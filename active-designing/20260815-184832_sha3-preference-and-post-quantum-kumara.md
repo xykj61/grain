@@ -1,6 +1,6 @@
 # SHA-3 Preference and Post-Quantum Kumara Identity — a design brief
 
-**Stamp:** `20260815.184832` · **Status:** Living · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260815.184832` · **Status:** Mixed -- Living · **Voice:** Kyri · **Style:** Radiant
 **Kin:** [`the decision wave`](20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md) · `crypto/` (Season G) · `context/TAME_GUIDANCE.md` · Kumara identity
 
 Season G climbs its crypto primitives in Rye. This brief seats a hash

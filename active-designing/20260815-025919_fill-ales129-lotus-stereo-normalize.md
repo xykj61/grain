@@ -1,6 +1,7 @@
 # Fill ALES129 — `lotus/stereo_normalize.rye`, peak normalization carried into stereo, one shared gain
 
 **Stamp:** `20260815.025919` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES129**
 **Kin:** [`20260815-001849_fill-ales103-lotus-peak-normalize.md`](20260815-001849_fill-ales103-lotus-peak-normalize.md) · [`20260815-024705_fill-ales127-lotus-stereo-invert.md`](20260815-024705_fill-ales127-lotus-stereo-invert.md)
 

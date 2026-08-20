@@ -1,7 +1,7 @@
 # Fill ALES189 — Lotus's stereo reverb in real time (`stereo_reverb_ms`)
 
 **Stamp:** `20260815.095002` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — a thin real-time twin over a proven tool, no new arithmetic on the audio path, no custody gate reached
+**Status:** Vision -- Self-approved design round — a thin real-time twin over a proven tool, no new arithmetic on the audio path, no custody gate reached
 **Waymark:** ALES · **Rung:** ALES189 · **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite)
 **Kin:** [`../lotus/stereo_reverb.rye`](../lotus/stereo_reverb.rye) (ALES187) · [`../lotus/reverb_time.rye`](../lotus/reverb_time.rye) (ALES188) · [`../lotus/stereo_echo_time.rye`](../lotus/stereo_echo_time.rye) (ALES182) · [`../lotus/clock.rye`](../lotus/clock.rye) (ALES5)
 

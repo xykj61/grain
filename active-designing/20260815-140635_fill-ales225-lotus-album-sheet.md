@@ -1,6 +1,6 @@
 # Fill ALES225 — Lotus album_sheet: a whole record's readable table of contents
 
-**Stamp:** `20260815.140635` · **Voice:** Kyri · **Style:** Radiant · **Status:** Self-approved design round
+**Stamp:** `20260815.140635` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Self-approved design round
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · waymark **ALES** · rung **ALES225**
 **Kin:** [`../lotus/render_album.rye`](../lotus/render_album.rye) (ALES223 — the unpacked album this reads) · [`../lotus/cue_sheet.rye`](../lotus/cue_sheet.rye) (ALES21 — the readable-render idiom this mirrors) · [`20260815-140211_fill-ales224-lotus-album-manifest.md`](20260815-140211_fill-ales224-lotus-album-manifest.md)
 

@@ -1,6 +1,7 @@
 # Fill ALES159 — Lotus's stereo_expand: the downward expander carried into stereo, the gate's linked decision fused with the compressor's linked gain
 
 **Stamp:** `20260815.063651` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES159
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-063222_fill-ales158-lotus-stereo-limit.md`](20260815-063222_fill-ales158-lotus-stereo-limit.md)
 

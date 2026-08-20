@@ -1,7 +1,7 @@
 # HUNK34 — a keeper lists their installed preset books, an honest index
 
 **Stamp:** `20260813.184007` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** self-approved design round · **Season A** (Hardware & Right-to-Repair) · **waymark HUNK** · Photos-app journey · rung **HUNK34**
+**Status:** Vision -- self-approved design round · **Season A** (Hardware & Right-to-Repair) · **waymark HUNK** · Photos-app journey · rung **HUNK34**
 **Kin:** [`../pond/apps/preset_store.rye`](../pond/apps/preset_store.rye) (HUNK32) · [`../pond/apps/session_list.rye`](../pond/apps/session_list.rye) (HUNK19/20) · [`../image/filter_preset.rye`](../image/filter_preset.rye) (HUNK30)
 
 ## Where the road stands

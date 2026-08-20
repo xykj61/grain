@@ -1,7 +1,7 @@
 # HUNK80 — tap a searched part to open its detail: the marketplace loop closes
 
 **Stamp:** `20260814.001609` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable, no gate)
+**Status:** Vision -- Self-approved design round (agent-doable, no gate)
 **Season:** A (Hardware & Right-to-Repair) · **waymark:** HUNK · **journey:** parts-marketplace · **rung:** HUNK80
 **Kin:** [`../brushstroke/part_and_search.rye`](../brushstroke/part_and_search.rye) (HUNK79 faceted shelf on glass) · [`../brushstroke/part_row.rye`](../brushstroke/part_row.rye) (HUNK73 shelf · HUNK74 paging) · [`../brushstroke/library_tap.rye`](../brushstroke/library_tap.rye) (HUNK70 the same gesture for Photos)
 

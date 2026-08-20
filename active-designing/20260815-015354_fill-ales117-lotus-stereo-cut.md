@@ -1,6 +1,7 @@
 # Fill ALES117 — Lotus's `stereo_cut`, the foundational span-remove carried into stereo
 
 **Stamp:** `20260815.015354` · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · **waymark** ALES · **rung** ALES117
 **Stands on:** [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the `Clip`, `cut`, and `EditError`) · [`../lotus/pan.rye`](../lotus/pan.rye) (ALES10 — the `StereoClip` and its balance invariant) · [`../lotus/stereo_replace.rye`](../lotus/stereo_replace.rye) (ALES116 — the validate-both-before-either twin pattern)
 

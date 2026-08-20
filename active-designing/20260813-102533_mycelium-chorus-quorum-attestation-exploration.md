@@ -1,7 +1,7 @@
 # The Chorus — a quorum of independent Vouchers, a position believed when distinct nodes agree
 
 **Stamp:** `20260813.102533` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — opens a fresh Mycelium journey (Season D)
+**Status:** Mixed -- Self-approved design round — opens a fresh Mycelium journey (Season D)
 **Kin:** [`../mycelium/voucher.rye`](../mycelium/voucher.rye) · [`../mycelium/statement.rye`](../mycelium/statement.rye) · [`../mycelium/cord.rye`](../mycelium/cord.rye) · [`../mycelium/kumara.rye`](../mycelium/kumara.rye) · [`20260813-095216_mycelium-voucher-attested-statement-exploration.md`](20260813-095216_mycelium-voucher-attested-statement-exploration.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md) · [`../.claude/rules/comlink-tendency.md`](../.claude/rules/comlink-tendency.md)
 
 ---

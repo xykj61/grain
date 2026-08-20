@@ -1,6 +1,7 @@
 # HUNK55 — tap-to-jump on the filmstrip: a thumbnail is tapped, the cursor lands there
 
 **Stamp:** `20260813.212112` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season A** (Hardware & Right-to-Repair) · **waymark HUNK** · **Photos-app journey** · **rung HUNK55**
 **Kin:** [`../brushstroke/edit_filmstrip.rye`](../brushstroke/edit_filmstrip.rye) (HUNK54) · [`../brushstroke/edit_touch_input.rye`](../brushstroke/edit_touch_input.rye) (HUNK50) · [`../image/edit_cursor.rye`](../image/edit_cursor.rye) (HUNK16)
 **Teacher, thanked clean-room:** the edit-history filmstrip of a photo app (iCloud Photos / Google Photos) — a keeper taps a thumbnail in the history strip and the picture jumps to that step (concept only, siloed).

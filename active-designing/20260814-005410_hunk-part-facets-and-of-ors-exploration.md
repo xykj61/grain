@@ -1,7 +1,7 @@
 # HUNK85 — the faceted query: OR within a facet, AND across facets
 
 **Stamp:** `20260814.005410` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable, no gate)
+**Status:** Vision -- Self-approved design round (agent-doable, no gate)
 **Season:** A (Hardware & Right-to-Repair) · **waymark:** HUNK · **journey:** parts-marketplace · **rung:** HUNK85
 **Kin:** [`../image/part_and.rye`](../image/part_and.rye) (HUNK78 conjunction) · [`../image/part_or.rye`](../image/part_or.rye) (HUNK83 disjunction) · [`../image/part_filter.rye`](../image/part_filter.rye) (HUNK75 `matches`) · [`../image/part_query.rye`](../image/part_query.rye) (HUNK76 `parse_query`)
 

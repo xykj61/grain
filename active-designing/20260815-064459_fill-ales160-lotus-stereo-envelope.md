@@ -1,6 +1,7 @@
 # Fill ALES160 — Lotus's stereo_envelope: the envelope follower carried into stereo, one linked detector for the time-varying family to come
 
 **Stamp:** `20260815.064459` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES160
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-063651_fill-ales159-lotus-stereo-expand.md`](20260815-063651_fill-ales159-lotus-stereo-expand.md)
 

@@ -1,7 +1,7 @@
 # Fill ALES97 — the Lotus silence splitter (cut *at* the silence, keep each region as its own take)
 
 **Stamp:** `20260814.232954` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES97**
+**Status:** Vision -- Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES97**
 **Kin:** [`the six-season double-seat`](20260813-020035_double-seat-expansion-six-seasons.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md) · [`fill ALES96`](20260814-232010_fill-ales96-lotus-silence-stripper.md) · [`fill ALES95`](20260814-231217_fill-ales95-lotus-voice-activity-segmenter.md)
 **Stands on:** `lotus/segment.rye` (ALES95 — the voice-activity segmenter, reused by name) · `lotus/trim_silence.rye` (ALES96 — the silence stripper, the join-law twin) · `lotus/timeline.rye` (ALES2 — the Clip and `splice`) · `lotus/voiced.rye` (ALES94 — the `.silent` verdict)
 

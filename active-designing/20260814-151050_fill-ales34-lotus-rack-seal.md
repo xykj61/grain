@@ -1,7 +1,7 @@
 # ALES34 — Lotus's slot sheet, sealed (verify before trust)
 
 **Stamp:** `20260814.151050` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living design capture — the self-approved round after ALES33
+**Status:** Mixed -- Living design capture — the self-approved round after ALES33
 **Waymark:** ALES · rung ALES34
 **Kin:** [`ALES33 — the rack travels as text`](20260814-150213_fill-ales33-lotus-rack-sheet.md) (render_rack / parse_rack reused whole) · [`ALES0 — the audio wire`](20260814-fill-ales0-lotus-audio-wire-shape.md) (the Sha256 verify-before-trust idiom) · [`lotus/rack_seal.rye`](../lotus/rack_seal.rye) · [`lotus/rack_sheet.rye`](../lotus/rack_sheet.rye) · [`lotus/wire.rye`](../lotus/wire.rye)
 

@@ -1,6 +1,7 @@
 # Fill ALES170 — Lotus's stereo_tone: the one-pole tone control carried into stereo, the same coefficient shaping both channels — the rung that opens the stereo EQ / filter class
 
 **Stamp:** `20260815.074743` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES170
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-073957_fill-ales169-lotus-stereo-limit-env-hold.md`](20260815-073957_fill-ales169-lotus-stereo-limit-env-hold.md)
 

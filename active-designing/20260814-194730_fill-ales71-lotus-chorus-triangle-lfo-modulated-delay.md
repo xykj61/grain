@@ -1,7 +1,7 @@
 # Fill ALES71 — Lotus's chorus: a triangle-LFO modulated delay round a centre
 
 **Stamp:** `20260814.194730` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the first *periodic* modulated delay, the thin rung that stands on ALES70's fractional interpolation and yields the chorus)
+**Status:** Vision -- Design read — self-approved round (no custody gate; the first *periodic* modulated delay, the thin rung that stands on ALES70's fractional interpolation and yields the chorus)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES71**
 **Kin:** [`../lotus/glide.rye`](../lotus/glide.rye) (ALES70 — the fractional interpolation this drives with a periodic LFO instead of a one-way ramp) · [`../lotus/taps.rye`](../lotus/taps.rye) (ALES68 — the fixed integer tap a zero-depth chorus reduces to) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip and the one true saturate)
 

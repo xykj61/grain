@@ -1,7 +1,7 @@
 # ALES32 — Lotus's rack paste, joined
 
 **Stamp:** `20260814.145422` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living design capture — the self-approved round after ALES31
+**Status:** Mixed -- Living design capture — the self-approved round after ALES31
 **Waymark:** ALES · rung ALES32
 **Kin:** [`ALES30 — the multi-slot rack`](20260814-144031_fill-ales30-lotus-rack.md) · [`ALES31 — the paste that joins`](20260814-144834_fill-ales31-lotus-paste-join.md) · [`lotus/rack_paste_join.rye`](../lotus/rack_paste_join.rye) · [`lotus/rack.rye`](../lotus/rack.rye) (ALES30, `find` reused) · [`lotus/paste_join.rye`](../lotus/paste_join.rye) (ALES31, `paste_join` reused whole)
 

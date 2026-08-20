@@ -1,7 +1,7 @@
 # Fill ALES43 — Lotus's carried-state filter: a low-pass that spans a re-berthed region without a fresh transient
 
 **Stamp:** `20260814.163000` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read — the next agent-doable Lotus rung, purely local
+**Status:** Mixed -- Self-approved design read — the next agent-doable Lotus rung, purely local
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES43**
 **Stands on:** [`../lotus/tone.rye`](../lotus/tone.rye) (ALES40 — the one-pole low-pass, now exposing `low_pass_carry`) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip)
 

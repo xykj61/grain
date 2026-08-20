@@ -1,6 +1,6 @@
 # Fill ALES234 — Lotus library_merge: two independent sets of changes, reconciled
 
-**Stamp:** `20260815.145638` · **Voice:** Kyri · **Style:** Radiant · **Status:** Self-approved design round
+**Stamp:** `20260815.145638` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Self-approved design round
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · waymark **ALES** · rung **ALES234**
 **Kin:** [`../lotus/library_diff.rye`](../lotus/library_diff.rye) (ALES229 — what changed between two catalogs) · [`../lotus/library_find.rye`](../lotus/library_find.rye) (ALES228 — the find / digest_of resolve this composes on) · [`../lotus/library_manifest.rye`](../lotus/library_manifest.rye) (ALES226 — the three opened catalogs this reconciles) · [`20260815-143152_fill-ales229-lotus-library-diff.md`](20260815-143152_fill-ales229-lotus-library-diff.md)
 

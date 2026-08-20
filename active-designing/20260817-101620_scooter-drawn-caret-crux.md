@@ -1,6 +1,6 @@
 # Scooter's Drawn Caret -- the cursor made a pixel block
 
-**Stamp:** `20260817.101620` - **Status:** Design read (self-approved round) - **Voice:** Kyri - **Style:** Radiant
+**Stamp:** `20260817.101620` - **Status:** Vision -- Design read (self-approved round) - **Voice:** Kyri - **Style:** Radiant
 **Kin:** [`../pond/apps/scooter_compose.rye`](../pond/apps/scooter_compose.rye) - [`../pond/apps/scooter_paint.rye`](../pond/apps/scooter_paint.rye) - [`../image/text_grid.rye`](../image/text_grid.rye) - Season G (Open Media Primitives)
 
 ## The gap this closes

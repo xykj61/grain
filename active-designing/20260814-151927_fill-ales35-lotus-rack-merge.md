@@ -1,7 +1,7 @@
 # Fill ALES35 — Lotus's rack merge: two saved racks joined, sealed import
 
 **Stamp:** `20260814.151927` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read — the next agent-doable Lotus rung, purely local
+**Status:** Mixed -- Self-approved design read — the next agent-doable Lotus rung, purely local
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES35**
 **Stands on:** [`../lotus/rack.rye`](../lotus/rack.rye) (ALES30) · [`../lotus/rack_seal.rye`](../lotus/rack_seal.rye) (ALES34) · [`../lotus/rack_sheet.rye`](../lotus/rack_sheet.rye) (ALES33)
 

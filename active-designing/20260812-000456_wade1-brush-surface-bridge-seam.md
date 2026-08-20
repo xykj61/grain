@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Voice:** Kyri
-**Status:** Design in motion — the seam proposed, grounded in running code; `tokens.rye` and the witness await the maintainer's word
+**Status:** Mixed -- Design in motion — the seam proposed, grounded in running code; `tokens.rye` and the witness await the maintainer's word
 **Waymark:** **WADE1** (surface bridge · durable core) — plan [`../expanding-prompts/20260811-220402_wade-bit-design-system-and-dimeroll-entities.md`](../expanding-prompts/20260811-220402_wade-bit-design-system-and-dimeroll-entities.md)
 **Order:** [Lindy-first, crux-first](../.claude/rules/lindy-first-crux.md)
 

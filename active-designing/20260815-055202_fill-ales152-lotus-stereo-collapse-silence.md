@@ -1,6 +1,7 @@
 # Fill ALES152 — Lotus's stereo_collapse_silence: the interior silence-capper carried into stereo, the first stereo edit that keeps its cuts
 
 **Stamp:** `20260815.055202` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES152
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-051802_fill-ales148-lotus-stereo-trim-silence.md`](20260815-051802_fill-ales148-lotus-stereo-trim-silence.md)
 

@@ -1,6 +1,7 @@
 # HUNK57 — a windowed filmstrip: a history longer than the strip is wide, read a window at a time
 
 **Stamp:** `20260813.213640` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season A** (Hardware & Right-to-Repair) · **waymark HUNK** · **Photos-app journey** · **rung HUNK57**
 **Kin:** [`../brushstroke/edit_filmstrip.rye`](../brushstroke/edit_filmstrip.rye) (HUNK54, extended additively) · [`../brushstroke/edit_filmstrip_scrub.rye`](../brushstroke/edit_filmstrip_scrub.rye) (HUNK56) · [`../image/edit_cursor.rye`](../image/edit_cursor.rye) (HUNK16)
 **Teacher, thanked clean-room:** the scrollable edit-history strip of a photo app (iCloud Photos / Google Photos) — the strip shows a handful of thumbnails at a time, never the whole history at once (concept only, siloed).

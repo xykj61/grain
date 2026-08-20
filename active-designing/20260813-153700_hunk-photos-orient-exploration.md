@@ -1,7 +1,7 @@
 # HUNK8 — Photos gestures past crop: orient (rotate · flip)
 
 **Stamp:** `20260813.153700` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — a fresh HUNK quest opens past the sprite-marketplace close
+**Status:** Mixed -- Self-approved design round — a fresh HUNK quest opens past the sprite-marketplace close
 **Season:** A (Hardware & Right-to-Repair) · **Waymark:** HUNK · **Journey:** Photos app, past the crop
 **Kin:** [`../image/photos.rye`](../image/photos.rye) (HUNK3 crop) · [`../image/qoi.rye`](../image/qoi.rye) (HUNK0 codec) · [`20260813-144218_hunk-season-a-open-image-exploration.md`](20260813-144218_hunk-season-a-open-image-exploration.md)
 

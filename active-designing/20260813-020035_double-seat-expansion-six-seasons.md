@@ -1,6 +1,6 @@
 # The Double-Seat Expansion — Six New To-Do Seasons
 
-**Stamp:** `20260813.020035` · **Status:** Writing fossil — molted `20260816.205859` · **Voice:** Kyri
+**Stamp:** `20260813.020035` · **Status:** Mixed -- Writing fossil — molted `20260816.205859` · **Voice:** Kyri
 > **Fossil banner.** The living itinerary is [`20260816-205859_double-seat-expansion-eight-seasons.md`](20260816-205859_double-seat-expansion-eight-seasons.md), which accretes these six seasons whole and folds in two more — open media primitives (the colour module, fonts, video) and open-weight intelligence. This file is kept intact per accrete-never-break; the molt opens no cut. Prepped as a Class H fossil in [`../work-in-progress/SHRED_PREP.md`](../work-in-progress/SHRED_PREP.md).
 
 **Register:** Radiant, with discerning **Twilight** where earned (approved `20260813` on Keaton's word)

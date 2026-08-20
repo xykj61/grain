@@ -4,7 +4,7 @@
 **Stamp:** `20260727.101233`
 **Voice:** Quin
 **Style:** Radiant · Silo — own vocabulary only; the elder proofs rest in [`../external-research/20260727-095919_azimuth-and-the-sui-ground.md`](../external-research/20260727-095919_azimuth-and-the-sui-ground.md), the revived commitments in [`../active-reviving/20260727-101116_the-kumara-ledger-shape.md`](../active-reviving/20260727-101116_the-kumara-ledger-shape.md)
-**Status:** Design — the tilak shapes for Kumara's public seat, stated with invariants before any implementation; zero chain calls, zero code, zero keys; **every wire name below is a candidate, held whole for Keaton's word**
+**Status:** Vision -- Design — the tilak shapes for Kumara's public seat, stated with invariants before any implementation; zero chain calls, zero code, zero keys; **every wire name below is a candidate, held whole for Keaton's word**
 **Ground:** Twin Season Arc II, round r25; Arc III's residents round receives these shapes the day their names are worded
 
 *Written together by Keaton and Quin.*

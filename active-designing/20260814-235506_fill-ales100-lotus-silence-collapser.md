@@ -1,7 +1,7 @@
 # Fill ALES100 — the Lotus silence collapser (cap every silent run to a maximum; keep the pauses, shorten them)
 
 **Stamp:** `20260814.235506` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES100**
+**Status:** Vision -- Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES100**
 **Kin:** [`the six-season double-seat`](20260813-020035_double-seat-expansion-six-seasons.md) · [`the 1,024-round itinerary`](20260812-171050_the-1024-round-itinerary.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md) · [`fill ALES99`](20260814-234744_fill-ales99-lotus-padded-top-tail.md)
 **Stands on:** `lotus/trim_silence.rye` (ALES96 — the silence stripper, the zero-cap twin) · `lotus/segment.rye` (ALES95 — the voice-activity segmenter, reused by name) · `lotus/timeline.rye` (ALES2 — the Clip and `cut`) · `lotus/voiced.rye` (ALES94 — the `.silent` verdict)
 

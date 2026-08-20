@@ -1,7 +1,7 @@
 # Fill ALES215 — Lotus's WAV container (the open door every effect leaves through)
 
 **Stamp:** `20260815.130110` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable · purely local byte work · no custody gate)
+**Status:** Vision -- Self-approved design round (agent-doable · purely local byte work · no custody gate)
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES215**
 **Kin:** [`20260815-125233_fill-ales214-lotus-reverb-place.md`](20260815-125233_fill-ales214-lotus-reverb-place.md) · [`../lotus/wire.rye`](../lotus/wire.rye) (ALES0) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

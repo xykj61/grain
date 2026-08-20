@@ -1,7 +1,7 @@
 # Fill ALES104 — the Lotus reverse (turn the clip end for end, the plainest exact edit)
 
 **Stamp:** `20260815.002711` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES104**
+**Status:** Vision -- Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES104**
 **Kin:** [`the six-season double-seat`](20260813-020035_double-seat-expansion-six-seasons.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md) · [`fill ALES103`](20260815-001849_fill-ales103-lotus-peak-normalize.md)
 **Stands on:** `lotus/timeline.rye` (ALES2 — the Clip, its `buf`/`len`/`samples`) · `lotus/meter.rye` (ALES13 — the peak/RMS meter, to witness that a permutation moves no loudness)
 

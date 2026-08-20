@@ -1,6 +1,7 @@
 # Fill ALES149 — Lotus's stereo_split_silence: the auto-splitter carried into stereo, one cut line for both channels
 
 **Stamp:** `20260815.052853` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES149
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-051802_fill-ales148-lotus-stereo-trim-silence.md`](20260815-051802_fill-ales148-lotus-stereo-trim-silence.md)
 

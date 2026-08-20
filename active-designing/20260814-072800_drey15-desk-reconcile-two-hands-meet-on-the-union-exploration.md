@@ -1,7 +1,7 @@
 # DREY15 — the desk reconcile: two hands meet on the union
 
 **Stamp:** `20260814.072800` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Landed — witness `tools/drey_reconcile_witness.rish` GREEN
+**Status:** Mixed -- Landed — witness `tools/drey_reconcile_witness.rish` GREEN
 **Season A** (Hardware & Right-to-Repair) · **waymark DREY** · Mikrophone firmware journey · **rung DREY15**
 **Kin:** [`../mikrophone/sync.rye`](../mikrophone/sync.rye) (DREY12, pull) · [`../mikrophone/push.rye`](../mikrophone/push.rye) (DREY14, push)
 

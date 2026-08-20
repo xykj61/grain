@@ -1,6 +1,7 @@
 # Fill ALES183 — Lotus's stereo_taps: the multi-tap delay carried into stereo, the same tap set on both channels, each channel read off its own frozen dry snapshot — the second rung of the stereo time-based wing, the echo's snapshot sibling
 
 **Stamp:** `20260815.090818` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES183
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-090218_fill-ales182-lotus-stereo-echo-in-real-time.md`](20260815-090218_fill-ales182-lotus-stereo-echo-in-real-time.md)
 

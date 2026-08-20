@@ -1,7 +1,7 @@
 # HUNK84 — the OR to glass: a widening line draws the union as one paged shelf
 
 **Stamp:** `20260814.004821` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable, no gate)
+**Status:** Vision -- Self-approved design round (agent-doable, no gate)
 **Season:** A (Hardware & Right-to-Repair) · **waymark:** HUNK · **journey:** parts-marketplace · **rung:** HUNK84
 **Kin:** [`../image/part_or.rye`](../image/part_or.rye) (HUNK83 the disjunction this rung draws) · [`../brushstroke/part_and_search.rye`](../brushstroke/part_and_search.rye) (HUNK79 the AND on glass this rung duals) · [`../brushstroke/part_search.rye`](../brushstroke/part_search.rye) (HUNK77 single-clause search)
 

@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260811.195353`
 **Voice:** Kyri · **Style:** Radiant
-**Status:** Silo — a technique and its clean-room study; both Lexicon terms **seated `20260811` on Keaton's word** (double-seat · crash headroom), and a TAME-guidance audit seated as a power-of-two quest.
+**Status:** Vision -- Silo — a technique and its clean-room study; both Lexicon terms **seated `20260811` on Keaton's word** (double-seat · crash headroom), and a TAME-guidance audit seated as a power-of-two quest.
 **Studies (with gratitude, clean-room):** TigerBeetle **TIGER_STYLE** (`gratitude/TIGER_STYLE.md`) — static allocation and fail-fast. Our own technique in our own words.
 **Kin:** the calendar (`context/rankings.kyri`, `tools/gen/season/itinerary.rish`), TAME Guidance (`context/TAME_GUIDANCE.md` §2, "Bounds on everything").
 

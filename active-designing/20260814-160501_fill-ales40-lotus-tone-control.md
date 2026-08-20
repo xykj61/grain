@@ -1,7 +1,7 @@
 # Fill ALES40 — Lotus's tone control: a one-pole filter that shapes a clip's brightness, integer-exact
 
 **Stamp:** `20260814.160501` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read — the next agent-doable Lotus rung, purely local
+**Status:** Mixed -- Self-approved design read — the next agent-doable Lotus rung, purely local
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES40**
 **Stands on:** [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip it filters and the `saturate` it reuses)
 

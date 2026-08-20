@@ -1,6 +1,7 @@
 # HUNK60 — the interactive crop gesture
 
 **Stamp:** `20260813.222800` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK60**
 **Kin:** [`photos.rye`](../image/photos.rye) (HUNK3 `crop`) · [`photo_edits.rye`](../image/photo_edits.rye) (HUNK11 vocabulary) · [`edit_touch_input.rye`](../image/edit_touch_input.rye) (HUNK50 down/move/up law)
 

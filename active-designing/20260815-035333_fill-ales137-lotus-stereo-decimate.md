@@ -1,6 +1,7 @@
 # Fill ALES137 — `lotus/stereo_decimate.rye`, the sample-rate decimator carried into stereo, one shared run grid
 
 **Stamp:** `20260815.035333` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES137**
 **Kin:** [`20260815-034830_fill-ales136-lotus-stereo-crush.md`](20260815-034830_fill-ales136-lotus-stereo-crush.md) · [`20260814-213107_fill-ales83-lotus-sample-rate-decimator.md`](20260814-213107_fill-ales83-lotus-sample-rate-decimator.md)
 

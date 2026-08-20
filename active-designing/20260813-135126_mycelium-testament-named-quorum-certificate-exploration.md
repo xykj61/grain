@@ -1,6 +1,6 @@
 # Testament — a named constellation's verdict travels as an offline certificate (Exploration)
 
-**Stamp:** `20260813.135126` · **Status:** Living (self-approved design read) · **Voice:** Kyri
+**Stamp:** `20260813.135126` · **Status:** Vision -- Living (self-approved design read) · **Voice:** Kyri
 **Register:** Radiant · **Season:** D (Kresfa & Mycelium) — the double-seat expansion
 **Kin:** [`the Constel`](20260813-132009_mycelium-constel-named-dev-net-exploration.md) (a named, reproducible dev-net reaches quorum) · [`the Chorus`](20260813-102533_mycelium-chorus-quorum-attestation-exploration.md) (quorum attestation · `chorus_bron` travel) · [`the Muster`](20260813-110039_mycelium-muster-known-validator-set-exploration.md) (a known validator roll) · [`the double-seat expansion`](20260813-020035_double-seat-expansion-six-seasons.md) (Season D) · [`placeholder-ship-names`](../.claude/rules/placeholder-ship-names.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md)
 

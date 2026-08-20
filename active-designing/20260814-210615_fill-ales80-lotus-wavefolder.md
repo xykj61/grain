@@ -1,7 +1,7 @@
 # Fill ALES80 — Lotus's wavefolder: the excess past the ceiling reflects back, a mirror not a wall
 
 **Stamp:** `20260814.210615` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; ALES78's hard-clip drive and ALES79's overdrive each named the wavefolder as a next member of the DRIVE family)
+**Status:** Mixed -- Design read — self-approved round (no custody gate; ALES78's hard-clip drive and ALES79's overdrive each named the wavefolder as a next member of the DRIVE family)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES80**
 **Kin:** [`../lotus/drive.rye`](../lotus/drive.rye) (ALES78 — the pre-gain, reused verbatim, and the ceiling that the fold reflects at rather than pins to) · [`../lotus/soft_drive.rye`](../lotus/soft_drive.rye) (ALES79 — the sibling waveshaper, its shoulder rounded where this one folds) · [`../lotus/fader.rye`](../lotus/fader.rye) (ALES6 — the num/den gain in i64) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip, sample_min/max, the one true saturate)
 

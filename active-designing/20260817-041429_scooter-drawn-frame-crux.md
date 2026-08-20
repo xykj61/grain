@@ -1,7 +1,7 @@
 # Scooter on Dexter -- the drawn frame
 
 **Stamp:** `20260817.041429` - **Language:** EN - **Voice:** Kyri - **Style:** Radiant
-**Status:** Design round (self-approved) -- the terminal-family rung the signed-post rung named "later"
+**Status:** Mixed -- Design round (self-approved) -- the terminal-family rung the signed-post rung named "later"
 **Kin:** [`scooter signed post`](20260817-035757_scooter-signed-post-crux.md) - [`scooter channel model`](20260817-035009_scooter-channel-model-crux.md) - [`terminal family names`](20260816-222322_terminal-family-names.md) - [`the eight-season double-seat`](20260816-205859_double-seat-expansion-eight-seasons.md) (Season G, terminal family) - [`../.claude/rules/tame-guidance.md`](../.claude/rules/tame-guidance.md)
 
 ---

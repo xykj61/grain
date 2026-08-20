@@ -1,6 +1,7 @@
 # HUNK47 — the touchable painted surface: the page scrolls under the finger, on glass
 
 **Stamp:** `20260813.201754` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** A (Hardware & Right-to-Repair) · **Waymark:** HUNK · rung **HUNK47**
 **Kin:** [`preset_scroll_view.rye`](../pond/apps/preset_scroll_view.rye) (HUNK42 painted view) · [`preset_touch_scroll.rye`](../pond/apps/preset_touch_scroll.rye) (HUNK46 touch session) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

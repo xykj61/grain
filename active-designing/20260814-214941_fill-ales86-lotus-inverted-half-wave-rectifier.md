@@ -1,7 +1,7 @@
 # Fill ALES86 — Lotus's inverted half-wave rectifier: keep the negative half, zero the positive, the two halves that partition the wave
 
 **Stamp:** `20260814.214941` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; ALES85's own doc names the inverted half-wave rectifier as its plain sibling, the rung that completes the rectifier family)
+**Status:** Mixed -- Design read — self-approved round (no custody gate; ALES85's own doc names the inverted half-wave rectifier as its plain sibling, the rung that completes the rectifier family)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES86**
 **Kin:** [`../lotus/halve.rye`](../lotus/halve.rye) (ALES85 — the positive half-wave rectifier keeps `max(x, 0)`; this rung keeps `min(x, 0)`, and the two sum back to the dry wave) · [`../lotus/rectify.rye`](../lotus/rectify.rye) (ALES84 — the full-wave rectifier `|x|`; `max(x, 0) − min(x, 0) = |x|`) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip, sample_min/max)
 

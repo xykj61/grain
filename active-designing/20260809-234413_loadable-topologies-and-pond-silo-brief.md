@@ -4,7 +4,7 @@
 **Stamp:** `20260809.234413`
 **Voice:** Riyo
 **Style:** Radiant · Silo — this brief names only our own modules and one fixed external: the study that grounds it, held in `../external-research/20260809-232015_loadable-topologies-and-pond-the-application-module.md` and `../external-research/20260809-233940_divisional-roles-d3-d5-d9-and-the-three-modes.md`. Every teacher, every classical source, rests named in that study; this room speaks our vocabulary alone.
-**Status:** Design — the buildable plan distilled from the study. Proposed names are marked *proposed*; nothing here seats a name, cuts a doc, or opens the breach. Build order is named; the breach waits until JARL closes.
+**Status:** Mixed -- Design — the buildable plan distilled from the study. Proposed names are marked *proposed*; nothing here seats a name, cuts a doc, or opens the breach. Build order is named; the breach waits until JARL closes.
 
 ---
 

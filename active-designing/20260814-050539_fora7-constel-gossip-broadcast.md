@@ -1,7 +1,7 @@
 # FORA7 — gossip: one frame reaches the whole constellation at once
 
 **Stamp:** `20260814.050539` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design round (self-approved) — the next FORA rung, agent-doable, purely local
+**Status:** Vision -- Design round (self-approved) — the next FORA rung, agent-doable, purely local
 **Season:** the Six-Season double-seat, Season D/F thread · **Waymark:** FORA · rung **FORA7**
 **Kin:** [`../constel/switchboard.rye`](../constel/switchboard.rye) · [`../constel/exchange.rye`](../constel/exchange.rye) · [`../constel/README.md`](../constel/README.md) · [`20260814-045802_fora6-constel-switchboard-multi-pier.md`](20260814-045802_fora6-constel-switchboard-multi-pier.md)
 

@@ -1,6 +1,7 @@
 # Fill ALES179 — Lotus's stereo_chorus: the triangle-LFO modulated delay mixed dry-plus-wet, carried into stereo, the same LFO and mix on both channels, each channel read off its own frozen snapshot — the fourth rung of the stereo modulation class, the vibrato's parent
 
 **Stamp:** `20260815.083932` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES179
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-083330_fill-ales178-lotus-stereo-vibrato.md`](20260815-083330_fill-ales178-lotus-stereo-vibrato.md)
 

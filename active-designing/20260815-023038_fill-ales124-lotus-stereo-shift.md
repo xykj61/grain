@@ -1,6 +1,7 @@
 # Fill ALES124 — `lotus/stereo_shift.rye`, the grid nudge carried into stereo
 
 **Stamp:** `20260815.023038` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES124**
 **Kin:** [`20260815-005300_fill-ales108-lotus-shift.md`](20260815-005300_fill-ales108-lotus-shift.md) · [`20260815-021904_fill-ales122-lotus-stereo-silence-span.md`](20260815-021904_fill-ales122-lotus-stereo-silence-span.md) · [`20260815-022429_fill-ales123-lotus-stereo-insert-silence.md`](20260815-022429_fill-ales123-lotus-stereo-insert-silence.md)
 

@@ -1,7 +1,7 @@
 # HUNK35 — a keeper reads what is *inside* each installed book, not only how many
 
 **Stamp:** `20260813.184630` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** self-approved design round · **Season A** (Hardware & Right-to-Repair) · **waymark HUNK** · Photos-app journey · rung **HUNK35**
+**Status:** Vision -- self-approved design round · **Season A** (Hardware & Right-to-Repair) · **waymark HUNK** · Photos-app journey · rung **HUNK35**
 **Kin:** [`../pond/apps/preset_list.rye`](../pond/apps/preset_list.rye) (HUNK34) · [`../pond/apps/preset_store.rye`](../pond/apps/preset_store.rye) (HUNK32) · [`../image/filter_preset.rye`](../image/filter_preset.rye) (HUNK30)
 
 ## Where the road stands

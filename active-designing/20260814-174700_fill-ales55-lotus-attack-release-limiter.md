@@ -1,7 +1,7 @@
 # Fill ALES55 — the attack/release limiter, the breathing trio made whole
 
 **Stamp:** `20260814.174700` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — one keystone, one send
+**Status:** Mixed -- Self-approved design round — one keystone, one send
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES55**
 **Kin:** [`20260814-174600_fill-ales54-lotus-attack-release-gate.md`](20260814-174600_fill-ales54-lotus-attack-release-gate.md) · [`20260814-174500_fill-ales53-lotus-attack-release-compressor.md`](20260814-174500_fill-ales53-lotus-attack-release-compressor.md) · [`20260814-170815_fill-ales49-lotus-peak-limiter.md`](20260814-170815_fill-ales49-lotus-peak-limiter.md) · [`../lotus/README.md`](../lotus/README.md)
 

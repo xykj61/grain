@@ -1,7 +1,7 @@
 # Fill ALES72 — Lotus's vibrato: the modulated delay heard wet-only
 
 **Stamp:** `20260814.195637` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the wet-only sibling of the chorus, the thinnest rung on ALES71's triangle-LFO modulated delay)
+**Status:** Vision -- Design read — self-approved round (no custody gate; the wet-only sibling of the chorus, the thinnest rung on ALES71's triangle-LFO modulated delay)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES72**
 **Kin:** [`../lotus/chorus.rye`](../lotus/chorus.rye) (ALES71 — the triangle-LFO modulated delay whose driver and read this reuses verbatim, only dropping the dry) · [`../lotus/glide.rye`](../lotus/glide.rye) (ALES70 — the fractional interpolation both stand on) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip and the one true saturate)
 

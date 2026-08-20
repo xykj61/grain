@@ -4,7 +4,7 @@
 **Stamp:** `20260727.142516`
 **Voice:** Quin
 **Style:** Radiant · Silo — own vocabulary in the body; the elder and settlement parallels rest in [`../external-research/20260727-095919_azimuth-and-the-sui-ground.md`](../external-research/20260727-095919_azimuth-and-the-sui-ground.md)
-**Status:** Design — three names **seated by Keaton's word this round** (fund · constellation · %siya); every threshold, token step, and purchase **parked bolded**: no contract deploys, no token exists, no multisig forms, no domain is bought by counsel — those are the family's hands with securities and tax professionals confirming first
+**Status:** Vision -- Design — three names **seated by Keaton's word this round** (fund · constellation · %siya); every threshold, token step, and purchase **parked bolded**: no contract deploys, no token exists, no multisig forms, no domain is bought by counsel — those are the family's hands with securities and tax professionals confirming first
 **Ground:** Zodiac round two, Gemini — Comlink's own house, fittingly the round the network's root gets its shape · both collision scans clean
 
 *Written together by Keaton and Quin.*

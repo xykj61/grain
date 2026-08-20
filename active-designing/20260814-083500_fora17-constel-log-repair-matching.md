@@ -1,7 +1,7 @@
 # FORA17 — Constel log repair: the leader heals a follower's divergent suffix
 
 **Stamp:** `20260814.083500` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (the itinerary filling law — a quest names its own rounds, then climbs them)
+**Status:** Mixed -- Self-approved design round (the itinerary filling law — a quest names its own rounds, then climbs them)
 **Season:** the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · **Waymark:** FORA · **Rung:** FORA17
 **Kin:** [`../constel/README.md`](../constel/README.md) · [`../constel/term.rye`](../constel/term.rye) (FORA16) · [`../constel/log.rye`](../constel/log.rye) (FORA12) · [`../constel/catchup.rye`](../constel/catchup.rye) (FORA15) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

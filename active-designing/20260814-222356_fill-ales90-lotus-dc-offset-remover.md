@@ -1,7 +1,7 @@
 # Fill ALES90 — Lotus's DC-offset remover: the pure translation that undoes the offset the even-harmonic family introduces
 
 **Stamp:** `20260814.222356` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the rung is a bounded, memoryless block operation over one local i16 clip, and the ALES89 doc already *booked* the DC remover as the next Lotus crux)
+**Status:** Vision -- Design read — self-approved round (no custody gate; the rung is a bounded, memoryless block operation over one local i16 clip, and the ALES89 doc already *booked* the DC remover as the next Lotus crux)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES90**
 **Kin:** [`../lotus/rectify.rye`](../lotus/rectify.rye) (ALES84 — the full-wave rectifier, `y = |x|`, the plainest DC generator this rung answers) · [`../lotus/crush.rye`](../lotus/crush.rye) (ALES81 — the 1-bit crush, a floored `0`/`sample_min` map, DC-heavy by construction) · [`../lotus/drive.rye`](../lotus/drive.rye) (ALES82 — the asymmetric tube drive, a different rail per sign, so its mean drifts off zero) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip, `sample_min`/`max`, and the one true `saturate`)
 

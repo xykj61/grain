@@ -1,7 +1,7 @@
 # Mycelium Purse r3 — the per-account verdict reads across a Knot
 
 **Stamp:** `20260813.072541` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read — Season D (Kresfa & Mycelium) · Mycelium consensus · Purse rung r3
+**Status:** Mixed -- Self-approved design read — Season D (Kresfa & Mycelium) · Mycelium consensus · Purse rung r3
 **Kin:** [`../mycelium/purse.rye`](../mycelium/purse.rye) · [`../mycelium/purse_bron.rye`](../mycelium/purse_bron.rye) · [`../mycelium/cord_knot.rye`](../mycelium/cord_knot.rye) · [`../mycelium/till_knot.rye`](../mycelium/till_knot.rye) · [`20260813-070923_mycelium-purse-per-account-balances-exploration.md`](20260813-070923_mycelium-purse-per-account-balances-exploration.md)
 
 ---

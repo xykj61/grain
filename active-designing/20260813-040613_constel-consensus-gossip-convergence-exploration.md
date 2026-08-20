@@ -1,7 +1,7 @@
 # Gossip Convergence — two Constel nodes reach one agreed order over the Cord
 
 **Stamp:** `20260813.040613` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living (design capture, self-approved round) · **Season:** double-seat expansion D — Kresfa & Mycelium
+**Status:** Vision -- Living (design capture, self-approved round) · **Season:** double-seat expansion D — Kresfa & Mycelium
 **Kin:** [the Mycelium Cord](20260813-032851_mycelium-consensus-cord-exploration.md) · [the constel dev-net ledger](20260813-030005_constel-devnet-ledger-exploration.md) · [the dev-net harness](20260813-022908_constel-devnet-harness-exploration.md) · [the six-season expansion](20260813-020035_double-seat-expansion-six-seasons.md) · [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 **Gratitude (clean-room, concepts only):** TigerBeetle (`gratitude/tigerbeetle`, `gratitude/TIGER_STYLE.md`) · Mysticeti / Bullshark / Narwhal (Mysten Labs, studied under Sui's permissive license per `gratitude-licenses.md`)
 

@@ -1,7 +1,7 @@
 # HUNK36 — a keeper reads their installed library as a shelf on glass
 
 **Stamp:** `20260813.185517` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** self-approved design round · **Season A** (Hardware & Right-to-Repair) · **waymark HUNK** · Photos-app journey · rung **HUNK36**
+**Status:** Vision -- self-approved design round · **Season A** (Hardware & Right-to-Repair) · **waymark HUNK** · Photos-app journey · rung **HUNK36**
 **Kin:** [`../pond/apps/preset_detail.rye`](../pond/apps/preset_detail.rye) (HUNK35) · [`../brushstroke/skate_grid.rye`](../brushstroke/skate_grid.rye) · [`../brushstroke/preset_preview.rye`](../brushstroke/preset_preview.rye) (HUNK33)
 
 ## Where the road stands

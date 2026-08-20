@@ -1,7 +1,7 @@
 # Fill ALES61 — Lotus's attack/release downward expander: the expander given a sense of time
 
 **Stamp:** `20260814.183555` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the expander driven from the proven ALES52 follower)
+**Status:** Vision -- Design read — self-approved round (no custody gate; the expander driven from the proven ALES52 follower)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES61**
 **Kin:** [`../lotus/expand.rye`](../lotus/expand.rye) (ALES60 — the deepened floor this drives over time) · [`../lotus/envelope.rye`](../lotus/envelope.rye) (ALES52 — the proven time base) · [`../lotus/gate_env.rye`](../lotus/gate_env.rye) (ALES54 — the sibling attack/release tool this mirrors)
 

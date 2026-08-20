@@ -1,7 +1,7 @@
 # HUNK79 — the faceted search box on glass: a multi-clause line draws a narrowed, paged shelf
 
 **Stamp:** `20260814.000723` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable, no gate)
+**Status:** Vision -- Self-approved design round (agent-doable, no gate)
 **Season:** A (Hardware & Right-to-Repair) · **waymark:** HUNK · **journey:** parts-marketplace · **rung:** HUNK79
 **Kin:** [`../image/part_and.rye`](../image/part_and.rye) (HUNK78 conjunction) · [`../brushstroke/part_search.rye`](../brushstroke/part_search.rye) (HUNK77 single-clause search on glass) · [`../brushstroke/part_row.rye`](../brushstroke/part_row.rye) (HUNK73 shelf · HUNK74 paging)
 

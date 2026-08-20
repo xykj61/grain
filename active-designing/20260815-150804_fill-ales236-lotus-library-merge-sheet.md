@@ -1,6 +1,6 @@
 # Fill ALES236 — Lotus library_merge_sheet: the merge verdict as a readable page
 
-**Stamp:** `20260815.150804` · **Voice:** Kyri · **Style:** Radiant · **Status:** Self-approved design round
+**Stamp:** `20260815.150804` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Self-approved design round
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · waymark **ALES** · rung **ALES236**
 **Kin:** [`../lotus/library_merge.rye`](../lotus/library_merge.rye) (ALES234 — the Merge this draws) · [`../lotus/library_diff_sheet.rye`](../lotus/library_diff_sheet.rye) (ALES230 — the readable-projection idiom this mirrors) · [`20260815-145638_fill-ales234-lotus-library-merge.md`](20260815-145638_fill-ales234-lotus-library-merge.md)
 

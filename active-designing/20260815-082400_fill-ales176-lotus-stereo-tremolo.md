@@ -1,6 +1,7 @@
 # Fill ALES176 — Lotus's stereo_tremolo: the tremolo (triangle LFO on amplitude) carried into stereo, the same swing on both channels — the rung that OPENS the stereo modulation class
 
 **Stamp:** `20260815.082400` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES176
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-081412_fill-ales175-lotus-stereo-sweep.md`](20260815-081412_fill-ales175-lotus-stereo-sweep.md)
 

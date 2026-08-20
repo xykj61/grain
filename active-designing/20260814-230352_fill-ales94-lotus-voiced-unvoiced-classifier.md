@@ -1,7 +1,7 @@
 # Fill ALES94 — Lotus's voiced/unvoiced/silent classifier: the first rung to fuse two analysis readers
 
 **Stamp:** `20260814.230352` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the rung is a bounded, in-process, **read-only** classifier over one local i16 clip that composes ALES93's crossing count and ALES13's RMS, and the ALES93 doc named this rung in as many words — *a voiced/unvoiced classifier that reads this count against an energy floor (the meter's RMS)*)
+**Status:** Vision -- Design read — self-approved round (no custody gate; the rung is a bounded, in-process, **read-only** classifier over one local i16 clip that composes ALES93's crossing count and ALES13's RMS, and the ALES93 doc named this rung in as many words — *a voiced/unvoiced classifier that reads this count against an energy floor (the meter's RMS)*)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES94**
 **Kin:** [`../lotus/zero_cross.rye`](../lotus/zero_cross.rye) (ALES93 — the crossing count, one of the two features) · [`../lotus/meter.rye`](../lotus/meter.rye) (ALES13 — the RMS energy, the other feature) · [`../lotus/schmitt.rye`](../lotus/schmitt.rye) (ALES92 — the band the crossing count reads through)
 

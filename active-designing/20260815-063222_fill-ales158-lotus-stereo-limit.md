@@ -1,6 +1,7 @@
 # Fill ALES158 — Lotus's stereo_limit: the brickwall limiter carried into stereo, the ratio→∞ corner of the linked gain — both a true ceiling and an image held whole
 
 **Stamp:** `20260815.063222` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES158
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-062700_fill-ales157-lotus-stereo-compress.md`](20260815-062700_fill-ales157-lotus-stereo-compress.md)
 

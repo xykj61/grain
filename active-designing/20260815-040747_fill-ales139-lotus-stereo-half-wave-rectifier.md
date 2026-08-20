@@ -1,6 +1,7 @@
 # Fill ALES139 — `lotus/stereo_halve.rye`, the half-wave rectifier carried into stereo, one shared threshold at zero
 
 **Stamp:** `20260815.040747` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES139**
 **Kin:** [`20260815-040027_fill-ales138-lotus-stereo-rectify.md`](20260815-040027_fill-ales138-lotus-stereo-rectify.md) · [`20260814-214355_fill-ales85-lotus-half-wave-rectifier.md`](20260814-214355_fill-ales85-lotus-half-wave-rectifier.md)
 

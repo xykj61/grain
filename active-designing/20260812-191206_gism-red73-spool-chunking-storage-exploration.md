@@ -1,7 +1,7 @@
 # The spool — large artifacts across ordered resins (GISM red #73)
 
 **Stamp:** `20260812.191206` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — the reds-first crux for Season 2 (Yield)
+**Status:** Mixed -- Self-approved design round — the reds-first crux for Season 2 (Yield)
 **Kin:** [`../work-in-progress/REDS.md`](../work-in-progress/REDS.md) (red #73) · [`../mantra/beading.rye`](../mantra/beading.rye) · [`../pond/apps/tablecloth.rye`](../pond/apps/tablecloth.rye) · [`../.claude/rules/reds-first.md`](../.claude/rules/reds-first.md) · [`../active-designing/20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md)
 
 ---

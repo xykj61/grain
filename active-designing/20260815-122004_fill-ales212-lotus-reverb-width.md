@@ -1,7 +1,7 @@
 # Fill ALES212 — Lotus's reverb width (reverberate the master wet, then widen the wet result)
 
 **Stamp:** `20260815.122004` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable · purely local DSP · no custody gate)
+**Status:** Vision -- Self-approved design round (agent-doable · purely local DSP · no custody gate)
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES212**
 **Kin:** [`20260815-121345_fill-ales211-lotus-stereo-width.md`](20260815-121345_fill-ales211-lotus-stereo-width.md) · [`20260815-101449_fill-ales193-lotus-stereo-reverb-wet-dry-mix.md`](20260815-101449_fill-ales193-lotus-stereo-reverb-wet-dry-mix.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

@@ -1,7 +1,7 @@
 # The Constel Test-Network Naming Law — fake dev constellations that can never reach the real network
 
 **Stamp:** `20260813.022222` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living (siloed, dev-only) · **Season:** double-seat expansion D/F — Constel test-networks
+**Status:** Mixed -- Living (siloed, dev-only) · **Season:** double-seat expansion D/F — Constel test-networks
 **Kin:** [`.claude/rules/placeholder-ship-names.md`](../.claude/rules/placeholder-ship-names.md) · [`.claude/rules/comlink-tendency.md`](../.claude/rules/comlink-tendency.md) · [the double-seat expansion](20260813-020035_double-seat-expansion-six-seasons.md) · [`../PUBKEYS.md`](../PUBKEYS.md)
 **Witness:** [`../tools/constel_naming_witness.rish`](../tools/constel_naming_witness.rish)
 

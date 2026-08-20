@@ -2,7 +2,7 @@
 
 *Keaton's word re-opens the Glow Tend rune lane after the empty rest: pursue the hardest solvable stones the vanes wait on. STOA338 made two runtime faces meet; this claim is the stone that meeting was cut for — Tally's garden wall asks `count` against `cap` instead of baking `7` into the desk.*
 
-**Stamp:** `20260803.191630` · **Voice:** Riyo · **Status:** GREEN — desk · worker arity · witness
+**Stamp:** `20260803.191630` · **Voice:** Riyo · **Status:** Mixed -- GREEN — desk · worker arity · witness
 **Grant:** Keaton — hardest solvable Glow Tend rune problems · Tally → Caravan → Mantra Weave → Mycelium/Murr/Realidream horizon
 **Elder:** a1 `gate-tally-garden-bound-u32.glow` (lit wall) stays; this desk accretes beside it.
 

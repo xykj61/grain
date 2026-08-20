@@ -1,7 +1,7 @@
 # HUNK76 — a typed search box: parse a keeper's query text into a filter
 
 **Stamp:** `20260813.234932` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable, no gate)
+**Status:** Vision -- Self-approved design round (agent-doable, no gate)
 **Season:** A (Hardware & Right-to-Repair) · **waymark:** HUNK · **journey:** parts-marketplace · **rung:** HUNK76
 **Kin:** [`../image/part_filter.rye`](../image/part_filter.rye) (HUNK75 filter) · [`../image/part_catalog.rye`](../image/part_catalog.rye) (HUNK71 facts) · [`../tally/parse_int.rye`](../tally/parse_int.rye) (strict integer) · [`hunk-part-filter`](20260813-234337_hunk-part-filter-narrow-the-catalog-exploration.md)
 

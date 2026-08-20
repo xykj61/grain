@@ -1,6 +1,6 @@
 # HUNK — the whole Photos screen in one call: the palette above, the picture below
 
-**Stamp:** `20260813.210626` · **Status:** Living (self-approved design round) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260813.210626` · **Status:** Mixed -- Living (self-approved design round) · **Voice:** Kyri · **Style:** Radiant
 **Waymark:** **HUNK** (Season A, Photos-app journey; seated in [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md))
 **Road:** [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) — **Season A, Hardware & Right-to-Repair**
 **Builds on:** [`20260813-205957_hunk-strip-chips-view-exploration.md`](20260813-205957_hunk-strip-chips-view-exploration.md) — HUNK52's chip row · [`edit_finger_view.rye`](../brushstroke/edit_finger_view.rye) — HUNK51's picture

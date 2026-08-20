@@ -1,7 +1,7 @@
 # FORA28 — Constel `depart`: the remove-a-member lifecycle, closed
 
 **Stamp:** `20260814.080327` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design capture for a self-approved round · waymark **FORA** · rung **FORA28**
+**Status:** Vision -- Design capture for a self-approved round · waymark **FORA** · rung **FORA28**
 **Kin:** [`../constel/admit.rye`](../constel/admit.rye) (FORA26 — the add side) · [`../constel/reconfig.rye`](../constel/reconfig.rye) (FORA13 — the no-fork joint switch) · [`../constel/tenure.rye`](../constel/tenure.rye) (FORA24 — CheckQuorum step-down) · [`../constel/README.md`](../constel/README.md)
 
 ---

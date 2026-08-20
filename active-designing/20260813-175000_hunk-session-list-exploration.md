@@ -1,7 +1,7 @@
 # HUNK19 — a keeper lists their saved editing sessions (an honest index)
 
 **Stamp:** `20260813.175000` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — Season A (Hardware & Right-to-Repair) · waymark **HUNK** · Photos-app journey · rung **HUNK19**
+**Status:** Vision -- Self-approved design round — Season A (Hardware & Right-to-Repair) · waymark **HUNK** · Photos-app journey · rung **HUNK19**
 **Kin:** [`session_store.rye` (HUNK18)](../pond/apps/session_store.rye) · [`tablecloth.rye`](../pond/apps/tablecloth.rye) · [`mcp_resource_list.rye`](../pond/apps/mcp_resource_list.rye)
 
 ---

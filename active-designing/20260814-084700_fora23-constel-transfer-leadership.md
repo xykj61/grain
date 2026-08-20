@@ -1,6 +1,7 @@
 # FORA23 — Constel leadership transfer: a handoff only to a caught-up successor
 
 **Stamp:** `20260814.084700` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · **waymark** FORA · **rung** FORA23
 **Kin:** [`../constel/vote.rye`](../constel/vote.rye) (FORA21) · [`../constel/prevote.rye`](../constel/prevote.rye) (FORA22) · [`../constel/repair.rye`](../constel/repair.rye) (FORA17) · [`../constel/quorum.rye`](../constel/quorum.rye) (FORA9)
 

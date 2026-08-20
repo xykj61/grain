@@ -1,6 +1,6 @@
 # HUNK — the marketplace catalog painted as a paged shelf
 
-**Stamp:** `20260813.203000` · **Status:** Living (self-approved design round) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260813.203000` · **Status:** Mixed -- Living (self-approved design round) · **Voice:** Kyri · **Style:** Radiant
 **Waymark:** **HUNK** (Season A, Open Image journey; seated in [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md))
 **Road:** [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) — **Season A, Hardware & Right-to-Repair**
 **Builds on:** [`20260813-201500_hunk-sprite-marketplace-index-exploration.md`](20260813-201500_hunk-sprite-marketplace-index-exploration.md) — the HUNK4–HUNK7 sprite-index quest, complete

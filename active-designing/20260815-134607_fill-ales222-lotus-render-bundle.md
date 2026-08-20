@@ -1,6 +1,6 @@
 # Fill ALES222 — Lotus render_bundle: manifest and .wav as one saveable artifact
 
-**Stamp:** `20260815.134607` · **Voice:** Kyri · **Style:** Radiant · **Status:** Self-approved design round
+**Stamp:** `20260815.134607` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Self-approved design round
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · waymark **ALES** · rung **ALES222**
 **Kin:** [`../lotus/render_manifest.rye`](../lotus/render_manifest.rye) (ALES221 — the sealed, content-addressed manifest) · [`../lotus/wav.rye`](../lotus/wav.rye) (ALES215 — the .wav the bundle carries) · [`20260815-133848_fill-ales221-lotus-render-manifest.md`](20260815-133848_fill-ales221-lotus-render-manifest.md)
 

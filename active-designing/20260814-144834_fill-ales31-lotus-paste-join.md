@@ -1,7 +1,7 @@
 # ALES31 — Lotus's paste that joins rather than butts
 
 **Stamp:** `20260814.144834` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living design capture — the self-approved round after ALES30
+**Status:** Mixed -- Living design capture — the self-approved round after ALES30
 **Waymark:** ALES · rung ALES31
 **Kin:** [`ALES25 — the clipboard`](20260814-fill-ales25-lotus-clipboard.md) · [`ALES29 — the stereo two-sided insert-join`](20260814-fill-ales29-lotus-stereo-two-sided-insert-join.md) · [`ALES26 — the crossfade join`](20260814-fill-ales26-lotus-crossfade-join.md) · [`lotus/paste_join.rye`](../lotus/paste_join.rye) · [`lotus/stereo_insert_join.rye`](../lotus/stereo_insert_join.rye) (ALES29, `insert_join_stereo` reused whole) · [`lotus/clipboard.rye`](../lotus/clipboard.rye) (ALES25, the held span)
 

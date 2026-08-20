@@ -1,6 +1,6 @@
 # HUNK — the single-sprite marketplace index
 
-**Stamp:** `20260813.201500` · **Status:** Living (self-approved design round) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260813.201500` · **Status:** Mixed -- Living (self-approved design round) · **Voice:** Kyri · **Style:** Radiant
 **Waymark:** **HUNK** (Season A, Open Image journey; seated in [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md))
 **Road:** [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) — **Season A, Hardware & Right-to-Repair**
 **Builds on:** [`20260813-144218_hunk-season-a-open-image-exploration.md`](20260813-144218_hunk-season-a-open-image-exploration.md) — the HUNK0–HUNK3 Open Image quest, complete

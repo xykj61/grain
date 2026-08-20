@@ -1,6 +1,7 @@
 # Fill ALES122 — `lotus/stereo_silence_span.rye`, silencing a span carried into stereo
 
 **Stamp:** `20260815.021904` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES122**
 **Kin:** [`20260815-010618_fill-ales110-lotus-silence-span.md`](20260815-010618_fill-ales110-lotus-silence-span.md) · [`20260815-021504_fill-ales121-lotus-stereo-paste-over.md`](20260815-021504_fill-ales121-lotus-stereo-paste-over.md)
 

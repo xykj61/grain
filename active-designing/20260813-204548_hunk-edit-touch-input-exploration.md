@@ -1,6 +1,6 @@
 # HUNK — the finger surface proper: a tap on a strip, a swipe left or right, becomes one edit gesture
 
-**Stamp:** `20260813.204548` · **Status:** Living (self-approved design round) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260813.204548` · **Status:** Mixed -- Living (self-approved design round) · **Voice:** Kyri · **Style:** Radiant
 **Waymark:** **HUNK** (Season A, Photos-app journey; seated in [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md))
 **Road:** [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) — **Season A, Hardware & Right-to-Repair**
 **Builds on:** [`20260813-203500_hunk-edit-touch-view-exploration.md`](20260813-203500_hunk-edit-touch-view-exploration.md) — HUNK49's touchable editor, which named this rung as its next crux

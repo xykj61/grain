@@ -1,7 +1,7 @@
 # HUNK24 — the Photos app resamples smoothly (bilinear)
 
 **Stamp:** `20260813.173146` · **Waymark:** HUNK (Season A · Open Image journey) · **Voice:** Kyri
-**Status:** Design in motion — self-approved round · **Kin:** HUNK9 `scale` (nearest) · HUNK22 `scale_area` (area)
+**Status:** Vision -- Design in motion — self-approved round · **Kin:** HUNK9 `scale` (nearest) · HUNK22 `scale_area` (area)
 
 ## The crux
 

@@ -1,7 +1,7 @@
 # Fill ALES81 — Lotus's bit-crusher: drop the low bits, the first DRIVE map that is not odd
 
 **Stamp:** `20260814.211634` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; ALES78's hard-clip drive and ALES80's wavefolder each named the bit-crush / decimator as a next member of the DRIVE family)
+**Status:** Mixed -- Design read — self-approved round (no custody gate; ALES78's hard-clip drive and ALES80's wavefolder each named the bit-crush / decimator as a next member of the DRIVE family)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES81**
 **Kin:** [`../lotus/fold.rye`](../lotus/fold.rye) (ALES80 — the sibling waveshaper, its magnitude folded where this one's low bits fall away) · [`../lotus/drive.rye`](../lotus/drive.rye) (ALES78 — the DRIVE family's open, whose pre-gain this rung composes with rather than embeds) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip, sample_min/max, the one true saturate)
 

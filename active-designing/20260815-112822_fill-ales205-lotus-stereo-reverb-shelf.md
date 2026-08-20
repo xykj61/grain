@@ -1,7 +1,7 @@
 # Fill ALES205 — Lotus's stereo reverberant tone shelf (the reverb's two-band EQ, per ear)
 
 **Stamp:** `20260815.112822` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable · purely local DSP · no custody gate)
+**Status:** Vision -- Self-approved design round (agent-doable · purely local DSP · no custody gate)
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES205**
 **Kin:** [`20260815-112557_fill-ales204-lotus-reverb-shelf.md`](20260815-112557_fill-ales204-lotus-reverb-shelf.md) · [`20260815-104900_fill-ales199-lotus-stereo-reverb-tone.md`](20260815-104900_fill-ales199-lotus-stereo-reverb-tone.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

@@ -1,7 +1,7 @@
 # HUNK33 — the Skate preview of a named filter, seen before it is committed
 
 **Stamp:** `20260813.183502` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** self-approved design round · **Season A** (Hardware & Right-to-Repair) · **waymark HUNK** · Photos-app journey · rung **HUNK33**
+**Status:** Vision -- self-approved design round · **Season A** (Hardware & Right-to-Repair) · **waymark HUNK** · Photos-app journey · rung **HUNK33**
 **Kin:** [`../image/filter_preset.rye`](../image/filter_preset.rye) (HUNK30) · [`../brushstroke/edit_preview.rye`](../brushstroke/edit_preview.rye) (HUNK13) · [`../brushstroke/image_skate.rye`](../brushstroke/image_skate.rye) (HUNK2)
 
 ## Where the road stands

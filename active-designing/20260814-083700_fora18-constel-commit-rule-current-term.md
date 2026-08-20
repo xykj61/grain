@@ -1,7 +1,7 @@
 # FORA18 — Constel commit rule: a leader commits an old-term entry only through a current-term one
 
 **Stamp:** `20260814.083700` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (the itinerary filling law)
+**Status:** Mixed -- Self-approved design round (the itinerary filling law)
 **Season:** the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · **Waymark:** FORA · **Rung:** FORA18
 **Kin:** [`../constel/README.md`](../constel/README.md) · [`../constel/repair.rye`](../constel/repair.rye) (FORA17) · [`../constel/term.rye`](../constel/term.rye) (FORA16) · [`../constel/quorum.rye`](../constel/quorum.rye) (FORA9) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

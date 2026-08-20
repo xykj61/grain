@@ -1,6 +1,7 @@
 # Fill ALES167 — Lotus's stereo_gate_env_hold: the attack/hold/release noise gate carried into stereo, the linked held envelope driving one linked gate over time — the second spender of the held time base
 
 **Stamp:** `20260815.072727` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES167
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-072211_fill-ales166-lotus-stereo-compress-env-hold.md`](20260815-072211_fill-ales166-lotus-stereo-compress-env-hold.md)
 

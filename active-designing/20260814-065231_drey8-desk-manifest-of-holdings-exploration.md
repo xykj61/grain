@@ -1,7 +1,7 @@
 # DREY8 — the desk manifest of holdings *(exploration)*
 
 **Stamp:** `20260814.065231` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design capture — self-approved round, agent-doable crux
+**Status:** Vision -- Design capture — self-approved round, agent-doable crux
 **Waymark:** DREY · Season A (Hardware & Right-to-Repair) · Mikrophone firmware journey · rung **DREY8**
 **Kin:** [`../mikrophone/catalog.rye`](../mikrophone/catalog.rye) (DREY7) · [`../mikrophone/wire.rye`](../mikrophone/wire.rye) (DREY1) · [`20260814-064900_drey7-content-addressed-desk-catalog-exploration.md`](20260814-064900_drey7-content-addressed-desk-catalog-exploration.md)
 

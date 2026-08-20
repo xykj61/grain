@@ -1,7 +1,7 @@
 # Fill ALES62 — Lotus's attack/hold/release downward expander: the held quartet made whole
 
 **Stamp:** `20260814.184011` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; ALES56's held follower spent for the expander)
+**Status:** Vision -- Design read — self-approved round (no custody gate; ALES56's held follower spent for the expander)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES62**
 **Kin:** [`../lotus/expand.rye`](../lotus/expand.rye) (ALES60) · [`../lotus/hold_env.rye`](../lotus/hold_env.rye) (ALES56 — the held time base) · [`../lotus/expand_env.rye`](../lotus/expand_env.rye) (ALES61 — the zero-hold limit) · [`../lotus/gate_env_hold.rye`](../lotus/gate_env_hold.rye) (ALES57 — the sibling this mirrors)
 

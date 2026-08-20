@@ -1,7 +1,7 @@
 # Fill ALES211 — Lotus's stereo width (the image narrowed or widened, spending the mid/side primitive)
 
 **Stamp:** `20260815.121345` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable · purely local DSP · no custody gate)
+**Status:** Vision -- Self-approved design round (agent-doable · purely local DSP · no custody gate)
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES211**
 **Kin:** [`20260815-120505_fill-ales210-lotus-mid-side.md`](20260815-120505_fill-ales210-lotus-mid-side.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

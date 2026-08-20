@@ -4,7 +4,7 @@
 **Last updated:** `20260808.045124`
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Riyo
-**Status:** **Proposal** — a *designed, unbegun breach* per [`../context/BREACH.md`](../context/BREACH.md). Nothing here moves a file until the maintainer speaks the word.
+**Status:** Mixed -- **Proposal** — a *designed, unbegun breach* per [`../context/BREACH.md`](../context/BREACH.md). Nothing here moves a file until the maintainer speaks the word.
 
 ---
 

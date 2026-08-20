@@ -1,6 +1,7 @@
 # HUNK46 — the touch session: finger down · move · up become a live cursor
 
 **Stamp:** `20260813.201244` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** A (Hardware & Right-to-Repair) · **Waymark:** HUNK · rung **HUNK46**
 **Kin:** [`preset_scroll_input.rye`](../pond/apps/preset_scroll_input.rye) (HUNK43) · [`preset_scroll_drag.rye`](../pond/apps/preset_scroll_drag.rye) (HUNK44) · [`preset_scroll_fling.rye`](../pond/apps/preset_scroll_fling.rye) (HUNK45) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

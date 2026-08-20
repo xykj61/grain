@@ -1,7 +1,7 @@
 # The Voucher — a signed attestation of a holder's position at a named order-head
 
 **Stamp:** `20260813.095216` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — opens a fresh Mycelium journey (Season D)
+**Status:** Mixed -- Self-approved design round — opens a fresh Mycelium journey (Season D)
 **Kin:** [`../mycelium/statement.rye`](../mycelium/statement.rye) · [`../mycelium/cord.rye`](../mycelium/cord.rye) · [`../mycelium/lapse.rye`](../mycelium/lapse.rye) · [`../mycelium/kumara.rye`](../mycelium/kumara.rye) · [`20260813-091851_mycelium-statement-account-voice-exploration.md`](20260813-091851_mycelium-statement-account-voice-exploration.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 
 ---

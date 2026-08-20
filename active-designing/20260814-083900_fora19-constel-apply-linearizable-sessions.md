@@ -1,6 +1,7 @@
 # FORA19 — the committed log drives a state machine, each request applied exactly once
 
 **Stamp:** `20260814.083900` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** Six-Season double-seat, Season D (Kresfa & Mycelium — the tree's own consensus) · **Waymark:** FORA · **Rung:** FORA19
 **Stands on:** [`constel/commit.rye`](../constel/commit.rye) (FORA18 — `safe_commit_len`, the committed prefix) · [`constel/repair.rye`](../constel/repair.rye) (FORA17 — the ordered log the commit rule draws from)
 **Kin:** [`the 1,024-round itinerary`](20260812-171050_the-1024-round-itinerary.md) · [`the double-seat expansion`](20260813-020035_double-seat-expansion-six-seasons.md) · [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)

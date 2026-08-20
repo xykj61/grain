@@ -1,7 +1,7 @@
 # HUNK18 — the editing session survives a cold restart (undo *and redo* intact)
 
 **Stamp:** `20260813.174500` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — Season A (Hardware & Right-to-Repair) · waymark **HUNK** · Photos-app journey · rung **HUNK18**
+**Status:** Vision -- Self-approved design round — Season A (Hardware & Right-to-Repair) · waymark **HUNK** · Photos-app journey · rung **HUNK18**
 **Kin:** [`edit_cursor.rye` (HUNK16)](../image/edit_cursor.rye) · [`edit_store.rye` (HUNK12)](../pond/apps/edit_store.rye) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 
 ---

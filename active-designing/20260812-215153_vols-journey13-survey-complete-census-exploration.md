@@ -1,7 +1,7 @@
 # VOLS Journey 13 — Survey, the complete derived census (exploration)
 
 **Stamp:** `20260812.215153` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — opens Journey 13 of Season 4 (Seal) in the 1,024-round itinerary
+**Status:** Mixed -- Self-approved design round — opens Journey 13 of Season 4 (Seal) in the 1,024-round itinerary
 **Waymark:** **VOLS** (CION Equinox 1 — Survey, already seated; each journey is `VOLS-J<N>`)
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) · [`../context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md`](../context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md) · [`../tools/fixtures/labeling_module_scan.sh`](../tools/fixtures/labeling_module_scan.sh) · [`../tools/gen/season/cion_module_labeling_witness.rish`](../tools/gen/season/cion_module_labeling_witness.rish) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

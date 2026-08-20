@@ -1,7 +1,7 @@
 # Fill ALES190 — Lotus's named-room reverb presets (`reverb_preset`)
 
 **Stamp:** `20260815.095435` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — a curated constant bank over a proven tool, no new arithmetic on the audio path, no custody gate reached
+**Status:** Vision -- Self-approved design round — a curated constant bank over a proven tool, no new arithmetic on the audio path, no custody gate reached
 **Waymark:** ALES · **Rung:** ALES190 · **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite)
 **Kin:** [`../lotus/reverb_time.rye`](../lotus/reverb_time.rye) (ALES188) · [`../lotus/stereo_reverb_time.rye`](../lotus/stereo_reverb_time.rye) (ALES189) · [`../lotus/reverb.rye`](../lotus/reverb.rye) (ALES186)
 

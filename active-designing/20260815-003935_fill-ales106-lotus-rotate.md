@@ -1,7 +1,7 @@
 # Fill ALES106 — the Lotus rotate (cyclic shift, the third pure rearrangement beside reverse and invert)
 
 **Stamp:** `20260815.003935` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES106**
+**Status:** Vision -- Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES106**
 **Kin:** [`the six-season double-seat`](20260813-020035_double-seat-expansion-six-seasons.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md) · [`fill ALES104`](20260815-002711_fill-ales104-lotus-reverse.md) · [`fill ALES105`](20260815-003415_fill-ales105-lotus-invert.md)
 **Stands on:** `lotus/timeline.rye` (ALES2 — the Clip, its `buf`/`len`/`samples`) · `lotus/meter.rye` (ALES13 — the peak/RMS meter, to witness that a pure rearrangement moves no loudness)
 

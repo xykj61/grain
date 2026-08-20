@@ -1,7 +1,7 @@
 # DREY0 — the memory that forgets: a session buffer that holds only while powered
 
 **Stamp:** `20260814.020500` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (Season A · waymark **DREY** · Mikrophone firmware journey · founding rung DREY0)
+**Status:** Vision -- Self-approved design round (Season A · waymark **DREY** · Mikrophone firmware journey · founding rung DREY0)
 **Kin:** [`../foundations/20260801-005853_mantrapod-venture-pitch.md`](../foundations/20260801-005853_mantrapod-venture-pitch.md) · [`../active-designing/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/20260813-020035_double-seat-expansion-six-seasons.md) · [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
 
 ---

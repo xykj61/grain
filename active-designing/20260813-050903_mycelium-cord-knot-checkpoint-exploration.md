@@ -1,7 +1,7 @@
 # The Knot — a bounded Cord runs forever by tying off its committed past
 
 **Stamp:** `20260813.050903` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living (design capture, self-approved round) · **Season:** double-seat expansion D — Kresfa & Mycelium
+**Status:** Vision -- Living (design capture, self-approved round) · **Season:** double-seat expansion D — Kresfa & Mycelium
 **Kin:** [the Mycelium Cord](20260813-032851_mycelium-consensus-cord-exploration.md) · [gossip convergence](20260813-040613_constel-consensus-gossip-convergence-exploration.md) · [fact batching](20260813-043303_mycelium-fact-batching-exploration.md) · [the six-season expansion](20260813-020035_double-seat-expansion-six-seasons.md) · [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md) · [`.claude/rules/comlink-tendency.md`](../.claude/rules/comlink-tendency.md)
 **Gratitude (clean-room, concepts only):** TigerBeetle (`gratitude/tigerbeetle`, `gratitude/TIGER_STYLE.md`) — checkpointing a deterministic replicated state machine so its storage is bounded, and static allocation as a promise the system cannot outgrow.
 

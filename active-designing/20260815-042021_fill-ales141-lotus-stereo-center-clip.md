@@ -1,6 +1,7 @@
 # Fill ALES141 — `lotus/stereo_center_clip.rye`, the center clipper carried into stereo, opening the dead-zone family in stereo
 
 **Stamp:** `20260815.042021` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES141**
 **Kin:** [`20260815-041250_fill-ales140-lotus-stereo-inverted-half-wave.md`](20260815-041250_fill-ales140-lotus-stereo-inverted-half-wave.md) · [`20260814-215834_fill-ales87-lotus-center-clipper.md`](20260814-215834_fill-ales87-lotus-center-clipper.md)
 

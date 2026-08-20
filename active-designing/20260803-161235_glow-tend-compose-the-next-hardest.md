@@ -6,7 +6,7 @@
 **Voice:** Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety first; Gall grows from a running whole
-**Status:** 339 GREEN · 339b GREEN · 338 WHOLE · STOA340 Tally pair-bound GREEN `20260803.191630` — compose O1 first metal done; vane desks open under the rune grant
+**Status:** Mixed -- 339 GREEN · 339b GREEN · 338 WHOLE · STOA340 Tally pair-bound GREEN `20260803.191630` — compose O1 first metal done; vane desks open under the rune grant
 **Ground:** vane roadmap `20260802-161500` · bartis `%-` closed set · multi-line compose already green in `glow/` · a1×9 · a2 suite 6/6 · eq 8/8
 
 *Written together by Keaton and Riyo.*

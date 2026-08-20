@@ -1,7 +1,7 @@
 # LOWE Journey 14 — Molt, the meaning-preserving relabel (exploration)
 
 **Stamp:** `20260812.222457` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — opens Journey 14 of Season 4 (Seal) in the 1,024-round itinerary
+**Status:** Mixed -- Self-approved design round — opens Journey 14 of Season 4 (Seal) in the 1,024-round itinerary
 **Waymark:** **LOWE** (CION Equinox 2 — Molt, already seated; each journey is `LOWE-J<N>`)
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) · [`20260812-215153_vols-journey13-survey-complete-census-exploration.md`](20260812-215153_vols-journey13-survey-complete-census-exploration.md) · [`../work-in-progress/vols-survey-ledger.bron`](../work-in-progress/vols-survey-ledger.bron) · [`../tools/gen/season/cion_module_labeling_witness.rish`](../tools/gen/season/cion_module_labeling_witness.rish) · [`../context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md`](../context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

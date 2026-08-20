@@ -1,6 +1,6 @@
 # Season G -- the first permissive font corpus (a 5x7 numeral set)
 
-**Stamp:** `20260816.230846` - **Status:** Living (design read for `image/font5x7.rye`) - **Voice:** Kyri - **Style:** Radiant
+**Stamp:** `20260816.230846` - **Status:** Mixed -- Living (design read for `image/font5x7.rye`) - **Voice:** Kyri - **Style:** Radiant
 **Kin:** [`the glyph atlas rung`](20260816-223956_season-g-glyph-atlas-crux.md) - [`the eight-season double-seat`](20260816-205859_double-seat-expansion-eight-seasons.md) (Season G) - `image/glyph.rye` - `.claude/rules/lindy-first-crux.md`
 
 ---

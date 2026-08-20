@@ -1,7 +1,7 @@
 # TACT Journey 2 — Publishing: the owner-signed, offline-verifiable receipt (exploration)
 
 **Stamp:** `20260812.173656` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — opens the 1,024-itinerary's **Season 1 (The World, TACT), Journey 2**
+**Status:** Vision -- Self-approved design round — opens the 1,024-itinerary's **Season 1 (The World, TACT), Journey 2**
 **Kin:** [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) · [`20260812-172129_tact-journey1-ship-pilot-exploration.md`](20260812-172129_tact-journey1-ship-pilot-exploration.md) · [`../pond/apps/tablecloth_keyed.rye`](../pond/apps/tablecloth_keyed.rye) · [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md)
 
 ---

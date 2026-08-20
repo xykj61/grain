@@ -2,7 +2,7 @@
 
 *Keaton's word renews and aims the rune focus: hardest solvable Glow Tend problems, pursued through Tally, Caravan, Mantra, Weave, Mycelium, Murr, and Realidream — the best-path pick pre-approved. This brief is the alignment he asked for: the vanes' desks censused, their one shared hunger named, and the queue set. The gates are restated before the queue, because the word aims runes and opens nothing else: Mycelium stays gated at MUR M4, Murr's ladder stands, and no chain object, wallet, key, or custody motion ever flows from counsel — the vanes are design targets the runes grow toward.*
 
-**Stamp:** `20260803.191415` · **Voice:** Riyo · **Status:** COMPASS SET — V1 GREEN on pier as **STOA341** (see below)
+**Stamp:** `20260803.191415` · **Voice:** Riyo · **Status:** Mixed -- COMPASS SET — V1 GREEN on pier as **STOA341** (see below)
 
 *Written together by Keaton and Riyo.*
 

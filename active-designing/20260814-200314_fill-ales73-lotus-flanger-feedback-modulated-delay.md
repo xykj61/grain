@@ -1,7 +1,7 @@
 # Fill ALES73 — Lotus's flanger: a modulated delay with a feedback path
 
 **Stamp:** `20260814.200314` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the modulated-delay family's rung that adds a genuinely new element — feedback — rather than only changing the mix)
+**Status:** Vision -- Design read — self-approved round (no custody gate; the modulated-delay family's rung that adds a genuinely new element — feedback — rather than only changing the mix)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES73**
 **Kin:** [`../lotus/chorus.rye`](../lotus/chorus.rye) (ALES71 — the triangle-LFO driver `triangle_delay_at` this reuses) · [`../lotus/echo.rye`](../lotus/echo.rye) (ALES66 — the feedback delay whose in-place delay-line-is-the-buffer idiom this reuses, and which a zero-depth flanger equals byte-for-byte) · [`../lotus/glide.rye`](../lotus/glide.rye) (ALES70 — the fractional interpolation read) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip and the one true saturate)
 

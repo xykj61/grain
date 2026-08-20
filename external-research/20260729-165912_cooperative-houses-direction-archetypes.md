@@ -2,6 +2,7 @@
 
 **Language:** EN  
 **Stamp:** `20260729.165912`  
+**Status:** Research for understanding -- studies prior art and our own ground; seats no fact.
 **Kind:** external-research · understanding only · **not** living brand law  
 **Voice:** Quin  
 **Silo later:** foundations only after Keaton seats names  

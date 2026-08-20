@@ -1,7 +1,7 @@
 # Fill ALES47 — the band-reject, the middle let go
 
 **Stamp:** `20260814.165728` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — one keystone, one send
+**Status:** Mixed -- Self-approved design round — one keystone, one send
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES47**
 **Kin:** [`20260814-165106_fill-ales46-lotus-band-pass.md`](20260814-165106_fill-ales46-lotus-band-pass.md) · [`20260814-161231_fill-ales41-lotus-tone-shelf.md`](20260814-161231_fill-ales41-lotus-tone-shelf.md)
 

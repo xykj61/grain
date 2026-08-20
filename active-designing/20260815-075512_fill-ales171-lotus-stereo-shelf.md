@@ -1,6 +1,7 @@
 # Fill ALES171 — Lotus's stereo_shelf: the two-band bass-and-treble shelf carried into stereo, the same coefficient and band gains on both channels — the second rung of the stereo EQ / filter class
 
 **Stamp:** `20260815.075512` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES171
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-074743_fill-ales170-lotus-stereo-tone.md`](20260815-074743_fill-ales170-lotus-stereo-tone.md)
 

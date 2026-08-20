@@ -1,6 +1,7 @@
 # Fill ALES156 — Lotus's stereo_gate: the noise gate carried into stereo, ONE LINKED DETECTOR, the image the gate refuses to tear
 
 **Stamp:** `20260815.061957` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES156
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-060518_fill-ales155-lotus-stereo-dc-remove.md`](20260815-060518_fill-ales155-lotus-stereo-dc-remove.md)
 

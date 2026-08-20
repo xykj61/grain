@@ -1,6 +1,7 @@
 # Fill ALES131 — `lotus/stereo_crossfade.rye`, the equal-power crossfade carried into stereo, one shared law
 
 **Stamp:** `20260815.031427` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES131**
 **Kin:** [`20260815-030651_fill-ales130-lotus-stereo-fade.md`](20260815-030651_fill-ales130-lotus-stereo-fade.md) · [`20260814-fill-ales12-lotus-equal-power-crossfade.md`](20260814-fill-ales12-lotus-equal-power-crossfade.md)
 

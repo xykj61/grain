@@ -1,6 +1,7 @@
 # Fill ALES134 — `lotus/stereo_fold.rye`, the wavefolder carried into stereo, one shared triangle
 
 **Stamp:** `20260815.033358` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES134**
 **Kin:** [`20260815-032747_fill-ales133-lotus-stereo-soft-drive.md`](20260815-032747_fill-ales133-lotus-stereo-soft-drive.md) · [`20260814-210615_fill-ales80-lotus-wavefolder.md`](20260814-210615_fill-ales80-lotus-wavefolder.md)
 

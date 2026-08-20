@@ -1,7 +1,7 @@
 # TACT Journey 4 — Commerce: a fair-value trade recorded honestly on both books (exploration)
 
 **Stamp:** `20260812.175228` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — opens the 1,024-itinerary's **Season 1 (The World, TACT), Journey 4**
+**Status:** Vision -- Self-approved design round — opens the 1,024-itinerary's **Season 1 (The World, TACT), Journey 4**
 **Kin:** [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) · [`20260812-173656_tact-journey2-publishing-exploration.md`](20260812-173656_tact-journey2-publishing-exploration.md) · [`../dimeroll/dimeroll_core.rye`](../dimeroll/dimeroll_core.rye) · [`../seed/active-designing/20260811-220402_dimeroll-entity-books-siya-and-linengrow.md`](../seed/active-designing/20260811-220402_dimeroll-entity-books-siya-and-linengrow.md) · [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md)
 
 ---

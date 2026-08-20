@@ -1,6 +1,7 @@
 # Fill ALES173 — Lotus's stereo_notch: the band-reject carried into stereo, the same two cutoffs on both channels, each channel a stateless parallel sum — the fourth rung of the stereo EQ / filter class
 
 **Stamp:** `20260815.080408` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES173
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-075923_fill-ales172-lotus-stereo-band.md`](20260815-075923_fill-ales172-lotus-stereo-band.md)
 

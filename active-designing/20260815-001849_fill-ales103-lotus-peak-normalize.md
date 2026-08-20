@@ -1,7 +1,7 @@
 # Fill ALES103 — the Lotus peak normalize (measure the loudest sample, then scale the clip so it lands on the target)
 
 **Stamp:** `20260815.001849` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES103**
+**Status:** Vision -- Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES103**
 **Kin:** [`the six-season double-seat`](20260813-020035_double-seat-expansion-six-seasons.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md) · [`fill ALES102`](20260815-001200_fill-ales102-lotus-smoothed-silence-trim.md)
 **Stands on:** `lotus/meter.rye` (ALES13 — the peak/RMS meter, its `measure` and `peak`) · `lotus/timeline.rye` (ALES2 — the Clip and the saturating `gain`) · `lotus/power.rye` (ALES11 — the isqrt the meter is built on, reached only through ALES13)
 

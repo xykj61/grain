@@ -1,6 +1,7 @@
 # Fill ALES146 — `lotus/stereo_voiced.rye`, the voiced/unvoiced/silent classifier carried into stereo, the suite's second stereo analysis rung
 
 **Stamp:** `20260815.045940` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES146**
 **Kin:** [`20260815-044940_fill-ales145-lotus-stereo-zero-cross.md`](20260815-044940_fill-ales145-lotus-stereo-zero-cross.md) · [`20260814-230352_fill-ales94-lotus-voiced-unvoiced-classifier.md`](20260814-230352_fill-ales94-lotus-voiced-unvoiced-classifier.md)
 

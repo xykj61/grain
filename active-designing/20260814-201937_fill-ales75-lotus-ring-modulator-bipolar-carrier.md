@@ -1,7 +1,7 @@
 # Fill ALES75 — Lotus's ring modulator: the tremolo's carrier let cross zero
 
 **Stamp:** `20260814.201937` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the tremolo's named sibling — the same triangle carrier, allowed to go bipolar)
+**Status:** Vision -- Design read — self-approved round (no custody gate; the tremolo's named sibling — the same triangle carrier, allowed to go bipolar)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES75**
 **Kin:** [`../lotus/tremolo.rye`](../lotus/tremolo.rye) (ALES74 — the amplitude write this generalizes by removing the floor) · [`../lotus/chorus.rye`](../lotus/chorus.rye) (ALES71 — the triangle-LFO driver `triangle_delay_at`, now the carrier) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip and the one true saturate)
 

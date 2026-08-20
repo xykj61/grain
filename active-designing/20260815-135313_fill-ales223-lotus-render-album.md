@@ -1,6 +1,6 @@
 # Fill ALES223 — Lotus render_album: a whole record as one saveable artifact
 
-**Stamp:** `20260815.135313` · **Voice:** Kyri · **Style:** Radiant · **Status:** Self-approved design round
+**Stamp:** `20260815.135313` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Self-approved design round
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · waymark **ALES** · rung **ALES223**
 **Kin:** [`../lotus/render_bundle.rye`](../lotus/render_bundle.rye) (ALES222 — the self-binding bundle the album carries) · [`../lotus/render_manifest.rye`](../lotus/render_manifest.rye) (ALES221 — the seal each bundle inherits) · [`20260815-134607_fill-ales222-lotus-render-bundle.md`](20260815-134607_fill-ales222-lotus-render-bundle.md)
 

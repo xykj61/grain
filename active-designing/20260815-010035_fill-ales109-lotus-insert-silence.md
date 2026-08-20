@@ -1,7 +1,7 @@
 # Fill ALES109 — Lotus's insert-silence, the lossless twin of ALES108's shift
 
 **Stamp:** `20260815.010035` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read — one Lotus rung, one keystone, one send
+**Status:** Mixed -- Self-approved design read — one Lotus rung, one keystone, one send
 **Waymark:** ALES · rung **ALES109** · Season C thread (Lotus · the creative suite) of the Six-Season double-seat
 **Kin:** [`shift.rye`](../lotus/shift.rye) (ALES108) · [`timeline.rye`](../lotus/timeline.rye) (ALES2) · [`meter.rye`](../lotus/meter.rye) (ALES13)
 

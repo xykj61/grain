@@ -1,7 +1,7 @@
 # Fill ALES67 — Lotus's echo in real time: a delay named in milliseconds
 
 **Stamp:** `20260814.191951` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the ALES66 echo given the ALES5 clock's units, exactly as `fade_ms` gave the fade real time)
+**Status:** Vision -- Design read — self-approved round (no custody gate; the ALES66 echo given the ALES5 clock's units, exactly as `fade_ms` gave the fade real time)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES67**
 **Kin:** [`../lotus/echo.rye`](../lotus/echo.rye) (ALES66 — the feedback delay this speaks in real time) · [`../lotus/clock.rye`](../lotus/clock.rye) (ALES5 — the sample clock, its `fade_ms` / `place_at` the payoff pattern) · [`../lotus/marker_time.rye`](../lotus/marker_time.rye) (ALES21 — the timed twin of a base rung, the module shape this follows)
 

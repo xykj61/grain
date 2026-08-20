@@ -1,6 +1,6 @@
 # Fill ALES230 — Lotus library_diff_sheet: what changed, as a readable page
 
-**Stamp:** `20260815.143513` · **Voice:** Kyri · **Style:** Radiant · **Status:** Self-approved design round
+**Stamp:** `20260815.143513` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Self-approved design round
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · waymark **ALES** · rung **ALES230**
 **Kin:** [`../lotus/library_diff.rye`](../lotus/library_diff.rye) (ALES229 — the classified `Diff` this draws) · [`../lotus/library_sheet.rye`](../lotus/library_sheet.rye) (ALES227 — the readable-projection idiom this mirrors) · [`20260815-143152_fill-ales229-lotus-library-diff.md`](20260815-143152_fill-ales229-lotus-library-diff.md)
 

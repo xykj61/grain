@@ -1,6 +1,7 @@
 # The Craft of Deep Removal
 
 **Stamp:** `20260818.081438` - **Style:** Radiant - **Voice:** Kyri
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Kind:** external-research (kitchen) - names the tools and methods plainly
 **Silo twin:** [`../foundations/20260818-081438_the-three-depths-of-removal.md`](../foundations/20260818-081438_the-three-depths-of-removal.md)
 **Kin:** [`../.claude/rules/debride.md`](../.claude/rules/debride.md) - [`../.claude/rules/molt.md`](../.claude/rules/molt.md) - [`../.claude/rules/cairn.md`](../.claude/rules/cairn.md) - [`../foundations/20260726-020537_the-breach.md`](../foundations/20260726-020537_the-breach.md)

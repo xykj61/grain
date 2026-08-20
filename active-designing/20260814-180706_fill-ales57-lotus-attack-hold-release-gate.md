@@ -1,7 +1,7 @@
 # Fill ALES57 — the attack/hold/release gate
 
 **Stamp:** `20260814.180706` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Filled design round — self-approved on the autonomous loop, Lindy-first crux-first
+**Status:** Vision -- Filled design round — self-approved on the autonomous loop, Lindy-first crux-first
 **Waymark:** ALES · **Rung:** ALES57 · **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite)
 **Kin:** [`../lotus/README.md`](../lotus/README.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

@@ -1,6 +1,7 @@
 # FORA27 — Constel flexible quorums: the truth beneath the majority lemma
 
 **Stamp:** `20260814.075309` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · **waymark** FORA · **rung** FORA27
 **Kin:** [`../constel/quorum.rye`](../constel/quorum.rye) (FORA9) · [`../constel/elect.rye`](../constel/elect.rye) (FORA10) · [`../constel/commit.rye`](../constel/commit.rye) (FORA18) · [`../constel/roster.rye`](../constel/roster.rye) (FORA1)
 

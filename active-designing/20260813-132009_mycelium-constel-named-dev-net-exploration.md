@@ -1,6 +1,6 @@
 # Constel — a named, reproducible dev-net constellation reaches quorum (Exploration)
 
-**Stamp:** `20260813.132009` · **Status:** Living (self-approved design read) · **Voice:** Kyri
+**Stamp:** `20260813.132009` · **Status:** Mixed -- Living (self-approved design read) · **Voice:** Kyri
 **Register:** Radiant · **Season:** D (Kresfa & Mycelium) — the double-seat expansion
 **Kin:** [`the Portage crossing`](20260813-124159_mycelium-portage-cross-world-transfer-exploration.md) (value across two worlds) · [`the Muster`](20260813-110039_mycelium-muster-known-validator-set-exploration.md) (a known validator set) · [`the Chorus`](20260813-102533_mycelium-chorus-quorum-attestation-exploration.md) (quorum attestation) · [`the double-seat expansion`](20260813-020035_double-seat-expansion-six-seasons.md) (Season D · Constel test networks) · [`placeholder-ship-names`](../.claude/rules/placeholder-ship-names.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md)
 

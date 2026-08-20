@@ -1,7 +1,7 @@
 # DREY1 — the wire frame that carries only what was committed
 
 **Stamp:** `20260814.021218` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (Season A · waymark **DREY** · Mikrophone firmware journey · rung DREY1)
+**Status:** Vision -- Self-approved design round (Season A · waymark **DREY** · Mikrophone firmware journey · rung DREY1)
 **Kin:** [`20260814-020500_drey-mikrophone-firmware-memory-that-forgets-exploration.md`](20260814-020500_drey-mikrophone-firmware-memory-that-forgets-exploration.md) · [`../mikrophone/session.rye`](../mikrophone/session.rye) · [`../foundations/20260801-005853_mantrapod-venture-pitch.md`](../foundations/20260801-005853_mantrapod-venture-pitch.md) · [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
 
 ---

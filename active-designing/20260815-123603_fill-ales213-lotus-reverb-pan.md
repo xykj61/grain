@@ -1,7 +1,7 @@
 # Fill ALES213 — Lotus's reverb pan (reverberate the master wet, then place the wet image in the field)
 
 **Stamp:** `20260815.123603` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable · purely local DSP · no custody gate)
+**Status:** Vision -- Self-approved design round (agent-doable · purely local DSP · no custody gate)
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES213**
 **Kin:** [`20260815-122004_fill-ales212-lotus-reverb-width.md`](20260815-122004_fill-ales212-lotus-reverb-width.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

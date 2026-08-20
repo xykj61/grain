@@ -1,6 +1,6 @@
 # Fill ALES221 — Lotus render_manifest: a render describes itself, sealed
 
-**Stamp:** `20260815.133848` · **Voice:** Kyri · **Style:** Radiant · **Status:** Self-approved design round
+**Stamp:** `20260815.133848` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Self-approved design round
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · waymark **ALES** · rung **ALES221**
 **Kin:** [`../lotus/render.rye`](../lotus/render.rye) (ALES217 — the mono render) · [`../lotus/stereo_render.rye`](../lotus/stereo_render.rye) (ALES218 — the balanced render) · [`../lotus/seal.rye`](../lotus/seal.rye) (ALES38 — the general verify-before-trust frame) · [`20260815-133213_fill-ales220-lotus-stereo-preset.md`](20260815-133213_fill-ales220-lotus-stereo-preset.md)
 

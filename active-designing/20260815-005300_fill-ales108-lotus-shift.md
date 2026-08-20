@@ -1,7 +1,7 @@
 # Fill ALES108 — the Lotus shift (the grid nudge, rotate's honest drop-and-zero-fill twin)
 
 **Stamp:** `20260815.005300` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES108**
+**Status:** Vision -- Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES108**
 **Kin:** [`the six-season double-seat`](20260813-020035_double-seat-expansion-six-seasons.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md) · [`fill ALES106`](20260815-003935_fill-ales106-lotus-rotate.md) · [`fill ALES107`](20260815-004633_fill-ales107-lotus-nyquist.md)
 **Stands on:** `lotus/timeline.rye` (ALES2 — the Clip, its `buf`/`len`/`samples`) · `lotus/rotate.rye` (ALES106 — the cyclic shift, imported by the selftest to prove the wrap-vs-drop contrast) · `lotus/meter.rye` (ALES13 — the peak/RMS meter, to witness that dropping samples never raises the peak)
 

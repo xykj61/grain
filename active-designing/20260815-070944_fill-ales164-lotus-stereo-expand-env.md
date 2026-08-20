@@ -1,6 +1,7 @@
 # Fill ALES164 — Lotus's stereo_expand_env: the attack/release downward expander carried into stereo, the linked envelope driving one linked widening over time — the stereo time-varying dynamics quartet made whole
 
 **Stamp:** `20260815.070944` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES164
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-070439_fill-ales163-lotus-stereo-limit-env.md`](20260815-070439_fill-ales163-lotus-stereo-limit-env.md)
 

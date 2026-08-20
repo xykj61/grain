@@ -1,6 +1,7 @@
 # Fill ALES142 — `lotus/stereo_soft_center_clip.rye`, the soft center clipper carried into stereo, the continuous dead zone that holds phase yet breaks ratio
 
 **Stamp:** `20260815.042641` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES142**
 **Kin:** [`20260815-042021_fill-ales141-lotus-stereo-center-clip.md`](20260815-042021_fill-ales141-lotus-stereo-center-clip.md) · [`20260814-220520_fill-ales88-lotus-soft-center-clipper.md`](20260814-220520_fill-ales88-lotus-soft-center-clipper.md)
 

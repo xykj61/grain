@@ -1,7 +1,7 @@
 # Fill ALES51 — the noise gate, the threshold inverted
 
 **Stamp:** `20260814.171918` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — one keystone, one send
+**Status:** Mixed -- Self-approved design round — one keystone, one send
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES51**
 **Kin:** [`20260814-171338_fill-ales50-lotus-compressor.md`](20260814-171338_fill-ales50-lotus-compressor.md) · [`../lotus/README.md`](../lotus/README.md)
 

@@ -6,7 +6,7 @@
 **Voice:** Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety first, performance second, joy third
-**Status:** OPEN — lean offered once · the Now word is Keaton's
+**Status:** Mixed -- OPEN — lean offered once · the Now word is Keaton's
 
 *Written together by Keaton and Riyo.*
 

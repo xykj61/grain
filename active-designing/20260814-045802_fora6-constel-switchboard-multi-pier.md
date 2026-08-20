@@ -1,7 +1,7 @@
 # FORA6 — a switchboard: a whole local constellation, routed by name
 
 **Stamp:** `20260814.045802` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design round (self-approved) — the next FORA rung, agent-doable, purely local
+**Status:** Vision -- Design round (self-approved) — the next FORA rung, agent-doable, purely local
 **Season:** the Six-Season double-seat, Season D/F thread · **Waymark:** FORA · rung **FORA6**
 **Kin:** [`../constel/channel.rye`](../constel/channel.rye) · [`../constel/exchange.rye`](../constel/exchange.rye) · [`../constel/roster.rye`](../constel/roster.rye) · [`../constel/README.md`](../constel/README.md) · [`20260814-044915_fora5-constel-channel-byte-stream.md`](20260814-044915_fora5-constel-channel-byte-stream.md)
 

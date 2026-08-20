@@ -1,7 +1,7 @@
 # DREY7 — the content-addressed desk catalog *(exploration)*
 
 **Stamp:** `20260814.064900` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design capture — self-approved round, agent-doable crux
+**Status:** Vision -- Design capture — self-approved round, agent-doable crux
 **Waymark:** DREY · Season A (Hardware & Right-to-Repair) · Mikrophone firmware journey · rung **DREY7**
 **Kin:** [`../mikrophone/archive.rye`](../mikrophone/archive.rye) (DREY6) · [`../mikrophone/wire.rye`](../mikrophone/wire.rye) (DREY1) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) (Season A · Tablecloth content-addressing)
 

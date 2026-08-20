@@ -1,7 +1,7 @@
 # DAHL Journey 9 — Skate, the consent-first social layer (exploration)
 
 **Stamp:** `20260812.201611` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — opens Season 3 (Commons) of the 1,024-round itinerary
+**Status:** Vision -- Self-approved design round — opens Season 3 (Commons) of the 1,024-round itinerary
 **Waymark:** **DAHL** (Harvest Equinox 3 — Commons, already seated; no rival draw)
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) · [`../pond/customs.rye`](../pond/customs.rye) · [`../settlement/names.rye`](../settlement/names.rye) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

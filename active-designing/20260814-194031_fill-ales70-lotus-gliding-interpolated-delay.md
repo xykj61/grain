@@ -1,7 +1,7 @@
 # Fill ALES70 — Lotus's gliding delay: a fractional delay read by linear interpolation
 
 **Stamp:** `20260814.194031` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the genuinely new primitive — a delay at a *fractional* position, read by linear interpolation — that the periodic chorus, flanger, and vibrato will stand on)
+**Status:** Vision -- Design read — self-approved round (no custody gate; the genuinely new primitive — a delay at a *fractional* position, read by linear interpolation — that the periodic chorus, flanger, and vibrato will stand on)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES70**
 **Kin:** [`../lotus/taps.rye`](../lotus/taps.rye) (ALES68 — the multi-tap whose fixed integer taps this generalizes to a moving fractional one) · [`../lotus/echo.rye`](../lotus/echo.rye) (ALES66 — the feedback delay) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip and the one true saturate)
 

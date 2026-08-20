@@ -1,7 +1,7 @@
 # Fill ALES41 — Lotus's two-band tone shelf: bass and treble from the one-pole split
 
 **Stamp:** `20260814.161231` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read — the next agent-doable Lotus rung, purely local
+**Status:** Mixed -- Self-approved design read — the next agent-doable Lotus rung, purely local
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES41**
 **Stands on:** [`../lotus/tone.rye`](../lotus/tone.rye) (ALES40 — the low-pass/high-pass split it scales) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip and `saturate`)
 

@@ -1,6 +1,7 @@
 # Fill ALES127 — `lotus/stereo_invert.rye`, the phase flip of a master in stereo
 
 **Stamp:** `20260815.024705` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES127**
 **Kin:** [`20260815-003415_fill-ales105-lotus-invert.md`](20260815-003415_fill-ales105-lotus-invert.md) · [`20260815-024103_fill-ales126-lotus-stereo-rotate.md`](20260815-024103_fill-ales126-lotus-stereo-rotate.md) · [`20260815-023515_fill-ales125-lotus-stereo-reverse.md`](20260815-023515_fill-ales125-lotus-stereo-reverse.md)
 

@@ -1,7 +1,7 @@
 # Season G — the open colour algebra in Rye (the smallest tractable crux)
 
 **Stamp:** `20260816.210735` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — building now, Rye-first, floor code
+**Status:** Mixed -- Self-approved design round — building now, Rye-first, floor code
 **Kin:** [`the eight-season double-seat`](20260816-205859_double-seat-expansion-eight-seasons.md) (Season G — Open Media Primitives) · [`image/qoi.rye`](../image/qoi.rye) (the sibling open primitive) · [`rye-first crypto parity`](20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md) (the Rye-first spine)
 
 ---

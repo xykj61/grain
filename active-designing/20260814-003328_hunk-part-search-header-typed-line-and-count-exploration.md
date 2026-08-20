@@ -1,7 +1,7 @@
 # HUNK82 — the query header: the typed clauses and their result count, above the narrowed shelf
 
 **Stamp:** `20260814.003328` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable, no gate)
+**Status:** Vision -- Self-approved design round (agent-doable, no gate)
 **Season:** A (Hardware & Right-to-Repair) · **waymark:** HUNK · **journey:** parts-marketplace · **rung:** HUNK82
 **Kin:** [`../brushstroke/part_and_search.rye`](../brushstroke/part_and_search.rye) (HUNK79 the narrowed shelf on glass) · [`../image/part_and.rye`](../image/part_and.rye) (HUNK78 the `AndQuery` conjunction) · [`../brushstroke/edit_screen_view.rye`](../brushstroke/edit_screen_view.rye) (HUNK53 the stack-into-one-grid idiom) · [`../brushstroke/part_row.rye`](../brushstroke/part_row.rye) (HUNK73 fact-line helpers)
 

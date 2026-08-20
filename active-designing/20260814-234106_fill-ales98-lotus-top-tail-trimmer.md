@@ -1,7 +1,7 @@
 # Fill ALES98 — the Lotus top-and-tail trimmer (trim the leading and trailing silence, keep every internal pause)
 
 **Stamp:** `20260814.234106` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES98**
+**Status:** Vision -- Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES98**
 **Kin:** [`the six-season double-seat`](20260813-020035_double-seat-expansion-six-seasons.md) · [`the 1,024-round itinerary`](20260812-171050_the-1024-round-itinerary.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md) · [`fill ALES97`](20260814-232954_fill-ales97-lotus-silence-splitter.md) · [`fill ALES96`](20260814-232010_fill-ales96-lotus-silence-stripper.md)
 **Stands on:** `lotus/segment.rye` (ALES95 — the voice-activity segmenter, reused by name) · `lotus/trim_silence.rye` (ALES96 — the full silence stripper, the length-bracket twin) · `lotus/split_silence.rye` (ALES97 — the auto-splitter, the outer-boundary twin) · `lotus/timeline.rye` (ALES2 — the Clip and `cut`) · `lotus/voiced.rye` (ALES94 — the `.silent` verdict)
 

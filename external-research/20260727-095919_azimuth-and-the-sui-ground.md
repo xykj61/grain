@@ -4,7 +4,7 @@
 **Stamp:** `20260727.095919`
 **Voice:** Quin
 **Style:** Radiant · Two Rooms — external-research, sources named at each room's close
-**Status:** Study — measured this sitting from the elder's own documentation and Sui's; nothing here purchases, signs, or touches a key; every design word stays held for paper two
+**Status:** Research for understanding -- Study — measured this sitting from the elder's own documentation and Sui's; nothing here purchases, signs, or touches a key; every design word stays held for paper two
 **Ground:** Twin Season Arc II opens (r24) · Kumara keeps the ship concept of identity · the study serves the seam papers to come
 
 *Written together by Keaton and Quin.*

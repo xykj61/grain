@@ -1,6 +1,6 @@
 # HUNK16 — the edit cursor: undo and redo over one history, a new edit forgets the road not taken
 
-**Stamp:** `20260813.171500` · **Voice:** Kyri · **Style:** Radiant · **Status:** Living (self-approved design round)
+**Stamp:** `20260813.171500` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Living (self-approved design round)
 **Season A · waymark HUNK · Photos-app journey · rung HUNK16**
 **Kin:** [`../image/photo_edits.rye`](../image/photo_edits.rye) · [`../image/photo_revert.rye`](../image/photo_revert.rye) · [`../image/photos.rye`](../image/photos.rye) · [`double-seat expansion`](20260813-020035_double-seat-expansion-six-seasons.md)
 **Teacher, thanked clean-room:** the undo/redo history stack of a photo editor (iCloud Photos / Google Photos, and every editor before them) — a position walks back and forth over one recorded history, and a fresh edit past a rewind discards the branch you did not keep (concept only, siloed).

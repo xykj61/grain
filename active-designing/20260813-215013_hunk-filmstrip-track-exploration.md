@@ -1,6 +1,7 @@
 # HUNK58 — a tracking window that follows the cursor
 
 **Stamp:** `20260813.215013` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK58**
 **Kin:** [`edit_filmstrip.rye`](../brushstroke/edit_filmstrip.rye) (HUNK54/57) · [`edit_filmstrip_scrub.rye`](../brushstroke/edit_filmstrip_scrub.rye) (HUNK56) · [`edit_filmstrip_jump.rye`](../brushstroke/edit_filmstrip_jump.rye) (HUNK55)
 

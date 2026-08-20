@@ -1,7 +1,7 @@
 # HUNK37 — a keeper pages through a library larger than one screen
 
 **Stamp:** `20260813.190003` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** self-approved design round · **Season A** (Hardware & Right-to-Repair) · **waymark HUNK** · Photos-app journey · rung **HUNK37**
+**Status:** Vision -- self-approved design round · **Season A** (Hardware & Right-to-Repair) · **waymark HUNK** · Photos-app journey · rung **HUNK37**
 **Kin:** [`../pond/apps/preset_shelf.rye`](../pond/apps/preset_shelf.rye) (HUNK36) · [`../pond/apps/preset_detail.rye`](../pond/apps/preset_detail.rye) (HUNK35)
 
 ## Where the road stands

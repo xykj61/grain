@@ -1,6 +1,7 @@
 # Fill ALES145 — `lotus/stereo_zero_cross.rye`, the zero-crossing counter carried into stereo, the suite's first stereo analysis rung
 
 **Stamp:** `20260815.044940` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES145**
 **Kin:** [`20260815-044135_fill-ales144-lotus-stereo-schmitt.md`](20260815-044135_fill-ales144-lotus-stereo-schmitt.md) · [`20260814-225557_fill-ales93-lotus-zero-crossing-counter.md`](20260814-225557_fill-ales93-lotus-zero-crossing-counter.md)
 

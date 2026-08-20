@@ -1,7 +1,7 @@
 # DREY3 — the firmware loop: a committed run carries out to the wire
 
 **Stamp:** `20260814.022312` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (Season A · waymark **DREY** · Mikrophone firmware journey · rung DREY3)
+**Status:** Vision -- Self-approved design round (Season A · waymark **DREY** · Mikrophone firmware journey · rung DREY3)
 **Kin:** [`20260814-020500_drey-mikrophone-firmware-memory-that-forgets-exploration.md`](20260814-020500_drey-mikrophone-firmware-memory-that-forgets-exploration.md) · [`20260814-021218_drey1-wire-frame-carry-only-committed-exploration.md`](20260814-021218_drey1-wire-frame-carry-only-committed-exploration.md) · [`20260814-021722_drey2-recorder-control-state-machine-exploration.md`](20260814-021722_drey2-recorder-control-state-machine-exploration.md) · [`../mikrophone/recorder.rye`](../mikrophone/recorder.rye) · [`../mikrophone/wire.rye`](../mikrophone/wire.rye) · [`../mikrophone/session.rye`](../mikrophone/session.rye)
 
 ---

@@ -1,7 +1,7 @@
 # Python → Rishi — the molt seating
 
 **Language:** EN
-**Status:** Living — molt seated `20260809.030635` on Keaton's word · **prep only, no cut**
+**Status:** Mixed -- Living — molt seated `20260809.030635` on Keaton's word · **prep only, no cut**
 **Voice:** Riyo
 **Rules:** [`../.claude/rules/molt.md`](../.claude/rules/molt.md) · [`../.claude/rules/tame-guidance.md`](../.claude/rules/tame-guidance.md) · ledger [`../work-in-progress/SHRED_PREP.md`](../work-in-progress/SHRED_PREP.md) · red [`../work-in-progress/REDS.md`](../work-in-progress/REDS.md) (row 64)
 

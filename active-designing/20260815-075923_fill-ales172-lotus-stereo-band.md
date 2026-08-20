@@ -1,6 +1,7 @@
 # Fill ALES172 — Lotus's stereo_band: the band-pass carried into stereo, the same two cutoffs on both channels, each channel carrying its own cascade state — the third rung of the stereo EQ / filter class
 
 **Stamp:** `20260815.075923` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES172
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-075512_fill-ales171-lotus-stereo-shelf.md`](20260815-075512_fill-ales171-lotus-stereo-shelf.md)
 

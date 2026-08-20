@@ -1,6 +1,7 @@
 # Fill ALES125 — `lotus/stereo_reverse.rye`, turning a master end for end
 
 **Stamp:** `20260815.023515` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES125**
 **Kin:** [`20260815-002711_fill-ales104-lotus-reverse.md`](20260815-002711_fill-ales104-lotus-reverse.md) · [`20260815-023038_fill-ales124-lotus-stereo-shift.md`](20260815-023038_fill-ales124-lotus-stereo-shift.md)
 

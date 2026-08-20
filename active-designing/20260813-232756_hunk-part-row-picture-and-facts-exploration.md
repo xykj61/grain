@@ -1,7 +1,7 @@
 # HUNK73 — a part row: the picture beside its honest facts, on glass
 
 **Stamp:** `20260813.232756` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable, no gate)
+**Status:** Vision -- Self-approved design round (agent-doable, no gate)
 **Season:** A (Hardware & Right-to-Repair) · **waymark:** HUNK · **journey:** parts-marketplace · **rung:** HUNK73
 **Kin:** [`../image/part_catalog.rye`](../image/part_catalog.rye) (HUNK71 facts) · [`../pond/apps/part_store.rye`](../pond/apps/part_store.rye) (HUNK72 content-addressed) · [`../brushstroke/sprite_shelf.rye`](../brushstroke/sprite_shelf.rye) (HUNK38/39 swatch shelf) · [`double-seat-expansion`](20260813-020035_double-seat-expansion-six-seasons.md)
 

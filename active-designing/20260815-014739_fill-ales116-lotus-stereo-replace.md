@@ -1,7 +1,7 @@
 # Fill ALES116 — Lotus's stereo_replace, the general span-edit carried into stereo, both channels in lockstep
 
 **Stamp:** `20260815.014739` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read — one Lotus rung, one keystone, one send
+**Status:** Mixed -- Self-approved design read — one Lotus rung, one keystone, one send
 **Waymark:** ALES · rung **ALES116** · Season C thread (Lotus · the creative suite) of the Six-Season double-seat
 **Kin:** [`replace.rye`](../lotus/replace.rye) (ALES115) · [`pan.rye`](../lotus/pan.rye) (ALES10 — the StereoClip) · [`stereo_insert_join.rye`](../lotus/stereo_insert_join.rye) (ALES29 — the lockstep pattern) · [`timeline.rye`](../lotus/timeline.rye) (ALES2)
 

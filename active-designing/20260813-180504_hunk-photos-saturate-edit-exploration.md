@@ -1,6 +1,6 @@
 # HUNK28 — the filter family joins the edit-list: `saturate` records as a non-destructive edit
 
-**Stamp:** `20260813.180504` · **Status:** Self-approved design round (agent-doable, no gate) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260813.180504` · **Status:** Mixed -- Self-approved design round (agent-doable, no gate) · **Voice:** Kyri · **Style:** Radiant
 **Waymark:** **HUNK** (Season A, Photos-app journey; seated in [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md))
 **Road:** [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) — **Season A, Hardware & Right-to-Repair**
 **Builds on:** [`20260813-155719_hunk-photo-edits-non-destructive-exploration.md`](20260813-155719_hunk-photo-edits-non-destructive-exploration.md) — the non-destructive edit-list (HUNK11)

@@ -1,7 +1,7 @@
 # Fill ALES60 — Lotus's downward expander: the compressor mirrored under the threshold
 
 **Stamp:** `20260814.183030` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; a fresh dynamics gesture on the proven idiom)
+**Status:** Mixed -- Design read — self-approved round (no custody gate; a fresh dynamics gesture on the proven idiom)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES60**
 **Kin:** [`../lotus/compress.rye`](../lotus/compress.rye) (ALES50 — the excess-above-threshold law this mirrors) · [`../lotus/gate.rye`](../lotus/gate.rye) (ALES51 — the below-threshold floor, the expander's infinite-ratio limit) · [`../lotus/README.md`](../lotus/README.md)
 

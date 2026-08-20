@@ -1,7 +1,7 @@
 # Fill ALES42 — Lotus's three-band tone stack: bass, mid, and treble from two splits
 
 **Stamp:** `20260814.162200` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read — the next agent-doable Lotus rung, purely local
+**Status:** Mixed -- Self-approved design read — the next agent-doable Lotus rung, purely local
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES42**
 **Stands on:** [`../lotus/shelf.rye`](../lotus/shelf.rye) (ALES41 — the two-band scale-and-clamp it widens) · [`../lotus/tone.rye`](../lotus/tone.rye) (ALES40 — the one-pole low-pass/high-pass split) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip and `saturate`)
 

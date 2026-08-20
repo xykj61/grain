@@ -1,6 +1,6 @@
 # HUNK — Season A opens: the open image module
 
-**Stamp:** `20260813.144218` · **Status:** Living (self-approved design round) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260813.144218` · **Status:** Mixed -- Living (self-approved design round) · **Voice:** Kyri · **Style:** Radiant
 **Waymark:** **HUNK** (drawn `20260813` from `season-a-open-image-decode-and-photos-surface`; seated in [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md), the derive script, and [`../context/LEXICON.md`](../context/LEXICON.md))
 **Road:** [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) — **Season A, Hardware & Right-to-Repair**
 **Kin:** [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md) · [`gratitude/qoi.md`](../gratitude/qoi.md) · Tablecloth ([`../pond/apps/tablecloth.rye`](../pond/apps/tablecloth.rye)) · Skate ([`../brushstroke/skate_grid.rye`](../brushstroke/skate_grid.rye))

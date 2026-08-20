@@ -1,6 +1,6 @@
 # Fill ALES232 — Lotus album_diff: what changed between two record versions
 
-**Stamp:** `20260815.144541` · **Voice:** Kyri · **Style:** Radiant · **Status:** Self-approved design round
+**Stamp:** `20260815.144541` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Self-approved design round
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · waymark **ALES** · rung **ALES232**
 **Kin:** [`../lotus/album_manifest.rye`](../lotus/album_manifest.rye) (ALES224 — the two opened `AlbumManifest` values this compares) · [`../lotus/album_find.rye`](../lotus/album_find.rye) (ALES231 — the resolve this composes on) · [`../lotus/library_diff.rye`](../lotus/library_diff.rye) (ALES229 — the classification this mirrors one level down) · [`20260815-144122_fill-ales231-lotus-album-find.md`](20260815-144122_fill-ales231-lotus-album-find.md)
 

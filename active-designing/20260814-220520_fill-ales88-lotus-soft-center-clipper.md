@@ -1,7 +1,7 @@
 # Fill ALES88 — Lotus's soft center clipper: silence the quiet middle and subtract the threshold, the continuous dead-zone that completes the bracket
 
 **Stamp:** `20260814.220520` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; ALES87's own doc names the soft dead-zone as its plain sibling, and the DRIVE family already carries a hard/soft pair on the ceiling side)
+**Status:** Mixed -- Design read — self-approved round (no custody gate; ALES87's own doc names the soft dead-zone as its plain sibling, and the DRIVE family already carries a hard/soft pair on the ceiling side)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES88**
 **Kin:** [`../lotus/center_clip.rye`](../lotus/center_clip.rye) (ALES87 — the hard center clipper silences the quiet middle and passes the loud *unchanged*, a jump at the boundary; this rung subtracts the threshold so the survivor rises *continuously* from zero) · [`../lotus/soft_drive.rye`](../lotus/soft_drive.rye) (ALES79 — the soft-clip overdrive, the rounded sibling of ALES78's hard clip; the ceiling-side pair this rung mirrors on the floor side) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip, sample_min/max)
 

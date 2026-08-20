@@ -1,7 +1,7 @@
 # Fill ALES107 — the Lotus Nyquist flip (alternate-sign, the value family's other exact mirror)
 
 **Stamp:** `20260815.004633` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES107**
+**Status:** Vision -- Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES107**
 **Kin:** [`the six-season double-seat`](20260813-020035_double-seat-expansion-six-seasons.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md) · [`fill ALES105`](20260815-003415_fill-ales105-lotus-invert.md) · [`fill ALES106`](20260815-003935_fill-ales106-lotus-rotate.md)
 **Stands on:** `lotus/timeline.rye` (ALES2 — the Clip, its `buf`/`len`/`samples`, and `saturate`, the one true clamp reused so the rail lives in one place) · `lotus/meter.rye` (ALES13 — the peak/RMS meter, to witness that a sign pattern moves no loudness)
 

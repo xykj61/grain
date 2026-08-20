@@ -1,6 +1,7 @@
 # Fill ALES157 — Lotus's stereo_compress: the compressor carried into stereo, ONE LINKED GAIN from the max detector, the image held to the sample
 
 **Stamp:** `20260815.062700` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES157
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-061957_fill-ales156-lotus-stereo-gate.md`](20260815-061957_fill-ales156-lotus-stereo-gate.md)
 

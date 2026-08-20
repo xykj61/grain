@@ -1,6 +1,7 @@
 # Fill ALES133 — `lotus/stereo_soft_drive.rye`, the soft-clip overdrive carried into stereo, one shared shoulder
 
 **Stamp:** `20260815.032747` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES133**
 **Kin:** [`20260815-032122_fill-ales132-lotus-stereo-drive.md`](20260815-032122_fill-ales132-lotus-stereo-drive.md) · [`20260814-205812_fill-ales79-lotus-soft-clip-overdrive.md`](20260814-205812_fill-ales79-lotus-soft-clip-overdrive.md)
 

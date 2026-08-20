@@ -1,7 +1,7 @@
 # Fill ALES56 — the hold stage, the patience between attack and release
 
 **Stamp:** `20260814.175827` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — one keystone, one send
+**Status:** Mixed -- Self-approved design round — one keystone, one send
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES56**
 **Kin:** [`20260814-172539_fill-ales52-lotus-envelope-follower.md`](20260814-172539_fill-ales52-lotus-envelope-follower.md) · [`20260814-174600_fill-ales54-lotus-attack-release-gate.md`](20260814-174600_fill-ales54-lotus-attack-release-gate.md) · [`20260814-174700_fill-ales55-lotus-attack-release-limiter.md`](20260814-174700_fill-ales55-lotus-attack-release-limiter.md) · [`../lotus/README.md`](../lotus/README.md)
 

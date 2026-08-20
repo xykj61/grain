@@ -1,7 +1,7 @@
 # The Statement — an account-statement voice over the Mycelium ledger
 
 **Stamp:** `20260813.091851` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (a fresh Mycelium journey, Season D)
+**Status:** Mixed -- Self-approved design round (a fresh Mycelium journey, Season D)
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-085046_mycelium-lapse-pending-timeout-exploration.md`](20260813-085046_mycelium-lapse-pending-timeout-exploration.md) · [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md)
 
 ---

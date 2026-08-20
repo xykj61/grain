@@ -1,6 +1,6 @@
 # The Post-Quantum Identity Is Dual-Key — a learned discovery
 
-**Stamp:** `20260816.192400` · **Status:** Living (design decision) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260816.192400` · **Status:** Mixed -- Living (design decision) · **Voice:** Kyri · **Style:** Radiant
 **Season:** G — Cryptography (the Six-Season double-seat)
 **Kin:** [`the post-quantum pivot`](20260816-161537_post-quantum-mlkem-mldsa-pivot.md) · [`crypto/mldsa_identity.rye`](../crypto/mldsa_identity.rye) · [`crypto/mlkem_sealed.rye`](../crypto/mlkem_sealed.rye) · [`crypto/kumara_sealed.rye`](../crypto/kumara_sealed.rye) · [`crypto/ed25519_to_x25519.rye`](../crypto/ed25519_to_x25519.rye) · [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

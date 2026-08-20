@@ -1,7 +1,7 @@
 # HUNK26 — the Photos app auto-levels: a contrast stretch over the open grid
 
 **Stamp:** `20260813.175434` · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable, no gate) · **Waymark:** HUNK · **Rung:** HUNK26
+**Status:** Mixed -- Self-approved design round (agent-doable, no gate) · **Waymark:** HUNK · **Rung:** HUNK26
 **Season:** A — Hardware & Right-to-Repair · **Journey:** Open Image · beneath the parts marketplace and the Photos app
 **Kin:** [`../image/photos.rye`](../image/photos.rye) · [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) · [`20260813-174431_hunk-photos-convolve-exploration.md`](20260813-174431_hunk-photos-convolve-exploration.md)
 

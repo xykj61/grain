@@ -1,7 +1,7 @@
 # HUNK42 — the scrollable surface: page beside a live scroll bar
 
 **Stamp:** `20260813.194607` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read (self-approved round) · **Season A** (Hardware & Right-to-Repair) · waymark **HUNK** · rung **HUNK42**
+**Status:** Vision -- Design read (self-approved round) · **Season A** (Hardware & Right-to-Repair) · waymark **HUNK** · rung **HUNK42**
 **Kin:** [`pond/apps/preset_scroll.rye`](../pond/apps/preset_scroll.rye) (HUNK40 cursor · HUNK41 scroll bar) · [`pond/apps/preset_shelf.rye`](../pond/apps/preset_shelf.rye) (HUNK37 pager) · [`brushstroke/skate_grid.rye`](../brushstroke/skate_grid.rye)
 
 ---

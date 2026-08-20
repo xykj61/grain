@@ -1,6 +1,7 @@
 # Fill ALES138 — `lotus/stereo_rectify.rye`, the full-wave rectifier carried into stereo, one shared fold at zero
 
 **Stamp:** `20260815.040027` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES138**
 **Kin:** [`20260815-035333_fill-ales137-lotus-stereo-decimate.md`](20260815-035333_fill-ales137-lotus-stereo-decimate.md) · [`20260814-213747_fill-ales84-lotus-full-wave-rectifier.md`](20260814-213747_fill-ales84-lotus-full-wave-rectifier.md)
 

@@ -1,6 +1,6 @@
 # The Post-Quantum Pivot — ML-KEM and ML-DSA on the Doubled Oracle
 
-**Stamp:** `20260816.161537` · **Status:** Living (design decision) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260816.161537` · **Status:** Mixed -- Living (design decision) · **Voice:** Kyri · **Style:** Radiant
 **Season:** G — Cryptography (the Six-Season double-seat)
 **Kin:** [`rye-first crypto parity and the decision wave`](20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md) · [`crypto/README.md`](../crypto/README.md) · [`the 1024-round itinerary`](20260812-171050_the-1024-round-itinerary.md) · [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md) · [`.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md)
 

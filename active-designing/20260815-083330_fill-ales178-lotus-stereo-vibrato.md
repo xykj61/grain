@@ -1,6 +1,7 @@
 # Fill ALES178 — Lotus's stereo_vibrato: the wet-only triangle-LFO modulated delay carried into stereo, the same LFO on both channels, each channel read off its own frozen snapshot — the third rung of the stereo modulation class, and the first that snapshots
 
 **Stamp:** `20260815.083330` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES178
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-083200_fill-ales177-lotus-stereo-ring-mod.md`](20260815-083200_fill-ales177-lotus-stereo-ring-mod.md)
 

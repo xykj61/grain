@@ -1,6 +1,7 @@
 # HUNK44 — the drag seam: a touch drag in pixels becomes line deltas over the cell height
 
 **Stamp:** `20260813.195829` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** A (Hardware & Right-to-Repair) · **Waymark:** HUNK · rung **HUNK44**
 **Kin:** [`preset_scroll.rye`](../pond/apps/preset_scroll.rye) (HUNK40 cursor) · [`preset_scroll_input.rye`](../pond/apps/preset_scroll_input.rye) (HUNK43 input seam) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

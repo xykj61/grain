@@ -1,7 +1,7 @@
 # HUNK20 — the session listing travels both ways (a fixed-point record)
 
 **Stamp:** `20260813.175500` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — Season A · waymark **HUNK** · Photos-app journey · rung **HUNK20**
+**Status:** Vision -- Self-approved design round — Season A · waymark **HUNK** · Photos-app journey · rung **HUNK20**
 **Kin:** [`session_list.rye` (HUNK19)](../pond/apps/session_list.rye) · [`sprite_catalog.rye` travel (HUNK7)](../image/sprite_catalog.rye)
 
 ---

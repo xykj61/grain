@@ -1,6 +1,7 @@
 # Fill ALES161 — Lotus's stereo_compress_env: the attack/release compressor carried into stereo, the linked envelope driving one linked gain over time
 
 **Stamp:** `20260815.065200` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES161
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-064459_fill-ales160-lotus-stereo-envelope.md`](20260815-064459_fill-ales160-lotus-stereo-envelope.md)
 

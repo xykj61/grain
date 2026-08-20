@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260810.154352` (2026-08-10 EDT)
 **Voice:** Kyri · **Style:** Radiant
-**Status:** Survey (a looking pass — names sites and gaps, opens no cut) · seated on Keaton's word
+**Status:** Mixed -- Survey (a looking pass — names sites and gaps, opens no cut) · seated on Keaton's word
 **Kin:** `.claude/rules/molt.md` · `.claude/rules/debride.md` · `.claude/rules/cairn.md` · `ORGANIZING.md`
 
 ---

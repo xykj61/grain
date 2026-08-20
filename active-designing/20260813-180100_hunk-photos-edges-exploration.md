@@ -1,7 +1,7 @@
 # HUNK27 — the Photos app detects edges: a Sobel gradient magnitude over luma
 
 **Stamp:** `20260813.180100` · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable, no gate) · **Waymark:** HUNK · **Rung:** HUNK27
+**Status:** Mixed -- Self-approved design round (agent-doable, no gate) · **Waymark:** HUNK · **Rung:** HUNK27
 **Season:** A — Hardware & Right-to-Repair · **Journey:** Open Image
 **Kin:** [`../image/photos.rye`](../image/photos.rye) · [`20260813-175434_hunk-photos-stretch-exploration.md`](20260813-175434_hunk-photos-stretch-exploration.md) · [`20260813-174431_hunk-photos-convolve-exploration.md`](20260813-174431_hunk-photos-convolve-exploration.md)
 

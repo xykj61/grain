@@ -1,7 +1,7 @@
 # ALES30 — Lotus's multi-slot clipboard, a named rack of held spans
 
 **Stamp:** `20260814.144031` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living design capture — the self-approved round after ALES29
+**Status:** Mixed -- Living design capture — the self-approved round after ALES29
 **Waymark:** ALES · rung ALES30
 **Kin:** [`ALES25 — the clipboard`](20260814-fill-ales25-lotus-clipboard.md) · [`ALES23 — the selection`](20260814-fill-ales23-lotus-selection.md) · [`lotus/rack.rye`](../lotus/rack.rye) · [`lotus/clipboard.rye`](../lotus/clipboard.rye) (ALES25, `copy_to` / `cut_to` / `paste` reused whole) · [`lotus/pan.rye`](../lotus/pan.rye) (ALES10, the `StereoClip` whose channels share one length)
 

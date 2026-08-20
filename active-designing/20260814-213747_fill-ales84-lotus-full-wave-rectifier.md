@@ -1,7 +1,7 @@
 # Fill ALES84 — Lotus's full-wave rectifier: fold the wave at zero, the plainest even-harmonic generator
 
 **Stamp:** `20260814.213747` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the DRIVE family closed whole at ALES83, and the plainest step beside it is the even-harmonic complement to its odd clippers — the rectifier)
+**Status:** Mixed -- Design read — self-approved round (no custody gate; the DRIVE family closed whole at ALES83, and the plainest step beside it is the even-harmonic complement to its odd clippers — the rectifier)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES84**
 **Kin:** [`../lotus/tube.rye`](../lotus/tube.rye) (ALES82 — coaxes even harmonics from an *uneven* clip; the rectifier makes them from the *purest* even map) · [`../lotus/fold.rye`](../lotus/fold.rye) (ALES80 — the wavefolder folds the excess *past a ceiling*; the rectifier folds the whole negative half *at zero*) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip, sample_min/max, the one true saturate)
 

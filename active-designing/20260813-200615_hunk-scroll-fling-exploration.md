@@ -1,6 +1,7 @@
 # HUNK45 — the fling: momentum decay after the finger lifts
 
 **Stamp:** `20260813.200615` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** A (Hardware & Right-to-Repair) · **Waymark:** HUNK · rung **HUNK45**
 **Kin:** [`preset_scroll.rye`](../pond/apps/preset_scroll.rye) (HUNK40 cursor) · [`preset_scroll_input.rye`](../pond/apps/preset_scroll_input.rye) (HUNK43 input) · [`preset_scroll_drag.rye`](../pond/apps/preset_scroll_drag.rye) (HUNK44 pixel drag) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

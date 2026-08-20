@@ -1,7 +1,7 @@
 # FORA8 — census: announce, collect, and know who is present
 
 **Stamp:** `20260814.051119` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design round (self-approved) — the next FORA rung, agent-doable, purely local
+**Status:** Vision -- Design round (self-approved) — the next FORA rung, agent-doable, purely local
 **Season:** the Six-Season double-seat, Season D/F thread · **Waymark:** FORA · rung **FORA8**
 **Kin:** [`../constel/gossip.rye`](../constel/gossip.rye) · [`../constel/switchboard.rye`](../constel/switchboard.rye) · [`../constel/README.md`](../constel/README.md) · [`20260814-050539_fora7-constel-gossip-broadcast.md`](20260814-050539_fora7-constel-gossip-broadcast.md)
 

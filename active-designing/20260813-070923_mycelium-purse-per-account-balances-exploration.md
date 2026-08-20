@@ -1,7 +1,7 @@
 # The Purse — a double-spend by one holder, decided per account by the agreed order
 
 **Stamp:** `20260813.070923` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living (design capture, self-approved round) · **Season:** double-seat expansion D — Kresfa & Mycelium
+**Status:** Vision -- Living (design capture, self-approved round) · **Season:** double-seat expansion D — Kresfa & Mycelium
 **Kin:** [the Mycelium Cord](20260813-032851_mycelium-consensus-cord-exploration.md) · [the Till](20260813-064129_mycelium-till-double-spend-exploration.md) · [the Tenure](20260813-060935_mycelium-tenure-contested-name-exploration.md) · [the Knot checkpoint](20260813-050903_mycelium-cord-knot-checkpoint-exploration.md) · [the six-season expansion](20260813-020035_double-seat-expansion-six-seasons.md) · [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 **Gratitude (clean-room, concepts only):** the per-account double-spend is the shape every real value ledger carries — TigerBeetle's debit/credit account model and the Bitcoin/UTXO lineage are studied plainly as the world's answers; the code here is the tree's own, folding over the Cord's arrival-order-independent commit (`mycelium/cord.rye`) and reusing `mycelium/fold`'s signed-fact model unchanged.
 

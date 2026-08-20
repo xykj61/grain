@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260810.160002` (2026-08-10 EDT)
 **Voice:** Kyri · **Style:** Radiant
-**Status:** Concept seated on Keaton's word · extends the **calendar** (`context/LEXICON.md`)
+**Status:** Mixed -- Concept seated on Keaton's word · extends the **calendar** (`context/LEXICON.md`)
 **Kin:** the calendar (power-of-2 rounds), `journey/`, `prin sundial` (confidence meter)
 
 ---

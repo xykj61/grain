@@ -1,7 +1,7 @@
 # Fill ALES46 — the band-pass, the middle kept
 
 **Stamp:** `20260814.165106` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — one keystone, one send
+**Status:** Mixed -- Self-approved design round — one keystone, one send
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES46**
 **Kin:** [`20260814-164244_fill-ales45-lotus-carried-highpass.md`](20260814-164244_fill-ales45-lotus-carried-highpass.md) · [`20260814-163647_fill-ales44-lotus-filter-sweep.md`](20260814-163647_fill-ales44-lotus-filter-sweep.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md)
 

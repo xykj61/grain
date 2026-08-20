@@ -1,7 +1,7 @@
 # DAHL Journey 12 — Data-dignity, the keeper's word outliving the keeper (exploration)
 
 **Stamp:** `20260812.212607` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — opens Journey 12 of Season 3 (Commons) in the 1,024-round itinerary
+**Status:** Vision -- Self-approved design round — opens Journey 12 of Season 3 (Commons) in the 1,024-round itinerary
 **Waymark:** **DAHL** (Harvest Equinox 3 — Commons, already seated; each journey is `DAHL-J<N>`)
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) · [`20260812-210603_dahl-journey11-council-skies-exploration.md`](20260812-210603_dahl-journey11-council-skies-exploration.md) · [`../settlement/constellation.rye`](../settlement/constellation.rye) · [`../pond/apps/skate_group_signed.rye`](../pond/apps/skate_group_signed.rye) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

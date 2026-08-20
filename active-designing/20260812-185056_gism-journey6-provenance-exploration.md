@@ -3,7 +3,7 @@
 **Stamp:** `20260812.185056` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
 **Waymark:** **GISM** (`harvest-season-equinox-1-yield`, already seated — `.claude/rules/waymark-ladders.md`)
 **Itinerary journey:** Season 2 — Yield · **Journey 6 — Provenance**
-**Status:** Self-approved design round — opens Journey 6 of the 1,024-round itinerary
+**Status:** Mixed -- Self-approved design round — opens Journey 6 of the 1,024-round itinerary
 **Kin:** [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) · [`20260812-181015_gism-journey5-real-corpora-exploration.md`](20260812-181015_gism-journey5-real-corpora-exploration.md) · [`../.claude/rules/reds-first.md`](../.claude/rules/reds-first.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md) · [`../work-in-progress/REDS.md`](../work-in-progress/REDS.md)
 
 ---

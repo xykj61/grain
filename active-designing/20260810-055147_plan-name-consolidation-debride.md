@@ -1,7 +1,7 @@
 # The Name-Consolidation Debride — Kaeden · Reyklah · Rio 3 · Reya 2 → the living names
 
 **Language:** EN
-**Status:** Design brief — proposed, awaiting the send that opens the cut
+**Status:** Mixed -- Design brief — proposed, awaiting the send that opens the cut
 **Voice:** Riyo · **Coauthor:** Keaton Livermore
 **Rule:** [`../.claude/rules/debride.md`](../.claude/rules/debride.md) · cairn first per [`../.claude/rules/cairn.md`](../.claude/rules/cairn.md)
 **Kin:** [`../work-in-progress/CAIRNS.md`](../work-in-progress/CAIRNS.md) · [`../PUBKEYS.md`](../PUBKEYS.md) (k3) · [`../MAP.md`](../MAP.md)

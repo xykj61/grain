@@ -1,6 +1,7 @@
 # Fill ALES165 — Lotus's stereo_hold_env: the held envelope follower carried into stereo, one linked detector given the hold stage — the patient time base the whole stereo held-dynamics family waits for
 
 **Stamp:** `20260815.071625` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES165
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-070944_fill-ales164-lotus-stereo-expand-env.md`](20260815-070944_fill-ales164-lotus-stereo-expand-env.md)
 

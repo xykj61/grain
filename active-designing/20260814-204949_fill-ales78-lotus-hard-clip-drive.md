@@ -1,7 +1,7 @@
 # Fill ALES78 — Lotus's hard-clip drive: a pre-gain into ALES49's ceiling
 
 **Stamp:** `20260814.204949` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the modulation family closed at ALES77, and this opens the next durable family — DRIVE — with its simplest provable member, the hard clip)
+**Status:** Mixed -- Design read — self-approved round (no custody gate; the modulation family closed at ALES77, and this opens the next durable family — DRIVE — with its simplest provable member, the hard clip)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES78**
 **Kin:** [`../lotus/limit.rye`](../lotus/limit.rye) (ALES49 — the ceiling law `pin to sign(x)·ceil`, reused here over the BOOSTED sample) · [`../lotus/fader.rye`](../lotus/fader.rye) (ALES6/ALES8 — the num/den gain in the i64 accumulator, the drive's pre-gain) · [`../lotus/tremolo.rye`](../lotus/tremolo.rye) (ALES74 — the amplitude kin whose unity boundary this rung reads in reverse) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip, sample_min/max, the one true saturate)
 

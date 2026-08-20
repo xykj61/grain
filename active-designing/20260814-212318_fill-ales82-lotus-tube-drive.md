@@ -1,7 +1,7 @@
 # Fill ALES82 — Lotus's asymmetric tube drive: a different ceiling per sign, the first clip that is not odd
 
 **Stamp:** `20260814.212318` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; ALES78, ALES79, ALES80, and ALES81 each named the asymmetric / tube drive as the next member of the DRIVE family)
+**Status:** Mixed -- Design read — self-approved round (no custody gate; ALES78, ALES79, ALES80, and ALES81 each named the asymmetric / tube drive as the next member of the DRIVE family)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES82**
 **Kin:** [`../lotus/drive.rye`](../lotus/drive.rye) (ALES78 — the hard clip this rung generalizes: one ceiling both signs becomes one ceiling per sign) · [`../lotus/soft_drive.rye`](../lotus/soft_drive.rye) (ALES79 — the sibling that rounds the corner while staying odd) · [`../lotus/crush.rye`](../lotus/crush.rye) (ALES81 — the family's other not-odd map, whose asymmetry is a downward floor where this one's is an uneven rail) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip, sample_min/max, the one true saturate)
 

@@ -1,6 +1,7 @@
 # Fill ALES144 — `lotus/stereo_schmitt.rye`, the Schmitt trigger carried into stereo, the first state-carrying comparator in stereo
 
 **Stamp:** `20260815.044135` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES144**
 **Kin:** [`20260815-043212_fill-ales143-lotus-stereo-infinite-clip.md`](20260815-043212_fill-ales143-lotus-stereo-infinite-clip.md) · [`20260814-224452_fill-ales92-lotus-schmitt-trigger.md`](20260814-224452_fill-ales92-lotus-schmitt-trigger.md)
 

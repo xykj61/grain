@@ -1,7 +1,7 @@
 # DREY5 — the carry meets: a committed run leaves the device and lands in the desk inbox
 
 **Stamp:** `20260814.063000` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (Season A · waymark **DREY** · Mikrophone firmware journey · rung DREY5)
+**Status:** Vision -- Self-approved design round (Season A · waymark **DREY** · Mikrophone firmware journey · rung DREY5)
 **Kin:** [`20260814-022312_drey3-firmware-loop-carry-committed-run-to-the-wire-exploration.md`](20260814-022312_drey3-firmware-loop-carry-committed-run-to-the-wire-exploration.md) · [`20260814-022831_drey4-inbox-far-side-accepts-verify-before-keep-exploration.md`](20260814-022831_drey4-inbox-far-side-accepts-verify-before-keep-exploration.md) · [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
 
 ---

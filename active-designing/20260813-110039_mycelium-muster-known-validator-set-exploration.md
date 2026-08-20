@@ -1,7 +1,7 @@
 # The Muster — a Chorus is believed only when its voices pass a known validator set
 
 **Stamp:** `20260813.110039` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — opens a fresh Mycelium journey (Season D)
+**Status:** Mixed -- Self-approved design round — opens a fresh Mycelium journey (Season D)
 **Kin:** [`../mycelium/chorus.rye`](../mycelium/chorus.rye) · [`../mycelium/voucher.rye`](../mycelium/voucher.rye) · [`../mycelium/cord.rye`](../mycelium/cord.rye) · [`../mycelium/kumara.rye`](../mycelium/kumara.rye) · [`20260813-102533_mycelium-chorus-quorum-attestation-exploration.md`](20260813-102533_mycelium-chorus-quorum-attestation-exploration.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md) · [`../.claude/rules/comlink-tendency.md`](../.claude/rules/comlink-tendency.md)
 
 ---

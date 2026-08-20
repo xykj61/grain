@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Voice:** Kyri
-**Status:** Design — a scope extension of the running Dimeroll module; no new value model
+**Status:** Mixed -- Design — a scope extension of the running Dimeroll module; no new value model
 **Kin:** [`../dimeroll/README.md`](../dimeroll/README.md) (the module) · WADE plan [`../expanding-prompts/20260811-220402_wade-bit-design-system-and-dimeroll-entities.md`](../expanding-prompts/20260811-220402_wade-bit-design-system-and-dimeroll-entities.md) · [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md)
 
 ---

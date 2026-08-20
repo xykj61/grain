@@ -1,7 +1,7 @@
 # The secp256k1 Group Law — the proven curve over the proven field
 
 **Stamp:** `20260816.022000` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living (design read for the round that landed `crypto/secp256k1_group.rye` GREEN)
+**Status:** Mixed -- Living (design read for the round that landed `crypto/secp256k1_group.rye` GREEN)
 **Season:** the Six-Season double-seat, **Season G** (Cryptography · Rye-native, parity-checked, audit-ready)
 **Kin:** [`fe_secp256k1 — the Bitcoin/Ethereum field crux`](20260816-020351_fe-secp256k1-the-bitcoin-ethereum-field-crux.md) · [`the Rye-first crypto parity wave`](20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md) · [`crypto/secp256k1_group.rye`](../crypto/secp256k1_group.rye) · [`crypto/ed25519_group.rye`](../crypto/ed25519_group.rye) · [`docs/CRYPTO.md`](../docs/CRYPTO.md)
 

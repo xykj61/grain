@@ -1,7 +1,7 @@
 # Fill ALES68 — Lotus's multi-tap delay: several fixed taps of the dry signal
 
 **Stamp:** `20260814.192743` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the second delay-line reading, contrasting ALES66's feedback with a snapshotted-dry multi-tap, reusing the graft/clipboard snapshot idiom and the one true saturate)
+**Status:** Vision -- Design read — self-approved round (no custody gate; the second delay-line reading, contrasting ALES66's feedback with a snapshotted-dry multi-tap, reusing the graft/clipboard snapshot idiom and the one true saturate)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES68**
 **Kin:** [`../lotus/echo.rye`](../lotus/echo.rye) (ALES66 — the feedback delay this contrasts) · [`../lotus/graft.rye`](../lotus/graft.rye) (ALES24 — the dry-span snapshot idiom this reuses) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip and the one true saturate)
 

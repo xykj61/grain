@@ -1,7 +1,7 @@
 # Constel roster — a bounded registry of fake piers (FORA1)
 
 **Stamp:** `20260814.041928` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living design — self-approved round, the pure roster beneath the later Comlink handshake
+**Status:** Mixed -- Living design — self-approved round, the pure roster beneath the later Comlink handshake
 **Season:** the Six-Season double-seat, Season D/F thread (Kresfa & Mycelium · Surface & Namespace) · **Waymark:** FORA · rung FORA1
 **Kin:** [`20260814-fill-constel-naming-law.md`](20260814-fill-constel-naming-law.md) · [`../constel/name.rye`](../constel/name.rye) · [`../.claude/rules/placeholder-ship-names.md`](../.claude/rules/placeholder-ship-names.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md)
 

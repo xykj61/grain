@@ -1,6 +1,6 @@
 # Fill ALES228 — Lotus library_find: resolve an album by name in a catalog
 
-**Stamp:** `20260815.142750` · **Voice:** Kyri · **Style:** Radiant · **Status:** Self-approved design round
+**Stamp:** `20260815.142750` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Self-approved design round
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · waymark **ALES** · rung **ALES228**
 **Kin:** [`../lotus/library_manifest.rye`](../lotus/library_manifest.rye) (ALES226 — the opened catalog this searches) · [`../lotus/library_sheet.rye`](../lotus/library_sheet.rye) (ALES227 — the readable page this makes usable) · [`../lotus/rack.rye`](../lotus/rack.rye) (ALES30 — the `find` / `name_of` lookup idiom mirrored one level up) · [`20260815-142207_fill-ales227-lotus-library-sheet.md`](20260815-142207_fill-ales227-lotus-library-sheet.md)
 

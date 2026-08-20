@@ -1,6 +1,7 @@
 # Fill ALES128 — `lotus/stereo_nyquist.rye`, the Nyquist flip of a master in stereo
 
 **Stamp:** `20260815.025105` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES128**
 **Kin:** [`20260815-004633_fill-ales107-lotus-nyquist.md`](20260815-004633_fill-ales107-lotus-nyquist.md) · [`20260815-024705_fill-ales127-lotus-stereo-invert.md`](20260815-024705_fill-ales127-lotus-stereo-invert.md) · [`20260815-024103_fill-ales126-lotus-stereo-rotate.md`](20260815-024103_fill-ales126-lotus-stereo-rotate.md)
 

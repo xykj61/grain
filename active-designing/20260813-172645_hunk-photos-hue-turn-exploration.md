@@ -1,7 +1,7 @@
 # HUNK23 — an exact 120° hue turn for the open image module
 
 **Stamp:** `20260813.172645` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable, Lindy-first crux-first)
+**Status:** Mixed -- Self-approved design round (agent-doable, Lindy-first crux-first)
 **Season A · waymark HUNK · journey Open Image** — beside the Photos app's crop · orient · scale · adjust · saturate.
 **Kin:** [`../image/photos.rye`](../image/photos.rye) · [`20260813-171223_hunk-photos-scale-area-exploration.md`](20260813-171223_hunk-photos-scale-area-exploration.md) · [`20260813-170307_hunk-photos-saturate-exploration.md`](20260813-170307_hunk-photos-saturate-exploration.md)
 

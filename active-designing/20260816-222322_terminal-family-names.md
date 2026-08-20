@@ -2,7 +2,7 @@
 
 *Our own names for the command-line family and one open naming question, kept where we name only our modules. The clean-room study that informs them lives in external-research; this file names what we build. Voice: Kyri - Style: Radiant - ASCII only.*
 
-**Stamp:** `20260816.222322` - **Status:** Living
+**Stamp:** `20260816.222322` - **Status:** Vision -- Living
 **Study:** [`../external-research/20260816-222322_dill-talk-tty-and-the-terminal-family.md`](../external-research/20260816-222322_dill-talk-tty-and-the-terminal-family.md)
 **Kin:** [`../context/specs/20260709-225343_thin-view-dexter-exception.md`](../context/specs/20260709-225343_thin-view-dexter-exception.md) - [`../.claude/rules/comlink-tendency.md`](../.claude/rules/comlink-tendency.md)
 

@@ -1,7 +1,7 @@
 # Fill ALES216 — Lotus's stereo WAV container (the door widened to two channels)
 
 **Stamp:** `20260815.130649` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable · purely local byte work · no custody gate)
+**Status:** Vision -- Self-approved design round (agent-doable · purely local byte work · no custody gate)
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES216**
 **Kin:** [`20260815-130110_fill-ales215-lotus-wav-container.md`](20260815-130110_fill-ales215-lotus-wav-container.md) · [`../lotus/wav.rye`](../lotus/wav.rye) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

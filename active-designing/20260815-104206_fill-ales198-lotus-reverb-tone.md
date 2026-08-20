@@ -1,7 +1,7 @@
 # Fill ALES198 — Lotus's reverb tone (the darkness knob)
 
 **Stamp:** `20260815.104206` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable · purely local DSP · no custody gate)
+**Status:** Vision -- Self-approved design round (agent-doable · purely local DSP · no custody gate)
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES198**
 **Kin:** [`20260815-102052_fill-ales194-lotus-reverb-predelay.md`](20260815-102052_fill-ales194-lotus-reverb-predelay.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

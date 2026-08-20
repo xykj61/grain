@@ -1,7 +1,7 @@
 # Mycelium Purse r4 — a real per-account double-spend reads true (the arc closes)
 
 **Stamp:** `20260813.073500` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read for one rung
+**Status:** Mixed -- Self-approved design read for one rung
 **Kin:** [`../mycelium/purse.rye`](../mycelium/purse.rye) · [`../mycelium/purse_bron.rye`](../mycelium/purse_bron.rye) · [`../mycelium/purse_knot.rye`](../mycelium/purse_knot.rye) · the mirror [`20260813-064129_mycelium-till-double-spend-exploration.md`](20260813-064129_mycelium-till-double-spend-exploration.md)
 
 ---

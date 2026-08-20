@@ -1,7 +1,7 @@
 # Fill ALES218 — Lotus's stereo render (an effect chain over two channels becomes a stereo .wav)
 
 **Stamp:** `20260815.132120` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable · purely local byte work · no custody gate)
+**Status:** Vision -- Self-approved design round (agent-doable · purely local byte work · no custody gate)
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES218**
 **Kin:** [`20260815-131432_fill-ales217-lotus-render.md`](20260815-131432_fill-ales217-lotus-render.md) · [`../lotus/render.rye`](../lotus/render.rye) · [`../lotus/stereo_wav.rye`](../lotus/stereo_wav.rye) · [`../lotus/pan.rye`](../lotus/pan.rye)
 

@@ -1,7 +1,7 @@
 # DREY14 — the desk push loop: give the far hand its lack (the pull's mirror)
 
 **Stamp:** `20260814.072200` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Landed — witness `tools/drey_push_witness.rish` GREEN
+**Status:** Mixed -- Landed — witness `tools/drey_push_witness.rish` GREEN
 **Season A** (Hardware & Right-to-Repair) · **waymark DREY** · Mikrophone firmware journey · **rung DREY14**
 **Kin:** [`../mikrophone/sync.rye`](../mikrophone/sync.rye) (DREY12, the pull) · [`../mikrophone/serve.rye`](../mikrophone/serve.rye) (DREY9) · [`../mikrophone/manifest.rye`](../mikrophone/manifest.rye) (DREY8) · [`../mikrophone/catalog.rye`](../mikrophone/catalog.rye) (DREY7)
 

@@ -1,7 +1,7 @@
 # HUNK92 — the sort names which way it turns: a directional header over the matching page
 
 **Stamp:** `20260814.014131` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (Season A · waymark HUNK · parts-marketplace journey · rung HUNK92)
+**Status:** Vision -- Self-approved design round (Season A · waymark HUNK · parts-marketplace journey · rung HUNK92)
 **Kin:** [`part_facets_sorted_screen.rye`](../brushstroke/part_facets_sorted_screen.rye) (HUNK90) · [`part_facets_sort_desc.rye`](../brushstroke/part_facets_sort_desc.rye) (HUNK91)
 
 ---

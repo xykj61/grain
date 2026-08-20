@@ -1,7 +1,7 @@
 # Fill ALES69 — Lotus's multi-tap delay in real time: taps named in milliseconds
 
 **Stamp:** `20260814.193359` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the ALES68 multi-tap given the ALES5 clock's units, exactly as `echo_ms` gave the feedback echo real time)
+**Status:** Vision -- Design read — self-approved round (no custody gate; the ALES68 multi-tap given the ALES5 clock's units, exactly as `echo_ms` gave the feedback echo real time)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES69**
 **Kin:** [`../lotus/taps.rye`](../lotus/taps.rye) (ALES68 — the multi-tap delay this speaks in real time) · [`../lotus/echo_time.rye`](../lotus/echo_time.rye) (ALES67 — the timed twin this mirrors) · [`../lotus/clock.rye`](../lotus/clock.rye) (ALES5 — the sample clock)
 

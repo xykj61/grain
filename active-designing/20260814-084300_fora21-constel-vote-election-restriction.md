@@ -1,6 +1,7 @@
 # FORA21 — a vote goes only to an up-to-date log (the election restriction)
 
 **Stamp:** `20260814.084300` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** Six-Season double-seat, Season D (Kresfa & Mycelium — the tree's own consensus) · **Waymark:** FORA · **Rung:** FORA21
 **Stands on:** [`constel/repair.rye`](../constel/repair.rye) (FORA17 — the `TermedLog`, its `last_term` and length) · [`constel/quorum.rye`](../constel/quorum.rye) (FORA9 — `majority_of`, the intersection lemma) · [`constel/commit.rye`](../constel/commit.rye) (FORA18 — the committed prefix whose completeness this guarantees)
 **Kin:** [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)

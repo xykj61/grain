@@ -1,6 +1,7 @@
 # Fill ALES175 — Lotus's stereo_sweep: the filter sweep (a moving low-pass) carried into stereo, the same schedule on both channels — the sixth rung of the stereo EQ / filter class, the automated brightness
 
 **Stamp:** `20260815.081412` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES175
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-080752_fill-ales174-lotus-stereo-bell.md`](20260815-080752_fill-ales174-lotus-stereo-bell.md)
 

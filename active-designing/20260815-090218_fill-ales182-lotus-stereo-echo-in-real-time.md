@@ -1,6 +1,7 @@
 # Fill ALES182 — Lotus's stereo_echo_time: the stereo echo spoken in MILLISECONDS, a thin twin over ALES181 the clock adds only the units to — the first real-time face of the stereo time-based wing
 
 **Stamp:** `20260815.090218` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES182
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-085411_fill-ales181-lotus-stereo-echo.md`](20260815-085411_fill-ales181-lotus-stereo-echo.md)
 

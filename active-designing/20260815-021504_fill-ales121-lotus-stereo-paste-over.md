@@ -1,6 +1,7 @@
 # Fill ALES121 — `lotus/stereo_paste_over.rye`, the overwrite paste carried into stereo
 
 **Stamp:** `20260815.021504` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES121**
 **Kin:** [`20260815-013334_fill-ales114-lotus-paste-over.md`](20260815-013334_fill-ales114-lotus-paste-over.md) · [`20260815-014739_fill-ales116-lotus-stereo-replace.md`](20260815-014739_fill-ales116-lotus-stereo-replace.md) · [`20260815-020930_fill-ales120-lotus-stereo-duplicate.md`](20260815-020930_fill-ales120-lotus-stereo-duplicate.md)
 

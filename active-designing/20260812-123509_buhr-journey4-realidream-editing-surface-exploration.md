@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Voice:** Kyri
-**Status:** Exploration — a survey of the door beyond the three seated journeys; a design in motion, not yet a build
+**Status:** Mixed -- Exploration — a survey of the door beyond the three seated journeys; a design in motion, not yet a build
 **Waymark:** **BUHR** — Compass Season Equinox 3 ([`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md))
 **Order:** [Lindy-first, crux-first](../.claude/rules/lindy-first-crux.md)
 **Kin:** [`20260812-053742_buhr-exploration-surface-and-intelligence.md`](20260812-053742_buhr-exploration-surface-and-intelligence.md) — the equinox exploration this one continues

@@ -1,6 +1,6 @@
 # Fill ALES226 — Lotus library_manifest: a keeper's whole catalog, content-addressed
 
-**Stamp:** `20260815.141539` · **Voice:** Kyri · **Style:** Radiant · **Status:** Self-approved design round
+**Stamp:** `20260815.141539` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Self-approved design round
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · waymark **ALES** · rung **ALES226**
 **Kin:** [`../lotus/album_manifest.rye`](../lotus/album_manifest.rye) (ALES224 — the sealed album content-address this reads and mirrors one level up) · [`../lotus/seal.rye`](../lotus/seal.rye) (ALES38 — the verify-before-trust frame reused whole) · [`20260815-140211_fill-ales224-lotus-album-manifest.md`](20260815-140211_fill-ales224-lotus-album-manifest.md)
 

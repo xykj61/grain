@@ -1,7 +1,7 @@
 # DAHL Journey 10 — Membership, the quorum surface (exploration)
 
 **Stamp:** `20260812.204233` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — opens Journey 10 of Season 3 (Commons) in the 1,024-round itinerary
+**Status:** Vision -- Self-approved design round — opens Journey 10 of Season 3 (Commons) in the 1,024-round itinerary
 **Waymark:** **DAHL** (Harvest Equinox 3 — Commons, already seated; each journey is `DAHL-J<N>`)
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) · [`20260812-201611_dahl-journey9-skate-consent-first-exploration.md`](20260812-201611_dahl-journey9-skate-consent-first-exploration.md) · [`../settlement/names.rye`](../settlement/names.rye) · [`../pond/apps/skate_circle.rye`](../pond/apps/skate_circle.rye) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

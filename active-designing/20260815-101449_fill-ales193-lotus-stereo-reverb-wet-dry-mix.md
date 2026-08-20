@@ -1,7 +1,7 @@
 # Fill ALES193 — Lotus's stereo reverb wet/dry mix
 
 **Stamp:** `20260815.101449` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable · purely local DSP · no custody gate)
+**Status:** Vision -- Self-approved design round (agent-doable · purely local DSP · no custody gate)
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES193**
 **Kin:** [`20260815-100815_fill-ales192-lotus-reverb-wet-dry-mix.md`](20260815-100815_fill-ales192-lotus-reverb-wet-dry-mix.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

@@ -1,7 +1,7 @@
 # Fill ALES209 — Lotus's stereo frozen reverb (the held tail carried across a stereo master)
 
 **Stamp:** `20260815.115900` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable · purely local DSP · no custody gate)
+**Status:** Vision -- Self-approved design round (agent-doable · purely local DSP · no custody gate)
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES209**
 **Kin:** [`20260815-115209_fill-ales208-lotus-reverb-freeze.md`](20260815-115209_fill-ales208-lotus-reverb-freeze.md) · [`20260815-114348_fill-ales207-lotus-stereo-reverb-early-late.md`](20260815-114348_fill-ales207-lotus-stereo-reverb-early-late.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

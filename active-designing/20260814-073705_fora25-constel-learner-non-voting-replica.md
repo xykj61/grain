@@ -1,6 +1,7 @@
 # FORA25 — Constel learner: a new member joins non-voting, catches up, then earns the vote
 
 **Stamp:** `20260814.073705` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · **waymark** FORA · **rung** FORA25
 **Kin:** [`../constel/reconfig.rye`](../constel/reconfig.rye) (FORA13) · [`../constel/catchup.rye`](../constel/catchup.rye) (FORA15) · [`../constel/quorum.rye`](../constel/quorum.rye) (FORA9) · [`../constel/roster.rye`](../constel/roster.rye) (FORA1)
 

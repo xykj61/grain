@@ -1,6 +1,6 @@
 # HUNK40 — the scroll cursor: a live viewport offset from a keeper's gesture
 
-**Stamp:** `20260813.192957` · **Status:** Living (design capture, self-approved) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260813.192957` · **Status:** Mixed -- Living (design capture, self-approved) · **Voice:** Kyri · **Style:** Radiant
 **Season:** A (Hardware & Right-to-Repair) · **Waymark:** HUNK · **Journey:** the marketplace / Photos-app surface
 **Kin:** [`../pond/apps/preset_shelf.rye`](../pond/apps/preset_shelf.rye) (HUNK36–37 pager) · [`../image/edit_cursor.rye`](../image/edit_cursor.rye) (HUNK16 cursor idiom) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md)
 

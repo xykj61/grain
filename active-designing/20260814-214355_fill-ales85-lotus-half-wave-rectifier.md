@@ -1,7 +1,7 @@
 # Fill ALES85 — Lotus's half-wave rectifier: keep the positive half, zero the negative, exact everywhere
 
 **Stamp:** `20260814.214355` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; ALES84's own doc names the half-wave rectifier as the full-wave's plain sibling, the next rung of the even family)
+**Status:** Mixed -- Design read — self-approved round (no custody gate; ALES84's own doc names the half-wave rectifier as the full-wave's plain sibling, the next rung of the even family)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES85**
 **Kin:** [`../lotus/rectify.rye`](../lotus/rectify.rye) (ALES84 — the full-wave rectifier folds the negative half *up*, `y = |x|`; the half-wave rectifier folds it *away*, `y = max(x, 0)`) · [`../lotus/gate.rye`](../lotus/gate.rye) (ALES44 — a threshold silences below a floor; the half-wave rectifier is the threshold set exactly at zero, one-sided) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip, sample_min/max, the one true saturate)
 

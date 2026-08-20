@@ -1,7 +1,7 @@
 # HUNK89 — the faceted result, sorted cheapest-first
 
 **Stamp:** `20260814.012339` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (Season A · waymark HUNK · parts-marketplace journey · rung HUNK89)
+**Status:** Vision -- Self-approved design round (Season A · waymark HUNK · parts-marketplace journey · rung HUNK89)
 **Kin:** [`part_facets_search.rye`](../brushstroke/part_facets_search.rye) (HUNK86) · [`part_facets_paged.rye`](../brushstroke/part_facets_paged.rye) (HUNK88) · [`part_catalog.rye`](../brushstroke/part_catalog.rye) (HUNK71) · [`part_row.rye`](../brushstroke/part_row.rye)
 
 ---

@@ -1,7 +1,7 @@
 # Fill ALES77 — Lotus's equal-power auto-pan: ALES11's quarter-circle split swept across the field
 
 **Stamp:** `20260814.203749` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the modulation family's rung the auto-pan itself named as next — the equal-power curve against ALES76's linear centre)
+**Status:** Vision -- Design read — self-approved round (no custody gate; the modulation family's rung the auto-pan itself named as next — the equal-power curve against ALES76's linear centre)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES77**
 **Kin:** [`../lotus/power.rye`](../lotus/power.rye) (ALES11 — the equal-power split `split(pos, den)` swept here in time) · [`../lotus/auto_pan.rye`](../lotus/auto_pan.rye) (ALES76 — the same triangle-swept position, only the linear split swapped for the equal-power one) · [`../lotus/chorus.rye`](../lotus/chorus.rye) (ALES71 — the triangle-LFO driver `triangle_delay_at`, now the pan position) · [`../lotus/pan.rye`](../lotus/pan.rye) (ALES10 — the StereoClip) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip, sample_min/max, the one true saturate)
 

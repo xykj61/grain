@@ -1,6 +1,7 @@
 # Fill ALES184 — Lotus's allpass: Schroeder's diffusion filter, the delayed dry read against the delayed output — the missing primitive the reverb stands on
 
 **Stamp:** `20260815.091646` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES184
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-090818_fill-ales183-lotus-stereo-multi-tap.md`](20260815-090818_fill-ales183-lotus-stereo-multi-tap.md)
 

@@ -1,7 +1,7 @@
 # Fill ALES50 — the compressor, the ceiling softened
 
 **Stamp:** `20260814.171338` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — one keystone, one send
+**Status:** Mixed -- Self-approved design round — one keystone, one send
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES50**
 **Kin:** [`20260814-170815_fill-ales49-lotus-peak-limiter.md`](20260814-170815_fill-ales49-lotus-peak-limiter.md) · [`../lotus/README.md`](../lotus/README.md)
 

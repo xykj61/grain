@@ -1,7 +1,7 @@
 # HUNK78 — an AND of clauses: narrow on several facets at once
 
 **Stamp:** `20260814.000136` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable, no gate)
+**Status:** Vision -- Self-approved design round (agent-doable, no gate)
 **Season:** A (Hardware & Right-to-Repair) · **waymark:** HUNK · **journey:** parts-marketplace · **rung:** HUNK78
 **Kin:** [`../image/part_filter.rye`](../image/part_filter.rye) (HUNK75 filter) · [`../image/part_query.rye`](../image/part_query.rye) (HUNK76 parse one clause) · [`../brushstroke/part_search.rye`](../brushstroke/part_search.rye) (HUNK77 search on glass)
 

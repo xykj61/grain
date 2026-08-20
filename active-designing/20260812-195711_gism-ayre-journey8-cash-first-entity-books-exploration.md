@@ -1,7 +1,7 @@
 # Season 2 Journey 8 — Cash-first: entity books that balance, never braided
 
 **Stamp:** `20260812.195711` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — opens Season 2, Journey 8 (Cash-first) of the 1,024-round itinerary
+**Status:** Mixed -- Self-approved design round — opens Season 2, Journey 8 (Cash-first) of the 1,024-round itinerary
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) · [`20260811-220402_dimeroll-entity-books-siya-and-linengrow.md`](20260811-220402_dimeroll-entity-books-siya-and-linengrow.md) · [`../dimeroll/README.md`](../dimeroll/README.md) · [`../pond/apps/commerce_trade.rye`](../pond/apps/commerce_trade.rye)
 
 ---

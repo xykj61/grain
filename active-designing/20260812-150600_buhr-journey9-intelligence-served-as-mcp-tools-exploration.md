@@ -1,6 +1,6 @@
 # BUHR Journey 9 — the intelligence, served as MCP tools (exploration)
 
-**Stamp:** `20260812.150600` · **Waymark:** BUHR (Compass Season · Equinox 3 — Surface & Intelligence) · **Status:** exploration, self-approved design round · **Voice:** Kyri
+**Stamp:** `20260812.150600` · **Waymark:** BUHR (Compass Season · Equinox 3 — Surface & Intelligence) · **Status:** Vision -- exploration, self-approved design round · **Voice:** Kyri
 
 ## The blind spot
 

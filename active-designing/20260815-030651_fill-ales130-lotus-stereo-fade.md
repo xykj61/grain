@@ -1,6 +1,7 @@
 # Fill ALES130 — `lotus/stereo_fade.rye`, the fade envelope carried into stereo, one shared ramp
 
 **Stamp:** `20260815.030651` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES130**
 **Kin:** [`20260815-025919_fill-ales129-lotus-stereo-normalize.md`](20260815-025919_fill-ales129-lotus-stereo-normalize.md) · [`20260814-fill-ales4-lotus-fade-envelope.md`](20260814-fill-ales4-lotus-fade-envelope.md)
 

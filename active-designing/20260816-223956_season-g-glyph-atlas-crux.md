@@ -1,6 +1,6 @@
 # Season G, the open glyph atlas -- fonts, the second rung after color
 
-**Stamp:** `20260816.223956` -- **Status:** Living (self-approved design round) -- **Voice:** Kyri -- **Style:** Radiant
+**Stamp:** `20260816.223956` -- **Status:** Mixed -- Living (self-approved design round) -- **Voice:** Kyri -- **Style:** Radiant
 **Season:** G (Open Media Primitives) -- the open-font rung, beside `image/color.rye` (color) and `image/qoi.rye` (image)
 **Kin:** [`the eight-season double-seat`](20260816-205859_double-seat-expansion-eight-seasons.md) (Season G) -- [`the color crux`](20260816-210735_season-g-color-algebra-crux.md) -- `image/qoi.rye` (the codec whose shape this echoes)
 **Teacher, thanked clean-room:** [`../gratitude/bdf-bitmap-font.md`](../gratitude/bdf-bitmap-font.md) -- Adobe's public BDF bitmap-font spec and the run-length lineage; the public shape only, never a copied line.

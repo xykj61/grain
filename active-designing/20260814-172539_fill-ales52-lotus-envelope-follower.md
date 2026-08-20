@@ -1,7 +1,7 @@
 # Fill ALES52 — the envelope follower, the time base opens
 
 **Stamp:** `20260814.172539` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — one keystone, one send
+**Status:** Mixed -- Self-approved design round — one keystone, one send
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES52**
 **Kin:** [`20260814-171918_fill-ales51-lotus-noise-gate.md`](20260814-171918_fill-ales51-lotus-noise-gate.md) · [`20260814-fill-ales43-lotus-carried-filter.md`](20260814-fill-ales43-lotus-carried-filter.md) · [`../lotus/README.md`](../lotus/README.md)
 

@@ -1,7 +1,7 @@
 # FORA3 — the handshake, framed for a local wire
 
 **Stamp:** `20260814.043551` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design round (self-approved) — the next FORA rung, agent-doable, purely local
+**Status:** Vision -- Design round (self-approved) — the next FORA rung, agent-doable, purely local
 **Season:** the Six-Season double-seat, Season D/F thread · **Waymark:** FORA · rung **FORA3**
 **Kin:** [`../constel/handshake.rye`](../constel/handshake.rye) · [`../constel/README.md`](../constel/README.md) · [`../mikrophone/wire.rye`](../mikrophone/wire.rye) · [`../.claude/rules/placeholder-ship-names.md`](../.claude/rules/placeholder-ship-names.md) · [`20260814-042804_fora2-constel-local-handshake.md`](20260814-042804_fora2-constel-local-handshake.md)
 

@@ -1,6 +1,6 @@
 # The Hybrid Sealed Door — Confidentiality That Stands on Both Agreements
 
-**Stamp:** `20260816.195850` · **Status:** Living (design decision, LANDED same round) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260816.195850` · **Status:** Mixed -- Living (design decision, LANDED same round) · **Voice:** Kyri · **Style:** Radiant
 **Season:** G — Cryptography (the Six-Season double-seat)
 **Kin:** [`the dual-key discovery`](20260816-192400_post-quantum-identity-is-dual-key.md) · [`crypto/hybrid_sealed.rye`](../crypto/hybrid_sealed.rye) · [`crypto/hybrid_identity.rye`](../crypto/hybrid_identity.rye) · [`crypto/kumara_sealed.rye`](../crypto/kumara_sealed.rye) · [`crypto/mlkem_sealed.rye`](../crypto/mlkem_sealed.rye) · [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

@@ -1,7 +1,7 @@
 # Fill ALES112 — Lotus's duplicate, repeat a span in place (the growth-twin of crop)
 
 **Stamp:** `20260815.011901` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read — one Lotus rung, one keystone, one send
+**Status:** Mixed -- Self-approved design read — one Lotus rung, one keystone, one send
 **Waymark:** ALES · rung **ALES112** · Season C thread (Lotus · the creative suite) of the Six-Season double-seat
 **Kin:** [`crop.rye`](../lotus/crop.rye) (ALES111) · [`insert_silence.rye`](../lotus/insert_silence.rye) (ALES109) · [`timeline.rye`](../lotus/timeline.rye) (ALES2) · [`meter.rye`](../lotus/meter.rye) (ALES13)
 

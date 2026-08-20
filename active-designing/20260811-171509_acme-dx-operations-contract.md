@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260811.171509`
-**Status:** Design contract — the fourth and final deliverable of the Acme DX design season ([`../expanding-prompts/20260811-145659_acme-dx-design-season.md`](../expanding-prompts/20260811-145659_acme-dx-design-season.md)). Grounded in the operations Mandate already presents; landing it **closes the design season**.
+**Status:** Mixed -- Design contract — the fourth and final deliverable of the Acme DX design season ([`../expanding-prompts/20260811-145659_acme-dx-design-season.md`](../expanding-prompts/20260811-145659_acme-dx-design-season.md)). Grounded in the operations Mandate already presents; landing it **closes the design season**.
 **Voice:** Kyri · **Style:** Radiant · **Audience:** an Acme Corporation employee running their module in earnest
 **Begins where Equinox 3 ends:** the developer can build a module the tree accepts ([`20260811-170901_acme-dx-interfaces-surface-contract.md`](20260811-170901_acme-dx-interfaces-surface-contract.md)); now they run, serve, persist, recover, and observe it.
 

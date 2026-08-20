@@ -1,6 +1,7 @@
 # Fill ALES126 — `lotus/stereo_rotate.rye`, the cyclic turn of a master in stereo
 
 **Stamp:** `20260815.024103` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES126**
 **Kin:** [`20260815-003935_fill-ales106-lotus-rotate.md`](20260815-003935_fill-ales106-lotus-rotate.md) · [`20260815-023515_fill-ales125-lotus-stereo-reverse.md`](20260815-023515_fill-ales125-lotus-stereo-reverse.md) · [`20260815-023038_fill-ales124-lotus-stereo-shift.md`](20260815-023038_fill-ales124-lotus-stereo-shift.md)
 

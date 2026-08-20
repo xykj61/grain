@@ -1,6 +1,6 @@
 # The Hybrid Signed Carry — provenance on both worlds, in the open
 
-**Stamp:** `20260816.201310` · **Status:** Living (design decision, self-approved) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260816.201310` · **Status:** Mixed -- Living (design decision, self-approved) · **Voice:** Kyri · **Style:** Radiant
 **Season:** G — Cryptography (the Six-Season double-seat)
 **Kin:** [`crypto/signed_carry.rye`](../crypto/signed_carry.rye) (the classical sibling, GREEN) · [`crypto/hybrid_identity.rye`](../crypto/hybrid_identity.rye) (the hybrid signature, GREEN) · [`crypto/hybrid_signed_sealed.rye`](../crypto/hybrid_signed_sealed.rye) (the confidential-and-signed door, GREEN) · [`the post-quantum pivot`](20260816-161537_post-quantum-mlkem-mldsa-pivot.md) · [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

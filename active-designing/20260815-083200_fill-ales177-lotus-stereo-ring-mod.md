@@ -1,6 +1,7 @@
 # Fill ALES177 — Lotus's stereo_ring_mod: the ring modulator (bipolar triangle carrier on amplitude) carried into stereo, the same carrier on both channels — the second rung of the stereo modulation class, the tremolo's sibling
 
 **Stamp:** `20260815.083200` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES177
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-082400_fill-ales176-lotus-stereo-tremolo.md`](20260815-082400_fill-ales176-lotus-stereo-tremolo.md)
 

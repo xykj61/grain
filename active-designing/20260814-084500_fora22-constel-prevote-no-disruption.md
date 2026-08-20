@@ -1,6 +1,7 @@
 # FORA22 — a partitioned pier cannot disrupt a stable sky (pre-vote)
 
 **Stamp:** `20260814.084500` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** Six-Season double-seat, Season D (Kresfa & Mycelium — the tree's own consensus) · **Waymark:** FORA · **Rung:** FORA22
 **Stands on:** [`constel/vote.rye`](../constel/vote.rye) (FORA21 — `at_least_as_current`, the up-to-date check a pre-vote reuses) · [`constel/term.rye`](../constel/term.rye) (FORA16 — the term a pre-vote refuses to bump prematurely) · [`constel/quorum.rye`](../constel/quorum.rye) (FORA9 — the majority threshold)
 **Kin:** [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)

@@ -1,6 +1,6 @@
 # Clean-Room Brief -- LionsOS Modularity and Separation-of-Concerns Thesis, as it Informs Caravan
 
-**Stamp:** `20260819.094721` -- **Status:** Living (clean-room brief) -- **Voice:** Kyri
+**Stamp:** `20260819.094721` -- **Status:** Mixed -- Living (clean-room brief) -- **Voice:** Kyri
 **Register:** Radiant -- **Commissioned by:** [`../external-research/20260819-094721_microkernel-target-study-weight-recenter.md`](../external-research/20260819-094721_microkernel-target-study-weight-recenter.md)
 **Studies:** LionsOS (Trustworthy Systems' modular, verification-minded OS built on Microkit) and sDDF (the seL4 Device Driver Framework).
 **License boundary:** LionsOS and sDDF ship under **BSD-style** permissive terms -- the friendliest of the microkernel-ecosystem sources studied here. Even so, this brief keeps the **clean-room boundary**: **concepts, architecture papers, and design docs only, no source in our tree.** Rule: [`gratitude-licenses`](../.claude/rules/gratitude-licenses.md).

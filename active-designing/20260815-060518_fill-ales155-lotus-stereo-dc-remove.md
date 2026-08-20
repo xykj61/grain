@@ -1,6 +1,7 @@
 # Fill ALES155 — Lotus's stereo_dc_remove: the DC-offset remover carried into stereo, two independent means, the image-preserving translation
 
 **Stamp:** `20260815.060518` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES155
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-060518_fill-ales154-lotus-stereo-smooth-trim.md`](20260815-060518_fill-ales154-lotus-stereo-smooth-trim.md)
 

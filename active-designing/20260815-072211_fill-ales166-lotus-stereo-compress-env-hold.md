@@ -1,6 +1,7 @@
 # Fill ALES166 — Lotus's stereo_compress_env_hold: the attack/hold/release compressor carried into stereo, the linked held envelope driving one linked gain over time — the first spender of the held time base
 
 **Stamp:** `20260815.072211` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES166
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-071625_fill-ales165-lotus-stereo-hold-env.md`](20260815-071625_fill-ales165-lotus-stereo-hold-env.md)
 

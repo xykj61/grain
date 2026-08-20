@@ -1,7 +1,7 @@
 # HUNK87 — the faceted query header: the typed groups and their result count, above the narrowed-and-widened shelf
 
 **Stamp:** `20260814.010517` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable, no gate)
+**Status:** Mixed -- Self-approved design round (agent-doable, no gate)
 **Season:** A (Hardware & Right-to-Repair) · **waymark:** HUNK · **journey:** parts-marketplace · **rung:** HUNK87
 **Kin:** [`../brushstroke/part_search_header.rye`](../brushstroke/part_search_header.rye) (HUNK82 the AND header this rung generalizes) · [`../brushstroke/part_facets_search.rye`](../brushstroke/part_facets_search.rye) (HUNK86 the faceted shelf it crowns) · [`../image/part_facets.rye`](../image/part_facets.rye) (HUNK85 the faceted query it echoes)
 

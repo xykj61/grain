@@ -2,7 +2,7 @@
 
 **Stamp:** `20260801.033305`  
 **Voice:** Riyo  
-**Status:** Living design note — plan, not a campaign rewrite  
+**Status:** Vision -- Living design note — plan, not a campaign rewrite  
 **Kind:** active-designing  
 **Companions:** [`yonder/20260629-203012_posix-a-seam-not-a-model.md`](yonder/20260629-203012_posix-a-seam-not-a-model.md) · [`../external-research/20260712-054342_proven-seat-guest-genode-sel4.md`](../external-research/20260712-054342_proven-seat-guest-genode-sel4.md) · Lexicon **build stack** · **Proven seat**
 

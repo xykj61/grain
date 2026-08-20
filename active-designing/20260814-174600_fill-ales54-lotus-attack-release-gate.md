@@ -1,7 +1,7 @@
 # Fill ALES54 — the attack/release noise gate, the envelope holds it open
 
 **Stamp:** `20260814.174600` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — one keystone, one send
+**Status:** Mixed -- Self-approved design round — one keystone, one send
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES54**
 **Kin:** [`20260814-174500_fill-ales53-lotus-attack-release-compressor.md`](20260814-174500_fill-ales53-lotus-attack-release-compressor.md) · [`20260814-171918_fill-ales51-lotus-noise-gate.md`](20260814-171918_fill-ales51-lotus-noise-gate.md) · [`20260814-172539_fill-ales52-lotus-envelope-follower.md`](20260814-172539_fill-ales52-lotus-envelope-follower.md) · [`../lotus/README.md`](../lotus/README.md)
 

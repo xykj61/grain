@@ -1,6 +1,7 @@
 # FORA24 — Constel tenure: a leader holds its title only while a majority answers
 
 **Stamp:** `20260814.084900` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · **waymark** FORA · **rung** FORA24
 **Kin:** [`../constel/read.rye`](../constel/read.rye) (FORA20) · [`../constel/prevote.rye`](../constel/prevote.rye) (FORA22) · [`../constel/transfer.rye`](../constel/transfer.rye) (FORA23) · [`../constel/quorum.rye`](../constel/quorum.rye) (FORA9)
 

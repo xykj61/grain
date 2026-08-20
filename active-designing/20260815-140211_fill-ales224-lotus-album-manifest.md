@@ -1,6 +1,6 @@
 # Fill ALES224 — Lotus album_manifest: a whole record's own content address, sealed
 
-**Stamp:** `20260815.140211` · **Voice:** Kyri · **Style:** Radiant · **Status:** Self-approved design round
+**Stamp:** `20260815.140211` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Self-approved design round
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · waymark **ALES** · rung **ALES224**
 **Kin:** [`../lotus/render_album.rye`](../lotus/render_album.rye) (ALES223 — the catalog this manifest names) · [`../lotus/render_manifest.rye`](../lotus/render_manifest.rye) (ALES221 — the per-render manifest this is one level up from) · [`../lotus/seal.rye`](../lotus/seal.rye) (ALES38 — the verify-before-trust frame reused whole)
 

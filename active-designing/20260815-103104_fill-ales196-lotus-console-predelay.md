@@ -1,7 +1,7 @@
 # Fill ALES196 — Lotus's console pre-delay (the dry-composed pre-delay, end to end)
 
 **Stamp:** `20260815.103104` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable · purely local DSP · no custody gate)
+**Status:** Vision -- Self-approved design round (agent-doable · purely local DSP · no custody gate)
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES196**
 **Kin:** [`20260815-102559_fill-ales195-lotus-stereo-reverb-predelay.md`](20260815-102559_fill-ales195-lotus-stereo-reverb-predelay.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

@@ -1,7 +1,7 @@
 # TACT Journey 1 — Ship-Pilot: the guided first-run (exploration)
 
 **Stamp:** `20260812.172129` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — opens the 1,024-itinerary's **Season 1 (The World, TACT), Journey 1**
+**Status:** Mixed -- Self-approved design round — opens the 1,024-itinerary's **Season 1 (The World, TACT), Journey 1**
 **Kin:** [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) · [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`../pond/README.md`](../pond/README.md) · [`../foundations/20260810-011514_pond-the-application-module.md`](../foundations/20260810-011514_pond-the-application-module.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 
 ---

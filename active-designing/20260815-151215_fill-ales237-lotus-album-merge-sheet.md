@@ -1,6 +1,6 @@
 # Fill ALES237 — Lotus album_merge_sheet: the record merge verdict as a page, the merge tier whole
 
-**Stamp:** `20260815.151215` · **Voice:** Kyri · **Style:** Radiant · **Status:** Self-approved design round
+**Stamp:** `20260815.151215` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Self-approved design round
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · waymark **ALES** · rung **ALES237**
 **Kin:** [`../lotus/album_merge.rye`](../lotus/album_merge.rye) (ALES235 — the Merge this draws) · [`../lotus/library_merge_sheet.rye`](../lotus/library_merge_sheet.rye) (ALES236 — the catalog page this mirrors one level down) · [`20260815-150804_fill-ales236-lotus-library-merge-sheet.md`](20260815-150804_fill-ales236-lotus-library-merge-sheet.md)
 

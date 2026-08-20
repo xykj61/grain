@@ -1,7 +1,7 @@
 # Fill ALES63 — Lotus's sidechain compressor: the gain that follows another signal
 
 **Stamp:** `20260814.184728` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; ALES56's held follower and ALES58's compressor spent for a keyed detector)
+**Status:** Vision -- Design read — self-approved round (no custody gate; ALES56's held follower and ALES58's compressor spent for a keyed detector)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES63**
 **Kin:** [`../lotus/compress_env_hold.rye`](../lotus/compress_env_hold.rye) (ALES58 — the attack/hold/release compressor this keys) · [`../lotus/hold_env.rye`](../lotus/hold_env.rye) (ALES56 — the held time base) · [`../lotus/compress.rye`](../lotus/compress.rye) (ALES50 — the softened ceiling)
 

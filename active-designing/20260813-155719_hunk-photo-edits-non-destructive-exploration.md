@@ -1,6 +1,6 @@
 # HUNK11 — the non-destructive edit-list: verbs as data, replayed and travelling
 
-**Stamp:** `20260813.155719` · **Voice:** Kyri · **Style:** Radiant · **Status:** Living (self-approved design round)
+**Stamp:** `20260813.155719` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Living (self-approved design round)
 **Season A · waymark HUNK · Photos-app journey · rung HUNK11**
 **Kin:** [`../image/photos.rye`](../image/photos.rye) · [`../image/sprite_catalog.rye`](../image/sprite_catalog.rye) · [`../image/qoi.rye`](../image/qoi.rye) · [`double-seat expansion`](20260813-020035_double-seat-expansion-six-seasons.md)
 **Teacher, thanked clean-room:** the non-destructive edit history of iCloud Photos / Google Photos — the original is never overwritten; the edits ride alongside as data (concept only, siloed).

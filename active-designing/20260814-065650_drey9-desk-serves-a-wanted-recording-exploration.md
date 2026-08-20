@@ -1,7 +1,7 @@
 # DREY9 — the desk serves a wanted recording *(exploration)*
 
 **Stamp:** `20260814.065650` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design capture — self-approved round, agent-doable crux
+**Status:** Vision -- Design capture — self-approved round, agent-doable crux
 **Waymark:** DREY · Season A (Hardware & Right-to-Repair) · Mikrophone firmware journey · rung **DREY9**
 **Kin:** [`../mikrophone/manifest.rye`](../mikrophone/manifest.rye) (DREY8) · [`../mikrophone/catalog.rye`](../mikrophone/catalog.rye) (DREY7) · [`../mikrophone/wire.rye`](../mikrophone/wire.rye) (DREY1)
 

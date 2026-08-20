@@ -1,7 +1,7 @@
 # Fill ALES102 — the Lotus smoothed silence trim (smooth the runs before you strip; declick the pause, keep the gap)
 
 **Stamp:** `20260815.001200` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES102**
+**Status:** Vision -- Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES102**
 **Kin:** [`the six-season double-seat`](20260813-020035_double-seat-expansion-six-seasons.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md) · [`fill ALES101`](20260815-000323_fill-ales101-lotus-run-length-smoother.md)
 **Stands on:** `lotus/trim_silence.rye` (ALES96 — the silence stripper, the min-zero twin) · `lotus/smooth_runs.rye` (ALES101 — the run-length smoother) · `lotus/segment.rye` (ALES95) · `lotus/timeline.rye` (ALES2 — the Clip and `cut`)
 

@@ -1,6 +1,7 @@
 # Fill ALES187 — Lotus's stereo reverb: Schroeder's network carried into stereo, the SAME bank on BOTH channels, each channel reverbed through ITS OWN network — the wing's keystone made stereo
 
 **Stamp:** `20260815.093859` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES187
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260815-093042_fill-ales186-lotus-reverb.md`](20260815-093042_fill-ales186-lotus-reverb.md) · [`20260815-091646_fill-ales184-lotus-allpass.md`](20260815-091646_fill-ales184-lotus-allpass.md)
 

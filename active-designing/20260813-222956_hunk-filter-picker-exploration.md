@@ -1,6 +1,7 @@
 # HUNK63 — the filter picker tool
 
 **Stamp:** `20260813.222956` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK63**
 **Kin:** [`filter_preset.rye`](../image/filter_preset.rye) (HUNK30 `PresetBook` · `stock_book`) · [`preset_preview.rye`](../brushstroke/preset_preview.rye) (HUNK33 preview) · [`edit_cursor.rye`](../image/edit_cursor.rye) (HUNK16 history) · [`crop_editor.rye`](../brushstroke/crop_editor.rye) (HUNK62 — the tool pattern this parallels)
 

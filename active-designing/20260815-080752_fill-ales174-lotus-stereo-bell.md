@@ -1,6 +1,7 @@
 # Fill ALES174 — Lotus's stereo_bell: the parametric bell (peaking EQ) carried into stereo, the same two cutoffs and one gain on both channels — the fifth rung of the stereo EQ / filter class, the surgical everyday EQ
 
 **Stamp:** `20260815.080752` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES174
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-080408_fill-ales173-lotus-stereo-notch.md`](20260815-080408_fill-ales173-lotus-stereo-notch.md)
 

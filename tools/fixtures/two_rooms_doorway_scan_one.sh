@@ -13,7 +13,11 @@ if [ "$file_stamp" \< "$seating" ]; then
   echo "OK   $f (before seating $seating)"
   exit 0
 fi
-status=$(head -25 "$f" | grep '^\*\*Status:\*\*' | head -1 || true)
+# A Status anywhere in the head counts, not only one that begins its line: many pages carry
+# it folded into a shared header row (**Stamp:** ... - **Status:** ... - **Voice:** ...), and
+# reading only line-starts reported 92 of those as having no Status at all. A wrong diagnosis
+# sends the reader to fix something that was never broken.
+status=$(head -25 "$f" | grep -o '\*\*Status:\*\*.*' | head -1 || true)
 if [ -z "$status" ]; then
   echo "FAIL $f missing Status line (stamp $file_stamp)"
   exit 1

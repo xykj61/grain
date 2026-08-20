@@ -1,7 +1,7 @@
 # Fill ALES115 — Lotus's replace, the general span-edit (cut and splice, composed)
 
 **Stamp:** `20260815.014021` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read — one Lotus rung, one keystone, one send
+**Status:** Mixed -- Self-approved design read — one Lotus rung, one keystone, one send
 **Waymark:** ALES · rung **ALES115** · Season C thread (Lotus · the creative suite) of the Six-Season double-seat
 **Kin:** [`timeline.rye`](../lotus/timeline.rye) (ALES2 — `cut`, `splice`, `EditError`) · [`paste_over.rye`](../lotus/paste_over.rye) (ALES114) · [`move.rye`](../lotus/move.rye) (ALES113) · [`meter.rye`](../lotus/meter.rye) (ALES13)
 

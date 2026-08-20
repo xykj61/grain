@@ -1,7 +1,7 @@
 # Fill ALES217 — Lotus's render rung (an effect chain becomes a .wav)
 
 **Stamp:** `20260815.131432` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable · purely local byte work · no custody gate)
+**Status:** Vision -- Self-approved design round (agent-doable · purely local byte work · no custody gate)
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES217**
 **Kin:** [`20260815-130649_fill-ales216-lotus-stereo-wav.md`](20260815-130649_fill-ales216-lotus-stereo-wav.md) · [`../lotus/wav.rye`](../lotus/wav.rye) · [`../lotus/timeline.rye`](../lotus/timeline.rye) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

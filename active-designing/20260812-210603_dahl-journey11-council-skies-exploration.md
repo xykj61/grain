@@ -1,7 +1,7 @@
 # DAHL Journey 11 — Council skies, the loadable topology (exploration)
 
 **Stamp:** `20260812.210603` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — opens Journey 11 of Season 3 (Commons) in the 1,024-round itinerary
+**Status:** Vision -- Self-approved design round — opens Journey 11 of Season 3 (Commons) in the 1,024-round itinerary
 **Waymark:** **DAHL** (Harvest Equinox 3 — Commons, already seated; each journey is `DAHL-J<N>`)
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) · [`20260812-204233_dahl-journey10-membership-quorum-exploration.md`](20260812-204233_dahl-journey10-membership-quorum-exploration.md) · [`20260809-234413_loadable-topologies-and-pond-silo-brief.md`](20260809-234413_loadable-topologies-and-pond-silo-brief.md) · [`../comlink/topology.rye`](../comlink/topology.rye) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

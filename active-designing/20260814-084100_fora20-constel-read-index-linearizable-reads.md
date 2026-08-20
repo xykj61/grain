@@ -1,6 +1,7 @@
 # FORA20 — a linearizable read without a log append (the read-index)
 
 **Stamp:** `20260814.084100` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** Six-Season double-seat, Season D (Kresfa & Mycelium — the tree's own consensus) · **Waymark:** FORA · **Rung:** FORA20
 **Stands on:** [`constel/apply.rye`](../constel/apply.rye) (FORA19 — the state machine a read observes) · [`constel/commit.rye`](../constel/commit.rye) (FORA18 — the commit index a read captures) · [`constel/term.rye`](../constel/term.rye) (FORA16 — the term a leader confirms)
 **Kin:** [`the double-seat expansion`](20260813-020035_double-seat-expansion-six-seasons.md) · [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)

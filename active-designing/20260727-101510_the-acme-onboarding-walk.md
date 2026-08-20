@@ -4,7 +4,7 @@
 **Stamp:** `20260727.101510`
 **Voice:** Quin
 **Style:** Radiant · Silo — own vocabulary only, which is itself the Acme discipline: a walk that names no vendor, no chain brand, and no country as special reads the same from any county on Earth; concrete instruments live in the external room when their day comes
-**Status:** Design — the walk's stations, templates, and invariants; the manual page and the edu echo graduate from this paper only after the seam is worn; **no station holds a coin, a key, or a wallet — every such motion is the pilot's own hand, stated on every page**
+**Status:** Vision -- Design — the walk's stations, templates, and invariants; the manual page and the edu echo graduate from this paper only after the seam is worn; **no station holds a coin, a key, or a wallet — every such motion is the pilot's own hand, stated on every page**
 **Ground:** Twin Season Arc II, round r26 — the third of three papers; with this landing, the arc's exit stands met at the paste's send
 **Companions:** [`20260727-101233_the-identity-seam-in-glow.md`](20260727-101233_the-identity-seam-in-glow.md) · [`../active-reviving/20260727-101116_the-kumara-ledger-shape.md`](../active-reviving/20260727-101116_the-kumara-ledger-shape.md)
 

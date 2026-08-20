@@ -1,7 +1,7 @@
 # Fill ALES64 — Lotus's de-esser: the first sidechain composition
 
 **Stamp:** `20260814.185604` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; ALES46's band-pass and ALES63's sidechain composed over their public APIs)
+**Status:** Vision -- Design read — self-approved round (no custody gate; ALES46's band-pass and ALES63's sidechain composed over their public APIs)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES64**
 **Kin:** [`../lotus/sidechain.rye`](../lotus/sidechain.rye) (ALES63 — the keyed compressor) · [`../lotus/band.rye`](../lotus/band.rye) (ALES46 — the band-pass that isolates the sibilant band) · [`../lotus/compress_env_hold.rye`](../lotus/compress_env_hold.rye) (ALES58 — the attack/hold/release compressor beneath the key)
 

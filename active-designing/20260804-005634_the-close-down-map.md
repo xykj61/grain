@@ -2,7 +2,7 @@
 
 *Keaton asked for directing: the e-series felt lost against open waymarks, seasons, and hands. This map seats one reading of the living tree so finishing beats inventing. The e-numbers are nested Equinox counsel laps under Ashvini (nest-10) — not a second season and not a waymark. STOA numbers are the language door's landing names; they stick. Hands threads and paused seasons sit beside the metal, never under it.*
 
-**Stamp:** `20260804.005634` · **Voice:** Riyo · **Status:** SEATED — **orient pin** (four layers A–D · twelve doors)  
+**Stamp:** `20260804.005634` · **Voice:** Riyo · **Status:** Mixed -- SEATED — **orient pin** (four layers A–D · twelve doors)  
 **Last refreshed:** `20260805.000001` — ladder home (season-row) · v90 refined 6b · **first knock GREEN** · guide 1 mid-walk (`keeper` key-door; passwd next)  
 **Ledger that walks it:** [`work-in-progress/THREADS.md`](../work-in-progress/THREADS.md) (e287 seated · e288 woven) — refreshed every close; Recommend = its top row  
 **Season summary:** [`../counsel/20260804-230650_the-equinox-season-summary.md`](../counsel/20260804-230650_the-equinox-season-summary.md)  

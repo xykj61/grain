@@ -1,6 +1,7 @@
 # Fill ALES151 — Lotus's stereo_pad_tail: the padded top-and-tail carried into stereo, one margin of joint silence for both channels
 
 **Stamp:** `20260815.054529` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES151
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-053823_fill-ales150-lotus-stereo-top-tail.md`](20260815-053823_fill-ales150-lotus-stereo-top-tail.md)
 

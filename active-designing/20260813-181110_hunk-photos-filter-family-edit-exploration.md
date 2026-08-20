@@ -1,6 +1,6 @@
 # HUNK29 — the whole filter family joins the edit-list: hue, blur, sharpen, auto-levels, edges
 
-**Stamp:** `20260813.181110` · **Status:** Self-approved design round (agent-doable, no gate) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260813.181110` · **Status:** Mixed -- Self-approved design round (agent-doable, no gate) · **Voice:** Kyri · **Style:** Radiant
 **Waymark:** **HUNK** (Season A, Photos-app journey; seated in [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md))
 **Road:** [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) — **Season A, Hardware & Right-to-Repair**
 **Builds on:** [`20260813-180504_hunk-photos-saturate-edit-exploration.md`](20260813-180504_hunk-photos-saturate-edit-exploration.md) — HUNK28, the first filter joined

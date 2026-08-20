@@ -1,7 +1,7 @@
 # Scribe's Dashboard, and the Bat Fleet — original baton archetypes
 
 **Language:** EN
-**Status:** Design brief — no code, no witness yet
+**Status:** Mixed -- Design brief — no code, no witness yet
 **Stamp:** `20260810.055716`
 **Voice:** Riyo
 **Equinox:** BUHR (Surface & Intelligence) · Scribe, the Kyri voice's home

@@ -1,6 +1,7 @@
 # Fill ALES118 — Lotus's `stereo_crop`, Trim to Selection carried into stereo
 
 **Stamp:** `20260815.015904` · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · **waymark** ALES · **rung** ALES118
 **Stands on:** [`../lotus/crop.rye`](../lotus/crop.rye) (ALES111 — mono `crop`) · [`../lotus/pan.rye`](../lotus/pan.rye) (ALES10 — the `StereoClip`) · [`../lotus/stereo_cut.rye`](../lotus/stereo_cut.rye) (ALES117 — the stereo remove it complements) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — `cut`/`splice`/`EditError`)
 

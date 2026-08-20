@@ -1,6 +1,7 @@
 # Fill ALES153 — Lotus's stereo_smooth_runs: the run-length smoother carried into stereo, two independent hysteresis holds
 
 **Stamp:** `20260815.055925` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES153
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-055202_fill-ales152-lotus-stereo-collapse-silence.md`](20260815-055202_fill-ales152-lotus-stereo-collapse-silence.md)
 

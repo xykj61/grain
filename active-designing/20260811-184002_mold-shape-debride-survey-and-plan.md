@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260811.184002`
-**Status:** Survey — the looking pass a debride owes before the knife. No cut taken; this classifies the 3058 `mold` occurrences and names the true, small target so the sweep, when it runs, damages nothing it should keep.
+**Status:** Mixed -- Survey — the looking pass a debride owes before the knife. No cut taken; this classifies the 3058 `mold` occurrences and names the true, small target so the sweep, when it runs, damages nothing it should keep.
 **Voice:** Kyri · **Style:** Radiant
 **Law:** the seated **Shape** decision (`context/LEXICON.md` → Shape · Mold entries; `active-designing/20260720-223226_glow-os-shape-not-mold.md`) · **debride** (`.claude/rules/debride.md`) · **cairn** (`.claude/rules/cairn.md`)
 

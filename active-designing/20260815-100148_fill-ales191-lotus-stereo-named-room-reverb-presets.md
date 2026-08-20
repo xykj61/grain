@@ -1,7 +1,7 @@
 # Fill ALES191 — Lotus's stereo named-room reverb presets
 
 **Stamp:** `20260815.100148` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable · purely local DSP · no custody gate)
+**Status:** Vision -- Self-approved design round (agent-doable · purely local DSP · no custody gate)
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES191**
 **Kin:** [`20260815-095435_fill-ales190-lotus-named-room-reverb-presets.md`](20260815-095435_fill-ales190-lotus-named-room-reverb-presets.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

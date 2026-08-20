@@ -1,7 +1,7 @@
 # Fill ALES76 — Lotus's auto-pan: the same LFO swept across the stereo field
 
 **Stamp:** `20260814.202856` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the modulation family's rung on the stereo field, the one both ALES74 and ALES75 named as next)
+**Status:** Vision -- Design read — self-approved round (no custody gate; the modulation family's rung on the stereo field, the one both ALES74 and ALES75 named as next)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES76**
 **Kin:** [`../lotus/pan.rye`](../lotus/pan.rye) (ALES10 — the linear pan and the `StereoClip` this sweeps in time) · [`../lotus/tremolo.rye`](../lotus/tremolo.rye) (ALES74 — the triangle LFO read as an attenuation, the same discipline here) · [`../lotus/chorus.rye`](../lotus/chorus.rye) (ALES71 — the triangle-LFO driver `triangle_delay_at`, now the pan position) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip, sample_min/max, the one true saturate)
 

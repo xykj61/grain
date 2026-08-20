@@ -1,7 +1,7 @@
 # HUNK90 — the sorted screen: a header names the sort above the cheapest-first parts
 
 **Stamp:** `20260814.012818` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (Season A · waymark HUNK · parts-marketplace journey · rung HUNK90)
+**Status:** Vision -- Self-approved design round (Season A · waymark HUNK · parts-marketplace journey · rung HUNK90)
 **Kin:** [`part_facets_paged.rye`](../brushstroke/part_facets_paged.rye) (HUNK88) · [`part_facets_sort.rye`](../brushstroke/part_facets_sort.rye) (HUNK89)
 
 ---

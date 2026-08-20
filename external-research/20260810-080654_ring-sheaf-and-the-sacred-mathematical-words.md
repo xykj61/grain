@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260810.080654` (2026-08-10 EDT)
 **Voice:** Riyo (Kyri) · **Style:** Radiant · a study, addressed to any reader who meets our code
-**Status:** Reference. Establishes the word discipline for mathematical names in this tree — which words are reserved for their algebraic meaning, and which are honest metaphors. Cited from `basin/basin.rye`.
+**Status:** Research for understanding -- Reference. Establishes the word discipline for mathematical names in this tree — which words are reserved for their algebraic meaning, and which are honest metaphors. Cited from `basin/basin.rye`.
 
 ---
 

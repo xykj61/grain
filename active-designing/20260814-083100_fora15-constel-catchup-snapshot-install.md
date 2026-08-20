@@ -1,7 +1,7 @@
 # FORA15 — Constel catch-up: a lagging pier brought current from a leader's snapshot + tail
 
 **Stamp:** `20260814.083100` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read for the rung (Lindy-first crux-first, agent-doable, purely local)
+**Status:** Vision -- Self-approved design read for the rung (Lindy-first crux-first, agent-doable, purely local)
 **Waymark:** FORA · rung FORA15 · **Season:** the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus)
 **Kin:** [`../constel/snapshot.rye`](../constel/snapshot.rye) (FORA14) · [`../constel/log.rye`](../constel/log.rye) (FORA12) · [`../constel/README.md`](../constel/README.md) · [`20260814-060326_fora14-constel-snapshot-log-compaction.md`](20260814-060326_fora14-constel-snapshot-log-compaction.md)
 

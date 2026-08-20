@@ -1,7 +1,7 @@
 # Fill ALES79 — Lotus's soft-clip overdrive: ALES78's hard clip with its corner rounded
 
 **Stamp:** `20260814.205812` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; ALES78's hard-clip drive named this rung as its successor — the soft knee it is the floor of)
+**Status:** Mixed -- Design read — self-approved round (no custody gate; ALES78's hard-clip drive named this rung as its successor — the soft knee it is the floor of)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES79**
 **Kin:** [`../lotus/drive.rye`](../lotus/drive.rye) (ALES78 — the pre-gain and the ceiling pin, reused with a knee opened below the ceiling) · [`../lotus/fader.rye`](../lotus/fader.rye) (ALES6 — the num/den gain in i64) · [`../lotus/limit.rye`](../lotus/limit.rye) (ALES49 — the ceiling law the shoulder's top reuses) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip, sample_min/max, the one true saturate)
 

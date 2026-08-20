@@ -1,7 +1,7 @@
 # The Ledger Voice — the intelligence reads only a lawful supply
 
 **Stamp:** `20260813.053843` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living (design capture, self-approved round) · **Season:** double-seat expansion D — Kresfa & Mycelium
+**Status:** Mixed -- Living (design capture, self-approved round) · **Season:** double-seat expansion D — Kresfa & Mycelium
 **Kin:** [the Mycelium Cord](20260813-032851_mycelium-consensus-cord-exploration.md) · [gossip convergence](20260813-040613_constel-consensus-gossip-convergence-exploration.md) · [fact batching](20260813-043303_mycelium-fact-batching-exploration.md) · [the Knot checkpoint](20260813-050903_mycelium-cord-knot-checkpoint-exploration.md) · [the six-season expansion](20260813-020035_double-seat-expansion-six-seasons.md) · [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 **Gratitude (clean-room, concepts only):** the Q-vane voice pattern already in the tree — `pond/apps/graph_query.rye` reads the living Mantra graph, `pond/apps/artifact_query.rye` reads only content-address-verified bytes. The Ledger Voice carries the same shape to Mycelium's folded supply.
 

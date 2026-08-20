@@ -1,7 +1,7 @@
 # Fill ALES203 — Lotus's stereo envelope-gated reverb (the shaped-edge gated tail, per ear)
 
 **Stamp:** `20260815.111333` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable · purely local DSP · no custody gate)
+**Status:** Vision -- Self-approved design round (agent-doable · purely local DSP · no custody gate)
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES203**
 **Kin:** [`20260815-110731_fill-ales202-lotus-reverb-gate-env.md`](20260815-110731_fill-ales202-lotus-reverb-gate-env.md) · [`20260815-110035_fill-ales201-lotus-stereo-reverb-gate.md`](20260815-110035_fill-ales201-lotus-stereo-reverb-gate.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

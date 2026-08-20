@@ -1,7 +1,7 @@
 # Fill ALES36 — Lotus's rack rename: a slot re-named in place
 
 **Stamp:** `20260814.152510` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read — the next agent-doable Lotus rung, purely local
+**Status:** Mixed -- Self-approved design read — the next agent-doable Lotus rung, purely local
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES36**
 **Stands on:** [`../lotus/rack.rye`](../lotus/rack.rye) (ALES30) — the Rack, its named Slots, `find`, `name_of`, the naming invariant
 

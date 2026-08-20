@@ -1,7 +1,7 @@
 # HUNK43 — the input seam: a keeper's raw gesture drives the cursor
 
 **Stamp:** `20260813.195500` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read (self-approved round) · **Season A** · waymark **HUNK** · rung **HUNK43**
+**Status:** Vision -- Design read (self-approved round) · **Season A** · waymark **HUNK** · rung **HUNK43**
 **Kin:** [`pond/apps/preset_scroll.rye`](../pond/apps/preset_scroll.rye) (HUNK40 cursor) · [`pond/apps/preset_scroll_view.rye`](../pond/apps/preset_scroll_view.rye) (HUNK42 surface)
 
 ---

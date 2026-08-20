@@ -1,6 +1,6 @@
 # Fill ALES231 — Lotus album_find: resolve a track by name in a record
 
-**Stamp:** `20260815.144122` · **Voice:** Kyri · **Style:** Radiant · **Status:** Self-approved design round
+**Stamp:** `20260815.144122` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Self-approved design round
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · waymark **ALES** · rung **ALES231**
 **Kin:** [`../lotus/album_manifest.rye`](../lotus/album_manifest.rye) (ALES224 — the opened `AlbumManifest` this reads) · [`../lotus/library_find.rye`](../lotus/library_find.rye) (ALES228 — the resolve idiom this mirrors one level down) · [`20260815-142750_fill-ales228-lotus-library-find.md`](20260815-142750_fill-ales228-lotus-library-find.md)
 

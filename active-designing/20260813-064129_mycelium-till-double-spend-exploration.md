@@ -1,7 +1,7 @@
 # The Till — a contested draw is decided by the agreed order
 
 **Stamp:** `20260813.064129` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living (design capture, self-approved round) · **Season:** double-seat expansion D — Kresfa & Mycelium
+**Status:** Vision -- Living (design capture, self-approved round) · **Season:** double-seat expansion D — Kresfa & Mycelium
 **Kin:** [the Mycelium Cord](20260813-032851_mycelium-consensus-cord-exploration.md) · [the Tenure](20260813-060935_mycelium-tenure-contested-name-exploration.md) · [the Knot checkpoint](20260813-050903_mycelium-cord-knot-checkpoint-exploration.md) · [the six-season expansion](20260813-020035_double-seat-expansion-six-seasons.md) · [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 **Gratitude (clean-room, concepts only):** the double-spend problem is the oldest reason a value ledger wants consensus at all — TigerBeetle's deterministic replicated state machine and the Mysticeti DAG consensus are studied plainly as the world's answers; the code here is our own, folding over the Cord's own arrival-order-independent commit (`mycelium/cord.rye`).
 

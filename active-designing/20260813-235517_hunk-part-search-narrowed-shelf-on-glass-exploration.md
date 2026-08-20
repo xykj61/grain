@@ -1,7 +1,7 @@
 # HUNK77 — the search box on glass: a typed line draws a narrowed, paged shelf
 
 **Stamp:** `20260813.235517` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable, no gate)
+**Status:** Vision -- Self-approved design round (agent-doable, no gate)
 **Season:** A (Hardware & Right-to-Repair) · **waymark:** HUNK · **journey:** parts-marketplace · **rung:** HUNK77
 **Kin:** [`../image/part_query.rye`](../image/part_query.rye) (HUNK76 parse) · [`../image/part_filter.rye`](../image/part_filter.rye) (HUNK75 filter) · [`../brushstroke/part_row.rye`](../brushstroke/part_row.rye) (HUNK73 shelf · HUNK74 paging) · [`hunk-part-query`](20260813-234932_hunk-part-query-typed-search-box-exploration.md)
 

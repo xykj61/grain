@@ -1,7 +1,7 @@
 # Fill ALES95 — the Lotus voice-activity segmenter (classify across frames)
 
 **Stamp:** `20260814.231217` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES95**
+**Status:** Vision -- Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES95**
 **Kin:** [`the six-season double-seat`](20260813-020035_double-seat-expansion-six-seasons.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md) · [`waymark ladders`](../.claude/rules/waymark-ladders.md)
 **Stands on:** `lotus/voiced.rye` (ALES94 — the voiced/unvoiced/silent classifier over one span) · `lotus/timeline.rye` (ALES2 — the Clip) · `lotus/schmitt.rye` (ALES92 — the band-and-span precheck) · `lotus/meter.rye` (ALES13 — the RMS energy)
 

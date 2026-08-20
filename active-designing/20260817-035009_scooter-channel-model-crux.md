@@ -1,6 +1,6 @@
 # Scooter, Rung 1 -- the channel model (permissioned journal, derived-unread inbox)
 
-**Stamp:** `20260817.035009` -- **Status:** Living (design read, self-approved) -- **Voice:** Kyri -- **Style:** Radiant
+**Stamp:** `20260817.035009` -- **Status:** Mixed -- Living (design read, self-approved) -- **Voice:** Kyri -- **Style:** Radiant
 **Season:** the Eight-Season double-seat -- **Season G, Open Media Primitives** -- the terminal family (Dexter + Scooter)
 **Kin:** [`the terminal-family plan`](../expanding-prompts/20260816-222322_dexter-terminal-and-scooter-cli-chat.md) (build round 6) -- [`the terminal-family names`](20260816-222322_terminal-family-names.md) -- pattern elders `pond/apps/skate_circle.rye`, `pond/apps/skate_group.rye`
 

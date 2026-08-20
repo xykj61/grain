@@ -1,6 +1,6 @@
 # The Double-Seat Expansion -- Eight To-Do Seasons
 
-**Stamp:** `20260816.205859` - **Status:** Living (design capture) - **Voice:** Kyri
+**Stamp:** `20260816.205859` - **Status:** Mixed -- Living (design capture) - **Voice:** Kyri
 **Register:** Radiant, with discerning **Twilight** where earned (approved `20260813` on Keaton's word)
 **Molted from:** [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) -- the six-season fossil, kept whole, banner-pointing here. The molt accretes: every earlier season stands unchanged; two new seasons fold in the recommended open-media and intelligence work.
 **Double-seats beside:** [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) -- the fixed four-season, 1,024-round road, untouched.

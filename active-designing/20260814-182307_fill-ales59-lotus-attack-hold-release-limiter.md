@@ -1,7 +1,7 @@
 # Fill ALES59 — the attack/hold/release limiter
 
 **Stamp:** `20260814.182307` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Filled design round — self-approved on the autonomous loop, Lindy-first crux-first
+**Status:** Vision -- Filled design round — self-approved on the autonomous loop, Lindy-first crux-first
 **Waymark:** ALES · **Rung:** ALES59 · **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite)
 **Kin:** [`20260814-181719_fill-ales58-lotus-attack-hold-release-compressor.md`](20260814-181719_fill-ales58-lotus-attack-hold-release-compressor.md) · [`../lotus/README.md`](../lotus/README.md)
 

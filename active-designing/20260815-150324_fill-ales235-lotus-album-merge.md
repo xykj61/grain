@@ -1,6 +1,6 @@
 # Fill ALES235 — Lotus album_merge: two independent sets of record changes, reconciled
 
-**Stamp:** `20260815.150324` · **Voice:** Kyri · **Style:** Radiant · **Status:** Self-approved design round
+**Stamp:** `20260815.150324` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Self-approved design round
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · waymark **ALES** · rung **ALES235**
 **Kin:** [`../lotus/library_merge.rye`](../lotus/library_merge.rye) (ALES234 — the three-way merge this mirrors one level down) · [`../lotus/album_diff.rye`](../lotus/album_diff.rye) (ALES232 — the sibling second-order primitive this stands beside) · [`../lotus/album_find.rye`](../lotus/album_find.rye) (ALES231 — the find / digest_of resolve this composes on) · [`20260815-145638_fill-ales234-lotus-library-merge.md`](20260815-145638_fill-ales234-lotus-library-merge.md)
 

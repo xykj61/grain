@@ -1,7 +1,7 @@
 # Fill ALES83 — Lotus's sample-rate decimator: hold each sample across a run, crushing time rather than amplitude
 
 **Stamp:** `20260814.213107` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; ALES81 and ALES82 each named the sample-rate decimator as the DRIVE family's remaining rung — the bit-crush's twin on the other axis)
+**Status:** Mixed -- Design read — self-approved round (no custody gate; ALES81 and ALES82 each named the sample-rate decimator as the DRIVE family's remaining rung — the bit-crush's twin on the other axis)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES83**
 **Kin:** [`../lotus/crush.rye`](../lotus/crush.rye) (ALES81 — the bit-crush this rung mirrors: crush lowers a sample's *resolution* on the value axis, decimate lowers its *rate* on the time axis) · [`../lotus/tube.rye`](../lotus/tube.rye) (ALES82 — the DRIVE family's most recent rung, which named the decimator as the next) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip, sample_min/max, max_clip)
 

@@ -1,6 +1,6 @@
 # Portage — value carried across two worlds, atomic on both ledgers or neither (Exploration)
 
-**Stamp:** `20260813.124159` · **Status:** Living (self-approved design read) · **Voice:** Kyri
+**Stamp:** `20260813.124159` · **Status:** Vision -- Living (self-approved design read) · **Voice:** Kyri
 **Register:** Radiant · **Season:** D (Kresfa & Mycelium) — the double-seat expansion
 **Kin:** [`the Freight migration`](20260813-121424_puddle-freight-world-state-migration-exploration.md) (a world moves whole) · [`the Pledge`](20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md) (two phases within one ledger) · [`the double-seat expansion`](20260813-020035_double-seat-expansion-six-seasons.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md)
 

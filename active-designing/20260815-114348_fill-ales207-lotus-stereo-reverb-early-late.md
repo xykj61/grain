@@ -1,7 +1,7 @@
 # Fill ALES207 — Lotus's stereo reverb early/late balance (the first reflections against the diffuse wash, per ear)
 
 **Stamp:** `20260815.114348` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable · purely local DSP · no custody gate)
+**Status:** Vision -- Self-approved design round (agent-doable · purely local DSP · no custody gate)
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES207**
 **Kin:** [`20260815-113645_fill-ales206-lotus-reverb-early-late.md`](20260815-113645_fill-ales206-lotus-reverb-early-late.md) · [`20260815-101449_fill-ales193-lotus-stereo-reverb-wet-dry-mix.md`](20260815-101449_fill-ales193-lotus-stereo-reverb-wet-dry-mix.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

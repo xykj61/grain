@@ -4,7 +4,7 @@
 **Last updated:** `20260808.204505`
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Riyo
-**Status:** **Exploration** — a founder questioning the foundations in the primordial hour, which is the honest and cheap time to do it. It frames understanding and proposes directions; it **seats nothing**, recommends no treasury or policy action, and every choice waits for the maintainer's word (`../context/TWO_ROOMS.md`).
+**Status:** Research for understanding -- **Exploration** — a founder questioning the foundations in the primordial hour, which is the honest and cheap time to do it. It frames understanding and proposes directions; it **seats nothing**, recommends no treasury or policy action, and every choice waits for the maintainer's word (`../context/TWO_ROOMS.md`).
 
 ---
 

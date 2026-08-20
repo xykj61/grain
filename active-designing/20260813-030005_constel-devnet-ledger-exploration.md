@@ -1,7 +1,7 @@
 # The Constel Dev-Net Ledger — the fake net's money moves only by the identity that holds its genesis
 
 **Stamp:** `20260813.030005` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living (design capture, self-approved round) · **Season:** double-seat expansion D — Constel test-networks × Mycelium
+**Status:** Vision -- Living (design capture, self-approved round) · **Season:** double-seat expansion D — Constel test-networks × Mycelium
 **Kin:** [the dev-net harness](20260813-022908_constel-devnet-harness-exploration.md) · [the naming law](20260813-022222_constel-test-network-naming-law.md) · [the six-season expansion](20260813-020035_double-seat-expansion-six-seasons.md) · [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 
 ---

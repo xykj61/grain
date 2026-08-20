@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Voice:** Kyri
-**Status:** Exploration — a design in motion for BUHR's third journey; nothing built by it
+**Status:** Mixed -- Exploration — a design in motion for BUHR's third journey; nothing built by it
 **Waymark:** **BUHR** — Compass Season Equinox 3 ([`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md))
 **Order:** [Lindy-first, crux-first](../.claude/rules/lindy-first-crux.md)
 

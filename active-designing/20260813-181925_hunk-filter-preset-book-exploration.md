@@ -1,7 +1,7 @@
 # HUNK30 — named filter presets: a book of recipes applied by name
 
 **Stamp:** `20260813.181925` · **Waymark:** HUNK · **Season A** (Hardware & Right-to-Repair) · **Journey:** Photos app
-**Status:** self-approved design round · **Kin:** [`photo_edits.rye`](../image/photo_edits.rye) (HUNK11) · [`edit_store.rye`](../pond/apps/edit_store.rye) (HUNK12)
+**Status:** Vision -- self-approved design round · **Kin:** [`photo_edits.rye`](../image/photo_edits.rye) (HUNK11) · [`edit_store.rye`](../pond/apps/edit_store.rye) (HUNK12)
 
 ## Where the road stands
 

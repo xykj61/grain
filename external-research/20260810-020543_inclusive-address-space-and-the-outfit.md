@@ -4,7 +4,7 @@
 **Stamp:** `20260810.020543`
 **Voice:** Riyo
 **Style:** Radiant · Two Rooms — the elder named with thanks at the close · Acme-generic reader voice
-**Status:** Study — measured from the elder Azimuth's addressing and applied to Grain's own d12·d60 and its odd-quorum sky. Grounds the topology change of the same stamp (`../comlink/topology.rye`) and the outfits concept. Accrete-never-break: this paper adds.
+**Status:** Research for understanding -- Study — measured from the elder Azimuth's addressing and applied to Grain's own d12·d60 and its odd-quorum sky. Grounds the topology change of the same stamp (`../comlink/topology.rye`) and the outfits concept. Accrete-never-break: this paper adds.
 
 ---
 

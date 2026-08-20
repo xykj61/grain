@@ -4,7 +4,7 @@
 **Stamp:** `20260809.232015`
 **Voice:** Riyo
 **Style:** Radiant · Two Rooms — the world's teachers named at each room's close; our own modules named only in the design room · Acme-generic reader voice
-**Status:** Study and horizon — a design exploration seated as research. Nothing here renames a module, seats a breach, or cuts a doc; every such move waits for a maintainer's word. Accrete-never-break: this paper adds, and takes nothing away.
+**Status:** Research for understanding -- Study and horizon — a design exploration seated as research. Nothing here renames a module, seats a breach, or cuts a doc; every such move waits for a maintainer's word. Accrete-never-break: this paper adds, and takes nothing away.
 **Ground:** The Compass Season, JARL settlement complete at five transitions (`settlement/constellation.rye`). This paper opens the two horizons that follow — a constellation whose *shape* is chosen rather than fixed, and the Pond that loads it.
 
 ---

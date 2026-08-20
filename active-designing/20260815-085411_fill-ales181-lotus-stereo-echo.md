@@ -1,6 +1,7 @@
 # Fill ALES181 — Lotus's stereo_echo: the feedback delay carried into stereo, the same delay and feedback on both channels, each channel reading and feeding back through its own live buffer — the first rung of the stereo time-based wing
 
 **Stamp:** `20260815.085411` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES181
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-084450_fill-ales180-lotus-stereo-flanger.md`](20260815-084450_fill-ales180-lotus-stereo-flanger.md)
 

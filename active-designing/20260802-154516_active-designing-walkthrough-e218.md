@@ -1,6 +1,7 @@
 # Active-designing walkthrough — e218 random sample (update · yonder · archive · Mitra queue)
 
 **Stamp:** `20260802.154516` · **Voice:** Riyo · **Kind:** every-round tree walk  
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Method:** `ls active-designing/*.md | shuf | head -12` · triage without mass move (references are promises)
 
 ---

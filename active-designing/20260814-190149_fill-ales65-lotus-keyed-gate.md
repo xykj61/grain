@@ -1,7 +1,7 @@
 # Fill ALES65 — Lotus's keyed gate: the door opened by another signal
 
 **Stamp:** `20260814.190149` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; ALES51's floor and ALES56's held follower keyed like ALES63)
+**Status:** Vision -- Design read — self-approved round (no custody gate; ALES51's floor and ALES56's held follower keyed like ALES63)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES65**
 **Kin:** [`../lotus/sidechain.rye`](../lotus/sidechain.rye) (ALES63 — the keyed compressor this mirrors) · [`../lotus/gate_env_hold.rye`](../lotus/gate_env_hold.rye) (ALES57 — the attack/hold/release gate this keys) · [`../lotus/gate.rye`](../lotus/gate.rye) (ALES51 — the silenced floor) · [`../lotus/hold_env.rye`](../lotus/hold_env.rye) (ALES56 — the held time base)
 

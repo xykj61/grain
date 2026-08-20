@@ -1,7 +1,7 @@
 # HUNK9 — Photos resize: scale on the open grid
 
 **Stamp:** `20260813.154324` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — the Photos-app quest continues past orient
+**Status:** Mixed -- Self-approved design round — the Photos-app quest continues past orient
 **Season:** A (Hardware & Right-to-Repair) · **Waymark:** HUNK · **Journey:** Photos app · **Rung:** HUNK9
 **Kin:** [`../image/photos.rye`](../image/photos.rye) (HUNK3 crop · HUNK8 orient) · [`../image/qoi.rye`](../image/qoi.rye) (HUNK0 codec) · [`20260813-153700_hunk-photos-orient-exploration.md`](20260813-153700_hunk-photos-orient-exploration.md)
 

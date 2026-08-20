@@ -1,7 +1,7 @@
 # HUNK13 — the Skate view of a pending edit, seen before it is committed
 
 **Stamp:** `20260813.160955` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living (design read) · self-approved design round for the next HUNK rung
+**Status:** Vision -- Living (design read) · self-approved design round for the next HUNK rung
 **Season A** (Hardware & Right-to-Repair) · **waymark HUNK** · Photos-app journey · rung **HUNK13**
 **Kin:** [`../image/photo_edits.rye`](../image/photo_edits.rye) (HUNK11) · [`../pond/apps/edit_store.rye`](../pond/apps/edit_store.rye) (HUNK12) · [`../brushstroke/image_skate.rye`](../brushstroke/image_skate.rye) (HUNK2) · [`20260813-155719_hunk-photo-edits-non-destructive-exploration.md`](20260813-155719_hunk-photo-edits-non-destructive-exploration.md) (names HUNK13)
 

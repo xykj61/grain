@@ -1,7 +1,7 @@
 # FORA16 — Constel terms: leadership made safe across re-election (an old leader can't commit)
 
 **Stamp:** `20260814.083300` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read for the rung (Lindy-first crux-first, agent-doable, purely local)
+**Status:** Vision -- Self-approved design read for the rung (Lindy-first crux-first, agent-doable, purely local)
 **Waymark:** FORA · rung FORA16 · **Season:** the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus)
 **Kin:** [`../constel/elect.rye`](../constel/elect.rye) (FORA10) · [`../constel/decree.rye`](../constel/decree.rye) (FORA11) · [`../constel/quorum.rye`](../constel/quorum.rye) (FORA9) · [`../constel/README.md`](../constel/README.md)
 

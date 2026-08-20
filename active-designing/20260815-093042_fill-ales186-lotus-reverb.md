@@ -1,6 +1,7 @@
 # Fill ALES186 — Lotus's reverb: the Schroeder network, parallel combs summed then diffused through series allpasses — the wing's keystone, a bounded composition of proven stages
 
 **Stamp:** `20260815.093042` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES186
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-091646_fill-ales184-lotus-allpass.md`](20260815-091646_fill-ales184-lotus-allpass.md)
 

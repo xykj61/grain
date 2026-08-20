@@ -1,6 +1,7 @@
 # Fill ALES120 — `lotus/stereo_duplicate.rye`, the growth-twin carried into stereo
 
 **Stamp:** `20260815.020930` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES120**
 **Kin:** [`20260815-011901_fill-ales112-lotus-duplicate.md`](20260815-011901_fill-ales112-lotus-duplicate.md) · [`20260815-020325_fill-ales119-lotus-stereo-move.md`](20260815-020325_fill-ales119-lotus-stereo-move.md)
 

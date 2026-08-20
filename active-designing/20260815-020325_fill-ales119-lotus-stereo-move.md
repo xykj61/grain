@@ -1,6 +1,7 @@
 # Fill ALES119 — Lotus's `stereo_move`, the drag gesture carried into stereo
 
 **Stamp:** `20260815.020325` · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · **waymark** ALES · **rung** ALES119
 **Stands on:** [`../lotus/move.rye`](../lotus/move.rye) (ALES113 — mono `move`) · [`../lotus/pan.rye`](../lotus/pan.rye) (ALES10 — the `StereoClip`) · [`../lotus/stereo_cut.rye`](../lotus/stereo_cut.rye) (ALES117) · [`../lotus/stereo_crop.rye`](../lotus/stereo_crop.rye) (ALES118) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — `EditError`)
 

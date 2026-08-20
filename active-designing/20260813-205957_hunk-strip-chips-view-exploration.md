@@ -1,6 +1,6 @@
 # HUNK — the strip painted beside the picture: a keeper reads the palette they tap
 
-**Stamp:** `20260813.205957` · **Status:** Living (self-approved design round) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260813.205957` · **Status:** Mixed -- Living (self-approved design round) · **Voice:** Kyri · **Style:** Radiant
 **Waymark:** **HUNK** (Season A, Photos-app journey; seated in [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md))
 **Road:** [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) — **Season A, Hardware & Right-to-Repair**
 **Builds on:** [`20260813-205200_hunk-edit-finger-view-exploration.md`](20260813-205200_hunk-edit-finger-view-exploration.md) — HUNK51's finger-driven view · [`image_skate.rye`](../brushstroke/image_skate.rye) — HUNK2's down-map

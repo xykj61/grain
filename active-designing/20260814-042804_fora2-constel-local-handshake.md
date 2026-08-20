@@ -1,7 +1,7 @@
 # Constel handshake — two fake piers greet, proven pure (FORA2)
 
 **Stamp:** `20260814.042804` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living design — self-approved round, the pure handshake beneath the real Comlink transport
+**Status:** Mixed -- Living design — self-approved round, the pure handshake beneath the real Comlink transport
 **Season:** the Six-Season double-seat, Season D/F thread (Kresfa & Mycelium · Surface & Namespace) · **Waymark:** FORA · rung FORA2
 **Kin:** [`20260814-041928_fora1-constel-roster-fake-pier-registry.md`](20260814-041928_fora1-constel-roster-fake-pier-registry.md) · [`../constel/roster.rye`](../constel/roster.rye) · [`../constel/name.rye`](../constel/name.rye) · [`../constel/README.md`](../constel/README.md)
 

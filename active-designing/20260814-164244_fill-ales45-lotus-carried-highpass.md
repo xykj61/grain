@@ -1,7 +1,7 @@
 # Fill ALES45 — Lotus's carried-state high-pass: the complement gains a memory too, so a whole split spans and sweeps
 
 **Stamp:** `20260814.164244` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read — the next agent-doable Lotus rung, purely local
+**Status:** Mixed -- Self-approved design read — the next agent-doable Lotus rung, purely local
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES45**
 **Stands on:** [`../lotus/tone.rye`](../lotus/tone.rye) (ALES40 — `lp_step`, `high_pass`) · [`../lotus/tone_carry.rye`](../lotus/tone_carry.rye) (ALES43 — `Lowpass`) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip)
 

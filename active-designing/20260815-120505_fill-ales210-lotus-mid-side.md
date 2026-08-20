@@ -1,7 +1,7 @@
 # Fill ALES210 — Lotus's mid/side primitive (the stereo master as its sum and its difference)
 
 **Stamp:** `20260815.120505` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable · purely local DSP · no custody gate)
+**Status:** Vision -- Self-approved design round (agent-doable · purely local DSP · no custody gate)
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES210**
 **Kin:** [`20260815-115900_fill-ales209-lotus-stereo-reverb-freeze.md`](20260815-115900_fill-ales209-lotus-stereo-reverb-freeze.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

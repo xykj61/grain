@@ -1,6 +1,6 @@
 # Fill ALES219 — Lotus preset: a named effect chain a keeper loads by name
 
-**Stamp:** `20260815.132711` · **Voice:** Kyri · **Style:** Radiant · **Status:** Self-approved design round
+**Stamp:** `20260815.132711` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Self-approved design round
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · waymark **ALES** · rung **ALES219**
 **Kin:** [`../lotus/render.rye`](../lotus/render.rye) (ALES217 — the Step and the render) · [`../lotus/stereo_render.rye`](../lotus/stereo_render.rye) (ALES218) · [`20260815-132120_fill-ales218-lotus-stereo-render.md`](20260815-132120_fill-ales218-lotus-stereo-render.md)
 

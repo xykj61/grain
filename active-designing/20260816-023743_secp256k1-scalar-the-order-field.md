@@ -1,6 +1,6 @@
 # secp256k1 Scalar — Arithmetic Modulo the Group Order n
 
-**Stamp:** `20260816.023743` · **Status:** Living (design capture, raw layer) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260816.023743` · **Status:** Mixed -- Living (design capture, raw layer) · **Voice:** Kyri · **Style:** Radiant
 **Kin:** [`crypto/secp256k1_scalarmul.rye`](../crypto/secp256k1_scalarmul.rye) (the point ladder, GREEN) · [`crypto/ed25519_scalar.rye`](../crypto/ed25519_scalar.rye) (the sibling scalar field mod L) · [`the crypto front door`](../docs/CRYPTO.md) · [`the decision wave`](20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md)
 
 ---

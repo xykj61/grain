@@ -1,7 +1,7 @@
 # Fill ALES49 — the peak limiter, the ceiling that holds
 
 **Stamp:** `20260814.170815` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — one keystone, one send
+**Status:** Mixed -- Self-approved design round — one keystone, one send
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES49**
 **Kin:** [`20260814-170143_fill-ales48-lotus-parametric-bell.md`](20260814-170143_fill-ales48-lotus-parametric-bell.md) · [`../lotus/README.md`](../lotus/README.md)
 

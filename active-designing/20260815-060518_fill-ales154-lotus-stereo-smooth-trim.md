@@ -1,6 +1,7 @@
 # Fill ALES154 — Lotus's stereo_smooth_trim: the smoothed silence trim carried into stereo, two independent silences smoothed then fused into one joint cut
 
 **Stamp:** `20260815.060518` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES154
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-055925_fill-ales153-lotus-stereo-smooth-runs.md`](20260815-055925_fill-ales153-lotus-stereo-smooth-runs.md)
 

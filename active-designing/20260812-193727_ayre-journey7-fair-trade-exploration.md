@@ -1,7 +1,7 @@
 # AYRE Journey 7 — Fair-trade certification: a certificate a record satisfies
 
 **Stamp:** `20260812.193727` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — opens Season 2, Journey 7 (Fair-trade) under the seated **AYRE** waymark
+**Status:** Mixed -- Self-approved design round — opens Season 2, Journey 7 (Fair-trade) under the seated **AYRE** waymark
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) · [`../pond/apps/tablecloth_brix.rye`](../pond/apps/tablecloth_brix.rye) · [`../pond/apps/commerce_trade.rye`](../pond/apps/commerce_trade.rye) · [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
 
 ---

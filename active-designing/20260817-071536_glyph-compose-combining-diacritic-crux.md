@@ -1,6 +1,6 @@
 # glyph_compose -- the combining-diacritic overlay that collapses the accent grind
 
-**Stamp:** `20260817.071536` -- **Status:** Living (self-approved design round) -- **Voice:** Kyri -- **Style:** Radiant
+**Stamp:** `20260817.071536` -- **Status:** Mixed -- Living (self-approved design round) -- **Voice:** Kyri -- **Style:** Radiant
 **Kin:** [`../image/glyph.rye`](../image/glyph.rye) (the gfa1 atlas) - [`../image/font5x7.rye`](../image/font5x7.rye) (the base corpus) - [`../image/font5x7_grave.rye`](../image/font5x7_grave.rye) (a hand-drawn accent corpus) - [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md) - Season G, Open Media Primitives
 
 ---

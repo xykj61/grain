@@ -1,7 +1,7 @@
 # Fill ALES105 — the Lotus invert (flip every sample's sign, the exact value-mirror of reverse)
 
 **Stamp:** `20260815.003415` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES105**
+**Status:** Vision -- Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES105**
 **Kin:** [`the six-season double-seat`](20260813-020035_double-seat-expansion-six-seasons.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md) · [`fill ALES104`](20260815-002711_fill-ales104-lotus-reverse.md)
 **Stands on:** `lotus/timeline.rye` (ALES2 — the Clip, its `buf`/`len`/`samples`, and `saturate`) · `lotus/meter.rye` (ALES13 — the peak/RMS meter, to witness that a sign flip off the rail moves no loudness)
 

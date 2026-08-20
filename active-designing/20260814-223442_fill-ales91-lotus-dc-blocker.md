@@ -1,7 +1,7 @@
 # Fill ALES91 — Lotus's one-pole IIR DC blocker: the carried-state sibling that follows a drifting offset
 
 **Stamp:** `20260814.223442` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the rung is a bounded, in-process one-pole difference equation over one local i16 clip, and the ALES90 doc already *booked* this IIR blocker as "a later, named rung — the ALES43-shaped sibling")
+**Status:** Vision -- Design read — self-approved round (no custody gate; the rung is a bounded, in-process one-pole difference equation over one local i16 clip, and the ALES90 doc already *booked* this IIR blocker as "a later, named rung — the ALES43-shaped sibling")
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES91**
 **Kin:** [`../lotus/dc_remove.rye`](../lotus/dc_remove.rye) (ALES90 — the block-mean remover this rung is the carried-state sibling of) · [`../lotus/tone_carry.rye`](../lotus/tone_carry.rye) (ALES43 — the carried-state idiom this rung reuses) · [`../lotus/tone.rye`](../lotus/tone.rye) (ALES40 — the one-pole filter whose coefficient law this rung diverges from) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip, `sample_min`/`max`, and the one true `saturate`)
 

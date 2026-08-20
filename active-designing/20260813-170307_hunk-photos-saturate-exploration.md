@@ -1,7 +1,7 @@
 # HUNK21 — the Photos app tunes saturation
 
 **Stamp:** `20260813.170307` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Landed (self-approved design round) · **Season A** · waymark **HUNK** · journey **Photos app** · rung **HUNK21**
+**Status:** Mixed -- Landed (self-approved design round) · **Season A** · waymark **HUNK** · journey **Photos app** · rung **HUNK21**
 **Kin:** [`../image/photos.rye`](../image/photos.rye) · [`20260813-154324_hunk-photos-scale-exploration.md`](20260813-154324_hunk-photos-scale-exploration.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 
 ---

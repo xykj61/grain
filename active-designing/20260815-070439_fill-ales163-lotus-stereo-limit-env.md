@@ -1,6 +1,7 @@
 # Fill ALES163 — Lotus's stereo_limit_env: the attack/release brickwall limiter carried into stereo, the linked envelope driving one linked ceiling over time
 
 **Stamp:** `20260815.070439` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES163
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-065745_fill-ales162-lotus-stereo-gate-env.md`](20260815-065745_fill-ales162-lotus-stereo-gate-env.md)
 

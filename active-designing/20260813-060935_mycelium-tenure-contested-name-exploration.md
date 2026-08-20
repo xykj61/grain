@@ -1,7 +1,7 @@
 # The Tenure — a contested name is decided by the agreed order
 
 **Stamp:** `20260813.060935` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living (design capture, self-approved round) · **Season:** double-seat expansion D — Kresfa & Mycelium
+**Status:** Vision -- Living (design capture, self-approved round) · **Season:** double-seat expansion D — Kresfa & Mycelium
 **Kin:** [the Mycelium Cord](20260813-032851_mycelium-consensus-cord-exploration.md) · [the Ledger Voice](20260813-053843_mycelium-ledger-voice-exploration.md) · [the Knot checkpoint](20260813-050903_mycelium-cord-knot-checkpoint-exploration.md) · [the six-season expansion](20260813-020035_double-seat-expansion-six-seasons.md) · [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 **Gratitude (clean-room, concepts only):** the name-registration crux is the oldest reason a namespace wants consensus at all — studied plainly, code written our own; the Cord's own arrival-order-independent commit (`mycelium/cord.rye`) is the machinery this reads.
 

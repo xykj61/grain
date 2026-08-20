@@ -3,6 +3,7 @@
 *Comlink already crosses a sealed datagram over a socket. To grow it into a transport a person can live on — one that roams networks, survives a slept laptop, and feels instant — three bodies of prior art repay close study: the Secure Shell that made remote work safe, the Mobile Shell that made it survive movement, and the Internet Protocol's sixth version that gives every host a global name. This writing studies them faithfully, in our own register, so their lessons can cross cleanly into our grain. The teachers are thanked by name in `../gratitude/`; here we study the ideas.*
 
 **Stamp:** `20260802.161500`
+**Status:** Research for understanding -- studies prior art and our own ground; seats no fact.
 **Voice:** Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety first, performance second, joy third

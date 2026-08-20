@@ -1,7 +1,7 @@
 # Fill ALES93 — Lotus's zero-crossing counter: reading ALES92's flips as a count, the first analysis rung on the comparator
 
 **Stamp:** `20260814.225557` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the rung is a bounded, in-process, **read-only** counter over one local i16 clip that composes ALES92's public one-sample comparator, and the ALES92 doc named this rung in as many words — *a zero-crossing counter that reads this trigger's flips as a pitch estimate*)
+**Status:** Vision -- Design read — self-approved round (no custody gate; the rung is a bounded, in-process, **read-only** counter over one local i16 clip that composes ALES92's public one-sample comparator, and the ALES92 doc named this rung in as many words — *a zero-crossing counter that reads this trigger's flips as a pitch estimate*)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES93**
 **Kin:** [`../lotus/schmitt.rye`](../lotus/schmitt.rye) (ALES92 — the hysteresis comparator whose flips this rung counts, over its public `schmitt_step`) · [`../lotus/meter.rye`](../lotus/meter.rye) (the read-only analysis shape — a struct that accumulates, accessors that report) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip, `sample_min`/`max`)
 

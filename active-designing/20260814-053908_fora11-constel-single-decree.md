@@ -1,7 +1,7 @@
 # FORA11 — Constel decree: the sky commits one value, once
 
 **Stamp:** `20260814.053908` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read for a self-approved round — the crux-first pure rung after FORA10 elect
+**Status:** Vision -- Design read for a self-approved round — the crux-first pure rung after FORA10 elect
 **Season:** the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · **Waymark:** FORA · **Rung:** FORA11
 **Kin:** [`../constel/elect.rye`](../constel/elect.rye) · [`../constel/quorum.rye`](../constel/quorum.rye) · [`../constel/census.rye`](../constel/census.rye) · [`../constel/README.md`](../constel/README.md) · [`20260814-053151_fora10-constel-leader-election.md`](20260814-053151_fora10-constel-leader-election.md)
 

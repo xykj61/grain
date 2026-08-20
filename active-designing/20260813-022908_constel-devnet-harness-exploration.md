@@ -1,7 +1,7 @@
 # The Constel Dev-Net Harness — a fake constellation that runs the whole protocol, quarantined by its own name
 
 **Stamp:** `20260813.022908` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living (design capture, self-approved round) · **Season:** double-seat expansion D — Constel test-networks
+**Status:** Vision -- Living (design capture, self-approved round) · **Season:** double-seat expansion D — Constel test-networks
 **Kin:** [the naming law](20260813-022222_constel-test-network-naming-law.md) · [the double-seat expansion](20260813-020035_double-seat-expansion-six-seasons.md) · [`.claude/rules/placeholder-ship-names.md`](../.claude/rules/placeholder-ship-names.md) · [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 
 ---

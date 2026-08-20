@@ -1,7 +1,7 @@
 # FORA12 — Constel log: a sequence of decrees the whole sky agrees on, in order
 
 **Stamp:** `20260814.054414` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read for a self-approved round — the crux-first pure rung after FORA11 decree
+**Status:** Vision -- Design read for a self-approved round — the crux-first pure rung after FORA11 decree
 **Season:** the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · **Waymark:** FORA · **Rung:** FORA12
 **Kin:** [`../constel/decree.rye`](../constel/decree.rye) · [`../constel/elect.rye`](../constel/elect.rye) · [`../constel/README.md`](../constel/README.md) · [`../mantra`](../mantra) · [`20260814-053908_fora11-constel-single-decree.md`](20260814-053908_fora11-constel-single-decree.md)
 

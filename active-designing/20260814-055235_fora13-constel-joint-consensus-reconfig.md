@@ -1,7 +1,7 @@
 # FORA13 — Constel joint-consensus reconfiguration: change the sky without a fork
 
 **Stamp:** `20260814.055235` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read for the FORA13 rung — self-approved under the itinerary's filling law
+**Status:** Vision -- Design read for the FORA13 rung — self-approved under the itinerary's filling law
 **Season:** the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · **Waymark:** FORA · rung **FORA13**
 **Kin:** [`../constel/quorum.rye`](../constel/quorum.rye) (FORA9 — the intersection lemma) · [`../constel/decree.rye`](../constel/decree.rye) (FORA11) · [`../constel/log.rye`](../constel/log.rye) (FORA12) · [`../constel/README.md`](../constel/README.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 

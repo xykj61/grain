@@ -1,7 +1,7 @@
 # Starseeding — the boot that raises a star
 
 **Language:** EN
-**Status:** Design brief — no code, no keys, no witness yet
+**Status:** Mixed -- Design brief — no code, no keys, no witness yet
 **Voice:** Riyo
 **Equinox:** JARL (Identity & Network) · a boot beside Aurora, settling on Settlement
 **Born-named:** **Starseeding** — already seated as a proposed horizon (`context/LEXICON.md` line 196; `work-in-progress/TASKS.md`; `work-in-progress/REMEMBER.md`), handed forward in two vision batons (`expanding-prompts/20260810-025942_…`, `20260810-044453_…`). This brief gives that name a home and a first lap.

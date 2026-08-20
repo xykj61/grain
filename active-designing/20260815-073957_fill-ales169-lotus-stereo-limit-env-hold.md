@@ -1,6 +1,7 @@
 # Fill ALES169 — Lotus's stereo_limit_env_hold: the attack/hold/release brickwall limiter carried into stereo, the linked held envelope driving one linked ceiling over time — the fourth spender of the held time base, the stereo held quartet made whole
 
 **Stamp:** `20260815.073957` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES169
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-073427_fill-ales168-lotus-stereo-expand-env-hold.md`](20260815-073427_fill-ales168-lotus-stereo-expand-env-hold.md)
 

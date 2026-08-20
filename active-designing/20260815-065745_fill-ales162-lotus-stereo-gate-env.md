@@ -1,6 +1,7 @@
 # Fill ALES162 — Lotus's stereo_gate_env: the attack/release noise gate carried into stereo, the linked envelope driving one linked gate over time
 
 **Stamp:** `20260815.065745` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES · **Rung:** ALES162
 **Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`20260815-065200_fill-ales161-lotus-stereo-compress-env.md`](20260815-065200_fill-ales161-lotus-stereo-compress-env.md)
 

@@ -1,6 +1,6 @@
 # Fill ALES220 — Lotus stereo_preset: a named preset carried over both channels
 
-**Stamp:** `20260815.133213` · **Voice:** Kyri · **Style:** Radiant · **Status:** Self-approved design round
+**Stamp:** `20260815.133213` · **Voice:** Kyri · **Style:** Radiant · **Status:** Vision -- Self-approved design round
 **Season:** Six-Season double-seat, Season C (Lotus · the creative suite) · waymark **ALES** · rung **ALES220**
 **Kin:** [`../lotus/preset.rye`](../lotus/preset.rye) (ALES219 — from_name and build) · [`../lotus/stereo_render.rye`](../lotus/stereo_render.rye) (ALES218 — the balanced render) · [`20260815-132711_fill-ales219-lotus-preset.md`](20260815-132711_fill-ales219-lotus-preset.md)
 

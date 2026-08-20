@@ -1,6 +1,7 @@
 # Fill ALES147 — `lotus/stereo_segment.rye`, the voice-activity segmenter carried into stereo, the suite's third stereo analysis rung
 
 **Stamp:** `20260815.050741` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES147**
 **Kin:** [`20260815-045940_fill-ales146-lotus-stereo-voiced.md`](20260815-045940_fill-ales146-lotus-stereo-voiced.md) · [`20260814-231217_fill-ales95-lotus-voice-activity-segmenter.md`](20260814-231217_fill-ales95-lotus-voice-activity-segmenter.md)
 

@@ -1,7 +1,7 @@
 # Fill ALES74 — Lotus's tremolo: the triangle LFO turned on amplitude
 
 **Stamp:** `20260814.201204` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; the modulation family's first rung on a NEW target — amplitude, not delay)
+**Status:** Vision -- Design read — self-approved round (no custody gate; the modulation family's first rung on a NEW target — amplitude, not delay)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES74**
 **Kin:** [`../lotus/chorus.rye`](../lotus/chorus.rye) (ALES71 — the triangle-LFO driver `triangle_delay_at` this reuses, now read as a gain) · [`../lotus/glide.rye`](../lotus/glide.rye) (ALES70 — `glide_scale`, the fixed-point unit both stand on) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip and the one true saturate)
 

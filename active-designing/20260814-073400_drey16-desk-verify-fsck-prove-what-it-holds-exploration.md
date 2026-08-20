@@ -1,7 +1,7 @@
 # DREY16 — the desk verify: the fsck that proves what it holds
 
 **Stamp:** `20260814.073400` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Landed — witness `tools/drey_verify_witness.rish` GREEN
+**Status:** Mixed -- Landed — witness `tools/drey_verify_witness.rish` GREEN
 **Season A** (Hardware & Right-to-Repair) · **waymark DREY** · Mikrophone firmware journey · **rung DREY16**
 **Kin:** [`../mikrophone/catalog.rye`](../mikrophone/catalog.rye) (DREY7, the content-addressed store)
 

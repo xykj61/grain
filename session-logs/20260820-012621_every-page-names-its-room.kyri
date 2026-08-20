@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260820.012621
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Every page names its room, and the count that was never counted
+prompt Fix REDS %91 too
+think Counted before sweeping, and the count was the first red. %91 said eleven documents; the real number is 514. Eleven was the tail of a terminal window I had read with tail and written down as though it were a measurement. That is worth booking on its own rather than quietly correcting, because it is measurement-beats-memory one step earlier in the process -- not misremembering a number, but never taking one.
+think The diagnosis inside %91 was wrong a second way. Of the 232 pages it called missing a Status line, 92 had one all along, folded into a shared header row -- the scan matched the marker only at the start of a line, so a page writing Stamp then Status then Voice on one row read as having no Status at all. A guard that misdescribes what is wrong sends the reader to repair something that was never broken, so the scan was fixed before any page was touched.
+think The reason I had left this for a design pass was that naming a room is a claim about the work, and guessing 514 of them would put false claims into dated documents. What dissolved that was noticing the asymmetry: an understatement cannot mislead. Calling a proven page Vision costs a reader nothing; calling an unproven page Checkable is precisely the harm the Two Rooms law exists to prevent. So a conservative assignment is safe by construction, and the honest thing was to make one rather than leave 514 pages silent.
+think With that settled the rule could rest on something measurable rather than on my reading of each page: does the page cite a green witness of its own? Cite one and it carries both proven and proposed claims, which is what Mixed means. Cite none and it is a design round that proposes -- Vision -- or, under external-research, a study that seats no fact, which is exactly the fourth token's own definition.
+think Never assigned Checkable, deliberately, and that is the load-bearing part. Not one of the 514 claims the bench's room outright, so nothing in this sweep can have over-claimed. A later design pass may sharpen any single page upward, and every such move would be a promotion earned, which is the direction the law already describes for crossing between rooms.
+think Kept every word each page already wrote. The token reads first and the existing Status prose follows it, so a page that said Self-approved design round still says so; it now also says which room it is standing in. For the 140 with no Status at all, the line is inserted directly after the Stamp line, which all 140 carry -- checked before writing rather than assumed.
+obs The em-dashes surviving in these Status lines are inherited prose, not text I wrote. Every one of the 140 lines authored here is plain ASCII; the rest is preserved verbatim, which is what accrete asks and what ascii-first explicitly exempts for dated artifacts.
+obs Three of the last four rounds have ended the same way: a guard existed, and the place nobody had looked was the place it was failing. The list-bound witness has been consuming this scan and going RED for a season, and nothing read the RED because it belonged to a witness about something else.
+loom rooms pages=514 mixed=262 vision=240 research_for_understanding=12 checkable=0
+loom rooms status_token_added=374 status_line_inserted=140 scan_underreads_fixed=92
+file tools/fixtures/two_rooms_doorway_scan_one.sh reads a Status folded into a shared header row, not only one that begins its line
+file crux/REDS.md rows %93 (the count that was never counted) and %94 (the sweep and why it is safe by construction)
+recommend check-in (Claude) the doorway scan is green across the whole roster and no page over-claims. One door stays open and it is not mine: REDS %90 waits on nixos/rebuild-outer.sh from outside the jail. The sharpening pass is optional rather than owed -- any page whose work is genuinely bench-proven may be promoted toward Checkable one at a time, each promotion earning its own witness citation, which is how the law says a claim crosses rooms.

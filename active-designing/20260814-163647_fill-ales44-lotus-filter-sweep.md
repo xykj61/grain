@@ -1,7 +1,7 @@
 # Fill ALES44 — Lotus's filter sweep: a low-pass whose cutoff moves across a span, seamless because the state carries
 
 **Stamp:** `20260814.163647` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read — the next agent-doable Lotus rung, purely local
+**Status:** Mixed -- Self-approved design read — the next agent-doable Lotus rung, purely local
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES44**
 **Stands on:** [`../lotus/tone_carry.rye`](../lotus/tone_carry.rye) (ALES43 — the carried-state low-pass) · [`../lotus/tone.rye`](../lotus/tone.rye) (ALES40 — `low_pass_carry`) · [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip)
 

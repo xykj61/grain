@@ -1,7 +1,7 @@
 # Fill ALES110 — Lotus's silence-span, the third way a span meets silence
 
 **Stamp:** `20260815.010618` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design read — one Lotus rung, one keystone, one send
+**Status:** Mixed -- Self-approved design read — one Lotus rung, one keystone, one send
 **Waymark:** ALES · rung **ALES110** · Season C thread (Lotus · the creative suite) of the Six-Season double-seat
 **Kin:** [`insert_silence.rye`](../lotus/insert_silence.rye) (ALES109) · [`timeline.rye`](../lotus/timeline.rye) (ALES2) · [`meter.rye`](../lotus/meter.rye) (ALES13)
 

@@ -1,7 +1,7 @@
 # HUNK83 — the OR of clauses: widen the marketplace to the parts matching any facet
 
 **Stamp:** `20260814.004500` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable, no gate)
+**Status:** Vision -- Self-approved design round (agent-doable, no gate)
 **Season:** A (Hardware & Right-to-Repair) · **waymark:** HUNK · **journey:** parts-marketplace · **rung:** HUNK83
 **Kin:** [`../image/part_and.rye`](../image/part_and.rye) (HUNK78 the conjunction this rung duals) · [`../image/part_filter.rye`](../image/part_filter.rye) (HUNK75 `matches` / `filter_catalog`) · [`../image/part_query.rye`](../image/part_query.rye) (HUNK76 `parse_query`)
 

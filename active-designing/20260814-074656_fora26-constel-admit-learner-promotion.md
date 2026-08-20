@@ -1,6 +1,7 @@
 # FORA26 — Constel admit: the whole add-a-member lifecycle, closed
 
 **Stamp:** `20260814.074656` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Vision -- a design round that proposes; no witness binds its claims yet.
 **Season:** Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · **waymark** FORA · **rung** FORA26
 **Kin:** [`../constel/learner.rye`](../constel/learner.rye) (FORA25) · [`../constel/reconfig.rye`](../constel/reconfig.rye) (FORA13) · [`../constel/quorum.rye`](../constel/quorum.rye) (FORA9) · [`../constel/roster.rye`](../constel/roster.rye) (FORA1)
 

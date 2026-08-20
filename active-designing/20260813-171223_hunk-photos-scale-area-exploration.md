@@ -1,7 +1,7 @@
 # HUNK22 — an area-average downscale for the open image module
 
 **Stamp:** `20260813.171223` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (agent-doable, Lindy-first crux-first)
+**Status:** Mixed -- Self-approved design round (agent-doable, Lindy-first crux-first)
 **Season A · waymark HUNK · journey Open Image** — beside the Photos app and the marketplace sprite render.
 **Kin:** [`../image/photos.rye`](../image/photos.rye) · [`../brushstroke/image_skate.rye`](../brushstroke/image_skate.rye) · [`20260813-170307_hunk-photos-saturate-exploration.md`](20260813-170307_hunk-photos-saturate-exploration.md)
 

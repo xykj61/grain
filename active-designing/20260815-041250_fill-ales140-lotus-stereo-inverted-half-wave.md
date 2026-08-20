@@ -1,6 +1,7 @@
 # Fill ALES140 — `lotus/stereo_halve_neg.rye`, the inverted half-wave rectifier carried into stereo, completing the rectifier family in stereo
 
 **Stamp:** `20260815.041250` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES140**
 **Kin:** [`20260815-040747_fill-ales139-lotus-stereo-half-wave-rectifier.md`](20260815-040747_fill-ales139-lotus-stereo-half-wave-rectifier.md) · [`20260814-215030_fill-ales86-lotus-inverted-half-wave-rectifier.md`](20260814-215030_fill-ales86-lotus-inverted-half-wave-rectifier.md)
 

@@ -1,6 +1,6 @@
 # Puddle — Fleet Placement Without a Scheduler (Exploration)
 
-**Stamp:** `20260813.114651` · **Status:** Living (self-approved design read) · **Voice:** Kyri
+**Stamp:** `20260813.114651` · **Status:** Vision -- Living (self-approved design read) · **Voice:** Kyri
 **Register:** Radiant · **Season:** D (Kresfa & Mycelium) — the double-seat expansion
 **Kin:** [`the double-seat expansion`](20260813-020035_double-seat-expansion-six-seasons.md) (Season D names Puddle) · [`Puddle research`](../external-research/20260702-035018_puddle-sandboxed-rye-containers.md) · Lexicon **Puddle** · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md)
 

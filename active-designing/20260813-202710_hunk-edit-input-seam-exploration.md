@@ -1,6 +1,6 @@
 # HUNK — the edit input seam: a keeper's gesture becomes exactly one history move
 
-**Stamp:** `20260813.202710` · **Status:** Living (self-approved design round) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260813.202710` · **Status:** Mixed -- Living (self-approved design round) · **Voice:** Kyri · **Style:** Radiant
 **Waymark:** **HUNK** (Season A, Photos-app journey; seated in [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md))
 **Road:** [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) — **Season A, Hardware & Right-to-Repair**
 **Builds on:** [`20260813-171500_hunk-edit-cursor-undo-redo-exploration.md`](20260813-171500_hunk-edit-cursor-undo-redo-exploration.md) — the HUNK16 EditCursor

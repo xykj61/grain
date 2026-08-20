@@ -1,7 +1,7 @@
 # Fill ALES66 — Lotus's feedback delay: the echo that decays
 
 **Stamp:** `20260814.191111` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Design read — self-approved round (no custody gate; a new primitive built on `timeline.saturate`, the one true saturation)
+**Status:** Mixed -- Design read — self-approved round (no custody gate; a new primitive built on `timeline.saturate`, the one true saturation)
 **Season:** Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES66**
 **Kin:** [`../lotus/timeline.rye`](../lotus/timeline.rye) (ALES2 — the Clip, `saturate`, `max_clip`, the range law) · [`../lotus/mix.rye`](../lotus/mix.rye) (ALES3 — the same one true saturation reused, the summing lesson) · [`../lotus/README.md`](../lotus/README.md)
 

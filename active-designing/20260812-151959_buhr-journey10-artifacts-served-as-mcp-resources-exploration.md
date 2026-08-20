@@ -1,6 +1,6 @@
 # BUHR Journey 10 — Tablecloth artifacts, served as MCP resources (exploration)
 
-**Stamp:** `20260812.151959` · **Waymark:** BUHR (Compass Season · Equinox 3 — Surface & Intelligence) · **Status:** exploration, self-approved design round · **Voice:** Kyri
+**Stamp:** `20260812.151959` · **Waymark:** BUHR (Compass Season · Equinox 3 — Surface & Intelligence) · **Status:** Vision -- exploration, self-approved design round · **Voice:** Kyri
 
 ## The blind spot
 

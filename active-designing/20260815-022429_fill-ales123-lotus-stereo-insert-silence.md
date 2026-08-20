@@ -1,6 +1,7 @@
 # Fill ALES123 — `lotus/stereo_insert_silence.rye`, opening a silent gap carried into stereo
 
 **Stamp:** `20260815.022429` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Status:** Mixed -- proposes a shape and cites the witnesses that bind what already landed.
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark **ALES** · rung **ALES123**
 **Kin:** [`20260815-010035_fill-ales109-lotus-insert-silence.md`](20260815-010035_fill-ales109-lotus-insert-silence.md) · [`20260815-020930_fill-ales120-lotus-stereo-duplicate.md`](20260815-020930_fill-ales120-lotus-stereo-duplicate.md) · [`20260815-021904_fill-ales122-lotus-stereo-silence-span.md`](20260815-021904_fill-ales122-lotus-stereo-silence-span.md)
 

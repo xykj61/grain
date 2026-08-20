@@ -1,7 +1,7 @@
 # Scooter compose -- the prompt that becomes a post
 
 **Stamp:** `20260817.085923` - **Language:** EN - **Voice:** Kyri - **Style:** Radiant
-**Status:** Design round (self-approved) -- the terminal-family rung where input meets the drawn face
+**Status:** Vision -- Design round (self-approved) -- the terminal-family rung where input meets the drawn face
 **Kin:** [`scooter drawn frame`](20260817-041429_scooter-drawn-frame-crux.md) - [`dexter line editor`](../session-logs/20260817-042243_dexter-line-editor.kyri) - [`terminal family plan`](../expanding-prompts/20260816-222322_dexter-terminal-and-scooter-cli-chat.md) - [`the eight-season double-seat`](20260816-205859_double-seat-expansion-eight-seasons.md) (Season G, terminal family) - [`../.claude/rules/tame-guidance.md`](../.claude/rules/tame-guidance.md)
 
 ---

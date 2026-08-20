@@ -1,6 +1,6 @@
 # HUNK — the edit history as a filmstrip: every step a thumbnail, the cursor marked
 
-**Stamp:** `20260813.211417` · **Status:** Living (self-approved design round) · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260813.211417` · **Status:** Mixed -- Living (self-approved design round) · **Voice:** Kyri · **Style:** Radiant
 **Waymark:** **HUNK** (Season A, Photos-app journey; seated in [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md))
 **Road:** [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) — **Season A, Hardware & Right-to-Repair**
 **Builds on:** [`edit_cursor.rye`](../image/edit_cursor.rye) — HUNK16's history · [`edit_preview.rye`](../brushstroke/edit_preview.rye) — HUNK13's preview · [`image_skate.rye`](../brushstroke/image_skate.rye) — HUNK2's down-map

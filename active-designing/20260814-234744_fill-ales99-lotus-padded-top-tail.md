@@ -1,7 +1,7 @@
 # Fill ALES99 — the Lotus padded top-and-tail (trim the ends, yet keep a chosen margin of silence)
 
 **Stamp:** `20260814.234744` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES99**
+**Status:** Vision -- Self-approved design round (autonomous loop) · **Season C** thread (Lotus · the creative suite) · **waymark ALES** · **rung ALES99**
 **Kin:** [`the six-season double-seat`](20260813-020035_double-seat-expansion-six-seasons.md) · [`the 1,024-round itinerary`](20260812-171050_the-1024-round-itinerary.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md) · [`fill ALES98`](20260814-234106_fill-ales98-lotus-top-tail-trimmer.md)
 **Stands on:** `lotus/top_tail.rye` (ALES98 — the top-and-tail trimmer, the pad-zero twin) · `lotus/segment.rye` (ALES95 — the voice-activity segmenter, reused by name) · `lotus/timeline.rye` (ALES2 — the Clip and `cut`) · `lotus/voiced.rye` (ALES94 — the `.silent` verdict)
 

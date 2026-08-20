@@ -1,7 +1,7 @@
 # The Warrant — a validator set rotates only when the current quorum certifies its successor
 
 **Stamp:** `20260813.112420` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Self-approved design round — opens a fresh Mycelium journey (Season D)
+**Status:** Vision -- Self-approved design round — opens a fresh Mycelium journey (Season D)
 **Kin:** [`../mycelium/muster.rye`](../mycelium/muster.rye) · [`../mycelium/muster_bron.rye`](../mycelium/muster_bron.rye) · [`../mycelium/chorus.rye`](../mycelium/chorus.rye) · [`../mycelium/kumara.rye`](../mycelium/kumara.rye) · [`20260813-110039_mycelium-muster-known-validator-set-exploration.md`](20260813-110039_mycelium-muster-known-validator-set-exploration.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md) · [`../.claude/rules/comlink-tendency.md`](../.claude/rules/comlink-tendency.md)
 
 ---
