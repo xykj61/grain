@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20260820.044313
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan recant -- a judgment a run's own evidence disproves is taken back and repaired
+prompt Kyri first, then REMEMBER and the road-ahead itineraries; Standfast on reds, then the next agent-doable lap Lindy-first crux-first; council rota one doc; condense REMEMBER when a set closes; send each finished increment
+think Read KYRI and RADIANT_STYLE first, then crux/REMEMBER, then the top rows of session-logs/README.md. The newest recommend names the crux exactly: a run that weighed a loss spent and was wrong about it has no way yet to say so, which asks whether an appraisal should ever be revisited by the run that comes after.
+think Standfast first. The reds ledger holds five living rows and every one is closed -- %95, %96, %97 all closed on the laps just past, and no open agent-closable red stands. The line is clear for constructive work.
+think The design question took the longest. An appraisal is folded fresh from each run's own evidence, so within one run there is nothing to revisit. The crack is across runs: the appraisal note goes to the wire and outlives the run that wrote it, and a later run of the same plan meets that judgment with evidence of its own. Nothing below this rung ever asks the two to agree.
+think So the rung is recant, and the shape follows the arc's grammar exactly. A plan-level word beside the standard -- review = .stand or .revisit. The standing appraisal becomes the one note provision_notes does not clear, because a judgment that vanished with its run was never a record. The reckoning reads the judgment already on the wire before it writes a word over it, folds this run's own evidence fresh, and publishes the disagreement as a recant note.
+think The measurement had to cost a dependent to be worth a rung. It does: letting a stale judgment stand spares an arc nobody serves and settles the plan borne, which tells an operator there is nothing left to do. Weighing it again repairs the arc, settles carried, and spends exactly one more dependent.
+think The lap needed a record where a standing judgment is disprovable. Six phases, three falling clients, three conferrals lost. client_c's peek waits behind turn 1 -- so it is the phase that would speak for client_b's loss -- and this time it falls holding its own conferral, taking that testimony down with it. The judgment on the wire has nothing left under it.
+think Built from appraise.rye by rebase rather than by hand: the mechanical rename, then the report nesting one tier deeper, then the appraisal section converted to re-exports and the recantation section written new. Four shadowing errors from the compiler on the first build, each an honest name collision with a function already in the file.
+think Six RED paths proven on metal before any GREEN claim, one of them twice -- the first cut of the supply RED disarmed the guard and the overreach was caught downstream at the wire check instead, so it was re-run with the guard armed and refused RecantUnappraised at the run, which is where the rung means it to fire.
+obs The council rota doc this lap was item 15, TAME Core with the shelf beside it. Its first reflex governed the whole round: bound everything, assert invariants first, and close a fix on a witness on metal rather than a claim. Every new fold here names its bounds in a comptime-checked assert and states them positively.
+obs The generalization test held one tier further out without a line of work: a plan the wire holds no judgment about writes exactly what appraise.rye writes, so .stand over an unjudged record is the rung below, verbatim.
+obs Seating the standing judgment by hand rather than producing it from a first run is named plainly in the lap's own prose. It is honest: a judgment arrives on the wire the same way whether the run that wrote it finished a minute ago or a season ago, and what a run does with a judgment it did not make is the whole subject.
+loom witness=caravan_recant_witness rungs=59 phases=6 dependents_standing=5 dependents_revisiting=6 lost=3 spared_disproved_before=1 spared_disproved_after=0 recanted=1
+file caravan/recant.rye the rung -- Review, recanted_in, upheld_in, recant_refusal, unappraised_reach, spared_disproved, the recant note, and the lap
+file tools/caravan_recant_witness.rish the witness -- reads the wire outside the run that wrote it, every number and every glyph
+file tools/caravan_suite_witness.rish registers the rung in the choir; roster whole at 59, every rung GREEN in one sing from a cold tree
+file caravan/README.md the durable per-rung entry, so the finding outlives the operator card
+file crux/REMEMBER.md the live edge and the git nib, in the work commit
+recommend keep-going the arc has answered for reach at every moment of a dependent's life, repaired what a fall cost, learned which losses to leave alone, weighed the losses nobody spoke to, and now weighs its own judgments against a later run -- so the question standing above it is what a plan owes an operator who already acted on a judgment since taken back: a reversal that arrives after the report was read has no way yet to reach the person who read it.
