@@ -81,6 +81,7 @@ Every ring here composes over the one before it. A later ring imports an earlier
 | courier | [`courier.rye`](courier.rye) | a correction is carried to the reader who never comes back -- the address seated on the wire beside the reading, the letter written into the reader's own box outside this plan's wire, and the box read back before anybody is believed reached |
 | hear | [`hear.rye`](hear.rye) | a correction is finished when its reader answers, and the plan reads that answer in their own hand -- the reader's box facing two ways, and an answer bound to the reading it answers |
 | dispute | [`dispute.rye`](dispute.rye) | a reader who answers something other than agreement is recorded rather than set aside -- both readings written into the record, the plan's and its reader's, and neither one resolving the other |
+| abide | [`abide.rye`](abide.rye) | the word an operator reads stands beside the reading held against it -- one byte quoting the reader's own objection, written where the settlement is read rather than where the record is kept |
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
@@ -952,6 +953,25 @@ The numbers state the claim: **three refusals stand as a pure fold and a fourth 
 **The rung earns four refusals, each about the record rather than the answer that earned it.** `DisputeEarly` is the moment. `DisputeUnheard` is the supply. `DisputeMiscounted` is the honesty of the count. `DisputeUnfounded` is the record -- a pair naming one reading twice is agreement wearing a quarrel's clothes, and a record built on it would manufacture a disagreement nobody ever had.
 
 The numbers state the claim: **three refusals stand as a pure fold and the fourth beside them; a plan that loses nothing reads as the line handed, all 16 pairs; and one plan of 6 phases run twice absorbs 3 into standing dependents, loses 3 arcs, takes the same judgment back, re-seats the same 3 phases, posts the same correction, carries it to the same reader, reads the same answer, spends the same 6 dependents, and settles `carried` either way -- while disagreements written into the record rise 0 to 1 and answers set aside without a record fall 1 to 0. The price is two bytes written into a note the run already knew the name of.** Five RED paths proven first, one a planted control that writes `cc` into the record -- a reader who agreed, written down as disputing themselves. Module `caravan/dispute.rye`, witness `tools/caravan_dispute_witness.rish`, and the choir sings 63 rungs in one voice.
+
+
+## Abide -- the word an operator reads stands beside the reading held against it
+
+**`dispute.rye` taught a run to keep what its reader answered** -- the letter carried into the reader's own box, the reader's own hand read out of the box beside it, and the two readings written into the plan's record in both voices, resolved by neither. That record is exactly right, and it is kept where nobody reads it.
+
+**The record is kept out of sight of the person acting on the word.** A disagreement lands in `plan.dispute`, among the plan's own notes, and an operator looking for the outcome opens `plan.settled` -- a different file, one byte, reading precisely as it would have read had nobody objected at all. The objection is faithfully recorded and entirely invisible where it matters.
+
+**The measurement is words read as settled over a standing disagreement.** The rung below weighs a record against the answers it declined to keep. This one weighs the record against the place a person actually reads -- a settlement opened by an operator who has no way to learn that their own reader holds a different word.
+
+**An escort quotes, and never argues.** The mark is one byte in `caravan/.abidings/plan.beside`: the reading this plan's reader holds. The plan's own word stays exactly as it was written, because an escort adds a voice beside a sentence rather than editing the sentence, and a run that softened its own verdict under objection would be settling the quarrel it promised to leave open.
+
+**A plan publishes whether its word travels alone.** A record written `escort = .escorted` says whoever reads this word reads the objection with it. `escort = .alone` is where the rung below leaves it -- the objection is kept, and kept elsewhere.
+
+**A mark is bounded by the record that earned it.** Only a disagreement this run actually read out of its own notes may be quoted, and only the reader's own reading may be quoted from it.
+
+**The rung earns four refusals, each about the mark rather than the word it stands beside.** `AbideEarly` is the moment. `AbideUnrecorded` is the supply. `AbideMiscounted` is the honesty of the count. `AbideMisquoted` is the record -- an escort carries one person's word to whoever reads another, so a mark naming any other reading puts a sentence in that person's mouth.
+
+The numbers state the claim: **three refusals stand as a pure fold and the fourth beside them; a plan that loses nothing reads as the line handed, all 16 pairs; and one plan of 6 phases run twice absorbs 3 into standing dependents, loses 3 arcs, takes the same judgment back, re-seats the same 3 phases, posts and carries the same correction, reads the same answer, records the same disagreement, spends the same 6 dependents, and settles `carried` either way -- while published words standing beside the reading against them rise 0 to 1 and words an operator reads with no sign of the objection fall 1 to 0. The price is one byte written into a note the run already knew the name of.** Five RED paths proven first, one a planted control where the mark quotes the plan's own reading -- the plan recorded as its own objector, with the selftest still calling itself GREEN. Module `caravan/abide.rye`, witness `tools/caravan_abide_witness.rish`, and the choir sings 64 rungs in one voice.
 
 
 ## Held
