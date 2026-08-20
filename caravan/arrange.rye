@@ -1,0 +1,659 @@
+//! Caravan arrange -- a plan may be written in any order, and the queue
+//! seats it in the one its own names imply.
+//!
+//! `precede.rye` let a turn name the turns it follows, closed those names
+//! once at the door, and kept every admission after it at one bit test.
+//! Every reading in the arc up to here -- act, linked, fenced, masked,
+//! preceded -- takes the queue's **written sequence** as given and only ever
+//! loosens or tightens which pairs of it may be swapped. So a plan whose
+//! phases are written in an order its own names forbid is carried faithfully
+//! into a run that cannot honor it, and the first thing to notice is an
+//! invariant firing mid-flight, with dependents already started.
+//!
+//! **The sequence is a claim, and a claim may be checked.** A plan is
+//! *seated* when no phase stands before a phase of a turn it names. That is
+//! one bounded pass over pairs, read at the door, and it turns a mid-run
+//! panic into a named refusal: `PlanUnseated`, answered before a single
+//! dependent starts. Safety first, in TAME order.
+//!
+//! **And a checkable claim is usually a derivable one.** Every fact the
+//! seating needs is already written down -- each turn names the turns it
+//! follows, and each turn's steps are written in their own order -- so the
+//! queue can *derive* a lawful sequence rather than trusting the one it was
+//! handed. `arrange` seats the earliest-written phase nothing unseated still
+//! holds, again and again, so the author's order survives everywhere the
+//! names permit and moves only where they demand it.
+//!
+//! **Direction is why the seating never stalls.** A turn names only turns
+//! numbered below it, and a turn's steps keep the order they were written
+//! in, so among the phases still unseated the one with the smallest turn
+//! number -- earliest written on a tie -- is always free. The walk needs no
+//! visited set and no back-tracking; the same authoring rule that spared the
+//! closing a graph spares the seating one.
+//!
+//! **Arranging moves phases and never touches a name.** The output is a
+//! permutation of the plan exactly as its author wrote each phase: the same
+//! tasks, the same turns, the same steps, the same masks. What changes is
+//! only where each one stands.
+//!
+//! **A seated plan arranges to itself, exactly** -- phase for phase over a
+//! whole lap -- so this rung generalizes `precede.rye` rather than rivalling
+//! it, the same way an empty turn mask was the sibling mask and a full
+//! sibling mask was the fence and the link.
+//!
+//! **What it buys, and what it costs, named plainly.** Arranging buys back
+//! no slot and refuses no pass: handed a lawful sequence it is the identity,
+//! and handed an unlawful one it recovers precisely the run the author would
+//! have gotten by writing the phases out by hand. What it buys is that the
+//! author no longer has to. The price is one bounded seating at the door --
+//! at most `max_queue_len` squared pair tests over sixteen phases -- paid
+//! once, before any dependent starts, and never again during admission.
+//!
+//! **The isolation room needed nothing here either.** Which dependents may
+//! stand at one instant is `commute.admissible`'s whole question, answered
+//! from the regions the document declares. A seating orders the queue; it
+//! opens no instant.
+//!
+//! Usage:
+//!   arrange selftest                  Run the readings against each other
+//!   arrange                           Same as selftest
+//!   arrange dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const cohort = @import("cohort.rye");
+const gap = @import("gap.rye");
+const precede = @import("precede.rye");
+
+const caravan_arrange_version = "20260819.204512";
+
+// =========================================================================
+// Bounds, carried from the rung below
+// =========================================================================
+
+/// The declaration this rung exercises, unchanged.
+pub const declaration_path = precede.declaration_path;
+
+/// How many dependents one supervisor holds at once.
+pub const max_in_flight: u32 = precede.max_in_flight;
+
+/// How many items one ordered queue carries.
+pub const max_queue_len: u32 = precede.max_queue_len;
+
+/// How many still-waiting items past the head one turn may weigh.
+pub const max_lookahead: u32 = precede.max_lookahead;
+
+/// A dependent's fixed argv, unchanged from the rungs below.
+pub const fixed_argv_words: u32 = precede.fixed_argv_words;
+
+/// How many turns one queue may cut its work into.
+pub const max_turns: u32 = precede.max_turns;
+
+/// How many pair tests one seating may ever spend.
+///
+/// The seating walks the unseated phases once per phase it places, and each
+/// walk weighs every phase against every other, so the whole cost is bounded
+/// by the square of the queue and stated here rather than left to a reader
+/// to work out.
+pub const max_seating_tests: u32 = max_queue_len * max_queue_len;
+
+comptime {
+    // invariant: every phase may stand alone as its own turn
+    assert(max_turns >= max_queue_len);
+    // invariant: a whole plan's turns fit in the one word a turn mask is kept in
+    assert(max_turns <= 32);
+    // invariant: a seating always costs more than one test, or it read nothing
+    assert(max_seating_tests > max_queue_len);
+}
+
+/// Renders one outcome code as the words an operator reads.
+pub fn outcome_name(code: u8) []const u8 {
+    return precede.outcome_name(code);
+}
+
+/// Why a queue may not run as it was handed over.
+///
+/// `PlanUnseated` is this rung's own: the plan is written in an order its
+/// own names forbid, so the door answers by name rather than letting a
+/// run discover it with dependents already in flight.
+pub const RunError = precede.RunError || error{ PlanUnseated, PlanUnseatable };
+
+/// One queued item and the letters it declares, carried from `intent.rye`.
+pub const Task = precede.Task;
+
+/// One phase, its turn, its step, and the two masks it carries, unchanged.
+pub const Phase = precede.Phase;
+
+/// How deeply a reading looks at the queue's own authorship, unchanged.
+pub const Reading = precede.Reading;
+
+/// Renders one reading as the words an operator reads.
+pub fn reading_words(r: Reading) []const u8 {
+    return precede.reading_words(r);
+}
+
+/// What one run did, reported whole, unchanged from the rung below.
+pub const Report = precede.Report;
+
+/// The single bit that stands for one turn of a plan.
+pub fn turn_bit(turn: u32) u32 {
+    return precede.turn_bit(turn);
+}
+
+// =========================================================================
+// The seating -- what the written sequence claims, and how it is derived
+// =========================================================================
+
+/// Answers whether a phase of a turn this one names still stands unseated.
+///
+/// Two facts hold a phase back, and only two. A phase of its own turn
+/// written earlier holds it, because a turn's steps keep the order the queue
+/// wrote them in, absolutely. A phase of another turn holds it exactly when
+/// this phase's closed turn mask names that turn.
+fn held_back(closed: []const Phase, seated: []const bool, pick: u32) bool {
+    // invariant: a pick always names a phase inside the plan
+    assert(pick < closed.len);
+    // invariant: a seating record always covers the plan it walks
+    assert(seated.len == closed.len);
+    var j: u32 = 0;
+    while (j < closed.len) : (j += 1) {
+        // invariant: the walk stays inside the queue one supervisor may hold
+        assert(j < max_queue_len);
+        if (j == pick) continue;
+        if (seated[j]) continue;
+        if (closed[j].turn == closed[pick].turn) {
+            if (j < pick) return true;
+            continue;
+        }
+        if ((closed[pick].follows_turns & turn_bit(closed[j].turn)) != 0) return true;
+    }
+    // invariant: the walk read the whole plan, weighing every phase in it
+    assert(j == closed.len);
+    return false;
+}
+
+/// Chooses the earliest-written phase nothing unseated still holds.
+///
+/// Earliest-written is what keeps the author's order everywhere the names
+/// permit: two phases neither of which holds the other keep the sequence
+/// they were handed in, so a seating moves a phase only where a name demands
+/// it.
+fn first_free(closed: []const Phase, seated: []const bool) ?u32 {
+    var i: u32 = 0;
+    while (i < closed.len) : (i += 1) {
+        if (seated[i]) continue;
+        if (!held_back(closed, seated, i)) return i;
+    }
+    // invariant: the walk weighed every phase in the plan, none skipped
+    assert(i == closed.len);
+    return null;
+}
+
+/// Answers whether the plan's written sequence already keeps every name it
+/// carries.
+///
+/// The question is about turns alone. A turn's own steps are already held in
+/// their written order by `precede.plan_is_ordered`, which refuses a plan
+/// whose steps arrive out of sequence; what no rung before this one ever
+/// asked is whether a phase stands before a phase of a turn it names.
+pub fn plan_is_seated(plan: []const Phase) bool {
+    // invariant: a plan always carries work
+    assert(plan.len >= 1);
+    // invariant: a plan stays inside the queue one supervisor may hold
+    assert(plan.len <= max_queue_len);
+    var closed_store: [max_queue_len]Phase = undefined;
+    const closed = closed_store[0..plan.len];
+    precede.close(plan, closed);
+
+    var i: u32 = 0;
+    while (i < closed.len) : (i += 1) {
+        var j: u32 = i + 1;
+        while (j < closed.len) : (j += 1) {
+            if (closed[i].turn == closed[j].turn) continue;
+            if ((closed[i].follows_turns & turn_bit(closed[j].turn)) != 0) return false;
+        }
+        // invariant: the inner walk reached the end of the plan, weighing every pair
+        assert(j == closed.len);
+    }
+    // invariant: every phase was weighed against every phase after it
+    assert(i == closed.len);
+    return true;
+}
+
+/// Seats a plan in an order its own names imply, and answers whether it
+/// could be seated at all.
+///
+/// The output is a permutation of the plan: each phase written out exactly
+/// as its author wrote it -- same task, same turn, same step, same masks --
+/// standing where the names put it. Seating reads the *closed* plan, so a
+/// turn inherits the order of every turn it reaches through another, and
+/// writes out the *original*, so the arranged plan carries no name its
+/// author never typed.
+///
+/// A plan whose turns are sound always seats: among the phases still
+/// unseated, the one with the smallest turn number -- earliest written on a
+/// tie -- is held by nothing. The refusal is kept as a named answer rather
+/// than an assert, so a caller handed an unsound plan hears why.
+pub fn arrange(plan: []const Phase, out: []Phase) bool {
+    // invariant: a seating always has room for every phase it seats
+    assert(out.len == plan.len);
+    // invariant: a seating stays inside the queue one supervisor may hold
+    assert(plan.len <= max_queue_len);
+    // invariant: a plan always carries work
+    assert(plan.len >= 1);
+
+    var closed_store: [max_queue_len]Phase = undefined;
+    const closed = closed_store[0..plan.len];
+    precede.close(plan, closed);
+
+    var seated: [max_queue_len]bool = @splat(false);
+    var placed: u32 = 0;
+    while (placed < plan.len) {
+        // invariant: a seating never places more phases than the plan holds
+        assert(placed < max_queue_len);
+        const pick = first_free(closed, seated[0..plan.len]) orelse return false;
+        // invariant: a chosen phase was still waiting to be seated
+        assert(!seated[pick]);
+        out[placed] = plan[pick];
+        seated[pick] = true;
+        placed += 1;
+    }
+    // invariant: every phase in the plan was seated, none skipped or doubled
+    assert(placed == plan.len);
+    return true;
+}
+
+/// Answers whether two plans hold the same phases in the same places.
+pub fn plans_match(a: []const Phase, b: []const Phase) bool {
+    if (a.len != b.len) return false;
+    var i: u32 = 0;
+    while (i < a.len) : (i += 1) {
+        if (a[i].turn != b[i].turn) return false;
+        if (a[i].step != b[i].step) return false;
+        if (a[i].follows != b[i].follows) return false;
+        if (a[i].follows_turns != b[i].follows_turns) return false;
+        if (!std.mem.eql(u8, a[i].task.item.domain, b[i].task.item.domain)) return false;
+        if (!std.mem.eql(u8, a[i].task.item.hops, b[i].task.item.hops)) return false;
+    }
+    // invariant: every phase of the two plans was weighed, none skipped
+    assert(i == a.len);
+    return true;
+}
+
+/// Answers whether two phases must keep the order the queue wrote them in.
+pub fn items_contend(sys: *const system.System, a: Phase, b: Phase, reading: Reading) bool {
+    return precede.items_contend(sys, a, b, reading);
+}
+
+/// Answers whether the head may enter beside the dependents running now.
+pub fn admissible(
+    sys: *const system.System,
+    live: []const cohort.Running,
+    head: Phase,
+    reading: Reading,
+) bool {
+    return precede.admissible(sys, live, head, reading);
+}
+
+// =========================================================================
+// The door -- a sequence its own names forbid is refused, never run
+// =========================================================================
+
+/// Runs an ordered queue of phases exactly as it was handed over, refusing a
+/// sequence its own names forbid.
+///
+/// The supervisor itself is `precede.run_queue`, asked rather than restated,
+/// so every number this rung's laps report stands beside every rung before
+/// it. What this rung adds stands entirely at the door, and it stands there
+/// before provisioning: a plan written out of its own order is answered with
+/// `PlanUnseated` while no dependent has started.
+pub fn run_queue(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Phase,
+    wake: gap.Wake,
+    reading: Reading,
+    report_out: *Report,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || cohort.RunError || boot.BootError)!void {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    if (plan.len == 0) return error.EmptyQueue;
+    if (plan.len > max_queue_len) return error.QueueTooLong;
+    if (!precede.plan_is_ordered(plan)) return error.OrderStalled;
+    if (!plan_is_seated(plan)) return error.PlanUnseated;
+    return precede.run_queue(allocator, io, self_path, sys, plan, wake, reading, report_out);
+}
+
+/// Seats a plan from the names it already carries, then runs it.
+///
+/// This is the whole offer of the rung in one call: hand the supervisor the
+/// phases in any order that keeps each turn's steps in sequence, and it
+/// derives a lawful head order rather than asking an author to have written
+/// one.
+pub fn run_arranged(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Phase,
+    wake: gap.Wake,
+    reading: Reading,
+    report_out: *Report,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || cohort.RunError || boot.BootError)!void {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    if (plan.len == 0) return error.EmptyQueue;
+    if (plan.len > max_queue_len) return error.QueueTooLong;
+    if (!precede.plan_is_ordered(plan)) return error.OrderStalled;
+
+    var seated_store: [max_queue_len]Phase = undefined;
+    const seated = seated_store[0..plan.len];
+    if (!arrange(plan, seated)) return error.PlanUnseatable;
+    // invariant: a seating always answers with a sequence its own names keep
+    assert(plan_is_seated(seated));
+    // invariant: a seated plan is still a plan the elder rungs may read
+    assert(precede.plan_is_ordered(seated));
+    return precede.run_queue(allocator, io, self_path, sys, seated, wake, reading, report_out);
+}
+
+// =========================================================================
+// The lap -- one plan, written twice: once in order, once in any order
+// =========================================================================
+
+/// The preceded lap, written in an order that already keeps its own names.
+///
+/// This is `precede.rye`'s lap unchanged, restated here so both sequences
+/// stand in one program and the seating can be measured against the order an
+/// author wrote by hand. One busy domain makes the room: `client_a` opens
+/// with a place and three more turns of the same domain queue behind it, so
+/// the head stands blocked and a pass is the only way forward. Turn 4 has
+/// `client_b` place into `ask_b` and names turn 3; turn 5 has `client_c`
+/// peek the published `menu` and names turn 4 alone, following turn 3 only
+/// through the closing; turn 6 names nothing at all.
+const written_queue = [_]Phase{
+    .{ .turn = 0, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "w", .item = .{ .domain = "client_a", .verb = .place, .hops = "ask_a", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok } } },
+    .{ .turn = 1, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 2, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "back_a", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 3, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "taken_a", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 4, .step = 0, .follows = 0, .follows_turns = 8, .task = .{ .effects = "w", .item = .{ .domain = "client_b", .verb = .place, .hops = "ask_b", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok } } },
+    .{ .turn = 5, .step = 0, .follows = 0, .follows_turns = 16, .task = .{ .effects = "r", .item = .{ .domain = "client_c", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 6, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "back_b", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+};
+
+/// The same seven phases, written in an order no elder rung could run.
+///
+/// Turn 5 stands first, ahead of both the turn it names and the turn it
+/// reaches through that one. Every phase carries exactly the names it
+/// carries above -- nothing about the work changed, only where it was
+/// written -- and each turn's steps are still in sequence, so the plan reads
+/// as a written plan to every rung before this one and only the seating can
+/// tell that it is out of order.
+const any_order_queue = [_]Phase{
+    written_queue[5],
+    written_queue[0],
+    written_queue[1],
+    written_queue[2],
+    written_queue[3],
+    written_queue[4],
+    written_queue[6],
+};
+
+/// A small plan whose first turn is cut into two steps, written last.
+///
+/// Turns of one phase can never show that a seating keeps a turn's steps in
+/// the order the queue wrote them in, since there is only ever one. This
+/// plan puts a two-step turn behind the turn that names it, so the seating
+/// must move both steps forward and keep them in sequence while doing it.
+const two_step_queue = [_]Phase{
+    .{ .turn = 1, .step = 0, .follows = 0, .follows_turns = 1, .task = .{ .effects = "r", .item = .{ .domain = "client_c", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 0, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "w", .item = .{ .domain = "client_a", .verb = .place, .hops = "ask_a", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok } } },
+    .{ .turn = 0, .step = 1, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+};
+
+// =========================================================================
+// Self-test
+// =========================================================================
+
+/// Loads one declaration, or names why it could not be read.
+fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
+    const parsed = read.load(io, path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{path});
+        return null;
+    }
+    return parsed;
+}
+
+/// The seating read straight, before any supervisor spends it.
+///
+/// The happy zone of this rung: every question here is a pure fold over the
+/// plan, answered instantly, with no dependent started and no store touched. The
+/// thin edge comes after, where only real processes can tell the truth.
+fn check_seating() u8 {
+    if (!precede.plan_is_ordered(&written_queue)) {
+        print("  RED: the written lap does not read as a written plan\n", .{});
+        return 1;
+    }
+    if (!precede.plan_is_ordered(&any_order_queue)) {
+        print("  RED: the any-order lap does not read as a written plan\n", .{});
+        return 1;
+    }
+
+    // The sequence is a claim, and this is the claim: no phase stands before
+    // a phase of a turn it names.
+    if (!plan_is_seated(&written_queue)) {
+        print("  RED: a plan written in its own order did not read as seated\n", .{});
+        return 1;
+    }
+    if (plan_is_seated(&any_order_queue)) {
+        print("  RED: a plan written against its own names read as seated\n", .{});
+        return 1;
+    }
+
+    // A seated plan arranges to itself, exactly -- so this rung generalizes
+    // the reading it extends rather than rivalling it.
+    var same_store: [max_queue_len]Phase = undefined;
+    const same = same_store[0..written_queue.len];
+    if (!arrange(&written_queue, same)) {
+        print("  RED: a plan already in order could not be seated\n", .{});
+        return 1;
+    }
+    if (!plans_match(same, &written_queue)) {
+        print("  RED: seating a plan already in order moved a phase\n", .{});
+        return 1;
+    }
+
+    // And the whole offer: the derived order is the order an author would
+    // have had to write out by hand.
+    var seated_store: [max_queue_len]Phase = undefined;
+    const seated = seated_store[0..any_order_queue.len];
+    if (!arrange(&any_order_queue, seated)) {
+        print("  RED: a plan whose turns are sound could not be seated\n", .{});
+        return 1;
+    }
+    if (!plans_match(seated, &written_queue)) {
+        print("  RED: the seating did not recover the order the author wrote\n", .{});
+        return 1;
+    }
+    if (!plan_is_seated(seated)) {
+        print("  RED: a seating answered with a sequence its own names forbid\n", .{});
+        return 1;
+    }
+    // invariant: a seated plan is still a plan every elder rung may read
+    assert(precede.plan_is_ordered(seated));
+
+    // A turn's steps keep the order the queue wrote them in, even while the
+    // seating moves the whole turn forward past the turn that named it.
+    var steps_store: [max_queue_len]Phase = undefined;
+    const steps = steps_store[0..two_step_queue.len];
+    if (!arrange(&two_step_queue, steps)) {
+        print("  RED: a plan with a two-step turn could not be seated\n", .{});
+        return 1;
+    }
+    if (steps[0].turn != 0 or steps[0].step != 0) {
+        print("  RED: the seating did not put a named turn first\n", .{});
+        return 1;
+    }
+    if (steps[1].turn != 0 or steps[1].step != 1) {
+        print("  RED: the seating broke the order a turn's own steps were written in\n", .{});
+        return 1;
+    }
+    if (steps[2].turn != 1) {
+        print("  RED: the seating left a naming turn ahead of the turn it named\n", .{});
+        return 1;
+    }
+    // invariant: seating a plan never changes how many phases it holds
+    assert(steps.len == two_step_queue.len);
+
+    print("  a plan written against its own names is refused rather than run\n", .{});
+    print("  the derived order is the order the author would have written by hand\n", .{});
+    print("  a seated plan arranges to itself exactly, so the elder reading stands\n", .{});
+    return 0;
+}
+
+/// Runs one queue under one reading and answers its report.
+fn run_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Phase,
+    reading: Reading,
+    report_out: *Report,
+) bool {
+    run_queue(allocator, io, self_path, sys, plan, .when_moved, reading, report_out) catch |err| {
+        print("  RED: a queue did not survive its run: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    return true;
+}
+
+/// Runs one queue by seating it first, and answers its report.
+fn run_seated(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Phase,
+    reading: Reading,
+    report_out: *Report,
+) bool {
+    run_arranged(allocator, io, self_path, sys, plan, .when_moved, reading, report_out) catch |err| {
+        print("  RED: a seated queue did not survive its run: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    return true;
+}
+
+/// The arranged lap: one plan run twice, written two ways, ending the same.
+fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    // The door answers before a single dependent starts.
+    var refused: Report = .{};
+    const answer = run_queue(
+        allocator, io, self_path, &sys, &any_order_queue, .when_moved, .preceded, &refused,
+    );
+    if (answer) |_| {
+        print("  RED: a plan written against its own names ran anyway\n", .{});
+        return 1;
+    } else |err| {
+        if (err != error.PlanUnseated) {
+            print("  RED: the door refused for the wrong reason: {s}\n", .{@errorName(err)});
+            return 1;
+        }
+    }
+    if (refused.inner.run.admitted != 0) {
+        print("  RED: the refusal started {d} dependents before answering\n", .{
+            refused.inner.run.admitted,
+        });
+        return 1;
+    }
+
+    var hand: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &written_queue, .preceded, &hand)) return 1;
+    var derived: Report = .{};
+    if (!run_seated(allocator, io, self_path, &sys, &any_order_queue, .preceded, &derived)) return 1;
+
+    print("  a plan written against its own names is refused at the door, {d} dependents started\n", .{
+        refused.inner.run.admitted,
+    });
+    print("  breaks a named turn: {d} written by hand, {d} arranged\n", .{
+        hand.out_of_precede, derived.out_of_precede,
+    });
+    print("  passes: {d} written by hand, {d} arranged\n", .{
+        hand.inner.run.passes, derived.inner.run.passes,
+    });
+    print("  slots unspent: {d} written by hand, {d} arranged\n", .{
+        hand.inner.run.slots_unspent, derived.inner.run.slots_unspent,
+    });
+    print("  {d} dependents run to the same end under both orders\n", .{derived.inner.run.reaped});
+
+    if (derived.out_of_precede != 0) {
+        print("  RED: the arranged run broke {d} turn orders its author named\n", .{
+            derived.out_of_precede,
+        });
+        return 1;
+    }
+    if (derived.inner.run.passes != hand.inner.run.passes) {
+        print("  RED: the derived order took {d} passes against {d} written by hand\n", .{
+            derived.inner.run.passes, hand.inner.run.passes,
+        });
+        return 1;
+    }
+    if (derived.inner.run.slots_unspent != hand.inner.run.slots_unspent) {
+        print("  RED: the derived order spent its slots differently from the hand-written one\n", .{});
+        return 1;
+    }
+    // invariant: the two orders ran the same queue to the same end
+    assert(hand.inner.run.reaped == derived.inner.run.reaped);
+    assert(hand.inner.run.succeeded == derived.inner.run.succeeded);
+    assert(derived.inner.run.reaped == any_order_queue.len);
+    // invariant: seating recovers the hand-written run whole, measure for measure
+    assert(hand.inner.run.peak_in_flight == derived.inner.run.peak_in_flight);
+    assert(hand.inner.out_of_mask == derived.inner.out_of_mask);
+
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan arrange {s} -- self-test\n", .{caravan_arrange_version});
+    const seating = check_seating();
+    if (seating != 0) return seating;
+    const order = check_order(allocator, io, self_path);
+    if (order != 0) return order;
+    print("  GREEN: a plan may be written in any order, and the queue seats it\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return cohort.run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}
