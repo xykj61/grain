@@ -1350,6 +1350,24 @@ The numbers state the claim: **five refusals stand by name -- unopened, unsettle
 
 The numbers state the claim: **five refusals stand by name -- unlooked, unaddressed, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, and only the telling parts the two plans.** Witness: `tools/caravan_recount_witness.rish`.
 
+### allay -- the reader who was told says whether the second look puts the matter to rest
+
+`recount.rye` above carries the second look home. Four bytes leave the plan's own notes and land in the box of the reader who asked for them, so a reopening finally comes back to the person who made it. **And nobody ever asks whether it answered them.** The telling lands, the run settles `carried out whole`, and that reader's own reply -- already written, already sitting in their box -- is never opened. A matter reopened once may be reopened again, and a plan that never reads the answer cannot tell a question finally put to rest from one still standing. This is the shape `apprise.rye` wore before `suffice.rye` answered it, one tier further out. **The measurement is tellings a run made whose reader's word was never read back**, and it falls 1 to 0.
+
+**The word is read where its writer left it, and published where the settlement is read.** The reader keeps five bytes in `<address>.rests` -- the telling they were carried, echoed back whole, and one byte for what they make of it -- and the run copies that one byte into `plan.rest`, so an operator opening the outcome learns whether the matter is closed. The plan copies the word; it never composes one.
+
+**A run reads a reply only to a telling it actually made.** The telling comes off the wire rather than out of the run's memory of having made one, so a plan that carried nothing home reads nothing and says so. `AllayUntold` refuses by name.
+
+**A reader who wrote nothing is reported as silent, never as content.** A box that says nothing and a reader who says the matter still stands are two different facts, and only the second one is a word. `AllaySilent` refuses by name.
+
+**The word names the telling it is about.** A reader may still hold a reply to a telling from a run before today, and reading that as today's would publish a verdict about a second look nobody made this morning. `AllayMismatched` is the rung itself.
+
+**Reading is not deciding.** The settlement, the quarrel, its age, its standing, the case on the desk, the finding, the plan's own word, the concession, the meeting, the redress, the delivery, the reader's first verdict, the second look, and the telling itself each come out of a reading run exactly as they went in -- and both runs settle `carried out whole`.
+
+**A reader's reply survives a provisioning, and the plan's copy falls with the telling it answers.** A reply swept every morning would leave a reader who answered reading a plan that never heard them; a published word standing beside a telling this plan's wire has forgotten would say a matter rests that nobody can find.
+
+The numbers state the claim: **five refusals stand by name -- untold, silent, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, and only the reading parts the two plans.** Witness: `tools/caravan_allay_witness.rish`.
+
 
 ## The ladder's carried checks -- the fold, and the meter that keeps it
 
@@ -1366,9 +1384,9 @@ The fold is conservative on purpose, and both of its limits were taught by a bol
 
 What stays carried is **256 bodies over 12,035 lines**, growing about 1,637 a rung -- a little over a fifth of what stood before. Ending it is the shared-harness move (option B), which becomes a refactor now that A has run.
 
-Nothing observable changed. Every rung of the grievance arc from `appraise` to `recount` was built twice -- folded and pristine -- and run against the same wire: run against the same wire: **28 rungs, the same output lines, every one of them** -- only the order in which three concurrent dependents print interleaves, run to run, in the pristine build exactly as in the folded one. Every check that ran before still runs, in the same order, printing the same words. The choir sings all 85 rungs GREEN from a cold tree.
+Nothing observable changed. Every rung of the grievance arc from `appraise` to `recount` was built twice -- folded and pristine -- and run against the same wire: **28 rungs, the same output lines, every one of them** -- only the order in which three concurrent dependents print interleaves, run to run, in the pristine build exactly as in the folded one. Every check that ran before still runs, in the same order, printing the same words. The choir sings every rung GREEN from a cold tree.
 
-`tools/caravan_ladder_copy_witness.rish` changed jobs with the fold. It holds the standing under a named ceiling of **22,000** carried lines -- about six rungs of headroom, close enough that the number means something again -- counts the 523 folded checks off the ladder rather than believing the prose, proves its counting by hand on a two-rung corpus, and refuses by name on three paths: a corpus with no modules, a corpus whose modules hold no checks at all, and a corpus grown past its ceiling. It sings with the choir, so it can never become a guard nobody runs.
+`tools/caravan_ladder_copy_witness.rish` changed jobs with the fold. It holds the standing under a named ceiling of **22,000** carried lines -- about six rungs of headroom, close enough that the number means something again -- counts the folded checks off the ladder rather than believing the prose -- 562 of them now, the 523 the fold landed plus the 39 `allay` folded as it was written, proves its counting by hand on a two-rung corpus, and refuses by name on three paths: a corpus with no modules, a corpus whose modules hold no checks at all, and a corpus grown past its ceiling. It sings with the choir, so it can never become a guard nobody runs.
 
 
 ## Held
