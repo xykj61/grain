@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20260820.102945
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan deem -- the hand a case went to is read back, and its finding published
+prompt Keaton set the loop running: be Kyri in Radiant Style, read the operator card and the itineraries, close open agent-closable reds first, take the next agent-doable lap Lindy-first crux-first, deep-read one council-rota doc, condense REMEMBER when a set closes, cairn before a sweep, sweep the prose Radiant, and send each finished increment as its own signed round.
+think Standfast first. crux/REDS.md reads five living rows and every one of them carries a CLOSED note -- %81, %83's landed prevention, %84, %96, %97 -- so no red books this lap's allocation and constructive work may open.
+think The running thread came off the newest log's recommend line rather than off the card. The refer rung had just landed, and its recommend named the next crux exactly: a third hand is given a copy of the argument and no way whatever to answer it, so a plan may refer the same quarrel forever and never once be told what the hand it chose made of it.
+think Council rota, lap index 75 mod 27 = 21 -- ORGANIZING.md, which last lap already read beside item 20. Took item 22, context/SILO_TECHNIQUE.md, as the genuine second reading. Its discipline shaped one choice directly: the finding lives in the third hand's own box, siloed from the plan's notes entirely, so the plan can read it and never write it.
+think Named the rung under the Comlink tendency -- clear, fun, safe. Grepped the whole tree for `deem` and found zero hits in .rye, .rish, and .md alike, so the word is free. It says exactly what the act is, it is a pleasure to type, and it sits naturally beside dwell and swell.
+think Shaped the rung around one honest crux: a finding must name the case it answers. A desk that has heard this argument before may still hold the answer to an older one, and publishing that beside today's outcome would put a third hand's name on a word they never said about this work. So a finding carries four bytes -- the three that named the case, echoed back exactly, and one more saying what the hand made of it -- and DeemMismatched is the rung itself.
+think Kept the restraint the arc is built on: no run ever writes a finding. answer_as_forum exists so a hand outside the argument can answer honestly on the same wire, and it is never called by any run of the plan. A supervisor able to author the word against it has graded its own objection, which is the whole thing the referring existed to prevent.
+think The measured lap parts the two runs on the reading alone. Both carry the same case to the same desk, and the hand at that desk has already written the same answer into their own box for both. So the only difference is whether the plan ever opens it -- which makes the harm this rung names visible as a choice rather than as an absence.
+think The bench finds for the reader who objected, and the plan still settles carried out whole. That is the honest shape of a word from outside: it carries, and it never decides.
+obs One restructure fell out of proving a red. Reaching DeemUnreferred on the wire first hit an assert inside referral_bytes, because a run that carried nothing out has no loud volume to build a case from. The fix was to build the case lazily -- null when nothing travelled -- so the refusal order in the run matches the refusal order in the fold, and the guard fires by name rather than by panic. Better code, found by trying to break it.
+obs Three parameter shadows caught by the compiler before anything ran: read_count and standing were already file-level names. Renamed to heard_count and spoken. Zig's shadow check is a small gift here -- the arc has grown large enough that a plain word is rarely free.
+obs Six RED paths proven on metal before the witness claimed GREEN, one of them a planted control where every guard is disarmed at once -- the write skipped, the read-back dropped, and the harness read of the note replaced by the answer it hoped for. It printed GREEN while caravan/.deems/plan.deem did not exist at all. Seeing that once is what makes the reading back a check rather than decoration.
+obs The measurement is narrow on purpose. A run that referred nothing is owed an answer by nobody, so it costs the count nothing; the harm named is the case that travelled and was never heard from again.
+loom witness=caravan_deem_witness verdict=GREEN reds_proven=6 refusals=5 finding_bytes=4
+loom witness=caravan_suite_witness rungs=75 verdict=GREEN cold_tree=whole
+loom plan=deem_two_runs phases=6 dependents=6 absorbed=3 lost=3 reseated=3 answered=0,1 awaiting=1,0 unanswered=1,0 settlement=carried,carried
+file caravan/deem.rye the rung -- Deem, Finding, the four-byte finding, five refusals, and the reading as the last act of the run
+file tools/caravan_deem_witness.rish the witness that proves it and joins the choir
+file tools/caravan_suite_witness.rish registers the new rung; the choir now sings 75
+file caravan/README.md the durable per-rung account, beside refer above it
+file crux/REMEMBER.md the live edge refilled and the refer edge condensed one line down
+file crux/CAIRNS.md the walk-back at 4c4d3c150e, recorded before the card was swept
+file .gitignore this rung's own note directory
+recommend keep-going the arc now corrects a record, carries the correction, hears the answer, records the disagreement, escorts the word, bounds the objection, stands its standing, tells the raiser, reads their reply, carries a live quarrel past the run that heard it, makes the inheriting run answer for it, lets its holder close it, says how long a standing one has stood, reads that age aloud, puts a long-standing one before a hand that is neither party, and now reads back what that hand made of it -- so the question above is what a plan owes a finding once it has published one: the arc gives an operator the third hand's word and gives the plan no obligation whatever toward it, which means a supervisor may publish `a hand outside the argument finds for the reader who objected` beside `carried out whole` every run forever and never once let that finding touch what it does next.
