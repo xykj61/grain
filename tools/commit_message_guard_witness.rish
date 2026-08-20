@@ -18,6 +18,8 @@
 #      verbose diff below the scissors. A wall that refuses everything is as useless as none.
 #   3. The wall is actually armed on this clone, and the refusal teaches the fix rather than
 #      merely saying no.
+#   4. The public seed arms the same wall. publish-seed.sh re-creates seed/.git on every run,
+#      so the arming lives in the script -- checked by doing it, not by reading it.
 #
 # Kin: tools/fixtures/commit_message_guard_scan.sh (the cases), tools/hooks/commit-msg (the wall),
 # tools/install_hooks.rish (arming it), .claude/rules/git-signing.md (both rules).
@@ -48,10 +50,20 @@ assert scan.out contains "GUARD_TEACHES 1" else "commit-guard: the refusal does 
 # A guard must never eat the work it refuses.
 assert scan.out contains "GUARD_MESSAGE_KEPT 1" else "commit-guard: the hook altered the message file it refused -- a refusal must leave the author's words untouched"
 
+# The public seed arms the same wall. publish-seed.sh deletes and re-creates seed/.git on
+# every publish, so a hooksPath set once by hand would be wiped on the next run -- the arming
+# has to live in the script, and it is proven by doing rather than by reading: a throwaway
+# repo armed exactly the way the publisher arms the seed refuses a forbidden message and
+# welcomes a clean one, and the message the publisher actually ships is fed to the hook.
+assert scan.out contains "SEED_PUBLISHER_ARMS 1" else "commit-guard: publish-seed.sh no longer arms the seed repo -- a fresh seed/.git would publish unguarded"
+assert scan.out contains "SEED_ARMED_REFUSES 1" else "commit-guard: a repo armed the way the publisher arms the seed let a forbidden message through"
+assert scan.out contains "SEED_ARMED_WELCOMES 1" else "commit-guard: a repo armed the seed's way refused a clean message -- the wall would block every publish"
+assert scan.out contains "SEED_SHIPPED_MESSAGE_PASSES 1" else "commit-guard: the message publish-seed.sh actually ships does not pass the wall it arms"
+
 # The wall must be standing here, not merely shippable. A fresh clone lands RED with a one-line fix.
 assert scan.out contains "GUARD_ARMED 1" else "commit-guard: this clone is not armed -- run `rishi/bin/rishi run tools/install_hooks.rish` to point core.hooksPath at tools/hooks"
 
 assert scan.out contains "GUARD_OK" else "commit-guard: the scan reported GUARD_BAD -- read the line above"
 assert ((scan.out contains "GUARD_BAD") == false) else "commit-guard: GUARD_BAD present"
 
-say "GREEN: commit-guard -- 18 planted cases answered right, the refusal teaches its own fix, the message survives it, and the wall is armed on this clone."
+say "GREEN: commit-guard -- 18 planted cases answered right, the refusal teaches its own fix, the message survives it, the public seed arms the same wall on every publish, and this clone stands armed."
