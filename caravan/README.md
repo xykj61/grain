@@ -1319,6 +1319,17 @@ The numbers state the claim: **five refusals stand by name -- untold, silent, mi
 The numbers state the claim: **five refusals stand by name -- unweighed, settled, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, and only the taking up parts the two plans.** Witness: `tools/caravan_reopen_witness.rish`.
 
 
+## The ladder's carried checks -- a meter, not a rung
+
+Every rung above imports the implementation of the rung beneath it and then carries a fresh copy of that rung's self-test. The imports are real reuse; the checks are not. A check function is private, so a later rung has no way to *call* the one below it -- only to carry its bytes forward.
+
+Measured on metal rather than recalled: **88 rung modules, 914 check functions, 277 distinct bodies, 637 byte-identical copies occupying 46,014 lines** -- eighteen percent of the ladder's 258,525 lines, growing about five hundred lines a rung. The imports being real means this is accumulated self-test rather than duplicated logic, and the suite already sings every rung; nothing here is wrong. It is a ratchet, and now a measured one.
+
+`tools/caravan_ladder_copy_witness.rish` holds the number under a named ceiling of 60,000 carried lines, proves its counting by hand on a two-rung corpus, and refuses by name on three paths: a corpus with no modules, a corpus whose modules hold no checks at all, and growth past the ceiling. It sings with the choir, so it can never become a guard nobody runs.
+
+Whether to fold the checks into one shared harness -- and which of three shapes that fold takes -- is a design call standing with its measurement in [`../active-designing/20260820-131713_caravan-ladder-shared-harness.md`](../active-designing/20260820-131713_caravan-ladder-shared-harness.md), awaiting Keaton's word.
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.

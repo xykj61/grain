@@ -1,0 +1,17 @@
+//! Fixture rung -- the upper module. It carries `check_first` forward verbatim,
+//! exactly as a real rung carries the checks of the rung beneath it, and adds
+//! one check of its own.
+
+fn check_first() u8 {
+    // invariant: the corpus proves counting, so the body only needs to be real lines.
+    var held: u32 = 1;
+    held += 1;
+    return if (held == 2) 0 else 1;
+}
+
+fn check_third() u8 {
+    // invariant: the upper rung's own check, which no rung below it holds.
+    var held: u32 = 3;
+    held += 3;
+    return if (held == 6) 0 else 1;
+}

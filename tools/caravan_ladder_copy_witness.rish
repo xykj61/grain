@@ -1,0 +1,66 @@
+# tools/caravan_ladder_copy_witness.rish -- the Caravan ladder's carried checks are a measured number.
+#
+# Every rung of the Caravan arc imports the implementation of the rung beneath it and then carries a
+# fresh copy of that rung's self-test. The imports are real reuse; the checks are not. `check_heed` is
+# the same bytes in suffice.rye, apprise.rye, and reopen.rye, because a check function is private and a
+# later rung has no way to call the one below it. So the modules grow about five hundred lines a rung,
+# and the ladder is eighty-two rungs deep.
+#
+# The growth was surfaced as a recollection in the `20260820.130722` session log. A recollection drifts
+# (REDS %93), so this witness turns it into a number anybody can re-run before deciding anything.
+#
+# Three claims, each proven on metal:
+#   1. The living ladder counts clean under a named ceiling, with headroom for the arc to keep climbing
+#      while the shared-harness answer is designed.
+#   2. The counting itself is right, proven on a two-module corpus whose one carried check and six
+#      carried lines are countable by hand.
+#   3. Every RED path refuses by name -- a corpus with no modules, a corpus whose modules hold no checks
+#      at all (the REDS %97 shape: a count that cannot see what it measures), and growth past the ceiling.
+#
+# Brief: active-designing/20260820-134500_caravan-ladder-shared-harness.md
+# No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_ladder_copy_witness.rish
+
+say "caravan-ladder-copy: Language EN -- the checks the ladder carries forward are counted rather than recalled, so the design call rests on a number."
+say "caravan-ladder-copy: Style Radiant -- measurement beats memory; a ratchet surfaced once becomes a meter anybody can re-run."
+say "caravan-ladder-copy: Lens TAME -- safety first: the ceiling is named, the counting is proven by hand on a corpus, and every refusal has a name."
+
+let living = run ["sh" "tools/fixtures/caravan_ladder_copy_scan.sh"]
+assert living.ok else "caravan-ladder-copy: the living ladder scan must exit 0 -- ${living.out}"
+assert living.out contains "LADDER_COPY_OK" else "caravan-ladder-copy: want the living ladder under its named ceiling"
+assert living.out contains "LADDER_MODULES" else "caravan-ladder-copy: want the module count named"
+assert living.out contains "copied_lines=" else "caravan-ladder-copy: want the carried lines named"
+
+say "caravan-ladder-copy: living ladder -- ${living.out}"
+
+# The counting proven by hand. The corpus holds two rungs: the lower carries two distinct checks, the
+# upper carries one of them forward byte for byte and adds one of its own. So four checks stand, three
+# bodies are distinct, exactly one is a copy, and that copy is six lines long -- countable by eye in the
+# fixture itself, which is what makes this a proof of the counter rather than a second opinion from it.
+let corpus = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_copy_corpus sh tools/fixtures/caravan_ladder_copy_scan.sh"]
+assert corpus.ok else "caravan-ladder-copy: the corpus scan must exit 0 -- ${corpus.out}"
+assert corpus.out contains "LADDER_MODULES 2" else "caravan-ladder-copy: want the corpus read as two rungs"
+assert corpus.out contains "LADDER_CHECKS 4 distinct=3 copies=1" else "caravan-ladder-copy: want four checks, three distinct, one carried"
+assert corpus.out contains "copied_lines=6" else "caravan-ladder-copy: want the one carried check counted at its six real lines"
+
+# RED path one -- a corpus holding no rung modules at all.
+let empty = run ["sh" "-c" "d=$(mktemp -d); CARAVAN_LADDER_DIR=$d sh tools/fixtures/caravan_ladder_copy_scan.sh; s=$?; rmdir $d; exit $s"]
+assert (empty.ok == false) else "caravan-ladder-copy: an empty corpus must refuse"
+assert empty.out contains "reason=no_modules" else "caravan-ladder-copy: want the empty corpus refused by name"
+
+# RED path two -- modules that hold no checks. This is the REDS %97 shape: the scan read a real corpus
+# and answered zero, and a zero nobody questions is a guess wearing a measurement's clothes. Here the
+# zero refuses instead.
+let hollow = run ["sh" "-c" "d=$(mktemp -d); printf 'const std = @import(\"std\");\\n' > $d/hollow.rye; CARAVAN_LADDER_DIR=$d sh tools/fixtures/caravan_ladder_copy_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert (hollow.ok == false) else "caravan-ladder-copy: a corpus with no checks must refuse"
+assert hollow.out contains "reason=no_checks" else "caravan-ladder-copy: want the hollow corpus refused by name"
+
+# RED path three -- the ceiling has teeth. Held at a hundred lines, the living ladder refuses, which
+# proves the ceiling is a real gate rather than a printed number.
+let ceiling = run ["sh" "-c" "CARAVAN_LADDER_COPY_CEILING=100 sh tools/fixtures/caravan_ladder_copy_scan.sh"]
+assert (ceiling.ok == false) else "caravan-ladder-copy: a ladder past its ceiling must refuse"
+assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-copy: want the ceiling breach refused by name"
+
+say "GREEN: caravan-ladder-copy -- the ladder's carried checks stand counted under a named ceiling, the counting is proven by hand on a two-rung corpus, and all three RED paths refuse by name."
