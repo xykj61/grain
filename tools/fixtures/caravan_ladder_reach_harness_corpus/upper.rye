@@ -1,0 +1,10 @@
+//! Fixture rung -- the top of the harness-form corpus. It folds into the middle
+//! rung one step down, through the shared harness, so the chain walks a rung at
+//! a time and no rung is named twice. This is the shape the living ladder keeps.
+
+const middle_rung = @import("middle.rye");
+const ladder_checks = @import("ladder_checks.rye");
+
+pub fn check_first() u8 {
+    return ladder_checks.check_first(middle_rung);
+}

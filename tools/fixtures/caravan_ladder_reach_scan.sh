@@ -3,9 +3,13 @@
 # rung directly below it, and no rung reaches past its neighbor.
 #
 # A rung whose check is byte-for-byte the one beneath it runs it there rather
-# than carrying a copy (the 20260820.131713 design call, option A). That fold
-# reads `return <alias>_rung.check_<name>();`, and the alias names which rung the
-# body actually runs in.
+# than carrying a copy (the 20260820.131713 design call, option A). That fold has
+# two written forms, and the alias in each names which rung the body actually runs
+# in: the elder `return <alias>_rung.check_<name>();`, and the harness form
+# `return ladder_checks.check_<name>(<alias>_rung);`, which is what a rung writes
+# once the rung below publishes no stub of its own (the 20260820.182533 fold).
+# Both are read here, since a guard blind to one form would pass a ladder that had
+# merely moved between them -- a count that cannot see what it measures, REDS %97.
 #
 # The discipline the fold assumes is one step: each rung folds into the rung
 # immediately beneath it, so the chain walks down one rung at a time. A rung that
@@ -33,8 +37,17 @@ for f in "$DIR"/*.rye; do
   test -f "$f" || continue
   modules=$((modules + 1))
   mod=$(basename "$f" .rye)
-  targets=$(grep -oE 'return [a-z_]+_rung\.check_' "$f" 2>/dev/null \
-    | sed 's/^return //; s/\.check_$//' | sort -u)
+  # A rung names the rung below it in one of two forms, and both are a fold. The
+  # elder form calls the check on that rung directly; the harness form hands that
+  # rung to the shared body in ladder_checks.rye, which is what a rung writes once
+  # the rung below stopped publishing a stub of its own (the 20260820.182533 fold).
+  # Reading only one form would leave a rung's reach unguarded the moment it moved
+  # to the other -- a guard that cannot see what it measures (REDS %97).
+  targets=$( { grep -oE 'return [a-z_]+_rung\.check_' "$f" 2>/dev/null \
+      | sed 's/^return //; s/\.check_$//'
+    grep -oE 'return ladder_checks\.check_[a-z0-9_]+\([a-z_]+_rung' "$f" 2>/dev/null \
+      | sed 's/.*(//'
+  } | sort -u)
   test -n "$targets" || continue
   folding=$((folding + 1))
   count=$(printf '%s\n' "$targets" | wc -l | tr -d ' ')

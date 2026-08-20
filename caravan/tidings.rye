@@ -4714,13 +4714,6 @@ pub fn check_delivery() u8 {
     return reposing_rung.check_delivery();
 }
 
-/// The generalization test: a run that weighs a plan losing nothing reads as
-/// the rung below.
-pub fn check_unlost(sys: *const system.System) u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_unlost(@This(), sys);
-}
 
 /// The reading the reader answers with, in their own hand.
 ///
@@ -5373,20 +5366,6 @@ pub fn check_tidings() u8 {
     return 0;
 }
 
-/// The two answers the wire itself carries, proven as bytes in a reader's own
-/// box rather than only as folds.
-///
-/// The lap below proves the `stood` answer end to end, since the word its reader
-/// objected to is the very word the plan finally settled -- which is the answer
-/// this arc most often owes a person, and the one it is least comfortable to
-/// send. The other answer is proven here, on the same wire and in the same shape
-/// -- written to a reader of its own, read back out of their box, and never
-/// touching the box the lap depends on.
-pub fn check_tidings_wire(io: std.Io) u8 {
-    // The harness owns this body; it runs here against this rung's own
-    // helpers, its own report, and its own wire.
-    return ladder_checks.check_tidings_wire(@This(), io);
-}
 
 /// The repose lap: one plan run twice over an objection its reader let go, once
 /// leaving the mark reading exactly as it was written and once carrying the
@@ -5589,7 +5568,7 @@ fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
     if (delivering != 0) return delivering;
     const hearing = check_hearing();
     if (hearing != 0) return hearing;
-    const unlost = check_unlost(&sys);
+    const unlost = ladder_checks.check_unlost(@This(), &sys);
     if (unlost != 0) return unlost;
     const disputing = check_dispute();
     if (disputing != 0) return disputing;
@@ -5601,7 +5580,7 @@ fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
     if (reposing != 0) return reposing;
     const tiding = check_tidings();
     if (tiding != 0) return tiding;
-    const wired = check_tidings_wire(io);
+    const wired = ladder_checks.check_tidings_wire(@This(), io);
     if (wired != 0) return wired;
     const runs = check_tidings_runs(allocator, io, self_path, &sys);
     if (runs != 0) return runs;

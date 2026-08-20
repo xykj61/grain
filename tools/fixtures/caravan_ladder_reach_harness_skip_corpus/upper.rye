@@ -1,0 +1,12 @@
+//! Fixture rung -- the planted drift, written in the harness form. This top rung
+//! reaches PAST its neighbor and folds straight into the bottom rung, so two
+//! rungs name one rung below. A scan reading only the elder form would see no
+//! fold here at all and pass a ladder that had drifted -- which is why the scan
+//! reads both forms. It must refuse this by name.
+
+const lower_rung = @import("lower.rye");
+const ladder_checks = @import("ladder_checks.rye");
+
+pub fn check_first() u8 {
+    return ladder_checks.check_first(lower_rung);
+}
