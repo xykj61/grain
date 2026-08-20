@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260819.215403` -- REMEMBER's understudy chronicle folded to a pointer as the unhand rung lands
+
+**Walk-back nib:** `dafef2f30c` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
+**Swept:** the **Live edge** bullet's whole inline account of `caravan/understudy.rye` -- why the door costs nothing because the arc had already separated what a child was handed from what the record says, the table's new memory of which slot each live child came from, `UnderstudyMoved` about place and `UnderstudyHomed` about time, the 19 tests against 32 and 256, the 0 turns' memory changed against 2, and the 7 places, 7 children, and 2 carried home either way. Roughly one long paragraph folded into the prior-edges pointer.
+**What waits there, worth recalling:** at nib `dafef2f30c` the departing card holds the full prose for why a child in flight is judged by what it was handed rather than by what the record says -- the separation that made an understudy safe. That argument is the direct ancestor of this rung's finding, which spends the same separation one step further out: if the line a child holds is a fact about the child, then the door may weigh newcomers against that line rather than against the ceiling its whole domain was granted. Both survive in `caravan/understudy.rye`, `caravan/README.md`, and the `20260819.213726` session log.
+
 ### `20260819.213726` -- REMEMBER's replace chronicle folded to a pointer as the understudy rung lands
 
 **Walk-back nib:** `6be544fa1e` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.

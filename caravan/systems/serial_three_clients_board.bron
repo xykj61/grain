@@ -1,0 +1,73 @@
+# serial_three_clients_board -- a region one client writes and the others
+# read, with no channel joining any of them.
+#
+# `serial_three_clients_menu.bron` published one region every domain may
+# reach and only the virtualiser may write. That shape is what let a reader
+# of the grants say something true and narrow: a region two clients only
+# read is a fact they agree about rather than a hazard between them.
+#
+# This declaration adds the case that shape cannot reach. `board` is written
+# by `client_a` and read by `client_b` and `client_c`, and no channel joins
+# any client to any other. So a reader of the grants alone must answer that
+# `client_a` conflicts with both of the others at every instant -- they share
+# a region one side may write, which is exactly the hazard the grant reading
+# exists to catch.
+#
+# That answer is true of the domain and false of most of its work. A client
+# is handed a line narrowed to the arcs it names this turn, so a `client_a`
+# peeking its own `back_a` holds no capability to `board` at all while it
+# runs. The ceiling says the two contend; the line handed over says they
+# never touch. Both readings are honest about different things, and the
+# document is written to hold them apart.
+#
+# Nothing else moves from the menu declaration: the same four domains, the
+# same three channels to the virtualiser, the same private regions and arcs,
+# and `menu` still published by the virtualiser to every client.
+#
+# Read whole by `caravan/read.rye`; exercised by `caravan/unhand.rye`.
+
+system serial_three_clients_board
+
+domain serial_virt
+domain client_a
+domain client_b
+domain client_c
+
+channel serial_virt client_a
+channel serial_virt client_b
+channel serial_virt client_c
+
+region ask_a 4096
+region back_a 4096
+region taken_a 64
+region ask_b 4096
+region back_b 4096
+region taken_b 64
+region ask_c 4096
+region back_c 4096
+region taken_c 64
+region menu 4096
+region board 4096
+
+grant ask_a client_a rw
+grant ask_a serial_virt r
+grant back_a serial_virt rw
+grant back_a client_a r
+grant taken_a client_a rw
+grant ask_b client_b rw
+grant ask_b serial_virt r
+grant back_b serial_virt rw
+grant back_b client_b r
+grant taken_b client_b rw
+grant ask_c client_c rw
+grant ask_c serial_virt r
+grant back_c serial_virt rw
+grant back_c client_c r
+grant taken_c client_c rw
+grant menu serial_virt rw
+grant menu client_a r
+grant menu client_b r
+grant menu client_c r
+grant board client_a rw
+grant board client_b r
+grant board client_c r
