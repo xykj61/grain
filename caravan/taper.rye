@@ -1135,7 +1135,7 @@ fn standing_dependent(phase: Phase) cohort.Running {
 ///
 /// The happy zone of this rung: one declaration, one standing dependent, and
 /// every question answered as a pure fold -- no process anywhere.
-fn check_lines(sys: *const system.System) u8 {
+pub fn check_lines(sys: *const system.System) u8 {
     const standing_phase = written_queue[0];
     const handed = standing_phase.task;
     const reader = written_queue[1];
@@ -1249,7 +1249,7 @@ fn check_lines(sys: *const system.System) u8 {
 /// the sibling mask, a seated plan arranged to itself, and a line as wide as
 /// its own ceiling read as the ceiling. Here a run where nothing has been
 /// given back answers `unhand.admissible_held` exactly, pair for pair.
-fn check_untapered(sys: *const system.System) u8 {
+pub fn check_untapered(sys: *const system.System) u8 {
     const clients = [_]Task{
         written_queue[0].task,
         written_queue[1].task,
@@ -1317,7 +1317,7 @@ fn run_one(
 
 /// The taper lap: one plan run twice, once by the line handed at spawn and
 /// once by the line each dependent still holds.
-fn check_room_runs(
+pub fn check_room_runs(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,

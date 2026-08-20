@@ -557,7 +557,7 @@ fn run_one(
 }
 
 /// The cut read straight, before any supervisor spends it.
-fn check_cut(io: std.Io) u8 {
+pub fn check_cut(io: std.Io) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 
@@ -604,7 +604,7 @@ fn check_cut(io: std.Io) u8 {
 }
 
 /// The cut lap: reading the act runs a turn's second phase ahead of its first.
-fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 

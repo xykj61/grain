@@ -5,7 +5,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Kyri
 **Lens:** TAME -- safety first, performance second, the joy of the craft third
-**Status:** Vision -- a design call surfaced with its measurement, awaiting Keaton's word. Nothing is cut by this document.
+**Status:** Landed -- **A ran** on Keaton's word `20260820.142246`; see the addendum at the foot. The body below stands exactly as it was written, before the word came.
 **Witness:** [`../tools/caravan_ladder_copy_witness.rish`](../tools/caravan_ladder_copy_witness.rish) over [`../tools/fixtures/caravan_ladder_copy_scan.sh`](../tools/fixtures/caravan_ladder_copy_scan.sh) -- GREEN on metal `20260820.131713`
 
 ---
@@ -60,3 +60,24 @@ Whichever way it goes, the arc keeps climbing. This document changes nothing on 
 ## Related
 
 Surfaced as a ratchet in the `20260820.130722` session log, [`../session-logs/20260820-130722_caravan-reopen-a-short-word-opens-the-matter.kyri`](../session-logs/20260820-130722_caravan-reopen-a-short-word-opens-the-matter.kyri). Read under the council rota beside [`../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md`](../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md). The arc itself is the Lindy-priority Microkernel Target double-seat, [`20260816-205859_double-seat-expansion-eight-seasons.md`](20260816-205859_double-seat-expansion-eight-seasons.md).
+
+---
+
+## Addendum -- A ran (`20260820.142246`)
+
+Keaton's word came, approving every standing recommendation including this one. **A landed.** Every check in the Caravan ladder is `pub` now, and a rung whose check is byte-for-byte the rung below's runs it there rather than keeping a second copy.
+
+**What the fold moved.** 523 check bodies fold, 39,962 lines leave the ladder, and the arc falls from 289,303 lines to 249,341 -- `recount`, the top rung, from 15,664 to 13,113. Measured against today's ladder rather than the 88-module reading in the body above: the carry stood at **779 copied bodies over 54,612 lines** before the fold and stands at **256 over 12,035** after, a little over a fifth of what it was, with the per-rung growth falling from **4,383 lines a rung to 1,637**.
+
+**What the fold refused to move, and why.** The first cut was bolder -- it folded every byte-identical body whose whole call subtree was also carried -- and the cold-start discipline REDS %92 seated caught it within the hour. Two rules came out of that, and both are honest limits rather than shortfalls:
+
+- **A check that reaches the wire is never run in the rung below.** The bodies match byte for byte, yet each rung keeps its notes in its own directory (`caravan/.apprises` beside `caravan/.redresses`), so the rung below would provision *its* wire and leave this rung's cold. The bolder cut passed on a warm tree and went RED the moment the choir cleared the stores -- `NoteUnavailable`, a debt that could not be seated at all, exactly the failure REDS %92 exists to surface.
+- **A check whose tail chains into a check this rung invented stays home.** The rung below has never heard of the check it would chain to, so running the body there would silently end the chain early and skip everything this rung added -- which is how the first cut lost `check_apprise_wire` without a single compiler complaint.
+
+Both residues are precisely what **B** would take: a harness that runs a rung's checks against *its own* report and *its own* wire, with the chain expressed as a list rather than a tail call, has no such limit. B is a refactor now rather than a rewrite, which is what A was for.
+
+**What did not change.** Nothing observable. Every rung of the grievance arc from `appraise` to `recount` was built twice -- folded and pristine -- and run against the same wire: run against the same wire: **28 rungs, the same output lines, every one of them** -- only the order in which three concurrent dependents print interleaves, run to run, in the pristine build exactly as in the folded one. Every check that ran before still runs, in the same order, printing the same words. The choir sings all 85 rungs GREEN from a cold tree.
+
+**The meter changed jobs.** It began as a ratchet meter over a number nobody was watching; it is now the wall that keeps the fold folded. The ceiling stands at **22,000** against a standing of 12,035 -- about six rungs of headroom at the residue's measured rate, close enough that the number means something, where 60,000 over a folded ladder would have meant nothing for years. The witness also counts the 523 folded checks off the ladder itself, so a tree that quietly carried the bodies again would go RED whatever the prose said.
+
+Session log: [`../session-logs/20260820-143646_caravan-ladder-fold.kyri`](../session-logs/20260820-143646_caravan-ladder-fold.kyri).

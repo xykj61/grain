@@ -1695,7 +1695,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 /// and the honesty of the count answered as a pure fold -- no process
 /// anywhere. The fourth refusal, `AbandonUncounted`, belongs to the run rather
 /// than the fold, since only the wire can answer whether the count landed.
-fn check_abandonment() u8 {
+pub fn check_abandonment() u8 {
     // The act itself: a departed dependent conferred one arc, fallen holding
     // it, its abandonment recorded.
     if (abandon_refusal(1, false, false)) |why| {
@@ -1760,7 +1760,7 @@ fn check_abandonment() u8 {
 
 /// The generalization test: a run that answers for no abandonment reads as
 /// the rung below.
-fn check_unanswered(sys: *const system.System) u8 {
+pub fn check_unanswered(sys: *const system.System) u8 {
     const clients = [_]Task{
         written_queue[0].task,
         written_queue[1].task,
@@ -1916,7 +1916,7 @@ fn judge_answer_runs(quiet: *Report, spoken: *Report) u8 {
 
 /// The abandon lap: one plan run twice, once taking each fallen holder's
 /// conferral back in silence and once answering for the work it never bought.
-fn check_answer_runs(
+pub fn check_answer_runs(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,

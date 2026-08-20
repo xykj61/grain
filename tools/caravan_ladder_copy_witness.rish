@@ -1,31 +1,39 @@
-# tools/caravan_ladder_copy_witness.rish -- the Caravan ladder's carried checks are a measured number.
+# tools/caravan_ladder_copy_witness.rish -- the Caravan ladder's carried checks are a measured number, and the fold that ended most of them holds.
 #
-# Every rung of the Caravan arc imports the implementation of the rung beneath it and then carries a
-# fresh copy of that rung's self-test. The imports are real reuse; the checks are not. `check_heed` is
-# the same bytes in suffice.rye, apprise.rye, and reopen.rye, because a check function is private and a
-# later rung has no way to call the one below it. So the modules grow about five hundred lines a rung,
-# and the ladder is eighty-two rungs deep.
+# Every rung of the Caravan arc imports the implementation of the rung beneath it. For eighty-odd rungs it also carried a
+# fresh copy of that rung's self-test, because a check function was private and a later rung had no way to call the one
+# below it. Measured rather than recalled, that reached 779 copied bodies over 54,612 lines, growing about 4,383 a rung.
 #
-# The growth was surfaced as a recollection in the `20260820.130722` session log. A recollection drifts
-# (REDS %93), so this witness turns it into a number anybody can re-run before deciding anything.
+# On Keaton's word the ladder folded (the 20260820.131713 design call, option A): every check is public now, and a rung
+# whose check is byte-for-byte the rung below's runs it there. 523 bodies fold that way, 39,962 lines leave the ladder,
+# and the carry falls to 12,035 -- a little over a fifth of what it was.
 #
-# Three claims, each proven on metal:
-#   1. The living ladder counts clean under a named ceiling, with headroom for the arc to keep climbing
-#      while the shared-harness answer is designed.
-#   2. The counting itself is right, proven on a two-module corpus whose one carried check and six
-#      carried lines are countable by hand.
-#   3. Every RED path refuses by name -- a corpus with no modules, a corpus whose modules hold no checks
-#      at all (the REDS %97 shape: a count that cannot see what it measures), and growth past the ceiling.
+# What stays carried is named rather than rounded away. A check that reaches the wire is never run in the rung below:
+# the bodies match, yet each rung keeps its notes in its own directory, so the rung below would provision its own wire
+# and leave this rung's cold -- which is exactly how the cold-start discipline REDS %92 seated caught the first, bolder
+# cut of this fold. Nor is a check run below when its tail chains into a check this rung invented. Both residues want
+# the shared harness (option B), a refactor now that A has run.
 #
-# Brief: active-designing/20260820-134500_caravan-ladder-shared-harness.md
+# So this witness changed jobs with the scan beneath it. It began proving a ratchet was measurable; it now proves a wall
+# holds, at 22,000 against a standing of 12,035 -- about six rungs of headroom at the residue's own rate.
+#
+# Four claims, each proven on metal:
+#   1. The living ladder counts clean under a named ceiling.
+#   2. The fold is real, counted off the ladder rather than believed: 523 checks run in the rung that owns them.
+#   3. The counting itself is right, proven on a two-module corpus whose one carried check and six carried lines are
+#      countable by hand.
+#   4. Every RED path refuses by name -- a corpus with no modules, a corpus whose modules hold no checks at all (the
+#      REDS %97 shape: a count that cannot see what it measures), and a corpus grown past its ceiling.
+#
+# Brief: active-designing/20260820-131713_caravan-ladder-shared-harness.md
 # No network, no key, no funds.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/caravan_ladder_copy_witness.rish
 
 say "caravan-ladder-copy: Language EN -- the checks the ladder carries forward are counted rather than recalled, so the design call rests on a number."
-say "caravan-ladder-copy: Style Radiant -- measurement beats memory; a ratchet surfaced once becomes a meter anybody can re-run."
-say "caravan-ladder-copy: Lens TAME -- safety first: the ceiling is named, the counting is proven by hand on a corpus, and every refusal has a name."
+say "caravan-ladder-copy: Style Radiant -- measurement beats memory; a ratchet surfaced once became a meter, and the meter became the wall that keeps the fold folded."
+say "caravan-ladder-copy: Lens TAME -- safety first: the ceiling is named, the counting is proven by hand on a corpus, the fold is read out of the count rather than claimed, and every refusal has a name."
 
 let living = run ["sh" "tools/fixtures/caravan_ladder_copy_scan.sh"]
 assert living.ok else "caravan-ladder-copy: the living ladder scan must exit 0 -- ${living.out}"
@@ -35,11 +43,18 @@ assert living.out contains "copied_lines=" else "caravan-ladder-copy: want the c
 
 say "caravan-ladder-copy: living ladder -- ${living.out}"
 
+# The fold itself, read off the ladder rather than claimed. A folded check is one line that calls the rung below, so the
+# fold is countable: 523 of them stand. A tree that lost them would be carrying the bodies again, whatever the prose said.
+let folds = run ["sh" "-c" "grep -h 'return [a-z_]*_rung[.]check_' caravan/*.rye | wc -l | tr -d ' '"]
+assert folds.ok else "caravan-ladder-copy: could not count the folded checks -- ${folds.err}"
+assert (trim folds.out) == "523" else "caravan-ladder-copy: want 523 checks run in the rung below, read ${trim folds.out}"
+say "caravan-ladder-copy: fold -- ${trim folds.out} checks run in the rung that owns them rather than carried"
+
 # The counting proven by hand. The corpus holds two rungs: the lower carries two distinct checks, the
 # upper carries one of them forward byte for byte and adds one of its own. So four checks stand, three
 # bodies are distinct, exactly one is a copy, and that copy is six lines long -- countable by eye in the
 # fixture itself, which is what makes this a proof of the counter rather than a second opinion from it.
-let corpus = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_copy_corpus sh tools/fixtures/caravan_ladder_copy_scan.sh"]
+let corpus = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_copy_corpus CARAVAN_LADDER_COPY_CEILING=10 sh tools/fixtures/caravan_ladder_copy_scan.sh"]
 assert corpus.ok else "caravan-ladder-copy: the corpus scan must exit 0 -- ${corpus.out}"
 assert corpus.out contains "LADDER_MODULES 2" else "caravan-ladder-copy: want the corpus read as two rungs"
 assert corpus.out contains "LADDER_CHECKS 4 distinct=3 copies=1" else "caravan-ladder-copy: want four checks, three distinct, one carried"
@@ -57,10 +72,12 @@ let hollow = run ["sh" "-c" "d=$(mktemp -d); printf 'const std = @import(\"std\"
 assert (hollow.ok == false) else "caravan-ladder-copy: a corpus with no checks must refuse"
 assert hollow.out contains "reason=no_checks" else "caravan-ladder-copy: want the hollow corpus refused by name"
 
-# RED path three -- the ceiling has teeth. Held at a hundred lines, the living ladder refuses, which
-# proves the ceiling is a real gate rather than a printed number.
-let ceiling = run ["sh" "-c" "CARAVAN_LADDER_COPY_CEILING=100 sh tools/fixtures/caravan_ladder_copy_scan.sh"]
+# RED path three -- the ceiling has teeth. The corpus carries six lines; held at five, it refuses, which proves the
+# ceiling is a real gate rather than a printed number. The proof runs on the corpus rather than the living ladder,
+# because the folded ladder is meant to sit under its ceiling and a gate must be provable without breaking the thing
+# it guards.
+let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_copy_corpus CARAVAN_LADDER_COPY_CEILING=5 sh tools/fixtures/caravan_ladder_copy_scan.sh"]
 assert (ceiling.ok == false) else "caravan-ladder-copy: a ladder past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-copy: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-copy -- the ladder's carried checks stand counted under a named ceiling, the counting is proven by hand on a two-rung corpus, and all three RED paths refuse by name."
+say "GREEN: caravan-ladder-copy -- the folded ladder stands counted under a named ceiling, the fold is read out of the count rather than claimed, the counting is proven by hand on a two-rung corpus, and all three RED paths refuse by name."

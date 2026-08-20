@@ -466,7 +466,7 @@ const one_step_plan = [_]Assignment{
 /// This is the sentence every other check leans on. Re-deriving per attempt
 /// only buys anything if a derivation is a function of the file rather than
 /// of when it happened to run.
-fn check_derivation_is_a_function(io: std.Io) u8 {
+pub fn check_derivation_is_a_function(io: std.Io) u8 {
     var buf_a: [read.read_buffer_bytes]u8 = undefined;
     var buf_b: [read.read_buffer_bytes]u8 = undefined;
     const first = derive(io, declaration_path, &buf_a) catch |err| {
@@ -492,7 +492,7 @@ fn check_derivation_is_a_function(io: std.Io) u8 {
 
 /// Widens one remembered right and proves the widened line contradicts the
 /// declaration -- pure policy, before any process runs.
-fn check_widened_memory_contradicts(io: std.Io) u8 {
+pub fn check_widened_memory_contradicts(io: std.Io) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const fresh = derive(io, declaration_path, &buf) catch |err| {
         print("  RED: the derivation refused: {s}\n", .{@errorName(err)});
@@ -529,7 +529,7 @@ fn check_widened_memory_contradicts(io: std.Io) u8 {
 
 /// The refusing policy: a supervisor whose memory has parted from the
 /// document declines the spawn by name rather than running on either one.
-fn check_refuse(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_refuse(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const fresh = derive(io, declaration_path, &buf) catch |err| {
         print("  RED: the derivation refused: {s}\n", .{@errorName(err)});
@@ -556,7 +556,7 @@ fn check_refuse(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8)
 
 /// The healing policy: the document wins, the memory is replaced, and the
 /// dependent runs on rights the declaration granted this second.
-fn check_heal(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_heal(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const fresh = derive(io, declaration_path, &buf) catch |err| {
         print("  RED: the derivation refused: {s}\n", .{@errorName(err)});
@@ -594,7 +594,7 @@ fn check_heal(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u
 /// moment of the spawn. The supervisor asks the drifted dependent to do exactly
 /// the thing its memory wrongly permits, and `WriteDenied` comes back:
 /// proof that the line crossing to the dependent came from the document.
-fn check_report_lenient(
+pub fn check_report_lenient(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,
@@ -648,7 +648,7 @@ fn check_report_lenient(
 /// A run that derived once and remembered would report fewer derivations
 /// than attempts, which is exactly the claim this ring exists to make
 /// checkable from outside the program.
-fn check_every_attempt_derives(
+pub fn check_every_attempt_derives(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,

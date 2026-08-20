@@ -538,7 +538,7 @@ const after_probe = [_]Assignment{
 };
 
 /// Proves the swap verdicts read back as three distinct words.
-fn check_wire() u8 {
+pub fn check_wire() u8 {
     const all = [_]SwapVerdict{ .safe_either_way, .regions_moved, .still_named };
     var i: u32 = 0;
     while (i < all.len) : (i += 1) {
@@ -570,7 +570,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 }
 
 /// The lap that carries across a re-declaration taken mid-flight.
-fn check_inflight(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_inflight(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var ring_buf: [read.read_buffer_bytes]u8 = undefined;
     const ring = load_one(io, ring_path, &ring_buf) orelse return 1;
 
@@ -599,7 +599,7 @@ fn check_inflight(allocator: std.mem.Allocator, io: std.Io, self_path: []const u
 }
 
 /// A successor that moves a region, refused mid-flight.
-fn check_moved(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_moved(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var ring_buf: [read.read_buffer_bytes]u8 = undefined;
     const ring = load_one(io, ring_path, &ring_buf) orelse return 1;
 
@@ -626,7 +626,7 @@ fn check_moved(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) 
 }
 
 /// A step naming the replaced domain after the swap, turned away.
-fn check_after(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_after(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var ring_buf: [read.read_buffer_bytes]u8 = undefined;
     const ring = load_one(io, ring_path, &ring_buf) orelse return 1;
 

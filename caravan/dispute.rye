@@ -3671,51 +3671,10 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 
 /// The mend below, read straight, so this rung's own fold stands on a repair
 /// that still refuses everything it always refused.
-fn check_mending() u8 {
-    // The act itself: a plan the wire calls short, one arc lost, one phase
-    // seated to carry it.
-    if (mend_refusal(.short, 1, 1)) |why| {
-        print("  RED: a settled mend refused: {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The record, the plan, and the reach, exactly as the rung below weighs them.
-    if (mend_refusal(null, 1, 1)) |why| {
-        if (why != error.MendUnread) {
-            print("  RED: an unread mend refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a mend that read no verdict was allowed to repair\n", .{});
-        return 1;
-    }
-    if (mend_refusal(.carried, 0, 0)) |why| {
-        if (why != error.MendWhole) {
-            print("  RED: a whole plan refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan already carried was mended\n", .{});
-        return 1;
-    }
-    if (mend_refusal(.short, 1, 2)) |why| {
-        if (why != error.MendOvereach) {
-            print("  RED: an overreaching mend refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a mend seated more phases than the plan ever lost\n", .{});
-        return 1;
-    }
-
-    // What is left standing, and the verdict that follows the work.
-    if (unserved_after(2, 1) != 1 or settled_verdict(1) != .short or settled_verdict(0) != .carried) {
-        print("  RED: the repair below stopped counting what still stands\n", .{});
-        return 1;
-    }
-
-    print("  a repair still refuses by name: unread, whole, overreaching\n", .{});
-    return 0;
+pub fn check_mending() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return hearing_rung.check_mending();
 }
 
 /// The bearing and its three standing refusals, read straight, before any
@@ -3726,123 +3685,10 @@ fn check_mending() u8 {
 /// fold -- no process anywhere. The fourth refusal, `BearOverrepaired`, belongs
 /// to the run rather than the fold, since only the wire can answer what a plan
 /// published about its own obedience.
-fn check_bearing() u8 {
-    // The act itself: a plan the wire calls short, two arcs lost, one borne and
-    // one repaired.
-    if (bear_refusal(.short, 2, 1, 1)) |why| {
-        print("  RED: a settled bearing refused: {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The moment: a bearing weighed before the run published what it lost is
-    // obeying a plan it remembers rather than the one it wrote down.
-    if (bear_refusal(null, 2, 1, 1)) |why| {
-        if (why != error.BearEarly) {
-            print("  RED: an early bearing refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a bearing was weighed before the run published anything\n", .{});
-        return 1;
-    }
-
-    // The work: a plan that lost nothing has nothing here to bear.
-    if (bear_refusal(.carried, 0, 0, 0)) |why| {
-        if (why != error.BearWhole) {
-            print("  RED: a whole plan's bearing refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan that lost nothing bore a loss all the same\n", .{});
-        return 1;
-    }
-
-    // The honesty of the count, from both sides: a plan cannot bear more arcs
-    // than it lost, and every lost arc is either borne or repaired.
-    if (bear_refusal(.short, 1, 2, 0)) |why| {
-        if (why != error.BearMiscounted) {
-            print("  RED: an overborne plan refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan bore more arcs than it ever lost\n", .{});
-        return 1;
-    }
-    if (bear_refusal(.short, 2, 1, 0)) |why| {
-        if (why != error.BearMiscounted) {
-            print("  RED: an unaccounted loss refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a loss was neither borne nor repaired, and nobody minded\n", .{});
-        return 1;
-    }
-
-    // The number this rung moves, as a fold: an arc the plan asked to bear and
-    // the repair seated anyway.
-    if (overrepaired(phase_bit(3), phase_bit(3)) != 1) {
-        print("  RED: a borne arc re-run counted as obedience\n", .{});
-        return 1;
-    }
-    if (overrepaired(phase_bit(3), phase_bit(1)) != 0) {
-        print("  RED: a repair of a repairable arc counted as overreach\n", .{});
-        return 1;
-    }
-    if (overrepaired(0, phase_bit(1) | phase_bit(3)) != 0) {
-        print("  RED: a plan that asked nothing was disobeyed all the same\n", .{});
-        return 1;
-    }
-
-    // The settlement, and the third word two were never honest enough to carry.
-    if (settlement_of(0, 0) != .carried) {
-        print("  RED: a plan with nothing standing was not read as carried out\n", .{});
-        return 1;
-    }
-    if (settlement_of(1, 1) != .borne) {
-        print("  RED: a plan whose whole loss was borne was read as short\n", .{});
-        return 1;
-    }
-    if (settlement_of(2, 1) != .short) {
-        print("  RED: a plan still holding work nobody bore was read as borne\n", .{});
-        return 1;
-    }
-    if (settlement_of(1, 0) != .short) {
-        print("  RED: a loss nobody asked to bear was borne anyway\n", .{});
-        return 1;
-    }
-
-    // The settlement survives the round trip through the byte it rides as.
-    if (settlement_of_byte(settlement_byte(.borne)) != .borne or
-        settlement_of_byte(settlement_byte(.carried)) != .carried or
-        settlement_of_byte(settlement_byte(.short)) != .short)
-    {
-        print("  RED: a settlement did not survive the wire it rides\n", .{});
-        return 1;
-    }
-    if (settlement_of_byte(0) != null) {
-        print("  RED: a cleared note read as a settlement\n", .{});
-        return 1;
-    }
-
-    // A re-seated phase carries its bearing forward, since a phase that asked
-    // to be borne asks it every time it is written down. This rung's own lap
-    // marks nothing, so the marked phase is written here rather than borrowed.
-    var marked = written_queue[3];
-    marked.bear = true;
-    const again = reseated(marked, 0);
-    if (!again.bear) {
-        print("  RED: a re-seated phase forgot the bearing its author wrote\n", .{});
-        return 1;
-    }
-    if (again.reserve != null or again.follows != 0 or again.follows_turns != 0) {
-        print("  RED: a re-seated phase kept an arrangement its siblings no longer stand in\n", .{});
-        return 1;
-    }
-
-    print("  a plan names what it expects of a phase, and what it would accept of a loss\n", .{});
-    print("  three refusals stand by name: early, whole, miscounted\n", .{});
-    print("  the bearing this rung keeps: {s}\n", .{bearing_words(.borne)});
-    return 0;
+pub fn check_bearing() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return hearing_rung.check_bearing();
 }
 
 /// The recantation and its three standing refusals, read straight, before any
@@ -3855,154 +3701,10 @@ fn check_bearing() u8 {
 /// no process appears anywhere. The fourth refusal, `RecantUnspoken`, belongs to
 /// the run rather than the fold, since only the wire can answer what a run
 /// published about its own reversal.
-fn check_recantation() u8 {
-    // The evidence, read from the record this lap actually wrote: turn 5
-    // follows turn 1, so phase 1 has a follower and phase 3 has none.
-    var closed: [max_queue_len]unhand.Phase = undefined;
-    var flat: [max_queue_len]unhand.Phase = undefined;
-    var p: u32 = 0;
-    while (p < written_queue.len) : (p += 1) flat[p] = plain(written_queue[p]);
-    // invariant: every phase of the lap was read plainly, none skipped
-    assert(p == written_queue.len);
-    precede.close(flat[0..written_queue.len], closed[0..written_queue.len]);
-    const record = closed[0..written_queue.len];
-
-    if (followers_of(record, 1) != phase_bit(5)) {
-        print("  RED: the phase a later turn waits behind found no follower\n", .{});
-        return 1;
-    }
-    if (followers_of(record, 3) != 0) {
-        print("  RED: a phase nothing waits behind found a follower all the same\n", .{});
-        return 1;
-    }
-
-    // The evidence the standing judgment was made on, and the evidence this run
-    // has instead. With only the first two arcs lost, phase 1's follower stands
-    // and the judgment holds; with all three lost, that follower is gone and
-    // nothing supports the judgment any longer.
-    const two_lost = phase_bit(1) | phase_bit(3);
-    const all_lost = two_lost | phase_bit(5);
-    if (appraised_in(record, two_lost, 0) != phase_bit(1)) {
-        print("  RED: the judgment the wire carries was never supportable\n", .{});
-        return 1;
-    }
-    if (appraised_in(record, all_lost, 0) != 0) {
-        print("  RED: a judgment stood on a follower that fell with the arc\n", .{});
-        return 1;
-    }
-
-    // The fold at the heart of this rung: a standing judgment this run's own
-    // record no longer supports is taken back, and one it still supports is kept.
-    if (recanted_in(standing_judgment, 0, all_lost) != phase_bit(1)) {
-        print("  RED: a judgment nothing supports was carried forward all the same\n", .{});
-        return 1;
-    }
-    if (recanted_in(standing_judgment, phase_bit(1), all_lost) != 0) {
-        print("  RED: a judgment this run's own evidence keeps was taken back\n", .{});
-        return 1;
-    }
-    // A judgment about an arc this run did not lose is left alone: the run it
-    // spoke about is over, this run served the work, and there is nothing to
-    // resolve and nothing to repair.
-    if (recanted_in(standing_judgment, 0, phase_bit(3)) != 0) {
-        print("  RED: a judgment about work this run served was reversed anyway\n", .{});
-        return 1;
-    }
-    // The other half of the same count, so the equality can be read straight.
-    if (upheld_in(standing_judgment, phase_bit(1), all_lost) != phase_bit(1)) {
-        print("  RED: a judgment this run's evidence supports counted as neither\n", .{});
-        return 1;
-    }
-    if (upheld_in(standing_judgment, 0, all_lost) != 0) {
-        print("  RED: an unsupported judgment counted as upheld\n", .{});
-        return 1;
-    }
-
-    // The act itself: a plan the wire calls short, one judgment standing, none
-    // upheld and one taken back.
-    if (recant_refusal(.short, 1, 0, 1)) |why| {
-        print("  RED: a settled recantation refused: {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The moment: a judgment weighed again before the run published what it lost
-    // is judging a run it remembers rather than the one it wrote down.
-    if (recant_refusal(null, 1, 0, 1)) |why| {
-        if (why != error.RecantEarly) {
-            print("  RED: an early recantation refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a judgment was weighed again before the run published anything\n", .{});
-        return 1;
-    }
-
-    // The supply: a wire carrying no judgment has nothing here to take back.
-    if (recant_refusal(.short, 0, 0, 0)) |why| {
-        if (why != error.RecantUnappraised) {
-            print("  RED: an unjudged plan refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run took back a judgment nobody had ever made\n", .{});
-        return 1;
-    }
-
-    // The honesty of the count, from both sides: a run cannot answer for more
-    // judgments than stand, and every standing judgment is upheld or recanted.
-    if (recant_refusal(.short, 1, 1, 1)) |why| {
-        if (why != error.RecantMiscounted) {
-            print("  RED: an overanswered judgment refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run answered for more judgments than the wire ever held\n", .{});
-        return 1;
-    }
-    if (recant_refusal(.short, 2, 1, 0)) |why| {
-        if (why != error.RecantMiscounted) {
-            print("  RED: an unanswered judgment refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a standing judgment was neither upheld nor recanted, and nobody minded\n", .{});
-        return 1;
-    }
-
-    // The supply, stated as its own refusal so it can be read straight.
-    if (unappraised_reach(standing_judgment, phase_bit(3))) |why| {
-        if (why != error.RecantUnappraised) {
-            print("  RED: a recantation reaching an unjudged phase refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run took back a judgment that was never made about that arc\n", .{});
-        return 1;
-    }
-    if (unappraised_reach(standing_judgment, standing_judgment)) |why| {
-        print("  RED: a recantation inside its own judgment refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The number this rung moves, as a fold: an arc spared on a judgment this
-    // run's own evidence declines to support.
-    if (spared_disproved(standing_judgment, 0) != 1) {
-        print("  RED: an arc spared past its own evidence counted as nothing\n", .{});
-        return 1;
-    }
-    if (spared_disproved(standing_judgment, standing_judgment) != 0) {
-        print("  RED: an arc spared on evidence that still stands counted as waste\n", .{});
-        return 1;
-    }
-    if (spared_disproved(0, 0) != 0) {
-        print("  RED: a run that spared nothing disproved a judgment all the same\n", .{});
-        return 1;
-    }
-
-    print("  a plan publishes whether its own judgments answer to a later run\n", .{});
-    print("  three refusals stand by name: early, unappraised, miscounted\n", .{});
-    print("  the review this rung keeps: {s}\n", .{review_words(.revisit)});
-    return 0;
+pub fn check_recantation() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return hearing_rung.check_recantation();
 }
 
 /// The amendment and its three standing refusals, read straight, before any
@@ -4014,139 +3716,10 @@ fn check_recantation() u8 {
 /// whole of the input, and no process appears anywhere. The fourth refusal,
 /// `AmendUnspoken`, belongs to the run rather than the fold, since only the wire
 /// can answer whether a correction actually reached the place it was read.
-fn check_amendment() u8 {
-    // The fold at the heart of this rung, and the smallest of the arc: a word an
-    // operator holds, weighed against the word the plan now stands behind.
-    if (!superseded(standing_reading, .carried)) {
-        print("  RED: a reading the run's own settlement contradicts still held\n", .{});
-        return 1;
-    }
-    if (superseded(standing_reading, .borne)) {
-        print("  RED: a reading the run still stands behind counted as replaced\n", .{});
-        return 1;
-    }
-    // A plan nobody read supersedes nothing: there is no reader to correct, and
-    // no belief left standing anywhere.
-    if (superseded(null, .carried)) {
-        print("  RED: a plan nobody ever read left a reader holding a stale word\n", .{});
-        return 1;
-    }
-
-    // The two halves of the count, so the equality can be read straight.
-    if (amended_in(standing_reading, .carried, .posted) != 1) {
-        print("  RED: a superseded reading went uncorrected by a posting run\n", .{});
-        return 1;
-    }
-    if (amended_in(standing_reading, .borne, .posted) != 0) {
-        print("  RED: a reading the run still stands behind was corrected anyway\n", .{});
-        return 1;
-    }
-    if (amended_in(standing_reading, .carried, .silent) != 0) {
-        print("  RED: a silent run wrote to a reader all the same\n", .{});
-        return 1;
-    }
-    if (confirmed_in(standing_reading, .borne, .posted) != 1) {
-        print("  RED: a reading the run stands behind counted as neither\n", .{});
-        return 1;
-    }
-    if (confirmed_in(standing_reading, .carried, .posted) != 0) {
-        print("  RED: a superseded reading counted as confirmed\n", .{});
-        return 1;
-    }
-    if (confirmed_in(null, .carried, .posted) != 0) {
-        print("  RED: a reader who never read was confirmed all the same\n", .{});
-        return 1;
-    }
-
-    // The act itself: a plan the wire calls carried, one reading standing, none
-    // confirmed and one corrected.
-    if (amend_refusal(.carried, 1, 0, 1)) |why| {
-        print("  RED: a settled amendment refused: {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The moment: a reading answered before the run published what it settled is
-    // correcting from memory rather than from the word it actually ended on.
-    if (amend_refusal(null, 1, 0, 1)) |why| {
-        if (why != error.AmendEarly) {
-            print("  RED: an early amendment refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a reader was corrected before the run published anything\n", .{});
-        return 1;
-    }
-
-    // The supply: a wire carrying no reading has nobody here to write to.
-    if (amend_refusal(.carried, 0, 0, 0)) |why| {
-        if (why != error.AmendUnread) {
-            print("  RED: an unread plan refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run corrected a reader who had never read a word\n", .{});
-        return 1;
-    }
-
-    // The honesty of the count, from both sides: a run cannot answer for more
-    // readings than stand, and every standing reading is confirmed or amended.
-    if (amend_refusal(.carried, 1, 1, 1)) |why| {
-        if (why != error.AmendMiscounted) {
-            print("  RED: an overanswered reading refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run answered for more readings than the wire ever held\n", .{});
-        return 1;
-    }
-    if (amend_refusal(.carried, 1, 0, 0)) |why| {
-        if (why != error.AmendMiscounted) {
-            print("  RED: an unanswered reading refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a standing reading was neither confirmed nor amended, and nobody minded\n", .{});
-        return 1;
-    }
-
-    // The supply, stated as its own refusal so it can be read straight.
-    if (unread_reach(null, 1)) |why| {
-        if (why != error.AmendUnread) {
-            print("  RED: an amendment reaching nobody refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run wrote to a reader the wire never named\n", .{});
-        return 1;
-    }
-    if (unread_reach(standing_reading, 1)) |why| {
-        print("  RED: an amendment inside its own reading refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The number this rung moves, as a fold: a word an operator holds that this
-    // run's own settlement contradicts, left standing because nobody wrote to
-    // them.
-    if (superseded_unposted(standing_reading, .carried, .silent) != 1) {
-        print("  RED: a reader left holding a replaced word counted as nothing\n", .{});
-        return 1;
-    }
-    if (superseded_unposted(standing_reading, .carried, .posted) != 0) {
-        print("  RED: a reader who was written to still counted as uncorrected\n", .{});
-        return 1;
-    }
-    if (superseded_unposted(standing_reading, .borne, .silent) != 0) {
-        print("  RED: a reading that still holds counted as stale\n", .{});
-        return 1;
-    }
-    if (superseded_unposted(null, .carried, .silent) != 0) {
-        print("  RED: a plan nobody read owed a correction all the same\n", .{});
-        return 1;
-    }
-
-    print("  a plan publishes whether its own corrections are addressed\n", .{});
-    print("  the notice below stands by name: early, unread, miscounted\n", .{});
-    return 0;
+pub fn check_amendment() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return hearing_rung.check_amendment();
 }
 
 /// The delivery and its three standing refusals, read straight, before any
@@ -4157,147 +3730,15 @@ fn check_amendment() u8 {
 /// answered as a pure fold -- no process anywhere. The fourth refusal,
 /// `CourierUndelivered`, belongs to the run rather than the fold, since only a
 /// reader's own box can answer whether anything actually arrived in it.
-fn check_delivery() u8 {
-    // The address, weighed first, since every question below it assumes a place
-    // a correction may actually be carried to.
-    if (!addressable(standing_address)) {
-        print("  RED: the address this lap reads was refused as a destination\n", .{});
-        return 1;
-    }
-    if (addressable("")) {
-        print("  RED: an empty address counted as a place a reader could be found\n", .{});
-        return 1;
-    }
-    if (addressable("../escape")) {
-        print("  RED: an address walked outside the boxes it was bounded to\n", .{});
-        return 1;
-    }
-    if (addressable("desk_that_is_far_too_long_to_carry")) {
-        print("  RED: an address past its bound counted as reachable\n", .{});
-        return 1;
-    }
-
-    // The two halves of the count, so the equality can be read straight.
-    if (carried_in(1, true, .carried) != 1) {
-        print("  RED: a posted correction with an address went nowhere\n", .{});
-        return 1;
-    }
-    if (carried_in(1, true, .waiting) != 0) {
-        print("  RED: a waiting run carried a correction all the same\n", .{});
-        return 1;
-    }
-    if (carried_in(1, false, .carried) != 0) {
-        print("  RED: a correction travelled to a reader who left no address\n", .{});
-        return 1;
-    }
-    if (carried_in(0, true, .carried) != 0) {
-        print("  RED: a run that corrected nobody carried something anyway\n", .{});
-        return 1;
-    }
-    if (held_in(1, true, .waiting) != 1) {
-        print("  RED: a correction left on the wire counted as neither\n", .{});
-        return 1;
-    }
-    if (held_in(1, true, .carried) != 0) {
-        print("  RED: a carried correction counted as held as well\n", .{});
-        return 1;
-    }
-
-    // The act itself: a correction posted, an address standing, none held and
-    // one carried.
-    const letter = [2]Settlement{ .borne, .carried };
-    if (carry_refusal(letter, true, 0, 1)) |why| {
-        print("  RED: a settled delivery refused: {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The moment: a correction carried before this run posted one is delivering
-    // from memory of a letter nobody wrote.
-    if (carry_refusal(null, true, 0, 1)) |why| {
-        if (why != error.CourierEarly) {
-            print("  RED: an early delivery refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a correction was carried before the run posted anything\n", .{});
-        return 1;
-    }
-
-    // The supply: a reader who left no address has nowhere for a letter to go.
-    if (carry_refusal(letter, false, 0, 1)) |why| {
-        if (why != error.CourierUnaddressed) {
-            print("  RED: an unaddressed delivery refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run carried a correction to a reader it could not name\n", .{});
-        return 1;
-    }
-
-    // The honesty of the count, from both sides: a run cannot answer for more
-    // corrections than it wrote, and every posted correction is carried or held.
-    if (carry_refusal(letter, true, 1, 1)) |why| {
-        if (why != error.CourierMiscounted) {
-            print("  RED: an overcounted delivery refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run both carried and held the one correction it wrote\n", .{});
-        return 1;
-    }
-    if (carry_refusal(letter, true, 0, 0)) |why| {
-        if (why != error.CourierMiscounted) {
-            print("  RED: an uncounted delivery refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a posted correction was neither carried nor held, and nobody minded\n", .{});
-        return 1;
-    }
-
-    // The supply, stated as its own refusal so it can be read straight.
-    if (unaddressed_reach(false, 1)) |why| {
-        if (why != error.CourierUnaddressed) {
-            print("  RED: a delivery bound nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run set out for a reader the wire never placed\n", .{});
-        return 1;
-    }
-    if (unaddressed_reach(true, 1)) |why| {
-        print("  RED: a delivery inside its own address refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The number this rung moves, as a fold: a correction this run wrote and
-    // left waiting for a reader who never comes back.
-    if (posted_unreached(1, true, .waiting) != 1) {
-        print("  RED: a correction left in the drawer counted as nothing\n", .{});
-        return 1;
-    }
-    if (posted_unreached(1, true, .carried) != 0) {
-        print("  RED: a correction that arrived still counted as waiting\n", .{});
-        return 1;
-    }
-    if (posted_unreached(0, true, .waiting) != 0) {
-        print("  RED: a run that corrected nobody owed a delivery all the same\n", .{});
-        return 1;
-    }
-    if (posted_unreached(1, false, .waiting) != 0) {
-        print("  RED: a reader who left no address counted as one this run failed\n", .{});
-        return 1;
-    }
-
-    print("  a plan publishes whether its own corrections travel\n", .{});
-    print("  three refusals stand by name: early, unaddressed, miscounted\n", .{});
-    print("  the dispatch this rung keeps: {s}\n", .{dispatch_words(.carried)});
-    return 0;
+pub fn check_delivery() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return hearing_rung.check_delivery();
 }
 
 /// The generalization test: a run that weighs a plan losing nothing reads as
 /// the rung below.
-fn check_unlost(sys: *const system.System) u8 {
+pub fn check_unlost(sys: *const system.System) u8 {
     const clients = [_]Task{
         written_queue[0].task,
         written_queue[1].task,
@@ -4369,7 +3810,7 @@ const standing_hand: Settlement = .short;
 /// work. What this fold reads is the rung below's own count with `agreed` in
 /// place of `answered`: an agreeing hand closes the correspondence, and a
 /// disagreeing one leaves the hearing exactly where it stood.
-fn check_hearing() u8 {
+pub fn check_hearing() u8 {
     const letter = [2]Settlement{ .borne, .carried };
     if (heard_in(1, true, .asked) != 1) {
         print("  RED: an agreeing hand went unheard by a listening run\n", .{});
@@ -4414,7 +3855,7 @@ fn check_hearing() u8 {
 /// fold -- no process anywhere. The fourth refusal, `DisputeUnfounded`, is
 /// answered here too, since whether two readings differ is a question two words
 /// can settle between themselves.
-fn check_dispute() u8 {
+pub fn check_dispute() u8 {
     // The two halves of the count, so the equality can be read straight.
     if (recorded_in(1, false, .open) != 1) {
         print("  RED: a reader who disagreed went unrecorded by an open record\n", .{});
@@ -4748,7 +4189,7 @@ fn judge_dispute_runs(settled: *Report, open_record: *Report) u8 {
 
 /// The dispute lap: one plan run twice against a reader who answered in a word
 /// the plan cannot accept, once setting that answer aside and once keeping it.
-fn check_dispute_runs(
+pub fn check_dispute_runs(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,

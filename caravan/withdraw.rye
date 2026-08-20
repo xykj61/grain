@@ -819,7 +819,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 /// The happy zone of this rung: a table is built by hand, phases are marked
 /// started, and every question is a pure fold over the record -- answered
 /// instantly, with no dependent started and no store touched.
-fn check_withdrawal() u8 {
+pub fn check_withdrawal() u8 {
     var table: Table = .{};
     var i: u32 = 0;
     while (i < written_queue.len) : (i += 1) table.record[i] = written_queue[i];
@@ -930,7 +930,7 @@ fn index_of(table: *const Table, turn: u32) ?u32 {
 /// seated plan arranged to itself, and a plan grown one arrival at a time
 /// was the plan its author wrote. Here a plan grown by an arrival and then
 /// relieved of that arrival is the plan again, exactly.
-fn check_inverse() u8 {
+pub fn check_inverse() u8 {
     var grown: [max_queue_len]Phase = undefined;
     var pruned: [max_queue_len]Phase = undefined;
     const base = written_queue[0..6];
@@ -994,7 +994,7 @@ fn run_shrinking(
 }
 
 /// The withdrawal lap: one plan run twice, handed whole and pruned as it runs.
-fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 

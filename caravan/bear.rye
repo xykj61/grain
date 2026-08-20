@@ -2316,7 +2316,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 
 /// The mend below, read straight, so this rung's own fold stands on a repair
 /// that still refuses everything it always refused.
-fn check_mending() u8 {
+pub fn check_mending() u8 {
     // The act itself: a plan the wire calls short, one arc lost, one phase
     // seated to carry it.
     if (mend_refusal(.short, 1, 1)) |why| {
@@ -2371,7 +2371,7 @@ fn check_mending() u8 {
 /// fold -- no process anywhere. The fourth refusal, `BearOverrepaired`, belongs
 /// to the run rather than the fold, since only the wire can answer what a plan
 /// published about its own obedience.
-fn check_bearing() u8 {
+pub fn check_bearing() u8 {
     // The act itself: a plan the wire calls short, two arcs lost, one borne and
     // one repaired.
     if (bear_refusal(.short, 2, 1, 1)) |why| {
@@ -2489,7 +2489,7 @@ fn check_bearing() u8 {
 
 /// The generalization test: a run that bears a plan losing nothing reads as the
 /// rung below.
-fn check_unlost(sys: *const system.System) u8 {
+pub fn check_unlost(sys: *const system.System) u8 {
     const clients = [_]Task{
         written_queue[0].task,
         written_queue[1].task,
@@ -2697,7 +2697,7 @@ fn judge_bearing_runs(repaired: *Report, borne: *Report) u8 {
 
 /// The bearing lap: one plan run twice, once repairing every loss it took and
 /// once carrying the loss its author asked it to carry.
-fn check_bearing_runs(
+pub fn check_bearing_runs(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,

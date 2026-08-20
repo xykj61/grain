@@ -583,7 +583,7 @@ fn run_one(
 }
 
 /// Both tests read straight, before any supervisor spends them.
-fn check_direction(io: std.Io) u8 {
+pub fn check_direction(io: std.Io) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 
@@ -651,7 +651,7 @@ fn check_direction(io: std.Io) u8 {
 }
 
 /// The reading lap: nobody writes what everybody holds, so it all converts.
-fn check_shared_read(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_shared_read(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 
@@ -691,7 +691,7 @@ fn check_shared_read(allocator: std.mem.Allocator, io: std.Io, self_path: []cons
 }
 
 /// The published lap: the write closes the order and leaves the instant open.
-fn check_published(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_published(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 
@@ -723,7 +723,7 @@ fn check_published(allocator: std.mem.Allocator, io: std.Io, self_path: []const 
 }
 
 /// The control: spending direction too freely is faster, and wrong.
-fn check_reads_free(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_reads_free(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 

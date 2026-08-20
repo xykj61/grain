@@ -2098,91 +2098,10 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 /// process anywhere. The fourth refusal, `ReckonOverclaimed`, belongs to the
 /// run rather than the fold, since only the wire can answer what a plan
 /// published about itself.
-fn check_reckoning() u8 {
-    // The act itself: a drained record that absorbed one phase and lost the
-    // arc it called for, reckoned once every dependent is gone.
-    if (reckon_refusal(1, 0, 1)) |why| {
-        print("  RED: a settled reckoning refused: {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The moment: a plan with a dependent still out may yet carry every arc.
-    if (reckon_refusal(1, 1, 1)) |why| {
-        if (why != error.ReckonEarly) {
-            print("  RED: an early reckoning refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan was judged while a dependent still stood\n", .{});
-        return 1;
-    }
-
-    // The work: a plan that absorbed no phase has nothing this rung weighs.
-    if (reckon_refusal(0, 0, 0)) |why| {
-        if (why != error.ReckonUnabsorbed) {
-            print("  RED: an unabsorbed reckoning refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan that absorbed nothing was reckoned all the same\n", .{});
-        return 1;
-    }
-
-    // The honesty of the count: a plan cannot lose more arcs than it absorbed.
-    if (reckon_refusal(1, 0, 2)) |why| {
-        if (why != error.ReckonMiscounted) {
-            print("  RED: a miscounted reckoning refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan lost more arcs than it ever absorbed\n", .{});
-        return 1;
-    }
-
-    // The verdict itself, under both ledgers, over a plan that lost an arc.
-    if (verdict_in(1, .assumed) != .carried or verdict_in(1, .reckoned) != .short) {
-        print("  RED: a plan that lost an arc read {s} and {s}\n", .{
-            verdict_words(verdict_in(1, .assumed)), verdict_words(verdict_in(1, .reckoned)),
-        });
-        return 1;
-    }
-
-    // And a plan that lost nothing is carried out under either ledger.
-    if (verdict_in(0, .assumed) != .carried or verdict_in(0, .reckoned) != .carried) {
-        print("  RED: a plan that lost nothing was reported short\n", .{});
-        return 1;
-    }
-
-    // The number the two rooms disagree on, read as a fold.
-    if (overclaimed_completion(1, .carried) != 1 or overclaimed_completion(1, .short) != 0) {
-        print("  RED: a lost arc overclaimed {d} completions and {d}\n", .{
-            overclaimed_completion(1, .carried), overclaimed_completion(1, .short),
-        });
-        return 1;
-    }
-
-    // A plan that lost nothing overclaims nothing, however it was judged.
-    if (overclaimed_completion(0, .carried) != 0) {
-        print("  RED: a plan that lost nothing overclaimed its own completion\n", .{});
-        return 1;
-    }
-
-    // The verdict survives the round trip through the byte it rides as.
-    if (verdict_of_byte(verdict_byte(.short)) != .short or
-        verdict_of_byte(verdict_byte(.carried)) != .carried)
-    {
-        print("  RED: a verdict did not survive the wire it rides\n", .{});
-        return 1;
-    }
-    if (verdict_of_byte(0) != null) {
-        print("  RED: a cleared note read as a verdict\n", .{});
-        return 1;
-    }
-
-    print("  a drained record says every phase was taken up, never that every phase was served\n", .{});
-    print("  three refusals stand by name: early, unabsorbed, miscounted\n", .{});
-    print("  the ledger this rung keeps: {s}\n", .{ledger_words(.reckoned)});
-    return 0;
+pub fn check_reckoning() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return reckoning_rung.check_reckoning();
 }
 
 /// The mend and its three standing refusals, read straight, before any
@@ -2193,7 +2112,7 @@ fn check_reckoning() u8 {
 /// seat, answered as a pure fold -- no process anywhere. The fourth refusal,
 /// `MendUnserved`, belongs to the run rather than the fold, since only the
 /// wire can answer what a plan published about itself once the repair is over.
-fn check_mending() u8 {
+pub fn check_mending() u8 {
     // The act itself: a plan the wire calls short, one arc lost, one phase
     // seated to carry it.
     if (mend_refusal(.short, 1, 1)) |why| {
@@ -2295,7 +2214,7 @@ fn check_mending() u8 {
 
 /// The generalization test: a run that reckons a plan losing nothing reads as
 /// the rung below.
-fn check_unlost(sys: *const system.System) u8 {
+pub fn check_unlost(sys: *const system.System) u8 {
     const clients = [_]Task{
         written_queue[0].task,
         written_queue[1].task,
@@ -2493,7 +2412,7 @@ fn judge_redress_runs(reported: *Report, mended: *Report) u8 {
 
 /// The mending lap: one plan run twice, once reporting the loss it took and
 /// once running again for exactly the arcs it lost.
-fn check_redress_runs(
+pub fn check_redress_runs(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,

@@ -625,7 +625,7 @@ const reaping_probe = [_]Stage{
 };
 
 /// Proves the pair verdicts read back as three distinct words.
-fn check_wire() u8 {
+pub fn check_wire() u8 {
     const all = [_]PairVerdict{ .may_run_together, .shares_a_region, .shares_a_channel };
     var i: u32 = 0;
     while (i < all.len) : (i += 1) {
@@ -657,7 +657,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 }
 
 /// Measures how much room each ring has, and holds the arithmetic to it.
-fn check_room(io: std.Io) u8 {
+pub fn check_room(io: std.Io) u8 {
     var serial_buf: [read.read_buffer_bytes]u8 = undefined;
     const serial = load_one(io, serial_path, &serial_buf) orelse return 1;
     var wide_buf: [read.read_buffer_bytes]u8 = undefined;
@@ -693,7 +693,7 @@ fn check_room(io: std.Io) u8 {
 }
 
 /// One bare channel across a region-disjoint pair, and the room it costs.
-fn check_wired(io: std.Io) u8 {
+pub fn check_wired(io: std.Io) u8 {
     var wide_buf: [read.read_buffer_bytes]u8 = undefined;
     const wide = load_one(io, declaration_path, &wide_buf) orelse return 1;
     var wired_buf: [read.read_buffer_bytes]u8 = undefined;
@@ -731,7 +731,7 @@ fn check_wired(io: std.Io) u8 {
 /// either test would answer correctly. A document that shares memory across
 /// a ring is no longer a ring -- and that is exactly the document where
 /// reading only the channels would wave a sharing pair through.
-fn check_mute(io: std.Io) u8 {
+pub fn check_mute(io: std.Io) u8 {
     var mute_buf: [read.read_buffer_bytes]u8 = undefined;
     const mute = load_one(io, mute_path, &mute_buf) orelse return 1;
 
@@ -759,7 +759,7 @@ fn check_mute(io: std.Io) u8 {
 }
 
 /// The lap that carries, spending both pairs the ring has room for.
-fn check_lap(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_lap(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const wide = load_one(io, declaration_path, &buf) orelse return 1;
 
@@ -790,7 +790,7 @@ fn check_lap(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8
 }
 
 /// Two neighbors, refused before either is spawned.
-fn check_adjacent(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_adjacent(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const wide = load_one(io, declaration_path, &buf) orelse return 1;
 
@@ -813,7 +813,7 @@ fn check_adjacent(allocator: std.mem.Allocator, io: std.Io, self_path: []const u
 
 /// A refusal that arrives while a sibling is still running, and the reading
 /// that never lets it.
-fn check_reaping(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_reaping(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const wide = load_one(io, declaration_path, &buf) orelse return 1;
 

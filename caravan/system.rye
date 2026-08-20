@@ -514,7 +514,7 @@ const serial_stack =
 
 /// Reads the worked example whole and checks every claim the declaration
 /// makes -- the wiring, the sharing, the summarizing reads, and the verdict.
-fn check_serial_stack() u8 {
+pub fn check_serial_stack() u8 {
     const system = parse(serial_stack) catch |err| {
         print("  RED: the serial stack refused to parse: {s}\n", .{@errorName(err)});
         return 1;
@@ -563,7 +563,7 @@ fn check_serial_stack() u8 {
 /// permission words. The write-and-run word never enters the grammar, so
 /// W xor X is a property of what a declaration CAN say rather than only of
 /// what a later check finds.
-fn check_refusals() void {
+pub fn check_refusals() void {
     // invariant: a well-formed document is the baseline these refusals depart from
     assert(serial_stack.len >= 1);
     // invariant: the grammar holds exactly the five keys the parser reads
@@ -590,7 +590,7 @@ fn check_refusals() void {
 
 /// Checks the verdicts that live above the line level -- the properties no
 /// single declaration line could carry by itself.
-fn check_verdicts() void {
+pub fn check_verdicts() void {
     // invariant: a verdict is only meaningful over a bounded document
     assert(max_lines >= 1);
     // invariant: the whole verdict is the zero value, so a silent default reads as a claim

@@ -2719,51 +2719,10 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 
 /// The mend below, read straight, so this rung's own fold stands on a repair
 /// that still refuses everything it always refused.
-fn check_mending() u8 {
-    // The act itself: a plan the wire calls short, one arc lost, one phase
-    // seated to carry it.
-    if (mend_refusal(.short, 1, 1)) |why| {
-        print("  RED: a settled mend refused: {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The record, the plan, and the reach, exactly as the rung below weighs them.
-    if (mend_refusal(null, 1, 1)) |why| {
-        if (why != error.MendUnread) {
-            print("  RED: an unread mend refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a mend that read no verdict was allowed to repair\n", .{});
-        return 1;
-    }
-    if (mend_refusal(.carried, 0, 0)) |why| {
-        if (why != error.MendWhole) {
-            print("  RED: a whole plan refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan already carried was mended\n", .{});
-        return 1;
-    }
-    if (mend_refusal(.short, 1, 2)) |why| {
-        if (why != error.MendOvereach) {
-            print("  RED: an overreaching mend refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a mend seated more phases than the plan ever lost\n", .{});
-        return 1;
-    }
-
-    // What is left standing, and the verdict that follows the work.
-    if (unserved_after(2, 1) != 1 or settled_verdict(1) != .short or settled_verdict(0) != .carried) {
-        print("  RED: the repair below stopped counting what still stands\n", .{});
-        return 1;
-    }
-
-    print("  a repair still refuses by name: unread, whole, overreaching\n", .{});
-    return 0;
+pub fn check_mending() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return appraising_rung.check_mending();
 }
 
 /// The bearing and its three standing refusals, read straight, before any
@@ -2774,123 +2733,10 @@ fn check_mending() u8 {
 /// fold -- no process anywhere. The fourth refusal, `BearOverrepaired`, belongs
 /// to the run rather than the fold, since only the wire can answer what a plan
 /// published about its own obedience.
-fn check_bearing() u8 {
-    // The act itself: a plan the wire calls short, two arcs lost, one borne and
-    // one repaired.
-    if (bear_refusal(.short, 2, 1, 1)) |why| {
-        print("  RED: a settled bearing refused: {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The moment: a bearing weighed before the run published what it lost is
-    // obeying a plan it remembers rather than the one it wrote down.
-    if (bear_refusal(null, 2, 1, 1)) |why| {
-        if (why != error.BearEarly) {
-            print("  RED: an early bearing refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a bearing was weighed before the run published anything\n", .{});
-        return 1;
-    }
-
-    // The work: a plan that lost nothing has nothing here to bear.
-    if (bear_refusal(.carried, 0, 0, 0)) |why| {
-        if (why != error.BearWhole) {
-            print("  RED: a whole plan's bearing refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan that lost nothing bore a loss all the same\n", .{});
-        return 1;
-    }
-
-    // The honesty of the count, from both sides: a plan cannot bear more arcs
-    // than it lost, and every lost arc is either borne or repaired.
-    if (bear_refusal(.short, 1, 2, 0)) |why| {
-        if (why != error.BearMiscounted) {
-            print("  RED: an overborne plan refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan bore more arcs than it ever lost\n", .{});
-        return 1;
-    }
-    if (bear_refusal(.short, 2, 1, 0)) |why| {
-        if (why != error.BearMiscounted) {
-            print("  RED: an unaccounted loss refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a loss was neither borne nor repaired, and nobody minded\n", .{});
-        return 1;
-    }
-
-    // The number this rung moves, as a fold: an arc the plan asked to bear and
-    // the repair seated anyway.
-    if (overrepaired(phase_bit(3), phase_bit(3)) != 1) {
-        print("  RED: a borne arc re-run counted as obedience\n", .{});
-        return 1;
-    }
-    if (overrepaired(phase_bit(3), phase_bit(1)) != 0) {
-        print("  RED: a repair of a repairable arc counted as overreach\n", .{});
-        return 1;
-    }
-    if (overrepaired(0, phase_bit(1) | phase_bit(3)) != 0) {
-        print("  RED: a plan that asked nothing was disobeyed all the same\n", .{});
-        return 1;
-    }
-
-    // The settlement, and the third word two were never honest enough to carry.
-    if (settlement_of(0, 0) != .carried) {
-        print("  RED: a plan with nothing standing was not read as carried out\n", .{});
-        return 1;
-    }
-    if (settlement_of(1, 1) != .borne) {
-        print("  RED: a plan whose whole loss was borne was read as short\n", .{});
-        return 1;
-    }
-    if (settlement_of(2, 1) != .short) {
-        print("  RED: a plan still holding work nobody bore was read as borne\n", .{});
-        return 1;
-    }
-    if (settlement_of(1, 0) != .short) {
-        print("  RED: a loss nobody asked to bear was borne anyway\n", .{});
-        return 1;
-    }
-
-    // The settlement survives the round trip through the byte it rides as.
-    if (settlement_of_byte(settlement_byte(.borne)) != .borne or
-        settlement_of_byte(settlement_byte(.carried)) != .carried or
-        settlement_of_byte(settlement_byte(.short)) != .short)
-    {
-        print("  RED: a settlement did not survive the wire it rides\n", .{});
-        return 1;
-    }
-    if (settlement_of_byte(0) != null) {
-        print("  RED: a cleared note read as a settlement\n", .{});
-        return 1;
-    }
-
-    // A re-seated phase carries its bearing forward, since a phase that asked
-    // to be borne asks it every time it is written down. This rung's own lap
-    // marks nothing, so the marked phase is written here rather than borrowed.
-    var marked = written_queue[3];
-    marked.bear = true;
-    const again = reseated(marked, 0);
-    if (!again.bear) {
-        print("  RED: a re-seated phase forgot the bearing its author wrote\n", .{});
-        return 1;
-    }
-    if (again.reserve != null or again.follows != 0 or again.follows_turns != 0) {
-        print("  RED: a re-seated phase kept an arrangement its siblings no longer stand in\n", .{});
-        return 1;
-    }
-
-    print("  a plan names what it expects of a phase, and what it would accept of a loss\n", .{});
-    print("  three refusals stand by name: early, whole, miscounted\n", .{});
-    print("  the bearing this rung keeps: {s}\n", .{bearing_words(.borne)});
-    return 0;
+pub fn check_bearing() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return appraising_rung.check_bearing();
 }
 
 /// The recantation and its three standing refusals, read straight, before any
@@ -2903,7 +2749,7 @@ fn check_bearing() u8 {
 /// no process appears anywhere. The fourth refusal, `RecantUnspoken`, belongs to
 /// the run rather than the fold, since only the wire can answer what a run
 /// published about its own reversal.
-fn check_recantation() u8 {
+pub fn check_recantation() u8 {
     // The evidence, read from the record this lap actually wrote: turn 5
     // follows turn 1, so phase 1 has a follower and phase 3 has none.
     var closed: [max_queue_len]unhand.Phase = undefined;
@@ -3055,7 +2901,7 @@ fn check_recantation() u8 {
 
 /// The generalization test: a run that weighs a plan losing nothing reads as
 /// the rung below.
-fn check_unlost(sys: *const system.System) u8 {
+pub fn check_unlost(sys: *const system.System) u8 {
     const clients = [_]Task{
         written_queue[0].task,
         written_queue[1].task,
@@ -3307,7 +3153,7 @@ fn judge_recanting_runs(unweighed: *Report, revisiting: *Report) u8 {
 
 /// The recanting lap: one plan run twice against a judgment already on the wire,
 /// once letting it stand and once weighing it again.
-fn check_recanting_runs(
+pub fn check_recanting_runs(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,

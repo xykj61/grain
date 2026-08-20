@@ -874,7 +874,7 @@ const wall_plan = [_]Assignment{
 
 /// Proves the plan wire holds every step to its own verb's shape before any
 /// process runs.
-fn check_wire() u8 {
+pub fn check_wire() u8 {
     var buf: [max_plan_len]u8 = undefined;
     var task: Task = .{ .verb = .pass, .hops = .{}, .peers = .{}, .count = 2 };
     task.hops = relay.HopList.parse("ask_ab,ask_bc", regions.max_name_len) orelse {
@@ -944,7 +944,7 @@ fn load_declaration(io: std.Io, buf: []u8) ?system.System {
 }
 
 /// Reads the ring's shape out of its grants, before a single process runs.
-fn check_shape(io: std.Io) u8 {
+pub fn check_shape(io: std.Io) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_declaration(io, &buf) orelse return 1;
     const set = relay.flows_of(&parsed) orelse {
@@ -992,7 +992,7 @@ fn check_shape(io: std.Io) u8 {
 }
 
 /// Runs the lap and reads the numbers that carry the claim.
-fn check_lap(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_lap(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_declaration(io, &buf) orelse return 1;
     const early = run_plan(allocator, io, self_path, &parsed, &early_plan) catch |err| {
@@ -1026,7 +1026,7 @@ fn check_lap(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8
 }
 
 /// Proves the walls, each in its own dependent.
-fn check_walls(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_walls(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_declaration(io, &buf) orelse return 1;
     const done = run_plan(allocator, io, self_path, &parsed, &wall_plan) catch |err| {

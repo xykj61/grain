@@ -711,7 +711,7 @@ const mended_plan = [_]Assignment{
 };
 
 /// Proves the fall and wake words hold before any process runs.
-fn check_wire() u8 {
+pub fn check_wire() u8 {
     if (read_fall("fall-after-read") != null) {
         print("  RED: a fall point this ring never named was accepted\n", .{});
         return 1;
@@ -747,7 +747,7 @@ fn load_declaration(io: std.Io, buf: []u8) ?system.System {
 }
 
 /// A fall before the write costs the ring one attempt and nothing else.
-fn check_clean_fall(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_clean_fall(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_declaration(io, &buf) orelse return 1;
     const done = run_plan(allocator, io, self_path, &parsed, &clean_fall_plan, .when_moved) catch |err| {
@@ -767,7 +767,7 @@ fn check_clean_fall(allocator: std.mem.Allocator, io: std.Io, self_path: []const
 }
 
 /// A fall after the write leaves the bytes whole and the wake swallowed.
-fn check_silent_restart(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_silent_restart(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_declaration(io, &buf) orelse return 1;
     const done = run_plan(allocator, io, self_path, &parsed, &silent_restart_plan, .when_moved) catch |err| {
@@ -785,7 +785,7 @@ fn check_silent_restart(allocator: std.mem.Allocator, io: std.Io, self_path: []c
 }
 
 /// The same fall under a wake that rings on every completed pass.
-fn check_mended(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_mended(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_declaration(io, &buf) orelse return 1;
     const done = run_plan(allocator, io, self_path, &parsed, &mended_plan, .every_pass) catch |err| {

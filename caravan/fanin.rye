@@ -851,7 +851,7 @@ const wall_plan = [_]Assignment{
 };
 
 /// Proves the plan wire carries parallel lists before any process runs.
-fn check_wire() u8 {
+pub fn check_wire() u8 {
     var buf: [max_plan_len]u8 = undefined;
     var task: Task = .{ .verb = .sweep, .heard = .{}, .mine = .{}, .peer = .{}, .count = 2 };
     task.heard = NameList.parse("tx_a,tx_b", regions.max_name_len) orelse {
@@ -934,7 +934,7 @@ fn load_declaration(io: std.Io, buf: []u8) ?system.System {
 }
 
 /// Runs the sweeps and reads the numbers that carry the claim.
-fn check_sweeps(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_sweeps(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_declaration(io, &buf) orelse return 1;
     const done = run_plan(allocator, io, self_path, &parsed, &sweep_plan) catch |err| {
@@ -962,7 +962,7 @@ fn check_sweeps(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8)
 }
 
 /// Proves the walls, each in its own dependent.
-fn check_walls(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_walls(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_declaration(io, &buf) orelse return 1;
     const done = run_plan(allocator, io, self_path, &parsed, &wall_plan) catch |err| {

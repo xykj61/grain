@@ -527,7 +527,7 @@ fn demo_map() !Map {
 
 /// Asserts that the declaration grants exactly what it says, and that a
 /// domain reaches nothing beyond it -- the isolation half of the ring.
-fn check_declared_access(map: *const Map) void {
+pub fn check_declared_access(map: *const Map) void {
     // invariant: the map under test carries its whole declared roster
     assert(map.domain_count == 4);
     assert(map.region_count == 4);
@@ -563,7 +563,7 @@ fn check_declared_access(map: *const Map) void {
 
 /// Asserts the two reads that summarize a declaration -- how widely each
 /// region is shared, and how much memory each domain reaches in total.
-fn check_reads(map: *const Map) void {
+pub fn check_reads(map: *const Map) void {
     // invariant: the map under test carries its whole declared sharing
     assert(map.grant_count == 7);
 
@@ -589,7 +589,7 @@ fn check_reads(map: *const Map) void {
 
 /// Asserts that every illegal declaration is refused by its own name, and
 /// that a refusal leaves the map exactly as it stood.
-fn check_refusals(map: *Map) void {
+pub fn check_refusals(map: *Map) void {
     // invariant: the map under test starts from its declared shape
     assert(map.grant_count == 7);
 

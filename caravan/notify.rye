@@ -700,7 +700,7 @@ const refusal_plan = [_]Assignment{
 };
 
 /// Proves the plan wire and the bell path are both closed shapes.
-fn check_wire() u8 {
+pub fn check_wire() u8 {
     var plan_buf: [max_bell_path_len]u8 = undefined;
     const word = write_plan(&plan_buf, .receive, "rx_a", "serial_virt") orelse {
         print("  RED: a legal task had no plan word\n", .{});
@@ -736,7 +736,7 @@ fn check_wire() u8 {
 }
 
 /// Delivers the worked example between two real processes and checks it.
-fn check_delivery(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_delivery(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
         print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });
@@ -760,7 +760,7 @@ fn check_delivery(allocator: std.mem.Allocator, io: std.Io, self_path: []const u
 }
 
 /// Proves an unwired ring touches nothing and a silent bell is heard as silence.
-fn check_refusals(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_refusals(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
         print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });

@@ -446,7 +446,7 @@ const worked_fall_at: u32 = 1;
 const no_fall: u32 = regions.max_domains;
 
 /// Boots the worked example and checks every claim the boot makes.
-fn check_serial_stack(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_serial_stack(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
         print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });
@@ -471,7 +471,7 @@ fn check_serial_stack(allocator: std.mem.Allocator, io: std.Io, self_path: []con
 
 /// Checks the words a dependent is handed against the declaration, including
 /// the buffer it was never granted.
-fn check_lines(io: std.Io) u8 {
+pub fn check_lines(io: std.Io) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
         print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });
@@ -526,7 +526,7 @@ fn check_lines(io: std.Io) u8 {
 }
 
 /// Checks that a declaration this supervisor cannot seat starts nothing.
-fn check_wide_roster(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_wide_roster(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = read.load(io, roster.wide_roster_path, &buf) catch |err| {
         print("  RED: {s} refused: {s}\n", .{ roster.wide_roster_path, @errorName(err) });

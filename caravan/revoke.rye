@@ -1300,7 +1300,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 /// supply, and the work still standing answered as a pure fold -- no process
 /// anywhere. The fourth refusal, `RevokeUnpruned`, belongs to the run rather
 /// than the fold, since only a dependent can answer that it pruned.
-fn check_revocation() u8 {
+pub fn check_revocation() u8 {
     // The act itself: a dependent conferred one arc, its work carried, returning
     // that arc in full.
     if (revoke_refusal(1, 1, 0)) |why| {
@@ -1357,7 +1357,7 @@ fn check_revocation() u8 {
 
 /// The generalization test: a run that revokes nothing reads as the rung
 /// below.
-fn check_unrevoked(sys: *const system.System) u8 {
+pub fn check_unrevoked(sys: *const system.System) u8 {
     const clients = [_]Task{
         written_queue[0].task,
         written_queue[1].task,
@@ -1426,7 +1426,7 @@ fn run_one(
 
 /// The revoke lap: one plan run twice, once holding every conferred word to
 /// the end and once returning it the moment its work is carried.
-fn check_keep_runs(
+pub fn check_keep_runs(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,

@@ -1351,15 +1351,24 @@ The numbers state the claim: **five refusals stand by name -- unopened, unsettle
 The numbers state the claim: **five refusals stand by name -- unlooked, unaddressed, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, and only the telling parts the two plans.** Witness: `tools/caravan_recount_witness.rish`.
 
 
-## The ladder's carried checks -- a meter, not a rung
+## The ladder's carried checks -- the fold, and the meter that keeps it
 
-Every rung above imports the implementation of the rung beneath it and then carries a fresh copy of that rung's self-test. The imports are real reuse; the checks are not. A check function is private, so a later rung has no way to *call* the one below it -- only to carry its bytes forward.
+Every rung above imports the implementation of the rung beneath it. For eighty-odd rungs it also carried a fresh copy of that rung's self-test, because a check function was private and a later rung had no way to *call* the one below it -- only to carry its bytes forward.
 
-Measured on metal rather than recalled: **88 rung modules, 914 check functions, 277 distinct bodies, 637 byte-identical copies occupying 46,014 lines** -- eighteen percent of the ladder's 258,525 lines, growing about five hundred lines a rung. The imports being real means this is accumulated self-test rather than duplicated logic, and the suite already sings every rung; nothing here is wrong. It is a ratchet, and now a measured one.
+Measured on metal rather than recalled, the carry reached **779 copied bodies over 54,612 lines**, growing about 4,383 lines a rung. On Keaton's word (`20260820.142246`) the design call in [`../active-designing/20260820-131713_caravan-ladder-shared-harness.md`](../active-designing/20260820-131713_caravan-ladder-shared-harness.md) landed as **option A**: every check is `pub` now, and a rung whose check is byte-for-byte the rung below's runs it there rather than keeping a second copy.
 
-`tools/caravan_ladder_copy_witness.rish` holds the number under a named ceiling of 60,000 carried lines, proves its counting by hand on a two-rung corpus, and refuses by name on three paths: a corpus with no modules, a corpus whose modules hold no checks at all, and growth past the ceiling. It sings with the choir, so it can never become a guard nobody runs.
+**523 checks fold that way, and 39,962 lines leave the ladder** -- from 289,303 lines to 249,341, with `recount` alone falling 15,664 to 13,113. Each folded check now lives in exactly one place, so an improvement to it improves every rung above at once.
 
-Whether to fold the checks into one shared harness -- and which of three shapes that fold takes -- is a design call standing with its measurement in [`../active-designing/20260820-131713_caravan-ladder-shared-harness.md`](../active-designing/20260820-131713_caravan-ladder-shared-harness.md), awaiting Keaton's word.
+The fold is conservative on purpose, and both of its limits were taught by a bolder first cut that went RED:
+
+- **A check that reaches the wire stays home.** The bodies match byte for byte, yet each rung keeps its notes in its own directory, so the rung below would provision *its* wire and leave this rung's cold. The bolder cut passed on a warm tree and failed the moment the choir cleared the stores -- `NoteUnavailable`, a debt that could not be seated at all, which is exactly what the cold-start discipline REDS %92 seated exists to surface.
+- **A check whose tail chains into a check this rung invented stays home.** The rung below has never heard of the check it would chain to, so the chain would end early and silently skip everything this rung added.
+
+What stays carried is **256 bodies over 12,035 lines**, growing about 1,637 a rung -- a little over a fifth of what stood before. Ending it is the shared-harness move (option B), which becomes a refactor now that A has run.
+
+Nothing observable changed. Every rung of the grievance arc from `appraise` to `recount` was built twice -- folded and pristine -- and run against the same wire: run against the same wire: **28 rungs, the same output lines, every one of them** -- only the order in which three concurrent dependents print interleaves, run to run, in the pristine build exactly as in the folded one. Every check that ran before still runs, in the same order, printing the same words. The choir sings all 85 rungs GREEN from a cold tree.
+
+`tools/caravan_ladder_copy_witness.rish` changed jobs with the fold. It holds the standing under a named ceiling of **22,000** carried lines -- about six rungs of headroom, close enough that the number means something again -- counts the 523 folded checks off the ladder rather than believing the prose, proves its counting by hand on a two-rung corpus, and refuses by name on three paths: a corpus with no modules, a corpus whose modules hold no checks at all, and a corpus grown past its ceiling. It sings with the choir, so it can never become a guard nobody runs.
 
 
 ## Held

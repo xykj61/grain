@@ -889,7 +889,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 /// The happy zone of this rung: every question is a pure fold over a record
 /// and three small flag arrays -- answered instantly, with no dependent started
 /// and no store touched.
-fn check_shapes() u8 {
+pub fn check_shapes() u8 {
     const plan = written_queue[0..];
     const none: [max_queue_len]bool = @splat(false);
     const gone = none[0..plan.len];
@@ -997,7 +997,7 @@ fn check_shapes() u8 {
 ///
 /// An understudy that keeps the place leaves every turn's memory of what it
 /// spent exactly as it was; the move it refuses would change two of them.
-fn check_memory() u8 {
+pub fn check_memory() u8 {
     const plan = written_queue[0..];
     const none: [max_queue_len]bool = @splat(false);
     var started_store: [max_queue_len]bool = @splat(false);
@@ -1062,7 +1062,7 @@ fn check_memory() u8 {
 /// arranged to itself, a plan grown one arrival at a time was the plan its
 /// author wrote, and a plan correcting a phase to itself was that plan. Here
 /// a rung that opens a new door answers the old one exactly as its elder did.
-fn check_inverse() u8 {
+pub fn check_inverse() u8 {
     const plan = written_queue[0..];
     const none: [max_queue_len]bool = @splat(false);
     const gone = none[0..plan.len];
@@ -1146,7 +1146,7 @@ fn run_swapped(
 
 /// The understudy lap: one plan run twice, handed whole and given a second
 /// shape while a dependent stands in it.
-fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 

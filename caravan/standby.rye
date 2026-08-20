@@ -573,7 +573,7 @@ const succession_plan = [_]Assignment{
 };
 
 /// Proves the shape verdicts hold as words before any document is read.
-fn check_wire() u8 {
+pub fn check_wire() u8 {
     // invariant: every way a shape can be refused carries its own verdict
     assert(shape_of_words_distinct());
     print("  a shape reads back as one of four verdicts: {s}, {s}, {s}, {s}\n", .{
@@ -611,7 +611,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 
 /// A standby named beside the domain it would replace, refused for having
 /// two hands on one region.
-fn check_shadow(io: std.Io) u8 {
+pub fn check_shadow(io: std.Io) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_one(io, shadow_path, &buf) orelse return 1;
     const verdict = shape_of(&parsed);
@@ -625,7 +625,7 @@ fn check_shadow(io: std.Io) u8 {
 }
 
 /// A detour drawn in advance, directed throughout and no longer a ring.
-fn check_bypass(io: std.Io) u8 {
+pub fn check_bypass(io: std.Io) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_one(io, bypass_path, &buf) orelse return 1;
     const verdict = shape_of(&parsed);
@@ -644,7 +644,7 @@ fn check_bypass(io: std.Io) u8 {
 
 /// The succession: the same ring declared again, with the standby standing
 /// where the lost domain stood.
-fn check_succession(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_succession(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var ring_buf: [read.read_buffer_bytes]u8 = undefined;
     const ring = load_one(io, ring_path, &ring_buf) orelse return 1;
     var next_buf: [read.read_buffer_bytes]u8 = undefined;
