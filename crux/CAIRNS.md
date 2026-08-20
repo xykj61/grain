@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.054032` -- the courier live edge folds as the hear rung seats
+
+**Walk-back nib:** `c90bee22f7` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **courier** rung, folded into the pointer line beside the amend and recant rungs the cairns below it swept, so the card leads with the hearing this lap proved rather than carrying a second copy of the log index.
+
+**What waits there, worth recalling:** the inline account of a correction carried to the reader who never comes back -- the address seated on the wire beside the reading, the delivery landing outside this plan's own wire in `caravan/.readers/desk.told`, the four refusals of the journey named one by one, and the price stated as nothing but the walk. Every word of it rests in `caravan/README.md` and in the dated log `20260820-052038_caravan-courier-a-correction-that-travels.kyri`; the departing card reads whole at `git show c90bee22f7:crux/REMEMBER.md`.
+
+
 ### `20260820.052038` -- the amend live edge folds as the courier rung seats
 
 **Walk-back nib:** `ec5ee6de20` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
