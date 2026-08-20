@@ -14,7 +14,7 @@
 //! identically on the dev bench.
 //!
 //! Demo keeper seeds only — no real key, no network, no custody. Generating the maintainer's own
-//! Kumara instance stays custody gate #4; a constel served over the wire reaches the serve gate.
+//! Kumara instance stays custody gate %4; a constel served over the wire reaches the serve gate.
 //!
 //!   rye build pond/apps/constel_net_topology.rye -femit-bin=pond/bin/constel-net-topology
 //!   pond/bin/constel-net-topology selftest

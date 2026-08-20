@@ -1,13 +1,13 @@
 #!/bin/sh
-# Witness claim-check guard (REDS #76 -> #85) -- a witness reads its own claim natively, never through
+# Witness claim-check guard (REDS %76 -> #85) -- a witness reads its own claim natively, never through
 # a shell grep over interpolated output.
 #
 # The lantern fired twice. A witness that checked its GREEN line with
 #   run ["sh" "-c" "printf '%s' '${out}' | grep -q 'the source's window' && echo yes"]
 # hands captured program output to the shell inside a single-quoted word. One apostrophe in that
 # output closes the quote early, the grep misses a run that was truly GREEN, and the witness reds
-# while the code is sound -- the shell lying about the module. REDS #76 caught it at HUNK49, taught
-# the convention, and converted two files; REDS #85 caught the same shape again in the image family,
+# while the code is sound -- the shell lying about the module. REDS %76 caught it at HUNK49, taught
+# the convention, and converted two files; REDS %85 caught the same shape again in the image family,
 # because a witness template written before the rule kept seeding fragile checks forward. A lantern
 # that fires twice becomes a loom, and this is that loom.
 #

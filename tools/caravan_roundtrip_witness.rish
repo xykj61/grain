@@ -13,7 +13,7 @@
 # back to it. An undirected bell fails exactly here.
 #
 # Checks read the selftest output natively (`contains`), never a shell grep
-# over interpolated output -- REDS #76 / #85, the apostrophe loom.
+# over interpolated output -- REDS %76 / %85, the apostrophe loom.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/caravan_roundtrip_witness.rish
@@ -25,7 +25,7 @@ let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/r
 
 assert build.ok else "caravan roundtrip build failed"
 
-# The reader this witness runs is built here rather than borrowed (REDS #92).
+# The reader this witness runs is built here rather than borrowed (REDS %92).
 # Thirty-six rungs ran caravan/bin/read without building it, so the whole arc was
 # green only on a tree some earlier run had left warm. A witness owns what it runs.
 let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/read"]

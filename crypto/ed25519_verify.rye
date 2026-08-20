@@ -23,7 +23,7 @@
 //! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity held. VERIFICATION reads only PUBLIC values —
 //! the public key, the message, and the signature — so it holds no secret and its variable-time composition leaks nothing; a constant-time
 //! posture belongs to signing, not verifying. This file SIGNS NOTHING and holds no key: producing a signature needs a secret scalar, and
-//! signing with the maintainer's own identity key stays its own separate, GATED round (gate #3/#4). Verifying the RFC's published test vectors
+//! signing with the maintainer's own identity key stays its own separate, GATED round (gate %3/%4). Verifying the RFC's published test vectors
 //! and signatures produced by an independent library is arithmetic anyone can replay. Parity is proven at selftest against RFC 8032 §7.1
 //! known-answer vectors (TEST 1 and TEST 2 accept; a one-bit tamper of each is refused) and against Zig's own std.crypto.sign.Ed25519 as an
 //! independent implementation — signatures it produces over a spread of messages all accept, a one-byte tamper of each is refused, and our

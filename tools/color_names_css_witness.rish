@@ -33,7 +33,7 @@ assert selftest.ok else "color-names-css: selftest exited non-zero -- ${selftest
 let out = trim selftest.out
 say "color-names-css: ${out}"
 
-# Honour the loom REDS #76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
+# Honour the loom REDS %76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
 # output, so punctuation in the selftest prose can never break a check.
 assert out contains "GREEN image-color-names-css" else "color-names-css: selftest did not print the GREEN color-names-css line"
 assert out contains "every named color's canonical hex parses through color.parse_hex" else "color-names-css: a name did not compose over color's own parser"

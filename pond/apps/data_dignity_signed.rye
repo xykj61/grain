@@ -25,7 +25,7 @@
 //!
 //! Additive — composes rung one (`data_dignity`) and `kumara` over public API; rung one stays its own
 //! GREEN binary. Demo keeper and heir seeds only — no real key, no network, no real identity or seed (the
-//! maintainer's own succession over a real Kumara instance is the maintainer's hand — gate #4-adjacent).
+//! maintainer's own succession over a real Kumara instance is the maintainer's hand — gate %4-adjacent).
 //!
 //!   rye build pond/apps/data_dignity_signed.rye -femit-bin=pond/bin/data-dignity-signed
 //!   pond/bin/data-dignity-signed selftest

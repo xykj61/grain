@@ -18,7 +18,7 @@
 //! page, and `low to high` over the cheapest-first page. A zero-result line names neither page nor direction — there is
 //! nothing to order. A malformed clause surfaces the parser's named refusal through the header before any sort work.
 //!
-//! A price is echoed, compared, and reordered by; nothing is moved (custody gate #3 untouched). No network, no key, no
+//! A price is echoed, compared, and reordered by; nothing is moved (custody gate %3 untouched). No network, no key, no
 //! funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_facets_sort_dir.rye selftest

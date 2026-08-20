@@ -12,7 +12,7 @@
 //! capture cross the single wire. A keeper never touches `session.capture` or `wire.frame` directly; they hold a
 //! recorder, record into it, commit what they mean to keep, and carry it out through this thin loop. Nothing new is
 //! invented here — the loop composes the three known-correct rungs and proves the forgetting promise survives every seam
-//! between them. No disk, no network, no key signs, no funds (custody gate #2 — real hardware, a real record button, a
+//! between them. No disk, no network, no key signs, no funds (custody gate %2 — real hardware, a real record button, a
 //! real wire — untouched). The Sha256 digest stays an integrity check the far side recomputes, not a signature.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mikrophone/firmware.rye selftest

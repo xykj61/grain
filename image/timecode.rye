@@ -20,7 +20,7 @@
 //!     leaving the moving picture beneath it untouched, and
 //!   * the elapsed seconds are monotone non-decreasing in the frame index (a clock never runs backward).
 //! The whole stamped reel then round-trips byte for byte through BOTH open codecs, and the delta/keyframe mix is REPORTED,
-//! never claimed a compression win (REDS #82). Pure composition over public APIs (the background verbs, paint_text_panel,
+//! never claimed a compression win (REDS %82). Pure composition over public APIs (the background verbs, paint_text_panel,
 //! both codecs); no new storage, codec, palette, glyph, or font -- integer arithmetic maps the frame index to a string, so
 //! no float ever enters. No network, no key, no funds -- the timecode a surface plays under live video, on our own open
 //! geometry.
@@ -399,7 +399,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // The delta/keyframe mix is a REPORTED measurement -- the moving block ticks every frame while the badge changes only
-    // at second boundaries, so some frames delta cheaply and some not; the count is shown, never asserted exact (REDS #82).
+    // at second boundaries, so some frames delta cheaply and some not; the count is shown, never asserted exact (REDS %82).
     const keyframes: u32 = frame_count - gfd_res.delta_frames;
     print("GREEN image-timecode: M:SS clock over {d} frames of {d}x{d} moving video; format_timecode exact by KAT (0->0:00, 65->1:05, 5999->99:59, no float); badge pixels bound to the formatter byte for byte; {d} ticks + {d} steady pairs (badge byte-steady within a second, changes at each boundary), touching only the {d}x{d} badge; round-trip byte-identical through BOTH codecs; gfd1 adaptive mix {d} deltas + {d} keyframes ({d} bytes vs gfv1 {d}); gfv1 stream refused by gfd1 decoder as BadMagic\n", .{
         frame_count, timecode_frame_w, timecode_frame_h, ticks, steadies, b.w, b.h, gfd_res.delta_frames, keyframes, gfd_res.len, gfv_res.len,

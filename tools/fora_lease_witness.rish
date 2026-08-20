@@ -16,7 +16,7 @@
 
 say "fora-lease: Language EN — FORA29 proves the fast alternative to FORA20's read-index: a leader lease (Raft §6.4.1) lets a leader that a majority recently acknowledged serve a read without a fresh round-trip, for a bounded window shorter than the election timeout."
 say "fora-lease: Style Radiant — a fast read may rest on an honest clock, so long as the lease expires a breath before the sky could ever elect another; the moment that promise cannot hold, the read takes the slower, always-safe road home."
-say "fora-lease: Lens TAME — grant gates on tenure.still_commands (NoMajority) over public APIs only; the clock is a bounded monotonic u64 tick, no wrap, purely local — no wall clock; lease_sound holds the §6.4.1 inequality strict; serve_on_lease never underflows (now >= granted asserted); bounded to roster.max_piers; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-lease: Lens TAME — grant gates on tenure.still_commands (NoMajority) over public APIs only; the clock is a bounded monotonic u64 tick, no wrap, purely local — no wall clock; lease_sound holds the §6.4.1 inequality strict; serve_on_lease never underflows (now >= granted asserted); bounded to roster.max_piers; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/lease"

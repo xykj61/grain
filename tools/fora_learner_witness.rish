@@ -16,7 +16,7 @@
 
 say "fora-learner: Language EN — FORA25 adds the learner (non-voting replica, Raft/Ongaro §4.2.1): a new member joins as a replica that applies the log yet counts toward nothing, catches up out of the critical path, and is promoted to a voter only once caught up."
 say "fora-learner: Style Radiant — a member is welcomed before it is weighed; it learns the sky's whole story before its voice is counted, so adding a hand never costs the sky its footing."
-say "fora-learner: Lens TAME — voter_count and voter_majority draw the strict majority (FORA9) over voters only; a learner's ack is skipped in commit_backing; caught_up computes the lag in u64 so a far-ahead leader never wraps; promotion is refused NotCaughtUp until the match is within the bound; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-learner: Lens TAME — voter_count and voter_majority draw the strict majority (FORA9) over voters only; a learner's ack is skipped in commit_backing; caught_up computes the lag in u64 so a far-ahead leader never wraps; promotion is refused NotCaughtUp until the match is within the bound; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/learner"

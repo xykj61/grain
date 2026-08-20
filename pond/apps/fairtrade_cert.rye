@@ -18,7 +18,7 @@
 //! This rung is pure declaration-satisfaction: no signing, no books yet — the spine the
 //! later rungs wire real identity (r2, mirroring commerce_trade_signed) and a fair-value
 //! trade (r4, mirroring commerce_trade) into, known correct first. Facts only; no funds
-//! move, no key is held (custody gate #3 untouched). Demo attestations only.
+//! move, no key is held (custody gate %3 untouched). Demo attestations only.
 //!
 //!   rye build pond/apps/fairtrade_cert.rye -femit-bin=pond/bin/fairtrade-cert
 //!   pond/bin/fairtrade-cert selftest

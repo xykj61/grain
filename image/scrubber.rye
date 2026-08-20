@@ -17,7 +17,7 @@
 //!   * the fill is a superset over time -- every column lit at an earlier frame stays lit at a later one (the elapsed
 //!     edge only ever advances), which the non-decreasing count plus the left-anchored fill together prove.
 //! The whole scrubbed reel then round-trips byte for byte through BOTH open codecs, and the delta/keyframe mix is
-//! REPORTED, never claimed a compression win (REDS #82). Pure composition over public APIs (the background verbs,
+//! REPORTED, never claimed a compression win (REDS %82). Pure composition over public APIs (the background verbs,
 //! shape.fill_rect, shape.stroke_rect, both codecs); no new storage, codec, palette, glyph, or font -- integer
 //! arithmetic maps progress to a pixel width, so no float ever enters. No network, no key, no funds -- the progress bar
 //! a surface plays under live video, on our own open geometry.
@@ -339,7 +339,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // The delta/keyframe mix is a REPORTED measurement -- the moving block and the growing fill make some frames delta
-    // cheaply and some not, so the count is shown, never asserted exact (REDS #82).
+    // cheaply and some not, so the count is shown, never asserted exact (REDS %82).
     const keyframes: u32 = frame_count - gfd_res.delta_frames;
     print("GREEN image-scrubber: progress bar over {d} frames of {d}x{d} moving video; elapsed fill grows {d}->{d} px monotone (empty first frame, full last), touching only the {d}x{d} bar; round-trip byte-identical through BOTH codecs; gfd1 adaptive mix {d} deltas + {d} keyframes ({d} bytes vs gfv1 {d}); gfv1 stream refused by gfd1 decoder as BadMagic\n", .{
         frame_count, scrubber_frame_w, scrubber_frame_h, 0, inner_w * inner_h, bar.w, bar.h, gfd_res.delta_frames, keyframes, gfd_res.len, gfv_res.len,

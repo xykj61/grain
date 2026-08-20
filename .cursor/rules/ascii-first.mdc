@@ -5,9 +5,9 @@ alwaysApply: true
 
 # ASCII-First -- plain ASCII for documents and commits
 
-**Seated:** `20260816.214652` on Keaton's word. Canonical twin: `.claude/rules/ascii-first.md` (full form). Kin: `reds-first.mdc`, REDS #83.
+**Seated:** `20260816.214652` on Keaton's word. Canonical twin: `.claude/rules/ascii-first.md` (full form). Kin: `reds-first.mdc`, REDS %83.
 
-Write every new document, code comment, and commit message in **plain 7-bit ASCII**. A non-ASCII character no reader needs is a corruption waiting to compound -- REMEMBER.md silently triple-encoded into 2,797 runs of mojibake before it was caught (REDS #83).
+Write every new document, code comment, and commit message in **plain 7-bit ASCII**. A non-ASCII character no reader needs is a corruption waiting to compound -- REMEMBER.md silently triple-encoded into 2,797 runs of mojibake before it was caught (REDS %83).
 
 Substitute: em/en-dash -> `--`/`-`; middot -> `-`/`,`/`;`; curly quotes -> straight `'`/`"`; arrows -> `->`/`<-`/`<->`; ellipsis -> `...`; Greek/subscripts in prose -> spelled (`gamma_2`, `sigma`).
 

@@ -16,7 +16,7 @@
 
 say "fora-flexquorum: Language EN — FORA27 proves flexible quorums (Flexible Paxos): consensus needs only every election quorum to intersect every replication quorum, so any split with qe + qr > n is safe and the strict-majority pair is the symmetric special case."
 say "fora-flexquorum: Style Radiant — the ladder's one lemma opens into the truth beneath it; a constellation may tune fast elections against fast commits along a single line, and the majority it always trusted is just the balance point on that line."
-say "fora-flexquorum: Lens TAME — safe_split computes qe+qr>n in u64 (no wrap); min_overlap is the pigeonhole strength; the crux is grounded by an exhaustive bounded enumeration of real subset pairs (2^n per side, n ≤ roster.max_piers), never merely asserted; composes quorum.majority_of and roster.max_piers over public APIs only; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-flexquorum: Lens TAME — safe_split computes qe+qr>n in u64 (no wrap); min_overlap is the pigeonhole strength; the crux is grounded by an exhaustive bounded enumeration of real subset pairs (2^n per side, n ≤ roster.max_piers), never merely asserted; composes quorum.majority_of and roster.max_piers over public APIs only; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/flexquorum"

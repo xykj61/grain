@@ -5,7 +5,7 @@
 # genesis opens and its Deed verifies against the fresh constellation. From zero — a forged
 # bind, or a number that is no galaxy — no identity settles, so the pilot holds at identity and
 # never advances. Onboarding cannot walk past a keeper who has no real identity. Demo keeper
-# seeds only; the maintainer's own Kumara instance stays custody gate #4.
+# seeds only; the maintainer's own Kumara instance stays custody gate %4.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/tact_ship_pilot_identity_witness.rish

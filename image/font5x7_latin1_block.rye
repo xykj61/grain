@@ -241,7 +241,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (n > hi) hi = n;
     }
 
-    // Compression is reported as a fact, not asserted -- the round-trip is the proof (the REDS #82 lesson).
+    // Compression is reported as a fact, not asserted -- the round-trip is the proof (the REDS %82 lesson).
     const raw_coverage = glyph_count * cell_area;
     print("GREEN image-font5x7-latin1-block: {d} Latin-1 letters U+00C0..U+00FF (the whole block but the two math signs U+00D7,U+00F7) at {d}x{d} round-trip byte-identical; codepoints strictly ascending and unique (thirteen corpora disjoint: 32 lowercase + 30 uppercase); block-complete (every letter present, both math signs absent), every glyph inked (ink {d}..{d} of {d}); encoded {d} bytes, raw {d}\n", .{
         glyph_count, cell_w, cell_h, lo, hi, cell_area, res.len, raw_coverage,

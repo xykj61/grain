@@ -7,7 +7,7 @@
 # signatures verify over the identical facts. The honesty crux mirrors commerce_trade_signed: change
 # the amount after both signed and both signatures fall (NotAgreed, no journal touched). A forged
 # signature (NotAgreed) and a signature booked against a different entity pair (NameMismatch) each
-# refuse. Composes rung one's transfer over kumara signing; facts only, custody gate #3 untouched;
+# refuse. Composes rung one's transfer over kumara signing; facts only, custody gate %3 untouched;
 # demo steward seeds only.
 #
 # Run from the repository root:

@@ -25,7 +25,7 @@
 //! HUNK82 could not echo.
 //!
 //! A price clause is echoed as the keeper's own cents (the canonical `max:100`, re-parseable) — a fact drawn for
-//! reading, never a balance the tree can move (custody gate #3 untouched). No network, no key, no funds.
+//! reading, never a balance the tree can move (custody gate %3 untouched). No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_facets_header.rye selftest
 

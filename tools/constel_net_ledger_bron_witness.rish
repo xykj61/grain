@@ -6,7 +6,7 @@
 # byte-for-byte, so a dev-net's books cross as readable text. Two promises ride in the bytes: the
 # quarantine (an @p-shaped net name refuses UnsafeName on parse) and the sovereignty (a swapped
 # sovereign key no longer matches the facts' signatures, so the fold refuses IdentityRefused). Demo
-# keeper seeds only — no real key, no funds, no network, no custody (gate #3 and gate #4 untouched).
+# keeper seeds only — no real key, no funds, no network, no custody (gate %3 and gate %4 untouched).
 #
 # Scope: active-designing/20260813-030005_constel-devnet-ledger-exploration.md
 #

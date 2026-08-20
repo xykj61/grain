@@ -10,8 +10,8 @@
 //! channel carries.
 //!
 //! Purely LOCAL — a bounded in-process byte FIFO over a fixed buffer on one bench, siloed to constel/, run from inside the
-//! jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate #2 — real hardware / any
-//! real wire — and gate #4 — real Kumara, real network — both untouched). The channel's ONLY job is delimiting: cutting one
+//! jailed pier. No socket, no network, no keys, no funds, no real address ever formed (custody gate %2 — real hardware / any
+//! real wire — and gate %4 — real Kumara, real network — both untouched). The channel's ONLY job is delimiting: cutting one
 //! whole frame out of the stream. It never re-checks the frame — the caller runs wire.deframe_*, so the two trust gates
 //! (Sha256 integrity + the naming-law border) stay exactly where FORA3 put them. FORA6, the real Comlink socket, is this same
 //! channel with a kernel file descriptor standing in for the buffer.

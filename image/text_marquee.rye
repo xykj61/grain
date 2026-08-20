@@ -13,7 +13,7 @@
 //! smaller of a pixel delta or a whole keyframe, so heavy panning is exactly where it must fall back to keyframes
 //! rather than store a delta larger than the frame. This witness proves the round-trip stays byte-for-byte through
 //! BOTH codecs on that motion, and REPORTS the delta/keyframe mix rather than asserting the delta wins -- because on
-//! real panning it may not, and the honest proof is correctness under motion, not a compression claim (REDS #82). Pure
+//! real panning it may not, and the honest proof is correctness under motion, not a compression claim (REDS %82). Pure
 //! composition over public APIs (solid, paint_line, a local crop, both codecs); no new storage, codec, palette, or
 //! geometry. No network, no key, no funds.
 //!
@@ -192,7 +192,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // The delta/keyframe mix is a REPORTED measurement -- on panning motion the adaptive encoder legitimately keyframes
-    // where a delta would cost more, so the count is shown, never asserted to a compression win (REDS #82).
+    // where a delta would cost more, so the count is shown, never asserted to a compression win (REDS %82).
     const keyframes: u32 = frame_count - gfd_res.delta_frames;
     print("GREEN image-text-marquee: '{s}' panned over {d} frames of {d}x{d} (max frame change {d} px); round-trip byte-identical through BOTH codecs under REAL panning; gfd1 adaptive mix {d} deltas + {d} keyframes ({d} bytes vs gfv1 {d}); gfv1 stream refused by gfd1 decoder as BadMagic\n", .{
         marquee_caption, frame_count, marquee_width, marquee_height, max_diff, gfd_res.delta_frames, keyframes, gfd_res.len, gfv_res.len,

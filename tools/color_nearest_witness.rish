@@ -32,7 +32,7 @@ assert selftest.ok else "color-nearest: selftest exited non-zero -- ${selftest.o
 let out = trim selftest.out
 say "color-nearest: ${out}"
 
-# Honour the loom REDS #76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
+# Honour the loom REDS %76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
 # output, so punctuation in the selftest prose can never break a check.
 assert out contains "GREEN image-color-nearest" else "color-nearest: selftest did not print the GREEN color-nearest line"
 assert out contains "is its own nearest at squared distance zero" else "color-nearest: a named color was not its own zero-distance nearest"

@@ -6,7 +6,7 @@
 # keeper reads) — and proves the whole chain of custody runs GREEN over real bytes:
 # a settled planet identity signs the exact real content, fetch returns it byte-for-
 # byte, owner_of/place_of resolve provenance, and every tamper refuses. It also books
-# Yield red #73 on metal — a real front-door document (SECURITY.md, 2689 B) refuses
+# Yield red %73 on metal — a real front-door document (SECURITY.md, 2689 B) refuses
 # ContentTooLarge because it does not fit one 512-byte resin (the chunking horizon).
 # The demo keyed catalog over doc_planet/doc_star (tablecloth_keyed) is re-run
 # untouched — the provenance app is additive, composed over its public API.
@@ -14,7 +14,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/gism_j6_provenance_real_witness.rish
 
-say "gism-j6r1: Language EN — the chain of custody stands on a real tree document, red #73 booked."
+say "gism-j6r1: Language EN — the chain of custody stands on a real tree document, red %73 booked."
 say "gism-j6r1: Lens TAME — real bytes, owner-signed and content-addressed; the demo keyed catalog still GREEN."
 
 let zig = "vendor/zig-toolchain/zig"
@@ -30,7 +30,7 @@ assert selftest.out contains "real artifact — 213 bytes, owner 267 (planet), f
 assert selftest.out contains "store tamper refused (DigestMismatch)" else "gism-j6r1: store-tamper refusal missing"
 assert selftest.out contains "forged signature refused (BadSignature), nothing stored" else "gism-j6r1: forged-signature refusal missing"
 assert selftest.out contains "content-mismatched signature refused (BadSignature)" else "gism-j6r1: content-mismatch refusal missing"
-assert selftest.out contains "red #73 — real doc 2689 B > 512 B resin refuses ContentTooLarge" else "gism-j6r1: Yield red #73 proof missing"
+assert selftest.out contains "red %73 — real doc 2689 B > 512 B resin refuses ContentTooLarge" else "gism-j6r1: Yield red %73 proof missing"
 
 # The demo keyed catalog over doc_planet/doc_star must still be GREEN — provenance_real
 # composes its public API only, retiring nothing.
@@ -41,4 +41,4 @@ let demo_selftest = run ["sh" "-c" "${demo_bin} selftest 2>&1"]
 assert demo_selftest.ok else "gism-j6r1: tablecloth_keyed (demo) selftest regressed"
 assert demo_selftest.out contains "GREEN" else "gism-j6r1: tablecloth_keyed (demo) did not speak GREEN"
 
-say "GREEN: GISM-J6r1 — the chain of custody stands on a real embedded artifact; red #73 booked; the demo keyed catalog stays GREEN."
+say "GREEN: GISM-J6r1 — the chain of custody stands on a real embedded artifact; red %73 booked; the demo keyed catalog stays GREEN."

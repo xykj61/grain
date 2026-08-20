@@ -17,7 +17,7 @@
 
 say "fora-vote: Language EN — FORA21 writes Raft's §5.4.1 election restriction: a voter grants its vote only to a candidate at least as up-to-date as its own log. This is the rule that makes Leader Completeness true — the promise FORA18's commit rule leaned on."
 say "fora-vote: Style Radiant — a sky chooses only a leader that carries its whole settled history, and an entry the sky has truly committed outlives every election that follows it."
-say "fora-vote: Lens TAME — at_least_as_current is the §5.4.1 predicate; grant_vote and poll are bounded to the roster and the entry cap; the incomplete-candidate proof spends FORA9's intersection lemma over real TermedLogs; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-vote: Lens TAME — at_least_as_current is the §5.4.1 predicate; grant_vote and poll are bounded to the roster and the entry cap; the incomplete-candidate proof spends FORA9's intersection lemma over real TermedLogs; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/vote"

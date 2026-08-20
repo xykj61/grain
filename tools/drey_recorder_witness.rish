@@ -15,7 +15,7 @@
 
 say "drey-recorder: Language EN — DREY2 gives the Mikrophone its record button: a control state machine over DREY0's session, gating when a sample may land."
 say "drey-recorder: Style Radiant — a field recorder is not a raw buffer; nothing is captured unless it is recording, and that promise lives in the control itself."
-say "drey-recorder: Lens TAME — four states, a small set of transitions, no heap beyond the session's fixed buffers; feed reaches capture only while recording; every illegal move refuses by name (NotRecording, AlreadyRecording, NotPaused, Stopped); no disk, no network, no key, no funds (custody gate #2 untouched)."
+say "drey-recorder: Lens TAME — four states, a small set of transitions, no heap beyond the session's fixed buffers; feed reaches capture only while recording; every illegal move refuses by name (NotRecording, AlreadyRecording, NotPaused, Stopped); no disk, no network, no key, no funds (custody gate %2 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mikrophone/bin/recorder"

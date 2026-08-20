@@ -18,7 +18,7 @@
 
 say "fora-term: Language EN — FORA16 makes leadership safe across re-election: a term is a monotonic clock on who leads, and a pier that has seen a newer leader refuses (StaleTerm) to lend its vote to an older one, so an old leader whose sky has advanced can never reach a majority — it is out-voted, not forbidden."
 say "fora-term: Style Radiant — every leader knows its season; the one that has passed steps aside without a fork, because the term that names the sky's true leader only ever climbs."
-say "fora-term: Lens TAME — the term table is monotonic (observe never lowers a term); the stale-leader refusal is the whole safety, spending FORA9's intersection lemma; commit reflects only up-to-date accepts; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-term: Lens TAME — the term table is monotonic (observe never lowers a term); the stale-leader refusal is the whole safety, spending FORA9's intersection lemma; commit reflects only up-to-date accepts; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/term"

@@ -18,7 +18,7 @@
 //! a keeper added them whichever way the sort turns. The sort stays a PERMUTATION: same parts as a set, only reordered.
 //! A malformed clause surfaces the parser's named refusal before any sort.
 //!
-//! A price is compared and reordered by; nothing is moved (custody gate #3 untouched). No network, no key, no funds.
+//! A price is compared and reordered by; nothing is moved (custody gate %3 untouched). No network, no key, no funds.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run brushstroke/part_facets_sort_desc.rye selftest
 

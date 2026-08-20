@@ -9,7 +9,7 @@ pub const max_doc_bytes: u32 = 8192;
 pub const max_blocks: u32 = 32;
 // A real reference document runs consecutive bullet lines into one paragraph
 // block far past the 512-byte demo literals were tuned to fit — the largest
-// paragraph in context/TAME_CORE.md measures 1327 bytes (Yield red #72). The
+// paragraph in context/TAME_CORE.md measures 1327 bytes (Yield red %72). The
 // bound doubles twice, 512 → 2048, to admit real reference-doc paragraphs with
 // headroom over the measured maximum rather than tracking one corpus exactly.
 pub const max_block_text: u32 = 2048;

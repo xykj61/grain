@@ -15,7 +15,7 @@
 
 say "drey-carry: Language EN — DREY5 joins the two proven hands of the Mikrophone carry: the device that frames only what was kept on purpose, and the desk that keeps only what it has proven whole."
 say "drey-carry: Style Radiant — two hands proven alone become one carry proven whole; between them the forgetting promise holds across every seam."
-say "drey-carry: Lens TAME — the join invents nothing; it composes firmware.carry_frame and inbox.accept over their public APIs; every refusal is inherited by name (NothingToCarry, DigestMismatch); the single wire is a byte slice handed function to function; no disk, no network, no key, no funds (custody gate #2 untouched)."
+say "drey-carry: Lens TAME — the join invents nothing; it composes firmware.carry_frame and inbox.accept over their public APIs; every refusal is inherited by name (NothingToCarry, DigestMismatch); the single wire is a byte slice handed function to function; no disk, no network, no key, no funds (custody gate %2 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mikrophone/bin/carry"

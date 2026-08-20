@@ -19,7 +19,7 @@
 //! It composes rungs one and two — a recovered bundle rebuilds a `SignedRecord` re-checked by
 //! `verify_held` / `evaluate_signed` — inventing no new signing and no new join. It reads no network:
 //! the serve transport that would carry this record across the wire is the Comlink-served custody
-//! gate (Keaton's hand). Demo keeper seeds only; facts only (custody gate #3 untouched).
+//! gate (Keaton's hand). Demo keeper seeds only; facts only (custody gate %3 untouched).
 //!
 //!   rye build pond/apps/fairtrade_cert_bron.rye -femit-bin=pond/bin/fairtrade-cert-bron
 //!   pond/bin/fairtrade-cert-bron selftest

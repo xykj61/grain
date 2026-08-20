@@ -36,7 +36,7 @@ let out = trim selftest.out
 say "round_paint: ${out}"
 
 # Check the GREEN claim with Rishi's native `contains`, never a shell grep over interpolated output -- an apostrophe in
-# the selftest prose can never close a shell quote here, the loom REDS #76/#85 taught the tree.
+# the selftest prose can never close a shell quote here, the loom REDS %76/%85 taught the tree.
 assert selftest.out contains "GREEN image-round" else "round_paint: selftest did not print the GREEN round line"
 
 say "round_paint: GREEN -- a source pattern rounded to fill a box, whole copies resized so a whole count pave it exactly, proven on metal: an exact fit rounded to a clean identity repeat; a non-dividing 3x2 box scaled the copies with no gap and no clip; a 4x4 pattern larger than a 2x2 box shrank to one copy sampling all four corners; a translucent pattern blended src-over uniform; a byte-for-byte QOI round trip; a sub-rectangle rounded only its own box; and every malformed fill refused by name having painted nothing."

@@ -15,7 +15,7 @@
 //!
 //! Composes rung one's public API only (`open_ledger` · `admit` · `NetLedger`) over `mycelium/fold`'s
 //! own `mint_fact`; rung one stays its own GREEN binary. Demo keeper seeds only — no real key, no funds,
-//! no network, no custody (gate #3 payment rail and gate #4 the maintainer's Kumara untouched).
+//! no network, no custody (gate %3 payment rail and gate %4 the maintainer's Kumara untouched).
 //!
 //!   rye build pond/apps/constel_net_ledger_stars.rye -femit-bin=pond/bin/constel-net-ledger-stars
 //!   pond/bin/constel-net-ledger-stars selftest

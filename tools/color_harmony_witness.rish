@@ -34,7 +34,7 @@ assert selftest.ok else "color-harmony: selftest exited non-zero -- ${selftest.o
 let out = trim selftest.out
 say "color-harmony: ${out}"
 
-# Honour the loom REDS #76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
+# Honour the loom REDS %76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
 # output, so an apostrophe in the selftest prose (here "keeper's own seed") can never break a check the way it broke the
 # elder color_scale witness.
 assert out contains "GREEN image-color-harmony" else "color-harmony: selftest did not print the GREEN colour-harmony line"

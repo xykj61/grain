@@ -39,7 +39,7 @@ let out = trim selftest.out
 say "space-paint: ${out}"
 
 # Check the GREEN claim with Rishi's native `contains`, never a shell grep over interpolated output -- an apostrophe in
-# the selftest prose can never close a shell quote here, the loom REDS #76 taught the tree.
+# the selftest prose can never close a shell quote here, the loom REDS %76 taught the tree.
 assert selftest.out contains "GREEN image-space" else "space-paint: selftest did not print the GREEN space line"
 
 say "space-paint: GREEN -- a source pattern spaced to fill a box with whole copies and even ground gaps, proven on metal: an exact fit filled with no ground; a leftover axis pinned the first and last copies flush and left the gap as ground; one whole copy seated at the start; an oversize pattern clipped to a single copy; a translucent src-over fill; a byte-for-byte QOI round trip; and every malformed fill refused by name having painted nothing."

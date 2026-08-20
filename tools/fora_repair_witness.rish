@@ -20,7 +20,7 @@
 
 say "fora-repair: Language EN — FORA17 heals a rejoining follower: a TermedLog carries the per-entry term so a leader can tell a real conflict from a mere lag, then truncate the follower's uncommitted stale-term suffix and append its own true entries — the common prefix never rewritten."
 say "fora-repair: Style Radiant — every honest pier finds its way back to the one true history; the only tissue a repair removes is the tissue the sky already agreed to forget."
-say "fora-repair: Lens TAME — the TermedLog is bounded (LogFull) and term-monotonic (TermRegressed); truncate_to is the only entry-removing mutation and only ever sheds an uncommitted tail; repair ends with follower.matches(leader) asserted; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-repair: Lens TAME — the TermedLog is bounded (LogFull) and term-monotonic (TermRegressed); truncate_to is the only entry-removing mutation and only ever sheds an uncommitted tail; repair ends with follower.matches(leader) asserted; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/repair"

@@ -10,7 +10,7 @@ After pushing, remind the user to upload their public GPG key to GitHub if commi
 
 ## The one exception — the depersonalized public seed (`seed/` → `grain-os/grain`)
 
-The private field's commits are always signed, above. The **public seed is the deliberate exception**: `seed/` is its own gitignored repo that projects the depersonalized public seed (custody gate #1, force-pushed to `grain-os/grain`), committed as the anonymous **`Grain OS <grain-os@users.noreply.github.com>`** identity with a **single Option-B commit**.
+The private field's commits are always signed, above. The **public seed is the deliberate exception**: `seed/` is its own gitignored repo that projects the depersonalized public seed (custody gate %1, force-pushed to `grain-os/grain`), committed as the anonymous **`Grain OS <grain-os@users.noreply.github.com>`** identity with a **single Option-B commit**.
 
 That identity **has no secret key on purpose.** Signing the public seed with the maintainer's own GPG key would cryptographically **link the anonymous seed back to the maintainer** — defeating the whole point of depersonalization (`tools/sow_witness.rish` proves `IDENT_CLEAN`/`NO_PERSONAL`; a signature would undo it). So the seed commit is **unsigned**, by design, on Keaton's word (`20260817`).
 
@@ -27,6 +27,18 @@ git push --force origin main             # origin here IS grain-os/grain
 This is the **only** place `commit.gpgsign` is false anywhere in the tree, and it is a privacy safeguard, not a lapse.
 
 **Living remotes** (`20260730.030553` — Keaton's word): always push **both** `origin` (GitHub `autoproject96/grain`) and `xykj61` (GitHub `xykj61/grain`). Codeberg stays retired from living push. Canonical count: `context/REMOTE_ROSTER.md`.
+
+## Our own record numbers wear `%`, never `#` -- seated `20260820.005250`
+
+**`%` is the sigil for a number this tree assigns itself.** Write **`REDS %89`**, `gate %1`, `errata %75`, `OQ %4`, `study %24`, `rows %1, %2`. Reserve **`#`** for a genuine GitHub issue or pull request -- `PR #76` keeps its hash, because there it is telling the truth.
+
+GitHub's commit-message renderer turns any `#<number>` into a link to the issue or PR of that number, exactly as it does for `@name` above. This is **not** a hypothetical: `xykj61/grain` carries pull requests numbered into the eighties, so `REDS %80` in a commit body has been rendering as a link to an unrelated equinox PR. A reader following it lands somewhere the sentence never meant.
+
+**Where it bites, and where it does not.** GitHub's own documentation is explicit -- *"Autolinked references are not created in wikis or files in a repository."* So `REDS %89` inside `crux/REDS.md` was never a broken link; only **commit messages** (and issue, PR, and release text) linkify. The convention is nonetheless written the same way everywhere, because a ledger row quoted out of a file and into a commit message must already be safe when it arrives.
+
+**Why `%` and not a plain hyphen.** In Glow, as in the Hoon it descends from, `%` marks a **constant term** -- a value that is exactly itself and never varies. A REDS row number is precisely that: an immutable name for a fact recorded once and never edited, which is the ledger's own first law. So the sigil is not an arbitrary dodge of a renderer; it says what the number is. It also resolves an ambiguity a bare space would leave, where *REDS 89* could be read as eighty-nine reds rather than the eighty-ninth. The modulo `%` of Rye and Zig is no collision: that form is `x%8`, bound tight to an expression, never `REDS %89`.
+
+**Accrete-never-break.** Dated testimony -- session logs, counsel, waymarks, dated design notes -- keeps every `#` it ever wrote. This governs living surfaces and everything written from here forward.
 
 ## Commit message hygiene — no bare `@name` in subject or body
 

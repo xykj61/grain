@@ -18,7 +18,7 @@
 //!
 //! Boundary (custody-first): this records the *facts* of a trade; it holds and moves nothing. A
 //! Booked pair is a pure fold of facts — recording the same trade twice yields identical books, so
-//! there is no hidden cash state to disburse. Actually settling a trade reaches custody gate #3
+//! there is no hidden cash state to disburse. Actually settling a trade reaches custody gate %3
 //! (moving funds / a payment rail) and waits on licensed counsel — surfaced there, never crossed.
 //!
 //!   rye build pond/apps/commerce_trade.rye -femit-bin=pond/bin/commerce-trade

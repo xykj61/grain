@@ -17,7 +17,7 @@
 
 say "fora-exchange: Language EN — FORA4 proves two fake piers reach a COMPLETE Session communicating ONLY through frames (bytes), never once sharing an in-memory value — the real pier boundary the later byte-queue and socket rounds will simply carry unchanged."
 say "fora-exchange: Style Radiant — two Party views, three frames, and nothing else shared; agreement reached purely over the wire representation, every fault refusing by name mid-exchange."
-say "fora-exchange: Lens TAME — a bounded exchange over in-memory frame buffers composing handshake.rye and wire.rye over their public APIs; the naming-law border guards every crossing; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-exchange: Lens TAME — a bounded exchange over in-memory frame buffers composing handshake.rye and wire.rye over their public APIs; the naming-law border guards every crossing; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/exchange"

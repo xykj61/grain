@@ -19,7 +19,7 @@
 
 say "fora-catchup: Language EN — FORA15 brings the pier that fell behind current: a follower lacking a leader's committed tail either has it served live (tail catch-up) or, if it is too far behind to replay, installs the leader's compact snapshot and takes the tail — Raft's InstallSnapshot named in Constel's terms, spending FORA14's snapshot directly."
 say "fora-catchup: Style Radiant — the pier that was offline finds its way current; the snapshot it installs is the one true summary of what the sky agreed, and no catch-up ever papers over a real disagreement — a divergent overlap is refused whole."
-say "fora-catchup: Lens TAME — every catch-up ends with follower.equivalent(leader) asserted; the verifiable overlap is checked before a single append; the follower's tail stays bounded (auto-compacting) however far behind it was; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate #2 and gate #4 untouched)."
+say "fora-catchup: Lens TAME — every catch-up ends with follower.equivalent(leader) asserted; the verifiable overlap is checked before a single append; the follower's tail stays bounded (auto-compacting) however far behind it was; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "constel/bin/catchup"
