@@ -3781,3 +3781,236 @@ pub fn check_answer_refusals(comptime rung: type) u8 {
     return link(rung, "check_answer_measure");
 }
 
+/// Weighs the number this rung moves, as a pure fold.
+pub fn check_answer_measure(comptime rung: type) u8 {
+    if (rung.unopened_answers(1, .leaves) != 1) {
+        print("  RED: an answer written back and never opened went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.unopened_answers(1, .hears) != 0) {
+        print("  RED: an answer the plan heard still counted as one nobody opened\n", .{});
+        return 1;
+    }
+    // A run that carried no call has no correspondence to read a reply in, so it
+    // costs the count nothing -- the harm this rung names is the person actually
+    // called and then never heard.
+    if (rung.unopened_answers(0, .leaves) != 0) {
+        print("  RED: a run that called nobody was charged an unopened answer\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: uncalled, silent, mismatched, miscounted, misrecorded\n", .{});
+    print("  the hearing this rung keeps: {s}\n", .{rung.answer_words(.hears)});
+    print("  what a leaving plan tells an operator: {s}\n", .{rung.answer_words(.leaves)});
+    print("  a reader who lets the wall stand: {s}\n", .{rung.hand_words(.accepts)});
+    print("  a reader who takes the matter up: {s}\n", .{rung.hand_words(.takes_up)});
+    print("  an answer carries nine bytes: the call it replies to, echoed whole, and the reader's own byte last\n", .{});
+    return link(rung, "check_abate");
+}
+
+/// A recorded answer across a provisioning, proven outside any run.
+///
+/// The lap below proves the opening end to end under a real plan. This proves
+/// the two properties that make a record worth writing: it survives a
+/// provisioning, since an outcome swept every morning would leave an operator
+/// reading a call nobody ever answered -- **and the reader's own word stands
+/// exactly where they left it**, so taking down every note the plan keeps leaves
+/// the person still holding what they said.
+pub fn check_answer_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    rung.clear_answer(io);
+    rung.clear_hands(io, rung.standing_address);
+    rung.clear_calls(io, rung.standing_address);
+    rung.clear_desist(io);
+    rung.clear_mind(io);
+    if (rung.answer_standing(io) != null) {
+        print("  RED: an answer stood recorded where none had been opened\n", .{});
+        return 1;
+    }
+    const held = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .stands));
+    const call = rung.calls_bytes(rung.walls_bytes(rung.minds_bytes(held)));
+    const hand = rung.hands_bytes(call, .accepts);
+    // The reader before this run, standing in for themselves: they were called
+    // to the wall and wrote back, exactly as the rung below leaves a wire.
+    rung.seat_hands(io, rung.standing_address, hand) catch |err| {
+        print("  RED: a reader's own answer could not be seated: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.answer_note(io, hand) catch |err| {
+        print("  RED: an answer could not be recorded: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = rung.answer_standing(io) orelse {
+        print("  RED: a provisioning cleared the answer an operator reads\n", .{});
+        return 1;
+    };
+    if (!rung.answers_carries(survived, hand)) {
+        print("  RED: a record carried past a provisioning stopped naming its answer\n", .{});
+        return 1;
+    }
+    if (rung.answers_hand(survived) != .accepts) {
+        print("  RED: a record carried past a provisioning forgot the word it was built on\n", .{});
+        return 1;
+    }
+    // And the reader's own word outlives the plan's own record, which is the
+    // whole point of reading it where they wrote it rather than moving it.
+    rung.clear_answer(io);
+    if (rung.hands_written(io, rung.standing_address) == null) {
+        print("  RED: a reader's own answer fell with the record that only quoted it\n", .{});
+        return 1;
+    }
+    rung.clear_hands(io, rung.standing_address);
+    if (rung.hands_written(io, rung.standing_address) != null) {
+        print("  RED: an answer outlived the taking down of the reader's own note\n", .{});
+        return 1;
+    }
+    rung.clear_mind(io);
+    print("  a record survives a provisioning, and leaves the reader's own word standing where they wrote it\n", .{});
+    return link_wire(rung, "check_abate_wire", io, sys);
+}
+
+
+
+/// Weighs the abating this rung adds, as a pure fold.
+pub fn check_abate(comptime rung: type) u8 {
+    const held = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .stands));
+    const mark = rung.minds_bytes(held);
+    const wall = rung.walls_bytes(mark);
+    const call = rung.calls_bytes(wall);
+    const released = rung.answers_bytes(rung.hands_bytes(call, .takes_up));
+    const abatement = rung.abates_bytes(released);
+    if (!rung.abates_carries(abatement, released)) {
+        print("  RED: an abatement did not carry the record it was built from\n", .{});
+        return 1;
+    }
+    if (rung.abates_hand(abatement) != .takes_up) {
+        print("  RED: an abatement lost the release it was granted six tiers down\n", .{});
+        return 1;
+    }
+    if (abatement[rung.max_abates_bytes - 1] != rung.abated_byte) {
+        print("  RED: an abatement did not say what it is in its own last byte\n", .{});
+        return 1;
+    }
+    // The consent, as a fold: exactly one of the two answers a reader may give
+    // releases a plan from its own wall, and the other asks for nothing.
+    if (!rung.releases(.takes_up) or rung.releases(.accepts)) {
+        print("  RED: a reader letting the wall stand read as one releasing it\n", .{});
+        return 1;
+    }
+    // An abatement built on some other record acts on some other correspondence,
+    // and reading it as this one's would take down a boundary nobody released.
+    const accepted = rung.answers_bytes(rung.hands_bytes(call, .accepts));
+    if (rung.abates_carries(rung.abates_bytes(accepted), released)) {
+        print("  RED: an abatement of some other record read as this one's\n", .{});
+        return 1;
+    }
+    if (rung.abates_carries(null, released)) {
+        print("  RED: a plan that took nothing down read as one that had\n", .{});
+        return 1;
+    }
+    if (rung.abates_hand(null) != null) {
+        print("  RED: an absent abatement carried a release all the same\n", .{});
+        return 1;
+    }
+    // The wall the release actually names, weighed against the wall standing --
+    // the whole point of the rung, since taking down the wrong boundary wears
+    // the authority of a word nobody spent on it.
+    if (!rung.abates_wall(released, wall)) {
+        print("  RED: a record refused the very wall its correspondence was built on\n", .{});
+        return 1;
+    }
+    const elder = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .allays));
+    if (rung.abates_wall(released, rung.walls_bytes(rung.minds_bytes(elder)))) {
+        print("  RED: a release about one wall read as covering another\n", .{});
+        return 1;
+    }
+    if (rung.abates_wall(released, null)) {
+        print("  RED: a plan standing no wall at all read as one with a wall to take down\n", .{});
+        return 1;
+    }
+    if (!rung.abate_holds(abatement, abatement) or rung.abate_holds(null, abatement)) {
+        print("  RED: an abatement read back out of the plan's notes did not answer for itself\n", .{});
+        return 1;
+    }
+    if (rung.abated_in(1, true, .abates) != 1 or rung.abated_in(1, true, .holds) != 0) {
+        print("  RED: an abating was counted as a holding, or the other way about\n", .{});
+        return 1;
+    }
+    if (rung.abated_in(1, false, .abates) != 0) {
+        print("  RED: a plan took a wall down on a reader who released nothing\n", .{});
+        return 1;
+    }
+    if (rung.abated_in(0, true, .abates) != 0) {
+        print("  RED: a run that opened no answer was counted as abating a wall\n", .{});
+        return 1;
+    }
+    if (rung.withheld_walls_in(1, true, .holds) != 1 or rung.withheld_walls_in(1, true, .abates) != 0) {
+        print("  RED: the other half of the count did not close\n", .{});
+        return 1;
+    }
+    if (rung.withheld_walls_in(1, false, .abates) != 1) {
+        print("  RED: a wall left standing for want of a release went uncounted as held\n", .{});
+        return 1;
+    }
+    return link(rung, "check_abate_refusals");
+}
+
+/// Weighs every refusal this rung earns, as a pure fold.
+pub fn check_abate_refusals(comptime rung: type) u8 {
+    if (rung.abate_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.AbateUnopened) {
+            print("  RED: an abating by a run that opened no answer refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: an abating by a run that opened no answer was allowed\n", .{});
+        return 1;
+    }
+    if (rung.abate_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.AbateUnreleased) {
+            print("  RED: an abating on a reader who released nothing refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: an abating on a reader who released nothing was allowed\n", .{});
+        return 1;
+    }
+    if (rung.abate_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.AbateMismatched) {
+            print("  RED: an abating of some other wall refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: an abating of some other wall was allowed\n", .{});
+        return 1;
+    }
+    if (rung.abate_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.AbateMiscounted) {
+            print("  RED: an answer both abated and held refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: an answer both abated and held was allowed\n", .{});
+        return 1;
+    }
+    if (rung.abate_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.AbateMiscounted) {
+            print("  RED: an answer neither abated nor held refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: an answer neither abated nor held was allowed\n", .{});
+        return 1;
+    }
+    // And the honest pass: one answer opened, one release acted on, counted once.
+    if (rung.abate_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: an honest abating refused as {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return link(rung, "check_abate_measure");
+}
