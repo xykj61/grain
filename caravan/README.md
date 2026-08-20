@@ -1,11 +1,13 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260819.172105` (the inflight ring lands -- two documents standing at once, and the rule a supervisor keeps when it cannot know which one is true)
+**Last updated:** `20260819.232716` (the whole ladder molts to **dependent** -- the word the arc had already earned)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
 **Caravan supervises.** It watches a dependent process, restarts it when it falls, and grows -- one accretion at a time -- toward the fuller shape a real service needs: bounded memory per dependent, more than one dependent, ordered startup, a named capability table, and a real exit-code vocabulary that tells restart-on-fall apart from an ordinary cycle and a deliberate stop.
+
+**A supervised process here is a *dependent*.** The elder word named offspring, and the ring arc outgrew it: by `unhand.rye` a supervised process is weighed by the line it holds rather than by the ceiling its domain was granted, and by `confer.rye` and `revoke.rye` its reach travels to it and returns from it while it runs. That is a dependent -- something held up by what it was granted -- rather than a thing begotten. The one place the elder word still stands is `std.process.Child`, which is Zig's name at the seam and stays exactly as Zig wrote it. The record of the word that departed, and why it left, waits in [`../crux/CAIRNS.md`](../crux/CAIRNS.md) and the Lexicon's **Dependent** row.
 
 Every ring here composes over the one before it. A later ring imports an earlier one, or restates its shape one step further out -- nothing is rewritten to make room for the next proof.
 
@@ -117,7 +119,7 @@ The seam is a capability line on argv. Each grant crosses as one `region:perm` w
 
 Five properties make the boot checkable rather than merely arranged. **Coverage:** every declared domain starts, so a system reporting itself up has every component running. **Order:** dependents start in declaration order, so a document reads as a startup sequence. **Fidelity:** the words handed to each dependent agree with the map at every right, checked by the parent before the spawn and by the dependent after it. **Constancy:** the capability line is built once and reused across every restart, so a dependent that falls comes back holding exactly what it held before -- a restart grants nothing a first start withheld. And **refusal before action:** a declaration this supervisor cannot seat spawns nothing at all.
 
-That last one is the load-bearing negative. A half-booted system is worse than a refused one, since it looks alive from the outside while the components its running dependents depend on were never started -- so `wide_roster.bron`, whole by every property `verify` reads and still past the four dependents this table holds, answers `TooManyDomains` before a single process exists. Witness: [`tools/caravan_boot_witness.rish`](../tools/caravan_boot_witness.rish), GREEN on metal, its RED path proven by rendering a read-only grant as `rw` and watching the fidelity assert abort after the first dependent came up and before the widened line ever spawned.
+That last one is the load-bearing negative. A half-booted system is worse than a refused one, since it looks alive from the outside while the components its running dependents rely on were never started -- so `wide_roster.bron`, whole by every property `verify` reads and still past the four dependents this table holds, answers `TooManyDomains` before a single process exists. Witness: [`tools/caravan_boot_witness.rish`](../tools/caravan_boot_witness.rish), GREEN on metal, its RED path proven by rendering a read-only grant as `rw` and watching the fidelity assert abort after the first dependent came up and before the widened line ever spawned.
 
 ## Why a Grant Has To Do Work
 
