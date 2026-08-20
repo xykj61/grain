@@ -1,0 +1,1651 @@
+//! Caravan entrust -- a line may also grow, and growing is the harder half.
+//!
+//! `taper.rye` let a dependent give back an arc it had finished with, so the
+//! door widened the moment the work narrowed. It named the mirror question
+//! plainly and left it standing: may a supervisor hand a *running* dependent
+//! more work, rather than leaving it and spawning another dependent later?
+//!
+//! **It may, and the act is not the mirror image of a handback.** A shrink
+//! is safe by construction -- the door already weighed the wider line when
+//! it admitted every sibling standing beside it, so narrowing can only free
+//! room. A widening is the opposite: it reaches for arcs the door never
+//! weighed, beside siblings admitted against the narrower line. So a
+//! widening must look in two places a shrink never had to.
+//!
+//! **The shape stays one number.** A phase carries, beside the line it
+//! hands its dependent at spawn, a **reserve**: arcs the supervisor may entrust
+//! later, written in the same grammar. The dependent is spawned holding both,
+//! and the run remembers only the handed line -- the reserve stands dark to
+//! the door until it is entrusted. An entrustment is therefore the count of
+//! leading reserve arcs handed over, and the line the run remembers is the
+//! handed line followed by that prefix. A line written that way can only
+//! ever grow, and the whole memory of the growing is one byte per dependent.
+//!
+//! **The win is a different one than the shrink bought.** A taper bought
+//! room -- more dependents at once. An entrustment buys the opposite economy:
+//! work arriving for a domain already standing is carried by the dependent
+//! already there, so the same arcs are read by **fewer dependents**. Where
+//! `unhand.admissible_held` refuses a second dependent of a running domain, an
+//! entrustment dissolves the block without weakening it, because the arcs
+//! go to the one dependent rather than to a second.
+//!
+//! **The rung earns five refusals, two more than the shrink, and every one
+//! is about the line.** `EntrustReversed` is the direction: a line only
+//! ever grows here, so an entrustment lower than the run remembers is a
+//! claim to take work back, which is a different act. `EntrustExhausted` is
+//! the supply: a reserve gives only what it holds, and a widened line names
+//! no more arcs than one item may ever name. `EntrustUngranted` is the
+//! reach a shrink never had to check: a narrowed line was inside the
+//! document by construction, being a suffix of a line already granted,
+//! while a widened line reaches for arcs and must be weighed against what
+//! the document actually grants that domain. `EntrustContended` is the
+//! room: a widening is refused wherever the widened line would contend with
+//! a line another running dependent holds, since the door that admitted those
+//! siblings never weighed this reach. `EntrustUnheard` is the answer: a
+//! handback was a fact the run took in, while an entrustment is an act the
+//! dependent must confirm, and a run that entrusted work nobody took on would
+//! believe work done that was never read.
+//!
+//! **The notification runs the other way.** In `taper.rye` the dependent
+//! published and the supervisor acknowledged. Here the supervisor publishes
+//! and the dependent acknowledges -- the same two-way note, read from the other
+//! end, and bounded on both sides so neither a dependent nor a blocked run ever
+//! waits forever.
+//!
+//! **The door itself needs nothing new.** `unhand.admissible_held` weighs a
+//! newcomer against the lines a run remembers, and this rung changes only
+//! what those lines say -- the same finding `taper.rye` made about a line
+//! that shrinks, read from the other side.
+//!
+//! **A run that entrusts nothing behaves exactly as the rung below.** With
+//! no reserve handed anywhere, every line stands at the width it was handed
+//! and every pair reads as `unhand.admissible_held` reads it.
+//!
+//! **The limit, named plainly.** A dependent is spawned holding its reserve
+//! capabilities, so this rung's isolation claim is about the *work* a dependent
+//! is permitted to do rather than about the reach it physically holds. A
+//! real microkernel hands a capability into a running dependent's cspace; a
+//! process boundary handed its capability words at spawn cannot. Carrying a
+//! capability over a channel into a dependent already running is the next
+//! rung's question.
+//!
+//! Usage:
+//!   entrust selftest                  Run the two rooms against each other
+//!   entrust                           Same as selftest
+//!   entrust dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const cycle = @import("cycle.rye");
+const regions = @import("regions.rye");
+const queue_store = @import("queue.rye");
+const serve = @import("serve.rye");
+const gap = @import("gap.rye");
+const cohort = @import("cohort.rye");
+const intent = @import("intent.rye");
+const mask = @import("mask.rye");
+const precede = @import("precede.rye");
+const unhand = @import("unhand.rye");
+const taper = @import("taper.rye");
+const tally_parse_int = @import("parse_int.rye");
+
+const Dir = std.Io.Dir;
+
+const caravan_entrust_version = "20260819.222434";
+
+// =========================================================================
+// The bounds -- carried whole, and the four this rung adds
+// =========================================================================
+
+/// The declaration this rung runs against, unchanged from the rung below.
+///
+/// The same board one client writes and its siblings read: a shape where a
+/// domain genuinely stands for a while, which is exactly the shape a
+/// supervisor wants to hand more work to rather than wait out.
+pub const declaration_path = taper.declaration_path;
+
+/// How many dependents one supervisor may hold at once, unchanged.
+pub const max_in_flight: u32 = taper.max_in_flight;
+
+/// How many phases one queue may ever hold, unchanged.
+pub const max_queue_len: u32 = taper.max_queue_len;
+
+/// How far a blocked head may look for a phase that can pass, unchanged.
+pub const max_lookahead: u32 = taper.max_lookahead;
+
+/// How many words a supervised dependent's own argv always carries, unchanged.
+pub const fixed_argv_words: u32 = taper.fixed_argv_words;
+
+/// How many turns one plan may ever name, unchanged.
+pub const max_turns: u32 = taper.max_turns;
+
+/// Where the entrustment notes live -- their own directory, so a note about
+/// work handed forward is never mistaken for one about work handed back.
+pub const note_dir = "caravan/.entrusts";
+
+/// The longest note path this rung builds: the directory, one domain name,
+/// and the longer of the two suffixes.
+pub const max_note_path_len: u32 = 160;
+
+/// How long one look at a note rests before the next.
+///
+/// Short enough that an entrustment is taken on the moment it is published,
+/// and long enough that neither side spins a core to hear it.
+pub const note_rest_ms: u32 = 2;
+
+/// How many looks a supervisor spends waiting for an entrustment to be
+/// taken on.
+///
+/// A bound rather than a wait: a run whose dependent has already exited hears
+/// nothing, and answers `EntrustUnheard` rather than hanging on a reader
+/// that is not coming.
+pub const max_confirm_looks: u32 = 500;
+
+/// How many looks a dependent spends waiting for more work once its own line is
+/// read through.
+///
+/// Bounded for the same reason from the other side: a dependent whose
+/// supervisor entrusts nothing carries its outcome home rather than holding
+/// the whole run open.
+pub const max_patience_looks: u32 = 600;
+
+comptime {
+    // invariant: a run always has a slot to remember a live dependent's line by
+    assert(max_in_flight >= 1);
+    // invariant: a confirming supervisor always looks at least once
+    assert(max_confirm_looks >= 1);
+    // invariant: a waiting dependent always looks at least once
+    assert(max_patience_looks >= 1);
+    // invariant: a note path leaves room for the directory and a name
+    assert(max_note_path_len > note_dir.len + regions.max_name_len);
+    // invariant: a widened line has room to grow past the line it started as
+    assert(cycle.max_hops >= 2);
+    // invariant: this rung's notes never collide with the handback notes
+    assert(!std.mem.eql(u8, note_dir, taper.note_dir));
+}
+
+// =========================================================================
+// The shapes -- carried whole from the rung below
+// =========================================================================
+
+/// Renders one outcome code as the words an operator reads.
+pub fn outcome_name(code: u8) []const u8 {
+    return taper.outcome_name(code);
+}
+
+/// Why a queue may not take, correct, understudy, unhand, taper, or entrust
+/// its work.
+///
+/// Five names of this rung's own: the direction a line grows, the supply it
+/// grows from, the reach it grows into, the room it grows beside, and the
+/// answer that says the growing arrived.
+pub const RunError = taper.RunError || error{
+    EntrustReversed,
+    EntrustExhausted,
+    EntrustUngranted,
+    EntrustContended,
+    EntrustUnheard,
+};
+
+/// One queued item and the letters it declares, carried from `intent.rye`.
+pub const Task = taper.Task;
+
+/// How deeply a reading looks at the queue's own authorship, unchanged.
+pub const Reading = taper.Reading;
+
+/// One phase, its turn, its step, its masks, and the reserve this rung adds.
+///
+/// `reserve` is the only field this rung grows: arcs a supervisor may
+/// entrust to this phase's dependent after it is already standing, written in
+/// the same grammar the line itself speaks. A phase that names no reserve
+/// runs exactly as the rung below runs it.
+pub const Phase = struct {
+    turn: u32,
+    step: u32,
+    follows: u32,
+    follows_turns: u32,
+    task: Task,
+    reserve: ?Task = null,
+};
+
+/// The phase as the rungs below read it, without the reserve they never had.
+pub fn plain(phase: Phase) unhand.Phase {
+    return .{
+        .turn = phase.turn,
+        .step = phase.step,
+        .follows = phase.follows,
+        .follows_turns = phase.follows_turns,
+        .task = phase.task,
+    };
+}
+
+/// What one run did, reported whole, with what it entrusted added.
+pub const Report = struct {
+    inner: taper.Report = .{},
+    entrusted: u32 = 0,
+    absorbed: u32 = 0,
+};
+
+/// The single bit that stands for one turn of a plan.
+pub fn turn_bit(turn: u32) u32 {
+    return taper.turn_bit(turn);
+}
+
+/// Answers whether the plan's written sequence keeps every name it carries.
+pub fn plan_is_seated(plan: []const unhand.Phase) bool {
+    return taper.plan_is_seated(plan);
+}
+
+/// Answers whether two phases must keep the order the queue wrote them in.
+pub fn items_contend(sys: *const system.System, a: unhand.Phase, b: unhand.Phase, reading: Reading) bool {
+    return taper.items_contend(sys, a, b, reading);
+}
+
+/// Counts the arcs one line names.
+pub fn hop_count(task: Task) u32 {
+    return taper.hop_count(task);
+}
+
+// =========================================================================
+// The line that grows
+// =========================================================================
+
+/// Which reading answers the isolation room at the door.
+///
+/// `by_fresh` is where `taper.rye` left it: work for a domain already
+/// standing waits for a free slot and then spawns a dependent of its own.
+/// `by_entrusted` is this rung: that work is handed to the dependent already
+/// there, and the line the run remembers grows to say so.
+pub const Room = enum { by_fresh, by_entrusted };
+
+/// Renders one room as the words an operator reads.
+pub fn room_words(r: Room) []const u8 {
+    return switch (r) {
+        .by_fresh => "a dependent of its own for every phase",
+        .by_entrusted => "more work handed to the dependent already standing",
+    };
+}
+
+/// One widened line, written out and held for as long as the reading uses it.
+///
+/// A line is text in the arc grammar every item speaks, so a line grown by
+/// its reserve is written into these buffers rather than described --
+/// derived rather than claimed, as this arc derives every number it reports.
+pub const Line = struct {
+    hops: [regions.max_name_len * cycle.max_hops + cycle.max_hops]u8 = @splat(0),
+    hops_len: u32 = 0,
+    effects: [2 * cycle.max_hops]u8 = @splat(0),
+    effects_len: u32 = 0,
+
+    /// The arcs this line names, as one item's `hops` field.
+    pub fn hops_slice(self: *const Line) []const u8 {
+        return self.hops[0..self.hops_len];
+    }
+
+    /// The letters this line declares, as one item's `effects` field.
+    pub fn effects_slice(self: *const Line) []const u8 {
+        return self.effects[0..self.effects_len];
+    }
+};
+
+/// Appends one arc and the letter it declares onto a line being written.
+fn append_arc(out: *Line, hop: []const u8, writes: bool, first: bool) void {
+    // invariant: an arc a line names always carries a name
+    assert(hop.len >= 1);
+    if (!first) {
+        out.hops[out.hops_len] = ',';
+        out.hops_len += 1;
+        out.effects[out.effects_len] = ',';
+        out.effects_len += 1;
+    }
+    var b: u32 = 0;
+    while (b < hop.len) : (b += 1) {
+        out.hops[out.hops_len] = hop[b];
+        out.hops_len += 1;
+    }
+    // invariant: the whole arc name was written, none of it dropped
+    assert(b == hop.len);
+    out.effects[out.effects_len] = if (writes) 'w' else 'r';
+    out.effects_len += 1;
+}
+
+/// Counts the arcs a reserve offers, or zero where a phase named none.
+pub fn reserve_depth(reserve: ?Task) u32 {
+    const held = reserve orelse return 0;
+    return hop_count(held);
+}
+
+/// Writes the line a dependent holds once it has been entrusted leading reserve
+/// arcs.
+///
+/// The handed line whole, then a prefix of the reserve, arcs and letters
+/// together -- so the two fields stay level with each other, exactly as
+/// they do when a line narrows.
+pub fn widen_line(handed: Task, reserve: ?Task, taken: u32, out: *Line) bool {
+    // invariant: a widening always grows a line that names arcs
+    assert(handed.item.hops.len >= 1);
+    // invariant: a widening never takes on more than one item may name
+    assert(taken <= cycle.max_hops);
+    if (taken > reserve_depth(reserve)) return false;
+    if (hop_count(handed) + taken > cycle.max_hops) return false;
+    out.hops_len = 0;
+    out.effects_len = 0;
+    var written: u32 = 0;
+
+    var index: u32 = 0;
+    var handed_arcs = std.mem.splitScalar(u8, handed.item.hops, ',');
+    while (handed_arcs.next()) |hop| {
+        // invariant: the walk stays inside the hops one item may name
+        assert(index < cycle.max_hops);
+        append_arc(out, hop, intent.declares_write(handed, index), written == 0);
+        written += 1;
+        index += 1;
+    }
+    // invariant: the handed line was written whole, none of it dropped
+    assert(written == index);
+
+    if (taken > 0) {
+        const held = reserve.?;
+        var r: u32 = 0;
+        var reserve_arcs = std.mem.splitScalar(u8, held.item.hops, ',');
+        while (reserve_arcs.next()) |hop| {
+            // invariant: the walk stays inside the hops one item may name
+            assert(r < cycle.max_hops);
+            if (r >= taken) break;
+            append_arc(out, hop, intent.declares_write(held, r), false);
+            written += 1;
+            r += 1;
+        }
+        // invariant: exactly the entrusted prefix was taken on, no more
+        assert(r == taken);
+    }
+    // invariant: a widened line always keeps every arc its dependent was handed
+    assert(written >= index);
+    // invariant: a widened line never outgrows what one item may name
+    assert(written <= cycle.max_hops);
+    return true;
+}
+
+/// Writes one widened line as a whole item, ready for the door to weigh.
+pub fn entrusted_task(handed: Task, reserve: ?Task, taken: u32, out: *Line) ?Task {
+    if (!widen_line(handed, reserve, taken, out)) return null;
+    return .{
+        .effects = out.effects_slice(),
+        .item = .{
+            .domain = handed.item.domain,
+            .verb = handed.item.verb,
+            .hops = out.hops_slice(),
+            .peers = handed.item.peers,
+            .count = handed.item.count,
+            .expect = handed.item.expect,
+        },
+    };
+}
+
+/// Answers whether a widened line names only arcs the document grants.
+///
+/// This is the place a shrink never had to look. A narrowed line was inside
+/// the document by construction, being a suffix of a line already granted;
+/// a widened line reaches, and every arc it reaches for must be one this
+/// domain may read -- and may write wherever the line declares a write.
+pub fn entrust_granted(sys: *const system.System, widened: Task) bool {
+    // invariant: a widened line always names arcs
+    assert(widened.item.hops.len >= 1);
+    // invariant: a widened line always names the domain it belongs to
+    assert(widened.item.domain.len >= 1);
+    const domain = widened.item.domain;
+    var index: u32 = 0;
+    var arcs = std.mem.splitScalar(u8, widened.item.hops, ',');
+    while (arcs.next()) |hop| {
+        // invariant: the walk stays inside the hops one item may name
+        assert(index < cycle.max_hops);
+        if (!sys.map.may_read(hop, domain)) return false;
+        if (intent.declares_write(widened, index) and !sys.map.may_write(hop, domain)) {
+            return false;
+        }
+        index += 1;
+    }
+    // invariant: every arc the widened line names was weighed, none skipped
+    assert(index >= 1);
+    return true;
+}
+
+/// Answers whether a widened line stands clear of every sibling's own.
+///
+/// The door that admitted those siblings weighed the narrower line, so a
+/// widening earns its own weighing against each of them -- and never
+/// against the dependent doing the widening, which is weighing itself.
+pub fn entrust_clear(
+    sys: *const system.System,
+    siblings: []const Task,
+    at: u32,
+    widened: Task,
+) bool {
+    // invariant: a widening always names a dependent inside the lines remembered
+    assert(at < siblings.len);
+    var i: u32 = 0;
+    while (i < siblings.len) : (i += 1) {
+        if (i == at) continue;
+        if (intent.items_contend(sys, siblings[i], widened, .by_intent)) return false;
+    }
+    // invariant: every sibling standing was weighed, none skipped
+    assert(i == siblings.len);
+    return true;
+}
+
+/// Answers why a run may not entrust this much of a reserve, or that it may.
+///
+/// Four doors, in the order a reader meets them. The direction: a line only
+/// ever grows here. The supply: a reserve gives only what it holds. The
+/// reach: what a line names must be what the document grants. The room:
+/// what a line reaches for must stand clear of every sibling.
+pub fn entrust_refusal(
+    sys: *const system.System,
+    siblings: []const Task,
+    reserves: []const ?Task,
+    at: u32,
+    remembered: u32,
+    taken: u32,
+    out: *Line,
+) ?RunError {
+    // invariant: a widening always names a dependent inside the lines remembered
+    assert(at < siblings.len);
+    // invariant: every remembered line carries a remembered reserve
+    assert(siblings.len == reserves.len);
+    if (taken < remembered) return error.EntrustReversed;
+    const widened = entrusted_task(siblings[at], reserves[at], taken, out) orelse
+        return error.EntrustExhausted;
+    if (!entrust_granted(sys, widened)) return error.EntrustUngranted;
+    if (!entrust_clear(sys, siblings, at, widened)) return error.EntrustContended;
+    return null;
+}
+
+/// Answers whether one entrustment may be made at all.
+pub fn entrust_admits(
+    sys: *const system.System,
+    siblings: []const Task,
+    reserves: []const ?Task,
+    at: u32,
+    remembered: u32,
+    taken: u32,
+) bool {
+    var line: Line = .{};
+    return entrust_refusal(sys, siblings, reserves, at, remembered, taken, &line) == null;
+}
+
+// =========================================================================
+// The door -- the held reading, over lines that have grown
+// =========================================================================
+
+/// The lines a run remembers, each widened by what its dependent was entrusted.
+pub const Holding = struct {
+    lines: [max_in_flight]Line = @splat(.{}),
+    tasks: [max_in_flight]Task = undefined,
+    count: u32 = 0,
+
+    /// The lines this holding stands for, as the door reads them.
+    pub fn slice(self: *const Holding) []const Task {
+        // invariant: a holding never stands for more dependents than one run holds
+        assert(self.count <= max_in_flight);
+        return self.tasks[0..self.count];
+    }
+};
+
+/// Writes the line each dependent now holds, or names why one may not grow.
+pub fn widen_all(
+    handed: []const Task,
+    reserves: []const ?Task,
+    taken: []const u32,
+    out: *Holding,
+) RunError!void {
+    // invariant: a run never widens more lines than one supervisor holds
+    assert(handed.len <= max_in_flight);
+    // invariant: every remembered line carries a reserve and an entrustment
+    assert(handed.len == reserves.len);
+    assert(handed.len == taken.len);
+    out.count = 0;
+    var i: u32 = 0;
+    while (i < handed.len) : (i += 1) {
+        out.tasks[i] = entrusted_task(handed[i], reserves[i], taken[i], &out.lines[i]) orelse
+            return error.EntrustExhausted;
+        out.count += 1;
+    }
+    // invariant: every remembered line was widened, none skipped
+    assert(i == handed.len);
+    assert(out.count == handed.len);
+}
+
+/// Answers whether the head may enter, by whichever room the run reads.
+///
+/// The door itself is `unhand.admissible_held` in both rooms -- a domain
+/// runs one dependent at a time, a channel joins two domains at every instant,
+/// and a newcomer is weighed against the lines the run remembers. What the
+/// room chooses is only how wide those lines are.
+pub fn admissible_in(
+    sys: *const system.System,
+    live: []const cohort.Running,
+    handed: []const Task,
+    reserves: []const ?Task,
+    taken: []const u32,
+    head: Task,
+    room: Room,
+) RunError!bool {
+    // invariant: a queued item always names a domain
+    assert(head.item.domain.len >= 1);
+    // invariant: every remembered line carries a reserve and an entrustment
+    assert(handed.len == reserves.len);
+    assert(handed.len == taken.len);
+    if (room == .by_fresh) return unhand.admissible_held(sys, live, handed, head);
+    var holding: Holding = .{};
+    try widen_all(handed, reserves, taken, &holding);
+    return unhand.admissible_held(sys, live, holding.slice(), head);
+}
+
+// =========================================================================
+// The notes -- what a run publishes and what a dependent takes on
+// =========================================================================
+
+/// Why an entrustment could not be published, read, or confirmed.
+pub const NoteError = error{ NotePathTooLong, NoteUnavailable };
+
+/// Writes the path of one dependent's note.
+fn note_path(buf: *[max_note_path_len]u8, domain: []const u8, suffix: []const u8) NoteError![]const u8 {
+    // invariant: a note always names the dependent it belongs to
+    assert(domain.len >= 1);
+    // invariant: a note always carries one of the two suffixes
+    assert(suffix.len >= 1);
+    const total = note_dir.len + 1 + domain.len + suffix.len;
+    if (total > max_note_path_len) return error.NotePathTooLong;
+    var w: u32 = 0;
+    for (note_dir) |c| {
+        buf[w] = c;
+        w += 1;
+    }
+    buf[w] = '/';
+    w += 1;
+    for (domain) |c| {
+        buf[w] = c;
+        w += 1;
+    }
+    for (suffix) |c| {
+        buf[w] = c;
+        w += 1;
+    }
+    // invariant: the path written is exactly the length computed for it
+    assert(w == total);
+    return buf[0..w];
+}
+
+/// Writes one byte into a note, creating it fresh.
+fn seat_note(io: std.Io, domain: []const u8, suffix: []const u8, value: u8) NoteError!void {
+    // invariant: a note always names the dependent it belongs to
+    assert(domain.len >= 1);
+    var path_buf: [max_note_path_len]u8 = undefined;
+    const path = try note_path(&path_buf, domain, suffix);
+    // invariant: a written path always carries the directory it lives in
+    assert(path.len > note_dir.len);
+    const file = Dir.cwd().createFile(io, path, .{ .truncate = true }) catch
+        return error.NoteUnavailable;
+    defer file.close(io);
+    const byte = [_]u8{value};
+    file.writePositionalAll(io, &byte, 0) catch return error.NoteUnavailable;
+}
+
+/// Reads the one byte a note carries.
+fn read_note(io: std.Io, domain: []const u8, suffix: []const u8) NoteError!u8 {
+    // invariant: a note always names the dependent it belongs to
+    assert(domain.len >= 1);
+    var path_buf: [max_note_path_len]u8 = undefined;
+    const path = try note_path(&path_buf, domain, suffix);
+    // invariant: a written path always carries the directory it lives in
+    assert(path.len > note_dir.len);
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch
+        return error.NoteUnavailable;
+    defer file.close(io);
+    var seen = [_]u8{0};
+    _ = file.readPositionalAll(io, &seen, 0) catch return error.NoteUnavailable;
+    return seen[0];
+}
+
+/// Provisions one pair of notes per declared domain, both standing at zero.
+///
+/// Every run starts with nothing entrusted, so an entrustment a dependent reads
+/// was published by this run's own supervisor rather than left by the last.
+pub fn provision_notes(io: std.Io, sys: *const system.System) NoteError!u32 {
+    // invariant: the domain roster stays within its bound
+    assert(sys.graph.domain_count >= 1);
+    Dir.cwd().createDirPath(io, note_dir) catch return error.NoteUnavailable;
+    var i: u32 = 0;
+    while (i < sys.graph.domain_count) : (i += 1) {
+        const name = sys.graph.domains[i].name_slice();
+        try seat_note(io, name, ".given", 0);
+        try seat_note(io, name, ".taken", 0);
+    }
+    // invariant: every declared domain got its pair of notes, none invented
+    assert(i == sys.graph.domain_count);
+    return i;
+}
+
+/// Publishes one entrustment: how many leading reserve arcs are handed over.
+pub fn entrust(io: std.Io, domain: []const u8, taken: u32) NoteError!void {
+    // invariant: an entrustment always names the dependent it is handed to
+    assert(domain.len >= 1);
+    // invariant: an entrustment never hands more than one line may name
+    assert(taken <= cycle.max_hops);
+    try seat_note(io, domain, ".given", @intCast(taken));
+}
+
+/// Reads what this dependent has been entrusted so far.
+pub fn hear(io: std.Io, domain: []const u8) NoteError!u32 {
+    // invariant: a hearing always names the dependent that listens
+    assert(domain.len >= 1);
+    const seen = try read_note(io, domain, ".given");
+    // invariant: an entrustment stays inside what one line may name
+    assert(seen <= cycle.max_hops);
+    return seen;
+}
+
+/// Tells the run this dependent has taken its entrustment on.
+pub fn took_on(io: std.Io, domain: []const u8, taken: u32) NoteError!void {
+    // invariant: an answer always names the dependent that gives it
+    assert(domain.len >= 1);
+    // invariant: a dependent never takes on more than one line may name
+    assert(taken <= cycle.max_hops);
+    try seat_note(io, domain, ".taken", @intCast(taken));
+}
+
+/// Waits, bounded, until this entrustment has been taken on.
+///
+/// The bound is the whole safety of the act: a run that entrusted work
+/// nobody took on answers `EntrustUnheard` rather than believing work done
+/// that was never read.
+pub fn confirm(io: std.Io, domain: []const u8, taken: u32) bool {
+    // invariant: a confirmation always names the dependent it waits on
+    assert(domain.len >= 1);
+    // invariant: a confirmation always waits on work actually handed over
+    assert(taken >= 1);
+    var looks: u32 = 0;
+    while (looks < max_confirm_looks) : (looks += 1) {
+        const answered = read_note(io, domain, ".taken") catch return false;
+        if (answered >= taken) return true;
+        std.Io.sleep(io, std.Io.Duration.fromMilliseconds(note_rest_ms), .awake) catch {};
+    }
+    // invariant: the confirmation stayed inside the bound it was given
+    assert(looks == max_confirm_looks);
+    return false;
+}
+
+// =========================================================================
+// The supervisor -- a record whose memory of each dependent grows
+// =========================================================================
+
+/// One dependent already reaped, held until the whole record has drained.
+const Finished = struct {
+    domain: []const u8,
+    verb: cycle.Verb,
+    count: u32,
+    expect: u8,
+    code: u8,
+};
+
+/// Folds one reaped outcome into the report, or names the mismatch.
+fn judge_outcome(done: Finished, report_out: *Report) RunError!void {
+    // invariant: a judged dependent always names its domain
+    assert(done.domain.len >= 1);
+    // invariant: the report never counts more successes than dependents reaped
+    assert(report_out.inner.inner.inner.run.succeeded <= report_out.inner.inner.inner.run.reaped);
+    if (done.code != done.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            done.domain, outcome_name(done.expect), outcome_name(done.code),
+        });
+        return error.OutcomeMismatch;
+    }
+    if (done.code == carry.Outcome.carried_ok) {
+        report_out.inner.inner.inner.run.succeeded += 1;
+        if (done.verb == .home) report_out.inner.inner.inner.run.homed += done.count;
+    }
+}
+
+/// The queue's own bookkeeping for one run, over a record whose dependents may
+/// be handed more work while they run.
+///
+/// `reserves` and `taken` are what this rung adds beside `lines`: what each
+/// live dependent may yet be entrusted, and how much of it the run has actually
+/// handed over. Without them the line handed at spawn is the only line a
+/// dependent will ever hold.
+const Table = struct {
+    live: [max_in_flight]cohort.Running = undefined,
+    lines: [max_in_flight]Task = undefined,
+    reserves: [max_in_flight]?Task = @splat(null),
+    taken: [max_in_flight]u32 = @splat(0),
+    in_flight: u32 = 0,
+    done: [max_queue_len]Finished = undefined,
+    finished: u32 = 0,
+    started: [max_queue_len]bool = @splat(false),
+    record: [max_queue_len]unhand.Phase = undefined,
+    reserve_of: [max_queue_len]?Task = @splat(null),
+    held: u32 = 0,
+    head: u32 = 0,
+    left: u32 = 0,
+};
+
+/// The record as it stands right now.
+fn standing(table: *const Table) []const unhand.Phase {
+    // invariant: a record never outgrows the queue one supervisor may hold
+    assert(table.held <= max_queue_len);
+    return table.record[0..table.held];
+}
+
+/// Answers whether one phase of the record is still work waiting to run.
+fn waits(table: *const Table, at: u32) bool {
+    // invariant: a reading always names a phase inside the record
+    assert(at < table.held);
+    return !table.started[at];
+}
+
+/// Moves the head past every item already started.
+fn advance_head(table: *Table) void {
+    // invariant: a head never walks past the record it reads
+    assert(table.head <= table.held);
+    while (table.head < table.held and !waits(table, table.head)) table.head += 1;
+}
+
+/// Answers whether a phase of a turn this pick's turn names still waits.
+fn elder_waits(table: *const Table, pick: u32) bool {
+    // invariant: a pick always names a phase inside the record
+    assert(pick < table.held);
+    const wanted = table.record[pick].follows_turns;
+    if (wanted == 0) return false;
+    var i: u32 = 0;
+    while (i < table.held) : (i += 1) {
+        if (i == pick) continue;
+        if (!waits(table, i)) continue;
+        if ((wanted & turn_bit(table.record[i].turn)) != 0) return true;
+    }
+    // invariant: the walk read the whole record, weighing every phase in it
+    assert(i == table.held);
+    return false;
+}
+
+/// Answers whether a sibling of this pick's own turn still waits behind it.
+fn sibling_waits(table: *const Table, pick: u32, sibling_mask: u32) bool {
+    // invariant: a pick always names a phase inside the record
+    assert(pick < table.held);
+    var i: u32 = 0;
+    while (i < pick) : (i += 1) {
+        if (!waits(table, i)) continue;
+        if (table.record[i].turn != table.record[pick].turn) continue;
+        if ((sibling_mask & mask.step_bit(table.record[i].step)) != 0) return true;
+    }
+    // invariant: the walk reached the pick, weighing every phase before it
+    assert(i == pick);
+    return false;
+}
+
+/// Answers whether the door admits this phase, under the room the run reads.
+fn door_admits(
+    sys: *const system.System,
+    table: *const Table,
+    at: u32,
+    room: Room,
+) RunError!bool {
+    // invariant: a candidate always stands inside the record
+    assert(at < table.held);
+    // invariant: a run never remembers more lines than it may hold
+    assert(table.in_flight <= max_in_flight);
+    return admissible_in(
+        sys,
+        table.live[0..table.in_flight],
+        table.lines[0..table.in_flight],
+        table.reserves[0..table.in_flight],
+        table.taken[0..table.in_flight],
+        table.record[at].task,
+        room,
+    );
+}
+
+/// Answers whether a phase may be admitted ahead of the record's head.
+fn may_pass(
+    sys: *const system.System,
+    table: *const Table,
+    candidate: u32,
+    reading: Reading,
+) bool {
+    // invariant: a pass always reaches forward, never at the head itself
+    assert(candidate > table.head);
+    // invariant: a candidate always stands inside the record
+    assert(candidate < table.held);
+    var i: u32 = table.head;
+    while (i < candidate) : (i += 1) {
+        if (!waits(table, i)) continue;
+        if (items_contend(sys, table.record[i], table.record[candidate], reading)) return false;
+    }
+    // invariant: the walk reached the candidate, weighing every phase before it
+    assert(i == candidate);
+    return true;
+}
+
+/// Chooses one phase from behind a blocked head, or answers that none may go.
+fn choose_pass(
+    sys: *const system.System,
+    table: *const Table,
+    reading: Reading,
+    room: Room,
+) RunError!?u32 {
+    // invariant: a pass is only ever sought while the head stands blocked
+    assert(table.head < table.held);
+    var looked: u32 = 0;
+    var i: u32 = table.head + 1;
+    while (i < table.held and looked < max_lookahead) : (i += 1) {
+        if (!waits(table, i)) continue;
+        looked += 1;
+        if (!try door_admits(sys, table, i, room)) continue;
+        if (!may_pass(sys, table, i, reading)) continue;
+        return i;
+    }
+    // invariant: the look stayed inside the bound it was given
+    assert(looked <= max_lookahead);
+    return null;
+}
+
+/// Answers which standing dependent could carry this phase, if any could.
+///
+/// A phase may be entrusted to a dependent of its own domain whose reserve names
+/// exactly the arcs this phase names, at the point the reserve has reached.
+/// The match is by name and by letter, so a phase asking for a write is
+/// never carried by a reserve that offered a read.
+fn entrust_slot(table: *const Table, at: u32) ?u32 {
+    // invariant: a candidate always stands inside the record
+    assert(at < table.held);
+    const wanted = table.record[at].task;
+    var i: u32 = 0;
+    while (i < table.in_flight) : (i += 1) {
+        if (!std.mem.eql(u8, table.live[i].domain, wanted.item.domain)) continue;
+        const held = table.reserves[i] orelse continue;
+        const depth = hop_count(wanted);
+        if (table.taken[i] + depth > reserve_depth(held)) continue;
+        var matched: u32 = 0;
+        var offset = table.taken[i];
+        var wanted_arcs = std.mem.splitScalar(u8, wanted.item.hops, ',');
+        while (wanted_arcs.next()) |hop| {
+            // invariant: the walk stays inside the hops one item may name
+            assert(matched < cycle.max_hops);
+            const at_reserve = offset + matched;
+            var seen: u32 = 0;
+            var found = false;
+            var reserve_arcs = std.mem.splitScalar(u8, held.item.hops, ',');
+            while (reserve_arcs.next()) |offered| {
+                if (seen == at_reserve) {
+                    found = std.mem.eql(u8, offered, hop) and
+                        intent.declares_write(held, seen) == intent.declares_write(wanted, matched);
+                }
+                seen += 1;
+            }
+            if (!found) return null;
+            matched += 1;
+        }
+        // invariant: every arc the phase names was weighed against the reserve
+        assert(matched == depth);
+        _ = &offset;
+        return i;
+    }
+    // invariant: the walk read every dependent standing, none skipped
+    assert(i == table.in_flight);
+    return null;
+}
+
+/// Hands one phase to a dependent already standing, or names why it could not.
+///
+/// Publish, then wait -- bounded -- for the dependent to say it took the work
+/// on. Only once it has answered does the run widen the line it remembers,
+/// so the door never weighs a reach nobody accepted.
+fn entrust_one(
+    io: std.Io,
+    sys: *const system.System,
+    table: *Table,
+    slot: u32,
+    at: u32,
+    report_out: *Report,
+) (RunError || NoteError)!void {
+    // invariant: an entrustment always names a dependent the run is holding
+    assert(slot < table.in_flight);
+    // invariant: an entrustment always names a phase inside the record
+    assert(at < table.held);
+    const grown = table.taken[slot] + hop_count(table.record[at].task);
+    var line: Line = .{};
+    if (entrust_refusal(
+        sys,
+        table.lines[0..table.in_flight],
+        table.reserves[0..table.in_flight],
+        slot,
+        table.taken[slot],
+        grown,
+        &line,
+    )) |why| return why;
+
+    try entrust(io, table.live[slot].domain, grown);
+    if (!confirm(io, table.live[slot].domain, grown)) return error.EntrustUnheard;
+    table.taken[slot] = grown;
+    report_out.entrusted += 1;
+    report_out.absorbed += 1;
+}
+
+/// Starts one phase, handing the line it declared and the reserve it may
+/// later be entrusted.
+///
+/// The capability table is narrowed to the widest line this dependent could ever
+/// hold -- its own line and its whole reserve -- while the plan word it is
+/// handed names only the line. So the reserve stands dark to the door until
+/// the run entrusts it, and the dependent can reach it the moment the run does.
+fn start_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    phase: unhand.Phase,
+    reserve: ?Task,
+    wake: gap.Wake,
+) (RunError || cohort.RunError || boot.BootError)!cohort.Running {
+    // invariant: a start always names the domain it starts
+    assert(phase.task.item.domain.len >= 1);
+    // invariant: a start always hands a line that names arcs
+    assert(phase.task.item.hops.len >= 1);
+    var line: Line = .{};
+    const widest = entrusted_task(phase.task, reserve, reserve_depth(reserve), &line) orelse
+        return error.EntrustExhausted;
+    if (!entrust_granted(sys, widest)) return error.EntrustUngranted;
+    const narrowed = intent.narrow(caps, widest) orelse return error.UnknownDomain;
+    const slot = narrowed.find_dependent(phase.task.item.domain) orelse return error.UnknownDomain;
+    // invariant: a narrowed line stays inside what the document grants
+    assert(boot.line_within(sys, slot));
+    return cohort.spawn_one_within(
+        allocator, io, self_path, sys, &narrowed, phase.task.item, wake, &.{},
+    );
+}
+
+/// Admits as much of the record as the table, the room, and the reading
+/// allow, and answers how many phases it took up.
+fn fill_table(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    wake: gap.Wake,
+    reading: Reading,
+    room: Room,
+    table: *Table,
+    report_out: *Report,
+) (RunError || NoteError || cohort.RunError || boot.BootError)!u32 {
+    var took_up: u32 = 0;
+    while (table.left > 0) {
+        advance_head(table);
+        // invariant: work still waiting always leaves a head to weigh
+        assert(table.head < table.held);
+
+        // The entrusting act comes first, because it costs no slot at all:
+        // work for a domain already standing is carried by the dependent that is
+        // already there rather than waiting for one of its own.
+        if (room == .by_entrusted) {
+            if (entrust_slot(table, table.head)) |slot| {
+                try entrust_one(io, sys, table, slot, table.head, report_out);
+                table.started[table.head] = true;
+                table.left -= 1;
+                took_up += 1;
+                continue;
+            }
+        }
+
+        if (table.in_flight >= max_in_flight) break;
+
+        var pick: u32 = table.head;
+        if (!try door_admits(sys, table, table.head, room)) {
+            pick = try choose_pass(sys, table, reading, room) orelse break;
+            report_out.inner.inner.inner.run.passes += 1;
+            const reach = pick - table.head;
+            if (reach > report_out.inner.inner.inner.run.pass_reach) {
+                report_out.inner.inner.inner.run.pass_reach = reach;
+            }
+        }
+        const chosen = table.record[pick];
+        if (sibling_waits(table, pick, mask.prefix_mask(chosen.step))) {
+            report_out.inner.inner.inner.out_of_turn += 1;
+        }
+        if (sibling_waits(table, pick, mask.prefix_mask(mask.fence_after(chosen.follows)))) {
+            report_out.inner.inner.inner.out_of_fence += 1;
+        }
+        if (sibling_waits(table, pick, chosen.follows)) report_out.inner.inner.inner.out_of_mask += 1;
+        if (elder_waits(table, pick)) report_out.inner.inner.out_of_precede += 1;
+
+        table.live[table.in_flight] = try start_one(
+            allocator, io, self_path, sys, caps, chosen, table.reserve_of[pick], wake,
+        );
+        table.lines[table.in_flight] = chosen.task;
+        table.reserves[table.in_flight] = table.reserve_of[pick];
+        table.taken[table.in_flight] = 0;
+        table.in_flight += 1;
+        table.started[pick] = true;
+        table.left -= 1;
+        took_up += 1;
+        report_out.inner.inner.inner.run.admitted += 1;
+    }
+    // invariant: a fill never overruns the table it fills
+    assert(table.in_flight <= max_in_flight);
+    // invariant: a preceded reading never runs a phase past a turn its turn named
+    assert(reading != .preceded or report_out.inner.inner.out_of_precede == 0);
+    return took_up;
+}
+
+/// Waits on the eldest dependent, records what it answered, and closes the
+/// table over the slot it leaves.
+///
+/// `lines`, `reserves`, and `taken` close with `live`, so the run's memory
+/// of what each dependent holds -- and of what it has been entrusted -- stays
+/// true across every reaping rather than drifting one slot at a time.
+fn reap_oldest(io: std.Io, table: *Table, report_out: *Report) cohort.RunError!void {
+    // invariant: a reaping always has a dependent to wait on
+    assert(table.in_flight >= 1);
+    // invariant: a reaping never overruns the record it is kept in
+    assert(table.finished < max_queue_len);
+    const code = try cohort.reap_one(io, &table.live[0]);
+    table.done[table.finished] = .{
+        .domain = table.live[0].domain,
+        .verb = table.live[0].verb,
+        .count = table.live[0].count,
+        .expect = table.live[0].expect,
+        .code = code,
+    };
+    table.finished += 1;
+    table.in_flight -= 1;
+    report_out.inner.inner.inner.run.reaped += 1;
+    report_out.inner.inner.inner.run.turns += 1;
+
+    var s: u32 = 0;
+    while (s < table.in_flight) : (s += 1) {
+        table.live[s] = table.live[s + 1];
+        table.lines[s] = table.lines[s + 1];
+        table.reserves[s] = table.reserves[s + 1];
+        table.taken[s] = table.taken[s + 1];
+    }
+    // invariant: the table closed over the reaped dependent, none lost
+    assert(s == table.in_flight);
+}
+
+/// Runs a record with the isolation room answered by the chosen reading.
+///
+/// The supervisor every rung of this arc keeps -- fill the table, reap the
+/// eldest, judge at the end -- with one act added at the front of the fill:
+/// hand the head to a dependent already standing, where one is standing that
+/// can carry it.
+pub fn run_in_room(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    base: []const Phase,
+    wake: gap.Wake,
+    reading: Reading,
+    room: Room,
+    report_out: *Report,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || NoteError || RunError || cohort.RunError || boot.BootError)!void {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always reports into a fresh report
+    assert(report_out.inner.inner.inner.run.admitted == 0);
+    if (base.len == 0) return error.EmptyQueue;
+    if (base.len > max_queue_len) return error.QueueFull;
+
+    var table: Table = .{};
+    var plainly: [max_queue_len]unhand.Phase = undefined;
+    var p: u32 = 0;
+    while (p < base.len) : (p += 1) plainly[p] = plain(base[p]);
+    // invariant: every phase was read plainly, none skipped
+    assert(p == base.len);
+    const flat = plainly[0..base.len];
+    if (!precede.plan_is_ordered(flat)) return error.OrderStalled;
+    if (!plan_is_seated(flat)) return error.PlanUnseated;
+
+    precede.close(flat, table.record[0..base.len]);
+    table.held = @intCast(base.len);
+    table.left = table.held;
+    var r: u32 = 0;
+    while (r < base.len) : (r += 1) table.reserve_of[r] = base[r].reserve;
+    // invariant: every phase carried its reserve into the record, none lost
+    assert(r == base.len);
+    // invariant: a closed record closes to itself, so the door's work is done
+    assert(precede.plan_is_closed(standing(&table)));
+
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    report_out.inner.inner.inner.run.bells = try roundtrip.provision_directed(io, sys);
+    const noted = try provision_notes(io, sys);
+    // invariant: every declared domain has a note before any entrustment
+    assert(noted == sys.graph.domain_count);
+    const caps = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &caps));
+    report_out.inner.inner.inner.run.queued = table.held;
+
+    while (table.left > 0 or table.in_flight > 0) {
+        const took_up = try fill_table(
+            allocator, io, self_path, sys, &caps, wake, reading, room, &table, report_out,
+        );
+        if (table.in_flight > report_out.inner.inner.inner.run.peak_in_flight) {
+            report_out.inner.inner.inner.run.peak_in_flight = table.in_flight;
+        }
+
+        if (table.left > 0) {
+            const free = max_in_flight - table.in_flight;
+            report_out.inner.inner.inner.run.slots_unspent += free;
+            if (took_up == 0 and free > 0) report_out.inner.inner.inner.run.idle_turns += 1;
+        }
+
+        // With an empty table nothing conflicts, so a stall here would mean
+        // the record named a domain the document does not.
+        if (table.in_flight == 0) return error.OrderStalled;
+
+        try reap_oldest(io, &table, report_out);
+    }
+    // invariant: the whole record was taken up, and every dependent reaped
+    assert(table.left == 0);
+    assert(table.in_flight == 0);
+    assert(report_out.inner.inner.inner.run.reaped == report_out.inner.inner.inner.run.admitted);
+    // invariant: every phase either started a dependent or was entrusted to one
+    assert(table.finished + report_out.absorbed == table.held);
+
+    var j: u32 = 0;
+    while (j < table.finished) : (j += 1) try judge_outcome(table.done[j], report_out);
+    // invariant: every reaped dependent was judged, none skipped
+    assert(j == table.finished);
+}
+
+// =========================================================================
+// The dependent -- a walk that takes on more work as it is entrusted
+// =========================================================================
+
+/// Reads the capability words a dependent was handed into its own slot.
+fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32) ?capabilities.DependentSlot {
+    // invariant: a dependent always knows which domain it is
+    assert(domain.len >= 1);
+    // invariant: the count stays within what one dependent may hold
+    assert(cap_count <= capabilities.max_caps_per_dependent);
+    var slot = capabilities.DependentSlot.init(domain);
+    var i: u32 = 0;
+    while (i < cap_count) : (i += 1) {
+        const cap = boot.read_cap_word(args[fixed_argv_words + i]) orelse return null;
+        slot.grant(cap) catch return null;
+    }
+    // invariant: the dependent holds exactly the capability words it was handed
+    assert(slot.cap_count == cap_count);
+    return slot;
+}
+
+/// Answers whether this arc is one the dependent's own plan already names.
+fn named_by_plan(task: cycle.Task, name: []const u8) bool {
+    // invariant: an arc always carries a name
+    assert(name.len >= 1);
+    var i: u32 = 0;
+    while (i < task.hops.count) : (i += 1) {
+        if (std.mem.eql(u8, task.hops.name_at(i), name)) return true;
+    }
+    // invariant: the walk read the whole plan, weighing every arc in it
+    assert(i == task.hops.count);
+    return false;
+}
+
+/// Reads the arcs this dependent was handed, then every arc it is entrusted.
+///
+/// The walk `cycle.do_stand` makes, with one act added after it: having
+/// read its own line through, the dependent waits -- bounded -- for the run to
+/// entrust it more, and answers each entrustment by reading that arc and
+/// saying so. Its reserve is the capabilities it holds beyond its plan, in
+/// the order the run granted them, so nothing has to be handed twice.
+fn stand_taking_on(
+    io: std.Io,
+    slot: *const capabilities.DependentSlot,
+    domain: []const u8,
+    task: cycle.Task,
+) u8 {
+    // invariant: a standing dependent always knows which domain it is
+    assert(domain.len >= 1);
+    // invariant: a standing dependent always reads at least one arc
+    assert(task.hops.count >= 1);
+    var i: u32 = 0;
+    while (i < task.hops.count) : (i += 1) {
+        // invariant: the walk stays inside the hops one plan may carry
+        assert(i < cycle.max_hops);
+        const stood = queue_store.read_index(io, slot, task.hops.name_at(i)) catch |err|
+            return serve.reach_code(err);
+        if (stood != task.count) return carry.Outcome.bytes_differed;
+    }
+    // invariant: every arc this dependent was handed was read, none skipped
+    assert(i == task.hops.count);
+
+    var reserve: [capabilities.max_caps_per_dependent][]const u8 = undefined;
+    var offered: u32 = 0;
+    var c: u32 = 0;
+    while (c < slot.cap_count) : (c += 1) {
+        const name = slot.caps[c].name_slice();
+        if (named_by_plan(task, name)) continue;
+        reserve[offered] = name;
+        offered += 1;
+    }
+    // invariant: the reserve read every capability the dependent holds, none skipped
+    assert(c == slot.cap_count);
+    // invariant: a reserve never outgrows the capabilities one dependent holds
+    assert(offered <= capabilities.max_caps_per_dependent);
+
+    var carried: u32 = 0;
+    var looks: u32 = 0;
+    while (carried < offered and looks < max_patience_looks) : (looks += 1) {
+        const given = hear(io, domain) catch break;
+        if (given <= carried) {
+            std.Io.sleep(io, std.Io.Duration.fromMilliseconds(note_rest_ms), .awake) catch {};
+            continue;
+        }
+        while (carried < given and carried < offered) : (carried += 1) {
+            const stood = queue_store.read_index(io, slot, reserve[carried]) catch |err|
+                return serve.reach_code(err);
+            if (stood != task.count) return carry.Outcome.bytes_differed;
+        }
+        took_on(io, domain, carried) catch return carry.Outcome.malformed;
+    }
+    // invariant: the waiting stayed inside the bound it was given
+    assert(looks <= max_patience_looks);
+
+    print("    {s}: read {d} arcs of its own and {d} entrusted\n", .{
+        domain, task.hops.count, carried,
+    });
+    return carry.Outcome.carried_ok;
+}
+
+/// Runs as one supervised dependent, taking on work as the run entrusts it.
+///
+/// A dependent whose plan is not a standing walk carries on exactly as the rung
+/// below runs it -- there is no reserve to take on, so there is nothing to
+/// listen for.
+fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+    // invariant: a dependent always receives its marker, domain, plan, and count
+    assert(args.len >= fixed_argv_words);
+    // invariant: a dependent always knows which domain it is
+    assert(args[2].len >= 1);
+    const domain = args[2];
+    const task = cycle.read_plan(args[3]) orelse return cohort.run_dependent(io, args);
+    if (task.verb != .stand) return cohort.run_dependent(io, args);
+
+    const cap_count = tally_parse_int.parse_int(u32, args[6], .{}) catch {
+        print("    {s}: refused an unreadable capability count\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    if (cap_count > capabilities.max_caps_per_dependent) {
+        print("    {s}: more capabilities than one dependent holds\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    if (fixed_argv_words + cap_count > args.len) {
+        print("    {s}: a capability count past the words it was handed\n", .{domain});
+        return carry.Outcome.malformed;
+    }
+    const slot = slot_from_argv(args, domain, cap_count) orelse {
+        print("    {s}: refused a malformed capability word\n", .{domain});
+        return carry.Outcome.malformed;
+    };
+    const code = stand_taking_on(io, &slot, domain, task);
+    print("    {s}: {s}\n", .{ domain, outcome_name(code) });
+    return code;
+}
+
+// =========================================================================
+// The lap -- one plan run twice, once with a dependent of its own for every
+// phase and once with work handed to the dependent already standing
+// =========================================================================
+
+/// The lap this rung runs, written so the two rooms genuinely disagree.
+///
+/// `client_a` stands over three arcs and carries a reserve of one. The phase
+/// behind it asks `client_a` to peek exactly that reserved arc. Under a
+/// dependent of its own for every phase, that peek waits for the standing dependent
+/// to exit and then spawns another. Under an entrustment it is handed to the
+/// dependent already there, and the same arcs are read by one fewer dependent.
+const written_queue = [_]Phase{
+    .{ .turn = 0, .step = 0, .follows = 0, .follows_turns = 0, .reserve = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.carried_ok } }, .task = .{ .effects = "w,w,w", .item = .{ .domain = "client_a", .verb = .stand, .hops = "board,ask_a,taken_a", .peers = "serial_virt,client_a", .count = 0, .expect = carry.Outcome.carried_ok } } },
+    .{ .turn = 1, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 2, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 3, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_c", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+};
+
+// =========================================================================
+// Self-test
+// =========================================================================
+
+/// Loads one declaration, or names why it could not be read.
+fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
+    const parsed = read.load(io, path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{path});
+        return null;
+    }
+    return parsed;
+}
+
+/// Builds one live dependent standing for a phase, without spawning anything.
+fn standing_dependent(phase: Phase) cohort.Running {
+    return .{
+        .proc = undefined,
+        .domain = phase.task.item.domain,
+        .verb = phase.task.item.verb,
+        .count = phase.task.item.count,
+        .expect = phase.task.item.expect,
+    };
+}
+
+/// The line and its four standing refusals, read straight, before any dependent
+/// runs.
+///
+/// The happy zone of this rung: one declaration, one standing dependent, and
+/// every question answered as a pure fold -- no process anywhere. The fifth
+/// refusal, `EntrustUnheard`, belongs to the run rather than the fold, since
+/// only a dependent can answer.
+fn check_lines(sys: *const system.System) u8 {
+    const standing_phase = written_queue[0];
+    const handed = standing_phase.task;
+    const reserve = standing_phase.reserve;
+
+    if (reserve_depth(reserve) != 1) {
+        print("  RED: a reserve of one arc counted {d}\n", .{reserve_depth(reserve)});
+        return 1;
+    }
+
+    // The line grows from the back, arcs and letters together.
+    var line: Line = .{};
+    const grown = entrusted_task(handed, reserve, 1, &line) orelse {
+        print("  RED: a line of three arcs would not take one on\n", .{});
+        return 1;
+    };
+    if (!std.mem.eql(u8, grown.item.hops, "board,ask_a,taken_a,menu")) {
+        print("  RED: a line took on the wrong arc: {s}\n", .{grown.item.hops});
+        return 1;
+    }
+    if (!std.mem.eql(u8, grown.effects, "w,w,w,r")) {
+        print("  RED: a widened line declared {s}\n", .{grown.effects});
+        return 1;
+    }
+    if (!entrust_granted(sys, grown)) {
+        print("  RED: a line grown inside its own grants read as reaching past them\n", .{});
+        return 1;
+    }
+
+    var handed_store: [max_in_flight]Task = undefined;
+    handed_store[0] = handed;
+    var reserve_store: [max_in_flight]?Task = @splat(null);
+    reserve_store[0] = reserve;
+    const one_line = handed_store[0..1];
+    const one_reserve = reserve_store[0..1];
+
+    // The direction: a line only ever grows here.
+    if (entrust_refusal(sys, one_line, one_reserve, 0, 1, 0, &line)) |why| {
+        if (why != error.EntrustReversed) {
+            print("  RED: a line giving work back refused for the wrong reason: {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a line took work back from a dependent already carrying it\n", .{});
+        return 1;
+    }
+
+    // The supply: a reserve gives only what it holds.
+    if (entrust_refusal(sys, one_line, one_reserve, 0, 0, 2, &line)) |why| {
+        if (why != error.EntrustExhausted) {
+            print("  RED: a line past its reserve refused for the wrong reason: {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a line took on more arcs than any reserve offered it\n", .{});
+        return 1;
+    }
+
+    // The reach: what a line names must be what the document grants.
+    var ungranted_store: [max_in_flight]?Task = @splat(null);
+    ungranted_store[0] = .{ .effects = "w", .item = .{ .domain = "client_a", .verb = .peek, .hops = "back_a", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.carried_ok } };
+    if (entrust_refusal(sys, one_line, ungranted_store[0..1], 0, 0, 1, &line)) |why| {
+        if (why != error.EntrustUngranted) {
+            print("  RED: a line past its grants refused for the wrong reason: {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a line reaching for a write the document never granted read as within\n", .{});
+        return 1;
+    }
+
+    // The room: a widening stands clear of every sibling or it does not go.
+    // A `client_a` holding only `menu` stands clear of a `client_b` reading
+    // `board`, since two readers of one region agree rather than contend.
+    // Reach for `board` as a write -- which the document does grant -- and
+    // the same pair becomes the hazard the door exists to catch.
+    var pair_lines: [max_in_flight]Task = undefined;
+    pair_lines[0] = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } };
+    pair_lines[1] = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "board", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } };
+    var pair_reserves: [max_in_flight]?Task = @splat(null);
+    pair_reserves[0] = .{ .effects = "w", .item = .{ .domain = "client_a", .verb = .peek, .hops = "board", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.carried_ok } };
+    if (entrust_refusal(sys, pair_lines[0..2], pair_reserves[0..2], 0, 0, 1, &line)) |why| {
+        if (why != error.EntrustContended) {
+            print("  RED: a line reaching into a sibling refused for the wrong reason: {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a widening reached a region a sibling was already reading\n", .{});
+        return 1;
+    }
+
+    // The finding: the same newcomer, refused against a fresh dependent of its
+    // own and carried by the dependent already standing.
+    var live_store: [max_in_flight]cohort.Running = undefined;
+    live_store[0] = standing_dependent(standing_phase);
+    const live = live_store[0..1];
+    var taken_store: [max_in_flight]u32 = @splat(0);
+    const newcomer = written_queue[1].task;
+    const fresh = admissible_in(sys, live, one_line, one_reserve, taken_store[0..1], newcomer, .by_entrusted) catch {
+        print("  RED: a run could not weigh a line it had just handed out\n", .{});
+        return 1;
+    };
+    if (fresh) {
+        print("  RED: a domain was admitted twice at once\n", .{});
+        return 1;
+    }
+
+    print("  a line may grow, and the arc taken on carries work no second dependent had to\n", .{});
+    print("  four refusals stand by name: reversed, exhausted, ungranted, contended\n", .{});
+    print("  the room this rung reads: {s}\n", .{room_words(.by_entrusted)});
+    return 0;
+}
+
+/// The generalization test: a run that entrusts nothing reads as the rung
+/// below.
+///
+/// This arc's standing habit, one tier further out. An empty turn mask was
+/// the sibling mask, a seated plan arranged to itself, a line as wide as its
+/// ceiling read as the ceiling, and a run that heard no handback read as the
+/// line handed. Here a run that has entrusted nothing answers
+/// `unhand.admissible_held` exactly, pair for pair.
+fn check_unentrusted(sys: *const system.System) u8 {
+    const clients = [_]Task{
+        written_queue[0].task,
+        written_queue[1].task,
+        written_queue[2].task,
+    };
+    var agreed: u32 = 0;
+    var a: u32 = 0;
+    while (a < clients.len) : (a += 1) {
+        var live_store: [max_in_flight]cohort.Running = undefined;
+        live_store[0] = .{
+            .proc = undefined,
+            .domain = clients[a].item.domain,
+            .verb = clients[a].item.verb,
+            .count = clients[a].item.count,
+            .expect = clients[a].item.expect,
+        };
+        var handed_store: [max_in_flight]Task = undefined;
+        handed_store[0] = clients[a];
+        const reserve_store = [_]?Task{null};
+        const taken_store = [_]u32{0};
+        var b: u32 = 0;
+        while (b < clients.len) : (b += 1) {
+            const here = admissible_in(
+                sys, live_store[0..1], handed_store[0..1], reserve_store[0..1], taken_store[0..1], clients[b], .by_entrusted,
+            ) catch {
+                print("  RED: an unentrusted run could not weigh its own door\n", .{});
+                return 1;
+            };
+            const there = unhand.admissible_held(sys, live_store[0..1], handed_store[0..1], clients[b]);
+            if (here != there) {
+                print("  RED: the two rooms disagreed about {s} beside {s}\n", .{
+                    clients[b].item.domain, clients[a].item.domain,
+                });
+                return 1;
+            }
+            agreed += 1;
+        }
+        // invariant: every newcomer was weighed against this dependent, none skipped
+        assert(b == clients.len);
+    }
+    // invariant: every line stood as the running dependent once, none skipped
+    assert(a == clients.len);
+
+    print("  a run that entrusts nothing reads as the line handed, all {d} pairs\n", .{agreed});
+    return 0;
+}
+
+/// Runs one queue whole in one room and answers whether it survived.
+fn run_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Phase,
+    room: Room,
+    report_out: *Report,
+) bool {
+    run_in_room(
+        allocator, io, self_path, sys, plan, .when_moved, .preceded, room, report_out,
+    ) catch |err| {
+        print("  RED: a queue did not survive its run: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    return true;
+}
+
+/// The entrust lap: one plan run twice, once with a dependent of its own for
+/// every phase and once with work handed to the dependent already standing.
+fn check_room_runs(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+) u8 {
+    var fresh: Report = .{};
+    if (!run_one(allocator, io, self_path, sys, &written_queue, .by_fresh, &fresh)) return 1;
+    var entrusted: Report = .{};
+    if (!run_one(allocator, io, self_path, sys, &written_queue, .by_entrusted, &entrusted)) return 1;
+
+    print("  phases: {d} by a dependent of its own, {d} by the dependent already standing\n", .{
+        fresh.inner.inner.inner.run.queued, entrusted.inner.inner.inner.run.queued,
+    });
+    print("  dependents: {d} by a dependent of its own, {d} by the dependent already standing\n", .{
+        fresh.inner.inner.inner.run.reaped, entrusted.inner.inner.inner.run.reaped,
+    });
+    print("  carried home as handed: {d} by a dependent of its own, {d} by the dependent already standing\n", .{
+        fresh.inner.inner.inner.run.succeeded, entrusted.inner.inner.inner.run.succeeded,
+    });
+    print("  work entrusted: {d} by a dependent of its own, {d} by the dependent already standing\n", .{
+        fresh.entrusted, entrusted.entrusted,
+    });
+    print("  phases carried without a dependent of their own: {d} against {d}\n", .{
+        entrusted.absorbed, fresh.absorbed,
+    });
+    print("  breaks a named turn: {d} by a dependent of its own, {d} by the dependent already standing\n", .{
+        fresh.inner.inner.out_of_precede, entrusted.inner.inner.out_of_precede,
+    });
+
+    if (entrusted.inner.inner.inner.run.queued != fresh.inner.inner.inner.run.queued) {
+        print("  RED: the two rooms ran {d} phases against {d}\n", .{
+            entrusted.inner.inner.inner.run.queued, fresh.inner.inner.inner.run.queued,
+        });
+        return 1;
+    }
+    if (entrusted.entrusted == 0) {
+        print("  RED: a run of a standing dependent with a reserve entrusted nothing at all\n", .{});
+        return 1;
+    }
+    if (entrusted.inner.inner.inner.run.reaped >= fresh.inner.inner.inner.run.reaped) {
+        print("  RED: the entrusting room spared no dependent at all: {d} against {d}\n", .{
+            entrusted.inner.inner.inner.run.reaped, fresh.inner.inner.inner.run.reaped,
+        });
+        return 1;
+    }
+    if (entrusted.inner.inner.inner.run.reaped + entrusted.absorbed != entrusted.inner.inner.inner.run.queued) {
+        print("  RED: {d} dependents and {d} entrusted phases against a record of {d}\n", .{
+            entrusted.inner.inner.inner.run.reaped, entrusted.absorbed,
+            entrusted.inner.inner.inner.run.queued,
+        });
+        return 1;
+    }
+    if (entrusted.inner.inner.out_of_precede != 0) {
+        print("  RED: the entrusting room broke {d} turn orders its author named\n", .{
+            entrusted.inner.inner.out_of_precede,
+        });
+        return 1;
+    }
+    // invariant: a run reaps exactly the dependents it admitted, never more
+    assert(entrusted.inner.inner.inner.run.reaped == entrusted.inner.inner.inner.run.admitted);
+    // invariant: a wider door never runs less of the record than it holds
+    assert(fresh.inner.inner.inner.run.reaped == fresh.inner.inner.inner.run.queued);
+
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan entrust {s} -- self-test\n", .{caravan_entrust_version});
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    const lines = check_lines(&sys);
+    if (lines != 0) return lines;
+    const unentrusted = check_unentrusted(&sys);
+    if (unentrusted != 0) return unentrusted;
+    const runs = check_room_runs(allocator, io, self_path, &sys);
+    if (runs != 0) return runs;
+    print("  GREEN: a line may also grow, and the work arrives without a second dependent\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}

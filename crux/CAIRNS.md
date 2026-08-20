@@ -24,6 +24,13 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260819.223443` -- REMEMBER's taper chronicle folded to a pointer as the entrust rung lands
+
+**Walk-back nib:** `8f65552046` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
+**Swept:** the **Live edge** bullet's whole inline account of `caravan/taper.rye` -- why an ordered `stand` means a child always holds a suffix of the line it was handed and a handback is therefore one number, the two-way note the child publishes and the supervisor acknowledges with both sides bounded, `TaperReversed` about direction and `TaperEmptied` about the floor and `TaperWidened` about reach, the channel joint and one-child-per-domain rule standing unchanged, the 9 pairs a silent run reads as the held reading, the 5 children and 1 carried home either way with 2 at once against 3, and the five RED paths each named. Roughly one long paragraph folded into a condensed prior-edge line.
+**What waits there, worth recalling:** the departing card carries the taper rung's own honest limit in full -- that a run widens only as far as its children publish, and pays for the chance with a bounded listen at each blocked moment. That trade is the direct counterpart of this rung's own named limit, which runs the other way: an entrustment costs a bounded *wait for an answer* rather than a bounded listen, because a handback is a fact while an entrustment is an act. Read together the two limits describe the whole cost of a line that moves in either direction. Both survive in `caravan/taper.rye`, `caravan/README.md`, and the `20260819.221729` session log.
+
+
 ### `20260819.221729` -- REMEMBER's unhand chronicle folded to a pointer as the taper rung lands
 
 **Walk-back nib:** `96e537f929` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
