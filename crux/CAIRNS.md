@@ -24,6 +24,14 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.052038` -- the amend live edge folds as the courier rung seats
+
+**Walk-back nib:** `ec5ee6de20` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **amend** rung, folded into the pointer line beside the recant, appraise, and bear rungs the cairns below it swept, so the card leads with the delivery and carries one account of this arc rather than five.
+
+**What waits there, worth recalling:** the inline account of a settlement an operator already read being corrected where they read it -- the standing reading named as the second note a run does not clear, the amendment written to a person rather than about a phase in two bytes an operator reads straight, and the honest naming of a wire that is entirely truthful while the belief in the room says otherwise. Every word of it also rests in `caravan/README.md` and its own dated log.
+
 ### `20260820.050442` -- the recant live edge folds as the amend rung seats
 
 **Walk-back nib:** `38dd79aff9` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.

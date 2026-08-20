@@ -1,0 +1,169 @@
+# caravan_courier_witness.rish -- Caravan courier witness.
+#
+# `amend.rye` taught a run to answer the operator whose word it replaced: the
+# settlement superseded, the settlement that supersedes it, both readings named
+# in two bytes on the wire, and the standing reading cleared in the same breath.
+# It is a true correction, honestly published, and it waits. The operator this
+# rung studies is the one who never comes back to read it.
+#
+#   A CORRECTION IS CARRIED TO THE READER WHO NEVER COMES BACK.
+#
+# WHAT THIS RUNG PROVES, MEASURED:
+#
+#   * THE NUMBER THE TWO DISPATCHES DISAGREE ON IS CORRECTIONS LEFT WAITING FOR
+#     A READER WHO NEVER RETURNS. The rung below weighs a RECORD AGAINST ITS
+#     READER and writes the answer down. This weighs that answer against the
+#     DISTANCE between where it was written and where the reader actually is.
+#     It falls from 1 to 0.
+#   * A CORRECTION THAT NEVER TRAVELS is a letter written, sealed, and left in
+#     the writer's own drawer -- entirely honest, and read by nobody. Both runs
+#     post the same correction; only one of them carries it anywhere.
+#   * THE DELIVERY LANDS OUTSIDE THIS PLAN'S OWN WIRE, and that is the point.
+#     Every note of this arc so far lands under `caravan/.couriers`, where a
+#     reader must come looking. A delivery lands in `caravan/.readers/desk.told`
+#     instead, so the first outward reach of the whole arc is visible as exactly
+#     that: a record leaving the place records are kept. This witness reads that
+#     box rather than trusting the run's telling.
+#   * A READER LEAVES AN ADDRESS, OR THEY LEAVE NOTHING. A reading arrives on
+#     the wire beside the place its reader was reached at. An amendment whose
+#     reading names no address is refused rather than sent somewhere invented.
+#   * THE PRICE IS NOTHING BUT THE WALK. Both runs take up 6 phases, absorb 3
+#     into standing dependents, lose 3 arcs, take the same judgment back,
+#     re-seat the same 3 phases, spend the same 6 dependents, post the same
+#     correction, and settle the plan `carried`.
+#   * A PLAN PUBLISHES WHETHER ITS OWN CORRECTIONS TRAVEL. The dispatch is
+#     plan-level beside the notice, since it instructs about how far a record
+#     reaches rather than about one arc.
+#   * A DELIVERY IS BOUNDED BY THE CORRECTION IT CARRIES. Only an amendment this
+#     run actually posted may be carried, and every posted amendment is carried
+#     or held, never both and never neither.
+#   * FOUR REFUSALS THIS RUNG EARNS, EACH ABOUT THE JOURNEY RATHER THAN THE
+#     CORRECTION IT CARRIES. `CourierEarly` is the moment: a correction carried
+#     before the run posted one is delivering from memory of a letter nobody
+#     wrote. `CourierUnaddressed` is the supply. `CourierMiscounted` is the
+#     honesty of the count. `CourierUndelivered` is the answer -- a run that
+#     reports a reader reached whose box holds nothing has made a claim rather
+#     than a delivery.
+#   * A PLAN THAT LOSES NOTHING READS AS THE RUNG BELOW, all 16 pairs -- this
+#     arc's standing generalization test.
+#
+# Six RED paths were proven on metal before this witness claimed GREEN.
+# Withhold the delivery and the run refuses `CourierUndelivered`. Disarm the
+# moment and a correction is carried before the run posted anything. Disarm the
+# supply and a correction travels to a reader who left no address. Let the count
+# stop closing and a posted correction is neither carried nor held, unminded.
+# Carry the wrong two readings and the box read-back refuses `CourierUndelivered`
+# -- a planted control that delivers honestly and delivers the wrong letter.
+# Seat no address at all and the armed supply guard refuses `CourierUnaddressed`
+# at the run, so it is proven a check rather than decoration.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS %76 / %85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_courier_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/courier"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/courier.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan courier build failed -- ${build.err}"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+# The board declaration the rungs below opened, unchanged.
+let published = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_three_clients_board.bron 2>&1"]
+assert published.ok else "the board declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 11 -- grants 22" else "the board declaration changed shape"
+assert published.out contains "verdict: whole" else "the board declaration did not read whole"
+
+# A fresh start for the stores, the doorbells, this plan's notes, and the
+# reader's own box. The box goes with them, so the lap begins with a reader who
+# has been told nothing at all rather than one a run this witness never watched
+# already reached.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels caravan/.couriers caravan/.readers"]
+assert clean.ok else "the region stores, doorbells, notes, and reader boxes could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan courier selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan courier selftest not GREEN"
+assert test.out contains "a correction is carried to the reader who never comes back" else "the delivery finding did not close"
+
+# The delivery and its three standing refusals, read straight, before any
+# dependent runs. The fourth, `CourierUndelivered`, belongs to the run rather
+# than the fold, since only a reader's own box can answer whether anything
+# actually arrived in it.
+assert test.out contains "a plan publishes whether its own corrections travel" else "the delivery fold was not weighed"
+assert test.out contains "three refusals stand by name: early, unaddressed, miscounted" else "the three standing refusals did not stand"
+
+# The amendment, the recantation, the bearing, and the mend below, unchanged and
+# still weighed.
+assert test.out contains "a plan publishes whether its own corrections are addressed" else "the amendment below stopped being weighed"
+assert test.out contains "a plan publishes whether its own judgments answer to a later run" else "the recantation below stopped being weighed"
+assert test.out contains "a plan names what it expects of a phase, and what it would accept of a loss" else "the bearing below stopped being weighed"
+assert test.out contains "a repair still refuses by name: unread, whole, overreaching" else "the mend below stopped being weighed"
+
+# The generalization test: a plan that loses nothing reads as the rung below.
+assert test.out contains "a plan that loses nothing reads as the line handed, all 16 pairs" else "an unlost plan did not read as the line handed"
+
+# The carrying lap: one plan run twice against a reader who never comes back,
+# once leaving the correction on the wire and once carrying it to them. Every
+# number stands still -- the work, the dependents, the correction, the
+# settlement -- and only the journey moves.
+assert test.out contains "phases: 6 waiting, 6 carried" else "the two dispatches ran different records"
+assert test.out contains "dependents: 6 waiting, 6 carried" else "carrying a correction cost work it should not have"
+assert test.out contains "phases absorbed into a standing dependent: 3 waiting, 3 carried" else "the two dispatches absorbed different phases"
+assert test.out contains "abandoned reach, conferred and never served: 3 waiting, 3 carried" else "the two dispatches lost different work"
+assert test.out contains "phases re-seated to carry what was lost: 3 waiting, 3 carried" else "the two dispatches repaired different work"
+assert test.out contains "standing judgments taken back on this run's own evidence: 1 waiting, 1 carried" else "the recanting rung stopped moving under both dispatches"
+assert test.out contains "readings corrected where they were read: 1 waiting, 1 carried" else "the amending rung stopped moving under both dispatches"
+assert test.out contains "corrections this run wrote: 1 waiting, 1 carried" else "the two dispatches wrote different corrections"
+assert test.out contains "corrections carried to the place their reader was reached: 0 waiting, 1 carried" else "the journey did not part the two dispatches"
+assert test.out contains "corrections left waiting for a reader who never returns: 1 against 0" else "the two dispatches left the same correction waiting"
+assert test.out contains "work still standing when the supervisor exits: 0 waiting, 0 carried" else "the two dispatches left different work standing"
+assert test.out contains "the plan, as an operator finally reads it: carried out whole waiting, carried out whole carried" else "the two dispatches settled the plan differently"
+assert test.out contains "breaks a named turn: 0 waiting, 0 carried" else "the carrying run broke an order its author named"
+
+# What an operator reads is what the wire carries, and what a reader holds is
+# what their own box carries. Every note is read here, outside the run that
+# wrote it, exactly as each would be read by the person it was written for.
+let settled = run ["sh" "-c" "cat caravan/.couriers/plan.settled"]
+assert settled.ok else "the plan published no settlement an operator could read"
+assert settled.out contains "c" else "the wire did not carry the carried settlement the repair earned"
+
+let correction = run ["sh" "-c" "cat caravan/.couriers/plan.amend"]
+assert correction.ok else "the plan published no correction an operator could read"
+assert correction.out contains "bc" else "the wire did not name the two readings the correction stands between"
+
+let address = run ["sh" "-c" "cat caravan/.couriers/plan.at"]
+assert address.ok else "the plan kept no address for the reader who took its word"
+assert address.out contains "desk" else "the wire did not name the place its reader was reached"
+
+# The delivery itself, outside this plan's wire entirely -- the whole claim of
+# the rung, read from the reader's own box.
+let box = run ["sh" "-c" "cat caravan/.readers/desk.told"]
+assert box.ok else "the reader's own box was never written to"
+assert box.out contains "bc" else "the reader's box did not carry the correction in the words they read"
+
+let reading = run ["sh" "-c" "od -An -tu1 < caravan/.couriers/plan.read"]
+assert reading.ok else "the plan kept no reading note at all"
+assert reading.out contains "0" else "a reading that had its answer was left waiting on the wire"
+
+let recant_note = run ["sh" "-c" "cat caravan/.couriers/plan.recant"]
+assert recant_note.ok else "the plan published no recantation an operator could read"
+assert recant_note.out contains ".r...." else "the wire did not name the one judgment this run took back"
+
+let lost_note = run ["sh" "-c" "cat caravan/.couriers/plan.lost"]
+assert lost_note.ok else "the plan published no loss an operator could read"
+assert lost_note.out contains ".x.x.x" else "the wire did not name the three phases the plan lost"
+
+# The dependents measure the loss in their own hands, exactly as the rungs below
+# left them, and the follower that once spoke for the judgment falls with it.
+assert test.out contains "falls as its author declared, holding 1 conferred arcs it never served" else "a falling dependent did not fall holding its conferral"
+assert test.out contains "client_b: read 3 arcs of its own, 0 inherited at its first breath, 1 conferred, 0 returned, 1 still reachable at home" else "the dependent a conferral was made to did not read it as its own"
+assert test.out contains "client_c: bytes differed" else "the follower that once spoke for the judgment came home after all"
+
+say "GREEN: Caravan courier witness passed."
