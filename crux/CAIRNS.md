@@ -24,6 +24,14 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.050442` -- the recant live edge folds as the amend rung seats
+
+**Walk-back nib:** `38dd79aff9` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **recant** rung, folded into the pointer line beside the appraise and bear rungs the cairn below it swept, so the card leads with the amendment and carries one account of this arc rather than four.
+
+**What waits there, worth recalling:** the inline account of a judgment a run's own evidence disproves being taken back on the wire and repaired -- the standing appraisal named as the one note a run does not clear, the reversal riding one glyph per phase beside the judgment it undoes, and the honest price of a reversal stated as exactly one more dependent. The rung stands whole in `caravan/recant.rye`, its witness, its session log, and the Caravan README.
+
 ### `20260820.044313` -- the appraise and bear live edges fold as the recant rung seats
 
 **Walk-back nib:** `c17b4bbcd6` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.

@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20260820.050442
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan amend -- a settlement an operator already read is corrected where they read it
+prompt Kyri first, then REMEMBER and the road-ahead itineraries; Standfast on reds, then the next agent-doable lap Lindy-first crux-first; council rota one doc; condense REMEMBER when a set closes; send each finished increment
+think Read context/KYRI.md and context/RADIANT_STYLE.md before anything else, so the voice shaped the round from the first token rather than being applied to it afterward.
+think Standfast first. Walked crux/REDS.md end to end: every living row reads CLOSED or Released, %96 and %97 both closed on the lap before this one. No agent-closable red stands, so the constructive queue is open rather than blocked.
+think Read the running thread the way the seed asks -- the top rows of session-logs/README.md and the newest log's recommend line. The recant rung named its own successor plainly: what a plan owes an operator who already acted on a judgment since taken back, since a reversal arriving after the report was read has no way yet to reach the person who read it.
+think Read the whole of caravan/recant.rye before writing a line -- the shapes, the notes, the supervisor, the mend, the settlement, the lap, the self-test. A rung of this arc is built by carrying the one below it whole and adding exactly one question, so the elder rung is the specification.
+think Named the rung under the Comlink tendency -- clearest, warmest, safest word. **Amend** is plain, warm to type, and collides with nothing seated in the tree; the one prior hit is an unrelated equinox witness filename.
+think Found the honest gap. The wire is truthful the whole time: recant publishes its reversal, moves the settlement from `borne` to `carried`, and every note says what is so. What no rung below reaches is the person who read the elder word and went home. The measurement had to weigh a record against its READER rather than against itself.
+think Shaped the rung SLC -- one scope, honestly bounded. A plan-level `notice` word beside the review; a standing reading that survives the run as the appraisal does, for a plainer reason (a reader's copy survives whatever the wire does); an amendment written in an operator's own words rather than one glyph per phase, since it is the first note of this arc addressed to a person.
+think Rebased the module one tier out mechanically first -- report accessors gain an `inner`, the rung below becomes recant, the recantation section becomes delegations -- and let the compiler find the two shadowed names rather than reasoning about them.
+think Proved six RED paths on metal BEFORE claiming anything. Withhold the amendment; leave the answered reading standing; disarm the moment; disarm the supply; let the count stop closing; and plant a correction addressed to a reading the wire never named, which the armed supply guard refuses at the run.
+obs The council rota doc this lap was item 16, Simple Lovable Complete. Its three questions governed the scope directly: one clear question honestly bounded, a rung a person would genuinely want (an operator finally hears that the word they carried away has changed), and a loop that closes fully -- fold, wire, four refusals, measurement, and the generalization test one tier out.
+obs The finding parts from every rung before it on price. Nine rungs of this arc each cost something to be honest -- one more dependent, a repair re-run, a judgment taken back. This one costs NOTHING: both runs spend the same six dependents, repair the same three arcs, and settle the same word. A correction costs only the willingness to say so, and that is the whole moral of the rung.
+obs The supply refusal `AmendUnread` is defense in depth over its own fold, exactly as `RecantUnappraised` is below it. Proving its RED needed a planted control that both nulls the reading the run reads back and means to correct somebody anyway -- named honestly rather than left as decoration nobody had watched fire.
+obs Chose `on_the_wire` over `standing` for the refusal's count parameter after the compiler named a shadow: `standing` is already the supervisor's own reach into the closed record, and one word meaning two things inside one module is a red waiting to be written.
+loom witness=caravan_amend_witness phases=6 dependents_silent=6 dependents_posted=6 absorbed=3 lost=3 reseated=3 recanted=1 amended_silent=0 amended_posted=1 superseded_unposted_silent=1 superseded_unposted_posted=0 pairs=16 red_paths_proven=6
+loom witness=caravan_suite_witness rungs=60 verdict=GREEN cold_tree=true
+loom module=caravan_amend lines=3725 asserts=219 usize=0
+file caravan/amend.rye the rung -- a settlement an operator already read corrected where they read it, carrying recant whole beneath it
+file tools/caravan_amend_witness.rish the witness -- reads every note off the wire outside the run that wrote it, as an operator would
+file tools/caravan_suite_witness.rish registers the new rung in the choir, which sings 60 from a cold tree
+file caravan/README.md the rung's durable entry, so the record outlives this log
+file crux/REMEMBER.md the live edge and the git nib, in the same commit as the work
+recommend keep-going the arc has answered for reach at every moment of a dependent's life, repaired what a fall cost, learned which losses to leave alone, weighed the losses nobody spoke to, taken back its own stale judgments, and now writes to the reader those judgments misled -- so the question standing above it is what a plan owes a reader it cannot name: the amendment waits on the wire for somebody to come back and read it, which is no correction at all for an operator who never returns, and asks whether a record should ever reach outward rather than only publish.
