@@ -111,6 +111,7 @@ const recanting_rung = @import("recant.rye");
 const appraising_rung = @import("appraise.rye");
 const mending_rung = @import("mend.rye");
 const tally_parse_int = @import("parse_int.rye");
+const ladder_checks = @import("ladder_checks.rye");
 
 const Dir = std.Io.Dir;
 
@@ -5775,7 +5776,7 @@ fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
 /// the same three arcs, post and carry the same correction, read the same
 /// answer, record the same disagreement, and settle the same word. What parts
 /// them is whether anybody reading that word ever learns of it.
-const written_queue = [_]Phase{
+pub const written_queue = [_]Phase{
     .{ .turn = 0, .step = 0, .follows = 0, .follows_turns = 0, .reserve = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.carried_ok } }, .task = .{ .effects = "r,w,w", .item = .{ .domain = "client_b", .verb = .stand, .hops = "board,ask_b,taken_b", .peers = "serial_virt,client_b", .count = 0, .expect = carry.Outcome.bytes_differed } } },
     .{ .turn = 1, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
     .{ .turn = 2, .step = 0, .follows = 0, .follows_turns = 0, .reserve = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.carried_ok } }, .task = .{ .effects = "r,w,w", .item = .{ .domain = "client_a", .verb = .stand, .hops = "board,ask_a,taken_a", .peers = "serial_virt,client_a", .count = 0, .expect = carry.Outcome.bytes_differed } } },
@@ -5900,52 +5901,9 @@ pub fn check_delivery() u8 {
 /// The generalization test: a run that weighs a plan losing nothing reads as
 /// the rung below.
 pub fn check_unlost(sys: *const system.System) u8 {
-    const clients = [_]Task{
-        written_queue[0].task,
-        written_queue[1].task,
-        written_queue[3].task,
-        written_queue[4].task,
-    };
-    var agreed: u32 = 0;
-    var a: u32 = 0;
-    while (a < clients.len) : (a += 1) {
-        var live_store: [max_in_flight]cohort.Running = undefined;
-        live_store[0] = .{
-            .proc = undefined,
-            .domain = clients[a].item.domain,
-            .verb = clients[a].item.verb,
-            .count = clients[a].item.count,
-            .expect = clients[a].item.expect,
-        };
-        var handed_store: [max_in_flight]Task = undefined;
-        handed_store[0] = clients[a];
-        const reserve_store = [_]?Task{null};
-        const taken_store = [_]u32{0};
-        var b: u32 = 0;
-        while (b < clients.len) : (b += 1) {
-            const here = admissible_in(
-                sys, live_store[0..1], handed_store[0..1], reserve_store[0..1], taken_store[0..1], clients[b],
-            ) catch {
-                print("  RED: an appraising run could not weigh its own door\n", .{});
-                return 1;
-            };
-            const there = unhand.admissible_held(sys, live_store[0..1], handed_store[0..1], clients[b]);
-            if (here != there) {
-                print("  RED: the two readings disagreed about {s} beside {s}\n", .{
-                    clients[b].item.domain, clients[a].item.domain,
-                });
-                return 1;
-            }
-            agreed += 1;
-        }
-        // invariant: every newcomer was weighed against this dependent, none skipped
-        assert(b == clients.len);
-    }
-    // invariant: every line stood as the running dependent once, none skipped
-    assert(a == clients.len);
-
-    print("  a plan that loses nothing reads as the line handed, all {d} pairs\n", .{agreed});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_unlost(@This(), sys);
 }
 
 /// The reading the reader answers with, in their own hand.
@@ -6459,27 +6417,9 @@ pub fn check_tidings() u8 {
 /// -- written to a reader of its own, read back out of their box, and never
 /// touching the box the lap depends on.
 pub fn check_tidings_wire(io: std.Io) u8 {
-    const shelf = "shelf";
-    clear_tidings(io, shelf);
-    tell_outcome(io, shelf, .moved) catch |err| {
-        print("  RED: a reader could not be told at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const read_back = told_of(io, shelf) orelse {
-        print("  RED: a reader's own box carried nothing back\n", .{});
-        return 1;
-    };
-    if (read_back != .moved) {
-        print("  RED: a word that moved was read back as {s}\n", .{result_words(read_back)});
-        return 1;
-    }
-    clear_tidings(io, shelf);
-    if (told_of(io, shelf) != null) {
-        print("  RED: a cleared box still answered\n", .{});
-        return 1;
-    }
-    print("  both answers ride the wire: {s}\n", .{result_words(.moved)});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_tidings_wire(@This(), io);
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -6502,27 +6442,9 @@ pub fn check_appeal() u8 {
 /// shape -- written by a reader of this fold's own, read back out of their box,
 /// and cleared again, never touching the box the lap depends on.
 pub fn check_appeal_wire(io: std.Io) u8 {
-    const shelf = "shelf";
-    clear_press(io, shelf);
-    press_as_reader(io, shelf, .accepts) catch |err| {
-        print("  RED: a reader could not reply at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const read_back = pressed_by(io, shelf) orelse {
-        print("  RED: a reader's own box carried no reply back\n", .{});
-        return 1;
-    };
-    if (read_back != .accepts) {
-        print("  RED: an accepted outcome was read back as {s}\n", .{plea_words(read_back)});
-        return 1;
-    }
-    clear_press(io, shelf);
-    if (pressed_by(io, shelf) != null) {
-        print("  RED: a cleared box still replied\n", .{});
-        return 1;
-    }
-    print("  both pleas ride the wire: {s}\n", .{plea_words(.accepts)});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_appeal_wire(@This(), io);
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -6562,49 +6484,9 @@ pub fn check_endure_measure() u8 {
 /// unchanged -- which is the whole difference between a record and a run's own
 /// leavings.
 pub fn check_endure_wire(io: std.Io, sys: *const system.System) u8 {
-    // The notes are seated once first, so this fold writes into a plan that
-    // exists rather than into a directory no run has opened yet.
-    _ = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    clear_standing(io);
-    if (position_standing(io) != null) {
-        print("  RED: a cleared plan still carried a quarrel\n", .{});
-        return 1;
-    }
-    standing_note(io, .presses) catch |err| {
-        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    // The whole point of the rung, read straight: every other note this
-    // provisioning touched now stands at nothing, and this one stands where its
-    // holder left it.
-    if (appeal_published(io) != null) {
-        print("  RED: a provisioning left the last run's plea standing\n", .{});
-        return 1;
-    }
-    const survived = position_standing(io) orelse {
-        print("  RED: a provisioning cleared the position it was told to leave\n", .{});
-        return 1;
-    };
-    if (survived != .presses) {
-        print("  RED: a carried position read back as {s}\n", .{plea_words(survived)});
-        return 1;
-    }
-    clear_standing(io);
-    if (position_standing(io) != null) {
-        print("  RED: a cleared position still stood\n", .{});
-        return 1;
-    }
-    print("  a pressed quarrel survives a provisioning: {s}\n", .{plea_words(.presses)});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_endure_wire(@This(), io, sys);
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -6644,54 +6526,9 @@ pub fn check_heed_measure() u8 {
 /// belongs to the person holding it while a word about that quarrel belongs to
 /// the run that said it.
 pub fn check_heed_wire(io: std.Io, sys: *const system.System) u8 {
-    _ = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    clear_standing(io);
-    if (regard_published(io) != null) {
-        print("  RED: a fresh plan already stood under a quarrel\n", .{});
-        return 1;
-    }
-    standing_note(io, .presses) catch |err| {
-        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    regard_note(io, .under) catch |err| {
-        print("  RED: a regard could not be published at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const written = regard_published(io) orelse {
-        print("  RED: a published regard could not be read back\n", .{});
-        return 1;
-    };
-    if (written != .under) {
-        print("  RED: a published regard read back as {s}\n", .{regard_words(written)});
-        return 1;
-    }
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    // The whole seam of this rung, read straight: the quarrel outlives the
-    // provisioning and the word about it does not.
-    if (regard_published(io) != null) {
-        print("  RED: a provisioning left the last run's regard standing\n", .{});
-        return 1;
-    }
-    const survived = position_standing(io) orelse {
-        print("  RED: a provisioning cleared the position it was told to leave\n", .{});
-        return 1;
-    };
-    if (survived != .presses) {
-        print("  RED: a carried position read back as {s}\n", .{plea_words(survived)});
-        return 1;
-    }
-    clear_standing(io);
-    print("  a quarrel survives a provisioning and the word about it does not\n", .{});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_heed_wire(@This(), io, sys);
 }
 
 /// The relenting folds, weighed before any dependent runs.
@@ -6730,46 +6567,9 @@ pub fn check_relent_measure() u8 {
 /// quarrel that came back with the morning would be no closer to over than one
 /// no run ever answered.
 pub fn check_relent_wire(io: std.Io, sys: *const system.System) u8 {
-    _ = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    clear_standing(io);
-    standing_note(io, .presses) catch |err| {
-        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    const survived = position_standing(io) orelse {
-        print("  RED: a provisioning cleared the position it was told to leave\n", .{});
-        return 1;
-    };
-    if (survived != .presses) {
-        print("  RED: a carried position read back as {s}\n", .{plea_words(survived)});
-        return 1;
-    }
-    release_standing(io);
-    if (!note_cleared(position_standing(io))) {
-        print("  RED: a withdrawn quarrel was still standing where it was taken down\n", .{});
-        return 1;
-    }
-    const again = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(again == sys.graph.domain_count);
-    if (!note_cleared(position_standing(io))) {
-        print("  RED: a withdrawn quarrel came back with the next provisioning\n", .{});
-        return 1;
-    }
-    print("  a quarrel survives a provisioning, and its withdrawal survives one too\n", .{});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_relent_wire(@This(), io, sys);
 }
 
 /// The dwelling folds, weighed before any dependent runs.
@@ -6809,62 +6609,9 @@ pub fn check_dwell_measure() u8 {
 /// position**, since a count of runs stood through is a fact about one quarrel
 /// and has nothing to say once that quarrel is over.
 pub fn check_dwell_wire(io: std.Io, sys: *const system.System) u8 {
-    _ = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    clear_standing(io);
-    standing_note(io, .presses) catch |err| {
-        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    dwell_note(io, 1) catch |err| {
-        print("  RED: an age could not be written at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    const survived = dwell_published(io) orelse {
-        print("  RED: a provisioning cleared the age it was told to leave\n", .{});
-        return 1;
-    };
-    if (survived != 1) {
-        print("  RED: an age carried past a provisioning read back as {d}\n", .{survived});
-        return 1;
-    }
-    // A second season of standing, written the way a run writes it: read the
-    // wire, climb by the run just stood, write, read back.
-    const climbed = stood_longer(survived);
-    dwell_note(io, climbed) catch |err| {
-        print("  RED: a second season could not be written: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    if (!dwell_holds(dwell_published(io), 2)) {
-        print("  RED: a quarrel that stood two runs did not read as two\n", .{});
-        return 1;
-    }
-    // The age falls with the quarrel, proven on the wire the withdrawal leaves.
-    release_standing(io);
-    if (dwell_published(io) != null) {
-        print("  RED: an age outlived the quarrel it was counting\n", .{});
-        return 1;
-    }
-    const again = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(again == sys.graph.domain_count);
-    if (dwell_published(io) != null) {
-        print("  RED: an age came back with the next provisioning\n", .{});
-        return 1;
-    }
-    print("  an age survives a provisioning, and falls with the quarrel it counts\n", .{});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_dwell_wire(@This(), io, sys);
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -6873,127 +6620,16 @@ pub fn check_dwell_wire(io: std.Io, sys: *const system.System) u8 {
 /// long-standing, who may move that bound, and the honesty of the count
 /// answered as a pure fold -- no process anywhere.
 pub fn check_swell() u8 {
-    // The reading itself, weighed against a bound no run may move. The
-    // threshold is inclusive, since a position that has stood the named number
-    // of runs has already outlasted them.
-    if (stands_loud(long_standing_runs) != .loud) {
-        print("  RED: a quarrel at the bound read quiet\n", .{});
-        return 1;
-    }
-    if (stands_loud(long_standing_runs - 1) != .quiet) {
-        print("  RED: a quarrel one run short of the bound read loud\n", .{});
-        return 1;
-    }
-    if (stands_loud(0) != .quiet) {
-        print("  RED: a quarrel of no age at all read loud\n", .{});
-        return 1;
-    }
-    if (stands_loud(max_dwell_runs) != .loud) {
-        print("  RED: the oldest quarrel one note may carry read quiet\n", .{});
-        return 1;
-    }
-    // The byte an operator reads, and the reading it comes back as. A note
-    // carrying anything else is no reading at all rather than a quiet one.
-    if (volume_of_byte(volume_byte(.loud)) != .loud) {
-        print("  RED: a loud standing did not survive its own byte\n", .{});
-        return 1;
-    }
-    if (volume_of_byte(volume_byte(.quiet)) != .quiet) {
-        print("  RED: a quiet standing did not survive its own byte\n", .{});
-        return 1;
-    }
-    if (volume_of_byte('z') != null) {
-        print("  RED: a byte no herald ever wrote read back as a standing\n", .{});
-        return 1;
-    }
-    // The count, which every later number closes on.
-    if (heralded_in(1, .heralded) != 1) {
-        print("  RED: a heralding run left its one standing position unpublished\n", .{});
-        return 1;
-    }
-    if (heralded_in(1, .hushed) != 0) {
-        print("  RED: a hushed run published a standing all the same\n", .{});
-        return 1;
-    }
-    if (heralded_in(0, .heralded) != 0) {
-        print("  RED: a run holding no quarrel published a standing for one\n", .{});
-        return 1;
-    }
-    if (unpublished_in(1, .hushed) != 1) {
-        print("  RED: a hushed run counted its unpublished position as nothing\n", .{});
-        return 1;
-    }
-    if (unpublished_in(1, .heralded) != 0) {
-        print("  RED: a heralding run still counted a position unpublished\n", .{});
-        return 1;
-    }
-    // The record half, answered by the byte itself.
-    if (!swell_holds(.loud, .loud)) {
-        print("  RED: a note carrying the standing just written did not hold\n", .{});
-        return 1;
-    }
-    if (swell_holds(.quiet, .loud)) {
-        print("  RED: a note reading quiet held for a loud standing\n", .{});
-        return 1;
-    }
-    if (swell_holds(null, .quiet)) {
-        print("  RED: a note that does not exist held for a quiet standing\n", .{});
-        return 1;
-    }
-    return check_swell_refusals();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_swell(@This());
 }
 
 /// The four refusals this rung earns, each read straight.
 pub fn check_swell_refusals() u8 {
-    // The moment: a run publishing a standing where nothing stands tells an
-    // operator how loudly a quarrel that is over reads.
-    if (swell_refusal(0, 1, 0, true)) |why| {
-        if (why != error.SwellEarly) {
-            print("  RED: an early heralding refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run heralded a quarrel nobody holds\n", .{});
-        return 1;
-    }
-    // The hard half: a standing read off an age no run ever wrote is a guess
-    // wearing a measurement's clothes, and it would read loudest of all.
-    if (swell_refusal(1, 1, 0, false)) |why| {
-        if (why != error.SwellUndated) {
-            print("  RED: an undated heralding refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run published a standing for a quarrel it never dated\n", .{});
-        return 1;
-    }
-    // The honesty of the count: every position still standing is heralded or
-    // left unpublished, never both and never neither.
-    if (swell_refusal(1, 1, 1, true)) |why| {
-        if (why != error.SwellMiscounted) {
-            print("  RED: a doubled count refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: one position counted as both published and unpublished stood\n", .{});
-        return 1;
-    }
-    if (swell_refusal(1, 0, 0, true)) |why| {
-        if (why != error.SwellMiscounted) {
-            print("  RED: an empty count refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a standing position counted as neither published nor unpublished stood\n", .{});
-        return 1;
-    }
-    // And the honest reading passes, which is the half a refusal-only test
-    // never proves.
-    if (swell_refusal(1, 1, 0, true)) |why| {
-        print("  RED: a heralding inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_swell_measure();
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_swell_refusals(@This());
 }
 
 /// The number this rung moves, weighed as a fold before any run moves it.
@@ -7038,55 +6674,9 @@ pub fn check_swell_measure() u8 {
 /// that position**, since a byte left behind beside the outcome would go on
 /// shouting for a quarrel its own holder let go.
 pub fn check_swell_wire(io: std.Io, sys: *const system.System) u8 {
-    _ = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    clear_standing(io);
-    clear_swell(io);
-    standing_note(io, .presses) catch |err| {
-        print("  RED: a position could not be carried at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    swell_note(io, .loud) catch |err| {
-        print("  RED: a standing could not be published at all: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    const provisioned = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(provisioned == sys.graph.domain_count);
-    const survived = swell_published(io) orelse {
-        print("  RED: a provisioning cleared the standing it was told to leave\n", .{});
-        return 1;
-    };
-    if (survived != .loud) {
-        print("  RED: a standing carried past a provisioning read back as {s}\n", .{
-            volume_words(survived),
-        });
-        return 1;
-    }
-    // The standing falls with the quarrel, proven on the wire the withdrawal
-    // leaves.
-    release_standing(io);
-    if (swell_published(io) != null) {
-        print("  RED: a standing outlived the quarrel it was speaking for\n", .{});
-        return 1;
-    }
-    const again = provision_notes(io, sys) catch |err| {
-        print("  RED: a plan could not be provisioned again: {s}\n", .{@errorName(err)});
-        return 1;
-    };
-    // invariant: a provisioning always seats the domains the declaration names
-    assert(again == sys.graph.domain_count);
-    if (swell_published(io) != null) {
-        print("  RED: a standing came back with the next provisioning\n", .{});
-        return 1;
-    }
-    print("  a standing survives a provisioning, and falls with the quarrel it speaks for\n", .{});
-    return 0;
+    // The harness owns this body; it runs here against this rung's own
+    // helpers, its own report, and its own wire.
+    return ladder_checks.check_swell_wire(@This(), io, sys);
 }
 
 /// The swelling lap: one plan run twice over a quarrel that has already stood

@@ -10,30 +10,34 @@
 #
 # On Keaton's word the ladder folded (the 20260820.131713 design call, option A):
 # every check is public now, and a rung whose check is byte-for-byte the rung
-# below's runs it there. 523 bodies fold that way and the carry falls to 12,035.
+# below's runs it there. 523 bodies folded that way and the carry fell to 12,035.
 #
-# What stays carried is named rather than rounded away. A check that reaches the
-# wire is never run in the rung below -- the bodies match, yet each rung keeps its
-# notes in its own directory, so the rung below would provision its own wire and
-# leave this rung's cold. Nor is a check run below when its tail chains into a
-# check this rung invented, since the rung below has never heard of it. Both
-# residues want the shared harness (option B), which is a refactor now that A ran.
+# Three rungs later the carry stood at 17,997, and Keaton's word opened option B:
+# caravan/ladder_checks.rye, the harness a rung hands itself to. A lifted check
+# takes the rung as a comptime parameter and reaches every helper through it, so
+# one body runs against whichever rung handed itself in -- its own report, its own
+# helpers, its own wire. That answers both residues option A had to leave home:
+# a check reaching the wire now measures the wire of the rung that called it, and
+# a chain re-enters the rung at every link rather than ending in the rung below.
+# 57 bodies lift, and the carry falls to 1,952 -- a ninth of what stood before it.
 #
 # Measurement beats memory: a count carried forward drifts (REDS %93), and a
 # count that cannot see what it measures is a guess wearing a measurement's
 # clothes (REDS %97). Both failure shapes are refused by name below.
 #
-# CARAVAN_LADDER_COPY_CEILING (default 22000): how many carried lines the ladder
-# may hold -- about six rungs of headroom above the folded standing of 12,035, at
-# the residue's own measured rate of 1,637 lines a rung. Close enough to the
-# standing that the number means something again, where 60,000 over a folded
-# ladder would mean nothing for years.
+# CARAVAN_LADDER_COPY_CEILING (default 4000): how many carried lines the ladder
+# may hold. What remains carried is the three-line call each rung keeps where a
+# hundred lines of copy stood, so a new rung adds roughly four lines per lifted
+# check it climbs to, plus whatever its own new checks carry until they are
+# lifted in turn -- call it five hundred a rung until the next rung measures it.
+# 4,000 is about four rungs of headroom above the standing of 1,952, close enough
+# that the number still means something on the lap it moves.
 #
 # CARAVAN_LADDER_DIR (default caravan): the directory of rung modules, so the
 # PASS and FAIL fixtures can prove both paths without touching the tree.
 set -eu
 
-CEILING=${CARAVAN_LADDER_COPY_CEILING:-22000}
+CEILING=${CARAVAN_LADDER_COPY_CEILING:-4000}
 DIR=${CARAVAN_LADDER_DIR:-caravan}
 
 work=$(mktemp -d)
