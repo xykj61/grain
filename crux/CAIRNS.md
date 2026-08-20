@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260819.200013` -- REMEMBER's fence chronicle folded to a pointer as the mask rung lands
+
+**Walk-back nib:** `a72f696bb6` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
+**Swept:** the **Live edge** bullet's whole inline account of `caravan/fence.rye` -- the prefix as the shape that fits, `after = step` read as the link exactly and `after = 0` as a phase freed of its siblings, the transitive closure held by construction so a supervisor never walks a graph, and the fenced lap's numbers named measure by measure -- together with the elder rungs' condensed roster, rewritten to lead with the fence.
+**What waits there, worth recalling:** at nib `a72f696bb6` the departing card holds the full prose for why a graph is what a queue may not grow, and why one comparison suffices when a prefix already holds every prefix inside it. Both survive in `caravan/fence.rye`'s own doc comment, in `caravan/README.md`, and in the dated log `20260819-194255_caravan-fence-a-prefix-is-one-number.kyri`; the card keeps the pointer.
+
 ### `20260819.194255` -- REMEMBER's phases chronicle folded to a pointer as the fence rung lands
 
 **Walk-back nib:** `54e2d94f10` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.

@@ -1,0 +1,995 @@
+//! Caravan mask -- a phase names the siblings it follows, and a turn closes them once.
+//!
+//! `fence.rye` let a phase say how much of its own turn it follows, and it
+//! said it in one number: the count of leading siblings. That prefix is
+//! transitively closed by construction, which is exactly why it costs
+//! nothing to read -- and exactly what it cannot express. A prefix must
+//! reach its farthest dependency, so it swallows every hole on the way.
+//! A phase genuinely free of step 0 yet bound to step 1 has to name both
+//! or neither, and the author who knows better has no way to write it down.
+//!
+//! **The honest shape is a set, and the fear was that a set is a graph.**
+//! It is -- yet a turn is small. `max_queue_len` is sixteen, so every phase
+//! a turn may hold fits inside one machine word, and the set a phase names
+//! is one `u32`. That changes what the closure costs: rather than walking
+//! edges at every admission, the queue **closes the whole plan once**, at
+//! the door, in a single forward pass over at most sixteen steps -- and
+//! every admission after it is one bit test, the same constant the prefix
+//! had.
+//!
+//! **What closure means, plainly.** A phase names the siblings it follows
+//! *directly*. Closing folds in what those siblings follow, so a phase that
+//! names only step 2 also follows whatever step 2 followed. The order the
+//! author implied is restored before any dependent starts, rather than
+//! rediscovered at each one.
+//!
+//! **And the run turns out never to need the closing at all.** Every bit
+//! the closing adds is reachable through a sibling the phase named
+//! directly, so a phase can only be passed while a direct namer of its own
+//! still waits -- the queue's own discipline carries transitivity by
+//! induction, and skipping the close changes no admission on the lap below.
+//! The closing is what makes the *pairwise* reading honest, which is worth
+//! its one pass at the door: a supervisor answering "do these two hold each
+//! other?" must answer for the order the author implied, not merely the
+//! edges written down.
+//!
+//! **The prefix survives the closing, exactly.** Filling a mask in only
+//! ever adds bits below its highest, so the prefix a mask implies -- one
+//! past its farthest bit -- reads the same before and after. The fenced
+//! reading is therefore stable under the close, and the whole difference
+//! between the two readings is the holes the prefix had to swallow.
+//!
+//! **A mask that names every earlier sibling is the fence, and the link.**
+//! Set each phase's mask to the full prefix of its step and all three
+//! readings answer identically, pair by pair over the whole lap -- so this
+//! rung generalizes its elders rather than rivalling them.
+//!
+//! **The isolation room needed nothing here either**, for the reason
+//! `phases.rye` gave: two phases of one turn share a domain, and
+//! `commute.admissible` already refuses to stand a domain beside itself.
+//! The mask is asked in the order room alone.
+//!
+//! Usage:
+//!   mask selftest                  Run the readings against each other
+//!   mask                           Same as selftest
+//!   mask dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const cycle = @import("cycle.rye");
+const gap = @import("gap.rye");
+const cohort = @import("cohort.rye");
+const overtake = @import("overtake.rye");
+const intent = @import("intent.rye");
+const phases = @import("phases.rye");
+const fence = @import("fence.rye");
+
+const caravan_mask_version = "20260819.210000";
+
+// =========================================================================
+// The bounds -- the shape `fence.rye` read, carried whole
+// =========================================================================
+
+/// The three-client shape with one published region, unchanged.
+pub const declaration_path = fence.declaration_path;
+
+/// How many dependents of one document this supervisor holds unreaped at once.
+pub const max_in_flight: u32 = fence.max_in_flight;
+
+/// How many phases one ordered queue carries.
+pub const max_queue_len: u32 = fence.max_queue_len;
+
+/// How many still-waiting phases past the head one turn may weigh.
+pub const max_lookahead: u32 = fence.max_lookahead;
+
+/// A dependent's fixed argv, unchanged from the rungs before it.
+pub const fixed_argv_words: u32 = fence.fixed_argv_words;
+
+/// How many turns one queue may cut its work into.
+pub const max_turns: u32 = fence.max_turns;
+
+/// How many phases of one turn fit in the word that holds a mask.
+///
+/// A queue holds `max_queue_len` phases in all, so one turn can never hold
+/// more than that -- and the whole point of this rung is that the number is
+/// small enough to live in a single `u32`.
+pub const max_turn_steps: u32 = max_queue_len;
+
+comptime {
+    // invariant: a queue holds more than one full table, or a pass is moot
+    assert(max_queue_len > max_in_flight);
+    // invariant: a look reaches past a full table, or it could never find room
+    assert(max_lookahead >= max_in_flight);
+    // invariant: a look stays inside the queue it walks
+    assert(max_lookahead < max_queue_len);
+    // invariant: every phase may stand alone as its own turn
+    assert(max_turns >= max_queue_len);
+    // invariant: a whole turn fits in the one word a mask is kept in
+    assert(max_turn_steps <= 32);
+}
+
+/// Renders one outcome code as the words an operator reads.
+pub fn outcome_name(code: u8) []const u8 {
+    return fence.outcome_name(code);
+}
+
+/// Why a queue may not run as it was handed over.
+pub const RunError = fence.RunError;
+
+/// One queued item and the letters it declares, carried from `intent.rye`.
+pub const Task = fence.Task;
+
+/// What one run did, reported whole.
+///
+/// The shared numbers are `overtake.Report` unconverted, so this rung's laps
+/// stand beside every rung before it. `out_of_turn` and `out_of_fence` are
+/// the two elder measures carried here unchanged, and `out_of_mask` is this
+/// rung's own: how many phases ran while a sibling their own closed mask
+/// names still waited.
+pub const Report = struct {
+    run: overtake.Report = .{},
+    out_of_turn: u32 = 0,
+    out_of_fence: u32 = 0,
+    out_of_mask: u32 = 0,
+};
+
+// =========================================================================
+// The mask -- which siblings of its turn one phase follows
+// =========================================================================
+
+/// How deeply a reading looks at the queue's own authorship.
+///
+/// The first three are the readings already measured, carried here so all
+/// four stand over one program. `masked` is this rung: a phase follows the
+/// siblings its closed mask names, and nothing further.
+pub const Reading = enum { by_act, linked, fenced, masked };
+
+/// Renders one reading as the words an operator reads.
+pub fn reading_words(r: Reading) []const u8 {
+    return switch (r) {
+        .by_act => "what the regions and the letters say",
+        .linked => "the same, and every phase of a turn in order",
+        .fenced => "the same, and the prefix each phase implies",
+        .masked => "the same, and the siblings each phase named",
+    };
+}
+
+/// One phase of one turn, and the siblings of that turn it follows.
+///
+/// The mask rides beside the phase the way the fence and the turn did, so
+/// every rung before this one reads what it always read. Bit `k` set means
+/// this phase follows step `k` of its own turn; a mask of zero frees a
+/// phase of its siblings entirely; a mask holding every earlier bit is the
+/// fence, and the link, exactly.
+pub const Phase = struct {
+    task: Task,
+    /// Which turn this phase belongs to.
+    turn: u32,
+    /// Where this phase stands inside its own turn, counting from zero.
+    step: u32,
+    /// Which earlier steps of this turn this phase follows, one bit each.
+    follows: u32,
+};
+
+/// The single bit that stands for one step of a turn.
+pub fn step_bit(step: u32) u32 {
+    // invariant: a step always stands inside the word one turn fits in
+    assert(step < max_turn_steps);
+    const one: u32 = 1;
+    return one << @intCast(step);
+}
+
+/// The mask holding every step below `n`.
+pub fn prefix_mask(n: u32) u32 {
+    // invariant: a prefix never reaches past the turn the word holds
+    assert(n <= max_turn_steps);
+    const one: u32 = 1;
+    return (one << @intCast(n)) - 1;
+}
+
+/// The smallest prefix that contains a mask -- one past its farthest bit.
+///
+/// This is the fence a mask forces an author to write when only one number
+/// is available, and the gap between the two is exactly what this rung
+/// buys: a prefix must reach the farthest dependency, so it swallows every
+/// hole on the way.
+pub fn fence_after(follows: u32) u32 {
+    if (follows == 0) return 0;
+    const lead: u32 = @clz(follows);
+    // invariant: a leading-zero count of a nonzero word leaves room for a bit
+    assert(lead < 32);
+    return 32 - lead;
+}
+
+/// Answers whether a mask names only siblings its own phase could have.
+///
+/// A phase may follow every sibling before it and no more; a bit at or past
+/// its own step would name a phase that has not been written yet.
+pub fn mask_is_sound(p: Phase) bool {
+    if (p.step >= max_turn_steps) return false;
+    return p.follows < step_bit(p.step);
+}
+
+/// Answers the phase `fence.rye` reads, with the mask folded to its prefix.
+///
+/// Every question this rung does not change is asked of that rung rather
+/// than restated here, so the readings' numbers stand unconverted.
+pub fn as_fence(p: Phase) fence.Phase {
+    // invariant: a folded phase always names a mask its own step could carry
+    assert(mask_is_sound(p));
+    return .{ .task = p.task, .turn = p.turn, .step = p.step, .after = fence_after(p.follows) };
+}
+
+/// Answers the phase `phases.rye` reads, with the authorship set aside.
+pub fn cut(p: Phase) phases.Phase {
+    return fence.cut(as_fence(p));
+}
+
+/// Fills every phase's mask with what the siblings it names themselves
+/// follow, so the whole plan is transitively closed once, at the door.
+///
+/// One forward pass is enough, and the plan's own authoring rule is why: a
+/// turn's steps are written in order, so by the time a phase is reached
+/// every sibling it may name has already been closed. The inner walk is
+/// bounded by the turn's own step, which is bounded by the word.
+pub fn close(plan: []const Phase, out: []Phase) void {
+    // invariant: a closing always has room for every phase it closes
+    assert(out.len == plan.len);
+    // invariant: a closing stays inside the queue one supervisor may hold
+    assert(plan.len <= max_queue_len);
+    var known: [max_turns][max_turn_steps]u32 = @splat(@splat(0));
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        const p = plan[i];
+        // invariant: a closed phase always names a mask its own step could carry
+        assert(mask_is_sound(p));
+        // invariant: a closed phase always names a turn inside the bound
+        assert(p.turn < max_turns);
+        var acc: u32 = p.follows;
+        var k: u32 = 0;
+        while (k < p.step) : (k += 1) {
+            if ((p.follows & step_bit(k)) != 0) acc |= known[p.turn][k];
+        }
+        // invariant: the fold weighed every step the phase could have named
+        assert(k == p.step);
+        known[p.turn][p.step] = acc;
+        out[i] = .{ .task = p.task, .turn = p.turn, .step = p.step, .follows = acc };
+        // invariant: closing only ever adds order, never takes it away
+        assert((out[i].follows & p.follows) == p.follows);
+        // invariant: a closed mask stays inside what its own step could name
+        assert(mask_is_sound(out[i]));
+    }
+    // invariant: every phase in the plan was closed, none skipped
+    assert(i == plan.len);
+}
+
+/// Finds where one step of one turn stands inside a plan.
+///
+/// A plan writes each turn's steps in order and never twice, so the answer
+/// is unique wherever it exists; a plan that names a step it never wrote
+/// would already have been refused at the door.
+pub fn find_step(plan: []const Phase, turn: u32, step: u32) u32 {
+    // invariant: a search always looks inside a plan that carries work
+    assert(plan.len >= 1);
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        if (plan[i].turn == turn and plan[i].step == step) return i;
+    }
+    // invariant: a plan read whole always holds the step its siblings name
+    assert(i < plan.len);
+    return 0;
+}
+
+/// Answers whether a plan is already closed, so closing it again would
+/// change nothing.
+pub fn plan_is_closed(plan: []const Phase) bool {
+    // invariant: a plan always carries work
+    assert(plan.len >= 1);
+    var closed: [max_queue_len]Phase = undefined;
+    close(plan, closed[0..plan.len]);
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        if (closed[i].follows != plan[i].follows) return false;
+    }
+    // invariant: every phase was compared against its own closing
+    assert(i == plan.len);
+    return true;
+}
+
+/// Answers whether two phases of one turn are held in order by their masks.
+///
+/// The later phase's mask is the whole of the question: it names the
+/// siblings it follows, so the earlier one binds it exactly when its step's
+/// bit is set. One test, and no closure to compute here -- the plan was
+/// closed once at the door, which is what makes this answer transitive.
+pub fn masks_bind(a: Phase, b: Phase) bool {
+    // invariant: two phases weighed by mask always stand in one turn
+    assert(a.turn == b.turn);
+    // invariant: a bound mask always names siblings its phase could have
+    assert(mask_is_sound(a));
+    assert(mask_is_sound(b));
+    if (a.step == b.step) return true;
+    const first = if (a.step < b.step) a else b;
+    const later = if (a.step < b.step) b else a;
+    return (later.follows & step_bit(first.step)) != 0;
+}
+
+/// Answers whether a plan is written the way each reading needs to read it.
+///
+/// `fence.plan_is_ordered` answers the cut and the prefix whole, and this
+/// rung adds one authoring question past it: every mask names only siblings
+/// its own phase could have. Read once at the door, so a plan naming a
+/// phase that has not been written yet is refused rather than run.
+pub fn plan_is_ordered(plan: []const Phase) bool {
+    // invariant: a plan always carries work
+    assert(plan.len >= 1);
+    // invariant: a plan stays inside the queue one supervisor may hold
+    assert(plan.len <= max_queue_len);
+    var folded: [max_queue_len]fence.Phase = undefined;
+    var i: u32 = 0;
+    while (i < plan.len) : (i += 1) {
+        if (!mask_is_sound(plan[i])) return false;
+        folded[i] = as_fence(plan[i]);
+    }
+    // invariant: every phase in the plan was weighed, none skipped
+    assert(i == plan.len);
+    return fence.plan_is_ordered(folded[0..plan.len]);
+}
+
+/// Answers whether two phases must keep the order the queue wrote them in.
+///
+/// `fence.items_contend` answers the three elder readings whole. The masked
+/// reading differs from the fenced one in exactly one place: two phases of
+/// one turn are ordered by the masks they named rather than by the prefix
+/// those masks imply. Everything else is the act reading, asked rather than
+/// restated.
+pub fn items_contend(sys: *const system.System, a: Phase, b: Phase, reading: Reading) bool {
+    // invariant: a phase always names at least one arc to work
+    assert(a.task.item.hops.len >= 1);
+    assert(b.task.item.hops.len >= 1);
+    if (reading == .by_act) return fence.items_contend(sys, as_fence(a), as_fence(b), .by_act);
+    if (reading == .linked) return fence.items_contend(sys, as_fence(a), as_fence(b), .linked);
+    if (reading == .fenced) return fence.items_contend(sys, as_fence(a), as_fence(b), .fenced);
+    if (a.turn == b.turn) return masks_bind(a, b);
+    return fence.items_contend(sys, as_fence(a), as_fence(b), .by_act);
+}
+
+/// Answers whether the head may enter beside the dependents running now.
+///
+/// Left where `phases.rye` left it, under every reading, and the cut is
+/// still why: two phases of one turn share a domain, and a domain never
+/// stands beside itself. A mask loosens an order and opens no instant.
+pub fn admissible(
+    sys: *const system.System,
+    live: []const cohort.Running,
+    head: Phase,
+    reading: Reading,
+) bool {
+    // invariant: a queued phase always names a domain
+    assert(head.task.item.domain.len >= 1);
+    _ = reading;
+    return fence.admissible(sys, live, as_fence(head), .fenced);
+}
+
+// =========================================================================
+// The supervisor -- one program, differing only in what orders a pair
+// =========================================================================
+
+/// One dependent already reaped, held until the whole queue has drained.
+const Finished = struct {
+    domain: []const u8,
+    verb: cycle.Verb,
+    count: u32,
+    expect: u8,
+    code: u8,
+};
+
+/// Folds one reaped outcome into the report, or names the mismatch.
+fn judge_outcome(done: Finished, report_out: *Report) RunError!void {
+    // invariant: a judged dependent always names its domain
+    assert(done.domain.len >= 1);
+    // invariant: the report never counts more successes than dependents reaped
+    assert(report_out.run.succeeded <= report_out.run.reaped);
+    if (done.code != done.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            done.domain, outcome_name(done.expect), outcome_name(done.code),
+        });
+        return error.OutcomeMismatch;
+    }
+    if (done.code == carry.Outcome.carried_ok) {
+        report_out.run.succeeded += 1;
+        if (done.verb == .home) report_out.run.homed += done.count;
+    }
+}
+
+/// Everything one turn of the supervisor reads and moves.
+const Table = struct {
+    live: [max_in_flight]cohort.Running = undefined,
+    in_flight: u32 = 0,
+    done: [max_queue_len]Finished = undefined,
+    finished: u32 = 0,
+    taken: [max_queue_len]bool = @splat(false),
+    head: u32 = 0,
+    left: u32 = 0,
+};
+
+/// Moves the head to the first phase still waiting.
+fn advance_head(table: *Table, queued: u32) void {
+    // invariant: a head never points past the queue it walks
+    assert(table.head <= queued);
+    while (table.head < queued and table.taken[table.head]) table.head += 1;
+}
+
+/// Answers whether a sibling this phase's turn holds, named by one mask,
+/// still waits.
+///
+/// One walk answers all three measures, differing only in which mask counts:
+/// the full prefix of the phase's step is the link's own question, the
+/// prefix its mask implies is the fence's, and the closed mask itself is
+/// this rung's. A sibling already running cannot be found here, and needs no
+/// finding: a domain never stands beside itself, so an in-flight sibling has
+/// already closed the door this question asks about.
+fn sibling_waits(table: *const Table, plan: []const Phase, pick: u32, mask: u32) bool {
+    // invariant: a pick always names a phase inside the plan
+    assert(pick < plan.len);
+    // invariant: a weighed mask never reaches past the phase that named it
+    assert(mask < step_bit(plan[pick].step) or plan[pick].step == 0);
+    var i: u32 = 0;
+    while (i < pick) : (i += 1) {
+        // invariant: the walk stays inside the queue it reads
+        assert(i < max_queue_len);
+        if (table.taken[i]) continue;
+        if (plan[i].turn != plan[pick].turn) continue;
+        if ((mask & step_bit(plan[i].step)) != 0) return true;
+    }
+    // invariant: the walk reached the pick, weighing every phase before it
+    assert(i == pick);
+    return false;
+}
+
+/// Answers whether a phase may be admitted ahead of the queue's head.
+fn may_pass(
+    sys: *const system.System,
+    table: *const Table,
+    plan: []const Phase,
+    candidate: u32,
+    reading: Reading,
+) bool {
+    // invariant: a pass always reaches forward, never at the head itself
+    assert(candidate > table.head);
+    // invariant: a candidate always stands inside the queue
+    assert(candidate < plan.len);
+    var i: u32 = table.head;
+    while (i < candidate) : (i += 1) {
+        if (table.taken[i]) continue;
+        if (items_contend(sys, plan[i], plan[candidate], reading)) return false;
+    }
+    // invariant: the walk reached the candidate, weighing every phase before it
+    assert(i == candidate);
+    return true;
+}
+
+/// Chooses one phase from behind a blocked head, or answers that none may go.
+fn choose_pass(
+    sys: *const system.System,
+    table: *const Table,
+    plan: []const Phase,
+    reading: Reading,
+) ?u32 {
+    // invariant: a pass is only ever sought while the head stands blocked
+    assert(table.head < plan.len);
+    // invariant: a queue never grows past the table's own bound
+    assert(plan.len <= max_queue_len);
+    var looked: u32 = 0;
+    var i: u32 = table.head + 1;
+    while (i < plan.len and looked < max_lookahead) : (i += 1) {
+        if (table.taken[i]) continue;
+        looked += 1;
+        if (!admissible(sys, table.live[0..table.in_flight], plan[i], reading)) continue;
+        if (!may_pass(sys, table, plan, i, reading)) continue;
+        return i;
+    }
+    // invariant: the look stayed inside the bound it was given
+    assert(looked <= max_lookahead);
+    return null;
+}
+
+/// Starts one phase, handing the line it declared and nothing more.
+fn start_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    phase: Phase,
+    wake: gap.Wake,
+) (RunError || cohort.RunError || boot.BootError)!cohort.Running {
+    // invariant: a start always names the domain it starts
+    assert(phase.task.item.domain.len >= 1);
+    const narrowed = intent.narrow(caps, phase.task) orelse return error.UnknownDomain;
+    const slot = narrowed.find_dependent(phase.task.item.domain) orelse return error.UnknownDomain;
+    // invariant: a narrowed line stays inside what the document grants
+    assert(boot.line_within(sys, slot));
+    return cohort.spawn_one_within(
+        allocator, io, self_path, sys, &narrowed, phase.task.item, wake, &.{},
+    );
+}
+
+/// Admits as much of the queue as the table, the isolation, and the reading
+/// allow, and answers how many dependents it started.
+fn fill_table(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    plan: []const Phase,
+    wake: gap.Wake,
+    reading: Reading,
+    table: *Table,
+    report_out: *Report,
+) (RunError || cohort.RunError || boot.BootError)!u32 {
+    var admitted: u32 = 0;
+    while (table.in_flight < max_in_flight and table.left > 0) {
+        advance_head(table, @intCast(plan.len));
+        // invariant: work still waiting always leaves a head to weigh
+        assert(table.head < plan.len);
+
+        var pick: u32 = table.head;
+        if (!admissible(sys, table.live[0..table.in_flight], plan[table.head], reading)) {
+            pick = choose_pass(sys, table, plan, reading) orelse break;
+            report_out.run.passes += 1;
+            const reach = pick - table.head;
+            if (reach > report_out.run.pass_reach) report_out.run.pass_reach = reach;
+        }
+        const chosen = plan[pick];
+        if (sibling_waits(table, plan, pick, prefix_mask(chosen.step))) report_out.out_of_turn += 1;
+        if (sibling_waits(table, plan, pick, prefix_mask(fence_after(chosen.follows)))) {
+            report_out.out_of_fence += 1;
+        }
+        if (sibling_waits(table, plan, pick, chosen.follows)) report_out.out_of_mask += 1;
+
+        table.live[table.in_flight] = try start_one(
+            allocator, io, self_path, sys, caps, chosen, wake,
+        );
+        table.in_flight += 1;
+        table.taken[pick] = true;
+        table.left -= 1;
+        admitted += 1;
+        report_out.run.admitted += 1;
+    }
+    // invariant: a fill never overruns the table it fills
+    assert(table.in_flight <= max_in_flight);
+    // invariant: a linked reading never runs a turn's phases out of order
+    assert(reading != .linked or report_out.out_of_turn == 0);
+    // invariant: a fenced reading never runs a phase past the prefix it implies
+    assert(reading != .fenced or report_out.out_of_fence == 0);
+    // invariant: a masked reading never runs a phase past the siblings it named
+    assert(reading != .masked or report_out.out_of_mask == 0);
+    return admitted;
+}
+
+/// Waits on the eldest dependent, records what it answered, and closes the table
+/// over the slot it leaves.
+fn reap_oldest(io: std.Io, table: *Table, report_out: *Report) cohort.RunError!void {
+    // invariant: a reaping always has a dependent to wait on
+    assert(table.in_flight >= 1);
+    // invariant: a reaping never overruns the record it is kept in
+    assert(table.finished < max_queue_len);
+    const code = try cohort.reap_one(io, &table.live[0]);
+    table.done[table.finished] = .{
+        .domain = table.live[0].domain,
+        .verb = table.live[0].verb,
+        .count = table.live[0].count,
+        .expect = table.live[0].expect,
+        .code = code,
+    };
+    table.finished += 1;
+    table.in_flight -= 1;
+    report_out.run.reaped += 1;
+    report_out.run.turns += 1;
+
+    var s: u32 = 0;
+    while (s < table.in_flight) : (s += 1) table.live[s] = table.live[s + 1];
+    // invariant: the table closed over the reaped dependent, none lost
+    assert(s == table.in_flight);
+}
+
+/// Runs an ordered queue of phases under one reading, reaping one dependent per
+/// turn.
+///
+/// The plan is closed exactly once, here at the door, and every reading runs
+/// over the closed copy. The elders are unmoved by that: closing only fills
+/// in bits below a mask's highest, so the prefix each phase implies -- which
+/// is all the fenced and linked readings ever see -- reads the same either
+/// way. The whole difference in a report is how much of its own turn a phase
+/// was asked to follow.
+pub fn run_queue(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Phase,
+    wake: gap.Wake,
+    reading: Reading,
+    report_out: *Report,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || cohort.RunError || boot.BootError)!void {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always reports into a fresh report
+    assert(report_out.out_of_turn == 0);
+    assert(report_out.out_of_fence == 0);
+    assert(report_out.out_of_mask == 0);
+    if (plan.len == 0) return error.EmptyQueue;
+    if (plan.len > max_queue_len) return error.QueueTooLong;
+    if (!plan_is_ordered(plan)) return error.OrderStalled;
+
+    var closed_store: [max_queue_len]Phase = undefined;
+    const closed = closed_store[0..plan.len];
+    close(plan, closed);
+    // invariant: a closed plan closes to itself, so the door's work is done
+    assert(plan_is_closed(closed));
+
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    report_out.run.bells = try roundtrip.provision_directed(io, sys);
+    const caps = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &caps));
+    report_out.run.queued = @intCast(plan.len);
+
+    var open: Table = .{};
+    open.left = @intCast(plan.len);
+    while (open.left > 0 or open.in_flight > 0) {
+        const admitted_now = try fill_table(
+            allocator, io, self_path, sys, &caps, closed, wake, reading, &open, report_out,
+        );
+        if (open.in_flight > report_out.run.peak_in_flight) {
+            report_out.run.peak_in_flight = open.in_flight;
+        }
+
+        if (open.left > 0) {
+            const free = max_in_flight - open.in_flight;
+            report_out.run.slots_unspent += free;
+            if (admitted_now == 0 and free > 0) report_out.run.idle_turns += 1;
+        }
+
+        // With an empty table nothing conflicts, so a stall here would mean
+        // the queue named a domain the document does not.
+        if (open.in_flight == 0) return error.OrderStalled;
+        try reap_oldest(io, &open, report_out);
+    }
+    // invariant: the whole queue was admitted and every dependent reaped
+    assert(open.left == 0);
+    assert(open.in_flight == 0);
+    assert(report_out.run.reaped == report_out.run.admitted);
+    assert(open.finished == plan.len);
+
+    var j: u32 = 0;
+    while (j < open.finished) : (j += 1) try judge_outcome(open.done[j], report_out);
+    // invariant: every reaped dependent was judged, none skipped
+    assert(j == open.finished);
+}
+
+// =========================================================================
+// The lap -- one turn whose last phase skips a sibling and keeps an elder
+// =========================================================================
+
+/// A lap whose cut turn spans domains and carries a hole no prefix can name.
+///
+/// **A turn cut inside one domain could never show this**, and the elder
+/// rungs' laps are exactly that: two phases of one domain never stand at one
+/// instant, so isolation already runs them in the order they were written
+/// and no reading of authorship can loosen it. Authorship earns its keep on
+/// a turn that spans domains -- a request placed, read by the server, and
+/// answered back -- which is the first lap on which a fence and a mask can
+/// differ at all.
+///
+/// The head places and two more turns of the same domain queue behind it,
+/// so `client_a` stays busy while the cut turn runs. Then the cut turn,
+/// four phases across three domains: step 0 has `client_b` place into
+/// `ask_b`; step 1 has `client_a` peek `taken_a` and name nothing, free of
+/// its siblings; step 2 has `client_b` peek `back_b`, naming step 0; step 3
+/// has `client_c` peek the published `menu`, naming step 2 alone. So step 3
+/// follows step 0 only through the closing, and skips step 1 entirely. A
+/// prefix cannot write that: reaching step 2 means reaching step 1 on the
+/// way, and `client_a` is exactly the domain still waiting when step 3
+/// becomes free.
+const masked_queue = [_]Phase{
+    .{ .turn = 0, .step = 0, .follows = 0, .task = .{ .effects = "w", .item = .{ .domain = "client_a", .verb = .place, .hops = "ask_a", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok } } },
+    .{ .turn = 1, .step = 0, .follows = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 2, .step = 0, .follows = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "back_a", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 3, .step = 0, .follows = 0, .task = .{ .effects = "w", .item = .{ .domain = "client_b", .verb = .place, .hops = "ask_b", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok } } },
+    .{ .turn = 3, .step = 1, .follows = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "taken_a", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 3, .step = 2, .follows = 1, .task = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "back_b", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 3, .step = 3, .follows = 4, .task = .{ .effects = "r", .item = .{ .domain = "client_c", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+};
+
+// =========================================================================
+// Self-test
+// =========================================================================
+
+/// Loads one declaration, or names why it could not be read.
+fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
+    const parsed = read.load(io, path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{path});
+        return null;
+    }
+    return parsed;
+}
+
+/// Runs one queue under one reading and answers its report.
+fn run_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Phase,
+    reading: Reading,
+    report_out: *Report,
+) bool {
+    run_queue(allocator, io, self_path, sys, plan, .when_moved, reading, report_out) catch |err| {
+        print("  RED: a queue did not survive its run: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    return true;
+}
+
+/// The mask read straight, before any supervisor spends it.
+///
+/// The happy zone of this rung: every question here is a pure fold over the
+/// declaration and the plan, answered instantly, with no dependent started and
+/// no store touched. The thin edge comes after, where only real processes
+/// can tell the truth.
+fn check_mask(io: std.Io) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    if (!plan_is_ordered(&masked_queue)) {
+        print("  RED: the masked lap does not read as a written plan\n", .{});
+        return 1;
+    }
+
+    var closed_store: [max_queue_len]Phase = undefined;
+    const closed = closed_store[0..masked_queue.len];
+    close(&masked_queue, closed);
+    if (!plan_is_closed(closed)) {
+        print("  RED: a closed plan did not close to itself\n", .{});
+        return 1;
+    }
+
+    const anchor = masked_queue[3];
+    const free = masked_queue[4];
+    const middle = masked_queue[5];
+    const skipping = masked_queue[6];
+    const closed_skip = closed[6];
+    const stranger = masked_queue[1];
+
+    // The closing is the whole reason a set may be read in one bit test:
+    // the last phase names step 2 alone, and follows step 0 only because
+    // step 2 did.
+    if (masks_bind(anchor, skipping)) {
+        print("  RED: an unclosed mask already held an order it never named\n", .{});
+        return 1;
+    }
+    if (!masks_bind(anchor, closed_skip)) {
+        print("  RED: the closing lost the order a named sibling carried\n", .{});
+        return 1;
+    }
+    if (masks_bind(free, closed_skip)) {
+        print("  RED: the closing swallowed the hole its author wrote\n", .{});
+        return 1;
+    }
+
+    // The hole is the whole of what a prefix cannot say: the fenced reading
+    // must reach step 1 to reach step 2, and the masked reading needs not.
+    if (items_contend(&sys, free, closed_skip, .masked)) {
+        print("  RED: a phase skipping a sibling was held by it anyway\n", .{});
+        return 1;
+    }
+    if (!items_contend(&sys, free, closed_skip, .fenced)) {
+        print("  RED: the prefix stopped swallowing the hole it must reach past\n", .{});
+        return 1;
+    }
+    if (!items_contend(&sys, middle, closed_skip, .masked)) {
+        print("  RED: a phase inside its own closed mask was free to pass it\n", .{});
+        return 1;
+    }
+    if (items_contend(&sys, stranger, closed_skip, .masked)) {
+        print("  RED: a mask reached into a turn it was never cut from\n", .{});
+        return 1;
+    }
+    // invariant: holding a pair in order is one act, so the question is symmetric
+    assert(items_contend(&sys, closed_skip, middle, .masked));
+    // invariant: a mask only ever adds order to what the regions already say
+    assert(!items_contend(&sys, free, closed_skip, .by_act));
+
+    // A prefix survives the closing exactly, because filling a mask in only
+    // ever adds bits below its highest.
+    var c: u32 = 0;
+    while (c < masked_queue.len) : (c += 1) {
+        if (fence_after(closed[c].follows) != fence_after(masked_queue[c].follows)) {
+            print("  RED: closing a mask moved the prefix it implies\n", .{});
+            return 1;
+        }
+    }
+    // invariant: every phase of the lap was weighed before and after closing
+    assert(c == masked_queue.len);
+
+    // The closing is what makes the pairwise reading honest, and the queue's
+    // own discipline is what keeps the run from ever needing it: every bit
+    // the closing adds is reachable through a sibling the phase named
+    // directly, so a phase can only be passed while a direct namer of its
+    // own still waits. The closure is a statement about the relation rather
+    // than a step in the admission.
+    var r: u32 = 0;
+    while (r < masked_queue.len) : (r += 1) {
+        const added = closed[r].follows & ~masked_queue[r].follows;
+        var bit: u32 = 0;
+        while (bit < closed[r].step) : (bit += 1) {
+            if ((added & step_bit(bit)) == 0) continue;
+            var reached = false;
+            var mid: u32 = 0;
+            while (mid < closed[r].step) : (mid += 1) {
+                if ((masked_queue[r].follows & step_bit(mid)) == 0) continue;
+                const namer = closed[find_step(closed, closed[r].turn, mid)];
+                if ((namer.follows & step_bit(bit)) != 0) reached = true;
+            }
+            if (!reached) {
+                print("  RED: the closing added an order no named sibling carries\n", .{});
+                return 1;
+            }
+        }
+    }
+    // invariant: every phase of the lap was weighed against its own closing
+    assert(r == masked_queue.len);
+
+    var overreached = free;
+    overreached.follows = step_bit(free.step);
+    if (mask_is_sound(overreached)) {
+        print("  RED: a mask naming its own step read as sound\n", .{});
+        return 1;
+    }
+    var one_bad = [_]Phase{ masked_queue[3], overreached };
+    if (plan_is_ordered(&one_bad)) {
+        print("  RED: a plan naming a phase not yet written read as ordered\n", .{});
+        return 1;
+    }
+
+    // A mask holding every earlier sibling is the fence, and the link,
+    // exactly -- so this rung generalizes its elders rather than rivalling
+    // them.
+    var whole = masked_queue;
+    var t: u32 = 0;
+    while (t < whole.len) : (t += 1) whole[t].follows = prefix_mask(whole[t].step);
+    var a: u32 = 0;
+    while (a < whole.len) : (a += 1) {
+        var b: u32 = 0;
+        while (b < whole.len) : (b += 1) {
+            if (a == b) continue;
+            const m = items_contend(&sys, whole[a], whole[b], .masked);
+            if (m != items_contend(&sys, whole[a], whole[b], .fenced) or
+                m != items_contend(&sys, whole[a], whole[b], .linked))
+            {
+                print("  RED: a full mask read differently from the fence or the link\n", .{});
+                return 1;
+            }
+        }
+    }
+    // invariant: every pair of the lap was weighed under all three readings
+    assert(a == whole.len);
+
+    print("  a phase names the siblings it follows, and a turn closes them once\n", .{});
+    print("  a full mask is the fence and the link exactly, and a hole is what no prefix can name\n", .{});
+    print("  the closing adds only what a named sibling already carries, so a run never walks it\n", .{});
+    return 0;
+}
+
+/// The masked lap: the mask stands between reading acts alone and the fence.
+fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var acts: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &masked_queue, .by_act, &acts)) return 1;
+    var linked: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &masked_queue, .linked, &linked)) return 1;
+    var fenced: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &masked_queue, .fenced, &fenced)) return 1;
+    var masked: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &masked_queue, .masked, &masked)) return 1;
+
+    print("  the masked lap runs {d} phases past their turn by act, {d} masked, {d} fenced, {d} linked\n", .{
+        acts.out_of_turn, masked.out_of_turn, fenced.out_of_turn, linked.out_of_turn,
+    });
+    print("  the mask is broken {d} times by act and {d} masked\n", .{
+        acts.out_of_mask, masked.out_of_mask,
+    });
+    print("  the implied prefix is broken {d} times by act, {d} masked, {d} fenced\n", .{
+        acts.out_of_fence, masked.out_of_fence, fenced.out_of_fence,
+    });
+    print("  passes: {d} by act, {d} masked, {d} fenced, {d} linked\n", .{
+        acts.run.passes, masked.run.passes, fenced.run.passes, linked.run.passes,
+    });
+    print("  slots unspent: {d} by act, {d} masked, {d} fenced, {d} linked\n", .{
+        acts.run.slots_unspent, masked.run.slots_unspent, fenced.run.slots_unspent, linked.run.slots_unspent,
+    });
+    print("  {d} dependents run to the same end under all four\n", .{masked.run.reaped});
+
+    if (acts.out_of_mask == 0) {
+        print("  RED: reading acts alone kept every mask the author wrote\n", .{});
+        return 1;
+    }
+    if (masked.out_of_mask != 0) {
+        print("  RED: the mask let {d} phases run past a sibling they named\n", .{
+            masked.out_of_mask,
+        });
+        return 1;
+    }
+    if (masked.out_of_fence == 0) {
+        print("  RED: the mask bought back no phase the prefix was swallowing\n", .{});
+        return 1;
+    }
+    if (fenced.out_of_fence != 0) {
+        print("  RED: the fence let {d} phases run past the prefix they imply\n", .{
+            fenced.out_of_fence,
+        });
+        return 1;
+    }
+    // invariant: the four readings ran the same queue to the same end
+    assert(acts.run.reaped == masked.run.reaped);
+    assert(linked.run.reaped == masked.run.reaped);
+    assert(fenced.run.reaped == masked.run.reaped);
+    assert(masked.run.reaped == masked_queue.len);
+    assert(acts.run.succeeded == masked.run.succeeded);
+    assert(fenced.run.succeeded == masked.run.succeeded);
+    // invariant: a mask stands between the reading it loosens and the act
+    assert(linked.run.slots_unspent >= fenced.run.slots_unspent);
+    assert(fenced.run.slots_unspent >= masked.run.slots_unspent);
+    assert(masked.run.slots_unspent >= acts.run.slots_unspent);
+
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan mask {s} -- self-test\n", .{caravan_mask_version});
+    const straight = check_mask(io);
+    if (straight != 0) return straight;
+    const order = check_order(allocator, io, self_path);
+    if (order != 0) return order;
+    print("  GREEN: a phase names the siblings it follows, and a turn closes them once\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return cohort.run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}
