@@ -1387,6 +1387,27 @@ The numbers state the claim: **five refusals stand by name -- untold, silent, mi
 The numbers state the claim: **five refusals stand by name -- unread, allayed, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, and only the forbearing parts the two plans.** Witness: `tools/caravan_forbear_witness.rish`.
 
 
+### mind -- a run says what impasse it opened holding
+
+`forbear` hands a twice-refused matter to the run that comes next, in the one note a provisioning leaves alone. **And the hand that inherits it never says so.** The forbearance is on the wire the moment the run begins; the run opens, works, settles `carried out whole`, and publishes an outcome that reads exactly as it would have read had nobody ever refused anything. So an operator meets a plan that looks untroubled while it runs under a matter the run before it could not settle, and the whole correspondence the arc spent arrives one lap later exactly where it started.
+
+**The measurement is impasses a run opened holding and never named**, and it falls **1 to 0**. This is the shape `endure` wore before `heed` answered it, three tiers further out: there a plan ran under a quarrel it inherited and never said so; here a plan runs under an impasse it inherited and never says so.
+
+**Minding is naming, and naming is where the outcome is read.** A run that minds decides nothing, reopens nothing, and answers nobody. It publishes six bytes into `plan.mind` -- the forbearance echoed whole, this run's own byte last -- beside the settlement and the reader's own word, so an operator opening the outcome learns what the run began under. Every byte save that last one came from outside the plan, copied rather than composed: a supervisor able to author its own inheritance would be a plan inheriting its own argument.
+
+**A run names only an impasse it was actually handed.** A mark published without a forbearance would report a matter nobody handed this plan. `MindUninherited` refuses by name.
+
+**A matter the word says rests is left alone.** Naming a settled question as an impasse would have every outcome from here forward report an argument that ended -- the exact harm this rung prevents, wearing the prevention's own clothes. `MindRested` refuses by name.
+
+**The mark names the impasse it is about.** A run may still find a mark left by a run before today, and reading that as this run's would report an inheritance nobody handed it this morning. `MindMismatched` is the rung itself.
+
+**The naming is the act, and the taking down is only its close.** The mark lands first and the forbearance comes down after, so a run that falls between the two leaves an impasse standing for the next hand rather than one quietly gone -- the same order `reweigh` keeps between its receipt and the matter it answers.
+
+**Naming is not settling.** The settlement, the quarrel, its age, its standing, the case on the desk, the finding, the plan's own word, the concession, the meeting, the redress, the delivery, the reader's first verdict, the second look, the telling, the reader's reply, and the impasse this run hands on itself each come out of a minding run exactly as they went in -- and both runs settle `carried out whole`.
+
+The numbers state the claim: **five refusals stand by name -- uninherited, rested, mismatched, miscounted, misrecorded; a plan that loses nothing reads as the line handed, all 16 pairs; every rung below moves exactly as it moved, the forbearing included, and only the minding parts the two plans.** Four further RED paths proven on metal beyond the folded five: a planted control that printed GREEN while `caravan/.minds/plan.mind` did not exist at all, a mark written from another matter raising `MindMisrecorded` by name, a measured run handed no forbearance at all, and a control that took the inheritance down before the mark that names it landed. Witness: `tools/caravan_mind_witness.rish`.
+
+
 ## The ladder's carried checks -- the fold, and the meter that keeps it
 
 Every rung above imports the implementation of the rung beneath it. For eighty-odd rungs it also carried a fresh copy of that rung's self-test, because a check function was private and a later rung had no way to *call* the one below it -- only to carry its bytes forward.
@@ -1404,7 +1425,9 @@ What stays carried is **256 bodies over 12,035 lines**, growing about 1,637 a ru
 
 Nothing observable changed. Every rung of the grievance arc from `appraise` to `recount` was built twice -- folded and pristine -- and run against the same wire: **28 rungs, the same output lines, every one of them** -- only the order in which three concurrent dependents print interleaves, run to run, in the pristine build exactly as in the folded one. Every check that ran before still runs, in the same order, printing the same words. The choir sings every rung GREEN from a cold tree.
 
-`tools/caravan_ladder_copy_witness.rish` changed jobs with the fold. It holds the standing under a named ceiling of **22,000** carried lines -- **15,811** stand there now, about four rungs of headroom, close enough that the number means something -- counts the folded checks off the ladder rather than believing the prose -- 601 of them now, the 523 the fold landed plus the 39 that `allay` and the 39 that `forbear` each folded as they were written, proves its counting by hand on a two-rung corpus, and refuses by name on three paths: a corpus with no modules, a corpus whose modules hold no checks at all, and a corpus grown past its ceiling. It sings with the choir, so it can never become a guard nobody runs.
+`tools/caravan_ladder_copy_witness.rish` changed jobs with the fold. It holds the standing under a named ceiling of **22,000** carried lines -- **17,997** stand there now, counts the folded checks off the ladder rather than believing the prose -- 640 of them, the 523 the fold landed plus the 39 each that `allay`, `forbear`, and `mind` folded as they were written -- proves its counting by hand on a two-rung corpus, and refuses by name on three paths: a corpus with no modules, a corpus whose modules hold no checks at all, and a corpus grown past its ceiling. It sings with the choir, so it can never become a guard nobody runs.
+
+**The meter is now the binding constraint, and says so plainly.** `mind` carried **2,186** lines rather than the 1,637 a rung the fold's first laps averaged, because each new rung keeps home the whole chain that tails into the check it invented -- and that chain lengthens by one rung each lap. Headroom stands at **4,003 lines, under two rungs**. Option B, the shared harness that runs a rung's checks against its own report and its own wire, is what ends the growth; it is a refactor now rather than a rewrite, and it waits on Keaton's word.
 
 
 ## Held
