@@ -1,0 +1,802 @@
+//! Caravan enlist -- a phase may join a run already under way, and what the
+//! run remembers spending is what keeps the order honest.
+//!
+//! `arrive.rye` opened a door for work that shows up after a plan is seated,
+//! and it named its own limit plainly: the arrivals are weighed at the door,
+//! before the run begins. Every rung in this arc, that one included, hands
+//! the supervisor a queue whose last phase is known before its first dependent
+//! starts. So a phase that shows up while dependents are in flight had no
+//! answer at all -- only a refusal to begin, or a run torn down and seated
+//! again from the top.
+//!
+//! **The reading carries over whole, and that is the finding.** The three
+//! facts `arrive.rye` reads -- nobody placed waits on the newcomer's turn,
+//! its step is the next one that turn has open, and a turn already standing
+//! says one thing about what it follows -- are facts about *the phases a run
+//! was ever handed*, taken or waiting alike. Read against that, they mean at
+//! the tenth dependent exactly what they meant before the first. So the mid-run
+//! door needs no new refusal at all; it needs a memory.
+//!
+//! **What a run must never do is forget what it spent.** A supervisor that
+//! reads only the work still waiting has lost every phase it already ran,
+//! and the same reading turns silently wrong: a phase of turn 4 rejoins
+//! after turn 4 has come home and turn 5 has started, nothing visible waits
+//! on it, and it stands behind its own follower while `out_of_precede` reads
+//! zero. This module keeps the whole record for exactly that reason, and it
+//! measures the difference rather than asserting it -- the same newcomer is
+//! refused by name against the record and welcomed against the remainder.
+//!
+//! **A newcomer takes the tail, so nothing already granted moves.** Every
+//! phase started before an enlistment keeps the slot, the line, and the
+//! grants it was handed -- the same rule `inflight.rye` holds for a domain
+//! whose document changed underneath it, read one tier up. A refused
+//! enlistment leaves the run exactly as it found it, with the record the
+//! length it already was.
+//!
+//! **An enlistment costs one walk of the record.** The newcomer is weighed
+//! against each phase ever handed to the run exactly once, so the whole cost
+//! is `max_enlist_tests` against `max_seating_tests` to seat the plan again
+//! -- the record's length against the queue's square, however late it comes.
+//!
+//! **The limit is named plainly.** A newcomer here joins the tail of the
+//! record and waits its turn like any other phase; it never preempts a dependent
+//! already running, and it never reaches back to re-order work already
+//! placed. Whether a run may *withdraw* a phase still waiting -- the mirror
+//! of this rung -- belongs to the vision room until a witness binds it.
+//!
+//! Usage:
+//!   enlist selftest                  Run the readings against each other
+//!   enlist                           Same as selftest
+//!   enlist dependent <domain> <plan> ... Run as a supervised dependent (internal)
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const system = @import("system.rye");
+const capabilities = @import("capabilities.rye");
+const roster = @import("roster.rye");
+const read = @import("read.rye");
+const boot = @import("boot.rye");
+const exercise = @import("exercise.rye");
+const carry = @import("carry.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
+const cycle = @import("cycle.rye");
+const gap = @import("gap.rye");
+const cohort = @import("cohort.rye");
+const intent = @import("intent.rye");
+const mask = @import("mask.rye");
+const precede = @import("precede.rye");
+const arrive = @import("arrive.rye");
+
+const caravan_enlist_version = "20260819.203831";
+
+// =========================================================================
+// Bounds, carried from the rung below
+// =========================================================================
+
+/// The declaration this rung exercises, unchanged.
+pub const declaration_path = arrive.declaration_path;
+
+/// How many dependents one supervisor holds at once.
+pub const max_in_flight: u32 = arrive.max_in_flight;
+
+/// How many items one ordered queue carries.
+pub const max_queue_len: u32 = arrive.max_queue_len;
+
+/// How many still-waiting items past the head one turn may weigh.
+pub const max_lookahead: u32 = arrive.max_lookahead;
+
+/// A dependent's fixed argv, unchanged from the rungs below.
+pub const fixed_argv_words: u32 = arrive.fixed_argv_words;
+
+/// How many turns one queue may cut its work into.
+pub const max_turns: u32 = arrive.max_turns;
+
+/// How many pair tests one seating may ever spend.
+pub const max_seating_tests: u32 = arrive.max_seating_tests;
+
+/// How many tests one arrival at the door may ever spend.
+pub const max_arrival_tests: u32 = arrive.max_arrival_tests;
+
+/// How many tests one mid-run enlistment may ever spend.
+///
+/// An enlistment weighs the newcomer against the whole record exactly once,
+/// gathering every question in that single walk, so joining late costs the
+/// same as arriving at the door. Stated here rather than left for a reader
+/// to work out.
+pub const max_enlist_tests: u32 = max_arrival_tests;
+
+/// How many newcomers one run may take while it is under way.
+///
+/// A run may never hold more work than the queue itself, so the schedule is
+/// bounded by the same number that bounds the record it grows.
+pub const max_enlistments: u32 = max_queue_len;
+
+comptime {
+    // invariant: joining late costs exactly what arriving at the door costs
+    assert(max_enlist_tests == max_arrival_tests);
+    // invariant: an enlistment costs strictly less than seating the plan again
+    assert(max_enlist_tests < max_seating_tests);
+    // invariant: a schedule never offers more work than one queue may hold
+    assert(max_enlistments <= max_queue_len);
+}
+
+/// Renders one outcome code as the words an operator reads.
+pub fn outcome_name(code: u8) []const u8 {
+    return arrive.outcome_name(code);
+}
+
+/// Why a queue may not take the work handed to it.
+///
+/// This rung adds no name of its own, which is the finding: a newcomer a
+/// placed phase was waiting for is `ArrivalUnseated` whether it comes to the
+/// door or to a run already under way.
+pub const RunError = arrive.RunError;
+
+/// One queued item and the letters it declares, carried from `intent.rye`.
+pub const Task = arrive.Task;
+
+/// One phase, its turn, its step, and the two masks it carries, unchanged.
+pub const Phase = arrive.Phase;
+
+/// How deeply a reading looks at the queue's own authorship, unchanged.
+pub const Reading = arrive.Reading;
+
+/// Renders one reading as the words an operator reads.
+pub fn reading_words(r: Reading) []const u8 {
+    return arrive.reading_words(r);
+}
+
+/// What one run did, reported whole, unchanged from the rung below.
+pub const Report = arrive.Report;
+
+/// The single bit that stands for one turn of a plan.
+pub fn turn_bit(turn: u32) u32 {
+    return arrive.turn_bit(turn);
+}
+
+/// Answers whether a newcomer may take the tail of a plan already seated.
+pub fn arrival_admits(plan: []const Phase, newcomer: Phase) bool {
+    return arrive.arrival_admits(plan, newcomer);
+}
+
+/// Answers whether the plan's written sequence keeps every name it carries.
+pub fn plan_is_seated(plan: []const Phase) bool {
+    return arrive.plan_is_seated(plan);
+}
+
+/// Answers whether two plans hold the same phases in the same places.
+pub fn plans_match(a: []const Phase, b: []const Phase) bool {
+    return arrive.plans_match(a, b);
+}
+
+/// Answers whether two phases must keep the order the queue wrote them in.
+pub fn items_contend(sys: *const system.System, a: Phase, b: Phase, reading: Reading) bool {
+    return precede.items_contend(sys, a, b, reading);
+}
+
+/// Answers whether the head may enter beside the dependents running now.
+pub fn admissible(
+    sys: *const system.System,
+    live: []const cohort.Running,
+    head: Phase,
+    reading: Reading,
+) bool {
+    return precede.admissible(sys, live, head, reading);
+}
+
+// =========================================================================
+// The supervisor -- one program, and one record that may grow while it runs
+// =========================================================================
+
+/// One dependent already reaped, held until the whole record has drained.
+const Finished = struct {
+    domain: []const u8,
+    verb: cycle.Verb,
+    count: u32,
+    expect: u8,
+    code: u8,
+};
+
+/// Folds one reaped outcome into the report, or names the mismatch.
+fn judge_outcome(done: Finished, report_out: *Report) RunError!void {
+    // invariant: a judged dependent always names its domain
+    assert(done.domain.len >= 1);
+    // invariant: the report never counts more successes than dependents reaped
+    assert(report_out.inner.run.succeeded <= report_out.inner.run.reaped);
+    if (done.code != done.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            done.domain, outcome_name(done.expect), outcome_name(done.code),
+        });
+        return error.OutcomeMismatch;
+    }
+    if (done.code == carry.Outcome.carried_ok) {
+        report_out.inner.run.succeeded += 1;
+        if (done.verb == .home) report_out.inner.run.homed += done.count;
+    }
+}
+
+/// The queue's own bookkeeping for one run, with a record that may grow.
+///
+/// `held` is what makes this table different from every elder one: the
+/// record's length is a running fact rather than a constant read from the
+/// plan it was handed, so a newcomer lands at `held` and the walks that
+/// follow read the record as it now stands.
+const Table = struct {
+    live: [max_in_flight]cohort.Running = undefined,
+    in_flight: u32 = 0,
+    done: [max_queue_len]Finished = undefined,
+    finished: u32 = 0,
+    taken: [max_queue_len]bool = @splat(false),
+    record: [max_queue_len]Phase = undefined,
+    held: u32 = 0,
+    head: u32 = 0,
+    left: u32 = 0,
+};
+
+/// The record as it stands right now.
+fn standing(table: *const Table) []const Phase {
+    // invariant: a record never outgrows the queue one supervisor may hold
+    assert(table.held <= max_queue_len);
+    return table.record[0..table.held];
+}
+
+/// Moves the head past every item already started.
+fn advance_head(table: *Table) void {
+    // invariant: a head never walks past the record it reads
+    assert(table.head <= table.held);
+    while (table.head < table.held and table.taken[table.head]) table.head += 1;
+}
+
+/// Answers whether a phase of a turn this pick's turn names still waits.
+fn elder_waits(table: *const Table, pick: u32) bool {
+    // invariant: a pick always names a phase inside the record
+    assert(pick < table.held);
+    const wanted = table.record[pick].follows_turns;
+    if (wanted == 0) return false;
+    var i: u32 = 0;
+    while (i < table.held) : (i += 1) {
+        if (i == pick) continue;
+        if (table.taken[i]) continue;
+        if ((wanted & turn_bit(table.record[i].turn)) != 0) return true;
+    }
+    // invariant: the walk read the whole record, weighing every phase in it
+    assert(i == table.held);
+    return false;
+}
+
+/// Answers whether a sibling of this pick's own turn still waits behind it.
+fn sibling_waits(table: *const Table, pick: u32, sibling_mask: u32) bool {
+    // invariant: a pick always names a phase inside the record
+    assert(pick < table.held);
+    var i: u32 = 0;
+    while (i < pick) : (i += 1) {
+        if (table.taken[i]) continue;
+        if (table.record[i].turn != table.record[pick].turn) continue;
+        if ((sibling_mask & mask.step_bit(table.record[i].step)) != 0) return true;
+    }
+    // invariant: the walk reached the pick, weighing every phase before it
+    assert(i == pick);
+    return false;
+}
+
+/// Answers whether a phase may be admitted ahead of the record's head.
+fn may_pass(
+    sys: *const system.System,
+    table: *const Table,
+    candidate: u32,
+    reading: Reading,
+) bool {
+    // invariant: a pass always reaches forward, never at the head itself
+    assert(candidate > table.head);
+    // invariant: a candidate always stands inside the record
+    assert(candidate < table.held);
+    var i: u32 = table.head;
+    while (i < candidate) : (i += 1) {
+        if (table.taken[i]) continue;
+        if (items_contend(sys, table.record[i], table.record[candidate], reading)) return false;
+    }
+    // invariant: the walk reached the candidate, weighing every phase before it
+    assert(i == candidate);
+    return true;
+}
+
+/// Chooses one phase from behind a blocked head, or answers that none may go.
+fn choose_pass(
+    sys: *const system.System,
+    table: *const Table,
+    reading: Reading,
+) ?u32 {
+    // invariant: a pass is only ever sought while the head stands blocked
+    assert(table.head < table.held);
+    var looked: u32 = 0;
+    var i: u32 = table.head + 1;
+    while (i < table.held and looked < max_lookahead) : (i += 1) {
+        if (table.taken[i]) continue;
+        looked += 1;
+        if (!admissible(sys, table.live[0..table.in_flight], table.record[i], reading)) continue;
+        if (!may_pass(sys, table, i, reading)) continue;
+        return i;
+    }
+    // invariant: the look stayed inside the bound it was given
+    assert(looked <= max_lookahead);
+    return null;
+}
+
+/// Starts one phase, handing the line it declared and nothing more.
+fn start_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    phase: Phase,
+    wake: gap.Wake,
+) (RunError || cohort.RunError || boot.BootError)!cohort.Running {
+    // invariant: a start always names the domain it starts
+    assert(phase.task.item.domain.len >= 1);
+    const narrowed = intent.narrow(caps, phase.task) orelse return error.UnknownDomain;
+    const slot = narrowed.find_dependent(phase.task.item.domain) orelse return error.UnknownDomain;
+    // invariant: a narrowed line stays inside what the document grants
+    assert(boot.line_within(sys, slot));
+    return cohort.spawn_one_within(
+        allocator, io, self_path, sys, &narrowed, phase.task.item, wake, &.{},
+    );
+}
+
+/// Admits as much of the record as the table, the isolation, and the reading
+/// allow, and answers how many dependents it started.
+fn fill_table(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    wake: gap.Wake,
+    reading: Reading,
+    table: *Table,
+    report_out: *Report,
+) (RunError || cohort.RunError || boot.BootError)!u32 {
+    var admitted: u32 = 0;
+    while (table.in_flight < max_in_flight and table.left > 0) {
+        advance_head(table);
+        // invariant: work still waiting always leaves a head to weigh
+        assert(table.head < table.held);
+
+        var pick: u32 = table.head;
+        if (!admissible(sys, table.live[0..table.in_flight], table.record[table.head], reading)) {
+            pick = choose_pass(sys, table, reading) orelse break;
+            report_out.inner.run.passes += 1;
+            const reach = pick - table.head;
+            if (reach > report_out.inner.run.pass_reach) report_out.inner.run.pass_reach = reach;
+        }
+        const chosen = table.record[pick];
+        if (sibling_waits(table, pick, mask.prefix_mask(chosen.step))) {
+            report_out.inner.out_of_turn += 1;
+        }
+        if (sibling_waits(table, pick, mask.prefix_mask(mask.fence_after(chosen.follows)))) {
+            report_out.inner.out_of_fence += 1;
+        }
+        if (sibling_waits(table, pick, chosen.follows)) report_out.inner.out_of_mask += 1;
+        if (elder_waits(table, pick)) report_out.out_of_precede += 1;
+
+        table.live[table.in_flight] = try start_one(
+            allocator, io, self_path, sys, caps, chosen, wake,
+        );
+        table.in_flight += 1;
+        table.taken[pick] = true;
+        table.left -= 1;
+        admitted += 1;
+        report_out.inner.run.admitted += 1;
+    }
+    // invariant: a fill never overruns the table it fills
+    assert(table.in_flight <= max_in_flight);
+    // invariant: a preceded reading never runs a phase past a turn its turn named
+    assert(reading != .preceded or report_out.out_of_precede == 0);
+    return admitted;
+}
+
+/// Waits on the eldest dependent, records what it answered, and closes the table
+/// over the slot it leaves.
+fn reap_oldest(io: std.Io, table: *Table, report_out: *Report) cohort.RunError!void {
+    // invariant: a reaping always has a dependent to wait on
+    assert(table.in_flight >= 1);
+    // invariant: a reaping never overruns the record it is kept in
+    assert(table.finished < max_queue_len);
+    const code = try cohort.reap_one(io, &table.live[0]);
+    table.done[table.finished] = .{
+        .domain = table.live[0].domain,
+        .verb = table.live[0].verb,
+        .count = table.live[0].count,
+        .expect = table.live[0].expect,
+        .code = code,
+    };
+    table.finished += 1;
+    table.in_flight -= 1;
+    report_out.inner.run.reaped += 1;
+    report_out.inner.run.turns += 1;
+
+    var s: u32 = 0;
+    while (s < table.in_flight) : (s += 1) table.live[s] = table.live[s + 1];
+    // invariant: the table closed over the reaped dependent, none lost
+    assert(s == table.in_flight);
+}
+
+// =========================================================================
+// The enlistment -- one fact a door could never have
+// =========================================================================
+
+/// Writes the work still waiting, in the order the record holds it.
+///
+/// This is the record a forgetful supervisor would keep -- everything not
+/// yet started, and nothing else. The module builds it only to weigh an
+/// enlistment against it and show what the forgetting costs; no run ever
+/// admits from it.
+fn remaining(table: *const Table, out: []Phase) u32 {
+    // invariant: a remainder always has room for the work still waiting
+    assert(out.len >= table.left);
+    var kept: u32 = 0;
+    var i: u32 = 0;
+    while (i < table.held) : (i += 1) {
+        if (table.taken[i]) continue;
+        out[kept] = table.record[i];
+        kept += 1;
+    }
+    // invariant: the walk read the whole record, weighing every phase in it
+    assert(i == table.held);
+    // invariant: the remainder holds exactly the work still waiting
+    assert(kept == table.left);
+    return kept;
+}
+
+/// One newcomer and the moment the run offers it.
+///
+/// `after` counts dependents reaped, so a schedule reads as plainly as the run
+/// it describes: this phase joins once that many dependents have come home.
+pub const Enlistment = struct {
+    after: u32,
+    phase: Phase,
+};
+
+/// Takes one newcomer into a running record, or names why it may not join.
+///
+/// One walk and no more, over the whole record rather than the work still
+/// waiting -- which is what lets the door-time reading mean the same thing
+/// mid-run. Nothing already placed moves, so the slots, lines, and grants of
+/// every dependent in flight stand exactly as they were handed out.
+fn enlist_one(table: *Table, newcomer: Phase) RunError!void {
+    // invariant: a run always carries work before anything joins it
+    assert(table.held >= 1);
+    if (table.held == max_queue_len) return error.QueueFull;
+    if (!arrival_admits(standing(table), newcomer)) return error.ArrivalUnseated;
+    table.record[table.held] = newcomer;
+    table.taken[table.held] = false;
+    table.held += 1;
+    table.left += 1;
+    // invariant: the record grew by exactly the one phase offered
+    assert(table.held <= max_queue_len);
+    // invariant: work still waiting never outruns the record that holds it
+    assert(table.left <= table.held);
+}
+
+/// Runs a record that may grow while it runs, taking each newcomer at the
+/// moment its schedule names.
+///
+/// The supervisor is the one every rung in this arc keeps -- fill the table,
+/// reap the eldest, judge at the end -- with exactly one act added: after
+/// each reaping, every newcomer whose moment has come is weighed against the
+/// record as it now stands. A refusal arrives before that dependent starts, and
+/// leaves the run it interrupted exactly as it found it.
+pub fn run_with_enlistments(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    base: []const Phase,
+    schedule: []const Enlistment,
+    wake: gap.Wake,
+    reading: Reading,
+    report_out: *Report,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || RunError || cohort.RunError || boot.BootError)!void {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always reports into a fresh report
+    assert(report_out.inner.run.admitted == 0);
+    if (base.len == 0) return error.EmptyQueue;
+    if (base.len + schedule.len > max_queue_len) return error.QueueFull;
+    if (schedule.len > max_enlistments) return error.QueueFull;
+    if (!precede.plan_is_ordered(base)) return error.OrderStalled;
+    if (!plan_is_seated(base)) return error.PlanUnseated;
+
+    var table: Table = .{};
+    precede.close(base, table.record[0..base.len]);
+    table.held = @intCast(base.len);
+    table.left = table.held;
+    // invariant: a closed record closes to itself, so the door's work is done
+    assert(precede.plan_is_closed(standing(&table)));
+
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    report_out.inner.run.bells = try roundtrip.provision_directed(io, sys);
+    const caps = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &caps));
+    report_out.inner.run.queued = table.held;
+
+    var offered: u32 = 0;
+    while (table.left > 0 or table.in_flight > 0) {
+        const admitted_now = try fill_table(
+            allocator, io, self_path, sys, &caps, wake, reading, &table, report_out,
+        );
+        if (table.in_flight > report_out.inner.run.peak_in_flight) {
+            report_out.inner.run.peak_in_flight = table.in_flight;
+        }
+
+        if (table.left > 0) {
+            const free = max_in_flight - table.in_flight;
+            report_out.inner.run.slots_unspent += free;
+            if (admitted_now == 0 and free > 0) report_out.inner.run.idle_turns += 1;
+        }
+
+        // With an empty table nothing conflicts, so a stall here would mean
+        // the record named a domain the document does not.
+        if (table.in_flight == 0) return error.OrderStalled;
+        try reap_oldest(io, &table, report_out);
+
+        while (offered < schedule.len and schedule[offered].after <= report_out.inner.run.reaped) {
+            try enlist_one(&table, schedule[offered].phase);
+            report_out.inner.run.queued += 1;
+            offered += 1;
+        }
+    }
+    // invariant: every newcomer the schedule named was offered, none skipped
+    assert(offered == schedule.len);
+    // invariant: the whole record was admitted and every dependent reaped
+    assert(table.left == 0);
+    assert(table.in_flight == 0);
+    assert(report_out.inner.run.reaped == report_out.inner.run.admitted);
+    assert(table.finished == table.held);
+
+    var j: u32 = 0;
+    while (j < table.finished) : (j += 1) try judge_outcome(table.done[j], report_out);
+    // invariant: every reaped dependent was judged, none skipped
+    assert(j == table.finished);
+}
+
+// =========================================================================
+// The lap -- one plan, handed whole and handed while it runs
+// =========================================================================
+
+/// The lap every rung in this arc runs, written in the order its names imply.
+///
+/// One busy domain makes the room: `client_a` opens with a place and three
+/// more turns of the same domain queue behind it, so the head stands blocked
+/// and a pass is the only way forward. Turn 4 has `client_b` place into
+/// `ask_b` and names turn 3; turn 5 has `client_c` peek the published `menu`
+/// and names turn 4 alone; turn 6 names nothing at all.
+const written_queue = [_]Phase{
+    .{ .turn = 0, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "w", .item = .{ .domain = "client_a", .verb = .place, .hops = "ask_a", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok } } },
+    .{ .turn = 1, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 2, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "back_a", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 3, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_a", .verb = .peek, .hops = "taken_a", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 4, .step = 0, .follows = 0, .follows_turns = 8, .task = .{ .effects = "w", .item = .{ .domain = "client_b", .verb = .place, .hops = "ask_b", .peers = "serial_virt", .count = 1, .expect = carry.Outcome.carried_ok } } },
+    .{ .turn = 5, .step = 0, .follows = 0, .follows_turns = 16, .task = .{ .effects = "r", .item = .{ .domain = "client_c", .verb = .peek, .hops = "menu", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+    .{ .turn = 6, .step = 0, .follows = 0, .follows_turns = 0, .task = .{ .effects = "r", .item = .{ .domain = "client_b", .verb = .peek, .hops = "back_b", .peers = "serial_virt", .count = 0, .expect = carry.Outcome.bytes_differed } } },
+};
+
+/// The tail of that lap, offered one phase at a time while the run is under
+/// way rather than handed to the door.
+///
+/// Turn 4 joins once one dependent has come home, turn 5 once two have, turn 6
+/// once three have -- so each newcomer lands with dependents in flight and
+/// slots already granted, which is the whole point of the rung.
+const late_arrivals = [_]Enlistment{
+    .{ .after = 1, .phase = written_queue[4] },
+    .{ .after = 2, .phase = written_queue[5] },
+    .{ .after = 3, .phase = written_queue[6] },
+};
+
+/// The phase a forgetful run would take a second time.
+///
+/// Turn 4 itself, offered again once it has come home and turn 5 -- which
+/// names it -- has started. Against the whole record the answer is plain:
+/// turn 5 waits on turn 4, and the record still remembers turn 4 standing in
+/// it. Against the work still waiting, both of those phases are gone, and
+/// the very same reading welcomes a phase that would run behind its own
+/// follower.
+const already_run = written_queue[4];
+
+// =========================================================================
+// Self-test
+// =========================================================================
+
+/// Loads one declaration, or names why it could not be read.
+fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
+    const parsed = read.load(io, path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{path});
+        return null;
+    }
+    return parsed;
+}
+
+/// The enlistment read straight, before any supervisor spends it.
+///
+/// The happy zone of this rung: a table is built by hand, phases are marked
+/// started, and every question is a pure fold over the record -- answered
+/// instantly, with no dependent started and no store touched.
+fn check_enlistment() u8 {
+    var table: Table = .{};
+    var i: u32 = 0;
+    while (i < written_queue.len - 3) : (i += 1) table.record[i] = written_queue[i];
+    table.held = i;
+    table.left = table.held;
+    // invariant: the hand-built record holds the phases it was given
+    assert(table.held == written_queue.len - 3);
+
+    // A newcomer nobody waits on joins a running record exactly as it would
+    // join at the door, and every phase already held keeps its place.
+    enlist_one(&table, written_queue[4]) catch {
+        print("  RED: a newcomer nobody waits on was refused a running record\n", .{});
+        return 1;
+    };
+    if (!plans_match(standing(&table), written_queue[0..5])) {
+        print("  RED: an enlistment moved a phase the record already held\n", .{});
+        return 1;
+    }
+    enlist_one(&table, written_queue[5]) catch {
+        print("  RED: a newcomer following a turn already held was refused\n", .{});
+        return 1;
+    };
+
+    // Turn 4 comes home and turn 5 -- which names it -- starts. The record
+    // remembers both; a supervisor reading only the work still waiting would
+    // remember neither.
+    table.taken[4] = true;
+    table.taken[5] = true;
+    table.left -= 2;
+
+    const twice = enlist_one(&table, already_run);
+    if (twice) |_| {
+        print("  RED: a phase the run already spent joined it a second time\n", .{});
+        return 1;
+    } else |err| {
+        if (err != error.ArrivalUnseated) {
+            print("  RED: the record refused for the wrong reason: {s}\n", .{@errorName(err)});
+            return 1;
+        }
+    }
+    if (table.held != 6) {
+        print("  RED: a refused enlistment left {d} phases in the record\n", .{table.held});
+        return 1;
+    }
+
+    // The same reading over the work still waiting welcomes it -- which is
+    // exactly what forgetting costs, measured rather than asserted.
+    var rest_store: [max_queue_len]Phase = undefined;
+    const kept = remaining(&table, &rest_store);
+    if (!arrival_admits(rest_store[0..kept], already_run)) {
+        print("  RED: the remainder refused the phase too, so nothing was shown\n", .{});
+        return 1;
+    }
+
+    print("  a phase already spent is refused by name against a record of {d}\n", .{table.held});
+    print("  the same reading over the {d} still waiting welcomes it back\n", .{kept});
+    print("  an enlistment costs at most {d} tests, against {d} to seat the plan again\n", .{
+        max_enlist_tests, max_seating_tests,
+    });
+    return 0;
+}
+
+/// Runs one queue whole and answers its report.
+fn run_one(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    plan: []const Phase,
+    reading: Reading,
+    report_out: *Report,
+) bool {
+    run_with_enlistments(
+        allocator, io, self_path, sys, plan, &.{}, .when_moved, reading, report_out,
+    ) catch |err| {
+        print("  RED: a queue did not survive its run: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    return true;
+}
+
+/// Runs one queue that grows while it runs and answers its report.
+fn run_growing(
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    base: []const Phase,
+    schedule: []const Enlistment,
+    reading: Reading,
+    report_out: *Report,
+) bool {
+    run_with_enlistments(
+        allocator, io, self_path, sys, base, schedule, .when_moved, reading, report_out,
+    ) catch |err| {
+        print("  RED: a growing queue did not survive its run: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    return true;
+}
+
+/// The enlistment lap: one plan run twice, handed whole and handed as it runs.
+fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    var buf: [read.read_buffer_bytes]u8 = undefined;
+    const sys = load_one(io, declaration_path, &buf) orelse return 1;
+
+    var whole: Report = .{};
+    if (!run_one(allocator, io, self_path, &sys, &written_queue, .preceded, &whole)) return 1;
+    var growing: Report = .{};
+    if (!run_growing(
+        allocator, io, self_path, &sys, written_queue[0..4], &late_arrivals, .preceded, &growing,
+    )) return 1;
+
+    print("  breaks a named turn: {d} handed whole, {d} joined while running\n", .{
+        whole.out_of_precede, growing.out_of_precede,
+    });
+    print("  passes: {d} handed whole, {d} joined while running\n", .{
+        whole.inner.run.passes, growing.inner.run.passes,
+    });
+    print("  {d} dependents run to the same end under both hands\n", .{growing.inner.run.reaped});
+    print("  {d} newcomers joined a run already under way\n", .{late_arrivals.len});
+
+    if (growing.out_of_precede != 0) {
+        print("  RED: the growing run broke {d} turn orders its author named\n", .{
+            growing.out_of_precede,
+        });
+        return 1;
+    }
+    if (growing.inner.run.reaped != whole.inner.run.reaped) {
+        print("  RED: the growing queue reaped {d} dependents against {d} handed whole\n", .{
+            growing.inner.run.reaped, whole.inner.run.reaped,
+        });
+        return 1;
+    }
+    // invariant: the two hands ran the same work to the same end
+    assert(whole.inner.run.succeeded == growing.inner.run.succeeded);
+    assert(growing.inner.run.reaped == written_queue.len);
+    assert(growing.inner.run.admitted == whole.inner.run.admitted);
+
+    return 0;
+}
+
+fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+    print("Caravan enlist {s} -- self-test\n", .{caravan_enlist_version});
+    const reading = check_enlistment();
+    if (reading != 0) return reading;
+    const order = check_order(allocator, io, self_path);
+    if (order != 0) return order;
+    print("  GREEN: a phase may join a run already under way, in one bounded walk of what it remembers\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return cohort.run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return run_self_test(allocator, io, self_path);
+}

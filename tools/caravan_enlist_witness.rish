@@ -1,0 +1,94 @@
+# caravan_enlist_witness.rish -- Caravan enlist witness.
+#
+# `arrive.rye` opened a door for work that shows up after a plan is seated,
+# and named its own limit: the arrivals are weighed at the door, before the
+# run begins. Every rung in this arc hands the supervisor a queue whose last
+# phase is known before its first dependent starts.
+#
+#   A PHASE MAY JOIN A RUN ALREADY UNDER WAY, IN ONE BOUNDED WALK OF WHAT
+#   THE RUN REMEMBERS.
+#
+# The reading carries over whole, and that is the finding. The three facts
+# `arrive.rye` reads are facts about the phases a run was EVER handed, taken
+# or waiting alike -- so they mean at the tenth dependent exactly what they meant
+# before the first. The mid-run door needs no new refusal; it needs a memory.
+#
+# WHAT THE ENLISTMENT BUYS, AND WHAT IT COSTS, MEASURED:
+#
+#   * JOINING LATE COSTS WHAT ARRIVING COSTS. One walk of the record: 16
+#     tests against 256 to seat the plan again, the record's length against
+#     the queue's square. Printed from the bounds themselves rather than
+#     typed into prose.
+#   * A RUN MUST NEVER FORGET WHAT IT SPENT. The same phase is refused by
+#     name -- `ArrivalUnseated` -- against a record of 6, and welcomed back
+#     by the very same reading over the 4 still waiting. A supervisor that
+#     kept only the remaining work would run a phase a second time, behind
+#     its own follower, with `out_of_precede` reading zero. The difference is
+#     measured rather than asserted.
+#   * A REFUSED ENLISTMENT LEAVES THE RUN AS IT FOUND IT -- the record stays
+#     the length it already was.
+#   * THREE NEWCOMERS JOINED A RUN ALREADY UNDER WAY, each after a dependent had
+#     come home, and the lap ran to the same end as the plan handed whole: 7
+#     dependents under both hands, 0 named turns broken.
+#   * A NEWCOMER TAKES THE TAIL, SO NOTHING ALREADY GRANTED MOVES. Every
+#     dependent started before an enlistment keeps the slot, the line, and the
+#     grants it was handed -- `inflight.rye`'s rule for a domain whose
+#     document changed underneath it, read one tier up.
+#   * THE PASSES DIFFER HONESTLY: 1 handed whole against 0 joined while
+#     running, since work that has not arrived yet is work a blocked head
+#     cannot pass over. Same dependents, same end, fewer reaches.
+#
+# THE LIMIT IS NAMED: a newcomer joins the tail and waits its turn. It never
+# preempts a dependent already running and never re-orders work already placed.
+# Whether a run may WITHDRAW a phase still waiting belongs to the vision room
+# until a witness binds it.
+#
+# Both RED paths were proven on metal before this witness claimed GREEN. Let
+# the enlistment weigh the newcomer against the work still waiting rather
+# than the record, and the pure read reds at a phase the run already spent
+# joining it a second time -- caught in the happy zone, before a dependent
+# starts. Let the mid-run door wave every newcomer through, and it reds the
+# same way, so the refusal is load-bearing rather than decorative.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS #76 / #85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_enlist_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/enlist"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/enlist.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan enlist build failed"
+
+# Nothing new is declared: a run grows by taking a phase, and the document
+# still speaks only in ceilings.
+let published = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_three_clients_menu.bron 2>&1"]
+assert published.ok else "the published declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 10 -- grants 19" else "the published document changed shape"
+assert published.out contains "verdict: whole" else "the published declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan enlist selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan enlist selftest not GREEN"
+assert test.out contains "a phase may join a run already under way, in one bounded walk of what it remembers" else "the enlist finding did not close"
+
+# The enlistment read straight, before any supervisor spends it.
+assert test.out contains "a phase already spent is refused by name against a record of 6" else "the record did not refuse a phase it already ran"
+assert test.out contains "the same reading over the 4 still waiting welcomes it back" else "the cost of forgetting was not shown"
+assert test.out contains "an enlistment costs at most 16 tests, against 256 to seat the plan again" else "the cost of an enlistment was not reported honestly"
+
+# The enlistment lap: one plan run twice, handed whole and handed as it runs.
+assert test.out contains "breaks a named turn: 0 handed whole, 0 joined while running" else "the growing run did not keep the order its author named"
+assert test.out contains "passes: 1 handed whole, 0 joined while running" else "the growing queue did not spend its passes as measured"
+assert test.out contains "7 dependents run to the same end under both hands" else "the two hands did not run the same lap to the same end"
+assert test.out contains "3 newcomers joined a run already under way" else "no newcomer joined a run in flight"
+
+say "GREEN: Caravan enlist witness passed."

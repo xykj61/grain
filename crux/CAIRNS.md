@@ -24,6 +24,12 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260819.204716` -- REMEMBER's arrive chronicle folded to a pointer as the enlist rung lands
+
+**Walk-back nib:** `45ae32e474` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
+**Swept:** the **Live edge** bullet's whole inline account of `caravan/arrive.rye` -- an arrival as a claim about one phase costing one walk of the plan, the three facts gathered in a single pass, 6 arrivals at 96 tests against 1536 to seat the plan again, `ArrivalUnseated` answered with 0 children started, the refusal naming a real order since the same phase arriving before its waiter is welcome, and a plan grown one arrival at a time proving to be the plan written whole. Roughly one dense bullet.
+**What waits there, worth recalling:** at nib `45ae32e474` the departing card holds the full prose for why a claim about one phase never needs a seating, and why an identity test -- the grown plan against the written one -- is this arc's standing way of showing a rung generalizes its elder rather than rivalling it. Both survive in `caravan/arrive.rye`, `caravan/README.md`, and the `20260819.203403` session log.
+
 ### `20260819.201448` -- REMEMBER's mask chronicle folded to a pointer as the precede rung lands
 
 **Walk-back nib:** `9d652c6823` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
