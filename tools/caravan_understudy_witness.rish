@@ -1,0 +1,111 @@
+# caravan_understudy_witness.rish -- Caravan understudy witness.
+#
+# `replace.rye` let a run correct a phase in one act and named its own limit
+# plainly: a correction reaches only work still waiting. A dependent already
+# running was never recalled, so the commonest correction of a busy run --
+# this work is in flight and the next hand should do it differently -- had no
+# door at all.
+#
+#   A RECORD MAY CARRY TWO SHAPES OF ONE PHASE AT ONCE, AND WHAT A DEPENDENT WAS
+#   HANDED TRAVELS WITH THE DEPENDENT.
+#
+# A dependent carries its own domain, its verb, its count, and the outcome it
+# owes from the moment it is spawned; its grants were narrowed once and
+# handed over; and every reading the supervisor makes about work still
+# waiting steps over a phase already started. So a phase in flight and its
+# slot in the record are two shapes of one phase already -- this rung only
+# says so and keeps them honest.
+#
+# WHAT THE UNDERSTUDY BUYS, AND WHAT IT COSTS, MEASURED:
+#
+#   * A CORRECTION REFUSES A RUNNING PHASE AND AN UNDERSTUDY TAKES THE SAME
+#     SHAPE. The very phase `replace.rye` turns away with `WithdrawalStarted`
+#     is welcomed here, unchanged. Both readings are run against each other
+#     rather than asserted.
+#   * A RUN MUST NEVER FORGET WHICH SLOT EACH DEPENDENT CAME FROM. A record that
+#     remembers only how many dependents run cannot tell a phase still in
+#     flight from a phase already home, and those two want opposite answers.
+#     The table carries one index per live dependent, shifted on every reaping.
+#   * TWO REFUSALS THIS RUNG EARNS, ONE ABOUT PLACE AND ONE ABOUT TIME.
+#     `UnderstudyMoved`: a running phase's step is already spent, so the work
+#     may change entirely while the turn and the step may not move at all.
+#     `UnderstudyHomed`: a phase whose dependent has come home is finished work,
+#     and rewriting it would make the record lie about what ran. The slot's
+#     own seating check carries through as `ReplacementUnseated`, and a phase
+#     never written is `WithdrawalMissing` here as everywhere else.
+#   * THE PLACE, MEASURED. An understudy changes what 0 turns remember,
+#     against 2 turns changed by the move it refuses -- one turn losing a
+#     step it spent, one gaining a step it never ran.
+#   * AN UNDERSTUDY COSTS ONE WALK AND ONE GLANCE: 19 tests against 32 for a
+#     correction and 256 to seat the plan again. It weighs no triple at all,
+#     because the place is already spent and only the shape changes. Printed
+#     from the bounds themselves rather than typed into prose.
+#   * AN UNDERSTUDY CHANGES NOTHING A RUN DOES. 7 places handed whole, 7
+#     places with a shape swapped under a dependent, 7 dependents reaped either
+#     way, and 2 carrying home as handed either way -- the record says
+#     something else while the work in flight finishes as it started.
+#   * AN UNDERSTUDY OF WAITING WORK IS THAT WORK'S CORRECTION, all 7 phases
+#     -- this arc's standing generalization test, one tier further out.
+#
+# THE LIMIT IS NAMED: an understudy reaches one shape at a time and never
+# recalls the dependent standing under it. Whether a run may hand a dependent in
+# flight a new line -- narrowing or widening the grants it already holds
+# while it holds them -- belongs to the vision room until a witness binds it.
+#
+# All three RED paths were proven on metal before this witness claimed GREEN.
+# Judge the reaped dependent from the record rather than from what it was handed,
+# and the swapped run reds at `client_a: expected bytes differed, heard
+# carried` -- the finding, shown as a failure. Drop the place refusal, and a
+# shape moved out of a place already spent is seated anyway. Drop the running
+# check, and a phase already home is rewritten after its work has run.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS #76 / #85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_understudy_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/understudy"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/understudy.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan understudy build failed"
+
+# Nothing new is declared: a run gives one phase a second shape rather than
+# adding work, and the document still speaks only in ceilings.
+let published = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_three_clients_menu.bron 2>&1"]
+assert published.ok else "the published declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 10 -- grants 19" else "the published document changed shape"
+assert published.out contains "verdict: whole" else "the published declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan understudy selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan understudy selftest not GREEN"
+assert test.out contains "a record may carry two shapes of one phase at once, and what a dependent was handed travels with the dependent" else "the understudy finding did not close"
+
+# The two doors weighed against each other, before any supervisor spends them.
+assert test.out contains "a correction refuses a running phase, and an understudy takes the same shape" else "the two doors were not weighed against each other"
+assert test.out contains "an understudy costs at most 19 tests, against 32 for a correction and 256 to seat the plan" else "the cost of an understudy was not reported honestly"
+
+# What the place buys, measured against the move the reading refuses.
+assert test.out contains "an understudy changes what 0 turns remember, against 2 changed by the move it refuses" else "the place an understudy keeps was not measured"
+assert test.out contains "the dependent in flight keeps the domain, the grants, and the outcome it was handed" else "the shape the dependent carries was not shown"
+
+# The generalization test: the new door answers the old one exactly.
+assert test.out contains "an understudy of waiting work is that work's correction, all 7 phases" else "the two doors did not agree about waiting work"
+
+# The understudy lap: one plan run twice, handed whole and given a second
+# shape while a dependent stands in it.
+assert test.out contains "breaks a named turn: 0 handed whole, 0 with a shape swapped under a dependent" else "the swapped run did not keep the order its author named"
+assert test.out contains "dependents: 7 handed whole, 7 with a shape swapped under a dependent" else "an understudy changed how much work the run did"
+assert test.out contains "record: 7 places handed whole, 7 places with a shape swapped under a dependent" else "an understudy changed the length of the record"
+assert test.out contains "came home as handed: 2 handed whole, 2 with a shape swapped under a dependent" else "a dependent did not come home under the shape it started with"
+assert test.out contains "1 shapes were swapped under a dependent already running" else "no shape was swapped under a running dependent"
+
+say "GREEN: Caravan understudy witness passed."
