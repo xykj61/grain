@@ -633,7 +633,7 @@ fn run_one(
 }
 
 /// The word read straight, in both directions, before any supervisor spends it.
-fn check_word(io: std.Io) u8 {
+pub fn check_word(io: std.Io) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 
@@ -707,7 +707,7 @@ fn check_word(io: std.Io) u8 {
 }
 
 /// The ceiling lap: reading the act converts the order the grants held.
-fn check_ceiling(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_ceiling(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 
@@ -755,7 +755,7 @@ fn check_ceiling(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
 }
 
 /// The control: believing a word without handing it over is faster, and wrong.
-fn check_trusted(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_trusted(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 

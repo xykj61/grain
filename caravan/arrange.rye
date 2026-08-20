@@ -442,7 +442,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 /// The happy zone of this rung: every question here is a pure fold over the
 /// plan, answered instantly, with no dependent started and no store touched. The
 /// thin edge comes after, where only real processes can tell the truth.
-fn check_seating() u8 {
+pub fn check_seating() u8 {
     if (!precede.plan_is_ordered(&written_queue)) {
         print("  RED: the written lap does not read as a written plan\n", .{});
         return 1;
@@ -559,7 +559,7 @@ fn run_seated(
 }
 
 /// The arranged lap: one plan run twice, written two ways, ending the same.
-fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 

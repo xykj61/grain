@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.143646` -- the recount live edge folds as the ladder-copy fold lands
+
+**Walk-back nib:** `b8427b4d1b` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The pre-fold Caravan ladder in full -- all 289,303 lines, every carried check body -- stands at this nib and every commit before it.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **recount** rung, folded into the condensed pointer line beneath it, so the card leads with the fold that just landed rather than carrying a second copy of the log index.
+
+**What waits there, worth recalling:** the inline account of the recount rung -- the second look receipted where only a later run of this plan looks while the reader who asked for it holds an empty box; the telling landing in `caravan/.readers/desk.knows` rather than under the plan's notes, so the outward reach is visible on the wire; `RecountUnlooked` and `RecountMismatched` refusing by name; and the planted control that printed GREEN over a box that did not exist. Beside it waits **the whole pre-fold ladder**, which is the larger thing this nib holds: 779 check bodies carried byte-for-byte over 54,612 lines, each rung's copy of every check beneath it, exactly as the arc wrote them one lap at a time. Anyone wanting to read a rung as its author left it -- or to check the fold against what it folded -- reads it here. Every word also rests in `caravan/README.md`, the design call `20260820-131713`, and the dated logs `20260820-135055` and `20260820-143646`.
+
+
 ### `20260820.135055` -- the reweigh live edge folds as the recount rung seats
 
 **Walk-back nib:** `c29c698d34` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.

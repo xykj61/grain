@@ -791,7 +791,7 @@ fn run_one(
 /// declaration and the plan, answered instantly, with no dependent started and
 /// no store touched. The thin edge comes after, where only real processes
 /// can tell the truth.
-fn check_turns(io: std.Io) u8 {
+pub fn check_turns(io: std.Io) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 
@@ -905,7 +905,7 @@ fn check_turns(io: std.Io) u8 {
 }
 
 /// The preceded lap: an order across turns that no elder reading could keep.
-fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 

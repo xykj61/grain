@@ -530,7 +530,7 @@ const wall_plan = [_]Assignment{
 };
 
 /// Proves the addressed message is a closed shape that names its client.
-fn check_messages() u8 {
+pub fn check_messages() u8 {
     var one: [max_message_len]u8 = undefined;
     var two: [max_message_len]u8 = undefined;
     const ask_a = ask_for(&one, "client_a");
@@ -572,7 +572,7 @@ fn load_two_clients(io: std.Io, buf: []u8) ?system.System {
 }
 
 /// Serves both clients between real processes and checks what it left behind.
-fn check_serve(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_serve(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_two_clients(io, &buf) orelse return 1;
     const done = run_plan(allocator, io, self_path, &parsed, &serve_plan) catch |err| {
@@ -591,7 +591,7 @@ fn check_serve(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) 
 }
 
 /// Proves the walls two clients need, each in its own dependent.
-fn check_walls(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_walls(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_two_clients(io, &buf) orelse return 1;
     const done = run_plan(allocator, io, self_path, &parsed, &wall_plan) catch |err| {

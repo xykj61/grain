@@ -618,7 +618,7 @@ const refusal_plan = [_]Assignment{
 };
 
 /// Proves the three meanings are three, and that they cover every code.
-fn check_meanings() u8 {
+pub fn check_meanings() u8 {
     // invariant: every named outcome is an answer rather than a fall
     assert(meaning_of(carry.Outcome.carried_ok) == .answered);
     assert(meaning_of(carry.Outcome.bytes_differed) == .answered);
@@ -684,7 +684,7 @@ fn run_fresh(
 }
 
 /// The fall before the write: the bell stands, and the restart hears it.
-fn check_before_write(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_before_write(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     const done = run_fresh(allocator, io, self_path, &before_write_plan) orelse return 1;
     // invariant: exactly one fall was injected, so exactly one restart was spent
     assert(done.restarts == 1);
@@ -695,7 +695,7 @@ fn check_before_write(allocator: std.mem.Allocator, io: std.Io, self_path: []con
 }
 
 /// The fall after the write: the bytes stand, and the restart rewrites them.
-fn check_after_write(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_after_write(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     const done = run_fresh(allocator, io, self_path, &after_write_plan) orelse return 1;
     // invariant: exactly one fall was injected, so exactly one restart was spent
     assert(done.restarts == 1);
@@ -705,7 +705,7 @@ fn check_after_write(allocator: std.mem.Allocator, io: std.Io, self_path: []cons
 }
 
 /// The deliberate stop: supervision ends, and no restart is spent.
-fn check_stop(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_stop(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     const done = run_fresh(allocator, io, self_path, &stop_plan) orelse return 1;
     // invariant: a stop is never a fall, so it costs no restart
     assert(done.restarts == 0);
@@ -716,7 +716,7 @@ fn check_stop(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u
 }
 
 /// The named refusal: an answer the supervisor takes as final.
-fn check_refusal(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_refusal(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     const done = run_fresh(allocator, io, self_path, &refusal_plan) orelse return 1;
     // invariant: a named refusal is an answer, so nothing was restarted
     assert(done.restarts == 0);
@@ -726,7 +726,7 @@ fn check_refusal(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
 }
 
 /// The bound: a dependent that falls every time is declined by name.
-fn check_limit(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_limit(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_declaration(io, &buf) orelse return 1;
     // A request falls before it touches anything, so this dependent is dropped

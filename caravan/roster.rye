@@ -307,7 +307,7 @@ pub fn report(
 pub const wide_roster_path = "caravan/systems/wide_roster.bron";
 
 /// Derives the worked example's roster and checks every claim it makes.
-fn check_serial_stack(io: std.Io) u8 {
+pub fn check_serial_stack(io: std.Io) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
         print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });
@@ -332,7 +332,7 @@ fn check_serial_stack(io: std.Io) u8 {
 }
 
 /// Checks the answers that matter most -- the ones both rings refuse.
-fn check_refusals(io: std.Io) u8 {
+pub fn check_refusals(io: std.Io) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
         print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });
@@ -371,7 +371,7 @@ fn check_refusals(io: std.Io) u8 {
 
 /// Checks that a whole declaration outrunning this supervisor says so by
 /// name, rather than seating what fits and reporting itself ready.
-fn check_wide_roster(io: std.Io) u8 {
+pub fn check_wide_roster(io: std.Io) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = read.load(io, wide_roster_path, &buf) catch |err| {
         print("  RED: {s} refused: {s}\n", .{ wide_roster_path, @errorName(err) });

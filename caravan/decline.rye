@@ -580,7 +580,7 @@ const relief_plan = [_]Assignment{
 };
 
 /// Proves the role and disposition words hold before any process runs.
-fn check_wire() u8 {
+pub fn check_wire() u8 {
     if (read_role("standin") != null) {
         print("  RED: a part this ring never named was accepted\n", .{});
         return 1;
@@ -613,7 +613,7 @@ fn load_declaration(io: std.Io, buf: []u8) ?system.System {
 }
 
 /// A domain lost for good, with the run halting at the hole.
-fn check_halt(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_halt(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_declaration(io, &buf) orelse return 1;
     const done = run_plan(allocator, io, self_path, &parsed, &halt_plan, .when_moved, .halt) catch |err| {
@@ -635,7 +635,7 @@ fn check_halt(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u
 }
 
 /// The same loss, with the rest of the circuit running anyway.
-fn check_carry_on(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_carry_on(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_declaration(io, &buf) orelse return 1;
     const done = run_plan(allocator, io, self_path, &parsed, &carry_on_plan, .every_pass, .carry_on) catch |err| {
@@ -656,7 +656,7 @@ fn check_carry_on(allocator: std.mem.Allocator, io: std.Io, self_path: []const u
 }
 
 /// Two neighbors reaching around the hole, and two refusals from the grants.
-fn check_no_detour(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_no_detour(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_declaration(io, &buf) orelse return 1;
     const done = run_plan(allocator, io, self_path, &parsed, &relief_plan, .when_moved, .carry_on) catch |err| {

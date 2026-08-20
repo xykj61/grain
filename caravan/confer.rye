@@ -1244,7 +1244,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 /// question about the wire answered as a pure fold -- no process anywhere.
 /// The fifth refusal, `ConferUnheld`, belongs to the run rather than the
 /// fold, since only a dependent can answer that it grafted what it was sent.
-fn check_words(sys: *const system.System) u8 {
+pub fn check_words(sys: *const system.System) u8 {
     const caps = roster.from_system(sys) catch {
         print("  RED: the derived table could not be built from the declaration\n", .{});
         return 1;
@@ -1355,7 +1355,7 @@ fn check_words(sys: *const system.System) u8 {
 
 /// The generalization test: a run that confers nothing reads as the rung
 /// below.
-fn check_unconferred(sys: *const system.System) u8 {
+pub fn check_unconferred(sys: *const system.System) u8 {
     const clients = [_]Task{
         written_queue[0].task,
         written_queue[1].task,
@@ -1424,7 +1424,7 @@ fn run_one(
 
 /// The confer lap: one plan run twice, once with every word handed at the
 /// spawn and once with each word arriving as the door grants it.
-fn check_reach_runs(
+pub fn check_reach_runs(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,

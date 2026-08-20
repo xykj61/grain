@@ -323,7 +323,7 @@ fn dependent_of(table: *const capabilities.CapabilityTable, label: []const u8) *
 }
 
 /// Proves a producer's bytes arrive in a consumer's hands.
-fn check_carry(
+pub fn check_carry(
     io: std.Io,
     sys: *const system.System,
     table: *const capabilities.CapabilityTable,
@@ -365,7 +365,7 @@ fn check_carry(
 }
 
 /// Proves a read-only grant refuses at the door and leaves the store whole.
-fn check_read_only(
+pub fn check_read_only(
     io: std.Io,
     sys: *const system.System,
     table: *const capabilities.CapabilityTable,
@@ -403,7 +403,7 @@ fn check_read_only(
 }
 
 /// Proves an ungranted region is refused before any door is opened, both ways.
-fn check_ungranted(
+pub fn check_ungranted(
     io: std.Io,
     sys: *const system.System,
     table: *const capabilities.CapabilityTable,
@@ -438,7 +438,7 @@ fn check_ungranted(
 }
 
 /// Proves an execute grant never grows a write door.
-fn check_execute(
+pub fn check_execute(
     io: std.Io,
     sys: *const system.System,
     table: *const capabilities.CapabilityTable,
@@ -472,7 +472,7 @@ fn check_execute(
 }
 
 /// Proves a reach past the declared extent refuses and the region stays put.
-fn check_extent(
+pub fn check_extent(
     io: std.Io,
     sys: *const system.System,
     table: *const capabilities.CapabilityTable,

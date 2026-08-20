@@ -1105,7 +1105,7 @@ const wall_plan = [_]Assignment{
 
 /// Proves the plan wire holds every step to its own verb's shape before any
 /// process runs.
-fn check_wire() u8 {
+pub fn check_wire() u8 {
     var buf: [max_plan_len]u8 = undefined;
     var task: Task = .{ .verb = .forward, .hops = .{}, .peers = .{}, .count = 2 };
     task.hops = HopList.parse("ask_up,ask_down,answer_down", regions.max_name_len) orelse {
@@ -1187,7 +1187,7 @@ fn load_declaration(io: std.Io, buf: []u8) ?system.System {
 }
 
 /// Reads the chain's shape out of its grants, before a single process runs.
-fn check_shape(io: std.Io) u8 {
+pub fn check_shape(io: std.Io) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_declaration(io, &buf) orelse return 1;
     const set = flows_of(&parsed) orelse {
@@ -1235,7 +1235,7 @@ fn check_shape(io: std.Io) u8 {
 }
 
 /// Runs the chain and reads the numbers that carry the claim.
-fn check_chain(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_chain(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_declaration(io, &buf) orelse return 1;
     const done = run_plan(allocator, io, self_path, &parsed, &chain_plan) catch |err| {
@@ -1263,7 +1263,7 @@ fn check_chain(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) 
 }
 
 /// Proves the walls, each in its own dependent.
-fn check_walls(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_walls(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = load_declaration(io, &buf) orelse return 1;
     const done = run_plan(allocator, io, self_path, &parsed, &wall_plan) catch |err| {

@@ -444,7 +444,7 @@ const refusal_plan = [_]Assignment{
 };
 
 /// Carries the worked example between two real processes and checks it.
-fn check_carry(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_carry(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
         print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });
@@ -465,7 +465,7 @@ fn check_carry(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) 
 }
 
 /// Proves every refusal holds in a dependent that holds only its own argv line.
-fn check_refusals(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_refusals(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const parsed = read.load(io, read.serial_stack_path, &buf) catch |err| {
         print("  RED: {s} refused: {s}\n", .{ read.serial_stack_path, @errorName(err) });
@@ -485,7 +485,7 @@ fn check_refusals(allocator: std.mem.Allocator, io: std.Io, self_path: []const u
 
 /// Proves the bytes that arrived were the ones the producer wrote, read
 /// back once more from the store the supervisor itself provisioned.
-fn check_store(io: std.Io) u8 {
+pub fn check_store(io: std.Io) u8 {
     const extent = exercise.store_extent(io, "rx_a") catch |err| {
         print("  RED: rx_a could not be measured: {s}\n", .{@errorName(err)});
         return 1;
@@ -499,7 +499,7 @@ fn check_store(io: std.Io) u8 {
 }
 
 /// Proves the plan wire itself is a closed vocabulary.
-fn check_plan_wire() u8 {
+pub fn check_plan_wire() u8 {
     var plan_buf: [max_plan_len]u8 = undefined;
     const word = write_plan(&plan_buf, .consume, "rx_a") orelse {
         print("  RED: a legal task had no plan word\n", .{});

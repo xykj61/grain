@@ -794,7 +794,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 }
 
 /// Proves a set is judged by its pairs, and that one bad pair refuses it.
-fn check_wire(io: std.Io) u8 {
+pub fn check_wire(io: std.Io) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 
@@ -827,7 +827,7 @@ fn check_wire(io: std.Io) u8 {
 }
 
 /// Measures the widest set each shape has room for, ring first.
-fn check_room(io: std.Io) u8 {
+pub fn check_room(io: std.Io) u8 {
     var serial_buf: [read.read_buffer_bytes]u8 = undefined;
     const serial = load_one(io, serial_path, &serial_buf) orelse return 1;
     var ring_buf: [read.read_buffer_bytes]u8 = undefined;
@@ -866,7 +866,7 @@ fn check_room(io: std.Io) u8 {
 }
 
 /// The shape with room for three, and the first fit that finds only one.
-fn check_widest(io: std.Io) u8 {
+pub fn check_widest(io: std.Io) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 
@@ -913,7 +913,7 @@ fn check_widest(io: std.Io) u8 {
 }
 
 /// The lap that carries, spending the whole cohort twice.
-fn check_lap(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_lap(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 
@@ -945,7 +945,7 @@ fn check_lap(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8
 
 /// A cohort holding the one domain that touches every other -- refused
 /// before any of the three is spawned.
-fn check_touching(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_touching(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 
@@ -970,7 +970,7 @@ fn check_touching(allocator: std.mem.Allocator, io: std.Io, self_path: []const u
 
 /// A refusal that arrives while two siblings are still running, and the
 /// reading that never lets it.
-fn check_reaping(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_reaping(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 

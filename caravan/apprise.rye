@@ -7990,51 +7990,10 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 
 /// The mend below, read straight, so this rung's own fold stands on a repair
 /// that still refuses everything it always refused.
-fn check_mending() u8 {
-    // The act itself: a plan the wire calls short, one arc lost, one phase
-    // seated to carry it.
-    if (mend_refusal(.short, 1, 1)) |why| {
-        print("  RED: a settled mend refused: {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The record, the plan, and the reach, exactly as the rung below weighs them.
-    if (mend_refusal(null, 1, 1)) |why| {
-        if (why != error.MendUnread) {
-            print("  RED: an unread mend refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a mend that read no verdict was allowed to repair\n", .{});
-        return 1;
-    }
-    if (mend_refusal(.carried, 0, 0)) |why| {
-        if (why != error.MendWhole) {
-            print("  RED: a whole plan refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan already carried was mended\n", .{});
-        return 1;
-    }
-    if (mend_refusal(.short, 1, 2)) |why| {
-        if (why != error.MendOvereach) {
-            print("  RED: an overreaching mend refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a mend seated more phases than the plan ever lost\n", .{});
-        return 1;
-    }
-
-    // What is left standing, and the verdict that follows the work.
-    if (unserved_after(2, 1) != 1 or settled_verdict(1) != .short or settled_verdict(0) != .carried) {
-        print("  RED: the repair below stopped counting what still stands\n", .{});
-        return 1;
-    }
-
-    print("  a repair still refuses by name: unread, whole, overreaching\n", .{});
-    return 0;
+pub fn check_mending() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_mending();
 }
 
 /// The bearing and its three standing refusals, read straight, before any
@@ -8045,123 +8004,10 @@ fn check_mending() u8 {
 /// fold -- no process anywhere. The fourth refusal, `BearOverrepaired`, belongs
 /// to the run rather than the fold, since only the wire can answer what a plan
 /// published about its own obedience.
-fn check_bearing() u8 {
-    // The act itself: a plan the wire calls short, two arcs lost, one borne and
-    // one repaired.
-    if (bear_refusal(.short, 2, 1, 1)) |why| {
-        print("  RED: a settled bearing refused: {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The moment: a bearing weighed before the run published what it lost is
-    // obeying a plan it remembers rather than the one it wrote down.
-    if (bear_refusal(null, 2, 1, 1)) |why| {
-        if (why != error.BearEarly) {
-            print("  RED: an early bearing refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a bearing was weighed before the run published anything\n", .{});
-        return 1;
-    }
-
-    // The work: a plan that lost nothing has nothing here to bear.
-    if (bear_refusal(.carried, 0, 0, 0)) |why| {
-        if (why != error.BearWhole) {
-            print("  RED: a whole plan's bearing refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan that lost nothing bore a loss all the same\n", .{});
-        return 1;
-    }
-
-    // The honesty of the count, from both sides: a plan cannot bear more arcs
-    // than it lost, and every lost arc is either borne or repaired.
-    if (bear_refusal(.short, 1, 2, 0)) |why| {
-        if (why != error.BearMiscounted) {
-            print("  RED: an overborne plan refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan bore more arcs than it ever lost\n", .{});
-        return 1;
-    }
-    if (bear_refusal(.short, 2, 1, 0)) |why| {
-        if (why != error.BearMiscounted) {
-            print("  RED: an unaccounted loss refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a loss was neither borne nor repaired, and nobody minded\n", .{});
-        return 1;
-    }
-
-    // The number this rung moves, as a fold: an arc the plan asked to bear and
-    // the repair seated anyway.
-    if (overrepaired(phase_bit(3), phase_bit(3)) != 1) {
-        print("  RED: a borne arc re-run counted as obedience\n", .{});
-        return 1;
-    }
-    if (overrepaired(phase_bit(3), phase_bit(1)) != 0) {
-        print("  RED: a repair of a repairable arc counted as overreach\n", .{});
-        return 1;
-    }
-    if (overrepaired(0, phase_bit(1) | phase_bit(3)) != 0) {
-        print("  RED: a plan that asked nothing was disobeyed all the same\n", .{});
-        return 1;
-    }
-
-    // The settlement, and the third word two were never honest enough to carry.
-    if (settlement_of(0, 0) != .carried) {
-        print("  RED: a plan with nothing standing was not read as carried out\n", .{});
-        return 1;
-    }
-    if (settlement_of(1, 1) != .borne) {
-        print("  RED: a plan whose whole loss was borne was read as short\n", .{});
-        return 1;
-    }
-    if (settlement_of(2, 1) != .short) {
-        print("  RED: a plan still holding work nobody bore was read as borne\n", .{});
-        return 1;
-    }
-    if (settlement_of(1, 0) != .short) {
-        print("  RED: a loss nobody asked to bear was borne anyway\n", .{});
-        return 1;
-    }
-
-    // The settlement survives the round trip through the byte it rides as.
-    if (settlement_of_byte(settlement_byte(.borne)) != .borne or
-        settlement_of_byte(settlement_byte(.carried)) != .carried or
-        settlement_of_byte(settlement_byte(.short)) != .short)
-    {
-        print("  RED: a settlement did not survive the wire it rides\n", .{});
-        return 1;
-    }
-    if (settlement_of_byte(0) != null) {
-        print("  RED: a cleared note read as a settlement\n", .{});
-        return 1;
-    }
-
-    // A re-seated phase carries its bearing forward, since a phase that asked
-    // to be borne asks it every time it is written down. This rung's own lap
-    // marks nothing, so the marked phase is written here rather than borrowed.
-    var marked = written_queue[3];
-    marked.bear = true;
-    const again = reseated(marked, 0);
-    if (!again.bear) {
-        print("  RED: a re-seated phase forgot the bearing its author wrote\n", .{});
-        return 1;
-    }
-    if (again.reserve != null or again.follows != 0 or again.follows_turns != 0) {
-        print("  RED: a re-seated phase kept an arrangement its siblings no longer stand in\n", .{});
-        return 1;
-    }
-
-    print("  a plan names what it expects of a phase, and what it would accept of a loss\n", .{});
-    print("  three refusals stand by name: early, whole, miscounted\n", .{});
-    print("  the bearing this rung keeps: {s}\n", .{bearing_words(.borne)});
-    return 0;
+pub fn check_bearing() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_bearing();
 }
 
 /// The recantation and its three standing refusals, read straight, before any
@@ -8174,154 +8020,10 @@ fn check_bearing() u8 {
 /// no process appears anywhere. The fourth refusal, `RecantUnspoken`, belongs to
 /// the run rather than the fold, since only the wire can answer what a run
 /// published about its own reversal.
-fn check_recantation() u8 {
-    // The evidence, read from the record this lap actually wrote: turn 5
-    // follows turn 1, so phase 1 has a follower and phase 3 has none.
-    var closed: [max_queue_len]unhand.Phase = undefined;
-    var flat: [max_queue_len]unhand.Phase = undefined;
-    var p: u32 = 0;
-    while (p < written_queue.len) : (p += 1) flat[p] = plain(written_queue[p]);
-    // invariant: every phase of the lap was read plainly, none skipped
-    assert(p == written_queue.len);
-    precede.close(flat[0..written_queue.len], closed[0..written_queue.len]);
-    const record = closed[0..written_queue.len];
-
-    if (followers_of(record, 1) != phase_bit(5)) {
-        print("  RED: the phase a later turn waits behind found no follower\n", .{});
-        return 1;
-    }
-    if (followers_of(record, 3) != 0) {
-        print("  RED: a phase nothing waits behind found a follower all the same\n", .{});
-        return 1;
-    }
-
-    // The evidence the standing judgment was made on, and the evidence this run
-    // has instead. With only the first two arcs lost, phase 1's follower stands
-    // and the judgment holds; with all three lost, that follower is gone and
-    // nothing supports the judgment any longer.
-    const two_lost = phase_bit(1) | phase_bit(3);
-    const all_lost = two_lost | phase_bit(5);
-    if (appraised_in(record, two_lost, 0) != phase_bit(1)) {
-        print("  RED: the judgment the wire carries was never supportable\n", .{});
-        return 1;
-    }
-    if (appraised_in(record, all_lost, 0) != 0) {
-        print("  RED: a judgment stood on a follower that fell with the arc\n", .{});
-        return 1;
-    }
-
-    // The fold at the heart of this rung: a standing judgment this run's own
-    // record no longer supports is taken back, and one it still supports is kept.
-    if (recanted_in(standing_judgment, 0, all_lost) != phase_bit(1)) {
-        print("  RED: a judgment nothing supports was carried forward all the same\n", .{});
-        return 1;
-    }
-    if (recanted_in(standing_judgment, phase_bit(1), all_lost) != 0) {
-        print("  RED: a judgment this run's own evidence keeps was taken back\n", .{});
-        return 1;
-    }
-    // A judgment about an arc this run did not lose is left alone: the run it
-    // spoke about is over, this run served the work, and there is nothing to
-    // resolve and nothing to repair.
-    if (recanted_in(standing_judgment, 0, phase_bit(3)) != 0) {
-        print("  RED: a judgment about work this run served was reversed anyway\n", .{});
-        return 1;
-    }
-    // The other half of the same count, so the equality can be read straight.
-    if (upheld_in(standing_judgment, phase_bit(1), all_lost) != phase_bit(1)) {
-        print("  RED: a judgment this run's evidence supports counted as neither\n", .{});
-        return 1;
-    }
-    if (upheld_in(standing_judgment, 0, all_lost) != 0) {
-        print("  RED: an unsupported judgment counted as upheld\n", .{});
-        return 1;
-    }
-
-    // The act itself: a plan the wire calls short, one judgment standing, none
-    // upheld and one taken back.
-    if (recant_refusal(.short, 1, 0, 1)) |why| {
-        print("  RED: a settled recantation refused: {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The moment: a judgment weighed again before the run published what it lost
-    // is judging a run it remembers rather than the one it wrote down.
-    if (recant_refusal(null, 1, 0, 1)) |why| {
-        if (why != error.RecantEarly) {
-            print("  RED: an early recantation refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a judgment was weighed again before the run published anything\n", .{});
-        return 1;
-    }
-
-    // The supply: a wire carrying no judgment has nothing here to take back.
-    if (recant_refusal(.short, 0, 0, 0)) |why| {
-        if (why != error.RecantUnappraised) {
-            print("  RED: an unjudged plan refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run took back a judgment nobody had ever made\n", .{});
-        return 1;
-    }
-
-    // The honesty of the count, from both sides: a run cannot answer for more
-    // judgments than stand, and every standing judgment is upheld or recanted.
-    if (recant_refusal(.short, 1, 1, 1)) |why| {
-        if (why != error.RecantMiscounted) {
-            print("  RED: an overanswered judgment refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run answered for more judgments than the wire ever held\n", .{});
-        return 1;
-    }
-    if (recant_refusal(.short, 2, 1, 0)) |why| {
-        if (why != error.RecantMiscounted) {
-            print("  RED: an unanswered judgment refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a standing judgment was neither upheld nor recanted, and nobody minded\n", .{});
-        return 1;
-    }
-
-    // The supply, stated as its own refusal so it can be read straight.
-    if (unappraised_reach(standing_judgment, phase_bit(3))) |why| {
-        if (why != error.RecantUnappraised) {
-            print("  RED: a recantation reaching an unjudged phase refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run took back a judgment that was never made about that arc\n", .{});
-        return 1;
-    }
-    if (unappraised_reach(standing_judgment, standing_judgment)) |why| {
-        print("  RED: a recantation inside its own judgment refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The number this rung moves, as a fold: an arc spared on a judgment this
-    // run's own evidence declines to support.
-    if (spared_disproved(standing_judgment, 0) != 1) {
-        print("  RED: an arc spared past its own evidence counted as nothing\n", .{});
-        return 1;
-    }
-    if (spared_disproved(standing_judgment, standing_judgment) != 0) {
-        print("  RED: an arc spared on evidence that still stands counted as waste\n", .{});
-        return 1;
-    }
-    if (spared_disproved(0, 0) != 0) {
-        print("  RED: a run that spared nothing disproved a judgment all the same\n", .{});
-        return 1;
-    }
-
-    print("  a plan publishes whether its own judgments answer to a later run\n", .{});
-    print("  three refusals stand by name: early, unappraised, miscounted\n", .{});
-    print("  the review this rung keeps: {s}\n", .{review_words(.revisit)});
-    return 0;
+pub fn check_recantation() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_recantation();
 }
 
 /// The amendment and its three standing refusals, read straight, before any
@@ -8333,139 +8035,10 @@ fn check_recantation() u8 {
 /// whole of the input, and no process appears anywhere. The fourth refusal,
 /// `AmendUnspoken`, belongs to the run rather than the fold, since only the wire
 /// can answer whether a correction actually reached the place it was read.
-fn check_amendment() u8 {
-    // The fold at the heart of this rung, and the smallest of the arc: a word an
-    // operator holds, weighed against the word the plan now stands behind.
-    if (!superseded(standing_reading, .carried)) {
-        print("  RED: a reading the run's own settlement contradicts still held\n", .{});
-        return 1;
-    }
-    if (superseded(standing_reading, .borne)) {
-        print("  RED: a reading the run still stands behind counted as replaced\n", .{});
-        return 1;
-    }
-    // A plan nobody read supersedes nothing: there is no reader to correct, and
-    // no belief left standing anywhere.
-    if (superseded(null, .carried)) {
-        print("  RED: a plan nobody ever read left a reader holding a stale word\n", .{});
-        return 1;
-    }
-
-    // The two halves of the count, so the equality can be read straight.
-    if (amended_in(standing_reading, .carried, .posted) != 1) {
-        print("  RED: a superseded reading went uncorrected by a posting run\n", .{});
-        return 1;
-    }
-    if (amended_in(standing_reading, .borne, .posted) != 0) {
-        print("  RED: a reading the run still stands behind was corrected anyway\n", .{});
-        return 1;
-    }
-    if (amended_in(standing_reading, .carried, .silent) != 0) {
-        print("  RED: a silent run wrote to a reader all the same\n", .{});
-        return 1;
-    }
-    if (confirmed_in(standing_reading, .borne, .posted) != 1) {
-        print("  RED: a reading the run stands behind counted as neither\n", .{});
-        return 1;
-    }
-    if (confirmed_in(standing_reading, .carried, .posted) != 0) {
-        print("  RED: a superseded reading counted as confirmed\n", .{});
-        return 1;
-    }
-    if (confirmed_in(null, .carried, .posted) != 0) {
-        print("  RED: a reader who never read was confirmed all the same\n", .{});
-        return 1;
-    }
-
-    // The act itself: a plan the wire calls carried, one reading standing, none
-    // confirmed and one corrected.
-    if (amend_refusal(.carried, 1, 0, 1)) |why| {
-        print("  RED: a settled amendment refused: {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The moment: a reading answered before the run published what it settled is
-    // correcting from memory rather than from the word it actually ended on.
-    if (amend_refusal(null, 1, 0, 1)) |why| {
-        if (why != error.AmendEarly) {
-            print("  RED: an early amendment refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a reader was corrected before the run published anything\n", .{});
-        return 1;
-    }
-
-    // The supply: a wire carrying no reading has nobody here to write to.
-    if (amend_refusal(.carried, 0, 0, 0)) |why| {
-        if (why != error.AmendUnread) {
-            print("  RED: an unread plan refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run corrected a reader who had never read a word\n", .{});
-        return 1;
-    }
-
-    // The honesty of the count, from both sides: a run cannot answer for more
-    // readings than stand, and every standing reading is confirmed or amended.
-    if (amend_refusal(.carried, 1, 1, 1)) |why| {
-        if (why != error.AmendMiscounted) {
-            print("  RED: an overanswered reading refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run answered for more readings than the wire ever held\n", .{});
-        return 1;
-    }
-    if (amend_refusal(.carried, 1, 0, 0)) |why| {
-        if (why != error.AmendMiscounted) {
-            print("  RED: an unanswered reading refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a standing reading was neither confirmed nor amended, and nobody minded\n", .{});
-        return 1;
-    }
-
-    // The supply, stated as its own refusal so it can be read straight.
-    if (unread_reach(null, 1)) |why| {
-        if (why != error.AmendUnread) {
-            print("  RED: an amendment reaching nobody refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run wrote to a reader the wire never named\n", .{});
-        return 1;
-    }
-    if (unread_reach(standing_reading, 1)) |why| {
-        print("  RED: an amendment inside its own reading refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The number this rung moves, as a fold: a word an operator holds that this
-    // run's own settlement contradicts, left standing because nobody wrote to
-    // them.
-    if (superseded_unposted(standing_reading, .carried, .silent) != 1) {
-        print("  RED: a reader left holding a replaced word counted as nothing\n", .{});
-        return 1;
-    }
-    if (superseded_unposted(standing_reading, .carried, .posted) != 0) {
-        print("  RED: a reader who was written to still counted as uncorrected\n", .{});
-        return 1;
-    }
-    if (superseded_unposted(standing_reading, .borne, .silent) != 0) {
-        print("  RED: a reading that still holds counted as stale\n", .{});
-        return 1;
-    }
-    if (superseded_unposted(null, .carried, .silent) != 0) {
-        print("  RED: a plan nobody read owed a correction all the same\n", .{});
-        return 1;
-    }
-
-    print("  a plan publishes whether its own corrections are addressed\n", .{});
-    print("  the notice below stands by name: early, unread, miscounted\n", .{});
-    return 0;
+pub fn check_amendment() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_amendment();
 }
 
 /// The delivery and its three standing refusals, read straight, before any
@@ -8476,147 +8049,15 @@ fn check_amendment() u8 {
 /// answered as a pure fold -- no process anywhere. The fourth refusal,
 /// `CourierUndelivered`, belongs to the run rather than the fold, since only a
 /// reader's own box can answer whether anything actually arrived in it.
-fn check_delivery() u8 {
-    // The address, weighed first, since every question below it assumes a place
-    // a correction may actually be carried to.
-    if (!addressable(standing_address)) {
-        print("  RED: the address this lap reads was refused as a destination\n", .{});
-        return 1;
-    }
-    if (addressable("")) {
-        print("  RED: an empty address counted as a place a reader could be found\n", .{});
-        return 1;
-    }
-    if (addressable("../escape")) {
-        print("  RED: an address walked outside the boxes it was bounded to\n", .{});
-        return 1;
-    }
-    if (addressable("desk_that_is_far_too_long_to_carry")) {
-        print("  RED: an address past its bound counted as reachable\n", .{});
-        return 1;
-    }
-
-    // The two halves of the count, so the equality can be read straight.
-    if (carried_in(1, true, .carried) != 1) {
-        print("  RED: a posted correction with an address went nowhere\n", .{});
-        return 1;
-    }
-    if (carried_in(1, true, .waiting) != 0) {
-        print("  RED: a waiting run carried a correction all the same\n", .{});
-        return 1;
-    }
-    if (carried_in(1, false, .carried) != 0) {
-        print("  RED: a correction travelled to a reader who left no address\n", .{});
-        return 1;
-    }
-    if (carried_in(0, true, .carried) != 0) {
-        print("  RED: a run that corrected nobody carried something anyway\n", .{});
-        return 1;
-    }
-    if (held_in(1, true, .waiting) != 1) {
-        print("  RED: a correction left on the wire counted as neither\n", .{});
-        return 1;
-    }
-    if (held_in(1, true, .carried) != 0) {
-        print("  RED: a carried correction counted as held as well\n", .{});
-        return 1;
-    }
-
-    // The act itself: a correction posted, an address standing, none held and
-    // one carried.
-    const letter = [2]Settlement{ .borne, .carried };
-    if (carry_refusal(letter, true, 0, 1)) |why| {
-        print("  RED: a settled delivery refused: {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The moment: a correction carried before this run posted one is delivering
-    // from memory of a letter nobody wrote.
-    if (carry_refusal(null, true, 0, 1)) |why| {
-        if (why != error.CourierEarly) {
-            print("  RED: an early delivery refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a correction was carried before the run posted anything\n", .{});
-        return 1;
-    }
-
-    // The supply: a reader who left no address has nowhere for a letter to go.
-    if (carry_refusal(letter, false, 0, 1)) |why| {
-        if (why != error.CourierUnaddressed) {
-            print("  RED: an unaddressed delivery refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run carried a correction to a reader it could not name\n", .{});
-        return 1;
-    }
-
-    // The honesty of the count, from both sides: a run cannot answer for more
-    // corrections than it wrote, and every posted correction is carried or held.
-    if (carry_refusal(letter, true, 1, 1)) |why| {
-        if (why != error.CourierMiscounted) {
-            print("  RED: an overcounted delivery refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run both carried and held the one correction it wrote\n", .{});
-        return 1;
-    }
-    if (carry_refusal(letter, true, 0, 0)) |why| {
-        if (why != error.CourierMiscounted) {
-            print("  RED: an uncounted delivery refused for the wrong reason: {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a posted correction was neither carried nor held, and nobody minded\n", .{});
-        return 1;
-    }
-
-    // The supply, stated as its own refusal so it can be read straight.
-    if (unaddressed_reach(false, 1)) |why| {
-        if (why != error.CourierUnaddressed) {
-            print("  RED: a delivery bound nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run set out for a reader the wire never placed\n", .{});
-        return 1;
-    }
-    if (unaddressed_reach(true, 1)) |why| {
-        print("  RED: a delivery inside its own address refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The number this rung moves, as a fold: a correction this run wrote and
-    // left waiting for a reader who never comes back.
-    if (posted_unreached(1, true, .waiting) != 1) {
-        print("  RED: a correction left in the drawer counted as nothing\n", .{});
-        return 1;
-    }
-    if (posted_unreached(1, true, .carried) != 0) {
-        print("  RED: a correction that arrived still counted as waiting\n", .{});
-        return 1;
-    }
-    if (posted_unreached(0, true, .waiting) != 0) {
-        print("  RED: a run that corrected nobody owed a delivery all the same\n", .{});
-        return 1;
-    }
-    if (posted_unreached(1, false, .waiting) != 0) {
-        print("  RED: a reader who left no address counted as one this run failed\n", .{});
-        return 1;
-    }
-
-    print("  a plan publishes whether its own corrections travel\n", .{});
-    print("  three refusals stand by name: early, unaddressed, miscounted\n", .{});
-    print("  the dispatch this rung keeps: {s}\n", .{dispatch_words(.carried)});
-    return 0;
+pub fn check_delivery() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_delivery();
 }
 
 /// The generalization test: a run that weighs a plan losing nothing reads as
 /// the rung below.
-fn check_unlost(sys: *const system.System) u8 {
+pub fn check_unlost(sys: *const system.System) u8 {
     const clients = [_]Task{
         written_queue[0].task,
         written_queue[1].task,
@@ -8702,41 +8143,10 @@ const inherited_debt: [max_debt_bytes]u8 = .{ finding_byte(.overrules), settleme
 /// work. What this fold reads is the rung below's own count with `agreed` in
 /// place of `answered`: an agreeing hand closes the correspondence, and a
 /// disagreeing one leaves the hearing exactly where it stood.
-fn check_hearing() u8 {
-    const letter = [2]Settlement{ .borne, .carried };
-    if (heard_in(1, true, .asked) != 1) {
-        print("  RED: an agreeing hand went unheard by a listening run\n", .{});
-        return 1;
-    }
-    if (heard_in(1, false, .asked) != 0) {
-        print("  RED: a disagreeing hand counted as an agreement\n", .{});
-        return 1;
-    }
-    if (unheard_in(1, false, .asked) != 1) {
-        print("  RED: a correction its reader disputed counted as heard\n", .{});
-        return 1;
-    }
-    if (!hand_agrees(letter, .carried)) {
-        print("  RED: a hand naming this run's own word read as disagreement\n", .{});
-        return 1;
-    }
-    if (hand_agrees(letter, .short)) {
-        print("  RED: a hand naming a word nobody carried read as agreement\n", .{});
-        return 1;
-    }
-    // A plan that listened and could not accept what it heard has still
-    // listened, so the rung below's own loss reads zero here: the harm has
-    // moved up a tier, into the record this rung keeps.
-    if (carried_unheard(1, false, .asked) != 0) {
-        print("  RED: a listening run counted as one that never listened\n", .{});
-        return 1;
-    }
-    if (carried_unheard(1, true, .unasked) != 1) {
-        print("  RED: an answer read by nobody counted as nothing\n", .{});
-        return 1;
-    }
-    print("  a plan publishes whether it hears what its reader answers\n", .{});
-    return 0;
+pub fn check_hearing() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_hearing();
 }
 
 /// The record and its three standing refusals, read straight, before any
@@ -8747,121 +8157,10 @@ fn check_hearing() u8 {
 /// fold -- no process anywhere. The fourth refusal, `DisputeUnfounded`, is
 /// answered here too, since whether two readings differ is a question two words
 /// can settle between themselves.
-fn check_dispute() u8 {
-    // The two halves of the count, so the equality can be read straight.
-    if (recorded_in(1, false, .open) != 1) {
-        print("  RED: a reader who disagreed went unrecorded by an open record\n", .{});
-        return 1;
-    }
-    if (recorded_in(1, false, .settled) != 0) {
-        print("  RED: a settled record held a disagreement all the same\n", .{});
-        return 1;
-    }
-    if (recorded_in(1, true, .open) != 0) {
-        print("  RED: a reader who agreed was written down as disputing\n", .{});
-        return 1;
-    }
-    if (recorded_in(0, false, .open) != 0) {
-        print("  RED: a run that read no answer recorded one anyway\n", .{});
-        return 1;
-    }
-    if (unwritten_in(1, false, .settled) != 1) {
-        print("  RED: an answer set aside counted as written down\n", .{});
-        return 1;
-    }
-    if (unwritten_in(1, false, .open) != 0) {
-        print("  RED: a recorded disagreement still counted as set aside\n", .{});
-        return 1;
-    }
-
-    // Whether a pair of readings is a disagreement at all.
-    if (!founded(.{ .carried, .short })) {
-        print("  RED: two readings that differ read as agreement\n", .{});
-        return 1;
-    }
-    if (founded(.{ .carried, .carried })) {
-        print("  RED: one reading named twice read as a disagreement\n", .{});
-        return 1;
-    }
-
-    // The refusals, each reached by the shape that earns it.
-    if (dispute_refusal(null, false, 1, 0)) |why| {
-        if (why != error.DisputeEarly) {
-            print("  RED: a record with no answer refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run recorded a quarrel with a reader who never wrote\n", .{});
-        return 1;
-    }
-    if (dispute_refusal(.short, true, 1, 0)) |why| {
-        if (why != error.DisputeUnfounded) {
-            print("  RED: a record of an agreeing hand refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run recorded a disagreement its reader never had\n", .{});
-        return 1;
-    }
-    if (dispute_refusal(.short, false, 1, 1)) |why| {
-        if (why != error.DisputeMiscounted) {
-            print("  RED: a record counted twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: an answer recorded and set aside at once went uncounted\n", .{});
-        return 1;
-    }
-    if (dispute_refusal(.short, false, 0, 0)) |why| {
-        if (why != error.DisputeMiscounted) {
-            print("  RED: a record counted nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: an answer neither recorded nor set aside went uncounted\n", .{});
-        return 1;
-    }
-    if (dispute_refusal(.short, false, 0, 1)) |why| {
-        print("  RED: a record inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    if (unheard_record(false, 1)) |why| {
-        if (why != error.DisputeUnheard) {
-            print("  RED: a record with no hand refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run wrote down an objection nobody voiced\n", .{});
-        return 1;
-    }
-    if (unheard_record(true, 1)) |why| {
-        print("  RED: a record inside its own supply refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The number this rung moves, as a fold: an answer this run read in a
-    // reader's own hand and set aside without a trace.
-    if (answered_unrecorded(1, false, .settled) != 1) {
-        print("  RED: an answer set aside counted as nothing\n", .{});
-        return 1;
-    }
-    if (answered_unrecorded(1, false, .open) != 0) {
-        print("  RED: an answer this run recorded still counted as set aside\n", .{});
-        return 1;
-    }
-    if (answered_unrecorded(0, false, .settled) != 0) {
-        print("  RED: a run that read no answer owed a record all the same\n", .{});
-        return 1;
-    }
-    if (answered_unrecorded(1, true, .settled) != 0) {
-        print("  RED: a reader who agreed counted as one this run set aside\n", .{});
-        return 1;
-    }
-
-    print("  a plan publishes whether its record may hold a disagreement\n", .{});
-    print("  three refusals stand by name: early, unheard, miscounted\n", .{});
-    print("  the standing this rung keeps: {s}\n", .{standing_words(.open)});
-    return 0;
+pub fn check_dispute() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_dispute();
 }
 
 /// The escort and its four refusals, read straight, before any dependent runs.
@@ -8870,121 +8169,10 @@ fn check_dispute() u8 {
 /// marked, the record it is marked from, the honesty of the count, and whether
 /// the mark quotes its reader truly, answered as a pure fold -- no process
 /// anywhere.
-fn check_abide() u8 {
-    // The two halves of the count, so the equality can be read straight.
-    if (escorted_in(1, true, .escorted) != 1) {
-        print("  RED: a word published over a disagreement went unmarked\n", .{});
-        return 1;
-    }
-    if (escorted_in(1, true, .alone) != 0) {
-        print("  RED: a word read alone carried a mark all the same\n", .{});
-        return 1;
-    }
-    if (escorted_in(1, false, .escorted) != 0) {
-        print("  RED: a word nobody disputed was escorted anyway\n", .{});
-        return 1;
-    }
-    if (escorted_in(0, true, .escorted) != 0) {
-        print("  RED: a run that published nothing marked a word all the same\n", .{});
-        return 1;
-    }
-    if (alone_in(1, true, .alone) != 1) {
-        print("  RED: a word left standing alone counted as marked\n", .{});
-        return 1;
-    }
-    if (alone_in(1, true, .escorted) != 0) {
-        print("  RED: an escorted word still counted as standing alone\n", .{});
-        return 1;
-    }
-
-    // Whether a mark quotes the reading its reader actually holds.
-    if (!quotes(.short, .{ .carried, .short })) {
-        print("  RED: a mark naming its reader's own reading read as a misquote\n", .{});
-        return 1;
-    }
-    if (quotes(.carried, .{ .carried, .short })) {
-        print("  RED: a mark naming the plan's own reading read as its reader's\n", .{});
-        return 1;
-    }
-
-    // The refusals, each reached by the shape that earns it.
-    if (abide_refusal(null, 1, 0)) |why| {
-        if (why != error.AbideEarly) {
-            print("  RED: a mark with no record refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run escorted a word past a quarrel nobody had\n", .{});
-        return 1;
-    }
-    if (abide_refusal(.{ .carried, .carried }, 1, 0)) |why| {
-        if (why != error.AbideMisquoted) {
-            print("  RED: a record naming one reading twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run escorted a word past an objection nobody made\n", .{});
-        return 1;
-    }
-    if (abide_refusal(.{ .carried, .short }, 1, 1)) |why| {
-        if (why != error.AbideMiscounted) {
-            print("  RED: a word counted twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a word marked and left alone at once went uncounted\n", .{});
-        return 1;
-    }
-    if (abide_refusal(.{ .carried, .short }, 0, 0)) |why| {
-        if (why != error.AbideMiscounted) {
-            print("  RED: a word counted nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a word neither marked nor left alone went uncounted\n", .{});
-        return 1;
-    }
-    if (abide_refusal(.{ .carried, .short }, 0, 1)) |why| {
-        print("  RED: a mark inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    if (unrecorded_escort(false, 1)) |why| {
-        if (why != error.AbideUnrecorded) {
-            print("  RED: a mark with no record refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run quoted an objector no record ever held\n", .{});
-        return 1;
-    }
-    if (unrecorded_escort(true, 1)) |why| {
-        print("  RED: a mark inside its own supply refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The number this rung moves, as a fold: a word an operator reads as settled
-    // while a disagreement stands recorded against it, carrying no sign of it.
-    if (published_unattended(1, true, .alone) != 1) {
-        print("  RED: a word read with no sign of the objection counted as nothing\n", .{});
-        return 1;
-    }
-    if (published_unattended(1, true, .escorted) != 0) {
-        print("  RED: an escorted word still counted as read alone\n", .{});
-        return 1;
-    }
-    if (published_unattended(0, true, .alone) != 0) {
-        print("  RED: a run that published nothing owed a mark all the same\n", .{});
-        return 1;
-    }
-    if (published_unattended(1, false, .alone) != 0) {
-        print("  RED: a word nobody disputed counted as one read past an objection\n", .{});
-        return 1;
-    }
-
-    print("  a plan publishes whether its word is read beside the reading against it\n", .{});
-    print("  three refusals stand by name: early, unrecorded, miscounted\n", .{});
-    print("  the escort this rung keeps: {s}\n", .{escort_words(.escorted)});
-    return 0;
+pub fn check_abide() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_abide();
 }
 
 /// The term and its four refusals, read straight, before any dependent runs.
@@ -8993,278 +8181,17 @@ fn check_abide() u8 {
 /// weighed, whether anybody was asked before a silence was called silence, the
 /// honesty of the count, and whether a renewal renews the objection actually
 /// standing, answered as a pure fold -- no process anywhere.
-fn check_lapse() u8 {
-    // The asking, which every later count closes on.
-    if (asked_in(1, true, .bounded) != 1) {
-        print("  RED: an objection published beside a word went unasked\n", .{});
-        return 1;
-    }
-    if (asked_in(1, true, .perpetual) != 0) {
-        print("  RED: a perpetual objection was asked about all the same\n", .{});
-        return 1;
-    }
-    if (asked_in(1, false, .bounded) != 0) {
-        print("  RED: a word nobody disputed carried a question all the same\n", .{});
-        return 1;
-    }
-    if (asked_in(0, true, .bounded) != 0) {
-        print("  RED: a run that escorted nothing asked about an objection\n", .{});
-        return 1;
-    }
-
-    // The two halves of the count, so the equality can be read straight.
-    if (renewed_in(1, true) != 1) {
-        print("  RED: an objection its reader raised again counted as let go\n", .{});
-        return 1;
-    }
-    if (renewed_in(1, false) != 0) {
-        print("  RED: a silence counted as a reader raising their objection\n", .{});
-        return 1;
-    }
-    if (lapsed_in(1, false) != 1) {
-        print("  RED: an objection nobody renewed counted as still standing\n", .{});
-        return 1;
-    }
-    if (lapsed_in(1, true) != 0) {
-        print("  RED: a renewed objection counted as one nobody carried forward\n", .{});
-        return 1;
-    }
-    if (lapsed_in(0, false) != 0) {
-        print("  RED: an objection nobody asked about counted as let go\n", .{});
-        return 1;
-    }
-
-    // Whether a second hand raises the objection actually standing.
-    if (!renews(.short, .{ .carried, .short })) {
-        print("  RED: a hand raising its own objection read as a different quarrel\n", .{});
-        return 1;
-    }
-    if (renews(.carried, .{ .carried, .short })) {
-        print("  RED: a hand naming the plan's own word read as its reader's objection\n", .{});
-        return 1;
-    }
-
-    // The refusals, each reached by the shape that earns it.
-    if (lapse_refusal(null, 0, 1)) |why| {
-        if (why != error.LapseEarly) {
-            print("  RED: a term with no record refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run let go of an objection nobody ever raised\n", .{});
-        return 1;
-    }
-    if (lapse_refusal(.{ .carried, .carried }, 0, 1)) |why| {
-        if (why != error.LapseMisrenewed) {
-            print("  RED: a record naming one reading twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run put a term on an objection that was never made\n", .{});
-        return 1;
-    }
-    if (lapse_refusal(.{ .carried, .short }, 1, 1)) |why| {
-        if (why != error.LapseMiscounted) {
-            print("  RED: an objection counted twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: an objection renewed and let go at once went uncounted\n", .{});
-        return 1;
-    }
-    if (lapse_refusal(.{ .carried, .short }, 0, 0)) |why| {
-        if (why != error.LapseMiscounted) {
-            print("  RED: an objection counted nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: an objection neither renewed nor let go went uncounted\n", .{});
-        return 1;
-    }
-    if (lapse_refusal(.{ .carried, .short }, 0, 1)) |why| {
-        print("  RED: a term inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    if (unasked_lapse(0, 1)) |why| {
-        if (why != error.LapseUnasked) {
-            print("  RED: a silence nobody listened for refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run called an objection let go without ever asking\n", .{});
-        return 1;
-    }
-    if (unasked_lapse(1, 1)) |why| {
-        print("  RED: a term inside its own asking refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The number this rung moves, as a fold: an objection published beside a
-    // word with no term on it at all, standing on every future reader unasked.
-    if (objection_unbounded(1, true, .perpetual) != 1) {
-        print("  RED: an objection standing forever counted as nothing\n", .{});
-        return 1;
-    }
-    if (objection_unbounded(1, true, .bounded) != 0) {
-        print("  RED: an objection put back to its reader still counted as unbounded\n", .{});
-        return 1;
-    }
-    if (objection_unbounded(0, true, .perpetual) != 0) {
-        print("  RED: a run that escorted nothing owed a term all the same\n", .{});
-        return 1;
-    }
-    if (objection_unbounded(1, false, .perpetual) != 0) {
-        print("  RED: a word nobody disputed counted as one objection standing forever\n", .{});
-        return 1;
-    }
-
-    print("  a plan publishes how long the objection beside its word may stand\n", .{});
-    print("  three refusals stand by name: early, unasked, miscounted\n", .{});
-    print("  the term this rung keeps: {s}\n", .{term_words(.bounded)});
-    print("  what a let-go objection reads as: {s}\n", .{life_words(.lapsed)});
-    return 0;
+pub fn check_lapse() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_lapse();
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
-fn check_standing() u8 {
-    // The reading, which every later count closes on.
-    if (read_in(1, true, .standing) != 1) {
-        print("  RED: a mark carrying a weighed objection went unspoken for\n", .{});
-        return 1;
-    }
-    if (read_in(1, true, .bare) != 0) {
-        print("  RED: a bare mark carried a standing all the same\n", .{});
-        return 1;
-    }
-    if (read_in(1, false, .standing) != 0) {
-        print("  RED: an objection nobody weighed was given a standing\n", .{});
-        return 1;
-    }
-    if (read_in(0, true, .standing) != 0) {
-        print("  RED: a run that escorted nothing spoke for a mark\n", .{});
-        return 1;
-    }
-
-    // The two halves of the count, so the equality can be read straight.
-    if (bare_in(1, true, .bare) != 1) {
-        print("  RED: a mark left exactly as it read counted as spoken for\n", .{});
-        return 1;
-    }
-    if (bare_in(1, true, .standing) != 0) {
-        print("  RED: a mark carrying its own standing counted as left bare\n", .{});
-        return 1;
-    }
-    if (bare_in(0, true, .bare) != 0) {
-        print("  RED: a run that escorted nothing left a mark bare\n", .{});
-        return 1;
-    }
-
-    // The translation, total in both directions.
-    if (stands_as(.renewed) != .held) {
-        print("  RED: an objection its reader raised again read as one at repose\n", .{});
-        return 1;
-    }
-    if (stands_as(.lapsed) != .quiet) {
-        print("  RED: an objection nobody renewed read as one still held\n", .{});
-        return 1;
-    }
-    if (stand_of_byte(stand_byte(.quiet)) != .quiet) {
-        print("  RED: a standing did not survive the byte it rides as\n", .{});
-        return 1;
-    }
-    if (stand_of_byte(stand_byte(.held)) != .held) {
-        print("  RED: a held objection did not survive the byte it rides as\n", .{});
-        return 1;
-    }
-    if (stand_of_byte('x') != null) {
-        print("  RED: a byte naming no standing at all read as one\n", .{});
-        return 1;
-    }
-
-    // Whether a standing says what the wire's own term says.
-    if (!agrees(.quiet, .lapsed)) {
-        print("  RED: a standing quoting its own term read as a different finding\n", .{});
-        return 1;
-    }
-    if (agrees(.quiet, .renewed)) {
-        print("  RED: an objection its reader still holds read as one at repose\n", .{});
-        return 1;
-    }
-    if (agrees(.held, .lapsed)) {
-        print("  RED: an objection nobody renewed read as one still held\n", .{});
-        return 1;
-    }
-
-    // The refusals, each reached by the shape that earns it.
-    if (repose_refusal(0, 1, 0)) |why| {
-        if (why != error.ReposeEarly) {
-            print("  RED: a standing with no mark refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run spoke for a mark nobody ever escorted\n", .{});
-        return 1;
-    }
-    if (repose_refusal(1, 1, 1)) |why| {
-        if (why != error.ReposeMiscounted) {
-            print("  RED: a mark counted twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a mark read and left bare at once went uncounted\n", .{});
-        return 1;
-    }
-    if (repose_refusal(1, 0, 0)) |why| {
-        if (why != error.ReposeMiscounted) {
-            print("  RED: a mark counted nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a mark neither read nor left bare went uncounted\n", .{});
-        return 1;
-    }
-    if (repose_refusal(1, 1, 0)) |why| {
-        print("  RED: a standing inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    if (unweighed_stand(0, 1)) |why| {
-        if (why != error.ReposeUnweighed) {
-            print("  RED: a standing nobody weighed refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run called an objection quiet without any term at all\n", .{});
-        return 1;
-    }
-    if (unweighed_stand(1, 1)) |why| {
-        print("  RED: a standing inside its own term refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The number this rung moves, as a fold: a mark that names an objection and
-    // never says whether anybody still holds it.
-    if (mark_unstanding(1, true, .bare) != 1) {
-        print("  RED: a mark reading live over a let-go quarrel counted as nothing\n", .{});
-        return 1;
-    }
-    if (mark_unstanding(1, true, .standing) != 0) {
-        print("  RED: a mark carrying its own standing still counted as unstanding\n", .{});
-        return 1;
-    }
-    if (mark_unstanding(0, true, .bare) != 0) {
-        print("  RED: a run that escorted nothing owed a standing all the same\n", .{});
-        return 1;
-    }
-    if (mark_unstanding(1, false, .bare) != 0) {
-        print("  RED: an objection nobody weighed counted as one mark reading live\n", .{});
-        return 1;
-    }
-
-    print("  a plan publishes whether its marks carry the standing of their objection\n", .{});
-    print("  three refusals stand by name: early, unweighed, miscounted\n", .{});
-    print("  the mark this rung keeps: {s}\n", .{mark_words(.standing)});
-    print("  what an objection nobody renewed reads as: {s}\n", .{stand_words(.quiet)});
-    return 0;
+pub fn check_standing() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_standing();
 }
 
 /// Runs one queue whole under one relenting, against a judgment, a reading, an
@@ -9945,145 +8872,10 @@ fn judge_apprise_runs(bare_run: *Report, under_run: *Report) u8 {
 /// The happy zone of this rung: every question about who a run owes a word to,
 /// what that word says, and the honesty of the count answered as a pure fold --
 /// no process anywhere.
-fn check_tidings() u8 {
-    // The count, which every later number closes on.
-    if (told_in(1, true, .returned) != 1) {
-        print("  RED: a raiser of a weighed quarrel went unwritten to\n", .{});
-        return 1;
-    }
-    if (told_in(1, true, .silent) != 0) {
-        print("  RED: a silent run wrote back all the same\n", .{});
-        return 1;
-    }
-    if (told_in(1, false, .returned) != 0) {
-        print("  RED: a quarrel nobody weighed was reported on anyway\n", .{});
-        return 1;
-    }
-    if (told_in(0, true, .returned) != 0) {
-        print("  RED: a run holding no quarrel wrote to somebody\n", .{});
-        return 1;
-    }
-    if (untold_in(1, true, .silent) != 1) {
-        print("  RED: a raiser left in the dark was counted as reached\n", .{});
-        return 1;
-    }
-    if (untold_in(1, true, .returned) != 0) {
-        print("  RED: a raiser written to still counted as left in the dark\n", .{});
-        return 1;
-    }
-    if (untold_in(0, true, .silent) != 0) {
-        print("  RED: a run holding no quarrel left a raiser untold\n", .{});
-        return 1;
-    }
-
-    // The translation, which invents nothing: two words read side by side.
-    if (results_as(.borne, .carried) != .moved) {
-        print("  RED: a word the repair moved read as one that stood\n", .{});
-        return 1;
-    }
-    if (results_as(.carried, .carried) != .stood) {
-        print("  RED: a word that never moved read as one that did\n", .{});
-        return 1;
-    }
-
-    // The result survives the round trip through the byte it rides as.
-    if (result_of_byte(result_byte(.moved)) != .moved) {
-        print("  RED: a moved word did not survive the wire it rides\n", .{});
-        return 1;
-    }
-    if (result_of_byte(result_byte(.stood)) != .stood) {
-        print("  RED: a standing word did not survive the wire it rides\n", .{});
-        return 1;
-    }
-    if (result_of_byte(0) != null) {
-        print("  RED: a cleared box read as an answer\n", .{});
-        return 1;
-    }
-
-    // The hard half, read straight rather than inferred from a count.
-    if (!tells_true(.moved, .borne, .carried)) {
-        print("  RED: a true answer was read as a false one\n", .{});
-        return 1;
-    }
-    if (tells_true(.stood, .borne, .carried)) {
-        print("  RED: a reader was told their word stood where the plan moved it\n", .{});
-        return 1;
-    }
-
-    // The moment: a run writing to a raiser nobody ever heard from is answering
-    // a letter that never arrived.
-    if (tidings_refusal(0, 1, 0)) |why| {
-        if (why != error.TidingsEarly) {
-            print("  RED: an early tiding refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run wrote to a raiser it never heard from\n", .{});
-        return 1;
-    }
-
-    // The honesty of the count, from both sides.
-    if (tidings_refusal(1, 1, 1)) |why| {
-        if (why != error.TidingsMiscounted) {
-            print("  RED: a raiser counted twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a raiser told and left untold at once went uncounted\n", .{});
-        return 1;
-    }
-    if (tidings_refusal(1, 0, 0)) |why| {
-        if (why != error.TidingsMiscounted) {
-            print("  RED: a raiser counted nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a raiser neither told nor left untold went uncounted\n", .{});
-        return 1;
-    }
-    if (tidings_refusal(1, 1, 0)) |why| {
-        print("  RED: a tiding inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The hard half as its own refusal: an outcome nobody ever reached.
-    if (unweighed_tidings(0, 1)) |why| {
-        if (why != error.TidingsUnweighed) {
-            print("  RED: an unweighed tiding refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run told somebody how a quarrel came out that never did\n", .{});
-        return 1;
-    }
-    if (unweighed_tidings(1, 1)) |why| {
-        print("  RED: a weighed tiding refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The number this rung moves, as a fold.
-    if (objection_untold(1, true, .silent) != 1) {
-        print("  RED: a quarrel decided in its raiser's absence went uncounted\n", .{});
-        return 1;
-    }
-    if (objection_untold(1, true, .returned) != 0) {
-        print("  RED: a raiser written to still counted as never told\n", .{});
-        return 1;
-    }
-    if (objection_untold(0, true, .silent) != 0) {
-        print("  RED: a run holding no quarrel owed somebody an answer\n", .{});
-        return 1;
-    }
-    if (objection_untold(1, false, .silent) != 0) {
-        print("  RED: a quarrel nobody decided owed its raiser an outcome\n", .{});
-        return 1;
-    }
-
-    print("  a plan publishes whether it writes back to the reader who objected\n", .{});
-    print("  three refusals stand by name: early, unweighed, miscounted\n", .{});
-    print("  the tidings this rung keeps: {s}\n", .{tidings_words(.returned)});
-    print("  what a moved word reads as: {s}\n", .{result_words(.moved)});
-    return 0;
+pub fn check_tidings() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_tidings();
 }
 
 /// The two answers the wire itself carries, proven as bytes in a reader's own
@@ -10095,7 +8887,7 @@ fn check_tidings() u8 {
 /// send. The other answer is proven here, on the same wire and in the same shape
 /// -- written to a reader of its own, read back out of their box, and never
 /// touching the box the lap depends on.
-fn check_tidings_wire(io: std.Io) u8 {
+pub fn check_tidings_wire(io: std.Io) u8 {
     const shelf = "shelf";
     clear_tidings(io, shelf);
     tell_outcome(io, shelf, .moved) catch |err| {
@@ -10124,135 +8916,10 @@ fn check_tidings_wire(io: std.Io) u8 {
 /// The happy zone of this rung: every question about who a run listens to, what
 /// a reader's word means, and the honesty of the count answered as a pure fold
 /// -- no process anywhere.
-fn check_appeal() u8 {
-    // The count, which every later number closes on.
-    if (appeal_heard_in(1, true, .open) != 1) {
-        print("  RED: a reader who answered went unread\n", .{});
-        return 1;
-    }
-    if (appeal_heard_in(1, true, .closed) != 0) {
-        print("  RED: a closed run read a reply all the same\n", .{});
-        return 1;
-    }
-    if (appeal_heard_in(1, false, .open) != 0) {
-        print("  RED: a reader who said nothing was read anyway\n", .{});
-        return 1;
-    }
-    if (appeal_heard_in(0, true, .open) != 0) {
-        print("  RED: a run that told nobody read somebody\n", .{});
-        return 1;
-    }
-    if (appeal_unheard_in(1, true, .closed) != 1) {
-        print("  RED: a reader answering into silence counted as heard\n", .{});
-        return 1;
-    }
-    if (appeal_unheard_in(1, true, .open) != 0) {
-        print("  RED: a reader who was read still counted as unheard\n", .{});
-        return 1;
-    }
-    if (appeal_unheard_in(0, true, .closed) != 0) {
-        print("  RED: a run that told nobody left a reader unheard\n", .{});
-        return 1;
-    }
-
-    // The plea survives the round trip through the byte it rides as.
-    if (plea_of_byte(plea_byte(.accepts)) != .accepts) {
-        print("  RED: an accepted outcome did not survive the wire it rides\n", .{});
-        return 1;
-    }
-    if (plea_of_byte(plea_byte(.presses)) != .presses) {
-        print("  RED: a pressed quarrel did not survive the wire it rides\n", .{});
-        return 1;
-    }
-    if (plea_of_byte(0) != null) {
-        print("  RED: a cleared box read as a reply\n", .{});
-        return 1;
-    }
-
-    // The record half, read straight rather than inferred from a count.
-    if (!quotes_plea(.presses, .presses)) {
-        print("  RED: a quoted plea was read as somebody else's\n", .{});
-        return 1;
-    }
-    if (quotes_plea(.accepts, .presses)) {
-        print("  RED: a reader still pressing was published as content\n", .{});
-        return 1;
-    }
-
-    // The moment: a run reading a plea where nothing was ever sent is hearing a
-    // reply to a letter it never wrote.
-    if (appeal_refusal(0, 1, 0)) |why| {
-        if (why != error.AppealEarly) {
-            print("  RED: an early appeal refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run read a reply to a letter it never sent\n", .{});
-        return 1;
-    }
-
-    // The honesty of the count, from both sides.
-    if (appeal_refusal(1, 1, 1)) |why| {
-        if (why != error.AppealMiscounted) {
-            print("  RED: a reader counted twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a reader heard and left unheard at once went uncounted\n", .{});
-        return 1;
-    }
-    if (appeal_refusal(1, 0, 0)) |why| {
-        if (why != error.AppealMiscounted) {
-            print("  RED: a reader counted nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a reader neither heard nor left unheard went uncounted\n", .{});
-        return 1;
-    }
-    if (appeal_refusal(1, 1, 0)) |why| {
-        print("  RED: an appeal inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The hard half as its own refusal: a position nobody ever wrote.
-    if (unvoiced_appeal(0, 1)) |why| {
-        if (why != error.AppealUnvoiced) {
-            print("  RED: an unvoiced appeal refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run filed a plea its reader never wrote\n", .{});
-        return 1;
-    }
-    if (unvoiced_appeal(1, 1)) |why| {
-        print("  RED: a voiced appeal refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The number this rung moves, as a fold.
-    if (answer_unread(1, true, .closed) != 1) {
-        print("  RED: a reader answering into silence went uncounted\n", .{});
-        return 1;
-    }
-    if (answer_unread(1, true, .open) != 0) {
-        print("  RED: a reader who was read still counted as answering into silence\n", .{});
-        return 1;
-    }
-    if (answer_unread(0, true, .closed) != 0) {
-        print("  RED: a run that told nobody owed somebody a reading\n", .{});
-        return 1;
-    }
-    if (answer_unread(1, false, .closed) != 0) {
-        print("  RED: a reader who said nothing was owed a reading\n", .{});
-        return 1;
-    }
-
-    print("  a plan publishes whether it reads what its reader says back\n", .{});
-    print("  three refusals stand by name: early, unvoiced, miscounted\n", .{});
-    print("  the appeal this rung keeps: {s}\n", .{appeal_words(.open)});
-    print("  what a reader still pressing reads as: {s}\n", .{plea_words(.presses)});
-    return 0;
+pub fn check_appeal() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_appeal();
 }
 
 /// The two pleas the wire itself carries, proven as bytes in a reader's own box
@@ -10263,7 +8930,7 @@ fn check_appeal() u8 {
 /// hearing. The other plea is proven here, on the same wire and in the same
 /// shape -- written by a reader of this fold's own, read back out of their box,
 /// and cleared again, never touching the box the lap depends on.
-fn check_appeal_wire(io: std.Io) u8 {
+pub fn check_appeal_wire(io: std.Io) u8 {
     const shelf = "shelf";
     clear_press(io, shelf);
     press_as_reader(io, shelf, .accepts) catch |err| {
@@ -10292,62 +8959,10 @@ fn check_appeal_wire(io: std.Io) u8 {
 /// The happy zone of this rung: every question about which positions a run may
 /// carry past its own ending, and the honesty of the count, answered as a pure
 /// fold -- no process anywhere.
-fn check_endure() u8 {
-    // The one judgment this rung makes, and everything else closes on it.
-    if (!endures(.presses)) {
-        print("  RED: a quarrel its holder still presses died with the run\n", .{});
-        return 1;
-    }
-    if (endures(.accepts)) {
-        print("  RED: a reader who closed their own quarrel had it carried on\n", .{});
-        return 1;
-    }
-
-    // The count, which every later number closes on.
-    if (kept_in(1, .presses, .kept) != 1) {
-        print("  RED: a pressed quarrel went uncarried\n", .{});
-        return 1;
-    }
-    if (kept_in(1, .presses, .spent) != 0) {
-        print("  RED: a spending run carried a position all the same\n", .{});
-        return 1;
-    }
-    if (kept_in(1, .accepts, .kept) != 0) {
-        print("  RED: a contentment was carried past the run that earned it\n", .{});
-        return 1;
-    }
-    if (kept_in(0, .presses, .kept) != 0) {
-        print("  RED: a run that heard nobody carried somebody forward\n", .{});
-        return 1;
-    }
-    if (kept_in(1, null, .kept) != 0) {
-        print("  RED: a run carried a position nobody stated\n", .{});
-        return 1;
-    }
-    if (spent_in(1, .presses, .spent) != 1) {
-        print("  RED: a quarrel dying with its run counted as carried\n", .{});
-        return 1;
-    }
-    if (spent_in(1, .presses, .kept) != 0) {
-        print("  RED: a carried position still counted as let go\n", .{});
-        return 1;
-    }
-    if (spent_in(0, .presses, .spent) != 0) {
-        print("  RED: a run that heard nobody let a position end\n", .{});
-        return 1;
-    }
-
-    // The record half, read straight rather than inferred from a count.
-    if (!quotes_standing(.presses, .presses)) {
-        print("  RED: a carried position was read as somebody else's\n", .{});
-        return 1;
-    }
-    if (quotes_standing(.accepts, .presses)) {
-        print("  RED: a reader still pressing was carried forward as content\n", .{});
-        return 1;
-    }
-
-    return check_endure_refusals();
+pub fn check_endure() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_endure();
 }
 
 /// Weighs the refusals this rung earns, and the number it moves.
@@ -10355,85 +8970,17 @@ fn check_endure() u8 {
 /// The seam is the rung's own: everything above answers what a position *is*
 /// and how the count closes on it, and everything here answers what a run is
 /// refused when it reaches for one it may not carry.
-fn check_endure_refusals() u8 {
-    // The moment: a run carrying a position where it read nobody is handing the
-    // next run a quarrel that belongs to no one.
-    if (endure_refusal(0, 1, 0)) |why| {
-        if (why != error.EndureEarly) {
-            print("  RED: an early endurance refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run carried forward a position it never heard\n", .{});
-        return 1;
-    }
-
-    // The honesty of the count, from both sides.
-    if (endure_refusal(1, 1, 1)) |why| {
-        if (why != error.EndureMiscounted) {
-            print("  RED: a position counted twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a position carried and let go at once went uncounted\n", .{});
-        return 1;
-    }
-    if (endure_refusal(1, 0, 0)) |why| {
-        if (why != error.EndureMiscounted) {
-            print("  RED: a position counted nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a position neither carried nor let go went uncounted\n", .{});
-        return 1;
-    }
-    if (endure_refusal(1, 1, 0)) |why| {
-        print("  RED: an endurance inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The hard half as its own refusal: a quarrel its holder already closed.
-    if (unpressed_endurance(0, 1)) |why| {
-        if (why != error.EndureUnpressed) {
-            print("  RED: an unpressed endurance refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run handed the next one an objection its holder had closed\n", .{});
-        return 1;
-    }
-    if (unpressed_endurance(1, 1)) |why| {
-        print("  RED: a pressed endurance refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    return check_endure_measure();
+pub fn check_endure_refusals() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_endure_refusals();
 }
 
 /// Weighs the number this rung moves, as a fold, before any process runs.
-fn check_endure_measure() u8 {
-    if (position_dropped(1, .presses, .spent) != 1) {
-        print("  RED: a pressed quarrel forgotten by morning went uncounted\n", .{});
-        return 1;
-    }
-    if (position_dropped(1, .presses, .kept) != 0) {
-        print("  RED: a carried position still counted as forgotten\n", .{});
-        return 1;
-    }
-    if (position_dropped(1, .accepts, .spent) != 0) {
-        print("  RED: a reader content with the outcome was owed an endurance\n", .{});
-        return 1;
-    }
-    if (position_dropped(0, .presses, .spent) != 0) {
-        print("  RED: a run that heard nobody dropped somebody's quarrel\n", .{});
-        return 1;
-    }
-
-    print("  a plan publishes whether a pressed quarrel outlives the run that heard it\n", .{});
-    print("  three refusals stand by name: early, unpressed, miscounted\n", .{});
-    print("  the endurance this rung keeps: {s}\n", .{endurance_words(.kept)});
-    print("  what a spending plan does with a quarrel: {s}\n", .{endurance_words(.spent)});
-    return 0;
+pub fn check_endure_measure() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_endure_measure();
 }
 
 /// The standing note the wire itself carries, proven as a byte outside any run.
@@ -10443,7 +8990,7 @@ fn check_endure_measure() u8 {
 /// provisioning. It is written, a provisioning runs over it, and it is read back
 /// unchanged -- which is the whole difference between a record and a run's own
 /// leavings.
-fn check_endure_wire(io: std.Io, sys: *const system.System) u8 {
+pub fn check_endure_wire(io: std.Io, sys: *const system.System) u8 {
     // The notes are seated once first, so this fold writes into a plan that
     // exists rather than into a directory no run has opened yet.
     _ = provision_notes(io, sys) catch |err| {
@@ -10494,84 +9041,10 @@ fn check_endure_wire(io: std.Io, sys: *const system.System) u8 {
 /// The happy zone of this rung: every question about what a run owes a quarrel
 /// it inherited, what it may say about one, and the honesty of the count,
 /// answered as a pure fold -- no process anywhere.
-fn check_heed() u8 {
-    // The one judgment this rung makes, and everything else closes on it.
-    if (regards(null) != .alone) {
-        print("  RED: a plan nobody pressed a quarrel against read as one under it\n", .{});
-        return 1;
-    }
-    if (regards(.presses) != .under) {
-        print("  RED: a plan a living person still quarrels with read as standing alone\n", .{});
-        return 1;
-    }
-    if (regards(.accepts) != .alone) {
-        print("  RED: a byte no endurance ever wrote was stood under all the same\n", .{});
-        return 1;
-    }
-
-    // The byte an operator reads, both ways round.
-    if (regard_of_byte(regard_byte(.under)) != .under) {
-        print("  RED: a word standing under a quarrel did not read back as one\n", .{});
-        return 1;
-    }
-    if (regard_of_byte(regard_byte(.alone)) != .alone) {
-        print("  RED: a word standing alone did not read back as one\n", .{});
-        return 1;
-    }
-    if (regard_of_byte(0) != null) {
-        print("  RED: an unwritten note read as a regard some run had published\n", .{});
-        return 1;
-    }
-
-    // The count, which every later number closes on.
-    if (heeded_in(1, .presses, .weighed) != 1) {
-        print("  RED: an inherited quarrel went unweighed\n", .{});
-        return 1;
-    }
-    if (heeded_in(1, .presses, .unweighed) != 0) {
-        print("  RED: an unweighing run stood under a quarrel all the same\n", .{});
-        return 1;
-    }
-    if (heeded_in(1, .accepts, .weighed) != 0) {
-        print("  RED: a word stood under a position nobody pressed\n", .{});
-        return 1;
-    }
-    if (heeded_in(0, .presses, .weighed) != 0) {
-        print("  RED: a run that inherited nothing stood under somebody's quarrel\n", .{});
-        return 1;
-    }
-    if (heeded_in(1, null, .weighed) != 0) {
-        print("  RED: a run stood under a quarrel no note carried\n", .{});
-        return 1;
-    }
-    if (unweighed_in(1, .presses, .unweighed) != 1) {
-        print("  RED: a quarrel left standing counted as weighed\n", .{});
-        return 1;
-    }
-    if (unweighed_in(1, .presses, .weighed) != 0) {
-        print("  RED: a weighed quarrel still counted as left standing\n", .{});
-        return 1;
-    }
-    if (unweighed_in(0, .presses, .unweighed) != 0) {
-        print("  RED: a run that inherited nothing left a position standing\n", .{});
-        return 1;
-    }
-
-    // The record half, read straight rather than inferred from a count.
-    if (!regard_holds(.under, .presses)) {
-        print("  RED: a published regard was read as somebody else's word\n", .{});
-        return 1;
-    }
-    if (regard_holds(.under, null)) {
-        print("  RED: a plan nobody pressed published a quarrel standing over it\n", .{});
-        return 1;
-    }
-    if (regard_holds(.alone, .presses)) {
-        print("  RED: a live quarrel was published as a word standing alone\n", .{});
-        return 1;
-    }
-
-    return check_heed_refusals();
+pub fn check_heed() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_heed();
 }
 
 /// Weighs the refusals this rung earns, and the number it moves.
@@ -10579,92 +9052,17 @@ fn check_heed() u8 {
 /// The seam is the rung's own: everything above answers what a regard *is* and
 /// how the count closes on it, and everything here answers what a run is refused
 /// when it reaches for a quarrel it may not stand under.
-fn check_heed_refusals() u8 {
-    // The moment: a run publishing a regard where nothing stood tells an
-    // operator about a quarrel nobody holds.
-    if (heed_refusal(0, 1, 0)) |why| {
-        if (why != error.HeedEarly) {
-            print("  RED: an early heeding refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run stood under a quarrel it never inherited\n", .{});
-        return 1;
-    }
-
-    // The honesty of the count, from both sides.
-    if (heed_refusal(1, 1, 1)) |why| {
-        if (why != error.HeedMiscounted) {
-            print("  RED: a position counted twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a position weighed and left standing at once went uncounted\n", .{});
-        return 1;
-    }
-    if (heed_refusal(1, 0, 0)) |why| {
-        if (why != error.HeedMiscounted) {
-            print("  RED: a position counted nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a position neither weighed nor left standing went uncounted\n", .{});
-        return 1;
-    }
-    if (heed_refusal(1, 1, 0)) |why| {
-        print("  RED: a heeding inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    // The hard half as its own refusal: a byte no endurance would ever write.
-    if (unpressed_regard(0, 1)) |why| {
-        if (why != error.HeedUnpressed) {
-            print("  RED: an unpressed regard refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan published an objection nobody ever made\n", .{});
-        return 1;
-    }
-    if (unpressed_regard(1, 1)) |why| {
-        print("  RED: a pressed regard refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-
-    return check_heed_measure();
+pub fn check_heed_refusals() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_heed_refusals();
 }
 
 /// Weighs the number this rung moves, as a fold, before any process runs.
-fn check_heed_measure() u8 {
-    if (standing_unweighed(1, .presses, .carried, .unweighed) != 1) {
-        print("  RED: a plan carried under a live quarrel went uncounted\n", .{});
-        return 1;
-    }
-    if (standing_unweighed(1, .presses, .carried, .weighed) != 0) {
-        print("  RED: a weighed quarrel still counted as unanswered\n", .{});
-        return 1;
-    }
-    if (standing_unweighed(1, .accepts, .carried, .unweighed) != 0) {
-        print("  RED: a byte nobody pressed was owed a regard\n", .{});
-        return 1;
-    }
-    if (standing_unweighed(0, .presses, .carried, .unweighed) != 0) {
-        print("  RED: a run that inherited nothing left somebody's quarrel unanswered\n", .{});
-        return 1;
-    }
-    // A plan that came up short already tells its reader the work is unfinished,
-    // so the regard has nothing to add that the settlement does not already say.
-    if (standing_unweighed(1, .presses, .short, .unweighed) != 0) {
-        print("  RED: a plan that came up short was owed a regard besides\n", .{});
-        return 1;
-    }
-
-    print("  a plan publishes whether it reads under the quarrel it inherited\n", .{});
-    print("  three refusals stand by name: early, unpressed, miscounted\n", .{});
-    print("  the heed this rung keeps: {s}\n", .{heed_words(.weighed)});
-    print("  what an unweighing plan reads as: {s}\n", .{heed_words(.unweighed)});
-    print("  the regard this rung publishes: {s}\n", .{regard_words(.under)});
-    return 0;
+pub fn check_heed_measure() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_heed_measure();
 }
 
 /// The regard note the wire itself carries, proven as a byte outside any run.
@@ -10674,7 +9072,7 @@ fn check_heed_measure() u8 {
 /// position survives a provisioning and the regard does not, because a quarrel
 /// belongs to the person holding it while a word about that quarrel belongs to
 /// the run that said it.
-fn check_heed_wire(io: std.Io, sys: *const system.System) u8 {
+pub fn check_heed_wire(io: std.Io, sys: *const system.System) u8 {
     _ = provision_notes(io, sys) catch |err| {
         print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
         return 1;
@@ -10730,155 +9128,27 @@ fn check_heed_wire(io: std.Io, sys: *const system.System) u8 {
 /// The happy zone of this rung: every question about whose hand closes a
 /// quarrel, how many a run may take down, and the honesty of the count answered
 /// as a pure fold -- no process anywhere.
-fn check_relent() u8 {
-    // The one judgment this rung makes, and everything else closes on it.
-    if (!withdraws(.accepts)) {
-        print("  RED: a holder who said the matter is over went on quarrelling\n", .{});
-        return 1;
-    }
-    if (withdraws(.presses)) {
-        print("  RED: a holder still pressing was read as having let go\n", .{});
-        return 1;
-    }
-    if (withdraws(null)) {
-        print("  RED: an empty box was read as a withdrawal\n", .{});
-        return 1;
-    }
-
-    // The count, which every later number closes on.
-    if (withdrawn_in(1, .accepts, .released) != 1) {
-        print("  RED: a withdrawn quarrel was left standing by a releasing run\n", .{});
-        return 1;
-    }
-    if (withdrawn_in(1, .accepts, .held) != 0) {
-        print("  RED: a holding run took a note down all the same\n", .{});
-        return 1;
-    }
-    if (withdrawn_in(1, .presses, .released) != 0) {
-        print("  RED: a quarrel nobody withdrew was closed for its holder\n", .{});
-        return 1;
-    }
-    if (withdrawn_in(1, null, .released) != 0) {
-        print("  RED: a silence was spent as somebody's withdrawal\n", .{});
-        return 1;
-    }
-    if (withdrawn_in(0, .accepts, .released) != 0) {
-        print("  RED: a run with nothing standing took a note down\n", .{});
-        return 1;
-    }
-    if (standing_in(1, .presses, .released) != 1) {
-        print("  RED: a live quarrel was counted as let go\n", .{});
-        return 1;
-    }
-    if (standing_in(1, .accepts, .released) != 0) {
-        print("  RED: a withdrawn quarrel still counted as standing\n", .{});
-        return 1;
-    }
-    if (standing_in(1, .accepts, .held) != 1) {
-        print("  RED: a holding run counted a position it never touched as gone\n", .{});
-        return 1;
-    }
-
-    // The record half: a note read back after a withdrawal says nothing at all.
-    if (!note_cleared(null)) {
-        print("  RED: an empty note read as a quarrel somebody still holds\n", .{});
-        return 1;
-    }
-    if (note_cleared(.presses)) {
-        print("  RED: a note still holding a quarrel read as taken down\n", .{});
-        return 1;
-    }
-    if (note_cleared(.accepts)) {
-        print("  RED: a note holding any byte at all read as taken down\n", .{});
-        return 1;
-    }
-    return check_relent_refusals();
+pub fn check_relent() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_relent();
 }
 
 /// The refusals this rung earns, each weighed by name.
 ///
 /// The seam is the rung's own: everything above answers what a withdrawal *is*
 /// and this answers when a run may act on one.
-fn check_relent_refusals() u8 {
-    // The moment: a run clearing a note where nothing stood is forgetting a
-    // quarrel nobody ever held.
-    if (relent_refusal(0, 1, 0)) |why| {
-        if (why != error.RelentEarly) {
-            print("  RED: an early relenting refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run cleared a note where nothing ever stood\n", .{});
-        return 1;
-    }
-    // The honesty of the count, both ways it can fail to close.
-    if (relent_refusal(1, 1, 1)) |why| {
-        if (why != error.RelentMiscounted) {
-            print("  RED: a doubled count refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: one position was let go and left standing at once\n", .{});
-        return 1;
-    }
-    if (relent_refusal(1, 0, 0)) |why| {
-        if (why != error.RelentMiscounted) {
-            print("  RED: an unaccounted position refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a standing position was neither let go nor left standing\n", .{});
-        return 1;
-    }
-    if (relent_refusal(1, 1, 0)) |why| {
-        print("  RED: a relenting inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    // The hard half: a supervisor closing a quarrel on its holder's behalf.
-    if (unwithdrawn_clearing(0, 1)) |why| {
-        if (why != error.RelentUnwithdrawn) {
-            print("  RED: an unwithdrawn clearing refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run closed a quarrel nobody's own hand let go\n", .{});
-        return 1;
-    }
-    if (unwithdrawn_clearing(1, 1)) |why| {
-        print("  RED: a withdrawn clearing refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_relent_measure();
+pub fn check_relent_refusals() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_relent_refusals();
 }
 
 /// The number this rung moves, weighed as a fold.
-fn check_relent_measure() u8 {
-    if (withdrawn_still_standing(1, .accepts, .held) != 1) {
-        print("  RED: a withdrawn quarrel left standing went uncounted\n", .{});
-        return 1;
-    }
-    if (withdrawn_still_standing(1, .accepts, .released) != 0) {
-        print("  RED: a quarrel taken down still counted as standing\n", .{});
-        return 1;
-    }
-    if (withdrawn_still_standing(1, .presses, .held) != 0) {
-        print("  RED: a live quarrel counted as one its holder had withdrawn\n", .{});
-        return 1;
-    }
-    if (withdrawn_still_standing(1, null, .held) != 0) {
-        print("  RED: a silent box counted as a withdrawal nobody honored\n", .{});
-        return 1;
-    }
-    if (withdrawn_still_standing(0, .accepts, .held) != 0) {
-        print("  RED: a run with nothing standing left a withdrawal uncleared\n", .{});
-        return 1;
-    }
-
-    print("  a quarrel comes down on its holder's word and on nobody else's\n", .{});
-    print("  three refusals stand by name: early, unwithdrawn, miscounted\n", .{});
-    print("  the relenting this rung keeps: {s}\n", .{relent_words(.released)});
-    print("  what a holding plan does with a withdrawal: {s}\n", .{relent_words(.held)});
-    return 0;
+pub fn check_relent_measure() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_relent_measure();
 }
 
 /// The standing note across two provisionings, proven as a byte outside any run.
@@ -10888,7 +9158,7 @@ fn check_relent_measure() u8 {
 /// provisioning while it stands, **and stays down once it is taken down**. A
 /// quarrel that came back with the morning would be no closer to over than one
 /// no run ever answered.
-fn check_relent_wire(io: std.Io, sys: *const system.System) u8 {
+pub fn check_relent_wire(io: std.Io, sys: *const system.System) u8 {
     _ = provision_notes(io, sys) catch |err| {
         print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
         return 1;
@@ -10936,177 +9206,27 @@ fn check_relent_wire(io: std.Io, sys: *const system.System) u8 {
 /// The happy zone of this rung: every question about how an age climbs, how
 /// many positions a run may date, and the honesty of the count answered as a
 /// pure fold -- no process anywhere.
-fn check_dwell() u8 {
-    // The arithmetic this whole rung rests on, and it climbs by one.
-    if (stood_longer(0) != 1) {
-        print("  RED: a quarrel's first run stood counted as {d}\n", .{stood_longer(0)});
-        return 1;
-    }
-    if (stood_longer(1) != 2) {
-        print("  RED: a second run of standing counted as {d}\n", .{stood_longer(1)});
-        return 1;
-    }
-    if (stood_longer(max_dwell_runs) != max_dwell_runs) {
-        print("  RED: an age at its bound climbed to {d}\n", .{stood_longer(max_dwell_runs)});
-        return 1;
-    }
-    if (stood_longer(max_dwell_runs - 1) != max_dwell_runs) {
-        print("  RED: the last run before the bound counted as {d}\n", .{
-            stood_longer(max_dwell_runs - 1),
-        });
-        return 1;
-    }
-
-    // The one judgment this rung makes about a record it inherits: an age only
-    // ever climbs, and at the bound it climbs by nothing rather than wrapping.
-    if (!ages_forward(3, 4)) {
-        print("  RED: an age that climbed by one read as forgetting\n", .{});
-        return 1;
-    }
-    if (!ages_forward(max_dwell_runs, max_dwell_runs)) {
-        print("  RED: an age standing still at its bound read as forgetting\n", .{});
-        return 1;
-    }
-    if (ages_forward(4, 3)) {
-        print("  RED: an age that shortened the record read as climbing\n", .{});
-        return 1;
-    }
-    if (ages_forward(1, 0)) {
-        print("  RED: an age reset to nothing read as climbing\n", .{});
-        return 1;
-    }
-
-    // The count, which every later number closes on.
-    if (aged_in(1, .told) != 1) {
-        print("  RED: a telling run left the one standing position undated\n", .{});
-        return 1;
-    }
-    if (aged_in(1, .untold) != 0) {
-        print("  RED: an untelling run dated a position all the same\n", .{});
-        return 1;
-    }
-    if (aged_in(0, .told) != 0) {
-        print("  RED: a run with nothing standing dated a quarrel nobody holds\n", .{});
-        return 1;
-    }
-    if (undated_in(1, .untold) != 1) {
-        print("  RED: a bare position counted as dated\n", .{});
-        return 1;
-    }
-    if (undated_in(1, .told) != 0) {
-        print("  RED: a dated position still counted as bare\n", .{});
-        return 1;
-    }
-    if (undated_in(0, .told) != 0) {
-        print("  RED: a run with nothing standing left a position bare\n", .{});
-        return 1;
-    }
-
-    // The record half: a note read back carries exactly the age just written.
-    if (!dwell_holds(2, 2)) {
-        print("  RED: a note reading the age just written read as disagreeing\n", .{});
-        return 1;
-    }
-    if (dwell_holds(1, 2)) {
-        print("  RED: a note a run shortened read as holding\n", .{});
-        return 1;
-    }
-    if (dwell_holds(null, 1)) {
-        print("  RED: a note that was never written read as holding an age\n", .{});
-        return 1;
-    }
-    return check_dwell_refusals();
+pub fn check_dwell() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_dwell();
 }
 
 /// The refusals this rung earns, each weighed by name.
 ///
 /// The seam is the rung's own: everything above answers what an age *is* and
 /// this answers when a run may write one.
-fn check_dwell_refusals() u8 {
-    // The moment: a run dating a position where nothing stands is telling an
-    // operator the age of a quarrel that is over.
-    if (dwell_refusal(0, 1, 0)) |why| {
-        if (why != error.DwellEarly) {
-            print("  RED: an early dwelling refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run dated a position where nothing stood\n", .{});
-        return 1;
-    }
-    // The honesty of the count, both ways it can fail to close.
-    if (dwell_refusal(1, 1, 1)) |why| {
-        if (why != error.DwellMiscounted) {
-            print("  RED: a doubled count refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: one position was dated and left bare at once\n", .{});
-        return 1;
-    }
-    if (dwell_refusal(1, 0, 0)) |why| {
-        if (why != error.DwellMiscounted) {
-            print("  RED: an unaccounted position refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a standing position was neither dated nor left bare\n", .{});
-        return 1;
-    }
-    if (dwell_refusal(1, 1, 0)) |why| {
-        print("  RED: a dwelling inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    // The hard half: a run shortening the record of how long a quarrel stood.
-    if (forgotten_dwell(4, 3)) |why| {
-        if (why != error.DwellForgotten) {
-            print("  RED: a forgotten dwelling refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run wrote a smaller age over a larger one\n", .{});
-        return 1;
-    }
-    if (forgotten_dwell(1, 0)) |why| {
-        if (why != error.DwellForgotten) {
-            print("  RED: an age reset to nothing refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run reset a standing quarrel's age to nothing\n", .{});
-        return 1;
-    }
-    if (forgotten_dwell(3, 4)) |why| {
-        print("  RED: an age climbing by one refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    if (forgotten_dwell(max_dwell_runs, max_dwell_runs)) |why| {
-        print("  RED: an age holding at its bound refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_dwell_measure();
+pub fn check_dwell_refusals() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_dwell_refusals();
 }
 
 /// The number this rung moves, weighed as a fold.
-fn check_dwell_measure() u8 {
-    if (standing_ageless(1, .untold) != 1) {
-        print("  RED: a standing quarrel nobody dated went uncounted\n", .{});
-        return 1;
-    }
-    if (standing_ageless(1, .told) != 0) {
-        print("  RED: a dated quarrel still counted as ageless\n", .{});
-        return 1;
-    }
-    if (standing_ageless(0, .untold) != 0) {
-        print("  RED: a run with nothing standing left an age untold\n", .{});
-        return 1;
-    }
-
-    print("  an age climbs by the run just stood and never shortens\n", .{});
-    print("  three refusals stand by name: early, forgotten, miscounted\n", .{});
-    print("  the dwelling this rung keeps: {s}\n", .{dwell_words(.told)});
-    print("  what a bare plan leaves an operator: {s}\n", .{dwell_words(.untold)});
-    return 0;
+pub fn check_dwell_measure() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_dwell_measure();
 }
 
 /// The age note across two provisionings, proven as a byte outside any run.
@@ -11117,7 +9237,7 @@ fn check_dwell_measure() u8 {
 /// the oldest quarrel on the wire brand new -- **and it falls with that
 /// position**, since a count of runs stood through is a fact about one quarrel
 /// and has nothing to say once that quarrel is over.
-fn check_dwell_wire(io: std.Io, sys: *const system.System) u8 {
+pub fn check_dwell_wire(io: std.Io, sys: *const system.System) u8 {
     _ = provision_notes(io, sys) catch |err| {
         print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
         return 1;
@@ -11181,159 +9301,24 @@ fn check_dwell_wire(io: std.Io, sys: *const system.System) u8 {
 /// The happy zone of this rung: every question about when a quarrel counts as
 /// long-standing, who may move that bound, and the honesty of the count
 /// answered as a pure fold -- no process anywhere.
-fn check_swell() u8 {
-    // The reading itself, weighed against a bound no run may move. The
-    // threshold is inclusive, since a position that has stood the named number
-    // of runs has already outlasted them.
-    if (stands_loud(long_standing_runs) != .loud) {
-        print("  RED: a quarrel at the bound read quiet\n", .{});
-        return 1;
-    }
-    if (stands_loud(long_standing_runs - 1) != .quiet) {
-        print("  RED: a quarrel one run short of the bound read loud\n", .{});
-        return 1;
-    }
-    if (stands_loud(0) != .quiet) {
-        print("  RED: a quarrel of no age at all read loud\n", .{});
-        return 1;
-    }
-    if (stands_loud(max_dwell_runs) != .loud) {
-        print("  RED: the oldest quarrel one note may carry read quiet\n", .{});
-        return 1;
-    }
-    // The byte an operator reads, and the reading it comes back as. A note
-    // carrying anything else is no reading at all rather than a quiet one.
-    if (volume_of_byte(volume_byte(.loud)) != .loud) {
-        print("  RED: a loud standing did not survive its own byte\n", .{});
-        return 1;
-    }
-    if (volume_of_byte(volume_byte(.quiet)) != .quiet) {
-        print("  RED: a quiet standing did not survive its own byte\n", .{});
-        return 1;
-    }
-    if (volume_of_byte('z') != null) {
-        print("  RED: a byte no herald ever wrote read back as a standing\n", .{});
-        return 1;
-    }
-    // The count, which every later number closes on.
-    if (heralded_in(1, .heralded) != 1) {
-        print("  RED: a heralding run left its one standing position unpublished\n", .{});
-        return 1;
-    }
-    if (heralded_in(1, .hushed) != 0) {
-        print("  RED: a hushed run published a standing all the same\n", .{});
-        return 1;
-    }
-    if (heralded_in(0, .heralded) != 0) {
-        print("  RED: a run holding no quarrel published a standing for one\n", .{});
-        return 1;
-    }
-    if (unpublished_in(1, .hushed) != 1) {
-        print("  RED: a hushed run counted its unpublished position as nothing\n", .{});
-        return 1;
-    }
-    if (unpublished_in(1, .heralded) != 0) {
-        print("  RED: a heralding run still counted a position unpublished\n", .{});
-        return 1;
-    }
-    // The record half, answered by the byte itself.
-    if (!swell_holds(.loud, .loud)) {
-        print("  RED: a note carrying the standing just written did not hold\n", .{});
-        return 1;
-    }
-    if (swell_holds(.quiet, .loud)) {
-        print("  RED: a note reading quiet held for a loud standing\n", .{});
-        return 1;
-    }
-    if (swell_holds(null, .quiet)) {
-        print("  RED: a note that does not exist held for a quiet standing\n", .{});
-        return 1;
-    }
-    return check_swell_refusals();
+pub fn check_swell() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_swell();
 }
 
 /// The four refusals this rung earns, each read straight.
-fn check_swell_refusals() u8 {
-    // The moment: a run publishing a standing where nothing stands tells an
-    // operator how loudly a quarrel that is over reads.
-    if (swell_refusal(0, 1, 0, true)) |why| {
-        if (why != error.SwellEarly) {
-            print("  RED: an early heralding refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run heralded a quarrel nobody holds\n", .{});
-        return 1;
-    }
-    // The hard half: a standing read off an age no run ever wrote is a guess
-    // wearing a measurement's clothes, and it would read loudest of all.
-    if (swell_refusal(1, 1, 0, false)) |why| {
-        if (why != error.SwellUndated) {
-            print("  RED: an undated heralding refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run published a standing for a quarrel it never dated\n", .{});
-        return 1;
-    }
-    // The honesty of the count: every position still standing is heralded or
-    // left unpublished, never both and never neither.
-    if (swell_refusal(1, 1, 1, true)) |why| {
-        if (why != error.SwellMiscounted) {
-            print("  RED: a doubled count refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: one position counted as both published and unpublished stood\n", .{});
-        return 1;
-    }
-    if (swell_refusal(1, 0, 0, true)) |why| {
-        if (why != error.SwellMiscounted) {
-            print("  RED: an empty count refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a standing position counted as neither published nor unpublished stood\n", .{});
-        return 1;
-    }
-    // And the honest reading passes, which is the half a refusal-only test
-    // never proves.
-    if (swell_refusal(1, 1, 0, true)) |why| {
-        print("  RED: a heralding inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_swell_measure();
+pub fn check_swell_refusals() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_swell_refusals();
 }
 
 /// The number this rung moves, weighed as a fold before any run moves it.
-fn check_swell_measure() u8 {
-    if (standing_unheralded(1, long_standing_runs, .hushed) != 1) {
-        print("  RED: a long-standing quarrel nobody published went uncounted\n", .{});
-        return 1;
-    }
-    if (standing_unheralded(1, long_standing_runs, .heralded) != 0) {
-        print("  RED: a published quarrel still counted as unheralded\n", .{});
-        return 1;
-    }
-    // A quarrel raised this morning is fairly read at its own volume, so it
-    // costs the count nothing -- the harm this rung names is the old position
-    // reading no louder than a fresh one.
-    if (standing_unheralded(1, 0, .hushed) != 0) {
-        print("  RED: a quarrel of no age at all counted as unheralded\n", .{});
-        return 1;
-    }
-    if (standing_unheralded(0, max_dwell_runs, .hushed) != 0) {
-        print("  RED: a run with nothing standing left a standing unpublished\n", .{});
-        return 1;
-    }
-
-    print("  a quarrel counts as long-standing at {d} runs, and no run may move that bound\n", .{
-        long_standing_runs,
-    });
-    print("  a plan publishes whether a long-standing quarrel reads where the outcome is read\n", .{});
-    print("  loud reads as {s}\n", .{volume_words(.loud)});
-    print("  quiet reads as {s}\n", .{volume_words(.quiet)});
-    return check_refer();
+pub fn check_swell_measure() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_swell_measure();
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -11341,141 +9326,24 @@ fn check_swell_measure() u8 {
 /// The happy zone of this rung: every question about when a case travels, where
 /// it may travel to, and the honesty of the count answered as a pure fold -- no
 /// process anywhere.
-fn check_refer() u8 {
-    // The count, which every later number closes on.
-    if (referred_in(1, .referred) != 1) {
-        print("  RED: a referring run kept its one long-standing quarrel inside\n", .{});
-        return 1;
-    }
-    if (referred_in(1, .unheard) != 0) {
-        print("  RED: an unheard run carried a case out all the same\n", .{});
-        return 1;
-    }
-    if (referred_in(0, .referred) != 0) {
-        print("  RED: a run with nothing standing long carried a case out\n", .{});
-        return 1;
-    }
-    if (unreferred_in(1, .unheard) != 1) {
-        print("  RED: a quarrel kept inside the argument counted as carried out\n", .{});
-        return 1;
-    }
-    if (unreferred_in(1, .referred) != 0) {
-        print("  RED: a referred quarrel still counted as kept inside\n", .{});
-        return 1;
-    }
-
-    // The one comparison this rung exists to make, in both directions.
-    if (!is_party("desk", "desk")) {
-        print("  RED: a forum naming the reader themself read as a third hand\n", .{});
-        return 1;
-    }
-    if (is_party("bench", "desk")) {
-        print("  RED: a hand outside the argument read as a party to it\n", .{});
-        return 1;
-    }
-
-    // The record half, in all three directions.
-    const case = referral_bytes(.carried, .loud, 4);
-    if (!refer_holds(case, case)) {
-        print("  RED: a case did not read back as the case it was\n", .{});
-        return 1;
-    }
-    if (refer_holds(referral_bytes(.short, .loud, 4), case)) {
-        print("  RED: a case naming another settlement read back as this one\n", .{});
-        return 1;
-    }
-    if (refer_holds(null, case)) {
-        print("  RED: a desk holding nothing read back as one holding the case\n", .{});
-        return 1;
-    }
-    return check_refer_refusals();
+pub fn check_refer() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_refer();
 }
 
 /// Weighs the five refusals this rung earns, each by name.
-fn check_refer_refusals() u8 {
-    if (refer_refusal(0, 1, 0, true, false)) |why| {
-        if (why != error.ReferEarly) {
-            print("  RED: an early referral refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run referred a quarrel nobody holds\n", .{});
-        return 1;
-    }
-    if (refer_refusal(1, 1, 0, false, false)) |why| {
-        if (why != error.ReferUnaddressed) {
-            print("  RED: an unaddressed referral refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run carried a case to a forum nobody named\n", .{});
-        return 1;
-    }
-    // The rung itself, refused by name: a forum naming somebody already in the
-    // argument has heard nothing, and a case landing there wears the look of a
-    // hearing while being none.
-    if (refer_refusal(1, 1, 0, true, true)) |why| {
-        if (why != error.ReferParty) {
-            print("  RED: a referral to a party refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run referred a quarrel to somebody already holding it\n", .{});
-        return 1;
-    }
-    // The honesty of the count: every long-standing position is referred or
-    // kept inside the argument -- never both and never neither.
-    if (refer_refusal(1, 1, 1, true, false)) |why| {
-        if (why != error.ReferMiscounted) {
-            print("  RED: a quarrel counted twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a quarrel referred and kept at once went uncounted\n", .{});
-        return 1;
-    }
-    if (refer_refusal(1, 0, 0, true, false)) |why| {
-        if (why != error.ReferMiscounted) {
-            print("  RED: a quarrel counted nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a quarrel neither referred nor kept went uncounted\n", .{});
-        return 1;
-    }
-    if (refer_refusal(1, 1, 0, true, false)) |why| {
-        print("  RED: a referral inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_refer_measure();
+pub fn check_refer_refusals() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_refer_refusals();
 }
 
 /// Weighs the number this rung moves, as a pure fold.
-fn check_refer_measure() u8 {
-    if (unheard_outside(1, long_standing_runs, .unheard) != 1) {
-        print("  RED: a long-standing quarrel nobody outside saw went uncounted\n", .{});
-        return 1;
-    }
-    if (unheard_outside(1, long_standing_runs, .referred) != 0) {
-        print("  RED: a referred quarrel still counted as unheard outside\n", .{});
-        return 1;
-    }
-    // A quarrel raised this morning is fairly left with the people having it,
-    // so it costs the count nothing -- the harm this rung names is the old
-    // position no third hand ever sees.
-    if (unheard_outside(1, 0, .unheard) != 0) {
-        print("  RED: a quarrel of no age at all counted as unheard outside\n", .{});
-        return 1;
-    }
-    if (unheard_outside(0, max_dwell_runs, .unheard) != 0) {
-        print("  RED: a run with nothing standing owed a third hand a case\n", .{});
-        return 1;
-    }
-
-    print("  five refusals stand by name: early, unaddressed, party, miscounted, misrecorded\n", .{});
-    print("  the referring this rung keeps: {s}\n", .{refer_words(.referred)});
-    print("  a case carries three facts: the plan's word, the standing, and the age\n", .{});
-    return check_deem();
+pub fn check_refer_measure() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_refer_measure();
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -11483,166 +9351,24 @@ fn check_refer_measure() u8 {
 /// The happy zone of this rung: every question about when an answer may be
 /// taken up, which argument it is about, and the honesty of the count answered
 /// as a pure fold -- no process anywhere.
-fn check_deem() u8 {
-    // The count, which every later number closes on.
-    if (answered_in(1, .answered) != 1) {
-        print("  RED: a reading run left its one carried case unanswered\n", .{});
-        return 1;
-    }
-    if (answered_in(1, .unread) != 0) {
-        print("  RED: an unread run published a finding all the same\n", .{});
-        return 1;
-    }
-    if (answered_in(0, .answered) != 0) {
-        print("  RED: a run that carried no case out read an answer anyway\n", .{});
-        return 1;
-    }
-    if (awaiting_in(1, .unread) != 1) {
-        print("  RED: a case left waiting counted as one answered\n", .{});
-        return 1;
-    }
-    if (awaiting_in(1, .answered) != 0) {
-        print("  RED: an answered case still counted as one waiting\n", .{});
-        return 1;
-    }
-
-    // The one comparison this rung exists to make, in both directions. A desk
-    // that has heard this argument before may still hold the answer to an older
-    // case, and filing that beside today's outcome quotes a hand outside the
-    // argument saying something they never said about this work.
-    const case = referral_bytes(.carried, .loud, 4);
-    const answer = finding_bytes(case, .upholds);
-    if (!finding_answers(answer, case)) {
-        print("  RED: a finding did not read back as an answer to its own case\n", .{});
-        return 1;
-    }
-    if (finding_answers(answer, referral_bytes(.short, .loud, 4))) {
-        print("  RED: a finding about another settlement answered this one\n", .{});
-        return 1;
-    }
-    if (finding_answers(answer, referral_bytes(.carried, .loud, 3))) {
-        print("  RED: a finding about a younger quarrel answered this one\n", .{});
-        return 1;
-    }
-    if (finding_answers(null, case)) {
-        print("  RED: a desk holding nothing read back as one that had answered\n", .{});
-        return 1;
-    }
-
-    // The verdict half, read out of the finding rather than supplied by a run.
-    if (finding_in(answer) != .upholds) {
-        print("  RED: a finding for the reader read back as some other word\n", .{});
-        return 1;
-    }
-    if (finding_in(finding_bytes(case, .overrules)) != .overrules) {
-        print("  RED: a finding for the plan read back as some other word\n", .{});
-        return 1;
-    }
-    if (finding_in(null) != null) {
-        print("  RED: a desk that said nothing was read as having said something\n", .{});
-        return 1;
-    }
-
-    // The record half, in both directions.
-    if (!deem_holds(.upholds, .upholds)) {
-        print("  RED: a published finding did not read back as the finding it was\n", .{});
-        return 1;
-    }
-    if (deem_holds(.overrules, .upholds)) {
-        print("  RED: a plan published one verdict and read back another\n", .{});
-        return 1;
-    }
-    if (deem_holds(null, .upholds)) {
-        print("  RED: a note holding nothing read back as a published finding\n", .{});
-        return 1;
-    }
-    return check_deem_refusals();
+pub fn check_deem() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_deem();
 }
 
 /// Weighs the five refusals this rung earns, each by name.
-fn check_deem_refusals() u8 {
-    if (deem_refusal(0, 1, 0, true, true)) |why| {
-        if (why != error.DeemUnreferred) {
-            print("  RED: an unreferred reading refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run took an answer to a case it never carried out\n", .{});
-        return 1;
-    }
-    if (deem_refusal(1, 1, 0, false, false)) |why| {
-        if (why != error.DeemSilent) {
-            print("  RED: a reading of an empty desk refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run published a finding nobody had written\n", .{});
-        return 1;
-    }
-    // The rung itself, refused by name: a finding about some other argument
-    // published beside this outcome puts a third hand's name on a word they
-    // never said about this work.
-    if (deem_refusal(1, 1, 0, true, false)) |why| {
-        if (why != error.DeemMismatched) {
-            print("  RED: a finding about another case refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run filed an older argument's answer beside today's word\n", .{});
-        return 1;
-    }
-    // The honesty of the count: every case carried out is answered or left
-    // waiting -- never both and never neither.
-    if (deem_refusal(1, 1, 1, true, true)) |why| {
-        if (why != error.DeemMiscounted) {
-            print("  RED: a case counted twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a case answered and waiting at once went uncounted\n", .{});
-        return 1;
-    }
-    if (deem_refusal(1, 0, 0, true, true)) |why| {
-        if (why != error.DeemMiscounted) {
-            print("  RED: a case counted nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a case neither answered nor waiting went uncounted\n", .{});
-        return 1;
-    }
-    if (deem_refusal(1, 1, 0, true, true)) |why| {
-        print("  RED: a reading inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_deem_measure();
+pub fn check_deem_refusals() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_deem_refusals();
 }
 
 /// Weighs the number this rung moves, as a pure fold.
-fn check_deem_measure() u8 {
-    if (unanswered_referrals(1, .unread) != 1) {
-        print("  RED: a case nobody was ever heard back on went uncounted\n", .{});
-        return 1;
-    }
-    if (unanswered_referrals(1, .answered) != 0) {
-        print("  RED: an answered case still counted as one nobody replied to\n", .{});
-        return 1;
-    }
-    // A run that carried nothing out is owed an answer by nobody, so it costs
-    // the count nothing -- the harm this rung names is the case that travelled
-    // and was never heard from again.
-    if (unanswered_referrals(0, .unread) != 0) {
-        print("  RED: a run that referred nothing was owed a third hand's word\n", .{});
-        return 1;
-    }
-
-    print("  five refusals stand by name: unreferred, silent, mismatched, miscounted, misrecorded\n", .{});
-    print("  the reading this rung keeps: {s}\n", .{deem_words(.answered)});
-    print("  what a bare plan leaves an operator: {s}\n", .{deem_words(.unread)});
-    print("  a finding carries four bytes: the case it answers, and the word on it\n", .{});
-    print("  finding for the reader reads as {s}\n", .{finding_words(.upholds)});
-    print("  finding for the plan reads as {s}\n", .{finding_words(.overrules)});
-    return check_avow();
+pub fn check_deem_measure() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_deem_measure();
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -11650,172 +9376,24 @@ fn check_deem_measure() u8 {
 /// The happy zone of this rung: every question about when a plan may speak,
 /// which finding its word is about, and the honesty of the count answered as a
 /// pure fold -- no process anywhere.
-fn check_avow() u8 {
-    // The count, which every later number closes on.
-    if (said_in(1, .concedes) != 1) {
-        print("  RED: an avowing run left the finding it read unanswered\n", .{});
-        return 1;
-    }
-    if (said_in(1, .dissents) != 1) {
-        print("  RED: a plan keeping its own word said nothing at all\n", .{});
-        return 1;
-    }
-    if (said_in(1, .mute) != 0) {
-        print("  RED: a mute run answered a finding all the same\n", .{});
-        return 1;
-    }
-    if (said_in(0, .concedes) != 0) {
-        print("  RED: a run that read no finding answered one anyway\n", .{});
-        return 1;
-    }
-    if (withheld_in(1, .mute) != 1) {
-        print("  RED: a finding left unanswered counted as one answered\n", .{});
-        return 1;
-    }
-    if (withheld_in(1, .concedes) != 0) {
-        print("  RED: an answered finding still counted as one withheld\n", .{});
-        return 1;
-    }
-
-    // The one comparison this rung exists to make, in both directions. A plan
-    // that answered this argument before may still hold its word on an older
-    // verdict, and filing that beside today's finding tells an operator the plan
-    // spoke to something it never spoke to.
-    const word = avowal_bytes(.upholds, .concedes);
-    if (!avowal_answers(word, .upholds)) {
-        print("  RED: an avowal did not read back as an answer to its own finding\n", .{});
-        return 1;
-    }
-    if (avowal_answers(word, .overrules)) {
-        print("  RED: a word about another verdict answered this one\n", .{});
-        return 1;
-    }
-    if (avowal_answers(null, .upholds)) {
-        print("  RED: a plan holding nothing read back as one that had spoken\n", .{});
-        return 1;
-    }
-
-    // The plan's own word, read out of the avowal rather than assumed of it.
-    if (stance_in(word) != .concedes) {
-        print("  RED: a plan taking the finding read back as some other word\n", .{});
-        return 1;
-    }
-    if (stance_in(avowal_bytes(.upholds, .dissents)) != .dissents) {
-        print("  RED: a plan keeping its word read back as some other word\n", .{});
-        return 1;
-    }
-    if (stance_in(null) != null) {
-        print("  RED: a plan that said nothing was read as having said something\n", .{});
-        return 1;
-    }
-    if (stance_byte(.mute) != null) {
-        print("  RED: silence was published as a word of its own\n", .{});
-        return 1;
-    }
-
-    // The record half, in both directions.
-    if (!avow_holds(word, word)) {
-        print("  RED: a published avowal did not read back as the word it was\n", .{});
-        return 1;
-    }
-    if (avow_holds(avowal_bytes(.upholds, .dissents), word)) {
-        print("  RED: a plan published one word and read back another\n", .{});
-        return 1;
-    }
-    if (avow_holds(null, word)) {
-        print("  RED: a note holding nothing read back as a published avowal\n", .{});
-        return 1;
-    }
-    return check_avow_refusals();
+pub fn check_avow() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_avow();
 }
 
 /// Weighs the five refusals this rung earns, each by name.
-fn check_avow_refusals() u8 {
-    if (avow_refusal(0, 1, 0, true, true)) |why| {
-        if (why != error.AvowUnheard) {
-            print("  RED: an unheard avowing refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run answered a finding it never read\n", .{});
-        return 1;
-    }
-    if (avow_refusal(1, 1, 0, false, false)) |why| {
-        if (why != error.AvowUnfound) {
-            print("  RED: an avowing over an unpublished finding refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run answered a verdict its own wire never carried\n", .{});
-        return 1;
-    }
-    // The rung itself, refused by name: a word about some other verdict
-    // published beside this finding tells an operator the plan answered
-    // something it never answered.
-    if (avow_refusal(1, 1, 0, true, false)) |why| {
-        if (why != error.AvowMismatched) {
-            print("  RED: a word about another finding refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run filed an older verdict's answer beside today's finding\n", .{});
-        return 1;
-    }
-    // The honesty of the count: every finding read is answered or left
-    // unanswered -- never both and never neither.
-    if (avow_refusal(1, 1, 1, true, true)) |why| {
-        if (why != error.AvowMiscounted) {
-            print("  RED: a finding counted twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a finding answered and withheld at once went uncounted\n", .{});
-        return 1;
-    }
-    if (avow_refusal(1, 0, 0, true, true)) |why| {
-        if (why != error.AvowMiscounted) {
-            print("  RED: a finding counted nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a finding neither answered nor withheld went uncounted\n", .{});
-        return 1;
-    }
-    if (avow_refusal(1, 1, 0, true, true)) |why| {
-        print("  RED: an avowing inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_avow_measure();
+pub fn check_avow_refusals() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_avow_refusals();
 }
 
 /// Weighs the number this rung moves, as a pure fold.
-fn check_avow_measure() u8 {
-    if (unavowed_findings(1, .mute) != 1) {
-        print("  RED: a finding the plan never answered went uncounted\n", .{});
-        return 1;
-    }
-    if (unavowed_findings(1, .concedes) != 0) {
-        print("  RED: an answered finding still counted as one nobody spoke to\n", .{});
-        return 1;
-    }
-    if (unavowed_findings(1, .dissents) != 0) {
-        print("  RED: a plan keeping its word still counted as one that said nothing\n", .{});
-        return 1;
-    }
-    // A run that read no finding is fairly asked to answer nothing, so it costs
-    // the count nothing -- the harm this rung names is the verdict a plan went
-    // looking for, published, and then owed nothing to.
-    if (unavowed_findings(0, .mute) != 0) {
-        print("  RED: a run that heard nothing was owed a word of its own\n", .{});
-        return 1;
-    }
-
-    print("  five refusals stand by name: unheard, unfound, mismatched, miscounted, misrecorded\n", .{});
-    print("  the avowing this rung keeps: {s}\n", .{avow_words(.concedes)});
-    print("  what a bare plan leaves an operator: {s}\n", .{avow_words(.mute)});
-    print("  an avowal carries two bytes: the finding it answers, and the plan's word on it\n", .{});
-    print("  a plan that keeps its own word reads as {s}\n", .{avow_words(.dissents)});
-    return check_owe();
+pub fn check_avow_measure() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_avow_measure();
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -11823,157 +9401,28 @@ fn check_avow_measure() u8 {
 /// The happy zone of this rung: every question about when a concession may be
 /// carried forward, which admission a debt is about, and the honesty of the
 /// count answered as a pure fold -- no process anywhere.
-fn check_owe() u8 {
-    if (booked_in(1, .free) != 0) {
-        print("  RED: a free run booked a debt it was never asked to carry\n", .{});
-        return 1;
-    }
-    if (booked_in(1, .books) != 1) {
-        print("  RED: a booking run carried {d} concessions forward\n", .{booked_in(1, .books)});
-        return 1;
-    }
-    if (booked_in(0, .books) != 0) {
-        print("  RED: a run that conceded nothing booked a debt anyway\n", .{});
-        return 1;
-    }
-    if (unowed_in(1, .free) != 1 or unowed_in(1, .books) != 0) {
-        print("  RED: the other half of the count did not close on one concession\n", .{});
-        return 1;
-    }
-
-    // The debt's own two bytes, read back out of the record they ride in.
-    const owed = debt_bytes(.upholds, .carried);
-    if (!debt_answers(owed, .upholds)) {
-        print("  RED: a debt did not read back as one about its own concession\n", .{});
-        return 1;
-    }
-    if (debt_answers(owed, .overrules)) {
-        print("  RED: a debt about one finding read back as one about another\n", .{});
-        return 1;
-    }
-    if (debt_answers(null, .upholds)) {
-        print("  RED: a wire holding nothing read back as a standing debt\n", .{});
-        return 1;
-    }
-    // The outcome a concession was made under, read out of the debt rather than
-    // assumed of it, since a plan that already reported itself short owes a
-    // different look than one that said the work was carried out whole.
-    if (debt_under(owed) != .carried) {
-        print("  RED: a debt taken under a whole plan read back as some other outcome\n", .{});
-        return 1;
-    }
-    if (debt_under(debt_bytes(.upholds, .short)) != .short) {
-        print("  RED: a debt taken under a short plan read back as some other outcome\n", .{});
-        return 1;
-    }
-    if (debt_under(null) != null) {
-        print("  RED: a wire holding nothing named an outcome all the same\n", .{});
-        return 1;
-    }
-    if (!debt_holds(owed, owed)) {
-        print("  RED: a booked debt did not read back as the debt it was\n", .{});
-        return 1;
-    }
-    if (debt_holds(debt_bytes(.upholds, .short), owed)) {
-        print("  RED: a debt under some other outcome read back as this one\n", .{});
-        return 1;
-    }
-    if (debt_holds(null, owed)) {
-        print("  RED: a note holding nothing read back as a booked debt\n", .{});
-        return 1;
-    }
-    return check_owe_refusals();
+pub fn check_owe() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_owe();
 }
 
 /// Weighs every refusal this rung earns, in the order the run reaches them.
-fn check_owe_refusals() u8 {
-    // A plan that said nothing has conceded nothing, so there is no admission
-    // to carry -- and booking one there would record a word never spoken.
-    if (owe_refusal(1, 1, 0, false, false, true)) |why| {
-        if (why != error.OweUnsaid) {
-            print("  RED: a booking over a silent plan refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan that said nothing was made to owe the work a look\n", .{});
-        return 1;
-    }
-    // A plan that kept its own word owes the work nothing, and booking a debt
-    // there would turn holding one's ground into an admission of fault.
-    if (owe_refusal(1, 1, 0, true, false, true)) |why| {
-        if (why != error.OweUnconceded) {
-            print("  RED: a booking over a dissent refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a plan keeping its own word was booked as having conceded\n", .{});
-        return 1;
-    }
-    // The rung itself: a debt about some older concession, carried forward as
-    // though the plan had made it about the work in front of it today.
-    if (owe_refusal(1, 1, 0, true, true, false)) |why| {
-        if (why != error.OweMismatched) {
-            print("  RED: a debt about another argument refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a run booked an older concession against today's finding\n", .{});
-        return 1;
-    }
-    // The honesty of the count: every concession made is booked or left owing
-    // nothing -- never both and never neither.
-    if (owe_refusal(1, 1, 1, true, true, true)) |why| {
-        if (why != error.OweMiscounted) {
-            print("  RED: a concession counted twice refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a concession booked and unowed at once went uncounted\n", .{});
-        return 1;
-    }
-    if (owe_refusal(1, 0, 0, true, true, true)) |why| {
-        if (why != error.OweMiscounted) {
-            print("  RED: a concession counted nowhere refused with {s}\n", .{@errorName(why)});
-            return 1;
-        }
-    } else {
-        print("  RED: a concession neither booked nor unowed went uncounted\n", .{});
-        return 1;
-    }
-    if (owe_refusal(1, 1, 0, true, true, true)) |why| {
-        print("  RED: a booking inside its own count refused with {s}\n", .{@errorName(why)});
-        return 1;
-    }
-    return check_owe_measure();
+pub fn check_owe_refusals() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_owe_refusals();
 }
 
 /// Weighs the number this rung moves, as a pure fold.
-fn check_owe_measure() u8 {
-    if (unbooked_concessions(1, .free) != 1) {
-        print("  RED: a concession carrying nowhere went uncounted\n", .{});
-        return 1;
-    }
-    if (unbooked_concessions(1, .books) != 0) {
-        print("  RED: a booked concession still counted as one reaching nobody\n", .{});
-        return 1;
-    }
-    // A run that conceded nothing owes the work no further look, so it costs the
-    // count nothing -- the harm this rung names is the admission a plan made
-    // out loud and then let end with the breath that spoke it.
-    if (unbooked_concessions(0, .free) != 0) {
-        print("  RED: a run that conceded nothing was made to owe a debt\n", .{});
-        return 1;
-    }
-
-    print("  five refusals stand by name: unsaid, unconceded, mismatched, miscounted, misrecorded\n", .{});
-    print("  the owing this rung keeps: {s}\n", .{owe_words(.books)});
-    print("  what a bare plan leaves an operator: {s}\n", .{owe_words(.free)});
-    print("  a debt carries two bytes: the finding conceded, and the outcome conceded under\n", .{});
-    return 0;
+pub fn check_owe_measure() u8 {
+    // The rung below owns this check and everything it calls, so this
+    // rung runs it there rather than carrying a second copy of it.
+    return redressing_rung.check_owe_measure();
 }
 
 /// Weighs this rung's own arithmetic, as a pure fold, before any run is spent.
-fn check_meet() u8 {
+pub fn check_meet() u8 {
     if (met_in(1, .defers) != 0) {
         print("  RED: a deferring run met a debt it never looked at\n", .{});
         return 1;
@@ -12042,7 +9491,7 @@ fn check_meet() u8 {
 }
 
 /// Weighs every refusal this rung earns, in the order the run reaches them.
-fn check_meet_refusals() u8 {
+pub fn check_meet_refusals() u8 {
     // A run that inherited nothing has no admission to answer, and recording
     // one there would close a question no run ever opened.
     if (meet_refusal(1, 1, 0, false, true, true)) |why| {
@@ -12104,7 +9553,7 @@ fn check_meet_refusals() u8 {
 }
 
 /// Weighs the number this rung moves, as a pure fold.
-fn check_meet_measure() u8 {
+pub fn check_meet_measure() u8 {
     if (unmet_debts(1, .defers) != 1) {
         print("  RED: an admission nobody looked at went uncounted\n", .{});
         return 1;
@@ -12129,7 +9578,7 @@ fn check_meet_measure() u8 {
 }
 
 /// Weighs this rung's own arithmetic, as a pure fold, before any run is spent.
-fn check_redress() u8 {
+pub fn check_redress() u8 {
     if (redressed_in(1, .hollow) != 0) {
         print("  RED: a hollow run said what a look found after all\n", .{});
         return 1;
@@ -12218,7 +9667,7 @@ fn check_redress() u8 {
 }
 
 /// Weighs every refusal this rung earns, in the order the run reaches them.
-fn check_redress_refusals() u8 {
+pub fn check_redress_refusals() u8 {
     // A run that met nothing has no look to report on, and a finding filed there
     // would answer a question this plan never asked.
     if (redress_refusal(1, 1, 0, false, true, true)) |why| {
@@ -12280,7 +9729,7 @@ fn check_redress_refusals() u8 {
 }
 
 /// Weighs the number this rung moves, as a pure fold.
-fn check_redress_measure() u8 {
+pub fn check_redress_measure() u8 {
     if (hollow_meetings(1, .hollow) != 1) {
         print("  RED: a meeting that said nothing went uncounted\n", .{});
         return 1;
@@ -12307,7 +9756,7 @@ fn check_redress_measure() u8 {
 }
 
 /// Weighs the delivery this rung makes, as a pure fold.
-fn check_apprise() u8 {
+pub fn check_apprise() u8 {
     if (apprised_in(1, .withheld) != 0) {
         print("  RED: a withholding run carried a finding to somebody after all\n", .{});
         return 1;
@@ -12357,7 +9806,7 @@ fn check_apprise() u8 {
 }
 
 /// Weighs every refusal this rung earns, in the order the run reaches them.
-fn check_apprise_refusals() u8 {
+pub fn check_apprise_refusals() u8 {
     // A run whose wire carries no finding has nothing to carry to anybody.
     if (apprise_refusal(1, 1, 0, false, true, true)) |why| {
         if (why != error.AppriseUnfound) {
@@ -12418,7 +9867,7 @@ fn check_apprise_refusals() u8 {
 }
 
 /// Weighs the number this rung moves, as a pure fold.
-fn check_apprise_measure() u8 {
+pub fn check_apprise_measure() u8 {
     if (unheard_findings(1, .withheld) != 1) {
         print("  RED: a finding its raiser never heard went uncounted\n", .{});
         return 1;
@@ -12451,7 +9900,7 @@ fn check_apprise_measure() u8 {
 /// in it -- **and it falls with that receipt**, since a finding standing beside
 /// a meeting that no longer happened would tell a later run what some look found
 /// that this plan's own wire has forgotten.
-fn check_redress_wire(io: std.Io, sys: *const system.System) u8 {
+pub fn check_redress_wire(io: std.Io, sys: *const system.System) u8 {
     clear_met(io);
     clear_redress(io);
     met_note(io, inherited_debt) catch |err| {
@@ -12519,7 +9968,7 @@ fn check_redress_wire(io: std.Io, sys: *const system.System) u8 {
 /// **and it falls when the reader's box is cleared**, so a lap always begins
 /// with a reader who has heard nothing rather than with yesterday's answer
 /// standing in for today's.
-fn check_apprise_wire(io: std.Io, sys: *const system.System) u8 {
+pub fn check_apprise_wire(io: std.Io, sys: *const system.System) u8 {
     clear_apprise(io, standing_address);
     clear_met(io);
     clear_redress(io);
@@ -12582,7 +10031,7 @@ fn check_apprise_wire(io: std.Io, sys: *const system.System) u8 {
 /// would have every run after this one meet the same admission again -- **and
 /// the debt it answers is truly down**, since a receipt written beside a debt
 /// still standing would close a question the wire says is still open.
-fn check_meet_wire(io: std.Io, sys: *const system.System) u8 {
+pub fn check_meet_wire(io: std.Io, sys: *const system.System) u8 {
     clear_owe(io);
     clear_met(io);
     seat_note(io, plan_name, ".owe", &inherited_debt) catch |err| {
@@ -12649,7 +10098,7 @@ fn check_meet_wire(io: std.Io, sys: *const system.System) u8 {
 /// morning would quiet the oldest quarrel on the wire -- **and it falls with
 /// that position**, since a byte left behind beside the outcome would go on
 /// shouting for a quarrel its own holder let go.
-fn check_swell_wire(io: std.Io, sys: *const system.System) u8 {
+pub fn check_swell_wire(io: std.Io, sys: *const system.System) u8 {
     _ = provision_notes(io, sys) catch |err| {
         print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
         return 1;
@@ -12711,7 +10160,7 @@ fn check_swell_wire(io: std.Io, sys: *const system.System) u8 {
 /// case back off a third hand's desk the moment the argument ended its own way
 /// would have referred nothing at all; it would have shown somebody a document
 /// and then closed their hand around it.
-fn check_refer_wire(io: std.Io, sys: *const system.System) u8 {
+pub fn check_refer_wire(io: std.Io, sys: *const system.System) u8 {
     _ = provision_notes(io, sys) catch |err| {
         print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
         return 1;
@@ -12761,7 +10210,7 @@ fn check_refer_wire(io: std.Io, sys: *const system.System) u8 {
 /// exactly where that hand left it -- and **the plan's own published copy is the
 /// plan's**, so clearing the copy an operator reads never reaches onto somebody
 /// else's desk to take back what they said.
-fn check_deem_wire(io: std.Io, sys: *const system.System) u8 {
+pub fn check_deem_wire(io: std.Io, sys: *const system.System) u8 {
     _ = provision_notes(io, sys) catch |err| {
         print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
         return 1;
@@ -12823,7 +10272,7 @@ fn check_deem_wire(io: std.Io, sys: *const system.System) u8 {
 /// left it -- and **it falls with the finding it answers**, since a word left
 /// standing beside a verdict no longer published would have the plan answering
 /// an argument nobody is making.
-fn check_avow_wire(io: std.Io, sys: *const system.System) u8 {
+pub fn check_avow_wire(io: std.Io, sys: *const system.System) u8 {
     _ = provision_notes(io, sys) catch |err| {
         print("  RED: a plan could not be provisioned at all: {s}\n", .{@errorName(err)});
         return 1;
@@ -12887,7 +10336,7 @@ fn check_avow_wire(io: std.Io, sys: *const system.System) u8 {
 /// and wake up owing nothing. **And it falls with the concession it carries**,
 /// because a debt standing beside a word the plan no longer holds would have a
 /// later run meeting an admission nobody is making.
-fn check_owe_wire(io: std.Io, sys: *const system.System) u8 {
+pub fn check_owe_wire(io: std.Io, sys: *const system.System) u8 {
     clear_deem(io);
     clear_avow(io);
     clear_owe(io);
@@ -12948,7 +10397,7 @@ fn check_owe_wire(io: std.Io, sys: *const system.System) u8 {
 /// hand that is neither party, with that hand's own answer sitting in their box
 /// the whole time -- once left unread, and once read and published beside the
 /// outcome.
-fn check_apprise_runs(
+pub fn check_apprise_runs(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,

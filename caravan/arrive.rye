@@ -417,7 +417,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 /// The happy zone of this rung: every question here is a pure fold over the
 /// plan, answered instantly, with no dependent started and no store touched. The
 /// thin edge comes after, where only real processes can tell the truth.
-fn check_arrival() u8 {
+pub fn check_arrival() u8 {
     // A plan grown one phase at a time is the plan its author wrote.
     var grown_store: [max_queue_len]Phase = undefined;
     const grown = grown_store[0..written_queue.len];
@@ -519,7 +519,7 @@ fn run_grown(
 }
 
 /// The arrival lap: one plan run twice, handed whole and handed one at a time.
-fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 
