@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.113447` -- the owe live edge folds as the meet rung seats
+
+**Walk-back nib:** `fcd1d65024` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **owe** rung and the pointer bullet beneath it, folded into one condensed line naming owe, avow, deem, refer, swell, dwell, relent, heed, and endure, so the card leads with the rung that just landed rather than carrying a second copy of the log index.
+
+**What waits there, worth recalling:** the inline account of a concession reaching the run that comes after it -- the debt being the only note in the whole arc written for a run that has not started, and that forward address being exactly what makes an admission cost something; `OweUnconceded` refusing to book a debt against a dissent, since booking one would turn holding one's ground into an admission of fault and teach every supervisor to concede nothing; a debt carrying two bytes, the finding conceded and the outcome it was conceded under, because a plan that said `carried out whole` while conceding owes a different look than one already reporting itself short; booking proven not to be repairing; and a debt outliving a provisioning, since one swept every morning would let a plan concede at bedtime and wake owing nothing. Every word of it also rests in `caravan/README.md` and its own dated log `20260820-111803`; the cairn is the cheaper walk-back.
+
+
 ### `20260820.111618` -- the avow live edge folds as the owe rung seats
 
 **Walk-back nib:** `8178a12701` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
