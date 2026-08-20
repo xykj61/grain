@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit — so the old files liv
 
 ## The ledger (newest first)
 
+### `20260819.232254` -- Caravan's whole `child` vocabulary molted to `dependent`, and the history rewritten behind it
+
+**Walk-back nib:** `5f6ec40c39` -- **local only.** This is a *deep* debride: the caravan blobs and the `caravan:` commit subjects are rewritten across the whole history and force-pushed to `origin` and `xykj61`, so this nib is **unreachable on both remotes** after the send. It survives on this pier alone, on the branch `pre-dependent-debride-20260819`. Anyone wanting the departing vocabulary reads it there, or not at all.
+
+**Swept:** every `child` / `children` in `caravan/**` and `tools/caravan_*` -- 2,067 bare `child`, 375 `children`, and the identifier family around them (`ChildSlot`, `ChildId`, `InvalidChild`, `ChildNeverExited`, `max_children`, `max_caps_per_child`, `max_peers_per_child`, `max_restarts_per_child`, `run_child`, `find_child`, `add_child`, `child_count`, `child_of`, `no_such_child`) across 93 tracked files, plus the witness file `tools/caravan_children_a1_gate_bound_witness.rish` renamed to `..._dependents_...`. The `caravan:` commit subjects in history carry the same molt. The `std.process.Child` seam is **kept** -- it is Zig's name, not ours.
+
+**What waits there, worth recalling:** the departing word is the whole point. `child` carried a parent/offspring reading that the ring arc had already outgrown -- by `unhand.rye` and `taper.rye` a supervised process is weighed by *the line it holds*, and by `confer.rye` and `revoke.rye` its reach travels and returns on its own. That is a **dependent**, not a child. The old nib holds every sentence in the elder reading, including the README's fifty-odd ring rows written in it, if a future reader ever wants to see how the vocabulary sounded before it was corrected.
+
+
 ### `20260819.223443` -- REMEMBER's taper chronicle folded to a pointer as the entrust rung lands
 
 **Walk-back nib:** `8f65552046` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.

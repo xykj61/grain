@@ -1,0 +1,69 @@
+# tools/caravan_suite_witness.rish -- the choir for the Microkernel Target's Caravan arc, and the guard that keeps it whole.
+#
+# The lantern that fires becomes a loom. Fifty-two per-rung Caravan witnesses had landed on disk, each GREEN in its own right,
+# with nothing that heard them all: three consecutive rounds named this ratchet by name and left it standing. REDS #81 already
+# taught the cost in the crypto library -- nine rungs landed as their own green witnesses and the choir never registered one of
+# them, so a whole ladder ran unheard. This witness closes that door for Caravan.
+#
+# It does two things, in order. First it proves the roster is whole: every tools/caravan_*_witness.rish on disk is registered
+# here, and every path registered here exists on disk -- a bijection, not a bare tally, so a rung's witness can never land
+# unheard and a roster line can never point at nothing. Then it runs the whole roster and asserts each one GREEN, naming
+# exactly which rung broke if any does.
+#
+# Season: the Lindy-priority Microkernel Target double-seat (Caravan on seL4/Genode, clean-room study; Tally on s6/skalibs).
+# Design read: active-designing/20260816-205859_double-seat-expansion-eight-seasons.md.
+# Kin: tools/crypto_suite_witness.rish (the elder choir this is shaped after), tools/crypto_count_guard_witness.rish (the
+# bijection guard REDS #80 booked, folded here into one file), caravan/README.md (the rung-by-rung record).
+#
+# Caravan's helper modules and dependent-program fixtures -- bounded, capabilities, chain, parse_int, seed, service, tally_copy,
+# twin, and the supervisor_* and *_test programs a witness spawns -- carry no witness of their own on purpose: they are proven
+# through the rungs that compose them, rather than in isolation. So the bijection here binds witnesses to the roster, never
+# modules to witnesses; that honest asymmetry is why this guard counts what it counts.
+#
+# This authors no supervision -- it runs and compares. Purely local: no key, no signature, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_suite_witness.rish
+
+say "caravan-suite: Language EN -- the Caravan choir: one run that hears every per-rung witness of the Microkernel Target arc, and a guard proving the roster it sings from is whole."
+say "caravan-suite: Style Radiant -- a rung is proven when a witness says so, and an arc is proven when nothing in it is unheard. The roster is checked before it is sung, so the count this witness prints is measured rather than remembered."
+say "caravan-suite: Lens TAME -- every tools/caravan_*_witness.rish on disk is asserted registered here, every registration is asserted to exist on disk, and then each is asserted GREEN. RED names exactly which rung broke the bijection or the run. Purely local -- no key, no network, no funds, no device."
+
+let mk = run ["sh" "-c" "mkdir -p caravan/bin"]
+assert mk.ok else "caravan-suite: could not make caravan/bin -- ${mk.err}"
+
+let witnesses = [ "tools/caravan_arrange_witness.rish" "tools/caravan_arrive_witness.rish" "tools/caravan_boot_witness.rish" "tools/caravan_c4_exit_meanings_eq_witness.rish" "tools/caravan_caps_a1_gate_bound_witness.rish" "tools/caravan_carry_witness.rish" "tools/caravan_channels_witness.rish" "tools/caravan_dependents_a1_gate_bound_witness.rish" "tools/caravan_cohort_witness.rish" "tools/caravan_commute_witness.rish" "tools/caravan_concurrent_witness.rish" "tools/caravan_confer_witness.rish" "tools/caravan_cycle_witness.rish" "tools/caravan_decline_witness.rish" "tools/caravan_enlist_witness.rish" "tools/caravan_entrust_witness.rish" "tools/caravan_exercise_witness.rish" "tools/caravan_fanin_witness.rish" "tools/caravan_fence_witness.rish" "tools/caravan_gap_witness.rish" "tools/caravan_glow_tend_limb1_witness.rish" "tools/caravan_glow_tend_limb2_witness.rish" "tools/caravan_glow_tend_limb3_witness.rish" "tools/caravan_glow_tend_limb4_witness.rish" "tools/caravan_harvest_witness.rish" "tools/caravan_inflight_witness.rish" "tools/caravan_intent_witness.rish" "tools/caravan_mask_witness.rish" "tools/caravan_notify_witness.rish" "tools/caravan_overtake_witness.rish" "tools/caravan_phases_witness.rish" "tools/caravan_precede_witness.rish" "tools/caravan_queue_witness.rish" "tools/caravan_read_witness.rish" "tools/caravan_rederive_witness.rish" "tools/caravan_regions_witness.rish" "tools/caravan_relay_witness.rish" "tools/caravan_replace_witness.rish" "tools/caravan_restart_witness.rish" "tools/caravan_revoke_witness.rish" "tools/caravan_rolling_witness.rish" "tools/caravan_roster_witness.rish" "tools/caravan_roundtrip_witness.rish" "tools/caravan_serve_witness.rish" "tools/caravan_stall_witness.rish" "tools/caravan_standby_witness.rish" "tools/caravan_system_witness.rish" "tools/caravan_taper_witness.rish" "tools/caravan_understudy_witness.rish" "tools/caravan_unhand_witness.rish" "tools/caravan_unprompted_witness.rish" "tools/caravan_withdraw_witness.rish" ]
+
+# The per-rung witnesses on disk, one bare name per line, sorted, excluding this suite itself.
+let list_disk = run ["sh" "-c" "find tools -maxdepth 1 -name 'caravan_*_witness.rish' -type f | sed 's:.*/::; s:.rish$::' | grep -v '^caravan_suite_witness$' | sort > caravan/bin/.cs_disk.txt"]
+assert list_disk.ok else "caravan-suite: could not list the per-rung witnesses on disk -- ${list_disk.err}"
+
+# The names this suite registers, one per line, sorted, excluding this suite itself.
+let list_reg = run ["sh" "-c" "grep -oE 'caravan_[a-z0-9_]+_witness' tools/caravan_suite_witness.rish | grep -v '^caravan_suite_witness$' | sort -u > caravan/bin/.cs_reg.txt"]
+assert list_reg.ok else "caravan-suite: could not read this suite's own registrations -- ${list_reg.err}"
+
+# Bijection A: every per-rung witness on disk is registered here, so no rung ever runs unheard.
+let unheard = run ["sh" "-c" "grep -Fxv -f caravan/bin/.cs_reg.txt caravan/bin/.cs_disk.txt || true"]
+assert unheard.ok else "caravan-suite: bijection scan A failed -- ${unheard.err}"
+assert (trim unheard.out) == "" else "caravan-suite: a Caravan witness on disk is not registered in this choir -- ${unheard.out}"
+
+# Bijection B: every registration here exists on disk, so no roster line ever points at nothing.
+let phantom = run ["sh" "-c" "grep -Fxv -f caravan/bin/.cs_disk.txt caravan/bin/.cs_reg.txt || true"]
+assert phantom.ok else "caravan-suite: bijection scan B failed -- ${phantom.err}"
+assert (trim phantom.out) == "" else "caravan-suite: this choir registers a witness with no file on disk -- ${phantom.out}"
+
+let disk_c = run ["sh" "-c" "wc -l < caravan/bin/.cs_disk.txt | tr -d ' \n'"]
+assert disk_c.ok else "caravan-suite: could not count the witnesses on disk -- ${disk_c.err}"
+let n_disk = trim disk_c.out
+
+let reg_c = run ["sh" "-c" "wc -l < caravan/bin/.cs_reg.txt | tr -d ' \n'"]
+assert reg_c.ok else "caravan-suite: could not count this suite's registrations -- ${reg_c.err}"
+let n_reg = trim reg_c.out
+
+assert n_disk == n_reg else "caravan-suite: Caravan witnesses on disk (${n_disk}) differ from those this choir registers (${n_reg})"
+
+say "caravan-suite: roster whole -- ${n_disk} per-rung witnesses on disk, each registered here and each registering a real file. Singing them now."
+
+for-each witnesses as w do assert (run ["rishi/bin/rishi" "run" w]).ok else "caravan-suite: a per-rung witness went RED -- ${w}"
+
+say "GREEN caravan-suite -- ${n_disk} Caravan witnesses registered and run, every rung of the Microkernel Target arc heard in one voice"
