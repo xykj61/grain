@@ -139,13 +139,13 @@ clutter=$((pen_super + pen_ratchet + pen_target + pen_over70))
 [ "$clutter" -gt 100 ] && clutter=100
 fascia=$((100 - clutter))
 
-# --- Amphora stack bits (folds proven in .rish; shell names presence) ---
-amphora_ready=no
-amphora_stack=missing
-if [ -f tools/amphora_lap1.rish ] && [ -f tools/amphora_lap2.rish ] && [ -f tools/amphora_lap3.rish ] && [ -d amphora ]; then
-  amphora_ready=yes
-  amphora_stack=laps1-3
-fi
+# --- The Amphora presence bits were removed `20260821.180613`, closing REDS %112 ---
+# They printed `amphora_ready=yes` while testing only that three FILES existed, so the line said
+# "ready" and measured "present" -- a claim strictly weaker than its own name, and wrong on this
+# pier, where lap 2 cannot run at all for want of `openssl`. They were never a fascia signal
+# either: nothing downstream read them, and connective-tissue health does not depend on one
+# module's stack. Amphora is proven by the eight `tools/amphora_*_witness.rish` rungs, which is
+# where a claim about Amphora belongs.
 
 # --- Moving window: fall-visibility baseline = window_min (i7+) ---
 # i9 carry law: a metric revision carries its window forward, marked by
@@ -275,7 +275,7 @@ awk -F'\t' '
 
 echo "fascia-metric-v0: Language EN — connective-tissue grade (difficulty-style)."
 echo "fascia-metric-v0: Style Radiant — measure clutter; refuse shred."
-echo "fascia-metric-v0: Lens TAME — Amphora path; no breach from this tool."
+echo "fascia-metric-v0: Lens TAME -- measure only; no breach from this tool, and no gate on any other module."
 echo "metric_rev=${metric_rev}"
 echo "signal:superseded=${superseded} penalty=${pen_super} weight=half"
 echo "signal:ratchet_outstanding=${ratchet_out} (py=${tools_py} memcpy_app=${memcpy_app} camel=${camel} parseint=${parseint}) penalty=${pen_ratchet} weight=4"
@@ -288,7 +288,5 @@ echo "window_size=8 window_n=${window_n} window_mean=${window_mean} window_min=$
 echo "prior_baseline=${baseline} delta=${baseline_delta} baseline_kind=window_min"
 echo "prior_mean=${prior_mean} delta_vs_mean=${delta_vs_mean}"
 echo "window_carry=${window_carry} window_seeded=${window_seeded} window_arc_seed=100,85,92 window_arc_fall=-15"
-echo "amphora_ready=${amphora_ready}"
-echo "amphora_stack=${amphora_stack}"
 echo "refuse: shred · breach · deploy · wallet · gas (measure only)"
-echo "GREEN: fascia-metric-v0 — grade ${fascia}/100 · four signals · ${metric_rev} · amphora_stack=${amphora_stack} · no shred"
+echo "GREEN: fascia-metric-v0 -- grade ${fascia}/100 - four signals - ${metric_rev} - no shred"

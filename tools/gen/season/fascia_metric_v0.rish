@@ -13,27 +13,24 @@
 
 
 say "fascia-metric-v0: Language EN — fascia grade from measurable clutter."
-say "fascia-metric-v0: Style Radiant — GREEN when four signals, window, Amphora stack."
-say "fascia-metric-v0: Lens TAME — Amphora measure door; no live shred."
+say "fascia-metric-v0: Style Radiant -- GREEN when four signals and the window read; the meter reports its own reading and gates on nothing else."
+say "fascia-metric-v0: Lens TAME -- an instrument no more braided than the thing it measures; measure only, no live shred."
 
 let verb = ""
 if length args != 0 then let verb = args[0]
 
-# Amphora stack fold — laps 1–3 must green beside the meter.
-let amphora1 = run ["rishi/bin/rishi" "run" "tools/gen/amphora/amphora_lap1.rish"]
-assert amphora1.ok else "fascia-metric-v0 Amphora manifest-entry fold RED"
-assert amphora1.out contains "manifest entry + vessel seated" else "fascia-metric-v0 Amphora manifest-entry missing GREEN"
-say "fold: amphora_lap1 GREEN"
-
-let amphora2 = run ["rishi/bin/rishi" "run" "tools/gen/amphora/amphora_lap2.rish"]
-assert amphora2.ok else "fascia-metric-v0 Amphora Cellar-pour fold RED"
-assert amphora2.out contains "Cellar season poured" else "fascia-metric-v0 Amphora Cellar-pour missing GREEN"
-say "fold: amphora_lap2 GREEN"
-
-let amphora3 = run ["rishi/bin/rishi" "run" "tools/gen/amphora/amphora_lap3.rish"]
-assert amphora3.ok else "fascia-metric-v0 Amphora cargo-fetch fold RED"
-assert amphora3.out contains "vessel cargo fetched over Comlink" else "fascia-metric-v0 Amphora cargo-fetch missing GREEN"
-say "fold: amphora_lap3 GREEN"
+# UNBRAIDED `20260821.180613`, closing REDS %112. Three Amphora laps used to run as a GATE here,
+# and this meter could not report a fascia grade unless all three passed. Lap 2 has been failing
+# on this pier because `openssl` is not installed -- an ENVIRONMENTAL absence in an unrelated
+# module -- so the meter that reports the tree's connective-tissue health has been silent for an
+# unknown span, and no surface said so.
+#
+# An instrument must be no more braided than the thing it measures. A meter gated behind three
+# unrelated laps has three ways to go silent and no way to say which, and it will spend most of
+# its life reporting nothing. The laps are not lost: eight Amphora witnesses already prove that
+# stack (`tools/amphora_*_witness.rish`), which is where a claim about Amphora belongs.
+#
+# The meter now takes its reading directly.
 
 let metric = run ["sh" "tools/fixtures/fascia_metric_v0.sh" verb]
 assert metric.ok else "fascia-metric-v0 REFUSE or measure failed — see stderr"
@@ -51,8 +48,6 @@ assert metric.out contains "baseline_kind=window_min" else "fascia-metric-v0 mis
 assert metric.out contains "window_carry=honored" else "fascia-metric-v0 missing window carry"
 assert metric.out contains "window_arc_fall=-15" else "fascia-metric-v0 missing arc fall"
 assert metric.out contains "delta_vs_mean=" else "fascia-metric-v0 missing delta_vs_mean"
-assert metric.out contains "amphora_ready=yes" else "fascia-metric-v0 amphora_ready not yes"
-assert metric.out contains "amphora_stack=laps1-3" else "fascia-metric-v0 amphora_stack not laps1-3"
 assert metric.out contains "weight=half" else "fascia-metric-v0 missing i5 half-weight on superseded"
 assert metric.out contains "refuse: shred" else "fascia-metric-v0 missing refuse line"
 say metric.out
@@ -61,4 +56,4 @@ say metric.out
 let refuse = run ["sh" "tools/fixtures/fascia_metric_v0.sh" "shred"]
 assert (refuse.ok == false) else "fascia-metric-v0 refuse-walk broken: shred must exit RED"
 
-say "GREEN: fascia-metric-v0 — i9 window carry · hold disclosed · window_min baseline · shred refuse RED."
+say "GREEN: fascia-metric-v0 -- the grade above is measured and reported; window carry, hold disclosed, window_min baseline, shred refuse RED, and nothing unrelated standing between the reading and the reader."

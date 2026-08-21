@@ -1,0 +1,34 @@
+format session-log-v1
+stamp 20260821.180613
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The meter unbraided, and the first hour written from commands actually run
+prompt unbraid the fascia meter, then open arc four
+think Read the meter whole before touching it and found the braid was entirely in the wrapper. The measurement itself was fine -- tools/fixtures/fascia_metric_v0.sh reports a grade in under six seconds -- and three Amphora laps sat in front of it as a gate.
+think Found why lap 2 fails, and it was not a code defect: openssl is absent from this pier. A health meter had been silent for an unknown span on account of a missing binary in an unrelated module, which is the braid stated as plainly as it can be stated.
+think Found a second thing on the way in that nobody had asked me to look for. The scan printed amphora_ready=yes while testing only that three FILES existed -- a claim strictly weaker than its own name, and false here, since the lap it declared ready cannot run at all. REDS %110's lesson at a different scale: a line that prints a stronger word than it measures is a red whether or not anyone has noticed.
+think Removed both presence bits rather than repairing them. Nothing downstream read them, connective-tissue health does not depend on one module's stack, and eight amphora witnesses already prove Amphora, which is where a claim about Amphora belongs.
+think Left lap 2 honestly RED and said so in the closing row rather than letting the unbraid read as a fix. The lap needs openssl installed or its export taught the sha256sum already present, and that is its own round.
+think Chose the README's four numbers by what MOVES rather than by what impresses. fascia, witnesses, modules, rooms-over-bound change when something real changes; the commit count and the file count move every commit, say nothing about whether the software is well, and would make the block stale within a day -- which is how a generated block quietly stops being regenerated.
+think Hit two Rishi bounds building the renderer and treated both as design rather than obstacle. There is no escape for a newline and no multi-line string, so a real newline comes from printf -- the shell owns character escapes and asking it for the one character needed is smaller than teaching the language a syntax. And Rishi strings are bounded, so an 18 KB README overruns them: the claim stays in Rishi and the byte-shuffling goes to a fixture, which is the honest division rather than a workaround.
+think Proved the drift path by building it. A copy of the real README gets one digit changed to a number no measurement will ever produce, and the check must refuse it by name. A generated number is only worth more than a typed one while it is regenerated; left alone it becomes a typed number wearing a generated one's clothes, and trusted MORE for it.
+think Refused to write a tutorial command I had not run. Testing found rish_env_witness needs an env var a runner sets, so it would have failed for every beginner who copied it -- the first command in a first hour, failing, is the worst possible first impression. rish_exit_codes_witness runs standalone in 0.05 seconds and prints a green line that means something.
+think Tested the five-line program before writing it down, and let its real output stand: 78 rooms. Two of its five lines are assertions, which is the discipline in miniature and worth saying out loud to someone on their first day.
+obs Named the roughest edge rather than papering over it. There is no one-command toolchain fetch in this tree, so step two of the first hour is a download done by hand. Every other step is copyable. Writing that down honestly is worth more than inventing a command that does not exist, and it names the next thing worth smoothing.
+obs Fixed the em dash in rish_exit_codes_witness rather than quoting it into a new ASCII-first document. The rule repairs on touch, and fixing the source beats fixing the quote -- the tutorial now shows exactly what the tool prints, and both are ASCII.
+loom meter=fascia unbraided=yes gates_removed=3 grade=45 of=100 wall_s=5.7 was=silent
+loom readme=metrics_block numbers=4 fascia=45 witnesses=1633 modules=1887 rooms_over=0 idempotent=yes drift_refused=yes
+loom tutorial=first_hour steps=6 commands_tested=6 commands_untested=0 hand_steps=1 reason=no_toolchain_fetch_command
+file tools/gen/season/fascia_metric_v0.rish the three Amphora gates removed; the meter takes its reading directly
+file tools/fixtures/fascia_metric_v0.sh the false amphora_ready line removed rather than repaired
+file crux/REDS.md %112 CLOSED -- the meter reports 45, and lap 2 is left honestly red with its reason
+file tools/readme_metrics.rish renders the four numbers and splices them; newline from printf, bytes to a fixture
+file tools/fixtures/readme_metrics_scan.sh the four numbers, and the argued absence of the other two
+file tools/fixtures/readme_metrics_check.sh is the block still true against a measurement taken this second
+file tools/fixtures/readme_metrics_control.sh a planted drift, so the check is proven to refuse
+file tools/readme_metrics_witness.rish true, generated, refuses drift, idempotent
+file README.md the generated block between markers, and the first-hour link above the map
+file docs-geode/tutorials/the-first-hour.md six steps, every command run before it was written down
+recommend check-in (checkpoint) all four arcs are closed and the front door carries a real number. Two doors want a word rather than a kg: the colour normalization booked as REDS %114, which edits dated bodies, and a one-command toolchain fetch, which is the roughest edge left on the beginner path and the honest next thing to smooth. Amphora lap 2 stays red on this pier for want of openssl, named in %112's closing row so it is not mistaken for fixed.
