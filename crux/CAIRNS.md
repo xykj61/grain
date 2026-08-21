@@ -24,6 +24,14 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260821.073606` -- the reply and edge live edges condense as fold N lands
+
+**Walk-back nib:** `b356c54b8e` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read while the refusal agenda was closing stands whole at this nib.
+
+**Swept:** `crux/REMEMBER.md` -- the two full live-edge bullets for `caravan/reply.rye` (`20260821.071421`) and `caravan/edge.rye` (`20260821.063720`) condense into one pointer bullet, roughly 6 KB of card, as fold N takes the live edge. Both arcs are recorded in full in `caravan/README.md` and in their own dated session logs.
+
+**What waits there, worth recalling:** the reply bullet holds the four-stage reading order and the muted-table RED path in the card's own words, and the edge bullet holds why seL4's alphabetical error listing is a reading order rather than a checking order -- both facts now living in `caravan/README.md`, yet stated more briefly there than the departing card stated them.
+
 ### `20260821.020803` -- the fold-L live edge folds as fold M lands and the printed queue proves itself
 
 **Walk-back nib:** `445da815d9` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when the fourth meter had just opened stands at this nib and every commit before it.

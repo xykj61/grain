@@ -7178,73 +7178,7 @@ fn reckon_the_plan(
     review: Review,
     report_out: *Report,
 ) (RunError || NoteError)!void {
-    // invariant: a reckoning always reads a record the run has drained
-    assert(table.left == 0);
-    const absorbed = abandoning_of(report_out).inner.inner.inner.inner.absorbed;
-    const lost = abandoning_of(report_out).abandoned;
-    try lost_note(io, table.held, table.lost_mask);
-    // The bearing rides beside the loss, written from the plan the run seated
-    // rather than from anything it learned along the way: a phase asked to be
-    // borne asked it before the run began.
-    try bearing_note(io, table.held, table.lost_mask & table.bear_mask);
-    // The appraisal rides beside both, and unlike either it is written from
-    // what the run learned: which of the losses its author left unmarked this
-    // run's own downstream says the plan got past. Written here, while the run
-    // still holds the record that proves it, and read back before the repair
-    // spares a single phase on its word.
-    // The judgment already standing on the wire, read before this run writes a
-    // word over it. It may have been left by a run that is over, since the
-    // appraisal is the one note a run never clears.
-    const held_before = appraisal_published(io, table.held);
-    // What this run's own record supports, folded fresh from the evidence it
-    // still holds.
-    const evidenced = appraised_in(standing(table), table.lost_mask, table.bear_mask);
-    // The reversal, and the whole of what this rung adds: which standing
-    // judgments this run lost the same arc for and declines to weigh spent.
-    // Under `.stand` a run publishes none, since it never weighs what it found.
-    const taken_back = if (review == .revisit)
-        recanted_in(held_before, evidenced, table.lost_mask)
-    else
-        0;
-    // The supply, refused by name while the judgment it must answer to is still
-    // in hand: a recantation may reach only an arc some appraisal spared.
-    if (unappraised_reach(held_before, taken_back)) |why| return why;
-    try recant_note(io, table.held, taken_back);
-    // The appraisal rides beside both. Under `.revisit` it is exactly what this
-    // run's evidence supports, so a recanted judgment leaves the wire in the
-    // same breath it is taken back. Under `.stand` this run's reading joins the
-    // one it found rather than weighing it -- which is where the rung below
-    // leaves a record, and why a plan the wire holds no judgment about reads
-    // there exactly.
-    try appraisal_note(io, table.held, switch (review) {
-        .stand => held_before | evidenced,
-        .revisit => evidenced,
-    });
-    if (absorbed == 0) {
-        // invariant: a plan that absorbed nothing can have lost nothing
-        assert(lost == 0);
-        // invariant: a plan that lost nothing names no phase in its loss
-        assert(table.lost_mask == 0);
-        below_of(report_out).inner.verdict = .carried;
-        below_of(report_out).settled = .carried;
-        bearing_of(report_out).settlement = .carried;
-        try verdict_note(io, .carried);
-        try settlement_note(io, .carried);
-        return;
-    }
-    if (reckon_refusal(absorbed, table.in_flight, lost)) |why| return why;
-
-    const verdict = verdict_in(lost, ledger);
-    try verdict_note(io, verdict);
-    const said = verdict_published(io) orelse return error.ReckonOverclaimed;
-    if (said != verdict) return error.ReckonOverclaimed;
-    if (ledger == .reckoned and said == .carried and lost >= 1) return error.ReckonOverclaimed;
-    below_of(report_out).inner.verdict = said;
-    below_of(report_out).inner.overclaimed += overclaimed_completion(lost, said);
-    // Where the run stands before any repair: the loss, entire. A mend moves
-    // this number and nothing else moves it.
-    below_of(report_out).unserved = lost;
-    below_of(report_out).settled = said;
+    return ladder_checks.reckon_the_plan(@This(), io, table, ledger, review, report_out);
 }
 
 // =========================================================================

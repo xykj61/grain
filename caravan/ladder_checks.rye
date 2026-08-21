@@ -5887,3 +5887,108 @@ pub fn mend_the_plan(
     // conferred away. So the work still standing is the loss minus the repair.
     try rung.settle_the_plan(io, lost, wrote, report_out);
 }
+
+/// Publishes what a run came to, weighs the judgments standing on its own
+/// wire, and leaves the report holding exactly the loss a repair must answer.
+///
+/// Thirty-seven rungs held this body byte for byte at seventy-five lines
+/// apiece -- 2,700 carried lines, the largest family standing on the ladder
+/// once `mend_the_plan` was lifted, and named here by the whole-body meter
+/// rather than by which name somebody happened to look at
+/// (`../tools/fixtures/caravan_ladder_carry_scan.sh`).
+///
+/// All thirty-seven stood identical on their own, and every one of the
+/// eighteen symbols this body reaches -- its own report and the tiers beneath
+/// it, the four notes it writes to the wire and the three it reads back, the
+/// two masks it folds, and each refusal it may raise -- already stood public
+/// on all thirty-seven. So this fold cost no accessor at all, which is what a
+/// ladder looks like after eleven folds have taught it to publish what it
+/// shares.
+///
+/// Four elder rungs keep a body of their own -- `reckon.rye` at 27 lines,
+/// `mend.rye` at 35, `bear.rye` at 41, and `appraise.rye` at 51 -- because
+/// each is the rung where a tier grew and its body genuinely differs. A fold
+/// that swept them in would have folded four different meanings into one, so
+/// they stay home and the meter keeps counting them apart.
+///
+/// Nothing varies between the thirty-seven, so nothing arrives as comptime
+/// text. The rung hands itself in, and each still reckons its own plan,
+/// against its own wire, into its own report.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_carry_scan.sh`.
+pub fn reckon_the_plan(
+    comptime rung: type,
+    io: std.Io,
+    table: *const rung.Table,
+    ledger: rung.Ledger,
+    review: rung.Review,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    // invariant: a reckoning always reads a record the run has drained
+    assert(table.left == 0);
+    const absorbed = rung.abandoning_of(report_out).inner.inner.inner.inner.absorbed;
+    const lost = rung.abandoning_of(report_out).abandoned;
+    try rung.lost_note(io, table.held, table.lost_mask);
+    // The bearing rides beside the loss, written from the plan the run seated
+    // rather than from anything it learned along the way: a phase asked to be
+    // borne asked it before the run began.
+    try rung.bearing_note(io, table.held, table.lost_mask & table.bear_mask);
+    // The appraisal rides beside both, and unlike either it is written from
+    // what the run learned: which of the losses its author left unmarked this
+    // run's own downstream says the plan got past. Written here, while the run
+    // still holds the record that proves it, and read back before the repair
+    // spares a single phase on its word.
+    // The judgment already standing on the wire, read before this run writes a
+    // word over it. It may have been left by a run that is over, since the
+    // appraisal is the one note a run never clears.
+    const held_before = rung.appraisal_published(io, table.held);
+    // What this run's own record supports, folded fresh from the evidence it
+    // still holds.
+    const evidenced = rung.appraised_in(rung.standing(table), table.lost_mask, table.bear_mask);
+    // The reversal, and the whole of what this rung adds: which standing
+    // judgments this run lost the same arc for and declines to weigh spent.
+    // Under `.stand` a run publishes none, since it never weighs what it found.
+    const taken_back = if (review == .revisit)
+        rung.recanted_in(held_before, evidenced, table.lost_mask)
+    else
+        0;
+    // The supply, refused by name while the judgment it must answer to is still
+    // in hand: a recantation may reach only an arc some appraisal spared.
+    if (rung.unappraised_reach(held_before, taken_back)) |why| return why;
+    try rung.recant_note(io, table.held, taken_back);
+    // The appraisal rides beside both. Under `.revisit` it is exactly what this
+    // run's evidence supports, so a recanted judgment leaves the wire in the
+    // same breath it is taken back. Under `.stand` this run's reading joins the
+    // one it found rather than weighing it -- which is where the rung below
+    // leaves a record, and why a plan the wire holds no judgment about reads
+    // there exactly.
+    try rung.appraisal_note(io, table.held, switch (review) {
+        .stand => held_before | evidenced,
+        .revisit => evidenced,
+    });
+    if (absorbed == 0) {
+        // invariant: a plan that absorbed nothing can have lost nothing
+        assert(lost == 0);
+        // invariant: a plan that lost nothing names no phase in its loss
+        assert(table.lost_mask == 0);
+        rung.below_of(report_out).inner.verdict = .carried;
+        rung.below_of(report_out).settled = .carried;
+        rung.bearing_of(report_out).settlement = .carried;
+        try rung.verdict_note(io, .carried);
+        try rung.settlement_note(io, .carried);
+        return;
+    }
+    if (rung.reckon_refusal(absorbed, table.in_flight, lost)) |why| return why;
+
+    const verdict = rung.verdict_in(lost, ledger);
+    try rung.verdict_note(io, verdict);
+    const said = rung.verdict_published(io) orelse return error.ReckonOverclaimed;
+    if (said != verdict) return error.ReckonOverclaimed;
+    if (ledger == .reckoned and said == .carried and lost >= 1) return error.ReckonOverclaimed;
+    rung.below_of(report_out).inner.verdict = said;
+    rung.below_of(report_out).inner.overclaimed += rung.overclaimed_completion(lost, said);
+    // Where the run stands before any repair: the loss, entire. A mend moves
+    // this number and nothing else moves it.
+    rung.below_of(report_out).unserved = lost;
+    rung.below_of(report_out).settled = said;
+}
