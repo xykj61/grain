@@ -881,15 +881,7 @@ pub fn dispatch_words(d: Dispatch) []const u8 {
 /// walking somewhere it was not asked to go. A run that cannot name where a
 /// reader is refuses rather than guessing.
 pub fn addressable(address: []const u8) bool {
-    if (address.len == 0) return false;
-    if (address.len > max_address_len) return false;
-    for (address) |byte| {
-        const lower = byte >= 'a' and byte <= 'z';
-        const upper = byte >= 'A' and byte <= 'Z';
-        const digit = byte >= '0' and byte <= '9';
-        if (!(lower or upper or digit or byte == '_')) return false;
-    }
-    return true;
+    return ladder_checks.addressable(@This(), address);
 }
 
 /// Which posted correction this run carries, counted as the one it can be.
@@ -899,11 +891,7 @@ pub fn addressable(address: []const u8) bool {
 /// run under `.carried` carries the one correction it posted, and only where the
 /// reading it answers left an address to carry it to.
 pub fn carried_in(amended: u32, addressed: bool, dispatch: Dispatch) u32 {
-    // invariant: a run never posts more corrections than a wire may hold
-    assert(amended <= 1);
-    if (dispatch == .waiting) return 0;
-    if (!addressed) return 0;
-    return amended;
+    return ladder_checks.carried_in(@This(), amended, addressed, dispatch);
 }
 
 /// Which posted correction this run leaves standing where it wrote it.
@@ -912,9 +900,7 @@ pub fn carried_in(amended: u32, addressed: bool, dispatch: Dispatch) u32 {
 /// of the count reads straight as an equality: every posted correction is
 /// carried or held.
 pub fn held_in(amended: u32, addressed: bool, dispatch: Dispatch) u32 {
-    // invariant: a run never posts more corrections than a wire may hold
-    assert(amended <= 1);
-    return amended - carried_in(amended, addressed, dispatch);
+    return ladder_checks.held_in(@This(), amended, addressed, dispatch);
 }
 
 /// Answers why one correction may not be carried, or that it may.
@@ -929,24 +915,8 @@ pub fn held_in(amended: u32, addressed: bool, dispatch: Dispatch) u32 {
 /// there is a correction to carry before it asks where to carry it, because a
 /// courier setting out with an empty satchel is delivering from memory of a
 /// letter nobody wrote.
-pub fn carry_refusal(
-    posted: ?[2]Settlement,
-    addressed: bool,
-    held: u32,
-    carried: u32,
-) ?RunError {
-    // invariant: a run never carries more corrections than it posted
-    assert(carried <= 1);
-    // invariant: a run never holds more corrections than a wire may hold
-    assert(held <= 1);
-    _ = posted orelse return error.CourierEarly;
-    if (!addressed) return error.CourierUnaddressed;
-    if (held + carried > 1) return error.CourierMiscounted;
-    // Every posted correction is carried or held -- never both and never
-    // neither. A count that does not close is a supervisor about to report a
-    // journey its own record cannot support.
-    if (held + carried != 1) return error.CourierMiscounted;
-    return null;
+pub fn carry_refusal(posted: ?[2]Settlement, addressed: bool, held: u32, carried: u32) ?RunError {
+    return ladder_checks.carry_refusal(@This(), posted, addressed, held, carried);
 }
 
 /// Refuses a delivery bound for a reader who left no address.
@@ -956,10 +926,7 @@ pub fn carry_refusal(
 /// reader nobody can name invents a destination, which is the same overreach as
 /// correcting a reader who never read.
 pub fn unaddressed_reach(addressed: bool, carried: u32) ?RunError {
-    // invariant: a run never carries more corrections than it posted
-    assert(carried <= 1);
-    if (carried >= 1 and !addressed) return error.CourierUnaddressed;
-    return null;
+    return ladder_checks.unaddressed_reach(@This(), addressed, carried);
 }
 
 /// Counts the corrections this run wrote and left waiting for a reader who
@@ -977,10 +944,7 @@ pub fn unaddressed_reach(addressed: bool, carried: u32) ?RunError {
 /// prevented; a reader who left no way to be found is a duty nobody can
 /// discharge, and counting it would be measuring the weather.
 pub fn posted_unreached(amended: u32, addressed: bool, dispatch: Dispatch) u32 {
-    // invariant: a run never posts more corrections than a wire may hold
-    assert(amended <= 1);
-    if (amended == 0 or !addressed) return 0;
-    return if (dispatch == .carried) 0 else 1;
+    return ladder_checks.posted_unreached(@This(), amended, addressed, dispatch);
 }
 
 // =========================================================================
@@ -3433,18 +3397,7 @@ pub fn amend_note(io: std.Io, was: Settlement, now: Settlement) NoteError!void {
 /// rather than by guessing -- which leaves a reader exactly where the rung below
 /// leaves them, holding a word the plan no longer stands behind.
 pub fn amend_published(io: std.Io) ?[2]Settlement {
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = note_path(&path_buf, plan_name, ".amend") catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    var bytes: [2]u8 = @splat(0);
-    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
-    // invariant: an amendment never outgrows the two readings it names
-    assert(got <= 2);
-    if (got < 2) return null;
-    const was = settlement_of_byte(bytes[0]) orelse return null;
-    const now = settlement_of_byte(bytes[1]) orelse return null;
-    return .{ was, now };
+    return ladder_checks.amend_published(@This(), io);
 }
 
 /// Records the disagreement between what this run stands behind and what its
@@ -3529,29 +3482,7 @@ pub fn seat_standing_address(io: std.Io, address: []const u8) NoteError!void {
 /// claim: a delivery lands where the reader is rather than where the record
 /// lives. The address is bounded and checked before a byte of it reaches a path.
 fn box_path(buf: *[max_note_path_len]u8, address: []const u8) NoteError![]const u8 {
-    // invariant: a box is only ever built for an address a run may carry to
-    assert(addressable(address));
-    const suffix = ".told";
-    const total = reader_dir.len + 1 + address.len + suffix.len;
-    if (total > max_note_path_len) return error.NotePathTooLong;
-    var at: u32 = 0;
-    for (reader_dir) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    buf[at] = '/';
-    at += 1;
-    for (address) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    for (suffix) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    // invariant: a box path is written exactly as long as it was measured
-    assert(at == total);
-    return buf[0..at];
+    return ladder_checks.box_path(@This(), buf, address);
 }
 
 /// Carries one correction to the reader's own box, in the words they read.
@@ -3562,17 +3493,7 @@ fn box_path(buf: *[max_note_path_len]u8, address: []const u8) NoteError![]const 
 /// carried out whole* wherever a person finds it. The box is made here, since a
 /// reader's address is a place this plan has never written to before.
 pub fn deliver(io: std.Io, address: []const u8, was: Settlement, now: Settlement) NoteError!void {
-    // invariant: a delivery always names two readings that actually differ
-    assert(was != now);
-    // invariant: a delivery is only ever carried to an address a run may reach
-    assert(addressable(address));
-    Dir.cwd().createDirPath(io, reader_dir) catch return error.NoteUnavailable;
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = try box_path(&path_buf, address);
-    const file = Dir.cwd().createFile(io, path, .{ .truncate = true }) catch return error.NoteUnavailable;
-    defer file.close(io);
-    const bytes = [_]u8{ settlement_byte(was), settlement_byte(now) };
-    file.writePositionalAll(io, &bytes, 0) catch return error.NoteUnavailable;
+    return ladder_checks.deliver(@This(), io, address, was, now);
 }
 
 /// Reads one reader's box back as the two readings it carries.
@@ -3582,19 +3503,7 @@ pub fn deliver(io: std.Io, address: []const u8, was: Settlement, now: Settlement
 /// and says so with a null rather than by believing its own report -- which is
 /// the difference between a delivery and a claim about one.
 pub fn delivered_to(io: std.Io, address: []const u8) ?[2]Settlement {
-    if (!addressable(address)) return null;
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = box_path(&path_buf, address) catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    var bytes: [2]u8 = @splat(0);
-    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
-    // invariant: a delivery never outgrows the two readings it names
-    assert(got <= 2);
-    if (got < 2) return null;
-    const was = settlement_of_byte(bytes[0]) orelse return null;
-    const now = settlement_of_byte(bytes[1]) orelse return null;
-    return .{ was, now };
+    return ladder_checks.delivered_to(@This(), io, address);
 }
 
 /// Clears one reader's box, so a lap begins with a reader who has been told
@@ -6079,45 +5988,7 @@ fn post_the_amendment(io: std.Io, notice: Notice, report_out: *Report) (RunError
 /// which is where the rung below leaves every reader who does not come back,
 /// and precisely the number this rung moves.
 fn carry_the_amendment(io: std.Io, dispatch: Dispatch, report_out: *Report) (RunError || NoteError)!void {
-    const amended = amending_of(report_out).amended;
-    if (amended == 0) {
-        // invariant: a run that corrected nobody leaves no correction waiting
-        assert(couriering_of(report_out).unreached == 0);
-        return;
-    }
-    var address_buf: [max_address_len]u8 = @splat(0);
-    const address = address_published(io, &address_buf);
-    const addressed = address != null;
-
-    // The measurement this rung moves, weighed against what the run actually
-    // posted rather than against what any dispatch asked for, so a correction
-    // left in the drawer is counted rather than refused.
-    couriering_of(report_out).unreached = posted_unreached(amended, addressed, dispatch);
-    const carried = carried_in(amended, addressed, dispatch);
-    const held = held_in(amended, addressed, dispatch);
-    if (dispatch == .waiting) {
-        // invariant: a waiting run carries nothing, however truly it corrected
-        assert(carried == 0);
-        return;
-    }
-    // The supply, refused by name while the address it must reach is still in
-    // hand: a correction may travel only to a place a reader actually left.
-    if (unaddressed_reach(addressed, carried)) |why| return why;
-    const posted = amend_published(io);
-    if (carry_refusal(posted, addressed, held, carried)) |why| return why;
-    // invariant: a run that reached the carrying refuses nothing it must carry
-    assert(carried == 1);
-    const letter = posted orelse return error.CourierEarly;
-    const where = address orelse return error.CourierUnaddressed;
-    try deliver(io, where, letter[0], letter[1]);
-    // The answer, and the hard half of this rung: a run that reports a reader
-    // reached whose box holds nothing has made a claim rather than a delivery,
-    // and a report read on that claim is worse than the silence below it.
-    const in_the_box = delivered_to(io, where) orelse return error.CourierUndelivered;
-    if (in_the_box[0] != letter[0] or in_the_box[1] != letter[1]) return error.CourierUndelivered;
-    couriering_of(report_out).delivered = carried;
-    // invariant: a carrying run leaves no correction waiting for its reader
-    assert(couriering_of(report_out).unreached == 0);
+    return ladder_checks.carry_the_amendment(@This(), io, dispatch, report_out);
 }
 
 /// Runs the arcs a plan lost that nobody spared, and answers for what is left
