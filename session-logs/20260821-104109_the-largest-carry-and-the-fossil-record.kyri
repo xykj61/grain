@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260821.104109
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Fold W -- provision_notes, the largest carry on the ladder, and a fossil record thirteen laps deep
+prompt Take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, one council-rota doc per lap, send each finished increment.
+think Standfast first. Read crux/REDS.md end to end: the living rows close at REDS %110, closed the same lap it was found, and no row stands open or booked awaiting an agent hand. The line is clear, so constructive work may begin beside it rather than instead of it.
+think Council rota, lap index 585 kyri logs mod 27 -> item 19, context/KYRI.md. Deep-read as this lap's first act rather than as a later duty, since the seed asks the voice to load ahead of REMEMBER and the route. Its own line -- measurement beats memory, and when a first look and a second look disagree the second look wins in public -- is the discipline this whole fold arc runs on.
+think Running thread from the top three logs: the Caravan fold arc, folds T, U and V. Five consecutive laps had reached past the printed queue's leader for the same stated reason, and fold V's recommend named the choice plainly: provision_notes at ninety-one lines stays the body most likely to reach a rung's own wire.
+think Ran the carry meter rather than trusting the recommend. provision_notes leads at 24 rungs x 91 lines = 2093, and the next four are 1633, 1624, 1584, 1530. The lead is wide enough that the crux question is no longer which family but whether this one can fold at all.
+think Lindy-first crux-first says take it. The hardest solvable move on the ladder is the body every prior lap deferred, and deferring it a sixth time would be choosing the easy lap that pads the count over the decisive one that opens the rest.
+think Hashed the family before folding it, as folds R through V taught. Forty-seven files hold a body by that name where the queue names twenty-four -- twenty-three standing apart, the largest absentee set the arc has met.
+think Read every absentee for both kinds rather than one. Diffed each against the canonical: every difference is a deletion and never an addition, save four elders whose own additions name notes the ladder later renamed. So all twenty-three are fold R's first kind, dated by shapes born after them, and none can be brought home.
+think The shape of the set is the finding. Thirteen distinct depths from fourteen lines to eighty-six, each a strict truncation, each naming the lap on which the ladder learned its next note. One depth would have been one shape born later; thirteen depths are thirteen laps of growth standing on disk in order.
+think Checked every symbol's pub status across all twenty-four before a line moved. Nine of ten already public -- note_dir, plan_name, the six accessors, NoteError. Only seat_note private, in seven of the twenty-four.
+think Hashed seat_note's own family before widening it, which is fold T's rule. Its private fifteen-line text stands in twenty-six rungs, two rungs more than this body -- so widening only the seven would have split a family and handed a later fold something it could no longer lift whole. Widened all thirty private bodies instead, which merges the twenty-six with the seventeen already public into one forty-three-rung family.
+think Generated the harness body from the canonical text by qualification rather than retyping it, so no line could drift in transcription, then folded twenty-four rungs to a three-line delegate apiece.
+think The copy witness caught a rule I had not known: no lifted body may carry the harness parameter name into prose. The doc comment said rung.note_dir; it now names the note directory in words. A guard teaching the author on the lap the author needed it.
+obs The arithmetic closes with no remainder and it prices the merge honestly. Twenty-three copies of ninety-one gave back 2,093 as the queue promised; the twenty-four three-line delegates carry 69; and the seat_note merge ADDED 15 by turning a distinct text into a copy. The fall is 2093 - 69 - 15 = 2,009, exactly what the meter measured.
+obs A fold pays its successors, read once more from the other side. Fold V cost nothing because twenty folds had widened its body's reach; this fold cost thirty because one symbol's family reached two rungs wider than the body's own. Widening past the body's edge is not waste -- it is the price of never handing a later fold a split.
+obs Six laps running the printed queue has been a lead rather than a verdict, and six laps running reading past it paid. This lap the difference was twenty-three bodies of one kind, and their shape rather than their count was the thing worth reading.
+obs Families fall 708 to 707 while bodies and copies each climb by one. The merge is visible in the family count and nowhere else, which is the meter reporting a structural change rather than a numerical one.
+loom fold=provision_notes rungs=24 body_lines=91 delegate_lines=3 widenings=30 absentees_kept_home=23 absentee_depths=13
+loom meter=caravan_ladder_carry carried_before=121631 carried_after=119622 fall=2009 ceiling_before=121700 ceiling_after=119700 bodies=18067 distinct=7868 copies=10199 families=707
+loom disk=caravan_rye rung_shed=2112 delegate_added=72 harness_growth=114 net=-1998
+loom witness=caravan_suite_witness rungs=105 result=GREEN
+file caravan/ladder_checks.rye the harness gains provision_notes over a comptime rung, the largest body it has taken and the first that reaches a rung's own wire end to end
+file caravan/abate.rye one of twenty-four rungs folded to a three-line delegate
+file caravan/abandon.rye seat_note widened with its whole family, so no later fold inherits a split
+file tools/caravan_ladder_carry_witness.rish carry, bodies, copies, families and the queue's two leaders repinned; the close line corrected to say this fold lifted the leader
+file tools/fixtures/caravan_ladder_carry_scan.sh ceiling 121700 -> 119700, the fold history extended, and the absentee-set reading written into the scan's own comments
+file caravan/README.md fold W's section, the thirteen-depth fossil-record table, and the arithmetic that closes with no remainder
+file crux/REMEMBER.md live edge and Now refreshed to fold W, fold V condensed into the prior-edges line
+recommend keep-going The queue's new leader is release_the_standing at 1633 across 24 rungs, with stand_the_mark at 1624 across 29 and reap_oldest at 1584 across 37 behind it. reap_oldest is the better crux on rung count and is one of the four spine bodies fold M already widened, so it may be another free fold; stand_the_mark spans the most rungs of the three leaders. Hash the family first, hash each private symbol's own family before widening it so no successor inherits a split, and read a large absentee set for its SHAPE rather than its count -- thirteen depths told this lap's whole history at a glance where a count would have said only twenty-three. The one gate worth Keaton's eye stays small and unchanged: jinja2 and ply on the pier's Python environment open the seL4 generated headers in a single step, which is an environment change and so his word.

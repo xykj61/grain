@@ -587,7 +587,7 @@ fn note_path(buf: *[max_note_path_len]u8, domain: []const u8, suffix: []const u8
 }
 
 /// Writes one byte into a note, creating it fresh.
-fn seat_note(io: std.Io, domain: []const u8, suffix: []const u8, value: u8) NoteError!void {
+pub fn seat_note(io: std.Io, domain: []const u8, suffix: []const u8, value: u8) NoteError!void {
     // invariant: a note always names the dependent it belongs to
     assert(domain.len >= 1);
     var path_buf: [max_note_path_len]u8 = undefined;

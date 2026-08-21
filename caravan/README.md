@@ -2277,6 +2277,57 @@ On disk the thirty-seven rung files shed 1,480 lines for 37 of delegate, and `la
 
 The choir stands **105 GREEN**, TAME bans clean, width-check clean.
 
+## Fold W -- `provision_notes`, the largest carry on the ladder, and a fossil record thirteen laps deep
+
+The printed queue had named `provision_notes` at the top for five consecutive laps -- **twenty-four rungs by ninety-one lines, 2,093 carried**, the largest single carry the arc has ever measured -- and five consecutive laps had reached past it for the family standing second. The reason was always the same one, and it was a good one: at ninety-one lines this is the body most likely to reach a rung's own wire from end to end, and reaching the wire is what keeps a body home. This lap it was the crux by every reading, and it folded.
+
+`provision_notes` seats one set of notes per declared domain, all standing at nothing, so a word a dependent finds at its first breath was left by this run's own supervisor rather than by the last. **The judgment it carries is what clears and what stays.** A run clears every note that answers for the run that wrote it -- the verdict, the bearing, the settlement, the recantation, the amendment, the disagreement, the plea. A run leaves standing every note that belongs to somebody else: the appraisal a run did not make, the reading a reader already holds, the position a person pressed, and the age that position has stood. Six invariants close the body by asking the wire whether each cleared note is genuinely gone, since a provisioning that believed itself would have agreed with itself.
+
+**It reaches the wire, and option B is exactly the answer to that.** The body opens the rung's own note directory and writes under the rung's own plan name, both reached through the rung handed in, so one text provisions whichever rung called it. The wire stays the rung's; the words become the ladder's. That is the whole promise the harness made when it was built, arriving here on the body that most needed it.
+
+**Hashing the family found forty-seven rungs where the queue named twenty-four, and the twenty-three are a fossil record thirteen laps deep.** Every elder is a strict truncation of the canonical -- shorter by whole notes and whole invariants, never by a different reach -- and they stand at thirteen distinct depths:
+
+| Lines | Rungs | What the ladder had learned by then |
+|---|---|---|
+| 14 | `entrust` - `taper` | a pair of notes per domain, and nothing said of the plan |
+| 16 | `confer` | the conferral notes |
+| 19 | `revoke` | revocation beside conferral |
+| 24 | `reclaim` | reclaiming, and the words a dependent is handed |
+| 26 | `abandon` | abandonment counted |
+| 31 | `mend` - `reckon` | the plan's own verdict, cleared with the rest |
+| 38 | `appraise` - `bear` | the bearing and the settlement beside the verdict |
+| 46 | `recant` | the recantation clears, the appraisal stays |
+| 56 | `amend` - `courier` - `hear` | the amendment clears, the reading stays |
+| 63 | `abide` - `dispute` - `lapse` - `repose` - `tidings` | the recorded disagreement clears |
+| 70 | `appeal` | the published plea clears |
+| 78 | `endure` | the standing position stays, and the regard clears with the findings |
+| 86 | `heed` - `relent` | the age stays beside the position it counts |
+| **91** | **the twenty-four** | every invariant asked of the wire |
+
+Read down that column and it is the arc's own memory of which note it had learned to provision on which lap, and of the judgment each new note arrived carrying. **None of them can be brought home, and the reason is fold V's rule read once more: no accessor gives a body back a check it never had.** They are fold R's first kind, twenty-three times over.
+
+**So the reading a large absentee set asks for is its shape.** One depth means one shape born later; thirteen depths mean thirteen laps of growth standing on disk in order. Both stay home, and for the same reason -- yet only the second tells you the family's whole history at a glance, which is worth more than the lines it costs.
+
+**The fold cost thirty widenings, and it split nothing.** Nine of the ten symbols the body reaches -- `note_dir`, `plan_name`, and the six accessors `verdict_published`, `settlement_published`, `amend_published`, `dispute_recorded`, `appeal_published`, `regard_published`, along with the `NoteError` type -- already stood public in all twenty-four, interest paid by the folds before this one. Only `seat_note` needed widening, and fold T's rule governed how: the private text stood in **twenty-six** rungs where this body stands in twenty-four, so widening only the twenty-four would have split that family and handed a later fold something it could no longer lift whole. All thirty private `seat_note` bodies were widened instead -- the twenty-six-rung text and two small two-rung texts beside it -- which **merged** the widened twenty-six with the seventeen already public into a single forty-three-rung family. The merge costs fifteen carried lines today and hands the next fold one family rather than two.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding the body | 24 | **0**, each keeping a three-line delegate |
+| Lines the body carried | 2,093 | **69** -- the delegate is itself a copy |
+| Widenings the fold cost | -- | **30**, one family widened whole |
+| Bodies standing apart, kept home | -- | **23**, at thirteen distinct depths |
+| The ladder's whole carry | 121,631 | **119,622** |
+| Carry ceiling | 121,700 | **119,700** |
+| Carrying families | 708 | **707**, the `seat_note` merge |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+**The arithmetic closes with no remainder.** Twenty-three copies of ninety-one gave back 2,093 exactly as the queue promised; the twenty-four three-line delegates carry 69; and the `seat_note` merge added 15 by turning a distinct text into a copy. So the fall is 2,093 less 69 less 15 -- **2,009**, exactly what the meter measured. Bodies climb 18,066 to 18,067 and copies 10,198 to 10,199, the one new body being the harness's own; distinct texts hold at 7,868, since the harness's text is one the ladder already had.
+
+On disk the twenty-four rung files shed 2,112 lines for 72 of delegate, and `ladder_checks.rye` grew 114 -- a net of **1,998 lines** off the tracked tree.
+
+The choir stands **105 GREEN**, TAME bans clean, width-check clean.
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.

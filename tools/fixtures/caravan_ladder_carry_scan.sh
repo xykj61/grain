@@ -43,9 +43,9 @@
 #   remembered, so the next fold is chosen by measurement rather than by which
 #   family somebody happened to look at.
 #
-# CARAVAN_CARRY_CEILING (default 121700): how many carried lines the ladder may
-# hold. 124,620 stand today across 10,197 copied bodies, and 708 families carry
-# a copy. That number is far larger than any the three named meters report, and
+# CARAVAN_CARRY_CEILING (default 119700): how many carried lines the ladder may
+# hold. The scan prints what stands today rather than reciting it here, since a
+# number written into a comment drifts the moment a fold lands (REDS %110). That number is far larger than any the three named meters report, and
 # naming it plainly is the whole point of this scan -- the ladder's real carry
 # was never the few thousand lines inside two prefixes. Each fold hands back the
 # room it wins by lowering this ceiling: 143,000 came down to 137,300 when
@@ -82,6 +82,16 @@
 # reading to make is which kind of absentee stands before you -- one dated by a
 # shape born later, or one a single accessor brings home.
 #
+# AN ABSENTEE SET CAN BE A FOSSIL RECORD WHOLE. `provision_notes` printed here as
+# twenty-four rungs at ninety-one lines, and hashing every body by that name found
+# forty-seven -- twenty-three elders standing at THIRTEEN distinct shallower
+# depths, from fourteen lines to eighty-six. Every one is a strict truncation of
+# the canonical, so the staircase reads as the ladder's own memory of which note
+# it had learned to provision on which lap. None can be brought home: no accessor
+# gives a body back a check it never had. The reading to make of a large absentee
+# set is therefore its SHAPE -- one depth means one shape born later, thirteen
+# depths mean thirteen laps of growth, and both stay home for the same reason.
+#
 # A FOLD QUEUE IS A LEAD, NEVER A VERDICT. This scan names families by exact
 # text, so `fill_table` printed here as thirty-seven rungs carrying 2,484 lines
 # while forty-three rungs actually held it -- the six it left out differ by the
@@ -94,7 +104,7 @@
 # PASS and FAIL fixtures prove both paths without touching the tree.
 set -eu
 
-CEILING=${CARAVAN_CARRY_CEILING:-121700}
+CEILING=${CARAVAN_CARRY_CEILING:-119700}
 TOP=${CARAVAN_CARRY_TOP:-12}
 DIR=${CARAVAN_LADDER_DIR:-caravan}
 
