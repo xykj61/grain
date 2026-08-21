@@ -40,6 +40,9 @@ const print = std.debug.print;
 const cohort = @import("cohort.rye");
 const system = @import("system.rye");
 const unhand = @import("unhand.rye");
+const capabilities = @import("capabilities.rye");
+const cycle = @import("cycle.rye");
+const carry = @import("carry.rye");
 const Dir = std.Io.Dir;
 
 const harness = @This();
@@ -5605,4 +5608,68 @@ pub fn tell_beckon_own(
     print("  breaks a named turn:" ++ pair, .{
         rung.preceded_of(bare_run).out_of_precede, rung.preceded_of(under_run).out_of_precede,
     });
+}
+
+/// Reads the arcs one dependent was handed, then every arc it is conferred, and
+/// returns the reach the run asks back before it comes home.
+///
+/// Forty-two rungs held this body, byte for byte, at forty-four lines apiece --
+/// the largest single carry this arc has folded, and the one that stayed
+/// invisible through six folds because every meter before it read the `tell_`
+/// family and this body opens on `stand_`. Asking the masked question of every
+/// printing body rather than one family's is what found it (`REDS %102`: a
+/// reading that sees a subset answers in the voice of the whole).
+///
+/// Nothing here varies between rungs, so nothing arrives as comptime text. The
+/// body lifts exactly as a check lifts: the rung hands itself in, and every
+/// helper this window walks -- the line a dependent reads of its own, the graft,
+/// the return, the probe that asks what is still reachable, and the plan's own
+/// declaration that this dependent falls -- is reached through that rung, so
+/// each rung still measures its own report and its own store.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn stand_taking_and_returning_reach(
+    comptime rung: type,
+    io: std.Io,
+    base: *const capabilities.DependentSlot,
+    slot: *capabilities.DependentSlot,
+    domain: []const u8,
+    task: cycle.Task,
+    found: u32,
+) u8 {
+    // invariant: a standing dependent always knows which domain it is
+    assert(domain.len >= 1);
+    // invariant: a standing dependent always reads at least one arc
+    assert(task.hops.count >= 1);
+    if (rung.read_own_line(io, slot, task)) |code| return code;
+
+    const promised = rung.offered(io, domain) catch 0;
+    // invariant: a promise never names more reach than one line may hold
+    assert(promised <= cycle.max_hops);
+
+    var granted: rung.Words = .{};
+    var carried: u32 = 0;
+    if (rung.graft_promised_reach(io, slot, domain, task, promised, &granted, &carried)) |code| return code;
+
+    // The return, when a pruning was promised: the reach comes back and the
+    // dependent answers how much of it it gave up.
+    const gave_back = rung.return_promised_reach(io, base, slot, domain, &granted, carried) orelse
+        return carry.Outcome.malformed;
+
+    const reachable = rung.reachable_between(io, slot, &granted, 0, carried);
+    print("    {s}: read {d} arcs of its own, {d} inherited at its first breath, {d} conferred, {d} returned, {d} still reachable at home\n", .{
+        domain, task.hops.count, found, carried, gave_back, reachable,
+    });
+
+    // A plan declares how each dependent ends, and this rung honors that
+    // declaration here -- after the conferral is grafted and answered for, and
+    // before the work it was granted for is carried. That window is the whole
+    // subject of the rung: a dependent that falls holding conferred reach.
+    if (rung.falling_promised(io, domain)) {
+        print("    {s}: falls as its author declared, holding {d} conferred arcs it never served\n", .{
+            domain, carried,
+        });
+        return carry.Outcome.bytes_differed;
+    }
+    return carry.Outcome.carried_ok;
 }

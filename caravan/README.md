@@ -1784,6 +1784,43 @@ Six folds all lived inside the `tell_` family, and the arc's own record had begu
 
 Naming this correction plainly matters more than the fold that found it. A narrative built from six laps in one family had quietly become a claim about the whole, and only asking the meter a wider question could disagree with it. **Measurement beats memory, including the memory written down six laps in a row.**
 
+**Fold L lifted the standing-dependent window on `20260821`, and it is the largest single fold this arc has taken.** `stand_taking_and_returning_reach` -- the body that reads the arcs one dependent was handed, grafts every arc it is conferred, and returns the reach the run asks back before it comes home -- stood **byte for byte in forty-two of its forty-four rungs at forty-four lines apiece**. No mask was needed and none was used: the forty-two hash alike exactly as written, so the body lifts precisely the way a check lifts.
+
+The two rungs that stand apart, `reclaim` and `revoke`, keep their own bodies at eighty-five and eighty-eight lines, which is their own content rather than a variation on this one.
+
+Four symbols widened by one word each across the forty-two -- `read_own_line`, `graft_promised_reach`, `return_promised_reach`, and `reachable_between` -- every one verified as `pub` before a line moved, and `offered`, `falling_promised`, and `Words` already stood public on all forty-two, which is nine folds of the habit compounding. Four rungs that had never needed the harness gained their import. **1,638 lines deleted for 281 of harness and call, and 1,189 lines came off disk.**
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding the body | 42 | **0**, each keeping a nine-line delegate |
+| Lines the body carried | 1,764 | **0** |
+| Lines on disk, all of `caravan/` | 379,740 | **378,551** |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+Parity is the strongest this arc has shown. All forty-two rungs were built and run before the edit and after it, and **every one of the forty-two sorted multisets stands identical with zero lines differing**. Thirty-three rungs differ in ordered comparison by two to eighteen lines, and an unchanged binary run twice against itself differs by eight the same way -- the interleave is the run rather than the fold, as folds I, J, and K each proved before it. All forty-two rung witnesses ran GREEN on metal, `tame_style_check` and `width-check` are clean, and the whole choir sang GREEN beside them.
+
+### The wider question, made standing -- a fourth meter, and the room the three windows sit in
+
+Fold L was found by hand, by asking one wider question after six folds inside the `tell_` family. That is the part worth keeping, and this lap turned it into a meter rather than leaving it as luck.
+
+Three meters stood on this ladder, and every one reads through a **named window**: [`caravan_ladder_copy_scan.sh`](../tools/fixtures/caravan_ladder_copy_scan.sh) reads bodies opening on `check_`, [`caravan_ladder_print_scan.sh`](../tools/fixtures/caravan_ladder_print_scan.sh) reads bodies opening on `tell_`, and [`caravan_ladder_spine_scan.sh`](../tools/fixtures/caravan_ladder_spine_scan.sh) reads one named function. Each is honest inside its window, each says so in its own first sentence, and together they governed eleven folds. What none of the three can see is a body named anything else -- which is exactly why the largest carry on the ladder rode past all three for six consecutive folds.
+
+So the fourth meter has **no name in its window at all**. [`caravan_ladder_carry_scan.sh`](../tools/fixtures/caravan_ladder_carry_scan.sh) reads every top-level body in every module, compares them by exact text rather than by hash, and prints the fold queue largest-first. Its answer, measured rather than estimated:
+
+| Reading | Carried lines |
+|---|---|
+| Byte-identical `check_` bodies | 47 |
+| `tell_` printing | 2,686 |
+| Orchestration spine | 0 |
+| **Every body, the whole ladder** | **142,850** across 10,198 copied bodies of 17,975 |
+
+**698 families carry at least one copy, and 247 of them carry past a hundred lines each.** The largest is `mend_the_plan` -- 36 rungs holding one 178-line body, **6,230 carried**, which alone is larger than any fold this arc has taken, fold L included. Behind it stand `fill_table` at 2,898, `reckon_the_plan` at 2,700, `provision_notes` at 2,093, and `confer_one` at 2,067; `graft_promised_reach`, one of the very helpers fold L widened, carries 1,763 of its own.
+
+This is a **ratchet rather than a red against the three**. Each named its window plainly, so nothing was measured wrong -- something was never measured. Yet the correction is worth stating without softening: the arc's own record had come to read the printing carry as *the* carry, and the ladder's real carry is two orders of magnitude larger. That is [`REDS %102`](../crux/REDS.md)'s family at ladder scale -- a reading that sees a subset answers in the voice of the whole, and a GREEN over part of a subject is more dangerous than a RED. The answer is never a fourth named window; it is one window with no name in it.
+
+The meter is proven by [`caravan_ladder_carry_witness.rish`](../tools/caravan_ladder_carry_witness.rish) -- the living count under a named ceiling, the three windows read beside it so no reader mistakes a window for the room, the counting proven by hand on a two-rung corpus whose added body opens on a prefix no meter names, and three RED paths refusing by name. It is **registered in the choir on the lap it was born**, which is [`REDS %101`](../crux/REDS.md)'s whole lesson, and the choir now sings **99**.
+
 
 ## Held
 

@@ -1,0 +1,114 @@
+# tools/caravan_ladder_carry_witness.rish -- the Caravan ladder's whole carry, asked of every body rather than of one named family.
+#
+# Three meters already stand on this ladder, and every one of them reads through a named window.
+# `caravan_ladder_copy_scan.sh` reads bodies whose name opens on `check_`. `caravan_ladder_print_scan.sh` reads bodies
+# whose name opens on `tell_`. `caravan_ladder_spine_scan.sh` reads one named function, `close_the_quarrel`. Each is
+# honest inside its window, each says so in its own first sentence, and together they governed eleven folds and took
+# some five thousand lines off the ladder.
+#
+# What none of the three can see is a body named anything else -- and that blindness was measured on `20260821` rather
+# than reasoned about. `stand_taking_and_returning_reach` stood BYTE FOR BYTE in forty-two rungs at forty-four lines
+# apiece, the largest single carry the arc had ever folded, and it rode free past all three meters for six consecutive
+# folds because its name opens on `stand_`. The fold that lifted it was found by hand, by asking a wider question once.
+# This witness makes that question standing, so the next one is found by a meter rather than by luck.
+#
+# That is `REDS %102`'s family at ladder scale: a reading that sees a subset answers in the voice of the whole, and a
+# GREEN over part of a subject is more dangerous than a RED, since it answers the question nobody asked in the voice of
+# the question they did. The answer is not a fourth named window. It is one window with no name in it at all.
+#
+# WHAT THE WIDER QUESTION ANSWERS, MEASURED THIS LAP:
+#
+#   * **142,850 carried lines across 10,198 copied bodies**, out of 17,975 bodies standing in 102 modules. The three
+#     named meters together report 47 carried check lines, 2,686 carried printing lines, and 0 spine lines. Every one of
+#     those numbers is true. None of them is the ladder's carry, and the difference is two orders of magnitude.
+#   * **698 families carry at least one copy**, and 247 of them carry past a hundred lines each. The largest is
+#     `mend_the_plan` -- 36 rungs holding one 178-line body, 6,230 carried, which alone is larger than any fold this arc
+#     has taken.
+#   * The fold queue is printed rather than remembered, largest first, so the next fold is chosen by measurement.
+#
+# A ratchet, never a red against the three. Each named its own window plainly at the top of its own file, so nothing was
+# ever measured wrong -- something was never measured. This is a fourth meter beside the first three rather than an
+# erratum against any of them, and its number is meant to be read together with theirs.
+#
+# Five claims, each proven on metal:
+#   1. The living ladder's whole carry counts clean under a named ceiling, and the ceiling comes down as folds land.
+#   2. The carry the three named meters see is named beside it, so no reader mistakes a window for the room.
+#   3. The fold queue is read off the ladder rather than claimed, largest family first.
+#   4. The counting itself is right, proven on a two-rung corpus whose three bodies -- two distinct, one a whole copy
+#      carrying three lines -- are countable by eye in the fixture, and whose second body opens on a prefix no meter on
+#      this ladder names, which is the whole reason this one exists.
+#   5. Every RED path refuses by name -- a corpus with no modules, a corpus whose modules hold no bodies at all (the
+#      REDS %97 shape, a count that cannot see what it measures), and a carry grown past its ceiling.
+#
+# Kin: tools/caravan_ladder_copy_witness.rish (the `check_` window), tools/caravan_ladder_print_witness.rish (the
+#      `tell_` window), and tools/caravan_ladder_spine_witness.rish (one named function).
+# No network, no key, no funds, no device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_ladder_carry_witness.rish
+
+say "caravan-ladder-carry: Language EN -- the whole carry of the ladder is counted here, every body rather than one family's, so a fold is chosen by measurement rather than by which name somebody happened to look at."
+say "caravan-ladder-carry: Style Radiant -- measurement beats memory; a shape three honest meters could not see becomes a fourth meter before it becomes a design call."
+say "caravan-ladder-carry: Lens TAME -- safety first: the ceiling is named, the counting is proven by hand on a corpus, the fold queue prints rather than gates, and every refusal has a name."
+
+let living = run ["sh" "tools/fixtures/caravan_ladder_carry_scan.sh"]
+assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
+assert living.out contains "CARRY_OK" else "caravan-ladder-carry: want the living carry under its named ceiling"
+assert living.out contains "CARRY_MODULES 102" else "caravan-ladder-carry: want all 102 ladder modules read, the rungs and the harness alike"
+assert living.out contains "CARRY_BODIES 17975 distinct=7777 copies=10198 carried_lines=142850" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
+
+say "caravan-ladder-carry: living ladder -- ${living.out}"
+
+# The fold queue, asserted so it stays a measurement rather than a memory. The largest family is named here by number
+# so a lap that folds it must come back and say so, and a lap that grows a larger one cannot pass quietly.
+assert living.out contains "CARRY_FAMILIES 698" else "caravan-ladder-carry: want every carrying family counted"
+assert living.out contains "CARRY_TOP mend_the_plan: 36 rungs x 178 lines = 6230 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
+assert living.out contains "CARRY_TOP graft_promised_reach: 42 rungs x 43 lines = 1763 carried" else "caravan-ladder-carry: want a helper this lap's own fold widened standing in the queue behind the body it serves"
+say "caravan-ladder-carry: the fold queue -- mend_the_plan carries 6,230 lines across 36 rungs, larger than any single fold this arc has taken"
+
+# The three named meters, read here beside the wide one so no reader mistakes a window for the room. Every number below
+# is true inside its own window, and the point of printing them together is that their sum is not the ladder's carry.
+let copy = run ["sh" "tools/fixtures/caravan_ladder_copy_scan.sh"]
+assert copy.ok else "caravan-ladder-carry: the check meter must still stand -- ${copy.out}"
+assert copy.out contains "copied_lines=47" else "caravan-ladder-carry: want the byte-identical check meter standing where the last fold left it"
+
+let print_meter = run ["sh" "tools/fixtures/caravan_ladder_print_scan.sh"]
+assert print_meter.ok else "caravan-ladder-carry: the printing meter must still stand -- ${print_meter.out}"
+assert print_meter.out contains "PRINT_LINES total=4600 distinct=1914 carried=2686" else "caravan-ladder-carry: want the printing meter standing where the last fold left it"
+
+let spine = run ["sh" "tools/fixtures/caravan_ladder_spine_scan.sh"]
+assert spine.ok else "caravan-ladder-carry: the spine meter must still stand -- ${spine.out}"
+assert spine.out contains "SPINE_LINES total=19 distinct=19 carried=0" else "caravan-ladder-carry: want the orchestration spine still folded"
+say "caravan-ladder-carry: three windows and the room -- checks carry 47, printing carries 2,686, the spine carries 0, and the whole ladder carries 142,850"
+
+# The counting proven by hand, over a corpus no fold has touched. The foot writes one three-line body; the rung above
+# copies it byte for byte and adds one of its own. So three bodies stand, two of them different texts, and one is a
+# whole copy carrying three lines -- countable by eye in the fixture itself, which is what makes this a proof of the
+# counter rather than a second opinion from it. The added body opens on `climb_`, a prefix no meter on this ladder
+# names, so the corpus also proves the window is genuinely open.
+let corpus = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_carry_corpus CARAVAN_CARRY_CEILING=5 sh tools/fixtures/caravan_ladder_carry_scan.sh"]
+assert corpus.ok else "caravan-ladder-carry: the corpus scan must exit 0 -- ${corpus.out}"
+assert corpus.out contains "CARRY_MODULES 2" else "caravan-ladder-carry: want the corpus read as two rungs"
+assert corpus.out contains "CARRY_BODIES 3 distinct=2 copies=1 carried_lines=3" else "caravan-ladder-carry: want three bodies, two distinct, one a whole copy of three lines"
+assert corpus.out contains "CARRY_TOP weigh_the_corpus: 2 rungs x 3 lines = 3 carried" else "caravan-ladder-carry: want the corpus family named the way the living queue is named"
+
+# RED path one -- a corpus holding no rung modules at all.
+let empty = run ["sh" "-c" "d=$(mktemp -d); CARAVAN_LADDER_DIR=$d sh tools/fixtures/caravan_ladder_carry_scan.sh; s=$?; rmdir $d; exit $s"]
+assert (empty.ok == false) else "caravan-ladder-carry: an empty corpus must refuse"
+assert empty.out contains "reason=no_modules" else "caravan-ladder-carry: want the empty corpus refused by name"
+
+# RED path two -- real modules that hold no bodies. This is the REDS %97 shape: a scan reading a real corpus and
+# answering zero, where the zero is the scan's blindness rather than the tree's virtue. It matters most for this scan of
+# the four, since this is the one whose whole argument is that a window can be too narrow to see its subject.
+let hollow = run ["sh" "-c" "d=$(mktemp -d); printf 'const std = @import(\"std\");\\n' > $d/hollow.rye; CARAVAN_LADDER_DIR=$d sh tools/fixtures/caravan_ladder_carry_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert (hollow.ok == false) else "caravan-ladder-carry: a corpus with no bodies must refuse"
+assert hollow.out contains "reason=no_bodies" else "caravan-ladder-carry: want the hollow corpus refused by name"
+
+# RED path three -- the ceiling has teeth. The corpus carries three lines; held at two, it refuses, which proves the
+# ceiling is a real gate rather than a printed number. The proof runs on the corpus rather than the living ladder,
+# because a gate must be provable without breaking the thing it guards.
+let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_carry_corpus CARAVAN_CARRY_CEILING=2 sh tools/fixtures/caravan_ladder_carry_scan.sh"]
+assert (ceiling.ok == false) else "caravan-ladder-carry: a carry past its ceiling must refuse"
+assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-carry: want the ceiling breach refused by name"
+
+say "GREEN: caravan-ladder-carry -- the Caravan ladder carries 142,850 lines across 10,198 copied bodies of the 17,975 standing in 102 modules, held under a named ceiling, with the fold queue printed largest-first and led by mend_the_plan at 6,230 lines across 36 rungs, the three named meters read beside it so no window is mistaken for the room, the counting proven by hand on a two-rung corpus whose added body opens on a prefix no meter names, and all three RED paths refusing by name."

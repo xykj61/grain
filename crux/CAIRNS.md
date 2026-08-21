@@ -24,6 +24,16 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260821.014514` -- the fold-K live edge folds as fold L lands and the fourth meter opens
+
+**Walk-back nib:** `c352a3b7ee` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when the run-telling had just folded stands at this nib and every commit before it.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for **fold K** and the bullet naming the finding that outweighed it, folded into the condensed-pointer line beneath them, and the **Now** block rewritten from the crux fold L just closed to the crux the new meter names. Roughly a screenful falls away; every word stands at the nib above.
+
+**What waits there, worth recalling:** fold K's full accounting as it was written -- `tell_desist_runs` standing in eight rungs at fifty lines apiece with the nesting depth identical across all eight, so only the pair of words naming which plan each column reports varies; the nine symbols widened by one word each and the tenth in the desisting rung; the carried printing falling 2,932 to 2,686 and the ceiling tightening to 2,800; and the one raw reach the harness names rather than hides, four levels below `abandoning_of`. Beside it stands the first statement of the wider finding -- that `stand_taking_and_returning_reach` and `run_dependent` between them carried more than six folds had spent. Fold L closes the first of those two, and the fourth meter now names all 698 carrying families by measurement, so the card need no longer remember any of them by hand. Both accounts live on in `session-logs/20260821-010702_caravan-ladder-fold-k-and-the-carry-that-was-not-spent.kyri` and the fold sections of `caravan/README.md`.
+
+**What the departing Now got right, and how far short it fell:** it named `stand_taking_and_returning_reach` at 42 of 44 rungs and thirty-five lines apiece, and the fold found the body byte-identical at forty-four lines with no mask needed at all -- the estimate was honest and conservative. What it could not name is the room the number sits in: the whole-body reading across every name finds **142,850 carried lines**, where the printing window it had been reading reports 2,686. That gap is why the new meter exists.
+
 ### `20260821.010702` -- the fold-I and fold-J live edges fold as fold K lands and the carry proves unspent
 
 **Walk-back nib:** `6f976f31d9` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when the whole staircase had just folded stands at this nib and every commit before it.

@@ -9732,7 +9732,7 @@ fn prune_to(
 }
 
 /// Counts the conferred arcs this dependent can touch, over one range.
-fn reachable_between(
+pub fn reachable_between(
     io: std.Io,
     slot: *capabilities.DependentSlot,
     words: *const Words,
@@ -9804,7 +9804,7 @@ fn inherited_at_first_breath(
 ///
 /// Answers `null` when every arc stood as the plan said it would, and an
 /// outcome code naming the first arc that did not.
-fn read_own_line(
+pub fn read_own_line(
     io: std.Io,
     slot: *capabilities.DependentSlot,
     task: cycle.Task,
@@ -9830,7 +9830,7 @@ fn read_own_line(
 /// Answers the count grafted, or an outcome code where a word or an arc did
 /// not stand. The dependent answers `.held` only after reading every arc it
 /// grafted, which is what lets the supervisor read that answer as work served.
-fn graft_promised_reach(
+pub fn graft_promised_reach(
     io: std.Io,
     slot: *capabilities.DependentSlot,
     domain: []const u8,
@@ -9879,7 +9879,7 @@ fn graft_promised_reach(
 /// A dependent told a pruning is coming waits for the number that names it,
 /// rebuilds its own hands down to that number, and answers. A `null` says the
 /// words on the wire could not be read back into hands at all.
-fn return_promised_reach(
+pub fn return_promised_reach(
     io: std.Io,
     base: *const capabilities.DependentSlot,
     slot: *capabilities.DependentSlot,
@@ -9923,41 +9923,7 @@ fn stand_taking_and_returning_reach(
     task: cycle.Task,
     found: u32,
 ) u8 {
-    // invariant: a standing dependent always knows which domain it is
-    assert(domain.len >= 1);
-    // invariant: a standing dependent always reads at least one arc
-    assert(task.hops.count >= 1);
-    if (read_own_line(io, slot, task)) |code| return code;
-
-    const promised = offered(io, domain) catch 0;
-    // invariant: a promise never names more reach than one line may hold
-    assert(promised <= cycle.max_hops);
-
-    var granted: Words = .{};
-    var carried: u32 = 0;
-    if (graft_promised_reach(io, slot, domain, task, promised, &granted, &carried)) |code| return code;
-
-    // The return, when a pruning was promised: the reach comes back and the
-    // dependent answers how much of it it gave up.
-    const gave_back = return_promised_reach(io, base, slot, domain, &granted, carried) orelse
-        return carry.Outcome.malformed;
-
-    const reachable = reachable_between(io, slot, &granted, 0, carried);
-    print("    {s}: read {d} arcs of its own, {d} inherited at its first breath, {d} conferred, {d} returned, {d} still reachable at home\n", .{
-        domain, task.hops.count, found, carried, gave_back, reachable,
-    });
-
-    // A plan declares how each dependent ends, and this rung honors that
-    // declaration here -- after the conferral is grafted and answered for, and
-    // before the work it was granted for is carried. That window is the whole
-    // subject of the rung: a dependent that falls holding conferred reach.
-    if (falling_promised(io, domain)) {
-        print("    {s}: falls as its author declared, holding {d} conferred arcs it never served\n", .{
-            domain, carried,
-        });
-        return carry.Outcome.bytes_differed;
-    }
-    return carry.Outcome.carried_ok;
+    return ladder_checks.stand_taking_and_returning_reach(@This(), io, base, slot, domain, task, found);
 }
 
 /// Runs as one supervised dependent, reading the wire before it trusts it.
