@@ -82,3 +82,13 @@ This document asked its central question and left it open with an instruction at
 **What this does not answer.** Genode's C++ component framework remains the harder fit and is untouched here -- this probe speaks to the C-ABI capability path only. No kernel is booted, no real capability is invoked, and nothing is linked against a real kernel library. Blind spot one still governs: the per-component license read precedes any fetch, and copyleft stays study-only.
 
 **What it changes for the arc.** Equinox 3's leading question no longer blocks design. The compiler question is settled in the affirmative, so the remaining work on that equinox is clean-room design against the capability model rather than a toolchain investigation -- and the next honest gate is the license read, which is Keaton's word.
+
+---
+
+## Addendum -- Equinox 1's ground reached, on metal (`20260821.043831`)
+
+The license read opened the userlevel side of seL4's own licensing split, and this round walked through the door it opened. **seL4's published userlevel API compiles under our compiler**: the hand-written half of the `libsel4` core builds **freestanding riscv64** with no CMake, no kernel, and no libc beneath it, and the vocabulary it hands a root task is **read out of the compiled enums by a program that ran** -- eleven refusal codes, nine riscv64 object types over a portable five, a 64-bit word, 256 scheduling priorities. The right to include those headers is re-read per file rather than inherited from the verdict: six of six carry their own BSD-2-Clause tag, none carries a GPL one.
+
+**The honest finding is the boundary.** `libsel4` is written in two halves, and the generated half stops at exactly one file -- `sel4/sel4_arch/types_gen.h` -- which gates `types.h`, `syscalls.h`, `bootinfo.h`, `faults.h`, and the `sel4.h` umbrella together. Producing it wants seL4's own Python generators, which import **jinja2** and **ply**, and this pier carries neither. That is a small, named **environment gate** rather than a design question, surfaced rather than crossed, and everything Caravan's supervision needs to be designed against already stands on this side of it.
+
+Witness: [`../tools/microkernel_libsel4_reach_witness.rish`](../tools/microkernel_libsel4_reach_witness.rish), GREEN with both RED paths proven -- withhold our own configuration header and the compile refuses; reach past the boundary and it refuses by naming the header it wants. Full reading, and the vocabulary mapped against `caravan/capabilities.rye`'s four refusals: [`20260821-043831_the-libsel4-reach-and-the-vocabulary-caravan-inherits.md`](20260821-043831_the-libsel4-reach-and-the-vocabulary-caravan-inherits.md).
