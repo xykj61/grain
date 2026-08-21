@@ -40,6 +40,7 @@ const print = std.debug.print;
 const cohort = @import("cohort.rye");
 const system = @import("system.rye");
 const unhand = @import("unhand.rye");
+const Dir = std.Io.Dir;
 
 const harness = @This();
 
@@ -4943,4 +4944,68 @@ pub fn close_the_quarrel(
         // invariant: a run never books more debts than one concession earns
         assert(tally(rung, "owe_of", "booked", report_out) <= 1);
     }
+}
+
+/// Writes the path of the answer one reader is owed about their own quarrel.
+///
+/// Twenty-nine rungs held this body byte for byte, because the address a reader
+/// is answered at is the one thing the whole correspondence arc never varies:
+/// a name under the readers' own directory, wearing the suffix that says the
+/// matter came out. Lifted here, one body serves them all, and each rung reaches
+/// its own ceiling, its own directory, and its own error set through the type it
+/// hands in -- so a rung that widens the ceiling widens the path it writes.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn tell_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: []const u8) rung.NoteError![]const u8 {
+    // invariant: an answer is only ever written to an address a run may carry to
+    assert(rung.addressable(address));
+    const suffix = ".outof";
+    // invariant: an answer is left in the same box a question is asked in
+    comptime assert(suffix.len == ".again".len);
+    const total = rung.reader_dir.len + 1 + address.len + suffix.len;
+    if (total > rung.max_note_path_len) return error.NotePathTooLong;
+    var at: u32 = 0;
+    for (rung.reader_dir) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    buf[at] = '/';
+    at += 1;
+    for (address) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    for (suffix) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    // invariant: an answer path is written exactly as long as it was measured
+    assert(at == total);
+    return buf[0..at];
+}
+
+/// Tells the reader who raised a quarrel how it came out.
+///
+/// One byte, written where that reader is rather than where the record is kept:
+/// `m` for a word their objection stood against that reads differently now, `t`
+/// for one that reads exactly as it read. It lands beside the letter this arc
+/// already carried them and the question it already asked them, in the same box,
+/// so a reader who has heard from this plan twice hears from it a third time in
+/// the place they already look.
+///
+/// Every note beneath this one is written where a word is read. This is the only
+/// one written where the person who objected can find it. Twenty-nine rungs
+/// wrote it identically, and each one now writes it into its own box, since the
+/// directory, the result shape, and the byte that names an outcome all arrive
+/// with the type handed in.
+pub fn tell_outcome(comptime rung: type, io: std.Io, address: []const u8, result: rung.Result) rung.NoteError!void {
+    // invariant: an answer is only ever carried to an address a run may reach
+    assert(rung.addressable(address));
+    Dir.cwd().createDirPath(io, rung.reader_dir) catch return error.NoteUnavailable;
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = try tell_path(rung, &path_buf, address);
+    const file = Dir.cwd().createFile(io, path, .{ .truncate = true }) catch return error.NoteUnavailable;
+    defer file.close(io);
+    const bytes = [_]u8{rung.result_byte(result)};
+    file.writePositionalAll(io, &bytes, 0) catch return error.NoteUnavailable;
 }

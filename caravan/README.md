@@ -1654,6 +1654,26 @@ That last row is the honest proof: a lift removed a cost rather than trading it 
 Read in order, the harness spine is four movements and a closing line, the seam the arc has shown since it began: **the standing** (what a run owes a position that outlived it), **the finding** (a case read, answered, met, and carried home), **the second look** (what a reader's short word costs the plan that answered them), **the correspondence** (the movement still growing, where a matter that comes round twice meets a wall and a person outside the plan finally gets a say), and **the booking**, always last. What it cost is named plainly in the brief: opening `refrain.rye` no longer shows the whole arc on one screen. That order lives in the harness now, in the one complete copy there is -- so it is written to be read. Full reasoning: [`../active-designing/20260820-204641_caravan-ladder-the-spine-the-meter-cannot-see.md`](../active-designing/20260820-204641_caravan-ladder-the-spine-the-meter-cannot-see.md).
 
 
+### The printing, and the fold that answered its first third
+
+Two honest meters watched this ladder, and a third shape rode free past both. The copy meter reads `check_` bodies and counts byte-identical ones; the spine meter reads one named orchestration function. Every rung also reports what its run did, in words an operator reads -- a `tell_` family printing one line per tier of the correspondence -- and a rung born from the rung beneath it copies that family whole and inserts its own tier. A different prefix than the first meter reads, a different function than the second names, so the printing went uncounted while each elder meter reported a true number. A ratchet, then, rather than an erratum: both had named their own window in their own first sentence.
+
+Measured on `20260820.221349`, the printing stood at **2,468 distinct lines on disk 9,317 times across 42 rungs, 6,849 of them lines the ladder had already written** -- seven and a half times the spine fold D lifted, and the largest carry on the ladder. The meter is [`../tools/caravan_ladder_print_witness.rish`](../tools/caravan_ladder_print_witness.rish) over [`../tools/fixtures/caravan_ladder_print_scan.sh`](../tools/fixtures/caravan_ladder_print_scan.sh), and it reports the carry two ways on purpose, because the split decides what the fold should be: whole bodies standing byte for byte lift the way a check lifts, while the staircase wants the harness seam fold D opened.
+
+**Fold E took the first half on `20260820.222728`.** The note-writing pair is the part of the family the whole correspondence arc never varies: `tell_path`, which writes the address an answer is left at, and `tell_outcome`, which writes the single byte telling a reader how their quarrel came out. Both stood byte for byte in **twenty-nine rungs**, and every symbol either one reaches -- the path ceiling, the readers' directory, the address test, the result shape, the byte that names an outcome, the error set -- already stood public on all twenty-nine. So both lifted into [`ladder_checks.rye`](ladder_checks.rye) whole, each rung keeping a three-line call that leaves its own public surface untouched.
+
+| Reading | Before | After |
+|---|---|---|
+| Printing lines on disk | 9,317 | **8,427** |
+| Carried printing lines | 6,849 | **5,955** |
+| Lines deleted from rungs | -- | **986**, for 174 lines of call |
+| Neighbor walk, read independently | 6,641 | **5,735** -- within four percent |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+The last two rows are the same honest proof fold D left: a lift removed a cost rather than trading it for a cheaper-looking one. The ceiling came down 7,800 to **6,900** in the same lap, since a ceiling left where a fold found it hands back exactly the room the fold just won. All twenty-nine touched rungs stand in the top rung's import closure, and that rung runs GREEN from a cold tree, with `tidings`, `abate`, `deem`, `suffice`, `reweigh`, and `apprise` re-run beside it. What remains of the carry is the reader-telling pair -- the two larger bodies that read a run's own report -- and the staircase beneath them, which wants the `comptime` seam rather than a whole-body lift. Full reasoning: the design call [`../active-designing/20260820-131713_caravan-ladder-shared-harness.md`](../active-designing/20260820-131713_caravan-ladder-shared-harness.md), and the lap that measured the printing, [`../session-logs/20260820-221349_caravan-ladder-the-printing-two-meters-cannot-see.kyri`](../session-logs/20260820-221349_caravan-ladder-the-printing-two-meters-cannot-see.kyri).
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.
