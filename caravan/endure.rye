@@ -346,6 +346,18 @@ pub const Report = struct {
     dropped: u32 = 0,
 };
 
+/// This rung's own tally, reached the way every rung above reaches it.
+///
+/// Every rung above this one finds the enduring through `endure_of`, climbing a
+/// nesting of `inner` to arrive here. This rung *is* that tier, so the reach is
+/// the report itself -- and naming it anyway is what lets the one body every
+/// rung of this arc runs stand byte for byte in this rung too, rather than
+/// nearly. An accessor born for the tier a rung owns costs three lines and
+/// folds fifty.
+pub fn endure_of(report_out: *Report) *Report {
+    return report_out;
+}
+
 /// The appeal rung's own tally, which this one wraps.
 ///
 /// Every rung of this arc wraps the report of the rung below it, so one named
@@ -2636,9 +2648,7 @@ pub fn appeal_published(io: std.Io) ?Plea {
 /// matter is not over, quoted rather than composed, and it is written here so
 /// the run after this one opens already knowing.
 pub fn standing_note(io: std.Io, plea: Plea) NoteError!void {
-    // invariant: only a pressed quarrel is ever carried past its own run
-    assert(endures(plea));
-    try seat_note(io, plan_name, ".standing", &[_]u8{plea_byte(plea)});
+    return ladder_checks.standing_note(@This(), io, plea);
 }
 
 /// Reads the position standing over this plan from any run at all, or nothing.
@@ -3173,54 +3183,7 @@ pub fn run_in_endure(
 /// position. A pressed quarrel a run heard and the run after it began without is
 /// the number this rung moves.
 fn carry_the_position(io: std.Io, endurance: Endurance, report_out: *Report) (RunError || NoteError)!void {
-    const plea = appeal_published(io) orelse {
-        // invariant: a run that heard nobody carries no position forward
-        assert(report_out.kept == 0);
-        // invariant: a run that heard nobody drops no position either
-        assert(report_out.dropped == 0);
-        return;
-    };
-    const heard: u32 = 1;
-
-    // The measurement this rung moves, weighed against the plea the wire itself
-    // carries rather than against what any plan asked for, so a quarrel left to
-    // die with its run is counted rather than refused.
-    report_out.dropped = position_dropped(heard, plea, endurance);
-    const kept_count = kept_in(heard, plea, endurance);
-    const spent_count = spent_in(heard, plea, endurance);
-    if (endurance == .spent) {
-        // invariant: a spending run carries nothing, however plainly its reader pressed
-        assert(kept_count == 0);
-        report_out.spent = spent_count;
-        return;
-    }
-    if (!endures(plea)) {
-        // A reader content with the outcome has closed their own quarrel, and
-        // the wire says so by leaving the standing note exactly as it reads.
-        //
-        // invariant: a contentment is never carried past the run that earned it
-        assert(kept_count == 0);
-        report_out.spent = spent_count;
-        return;
-    }
-    // The supply, refused by name while the plea it read is still in hand: a run
-    // carries a position only where its holder actually pressed one.
-    if (unpressed_endurance(if (endures(plea)) 1 else 0, kept_count)) |why| return why;
-    if (endure_refusal(heard, kept_count, spent_count)) |why| return why;
-    // invariant: a run that reached the endurance carries the one position it heard
-    assert(kept_count == 1);
-    try standing_note(io, plea);
-    // The wire before the memory, once more: the position is read back out of
-    // the note the next run will open, and only then does the report believe it.
-    const carried = position_standing(io) orelse return error.EndureMisremembered;
-    // The record half of this rung: the next run opens this byte and begins its
-    // whole season believing a person is still in a quarrel, so it must be the
-    // quarrel this run actually heard.
-    if (!quotes_standing(carried, plea)) return error.EndureMisremembered;
-    report_out.kept = kept_count;
-    report_out.spent = spent_count;
-    // invariant: a keeping run drops no position it heard
-    assert(report_out.dropped == 0);
+    return ladder_checks.carry_the_position(@This(), io, endurance, report_out);
 }
 
 /// Reads what the reader says to the answer this plan just gave them.
