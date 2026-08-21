@@ -2328,6 +2328,36 @@ On disk the twenty-four rung files shed 2,112 lines for 72 of delegate, and `lad
 
 The choir stands **105 GREEN**, TAME bans clean, width-check clean.
 
+## Fold X -- `release_the_standing`, and the family that folded whole
+
+The queue named **twenty-four rungs by seventy-one lines, 1,633 carried**, and hashing every body by that name found a **twenty-fifth**. That is the second kind of absentee, read now for the fourth time: `relent.rye` **owns** the relenting tier, so it reached its own report directly where all twenty-four rungs above reach it through `relent_of`. Ten lines differed out of seventy-one, and every one of them was the same difference. Three lines of identity accessor, and the family folded **whole at twenty-five, with no elder left home** -- the first fold of this arc to leave nothing standing apart.
+
+`release_the_standing` is the run's answer to what a person's pressed quarrel is worth. A quarrel is a living statement that the matter is not over, so the body reads the wire before it believes anything: the note that stands, the endurance that would have written it, the box its holder published, and the hand that box actually carries. **A holding run clears nothing, however plainly its holder moved on. Silence is never read as a withdrawal. A position whose holder cannot be reached stands rightly until they can be.** Only a reader who actually let go gets their position taken down.
+
+**The wire before the memory, at both ends.** The note is read back after the release, and only a wire reading clear lets the report say the position came down -- because a note still naming a quarrel after its holder let it go hands every future run an objection nobody holds. The rung refuses that by name with `error.RelentMisrecorded` rather than trusting its own release.
+
+**The fold cost sixteen widenings and split nothing.** Thirteen of the fourteen symbols the body reaches -- `position_standing`, `endures`, `address_published`, `pressed_by`, `withdrawn_still_standing`, `withdrawn_in`, `standing_in`, `withdraws`, `unwithdrawn_clearing`, `relent_refusal`, `release_standing`, `note_cleared`, and the `max_address_len` bound, with `Relent`, `Report`, `RunError`, and `NoteError` beside them -- already stood public in all twenty-five, interest paid by the folds before this one. Only `relent_of` needed it, and its whole family is exactly the twenty-four rungs this body stands in, so fold T's rule had nothing left to protect: widening the sixteen private bodies covered the family entire, and each of the twenty-four is a distinct text naming its own nesting depth, so the widening handed back nothing and split nothing.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding the body | 25 | **0**, each keeping a three-line delegate |
+| Lines the body carried | 1,633 | **72** -- the delegate is itself a copy |
+| Widenings the fold cost | -- | **16**, plus one accessor born |
+| Bodies standing apart, kept home | -- | **0**, the arc's first whole family |
+| The ladder's whole carry | 119,622 | **118,061** |
+| Carry ceiling | 119,700 | **118,100** |
+| Carrying families | 707 | **707**, unmoved |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+**The arithmetic closes with no remainder.** Twenty-four copies of seventy-one gave back 1,633 exactly as the queue promised; `relent.rye` joining first *added* seventy-one, making twenty-five copies at 1,704; and the twenty-five three-line delegates carry 72. So the fall is 1,704 less 72 less the seventy-one that came home -- **1,561**, exactly what the meter measured. Bodies climb 18,067 to 18,069 and copies 10,199 to 10,200; distinct texts climb 7,868 to 7,869, the newborn identity accessor being a text the ladder did not have.
+
+On disk the twenty-five rung files and the harness together shed **1,741 lines for 149 added** -- a net of **1,592 lines** off the tracked tree.
+
+**What this fold adds to the reading of an absentee.** Folds R, S, and V each brought one second-kind absentee home and left first-kind elders standing; fold W left twenty-three. This one left none, and the reason is measurable rather than remembered: `release_the_standing` exists **only** in the relenting tier and above. Every rung below it -- `heed`, `endure`, `appeal`, `repose` among them -- carries no body by that name at all, so there was never a shallower version to date this one out of its family. **A family with no fossil record is a family born whole**, arriving after the vocabulary beneath it had already settled, and the hash says so at a glance without anybody having to remember which lap wrote what.
+
+The choir stands **105 GREEN**, TAME bans clean, width-check clean.
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.
