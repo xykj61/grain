@@ -209,4 +209,35 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_c
 assert (ceiling.ok == false) else "caravan-ladder-copy: a ladder past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-copy: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-copy -- the folded ladder stands counted under a named ceiling, all three folds are read out of the ladder rather than claimed, the counting is proven by hand on a two-rung corpus, the fold walks down one rung at a time in either form a rung may write it, and all seven RED paths refuse by name, the prose rule among them, welcomed on the elder harness and refused on a planted one."
+# The roster, asked here because this meter runs on every fold lap and the choir does not (REDS %101).
+# The printing meter was born, proved itself GREEN on its own lap, and stood outside the choir for two
+# laps -- REDS %81's shape exactly, in a second module. Singing 98 witnesses costs minutes; asking whether
+# the roster is whole costs two greps, so the question rides with the cheap meter a fold lap already pulls.
+# A lantern that fires twice becomes a loom.
+let roster = run ["sh" "tools/fixtures/caravan_roster_bijection_scan.sh"]
+assert roster.ok else "caravan-ladder-copy: the Caravan roster must hear every witness on disk -- ${roster.out}"
+assert roster.out contains "ROSTER_OK" else "caravan-ladder-copy: want the roster whole in both directions -- ${roster.out}"
+say "caravan-ladder-copy: the roster -- ${trim roster.out}"
+
+# RED path eight -- a witness on disk that no roster line names. This is the exact shape both %81 and %101
+# wore, planted here so the guard is proven by doing rather than by reasoning: a throwaway directory holds
+# the living roster's own witnesses plus one more, and the scan names the stranger and refuses.
+let unheard = run ["sh" "-c" "d=$(mktemp -d); for f in tools/caravan_*_witness.rish; do : > $d/$(basename $f); done; : > $d/caravan_unregistered_witness.rish; CARAVAN_TOOLS_DIR=$d sh tools/fixtures/caravan_roster_bijection_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert (unheard.ok == false) else "caravan-ladder-copy: a witness no roster names must refuse"
+assert unheard.out contains "reason=unheard" else "caravan-ladder-copy: want the unheard witness refused by name"
+assert unheard.out contains "caravan_unregistered_witness" else "caravan-ladder-copy: want the unheard witness named, so a red says which one"
+
+# RED path nine -- the other direction: a roster naming a witness with no file behind it. A count that
+# describes a tree which no longer exists is the %97 family, and it refuses too.
+let phantom = run ["sh" "-c" "d=$(mktemp -d); for f in tools/caravan_*_witness.rish; do : > $d/$(basename $f); done; rm -f $d/caravan_abate_witness.rish; CARAVAN_TOOLS_DIR=$d sh tools/fixtures/caravan_roster_bijection_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert (phantom.ok == false) else "caravan-ladder-copy: a roster line pointing at nothing must refuse"
+assert phantom.out contains "reason=phantom" else "caravan-ladder-copy: want the phantom registration refused by name"
+
+# RED path ten -- a directory holding no Caravan witnesses at all. The REDS %97 shape once more: a scan
+# reading a real place and answering zero, where the zero is its own blindness. It refuses rather than
+# reporting a whole roster over an empty tree.
+let bare = run ["sh" "-c" "d=$(mktemp -d); CARAVAN_TOOLS_DIR=$d sh tools/fixtures/caravan_roster_bijection_scan.sh; s=$?; rmdir $d; exit $s"]
+assert (bare.ok == false) else "caravan-ladder-copy: a directory holding no witnesses must refuse"
+assert bare.out contains "reason=no_witnesses" else "caravan-ladder-copy: want the empty witness directory refused by name"
+
+say "GREEN: caravan-ladder-copy -- the folded ladder stands counted under a named ceiling, all three folds are read out of the ladder rather than claimed, the counting is proven by hand on a two-rung corpus, the fold walks down one rung at a time in either form a rung may write it, the Caravan roster is asked here every lap so no witness is born unheard, and all ten RED paths refuse by name, the prose rule and both roster directions among them, welcomed on the elder harness and refused on a planted one."

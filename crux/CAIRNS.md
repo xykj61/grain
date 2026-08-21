@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.232126` -- the fold-F live edge folds as fold G spends the last whole body
+
+**Walk-back nib:** `078135e0da` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when the reader-telling body had just lifted into the harness stands at this nib and every commit before it.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for **fold F**, folded into the condensed-pointer line beneath it so the card leads with the round that just landed rather than carrying a second copy of the log index. Roughly one screenful falls away; every word stands at the nib above.
+
+**What waits there, worth recalling:** the inline account of **fold F** as it was written -- the nineteen symbols `tell_the_reader` reaches, the eighteen that already stood public, and the nineteenth being `tidings_of`, the accessor twenty-four `inner` hops deep in one rung and six in another, widened by one word per rung rather than flattened. That widening is exactly what made fold G need none, so the reasoning is worth the walk back. The account lives on in `session-logs/20260820-224901_caravan-ladder-fold-f-the-reader-telling-body.kyri` and the fold sections of `caravan/README.md`.
+
+
 ### `20260820.224901` -- the fold-E live edge folds as fold F lifts the reader-telling body
 
 **Walk-back nib:** `da143b789b` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when the note-writing pair had just lifted into the harness stands at this nib and every commit before it.

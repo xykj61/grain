@@ -5100,3 +5100,85 @@ pub fn tell_the_reader(
     // invariant: a returning run leaves no weighed quarrel unreturned
     assert(rung.tidings_of(report_out).unreturned == 0);
 }
+
+/// Carries what the second look came to out to the reader who asked for it.
+///
+/// **It runs after the looking below it, and it reads that looking's own
+/// receipt.** Only a second look actually receipted can be told of, so this tier
+/// takes its subject off the wire rather than from anything the plan asked for
+/// -- and a run that looked at nothing tells nobody anything, which is the
+/// honest ending rather than a letter about a question nobody re-asked.
+///
+/// **The telling lands where the reader is.** Every note of this second look so
+/// far lives among the plan's own records, in a place only a later run of this
+/// plan opens; this one leaves for the reader's own box, which is what makes it
+/// a telling rather than another entry in the file.
+///
+/// **Telling is not deciding.** The telling copies the receipt and rewrites
+/// nothing -- the settlement, the quarrel, its age, its standing, the case on
+/// the desk, the finding, the plan's own word, the concession, the meeting, the
+/// redress, the delivery, the reader's own verdict, and the second look itself
+/// each come out of a telling run exactly as they went in.
+///
+/// Eleven rungs held this body byte for byte, and every symbol it reaches
+/// already stood public in all eleven, so it lifts here whole without widening a
+/// single word. Each rung still reads its own wire, its own address ceiling, and
+/// its own box, because every name arrives with the type handed in -- including
+/// the accessor that finds this tier's own report wherever that rung nests it.
+/// The rung the family was born on writes the body differently and is left
+/// alone.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn tell_the_reopener(
+    comptime rung: type,
+    io: std.Io,
+    recount: rung.Recount,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    const on_wire = rung.anew_standing(io);
+    const looked_count: u32 = if (on_wire != null) 1 else 0;
+    if (looked_count == 0) {
+        // invariant: a run that made no second look tells of none
+        assert(rung.recount_of(report_out).recounted == 0);
+        // invariant: a run that made no second look leaves none untold
+        assert(rung.recount_of(report_out).untold == 0);
+        return;
+    }
+
+    // The measurement this tier moves, weighed against the second look actually
+    // made rather than against anything the plan asked for, so a look nobody
+    // hears of is counted rather than refused.
+    rung.recount_of(report_out).untold = rung.untold_looks(looked_count, recount);
+    const told_count = rung.recounted_in(looked_count, recount);
+    const kept_count = rung.unsent_looks_in(looked_count, recount);
+    if (recount == .withholds) {
+        // invariant: a withholding run tells nobody, however plainly it looked
+        assert(told_count == 0);
+        rung.recount_of(report_out).withheld = kept_count;
+        return;
+    }
+
+    // The receipt comes off the wire, since the second look a telling reports is
+    // the one standing published and never one a run remembered. The reads
+    // supply the ladder rather than short-circuiting it, so every refusal below
+    // is reached by argument and named in its own order.
+    const receipt = on_wire orelse return error.RecountUnlooked;
+    const looked = true;
+    var address_buf: [rung.max_address_len]u8 = @splat(0);
+    const where = rung.address_published(io, &address_buf) orelse "";
+    const addressed = rung.addressable(where);
+    const carried = rung.knows_bytes(receipt);
+    const matched = rung.knows_answers(carried, receipt);
+    if (rung.recount_refusal(looked_count, told_count, kept_count, looked, addressed, matched)) |why| return why;
+
+    // invariant: a telling run carries the one second look it made
+    assert(told_count == 1);
+    try rung.recount_note(io, where, receipt);
+    // The wire before the memory: the reader's own box is opened again before
+    // the report believes anybody was told a word.
+    if (!rung.recount_holds(rung.recounted_to(io, where), carried)) return error.RecountMisrecorded;
+    rung.recount_of(report_out).recounted = told_count;
+    rung.recount_of(report_out).withheld = kept_count;
+    // invariant: a telling run leaves no second look of its own untold
+    assert(rung.recount_of(report_out).untold == 0);
+}
