@@ -59,18 +59,18 @@ say "caravan-ladder-carry: Lens TAME -- safety first: the ceiling is named, the 
 
 let living = run ["sh" "tools/fixtures/caravan_ladder_carry_scan.sh"]
 assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
-assert living.out contains "CARRY_OK carried=94151 ceiling=94200" else "caravan-ladder-carry: want the living carry under its named ceiling"
+assert living.out contains "CARRY_OK carried=89010 ceiling=89100" else "caravan-ladder-carry: want the living carry under its named ceiling"
 assert living.out contains "CARRY_MODULES 108" else "caravan-ladder-carry: want all 108 ladder modules read, the rungs and the harness alike"
-assert living.out contains "CARRY_BODIES 18118 distinct=7913 copies=10205 carried_lines=94151" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
+assert living.out contains "CARRY_BODIES 18131 distinct=7923 copies=10208 carried_lines=89010" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
 
 say "caravan-ladder-carry: living ladder -- ${living.out}"
 
 # The fold queue, asserted so it stays a measurement rather than a memory. The largest family is named here by number
 # so a lap that folds it must come back and say so, and a lap that grows a larger one cannot pass quietly.
-assert living.out contains "CARRY_FAMILIES 707" else "caravan-ladder-carry: want every carrying family counted"
+assert living.out contains "CARRY_FAMILIES 708" else "caravan-ladder-carry: want every carrying family counted"
 assert living.out contains "CARRY_TOP run_in_forbear: 10 rungs x 137 lines = 1233 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
-assert living.out contains "CARRY_TOP weigh_the_standing: 22 rungs x 57 lines = 1197 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
-say "caravan-ladder-carry: the fold queue -- run_in_forbear leads it now, the whole courier cluster having lifted into the harness this lap: carry_the_amendment over a cohort of thirty-five once the couriering tier owner was given the identity accessor it never needed, and the ten bodies it reaches -- box_path, carry_refusal, delivered_to, amend_published, deliver, addressable, carried_in, posted_unreached, unaddressed_reach, and held_in -- over cohorts of thirty-five and thirty-six, every one of them standing byte for byte with no absentee at all"
+assert living.out contains "CARRY_TOP seat_the_history: 17 rungs x 72 lines = 1152 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
+say "caravan-ladder-carry: the fold queue -- run_in_forbear leads it still, the whole standing cluster having lifted into the harness this lap: weigh_the_standing, date_the_standing, herald_the_standing, and carry_the_position, four tiers of what a run owes a quarrel still standing over its plan, each with its own tier owner brought home on three lines of identity accessor -- heed.rye, dwell.rye, swell.rye, endure.rye -- and the five notes and readings they reach lifted beside them, regard_published, regard_note, standing_note, dwell_note, and swell_published, over cohorts of twenty-three through twenty-seven"
 
 # The three named meters, read here beside the wide one so no reader mistakes a window for the room. Every number below
 # is true inside its own window, and the point of printing them together is that their sum is not the ladder's carry.
@@ -117,4 +117,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_c
 assert (ceiling.ok == false) else "caravan-ladder-carry: a carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-carry: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-carry -- the Caravan ladder's whole carry stands counted under a ceiling this fold brought down, every number of it printed above as the scan's own output rather than recited here, with the fold queue standing largest-first and led now by a new family, this lap having lifted a run's whole outward reach -- the carrying of a correction to the reader who is owed it, and the ten bodies beneath it -- out of cohorts of thirty-five and thirty-six, the couriering tier owner brought home on three lines of identity accessor."
+say "GREEN: caravan-ladder-carry -- the Caravan ladder's whole carry stands counted under a ceiling this fold brought down, every number of it printed above as the scan's own output rather than recited here, with the fold queue standing largest-first and led now by a new family, this lap having lifted the whole standing movement -- what a run owes a quarrel still standing over its plan, weighed, dated, heralded, and carried -- out of cohorts of twenty-three through twenty-seven, four tier owners brought home in one lap."

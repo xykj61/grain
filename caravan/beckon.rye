@@ -5981,9 +5981,7 @@ pub fn appeal_published(io: std.Io) ?Plea {
 /// matter is not over, quoted rather than composed, and it is written here so
 /// the run after this one opens already knowing.
 pub fn standing_note(io: std.Io, plea: Plea) NoteError!void {
-    // invariant: only a pressed quarrel is ever carried past its own run
-    assert(endures(plea));
-    try seat_note(io, plan_name, ".standing", &[_]u8{plea_byte(plea)});
+    return ladder_checks.standing_note(@This(), io, plea);
 }
 
 /// Reads the position standing over this plan from any run at all, or nothing.
@@ -6044,11 +6042,7 @@ pub fn release_standing(io: std.Io) void {
 /// of a quarrel belongs to the quarrel rather than to any run that met it; a
 /// withdrawal takes both down together.
 pub fn dwell_note(io: std.Io, runs: u32) NoteError!void {
-    // invariant: an age only ever reaches the wire once it has stood a run
-    assert(runs >= 1);
-    // invariant: an age always fits the single byte that carries it
-    assert(runs <= max_dwell_runs);
-    try seat_note(io, plan_name, ".dwell", &[_]u8{@intCast(runs)});
+    return ladder_checks.dwell_note(@This(), io, runs);
 }
 
 /// Reads how long the position standing over this plan has stood, or nothing.
@@ -6089,16 +6083,7 @@ pub fn swell_note(io: std.Io, volume: Volume) NoteError!void {
 /// is the honest reading, since an unpublished position may have outlasted a
 /// season.
 pub fn swell_published(io: std.Io) ?Volume {
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = note_path(&path_buf, plan_name, ".swell") catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    var bytes: [1]u8 = @splat(0);
-    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
-    // invariant: a standing never outgrows the one byte it is written in
-    assert(got <= 1);
-    if (got < 1) return null;
-    return volume_of_byte(bytes[0]);
+    return ladder_checks.swell_published(@This(), io);
 }
 
 /// Takes down the standing beside a position, because the position is gone.
@@ -6476,9 +6461,7 @@ pub fn clear_redress(io: std.Io) void {
 /// opens the outcome. The settlement says what the work came to; this says what
 /// company that word keeps.
 pub fn regard_note(io: std.Io, regard: Regard) NoteError!void {
-    // invariant: only a word standing under a quarrel is ever published as one
-    assert(regard == .under);
-    try seat_note(io, plan_name, ".regard", &[_]u8{regard_byte(regard)});
+    return ladder_checks.regard_note(@This(), io, regard);
 }
 
 /// Reads what this plan's word stands in, or nothing at all.
@@ -6489,16 +6472,7 @@ pub fn regard_note(io: std.Io, regard: Regard) NoteError!void {
 /// word stands alone, since the honest reading of an empty note is that no run
 /// has said anything yet.
 pub fn regard_published(io: std.Io) ?Regard {
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = note_path(&path_buf, plan_name, ".regard") catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    var bytes: [1]u8 = @splat(0);
-    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
-    // invariant: a regard never outgrows the one word it names
-    assert(got <= 1);
-    if (got < 1) return null;
-    return regard_of_byte(bytes[0]);
+    return ladder_checks.regard_published(@This(), io);
 }
 // =========================================================================
 // The supervisor -- a record that answers for the work its conferrals never
@@ -8057,57 +8031,7 @@ pub fn refer_the_quarrel(io: std.Io, refer: Refer, report_out: *Report) (RunErro
 /// costs the count nothing -- the number this rung moves is the long-standing
 /// position an operator reads no louder than a fresh one.
 pub fn herald_the_standing(io: std.Io, swell: Swell, report_out: *Report) (RunError || NoteError)!void {
-    const stood_plea = position_standing(io) orelse {
-        // invariant: a run with nothing standing heralds no position
-        assert(swell_of(report_out).heralded == 0);
-        // invariant: a run with nothing standing leaves none unheralded
-        assert(swell_of(report_out).unheralded == 0);
-        return;
-    };
-    if (!endures(stood_plea)) {
-        // invariant: a quarrel nobody pressed is never heralded on their behalf
-        assert(swell_of(report_out).heralded == 0);
-        return;
-    }
-    const standing_count: u32 = 1;
-
-    // The age this run reads is the age on the wire, never the age it believes
-    // it wrote. A position no run has dated reads null, and null is honestly
-    // nothing to speak from -- so the reading refuses by name rather than
-    // guessing at a volume.
-    const age = dwell_published(io) orelse 0;
-    const dated = dwell_published(io) != null;
-
-    // The measurement this rung moves, weighed against the position actually
-    // left standing rather than against anything the plan asked for, so a
-    // long-standing quarrel published nowhere is counted rather than refused.
-    swell_of(report_out).unheralded = standing_unheralded(standing_count, age, swell);
-    const loud_count = heralded_in(standing_count, swell);
-    const quiet_count = unpublished_in(standing_count, swell);
-    if (swell == .hushed) {
-        // invariant: a hushed run heralds nothing, however long the quarrel stood
-        assert(loud_count == 0);
-        swell_of(report_out).unpublished = quiet_count;
-        return;
-    }
-    if (swell_refusal(standing_count, loud_count, quiet_count, dated)) |why| return why;
-
-    const reading = stands_loud(age);
-    // invariant: a heralding run speaks for the one position it left standing
-    assert(loud_count == 1);
-    try swell_note(io, reading);
-    // The wire before the memory, once more: the note an operator opens beside
-    // the settlement is read back, and only then does the report believe it was
-    // written.
-    const after = swell_published(io);
-    // The record half of this rung: this byte sits where the outcome is read,
-    // so a note disagreeing with the standing this run actually weighed would
-    // be the loudest wrong word on the wire.
-    if (!swell_holds(after, reading)) return error.SwellMisrecorded;
-    swell_of(report_out).heralded = loud_count;
-    swell_of(report_out).unpublished = quiet_count;
-    // invariant: a heralding run leaves no long-standing quarrel unheralded
-    assert(swell_of(report_out).unheralded == 0);
+    return ladder_checks.herald_the_standing(@This(), io, swell, report_out);
 }
 
 /// Says how long the position still standing over this plan has stood.
@@ -8130,60 +8054,7 @@ pub fn herald_the_standing(io: std.Io, swell: Swell, report_out: *Report) (RunEr
 /// holds. A standing quarrel whose note says nothing at all about how long it
 /// has stood is the number this rung moves.
 pub fn date_the_standing(io: std.Io, dwell: Dwell, report_out: *Report) (RunError || NoteError)!void {
-    const stood_plea = position_standing(io) orelse {
-        // invariant: a run with nothing standing dates no position
-        assert(dwell_of(report_out).aged == 0);
-        // invariant: a run with nothing standing leaves none ageless
-        assert(dwell_of(report_out).ageless == 0);
-        return;
-    };
-    if (!endures(stood_plea)) {
-        // A byte no endurance of this arc would ever have written is no
-        // position to date, and the wire says so by leaving it exactly as it
-        // reads.
-        //
-        // invariant: a quarrel nobody pressed is never dated on their behalf
-        assert(dwell_of(report_out).aged == 0);
-        return;
-    }
-    const standing_count: u32 = 1;
-
-    // The measurement this rung moves, weighed against the position actually
-    // left standing rather than against anything the plan asked for, so a
-    // quarrel standing undated is counted rather than refused.
-    dwell_of(report_out).ageless = standing_ageless(standing_count, dwell);
-    const told_count = aged_in(standing_count, dwell);
-    const undated_count = undated_in(standing_count, dwell);
-    if (dwell == .untold) {
-        // invariant: an untelling run dates nothing, however long the quarrel stood
-        assert(told_count == 0);
-        dwell_of(report_out).undated = undated_count;
-        return;
-    }
-    if (dwell_refusal(standing_count, told_count, undated_count)) |why| return why;
-
-    // The age already on the wire, read before a byte of it is replaced. A
-    // quarrel no run has yet dated reads null, and null is honestly nothing --
-    // this run is the first to count it, and it counts one.
-    const before = dwell_published(io) orelse 0;
-    const now = stood_longer(before);
-    // The hard half, refused by name while the byte it read is still in view: an
-    // age only ever climbs, since the runs a position stood through already
-    // happened and no later run can unhappen them.
-    if (forgotten_dwell(before, now)) |why| return why;
-    // invariant: a telling run dates the one position it left standing
-    assert(told_count == 1);
-    try dwell_note(io, now);
-    // The wire before the memory, once more: the note every run after this one
-    // opens is read back, and only then does the report believe it was written.
-    const after = dwell_published(io);
-    // The record half of this rung: a note disagreeing with the age this run
-    // actually stood hands every future operator a number that means nothing.
-    if (!dwell_holds(after, now)) return error.DwellMisrecorded;
-    dwell_of(report_out).aged = told_count;
-    dwell_of(report_out).undated = undated_count;
-    // invariant: a telling run leaves no standing quarrel undated
-    assert(dwell_of(report_out).ageless == 0);
+    return ladder_checks.date_the_standing(@This(), io, dwell, report_out);
 }
 
 /// Lets a standing quarrel go, on the word of the person who raised it.
@@ -8221,62 +8092,8 @@ fn release_the_standing(io: std.Io, relent: Relent, report_out: *Report) (RunErr
 /// outcomes this rung reaches by weighing nothing rather than by publishing a
 /// qualification nobody is owed. A plan reported carried while an inherited
 /// quarrel stood against it is the number this rung moves.
-pub fn weigh_the_standing(
-    io: std.Io,
-    taken_up: ?Plea,
-    heed: Heed,
-    report_out: *Report,
-) (RunError || NoteError)!void {
-    const pressed = taken_up orelse {
-        // invariant: a run nobody pressed a quarrel against weighs no position
-        assert(heed_of(report_out).heeded == 0);
-        // invariant: a run nobody pressed a quarrel against leaves none unweighed
-        assert(heed_of(report_out).unheeded == 0);
-        return;
-    };
-    const stood: u32 = 1;
-    const settled = settlement_published(io) orelse return error.HeedEarly;
-
-    // The measurement this rung moves, weighed against the position the wire
-    // itself carried and the word this run itself published, so a quarrel left
-    // to stand unanswered is counted rather than refused.
-    heed_of(report_out).unheeded = standing_unweighed(stood, pressed, settled, heed);
-    const weighed_count = heeded_in(stood, pressed, heed);
-    const left_count = unweighed_in(stood, pressed, heed);
-    if (heed == .unweighed) {
-        // invariant: an unweighing run publishes nothing, however plainly the quarrel stands
-        assert(weighed_count == 0);
-        heed_of(report_out).unweighed = left_count;
-        return;
-    }
-    if (!endures(pressed)) {
-        // A byte no endurance of this arc would ever have written is no position
-        // to stand under, and the wire says so by leaving the regard unwritten.
-        //
-        // invariant: a word never stands under a quarrel nobody pressed
-        assert(weighed_count == 0);
-        heed_of(report_out).unweighed = left_count;
-        return;
-    }
-    // The supply, refused by name while the position it read is still in hand: a
-    // run stands under a quarrel only where a living person actually pressed one.
-    if (unpressed_regard(if (endures(pressed)) 1 else 0, weighed_count)) |why| return why;
-    if (heed_refusal(stood, weighed_count, left_count)) |why| return why;
-    // invariant: a run that reached the heeding weighs the one position it inherited
-    assert(weighed_count == 1);
-    try regard_note(io, .under);
-    // The wire before the memory, once more: the regard is read back out of the
-    // note an operator opens beside the settlement, and only then does the report
-    // believe it.
-    const published = regard_published(io) orelse return error.HeedMisrecorded;
-    // The record half of this rung: an operator takes that byte and the
-    // settlement together as the whole outcome, so it must be the regard this
-    // plan truly stands in.
-    if (!regard_holds(published, pressed)) return error.HeedMisrecorded;
-    heed_of(report_out).heeded = weighed_count;
-    heed_of(report_out).unweighed = left_count;
-    // invariant: a weighing run leaves no inherited quarrel unanswered
-    assert(heed_of(report_out).unheeded == 0);
+pub fn weigh_the_standing(io: std.Io, taken_up: ?Plea, heed: Heed, report_out: *Report) (RunError || NoteError)!void {
+    return ladder_checks.weigh_the_standing(@This(), io, taken_up, heed, report_out);
 }
 
 /// Carries a pressed quarrel past the run that heard it, or lets it end there.
@@ -8294,54 +8111,7 @@ pub fn weigh_the_standing(
 /// position. A pressed quarrel a run heard and the run after it began without is
 /// the number this rung moves.
 pub fn carry_the_position(io: std.Io, endurance: Endurance, report_out: *Report) (RunError || NoteError)!void {
-    const plea = appeal_published(io) orelse {
-        // invariant: a run that heard nobody carries no position forward
-        assert(endure_of(report_out).kept == 0);
-        // invariant: a run that heard nobody drops no position either
-        assert(endure_of(report_out).dropped == 0);
-        return;
-    };
-    const heard: u32 = 1;
-
-    // The measurement this rung moves, weighed against the plea the wire itself
-    // carries rather than against what any plan asked for, so a quarrel left to
-    // die with its run is counted rather than refused.
-    endure_of(report_out).dropped = position_dropped(heard, plea, endurance);
-    const kept_count = kept_in(heard, plea, endurance);
-    const spent_count = spent_in(heard, plea, endurance);
-    if (endurance == .spent) {
-        // invariant: a spending run carries nothing, however plainly its reader pressed
-        assert(kept_count == 0);
-        endure_of(report_out).spent = spent_count;
-        return;
-    }
-    if (!endures(plea)) {
-        // A reader content with the outcome has closed their own quarrel, and
-        // the wire says so by leaving the standing note exactly as it reads.
-        //
-        // invariant: a contentment is never carried past the run that earned it
-        assert(kept_count == 0);
-        endure_of(report_out).spent = spent_count;
-        return;
-    }
-    // The supply, refused by name while the plea it read is still in hand: a run
-    // carries a position only where its holder actually pressed one.
-    if (unpressed_endurance(if (endures(plea)) 1 else 0, kept_count)) |why| return why;
-    if (endure_refusal(heard, kept_count, spent_count)) |why| return why;
-    // invariant: a run that reached the endurance carries the one position it heard
-    assert(kept_count == 1);
-    try standing_note(io, plea);
-    // The wire before the memory, once more: the position is read back out of
-    // the note the next run will open, and only then does the report believe it.
-    const carried = position_standing(io) orelse return error.EndureMisremembered;
-    // The record half of this rung: the next run opens this byte and begins its
-    // whole season believing a person is still in a quarrel, so it must be the
-    // quarrel this run actually heard.
-    if (!quotes_standing(carried, plea)) return error.EndureMisremembered;
-    endure_of(report_out).kept = kept_count;
-    endure_of(report_out).spent = spent_count;
-    // invariant: a keeping run drops no position it heard
-    assert(endure_of(report_out).dropped == 0);
+    return ladder_checks.carry_the_position(@This(), io, endurance, report_out);
 }
 
 /// Reads what the reader says to the answer this plan just gave them.
