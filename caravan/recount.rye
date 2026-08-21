@@ -510,7 +510,7 @@ fn reposing_of(report_out: *Report) *reposing_rung.Report {
 }
 
 /// The lapsing rung's tally, one tier further down.
-fn lapsing_of(report_out: *Report) *lapsing_rung.Report {
+pub fn lapsing_of(report_out: *Report) *lapsing_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
@@ -7702,73 +7702,7 @@ fn stand_the_mark(io: std.Io, mark: Mark, report_out: *Report) (RunError || Note
 /// objection published beside a word with no term on it at all -- standing on
 /// every future reader, unasked -- is the number this rung moves.
 fn weigh_the_term(io: std.Io, term: Term, report_out: *Report) (RunError || NoteError)!void {
-    const marked = escort_written(io);
-    const escorted: u32 = if (marked == null) 0 else 1;
-    if (escorted == 0) {
-        // invariant: a run that escorted nothing leaves no objection unbounded
-        assert(lapsing_of(report_out).unbounded == 0);
-        return;
-    }
-    const held = dispute_recorded(io);
-    const disputed = held != null;
-
-    // The measurement this rung moves, weighed against what the wire actually
-    // carries rather than against what any term asked for, so an objection left
-    // standing forever is counted rather than refused.
-    lapsing_of(report_out).unbounded = objection_unbounded(escorted, disputed, term);
-    const asked = asked_in(escorted, disputed, term);
-    if (term == .perpetual) {
-        // invariant: an objection that stands forever was never asked about
-        assert(asked == 0);
-        return;
-    }
-    if (!disputed) {
-        // A record holding no disagreement has nothing to put a term on, and the
-        // wire says so by leaving the escort exactly as it reads.
-        //
-        // invariant: an unquarrelled word is never asked about
-        assert(asked == 0);
-        return;
-    }
-    const record = held orelse return error.LapseEarly;
-
-    // The asking, and the act that earns the right to read a later silence as
-    // silence. It reaches the reader's own box, and it is read back out of that
-    // box before a single word of the answer is weighed.
-    var address_buf: [max_address_len]u8 = @splat(0);
-    const address = address_published(io, &address_buf) orelse return error.CourierUnaddressed;
-    try ask_again(io, address, record);
-    const question = asked_of(io, address) orelse return error.LapseUnasked;
-    // A question naming any other quarrel would put a term on an objection this
-    // reader never raised, which is the same overreach as quoting them wrongly.
-    if (question[0] != record[0] or question[1] != record[1]) return error.LapseMisrenewed;
-    lapsing_of(report_out).asked = asked;
-
-    // The reader's own second hand, or its absence. Neither is guessed at, and
-    // the supervisor writes neither.
-    const again = renewed_by(io, address);
-    // The hard half of this rung: a hand naming any other reading raises a
-    // different quarrel entirely, and counting it as a renewal would keep a word
-    // standing that its reader let go.
-    if (again) |said| {
-        if (!renews(said, record)) return error.LapseMisrenewed;
-    }
-    // Past that refusal, a second hand at all is this objection raised again.
-    const raised = again != null;
-    const renewed_count = renewed_in(asked, raised);
-    const lapsed = lapsed_in(asked, raised);
-    // The silence, refused by name while the question it followed is still in
-    // hand: a run calls an objection let go only where somebody was asked.
-    if (unasked_lapse(asked, lapsed)) |why| return why;
-    if (lapse_refusal(held, renewed_count, lapsed)) |why| return why;
-    // invariant: a run that reached the term refuses nothing it must write
-    assert(renewed_count + lapsed == 1);
-    const life: Life = if (raised) .renewed else .lapsed;
-    try lapse_note(io, life);
-    lapsing_of(report_out).renewed = renewed_count;
-    lapsing_of(report_out).lapsed = lapsed;
-    // invariant: a bounded run leaves no published objection unbounded
-    assert(lapsing_of(report_out).unbounded == 0);
+    return ladder_checks.weigh_the_term(@This(), io, term, report_out);
 }
 
 /// Reads back what the reader answered, and says whether the plan ever
