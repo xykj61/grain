@@ -79,8 +79,8 @@ const notify = @import("notify.rye");
 const roundtrip = @import("roundtrip.rye");
 const cycle = @import("cycle.rye");
 const regions = @import("regions.rye");
-const queue_store = @import("queue.rye");
-const serve = @import("serve.rye");
+pub const queue_store = @import("queue.rye");
+pub const serve = @import("serve.rye");
 const gap = @import("gap.rye");
 const cohort = @import("cohort.rye");
 const intent = @import("intent.rye");
@@ -892,7 +892,7 @@ fn seat_note(io: std.Io, domain: []const u8, suffix: []const u8, bytes: []const 
 }
 
 /// Reads the one byte a counting note carries.
-fn read_count(io: std.Io, domain: []const u8, suffix: []const u8) NoteError!u8 {
+pub fn read_count(io: std.Io, domain: []const u8, suffix: []const u8) NoteError!u8 {
     // invariant: a note always names the dependent it belongs to
     assert(domain.len >= 1);
     // invariant: a note always carries one of the suffixes
@@ -908,7 +908,7 @@ fn read_count(io: std.Io, domain: []const u8, suffix: []const u8) NoteError!u8 {
 }
 
 /// Reads the word list a dependent's domain has been handed so far.
-fn read_words(io: std.Io, domain: []const u8, out: *Words) NoteError!void {
+pub fn read_words(io: std.Io, domain: []const u8, out: *Words) NoteError!void {
     // invariant: a word list always names the dependent that listens
     assert(domain.len >= 1);
     // invariant: a word list is always read into a list that starts empty
@@ -2423,7 +2423,7 @@ fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32
 }
 
 /// Answers whether this dependent already holds a capability over one region.
-fn already_holds(slot: *const capabilities.DependentSlot, region_name: []const u8) bool {
+pub fn already_holds(slot: *const capabilities.DependentSlot, region_name: []const u8) bool {
     // invariant: a holding is always asked about a named region
     assert(region_name.len >= 1);
     // invariant: a holding never reads past what one dependent may hold
@@ -2438,7 +2438,7 @@ fn already_holds(slot: *const capabilities.DependentSlot, region_name: []const u
 }
 
 /// Names the word at one depth of a list, or answers that the list is shorter.
-fn word_at(words: *const Words, index: u32) ?[]const u8 {
+pub fn word_at(words: *const Words, index: u32) ?[]const u8 {
     // invariant: a word is only ever sought inside what one dependent may hold
     assert(index < capabilities.max_caps_per_dependent);
     var seen: u32 = 0;
@@ -2585,39 +2585,7 @@ pub fn graft_promised_reach(
     granted: *Words,
     carried_out: *u32,
 ) ?u8 {
-    // invariant: a graft always names the dependent doing it
-    assert(domain.len >= 1);
-    // invariant: a promise never names more reach than one line may hold
-    assert(promised <= cycle.max_hops);
-    var carried: u32 = 0;
-    var looks: u32 = 0;
-    while (carried < promised and looks < max_patience_looks) : (looks += 1) {
-        const given: u32 = read_count(io, domain, ".given") catch break;
-        if (given <= carried) {
-            std.Io.sleep(io, std.Io.Duration.fromMilliseconds(note_rest_ms), .awake) catch {};
-            continue;
-        }
-        granted.len = 0;
-        read_words(io, domain, granted) catch return carry.Outcome.malformed;
-        while (carried < given and carried < promised) : (carried += 1) {
-            const word = word_at(granted, carried) orelse return carry.Outcome.malformed;
-            const cap = boot.read_cap_word(word) orelse return carry.Outcome.malformed;
-            const name = cap.name_slice();
-            if (!already_holds(slot, name)) {
-                slot.grant(cap) catch return carry.Outcome.malformed;
-            }
-            const stood = queue_store.read_index(io, slot, name) catch |err|
-                return serve.reach_code(err);
-            if (stood != task.count) return carry.Outcome.bytes_differed;
-        }
-        holds(io, domain, carried) catch return carry.Outcome.malformed;
-    }
-    // invariant: the waiting stayed inside the bound it was given
-    assert(looks <= max_patience_looks);
-    // invariant: a dependent never grafts more reach than it was promised
-    assert(carried <= promised);
-    carried_out.* = carried;
-    return null;
+    return ladder_checks.graft_promised_reach(@This(), io, slot, domain, task, promised, granted, carried_out);
 }
 
 /// Returns the reach a promised pruning asks back, and answers how much.

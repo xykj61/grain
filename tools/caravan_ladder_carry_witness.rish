@@ -59,9 +59,9 @@ say "caravan-ladder-carry: Lens TAME -- safety first: the ceiling is named, the 
 
 let living = run ["sh" "tools/fixtures/caravan_ladder_carry_scan.sh"]
 assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
-assert living.out contains "CARRY_OK carried=125932 ceiling=126000" else "caravan-ladder-carry: want the living carry under its named ceiling"
+assert living.out contains "CARRY_OK carried=124620 ceiling=124700" else "caravan-ladder-carry: want the living carry under its named ceiling"
 assert living.out contains "CARRY_MODULES 108" else "caravan-ladder-carry: want all 108 ladder modules read, the rungs and the harness alike"
-assert living.out contains "CARRY_BODIES 18063 distinct=7866 copies=10197 carried_lines=125932" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
+assert living.out contains "CARRY_BODIES 18064 distinct=7867 copies=10197 carried_lines=124620" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
 
 say "caravan-ladder-carry: living ladder -- ${living.out}"
 
@@ -69,8 +69,8 @@ say "caravan-ladder-carry: living ladder -- ${living.out}"
 # so a lap that folds it must come back and say so, and a lap that grows a larger one cannot pass quietly.
 assert living.out contains "CARRY_FAMILIES 708" else "caravan-ladder-carry: want every carrying family counted"
 assert living.out contains "CARRY_TOP provision_notes: 24 rungs x 91 lines = 2093 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
-assert living.out contains "CARRY_TOP graft_promised_reach: 42 rungs x 43 lines = 1763 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
-say "caravan-ladder-carry: the fold queue -- provision_notes leads it still, record_the_dispute having lifted out of thirty-three rungs into the harness for forty-nine widenings"
+assert living.out contains "CARRY_TOP hear_the_reader: 33 rungs x 54 lines = 1728 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
+say "caravan-ladder-carry: the fold queue -- provision_notes leads it still, graft_promised_reach having lifted whole out of forty-two rungs into the harness for two hundred and eighty-five widenings"
 
 # The three named meters, read here beside the wide one so no reader mistakes a window for the room. Every number below
 # is true inside its own window, and the point of printing them together is that their sum is not the ladder's carry.
@@ -85,7 +85,7 @@ assert print_meter.out contains "PRINT_LINES total=4600 distinct=1914 carried=26
 let spine = run ["sh" "tools/fixtures/caravan_ladder_spine_scan.sh"]
 assert spine.ok else "caravan-ladder-carry: the spine meter must still stand -- ${spine.out}"
 assert spine.out contains "SPINE_LINES total=19 distinct=19 carried=0" else "caravan-ladder-carry: want the orchestration spine still folded"
-say "caravan-ladder-carry: three windows and the room -- checks carry 47, printing carries 2,686, the spine carries 0, and the whole ladder carries 125932"
+say "caravan-ladder-carry: three windows and the room -- checks carry 47, printing carries 2,686, the spine carries 0, and the whole ladder carries 124620"
 
 # The counting proven by hand, over a corpus no fold has touched. The foot writes one three-line body; the rung above
 # copies it byte for byte and adds one of its own. So three bodies stand, two of them different texts, and one is a

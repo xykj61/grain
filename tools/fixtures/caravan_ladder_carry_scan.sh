@@ -43,8 +43,8 @@
 #   remembered, so the next fold is chosen by measurement rather than by which
 #   family somebody happened to look at.
 #
-# CARAVAN_CARRY_CEILING (default 126000): how many carried lines the ladder may
-# hold. 125,932 stand today across 10,197 copied bodies, and 708 families carry
+# CARAVAN_CARRY_CEILING (default 124700): how many carried lines the ladder may
+# hold. 124,620 stand today across 10,197 copied bodies, and 708 families carry
 # a copy. That number is far larger than any the three named meters report, and
 # naming it plainly is the whole point of this scan -- the ladder's real carry
 # was never the few thousand lines inside two prefixes. Each fold hands back the
@@ -54,8 +54,9 @@
 # `fill_table` lifted out of forty-three, to 131,200 when `confer_slot` lifted
 # out of the same forty-three at no widening cost at all, to 129,600 when
 # `confer_one` lifted out of forty, to 127,600 when `weigh_the_term` lifted
-# out of thirty-one, and to 126,000 when `record_the_dispute` lifted out of
-# thirty-three.
+# out of thirty-one, to 126,000 when `record_the_dispute` lifted out of
+# thirty-three, and to 124,700 when `graft_promised_reach` lifted out of
+# forty-two.
 #
 # A FOLD PAYS ITS SUCCESSORS. `confer_slot` needed five symbols public across
 # forty-three rungs and found all five already public, because the fold before
@@ -93,7 +94,7 @@
 # PASS and FAIL fixtures prove both paths without touching the tree.
 set -eu
 
-CEILING=${CARAVAN_CARRY_CEILING:-126000}
+CEILING=${CARAVAN_CARRY_CEILING:-124700}
 TOP=${CARAVAN_CARRY_TOP:-12}
 DIR=${CARAVAN_LADDER_DIR:-caravan}
 
