@@ -13,7 +13,7 @@ test -f "$VESSEL" || { echo "FAIL missing vessel"; exit 1; }
 test -f "$MANIFEST" || { echo "FAIL missing manifest"; exit 1; }
 
 parent=$(awk '/^parent / {print $2; exit}' "$VESSEL")
-got=$(openssl dgst -sha3-256 -r "$MANIFEST" | awk '{print $1}')
+got=$(sh "$ROOT/tools/fixtures/sha3_256.sh" "$MANIFEST")
 test -n "$parent" || { echo "FAIL vessel missing parent"; exit 1; }
 test "$parent" = "$got" || { echo "FAIL parent mismatch want=$got got=$parent"; exit 1; }
 echo "PARENT ok $parent"

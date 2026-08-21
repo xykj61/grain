@@ -4,6 +4,8 @@ set -eu
 OUT=${1:?usage: cellar_ring1_verify.sh outdir [golden_manifest_digest]}
 GOLDEN=${2:-}
 MANIFEST="$OUT/manifest.bron"
+# The digest tool lives at a path relative to this tree, not to wherever OUT points.
+ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
 
 test -f "$MANIFEST" || { echo "FAIL missing manifest"; exit 1; }
 
@@ -37,13 +39,13 @@ while read -r line; do
       fi
       resin="$OUT/resins/$expect"
       test -f "$resin" || { echo "FAIL missing resin $expect for $relpath"; exit 1; }
-      got=$(openssl dgst -sha3-256 -r "$resin" | awk '{print $1}')
+      got=$(sh "$ROOT/tools/fixtures/sha3_256.sh" "$resin")
       test "$got" = "$expect" || { echo "FAIL digest mismatch $relpath"; exit 1; }
       ;;
   esac
 done < "$MANIFEST"
 
-digest=$(openssl dgst -sha3-256 -r "$MANIFEST" | awk '{print $1}')
+digest=$(sh "$ROOT/tools/fixtures/sha3_256.sh" "$MANIFEST")
 echo "MANIFEST_DIGEST $digest"
 
 if [ -n "$GOLDEN" ]; then
