@@ -4468,6 +4468,223 @@ pub fn check_respect_refusals(comptime rung: type) u8 {
     return link(rung, "check_respect_measure");
 }
 
+/// Weighs the number this rung moves, as a pure fold.
+pub fn check_respect_measure(comptime rung: type) u8 {
+    if (rung.unrespected_endings(1, .reopens) != 1) {
+        print("  RED: an ending a run opened holding and never named went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.unrespected_endings(1, .respects) != 0) {
+        print("  RED: an ending named where the outcome is read still counted as one nobody named\n", .{});
+        return 1;
+    }
+    // A run opening on empty notes inherited nothing, so it costs the count
+    // nothing -- the harm this rung names is the ending actually handed forward
+    // and then never read.
+    if (rung.unrespected_endings(0, .reopens) != 0) {
+        print("  RED: a run that inherited nothing was charged an ending unnamed\n", .{});
+        return 1;
+    }
+    if (rung.respected_in(1, .respects) != 1 or rung.reopened_in(1, .respects) != 0) {
+        print("  RED: a respecting run miscounted the one ending it named\n", .{});
+        return 1;
+    }
+    if (rung.respected_in(1, .reopens) != 0 or rung.reopened_in(1, .reopens) != 1) {
+        print("  RED: a reopening run miscounted the ending it began again from\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: uninherited, unended, mismatched, miscounted, misrecorded\n", .{});
+    print("  the respecting this rung keeps: {s}\n", .{rung.respect_words(.respects)});
+    print("  what a reopening plan tells an operator: {s}\n", .{rung.respect_words(.reopens)});
+    print("  a mark carries twelve bytes: the closure it was handed, echoed whole, and this run's own byte last\n", .{});
+    return link(rung, "check_refrain");
+}
+
+/// A published mark across a provisioning, proven outside any run.
+///
+/// The lap below proves the respecting end to end under a real plan. This
+/// proves the two properties that make the mark worth publishing: **it survives
+/// a provisioning**, since an outcome swept every morning would leave an
+/// operator reading a plan that named nothing -- and **the inheritance it names
+/// comes down**, since a closure that returned every morning would make the
+/// naming a courtesy rather than an act.
+pub fn check_respect_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    rung.clear_respect(io);
+    rung.clear_close(io);
+    rung.clear_abate(io);
+    rung.clear_answer(io);
+    rung.clear_hands(io, rung.standing_address);
+    rung.clear_calls(io, rung.standing_address);
+    rung.clear_desist(io);
+    rung.clear_mind(io);
+    if (rung.respect_published(io) != null) {
+        print("  RED: a mark stood in a plan that had named nothing\n", .{});
+        return 1;
+    }
+    const held = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .stands));
+    const call = rung.calls_bytes(rung.walls_bytes(rung.minds_bytes(held)));
+    const accepted = rung.answers_bytes(rung.hands_bytes(call, .accepts));
+    const closure = rung.closes_bytes(accepted);
+    // The run before today, standing in for itself: it heard this reader out
+    // and wrote the ending down, exactly as the rung below leaves a wire.
+    rung.conclude_note(io, accepted) catch |err| {
+        print("  RED: an earlier run's closure could not be written: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.respect_note(io, closure) catch |err| {
+        print("  RED: a mark could not be published: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = rung.respect_published(io) orelse {
+        print("  RED: a provisioning cleared the mark an operator reads\n", .{});
+        return 1;
+    };
+    if (!rung.respects_carries(survived, closure)) {
+        print("  RED: a mark carried past a provisioning stopped naming its closure\n", .{});
+        return 1;
+    }
+    if (rung.respects_hand(survived) != .accepts) {
+        print("  RED: a mark carried past a provisioning forgot the word it was built on\n", .{});
+        return 1;
+    }
+    // And the mark outlives the inheritance it names, which is the whole reason
+    // the taking down comes second: the closure may fall, and the naming of it
+    // must not.
+    rung.clear_close(io);
+    if (rung.respect_published(io) == null) {
+        print("  RED: a mark fell with the closure it was only naming\n", .{});
+        return 1;
+    }
+    rung.clear_respect(io);
+    if (rung.respect_published(io) != null) {
+        print("  RED: a mark outlived the taking down of the plan's own note\n", .{});
+        return 1;
+    }
+    rung.clear_mind(io);
+    print("  a mark survives a provisioning, and outlives the closure it names\n", .{});
+    return link_wire(rung, "check_refrain_wire", io, sys);
+}
+
+/// Weighs the refraining this rung adds, as a pure fold.
+pub fn check_refrain(comptime rung: type) u8 {
+    const held = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .stands));
+    const call = rung.calls_bytes(rung.walls_bytes(rung.minds_bytes(held)));
+    const hand = rung.hands_bytes(call, .accepts);
+    const mark = rung.respects_bytes(rung.closes_bytes(rung.answers_bytes(hand)));
+    const record = rung.refrains_bytes(mark);
+    if (!rung.refrains_carries(record, mark)) {
+        print("  RED: a record lost the mark it was built from\n", .{});
+        return 1;
+    }
+    if (rung.refrains_hand(record) != .accepts) {
+        print("  RED: a record lost the reader's own word eight tiers down\n", .{});
+        return 1;
+    }
+    if (record[rung.max_refrains_bytes - 1] != rung.refrained_byte) {
+        print("  RED: a record did not say what it was\n", .{});
+        return 1;
+    }
+    // A record built on some other mark spares some other reader, and reading it
+    // as this one's would tell an operator a person had been left alone about a
+    // matter they never heard of.
+    const taken = rung.respects_bytes(rung.closes_bytes(rung.answers_bytes(rung.hands_bytes(call, .takes_up))));
+    if (rung.refrains_carries(rung.refrains_bytes(taken), mark)) {
+        print("  RED: a record over some other ending passed as this one's\n", .{});
+        return 1;
+    }
+    if (rung.refrains_carries(null, mark)) {
+        print("  RED: an absent record carried a mark all the same\n", .{});
+        return 1;
+    }
+    if (rung.refrains_hand(null) != null) {
+        print("  RED: an absent record carried a reader's word all the same\n", .{});
+        return 1;
+    }
+    // The reader-match, which is what keeps a sparing from taking down the wrong
+    // summons: the mark opens with the very bytes its reader wrote, read where
+    // that reader left them.
+    if (!rung.refrains_reader(mark, hand)) {
+        print("  RED: a mark did not carry the word its reader wrote\n", .{});
+        return 1;
+    }
+    if (rung.refrains_reader(mark, rung.hands_bytes(call, .takes_up))) {
+        print("  RED: a mark built on one word read as built on the other\n", .{});
+        return 1;
+    }
+    const elder = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .allays));
+    if (rung.refrains_reader(mark, rung.hands_bytes(rung.calls_bytes(rung.walls_bytes(rung.minds_bytes(elder))), .accepts))) {
+        print("  RED: a mark read as built on a word about some older matter entirely\n", .{});
+        return 1;
+    }
+    if (rung.refrains_reader(mark, null)) {
+        print("  RED: a mark read as built on a word nobody ever wrote\n", .{});
+        return 1;
+    }
+    return link(rung, "check_refrain_refusals");
+}
+
+/// Weighs every refusal this rung earns, as a pure fold.
+pub fn check_refrain_refusals(comptime rung: type) u8 {
+    if (rung.refrain_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.RefrainUnnamed) {
+            print("  RED: a sparing by a run that named no ending refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a sparing by a run that named no ending was allowed\n", .{});
+        return 1;
+    }
+    if (rung.refrain_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.RefrainTakenUp) {
+            print("  RED: a sparing over a reader who took the matter up refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a sparing over a reader who took the matter up was allowed\n", .{});
+        return 1;
+    }
+    if (rung.refrain_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.RefrainMismatched) {
+            print("  RED: a record over some other reader's word refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a record over some other reader's word was allowed\n", .{});
+        return 1;
+    }
+    if (rung.refrain_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.RefrainMiscounted) {
+            print("  RED: a reader both spared and summoned again refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a reader both spared and summoned again was allowed\n", .{});
+        return 1;
+    }
+    if (rung.refrain_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.RefrainMiscounted) {
+            print("  RED: a reader neither spared nor summoned again refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a reader neither spared nor summoned again was allowed\n", .{});
+        return 1;
+    }
+    // And the honest pass: one ending named, one reader spared, counted once.
+    if (rung.refrain_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: an honest refraining refused as {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return link(rung, "check_refrain_measure");
+}
+
 // ---------------------------------------------------------------------------
 // The orchestration spine -- fold D.
 //
@@ -4666,6 +4883,11 @@ fn the_correspondence(
         try rung.abate_the_wall(io, quarrel.abate, report_out);
         // invariant: a run never abates more walls than one answer releases
         assert(tally(rung, "abate_of", "abated", report_out) <= 1);
+    }
+    if (comptime @hasDecl(rung, "bid_the_farewell")) {
+        try rung.bid_the_farewell(io, quarrel.farewell, report_out);
+        // invariant: a run never tells more readers than one record spared
+        assert(tally(rung, "farewell_of", "bidden", report_out) <= 1);
     }
     if (comptime @hasDecl(rung, "refrain_from_calling")) {
         try rung.refrain_from_calling(io, quarrel.refrain, report_out);

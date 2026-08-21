@@ -76,7 +76,8 @@ say "caravan-ladder-copy: living ladder -- ${living.out}"
 
 # The fold itself, read off the ladder rather than claimed. A folded check is one line that runs the check in the rung
 # below, so the fold is countable: 913 of them stand -- the 523 the fold landed, plus the 39 each that the allay,
-# forbear, mind, desist, beckon, answer, abate, conclude, respect, and refrain rungs folded as they were written.
+# forbear, mind, desist, beckon, answer, abate, conclude, respect, refrain, and farewell rungs folded as they were
+# written.
 # A rung names the rung below in either of two forms, and the count reads both: the elder form calls the check on that
 # rung directly, and the harness form hands that rung to the shared body, which is what a rung writes once the rung
 # below publishes no stub of its own. Counting one form alone would read a move between them as a loss.
@@ -84,7 +85,7 @@ say "caravan-ladder-copy: living ladder -- ${living.out}"
 # rung and never falls, so a drop is a regression this wall names on the lap it happens.
 let folds = run ["sh" "-c" "grep -hE 'return ([a-z_]+_rung[.]check_|ladder_checks[.]check_[a-z0-9_]+[(][a-z_]+_rung)' caravan/*.rye | wc -l | tr -d ' '"]
 assert folds.ok else "caravan-ladder-copy: could not count the folded checks -- ${folds.err}"
-assert (trim folds.out) == "913" else "caravan-ladder-copy: want 913 checks run in the rung below, read ${trim folds.out}"
+assert (trim folds.out) == "952" else "caravan-ladder-copy: want 952 checks run in the rung below, read ${trim folds.out}"
 say "caravan-ladder-copy: fold A -- ${trim folds.out} checks run in the rung that owns them rather than carried"
 
 # The B fold, read at its own home. A lifted body lives in `ladder_checks.rye` and takes the rung as a comptime
@@ -92,7 +93,7 @@ say "caravan-ladder-copy: fold A -- ${trim folds.out} checks run in the rung tha
 # bodies are what B folded, so the bodies are what B is counted by. This number climbs as bodies lift and never falls.
 let harnessed = run ["sh" "-c" "grep -c '^pub fn check_' caravan/ladder_checks.rye | tr -d ' '"]
 assert harnessed.ok else "caravan-ladder-copy: could not count the harnessed bodies -- ${harnessed.err}"
-assert (trim harnessed.out) == "85" else "caravan-ladder-copy: want 85 bodies standing in the harness, read ${trim harnessed.out}"
+assert (trim harnessed.out) == "89" else "caravan-ladder-copy: want 89 bodies standing in the harness, read ${trim harnessed.out}"
 say "caravan-ladder-copy: fold B -- ${trim harnessed.out} check bodies stand in the harness, each run against the rung that called it"
 
 # The C fold -- silence is an answer. Until the 20260820.182533 fold, a rung published a five-line stub for every
