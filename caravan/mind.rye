@@ -583,7 +583,7 @@ pub fn couriering_of(report_out: *Report) *couriering_rung.Report {
 }
 
 /// The amending rung's tally, two tiers further down.
-fn amending_of(report_out: *Report) *amending_rung.Report {
+pub fn amending_of(report_out: *Report) *amending_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
@@ -8366,49 +8366,7 @@ fn escort_the_word(io: std.Io, escort: Escort, report_out: *Report) (RunError ||
 /// which is where the rung below leaves every reader and precisely the number
 /// this rung moves.
 fn post_the_amendment(io: std.Io, notice: Notice, report_out: *Report) (RunError || NoteError)!void {
-    const published = settlement_published(io);
-    const reading = reading_published(io);
-    const on_the_wire: u32 = if (reading == null) 0 else 1;
-    if (on_the_wire == 0) {
-        // invariant: a plan nobody read leaves no reader holding a stale word
-        assert(amending_of(report_out).superseded_unposted == 0);
-        return;
-    }
-    const settled = published orelse return error.AmendEarly;
-    // The measurement this rung moves, weighed against what the run *settled*
-    // rather than against what any notice asked for, so the elder reading is
-    // counted rather than refused: a word an operator holds that this run's own
-    // settlement contradicts, left standing because nobody wrote to them.
-    amending_of(report_out).superseded_unposted = superseded_unposted(reading, settled, notice);
-    const amended = amended_in(reading, settled, notice);
-    const confirmed = confirmed_in(reading, settled, notice);
-    if (notice == .silent) {
-        // invariant: a silent run corrects nobody, whatever it settled
-        assert(amended == 0);
-        return;
-    }
-    // The supply, refused by name while the reading it must answer to is still
-    // in hand: an amendment may reach only a reading somebody actually took.
-    if (unread_reach(reading, amended)) |why| return why;
-    if (amend_refusal(published, on_the_wire, confirmed, amended)) |why| return why;
-    if (amended == 0) {
-        // invariant: a reading left uncorrected is one this run still stands behind
-        assert(confirmed == 1);
-        return;
-    }
-    const was = reading orelse return error.AmendUnread;
-    try amend_note(io, was, settled);
-    // The reading leaves the wire in the same breath it is answered, since a
-    // reading that has had its reply is no longer waiting for one.
-    try seat_note(io, plan_name, ".read", &[_]u8{0});
-    // The answer the rung below earns: a run that superseded a reading and
-    // published no amendment corrected in private, and a report read on that
-    // silence would say a reader was written to when nobody wrote to them.
-    const posted = amend_published(io) orelse return error.AmendUnspoken;
-    if (posted[0] != was or posted[1] != settled) return error.AmendUnspoken;
-    amending_of(report_out).amended = amended;
-    // invariant: a posted run leaves no reader holding a word it has replaced
-    assert(amending_of(report_out).superseded_unposted == 0);
+    return ladder_checks.post_the_amendment(@This(), io, notice, report_out);
 }
 
 /// Carries the correction this run posted to the place its reader was reached.

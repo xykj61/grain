@@ -59,18 +59,18 @@ say "caravan-ladder-carry: Lens TAME -- safety first: the ceiling is named, the 
 
 let living = run ["sh" "tools/fixtures/caravan_ladder_carry_scan.sh"]
 assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
-assert living.out contains "CARRY_OK carried=114189 ceiling=114200" else "caravan-ladder-carry: want the living carry under its named ceiling"
+assert living.out contains "CARRY_OK carried=112761 ceiling=112800" else "caravan-ladder-carry: want the living carry under its named ceiling"
 assert living.out contains "CARRY_MODULES 108" else "caravan-ladder-carry: want all 108 ladder modules read, the rungs and the harness alike"
-assert living.out contains "CARRY_BODIES 18074 distinct=7872 copies=10202 carried_lines=114189" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
+assert living.out contains "CARRY_BODIES 18075 distinct=7873 copies=10202 carried_lines=112761" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
 
 say "caravan-ladder-carry: living ladder -- ${living.out}"
 
 # The fold queue, asserted so it stays a measurement rather than a memory. The largest family is named here by number
 # so a lap that folds it must come back and say so, and a lap that grows a larger one cannot pass quietly.
 assert living.out contains "CARRY_FAMILIES 706" else "caravan-ladder-carry: want every carrying family counted"
-assert living.out contains "CARRY_TOP post_the_amendment: 35 rungs x 45 lines = 1530 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
-assert living.out contains "CARRY_TOP run_dependent: 43 rungs x 35 lines = 1470 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
-say "caravan-ladder-carry: the fold queue -- post_the_amendment leads it now, the whole reap cluster having lifted into the harness in one lap: reap_oldest and the two helpers it reaches, one cohort of forty rungs, three families out and a visibility split healed by the same act"
+assert living.out contains "CARRY_TOP run_dependent: 43 rungs x 35 lines = 1470 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
+assert living.out contains "CARRY_TOP read_the_appeal: 27 rungs x 56 lines = 1456 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
+say "caravan-ladder-carry: the fold queue -- run_dependent leads it now, post_the_amendment having lifted into the harness over a cohort of thirty-five, the tier owner alone staying home because it reaches its own report direct and needs no accessor to do it"
 
 # The three named meters, read here beside the wide one so no reader mistakes a window for the room. Every number below
 # is true inside its own window, and the point of printing them together is that their sum is not the ladder's carry.
@@ -117,4 +117,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_c
 assert (ceiling.ok == false) else "caravan-ladder-carry: a carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-carry: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-carry -- the Caravan ladder's whole carry stands counted under a ceiling this fold brought down, every number of it printed above as the scan's own output rather than recited here, with the fold queue standing largest-first and led now by a new family, this fold having lifted a whole cluster -- one body and the two helpers it reaches, over one cohort of rungs, three families leaving the queue together and a split by visibility alone healed on the way out."
+say "GREEN: caravan-ladder-carry -- the Caravan ladder's whole carry stands counted under a ceiling this fold brought down, every number of it printed above as the scan's own output rather than recited here, with the fold queue standing largest-first and led now by a new family, this fold having lifted the correspondence half out of thirty-five rungs for the price of one word widened in twenty-seven of them."

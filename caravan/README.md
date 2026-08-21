@@ -2413,6 +2413,30 @@ So this lap lifted the cluster whole rather than the family alone. `reap_oldest`
 **Why the family count fell for the first time in this arc.** Every fold before it traded one carrying family for another and left the count unmoved. This one traded four for three, because the visibility split was healed by the same act that lifted the body: forty delegates, all public, all one text. A meter that counts what it can see was seeing a difference the ladder never had, and the fold gave it back the truth rather than an exception. **The clearest way to fix a measurement is to remove the thing that made it wrong.**
 
 
+## Fold AA -- `post_the_amendment`, and the tier owner that needed nothing built
+
+The queue named **thirty-five rungs by forty-five lines, 1,530 carried**, and hashing every `post_the_amendment` on the ladder found **thirty-six**. The thirty-sixth is `amend.rye`, and it differs in exactly the way this arc has learned to expect: where the cohort reaches its report through `amending_of(report_out)`, the tier owner reaches `report_out` directly, because the amending report *is* its report and it has no accessor at all. That is the **second kind of absentee**, met again and recognized on sight.
+
+What made this the cheapest fold the arc has taken is what the pub-ness audit found. Fifteen symbols the body reaches -- `settlement_published`, `reading_published`, `superseded_unposted`, `amended_in`, `confirmed_in`, `unread_reach`, `amend_refusal`, `amend_note`, `seat_note`, `plan_name`, `amend_published`, and the four types `Notice`, `Report`, `RunError`, and `NoteError` -- already stood public in all thirty-five, interest paid in full by the folds before this one. **One symbol needed widening: `amending_of`, private in twenty-seven rungs and already public in eight.** Hashing that accessor across the cohort found thirty-five distinct texts, one per rung, each a different depth of `.inner` -- so it is an identity accessor by construction and folds nowhere, exactly as fold R's rule predicts. The reach graph named the price a lap ahead, and the price was one word.
+
+What the body does is the arc's correspondence half, stated once. A run measures the readings its own settlement contradicts, weighed against what it settled rather than against what any notice asked for, so an elder reading is counted rather than refused. It refuses by name where an amendment would reach a reading nobody took. It writes the note, clears the reading off the wire in the same breath it is answered, and then reads the posting back out of the place an operator would open before letting its report believe it -- the wire before the memory, once more.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding `post_the_amendment` | 35 | **0**, each keeping a three-line delegate |
+| Lines the family carried | 1,530 | **102** -- the delegate is itself a copy |
+| Widenings the fold cost | -- | **27**, one word, no accessor born |
+| The ladder's whole carry | 114,189 | **112,761** |
+| Carry ceiling | 114,200 | **112,800** |
+| Carrying families | 706 | **706**, one family out and one back in |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+**The arithmetic closes with no remainder.** Thirty-four copies of forty-five went in at **1,530**; thirty-four copies of three came back out at **102**; the fall is **1,428**, exactly what the meter measured. Bodies climb 18,074 to 18,075 and distinct texts 7,872 to 7,873 -- one harness body born, one delegate text born, one old text retired. On disk thirty-five rung files, the harness, and the meter shed **1,540 lines for 133 added**, a net of **1,407** off the tracked tree.
+
+**The lesson this lap adds is about price rather than shape.** Twenty-six folds in, a family of thirty-five reached fifteen symbols and found every one of them already public. A fold pays its widenings once, and every fold after it inherits them; the ladder is now mostly paid, so the folds ahead are mostly free. What still costs is the reading -- hashing the family, auditing the reach, naming the absentee -- and that reading has never once been wasted.
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.

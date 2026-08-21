@@ -7132,3 +7132,66 @@ pub fn reap_oldest(
     // invariant: the table closed over the reaped dependent, none lost
     assert(s == table.in_flight);
 }
+
+/// Publishes the amendment a settled run owes whoever is still holding the
+/// reading it replaced, and reports what was corrected.
+///
+/// The arc's correspondence half, stated once. A run measures the readings its
+/// own settlement contradicts, refuses by name where an amendment would reach a
+/// reading nobody took, writes the note, clears the reading off the wire in the
+/// same breath it is answered, and believes its own report only after reading
+/// the posting back out of the place an operator would open.
+///
+/// Every reach here is seated through the rung handed in, so one text amends for
+/// whichever rung called it -- that rung's own wire, its own refusals, its own
+/// report.
+pub fn post_the_amendment(
+    comptime rung: type,
+    io: std.Io,
+    notice: rung.Notice,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    const published = rung.settlement_published(io);
+    const reading = rung.reading_published(io);
+    const on_the_wire: u32 = if (reading == null) 0 else 1;
+    if (on_the_wire == 0) {
+        // invariant: a plan nobody read leaves no reader holding a stale word
+        assert(rung.amending_of(report_out).superseded_unposted == 0);
+        return;
+    }
+    const settled = published orelse return error.AmendEarly;
+    // The measurement this rung moves, weighed against what the run *settled*
+    // rather than against what any notice asked for, so the elder reading is
+    // counted rather than refused: a word an operator holds that this run's own
+    // settlement contradicts, left standing because nobody wrote to them.
+    rung.amending_of(report_out).superseded_unposted = rung.superseded_unposted(reading, settled, notice);
+    const amended = rung.amended_in(reading, settled, notice);
+    const confirmed = rung.confirmed_in(reading, settled, notice);
+    if (notice == .silent) {
+        // invariant: a silent run corrects nobody, whatever it settled
+        assert(amended == 0);
+        return;
+    }
+    // The supply, refused by name while the reading it must answer to is still
+    // in hand: an amendment may reach only a reading somebody actually took.
+    if (rung.unread_reach(reading, amended)) |why| return why;
+    if (rung.amend_refusal(published, on_the_wire, confirmed, amended)) |why| return why;
+    if (amended == 0) {
+        // invariant: a reading left uncorrected is one this run still stands behind
+        assert(confirmed == 1);
+        return;
+    }
+    const was = reading orelse return error.AmendUnread;
+    try rung.amend_note(io, was, settled);
+    // The reading leaves the wire in the same breath it is answered, since a
+    // reading that has had its reply is no longer waiting for one.
+    try rung.seat_note(io, rung.plan_name, ".read", &[_]u8{0});
+    // The answer the rung below earns: a run that superseded a reading and
+    // published no amendment corrected in private, and a report read on that
+    // silence would say a reader was written to when nobody wrote to them.
+    const posted = rung.amend_published(io) orelse return error.AmendUnspoken;
+    if (posted[0] != was or posted[1] != settled) return error.AmendUnspoken;
+    rung.amending_of(report_out).amended = amended;
+    // invariant: a posted run leaves no reader holding a word it has replaced
+    assert(rung.amending_of(report_out).superseded_unposted == 0);
+}
