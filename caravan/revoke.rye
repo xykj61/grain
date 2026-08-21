@@ -422,10 +422,7 @@ pub fn promise_pruning(io: std.Io, domain: []const u8, keep: Keep) NoteError!voi
 
 /// Reads whether a pruning was promised to this dependent.
 pub fn pruning_promised(io: std.Io, domain: []const u8) bool {
-    // invariant: a promise is always read by the dependent it names
-    assert(domain.len >= 1);
-    const seen = read_count(io, domain, ".pruning") catch return false;
-    return seen != 0;
+    return ladder_checks.pruning_promised(@This(), io, domain);
 }
 
 /// Publishes one conferral: the words themselves, then the count that makes
@@ -481,21 +478,12 @@ pub fn revoke(io: std.Io, domain: []const u8, keep: u32) NoteError!void {
 
 /// Reads how many conferred words this dependent may still hold.
 pub fn kept(io: std.Io, domain: []const u8) NoteError!u32 {
-    // invariant: a keeping is always read by the dependent that listens
-    assert(domain.len >= 1);
-    const seen = try read_count(io, domain, ".kept");
-    // invariant: a keeping stays inside what one line may name
-    assert(seen <= cycle.max_hops);
-    return seen;
+    return ladder_checks.kept(@This(), io, domain);
 }
 
 /// Tells the run this dependent has pruned the reach it returned.
 pub fn pruned(io: std.Io, domain: []const u8, count: u32) NoteError!void {
-    // invariant: an answer always names the dependent that gives it
-    assert(domain.len >= 1);
-    // invariant: a dependent never prunes more than one line may name
-    assert(count <= cycle.max_hops);
-    try seat_note(io, domain, ".pruned", &[_]u8{@intCast(count)});
+    return ladder_checks.pruned(@This(), io, domain, count);
 }
 
 /// Waits, bounded, until this revocation has been pruned.
@@ -1077,26 +1065,12 @@ pub fn word_at(words: *const Words, index: u32) ?[]const u8 {
 /// The pruning is a rebuild rather than a removal, which is why it is total:
 /// the line a dependent was spawned holding is never at risk, and the conferred
 /// words come back one at a time in exactly the order they were granted.
-fn prune_to(
+pub fn prune_to(
     base: *const capabilities.DependentSlot,
     words: *const Words,
     keep: u32,
 ) ?capabilities.DependentSlot {
-    // invariant: a pruning never keeps more than one dependent may hold
-    assert(keep <= capabilities.max_caps_per_dependent);
-    var rebuilt = base.*;
-    var i: u32 = 0;
-    while (i < keep) : (i += 1) {
-        const word = word_at(words, i) orelse return null;
-        const cap = boot.read_cap_word(word) orelse return null;
-        if (already_holds(&rebuilt, cap.name_slice())) continue;
-        rebuilt.grant(cap) catch return null;
-    }
-    // invariant: every kept word was read back into the dependent's hands
-    assert(i == keep);
-    // invariant: a rebuilt slot never holds less than the line it was spawned with
-    assert(rebuilt.cap_count >= base.cap_count);
-    return rebuilt;
+    return ladder_checks.prune_to(@This(), base, words, keep);
 }
 
 /// Counts the conferred arcs this dependent can still touch, over one range.
@@ -1106,29 +1080,14 @@ fn prune_to(
 /// ones that answer. `serve.reach_by_name` genuinely refuses a region a
 /// capability list does not name, so a pruned word is a deletion rather than
 /// a promise.
-fn reachable_between(
+pub fn reachable_between(
     io: std.Io,
     slot: *capabilities.DependentSlot,
     words: *const Words,
     from: u32,
     to: u32,
 ) u32 {
-    // invariant: a probe always reads a range that runs forward
-    assert(from <= to);
-    // invariant: a probe never reaches past what one dependent may hold
-    assert(to <= capabilities.max_caps_per_dependent);
-    var reachable: u32 = 0;
-    var i: u32 = from;
-    while (i < to) : (i += 1) {
-        const word = word_at(words, i) orelse break;
-        const cap = boot.read_cap_word(word) orelse break;
-        if (queue_store.read_index(io, slot, cap.name_slice())) |_| {
-            reachable += 1;
-        } else |_| {}
-    }
-    // invariant: no arc counts as reachable that was never in the range
-    assert(reachable <= to - from);
-    return reachable;
+    return ladder_checks.reachable_between(@This(), io, slot, words, from, to);
 }
 
 /// Reads the arcs this dependent was handed, then every arc it is conferred, and

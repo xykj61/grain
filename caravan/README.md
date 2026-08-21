@@ -2553,6 +2553,58 @@ What the folded escort does is the arc's whole abiding half, stated once. A run 
 **The lesson this lap adds is that a tier owner is a question rather than a verdict.** Five owners have now stood apart from their cohorts, and the arc has answered each differently on evidence: `hear.rye` stayed home because it ends its run on an error the rungs above record and carry past, and no accessor gives a body back a check it never had. `amend.rye`, `appeal.rye`, and `refer.rye` stayed home because their difference was the reach and no accessor had yet been born for it. `abide.rye` came home because the accessor cost three lines and folded forty-seven. The test is never who owns the tier -- it is whether the difference is a meaning or a reach, and only reading the differing lines can say which.
 
 
+## Fold AF -- a run's whole opening, and the two absentees that both came home
+
+The queue named **`start_one` at forty rungs by thirty-five lines, 1,365 carried**, and hashing every body by that name found fifty-seven standing as ten texts -- the canonical forty, a shallower nine at nineteen lines, and eight singletons.
+
+**Two of the singletons stood at the canonical's own length**, each differing in exactly one line: the reach that names the abandoning tally. Reading the accessors settled both. `abandon.rye` owns the abandoning tier, so its `below_of` returns the rung beneath and the body climbs back two hops -- which is precisely what an identity accessor named `abandoning_of` gives the shared text from the same pointer. `reckon.rye` stands one rung above `abandon.rye`, so its `below_of` already returns the abandon rung's report, the very type `abandoning_of` returns everywhere else. Three lines apiece, and the family closed **whole at forty-two**.
+
+**`reckon.rye` is a sixth kind of absentee.** The arc had met one dated by a shape born later, one an accessor brings home, one standing below the fold line, and the tier owners who came home or stayed. This one is none of those: it is a rung close enough to reach a tier by its **position** rather than by its name. An absentee's distance from its cohort is a place on the ladder as often as it is a fact about its body.
+
+**Fold Z's rule found the neighborhood nearly free.** Eleven of the twelve symbols `start_one` reaches through its rung already stood public in all forty-two, so widening one word -- `revoke_rung`, in forty-three modules -- paid the whole fold. Four of the reached symbols are whole carrying families: `open_generation` at forty-three by ten, `promise_pruning` at forty-three by eleven, `promise_falling` at forty-two by eight, and `offer` at forty-five by seven. Together they are the four promises a run writes to the wire before it spawns anything, and they now read in one place beside the body that calls them.
+
+**The fold line still bites.** `offer`'s forty-fifth rung is `confer.rye`, which `ladder_checks.rye` itself imports; folding it would have a rung the harness reaches for reach back through the harness. It stays home, and `offer` folded at forty-four.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding `start_one` | 42, two apart | **0**, each keeping a delegate |
+| Widenings the fold cost | -- | **43**, one word |
+| Accessors born | -- | **2**, three lines apiece |
+| The ladder's whole carry | 103,057 | **101,252** |
+| Carry ceiling | 103,100 | **101,300** |
+| Carrying families | 707 | **707** |
+
+Out went 3,017 lines of body across forty-seven files; back came 411 as delegates and calls. Choir GREEN at 105 registered witnesses.
+
+
+## Fold AG -- the promised pruning, and the whole cluster beneath it
+
+The queue named **`return_promised_reach` at forty-two rungs by thirty-three lines, 1,353 carried**, and hashing every body by that name found **forty-two texts and one hash**. No absentee at all -- the first lead family in this arc to stand byte for byte across its whole cohort with nothing to read and nothing to bring home.
+
+What it does is the returning half of a conferred reach. A dependent told a pruning is coming waits, bounded, for the number that names what it may keep; it rebuilds its own hands down to that number, probes whether anything past the number is still reachable, and answers only when the probe comes back empty. A `null` says the words on the wire could not be read back into hands at all, which is a different answer from *nothing was returned* and is kept different on purpose.
+
+**Fold Z's rule paid again, and paid almost entirely.** The body reaches eight symbols through its rung, and **seven already stood public in all forty-two**. The eighth, `prune_to`, was private everywhere -- so one widened word bought the fold, exactly as fold AA and fold AD each did before it.
+
+**The reach reading opened the cluster.** Five of the reached symbols are whole carrying families of their own, and every one of them folded beside the lead: `reachable_between` at forty-four by twenty-four, `prune_to` at forty-four by twenty-three, `pruning_promised` at forty-four by six, `kept` at forty-four by eight, and `pruned` at forty-four by seven. Together with the body that calls them they are one coherent movement -- promise, wait, rebuild, probe, answer -- and they now read in one place rather than in forty-four.
+
+**The elder rung came home twice over.** `revoke.rye` is the tier owner here, and it stood apart from its cohort in two small ways at once: its `reachable_between` was private where the other forty-three published it, and its `prune_to` lacked one invariant the other forty-three carry -- *a pruning always rebuilds from hands that hold their own line*. The first is a visibility split, healed by the word. The second is an elder body dated by a shape born after it, and folding hands it the invariant rather than asking it to keep going without one. Both families closed **whole at forty-four**.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding `return_promised_reach` | 42, none apart | **0**, each keeping a delegate |
+| Rungs holding the five reached families | 44 apiece | **0**, each keeping a delegate |
+| Widenings the fold cost | -- | **45**, two words |
+| The ladder's whole carry | 101,252 | **98,507** |
+| Carry ceiling | 101,300 | **98,600** |
+| Carrying families | 707 | **707** |
+| The `check_` window | 47 | **47** |
+| The orchestration spine | 0 | **0** |
+
+The fall the meter read is **2,745**. Carrying families held at 707, since all six folded whole -- one visibility split healed and none opened. Checks 47 and spine 0 stand unmoved for the tenth fold running.
+
+**The lesson this lap adds is that a family with no absentee is a signal about its neighborhood, not only about itself.** Every prior lead family carried at least one rung standing apart, and reading that rung is what taught the arc its five kinds of absentee. This one stood whole -- and the reason is that the whole cluster was written at one moment, by one hand, as one movement, and has never been touched since. A body that varies has a history; a body that does not has a birthday.
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.
