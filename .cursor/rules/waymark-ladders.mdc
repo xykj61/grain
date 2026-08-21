@@ -14,7 +14,12 @@ Before the first rung is written as `X0` / `X1` / … in TASKS, ROADMAP, compres
 1. Choose a **canonical hyphenated input name** for the ladder (stable, descriptive, lowercase).
 2. Set `input_name` in `tools/waymark_derive.rish` and run `rishi/bin/rishi run tools/waymark_derive.rish`.
 3. Seat the printed four-letter **waymark** in Lexicon + the script’s seated-draws comment + exclude list.
-4. Name every rung `WAYMARK0`, `WAYMARK1`, … — never a bare capital letter alone (`B0`, `G0`) for a new ladder.
+4. **Mark each step by stamp and name, never by an ascending number** -- amended `20260821.160050` by
+   the mark law ([`stamp-and-name.md`](stamp-and-name.md)). A waymark is a **name** drawn for a
+   ladder and it keeps its place; what retires is the numbered rung after it. Write `HAWM -- the
+   glass keyboard lands (20260821-142939)` rather than `HAWM7`, and count the steps with `git log`
+   rather than carrying a total inside a name. Seated ladders whose rungs are already numbered keep
+   every number they wrote.
 
 ## Seated waymarks (do not redraw)
 

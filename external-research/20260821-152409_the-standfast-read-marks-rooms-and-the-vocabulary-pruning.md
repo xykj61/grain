@@ -151,13 +151,13 @@ Your instinct here is right and the tree's own filing law explains why. `ORGANIZ
 You asked whether to repeat the day in the filename. **Keep the full stamp.** Recommend:
 
 ```
-session-logs/date/20260821/20260821-152409_the-standfast-read.kyri
+session-logs/date/YYYYMMDD/YYYYMMDD-HHMMSS_slug.kyri
 ```
 
 rather than
 
 ```
-session-logs/date/20260821/152409_the-standfast-read.kyri
+session-logs/date/YYYYMMDD/HHMMSS_slug.kyri
 ```
 
 The eight repeated characters are not redundancy. They are a **check digit**, and they buy three things a shorter name cannot:
@@ -390,6 +390,31 @@ Then, and only then, the seed is worth a force-push -- carrying a front door tha
 ## What this round does not claim
 
 No file was moved, no word was retired, and no rule was seated -- this is a reading and a recommendation, and every part of it waits on a word. The 454 broken references were counted by resolving literal paths, so a link written in some other form may resolve where this count says it does not; the true number is at least 454 and may be higher. The fascia meter was run once and failed once; whether `amphora_lap2` is broken or merely stale is not yet diagnosed. And the prose-to-code ratio is offered as a check worth setting rather than as a verdict already reached -- a tree that writes down its reasoning has earned some of that ledger honestly.
+
+---
+
+## Addendum -- what the resolver measured, `20260821.160050`
+
+Arc one landed the same day this was written, and its census refines two numbers above. Recorded here as an addendum rather than as an edit, since the reading above is dated testimony and accretes rather than moves.
+
+**The session-log figure held, and the hedge resolves.** The survey counted 583 unique root-relative session-log paths with 454 broken, and said the true number was at least that and possibly higher. Re-measured over the same field with the seed projection excluded: **584** unique session-log paths cited, **455** no longer resolving -- the one added is this round's own log. Seventy-eight percent, exactly as reported.
+
+**The whole-field census, which the survey never took:** [`../tools/fixtures/dated_path_scan.sh`](../tools/fixtures/dated_path_scan.sh) walks every dated reference outside the seed projection and vendored source.
+
+| Reading | Measured `20260821.160050` |
+|---|---|
+| Dated references (unique citing-file and reference pairs) | **19,787** |
+| Resolve as written | **15,649** |
+| Broken | **4,138** -- 20.9 percent |
+| of those: recoverable, exactly one home | **3,939** |
+| of those: recoverable, basename shared by two paths | **16** |
+| of those: no such basename anywhere | **183** |
+
+**Ninety-five percent of the breakage is mechanically repairable**, and that is the resolver's whole case: the file is here, only the path is stale, and the full stamp in the filename is what makes the lookup solvable rather than lost.
+
+Two smaller corrections. The survey's `fold` history called four senses; the git record shows all four, and **`matches` turns out to be a Rishi infix operator** -- a fifth quiet collision, found by writing the resolver rather than by reading for it. And the census had to name its own bounds out loud: the gitignored `seed/` projection carries **8,425** references that would have double-counted the field, and the resolver's own documentation cites deliberately stale paths that are fixtures rather than defects. Both exclusions are written into the scan with their reasons, since a measurement that hides its bounds is a claim wearing a number's clothes.
+
+One recorded touch to the body above, claim unchanged: the filename example in *The filename question, answered* was written as a concrete path to a file that does not exist, so the census counted this document's own illustration as a broken reference. It now reads as a shape. That happened three times in one round -- here, in the mark law, and in the resolver's witness -- so it became a line of the law rather than a third exclusion.
 
 ---
 
