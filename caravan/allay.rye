@@ -589,12 +589,12 @@ pub fn run_of(report_out: *Report) *overtake.Report {
 }
 
 /// The sibling-order counters, reached the same way.
-fn masked_of(report_out: *Report) *mask.Report {
+pub fn masked_of(report_out: *Report) *mask.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The turn-order counters, reached the same way.
-fn preceded_of(report_out: *Report) *precede.Report {
+pub fn preceded_of(report_out: *Report) *precede.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
@@ -6131,14 +6131,14 @@ fn waits(table: *const Table, at: u32) bool {
 }
 
 /// Moves the head past every item already started.
-fn advance_head(table: *Table) void {
+pub fn advance_head(table: *Table) void {
     // invariant: a head never walks past the record it reads
     assert(table.head <= table.held);
     while (table.head < table.held and !waits(table, table.head)) table.head += 1;
 }
 
 /// Answers whether a phase of a turn this pick's turn names still waits.
-fn elder_waits(table: *const Table, pick: u32) bool {
+pub fn elder_waits(table: *const Table, pick: u32) bool {
     // invariant: a pick always names a phase inside the record
     assert(pick < table.held);
     const wanted = table.record[pick].follows_turns;
@@ -6155,7 +6155,7 @@ fn elder_waits(table: *const Table, pick: u32) bool {
 }
 
 /// Answers whether a sibling of this pick's own turn still waits behind it.
-fn sibling_waits(table: *const Table, pick: u32, sibling_mask: u32) bool {
+pub fn sibling_waits(table: *const Table, pick: u32, sibling_mask: u32) bool {
     // invariant: a pick always names a phase inside the record
     assert(pick < table.held);
     var i: u32 = 0;
@@ -6170,7 +6170,7 @@ fn sibling_waits(table: *const Table, pick: u32, sibling_mask: u32) bool {
 }
 
 /// Answers whether the door admits this phase over the lines remembered.
-fn door_admits(sys: *const system.System, table: *const Table, at: u32) RunError!bool {
+pub fn door_admits(sys: *const system.System, table: *const Table, at: u32) RunError!bool {
     // invariant: a candidate always stands inside the record
     assert(at < table.held);
     // invariant: a run never remembers more lines than it may hold
@@ -6207,7 +6207,7 @@ fn may_pass(
 }
 
 /// Chooses one phase from behind a blocked head, or answers that none may go.
-fn choose_pass(
+pub fn choose_pass(
     sys: *const system.System,
     table: *const Table,
     reading: Reading,
@@ -6231,7 +6231,7 @@ fn choose_pass(
 }
 
 /// Answers which standing dependent could carry this phase, if any could.
-fn confer_slot(table: *const Table, at: u32) ?u32 {
+pub fn confer_slot(table: *const Table, at: u32) ?u32 {
     // invariant: a candidate always stands inside the record
     assert(at < table.held);
     // invariant: a run never remembers more lines than it may hold
@@ -6321,7 +6321,7 @@ fn reclaim_one(
 
 /// Hands one phase, and the reach it needs, to a dependent already standing --
 /// then takes that reach back once the dependent answers that the work is done.
-fn confer_one(
+pub fn confer_one(
     io: std.Io,
     sys: *const system.System,
     caps: *const capabilities.CapabilityTable,
@@ -6377,7 +6377,7 @@ fn confer_one(
 
 /// Starts one phase, handing the capability words this reach calls for and
 /// promising the pruning this keep calls for.
-fn start_one(
+pub fn start_one(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,
@@ -6427,62 +6427,9 @@ pub fn fill_table(
     table: *Table,
     report_out: *Report,
 ) (RunError || NoteError || cohort.RunError || boot.BootError)!u32 {
-    // invariant: a fill always reads a record the run has seated
-    assert(table.held >= 1);
-    // invariant: a run never remembers more lines than it may hold
-    assert(table.in_flight <= max_in_flight);
-    var took_up: u32 = 0;
-    while (table.left > 0) {
-        advance_head(table);
-        // invariant: work still waiting always leaves a head to weigh
-        assert(table.head < table.held);
-
-        if (confer_slot(table, table.head)) |slot| {
-            try confer_one(io, sys, caps, table, slot, table.head, keeping, report_out);
-            table.started[table.head] = true;
-            table.left -= 1;
-            took_up += 1;
-            continue;
-        }
-
-        if (table.in_flight >= max_in_flight) break;
-
-        var pick: u32 = table.head;
-        if (!try door_admits(sys, table, table.head)) {
-            pick = try choose_pass(sys, table, reading) orelse break;
-            run_of(report_out).passes += 1;
-            const gained = pick - table.head;
-            if (gained > run_of(report_out).pass_reach) run_of(report_out).pass_reach = gained;
-        }
-        const chosen = table.record[pick];
-        if (sibling_waits(table, pick, mask.prefix_mask(chosen.step))) {
-            masked_of(report_out).out_of_turn += 1;
-        }
-        if (sibling_waits(table, pick, mask.prefix_mask(mask.fence_after(chosen.follows)))) {
-            masked_of(report_out).out_of_fence += 1;
-        }
-        if (sibling_waits(table, pick, chosen.follows)) masked_of(report_out).out_of_mask += 1;
-        if (elder_waits(table, pick)) preceded_of(report_out).out_of_precede += 1;
-
-        table.live[table.in_flight] = try start_one(
-            allocator, io, self_path, sys, caps, chosen, table.reserve_of[pick], keeping, wake, report_out,
-        );
-        table.lines[table.in_flight] = chosen.task;
-        table.reserves[table.in_flight] = table.reserve_of[pick];
-        table.taken[table.in_flight] = 0;
-        table.served[table.in_flight] = 0;
-        table.granted[table.in_flight] = 0;
-        table.in_flight += 1;
-        table.started[pick] = true;
-        table.left -= 1;
-        took_up += 1;
-        run_of(report_out).admitted += 1;
-    }
-    // invariant: a fill never overruns the table it fills
-    assert(table.in_flight <= max_in_flight);
-    // invariant: a preceded reading never runs a phase past a turn its turn named
-    assert(reading != .preceded or preceded_of(report_out).out_of_precede == 0);
-    return took_up;
+    return ladder_checks.fill_table(
+        @This(), allocator, io, self_path, sys, caps, wake, reading, keeping, table, report_out,
+    );
 }
 
 /// Records one departed dependent's abandoned reach, and reads the answer back.
