@@ -1,0 +1,42 @@
+format session-log-v1
+stamp 20260821.065446
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The three questions that were always one moment, and the order seL4 does not publish
+prompt Continue the Microkernel Target lap Lindy-first crux-first -- the three edge debts, which the agenda says are one family.
+
+think The prior lap's recommend named this rung and named it as one family. Reading `refusals.rye`'s own debt reasons confirmed it from the tree rather than from the recommend: argument checking bounds its arguments before invoking, bounds checking places a range in the grant at the edge, alignment checking carries an address's required alignment across the line. Three sentences, one moment.
+think They are one family because they are one moment, and that is the sentence the module is built on. Each is a question asked of the REQUEST rather than of the system -- answerable holding nothing but the arguments, before a slot is touched, a lineage walked, or a byte of a region spent. That is a real seam, not a convenience.
+think Measured the ground before writing. seL4 publishes a per-method description for all three, and `Untyped_Retype` publishes all three at once -- size_bits too big or too small for the object type is InvalidArgument, num_objects past CONFIG_RETYPE_FAN_OUT_LIMIT is RangeError, and riscv's own page method gives alignment its sentence. So retyping is the honest place to stand rather than an abstraction invented for the rung.
+think Then asked whether seL4 publishes a CHECK order, since answering the earliest failure is a design decision that must know whether it contradicts anything upstream. Extracted Retype's whole error block: DeleteFirst, FailedLookup, IllegalOperation, InvalidArgument, InvalidCapability, NotEnoughMemory, RangeError. Strictly alphabetical -- a reading order for a manual, never a checking order for a kernel. So no sequence is published, and ours is genuinely ours.
+think Made that a standing check rather than a one-time read. `tools/fixtures/caravan_edge_order_scan.sh` re-derives the block's order every run and reds if it ever stops being alphabetical, because the day seL4 publishes a real sequence it is worth weighing ours against rather than keeping ours by default. REDS %107's two-sided lesson, one shelf over.
+think Chose the order on a reason that travels with the code rather than living only in a header comment: each check depends only on facts the checks before it established. Argument first, since until a request names a real object at a size that kind can be there is no count to bound and no size to align to. Range second, since a count is answerable the moment the kind is known and needs no address. Alignment last, since it alone needs both the size and a caller's address.
+think Proved the order rather than asserting it. Built requests failing two and three checks at once -- crucially one failing the FIRST and THIRD while the second passes, so the answer is the earliest rather than the first found by luck of adjacency. Then swept the space: every kind, eleven widths, counts spanning the fan-out limit, a thousand-odd addresses, each request either clean or refused by its earliest failing check, with both arms asserted exercised.
+think Found a real asymmetry worth keeping apart rather than smoothing over. seL4 creates at most 256 objects in one invocation; Caravan's region carves at most 64. A request for sixty-five is WELCOMED by the edge and REFUSED by the region. Both are honest and each names its own author -- a reader who conflated them would think the kernel forbids what only we do. The module holds both lines and the self-test proves the pair.
+think The witness's order check would not run inside Rishi -- escaped quotes in a `run` string hit UndefinedName. That is precisely the quoting fact the control fixtures document and REDS %85 built a loom against, arriving on schedule. Moved the logic into its own fixture where the shell owns its quoting, which made it a better artifact anyway: it is now a named, reusable question rather than a line buried in a witness.
+think Registering the rung moved the ladder 106 modules to 107. Three meters pinned; the print meter wanted 43 rather than 44, since `edge.rye` holds no `tell_`-prefixed body and that meter's window is exactly that prefix. Read the scan rather than assuming the increment -- the module count moved and the printing count did not, and both are right.
+
+obs The best thing this rung does is refuse to close the agenda. All seven owed refusals now have a module answering them, and it would read beautifully to say the agenda is clear. `refusals.rye` still counts seven, and that is exactly right: its count is what the POLICY TABLE can answer, and the table has not learned to speak through the tree, the buffer, the region, or the edge. The module said so itself two rungs ago -- the debt closes when the table itself can answer, never when a neighbour can. So the honest close names the next rung instead of claiming a finish.
+obs Two laps running, the module found a claim it wanted to make and could not. Yesterday's was arithmetic; today's is bookkeeping. Both were caught by asking what would actually have to be true, and both made the rung better than the flourish would have.
+obs The order scan is the durable artifact here. The module is policy on hosted ground and will be rewritten when a root task really invokes; the question "does seL4 publish a check order?" is permanent, and now it is asked by a program every run rather than remembered from one afternoon's reading.
+obs No new red this lap. The prior lap's REDS %109 stands closed, and the meters reddening on ladder growth behaved exactly as designed -- three pins moved, one of them to a number the scan chose rather than the one arithmetic suggested.
+
+loom witness=caravan_edge_witness wall_ms=14200 red_paths=3 sweep_requests=12441 checks=3
+loom witness=caravan_suite_witness wall_ms=381588 rungs=104 verdict=green
+loom scan=caravan_ladder_carry modules=107 bodies=18039 distinct=7841 copies=10198 carried_lines=137176 ceiling=137300
+loom scan=caravan_edge_order api=object-api.xml method=Retype errors=7 verdict=alphabetical
+
+file caravan/edge.rye the edge -- three refusals asked of the request alone, in an order Caravan chose and states
+file tools/caravan_edge_witness.rish the witness -- three RED paths, three published sentences bound two-sidedly, the fan-out limit read both ways it is stated
+file tools/fixtures/caravan_edge_control.sh the three plants -- a reversed order, two checks collapsed into one answer, an alignment check welcoming every address
+file tools/fixtures/caravan_edge_order_scan.sh the standing question -- does seL4 publish a check order, or only a reading order
+file tools/caravan_suite_witness.rish the rung registered -- bijection whole at 104
+file tools/caravan_ladder_spine_witness.rish module pin 106 -> 107
+file tools/caravan_ladder_print_witness.rish module pin 106 -> 107, holding read from the scan at 43 rather than incremented
+file tools/caravan_ladder_carry_witness.rish module pin 106 -> 107 and the carry re-measured at 137,176
+file caravan/README.md the edge section -- the one moment, the unpublished order, the two lines kept apart, and the agenda deliberately left open
+file crux/REMEMBER.md live edge and Now refilled; the next rung named as the policy table rather than as a finish
+
+recommend keep-going Teaching `capabilities.rye`'s policy table to answer through its neighbours is the next rung and it is ungated: every owed refusal now has a module answering it, yet `refusals.rye` rightly still counts seven, because its count is what the table can reach and the table has not learned to speak through the tree, the buffer, the region, or the edge. Closing the agenda by measurement rather than by proximity is the crux, and it is exactly the shape `refusals.rye` named for itself. The one gate worth Keaton's eye stays small and unchanged: jinja2 and ply on the pier's Python environment open five more libsel4 headers in a single step.
