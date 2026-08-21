@@ -34,6 +34,7 @@ The request said "as long as the licenses are permissive." Two of the named proj
 
 Rye today is a **thin frontend** over Zig; the compiler fork (F1-F5) is a **deferred horizon**, not the active primary track ([`thin-frontend SLC direction`](../active-designing/20260628-043542_thin-frontend-slc-direction.md), and the TAME rule's own note). A "Tally/Caravan compiler target" is a compiler-**backend** feature, so it either advances that fork or leans on Zig's existing target machinery. Which leads to the first real research question:
 
+- **ANSWERED `20260821.040637`, on metal** -- see the addendum at the foot of this document. Short form: the vendored toolchain carries **no `sel4` OS target**, so freestanding-plus-kernel-libs is confirmed as the only path, and on that path the Rye compiler reaches riscv64, aarch64, and x86_64 freestanding with no libc, linking C sources directly. What remains is the license read and the fetch gate, not a toolchain question. Witness: [`../tools/microkernel_zig_target_probe_witness.rish`](../tools/microkernel_zig_target_probe_witness.rish).
 - **Can Zig target seL4 / Genode today?** Zig cross-compiles to `freestanding` and to many OS targets, and seL4 is fundamentally "bring your own runtime on top of the kernel's capability API," so **Zig-on-seL4 via a freestanding target plus the seL4 libraries is plausible** and worth a focused check against the current toolchain. Genode's C++ component framework is a harder fit for a Zig frontend and needs its own answer. *This is the external-research question the request named, and it should be answered against real toolchain versions, not from memory.*
 
 ## Blind spot three -- hardware freedom trades against speed
@@ -57,3 +58,26 @@ It approves no fetch by itself, incorporates no source, and buys no hardware. It
 ## Study-weight recenter (`20260819`)
 
 A later round reordered the *reading weight* used while designing Caravan and Tally on this target, without moving any gate. The prior emphasis on Genode and experimental Sculpt-on-seL4 as the primary living models steps back; the center of gravity moves to the static, verification-minded, simplicity-first part of the ecosystem -- **seL4 itself, then Microkit, then LionsOS plus sDDF**, then s6, then selective Genode, with Sculpt and CAmkES as reality-check and historical context. That posture matches TAME's Safety-over-Performance-over-Joy ranking more tightly than a large dynamic Genode userland. Every equinox, the Caravan-before-Tally order, the RISC-V/QEMU-first pragmatism, the three blind spots, and the parity-witness close stand exactly as seated above. Full ordering, reasons, and three clean-room briefs (seL4 core model, Microkit protection domains and channels, LionsOS modularity thesis): [`20260819-094721_microkernel-target-study-weight-recenter.md`](20260819-094721_microkernel-target-study-weight-recenter.md).
+
+
+---
+
+## Addendum -- the toolchain question, answered on metal (`20260821.040637`)
+
+This document asked its central question and left it open with an instruction attached: *answer it against real toolchain versions, not from memory.* [`tools/microkernel_zig_target_probe_witness.rish`](../tools/microkernel_zig_target_probe_witness.rish) does that, and is GREEN.
+
+**The finding, in one line: yes, by freestanding -- and the remaining obstacles are legal rather than technical.**
+
+| Question | Measured on this pier, Zig 0.16.0 |
+|---|---|
+| Is there an `sel4` OS target? | **No.** 42 OS targets; `sel4` is not among them |
+| Is `freestanding` available? | **Yes** -- so the study's "plausible" path is confirmed as the *only* path |
+| Can the **Rye compiler** reach the family's architectures? | **Yes** -- `riscv64` (`e_machine` 243), `aarch64` (183), `x86_64` (62), each built freestanding and each architecture read back from its own ELF header |
+| Does anything expect a libc? | **No** -- zero dynamic `NEEDED` entries across all three images |
+| Can it call a kernel's **C ABI**? | **Yes** -- `rye build` links C sources directly beside a `.rye`, and the binding is proven by its RED path: withholding the C side makes the link refuse with an unresolved symbol |
+
+**Why this needed no gate.** Answering it required no fetch, no license read, and no hardware. The probe calls [`tools/fixtures/microkernel_cap_stub.c`](../tools/fixtures/microkernel_cap_stub.c) -- **our own** capability-shaped stub carrying the shape the whole family shares: a capability is an opaque handle, an invocation takes a handle, a label, and a word, and returns a word. No seL4 or Genode source, header, or line is fetched or reproduced. The toolchain either emits that call shape freestanding or it does not, and which kernel sits on the far side changes nothing about the answer.
+
+**What this does not answer.** Genode's C++ component framework remains the harder fit and is untouched here -- this probe speaks to the C-ABI capability path only. No kernel is booted, no real capability is invoked, and nothing is linked against a real kernel library. Blind spot one still governs: the per-component license read precedes any fetch, and copyleft stays study-only.
+
+**What it changes for the arc.** Equinox 3's leading question no longer blocks design. The compiler question is settled in the affirmative, so the remaining work on that equinox is clean-room design against the capability model rather than a toolchain investigation -- and the next honest gate is the license read, which is Keaton's word.

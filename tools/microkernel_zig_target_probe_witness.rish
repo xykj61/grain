@@ -1,0 +1,70 @@
+# tools/microkernel_zig_target_probe_witness.rish -- the Microkernel Target arc's Equinox 3 question, answered against the real toolchain
+# on metal rather than from memory: can the Rye compiler lower to a capability-microkernel target today?
+#
+# THE QUESTION, AS SEATED AND LEFT OPEN. external-research/20260817-185851_microkernel-target-and-the-os-parity-question.md names it and
+# does not answer it: "Can Zig target seL4 / Genode today? ... This is the external-research question the request named, and it should be
+# answered against real toolchain versions, not from memory." The 20260819 recenter restates it as still open and leading Equinox 3. It is
+# the arc's crux and it is UNGATED -- answering it needs no fetch, no license read, and no hardware.
+#
+# WHAT IS PROVEN HERE. A capability microkernel asks three things of a root task: that it be FREESTANDING with no host OS beneath it, that
+# it carry NO LIBC, and that it call a C ABI which traps into the kernel. This witness proves the Rye compiler delivers all three, on all
+# three architectures the family runs on, and that the C ABI genuinely binds -- shown by the link REFUSING when the C side is withheld and
+# succeeding when it is supplied. That refusal is the RED path, proven rather than described.
+#
+# CLEAN ROOM, AND WHY THIS NEEDED NO GATE. No seL4 or Genode source, header, or line is fetched, copied, or reproduced. Both are copyleft --
+# seL4 GPLv2, Genode AGPLv3 -- and are studied for design concepts only (.claude/rules/gratitude-licenses.md). The stub in
+# tools/fixtures/microkernel_cap_stub.c is our own, carrying the shape the whole family shares: a capability is an opaque handle, an
+# invocation takes a handle, a label, and a word, and returns a word. The toolchain either emits that call shape freestanding or it does
+# not, and which kernel sits on the far side changes nothing about the answer.
+#
+# Season: the Lindy-priority Microkernel Target double-seat (ordered ahead of Seasons A-H on seated word `20260817`), Equinox 3.
+# Kin: tools/aurora_seed_freestanding_witness.rish (the elder freestanding riscv64 proof this borrows its build shape from) -
+# external-research/20260819-094721_microkernel-target-study-weight-recenter.md
+#
+# HONEST SCOPE -- a toolchain probe, not a port. No kernel is booted, no real capability is invoked, no hardware is touched.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/microkernel_zig_target_probe_witness.rish
+
+say "microkernel-target-probe: Language EN -- the arc's leading question has stood open since `20260817` with an explicit instruction attached: answer it against real toolchain versions, not from memory. This answers it by building, on this pier, with the toolchain the tree actually vendors."
+say "microkernel-target-probe: Style Radiant -- three things a capability microkernel asks of a root task, checked one at a time. Freestanding, so no host OS sits beneath it. No libc, so nothing assumes a runtime that is not there. And a C ABI that binds, shown by withholding the C side and watching the link refuse before supplying it and watching the link hold."
+say "microkernel-target-probe: Lens TAME -- every claim is a build or a byte read from one. The architecture of each image is read from its ELF header rather than trusted from the flag that asked for it, the libc question is answered by counting dynamic NEEDED entries, and the ABI claim carries its own RED path. Purely local -- no kernel booted, no capability invoked, no hardware, no network."
+
+let zig = "vendor/zig-toolchain/zig"
+let probe = "tools/fixtures/microkernel_probe.rye"
+let stub = "tools/fixtures/microkernel_cap_stub.c"
+
+let mk = run ["sh" "-c" "mkdir -p tools/.build"]
+assert mk.ok else "microkernel-target-probe: could not make tools/.build"
+
+# 1. THE FIRST HALF OF THE ANSWER, read from the toolchain's own target list: there is no sel4 OS target. The freestanding path is the
+#    only path, which the study called plausible and left unverified.
+let has_sel4 = run ["sh" "-c" "${zig} targets 2>/dev/null | grep -cE '^ *\"sel4\",?$' | tr -d ' \n'"]
+assert has_sel4.ok else "microkernel-target-probe: could not read the toolchain's target list"
+assert (trim has_sel4.out) == "0" else "microkernel-target-probe: the toolchain now DOES carry an sel4 OS target -- this witness's central finding has changed and the arc's design should be re-read before trusting it"
+
+let has_freestanding = run ["sh" "-c" "${zig} targets 2>/dev/null | grep -cE '^ *\"freestanding\",?$' | tr -d ' \n'"]
+assert (trim has_freestanding.out) == "1" else "microkernel-target-probe: the toolchain no longer offers a freestanding OS target, which the whole path depends on"
+
+# 2. THE RED PATH FIRST, so the ABI claim means something: withhold the C side and the link must REFUSE with an unresolved symbol.
+let withheld = run ["sh" "-c" "rm -f tools/.build/mkprobe_red.elf; env RYE_ZIG=${zig} rye/bin/rye build ${probe} -target riscv64-freestanding-none -femit-bin=tools/.build/mkprobe_red.elf 2>&1 | grep -c 'undefined symbol: cap_invoke' | tr -d ' \n'"]
+assert (trim withheld.out) != "0" else "microkernel-target-probe: withholding the C stub did NOT produce an unresolved symbol -- the extern is not really binding across the C ABI, so the parity claim below would be hollow"
+
+# 3. THE THREE ARCHITECTURES the capability-microkernel family runs on. Each builds freestanding with the C side supplied, and each image's
+#    architecture is read back from its own ELF header rather than trusted from the flag that requested it.
+let rv = run ["sh" "-c" "rm -f tools/.build/mkprobe_riscv64.elf; env RYE_ZIG=${zig} rye/bin/rye build ${probe} ${stub} -target riscv64-freestanding-none -femit-bin=tools/.build/mkprobe_riscv64.elf >/dev/null 2>&1 && od -An -tu2 -j18 -N2 tools/.build/mkprobe_riscv64.elf | tr -d ' \n'"]
+assert (trim rv.out) == "243" else "microkernel-target-probe: riscv64 freestanding did not produce a RISC-V ELF (e_machine 243)"
+
+let a64 = run ["sh" "-c" "rm -f tools/.build/mkprobe_aarch64.elf; env RYE_ZIG=${zig} rye/bin/rye build ${probe} ${stub} -target aarch64-freestanding-none -femit-bin=tools/.build/mkprobe_aarch64.elf >/dev/null 2>&1 && od -An -tu2 -j18 -N2 tools/.build/mkprobe_aarch64.elf | tr -d ' \n'"]
+assert (trim a64.out) == "183" else "microkernel-target-probe: aarch64 freestanding did not produce an AArch64 ELF (e_machine 183)"
+
+let x64 = run ["sh" "-c" "rm -f tools/.build/mkprobe_x86_64.elf; env RYE_ZIG=${zig} rye/bin/rye build ${probe} ${stub} -target x86_64-freestanding-none -femit-bin=tools/.build/mkprobe_x86_64.elf >/dev/null 2>&1 && od -An -tu2 -j18 -N2 tools/.build/mkprobe_x86_64.elf | tr -d ' \n'"]
+assert (trim x64.out) == "62" else "microkernel-target-probe: x86_64 freestanding did not produce an x86-64 ELF (e_machine 62)"
+
+# 4. NO LIBC beneath any of them -- counted, not assumed. A dynamic NEEDED entry would mean a runtime the kernel does not provide.
+let needed = run ["sh" "-c" "cat tools/.build/mkprobe_riscv64.elf tools/.build/mkprobe_aarch64.elf tools/.build/mkprobe_x86_64.elf > tools/.build/.mk_all 2>/dev/null; readelf -d tools/.build/mkprobe_riscv64.elf tools/.build/mkprobe_aarch64.elf tools/.build/mkprobe_x86_64.elf 2>/dev/null | grep -ci NEEDED | tr -d ' \n'"]
+assert (trim needed.out) == "0" else "microkernel-target-probe: one of the freestanding images carries a dynamic NEEDED entry -- something expects a runtime the kernel will not provide"
+
+say "microkernel-target-probe: toolchain `${zig}` -- no sel4 OS target, freestanding present; riscv64 e_machine 243, aarch64 183, x86_64 62; zero dynamic NEEDED entries across all three."
+
+say "GREEN microkernel-target-probe: the arc's Equinox 3 question is ANSWERED, and the answer is yes-by-freestanding. The vendored toolchain carries NO sel4 OS target, so the freestanding-plus-kernel-libs path the study called plausible is confirmed as the only path. On that path the Rye compiler reaches all three architectures the capability-microkernel family runs on -- riscv64, aarch64, and x86_64 -- each built freestanding, each architecture read back from its own ELF header, each with zero dynamic NEEDED entries and so no libc beneath it. `rye build` links C sources directly beside a `.rye`, which is the mechanism a kernel's C ABI needs, and that binding is proven by its RED path: withholding the C side makes the link refuse with an unresolved symbol. What remains is NOT a toolchain question -- it is the per-component license read and the fetch gate, which stay Keaton's word. This is a probe, not a port: no kernel booted, no real capability invoked, no hardware touched."
