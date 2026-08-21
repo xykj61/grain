@@ -18,12 +18,12 @@
 #
 # WHAT THE WIDER QUESTION ANSWERS, MEASURED THIS LAP:
 #
-#   * **142,850 carried lines across 10,198 copied bodies**, out of 17,975 bodies standing in 102 modules. The three
+#   * **137,140 carried lines across 10,194 copied bodies**, out of 17,977 bodies standing in 102 modules. The three
 #     named meters together report 47 carried check lines, 2,686 carried printing lines, and 0 spine lines. Every one of
 #     those numbers is true. None of them is the ladder's carry, and the difference is two orders of magnitude.
-#   * **698 families carry at least one copy**, and 247 of them carry past a hundred lines each. The largest is
-#     `mend_the_plan` -- 36 rungs holding one 178-line body, 6,230 carried, which alone is larger than any fold this arc
-#     has taken.
+#   * **703 families carry at least one copy.** The largest this meter ever named was `mend_the_plan` -- 37 rungs
+#     holding one 178-line body, 6,408 carried -- and the very next lap lifted it, which is exactly what a printed queue
+#     is for. `reckon_the_plan` leads now at 2,700 across 37 rungs.
 #   * The fold queue is printed rather than remembered, largest first, so the next fold is chosen by measurement.
 #
 # A ratchet, never a red against the three. Each named its own window plainly at the top of its own file, so nothing was
@@ -55,16 +55,16 @@ let living = run ["sh" "tools/fixtures/caravan_ladder_carry_scan.sh"]
 assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
 assert living.out contains "CARRY_OK" else "caravan-ladder-carry: want the living carry under its named ceiling"
 assert living.out contains "CARRY_MODULES 102" else "caravan-ladder-carry: want all 102 ladder modules read, the rungs and the harness alike"
-assert living.out contains "CARRY_BODIES 17975 distinct=7777 copies=10198 carried_lines=142850" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
+assert living.out contains "CARRY_BODIES 17977 distinct=7783 copies=10194 carried_lines=137140" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
 
 say "caravan-ladder-carry: living ladder -- ${living.out}"
 
 # The fold queue, asserted so it stays a measurement rather than a memory. The largest family is named here by number
 # so a lap that folds it must come back and say so, and a lap that grows a larger one cannot pass quietly.
-assert living.out contains "CARRY_FAMILIES 698" else "caravan-ladder-carry: want every carrying family counted"
-assert living.out contains "CARRY_TOP mend_the_plan: 36 rungs x 178 lines = 6230 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
-assert living.out contains "CARRY_TOP graft_promised_reach: 42 rungs x 43 lines = 1763 carried" else "caravan-ladder-carry: want a helper this lap's own fold widened standing in the queue behind the body it serves"
-say "caravan-ladder-carry: the fold queue -- mend_the_plan carries 6,230 lines across 36 rungs, larger than any single fold this arc has taken"
+assert living.out contains "CARRY_FAMILIES 703" else "caravan-ladder-carry: want every carrying family counted"
+assert living.out contains "CARRY_TOP reckon_the_plan: 37 rungs x 75 lines = 2700 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
+assert living.out contains "CARRY_TOP fill_table: 37 rungs x 69 lines = 2484 carried" else "caravan-ladder-carry: want a spine body this lap's own fold widened standing in the queue behind the body it served"
+say "caravan-ladder-carry: the fold queue -- reckon_the_plan carries 2,700 lines across 37 rungs, the largest standing now that mend_the_plan has been lifted"
 
 # The three named meters, read here beside the wide one so no reader mistakes a window for the room. Every number below
 # is true inside its own window, and the point of printing them together is that their sum is not the ladder's carry.
@@ -79,7 +79,7 @@ assert print_meter.out contains "PRINT_LINES total=4600 distinct=1914 carried=26
 let spine = run ["sh" "tools/fixtures/caravan_ladder_spine_scan.sh"]
 assert spine.ok else "caravan-ladder-carry: the spine meter must still stand -- ${spine.out}"
 assert spine.out contains "SPINE_LINES total=19 distinct=19 carried=0" else "caravan-ladder-carry: want the orchestration spine still folded"
-say "caravan-ladder-carry: three windows and the room -- checks carry 47, printing carries 2,686, the spine carries 0, and the whole ladder carries 142,850"
+say "caravan-ladder-carry: three windows and the room -- checks carry 47, printing carries 2,686, the spine carries 0, and the whole ladder carries 137,140"
 
 # The counting proven by hand, over a corpus no fold has touched. The foot writes one three-line body; the rung above
 # copies it byte for byte and adds one of its own. So three bodies stand, two of them different texts, and one is a
@@ -111,4 +111,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_c
 assert (ceiling.ok == false) else "caravan-ladder-carry: a carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-carry: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-carry -- the Caravan ladder carries 142,850 lines across 10,198 copied bodies of the 17,975 standing in 102 modules, held under a named ceiling, with the fold queue printed largest-first and led by mend_the_plan at 6,230 lines across 36 rungs, the three named meters read beside it so no window is mistaken for the room, the counting proven by hand on a two-rung corpus whose added body opens on a prefix no meter names, and all three RED paths refusing by name."
+say "GREEN: caravan-ladder-carry -- the Caravan ladder carries 137,140 lines across 10,194 copied bodies of the 17,977 standing in 102 modules, held under a ceiling this fold brought down to 137,300, with the fold queue printed largest-first and led now by reckon_the_plan at 2,700 lines across 37 rungs, the three named meters read beside it so no window is mistaken for the room, the counting proven by hand on a two-rung corpus whose added body opens on a prefix no meter names, and all three RED paths refusing by name."
