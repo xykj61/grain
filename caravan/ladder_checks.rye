@@ -7010,3 +7010,125 @@ pub fn stand_the_mark(
     // invariant: a standing run leaves no escorted mark unstanding
     assert(rung.reposing_of(report_out).unstanding == 0);
 }
+
+/// Takes back the reach one standing dependent no longer needs, and records what
+/// came home.
+///
+/// The smallest of the reap cluster, and the one the other two are built over: a
+/// reclamation names a row the table still holds, refuses by name where the
+/// conferral was never made or the reach never given, writes the notes that let
+/// the wire say so, and adds what it took back to the plan's own account.
+///
+/// Every reach here is seated through the rung handed in, so one text reclaims
+/// for whichever rung called it.
+pub fn reclaim_one(
+    comptime rung: type,
+    io: std.Io,
+    table: *rung.Table,
+    slot: u32,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    // invariant: a reclamation always names a row the table still holds
+    assert(slot < rung.max_in_flight);
+    // invariant: a reclamation never takes back more than one line may name
+    assert(table.granted[slot] <= cycle.max_hops);
+    const domain = table.live[slot].domain;
+    const already = (rung.read_count(io, domain, ".given") catch 0) == 0;
+    if (rung.reclaim_refusal(table.granted[slot], false, already)) |why| return why;
+    try rung.reclaim_notes(io, domain);
+    rung.abandoning_of(report_out).inner.reclaimed += table.granted[slot];
+}
+
+/// Answers for the work a conferral bought and the dependent never served.
+///
+/// The middle of the reap cluster: an abandonment names lost work only where
+/// there is lost work to name, writes it where an operator would read it, reads
+/// it straight back off the wire before believing it, and gathers the phases
+/// this dependent took up and never served into the plan's own loss.
+///
+/// Every reach here is seated through the rung handed in, so one text answers
+/// for whichever rung called it.
+pub fn abandon_one(
+    comptime rung: type,
+    io: std.Io,
+    table: *rung.Table,
+    slot: u32,
+    came_home: bool,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    // invariant: an abandonment always names a row the table still holds
+    assert(slot < rung.max_in_flight);
+    // invariant: an abandonment never records more than one line may name
+    assert(table.granted[slot] <= cycle.max_hops);
+    const domain = table.live[slot].domain;
+    if (rung.abandon_refusal(table.granted[slot], false, came_home)) |why| return why;
+    const left = rung.abandoned_reach(table.granted[slot], came_home, .answered);
+    // invariant: an abandonment that reaches this point always names lost work
+    assert(left >= 1);
+    try rung.abandon_note(io, domain, left);
+    if (rung.abandoned_by(io, domain) != left) return error.AbandonUncounted;
+    rung.abandoning_of(report_out).abandoned += left;
+    // The phases this dependent took up and never served, gathered into the
+    // plan's own loss while the slot that held them is still standing. After
+    // the table closes over this row the mask moves with the shuffle, and once
+    // the reaping is done it is gone -- so the plan learns where it fell short
+    // at the one moment the answer is still in reach.
+    table.lost_mask |= table.absorbed_mask[slot];
+}
+
+/// Waits on the eldest dependent, takes back what it was conferred, answers for
+/// the work that conferral never bought, and closes the table over its slot.
+///
+/// The largest of the reap cluster, and the reason the two above stand here: a
+/// reaping reaches both of them, so lifting it lifted them. An heir found at
+/// home refuses the whole reaping rather than reporting around it, since a
+/// dependent whose children outlive it was never reaped at all.
+///
+/// Every reach here is seated through the rung handed in, so one text reaps for
+/// whichever rung called it -- that rung's own table, its own helpers, its own
+/// report.
+pub fn reap_oldest(
+    comptime rung: type,
+    io: std.Io,
+    table: *rung.Table,
+    answer: rung.Answer,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError || cohort.RunError)!void {
+    // invariant: a reaping always has a dependent to wait on
+    assert(table.in_flight >= 1);
+    // invariant: a reaping never overruns the record it is kept in
+    assert(table.finished < rung.max_queue_len);
+    const code = try cohort.reap_one(io, &table.live[0]);
+    const found = rung.inherited_by(io, table.live[0].domain);
+    rung.abandoning_of(report_out).inner.inherited_at_home += found;
+    if (found != 0) return error.ReclaimInherited;
+    const came_home = code == carry.Outcome.carried_ok;
+    if (table.granted[0] >= 1) try rung.reclaim_one(io, table, 0, report_out);
+    if (answer == .answered and table.granted[0] >= 1 and !came_home) {
+        try rung.abandon_one(io, table, 0, came_home, report_out);
+    }
+    table.done[table.finished] = .{
+        .domain = table.live[0].domain,
+        .verb = table.live[0].verb,
+        .count = table.live[0].count,
+        .expect = table.live[0].expect,
+        .code = code,
+    };
+    table.finished += 1;
+    table.in_flight -= 1;
+    rung.run_of(report_out).reaped += 1;
+    rung.run_of(report_out).turns += 1;
+
+    var s: u32 = 0;
+    while (s < table.in_flight) : (s += 1) {
+        table.live[s] = table.live[s + 1];
+        table.lines[s] = table.lines[s + 1];
+        table.reserves[s] = table.reserves[s + 1];
+        table.taken[s] = table.taken[s + 1];
+        table.served[s] = table.served[s + 1];
+        table.granted[s] = table.granted[s + 1];
+        table.absorbed_mask[s] = table.absorbed_mask[s + 1];
+    }
+    // invariant: the table closed over the reaped dependent, none lost
+    assert(s == table.in_flight);
+}
