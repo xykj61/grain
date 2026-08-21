@@ -5,7 +5,7 @@
 **Language:** EN - **Style:** Radiant - **Voice:** Kyri
 **Written:** `20260821.180613`
 **Status:** Living - the beginner path
-**You will need:** a Linux or macOS terminal, `git`, and about an hour.
+**You will need:** a Linux or macOS terminal with `git`, `curl`, and `tar`, and about an hour.
 
 ---
 
@@ -24,16 +24,32 @@ cd grain
 
 ## 2. Fetch the toolchain
 
-Grain compiles through a pinned **Zig 0.16.0** toolchain, kept at `vendor/zig-toolchain/` and deliberately *not* committed -- a 172 MB binary does not belong in a git history.
+Grain compiles through a pinned **Zig 0.16.0**, kept at `vendor/zig-toolchain/` and deliberately not committed -- a 172 MB binary does not belong in a git history.
 
-Download Zig **0.16.0** for your platform from [ziglang.org/download](https://ziglang.org/download/), **verify it against the checksum published on that same page**, and extract it so that this path exists and runs:
+```sh
+sh tools/fetch-toolchain.sh
+```
+
+That is plain `sh` on purpose: this is the second thing you run, and the tree's own shell does not exist yet -- it is a program that compiles through the toolchain you are fetching right now.
+
+It downloads the official release for your platform, and then **refuses to extract a single byte unless the download matches a checksum pinned in this repository**. Not a checksum fetched from the download site beside the file, which would only catch a corrupted transfer -- one that lives in Grain's own signed commit history, so what you are trusting is the git log rather than the weather on a web server. If the bytes are wrong, nothing is unpacked and the tool says so.
+
+You should see it end with:
+
+```
+verified=yes
+installed=0.16.0
+verdict=ok
+```
+
+Confirm it for yourself:
 
 ```sh
 vendor/zig-toolchain/zig version
 # 0.16.0
 ```
 
-**An honest note:** this tree has no one-command fetch for that yet. Every other step below is a command you can copy; this one is a download you do by hand. It is the roughest edge on the beginner path, it is named here rather than papered over, and it is the next thing worth smoothing.
+Run it twice if you like -- the second run notices the toolchain already stands and does nothing.
 
 ## 3. Build Rye, which builds itself
 
@@ -73,7 +89,7 @@ Rye
 
 ## 5. Run a witness, and read what it says
 
-A **witness** is this tree's word for a proof that runs on real hardware. Nothing here is called working because someone wrote that it works; it is called working because a witness said so, on metal, today. There are **1,633** of them.
+A **witness** is this tree's word for a proof that runs on real hardware. Nothing here is called working because someone wrote that it works; it is called working because a witness said so, on metal, today. There are more than sixteen hundred of them -- the [README](../../README.md) carries the exact count, generated rather than typed, for the same reason this sentence does not.
 
 Run one:
 

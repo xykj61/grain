@@ -69,7 +69,13 @@ Rye carries this all the way down. The backend keeps its own honest semantic ver
 
 ## Building and Running
 
-Rye stands on the prebuilt Zig 0.16.0 toolchain kept at `../vendor/zig-toolchain`, fetched from the official release and verified against its published checksum before we trusted a byte of it.
+Rye stands on the prebuilt Zig 0.16.0 toolchain kept at `../vendor/zig-toolchain`, fetched from the official release and verified against its published checksum before we trusted a byte of it. That fetch is one command now, and it runs before anything in this tree is built -- plain `sh`, since Rishi is itself a Rye program and cannot exist yet:
+
+```sh
+sh tools/fetch-toolchain.sh
+```
+
+Nothing is extracted unless the download matches a checksum pinned in this repository rather than fetched beside the file. Four platforms are pinned; the refusal is proven on metal by `tools/fetch_toolchain_witness.rish`.
 
 Because the `rye` command is itself a Rye program (`src/main.rye`), Rye builds itself. The first build is the cold start, before any `rye` binary exists — `bootstrap.sh` bridges the source the way `rye build` does and hands it to the toolchain, pointed at Rye's own `std`:
 
