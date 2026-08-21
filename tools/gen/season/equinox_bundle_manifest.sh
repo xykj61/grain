@@ -16,7 +16,7 @@ END=${5:?end hash}
 STAMP=${6:?stamp}
 BASIS=${7:-}
 
-# Never publish credentials in a tracked manifest — keep host/path only.
+# Never publish credentials in a tracked manifest -- keep host/path only.
 case "$PIER_RAW" in
   *@*)
     PIER=$(printf '%s' "$PIER_RAW" | awk -F@ '{print $NF}')
@@ -83,15 +83,20 @@ SEAT_MAP_BYTES=$(wc -c < work-in-progress/EQUINOX_SEAT_MAP.md | tr -d '[:space:]
   echo "tip ${END}"
   echo "bundle_path ${BUNDLE}"
   echo "bundle_bytes ${BYTES}"
-  # couples: equinox_bundle_send.sh BOUND (one number, two speakers — keep in step)
+  # couples: equinox_bundle_send.sh BOUND (one number, two speakers -- keep in step)
   echo "bound_bytes 268435456"
   echo "refs_listed ${REFS}"
   echo "commit_count ${COMMITS}"
-  # Content address of the bundle bytes (sha3-256 via openssl, POSIX seam).
-  SHA3_RAW=$(openssl dgst -sha3-256 "$BUNDLE" 2>/dev/null)
+  # Content address of the bundle bytes -- SHA3-256 from this tree's own Keccak
+  # (crypto/sha3_digest.rye over crypto/sha3.rye, clean-room from FIPS 202) rather than from an
+  # openssl the host may or may not carry. Same algorithm, so every bundle address already written
+  # still matches. The "unavailable" branch is kept: a manifest that cannot address its bundle
+  # should say so plainly rather than print a digest of nothing.
+  SHA3_ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
+  SHA3_RAW=$(sh "$SHA3_ROOT/tools/fixtures/sha3.sh" 256 "$BUNDLE" 2>/dev/null)
   RC=$?
   if test "$RC" -eq 0 && test -n "$SHA3_RAW"; then
-    echo "bundle_sha3 ${SHA3_RAW##*= }"
+    echo "bundle_sha3 ${SHA3_RAW}"
   else
     echo "bundle_sha3 unavailable"
   fi

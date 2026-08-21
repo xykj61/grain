@@ -22,7 +22,7 @@ assert man.ok else "bundle_neg: manifest written"
 let torn = run ["sh" "-c" "b=$(ls -t bundles/rehearsal/rehearsal-span-*.bundle | head -1); n=$(wc -c < $b); m=$((n - 64)); head -c $m $b > /tmp/ebnw_torn.bundle"]
 assert torn.ok else "bundle_neg: torn plant prepared"
 
-let same = run ["sh" "-c" "b=$(ls -t bundles/rehearsal/rehearsal-span-*.bundle | head -1); a=$(openssl dgst -sha3-256 /tmp/ebnw_torn.bundle | awk 'END{print $NF}'); c=$(grep bundle_sha3 $b.manifest | awk 'END{print $NF}'); test x$a = x$c"]
+let same = run ["sh" "-c" "b=$(ls -t bundles/rehearsal/rehearsal-span-*.bundle | head -1); a=$(sh tools/fixtures/sha3.sh 256 /tmp/ebnw_torn.bundle); c=$(grep bundle_sha3 $b.manifest | awk 'END{print $NF}'); test x$a = x$c"]
 assert (same.ok == false) else "bundle_neg: content address must refuse the torn bytes"
 
 let tclone = run ["sh" "-c" "rm -rf /tmp/ebnw_tc; git clone -q /tmp/ebnw_torn.bundle /tmp/ebnw_tc"]

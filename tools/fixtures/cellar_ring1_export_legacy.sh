@@ -18,10 +18,13 @@ MANIFEST="$OUT/manifest.bron"
   printf 'source %s\n' "$(basename "$SRC")"
 } > "$MANIFEST"
 
+# Resolved BEFORE the cd, since everything after it is relative to the source tree rather than
+# to this repository.
+SHA3_ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
 cd "$SRC"
 find . -type f | LC_ALL=C sort | while IFS= read -r path; do
   rel=${path#./}
-  digest=$(openssl dgst -sha3-256 -r "$rel" | awk '{print $1}')
+  digest=$(sh "$SHA3_ROOT/tools/fixtures/sha3_256.sh" "$rel")
   cp "$rel" "$OUT/resins/$digest"
   printf 'entry %s %s\n' "$rel" "$digest" >> "$MANIFEST"
 done

@@ -5,14 +5,14 @@
 set -eu
 corpus="${1:?corpus path required}"
 size="$(wc -l < "$corpus" | tr -d ' ')"
-# Resolve the openssl oracle robustly — Rishi's shell may not carry it on PATH
-# (a nix host keeps it in the store or the system profile).
-OSSL="$(command -v openssl || ls /run/current-system/sw/bin/openssl 2>/dev/null || ls /nix/store/*-openssl-*/bin/openssl 2>/dev/null | head -1)"
-[ -n "$OSSL" ] || { echo "RED: openssl not found on PATH, system profile, or nix store" >&2; exit 2; }
+# SHA3-512 from this tree's own Keccak (crypto/sha3_digest.rye), not from an openssl the host may
+# or may not carry. Same algorithm, so every seated draw below is unchanged -- and the registry
+# witness re-derives all of them, so a drift of one digit would red on the lap it entered.
+SHA3="$(CDPATH= cd "$(dirname "$0")" && pwd)/sha3.sh"
 draw() {
   name="$1"
   expect="$2"
-  hash8="$(printf '%s' "$name" | "$OSSL" dgst -sha3-512 | awk '{print $NF}' | cut -c1-8)"
+  hash8="$(printf '%s' "$name" | sh "$SHA3" 512 - | cut -c1-8)"
   dec="$(printf '%d' "0x$hash8")"
   idx="$((dec % size + 1))"
   word="$(awk -v n="$idx" 'NR==n' "$corpus")"

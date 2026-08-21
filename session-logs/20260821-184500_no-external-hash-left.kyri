@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20260821.184500
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The waymark draws and the bundle manifest come home -- no external hash left
+prompt do the waymark derive and bundle manifest too
+think Established the honest baseline before framing this as a fix. openssl IS reachable here through a nix-store path, so the waymark tools were passing. This is a robustness change, not a repair, and saying so keeps the round from borrowing urgency it has not earned.
+think Named what that fallback actually was. A tool that hunts PATH, then the system profile, then a glob across the nix store is not depending on something anyone chose -- it is depending on something that happened. The dependency was invisible precisely because it kept succeeding.
+think Found the difference from the Amphora round immediately: the waymark path is SHA3-512, not 256, and several of its calls hash a STRING through a pipe rather than a file. Two widths and a stdin path, not one drop-in.
+think Widened the tool rather than adding a second one. crypto/sha3_digest.rye takes a width and answers both, and the shim spools stdin to a temp file rather than teaching a streaming path to a tool whose whole job is one answer.
+think Let the registry witness be the proof rather than reasoning about it. It re-derives all thirty-one seated waymarks from their inputs and verifies the SHA3-512 seal over the registry body, so a drift of a single digit would red. DERIVE_OK 31, REGISTRY_GREEN -- that is the claim, made by the tree rather than by me.
+think Broke the derive witness with a careless regex and caught it by running. My substitution left both the stdin marker and the corpus path on one line, so the tool hashed empty stdin and the digest pin failed. A blind replacement across call sites with different shapes needs each shape read.
+think Checked whether the derive's remaining failure was mine before assuming. It refuses on a collision with an already-seated name, and HEAD's own copy fails identically at the same assert -- correct behavior for a tool meant to be edited when a NEW ladder opens, not a regression.
+think Closed a gap the round opened. The parity witness only checked SHA3-256, and the tree now leans on 512 for the waymark seal. Both widths are checked against published FIPS 202 answers now, plus the stdin path, since the draws hash a name through a pipe.
+think Taught the oracle leg to look where openssl actually lives on this pier. It reported skipped_openssl_absent while openssl sat in the nix store, so the parity claim was weaker than it needed to be. It now reads agrees_both_widths, which is a real independent check rather than an honest shrug.
+obs The hash-tier spec needs no erratum. It calls openssl the independent host oracle, and that is still exactly true -- what changed is the implementation, which the spec never fixed. A dated spec whose claim remains accurate is left alone.
+obs Swept the em dashes from the two touched files under ASCII-first-on-touch, after checking that the only non-ASCII near a comparison sat inside an error message rather than a compared value.
+loom digest=own_keccak widths=2 fips202_256=matched fips202_512=matched stdin=matches_file openssl_parity=agrees_both_widths
+loom waymark=registry derive_ok=31 seal=verified digests_changed=0
+loom openssl=calls_removed total=5_amphora+6_waymark_bundle remaining_calls=1_oracle_only
+file crypto/sha3_digest.rye widened to both widths; renamed from sha3_file since it is no longer 256-only
+file tools/fixtures/sha3.sh the shim -- two widths, a pipe, and a refusal of any short or non-hex answer
+file tools/fixtures/waymark_seated_draws.sh the eight seated draws, on our own Keccak
+file tools/fixtures/waymark_registry_verify.sh corpus digest, seal, and every re-derived mark
+file tools/waymark_derive.rish no host oracle hunted for; the shim refuses an empty digest
+file tools/gen/season/equinox_bundle_manifest.sh bundle content addresses, unavailable branch kept
+file tools/fixtures/cellar_ring1_export_legacy.sh root resolved before the cd into the source tree
+file tools/fixtures/sha3_file_control.sh both widths, the pipe, and openssl found where it really lives
+file context/LEXICON.md one row -- own-Keccak digest, and what openssl is demoted to
+recommend check-in (checkpoint) the tree computes every digest with its own code and carries no external hash dependency; openssl is consulted as the independent oracle and required nowhere. One door still wants a word rather than a kg: the colour normalization booked as REDS %114, which edits dated bodies. Beyond it there is no known red standing on this pier.
