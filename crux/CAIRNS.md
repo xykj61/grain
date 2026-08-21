@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.204641` -- the refrain live edge folds as the ladder's spine is measured
+
+**Walk-back nib:** `ae1754ba1a` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when a named ending had just begun to change what the plan does next stands at this nib and every commit before it.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **refrain** rung, folded into the condensed-pointer line beneath it so the card leads with the round that just landed rather than carrying a second copy of the log index. Roughly one screenful falls away; every word stands at the nib above.
+
+**What waits there, worth recalling:** the inline account of the **refrain** rung as it was written -- thirteen bytes into `plan.refrain`, the mark echoed whole with this run's own byte last, `RefrainTakenUp` reading the person rather than the plan, and the wire record `osrwsmwbyocrf` carrying eight tiers in thirteen bytes. The numbers it named -- 95 rungs GREEN cold in 323s, the carry holding at 47 across 101 modules and 1,275 checks, fold A climbing 874 to 913 -- live on in `session-logs/` and `caravan/README.md`.
+
+
 ### `20260820.203922` -- the respect live edge folds as the refrain rung seats
 
 **Walk-back nib:** `d3dd720335` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when a run could name the ending it inherited and still write to the reader who made it stands at this nib and every commit before it.

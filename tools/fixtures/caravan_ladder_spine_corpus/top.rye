@@ -1,0 +1,12 @@
+//! Spine corpus, the rung above -- the foot's five lines again, plus two of its own.
+
+const std = @import("std");
+const assert = std.debug.assert;
+
+fn walk_the_case(io: std.Io, report_out: *Report) void {
+    try carry_the_position(io, report_out);
+    // invariant: a run carries one position
+    assert(report_out.carried <= 1);
+    try read_the_finding(io, report_out);
+    // invariant: a run reads one finding
+}
