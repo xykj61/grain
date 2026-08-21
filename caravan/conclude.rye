@@ -6013,31 +6013,7 @@ pub fn standing_written(io: std.Io) ?Stand {
 
 /// Writes the path of the answer one reader is owed about their own quarrel.
 fn tell_path(buf: *[max_note_path_len]u8, address: []const u8) NoteError![]const u8 {
-    // invariant: an answer is only ever written to an address a run may carry to
-    assert(addressable(address));
-    const suffix = ".outof";
-    // invariant: an answer is left in the same box a question is asked in
-    comptime assert(suffix.len == ".again".len);
-    const total = reader_dir.len + 1 + address.len + suffix.len;
-    if (total > max_note_path_len) return error.NotePathTooLong;
-    var at: u32 = 0;
-    for (reader_dir) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    buf[at] = '/';
-    at += 1;
-    for (address) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    for (suffix) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    // invariant: an answer path is written exactly as long as it was measured
-    assert(at == total);
-    return buf[0..at];
+    return ladder_checks.tell_path(@This(), buf, address);
 }
 
 /// Tells the reader who raised a quarrel how it came out.
@@ -6052,15 +6028,7 @@ fn tell_path(buf: *[max_note_path_len]u8, address: []const u8) NoteError![]const
 /// Every note beneath this one is written where a word is read. This is the only
 /// one written where the person who objected can find it.
 pub fn tell_outcome(io: std.Io, address: []const u8, result: Result) NoteError!void {
-    // invariant: an answer is only ever carried to an address a run may reach
-    assert(addressable(address));
-    Dir.cwd().createDirPath(io, reader_dir) catch return error.NoteUnavailable;
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = try tell_path(&path_buf, address);
-    const file = Dir.cwd().createFile(io, path, .{ .truncate = true }) catch return error.NoteUnavailable;
-    defer file.close(io);
-    const bytes = [_]u8{result_byte(result)};
-    file.writePositionalAll(io, &bytes, 0) catch return error.NoteUnavailable;
+    return ladder_checks.tell_outcome(@This(), io, address, result);
 }
 
 /// Reads back what this reader was told about their own quarrel, or nothing.

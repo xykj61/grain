@@ -17,29 +17,40 @@
 # the first reads, a different function than the second names. So the printing
 # rode free past both.
 #
-# Measured on `20260820.221349` rather than recalled, that printing is 2,468
+# Measured on `20260820.221349` rather than recalled, that printing was 2,468
 # distinct lines standing on disk 9,317 times across 42 rungs -- 6,849 of them
-# lines the ladder has already written. Naming the number is what turns a hunch
+# lines the ladder had already written. Naming the number is what turns a hunch
 # about duplication into a design call resting on a count (REDS %93: a tally
 # repeated from memory drifts; REDS %97: a count that cannot see what it
 # measures is a guess wearing a measurement's clothes).
+#
+# The first fold off that number landed the same night. The note-writing pair --
+# the path an answer is written to and the byte that tells a reader how their
+# quarrel came out -- stood byte for byte in twenty-nine rungs, and both lifted
+# into `caravan/ladder_checks.rye` the way a check lifts, each rung keeping a
+# three-line call. The carry fell to 5,955 of 8,427, and the ceiling below fell
+# with it, so the fold stays folded rather than quietly refilling.
 #
 # The scan reports the carry two ways on purpose, because they answer different
 # questions and the answer decides what the fold should be:
 #
 #   PRINT_BODIES names how much of the carry is a WHOLE body standing
 #   byte-for-byte in more than one rung. That part lifts into the harness
-#   exactly the way a check body lifts -- 93 bodies over 3,164 lines today.
+#   exactly the way a check body lifts -- 93 bodies over 3,164 lines when this
+#   meter opened, and 93 bodies over 2,268 lines once the note-writing pair
+#   folded, since the three-line calls a fold leaves behind are themselves a
+#   body every rung writes identically.
 #
 #   PRINT_LINES names the carry at the line level, which also counts the
 #   staircase: a body that is the rung below's plus three lines is a new body to
 #   the first reading and 90-odd already-written lines to the second.
 #
-# CARAVAN_PRINT_CEILING (default 7800): how many carried printing lines the
-# ladder may hold. 6,849 stand today, and a new rung adds roughly 450 -- so the
-# ceiling is set to catch the SECOND rung written before the fold lands rather
-# than the tenth, while leaving today's honest standing room to be measured
-# without breaking the thing it guards.
+# CARAVAN_PRINT_CEILING (default 6900): how many carried printing lines the
+# ladder may hold. 5,955 stand today, and a new rung adds roughly 450 -- so the
+# ceiling still catches the SECOND rung written before the next fold lands
+# rather than the tenth. It came down from 7,800 on the lap the note-writing
+# pair lifted, because a ceiling left where a fold found it hands back exactly
+# the room the fold just won.
 #
 # CARAVAN_PRINT_PREFIX (default tell_): the function-name prefix that opens the
 # printing family, so a corpus small enough to count by hand can prove the
@@ -53,7 +64,7 @@
 # PASS and FAIL fixtures prove both paths without touching the tree.
 set -eu
 
-CEILING=${CARAVAN_PRINT_CEILING:-7800}
+CEILING=${CARAVAN_PRINT_CEILING:-6900}
 BOUND=${CARAVAN_PRINT_BOUND:-70}
 PREFIX=${CARAVAN_PRINT_PREFIX:-tell_}
 DIR=${CARAVAN_LADDER_DIR:-caravan}
