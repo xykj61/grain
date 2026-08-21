@@ -33,7 +33,7 @@ fi
 wait "$src_pid"
 
 # Far resins must include the 400-byte body bit-faithful.
-big_digest=$(openssl dgst -sha3-256 -r "$SRC/big.txt" | awk '{print $1}')
+big_digest=$(sh "$ROOT/tools/fixtures/sha3_256.sh" "$SRC/big.txt")
 test -f "$far/resins/$big_digest"
 test "$(wc -c < "$far/resins/$big_digest")" -eq 400
 cmp -s "$SRC/big.txt" "$far/resins/$big_digest"

@@ -20,10 +20,13 @@ let verb = ""
 if length args != 0 then let verb = args[0]
 
 # UNBRAIDED `20260821.180613`, closing REDS %112. Three Amphora laps used to run as a GATE here,
-# and this meter could not report a fascia grade unless all three passed. Lap 2 has been failing
-# on this pier because `openssl` is not installed -- an ENVIRONMENTAL absence in an unrelated
-# module -- so the meter that reports the tree's connective-tissue health has been silent for an
-# unknown span, and no surface said so.
+# and this meter could not report a fascia grade unless all three passed. Lap 2 was failing on this
+# pier because `openssl` was not installed -- an ENVIRONMENTAL absence in an unrelated module -- so
+# the meter that reports the tree's connective-tissue health had been silent for an unknown span,
+# and no surface said so. (Lap 2 was itself repaired later the same day, REDS %116, by giving the
+# Amphora path this tree's own SHA3-256 instead of openssl. The unbraid stands regardless: it was
+# never right for a health meter to gate on another module's laps, and a fix to those laps does not
+# make the gate correct again.)
 #
 # An instrument must be no more braided than the thing it measures. A meter gated behind three
 # unrelated laps has three ways to go silent and no way to say which, and it will spend most of

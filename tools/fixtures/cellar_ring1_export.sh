@@ -21,7 +21,7 @@ MANIFEST="$OUT/manifest.bron"
 cd "$SRC"
 find . -type f | LC_ALL=C sort | while IFS= read -r path; do
   rel=${path#./}
-  digest=$(openssl dgst -sha3-256 -r "$rel" | awk '{print $1}')
+  digest=$(sh "$ROOT/tools/fixtures/sha3_256.sh" "$rel")
   cp "$rel" "$OUT/resins/$digest"
   printf 'entry plain-bytes %s %s\n' "$digest" "$rel" >> "$MANIFEST"
 done
