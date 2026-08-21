@@ -14,6 +14,9 @@
 #   the tree ever does ship binaries, the claims become true and the guard stands down rather than
 #   enforcing a rule whose reason expired.
 #   No living page asserts otherwise today.
+#   No RUNNABLE block invokes a bare `rye` or `rishi` -- a second way to misname the tools, added
+#   after the sandboxing guide and two video scripts each did (REDS %119). Only ```bash and ```sh
+#   fences are read, since usage tables and captured version output live in unlabeled ones.
 #   The guard REFUSES an assertion -- proven on a planted page.
 #   The guard ALLOWS a quotation and a dated artifact -- which is the half that is easy to miss.
 #   Its own first run reddened on three pages that quoted the phrase in order to explain it was
@@ -36,6 +39,7 @@ assert scan.ok else "shipped-binary: a living page claims the tools arrive with 
 say scan.out
 assert scan.out contains "tracked_binaries=0" else "shipped-binary: the premise moved -- binaries are tracked now, so the manual's elder claims would be TRUE and this guard wants rewriting rather than obeying"
 assert scan.out contains "claims_found=0" else "shipped-binary: no living page may assert the tools ship in a clone"
+assert scan.out contains "bare_invocations=0" else "shipped-binary: a runnable block invokes a bare rye or rishi -- neither is on a PATH, so no reader can run it; write rye/bin/rye and rishi/bin/rishi"
 assert scan.out contains "verdict=ok" else "shipped-binary: the scan must balance before it is believed"
 say "field GREEN -- the premise is measured at zero, and no living page says otherwise"
 
