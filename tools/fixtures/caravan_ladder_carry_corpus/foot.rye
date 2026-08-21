@@ -1,0 +1,10 @@
+//! The foot of a two-rung corpus, small enough to count by eye.
+//!
+//! It writes one body. Nothing above it has been written yet, so nothing here
+//! is carried and the meter reading this file alone would report zero.
+
+const std = @import("std");
+
+fn weigh_the_corpus(found: u32) u32 {
+    return found + 1;
+}

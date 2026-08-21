@@ -1,0 +1,20 @@
+//! The rung above, which copies the foot's body byte for byte and adds one of
+//! its own.
+//!
+//! Three bodies stand across the two files, two of them different texts, and
+//! one of them a whole copy carrying five lines. Every number this corpus
+//! proves is countable by eye in these two files, which is what makes it a
+//! proof of the counter rather than a second opinion from it.
+//!
+//! The added body opens on `climb_`, a prefix no meter on this ladder names --
+//! which is the whole reason this meter exists.
+
+const std = @import("std");
+
+fn weigh_the_corpus(found: u32) u32 {
+    return found + 1;
+}
+
+pub fn climb_the_corpus(step: u32) u32 {
+    return step * 2;
+}
