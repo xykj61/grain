@@ -191,9 +191,14 @@ assert recited.ok else "caravan-ladder-copy: no ladder meter may recite a module
 assert recited.out contains "LADDER_PROSE_COUNT_OK" else "caravan-ladder-copy: want every ladder meter's prose free of a recited module count"
 say "caravan-ladder-copy: recited counts -- ${trim recited.out}"
 
-# RED path eleven -- the living tree exactly as it stood this morning, which is the strongest available control: the
-# guard must name the very line that shipped, rather than a shape invented to be caught.
-let recited_elder = run ["sh" "-c" "d=$(mktemp -d); git show HEAD:tools/caravan_ladder_spine_witness.rish > $d/caravan_ladder_spine_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+# RED path eleven -- the spine meter exactly as it shipped, which is the strongest available control: the guard must
+# name the very line that drifted, rather than a shape invented to be caught.
+#
+# THIS CONTROL WAS ONCE `git show HEAD:` AND THAT WAS ITS OWN RED (REDS %109). The fix and the guard rode in the same
+# commit, so `HEAD` named the drifted file while that commit was still unmade and the repaired file from the moment it
+# landed -- the control proved itself once and never again. A tracked copy cannot drift with `HEAD`, and it outlives a
+# deep debride that would rewrite every hash in the tree, so the RED path stays armed through both.
+let recited_elder = run ["sh" "tools/fixtures/caravan_ladder_prose_count_scan.sh" "tools/fixtures/caravan_ladder_prose_count_elder"]
 assert (recited_elder.ok == false) else "caravan-ladder-copy: the drifted spine prose must refuse"
 assert recited_elder.out contains "LADDER_PROSE_BAD say" else "caravan-ladder-copy: want the drifted line named by file and number"
 

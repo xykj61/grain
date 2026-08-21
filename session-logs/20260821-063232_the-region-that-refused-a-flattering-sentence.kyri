@@ -1,0 +1,48 @@
+format session-log-v1
+stamp 20260821.063232
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The region that refused a flattering sentence, and the control that disarmed itself
+prompt Take the next agent-doable lap Lindy-first crux-first on the Microkernel Target double-seat, Standfast on reds first, rota doc per lap, send often.
+
+think Standfast first. `crux/REDS.md` reads 108 rows with every one closed -- no open agent-closable red stood at the top of the lap, so the constructive queue was honestly open.
+think The running thread was unambiguous. The newest three logs all recommend the same next rung, and `20260821.053811` names it outright: untyped retyping owes seL4_NotEnoughMemory, it is ungated, and it is the last of the three subsystem debts before the agenda narrows to edge checks.
+think Rota lap index 7 of 27 -- `foundations/20260813-142420_mycelium-the-consensus-protocol.md`, deep-read. Its one law reads across cleanly: the order is decided once and read by everyone the same way. A region's watermark is the same shape, one scale down -- a pure function of what has been carved, so two readers agree without speaking.
+think Read the ground before writing it. The vendored riscv64 `sel4_arch/constants.h` gives seL4_MinUntypedBits 4, seL4_MaxUntypedBits 38, seL4_SlotBits 5, seL4_EndpointBits 4, seL4_PageBits 12 -- and two sizes standing behind #ifdef, seL4_TCBBits 11-or-10 by FPU and seL4_NotificationBits 6-or-5 by MCS. That is a finding, not a footnote: a userland reciting one number for either would be right on one build and wrong on another. So the roster carves only the unconditional kinds, and the witness asserts both configured ones are still stated two ways.
+think Wrote the module claiming alignment as the crux -- that a raw remainder over-promises where padding bites. Built GREEN first pass. Then went to build the RED path for exactly that claim, and could not find a counterexample.
+think Worked it out rather than shipping the flourish. For an seL4 untyped region the origin is naturally aligned and the width is a power of two. Any carve big enough to be worth asking about forces the region at least as wide as the object, which makes the origin aligned to the object, which makes the span from an aligned start to the region's end an exact multiple of the object's size. The request is such a multiple too, and alignment padding is always strictly smaller than one object. So no request can land in the gap between the two readings. The aligned floor and the plain remainder AGREE, always.
+think That turns a wrong sentence into a better module. Corrected the prose to state the true theorem, and proved it by sweep rather than by assertion -- every kind, every count to the bound, every reachable watermark over regions 4 to 20 bits wide at three origins apiece. The agreement is bought by `open` refusing a misaligned origin, so that refusal became the third RED path: remove it and the theorem's own precondition falls.
+think Registering the rung moved the ladder 105 modules to 106, reddening the meters as the lap before -- and this time the copy meter reddened on a line with nothing to do with the module count. REDS %108's own strongest RED path reached for `git show HEAD:` to hand the guard the drifted spine meter. The fix and the guard had ridden in the SAME commit, so HEAD named the repaired file the moment it landed. The control proved itself on exactly one lap and refused every lap after.
+think Booked it as REDS %109 and closed it at the root. A control must be immutable or it is not a control. Froze the elder meter as a tracked copy at `tools/fixtures/caravan_ladder_prose_count_elder/`, byte for byte as it shipped at 45e5303292, line 106 carrying the sentence that genuinely drifted, with a README forbidding its own repair. A tracked byte cannot follow HEAD and outlives a deep debride that would rewrite every hash in the tree -- so no commit hash would have done either.
+think Booking row 109 pushed `crux/REDS.md` to 42,994 bytes, over the 24,576 living-pin bound, and the e123 guard said so. Folded rows 101-107 to `crux/archive/REDS-pin-discipline-and-meter-prose-rows-101-107.md` -- they read as one arc about guards that measure a fact and leave the prose repeating it unguarded. Living pin back to 22,328 bytes, spine re-measured off disk at 109.
+
+obs The flattering sentence is the real yield of this lap. It would have read well and shipped clean, since no witness in the tree checks whether a doc-comment's causal story is true. What caught it was building the RED path -- the discipline that says a claim earns a planted counterexample forced the reasoning that showed there is none. A tree that only proves what it asserts would have kept the wrong sentence forever.
+obs REDS %109 is REDS %102's twin rather than its repeat. %102 named a guard reading a hand-maintained set that stops existing; this is a guard reading a set that quietly becomes something ELSE. The failure mode is worse than a stale list, because the witness still exits non-zero and its message reads like a fresh regression rather than like a control that lost its subject.
+obs Two laps running, adding one module to the ladder has surfaced a fault nobody was looking for. The meters reddening on growth is exactly what they are for; the growth is the probe.
+obs Left unbooked on purpose: the REDS tally line reads rows 109 - before the ledger 6 - recovered 14 - under the law 84, and those three do not sum to 109. The categories may not be a partition and no scan defines them, so it stays an unmeasured question surfaced on the card rather than a red booked on an impression. REDS %104 is exactly the lesson -- an arithmetic claim is a measurement, never a feeling.
+obs The three edge debts -- argument, bounds, and alignment checking -- are what remain, and they are one family. Alignment checking in particular now has real ground beneath it, since this rung already proves alignment structurally.
+
+loom witness=caravan_untyped_witness wall_ms=13500 red_paths=3 sweep_regions=51 sweep_kinds=3 sweep_counts=64
+loom witness=caravan_suite_witness wall_ms=409263 rungs=103 verdict=green
+loom scan=caravan_ladder_carry modules=106 bodies=18023 distinct=7826 copies=10197 carried_lines=137167 ceiling=137300
+loom pin=crux/REDS.md bytes_before=42994 bytes_after=22328 bound=24576 rows_folded=7
+
+file caravan/untyped.rye the region with a real floor -- seL4_NotEnoughMemory answered after alignment, the swept equivalence proven rather than asserted
+file tools/caravan_untyped_witness.rish the witness -- three RED paths, every size re-read from the vendored BSD-2-Clause header, both config-dependent sizes proven still config-dependent
+file tools/fixtures/caravan_untyped_control.sh the three plants -- an unspent climb, a refusal that eats the region, an open that welcomes a misaligned origin
+file tools/fixtures/caravan_ladder_prose_count_elder/caravan_ladder_spine_witness.rish REDS %109's root fix -- the drifted meter frozen byte for byte, immune to HEAD and to a history rewrite
+file tools/fixtures/caravan_ladder_prose_count_elder/README.md why the frozen control may never be repaired
+file tools/caravan_ladder_copy_witness.rish RED path eleven repointed off git show HEAD onto the frozen fixture
+file tools/caravan_suite_witness.rish the rung registered in the choir -- bijection whole at 103
+file tools/caravan_ladder_spine_witness.rish module pin 105 -> 106
+file tools/caravan_ladder_print_witness.rish module pin 105 -> 106
+file tools/caravan_ladder_carry_witness.rish module pin 105 -> 106 and the carry re-measured at 137,167
+file tools/gen/season/reds_ledger_monotone_witness.rish spine pin moved to 109
+file crux/REDS.md REDS %109 booked and closed; rows 101-107 folded back under bound
+file crux/archive/REDS-pin-discipline-and-meter-prose-rows-101-107.md the fold, every byte kept
+file caravan/README.md the untyped section -- the floor, the refused flourish, the proven theorem
+file crux/REMEMBER.md live edge and Now refilled; the settled IPC and derivation edges condensed to a pointer
+
+recommend keep-going The three edge debts are the next rung and they are ungated: argument, bounds, and alignment checking are one family, they are the whole of what `refusals.rye` still holds open as the policy table's own reach, and alignment checking already has ground beneath it since the untyped region proves alignment structurally. They may well be one rung rather than three. The one gate worth Keaton's eye stays small and unchanged: jinja2 and ply on the pier's Python environment open five more libsel4 headers in a single step.

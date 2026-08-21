@@ -49,7 +49,7 @@ say "caravan-ladder-spine: Lens TAME -- safety first: the ceiling is named, the 
 let living = run ["sh" "tools/fixtures/caravan_ladder_spine_scan.sh"]
 assert living.ok else "caravan-ladder-spine: the living ladder scan must exit 0 -- ${living.out}"
 assert living.out contains "SPINE_OK" else "caravan-ladder-spine: want the living spine under its named ceiling"
-assert living.out contains "SPINE_MODULES 106 holding=1" else "caravan-ladder-spine: want exactly one of the 106 rung modules holding a spine -- the harness"
+assert living.out contains "SPINE_MODULES 104 holding=1" else "caravan-ladder-spine: want exactly one of the 104 rung modules holding a spine -- the harness"
 assert living.out contains "SPINE_LINES total=19 distinct=19 carried=0" else "caravan-ladder-spine: want one 19-line spine standing, every line of it distinct and none carried"
 assert living.out contains "SPINE_RATCHET over_bound=0 bound=70 longest=ladder_checks:19" else "caravan-ladder-spine: want no spine past the seventy-line bound, the four the fold answered included"
 
@@ -103,4 +103,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_s
 assert (ceiling.ok == false) else "caravan-ladder-spine: a spine carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-spine: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-spine -- the ladder's orchestration spine stands once, 19 lines in the harness with 0 carried anywhere on the ladder, counted two independent ways that agree, the byte-identical meter unmoved at 47 beside it, the seventy-line ratchet reading zero where four rungs had grown past it, held under a ceiling lowered to 40 so the fold stays folded, proven by hand on a two-rung corpus the fold never touched, and all three RED paths refusing by name."
+say "GREEN: caravan-ladder-spine -- the ladder's orchestration spine stands once, 19 lines in the harness with 0 carried across 102 modules, counted two independent ways that agree, the byte-identical meter unmoved at 47 beside it, the seventy-line ratchet reading zero where four rungs had grown past it, held under a ceiling lowered to 40 so the fold stays folded, proven by hand on a two-rung corpus the fold never touched, and all three RED paths refusing by name."

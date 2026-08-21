@@ -83,7 +83,7 @@ say "caravan-ladder-print: Lens TAME -- safety first: the ceiling is named, the 
 let living = run ["sh" "tools/fixtures/caravan_ladder_print_scan.sh"]
 assert living.ok else "caravan-ladder-print: the living ladder scan must exit 0 -- ${living.out}"
 assert living.out contains "PRINT_OK" else "caravan-ladder-print: want the living printing under its named ceiling"
-assert living.out contains "PRINT_MODULES 105 holding=43" else "caravan-ladder-print: want 43 of the 105 modules holding a printing family -- the 42 rungs and the harness the fold gave two bodies to"
+assert living.out contains "PRINT_MODULES 106 holding=43" else "caravan-ladder-print: want 43 of the 106 modules holding a printing family -- the 42 rungs and the harness the fold gave two bodies to"
 assert living.out contains "PRINT_LINES total=4600 distinct=1914 carried=2686" else "caravan-ladder-print: want the printing carry standing where this lap measured it"
 
 say "caravan-ladder-print: living ladder -- ${living.out}"
