@@ -17,7 +17,7 @@ sh "$ROOT/tools/fixtures/cellar_ring1_export.sh" "$SRC" "$OUT" "$STAMP"
 
 MANIFEST="$OUT/manifest.bron"
 VESSEL="$OUT/vessel.bron"
-PARENT=$(openssl dgst -sha3-256 -r "$MANIFEST" | awk '{print $1}')
+PARENT=$(sh "$ROOT/tools/fixtures/sha3_256.sh" "$MANIFEST")
 
 {
   printf '%s\n' '# amphora vessel — Cellar season poured for crossing'
