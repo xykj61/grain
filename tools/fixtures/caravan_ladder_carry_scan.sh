@@ -43,13 +43,13 @@
 #   remembered, so the next fold is chosen by measurement rather than by which
 #   family somebody happened to look at.
 #
-# CARAVAN_CARRY_CEILING (default 143000): how many carried lines the ladder may
-# hold. 142,850 stand today across 10,198 copied bodies, and 247 families carry
-# past a hundred lines each. That number is far larger than any the three named
-# meters report, and naming it plainly is the whole point of this scan -- the
-# ladder's real carry was never the few thousand lines inside two prefixes. Each
-# fold hands back the room it wins by lowering this ceiling, exactly as the
-# print meter's has come down five times.
+# CARAVAN_CARRY_CEILING (default 137300): how many carried lines the ladder may
+# hold. 137,140 stand today across 10,194 copied bodies, and 703 families carry
+# a copy. That number is far larger than any the three named meters report, and
+# naming it plainly is the whole point of this scan -- the ladder's real carry
+# was never the few thousand lines inside two prefixes. Each fold hands back the
+# room it wins by lowering this ceiling, and this one came down 143,000 to
+# 137,300 when `mend_the_plan` lifted out of thirty-seven rungs.
 #
 # CARAVAN_CARRY_TOP (default 12): how many carrying families to name.
 #
@@ -57,7 +57,7 @@
 # PASS and FAIL fixtures prove both paths without touching the tree.
 set -eu
 
-CEILING=${CARAVAN_CARRY_CEILING:-143000}
+CEILING=${CARAVAN_CARRY_CEILING:-137300}
 TOP=${CARAVAN_CARRY_TOP:-12}
 DIR=${CARAVAN_LADDER_DIR:-caravan}
 
