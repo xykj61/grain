@@ -159,6 +159,13 @@ pub fn from_caravan(refusal: CaravanRefusal) KernelRefusal {
 /// the line has not learned to speak through the tree, so claiming them here
 /// would credit the table with reach it does not have. The debt closes when the
 /// table itself can answer, never when a neighbour can.
+///
+/// WHERE THE TABLE LEARNED TO ASK. `reply.rye` (`20260821.071421`) is that
+/// speaking: one ask read by four stages -- the edge, the message, this table,
+/// and the deed -- answering all eleven, each earned by a named ask that ran.
+/// The four and the seven below stay exactly as they are, because they were
+/// always a statement about the table **alone**, and that statement is still
+/// true. What changed is that the table now has a way to ask.
 pub const Owed = enum(u8) {
     answered = 0,
     argument_checking = 1,
