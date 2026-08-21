@@ -107,10 +107,10 @@ pub const FilterStripTap = struct {
     }
 };
 
-// --- selftest: a colour source — a tap centered on band k selects filter k and the repainted marker sits on band k (no
+// --- selftest: a color source — a tap centered on band k selects filter k and the repainted marker sits on band k (no
 //     drift), a tap off the strip fires nothing, a tapped filter commits into the history, and a bad thumbnail refuses --
 
-fn craft_colour(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
+fn craft_color(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
     const buf = try allocator.alloc(u8, w * h * 4);
     var y: u32 = 0;
     while (y < h) : (y += 1) {
@@ -141,7 +141,7 @@ fn assert_marker_on(grid: *const skate.Grid, band: u32, tcols: u32) void {
 }
 
 fn run_selftest(garden: std.mem.Allocator) !u8 {
-    const pm = try craft_colour(garden, 4, 4);
+    const pm = try craft_color(garden, 4, 4);
     const tcols: u32 = 2;
     const trows: u32 = 2;
     var tap = try FilterStripTap.open(&pm, tcols, trows);
@@ -196,7 +196,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    print("GREEN filter-strip-tap: a 4x4 colour source — a tap centered on band k selects filter k and the repainted " ++
+    print("GREEN filter-strip-tap: a 4x4 color source — a tap centered on band k selects filter k and the repainted " ++
         "marker sits on exactly band k for every filter (no drift); a tap off the left edge and a tap past the last " ++
         "band each fire nothing (the selection unmoved); tapping noir (band 3) then committing pushes two edits and " ++
         "the view is the named filter byte-for-byte; a zero-dimension thumbnail refuses BadThumb. HUNK64 strip, HUNK63 " ++

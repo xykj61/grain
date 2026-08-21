@@ -142,7 +142,7 @@ pub fn apply_preset(
 pub fn stock_book() PresetError!PresetBook {
     var book = PresetBook.init();
 
-    // vivid — colours pop: saturation up by half.
+    // vivid — colors pop: saturation up by half.
     var vivid = photo_edits.EditList.init();
     try push_ok(&vivid, .{ .saturate = .{ .num = 3, .den = 2 } });
     try book.define("vivid", &vivid);
@@ -163,7 +163,7 @@ pub fn stock_book() PresetError!PresetBook {
     try push_ok(&noir, .{ .adjust = .{ .brightness = 0, .num = 3, .den = 2 } });
     try book.define("noir", &noir);
 
-    // bright — a gentle lift: brightness up, colour untouched.
+    // bright — a gentle lift: brightness up, color untouched.
     var bright = photo_edits.EditList.init();
     try push_ok(&bright, .{ .adjust = .{ .brightness = 40, .num = 1, .den = 1 } });
     try book.define("bright", &bright);
@@ -291,9 +291,9 @@ pub fn parse_book(text: []const u8, out: *PresetBook) PresetError!void {
 //     hand, that distinct presets differ, that a preset is deterministic and pure and stays open, and that the
 //     named refusals each fire ---------------------------------------------------------------------------------
 
-/// Build a small image where each pixel carries a distinct colour, so a preset's colour work is visible and a
+/// Build a small image where each pixel carries a distinct color, so a preset's color work is visible and a
 /// saturate/adjust recipe is unambiguous. Pixel (x,y) = (x·40+20, y·30+10, (x*3+y*7)·5, 255).
-fn craft_colour(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
+fn craft_color(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
     const buf = try allocator.alloc(u8, w * h * 4);
     var y: u32 = 0;
     while (y < h) : (y += 1) {
@@ -310,8 +310,8 @@ fn craft_colour(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
 }
 
 fn run_selftest(garden: std.mem.Allocator) !u8 {
-    const img_a = try craft_colour(garden, 6, 6);
-    const img_b = try craft_colour(garden, 4, 5); // a DIFFERENT image — a preset is not tied to one source
+    const img_a = try craft_color(garden, 6, 6);
+    const img_b = try craft_color(garden, 4, 5); // a DIFFERENT image — a preset is not tied to one source
 
     const book = try stock_book();
 

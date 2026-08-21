@@ -29,7 +29,7 @@ To keep one law for "a legal shelf," this round adds a `pub precheck` to `shelf.
 1. **THE IDENTITY EDGE (`bass == unity AND treble == unity`)** — equals ALES190's `reverb_preset` over the span, byte for byte, at any coefficient. A flat EQ is the un-shelved reverb.
 2. **IT EQUALS ITS COMPOSITION** — for a real shelf (bass 2/1, treble 1/2), equals `reverb_preset` then `shelf.shelf` byte for byte; and the shelved tail differs from its wet.
 3. **THE TREBLE CUT DARKENS** — a treble-cut tail's high-frequency roughness (summed first-difference) is strictly less than the un-shelved wet's — ALES198's direction, now one of two.
-4. **THE BASS BOOST LIFTS** — a bass-boost tail's total absolute energy is strictly greater than the wet's — the low wash rises, the colour the high-cut could never reach.
+4. **THE BASS BOOST LIFTS** — a bass-boost tail's total absolute energy is strictly greater than the wet's — the low wash rises, the color the high-cut could never reach.
 5. **SILENCE STAYS SILENCE.**
 6. **THE FAULTS FORWARD, ATOMIC** — an illegal coefficient `BadCoeff`, a zero band denominator `BadGain`, each with the clip **untouched (still dry)**; a span past the clip `DurationTooLong`; an out-of-range span `BadRange`; each by name before any write.
 

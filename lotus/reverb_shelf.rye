@@ -2,7 +2,7 @@
 //! DARKNESS knob (a plain first-order high-cut, one direction only — the tail can be darkened, never brightened, and the low wash cannot be lifted or
 //! trimmed). Yet the tone control a keeper actually turns on a reverb is a proper SHELVING EQ — two knobs, bass and treble, each boosting OR cutting
 //! its own band of the tail independently, so the wash can sit warm and dark, or bright and airy, or thinned of mud, from one span. Every real reverb
-//! carries this (the "reverb EQ", the low/high shelves on a plate); without it the darkness knob is the only colour the room can take. This rung is
+//! carries this (the "reverb EQ", the low/high shelves on a plate); without it the darkness knob is the only color the room can take. This rung is
 //! that shelf.
 //!
 //! The shape: reverberate the span WET in place through ALES190's reverb_preset UNCHANGED, then tone-shelf the wet with ALES41's proven two-band shelf —
@@ -194,7 +194,7 @@ fn run_selftest() !u8 {
         if (roughness(shelved.samples()) >= roughness(wet.samples())) return error.TrebleCutDidNotDarken;
     }
 
-    // 4. THE BASS BOOST LIFTS — a bass-boost tail's total energy is strictly greater than the un-shelved wet's: the low wash rises, the colour ALES198's
+    // 4. THE BASS BOOST LIFTS — a bass-boost tail's total energy is strictly greater than the un-shelved wet's: the low wash rises, the color ALES198's
     //    high-cut could never reach.
     {
         var shelved = timeline.Clip{};
@@ -253,7 +253,7 @@ fn run_selftest() !u8 {
         "or wrapping. Proven: at bass == unity AND treble == unity the span equals reverb_preset byte for byte (a flat EQ is the un-shelved reverb); " ++
         "for a real shelf reverb_shelf EQUALS reverb_preset then shelf.shelf byte for byte and the shelved tail differs from the un-shelved wet; a " ++
         "treble-cut tail's high-frequency roughness is strictly less than the wet's (the treble cut darkens, ALES198's direction); a bass-boost " ++
-        "tail's total energy is strictly greater than the wet's (the bass boost lifts, the colour the high-cut could never reach); silence stays " ++
+        "tail's total energy is strictly greater than the wet's (the bass boost lifts, the color the high-cut could never reach); silence stays " ++
         "silence; and the faults forward ATOMIC — an illegal coefficient BadCoeff, a zero band denominator BadGain, each with the clip still DRY (the " ++
         "shelf prechecked before the wet is written), a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the clip " ++
         "untouched. A wet-tail shelf, the split a plain fraction over sample indices so it means the same at any rate; purely local: one clip, a " ++

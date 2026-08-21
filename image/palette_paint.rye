@@ -193,7 +193,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         var ex: u32 = 0;
         while (ex < w_even) : (ex += 1) {
             const want = if (ex < 3) red else if (ex < 6) green else blue;
-            if (!pixel_at(&img, ex, ey).eql(want)) return error.SwatchColourWrong;
+            if (!pixel_at(&img, ex, ey).eql(want)) return error.SwatchColorWrong;
         }
     }
     // The palette tiles the WHOLE strip: every pixel is a swatch, none left the white ground (no gap, no overlap).

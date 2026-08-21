@@ -90,7 +90,7 @@ pub fn search_shelf(
 //     hand-filtered window draws), a match-none query draws a real empty page, a bad offset and a malformed line each
 //     refuse by name -----------------------------------------------------------------------------------------------
 
-/// A 16×8 sheet in four solid vertical bands (the part_row fixture), so a 4-wide window carries one known colour.
+/// A 16×8 sheet in four solid vertical bands (the part_row fixture), so a 4-wide window carries one known color.
 fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     const w: u32 = 16;
     const h: u32 = 8;
@@ -199,7 +199,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     if (search_shelf(garden, &cat, "stainless-304", cols, 4, 0)) |_| return error.LineSlipped else |e| {
         if (e != error.NoColon) return error.WrongLine;
     }
-    if (search_result_count(&cat, "colour:red")) |_| return error.LineSlipped else |e| {
+    if (search_result_count(&cat, "color:red")) |_| return error.LineSlipped else |e| {
         if (e != error.UnknownKey) return error.WrongLine;
     }
 

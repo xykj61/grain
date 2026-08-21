@@ -78,13 +78,13 @@ pub fn preview_book(
     return book.len();
 }
 
-// --- selftest: preview named filters over a colour image, prove each named preview equals the recipe's own
+// --- selftest: preview named filters over a color image, prove each named preview equals the recipe's own
 //     preview, that distinct names differ in the view, that the filter strip fills one grid per preset, that a
 //     preview is non-destructive and deterministic and genuinely lit, and that the named refusals fire ----------
 
-/// Build a small image where each pixel carries a distinct colour, so a filter's colour work is visible in the
+/// Build a small image where each pixel carries a distinct color, so a filter's color work is visible in the
 /// down-mapped grid. Pixel (x,y) = (x·40+20, y·30+10, (x*3+y*7)·5, 255).
-fn craft_colour(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
+fn craft_color(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
     const buf = try allocator.alloc(u8, w * h * 4);
     var y: u32 = 0;
     while (y < h) : (y += 1) {
@@ -101,7 +101,7 @@ fn craft_colour(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
 }
 
 fn run_selftest(garden: std.mem.Allocator) !u8 {
-    const pm = try craft_colour(garden, 8, 8);
+    const pm = try craft_color(garden, 8, 8);
     const cols: u32 = 4;
     const rows: u32 = 4;
 
@@ -173,7 +173,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (e != error.Overflow) return error.WrongOverflow;
     }
 
-    print("GREEN preset-preview: a stock book of {d} named filters previews over one 8x8 colour image — vivid " ++
+    print("GREEN preset-preview: a stock book of {d} named filters previews over one 8x8 color image — vivid " ++
         "looked up by name previews to exactly edit_preview.preview over its recipe cell-for-cell; mono differs " ++
         "from vivid in the view (a name is not a no-op); the filter strip fills {d} grids, one per preset, each " ++
         "equal to its own single preview; a preview is non-destructive and deterministic and rasterizes to {d} " ++

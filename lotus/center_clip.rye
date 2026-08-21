@@ -75,7 +75,7 @@ pub fn center_clip(clip: *timeline.Clip, start: u32, count: u32, thresh: i32) Ce
         // (a legal i16) and the untouched dry (already a legal i16).
         const out: i16 = if (mag <= thresh) 0 else dry;
         // invariant: the output is either silence or exactly the input — the center clipper never alters a passed sample, and never emits a value the
-        // input did not already hold, so the map only silences, never colours.
+        // input did not already hold, so the map only silences, never colors.
         assert(out == 0 or out == dry);
         // invariant: a silenced output means the input was inside the dead zone, and a passed output means it was outside — the inclusive boundary at
         // |x| = thresh silences, exactly as the ≤ states.

@@ -18,4 +18,4 @@ file image/text_grid.rye render_grid_cursor, the abstract block-cursor primitive
 file pond/apps/scooter_paint.rye render_session now a pure pass-through of render_grid_cursor -- the caret no longer inline in pond
 file image/README.md names render_grid_cells and render_grid_cursor (docs-sync)
 file crux/REMEMBER.md live edge + Git nib refreshed to the abstract cursor primitive; prior nib demoted
-recommend keep-going the cursor floor stands where every grid surface can reach it; next Lindy crux is the coloured caret over a coloured status face (compose render_grid_cursor with the bar palettes) or a multi-cell selection range -- both pure composition over render_grid_cells
+recommend keep-going the cursor floor stands where every grid surface can reach it; next Lindy crux is the colored caret over a colored status face (compose render_grid_cursor with the bar palettes) or a multi-cell selection range -- both pure composition over render_grid_cells

@@ -6,7 +6,7 @@
 # facts, larger than the catalog row (concept only, siloed).
 #
 # HUNK80 closed the loop up to the tap (a PartRef). This rung paints the page that tap opens: brushstroke/part_detail.rye
-# `detail_page` renders the part's own window down-mapped as a solid-colour picture band above its four fact rows (name,
+# `detail_page` renders the part's own window down-mapped as a solid-color picture band above its four fact rows (name,
 # part number, material, exact price), each read straight from the ref. The selftest proves NO DRIFT — a red part paints
 # a red picture (slot 3) above its own facts, a blue part a blue picture (slot 5) above different facts; the page
 # rasterizes to a lit canvas; EmptyPage, PageTooLarge, EmptyPicture, PageTooShort each refuse by name; and the capstone

@@ -172,7 +172,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
             const col = cx / 2;
             const row = cy / 2;
             const want = if ((col + row) % 2 == 0) red else blue;
-            if (!pixel_at(&img, cx, cy).eql(want)) return error.CheckerColourWrong;
+            if (!pixel_at(&img, cx, cy).eql(want)) return error.CheckerColorWrong;
         }
     }
     // The checker tiles the WHOLE box: every pixel is a swatch, none left the white ground (no gap, no overlap).
