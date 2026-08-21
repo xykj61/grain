@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.220352` -- the fold-D live edge folds as the farewell rung seats
+
+**Walk-back nib:** `1899f68b67` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when the ladder's orchestration spine had just lifted into the harness stands at this nib and every commit before it.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for **fold D**, folded into the condensed-pointer line beneath it so the card leads with the round that just landed rather than carrying a second copy of the log index. Roughly one screenful falls away; every word stands at the nib above.
+
+**What waits there, worth recalling:** the inline account of **fold D** as it was written -- the exact staircase of `close_the_quarrel` from 16 lines at `refer` to 86 at `refrain`, 106 distinct lines standing 1,003 times with 897 already written, and the one `comptime` body that took that number to zero while the byte-identical meter stood unmoved at 47. The reasoning for why option A was refused, the four movements the harness spine reads in, and the honest cost -- opening a rung no longer shows the whole correspondence on one screen -- live on in `session-logs/`, `caravan/README.md`, and the brief `active-designing/20260820-204641_caravan-ladder-the-spine-the-meter-cannot-see.md`.
+
+
 ### `20260820.204641` -- the refrain live edge folds as the ladder's spine is measured
 
 **Walk-back nib:** `ae1754ba1a` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when a named ending had just begun to change what the plan does next stands at this nib and every commit before it.

@@ -1,68 +1,67 @@
-//! Caravan refrain -- a run that opens holding a named ending calls nobody
-//! about that matter again, and takes down the summons this lap carried,
-//! rather than summoning a person who already said they were done.
+//! Caravan farewell -- a reader the plan has quietly stopped writing to is
+//! finally told so, in the box they already read, rather than left to guess
+//! whether a silence means an ending honored or an ending forgotten.
 //!
-//! `respect.rye` opened the last door: a run that inherits a closed
-//! correspondence names it where the outcome is read, so an operator learns
-//! this matter ended and the plan stops carrying an ending it never read.
+//! `refrain.rye` opened the last door: a run that reads its own named ending
+//! spares that reader a second summons and takes the standing one back down, so
+//! naming an ending finally costs the plan a letter it would otherwise send.
 //!
-//! **And then the very same run calls that person again.** Naming an ending
-//! changes what the outcome says; it changes nothing about what the plan does
-//! next. The rung five tiers down carries a wall to the box its reader already
-//! reads, every lap, on the plan's own word -- so a matter a person closed on
-//! Monday summons them again on Tuesday, and the whole exchange the arc spent
-//! buys that reader exactly one more letter they never asked for.
+//! **And the reader is never told any of it happened.** From where that person
+//! sits, the box simply stops filling. A plan that honored their ending and a
+//! plan that lost their file read exactly alike from the outside -- the same
+//! silence, carrying the same nothing -- so the one courtesy the whole arc was
+//! spent to earn arrives as an absence the reader must interpret.
 //!
-//! **The measurement is readers a plan summoned again about a matter it had
-//! already named as ended.** The rung below ends a closure going unread; this
-//! one ends a closure, once read, changing nothing.
+//! **The measurement is readers a plan stopped writing to without ever saying
+//! so.** The rung below ends a named ending changing nothing; this one ends the
+//! change itself going unannounced.
 //!
-//! **Refraining is sparing, and the record is what makes it checkable.** A run
-//! that refrains publishes thirteen bytes among the plan's own notes -- the
-//! mark it was handed, echoed whole, and this run's own byte last -- reads that
-//! note back before the report believes anybody was spared, and only then takes
-//! the summons out of the reader's box. The record lands first and the summons
-//! comes down after, so a run falling between the two leaves a reader summoned
-//! rather than a reader spared with nothing saying so.
+//! **Bidding farewell is telling, and the telling lands where the reader is.**
+//! A run that bids farewell writes fourteen bytes into `caravan/.readers`,
+//! outside this plan's own notes entirely -- the record it was handed, echoed
+//! whole, and this run's own byte last -- and opens that box again before the
+//! report believes anybody was told. The letter is read back off the wire rather
+//! than remembered, since a supervisor that believed its own writing could
+//! report a parting to a person who was never told.
 //!
-//! **A run refrains only where an ending was actually named.** A plan opening
-//! on notes that name no ending has heard of no closed matter, and sparing a
-//! reader there would take down a summons the correspondence still wanted.
-//! `RefrainUnnamed` refuses by name.
+//! **A run bids farewell only where a reader was actually spared.** A plan
+//! holding no record spared nobody, and a parting sent there would end a
+//! correspondence the plan is still perfectly willing to carry.
+//! `FarewellUnspared` refuses by name.
 //!
-//! **A reader who has taken the matter up again is never spared.** The word is
-//! read where that person left it, in their own box, rather than out of the
-//! mark the plan is holding -- so a correspondence a reader reopened since the
-//! ending was named stays live, and the plan keeps answering them.
-//! `RefrainTakenUp` refuses by name, the consent guard of this tier, mirror to
-//! `RespectUnended` below it.
+//! **A parting is only ever carried to an address a run may reach**, bounded
+//! exactly as every other word this arc carries outward. `FarewellUnaddressed`
+//! refuses by name.
 //!
-//! **The record names the ending it spares a reader about.** A mark is weighed
-//! against the word standing in that reader's own box, so a sparing built on
-//! somebody else's word is caught before a single summons comes down.
-//! `RefrainMismatched` is the rung itself.
+//! **The letter names the sparing it is about.** A reader holding an older
+//! parting would read their newest matter as closed by a run before today --
+//! worse than an empty box, since a box that says nothing at least says nothing
+//! false. `FarewellMismatched` is the rung itself.
 //!
-//! **Refraining is not settling, and never answering for anybody.** The run
-//! publishes one record, takes down one summons, and rewrites nothing else: the
-//! settlement, the quarrel, its age, its standing, the case on the desk, the
-//! finding, the plan's own word, the concession, the meeting, the redress, the
-//! delivery, the reader's first verdict, the second look, the telling, the
-//! reader's reply, the mark, the wall, the reader's own answer, the abatement,
-//! and the closure each come out of a refraining run exactly as they went in --
+//! **Bidding farewell is not settling, and never answering for anybody.** The
+//! run carries one letter and rewrites nothing else: the settlement, the
+//! quarrel, its age, its standing, the case on the desk, the finding, the plan's
+//! own word, the concession, the meeting, the redress, the delivery, the
+//! reader's first verdict, the second look, the telling, the reader's reply, the
+//! mark, the wall, the reader's own answer, the abatement, the closure, and the
+//! record of sparing each come out of a parting run exactly as they went in --
 //! and both runs settle `carried out whole`. The reader's word stays in the
 //! reader's own hand; the plan reads it and may never write it.
 //!
 //! Five refusals of this rung's own, matching the five below it.
-//! `RefrainUnnamed` is the moment a reader may be spared at all.
-//! `RefrainTakenUp` is the consent. `RefrainMismatched` is the whole point.
-//! `RefrainMiscounted` is the honesty of the count: every named ending spares
-//! its reader or summons them again, never both and never neither.
-//! `RefrainMisrecorded` is the record, read back out of the plan's own notes
-//! rather than out of the memory of having published it.
+//! `FarewellUnspared` is the moment a parting may be sent at all.
+//! `FarewellUnaddressed` is the reach. `FarewellMismatched` is the whole point.
+//! `FarewellMiscounted` is the honesty of the count: every sparing is either
+//! told to its reader or kept from them, never both and never neither.
+//! `FarewellMisrecorded` is the letter, read back out of the reader's own box
+//! rather than out of the memory of having written it.
 //!
-//! **A record survives a provisioning, and the summons it spares comes down** --
-//! proven as its own fold, since a summons that returned every morning would
-//! make the sparing a courtesy rather than an act.
+//! **A parting survives a provisioning, and outlives the record it names** --
+//! proven as its own fold, since a letter swept every morning would leave the
+//! reader exactly as uninformed as the silence this rung exists to end, and a
+//! parting that fell with the plan's own note would make the telling a gesture
+//! the plan could take back without the reader ever knowing.
+
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -130,12 +129,13 @@ const answering_rung = @import("answer.rye");
 const abating_rung = @import("abate.rye");
 const concluding_rung = @import("conclude.rye");
 const respecting_rung = @import("respect.rye");
+const refraining_rung = @import("refrain.rye");
 const tally_parse_int = @import("parse_int.rye");
 const ladder_checks = @import("ladder_checks.rye");
 
 const Dir = std.Io.Dir;
 
-const caravan_refrain_version = "20260820.201710";
+const caravan_farewell_version = "20260820.213727";
 
 // =========================================================================
 // The bounds -- carried whole from the rung below, with the reclaiming's own
@@ -367,6 +367,11 @@ pub const RunError = forbearing_rung.RunError || error{
     RefrainMismatched,
     RefrainMiscounted,
     RefrainMisrecorded,
+    FarewellUnspared,
+    FarewellUnaddressed,
+    FarewellMismatched,
+    FarewellMiscounted,
+    FarewellMisrecorded,
 };
 
 /// One queued item and the letters it declares, carried from `intent.rye`.
@@ -477,25 +482,30 @@ pub fn verdict_in(lost: u32, ledger: Ledger) Verdict {
 /// an operator reads the outcome. `left` is the other half of the same count,
 /// and the two close on the calls this run actually carried, exactly.
 pub const Report = struct {
-    inner: respecting_rung.Report = .{},
-    refrained: u32 = 0,
-    recalled: u32 = 0,
-    unspared: u32 = 0,
+    inner: refraining_rung.Report = .{},
+    bidden: u32 = 0,
+    withheld_parting: u32 = 0,
+    unsaid: u32 = 0,
 };
+
+/// The refrain rung's own tally, which this one wraps.
+pub fn refrain_of(report_out: *Report) *refraining_rung.Report {
+    return &report_out.inner;
+}
 
 /// The respect rung's own tally, which this one wraps.
 pub fn respect_of(report_out: *Report) *respecting_rung.Report {
-    return &report_out.inner;
+    return &report_out.inner.inner;
 }
 
 /// The conclude rung's own tally, one tier further down.
 pub fn conclude_of(report_out: *Report) *concluding_rung.Report {
-    return &report_out.inner.inner;
+    return &report_out.inner.inner.inner;
 }
 
 /// The abate rung's own tally, one tier further down.
 pub fn abate_of(report_out: *Report) *abating_rung.Report {
-    return &report_out.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner;
 }
 
 /// The answer rung's own tally, which this one wraps.
@@ -504,7 +514,7 @@ pub fn abate_of(report_out: *Report) *abating_rung.Report {
 /// reach per tier keeps the supervisor readable and keeps a miscount from
 /// hiding inside a chain of `inner`.
 pub fn answer_of(report_out: *Report) *answering_rung.Report {
-    return &report_out.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner;
 }
 
 /// The beckon rung's own tally, which this one wraps.
@@ -513,192 +523,192 @@ pub fn answer_of(report_out: *Report) *answering_rung.Report {
 /// reach per tier keeps the supervisor readable and keeps a miscount from
 /// hiding inside a chain of `inner`.
 pub fn beckon_of(report_out: *Report) *beckoning_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner;
 }
 
 /// The desist rung's tally, one tier further down.
 pub fn desist_of(report_out: *Report) *desisting_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The mind rung's tally, one tier further down.
 pub fn mind_of(report_out: *Report) *minding_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The forbear rung's tally, one tier further down.
 pub fn forbear_of(report_out: *Report) *forbearing_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The allay rung's tally, one tier further down.
 pub fn allay_of(report_out: *Report) *allaying_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The recount rung's tally, one tier further down.
 pub fn recount_of(report_out: *Report) *recounting_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The reweigh rung's tally, one tier further down.
 pub fn reweigh_of(report_out: *Report) *reweighing_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The reopen rung's tally, one tier further down.
 pub fn reopen_of(report_out: *Report) *reopening_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The suffice rung's tally, one tier further down.
 pub fn suffice_of(report_out: *Report) *sufficing_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The apprise rung's tally, one tier further down.
 pub fn apprise_of(report_out: *Report) *apprising_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The redress rung's tally, one tier further down.
 pub fn redress_of(report_out: *Report) *redressing_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The meet rung's tally, one tier further down.
 pub fn meet_of(report_out: *Report) *meeting_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The owe rung's tally, one tier further down.
 pub fn owe_of(report_out: *Report) *owing_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The avow rung's tally, one tier further down.
 pub fn avow_of(report_out: *Report) *avowing_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The deem rung's tally, one tier further down.
 pub fn deem_of(report_out: *Report) *deeming_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The refer rung's tally, one tier further down.
 pub fn refer_of(report_out: *Report) *referring_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The swell rung's tally, one tier further down.
 fn swell_of(report_out: *Report) *swelling_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The dwell rung's tally, one tier further down.
 fn dwell_of(report_out: *Report) *dwelling_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The relent rung's tally, one tier further down.
 fn relent_of(report_out: *Report) *relent_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The heed rung's tally, one tier further down.
 fn heed_of(report_out: *Report) *heed_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The endure rung's tally, one tier further down.
 fn endure_of(report_out: *Report) *endure_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The appeal rung's tally, one tier further down.
 fn appeal_of(report_out: *Report) *appeal_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The tidings rung's tally, one tier further down.
 fn tidings_of(report_out: *Report) *tidings_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The reposing rung's tally, one tier further down.
 fn reposing_of(report_out: *Report) *reposing_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The lapsing rung's tally, one tier further down.
 fn lapsing_of(report_out: *Report) *lapsing_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The abiding rung's tally, one tier further down.
 fn abiding_of(report_out: *Report) *abiding_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The disputing rung's tally, one tier further down.
 fn disputing_of(report_out: *Report) *disputing_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The hearing rung's tally, one tier further down.
 fn hearing_of(report_out: *Report) *hearing_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The couriering rung's tally, one tier further down.
 fn couriering_of(report_out: *Report) *couriering_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The amending rung's tally, two tiers further down.
 fn amending_of(report_out: *Report) *amending_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The recanting rung's tally, three tiers further down.
 fn recanting_of(report_out: *Report) *recanting_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The appraising rung's tally, four tiers further down.
 fn appraising_of(report_out: *Report) *appraising_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The bearing rung's tally, five tiers further down.
 fn bearing_of(report_out: *Report) *bearing_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The mending rung's tally, six tiers further down.
 fn below_of(report_out: *Report) *mending_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The abandoning rung's tally, nine tiers further down.
 fn abandoning_of(report_out: *Report) *abandon_rung.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The run's own tally, reached without spelling the whole nesting each time.
 pub fn run_of(report_out: *Report) *overtake.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.run;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.run;
 }
 
 /// The sibling-order counters, reached the same way.
 fn masked_of(report_out: *Report) *mask.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The turn-order counters, reached the same way.
 fn preceded_of(report_out: *Report) *precede.Report {
-    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
+    return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The single bit that stands for one turn of a plan.
@@ -3980,6 +3990,7 @@ pub const Quarrel = struct {
     conclude: Conclude,
     respect: Respect,
     refrain: Refrain,
+    farewell: Farewell,
 };
 
 /// Counts the long-standing quarrels nobody outside the argument ever sees.
@@ -5089,6 +5100,141 @@ pub fn unspared_readers(named_count: u32, refrain: Refrain) u32 {
     if (named_count == 0) return 0;
     return if (refrain == .calls) 1 else 0;
 }
+// =========================================================================
+// The parting -- a spared reader is finally told the plan has stopped writing
+// =========================================================================
+
+/// How many bytes one parting carries.
+///
+/// Fourteen: the record this plan published, echoed whole, and one byte saying
+/// the reader it names has been told. A parting carrying only "farewell" would
+/// name no correspondence at all, and a reader holding two closed matters could
+/// not tell which one the plan had finally let go.
+pub const max_fares_bytes: u32 = max_refrains_bytes + 1;
+
+/// The byte a parting run writes last, so a letter says what it is.
+///
+/// The last letter of the word, and the only byte of the fourteen this plan
+/// composes rather than copies. Every other byte was written by somebody else,
+/// somewhere further down the arc.
+pub const parted_byte: u8 = 'l';
+
+/// Whether a plan tells the reader it has stopped writing to that it has.
+///
+/// The rung below spares a reader a second summons and takes the standing one
+/// down. Both acts happen among the plan's own notes and in a box the reader
+/// never sees emptied -- so from where that person sits, a plan that honored
+/// their ending and a plan that lost their file read exactly alike.
+pub const Farewell = enum { goes_quiet, bids };
+
+/// Renders one parting as the words an operator reads.
+pub fn farewell_words(f: Farewell) []const u8 {
+    return switch (f) {
+        .goes_quiet => "the plan spares that reader and simply stops writing, leaving the silence to explain itself",
+        .bids => "the plan carries its own last word to the box its reader already reads, so the silence is a stated close",
+    };
+}
+
+/// Renders the fourteen bytes one parting carries.
+///
+/// The record copied whole, with this run's own byte last. A parting is a plan
+/// carrying outward something it already published rather than making a fresh
+/// claim, so the bytes a reader finds are the bytes the plan stood behind --
+/// copied, never composed.
+pub fn fares_bytes(record: [max_refrains_bytes]u8) [max_fares_bytes]u8 {
+    var out: [max_fares_bytes]u8 = @splat(0);
+    var at: u32 = 0;
+    while (at < max_refrains_bytes) : (at += 1) out[at] = record[at];
+    out[max_fares_bytes - 1] = parted_byte;
+    // invariant: a parting carries the whole record it tells a reader about
+    assert(at == max_refrains_bytes);
+    return out;
+}
+
+/// Answers whether a delivered parting names the record this run read.
+///
+/// The whole point of the rung, written as one comparison. A reader's box may
+/// still hold a parting left by a run before today, and reading that as this
+/// run's would tell an operator a person had been told about a sparing nobody
+/// made this morning.
+pub fn fares_carries(seen: ?[max_fares_bytes]u8, record: [max_refrains_bytes]u8) bool {
+    const bytes = seen orelse return false;
+    return std.mem.eql(u8, &bytes, &fares_bytes(record));
+}
+
+/// Reads the reader's own word out of a delivered parting, or nothing at all.
+///
+/// A parting echoes the record, a record echoes the mark, a mark echoes the
+/// closure, and that closure ends on the reader's own word -- so the word a
+/// person reads in the plan's last letter is the word they wrote themselves,
+/// carried nine tiers without a supervisor's hand on it.
+pub fn fares_hand(seen: ?[max_fares_bytes]u8) ?Hand {
+    const bytes = seen orelse return null;
+    return hand_of_byte(bytes[max_hands_bytes - 1]);
+}
+
+/// How many spared readers this run tells that the plan has stopped writing.
+///
+/// Narrow on purpose: a parting is about a sparing this plan actually published,
+/// so a run holding no record tells nobody, however willing it was.
+pub fn bidden_in(spared_count: u32, farewell: Farewell) u32 {
+    // invariant: a run never reads more sparings than one record carries
+    assert(spared_count <= 1);
+    if (spared_count == 0) return 0;
+    if (farewell == .goes_quiet) return 0;
+    return spared_count;
+}
+
+/// How many spared readers this run leaves to interpret a silence.
+pub fn kept_quiet_in(spared_count: u32, farewell: Farewell) u32 {
+    // invariant: a run never reads more sparings than one record carries
+    assert(spared_count <= 1);
+    return spared_count - bidden_in(spared_count, farewell);
+}
+
+/// Every refusal this rung earns before a parting reaches the outcome.
+///
+/// The order is the rung below's order one tier out. A parting asks whether a
+/// reader was spared at all, whether they left an address a run may carry to,
+/// and whether the letter delivered names that very sparing -- because telling a
+/// person the plan has closed the wrong matter is worse than telling them
+/// nothing, wearing as it does the authority of a correspondence finally ended.
+pub fn farewell_refusal(spared_count: u32, bidden_count: u32, quiet_count: u32, spared: bool, addressed: bool, matched: bool) ?RunError {
+    // invariant: a run never tells more readers than one record spared
+    assert(bidden_count <= 1);
+    if (bidden_count >= 1 and !spared) return error.FarewellUnspared;
+    if (bidden_count >= 1 and !addressed) return error.FarewellUnaddressed;
+    if (bidden_count >= 1 and !matched) return error.FarewellMismatched;
+    // invariant: a parting never counts more readers than there were sparings
+    assert(bidden_count + quiet_count <= spared_count + 1);
+    if (bidden_count + quiet_count != spared_count) return error.FarewellMiscounted;
+    return null;
+}
+
+/// Answers whether the parting now standing in a reader's box is this run's own.
+///
+/// The record half of this rung, and the reason the box is opened again before
+/// the report believes anybody was told. A parting disagreeing with the record
+/// this run read is a plan telling an operator about a person it never reached.
+pub fn farewell_holds(delivered: ?[max_fares_bytes]u8, expected: [max_fares_bytes]u8) bool {
+    const bytes = delivered orelse return false;
+    return std.mem.eql(u8, &bytes, &expected);
+}
+
+/// Counts the readers a plan stopped writing to without ever saying so.
+///
+/// The forty-fifth of the family, and the one that carries the whole arc's last
+/// courtesy out to the person it was always about. A silence explains nothing:
+/// a plan that honored a reader's ending and a plan that mislaid their file read
+/// exactly alike from the outside, and the reader is left to decide which they
+/// are living in.
+pub fn unsaid_partings(spared_count: u32, farewell: Farewell) u32 {
+    // invariant: a run never reads more sparings than one record carries
+    assert(spared_count <= 1);
+    if (spared_count == 0) return 0;
+    return if (farewell == .goes_quiet) 1 else 0;
+}
+
 // =========================================================================
 // The door -- unchanged, since this rung weighs a record rather than a line
 // =========================================================================
@@ -6971,6 +7117,86 @@ pub fn clear_calls(io: std.Io, address: []const u8) void {
     if (!addressable(address)) return;
     var path_buf: [max_note_path_len]u8 = undefined;
     const path = call_path(&path_buf, address) catch return;
+    Dir.cwd().deleteFile(io, path) catch {};
+}
+
+/// Writes the path of the parting one reader is finally sent.
+fn fare_path(buf: *[max_note_path_len]u8, address: []const u8) NoteError![]const u8 {
+    // invariant: a parting is only ever carried to an address a run may reach
+    assert(addressable(address));
+    const suffix = ".fares";
+    // invariant: a parting lands in the same box every other word to this
+    // reader was left in
+    comptime assert(suffix.len == ".walls".len);
+    const total = reader_dir.len + 1 + address.len + suffix.len;
+    if (total > max_note_path_len) return error.NotePathTooLong;
+    var at: u32 = 0;
+    for (reader_dir) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    buf[at] = '/';
+    at += 1;
+    for (address) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    for (suffix) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    // invariant: a parting path is written exactly as long as it was measured
+    assert(at == total);
+    return buf[0..at];
+}
+
+/// Tells a reader that the plan has stopped writing about the matter they ended.
+///
+/// Fourteen bytes, written where that reader is rather than where the record is
+/// kept: the record echoed whole and this run's own byte last. It lands beside
+/// every other word this arc has carried them, in the same box, so the person
+/// who ended the matter learns from the place they already look that the plan
+/// heard them and has gone quiet on purpose.
+///
+/// The record beneath this one is written where a plan keeps its notes. This is
+/// the one written where the person it is about will find it.
+pub fn fare_reader(io: std.Io, address: []const u8, record: [max_refrains_bytes]u8) NoteError!void {
+    // invariant: a parting is only ever carried to an address a run may reach
+    assert(addressable(address));
+    Dir.cwd().createDirPath(io, reader_dir) catch return error.NoteUnavailable;
+    var path_buf: [max_note_path_len]u8 = undefined;
+    const path = try fare_path(&path_buf, address);
+    const file = Dir.cwd().createFile(io, path, .{ .truncate = true }) catch return error.NoteUnavailable;
+    defer file.close(io);
+    const bytes = fares_bytes(record);
+    file.writePositionalAll(io, &bytes, 0) catch return error.NoteUnavailable;
+}
+
+/// Reads back the parting standing in one reader's box, or nothing at all.
+///
+/// The wire before the memory, one tier further out again: a run learns that it
+/// told a person by opening that person's box, never by remembering having
+/// written to it. A supervisor that believed its own letter could report a
+/// correspondence gracefully closed to somebody who was never told a thing.
+pub fn fared_of(io: std.Io, address: []const u8) ?[max_fares_bytes]u8 {
+    if (!addressable(address)) return null;
+    var path_buf: [max_note_path_len]u8 = undefined;
+    const path = fare_path(&path_buf, address) catch return null;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
+    defer file.close(io);
+    var bytes: [max_fares_bytes]u8 = @splat(0);
+    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
+    // invariant: a parting never outgrows the record it tells a reader about
+    assert(got <= max_fares_bytes);
+    if (got < max_fares_bytes) return null;
+    return bytes;
+}
+
+/// Takes down a parting, so a lap begins with a reader's box holding no goodbye.
+pub fn clear_fares(io: std.Io, address: []const u8) void {
+    if (!addressable(address)) return;
+    var path_buf: [max_note_path_len]u8 = undefined;
+    const path = fare_path(&path_buf, address) catch return;
     Dir.cwd().deleteFile(io, path) catch {};
 }
 
@@ -9740,6 +9966,69 @@ pub fn close_the_matter(io: std.Io, conclude: Conclude, report_out: *Report) (Ru
     assert(conclude_of(report_out).unclosed == 0);
 }
 
+/// Tells the reader this plan has stopped writing to that it has.
+///
+/// **It runs before the refraining beneath it, and it reads that rung's own
+/// record as the run before this one left it.** A record is published where an
+/// operator reads the outcome, so the only honest moment to carry one outward is
+/// ahead of the lap that writes a fresh one -- and a run opening on notes that
+/// hold no sparing tells nobody at all, which is the honest silence rather than
+/// a goodbye sent into a correspondence still very much alive.
+///
+/// The wire before the memory, one tier further out than the refraining below
+/// it: this run opens the record its own plan published, carries a letter to the
+/// box that reader already reads, and opens that box again before the report
+/// believes a single person was told.
+///
+/// **The telling lands where the reader is, not where the record is.** Every
+/// note this rung climbs past lives under the plan's own directory, where a
+/// person must come looking; this one lands outside it, so the arc's last
+/// courtesy is visible on the wire as a record leaving the place records are
+/// kept.
+pub fn bid_the_farewell(io: std.Io, farewell: Farewell, report_out: *Report) (RunError || NoteError)!void {
+    const spared = refrain_published(io);
+    const spared_count: u32 = if (spared != null) 1 else 0;
+    if (spared_count == 0) {
+        // invariant: a run reading no sparing tells nobody
+        assert(report_out.bidden == 0);
+        // invariant: a run reading no sparing leaves nobody untold
+        assert(report_out.unsaid == 0);
+        return;
+    }
+
+    // The measurement this rung moves, weighed against the record actually
+    // standing rather than against anything the plan asked for, so a reader
+    // nobody tells is counted rather than refused.
+    report_out.unsaid = unsaid_partings(spared_count, farewell);
+    const bidden_count = bidden_in(spared_count, farewell);
+    const quiet_count = kept_quiet_in(spared_count, farewell);
+    if (farewell == .goes_quiet) {
+        // invariant: a quiet run tells nobody, however plainly it read
+        assert(bidden_count == 0);
+        report_out.withheld_parting = quiet_count;
+        return;
+    }
+
+    // The record before the reach, and the reach before the letter: all three
+    // reads supply the ladder rather than short-circuiting it, so every refusal
+    // below is reached by argument and named in its own order.
+    const record = spared orelse return error.FarewellUnspared;
+    const addressed = addressable(standing_address);
+    const matched = fares_carries(fares_bytes(record), record);
+    if (farewell_refusal(spared_count, bidden_count, quiet_count, spared != null, addressed, matched)) |why| return why;
+
+    // invariant: a parting run tells the one reader its record names
+    assert(bidden_count == 1);
+    try fare_reader(io, standing_address, record);
+    // The wire before the memory, once more: the box the reader actually opens
+    // is opened here, and only then does the report believe anybody was told.
+    if (!farewell_holds(fared_of(io, standing_address), fares_bytes(record))) return error.FarewellMisrecorded;
+    report_out.bidden = bidden_count;
+    report_out.withheld_parting = quiet_count;
+    // invariant: a parting run leaves no reader of its own untold
+    assert(report_out.unsaid == 0);
+}
+
 /// Spares the reader of an ending this plan has already named.
 ///
 /// **It runs before the respecting beneath it, and it reads that rung's own
@@ -9764,22 +10053,22 @@ pub fn refrain_from_calling(io: std.Io, refrain: Refrain, report_out: *Report) (
     const named_count: u32 = if (named != null) 1 else 0;
     if (named_count == 0) {
         // invariant: a run reading no named ending spares nobody
-        assert(report_out.refrained == 0);
+        assert(refrain_of(report_out).refrained == 0);
         // invariant: a run reading no named ending leaves nobody unspared
-        assert(report_out.unspared == 0);
+        assert(refrain_of(report_out).unspared == 0);
         return;
     }
 
     // The measurement this rung moves, weighed against the mark actually
     // standing rather than against anything the plan asked for, so a reader
     // nobody spares is counted rather than refused.
-    report_out.unspared = unspared_readers(named_count, refrain);
+    refrain_of(report_out).unspared = unspared_readers(named_count, refrain);
     const refrained_count = refrained_in(named_count, refrain);
     const recalled_count = recalled_in(named_count, refrain);
     if (refrain == .calls) {
         // invariant: a calling run spares nobody, however plainly it read
         assert(refrained_count == 0);
-        report_out.recalled = recalled_count;
+        refrain_of(report_out).recalled = recalled_count;
         return;
     }
 
@@ -9804,10 +10093,10 @@ pub fn refrain_from_calling(io: std.Io, refrain: Refrain, report_out: *Report) (
     // And only then does the summons leave the reader's box, since a record that
     // never landed would spare a person with nothing on the wire saying why.
     clear_calls(io, standing_address);
-    report_out.refrained = refrained_count;
-    report_out.recalled = recalled_count;
+    refrain_of(report_out).refrained = refrained_count;
+    refrain_of(report_out).recalled = recalled_count;
     // invariant: a refraining run leaves no reader of its own unspared
-    assert(report_out.unspared == 0);
+    assert(refrain_of(report_out).unspared == 0);
 }
 
 /// Names the ending this run opened holding, where an operator reads the outcome.
@@ -11983,7 +12272,7 @@ fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 pub fn check_mending() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_mending();
+    return refraining_rung.check_mending();
 }
 
 /// The bearing and its three standing refusals, read straight, before any
@@ -11997,7 +12286,7 @@ pub fn check_mending() u8 {
 pub fn check_bearing() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_bearing();
+    return refraining_rung.check_bearing();
 }
 
 /// The recantation and its three standing refusals, read straight, before any
@@ -12013,7 +12302,7 @@ pub fn check_bearing() u8 {
 pub fn check_recantation() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_recantation();
+    return refraining_rung.check_recantation();
 }
 
 /// The amendment and its three standing refusals, read straight, before any
@@ -12028,7 +12317,7 @@ pub fn check_recantation() u8 {
 pub fn check_amendment() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_amendment();
+    return refraining_rung.check_amendment();
 }
 
 /// The delivery and its three standing refusals, read straight, before any
@@ -12042,7 +12331,7 @@ pub fn check_amendment() u8 {
 pub fn check_delivery() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_delivery();
+    return refraining_rung.check_delivery();
 }
 
 
@@ -12129,6 +12418,14 @@ const elder_closure: [max_closes_bytes]u8 = closes_bytes(
 /// own box, seated beside it, agrees byte for byte.
 const elder_named: [max_respects_bytes]u8 = respects_bytes(elder_closure);
 
+/// The sparing a run before today published, built from that same named ending.
+///
+/// Composed from the very mark the rung below reads, so the record this run
+/// carries outward is about the very matter its reader ended -- and the letter
+/// a reader finally finds in their own box echoes their own word, nine tiers
+/// down, without a supervisor's hand on any byte but the last.
+const elder_spared: [max_refrains_bytes]u8 = refrains_bytes(elder_named);
+
 /// The hearing below, still weighed, and now under the stricter question this
 /// rung hands it.
 ///
@@ -12140,7 +12437,7 @@ const elder_named: [max_respects_bytes]u8 = respects_bytes(elder_closure);
 pub fn check_hearing() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_hearing();
+    return refraining_rung.check_hearing();
 }
 
 /// The record and its three standing refusals, read straight, before any
@@ -12154,7 +12451,7 @@ pub fn check_hearing() u8 {
 pub fn check_dispute() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_dispute();
+    return refraining_rung.check_dispute();
 }
 
 /// The escort and its four refusals, read straight, before any dependent runs.
@@ -12166,7 +12463,7 @@ pub fn check_dispute() u8 {
 pub fn check_abide() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_abide();
+    return refraining_rung.check_abide();
 }
 
 /// The term and its four refusals, read straight, before any dependent runs.
@@ -12178,14 +12475,14 @@ pub fn check_abide() u8 {
 pub fn check_lapse() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_lapse();
+    return refraining_rung.check_lapse();
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
 pub fn check_standing() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_standing();
+    return refraining_rung.check_standing();
 }
 
 /// Runs one queue whole under one relenting, against a judgment, a reading, an
@@ -12233,6 +12530,7 @@ fn run_one(
     conclude: Conclude,
     respect: Respect,
     refrain: Refrain,
+    farewell: Farewell,
     stands: ?Plea,
     stood: u32,
     replies: Plea,
@@ -12245,11 +12543,12 @@ fn run_one(
     named_before: ?[max_minds_bytes]u8,
     closed_before: ?[max_closes_bytes]u8,
     named_ending: ?[max_respects_bytes]u8,
+    spared_before: ?[max_refrains_bytes]u8,
     report_out: *Report,
 ) bool {
-    if (!seat_the_wire(io, @intCast(plan.len), stands, stood, replies, answers, owes, weighs, opens, rests, handed_on, named_before, closed_before, named_ending)) return false;
+    if (!seat_the_wire(io, @intCast(plan.len), stands, stood, replies, answers, owes, weighs, opens, rests, handed_on, named_before, closed_before, named_ending, spared_before)) return false;
     run_in_forbear(
-        allocator, io, self_path, sys, plan, .when_moved, .preceded, .held_on, .borne, .weighed, .revisit, .posted, .carried, .asked, .open, .escorted, .bounded, .standing, .returned, .open, .{ .endurance = .kept, .heed = heed, .relent = relent, .dwell = dwell, .swell = swell, .refer = refer, .deem = deem, .avow = avow, .owe = owe, .meet = meet, .redress = redress, .upshot = upshot, .apprise = apprise, .suffice = suffice, .reopen = reopen, .reweigh = reweigh, .recount = recount, .allay = allay, .forbear = forbear, .mind = mind, .desist = desist, .beckon = beckon, .answer = answer, .abate = abate, .conclude = conclude, .respect = respect, .refrain = refrain }, report_out,
+        allocator, io, self_path, sys, plan, .when_moved, .preceded, .held_on, .borne, .weighed, .revisit, .posted, .carried, .asked, .open, .escorted, .bounded, .standing, .returned, .open, .{ .endurance = .kept, .heed = heed, .relent = relent, .dwell = dwell, .swell = swell, .refer = refer, .deem = deem, .avow = avow, .owe = owe, .meet = meet, .redress = redress, .upshot = upshot, .apprise = apprise, .suffice = suffice, .reopen = reopen, .reweigh = reweigh, .recount = recount, .allay = allay, .forbear = forbear, .mind = mind, .desist = desist, .beckon = beckon, .answer = answer, .abate = abate, .conclude = conclude, .respect = respect, .refrain = refrain, .farewell = farewell }, report_out,
     ) catch |err| {
         print("  RED: a queue did not survive its run: {s}\n", .{@errorName(err)});
         return false;
@@ -12278,6 +12577,7 @@ fn seat_the_wire(
     named_before: ?[max_minds_bytes]u8,
     closed_before: ?[max_closes_bytes]u8,
     named_ending: ?[max_respects_bytes]u8,
+    spared_before: ?[max_refrains_bytes]u8,
 ) bool {
     seat_standing_appraisal(io, held, standing_judgment) catch |err| {
         print("  RED: a judgment could not be seated on the wire: {s}\n", .{@errorName(err)});
@@ -12362,6 +12662,20 @@ fn seat_the_wire(
     if (named_ending) |named| {
         seat_note(io, plan_name, ".respect", &named) catch |err| {
             print("  RED: an earlier run's named ending could not be seated: {s}\n", .{@errorName(err)});
+            return false;
+        };
+    }
+    // And the sparing a run before today published, seated the same way -- by
+    // the harness, standing in for the run that read this reader's ending and
+    // left them alone. A record a supervisor wrote for itself would be a plan
+    // bidding farewell to its own correspondent, which is the one thing this
+    // rung must never read. The reader's own box begins empty of any goodbye,
+    // since a parting that stood every morning would make the telling a
+    // courtesy the plan never had to perform.
+    clear_fares(io, standing_address);
+    if (spared_before) |record| {
+        seat_note(io, plan_name, ".refrain", &record) catch |err| {
+            print("  RED: an earlier run's sparing could not be seated: {s}\n", .{@errorName(err)});
             return false;
         };
     }
@@ -12519,47 +12833,47 @@ fn tell_desist_runs(bare_run: *Report, under_run: *Report) void {
     assert(run_of(bare_run).queued >= 1);
     // invariant: a telling never reports more dependents than a repair may add
     assert(run_of(under_run).reaped <= run_of(under_run).queued + max_queue_len);
-    print("  phases: {d} calling, {d} refraining\n", .{
+    print("  phases: {d} quiet, {d} parting\n", .{
         run_of(bare_run).queued, run_of(under_run).queued,
     });
-    print("  dependents: {d} calling, {d} refraining\n", .{
+    print("  dependents: {d} quiet, {d} parting\n", .{
         run_of(bare_run).reaped, run_of(under_run).reaped,
     });
-    print("  phases absorbed into a standing dependent: {d} calling, {d} refraining\n", .{
+    print("  phases absorbed into a standing dependent: {d} quiet, {d} parting\n", .{
         abandoning_of(bare_run).inner.inner.inner.inner.absorbed,
         abandoning_of(under_run).inner.inner.inner.inner.absorbed,
     });
-    print("  abandoned reach, conferred and never served: {d} calling, {d} refraining\n", .{
+    print("  abandoned reach, conferred and never served: {d} quiet, {d} parting\n", .{
         abandoning_of(bare_run).abandoned, abandoning_of(under_run).abandoned,
     });
-    print("  phases re-seated to carry what was lost: {d} calling, {d} refraining\n", .{
+    print("  phases re-seated to carry what was lost: {d} quiet, {d} parting\n", .{
         below_of(bare_run).reseated, below_of(under_run).reseated,
     });
-    print("  standing judgments taken back on this run's own evidence: {d} calling, {d} refraining\n", .{
+    print("  standing judgments taken back on this run's own evidence: {d} quiet, {d} parting\n", .{
         recanting_of(bare_run).recanted, recanting_of(under_run).recanted,
     });
-    print("  readings corrected where they were read: {d} calling, {d} refraining\n", .{
+    print("  readings corrected where they were read: {d} quiet, {d} parting\n", .{
         amending_of(bare_run).amended, amending_of(under_run).amended,
     });
-    print("  corrections carried to the place their reader was reached: {d} calling, {d} refraining\n", .{
+    print("  corrections carried to the place their reader was reached: {d} quiet, {d} parting\n", .{
         couriering_of(bare_run).delivered, couriering_of(under_run).delivered,
     });
-    print("  disagreements written into the record: {d} calling, {d} refraining\n", .{
+    print("  disagreements written into the record: {d} quiet, {d} parting\n", .{
         disputing_of(bare_run).recorded, disputing_of(under_run).recorded,
     });
-    print("  published words standing beside the reading against them: {d} calling, {d} refraining\n", .{
+    print("  published words standing beside the reading against them: {d} quiet, {d} parting\n", .{
         abiding_of(bare_run).escorted, abiding_of(under_run).escorted,
     });
-    print("  standing objections put back to the reader who raised them: {d} calling, {d} refraining\n", .{
+    print("  standing objections put back to the reader who raised them: {d} quiet, {d} parting\n", .{
         lapsing_of(bare_run).asked, lapsing_of(under_run).asked,
     });
-    print("  marks carrying the standing of the objection they quote: {d} calling, {d} refraining\n", .{
+    print("  marks carrying the standing of the objection they quote: {d} quiet, {d} parting\n", .{
         reposing_of(bare_run).stood, reposing_of(under_run).stood,
     });
-    print("  raisers told how their own quarrel came out: {d} calling, {d} refraining\n", .{
+    print("  raisers told how their own quarrel came out: {d} quiet, {d} parting\n", .{
         tidings_of(bare_run).told, tidings_of(under_run).told,
     });
-    print("  readers whose reply to the answer was read back: {d} calling, {d} refraining\n", .{
+    print("  readers whose reply to the answer was read back: {d} quiet, {d} parting\n", .{
         appeal_of(bare_run).heard_back, appeal_of(under_run).heard_back,
     });
     tell_desist_half(bare_run, under_run);
@@ -12576,34 +12890,34 @@ fn tell_desist_half(bare_run: *Report, under_run: *Report) void {
     assert(deem_of(bare_run).answered <= 1);
     // invariant: a reading never leaves more cases unanswered than one desk holds
     assert(deem_of(under_run).unanswered <= 1);
-    print("  positions carried past the run that heard them: {d} calling, {d} refraining\n", .{
+    print("  positions carried past the run that heard them: {d} quiet, {d} parting\n", .{
         endure_of(bare_run).kept, endure_of(under_run).kept,
     });
-    print("  inherited positions weighed into the run's own word: {d} calling, {d} refraining\n", .{
+    print("  inherited positions weighed into the run's own word: {d} quiet, {d} parting\n", .{
         heed_of(bare_run).heeded, heed_of(under_run).heeded,
     });
-    print("  standing positions let go on their holder's own word: {d} calling, {d} refraining\n", .{
+    print("  standing positions let go on their holder's own word: {d} quiet, {d} parting\n", .{
         relent_of(bare_run).withdrawn, relent_of(under_run).withdrawn,
     });
-    print("  standing positions left exactly where they were found: {d} calling, {d} refraining\n", .{
+    print("  standing positions left exactly where they were found: {d} quiet, {d} parting\n", .{
         relent_of(bare_run).standing, relent_of(under_run).standing,
     });
-    print("  withdrawn quarrels still standing over the plan: {d} calling, {d} refraining\n", .{
+    print("  withdrawn quarrels still standing over the plan: {d} quiet, {d} parting\n", .{
         relent_of(bare_run).uncleared, relent_of(under_run).uncleared,
     });
-    print("  standing positions this run said the age of: {d} calling, {d} refraining\n", .{
+    print("  standing positions this run said the age of: {d} quiet, {d} parting\n", .{
         dwell_of(bare_run).aged, dwell_of(under_run).aged,
     });
-    print("  standing positions left with no age at all: {d} calling, {d} refraining\n", .{
+    print("  standing positions left with no age at all: {d} quiet, {d} parting\n", .{
         dwell_of(bare_run).undated, dwell_of(under_run).undated,
     });
-    print("  standing quarrels whose note never said how long: {d} calling, {d} refraining\n", .{
+    print("  standing quarrels whose note never said how long: {d} quiet, {d} parting\n", .{
         dwell_of(bare_run).ageless, dwell_of(under_run).ageless,
     });
-    print("  standing quarrels published where the outcome is read: {d} calling, {d} refraining\n", .{
+    print("  standing quarrels published where the outcome is read: {d} quiet, {d} parting\n", .{
         swell_of(bare_run).heralded, swell_of(under_run).heralded,
     });
-    print("  standing quarrels left unpublished at the outcome: {d} calling, {d} refraining\n", .{
+    print("  standing quarrels left unpublished at the outcome: {d} quiet, {d} parting\n", .{
         swell_of(bare_run).unpublished, swell_of(under_run).unpublished,
     });
     print("  long-standing quarrels an operator reads no louder than a fresh one: {d} against {d}\n", .{
@@ -12622,46 +12936,46 @@ fn tell_desist_third(bare_run: *Report, under_run: *Report) void {
     assert(run_of(bare_run).queued >= 1);
     // invariant: a telling never reads more findings than one case may earn
     assert(deem_of(under_run).answered <= 1);
-    print("  long-standing quarrels carried to a hand that is neither party: {d} calling, {d} refraining\n", .{
+    print("  long-standing quarrels carried to a hand that is neither party: {d} quiet, {d} parting\n", .{
         refer_of(bare_run).referred, refer_of(under_run).referred,
     });
-    print("  long-standing quarrels kept inside the argument: {d} calling, {d} refraining\n", .{
+    print("  long-standing quarrels kept inside the argument: {d} quiet, {d} parting\n", .{
         refer_of(bare_run).kept_in, refer_of(under_run).kept_in,
     });
     print("  long-standing quarrels nobody outside the argument ever sees: {d} against {d}\n", .{
         refer_of(bare_run).unheard, refer_of(under_run).unheard,
     });
-    print("  carried cases whose answer was read and published: {d} calling, {d} refraining\n", .{
+    print("  carried cases whose answer was read and published: {d} quiet, {d} parting\n", .{
         deem_of(bare_run).answered, deem_of(under_run).answered,
     });
-    print("  carried cases still waiting on a third hand's word: {d} calling, {d} refraining\n", .{
+    print("  carried cases still waiting on a third hand's word: {d} quiet, {d} parting\n", .{
         deem_of(bare_run).awaited_in, deem_of(under_run).awaited_in,
     });
     print("  cases carried out that nobody is ever heard back on: {d} against {d}\n", .{
         deem_of(bare_run).unanswered, deem_of(under_run).unanswered,
     });
-    print("  published findings the plan answered on the record: {d} calling, {d} refraining\n", .{
+    print("  published findings the plan answered on the record: {d} quiet, {d} parting\n", .{
         avow_of(bare_run).said, avow_of(under_run).said,
     });
-    print("  published findings left without a word from the plan: {d} calling, {d} refraining\n", .{
+    print("  published findings left without a word from the plan: {d} quiet, {d} parting\n", .{
         avow_of(bare_run).withheld, avow_of(under_run).withheld,
     });
     print("  findings a plan published and never said one word about: {d} against {d}\n", .{
         avow_of(bare_run).unavowed, avow_of(under_run).unavowed,
     });
-    print("  concessions booked as a debt the next run finds: {d} calling, {d} refraining\n", .{
+    print("  concessions booked as a debt the next run finds: {d} quiet, {d} parting\n", .{
         owe_of(bare_run).booked, owe_of(under_run).booked,
     });
-    print("  concessions left owing nothing to any run after: {d} calling, {d} refraining\n", .{
+    print("  concessions left owing nothing to any run after: {d} quiet, {d} parting\n", .{
         owe_of(bare_run).unowed, owe_of(under_run).unowed,
     });
     print("  concessions a plan made that reach no run after them: {d} against {d}\n", .{
         owe_of(bare_run).unbooked, owe_of(under_run).unbooked,
     });
-    print("  inherited debts this run met and took down: {d} calling, {d} refraining\n", .{
+    print("  inherited debts this run met and took down: {d} quiet, {d} parting\n", .{
         meet_of(bare_run).met, meet_of(under_run).met,
     });
-    print("  inherited debts left standing for the run after: {d} calling, {d} refraining\n", .{
+    print("  inherited debts left standing for the run after: {d} quiet, {d} parting\n", .{
         meet_of(bare_run).deferred, meet_of(under_run).deferred,
     });
     print("  debts a plan inherited that the run never met: {d} against {d}\n", .{
@@ -12680,50 +12994,50 @@ fn tell_desist_tail(bare_run: *Report, under_run: *Report) void {
     assert(run_of(bare_run).queued >= 1);
     // invariant: a telling never reads more deliveries than one finding earns
     assert(apprise_of(under_run).apprised <= 1);
-    print("  meetings this run said the upshot of: {d} calling, {d} refraining\n", .{
+    print("  meetings this run said the upshot of: {d} quiet, {d} parting\n", .{
         redress_of(bare_run).redressed, redress_of(under_run).redressed,
     });
-    print("  meetings this run closed without a word: {d} calling, {d} refraining\n", .{
+    print("  meetings this run closed without a word: {d} quiet, {d} parting\n", .{
         redress_of(bare_run).bare, redress_of(under_run).bare,
     });
     print("  debts a plan met whose meeting never said what it found: {d} against {d}\n", .{
         redress_of(bare_run).hollow, redress_of(under_run).hollow,
     });
-    print("  findings this run carried to the reader who won them: {d} calling, {d} refraining\n", .{
+    print("  findings this run carried to the reader who won them: {d} quiet, {d} parting\n", .{
         apprise_of(bare_run).apprised, apprise_of(under_run).apprised,
     });
-    print("  findings this run kept inside its own notes: {d} calling, {d} refraining\n", .{
+    print("  findings this run kept inside its own notes: {d} quiet, {d} parting\n", .{
         apprise_of(bare_run).withheld, apprise_of(under_run).withheld,
     });
     print("  findings a plan reached whose raiser was never told: {d} against {d}\n", .{
         apprise_of(bare_run).unheard, apprise_of(under_run).unheard,
     });
-    print("  answers this run read its reader's own word on: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.weighed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.weighed,
+    print("  answers this run read its reader's own word on: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.weighed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.weighed,
     });
-    print("  answers this run carried with nobody asked about them: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unweighed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unweighed,
+    print("  answers this run carried with nobody asked about them: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unweighed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unweighed,
     });
     print("  answers a plan carried whose worth it never learned: {d} against {d}\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unmeasured, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unmeasured,
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unmeasured, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unmeasured,
     });
-    print("  matters this run took up again on its reader's word: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.taken_up, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.taken_up,
+    print("  matters this run took up again on its reader's word: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.taken_up, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.taken_up,
     });
-    print("  short words this run read and left closed: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.left_closed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.left_closed,
+    print("  short words this run read and left closed: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.left_closed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.left_closed,
     });
-    print("  words calling an answer short that opened nothing: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheeded, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheeded,
+    print("  words calling an answer short that opened nothing: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheeded, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheeded,
     });
-    print("  reopened matters this run looked at again and took down: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.looked, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.looked,
+    print("  reopened matters this run looked at again and took down: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.looked, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.looked,
     });
-    print("  reopened matters left standing for the run after: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.passed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.passed,
+    print("  reopened matters left standing for the run after: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.passed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.passed,
     });
     print("  reopened matters a plan inherited that the run never looked at: {d} against {d}\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unlooked, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unlooked,
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unlooked, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unlooked,
     });
     tell_beckon_own(bare_run, under_run);
 }
@@ -12731,39 +13045,64 @@ fn tell_desist_tail(bare_run: *Report, under_run: *Report) void {
 /// Weighs the two marks against each other and names the first disagreement.
 ///
 /// The shape of the finding is two numbers moving together and the price of
-/// moving them named honestly beside it -- and here the price is one note taken
-/// down, at no cost in work at all. Both runs take up the same record, confer
+/// moving them named honestly beside it -- and here the price is one letter
+/// carried, at no cost in work at all. Both runs take up the same record, confer
 /// the same arcs, lose the same arcs, take the same judgment back, repair the
 /// same three phases, spend the same dependents, post the same correction, carry
 /// it to the same reader, record the same disagreement, escort the same
-/// published word, stand the same mark, wall the same twice-carried matter,
-/// call the same person to it, read that person's own releasing answer, and
-/// settle the plan `carried`. What differs is whether the plan does anything
-/// about the release -- **and the reader wrote the same word under both plans**,
-/// which is exactly what makes the holding a cost rather than an impossibility.
+/// published word, stand the same mark, wall the same twice-carried matter, call
+/// the same person to it, read that person's own accepting answer, and settle
+/// the plan `carried`. What differs is whether the reader ever hears that the
+/// plan has stopped writing -- **and the record both plans read was published by
+/// the same run before today**, which is exactly what makes the silence a choice
+/// rather than an accident.
 fn judge_abate_runs(bare_run: *Report, under_run: *Report) u8 {
     // invariant: a judging always reads two runs that were actually run
     assert(run_of(bare_run).queued >= 1);
-    // invariant: a judging never counts more spared readers than one mark names
-    assert(under_run.refrained <= 1);
+    // invariant: a judging never counts more told readers than one record spared
+    assert(under_run.bidden <= 1);
     // The measurement this rung moves, and the only number the two runs
-    // disagree on: a reader of an ending both plans read, spared by one and
-    // summoned again by the other.
-    if (bare_run.unspared != 1 or under_run.unspared != 0) {
-        print("  RED: the two plans summoned {d} readers about a matter already ended against {d}\n", .{
-            bare_run.unspared, under_run.unspared,
+    // disagree on: a reader of a sparing both plans read, told by one and left
+    // to interpret a silence by the other.
+    if (bare_run.unsaid != 1 or under_run.unsaid != 0) {
+        print("  RED: the two plans stopped writing to {d} readers without saying so against {d}\n", .{
+            bare_run.unsaid, under_run.unsaid,
         });
         return 1;
     }
-    if (bare_run.refrained != 0 or under_run.refrained != 1) {
-        print("  RED: the two plans spared {d} readers against {d}\n", .{
-            bare_run.refrained, under_run.refrained,
+    if (bare_run.bidden != 0 or under_run.bidden != 1) {
+        print("  RED: the two plans told {d} readers against {d}\n", .{
+            bare_run.bidden, under_run.bidden,
         });
         return 1;
     }
-    if (bare_run.recalled != 1 or under_run.recalled != 0) {
+    if (bare_run.withheld_parting != 1 or under_run.withheld_parting != 0) {
         print("  RED: the other half of the count did not close: {d} against {d}\n", .{
-            bare_run.recalled, under_run.recalled,
+            bare_run.withheld_parting, under_run.withheld_parting,
+        });
+        return 1;
+    }
+    // The refraining below moves under neither plan, and that is the honest
+    // reading rather than a gap: this pair hands neither run a named ending to
+    // open holding, so there is no reader for either to spare. The record both
+    // plans read was published by the harness for a run before today, which is
+    // the only kind of record this rung was ever meant to carry outward. The
+    // rung below proves its own number on its own pair.
+    if (bare_run.inner.unspared != 0 or under_run.inner.unspared != 0) {
+        print("  RED: a plan was charged {d} readers summoned again where it named no ending, against {d}\n", .{
+            bare_run.inner.unspared, under_run.inner.unspared,
+        });
+        return 1;
+    }
+    if (bare_run.inner.refrained != 0 or under_run.inner.refrained != 0) {
+        print("  RED: the two plans spared {d} readers where neither read an ending, against {d}\n", .{
+            bare_run.inner.refrained, under_run.inner.refrained,
+        });
+        return 1;
+    }
+    if (bare_run.inner.recalled != 0 or under_run.inner.recalled != 0) {
+        print("  RED: the other half of the count did not close: {d} against {d}\n", .{
+            bare_run.inner.recalled, under_run.inner.recalled,
         });
         return 1;
     }
@@ -12773,21 +13112,21 @@ fn judge_abate_runs(bare_run: *Report, under_run: *Report) u8 {
     // plans read was written by the harness for a run before today, which is the
     // only kind of mark this rung was ever meant to act on. The rung below
     // proves its own number on its own pair.
-    if (bare_run.inner.unrespected != 0 or under_run.inner.unrespected != 0) {
+    if (bare_run.inner.inner.unrespected != 0 or under_run.inner.inner.unrespected != 0) {
         print("  RED: a plan was charged {d} endings unnamed where it inherited none, against {d}\n", .{
-            bare_run.inner.unrespected, under_run.inner.unrespected,
+            bare_run.inner.inner.unrespected, under_run.inner.inner.unrespected,
         });
         return 1;
     }
-    if (bare_run.inner.respected != 0 or under_run.inner.respected != 0) {
+    if (bare_run.inner.inner.respected != 0 or under_run.inner.inner.respected != 0) {
         print("  RED: the two plans named {d} inherited endings where neither inherited one, against {d}\n", .{
-            bare_run.inner.respected, under_run.inner.respected,
+            bare_run.inner.inner.respected, under_run.inner.inner.respected,
         });
         return 1;
     }
-    if (bare_run.inner.reopened != 0 or under_run.inner.reopened != 0) {
+    if (bare_run.inner.inner.reopened != 0 or under_run.inner.inner.reopened != 0) {
         print("  RED: the other half of the count did not close: {d} against {d}\n", .{
-            bare_run.inner.reopened, under_run.inner.reopened,
+            bare_run.inner.inner.reopened, under_run.inner.inner.reopened,
         });
         return 1;
     }
@@ -12795,21 +13134,21 @@ fn judge_abate_runs(bare_run: *Report, under_run: *Report) u8 {
     // refraining acts on a mark already published rather than writing one. Both
     // runs hear the same reader and leave the same correspondence open; only
     // what the plan does about the ending it read parts them.
-    if (bare_run.inner.inner.unclosed != 1 or under_run.inner.inner.unclosed != 1) {
+    if (bare_run.inner.inner.inner.unclosed != 1 or under_run.inner.inner.inner.unclosed != 1) {
         print("  RED: the concluding below stopped counting a leaving plan: {d} against {d}\n", .{
-            bare_run.inner.inner.unclosed, under_run.inner.inner.unclosed,
+            bare_run.inner.inner.inner.unclosed, under_run.inner.inner.inner.unclosed,
         });
         return 1;
     }
-    if (bare_run.inner.inner.closed != 0 or under_run.inner.inner.closed != 0) {
+    if (bare_run.inner.inner.inner.closed != 0 or under_run.inner.inner.inner.closed != 0) {
         print("  RED: the two plans closed {d} correspondences where neither was asked to, against {d}\n", .{
-            bare_run.inner.inner.closed, under_run.inner.inner.closed,
+            bare_run.inner.inner.inner.closed, under_run.inner.inner.inner.closed,
         });
         return 1;
     }
-    if (bare_run.inner.inner.left_open != 1 or under_run.inner.inner.left_open != 1) {
+    if (bare_run.inner.inner.inner.left_open != 1 or under_run.inner.inner.inner.left_open != 1) {
         print("  RED: the concluding below stopped closing its count: {d} against {d}\n", .{
-            bare_run.inner.inner.left_open, under_run.inner.inner.left_open,
+            bare_run.inner.inner.inner.left_open, under_run.inner.inner.inner.left_open,
         });
         return 1;
     }
@@ -12817,42 +13156,42 @@ fn judge_abate_runs(bare_run: *Report, under_run: *Report) u8 {
     // reading rather than a gap: this pair runs the reader's accepting word,
     // and a reader who lets the wall stand releases nothing for either plan to
     // act on. The rung two down proves its own number on its own pair.
-    if (bare_run.inner.inner.inner.unabated != 0 or under_run.inner.inner.inner.unabated != 0) {
+    if (bare_run.inner.inner.inner.inner.unabated != 0 or under_run.inner.inner.inner.inner.unabated != 0) {
         print("  RED: a plan was charged {d} walls held against a reader who released none, against {d}\n", .{
-            bare_run.inner.inner.inner.unabated, under_run.inner.inner.inner.unabated,
+            bare_run.inner.inner.inner.inner.unabated, under_run.inner.inner.inner.inner.unabated,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.abated != 0 or under_run.inner.inner.inner.abated != 0) {
+    if (bare_run.inner.inner.inner.inner.abated != 0 or under_run.inner.inner.inner.inner.abated != 0) {
         print("  RED: the two plans abated {d} walls on a word that released none, against {d}\n", .{
-            bare_run.inner.inner.inner.abated, under_run.inner.inner.inner.abated,
+            bare_run.inner.inner.inner.inner.abated, under_run.inner.inner.inner.inner.abated,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.held != 1 or under_run.inner.inner.inner.held != 1) {
+    if (bare_run.inner.inner.inner.inner.held != 1 or under_run.inner.inner.inner.inner.held != 1) {
         print("  RED: the abating below stopped closing its count: {d} against {d}\n", .{
-            bare_run.inner.inner.inner.held, under_run.inner.inner.inner.held,
+            bare_run.inner.inner.inner.inner.held, under_run.inner.inner.inner.inner.held,
         });
         return 1;
     }
     // The opening below now moves the same under both plans, since abating acts
     // on a word already read rather than reading one. Both runs open the same
     // reader's release; only what the plan does about it parts them.
-    if (bare_run.inner.inner.inner.inner.opened != 1 or under_run.inner.inner.inner.inner.opened != 1) {
+    if (bare_run.inner.inner.inner.inner.inner.opened != 1 or under_run.inner.inner.inner.inner.inner.opened != 1) {
         print("  RED: the two plans opened {d} answers against {d}\n", .{
-            bare_run.inner.inner.inner.inner.opened, under_run.inner.inner.inner.inner.opened,
+            bare_run.inner.inner.inner.inner.inner.opened, under_run.inner.inner.inner.inner.inner.opened,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.unopened != 0 or under_run.inner.inner.inner.inner.unopened != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.unopened != 0 or under_run.inner.inner.inner.inner.inner.unopened != 0) {
         print("  RED: the two plans left {d} answers unopened against {d}\n", .{
-            bare_run.inner.inner.inner.inner.unopened, under_run.inner.inner.inner.inner.unopened,
+            bare_run.inner.inner.inner.inner.inner.unopened, under_run.inner.inner.inner.inner.inner.unopened,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.left != 0 or under_run.inner.inner.inner.inner.left != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.left != 0 or under_run.inner.inner.inner.inner.inner.left != 0) {
         print("  RED: the opening below stopped closing its count: {d} against {d}\n", .{
-            bare_run.inner.inner.inner.inner.left, under_run.inner.inner.inner.inner.left,
+            bare_run.inner.inner.inner.inner.inner.left, under_run.inner.inner.inner.inner.inner.left,
         });
         return 1;
     }
@@ -12860,21 +13199,21 @@ fn judge_abate_runs(bare_run: *Report, under_run: *Report) u8 {
     // answer reads a reply to a call already carried rather than carrying one.
     // Both runs call the same person to the same wall; only whether the plan
     // ever opens what they wrote back parts them.
-    if (bare_run.inner.inner.inner.inner.inner.beckoned != 1 or under_run.inner.inner.inner.inner.inner.beckoned != 1) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.beckoned != 1 or under_run.inner.inner.inner.inner.inner.inner.beckoned != 1) {
         print("  RED: the two plans called a person to {d} walls against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.beckoned, under_run.inner.inner.inner.inner.inner.beckoned,
+            bare_run.inner.inner.inner.inner.inner.inner.beckoned, under_run.inner.inner.inner.inner.inner.inner.beckoned,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.unheralded != 0 or under_run.inner.inner.inner.inner.inner.unheralded != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.unheralded != 0 or under_run.inner.inner.inner.inner.inner.inner.unheralded != 0) {
         print("  RED: the two plans left {d} walls unheralded against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.unheralded, under_run.inner.inner.inner.inner.inner.unheralded,
+            bare_run.inner.inner.inner.inner.inner.inner.unheralded, under_run.inner.inner.inner.inner.inner.inner.unheralded,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.kept != 0 or under_run.inner.inner.inner.inner.inner.kept != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.kept != 0 or under_run.inner.inner.inner.inner.inner.inner.kept != 0) {
         print("  RED: the beckoning below stopped closing its count: {d} against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.kept, under_run.inner.inner.inner.inner.inner.kept,
+            bare_run.inner.inner.inner.inner.inner.inner.kept, under_run.inner.inner.inner.inner.inner.inner.kept,
         });
         return 1;
     }
@@ -12882,72 +13221,72 @@ fn judge_abate_runs(bare_run: *Report, under_run: *Report) u8 {
     // carries a wall already stood rather than standing one of its own. Both
     // runs bound the same twice-carried matter; only whether a person is ever
     // called to that boundary parts them.
-    if (bare_run.inner.inner.inner.inner.inner.inner.walled != 1 or under_run.inner.inner.inner.inner.inner.inner.walled != 1) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.walled != 1 or under_run.inner.inner.inner.inner.inner.inner.inner.walled != 1) {
         print("  RED: the two plans stood {d} walls against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.walled, under_run.inner.inner.inner.inner.inner.inner.walled,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.walled, under_run.inner.inner.inner.inner.inner.inner.inner.walled,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.unbounded != 0 or under_run.inner.inner.inner.inner.inner.inner.unbounded != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.unbounded != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.unbounded != 0) {
         print("  RED: the two plans relayed {d} twice-carried impasses unbounded against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.unbounded, under_run.inner.inner.inner.inner.inner.inner.unbounded,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.unbounded, under_run.inner.inner.inner.inner.inner.inner.inner.unbounded,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.relayed != 0 or under_run.inner.inner.inner.inner.inner.inner.relayed != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.relayed != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.relayed != 0) {
         print("  RED: the bounding below stopped closing its count: {d} against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.relayed, under_run.inner.inner.inner.inner.inner.inner.relayed,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.relayed, under_run.inner.inner.inner.inner.inner.inner.inner.relayed,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.minded != 1 or under_run.inner.inner.inner.inner.inner.inner.inner.minded != 1) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.minded != 1 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.minded != 1) {
         print("  RED: the two plans named {d} inherited impasses against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.minded, under_run.inner.inner.inner.inner.inner.inner.inner.minded,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.minded, under_run.inner.inner.inner.inner.inner.inner.inner.inner.minded,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.unminded != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.unminded != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.unminded != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.unminded != 0) {
         print("  RED: the two plans left {d} impasses inherited in silence against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.unminded, under_run.inner.inner.inner.inner.inner.inner.inner.unminded,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.unminded, under_run.inner.inner.inner.inner.inner.inner.inner.inner.unminded,
         });
         return 1;
     }
     // The forbearing three tiers down stands still under both plans now: both
     // stood the wall, so both stayed the relay, and a bounded matter is counted
     // as walled rather than unhanded under either.
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.forborne != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.forborne != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.forborne != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.forborne != 0) {
         print("  RED: the two plans handed on {d} standing matters against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.forborne, under_run.inner.inner.inner.inner.inner.inner.inner.inner.forborne,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.forborne, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.forborne,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.unhanded != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.unhanded != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unhanded != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unhanded != 0) {
         print("  RED: the two plans left {d} matters standing with nothing handed on against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.unhanded, under_run.inner.inner.inner.inner.inner.inner.inner.inner.unhanded,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unhanded, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unhanded,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.opened != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.opened != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.opened != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.opened != 0) {
         print("  RED: the forbearing below stopped closing its count: {d} against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.opened, under_run.inner.inner.inner.inner.inner.inner.inner.inner.opened,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.opened, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.opened,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.read_back != 1 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.read_back != 1) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.read_back != 1 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.read_back != 1) {
         print("  RED: the two marks read their reader's word on {d} tellings against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.read_back, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.read_back,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.read_back, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.read_back,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheard != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheard != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheard != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheard != 0) {
         print("  RED: the two marks left {d} tellings unheard against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheard, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheard,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheard, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheard,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unread != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unread != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unread != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unread != 0) {
         print("  RED: the reading below stopped closing its count: {d} against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unread, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unread,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unread, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unread,
         });
         return 1;
     }
@@ -12956,21 +13295,21 @@ fn judge_abate_runs(bare_run: *Report, under_run: *Report) u8 {
     // own. Both runs look again, both receipt it, and both carry it home -- so
     // the harm the rung below names stands answered in each, and only whether
     // anybody opens the answer parts them.
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.recounted != 1 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.recounted != 1) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.recounted != 1 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.recounted != 1) {
         print("  RED: the two marks told their reader of {d} second looks against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.recounted, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.recounted,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.recounted, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.recounted,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.untold != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.untold != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.untold != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.untold != 0) {
         print("  RED: the two marks left {d} second looks untold against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.untold, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.untold,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.untold, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.untold,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.withheld != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.withheld != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.withheld != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.withheld != 0) {
         print("  RED: the telling below stopped closing its count: {d} against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.withheld, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.withheld,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.withheld, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.withheld,
         });
         return 1;
     }
@@ -12979,21 +13318,21 @@ fn judge_abate_runs(bare_run: *Report, under_run: *Report) u8 {
     // second look of its own. Both runs inherit the same matter, take the same
     // look, and take it down -- so the harm the rung below names stands answered
     // in each, and only whether anybody hears of it parts them.
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.looked != 1 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.looked != 1) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.looked != 1 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.looked != 1) {
         print("  RED: the two marks looked again at {d} matters against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.looked, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.looked,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.looked, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.looked,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unlooked != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unlooked != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unlooked != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unlooked != 0) {
         print("  RED: the two marks left {d} reopened matters unlooked-at against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unlooked, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unlooked,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unlooked, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unlooked,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.passed != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.passed != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.passed != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.passed != 0) {
         print("  RED: the looking below stopped closing its count: {d} against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.passed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.passed,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.passed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.passed,
         });
         return 1;
     }
@@ -13002,41 +13341,41 @@ fn judge_abate_runs(bare_run: *Report, under_run: *Report) u8 {
     // Both runs read their reader's short word, publish it, and book nothing --
     // so the harm the rung below names stands equally in each, and only what
     // becomes of the matter they inherited parts them.
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.taken_up != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.taken_up != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.taken_up != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.taken_up != 0) {
         print("  RED: the two marks took up {d} matters again against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.taken_up, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.taken_up,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.taken_up, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.taken_up,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheeded != 1 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheeded != 1) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheeded != 1 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheeded != 1) {
         print("  RED: the two marks left {d} short words unheeded against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheeded, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheeded,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheeded, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheeded,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.left_closed != 1 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.left_closed != 1) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.left_closed != 1 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.left_closed != 1) {
         print("  RED: the reopening below stopped closing its count: {d} against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.left_closed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.left_closed,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.left_closed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.left_closed,
         });
         return 1;
     }
     // The weighing below still moves the same under both marks, since looking
     // again at a matter acts on a reader's word rather than reading a second one.
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.weighed != 1 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.weighed != 1) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.weighed != 1 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.weighed != 1) {
         print("  RED: the two marks read their reader's word on {d} answers against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.weighed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.weighed,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.weighed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.weighed,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unmeasured != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unmeasured != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unmeasured != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unmeasured != 0) {
         print("  RED: the two marks left {d} answers unmeasured against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unmeasured, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unmeasured,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unmeasured, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unmeasured,
         });
         return 1;
     }
-    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unweighed != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unweighed != 0) {
+    if (bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unweighed != 0 or under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unweighed != 0) {
         print("  RED: the two marks left {d} answers unasked against {d}\n", .{
-            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unweighed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unweighed,
+            bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unweighed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unweighed,
         });
         return 1;
     }
@@ -13333,7 +13672,7 @@ fn judge_abate_runs(bare_run: *Report, under_run: *Report) u8 {
 pub fn check_tidings() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_tidings();
+    return refraining_rung.check_tidings();
 }
 
 
@@ -13345,7 +13684,7 @@ pub fn check_tidings() u8 {
 pub fn check_appeal() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_appeal();
+    return refraining_rung.check_appeal();
 }
 
 
@@ -13357,7 +13696,7 @@ pub fn check_appeal() u8 {
 pub fn check_endure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_endure();
+    return refraining_rung.check_endure();
 }
 
 /// Weighs the refusals this rung earns, and the number it moves.
@@ -13368,14 +13707,14 @@ pub fn check_endure() u8 {
 pub fn check_endure_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_endure_refusals();
+    return refraining_rung.check_endure_refusals();
 }
 
 /// Weighs the number this rung moves, as a fold, before any process runs.
 pub fn check_endure_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_endure_measure();
+    return refraining_rung.check_endure_measure();
 }
 
 
@@ -13387,7 +13726,7 @@ pub fn check_endure_measure() u8 {
 pub fn check_heed() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_heed();
+    return refraining_rung.check_heed();
 }
 
 /// Weighs the refusals this rung earns, and the number it moves.
@@ -13398,14 +13737,14 @@ pub fn check_heed() u8 {
 pub fn check_heed_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_heed_refusals();
+    return refraining_rung.check_heed_refusals();
 }
 
 /// Weighs the number this rung moves, as a fold, before any process runs.
 pub fn check_heed_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_heed_measure();
+    return refraining_rung.check_heed_measure();
 }
 
 
@@ -13417,7 +13756,7 @@ pub fn check_heed_measure() u8 {
 pub fn check_relent() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_relent();
+    return refraining_rung.check_relent();
 }
 
 /// The refusals this rung earns, each weighed by name.
@@ -13427,14 +13766,14 @@ pub fn check_relent() u8 {
 pub fn check_relent_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_relent_refusals();
+    return refraining_rung.check_relent_refusals();
 }
 
 /// The number this rung moves, weighed as a fold.
 pub fn check_relent_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_relent_measure();
+    return refraining_rung.check_relent_measure();
 }
 
 
@@ -13446,7 +13785,7 @@ pub fn check_relent_measure() u8 {
 pub fn check_dwell() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_dwell();
+    return refraining_rung.check_dwell();
 }
 
 /// The refusals this rung earns, each weighed by name.
@@ -13456,14 +13795,14 @@ pub fn check_dwell() u8 {
 pub fn check_dwell_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_dwell_refusals();
+    return refraining_rung.check_dwell_refusals();
 }
 
 /// The number this rung moves, weighed as a fold.
 pub fn check_dwell_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_dwell_measure();
+    return refraining_rung.check_dwell_measure();
 }
 
 
@@ -13475,21 +13814,21 @@ pub fn check_dwell_measure() u8 {
 pub fn check_swell() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_swell();
+    return refraining_rung.check_swell();
 }
 
 /// The four refusals this rung earns, each read straight.
 pub fn check_swell_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_swell_refusals();
+    return refraining_rung.check_swell_refusals();
 }
 
 /// The number this rung moves, weighed as a fold before any run moves it.
 pub fn check_swell_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_swell_measure();
+    return refraining_rung.check_swell_measure();
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -13500,21 +13839,21 @@ pub fn check_swell_measure() u8 {
 pub fn check_refer() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_refer();
+    return refraining_rung.check_refer();
 }
 
 /// Weighs the five refusals this rung earns, each by name.
 pub fn check_refer_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_refer_refusals();
+    return refraining_rung.check_refer_refusals();
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_refer_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_refer_measure();
+    return refraining_rung.check_refer_measure();
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -13525,21 +13864,21 @@ pub fn check_refer_measure() u8 {
 pub fn check_deem() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_deem();
+    return refraining_rung.check_deem();
 }
 
 /// Weighs the five refusals this rung earns, each by name.
 pub fn check_deem_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_deem_refusals();
+    return refraining_rung.check_deem_refusals();
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_deem_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_deem_measure();
+    return refraining_rung.check_deem_measure();
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -13550,21 +13889,21 @@ pub fn check_deem_measure() u8 {
 pub fn check_avow() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_avow();
+    return refraining_rung.check_avow();
 }
 
 /// Weighs the five refusals this rung earns, each by name.
 pub fn check_avow_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_avow_refusals();
+    return refraining_rung.check_avow_refusals();
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_avow_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_avow_measure();
+    return refraining_rung.check_avow_measure();
 }
 
 /// Weighs this rung's own folds, before any dependent runs.
@@ -13575,21 +13914,21 @@ pub fn check_avow_measure() u8 {
 pub fn check_owe() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_owe();
+    return refraining_rung.check_owe();
 }
 
 /// Weighs every refusal this rung earns, in the order the run reaches them.
 pub fn check_owe_refusals() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_owe_refusals();
+    return refraining_rung.check_owe_refusals();
 }
 
 /// Weighs the number this rung moves, as a pure fold.
 pub fn check_owe_measure() u8 {
     // The rung below owns this check and everything it calls, so this
     // rung runs it there rather than carrying a second copy of it.
-    return respecting_rung.check_owe_measure();
+    return refraining_rung.check_owe_measure();
 }
 
 /// Weighs the number this rung moves, as a pure fold.
@@ -13622,7 +13961,7 @@ pub fn check_refrain_measure() u8 {
     print("  the refraining this rung keeps: {s}\n", .{refrain_words(.refrains)});
     print("  what a calling plan tells an operator: {s}\n", .{refrain_words(.calls)});
     print("  a record carries thirteen bytes: the mark it was handed, echoed whole, and this run's own byte last\n", .{});
-    return 0;
+    return check_farewell();
 }
 
 /// A published record across a provisioning, proven outside any run.
@@ -13704,6 +14043,221 @@ pub fn check_refrain_wire(io: std.Io, sys: *const system.System) u8 {
     clear_respect(io);
     clear_mind(io);
     print("  a record survives a provisioning, and the summons it spares stays down\n", .{});
+    return check_farewell_wire(io, sys);
+}
+
+/// Weighs the parting this rung adds, as a pure fold.
+pub fn check_farewell() u8 {
+    const held = holds_bytes(rests_bytes(knows_bytes(anew_bytes(inherited_matter)), .stands));
+    const call = calls_bytes(walls_bytes(minds_bytes(held)));
+    const hand = hands_bytes(call, .accepts);
+    const record = refrains_bytes(respects_bytes(closes_bytes(answers_bytes(hand))));
+    const parting = fares_bytes(record);
+    if (!fares_carries(parting, record)) {
+        print("  RED: a parting lost the record it was built from\n", .{});
+        return 1;
+    }
+    if (fares_hand(parting) != .accepts) {
+        print("  RED: a parting lost the reader's own word nine tiers down\n", .{});
+        return 1;
+    }
+    if (parting[max_fares_bytes - 1] != parted_byte) {
+        print("  RED: a parting did not say what it was\n", .{});
+        return 1;
+    }
+    // A parting built on some other record tells some other reader, and reading
+    // it as this one's would leave a person holding a goodbye about a matter
+    // they never ended.
+    const taken = refrains_bytes(respects_bytes(closes_bytes(answers_bytes(hands_bytes(call, .takes_up)))));
+    if (fares_carries(fares_bytes(taken), record)) {
+        print("  RED: a parting over some other sparing passed as this one's\n", .{});
+        return 1;
+    }
+    if (fares_carries(null, record)) {
+        print("  RED: an absent parting carried a record all the same\n", .{});
+        return 1;
+    }
+    if (fares_hand(null) != null) {
+        print("  RED: an absent parting carried a reader's word all the same\n", .{});
+        return 1;
+    }
+    // And the letter that stands is weighed against the letter this run would
+    // write, which is what keeps a box holding yesterday's goodbye from reading
+    // as a person told this morning.
+    if (!farewell_holds(parting, fares_bytes(record))) {
+        print("  RED: the parting this run wrote read as some other run's\n", .{});
+        return 1;
+    }
+    if (farewell_holds(fares_bytes(taken), fares_bytes(record))) {
+        print("  RED: a parting about one sparing read as a parting about the other\n", .{});
+        return 1;
+    }
+    if (farewell_holds(null, fares_bytes(record))) {
+        print("  RED: an empty box read as a reader finally told\n", .{});
+        return 1;
+    }
+    return check_farewell_refusals();
+}
+
+/// Weighs every refusal this rung earns, as a pure fold.
+pub fn check_farewell_refusals() u8 {
+    if (farewell_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.FarewellUnspared) {
+            print("  RED: a parting by a run that spared nobody refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a parting by a run that spared nobody was allowed\n", .{});
+        return 1;
+    }
+    if (farewell_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.FarewellUnaddressed) {
+            print("  RED: a parting carried to no address refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a parting carried to no address was allowed\n", .{});
+        return 1;
+    }
+    if (farewell_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.FarewellMismatched) {
+            print("  RED: a parting about some other sparing refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a parting about some other sparing was allowed\n", .{});
+        return 1;
+    }
+    if (farewell_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.FarewellMiscounted) {
+            print("  RED: a reader both told and kept in the dark refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a reader both told and kept in the dark was allowed\n", .{});
+        return 1;
+    }
+    if (farewell_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.FarewellMiscounted) {
+            print("  RED: a reader neither told nor kept in the dark refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a reader neither told nor kept in the dark was allowed\n", .{});
+        return 1;
+    }
+    // And the honest pass: one sparing read, one reader told, counted once.
+    if (farewell_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: an honest parting refused as {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return check_farewell_measure();
+}
+
+/// Weighs the number this rung moves, as a pure fold.
+pub fn check_farewell_measure() u8 {
+    if (unsaid_partings(1, .goes_quiet) != 1) {
+        print("  RED: a reader the plan stopped writing to and never told went uncounted\n", .{});
+        return 1;
+    }
+    if (unsaid_partings(1, .bids) != 0) {
+        print("  RED: a reader finally told still counted as one left to guess\n", .{});
+        return 1;
+    }
+    // A run reading no sparing has stopped writing to nobody, so it costs the
+    // count nothing -- the harm this rung names is the correspondence actually
+    // ended and then ended without a word.
+    if (unsaid_partings(0, .goes_quiet) != 0) {
+        print("  RED: a run that spared nobody was charged a reader left to guess\n", .{});
+        return 1;
+    }
+    if (bidden_in(1, .bids) != 1 or kept_quiet_in(1, .bids) != 0) {
+        print("  RED: a parting run miscounted the one reader it told\n", .{});
+        return 1;
+    }
+    if (bidden_in(1, .goes_quiet) != 0 or kept_quiet_in(1, .goes_quiet) != 1) {
+        print("  RED: a quiet run miscounted the reader it left to guess\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: unspared, unaddressed, mismatched, miscounted, misrecorded\n", .{});
+    print("  the parting this rung keeps: {s}\n", .{farewell_words(.bids)});
+    print("  what a quiet plan tells an operator: {s}\n", .{farewell_words(.goes_quiet)});
+    print("  a parting carries fourteen bytes: the record it was handed, echoed whole, and this run's own byte last\n", .{});
+    return 0;
+}
+
+/// A delivered parting across a provisioning, proven outside any run.
+///
+/// The lap below proves the parting end to end under a real plan. This proves
+/// the two properties that make the letter worth carrying: **it survives a
+/// provisioning**, since a goodbye swept every morning would leave the reader
+/// exactly as uninformed as the silence this rung exists to end -- and **it
+/// outlives the record it names**, since a parting that fell with the plan's own
+/// note would be a telling the plan could take back without the reader ever
+/// knowing it had.
+pub fn check_farewell_wire(io: std.Io, sys: *const system.System) u8 {
+    clear_fares(io, standing_address);
+    clear_refrain(io);
+    clear_respect(io);
+    clear_close(io);
+    clear_abate(io);
+    clear_answer(io);
+    clear_hands(io, standing_address);
+    clear_calls(io, standing_address);
+    clear_desist(io);
+    clear_mind(io);
+    if (fared_of(io, standing_address) != null) {
+        print("  RED: a parting stood in the box of a reader nobody had told\n", .{});
+        return 1;
+    }
+    const held = holds_bytes(rests_bytes(knows_bytes(anew_bytes(inherited_matter)), .stands));
+    const call = calls_bytes(walls_bytes(minds_bytes(held)));
+    const record = refrains_bytes(respects_bytes(closes_bytes(answers_bytes(hands_bytes(call, .accepts)))));
+    // The run before today, standing in for itself: it read this reader's ending
+    // and left them alone, exactly as the rung below leaves a wire.
+    refrain_note(io, respects_bytes(closes_bytes(answers_bytes(hands_bytes(call, .accepts))))) catch |err| {
+        print("  RED: an earlier run's sparing could not be written: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    fare_reader(io, standing_address, record) catch |err| {
+        print("  RED: a parting could not be carried to a reader: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = fared_of(io, standing_address) orelse {
+        print("  RED: a provisioning cleared the parting a reader was told\n", .{});
+        return 1;
+    };
+    if (!fares_carries(survived, record)) {
+        print("  RED: a parting carried past a provisioning stopped naming its record\n", .{});
+        return 1;
+    }
+    if (fares_hand(survived) != .accepts) {
+        print("  RED: a parting carried past a provisioning forgot the word it was built on\n", .{});
+        return 1;
+    }
+    // And the letter outlives the record it names, which is the whole reason it
+    // is carried outward at all: the plan's own note may fall, and what the
+    // reader was told must not fall with it.
+    clear_refrain(io);
+    if (fared_of(io, standing_address) == null) {
+        print("  RED: a parting fell with the record it was only telling of\n", .{});
+        return 1;
+    }
+    clear_fares(io, standing_address);
+    if (fared_of(io, standing_address) != null) {
+        print("  RED: a parting stood in a box it had been taken out of\n", .{});
+        return 1;
+    }
+    clear_respect(io);
+    clear_mind(io);
+    print("  a parting survives a provisioning, and outlives the record it names\n", .{});
     return 0;
 }
 
@@ -13722,7 +14276,7 @@ pub fn check_suffice_runs(
     // very run travels nowhere, so there is nobody who owes it a word -- and a
     // run owed no word publishes none, however willing it was to read one.
     var fresh_run: Report = .{};
-    if (!run_one(allocator, io, self_path, sys, &written_queue, .weighed, .released, .told, .heralded, .referred, .answered, .concedes, .books, .meets, .hollow, .sound, .withheld, .unasked, .closes, .passes, .withholds, .unread, .opens, .begins, .relays, .keeps, .leaves, .holds, .leaves, .reopens, .calls, .presses, 0, .presses, .upholds, null, null, null, null, null, null, null, null, &fresh_run)) return 1;
+    if (!run_one(allocator, io, self_path, sys, &written_queue, .weighed, .released, .told, .heralded, .referred, .answered, .concedes, .books, .meets, .hollow, .sound, .withheld, .unasked, .closes, .passes, .withholds, .unread, .opens, .begins, .relays, .keeps, .leaves, .holds, .leaves, .reopens, .calls, .goes_quiet, .presses, 0, .presses, .upholds, null, null, null, null, null, null, null, null, null, &fresh_run)) return 1;
     if (deem_of(&fresh_run).answered != 0 or deem_of(&fresh_run).unanswered != 0) {
         print("  RED: a quarrel raised this morning was answered {d} times\n", .{deem_of(&fresh_run).answered});
         return 1;
@@ -13736,7 +14290,7 @@ pub fn check_suffice_runs(
     // The other ending: a plan nobody ever pressed a quarrel against refers
     // nothing anywhere, so no third hand's word is ever about it.
     var clear_run: Report = .{};
-    if (!run_one(allocator, io, self_path, sys, &written_queue, .weighed, .released, .told, .heralded, .referred, .answered, .concedes, .books, .meets, .hollow, .sound, .withheld, .unasked, .closes, .passes, .withholds, .unread, .opens, .begins, .relays, .keeps, .leaves, .holds, .leaves, .reopens, .calls, null, 0, .accepts, .upholds, null, null, null, null, null, null, null, null, &clear_run)) return 1;
+    if (!run_one(allocator, io, self_path, sys, &written_queue, .weighed, .released, .told, .heralded, .referred, .answered, .concedes, .books, .meets, .hollow, .sound, .withheld, .unasked, .closes, .passes, .withholds, .unread, .opens, .begins, .relays, .keeps, .leaves, .holds, .leaves, .reopens, .calls, .goes_quiet, null, 0, .accepts, .upholds, null, null, null, null, null, null, null, null, null, &clear_run)) return 1;
     if (deem_of(&clear_run).answered != 0 or deem_of(&clear_run).awaited_in != 0 or deem_of(&clear_run).unanswered != 0) {
         print("  RED: a plan nobody pressed read {d} findings\n", .{deem_of(&clear_run).answered});
         return 1;
@@ -13750,7 +14304,7 @@ pub fn check_suffice_runs(
     // And the honest middle: a desk that simply has not opened the case yet
     // leaves it waiting, which is a different fact from a plan that never asks.
     var silent_run: Report = .{};
-    if (!run_one(allocator, io, self_path, sys, &written_queue, .weighed, .released, .told, .heralded, .referred, .unread, .concedes, .books, .meets, .hollow, .sound, .withheld, .unasked, .closes, .passes, .withholds, .unread, .opens, .begins, .relays, .keeps, .leaves, .holds, .leaves, .reopens, .calls, .presses, long_standing_runs, .presses, null, null, null, null, null, null, null, null, null, &silent_run)) return 1;
+    if (!run_one(allocator, io, self_path, sys, &written_queue, .weighed, .released, .told, .heralded, .referred, .unread, .concedes, .books, .meets, .hollow, .sound, .withheld, .unasked, .closes, .passes, .withholds, .unread, .opens, .begins, .relays, .keeps, .leaves, .holds, .leaves, .reopens, .calls, .goes_quiet, .presses, long_standing_runs, .presses, null, null, null, null, null, null, null, null, null, null, &silent_run)) return 1;
     if (deem_of(&silent_run).awaited_in != 1 or deem_of(&silent_run).unanswered != 1) {
         print("  RED: a case on a desk that has said nothing counted as {d} waiting\n", .{
             deem_of(&silent_run).awaited_in,
@@ -13773,7 +14327,7 @@ pub fn check_suffice_runs(
     // supervisor made to yield, and a plan holding to its word on the record is
     // as honest an answer as taking the finding.
     var held_run: Report = .{};
-    if (!run_one(allocator, io, self_path, sys, &written_queue, .weighed, .released, .told, .heralded, .referred, .answered, .dissents, .books, .meets, .hollow, .sound, .withheld, .unasked, .closes, .passes, .withholds, .unread, .opens, .begins, .relays, .keeps, .leaves, .holds, .leaves, .reopens, .calls, .presses, long_standing_runs, .presses, .upholds, null, null, null, null, null, null, null, null, &held_run)) return 1;
+    if (!run_one(allocator, io, self_path, sys, &written_queue, .weighed, .released, .told, .heralded, .referred, .answered, .dissents, .books, .meets, .hollow, .sound, .withheld, .unasked, .closes, .passes, .withholds, .unread, .opens, .begins, .relays, .keeps, .leaves, .holds, .leaves, .reopens, .calls, .goes_quiet, .presses, long_standing_runs, .presses, .upholds, null, null, null, null, null, null, null, null, null, &held_run)) return 1;
     if (avow_of(&held_run).said != 1 or avow_of(&held_run).unavowed != 0) {
         print("  RED: a plan keeping its own word said {d} of them\n", .{avow_of(&held_run).said});
         return 1;
@@ -13796,7 +14350,7 @@ pub fn check_suffice_runs(
     // conceded nothing, so there is no admission to carry anywhere. Silence is
     // already counted by the rung below; this rung declines to read it as one.
     var mute_run: Report = .{};
-    if (!run_one(allocator, io, self_path, sys, &written_queue, .weighed, .released, .told, .heralded, .referred, .answered, .mute, .books, .meets, .hollow, .sound, .withheld, .unasked, .closes, .passes, .withholds, .unread, .opens, .begins, .relays, .keeps, .leaves, .holds, .leaves, .reopens, .calls, .presses, long_standing_runs, .presses, .upholds, null, null, null, null, null, null, null, null, &mute_run)) return 1;
+    if (!run_one(allocator, io, self_path, sys, &written_queue, .weighed, .released, .told, .heralded, .referred, .answered, .mute, .books, .meets, .hollow, .sound, .withheld, .unasked, .closes, .passes, .withholds, .unread, .opens, .begins, .relays, .keeps, .leaves, .holds, .leaves, .reopens, .calls, .goes_quiet, .presses, long_standing_runs, .presses, .upholds, null, null, null, null, null, null, null, null, null, &mute_run)) return 1;
     if (owe_of(&mute_run).booked != 0 or owe_of(&mute_run).unbooked != 0) {
         print("  RED: a mute run booked {d} debts out of a word it never said\n", .{owe_of(&mute_run).booked});
         return 1;
@@ -13827,7 +14381,7 @@ pub fn check_suffice_runs(
     // holding and take it down. What parts them is whether the meeting ever says
     // what it found.
     var bare_run: Report = .{};
-    if (!run_one(allocator, io, self_path, sys, &written_queue, .weighed, .released, .told, .heralded, .referred, .answered, .concedes, .free, .meets, .redresses, .righted, .apprises, .asks, .closes, .looks, .tells, .reads, .forbears, .minds, .bounds, .beckons, .hears, .holds, .leaves, .reopens, .calls, .presses, long_standing_runs, .presses, .upholds, inherited_debt, .wanting, inherited_matter, .stands, inherited_impasse, elder_mark, null, elder_named, &bare_run)) return 1;
+    if (!run_one(allocator, io, self_path, sys, &written_queue, .weighed, .released, .told, .heralded, .referred, .answered, .concedes, .free, .meets, .redresses, .righted, .apprises, .asks, .closes, .looks, .tells, .reads, .forbears, .minds, .bounds, .beckons, .hears, .holds, .leaves, .reopens, .calls, .goes_quiet, .presses, long_standing_runs, .presses, .upholds, inherited_debt, .wanting, inherited_matter, .stands, inherited_impasse, elder_mark, null, null, elder_spared, &bare_run)) return 1;
     const bare_said = settlement_published(io) orelse {
         print("  RED: a run published no settlement at all\n", .{});
         return 1;
@@ -14022,24 +14576,24 @@ pub fn check_suffice_runs(
         print("  RED: a holding run let the released wall fall anyway\n", .{});
         return 1;
     }
-    // The whole harm this rung repairs, read straight off the wire: the plan had
-    // already named this ending where an operator reads the outcome, and it
-    // summoned that very reader about the matter again all the same.
-    if (respect_published(io) == null) {
-        print("  RED: a calling run took down the ending a run before it had named\n", .{});
+    // The whole harm this rung repairs, read straight off the wire: a run before
+    // today spared this reader and published the record saying so, and this run
+    // stopped writing to them without a word about any of it.
+    if (refrain_published(io) == null) {
+        print("  RED: a quiet run took down the sparing a run before it had published\n", .{});
         return 1;
     }
-    if (refrain_published(io) != null) {
-        print("  RED: a calling run spared a reader after all\n", .{});
+    if (fared_of(io, standing_address) != null) {
+        print("  RED: a quiet run told its reader after all\n", .{});
         return 1;
     }
     if (called_of(io, standing_address) == null) {
-        print("  RED: a calling run left the reader's box holding no summons\n", .{});
+        print("  RED: a quiet run left the reader's box holding no summons\n", .{});
         return 1;
     }
 
     var under_run: Report = .{};
-    if (!run_one(allocator, io, self_path, sys, &written_queue, .weighed, .released, .told, .heralded, .referred, .answered, .concedes, .free, .meets, .redresses, .righted, .apprises, .asks, .closes, .looks, .tells, .reads, .forbears, .minds, .bounds, .beckons, .hears, .holds, .leaves, .reopens, .refrains, .presses, long_standing_runs, .presses, .upholds, inherited_debt, .wanting, inherited_matter, .stands, inherited_impasse, elder_mark, null, elder_named, &under_run)) return 1;
+    if (!run_one(allocator, io, self_path, sys, &written_queue, .weighed, .released, .told, .heralded, .referred, .answered, .concedes, .free, .meets, .redresses, .righted, .apprises, .asks, .closes, .looks, .tells, .reads, .forbears, .minds, .bounds, .beckons, .hears, .holds, .leaves, .reopens, .calls, .bids, .presses, long_standing_runs, .presses, .upholds, inherited_debt, .wanting, inherited_matter, .stands, inherited_impasse, elder_mark, null, null, elder_spared, &under_run)) return 1;
     const under_said = settlement_published(io) orelse {
         print("  RED: a reading run published no settlement at all\n", .{});
         return 1;
@@ -14359,11 +14913,11 @@ pub fn check_suffice_runs(
         print("  RED: a call carried a word other than the refusal it was built on\n", .{});
         return 1;
     }
-    // And the wall the call named still stands: a refraining takes down the
-    // summons rather than the boundary, so a reader who let the wall stand
-    // keeps it and simply stops hearing about it.
+    // And the wall the call named still stands: a parting takes the arc's last
+    // word outward rather than the boundary down, so a reader who let the wall
+    // stand keeps it and is simply told the plan has stopped writing.
     if (wall_standing(io) == null) {
-        print("  RED: a refraining run took down the wall it was only sparing a reader about\n", .{});
+        print("  RED: a parting run took down the wall it was only telling a reader about\n", .{});
         return 1;
     }
 
@@ -14413,31 +14967,32 @@ pub fn check_suffice_runs(
     }
 
     // The act this rung is the whole point of, read outside the run that made
-    // it: the record naming the reader this run finally left alone, standing
-    // beside the settlement where an operator reads the outcome, and carrying
-    // that reader's own word as its eighth tier.
-    const spared = refrain_published(io) orelse {
-        print("  RED: a refraining run published no record at all\n", .{});
+    // it: the parting standing in the box its reader already reads, carrying the
+    // record this plan published whole and that reader's own word as its ninth
+    // tier. It is the one note of this whole arc written where the person it is
+    // about will find it without coming to look.
+    const parted = fared_of(io, standing_address) orelse {
+        print("  RED: a parting run told nobody at all\n", .{});
         return 1;
     };
-    if (!refrains_carries(spared, elder_named)) {
-        print("  RED: a refraining run spared a reader other than the one its mark named\n", .{});
+    if (!fares_carries(parted, elder_spared)) {
+        print("  RED: a parting run told a reader about some other sparing\n", .{});
         return 1;
     }
-    if (refrains_hand(spared) != .accepts) {
-        print("  RED: a record carried a word other than the ending it spared a reader about\n", .{});
+    if (fares_hand(parted) != .accepts) {
+        print("  RED: a parting carried a word other than the ending it was built on\n", .{});
         return 1;
     }
-    // And the summons came down, which is what makes the sparing an act rather
-    // than a courtesy. The reader's box holds no fresh call, and the mark the
-    // run acted on stands exactly where the harness left it -- a refraining
-    // reads an ending and never rewrites one.
-    if (called_of(io, standing_address) != null) {
-        print("  RED: a refraining run left its summons standing in the reader's box\n", .{});
+    // And the record it names stands exactly where the harness left it, which is
+    // what makes the telling a carrying rather than a claim: a parting reads a
+    // sparing and never rewrites one, and the summons the rung below would have
+    // taken down still stands, since this pair asks that rung to act on nothing.
+    if (refrain_published(io) == null) {
+        print("  RED: a parting run took down the record it was only telling of\n", .{});
         return 1;
     }
-    if (respect_published(io) == null) {
-        print("  RED: a refraining run took down the ending it was only acting on\n", .{});
+    if (called_of(io, standing_address) == null) {
+        print("  RED: a parting run took down a summons it was only carrying past\n", .{});
         return 1;
     }
 
@@ -14468,58 +15023,60 @@ pub fn check_suffice_runs(
     // invariant: an apprising run leaves no raiser of its own unheard
     assert(apprise_of(&under_run).unheard == 0);
     // invariant: a run never weighs more answers than it carried
-    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.weighed <= 1);
+    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.weighed <= 1);
     // invariant: an asking run leaves no answer of its own unmeasured
-    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unmeasured == 0);
+    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unmeasured == 0);
     // invariant: a run never takes up more matters than one word earns
-    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.taken_up <= 1);
+    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.taken_up <= 1);
     // invariant: a run never looks again at more matters than one reader reopened
-    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.looked <= 1);
+    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.looked <= 1);
     // invariant: a looking run leaves no inherited matter unlooked-at
-    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unlooked == 0);
+    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unlooked == 0);
     // invariant: a run never tells of more second looks than it made
-    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.recounted <= 1);
+    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.recounted <= 1);
     // invariant: a telling run leaves no second look of its own untold
-    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.untold == 0);
+    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.untold == 0);
     // invariant: a run never reads more replies than one telling earns
-    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.read_back <= 1);
+    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.read_back <= 1);
     // invariant: a reading run leaves no telling of its own unheard
-    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheard == 0);
+    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheard == 0);
     // invariant: a run never forbears on more matters than one word leaves standing
-    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.forborne <= 1);
+    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.forborne <= 1);
     // invariant: a forbearing run hands on every matter it left standing
-    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.unhanded == 0);
+    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unhanded == 0);
     // invariant: a run never names more impasses than one forbearance carries
-    assert(under_run.inner.inner.inner.inner.inner.inner.inner.minded <= 1);
+    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.minded <= 1);
     // invariant: a minding run leaves no impasse it opened holding unnamed
-    assert(under_run.inner.inner.inner.inner.inner.inner.inner.unminded == 0);
+    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.unminded == 0);
     // invariant: a run never calls a person about more walls than it stood
-    assert(under_run.inner.inner.inner.inner.inner.beckoned <= 1);
+    assert(under_run.inner.inner.inner.inner.inner.inner.beckoned <= 1);
     // invariant: a beckoning run leaves no wall of its own unheralded
-    assert(under_run.inner.inner.inner.inner.inner.unheralded == 0);
+    assert(under_run.inner.inner.inner.inner.inner.inner.unheralded == 0);
     // invariant: a run never opens more answers than one call it carried
-    assert(under_run.inner.inner.inner.inner.opened <= 1);
+    assert(under_run.inner.inner.inner.inner.inner.opened <= 1);
     // invariant: a hearing run leaves no answer of its own unopened
-    assert(under_run.inner.inner.inner.inner.unopened == 0);
+    assert(under_run.inner.inner.inner.inner.inner.unopened == 0);
     // invariant: a run never abates more walls than one answer releases
-    assert(under_run.inner.inner.inner.abated <= 1);
+    assert(under_run.inner.inner.inner.inner.abated <= 1);
     // invariant: an abating run leaves no released wall of its own standing
-    assert(under_run.inner.inner.inner.unabated == 0);
+    assert(under_run.inner.inner.inner.inner.unabated == 0);
     // invariant: a run never closes more correspondences than one answer ends
-    assert(under_run.inner.inner.closed <= 1);
+    assert(under_run.inner.inner.inner.closed <= 1);
     // invariant: a leaving run keeps no ending of its own
-    assert(under_run.inner.inner.closed == 0);
+    assert(under_run.inner.inner.inner.closed == 0);
     // invariant: a reopening run keeps no inherited ending of its own
-    assert(under_run.inner.respected == 0);
+    assert(under_run.inner.inner.respected == 0);
     // invariant: a run never spares more readers than one mark names
-    assert(under_run.refrained <= 1);
-    // invariant: a refraining run leaves no reader of its own unspared
-    assert(under_run.unspared == 0);
+    assert(under_run.inner.refrained <= 1);
+    // invariant: a run never tells more readers than one record spared
+    assert(under_run.bidden <= 1);
+    // invariant: a parting run leaves no reader of its own untold
+    assert(under_run.unsaid == 0);
     return 0;
 }
 
 fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
-    print("Caravan refrain {s} -- self-test\n", .{caravan_refrain_version});
+    print("Caravan farewell {s} -- self-test\n", .{caravan_farewell_version});
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
 
@@ -14585,7 +15142,7 @@ fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
     if (receipted != 0) return receipted;
     const runs = check_suffice_runs(allocator, io, self_path, &sys);
     if (runs != 0) return runs;
-    print("  GREEN: a run that has named an ending calls that reader no further about the matter, and takes the summons back down, rather than summoning a person who already said they were done\n", .{});
+    print("  GREEN: a run that has spared a reader carries its own last word to the box that person already reads, so a silence they never asked to interpret becomes a close they were told about\n", .{});
     return 0;
 }
 
@@ -14618,110 +15175,136 @@ fn tell_beckon_own(bare_run: *Report, under_run: *Report) void {
     // invariant: a telling always reads two runs that were actually run
     assert(run_of(bare_run).queued >= 1);
     // invariant: a telling never names more impasses than one forbearance carries
-    assert(under_run.inner.inner.inner.inner.inner.inner.inner.minded <= 1);
-    print("  second looks this run carried home to the reader who asked: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.recounted, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.recounted,
+    assert(under_run.inner.inner.inner.inner.inner.inner.inner.inner.minded <= 1);
+    print("  second looks this run carried home to the reader who asked: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.recounted, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.recounted,
     });
-    print("  second looks this run kept inside its own notes: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.withheld, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.withheld,
+    print("  second looks this run kept inside its own notes: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.withheld, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.withheld,
     });
     print("  second looks a run made whose reader was never told: {d} against {d}\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.untold, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.untold,
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.untold, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.untold,
     });
-    print("  tellings this run read its reader's own word on: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.read_back, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.read_back,
+    print("  tellings this run read its reader's own word on: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.read_back, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.read_back,
     });
-    print("  tellings this run made with nobody's reply opened: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unread, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unread,
+    print("  tellings this run made with nobody's reply opened: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unread, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unread,
     });
     print("  tellings a run made whose reader's word was never read back: {d} against {d}\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheard, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheard,
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheard, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheard,
     });
-    print("  standing matters this run handed to the run after it: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.forborne, under_run.inner.inner.inner.inner.inner.inner.inner.inner.forborne,
+    print("  standing matters this run handed to the run after it: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.forborne, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.forborne,
     });
-    print("  standing matters this run left for the next run to open afresh: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.opened, under_run.inner.inner.inner.inner.inner.inner.inner.inner.opened,
+    print("  standing matters this run left for the next run to open afresh: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.opened, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.opened,
     });
     print("  matters a run left standing with nothing handed on: {d} against {d}\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.unhanded, under_run.inner.inner.inner.inner.inner.inner.inner.inner.unhanded,
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unhanded, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unhanded,
     });
-    print("  inherited impasses this run named where the outcome is read: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.minded, under_run.inner.inner.inner.inner.inner.inner.inner.minded,
+    tell_impasse_own(bare_run, under_run);
+}
+
+/// Prints the walls a matter meets and the person outside the plan who hears
+/// of them, split from the telling above so no one body outgrows TAME's
+/// seventy-line bound as the correspondence keeps growing.
+fn tell_impasse_own(bare_run: *Report, under_run: *Report) void {
+    // invariant: a telling always reads two runs that were actually run
+    assert(run_of(bare_run).queued >= 1);
+    print("  inherited impasses this run named where the outcome is read: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.minded, under_run.inner.inner.inner.inner.inner.inner.inner.inner.minded,
     });
-    print("  inherited impasses this run began the matter again from: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.begun, under_run.inner.inner.inner.inner.inner.inner.inner.begun,
+    print("  inherited impasses this run began the matter again from: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.begun, under_run.inner.inner.inner.inner.inner.inner.inner.inner.begun,
     });
     print("  impasses a run opened holding and never named: {d} against {d}\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.unminded, under_run.inner.inner.inner.inner.inner.inner.inner.unminded,
+        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.unminded, under_run.inner.inner.inner.inner.inner.inner.inner.inner.unminded,
     });
-    print("  twice-carried impasses this run stood a wall around: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.walled, under_run.inner.inner.inner.inner.inner.inner.walled,
+    print("  twice-carried impasses this run stood a wall around: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.inner.walled, under_run.inner.inner.inner.inner.inner.inner.inner.walled,
     });
     print("  impasses a plan carried round twice and relayed anyway: {d} against {d}\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.unbounded, under_run.inner.inner.inner.inner.inner.inner.unbounded,
+        bare_run.inner.inner.inner.inner.inner.inner.inner.unbounded, under_run.inner.inner.inner.inner.inner.inner.inner.unbounded,
     });
-    print("  stood walls this run carried out to the person who can act on it: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.beckoned, under_run.inner.inner.inner.inner.inner.beckoned,
+    print("  stood walls this run carried out to the person who can act on it: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.beckoned, under_run.inner.inner.inner.inner.inner.inner.beckoned,
     });
-    print("  stood walls this run kept in the plan's own drawer: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.inner.kept, under_run.inner.inner.inner.inner.inner.kept,
+    print("  stood walls this run kept in the plan's own drawer: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.inner.kept, under_run.inner.inner.inner.inner.inner.inner.kept,
     });
     print("  walls a plan stood and told nobody about: {d} against {d}\n", .{
-        bare_run.inner.inner.inner.inner.inner.unheralded, under_run.inner.inner.inner.inner.inner.unheralded,
+        bare_run.inner.inner.inner.inner.inner.inner.unheralded, under_run.inner.inner.inner.inner.inner.inner.unheralded,
     });
-    print("  carried calls this run opened its reader's own answer to: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.opened, under_run.inner.inner.inner.inner.opened,
+    print("  carried calls this run opened its reader's own answer to: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.opened, under_run.inner.inner.inner.inner.inner.opened,
     });
-    print("  carried calls this run left the reader's answer to standing shut: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.inner.left, under_run.inner.inner.inner.inner.left,
+    print("  carried calls this run left the reader's answer to standing shut: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.inner.left, under_run.inner.inner.inner.inner.inner.left,
     });
     print("  answers a reader wrote back that the plan never opened: {d} against {d}\n", .{
-        bare_run.inner.inner.inner.inner.unopened, under_run.inner.inner.inner.inner.unopened,
+        bare_run.inner.inner.inner.inner.inner.unopened, under_run.inner.inner.inner.inner.inner.unopened,
     });
-    print("  opened releases this run took its own wall down on: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.abated, under_run.inner.inner.inner.abated,
+    tell_correspondence_own(bare_run, under_run);
+}
+
+/// Prints what a reader's own word costs the plan that heard it, down to the
+/// last letter this arc carries out to them.
+fn tell_correspondence_own(bare_run: *Report, under_run: *Report) void {
+    // invariant: a telling always reads two runs that were actually run
+    assert(run_of(bare_run).queued >= 1);
+    print("  opened releases this run took its own wall down on: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.abated, under_run.inner.inner.inner.inner.abated,
     });
-    print("  opened releases this run held its own wall standing against: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.inner.held, under_run.inner.inner.inner.held,
+    print("  opened releases this run held its own wall standing against: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.inner.held, under_run.inner.inner.inner.inner.held,
     });
     print("  walls a plan kept standing after their reader took the matter up: {d} against {d}\n", .{
-        bare_run.inner.inner.inner.unabated, under_run.inner.inner.inner.unabated,
+        bare_run.inner.inner.inner.inner.unabated, under_run.inner.inner.inner.inner.unabated,
     });
-    print("  opened answers this run wrote a closure for: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.closed, under_run.inner.inner.closed,
+    print("  opened answers this run wrote a closure for: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.closed, under_run.inner.inner.inner.closed,
     });
-    print("  opened answers this run handed on with nothing written: {d} calling, {d} refraining\n", .{
-        bare_run.inner.inner.left_open, under_run.inner.inner.left_open,
+    print("  opened answers this run handed on with nothing written: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.inner.left_open, under_run.inner.inner.inner.left_open,
     });
     print("  correspondences a reader ended that no later run could tell from one merely stopped: {d} against {d}\n", .{
-        bare_run.inner.inner.unclosed, under_run.inner.inner.unclosed,
+        bare_run.inner.inner.inner.unclosed, under_run.inner.inner.inner.unclosed,
     });
-    print("  inherited endings this run named where the outcome is read: {d} calling, {d} refraining\n", .{
-        bare_run.inner.respected, under_run.inner.respected,
+    print("  inherited endings this run named where the outcome is read: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.respected, under_run.inner.inner.respected,
     });
-    print("  inherited endings this run began the matter again from: {d} calling, {d} refraining\n", .{
-        bare_run.inner.reopened, under_run.inner.reopened,
+    print("  inherited endings this run began the matter again from: {d} quiet, {d} parting\n", .{
+        bare_run.inner.inner.reopened, under_run.inner.inner.reopened,
     });
     print("  endings a run opened holding and never named: {d} against {d}\n", .{
-        bare_run.inner.unrespected, under_run.inner.unrespected,
+        bare_run.inner.inner.unrespected, under_run.inner.inner.unrespected,
     });
-    print("  readers of a named ending this run finally left alone: {d} calling, {d} refraining\n", .{
-        bare_run.refrained, under_run.refrained,
+    print("  readers of a named ending this run finally left alone: {d} quiet, {d} parting\n", .{
+        bare_run.inner.refrained, under_run.inner.refrained,
     });
-    print("  readers of a named ending this run summoned about the matter again: {d} calling, {d} refraining\n", .{
-        bare_run.recalled, under_run.recalled,
+    print("  readers of a named ending this run summoned about the matter again: {d} quiet, {d} parting\n", .{
+        bare_run.inner.recalled, under_run.inner.recalled,
     });
     print("  readers a plan summoned again about a matter it had already named as ended: {d} against {d}\n", .{
-        bare_run.unspared, under_run.unspared,
+        bare_run.inner.unspared, under_run.inner.unspared,
     });
-    print("  work still standing when the supervisor exits: {d} calling, {d} refraining\n", .{
+    print("  spared readers this run finally told the plan had stopped writing: {d} quiet, {d} parting\n", .{
+        bare_run.bidden, under_run.bidden,
+    });
+    print("  spared readers this run left to interpret a silence: {d} quiet, {d} parting\n", .{
+        bare_run.withheld_parting, under_run.withheld_parting,
+    });
+    print("  readers a plan stopped writing to without ever saying so: {d} against {d}\n", .{
+        bare_run.unsaid, under_run.unsaid,
+    });
+    print("  work still standing when the supervisor exits: {d} quiet, {d} parting\n", .{
         below_of(bare_run).unserved, below_of(under_run).unserved,
     });
-    print("  the plan, as an operator finally reads it: {s} calling, {s} refraining\n", .{
+    print("  the plan, as an operator finally reads it: {s} quiet, {s} parting\n", .{
         settlement_words(bearing_of(bare_run).settlement), settlement_words(bearing_of(under_run).settlement),
     });
-    print("  breaks a named turn: {d} calling, {d} refraining\n", .{
+    print("  breaks a named turn: {d} quiet, {d} parting\n", .{
         preceded_of(bare_run).out_of_precede, preceded_of(under_run).out_of_precede,
     });
 }
