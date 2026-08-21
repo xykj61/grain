@@ -22,6 +22,25 @@ Per-project Radiant notes: see **997_SYSTEM.md**.
 
 LGPL limits **embedding** library code in programs we distribute — not learning ideas or running tools separately. Full notes: **997_SYSTEM.md**.
 
+## The microkernel family -- verified `20260821.041056` (license read granted by Keaton)
+
+Read from each project's own authoritative text, not from memory. Full verdict and sources: [`../../external-research/20260821-041056_the-microkernel-license-read.md`](../../external-research/20260821-041056_the-microkernel-license-read.md).
+
+| Component | License | How we may hold it |
+|---|---|---|
+| **seL4 kernel** | **GPL-2.0** | study only -- no kernel source in our history |
+| **seL4 userlevel** (`libsel4`, libraries, tools, syscall headers) | **BSD-2-Clause** | **permissive -- a real dependency is thinkable**, vendored like Monocypher on a later word |
+| **seL4 Microkit** | **BSD-2-Clause** (code), CC-BY-SA-4.0 (docs) | permissive |
+| **LionsOS** | **BSD-2-Clause** (code), CC-BY-SA-4.0 (docs) | permissive |
+| **Genode** | **AGPLv3** + open-source linking clause, dual-licensed commercially | study only -- strong copyleft, unchanged |
+| **musl** | **MIT** | permissive |
+
+**The load-bearing sentence**, from seL4's own `LICENSE.md`: the kernel's GPL *"does not cover user-level code that uses kernel services by normal system calls"*, and such usage *"does not fall under the heading of 'derived work'."* Caravan is a root task on the userlevel side of that line.
+
+**The obligation that rides with it:** a **per-file SPDX sweep at fetch time**. seL4 issue #245 (2020) reported ~14 GPL-tagged files inside `libsel4`; the two most prominent read `BSD-2-Clause` on master today, checked directly, yet a project that once shipped mixed headers can again. Intent is not a licence -- check every file's own tag and record it.
+
+**Nothing is fetched by this read.** Bringing any of these into `vendor/` is a separate step and stays Keaton's word.
+
 ## skarnet (s6, skalibs) — ISC, not GPL
 
 **s6** and **skalibs** (Laurent Bercot) are **ISC** — permissive, not GPL. **SixOS** (Adam Joseph) is the GPL-3.0 project that composes s6 with Nix.
