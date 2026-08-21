@@ -78,6 +78,7 @@ const unhand = @import("unhand.rye");
 const entrust = @import("entrust.rye");
 const confer = @import("confer.rye");
 const tally_parse_int = @import("parse_int.rye");
+const ladder_checks = @import("ladder_checks.rye");
 
 const Dir = std.Io.Dir;
 
@@ -391,11 +392,7 @@ pub fn provision_notes(io: std.Io, sys: *const system.System) NoteError!u32 {
 
 /// Tells one dependent how much reach may yet arrive for it.
 pub fn offer(io: std.Io, domain: []const u8, depth: u32) NoteError!void {
-    // invariant: an offer always names the dependent it is made to
-    assert(domain.len >= 1);
-    // invariant: an offer never promises more than one line may name
-    assert(depth <= cycle.max_hops);
-    try seat_note(io, domain, ".offered", &[_]u8{@intCast(depth)});
+    return ladder_checks.offer(@This(), io, domain, depth);
 }
 
 /// Reads how much reach this dependent was told may yet arrive.
