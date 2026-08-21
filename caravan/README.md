@@ -1654,7 +1654,7 @@ That last row is the honest proof: a lift removed a cost rather than trading it 
 Read in order, the harness spine is four movements and a closing line, the seam the arc has shown since it began: **the standing** (what a run owes a position that outlived it), **the finding** (a case read, answered, met, and carried home), **the second look** (what a reader's short word costs the plan that answered them), **the correspondence** (the movement still growing, where a matter that comes round twice meets a wall and a person outside the plan finally gets a say), and **the booking**, always last. What it cost is named plainly in the brief: opening `refrain.rye` no longer shows the whole arc on one screen. That order lives in the harness now, in the one complete copy there is -- so it is written to be read. Full reasoning: [`../active-designing/20260820-204641_caravan-ladder-the-spine-the-meter-cannot-see.md`](../active-designing/20260820-204641_caravan-ladder-the-spine-the-meter-cannot-see.md).
 
 
-### The printing, and the fold that answered its first third
+### The printing, and the two folds that answered most of it
 
 Two honest meters watched this ladder, and a third shape rode free past both. The copy meter reads `check_` bodies and counts byte-identical ones; the spine meter reads one named orchestration function. Every rung also reports what its run did, in words an operator reads -- a `tell_` family printing one line per tier of the correspondence -- and a rung born from the rung beneath it copies that family whole and inserts its own tier. A different prefix than the first meter reads, a different function than the second names, so the printing went uncounted while each elder meter reported a true number. A ratchet, then, rather than an erratum: both had named their own window in their own first sentence.
 
@@ -1671,7 +1671,24 @@ Measured on `20260820.221349`, the printing stood at **2,468 distinct lines on d
 | Byte-identical check carry, beside it | 47 | **47**, unmoved |
 | Orchestration spine carry, beside it | 0 | **0**, unmoved |
 
-The last two rows are the same honest proof fold D left: a lift removed a cost rather than trading it for a cheaper-looking one. The ceiling came down 7,800 to **6,900** in the same lap, since a ceiling left where a fold found it hands back exactly the room the fold just won. All twenty-nine touched rungs stand in the top rung's import closure, and that rung runs GREEN from a cold tree, with `tidings`, `abate`, `deem`, `suffice`, `reweigh`, and `apprise` re-run beside it. What remains of the carry is the reader-telling pair -- the two larger bodies that read a run's own report -- and the staircase beneath them, which wants the `comptime` seam rather than a whole-body lift. Full reasoning: the design call [`../active-designing/20260820-131713_caravan-ladder-shared-harness.md`](../active-designing/20260820-131713_caravan-ladder-shared-harness.md), and the lap that measured the printing, [`../session-logs/20260820-221349_caravan-ladder-the-printing-two-meters-cannot-see.kyri`](../session-logs/20260820-221349_caravan-ladder-the-printing-two-meters-cannot-see.kyri).
+The last two rows are the same honest proof fold D left: a lift removed a cost rather than trading it for a cheaper-looking one. The ceiling came down 7,800 to **6,900** in the same lap, since a ceiling left where a fold found it hands back exactly the room the fold just won. All twenty-nine touched rungs stand in the top rung's import closure, and that rung runs GREEN from a cold tree, with `tidings`, `abate`, `deem`, `suffice`, `reweigh`, and `apprise` re-run beside it. What remains of the carry is the reader-telling pair -- the two larger bodies that read a run's own report -- and the staircase beneath them, which wants the `comptime` seam rather than a whole-body lift.
+
+**Fold F took the larger half on `20260820.224828`.** `tell_the_reader` carries one finding to the one person who asked for it, and it is the body the whole arc is built to end on: a run reads the quarrel out of the record that keeps it, reads the term that decided it, reads the address the raiser left, writes the result into that reader's own box, and reads the box back before the report believes anybody was told. Sixty lines apiece, standing byte for byte in **twenty-eight rungs**.
+
+It reaches nineteen symbols where the note-writing pair reached six, so the verification came first and cost more. Every one of the nineteen was grepped as `pub` across all twenty-eight rungs before a line moved, and eighteen already stood public. The nineteenth is `tidings_of`, the accessor that finds this tier's own report inside a report nested as deep as the rung stands -- twenty-four `inner` hops in one rung, six in another. That accessor is precisely the staircase, and lifting the body above it needed no flattening of it: one word per rung widened the accessor the harness already reaches every other tier through, and the staircase stayed exactly where it is written.
+
+| Reading | Before | After |
+|---|---|---|
+| Printing lines on disk | 8,427 | **6,896** |
+| Carried printing lines | 5,955 | **4,401** |
+| Lines deleted from rungs | -- | **1,652**, for 56 lines of call |
+| Neighbor walk, read independently | 5,735 | **4,069** -- within eight percent |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+The whole-body reading holds at 93 while its line count falls 2,268 to **729**, since the two-line calls a fold leaves behind are themselves a body every rung writes identically. Reading that steadiness as a failure would misread it: the carry that matters is the line reading, and it fell 1,554. The neighbor walk's agreement widened from four percent to eight for the same arithmetic reason -- the same absolute gap standing against a smaller total -- and naming both keeps the next reader from drawing a wrong conclusion from a number that stood still.
+
+The ceiling came down 6,900 to **4,800**, sized so a first new rung passes and a second refuses. All twenty-eight touched rungs stand in the top rung's import closure, that rung runs GREEN from a cold tree, and each of the twenty-eight ran its own witness GREEN beside it. What remains of the carry is `tell_the_reopener` -- forty-eight lines in eleven rungs -- and the staircase of per-tier bodies beneath both. Full reasoning: the design call [`../active-designing/20260820-131713_caravan-ladder-shared-harness.md`](../active-designing/20260820-131713_caravan-ladder-shared-harness.md), and the lap that measured the printing, [`../session-logs/20260820-221349_caravan-ladder-the-printing-two-meters-cannot-see.kyri`](../session-logs/20260820-221349_caravan-ladder-the-printing-two-meters-cannot-see.kyri).
 
 
 ## Held

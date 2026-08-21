@@ -5009,3 +5009,94 @@ pub fn tell_outcome(comptime rung: type, io: std.Io, address: []const u8, result
     const bytes = [_]u8{rung.result_byte(result)};
     file.writePositionalAll(io, &bytes, 0) catch return error.NoteUnavailable;
 }
+
+/// Tells the reader who raised the quarrel how it came out.
+///
+/// The wire before the memory, one tier further out than the standing below it:
+/// this run reads the quarrel out of the record that keeps it, reads the term
+/// out of the note that decided it, reads the word it finally settled out of the
+/// note an operator opens, reads the address out of the note that names it,
+/// writes the result into that reader's own box, and reads the box back before
+/// the report believes anybody was told. A plan that reported a raiser reached
+/// from memory of having written to them would be counting a letter it never
+/// sent.
+///
+/// A run holding no quarrel has nobody to write to, a quarrel nobody decided has
+/// no outcome to carry, and a reader who left no address cannot be reached at
+/// all; each is a silence no tiding can fill, and each says so by weighing
+/// nothing rather than by inventing a correspondent. A quarrel weighed whose
+/// raiser was never told how it came out is the number this tier moves.
+///
+/// Twenty-eight rungs held this body byte for byte. It lifts here whole, and
+/// each one still reads its own record, its own term, its own address ceiling,
+/// and its own box, because every symbol it names arrives with the type handed
+/// in -- including the accessor that finds this tier's own report inside a
+/// report nested as deep as that rung stands. The staircase beneath the
+/// accessor stays where it is written; only the body above it is written once.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn tell_the_reader(
+    comptime rung: type,
+    io: std.Io,
+    tidings: rung.Tidings,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    const quarrel = rung.dispute_recorded(io);
+    const raised: u32 = if (quarrel == null) 0 else 1;
+    if (raised == 0) {
+        // invariant: a run holding no quarrel leaves no raiser unreturned
+        assert(rung.tidings_of(report_out).unreturned == 0);
+        return;
+    }
+    const life = rung.term_written(io);
+    const weighed = life != null;
+
+    // The measurement this tier moves, weighed against what the wire actually
+    // carries rather than against what any plan asked for, so a raiser left in
+    // the dark is counted rather than refused.
+    rung.tidings_of(report_out).unreturned = rung.objection_untold(raised, weighed, tidings);
+    const told_count = rung.told_in(raised, weighed, tidings);
+    const untold_count = rung.untold_in(raised, weighed, tidings);
+    if (tidings == .silent) {
+        // invariant: a silent run writes to nobody, however plainly its own
+        // wire weighed the quarrel
+        assert(told_count == 0);
+        rung.tidings_of(report_out).untold = untold_count;
+        return;
+    }
+    if (!weighed) {
+        // A quarrel nobody decided has no outcome to report, and the wire says
+        // so by leaving the reader's box exactly as it reads.
+        //
+        // invariant: an unweighed quarrel is never reported on
+        assert(told_count == 0);
+        rung.tidings_of(report_out).untold = untold_count;
+        return;
+    }
+    // The supply, refused by name while the term it read is still in hand: a run
+    // writes back only where somebody actually decided the quarrel.
+    if (rung.unweighed_tidings(if (weighed) 1 else 0, told_count)) |why| return why;
+    if (rung.tidings_refusal(raised, told_count, untold_count)) |why| return why;
+    // invariant: a run that reached the tidings refuses nothing it must write
+    assert(told_count == 1);
+    const held = quarrel orelse return error.TidingsEarly;
+    const settled = rung.settlement_published(io) orelse return error.TidingsUnweighed;
+    var address_buf: [rung.max_address_len]u8 = undefined;
+    const address = rung.address_published(io, &address_buf) orelse return error.TidingsEarly;
+    // The word this reader stood against is the plan's own reading at the time
+    // of the quarrel, which the record names first.
+    const objected_to = held[0];
+    const result = rung.results_as(objected_to, settled);
+    // The hard half of this tier: a tiding carries one finding to the one person
+    // who asked for it, so it must be that finding.
+    if (!rung.tells_true(result, objected_to, settled)) return error.TidingsMisread;
+    try rung.tell_outcome(io, address, result);
+    // The wire before the memory, once more: the answer is read back out of the
+    // reader's own box, and only then does the report believe it.
+    const reached = rung.told_of(io, address) orelse return error.TidingsMisread;
+    if (!rung.tells_true(reached, objected_to, settled)) return error.TidingsMisread;
+    rung.tidings_of(report_out).told = told_count;
+    rung.tidings_of(report_out).untold = untold_count;
+    // invariant: a returning run leaves no weighed quarrel unreturned
+    assert(rung.tidings_of(report_out).unreturned == 0);
+}

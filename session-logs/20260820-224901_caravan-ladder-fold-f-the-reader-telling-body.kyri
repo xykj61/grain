@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20260820.224901
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Fold F -- the reader-telling body lifts, and the printing carry falls 1,554 lines
+prompt Take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, one council-rota doc deep-read, and send the finished increment.
+think Standfast first. `crux/REDS.md` reads 100 rows and every living one is closed -- 96, 97, 99, 100, plus the elder closures folded beside them. Nothing open, nothing agent-closable, so constructive work may begin.
+think The running thread is unambiguous. The newest log's recommend names the other half of the printing carry by name and by size: `tell_the_reader` at 60 lines in 28 rungs and `tell_the_reopener` at 48 in 11, together 2,100 carried lines, and it names the verification that made the last 986-line edit safe -- grep every symbol as `pub` across every rung before moving a line.
+think Rota lap 548 mod 27 = 8 -- deep-read foundations/20260811-233509_the-singularity.md. Its argument is this lap's discipline stated plainly: autonomy is trustworthy only because it doubles back, and a tool that can build itself must be able to catch itself. That is the mirror misaligned, and it is exactly why the reach verification comes before the edit rather than after the build goes green.
+think Crux-first among the two remaining families says take the larger. `tell_the_reader` carries 1,680 lines across 28 rungs against the reopener's 528 across 11, and both want the same seam, so the larger one both wins more room and proves the seam on the harder case.
+think Byte-identity measured rather than assumed: 29 rungs hold a body named `tell_the_reader`, and 28 of them are one md5. The twenty-ninth is `tidings.rye`, the rung the family was born on, whose body differs -- which is exactly the shape a fold expects and exactly the rung a fold leaves alone.
+think Reach verified before a line moved, nineteen symbols across 28 rungs. Eighteen already stood public everywhere: Tidings, Report, RunError, NoteError, max_address_len, dispute_recorded, term_written, objection_untold, told_in, untold_in, unweighed_tidings, tidings_refusal, address_published, settlement_published, results_as, tells_true, told_of, and tell_outcome, itself a shim fold E left.
+think The nineteenth is the interesting one and it is the staircase itself. `tidings_of` is private in all 28 and its body is a different depth in every rung -- twenty-four `inner` hops in `abate`, six in `swell`. The harness already reaches every other tier through exactly this kind of accessor, as `tally` does with `refer_of` and `owe_of`, and 23 such accessors already stand pub in a rung. So one word per rung widened it, the body above lifted whole, and the staircase stayed where it is written rather than being flattened into the harness.
+think A slip caught by measurement rather than by belief, in the singularity doc's own sense. The shim loop recomputed its rung list with `grep -l 'fn tell_the_reader' *.rye` AFTER the harness body had been appended, so `ladder_checks.rye` matched its own lift glob and the head/tail surgery duplicated it to 10,146 lines. `git diff --numstat` named it in one read -- 5,135 insertions and 0 deletions on a file that was 5,011 lines. Restored from HEAD, re-appended once, and the 28 rung diffs re-read at exactly 2 added and 59 deleted apiece.
+obs The two rows a lift could most easily have inflated stood still again. The byte-identical check carry holds at 47 and the orchestration spine at 0, exactly where folds D and E left them -- the same honest proof each of those folds rested on, that the cost was removed rather than traded for a cheaper-looking one.
+obs Two readings moved apart and the reason is arithmetic rather than drift. The union count and the neighbor walk differ by 332 where they differed by 220, so their agreement widened from four percent to eight -- the same absolute gap standing against a total that fell by a quarter. Naming that in the witness keeps the widening from reading as a meter losing its grip.
+obs The whole-body reading holds at 93 while its line count falls 2,268 to 729. A reader meeting only the body count would think the fold did nothing; the carry that matters is the line reading, and it fell 1,554. Both stand in the witness prose for exactly that reason.
+obs A ceiling left where a fold found it hands back the room the fold just won, so it came down 6,900 to 4,800 in the same lap -- headroom of 399 against a new rung's roughly 390, which passes the first rung written before the next fold and refuses the second.
+loom fold=caravan_ladder_print_F rungs=28 bodies_lifted=28 lines_deleted=1652 lines_added=56 accessors_widened=28
+loom meter=caravan_ladder_print carried_before=5955 carried_after=4401 total_before=8427 total_after=6896 ceiling=4800
+loom meter=caravan_ladder_print neighbor_before=5735 neighbor_after=4069 identical_bodies=93 identical_lines=729
+loom meter=caravan_ladder_copy copied_lines=47 unmoved=true
+loom meter=caravan_ladder_spine carried=0 unmoved=true
+loom witness=caravan_farewell closure_modules=88 touched_rungs_covered=28 rung_witnesses_green=28
+file caravan/ladder_checks.rye the reader-telling body lifted whole, taking the rung as a comptime parameter and reaching all nineteen symbols through it
+file caravan/answer.rye one of 28 rungs whose 60-line body became a two-line call and whose tier accessor widened by one word
+file tools/fixtures/caravan_ladder_print_scan.sh ceiling 6900 -> 4800, and the fold's prose brought current beside the elder numbers kept in the past tense
+file tools/caravan_ladder_print_witness.rish every asserted figure moved to what the scan now prints, and the widened neighbor agreement named rather than hidden
+file caravan/README.md the fold F section, the nineteen-symbol reach, the staircase left standing, and what remains of the carry
+file crux/REMEMBER.md the live edge moved to this fold and the prior one condensed to a pointer
+recommend keep-going the last whole body of the printing family is `tell_the_reopener` -- 48 lines in 11 rungs, 528 carried lines, and the same shape this lap proved. Verify its reach as `pub` across all 11 first, exactly as this lap did, and expect its own tier accessor (`recount_of`) to want the same one-word widening. After that the whole-body carry is spent and what remains is the staircase of per-tier bodies, which wants a different fold than either half of this one.
