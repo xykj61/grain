@@ -3209,46 +3209,7 @@ pub fn settle_the_plan(
     served_again: u32,
     report_out: *Report,
 ) (RunError || NoteError)!void {
-    // invariant: a settling always weighs a plan that actually lost an arc
-    assert(lost >= 1);
-    // invariant: a repair never carries more arcs than the plan lost
-    assert(served_again <= lost);
-    below_of(report_out).unserved = unserved_after(lost, served_again);
-    const settled = settled_verdict(below_of(report_out).unserved);
-    try verdict_note(io, settled);
-    const said = verdict_published(io) orelse return error.MendUnserved;
-    if (said != settled) return error.MendUnserved;
-    if (said == .carried and below_of(report_out).unserved >= 1) return error.MendUnserved;
-    below_of(report_out).settled = said;
-
-    const settlement = settlement_of(below_of(report_out).unserved, bearing_of(report_out).bore);
-    try settlement_note(io, settlement);
-    const read_back = settlement_published(io) orelse return error.BearOverrepaired;
-    if (read_back != settlement) return error.BearOverrepaired;
-    // The answer, and the hard half of this rung: a run that re-ran an arc its
-    // author asked it to bear has disobeyed the plan it serves, and a run that
-    // called such a plan borne would report an obedience it never practiced.
-    if (read_back == .borne and bearing_of(report_out).overrepaired >= 1) return error.BearOverrepaired;
-    // The answer of this rung, weighed the same way one tier out: a run that
-    // carried a loss no note of its own names has judged in private, and a run
-    // that called such a plan borne would report a judgment it never made in
-    // the open.
-    if (appraising_of(report_out).weighed >= 1 and appraisal_published(io, max_queue_len) == 0) {
-        return error.AppraiseUnweighed;
-    }
-    // The answer of this rung, weighed the same way one tier out: a run that
-    // took a judgment back and published no recantation reversed it in private,
-    // and a settlement read on that silence would tell an operator a story the
-    // wire cannot support.
-    if (recanting_of(report_out).recanted >= 1 and recant_published(io, max_queue_len) == 0) {
-        return error.RecantUnspoken;
-    }
-    // A plan whose judgment this run disproved and left standing all the same
-    // reads `borne`, which says there is nothing left to do while an arc of the
-    // plan stands unserved. Under `.revisit` that never happens, and this names
-    // it rather than trusting that it cannot.
-    if (read_back == .carried and recanting_of(report_out).spared_disproved >= 1) return error.RecantUnspoken;
-    bearing_of(report_out).settlement = read_back;
+    return ladder_checks.settle_the_plan(@This(), io, lost, served_again, report_out);
 }
 
 /// Weighs what the plan came to, publishes the verdict and the loss, and reads

@@ -6627,3 +6627,91 @@ pub fn hear_the_reader(
     // invariant: a hearing run leaves no reader's answer unread
     assert(rung.hearing_of(report_out).unheard == 0);
 }
+
+/// Weighs what a plan came to, publishes the verdict and the settlement, and
+/// reads both back -- one body for every rung that asks it.
+///
+/// The reckoning waits until the last dependent has been reaped and every
+/// abandonment already answered for, since a verdict taken any earlier would
+/// judge work that may yet be carried. Every claim it makes it first writes to
+/// the wire and then reads back, because a settlement a run believes from its
+/// own memory has agreed with itself. Four refusals stand in it, each naming a
+/// story the wire cannot support: a loss called carried while an arc stands
+/// unserved, a plan called borne that re-ran what its author asked it to bear,
+/// a judgment weighed in private, and a recantation never spoken aloud.
+///
+/// **Fold V -- thirty-seven rungs, and two absentees that are the ladder's own
+/// fossil record.** Every body named `settle_the_plan` was hashed before a line
+/// moved, as folds R through U taught. Thirty-six came back one text at
+/// forty-seven lines; `recant.rye`, which owns the recanting tier, stood apart
+/// by two lines reaching its own report directly -- fold R's **second** kind of
+/// absentee, and the accessor that brings it home, `recanting_of`, had already
+/// been born at fold M. It came home for two words and the family became
+/// thirty-seven.
+///
+/// Two more stand apart, and they stay home: `bear.rye` at twenty-eight lines
+/// and `appraise.rye` at thirty-five. Both are fold R's **first** kind -- bodies
+/// genuinely dated by shapes born after them. `bear.rye` predates the appraisal
+/// check and the recantation checks alike; `appraise.rye` carries the appraisal
+/// and predates the recantation. Read together with the folded body's
+/// forty-seven, the three depths are a staircase naming the two laps on which
+/// settling learned to weigh an appraisal and then a recantation. **An absentee
+/// can wear both kinds at once, and the first kind wins:** each of these two
+/// also reaches its own report directly, exactly as `recant.rye` did, yet no
+/// accessor can give a body back a check it never had.
+///
+/// **The fold cost nothing.** All thirteen symbols it reaches and all three
+/// types already stood public across every one of the thirty-seven, interest
+/// paid in full by the folds before it. This is the arc's second zero-widening
+/// fold after fold P, and it says the same thing from the other side: a fold's
+/// price is set by what its predecessors already made public.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_carry_scan.sh`.
+pub fn settle_the_plan(
+    comptime rung: type,
+    io: std.Io,
+    lost: u32,
+    served_again: u32,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    // invariant: a settling always weighs a plan that actually lost an arc
+    assert(lost >= 1);
+    // invariant: a repair never carries more arcs than the plan lost
+    assert(served_again <= lost);
+    rung.below_of(report_out).unserved = rung.unserved_after(lost, served_again);
+    const settled = rung.settled_verdict(rung.below_of(report_out).unserved);
+    try rung.verdict_note(io, settled);
+    const said = rung.verdict_published(io) orelse return error.MendUnserved;
+    if (said != settled) return error.MendUnserved;
+    if (said == .carried and rung.below_of(report_out).unserved >= 1) return error.MendUnserved;
+    rung.below_of(report_out).settled = said;
+
+    const settlement = rung.settlement_of(rung.below_of(report_out).unserved, rung.bearing_of(report_out).bore);
+    try rung.settlement_note(io, settlement);
+    const read_back = rung.settlement_published(io) orelse return error.BearOverrepaired;
+    if (read_back != settlement) return error.BearOverrepaired;
+    // The answer, and the hard half of this rung: a run that re-ran an arc its
+    // author asked it to bear has disobeyed the plan it serves, and a run that
+    // called such a plan borne would report an obedience it never practiced.
+    if (read_back == .borne and rung.bearing_of(report_out).overrepaired >= 1) return error.BearOverrepaired;
+    // The answer of this rung, weighed the same way one tier out: a run that
+    // carried a loss no note of its own names has judged in private, and a run
+    // that called such a plan borne would report a judgment it never made in
+    // the open.
+    if (rung.appraising_of(report_out).weighed >= 1 and rung.appraisal_published(io, rung.max_queue_len) == 0) {
+        return error.AppraiseUnweighed;
+    }
+    // The answer of this rung, weighed the same way one tier out: a run that
+    // took a judgment back and published no recantation reversed it in private,
+    // and a settlement read on that silence would tell an operator a story the
+    // wire cannot support.
+    if (rung.recanting_of(report_out).recanted >= 1 and rung.recant_published(io, rung.max_queue_len) == 0) {
+        return error.RecantUnspoken;
+    }
+    // A plan whose judgment this run disproved and left standing all the same
+    // reads `borne`, which says there is nothing left to do while an arc of the
+    // plan stands unserved. Under `.revisit` that never happens, and this names
+    // it rather than trusting that it cannot.
+    if (read_back == .carried and rung.recanting_of(report_out).spared_disproved >= 1) return error.RecantUnspoken;
+    rung.bearing_of(report_out).settlement = read_back;
+}
