@@ -28,7 +28,7 @@
 | [`press/`](press/README.md) | Press releases | crush-empty |
 | [`etc/`](etc/README.md) | Further shipping genres as seated | crush-empty |
 | [`sangha/`](sangha/README.md) | Sangha patterns (page-zero · three patterns) | **living** |
-| [`tutorials/`](tutorials/recursion-in-glow.md) | Shipped tutorials | **living** Glow recursion |
+| [`tutorials/`](tutorials/the-first-hour.md) | Shipped tutorials | **living** -- [The First Hour](tutorials/the-first-hour.md), the beginner path from `git clone` to a program you wrote that refuses to lie; and [Glow recursion](tutorials/recursion-in-glow.md) |
 
 ## Laws
 
