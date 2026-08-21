@@ -7393,52 +7393,7 @@ pub fn look_again(io: std.Io, reweigh: Reweigh, report_out: *Report) (RunError |
 /// redress, the delivery, the reader's own verdict, and the second look itself
 /// each come out of a telling run exactly as they went in.
 pub fn tell_the_reopener(io: std.Io, recount: Recount, report_out: *Report) (RunError || NoteError)!void {
-    const on_wire = anew_standing(io);
-    const looked_count: u32 = if (on_wire != null) 1 else 0;
-    if (looked_count == 0) {
-        // invariant: a run that made no second look tells of none
-        assert(recount_of(report_out).recounted == 0);
-        // invariant: a run that made no second look leaves none untold
-        assert(recount_of(report_out).untold == 0);
-        return;
-    }
-
-    // The measurement this rung moves, weighed against the second look actually
-    // made rather than against anything the plan asked for, so a look nobody
-    // hears of is counted rather than refused.
-    recount_of(report_out).untold = untold_looks(looked_count, recount);
-    const told_count = recounted_in(looked_count, recount);
-    const kept_count = unsent_looks_in(looked_count, recount);
-    if (recount == .withholds) {
-        // invariant: a withholding run tells nobody, however plainly it looked
-        assert(told_count == 0);
-        recount_of(report_out).withheld = kept_count;
-        return;
-    }
-
-    // The receipt comes off the wire, since the second look a telling reports is
-    // the one standing published and never one a run remembered. The reads
-    // supply the ladder rather than short-circuiting it, so every refusal below
-    // is reached by argument and named in its own order.
-    const receipt = on_wire orelse return error.RecountUnlooked;
-    const looked = true;
-    var address_buf: [max_address_len]u8 = @splat(0);
-    const where = address_published(io, &address_buf) orelse "";
-    const addressed = addressable(where);
-    const carried = knows_bytes(receipt);
-    const matched = knows_answers(carried, receipt);
-    if (recount_refusal(looked_count, told_count, kept_count, looked, addressed, matched)) |why| return why;
-
-    // invariant: a telling run carries the one second look it made
-    assert(told_count == 1);
-    try recount_note(io, where, receipt);
-    // The wire before the memory: the reader's own box is opened again before
-    // the report believes anybody was told a word.
-    if (!recount_holds(recounted_to(io, where), carried)) return error.RecountMisrecorded;
-    recount_of(report_out).recounted = told_count;
-    recount_of(report_out).withheld = kept_count;
-    // invariant: a telling run leaves no second look of its own untold
-    assert(recount_of(report_out).untold == 0);
+    return ladder_checks.tell_the_reopener(@This(), io, recount, report_out);
 }
 
 /// Reads what the reader made of the telling this run carried them.

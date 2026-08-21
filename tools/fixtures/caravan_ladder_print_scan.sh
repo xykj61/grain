@@ -37,8 +37,19 @@
 # the note-writing pair reached six, and every one of them stood public on all
 # twenty-eight save the accessor that finds this tier's report inside a rung's
 # own nesting, which widened by one word per rung. The carry fell to 4,401 of
-# 6,896, and the ceiling below fell with each fold, so a fold stays folded
-# rather than quietly refilling.
+# 6,896.
+#
+# The third fold spent the last whole body. `tell_the_reopener` -- the body that
+# carries what a second look came to out to the reader who asked for it -- stood
+# byte for byte in eleven rungs at forty-eight lines apiece, and it lifted whole
+# into the same harness beside its two kin, each rung keeping a two-line call.
+# It reaches eighteen symbols, and every one of them already stood public on all
+# eleven, so this fold widened nothing: the accessor that finds this tier's
+# report inside a rung's own nesting was already reachable, which is what the
+# previous fold's widening bought. The carry fell to 3,944 of 6,454, and the
+# ceiling below fell with each fold, so a fold stays folded rather than quietly
+# refilling. What remains carried is the staircase of per-tier bodies, which
+# wants a different fold than a whole-body lift.
 #
 # The scan reports the carry two ways on purpose, because they answer different
 # questions and the answer decides what the fold should be:
@@ -50,19 +61,21 @@
 #   729 once the reader-telling body followed, since the short calls a fold
 #   leaves behind are themselves a body every rung writes identically. The
 #   body reading holds while the line reading falls, and the line reading is
-#   the carry that matters.
+#   the carry that matters. It stands at 93 over 279 once the reader-asking body
+#   folded too.
 #
 #   PRINT_LINES names the carry at the line level, which also counts the
 #   staircase: a body that is the rung below's plus three lines is a new body to
 #   the first reading and 90-odd already-written lines to the second.
 #
-# CARAVAN_PRINT_CEILING (default 4800): how many carried printing lines the
-# ladder may hold. 4,401 stand today, and a new rung adds roughly 390 now that
-# two families are written once -- so the ceiling still catches the SECOND rung
-# written before the next fold lands rather than the tenth. It came down 7,800
-# to 6,900 when the note-writing pair lifted, and 6,900 to 4,800 when the
-# reader-telling body followed, because a ceiling left where a fold found it
-# hands back exactly the room the fold just won.
+# CARAVAN_PRINT_CEILING (default 4300): how many carried printing lines the
+# ladder may hold. 3,944 stand today, and a new rung adds roughly 342 now that
+# three families are written once -- so the ceiling still catches the SECOND
+# rung written before the next fold lands rather than the tenth. It came down
+# 7,800 to 6,900 when the note-writing pair lifted, 6,900 to 4,800 when the
+# reader-telling body followed, and 4,800 to 4,300 when the reader-asking body
+# joined them, because a ceiling left where a fold found it hands back exactly
+# the room the fold just won.
 #
 # CARAVAN_PRINT_PREFIX (default tell_): the function-name prefix that opens the
 # printing family, so a corpus small enough to count by hand can prove the
@@ -76,7 +89,7 @@
 # PASS and FAIL fixtures prove both paths without touching the tree.
 set -eu
 
-CEILING=${CARAVAN_PRINT_CEILING:-4800}
+CEILING=${CARAVAN_PRINT_CEILING:-4300}
 BOUND=${CARAVAN_PRINT_BOUND:-70}
 PREFIX=${CARAVAN_PRINT_PREFIX:-tell_}
 DIR=${CARAVAN_LADDER_DIR:-caravan}

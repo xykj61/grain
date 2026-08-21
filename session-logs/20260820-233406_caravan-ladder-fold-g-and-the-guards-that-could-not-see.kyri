@@ -1,0 +1,53 @@
+format session-log-v1
+stamp 20260820.233406
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Fold G spends the last whole body, and two guards are found reading less than they claimed
+prompt Take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, one council-rota doc deep-read, and send the finished increment.
+think Standfast first. Every row in crux/REDS.md through %100 reads CLOSED and Released, so the ledger opened no allocation and the constructive queue was free. The running thread was unambiguous: fold F's recommend named the next crux by name, size, and shape -- tell_the_reopener, 48 lines in 11 rungs, with recount_of expected to want the same one-word widening tidings_of had needed.
+think Rota lap 549 mod 27 = 9 -- deep-read foundations/20260810-011514_pond-the-application-module.md. Its Pool-retires-into-Pond passage is this lap's discipline in a different key: nothing of the substance was lost, only the framing retired. A fold is that move made mechanical -- eleven copies of a body retire into one, and every rung still reads its own wire, its own ceiling, its own box.
+think Verification before the edit, exactly as fold F proved. Grepped all eighteen symbols the body reaches as pub across all eleven rungs before a line moved. Every one already stood public -- so this fold widened nothing, and the reason is that fold F's widening of the accessor pattern had already bought it. A check that only ever passes is still the check that makes a five-hundred-line edit safe.
+think Confirmed the eleven bodies byte-identical by md5 over the extracted ranges before trusting the count, rather than trusting the previous lap's arithmetic. One hash across eleven files. The twelfth rung, recount, writes report_out directly rather than through the accessor, and was left alone -- the rung the family was born on.
+think The print meter red on its pinned number, which is what a pinned meter is for. Updated the pins, the ceiling, and the prose in the same act. The ceiling came 4,800 to 4,300: 3,944 carried plus roughly 342 for one new rung passes, and a second at 4,628 refuses.
+think The neighbor walk moved more than the union reading did, which did not follow from the fold alone. Read the scan rather than guessing: it orders rungs by total file length and compares each against the one before it, so eleven rungs shrinking by forty-eight lines apiece reorder the sequence itself. Named that in the witness and the README as a property of the second reading rather than leaving a number that invites a wrong conclusion.
+think Running the whole choir cold is what turned a clean fold into a Standfast lap. 98 witnesses answered GREEN and caravan_suite_witness alone refused, naming caravan_ladder_print_witness as a witness on disk that no roster line names. The guard was right and had been waiting two laps for somebody to ask it.
+think REDS %101's root is neither guard. It is that a per-rung send runs the witness it wrote, and the choir costs minutes -- so the cheap question rides on the expensive answer and gets asked only when somebody has the minutes. So the loom separates them: the bijection lifted into its own scan answering in two greps, pulled by the ladder copy meter every fold lap.
+think Folding the ledger that red filled took REDS past its 24576 bound, and repointing the spine guard at the archives that actually stand on disk made it refuse at row 81 -- a row it had never been able to see. Two faults hiding each other: a hand-kept archive list that happened to name only table-shaped archives, and a scan blind to the prose row shape REDS %97 had already repaired in the sibling file. It printed verdict=ok over 73 rows of 101.
+think Fixed that at the root rather than by extending the list: the archives are discovered by glob now, so a fold joins the spine on the lap it lands. A GREEN over a subset is more dangerous than a RED, because it answers the question nobody asked in the voice of the question they did -- so the witness states the row count it reached.
+think Caught myself writing the archive glob as an interpolation of captured output inside a shell-quoted word, which is exactly the fragile shape REDS %85's loom bans. The shell expands the glob directly now. The loom did not have to fire; reading it beforehand was enough.
+obs The deduplication call is the one place this could have gone wrong quietly. Counting mentions read 107 for 101 rows, because a closure note honestly keeps the number of the row it speaks about. Refusing that would have been REDS %100's fault repeated -- a gate reding on valid input. Both counts print, so the gap stays visible rather than folded away.
+obs Fold F's widening is what made fold G free. That is the compounding shape worth remembering: the expensive lap bought the cheap one, and the cheapness is evidence the earlier call was right rather than a sign this lap was easy.
+obs The whole-body printing carry is spent. What remains is the staircase of per-tier bodies, where each rung's body is the rung below's plus its own tier -- which wants fold D's comptime seam one tier deeper rather than a whole-body lift.
+loom fold=caravan_tell_the_reopener rungs=11 lines_each=48 deleted=517 call_lines=11 symbols_reached=18 widened=0
+loom meter=caravan_ladder_print total_before=6896 total_after=6454 carried_before=4401 carried_after=3944 neighbor_before=4069 neighbor_after=3483 ceiling_before=4800 ceiling_after=4300
+loom meter=caravan_ladder_copy copied_lines=47 unmoved=true red_paths=10
+loom meter=caravan_ladder_spine carried=0 unmoved=true
+loom suite=caravan_suite witnesses=98 green=98 cold=true
+loom guard=reds_ledger_monotone rows_before=73 rows_after=102 mentions=107 archives_discovered=7 red_paths=4
+file caravan/ladder_checks.rye the reader-asking body written once, taking the rung as a comptime parameter
+file caravan/abate.rye one of eleven rungs whose forty-eight-line body becomes a two-line call
+file caravan/allay.rye same fold
+file caravan/answer.rye same fold
+file caravan/beckon.rye same fold
+file caravan/conclude.rye same fold
+file caravan/desist.rye same fold
+file caravan/farewell.rye same fold -- the top rung, which nothing imports, run GREEN from a cold tree
+file caravan/forbear.rye same fold
+file caravan/mind.rye same fold
+file caravan/refrain.rye same fold
+file caravan/respect.rye same fold
+file tools/fixtures/caravan_ladder_print_scan.sh ceiling 4800 -> 4300 and the third fold named in its header
+file tools/caravan_ladder_print_witness.rish pins moved to the measurement, the neighbor-gap reason named rather than hidden
+file tools/fixtures/caravan_roster_bijection_scan.sh new -- the roster question answered in two greps, REDS %101's loom
+file tools/caravan_suite_witness.rish the printing meter registered, the bijection read from the shared scan
+file tools/caravan_ladder_copy_witness.rish pulls the roster every lap, three roster RED paths proven on metal
+file tools/fixtures/reds_ledger_monotone_scan.sh learned the prose row shape and the distinct-spine count
+file tools/gen/season/reds_ledger_monotone_witness.rish archives discovered by glob, four paths proven, row count stated
+file crux/REDS.md rows %101 and %102 booked and closed; rows 96-100 folded under bound
+file crux/archive/REDS-one-clock-and-ladder-fold-rows-96-100.md the closed range, every byte kept
+file crux/CAIRNS.md the walk-back nib before fold F's live edge condensed
+file crux/REMEMBER.md fold G seated as the live edge, fold F condensed to a pointer
+file caravan/README.md the fold G section, so the doc moves with the behavior
+recommend keep-going the whole-body printing carry is spent, and what remains is the staircase: bodies where each rung's is the rung below's plus its own tier, which the meter counts as roughly ninety already-written lines apiece. That wants fold D's comptime seam one tier deeper rather than a whole-body lift, so size it from PRINT_LINES against PRINT_BODIES before moving a line -- the two readings disagree on purpose here, and the disagreement is the design call. Verify reach as pub first regardless; it is what has made every fold in this arc safe.

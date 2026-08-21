@@ -1,26 +1,72 @@
-# tools/gen/season/reds_ledger_monotone_witness.rish — REDS indices accrete only.
+# tools/gen/season/reds_ledger_monotone_witness.rish -- REDS indices accrete only.
 #
 #   rishi/bin/rishi run tools/gen/season/reds_ledger_monotone_witness.rish
 #
 # Seated with the Baton Museum apply `20260730.030553`. Completeness
 # (three fields) stays in reds_ledger_witness; this witness proves the
-# index spine: 1..N, no gaps, no duplicates — so a bundle cannot silently
+# index spine: 1..N, no gaps, no duplicates -- so a bundle cannot silently
 # rewrite a landed row number without the seam going red.
 #
 # Fold-aware `20260811.143500`: a closed-range fold moves a contiguous prefix of
 # rows into a fold archive to keep the living pin under bound, so the 1..N spine
-# spans the archives AND the living pin. The scan unions the row indices across all
-# three files (oldest archive first) and proves the union is 1..N. Add each new fold
-# archive here the day it is created — the scan went red the moment the first fold
-# landed precisely because it read the living pin alone.
+# spans the archives AND the living pin.
+#
+# Discovered rather than listed (`20260820.232126`, REDS %102). That fold-awareness
+# was carried by a hand-written list of archive paths, and a hand-written list drifts:
+# three folds landed without being added, the list still named the retired
+# `work-in-progress/` path, and the spine it proved stopped at row 73 of 101 while
+# printing `verdict=ok` over the part it could see. The archives are found on disk now,
+# so a fold joins this spine on the lap it lands rather than on the lap somebody
+# remembers. This is the %81/%87/%97 family answered structurally: a guard that reads
+# a set somebody maintains by hand will eventually guard a set that no longer exists.
 
-say "reds-monotone: Language EN — a ledger grows by accretion."
-say "reds-monotone: Style Radiant — name the gap; refuse silent rewrite."
-say "reds-monotone: Lens TAME — indices span the fold archives and the living pin."
+say "reds-monotone: Language EN -- a ledger grows by accretion."
+say "reds-monotone: Style Radiant -- name the gap; refuse silent rewrite."
+say "reds-monotone: Lens TAME -- indices span every fold archive on disk and the living pin, both row shapes read, every refusal named."
 
-let scan = run ["sh" "tools/fixtures/reds_ledger_monotone_scan.sh" "work-in-progress/archive/REDS-voice-season-rows-1-24.md" "work-in-progress/archive/REDS-voice-season-rows-25-57.md" "work-in-progress/archive/REDS-self-work-yield-rows-58-73.md" "work-in-progress/REDS.md"]
+# The archives, discovered on disk rather than listed. The scan unions their rows, so the
+# order the glob returns them in is for the reader of a red rather than for the arithmetic.
+# The shell expands the glob and hands the scan its files directly, so no captured output
+# ever rides inside a quoted word (REDS %85: a witness that interpolates what it captured
+# into a shell string is checking its own claim through a shell that may reshape it).
+let count = run ["sh" "-c" "ls crux/archive/REDS-*rows-*.md | wc -l | tr -d ' \n'"]
+assert count.ok else "reds-monotone: could not find the fold archives on disk"
+assert (trim count.out) != "0" else "reds-monotone: no fold archive stands on disk, yet the living pin is a folded ledger"
+
+let scan = run ["sh" "-c" "sh tools/fixtures/reds_ledger_monotone_scan.sh crux/archive/REDS-*rows-*.md crux/REDS.md"]
 say scan.out
 assert scan.out contains "verdict=ok" else "reds-monotone: row indices are not 1..N monotone across the fold archives and the living pin"
-assert scan.ok else "reds-monotone: the verdict reads ok while the status fails — they must agree"
+assert scan.ok else "reds-monotone: the verdict reads ok while the status fails -- they must agree"
 
-say "GREEN: reds-monotone — row indices accrete 1..N with no gaps"
+# The spine says how far it reaches, so a shrinking set of rows is a red rather than a
+# quieter GREEN. It read 73 of 101 on the lap before this one and said ok about it.
+assert scan.out contains "rows=102" else "reds-monotone: want the spine reaching every row the ledger holds"
+
+# RED path one -- a gap. The control is generated rather than tracked, so it can never
+# drift from the shape this scan enforces.
+let gap = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** b'; echo '**REDS %3 -- c.** d'; } > $d/L.md; sh tools/fixtures/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
+assert (gap.ok == false) else "reds-monotone: a gap in the spine must refuse"
+assert gap.out contains "verdict=not_monotone" else "reds-monotone: want the gap refused by name"
+assert gap.out contains "expected row 2, found 3" else "reds-monotone: want the gap naming exactly which row is missing"
+
+# RED path two -- the prose shape is really read. Were this scan still blind to it, a
+# ledger written entirely in prose would answer no_rows rather than counting three.
+let prose = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** b'; echo '**REDS %2 -- c.** d'; echo '**REDS %3 -- e.** f'; } > $d/L.md; sh tools/fixtures/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
+assert prose.ok else "reds-monotone: a ledger written in the prose shape must be counted -- ${prose.out}"
+assert prose.out contains "rows=3" else "reds-monotone: want all three prose rows seen"
+
+# RED path three -- a closure note keeps the number of the row it speaks about, and that
+# is a whole ledger rather than a duplicate. A gate that reds on valid input teaches the
+# bench to route around it (REDS %100), so this welcome is proven beside the refusals.
+let note = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** b'; echo '**REDS %1 CLOSED -- a.** Released.'; echo '**REDS %2 -- c.** d'; } > $d/L.md; sh tools/fixtures/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
+assert note.ok else "reds-monotone: a row and its own closure note must read as one row -- ${note.out}"
+assert note.out contains "mentions=3" else "reds-monotone: want all three mentions counted"
+assert note.out contains "rows=2" else "reds-monotone: want the closure note read as the row it speaks about"
+
+# RED path four -- a file holding no rows at all, the REDS %97 shape: a scan reading a real
+# file and answering zero, where the zero is its own blindness rather than the ledger's virtue.
+let empty = run ["sh" "-c" "d=$(mktemp -d); echo '# a ledger with nothing in it' > $d/L.md; sh tools/fixtures/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
+assert (empty.ok == false) else "reds-monotone: a ledger holding no rows must refuse"
+assert empty.out contains "verdict=no_rows" else "reds-monotone: want the empty ledger refused by name"
+
+say "GREEN: reds-monotone -- the spine accretes 1..102 with no gaps across every fold archive found on disk and the living pin, both row shapes read, a closure note welcomed as the row it speaks about, and every refusal named"

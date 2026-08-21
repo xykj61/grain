@@ -21,17 +21,23 @@
 #
 # The second fold took the larger half. `tell_the_reader` -- the body carrying one finding to the one person who asked
 # for it -- stood byte for byte in twenty-eight rungs at sixty lines apiece, and lifted whole into the same harness,
-# each rung keeping a two-line call. **The carry stands at 4,401 of 6,896 today, down another 1,554 lines**, and the
-# ceiling came down with each fold so a fold stays folded.
+# each rung keeping a two-line call. The carry fell to 4,401 of 6,896.
+#
+# The third fold spent the last whole body. `tell_the_reopener` -- the body carrying what a second look came to out to
+# the reader who asked for it -- stood byte for byte in eleven rungs at forty-eight lines apiece, and lifted whole into
+# the same harness beside its two kin, each rung keeping a two-line call. It reaches eighteen symbols, and every one
+# already stood public on all eleven, so this fold widened nothing -- which is what the previous fold's widening bought.
+# **The carry stands at 3,944 of 6,454 today, down another 457 lines**, and the ceiling came down with each fold so a
+# fold stays folded. What remains carried is the staircase of per-tier bodies, which wants a different fold than this.
 #
 # A ratchet, never a red. Both meters name their own window in their own first sentence, so nothing was measured wrong
 # and something was never measured -- this is a third meter beside the first two rather than an erratum against either.
 #
 # The scan reports the carry two ways on purpose, because the two answer different questions and the answer decides
 # what the fold should be. **PRINT_BODIES** names how much of the carry is a WHOLE body standing byte-for-byte in more
-# than one rung -- 93 bodies over 3,164 lines when this meter opened, 93 over 2,268 once the pair folded, and 93 over
-# 729 once the reader-telling body followed, since the short calls a fold leaves behind are themselves a body every
-# rung writes identically. The body reading holds where the line reading falls, and the line reading is the carry.
+# than one rung -- 93 bodies over 3,164 lines when this meter opened, 93 over 2,268 once the pair folded, 93 over 729
+# once the reader-telling body followed, and 93 over 279 once the reader-asking body joined them, since the short calls
+# a fold leaves behind are themselves a body every rung writes identically. The body reading holds where the line reading falls, and the line reading is the carry.
 # **PRINT_LINES** names the carry at the line level, which also counts the staircase: a body that is the rung below's
 # plus three lines is a new body to the first reading and 90-odd already-written lines to the second. So a third of
 # this carry has fold B's answer already written for it, and the rest wants fold D's.
@@ -39,7 +45,7 @@
 # Five claims, each proven on metal:
 #   1. The living ladder's printing counts clean under a named ceiling.
 #   2. The carry is read two ways that agree -- a union reading over the whole ladder and a rung-by-rung neighbor walk,
-#      4,401 against 4,069, close enough to rest a design call on and separated by exactly what should separate them.
+#      3,944 against 3,483, close enough to rest a design call on and separated by exactly what should separate them.
 #   3. The whole-body split is read off the ladder rather than claimed, so the part of the carry that lifts the way a
 #      check lifts is named apart from the part that wants the harness.
 #   4. The counting itself is right, proven on a two-rung corpus whose ten lines, five distinct and five carried, are
@@ -62,7 +68,7 @@ let living = run ["sh" "tools/fixtures/caravan_ladder_print_scan.sh"]
 assert living.ok else "caravan-ladder-print: the living ladder scan must exit 0 -- ${living.out}"
 assert living.out contains "PRINT_OK" else "caravan-ladder-print: want the living printing under its named ceiling"
 assert living.out contains "PRINT_MODULES 102 holding=43" else "caravan-ladder-print: want 43 of the 102 modules holding a printing family -- the 42 rungs and the harness the fold gave two bodies to"
-assert living.out contains "PRINT_LINES total=6896 distinct=2495 carried=4401" else "caravan-ladder-print: want the printing carry standing where this lap measured it"
+assert living.out contains "PRINT_LINES total=6454 distinct=2510 carried=3944" else "caravan-ladder-print: want the printing carry standing where this lap measured it"
 
 say "caravan-ladder-print: living ladder -- ${living.out}"
 
@@ -70,23 +76,28 @@ say "caravan-ladder-print: living ladder -- ${living.out}"
 # a body standing byte-for-byte in more than one rung lifts into `caravan/ladder_checks.rye` exactly the way a check
 # body lifted under fold B. Naming it apart from the staircase is what keeps the coming fold from being sized as one
 # undifferentiated number -- a third of this carry is a lift the ladder has already done twice.
-assert living.out contains "PRINT_BODIES 218 distinct=125 identical=93 identical_lines=729" else "caravan-ladder-print: want the whole-body split read off the ladder"
-say "caravan-ladder-print: whole bodies -- 93 of 218 printing bodies stand byte-for-byte in a rung below, carrying 729 of the 4,401 lines"
+assert living.out contains "PRINT_BODIES 219 distinct=126 identical=93 identical_lines=279" else "caravan-ladder-print: want the whole-body split read off the ladder"
+say "caravan-ladder-print: whole bodies -- 93 of 219 printing bodies stand byte-for-byte in a rung below, carrying 279 of the 3,944 lines"
 
 # The second reading, computed beside the first and asserted on its own. The count above asks how many different lines
 # the whole ladder holds; the neighbor walk asks of each rung's printing how many of its lines already stand in the
 # printing of the rung directly beneath it. Two questions over one extraction, and a number that survives both is one a
 # design call may rest on (REDS %93).
 #
-# They differ by 332, and the difference is the honest signal rather than noise. A reading that agreed by construction
+# They differ by 461, and the difference is the honest signal rather than noise. A reading that agreed by construction
 # would prove nothing; what separates these two is a line dropped by one rung and written again further up the size
 # ordering, which the union reading counts as carried and the walk does not. The printing family also runs in more than
 # one chain -- the apprise and reweigh branches beside the long correspondence arc -- so the size ordering places a few
-# neighbors that are not neighbors on the ladder. Both readings land within eight percent of each other -- the gap
-# widened as the carry shrank, since the same absolute difference stands against a smaller total -- which is what
+# neighbors that are not neighbors on the ladder. Both readings land within twelve percent of each other, which is what
 # makes the number safe to build a fold on.
-assert living.out contains "PRINT_NEIGHBOR carried=4069" else "caravan-ladder-print: want the neighbor walk agreeing within eight percent"
-say "caravan-ladder-print: second reading -- the rung-by-rung walk counts 4,069 where the union counts 4,401, two questions landing within eight percent"
+#
+# The gap grew this lap, by 129 absolute where the earlier folds had only widened it proportionally, and the reason is
+# read off the scan rather than guessed: the walk orders rungs by total file length and compares each against the one
+# before it, so eleven rungs shrinking by forty-eight lines apiece reorder the sequence itself and the walk's own
+# pairing moves beneath it. A fold that shrinks rungs unevenly is exactly the act that most disturbs this reading --
+# which is a property of the second reading worth naming, rather than a fault in either.
+assert living.out contains "PRINT_NEIGHBOR carried=3483" else "caravan-ladder-print: want the neighbor walk agreeing within twelve percent"
+say "caravan-ladder-print: second reading -- the rung-by-rung walk counts 3,483 where the union counts 3,944, two questions landing within twelve percent"
 
 # TAME's seventy-line ratchet, reported rather than gated, exactly as TAME asks. Nine printing bodies stand past the
 # bound today, the longest being the refrain rung's own telling at 111 lines. The farewell rung answered its copy in
@@ -105,7 +116,7 @@ assert copy.out contains "copied_lines=47" else "caravan-ladder-print: want the 
 let spine = run ["sh" "tools/fixtures/caravan_ladder_spine_scan.sh"]
 assert spine.ok else "caravan-ladder-print: the spine meter must still stand -- ${spine.out}"
 assert spine.out contains "SPINE_LINES total=19 distinct=19 carried=0" else "caravan-ladder-print: want the orchestration spine still folded"
-say "caravan-ladder-print: the meters beside it -- checks carry 47, the spine carries 0, the printing carries 4,401"
+say "caravan-ladder-print: the meters beside it -- checks carry 47, the spine carries 0, the printing carries 3,944"
 
 # The counting proven by hand, over a corpus no fold has touched. The corpus holds two rungs: the foot writes one
 # three-line telling, and the rung above writes that same telling byte for byte plus a second that is the first plus one
@@ -139,4 +150,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_p
 assert (ceiling.ok == false) else "caravan-ladder-print: a printing carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-print: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-print -- the ladder's printing stands counted at 4,401 carried lines of 6,896 across 42 rungs and the harness beside them, read two independent ways that agree within eight percent, down 1,554 lines since the reader-telling body lifted into `caravan/ladder_checks.rye`, held under a ceiling lowered to 4,800 so the fold stays folded, proven by hand on a two-rung corpus holding both shapes, and all three RED paths refusing by name."
+say "GREEN: caravan-ladder-print -- the ladder's printing stands counted at 3,944 carried lines of 6,454 across 42 rungs and the harness beside them, read two independent ways that agree within twelve percent, down 457 lines since the reader-asking body lifted into `caravan/ladder_checks.rye` and spent the last whole-body carry, held under a ceiling lowered to 4,300 so the fold stays folded, proven by hand on a two-rung corpus holding both shapes, and all three RED paths refusing by name."

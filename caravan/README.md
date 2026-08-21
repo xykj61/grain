@@ -1690,6 +1690,25 @@ The whole-body reading holds at 93 while its line count falls 2,268 to **729**, 
 
 The ceiling came down 6,900 to **4,800**, sized so a first new rung passes and a second refuses. All twenty-eight touched rungs stand in the top rung's import closure, that rung runs GREEN from a cold tree, and each of the twenty-eight ran its own witness GREEN beside it. What remains of the carry is `tell_the_reopener` -- forty-eight lines in eleven rungs -- and the staircase of per-tier bodies beneath both. Full reasoning: the design call [`../active-designing/20260820-131713_caravan-ladder-shared-harness.md`](../active-designing/20260820-131713_caravan-ladder-shared-harness.md), and the lap that measured the printing, [`../session-logs/20260820-221349_caravan-ladder-the-printing-two-meters-cannot-see.kyri`](../session-logs/20260820-221349_caravan-ladder-the-printing-two-meters-cannot-see.kyri).
 
+**Fold G spent the last whole body on `20260820.232126`.** `tell_the_reopener` carries what a second look came to out to the reader who asked for it: a run takes its subject off the wire rather than from anything the plan asked for, writes into that reader's own box, and reads the box back before the report believes anybody was told. Forty-eight lines apiece, standing byte for byte in **eleven rungs**, with the rung the family was born on left alone because it writes the body differently.
+
+It reaches eighteen symbols, and this time every one of them already stood public across all eleven -- so the fold widened nothing. That is what the previous fold's one-word widening bought: the accessor pattern the harness reaches every tier through was already in place, and the third lift simply used it. Verification still came first, exactly as before, because a check that only ever passes is still the check that made a five-hundred-line edit safe.
+
+| Reading | Before | After |
+|---|---|---|
+| Printing lines on disk | 6,896 | **6,454** |
+| Carried printing lines | 4,401 | **3,944** |
+| Lines deleted from rungs | -- | **517**, for 11 lines of call |
+| Neighbor walk, read independently | 4,069 | **3,483** -- within twelve percent |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+The two readings' gap grew by 129 absolute this lap, where the earlier folds had widened it only proportionally, and the reason is read off the scan rather than guessed: the neighbor walk orders rungs by total file length and compares each against the one before it, so eleven rungs shrinking by forty-eight lines apiece reorder the sequence itself and the walk's own pairing moves beneath it. A fold that shrinks rungs unevenly is exactly the act that most disturbs that reading -- a property of the second reading worth naming, rather than a fault in either.
+
+The ceiling came down 4,800 to **4,300**, sized as before so a first new rung passes and a second refuses. All eleven touched rungs ran their own witness GREEN, the top rung ran GREEN from a cold tree, and the whole choir of **98 Caravan witnesses** sang GREEN cold beside them -- which is how this lap found that the printing meter had never been registered in that choir (**REDS %101**), and, folding the ledger that red filled, that the ledger's own spine guard had been proving seventy-three rows of a hundred and one (**REDS %102**). Both closed with looms rather than with fixes: the roster bijection lifted into a scan the every-lap ladder meter pulls, and the spine guard taught to discover its archives on disk rather than read a list somebody maintains by hand.
+
+What remains of the printing carry is the staircase of per-tier bodies, which wants a different fold than a whole-body lift -- the whole-body carry is spent.
+
 
 ## Held
 
