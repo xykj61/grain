@@ -60,6 +60,8 @@ Every line below was run; the output is what it printed.
 
 Index with `xs[i]`, where `i` may be a **bound name** doing arithmetic -- `let n = length xs` then `xs[n - 1]`. See the edges.
 
+**`.len` is the other spelling.** Lists and strings both answer it: `let n = xs.len` gives `3`, and `let n = s.len` gives `5`. This page missed it until the elder conformance reference was read against the tree and turned out to be right about it (`20260821.191504`) -- a reference checked against the language found by a reference checked against the language.
+
 ## Running commands
 
 ```
@@ -77,7 +79,8 @@ let r = run ["echo" "ok"]
 | `write-file path value` | writes a value to a path |
 | `list-dir path` | entry names as a list |
 | `env "NAME"` | the process environment; empty string when unset |
-| `args` | the script's arguments as a list; `args[0]` is the first |
+| `args` | the script's arguments as a list; `args[0]` is the first, and `args.len` counts them |
+| `flag` | `flag args "--name"` scans for `--name value` and returns the value -- **two arguments**, the list and the name; `flag "name"` alone raises `FlagNeedsName` |
 
 ---
 
@@ -112,6 +115,10 @@ let block = "first${nl}second"
 **`say` writes to stdout; a Rye program's `print` writes to stderr.** A tool whose whole output is one value must put that value where a caller captures it.
 
 ---
+
+## The other reference
+
+[`../../manual/reference/rishi-language.md`](../../manual/reference/rishi-language.md) is the **conformance** reference: fifteen numbered sections, *must* and *should* carrying their plain weight, pinned to the witness corpus at parity 142. It answers *what is the language obliged to do*. This page answers *what do I reach for, and where will it surprise me* -- and the two were read against each other on `20260821.191504`, which is how `.len` and `flag` arrived here. Neither supersedes the other; a language wants both a contract and a field guide.
 
 ## Where this is proven
 

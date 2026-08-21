@@ -1,5 +1,8 @@
 #!/bin/sh
-# tools/fixtures/shipped_binary_claim_scan.sh -- no living doc may say the tools ship in a clone.
+# tools/fixtures/shipped_binary_claim_scan.sh -- no living doc may misname the tools a clone carries.
+#
+# Two checks, one concern: a page must not tell a reader the tools ARRIVE with a clone (they do
+# not), nor NAME them in a way a reader cannot run (they are not on a PATH).
 #
 # WHY. This fault has now fired twice. REDS %117: the manual's first-hour page told a newcomer the
 # two tools "already live inside your clone" and "came with the copy." REDS %118: the machines
@@ -75,15 +78,39 @@ if [ "$hits" -gt 0 ]; then
 fi
 rm -f /tmp/sbc_hits.txt
 
+# SECOND CHECK, added `20260821.191504` (REDS %119). A page may also mislead by NAMING the tools
+# wrongly rather than by claiming they ship. The sandboxing guide invited a reader to run a bare
+# `rye build ...`, and two video scripts typed one on camera -- none of which can run, since the
+# compiler lives at `rye/bin/rye` in the clone and never on a PATH.
+#
+# The line between a defect and a legitimate use is mechanical, which is the only reason this is
+# checkable at all: a RUNNABLE block is fenced ```bash or ```sh, while usage tables and captured
+# version output sit in unlabeled fences. So only labeled fences are read. Archive rooms are
+# exempt for the same reason dated artifacts are -- they record what was true then.
+bare=0
+: > /tmp/sbc_bare.txt
+for f in $(git ls-files '*.md' 2>/dev/null | grep -vE '/[0-9]{8}-[0-9]{6}_' | grep -vE '^(session-logs|counsel|gratitude|vendor|seed)/' | grep -v '/archive/'); do
+  awk '/^```(bash|sh)$/{n=1;next} /^```/{n=0} n && /^(rye|rishi) /{print FILENAME ":" FNR ": " $0}' "$f" 2>/dev/null >> /tmp/sbc_bare.txt || true
+done
+bare=$(wc -l < /tmp/sbc_bare.txt | tr -d ' ')
+echo "bare_invocations=$bare"
+if [ "$bare" -gt 0 ]; then sed 's/^/bare: /' /tmp/sbc_bare.txt; fi
+rm -f /tmp/sbc_bare.txt
+
 if [ "$tracked" -gt 0 ]; then
   echo "note=binaries are tracked now, so such a claim would be true; the guard stands down"
   echo "verdict=ok"
   exit 0
 fi
 
-if [ "$hits" -eq 0 ]; then
+if [ "$hits" -eq 0 ] && [ "$bare" -eq 0 ]; then
   echo "verdict=ok"
   exit 0
+fi
+if [ "$bare" -gt 0 ] && [ "$hits" -eq 0 ]; then
+  echo "verdict=bare_invocation"
+  echo "refused: a runnable block invokes a bare rye or rishi, neither of which is on a PATH" >&2
+  exit 1
 fi
 echo "verdict=false_claim"
 echo "refused: a living document says the tools arrive with a clone, and git tracks none of them" >&2
