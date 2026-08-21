@@ -1,0 +1,23 @@
+---
+description: Which shelf design writing belongs on -- active-designing for what outlives the code, active-development for what scopes a round; counsel closed; journal declined.
+alwaysApply: true
+---
+
+# Design Rooms -- which shelf a piece of writing belongs on
+
+**Seated:** `20260821.174047` on Keaton's word. Canonical twin: `.claude/rules/design-rooms.md` (full form). Kin: `stamp-and-name.mdc`, `ORGANIZING.md`.
+
+One question tells the two rooms apart:
+
+> **Would this still be worth reading if the code it describes were deleted?**
+> **Yes -> `active-designing/`** (a shape, a name, an invariant, a direction). **No -> `active-development/`** (scoping a round, planning a lap, recording a survey, evaluating a shipped choice).
+
+The test is blunt on purpose -- a filing rule needing adjudication gets skipped, and a skipped rule is how one room came to hold two kinds of writing.
+
+**Why the split.** `active-designing/` was opened for essays and filled with round notes: 78, 163, and 141 files on three consecutive days in August 2026. Two tempos, one shelf.
+
+**What holds.** Both rooms use one-clock names and fold to `date/YYYYMMDD/`. `active-designing/` keeps its silo principle (our own names and RISC-V only). `active-development/` is bounded at 256 flat files **from birth**, since a room born under the law has no backlog to grandfather. **Nothing already filed moves** -- the test governs what is born from here forward.
+
+**`counsel/` is closed, and kept.** Closed `20260821.174047`; last dated file `20260805.000001`. Closed means no longer growing, never no longer true -- 764 pieces stand as filed and every reference still resolves. Mine it on touch, never wholesale.
+
+**`journal/` is declined.** Dimeroll owns the word as a book of record, and the Lexicon already assigns it to the logs -- `session-logs/` is the journal. Recorded so the question is answered rather than deferred.

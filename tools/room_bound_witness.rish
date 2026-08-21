@@ -14,6 +14,8 @@
 #
 #   The enforced roster holds, room by room. Five rooms earned enforcement by folding --
 #   `session-logs`, then `counsel`, `active-designing`, `expanding-prompts`, and `waymarks` --
+#   and `active-development` was born enforced on `20260821.174047`, having no backlog to
+#   grandfather --
 #   and each is asserted by name, because a roster checked only in aggregate can lose a room
 #   without anyone noticing. Two of the five hold ZERO flat files now, so a discovery-only report
 #   dropped them entirely; an enforced room is reported whether or not it holds anything. Two hundred fifty-six rather than a thousand, because a bound
@@ -40,7 +42,7 @@
 #   rishi/bin/rishi run tools/room_bound_witness.rish
 
 say "room-bound: Language EN -- a room that outgrows a reader stops being a room and starts being a pile. This holds every enforced room at a size a person can open, and reports the rest honestly rather than sweeping them unasked."
-say "room-bound: Style Radiant -- three claims. Rooms are discovered rather than listed. All five enforced rooms are named and stand under 256. And the gate is proven to close in both directions -- on a room over its bound, and on an enforced room that has gone missing."
+say "room-bound: Style Radiant -- three claims. Rooms are discovered rather than listed. All six enforced rooms are named and stand under 256. And the gate is proven to close in both directions -- on a room over its bound, and on an enforced room that has gone missing."
 say "room-bound: Lens TAME -- the bound is named at 256 rather than at GitHub's 1,000, because a maximum set at the cliff fails on the day it matters; every count below is the scan's own output rather than this file's memory."
 
 let scan = "tools/fixtures/room_bound_scan.sh"
@@ -57,6 +59,7 @@ assert roster.out contains "verdict=ok" else "room-bound: the roster must balanc
 assert roster.out contains "room=session-logs flat=" else "room-bound: session-logs must appear in the roster -- a room that vanishes from a meter is not a room that passed it"
 assert roster.out contains "room=counsel flat=" else "room-bound: counsel is enforced and must be reported even at zero flat files"
 assert roster.out contains "room=active-designing flat=" else "room-bound: active-designing is enforced and must be reported"
+assert roster.out contains "room=active-development flat=" else "room-bound: active-development is enforced from birth and must be reported even while empty"
 assert roster.out contains "room=expanding-prompts flat=" else "room-bound: expanding-prompts is enforced and must be reported even at zero flat files"
 assert roster.out contains "room=waymarks flat=" else "room-bound: waymarks is enforced and must be reported"
 assert roster.out contains "roster=enforce" else "room-bound: at least one room must be enforced, or the gate guards nothing"
@@ -68,9 +71,12 @@ assert control.ok else "room-bound: the two-phase control must complete"
 say control.out
 assert control.out contains "over_named_by_room=yes" else "room-bound: an over-bound room must be refused by name rather than by a bare count"
 assert control.out contains "over_refused=yes" else "room-bound: a room over its bound must exit non-zero"
-assert control.out contains "enforced_rooms_named_absent=5" else "room-bound: every enforced room absent from a tree must be named absent, not passed over"
+# This number is the roster size on purpose. It moved 5 -> 6 when active-development opened, and
+# the assert caught it -- which is the point: a room joining or leaving the roster is a seated
+# decision, so it should have to be written down here rather than sliding in unremarked.
+assert control.out contains "enforced_rooms_named_absent=6" else "room-bound: every enforced room absent from a tree must be named absent, not passed over -- and this count is the roster size, so a change here means a room joined or left"
 assert control.out contains "missing_refused=yes" else "room-bound: an enforced room missing from the tree must refuse -- a room nobody can find has not passed"
 assert control.out contains "control_verdict=ok" else "room-bound: the control must agree with itself before it is believed"
 say "RED paths GREEN -- a room over its bound refuses by name, and an enforced room absent from the tree refuses too"
 
-say "GREEN: room-bound -- rooms discovered rather than listed, all five enforced rooms named and under 256, the rest reported and booking nothing, and the gate proven to close in both directions: on a room over its bound, and on an enforced room gone missing."
+say "GREEN: room-bound -- rooms discovered rather than listed, all six enforced rooms named and under 256, the rest reported and booking nothing, and the gate proven to close in both directions: on a room over its bound, and on an enforced room gone missing."

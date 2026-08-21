@@ -16,7 +16,8 @@ Write in **Radiant Style** — see `context/RADIANT_STYLE.md` and `.claude/rules
 ## Context home
 
 - `context/` — style guide, identity, durable specs, and the four disciplines (read before large decisions). Filing guide: `ORGANIZING.md`.
-- `active-designing/` — design in motion.
+- `active-designing/` — design in motion: **essays**, design that outlives the code.
+- `active-development/` — where a **round** thinks out loud: lap plans, scoping, survey ledgers. One question files a piece — *would this still be worth reading if the code it describes were deleted?* Yes → designing, no → development (`.claude/rules/design-rooms.md`).
 - `expanding-prompts/` — intent expanded into runnable plans.
 - `session-logs/` — reasoning traces as **Bron** (`.bron`); one-clock filenames per `context/specs/20260627-102012_one-clock-naming-law.md` and `.claude/rules/session-logs.md` (newest-first index in `session-logs/README.md`). Dated logs fold under `date/YYYYMMDD/` (molted from `archive/` `20260821.161758`); rooms are bounded at 256 flat files (`tools/room_bound_witness.rish`), and a stale reference is resolved rather than rewritten (`tools/dated_path_resolve.rish`).
 
