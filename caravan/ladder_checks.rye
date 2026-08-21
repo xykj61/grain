@@ -7653,3 +7653,100 @@ pub fn refer_the_quarrel(
     // invariant: a referring run leaves no long-standing quarrel unheard
     assert(rung.refer_of(report_out).unheard == 0);
 }
+
+
+/// Stands the word this run published up beside the reading recorded against it.
+///
+/// The wire before the memory, one tier further out than the record below it:
+/// this run reads its own published settlement out of the note an operator would
+/// open, reads the disagreement out of the note that keeps it, and writes the
+/// mark from those two rather than from anything the supervisor remembers doing.
+/// A plan that escorted its word from memory of a quarrel would be quoting a
+/// reader it never read.
+///
+/// A run that published nothing marks nothing, and a record holding no quarrel
+/// has nothing to quote; both are silences no mark can fill, and each says so by
+/// weighing nothing rather than by inventing an objector. A word published over
+/// a disagreement that stands recorded, read by an operator who finds no sign of
+/// it, is the number this rung moves.
+///
+/// Every reach here is seated through the rung handed in, so one text escorts
+/// whichever rung called it. `abide.rye` owns the abiding tier and reached its
+/// own report directly; three lines of identity accessor brought its forty-seven
+/// home with the rest, so the family folded whole at thirty-two.
+pub fn escort_the_word(
+    comptime rung: type,
+    io: std.Io,
+    escort: rung.Escort,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    const said = rung.settlement_published(io);
+    const published: u32 = if (said == null) 0 else 1;
+    if (published == 0) {
+        // invariant: a run that published nothing leaves no word unattended
+        assert(rung.abiding_of(report_out).unattended == 0);
+        return;
+    }
+    const held = rung.dispute_recorded(io);
+    const disputed = held != null;
+
+    // The measurement this rung moves, weighed against what the wire actually
+    // carries rather than against what any escort asked for, so a word left
+    // standing alone is counted rather than refused.
+    rung.abiding_of(report_out).unattended = rung.published_unattended(published, disputed, escort);
+    const escorted = rung.escorted_in(published, disputed, escort);
+    const alone_count = rung.alone_in(published, disputed, escort);
+    if (escort == .alone) {
+        // invariant: a word read alone carries no mark, however plainly its
+        // reader objected
+        assert(escorted == 0);
+        return;
+    }
+    if (!disputed) {
+        // A record holding no disagreement has nothing to stand beside the word,
+        // and the wire says so by leaving the settlement exactly as it reads.
+        //
+        // invariant: an unquarrelled word is never escorted
+        assert(escorted == 0);
+        return;
+    }
+    // The supply, refused by name while the record it read is still in hand: a
+    // run escorts a word only where a disagreement actually stands.
+    if (rung.unrecorded_escort(disputed, escorted)) |why| return why;
+    if (rung.abide_refusal(held, alone_count, escorted)) |why| return why;
+    // invariant: a run that reached the escort refuses nothing it must write
+    assert(escorted == 1);
+    const record = held orelse return error.AbideUnrecorded;
+    const marked = record[1];
+    // The mark, and the hard half of this rung: an escort carries one person's
+    // word to whoever reads another, so it must be that person's word.
+    if (!rung.quotes(marked, record)) return error.AbideMisquoted;
+    try rung.abide_note(io, marked);
+    rung.abiding_of(report_out).escorted = escorted;
+    // invariant: an escorting run leaves no published word unattended
+    assert(rung.abiding_of(report_out).unattended == 0);
+}
+
+
+/// Reads the recorded disagreement back as the two readings it names.
+///
+/// A run that reads nothing here recorded no disagreement, and says so with a
+/// null rather than by guessing -- which leaves the record exactly where the
+/// rung below leaves it, reading as one voice whatever its reader answered.
+///
+/// The rung handed in carries its own path builder and its own plan name, so a
+/// rung keeps its notes wherever it keeps them and still reads them here.
+pub fn dispute_recorded(comptime rung: type, io: std.Io) ?[2]rung.Settlement {
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = rung.note_path(&path_buf, rung.plan_name, ".dispute") catch return null;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
+    defer file.close(io);
+    var bytes: [2]u8 = @splat(0);
+    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
+    // invariant: a dispute never outgrows the two readings it names
+    assert(got <= 2);
+    if (got < 2) return null;
+    const ours = rung.settlement_of_byte(bytes[0]) orelse return null;
+    const theirs = rung.settlement_of_byte(bytes[1]) orelse return null;
+    return .{ ours, theirs };
+}

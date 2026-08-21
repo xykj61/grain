@@ -2525,6 +2525,34 @@ What the folded check does is the arc's whole referral half, stated once. A run 
 **The lesson this lap adds is that a free fold is a signal, not luck.** Eighteen reaches, eighteen already public: the appeal, dependent, reap, and amendment clusters had each widened the symbols this tier shares, so by the time the quarrel came up the queue its whole neighborhood was already open. Folds pay forward. The cheapest fold on any ladder is the one taken after its neighbors have gone first, and the queue -- ordered by carried lines alone -- happens to walk a tier in roughly that order because a tier's families rise together.
 
 
+## Fold AE -- the escort, its wire reader, and the owner brought home
+
+The queue named **thirty-one rungs by forty-seven lines, 1,410 carried**, and hashing every `escort_the_word` on the ladder found thirty-two bodies at one length. Thirty-one stand byte for byte alike; the thirty-second is `abide.rye`, the tier owner, which reaches its own report directly where every rung above it reaches through `abiding_of`. Four lines of the forty-seven differ, and all four differ that one way -- the signature three laps running have now met in `amend.rye`, `appeal.rye`, and `refer.rye`, each of which stayed home.
+
+**This one came home instead, and the difference is the whole reading.** An owner stays home when a shape born after it dates it out, as `hear.rye` was dated in fold U. An owner comes home when the only thing standing between its body and its cohort's is a reach it never needed to name -- and then three lines of identity accessor make it byte for byte the same body. `relent.rye` proved that in fold X and `repose.rye` in fold Y; `abide.rye` is the third, and the family folded **whole at thirty-two**.
+
+Fold Z's rule ran next, and reported a clean neighborhood. `escort_the_word` reaches fourteen symbols beyond the accessor, and **all fourteen already stood public in all thirty-one rungs** -- the fold's whole price was the twenty-three rungs where `abiding_of` was private, plus the three lines the owner gained.
+
+**The reach reading paid once more.** One of those fourteen is itself a whole carrying family standing above the harness line: `dispute_recorded`, a wire reader in **thirty-three** rungs at fourteen lines apiece, one text with no absentee at all. It opens the disagreement note through its rung's own path builder and plan name, reads the two settlements it holds, and returns nothing rather than guessing where the wire reads short. Lifting it cost **no widening whatsoever** -- its five reached symbols were already public in all thirty-three, and `Dir` is the harness's own alias for `std.Io.Dir`.
+
+What the folded escort does is the arc's whole abiding half, stated once. A run reads its own published settlement out of the note an operator would open, reads the disagreement out of the note that keeps it, and writes the mark from those two rather than from anything the supervisor remembers doing. A run that published nothing marks nothing. A record holding no quarrel has nothing to quote. A word read alone carries no mark, however plainly its reader objected. Only a published word standing over a recorded disagreement earns an escort -- and the escort must quote the reading its reader actually holds, since carrying one person's word to whoever reads another means carrying that person's word.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding `escort_the_word` | 32, one apart | **0**, each keeping a three-line delegate |
+| Rungs holding `dispute_recorded` | 33 | **0**, each keeping a three-line delegate |
+| Lines the two families carried | 1,858 | **189** |
+| Widenings the fold cost | -- | **23**, one word, one accessor reach |
+| Accessors born | -- | **1**, three lines in `abide.rye` |
+| The ladder's whole carry | 104,726 | **103,057** |
+| Carry ceiling | 104,800 | **103,100** |
+| Carrying families | 707 | **707** |
+
+**The arithmetic closes with no remainder.** Out went 30x47 and 32x14 -- 1,410 plus 448, or **1,858**. Back came thirty-two and thirty-three rungs at three lines apiece, carrying 31x3 and 32x3 -- **189**. The fall is 1,669, and the meter read **1,669**. Carrying families held at 707 because both families folded whole into delegate families of their own, with no visibility split opened and none healed.
+
+**The lesson this lap adds is that a tier owner is a question rather than a verdict.** Five owners have now stood apart from their cohorts, and the arc has answered each differently on evidence: `hear.rye` stayed home because it ends its run on an error the rungs above record and carry past, and no accessor gives a body back a check it never had. `amend.rye`, `appeal.rye`, and `refer.rye` stayed home because their difference was the reach and no accessor had yet been born for it. `abide.rye` came home because the accessor cost three lines and folded forty-seven. The test is never who owns the tier -- it is whether the difference is a meaning or a reach, and only reading the differing lines can say which.
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.

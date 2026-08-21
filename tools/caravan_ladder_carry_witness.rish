@@ -59,18 +59,18 @@ say "caravan-ladder-carry: Lens TAME -- safety first: the ceiling is named, the 
 
 let living = run ["sh" "tools/fixtures/caravan_ladder_carry_scan.sh"]
 assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
-assert living.out contains "CARRY_OK carried=104726 ceiling=104800" else "caravan-ladder-carry: want the living carry under its named ceiling"
+assert living.out contains "CARRY_OK carried=103057 ceiling=103100" else "caravan-ladder-carry: want the living carry under its named ceiling"
 assert living.out contains "CARRY_MODULES 108" else "caravan-ladder-carry: want all 108 ladder modules read, the rungs and the harness alike"
-assert living.out contains "CARRY_BODIES 18090 distinct=7890 copies=10200 carried_lines=104726" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
+assert living.out contains "CARRY_BODIES 18093 distinct=7892 copies=10201 carried_lines=103057" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
 
 say "caravan-ladder-carry: living ladder -- ${living.out}"
 
 # The fold queue, asserted so it stays a measurement rather than a memory. The largest family is named here by number
 # so a lap that folds it must come back and say so, and a lap that grows a larger one cannot pass quietly.
 assert living.out contains "CARRY_FAMILIES 707" else "caravan-ladder-carry: want every carrying family counted"
-assert living.out contains "CARRY_TOP escort_the_word: 31 rungs x 47 lines = 1410 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
-assert living.out contains "CARRY_TOP start_one: 40 rungs x 35 lines = 1365 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
-say "caravan-ladder-carry: the fold queue -- escort_the_word leads it now, the quarrel cluster having lifted into the harness in one lap: refer_the_quarrel over a cohort of twenty-one, and six of the bodies it reaches -- position_standing, dwell_published, forum_published, refer_refusal, case_delivered, refer_note -- each over its own cohort, the whole seven costing one widened word"
+assert living.out contains "CARRY_TOP start_one: 40 rungs x 35 lines = 1365 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
+assert living.out contains "CARRY_TOP return_promised_reach: 42 rungs x 33 lines = 1353 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
+say "caravan-ladder-carry: the fold queue -- start_one leads it now, the escort pair having lifted into the harness this lap: escort_the_word over a cohort of thirty-two, its owner abide.rye brought home by three lines of identity accessor, and dispute_recorded, the wire reader it reaches, over a cohort of thirty-three for no widening at all"
 
 # The three named meters, read here beside the wide one so no reader mistakes a window for the room. Every number below
 # is true inside its own window, and the point of printing them together is that their sum is not the ladder's carry.
@@ -117,4 +117,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_c
 assert (ceiling.ok == false) else "caravan-ladder-carry: a carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-carry: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-carry -- the Caravan ladder's whole carry stands counted under a ceiling this fold brought down, every number of it printed above as the scan's own output rather than recited here, with the fold queue standing largest-first and led now by a new family, this lap having lifted a quarrel and six of the bodies it reaches out of cohorts of twenty-one through twenty-seven at once."
+say "GREEN: caravan-ladder-carry -- the Caravan ladder's whole carry stands counted under a ceiling this fold brought down, every number of it printed above as the scan's own output rather than recited here, with the fold queue standing largest-first and led now by a new family, this lap having lifted an escort and the wire reader it reaches out of cohorts of thirty-two and thirty-three, the tier owner brought home rather than left behind."
