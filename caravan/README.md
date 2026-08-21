@@ -1709,6 +1709,25 @@ The ceiling came down 4,800 to **4,300**, sized as before so a first new rung pa
 
 What remains of the printing carry is the staircase of per-tier bodies, which wants a different fold than a whole-body lift -- the whole-body carry is spent.
 
+**Fold H reached past byte-identity on `20260820.235259`.** The desisting telling -- `tell_desist_half` and the `tell_desist_third` it chains into -- stood in **eight rungs** at forty and fifty-two lines apiece, and the whole-body reading could not see it at all: no two of the sixteen bodies hashed alike, so every one of them counted as distinct. Reading them side by side showed why. They differ in exactly one thing -- the pair of words naming which plan each column reports, `holding, abating` in the abating rung and `leaving, hearing` in the answering one. Mask that pair and all eight halves are one hash, and all eight thirds are another.
+
+So the fold takes the pair as **comptime text** and lifts the bodies whole. Each rung keeps a three-line call handing in its own two words, the harness composes the printed line by concatenation, and every line comes out exactly as that rung wrote it. Six symbols widened by one word in each of the eight -- `dwell_of`, `endure_of`, `heed_of`, `relent_of`, `swell_of`, and the tail the harness hands control back to -- verified as `pub` across all eight before a line moved, the check that has made every fold in this arc safe.
+
+| Reading | Before | After |
+|---|---|---|
+| Printing lines on disk | 6,454 | **5,848** |
+| Carried printing lines | 3,944 | **3,433** |
+| Lines deleted from rungs | -- | **816**, for 56 lines of call |
+| Neighbor walk, read independently | 3,483 | **2,715** -- within twenty-one percent |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+The proof this fold rests on is stronger than a hash, because a hash could no longer reach it. All eight rungs were built and run before the edit and their whole printed output captured; all eight were built and run after, and the two outputs stand **line for line identical** -- save forty-two lines whose order concurrent clients set rather than the fold, which hold their count exactly. Measurement caught that nondeterminism honestly: a first comparison read as a difference, and running one binary twice showed the ordering moves on its own.
+
+The ceiling came down 4,300 to **3,700**, sized as before so a first new rung passes and a second refuses. All eight touched rungs ran their own witness GREEN, and the whole choir sang GREEN cold beside them.
+
+What remains carried is the **true staircase** -- `tell_desist_tail` and `tell_beckon_own`, bodies that read three tiers through a nesting each rung writes at its own depth, nine and ten `inner` hops in one rung where the next writes eight. Those want an accessor **born** rather than a body lifted, which is a different move than any of the four folds before it.
+
 
 ## Held
 
