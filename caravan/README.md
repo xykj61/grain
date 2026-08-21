@@ -2033,6 +2033,32 @@ So the rule is bounded by a property now: **every number a ladder meter prints i
 
 The rule proved itself on the way in twice over. Drawn first at the closing line alone, it was too narrow within the hour -- the line directly above the close carried the same stale number -- so it widened to every printed line. And its first pattern, an `(^|[^0-9])` alternation, matched nothing at all, because this shell's grep reads a `^` inside a group as a literal caret; the probe caught it by refusing a number the file plainly asserts. A guard that has never refused what it should welcome is a guard nobody has tested.
 
+## Fold O -- `fill_table`, the largest family the arc has folded, and the queue that could only see two thirds of it
+
+The printed queue named `fill_table` next: **thirty-seven rungs at sixty-nine lines apiece, 2,484 carried lines.** Reading past that answer before folding it is what made this the largest fold the arc has taken.
+
+**Forty-three rungs held the body, and the six the queue left out differ by the word `pub` and nothing else** -- one line out of sixty-nine. The carry scan names a family by exact text, which is precisely what makes it trustworthy about collisions and precisely what blinds it here: `pub fn fill_table(` and `fn fill_table(` are two texts and one body. Fold M had already measured the true size, **2,898 lines across forty-three rungs**, and written it down beside the four spine bodies it widened for exactly this fold. The queue simply could not see it.
+
+**So a fold queue is a lead, never a verdict.** It names where to look; the reading that follows says how much is actually there. That sentence now stands in the scan's own header, so the next lap inherits the caution rather than rediscovering it.
+
+`fill_table` is the body that takes up every phase a run may start right now -- conferring the slots that are owed, admitting what the doors allow, and recording each turn, fence, mask, and precedence a pick stepped past on the way. It moves into [`ladder_checks.rye`](ladder_checks.rye) whole and reaches every symbol through the rung handed in, so each rung still fills its own table, against its own doors, into its own report. `mask.prefix_mask` and `mask.fence_after` stay module-level, since a mask is the same arithmetic for every rung rather than something a rung writes over its own report.
+
+**The cost is 435 widenings** -- eleven bodies and one shape, one word each, across forty-three rungs, every one verified at column zero before a line moved. Five of them move the table (`advance_head`, `confer_slot`, `confer_one`, `choose_pass`, `start_one`), three weigh a pick (`door_admits`, `sibling_waits`, `elder_waits`), three reach the report (`run_of`, `masked_of`, `preceded_of`), and `Table` is the shape they all name. Every one of them leads a family still standing in the queue, so this fold prepared the next several the way fold M prepared this one.
+
+One rung needed a line no other did: [`reclaim.rye`](reclaim.rye) had never imported the harness, being older than it. Nothing the harness imports reaches back to `reclaim`, so the import is safe, and its own witness proves it on metal.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding the body | 43 | **0**, each keeping a sixteen-line delegate |
+| Lines the body carried | 2,829 as the meter counted it, 2,898 as one family | **656** -- the delegate is itself a copy |
+| The ladder's whole carry | 134,809 | **132,589** |
+| Carry ceiling | 135,000 | **132,700** |
+| Lines on disk, all `caravan/*.rye` | 373,828 | **371,654** |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+**Widening a symbol moves that symbol's own family too, and the arithmetic closes because of it.** A declaration line is part of the body it opens, so making `elder_waits` public in forty-three of the fifty-one rungs that hold it split one family of fifty-one into one of forty-three and one of eight -- and a split *lowers* the carry by one body, since the new family's first copy becomes a distinct text. Eleven such splits account for the 47 lines by which the measured fall, **2,220**, exceeds the 2,173 the fold's own family gave back. Nothing is unexplained, and none of it is estimated.
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.
