@@ -2,12 +2,12 @@
 
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Audience:** Acme Corporation employees · anyone contributing to this tree
-**Status:** Living — describes what runs today; horizons named as horizons.
+**Audience:** Acme Corporation employees - anyone contributing to this tree
+**Status:** Living -- describes what runs today; horizons named as horizons.
 
 ---
 
-Welcome. This guide is for the person who wants to change the code — to fix a
+Welcome. This guide is for the person who wants to change the code -- to fix a
 witness, grow a module, or send a first contribution. It assumes you can read a
 programming language and hold a shell prompt; it assumes nothing else. By the
 end you will know the four languages this system speaks, the single discipline
@@ -28,17 +28,17 @@ boundaries between them first; the syntax follows quickly once the roles are cle
 
 | Language | Extension | Role | Evaluated or read |
 |----------|-----------|------|-------------------|
-| **Rye** | `.rye` | Systems code — the modules themselves | Compiled to a native binary |
-| **Rishi** | `.rish` | The shell — witnesses, tools, orchestration | Interpreted, line by line |
-| **Brix** | `.brix` | Composition — declares systems and maps | Evaluated to data |
-| **Kyri** | `.kyri` | Data notation — records, logs, configuration | Parsed, never evaluated |
+| **Rye** | `.rye` | Systems code -- the modules themselves | Compiled to a native binary |
+| **Rishi** | `.rish` | The shell -- witnesses, tools, orchestration | Interpreted, line by line |
+| **Brix** | `.brix` | Composition -- declares systems and maps | Evaluated to data |
+| **Kyri** | `.kyri` | Data notation -- records, logs, configuration | Parsed, never evaluated |
 
 A short way to remember it: **Rye builds, Rishi runs, Brix declares, Kyri records.**
 Code lives in Rye and Rishi; facts live in Brix and Kyri. The line between the two
 is the line between a program and the data it reads, and that line is never crossed
 by accident.
 
-### Rye — the systems language (`.rye`)
+### Rye -- the systems language (`.rye`)
 
 Rye is where the modules live: the identity vault, the sealed wire, the ledger,
 the vector store. It is a disciplined dialect of Zig, compiled ahead of time to a
@@ -59,30 +59,34 @@ rather than a qualified `std.debug.assert(...)`. `print` is imported once so
 output and witness claim-lines read as bare `print(...)`. Every hosted Rye file in
 the tree begins here.
 
-### Rishi — the shell (`.rish`)
+### Rishi -- the shell (`.rish`)
+
+*(Corrected `20260821.190707`, REDS %118, twice over. The illustration named `vault/bin/vault`, a binary nothing in the tree builds -- `vault/bin/shard` is the real one, made by `rye/bin/rye build vault/shard.rye -femit-bin=vault/bin/shard`. And it checked `ok.out` for the green line, which is empty: a Rye program prints through `std.debug.print`, so its output arrives on `err`. The corrected form was run before it was written down, which is how the second fault was found at all -- the first correction still failed, and the failure was the more interesting one.)*
 
 Rishi is the shell that drives everything: it runs witnesses, builds binaries,
 and orchestrates the tools. Its defining feature is the **run-record**: every
 external command returns a small record you inspect before trusting anything.
 
 ```rish
-let ok = run ["vault/bin/vault" "selftest"]
-assert ok.ok else "vault: selftest did not run"
-assert ok.out contains "GREEN" else "vault: selftest was not green"
-say "GREEN: vault selftest holds."
+let ok = run ["vault/bin/shard" "selftest"]
+assert ok.ok else "vault shard: selftest did not run"
+# A Rye program speaks through `print`, which is std.debug.print -- so it writes to STDERR.
+# The green line is in `err`, and `out` is empty. Check the field the answer is actually in.
+assert ok.err contains "GREEN" else "vault shard: selftest was not green"
+say "GREEN: vault shard selftest holds."
 ```
 
 `run` returns a record with `ok` (did the command succeed), `out` (what it printed
 to standard output), and `err` (what it printed to standard error). You check the
-status **before** you trust the output — a command that failed prints nothing you
-should believe. `assert … else …` is the pipeline gate: it stops the witness with a
+status **before** you trust the output -- a command that failed prints nothing you
+should believe. `assert ... else ...` is the pipeline gate: it stops the witness with a
 named message the moment a claim fails. `say` prints a line for a human to read.
 Conditionals are `if / then / else`; iteration is `for-each`.
 
-### Brix — the composition language (`.brix`)
+### Brix -- the composition language (`.brix`)
 
-Brix declares systems and maps. It is read by a first-space split — a key, a
-space, the rest of the line as the value — with blank lines and `#` comments
+Brix declares systems and maps. It is read by a first-space split -- a key, a
+space, the rest of the line as the value -- with blank lines and `#` comments
 ignored. A Brix file states invariants at the top, in comments, so a reader knows
 the shape before reading the rows:
 
@@ -93,7 +97,7 @@ kind map
 name equinox_map
 count 4
 
-# A — the rising quarter
+# A -- the rising quarter
 block A
 direction east
 element fire
@@ -103,12 +107,12 @@ Brix is data that happens to describe structure. It evaluates to the same plain
 key-value shape Kyri uses, which is why the two feel like siblings: Brix is the
 composed, block-structured form; Kyri is the flat record form.
 
-### Kyri — the data notation (`.kyri`)
+### Kyri -- the data notation (`.kyri`)
 
 Kyri is where records live: session logs, configuration, inventory. A Kyri
 document opens with a `format <name>` line that names its shape, then carries
 `key value` fields, one per line, with `#` comments and blank lines ignored. No
-quotes, no braces, no nesting — one field per line, plainly.
+quotes, no braces, no nesting -- one field per line, plainly.
 
 ```kyri
 format session-log-v1
@@ -120,11 +124,11 @@ file manual/the-developer-guide.md the guide itself
 recommend keep-going
 ```
 
-A key may repeat — `think` and `file` above appear more than once, and every
+A key may repeat -- `think` and `file` above appear more than once, and every
 occurrence is kept in order. The reader for Kyri (the `scribe` module) is
 **zero-copy**: it parses a document into fields that are slices *into the source
-text*, never copies of it, and every bound — the longest source, the most fields
-— is named as a constant and asserted at the edge. That is the same discipline
+text*, never copies of it, and every bound -- the longest source, the most fields
+-- is named as a constant and asserted at the edge. That is the same discipline
 Rye keeps everywhere, applied to reading a file.
 
 ---
@@ -136,8 +140,8 @@ full guidance lives in `../context/TAME_GUIDANCE.md`; this section is the workin
 summary a contributor needs at the keyboard. TAME governs `.rye`, `.rish`,
 `.brix`, and `.kyri` alike, and its priority order is fixed:
 
-> **Safety first — structural, not by convention. Performance second — measure
-> before optimizing. Joy third — clarity, named things, the habit of saying why.**
+> **Safety first -- structural, not by convention. Performance second -- measure
+> before optimizing. Joy third -- clarity, named things, the habit of saying why.**
 > When these pull against each other, safety wins. When safety and performance
 > are equal, joy earns the vote.
 
@@ -145,8 +149,8 @@ Here is what that order asks of your code.
 
 ### State invariants before you implement them
 
-Write the `assert` calls first — at construction, at every mutation, and at every
-postcondition — each preceded by a `// invariant:` comment that names what must be
+Write the `assert` calls first -- at construction, at every mutation, and at every
+postcondition -- each preceded by a `// invariant:` comment that names what must be
 true. This is the load-bearing habit of the whole tree. A module is not trusted
 because it looks correct; it is trusted because it asserts its own correctness and
 a witness confirms those assertions hold.
@@ -162,19 +166,19 @@ fn init(buf: []u8) Region {
 }
 ```
 
-Aim for at least two asserts on every function you write or touch —
+Aim for at least two asserts on every function you write or touch --
 preconditions, postconditions, and bounds. A green witness does **not** excuse a
 module with no asserts of its own; the witness proves behavior from outside, and
 the asserts prove it from inside.
 
 ### Bound everything, with a named maximum
 
-Every allocation, every collection, every pipeline names a maximum — declared as a
+Every allocation, every collection, every pipeline names a maximum -- declared as a
 constant at construction, enforced at the edge. No unbounded growth lives in this
 tree.
 
 ```rye
-// The child's memory budget — 256 bytes. Small on purpose: the proof
+// The child's memory budget -- 256 bytes. Small on purpose: the proof
 // is in the bound, not in the size.
 const child_budget: u32 = 256;
 
@@ -183,19 +187,19 @@ const max_source_len: u32 = 65536;
 const max_fields: u32 = 512;
 ```
 
-The comment beside each bound is not decoration — it is the **say why** rule.
+The comment beside each bound is not decoration -- it is the **say why** rule.
 Every assertion, every named constant, every surprising design choice earns a
 comment that names the reason, so the next reader inherits the intent, not just
 the value.
 
-### Explicit widths — `u32` for counts, `u64` for the wire
+### Explicit widths -- `u32` for counts, `u64` for the wire
 
 Integer width is a design decision, stated explicitly:
 
 - **`u32`** for in-memory counts, indices, and lengths bounded by a named constant.
 - **`u64`** for wire-persistent sizes, timestamps, and quantities that cross a
   target boundary.
-- **`usize`** appears **only** at the inherited-standard-library seam — never in a
+- **`usize`** appears **only** at the inherited-standard-library seam -- never in a
   struct field, a function parameter, a return type, or a local you publish as API.
   At that seam you assert the bound, keep the arithmetic in `u32`, and cast at the
   edge:
@@ -214,7 +218,7 @@ is correct code, not debt.
 ### `snake_case`, and no `@memcpy`
 
 Functions, variables, and file names are `snake_case`. Copies between disjoint
-slices go through the `copy_disjoint` helper rather than a raw builtin — the one
+slices go through the `copy_disjoint` helper rather than a raw builtin -- the one
 intentional low-level copy in the tree lives inside `copy_disjoint` itself and
 nowhere else. When you touch a file that still uses an old form, migrate it in the
 same edit; the style is a ratchet that tightens on contact, not a sweep you go
@@ -222,8 +226,8 @@ hunting for.
 
 ### Accrete, never break
 
-The tree grows by adding, not by rewriting. Dated records — session logs,
-research, testimony — are never edited to match a later truth; they stand as the
+The tree grows by adding, not by rewriting. Dated records -- session logs,
+research, testimony -- are never edited to match a later truth; they stand as the
 honest record of their moment, and a newer record accretes beside them. Living
 documents and code may be revised freely; sealed and dated artifacts may not. When
 in doubt, add a new file at a new timestamp rather than rewrite an old one.
@@ -258,11 +262,11 @@ runs the binary, inspects the run-record, and asserts every claim the module mak
 A witness is small, exact, and reads like a paragraph of proof:
 
 ```rish
-# tools/vault_selftest_witness.rish — the keeper proves its own custody.
+# tools/vault_selftest_witness.rish -- the keeper proves its own custody.
 #
 #   rishi/bin/rishi run tools/vault_selftest_witness.rish
 
-say "vault: selftest — the keeper holds and returns the secret."
+say "vault: selftest -- the keeper holds and returns the secret."
 
 let out = run ["vault/bin/keeper" "selftest"]
 assert out.ok else "vault: selftest did not run"
@@ -273,8 +277,8 @@ say "GREEN: vault selftest holds."
 
 Every witness follows the same shape: a header comment with the one-line command
 to run it, a `say` that states what is being proven, a sequence of `run` and
-`assert … else …` gates, and a closing `GREEN:` line. When the last line prints,
-the claim is proven — not asserted, proven, on this machine, right now.
+`assert ... else ...` gates, and a closing `GREEN:` line. When the last line prints,
+the claim is proven -- not asserted, proven, on this machine, right now.
 
 ### Run it
 
@@ -283,7 +287,7 @@ rishi/bin/rishi run tools/vault_selftest_witness.rish
 ```
 
 Green means the module holds. Red means a named assertion failed, and the message
-tells you which one. There is no third state — a witness either proves the claim or
+tells you which one. There is no third state -- a witness either proves the claim or
 names exactly where the claim broke.
 
 ---
@@ -294,7 +298,7 @@ Here is the path a newcomer walks to add a module and have it fit the tree the
 first time. Nothing here is ceremony; each step is the shortest route to a module
 that is honest, bounded, and provable.
 
-1. **Name it plainly.** Reach for the clearest, warmest, safest word — a plain
+1. **Name it plainly.** Reach for the clearest, warmest, safest word -- a plain
    word or a clear metaphor a newcomer grasps at once, at whatever length that word
    wants to be. Grep the tree first so the name collides with nothing already
    seated.
@@ -325,7 +329,7 @@ that is honest, bounded, and provable.
    the module works until this line prints green.
 
 9. **Document only what runs.** The README describes behavior the reader can
-   reproduce. Where a capability is a plan rather than a fact, say so — name it a
+   reproduce. Where a capability is a plan rather than a fact, say so -- name it a
    horizon, honestly.
 
 Grow the module beside its neighbors, born with its own name, rather than renaming
@@ -336,25 +340,25 @@ churn of old ones.
 
 ## 5. Sending your work
 
-When your work is ready, you **send** it — commit, push, and (when clean)
+When your work is ready, you **send** it -- commit, push, and (when clean)
 fast-forward to the main branch. The commit discipline is borrowed directly from a
 large, careful open-source community, because it earns trust the same way the
 witnesses do: every commit explains itself.
 
 ### The commit subject
 
-- **Component-prefixed:** the short prefix names the area the commit touches —
+- **Component-prefixed:** the short prefix names the area the commit touches --
   `vault:`, `scribe:`, `manual:`, `tools:`, and so on, matching the directory or
   module the change lives in.
 - **Under 50 characters** total, prefix and description together, so it reads in a
   one-line log without wrapping.
-- **Present tense, plain:** "add," "fix," "prove," "rename" — what the commit does,
+- **Present tense, plain:** "add," "fix," "prove," "rename" -- what the commit does,
   not what it will do or has done.
 
 ### The commit body
 
 Write a short paragraph naming what changed and why it matters, in the same warm,
-honest voice as the prose everywhere else — no filler, no hedging. Close with a
+honest voice as the prose everywhere else -- no filler, no hedging. Close with a
 `Related` section that names the companion documents or states "no related work"
 plainly, rather than omitting it. When a commit touches several files, name what
 each significant one contributes.
@@ -382,22 +386,22 @@ Grounds every example in a file that already runs green in this tree.
   commit honestly names why it could not run. A document changed alongside code
   updates in the **same** commit, so a doc never describes behavior the code no
   longer has.
-- **One record rides along.** A session log — a `.kyri` file capturing the
-  reasoning behind the change — ships in the same send whenever possible.
+- **One record rides along.** A session log -- a `.kyri` file capturing the
+  reasoning behind the change -- ships in the same send whenever possible.
 
 ---
 
 ## 6. Where to look next
 
-- **`../context/TAME_GUIDANCE.md`** — the full discipline, every rule with its
+- **`../context/TAME_GUIDANCE.md`** -- the full discipline, every rule with its
   reasoning.
-- **`../context/RADIANT_STYLE.md`** — the voice this tree writes in, prose and
+- **`../context/RADIANT_STYLE.md`** -- the voice this tree writes in, prose and
   commits alike.
-- **`reference/rishi-language.md`** — the Rishi language and command-line
+- **`reference/rishi-language.md`** -- the Rishi language and command-line
   reference.
-- **`tutorials/first-witness.md`** — run, read, and write your very first witness,
+- **`tutorials/first-witness.md`** -- run, read, and write your very first witness,
   by the hand.
-- **`../tools/`** — the living corpus of witnesses. Every one of them is a worked
+- **`../tools/`** -- the living corpus of witnesses. Every one of them is a worked
   example of green-before-claim; read a few near the module you mean to touch.
 
 ---
@@ -406,5 +410,5 @@ You now have the whole shape: four languages with clean boundaries, one discipli
 that asks you to state your invariants and bound your growth, a build-and-witness
 rhythm that proves work rather than assuming it, and a send discipline that leaves
 a history which explains itself. Build something small, prove it green, and send
-it. The tree grows one honest, witnessed module at a time — and there is room in
+it. The tree grows one honest, witnessed module at a time -- and there is room in
 it for yours.
