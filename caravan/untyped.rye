@@ -1,0 +1,654 @@
+//! Caravan untyped retyping -- the memory a dependent receives, carved from a
+//! region with a real floor, and the one kernel refusal that only a floor can
+//! answer.
+//!
+//! WHY THIS MODULE EXISTS. `refusals.rye` read seL4's own compiled enums and
+//! found eleven named answers a capability invocation may receive, of which
+//! Caravan's policy table answers four. It named, for each of the seven
+//! remaining, the subsystem that owes it -- and **untyped retyping** owes
+//! `seL4_NotEnoughMemory`, with its reason written out in advance: *memory a
+//! dependent receives is carved from an untyped region with a real floor*.
+//! Neither the policy table nor the derivation tree can answer it. A table says
+//! who may ask; a tree says whose reach a grant descends from. Only a region
+//! that knows how much of itself is spent can say there is too little left.
+//!
+//! THE REFUSAL, AS THIS MODULE MEANS IT.
+//!
+//!   not_enough_memory  The region holds too little to carve what was asked.
+//!                      The floor is measured after alignment, never before,
+//!                      which is the whole reason this rung is a module rather
+//!                      than a subtraction.
+//!
+//! WHAT ALIGNMENT ACTUALLY COSTS, MEASURED RATHER THAN ASSUMED. seL4 places
+//! every object at an address that is a multiple of the object's own size, so
+//! the free watermark climbs to the next aligned boundary before a carve
+//! begins, and **the padding is spent memory**. Sixteen bytes of endpoint
+//! followed by a page costs four thousand and ninety-six bytes of climb, and a
+//! region yields correspondingly fewer objects than a division would predict.
+//! That much is plain.
+//!
+//! The tempting next sentence -- *so a raw remainder over-promises, and a
+//! region with a page of bytes free can be unable to hold a page* -- is
+//! **false here**, and this module states the reason rather than shipping the
+//! flourish. Because an seL4 untyped region is naturally aligned and its width
+//! is a power of two, any carve big enough to be worth asking about forces the
+//! region to be at least as wide as the object, which makes the region's origin
+//! aligned to the object too, which makes the bytes from an aligned start to
+//! the region's end an exact multiple of the object's size. A requested size is
+//! also such a multiple, and the padding is always strictly smaller than one
+//! object -- so a request can never land in the gap between the two readings.
+//! **The aligned floor and the naive remainder agree, always.**
+//!
+//! That agreement is a *consequence* of natural alignment rather than a licence
+//! to drop it. `open` refusing a misaligned origin is what buys it, and the
+//! self-test proves the equivalence by sweeping every kind, every count, and
+//! every reachable watermark rather than by asserting it once. The day a region
+//! is allowed to begin off its own boundary, the two readings part and this
+//! module reds.
+//!
+//! THE FOUR PROPERTIES IT KEEPS.
+//!
+//!   Every carved object begins on a boundary of its own size. seL4's rule,
+//!   held as a postcondition rather than as a habit.
+//!
+//!   The padding that puts it there is spent against the region, so a carve
+//!   that reports room genuinely has it and the region's yield is honest.
+//!
+//!   A refused carve spends nothing. The watermark never moves on a refusal,
+//!   so a region cannot be eaten by requests it declined.
+//!
+//!   A naturally aligned region needs no second opinion. The aligned floor and
+//!   the plain remainder agree across the whole reachable space, proven by
+//!   sweep, and the refusal at `open` is the reason.
+//!
+//! WHAT IS BOUNDED. A region's `size_bits` stands between seL4's own
+//! `seL4_MinUntypedBits` and `seL4_MaxUntypedBits`, and one carve asks for at
+//! most `max_objects` objects. Both bounds refuse with **named Rye errors**
+//! rather than with a kernel refusal, since they are this module's own capacity
+//! and this rung does not claim the general argument-checking debt that
+//! `refusals.rye` still holds open.
+//!
+//! HONEST NOTE ON THE OBJECT SIZES. seL4 states some object sizes
+//! unconditionally and others behind kernel configuration: in the very header
+//! these are read from, `seL4_TCBBits` is 11 with an FPU and 10 without, and
+//! `seL4_NotificationBits` is 6 under MCS and 5 without. A userland that
+//! recited one number for either would be right on one build and wrong on
+//! another. So the kinds carved here are exactly the ones seL4 states with no
+//! `#ifdef` above them -- a CNode slot, an endpoint, and a page -- and the
+//! configured sizes are left to the day a real kernel configuration is read
+//! rather than assumed.
+//!
+//! CLEAN ROOM. No seL4 line is reproduced. Every size is taken from the
+//! vendored BSD-2-Clause `sel4_arch/constants.h`, and the witness re-reads that
+//! header at run time, so a vendored bump that moves one reds this rung on the
+//! lap it lands.
+//!
+//! Usage:
+//!   untyped          Run the self-test (default)
+//!   untyped selftest Same as default
+//!   untyped table    Print the kinds, their sizes, and a worked carve
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const refusals = @import("refusals.rye");
+
+const caravan_untyped_version = "20260821.060758";
+
+/// The smallest untyped region seL4 will name, its `seL4_MinUntypedBits`. Read
+/// from the vendored `sel4_arch/constants.h` on `20260821.060758`; the witness
+/// re-reads it on every run.
+pub const min_untyped_bits: u32 = 4;
+
+/// The largest, seL4's `seL4_MaxUntypedBits`, from the same header.
+pub const max_untyped_bits: u32 = 38;
+
+/// How many objects one carve may ask for. This is Caravan's own bound rather
+/// than seL4's -- a supervisor hands a dependent a cohort of objects, never an
+/// unbounded fleet, and a request past this is answered before any arithmetic.
+pub const max_objects: u32 = 64;
+
+/// What this module refuses with when its own bounds are reached. These are Rye
+/// errors rather than kernel refusals on purpose -- the kernel offers no answer
+/// for "the userland asked for a region size that is not a region size."
+pub const UntypedError = error{
+    RegionTooSmall,
+    RegionTooLarge,
+    RegionMisaligned,
+    TooManyObjects,
+    EmptyRequest,
+};
+
+// =========================================================================
+// The object kinds, each with the size seL4 states for it
+// =========================================================================
+
+/// The kinds Caravan carves. Each is one seL4 states **unconditionally** on
+/// riscv64; the configured sizes are deliberately absent, for the reason the
+/// header note above gives.
+pub const ObjectKind = enum(u8) {
+    slot = 0,
+    endpoint = 1,
+    page = 2,
+};
+
+/// The whole roster, in declaration order. One list, so no count is recited.
+pub const all_object_kinds = [_]ObjectKind{ .slot, .endpoint, .page };
+
+/// How many bits wide one object of this kind is -- so its size is two raised
+/// to this, and its alignment is the same number.
+///
+/// `seL4_SlotBits` is 5, `seL4_EndpointBits` is 4, and `seL4_PageBits` is 12,
+/// each stated with no `#ifdef` above it in the vendored riscv64 header.
+pub fn object_bits(kind: ObjectKind) u32 {
+    // invariant: the switch is total over the roster.
+    const bits: u32 = switch (kind) {
+        .slot => 5,
+        .endpoint => 4,
+        .page => 12,
+    };
+    // invariant: an object smaller than the smallest untyped could never be carved.
+    assert(bits >= min_untyped_bits);
+    // invariant: an object larger than the largest untyped could never be seated.
+    assert(bits <= max_untyped_bits);
+    return bits;
+}
+
+/// How many bytes one object of this kind occupies.
+pub fn object_bytes(kind: ObjectKind) u64 {
+    const bits = object_bits(kind);
+    const bytes: u64 = @as(u64, 1) << @intCast(bits);
+    // invariant: a size in bytes is always at least one.
+    assert(bytes >= 1);
+    return bytes;
+}
+
+/// The name each kind carries in Caravan's own vocabulary, so a printed table
+/// reads as supervision rather than as numbers.
+pub fn kind_name(kind: ObjectKind) []const u8 {
+    const name: []const u8 = switch (kind) {
+        .slot => "slot",
+        .endpoint => "endpoint",
+        .page => "page",
+    };
+    assert(name.len > 0); // invariant: a named kind always carries its name
+    return name;
+}
+
+// =========================================================================
+// Alignment -- the arithmetic the floor rests on
+// =========================================================================
+
+/// The next address at or above `value` that is a multiple of two raised to
+/// `bits`. This is the whole reason a remainder is a lie: the bytes between
+/// `value` and its answer are spent, and no object of this size can reach them.
+pub fn align_up(value: u64, bits: u32) u64 {
+    // invariant: an alignment past the largest untyped could never be met.
+    assert(bits <= max_untyped_bits);
+    const step: u64 = @as(u64, 1) << @intCast(bits);
+    const mask: u64 = step - 1;
+    const aligned: u64 = (value + mask) & ~mask;
+    // invariant: aligning never moves an address backward.
+    assert(aligned >= value);
+    // invariant: the answer stands on a boundary of the requested size.
+    assert(aligned % step == 0);
+    return aligned;
+}
+
+/// Whether `value` already stands on a boundary of two raised to `bits`.
+pub fn aligned_to(value: u64, bits: u32) bool {
+    assert(bits <= max_untyped_bits); // invariant: the alignment is one this module can name
+    const step: u64 = @as(u64, 1) << @intCast(bits);
+    return value % step == 0;
+}
+
+// =========================================================================
+// The region
+// =========================================================================
+
+/// One untyped region: where it begins, how wide it is, and how much of it has
+/// been spent.
+///
+/// Invariants held by the methods rather than by the struct: `origin` stands on
+/// a boundary of the region's own size, as every seL4 untyped does, and
+/// `watermark` never passes `bytes()`.
+pub const Region = struct {
+    origin: u64 = 0,
+    size_bits: u32 = min_untyped_bits,
+    watermark: u64 = 0,
+
+    /// Open a region at `origin`, two raised to `size_bits` bytes wide, with
+    /// nothing yet spent.
+    ///
+    /// Refuses by named Rye error a size outside seL4's own untyped limits, and
+    /// an origin that does not stand on a boundary of the region's own size --
+    /// an untyped region in seL4 is naturally aligned, and a region that is not
+    /// would hand out objects whose addresses no kernel would honor.
+    pub fn open(origin: u64, size_bits: u32) UntypedError!Region {
+        if (size_bits < min_untyped_bits) return UntypedError.RegionTooSmall;
+        if (size_bits > max_untyped_bits) return UntypedError.RegionTooLarge;
+        if (!aligned_to(origin, size_bits)) return UntypedError.RegionMisaligned;
+
+        const region: Region = .{ .origin = origin, .size_bits = size_bits, .watermark = 0 };
+        // invariant: a fresh region has spent nothing.
+        assert(region.watermark == 0);
+        // invariant: a fresh region is a whole one.
+        assert(region.whole());
+        return region;
+    }
+
+    /// How many bytes the region holds in all.
+    pub fn bytes(self: *const Region) u64 {
+        assert(self.size_bits <= max_untyped_bits); // invariant: the width is one this module can name
+        const total: u64 = @as(u64, 1) << @intCast(self.size_bits);
+        assert(total >= 1); // invariant: a region always holds at least one byte
+        return total;
+    }
+
+    /// How many bytes stand unspent. This number is **honest yet insufficient**
+    /// on its own: alignment may make some of it unreachable for a given kind,
+    /// which is exactly what `room_for` measures and a bare remainder does not.
+    pub fn free_bytes(self: *const Region) u64 {
+        const total = self.bytes();
+        assert(self.watermark <= total); // invariant: nothing was spent that was never there
+        return total - self.watermark;
+    }
+
+    /// Where a carve of this kind would begin, as an offset into the region --
+    /// the watermark climbed to the next boundary of the object's own size.
+    pub fn next_start(self: *const Region, kind: ObjectKind) u64 {
+        const bits = object_bits(kind);
+        const address = align_up(self.origin + self.watermark, bits);
+        // invariant: the answer stands on a boundary of the object's own size.
+        assert(aligned_to(address, bits));
+        // invariant: aligning never reaches back past what is already spent.
+        assert(address >= self.origin + self.watermark);
+        return address - self.origin;
+    }
+
+    /// Whether `count` objects of this kind honestly fit, padding counted.
+    pub fn room_for(self: *const Region, kind: ObjectKind, count: u32) bool {
+        const start = self.next_start(kind);
+        const each = object_bytes(kind);
+        const needed = each * @as(u64, count);
+        const total = self.bytes();
+        if (start > total) return false;
+        // invariant: the remaining span is real once the start stands inside the region.
+        assert(start <= total);
+        return needed <= total - start;
+    }
+
+    /// Carve `count` objects of `kind` from the region.
+    ///
+    /// Answers `.no_error` when the objects are seated, and
+    /// `.not_enough_memory` when the region holds too little **after
+    /// alignment** -- the refusal this module owes. A refusal spends nothing:
+    /// the watermark stands exactly where it stood.
+    ///
+    /// Refuses by named Rye error a request for no objects at all, or for more
+    /// than one carve may ask.
+    pub fn retype(self: *Region, kind: ObjectKind, count: u32) UntypedError!refusals.KernelRefusal {
+        if (count == 0) return UntypedError.EmptyRequest;
+        if (count > max_objects) return UntypedError.TooManyObjects;
+
+        const before = self.watermark;
+
+        if (!self.room_for(kind, count)) {
+            // invariant: a refused carve leaves the region exactly as it found it.
+            assert(self.watermark == before);
+            assert(self.whole());
+            return .not_enough_memory;
+        }
+
+        const start = self.next_start(kind);
+        const each = object_bytes(kind);
+        self.watermark = start + each * @as(u64, count);
+
+        // invariant: the first object stands on a boundary of its own size.
+        assert(aligned_to(self.origin + start, object_bits(kind)));
+        // invariant: a seated carve always spends at least what it asked for.
+        assert(self.watermark >= before + each * @as(u64, count));
+        // invariant: the region never spends more than it holds.
+        assert(self.whole());
+        return .no_error;
+    }
+
+    /// Where the `index`-th object of the most recent carve of `kind` would
+    /// stand, given a carve that began at `start`. Every one lands on a
+    /// boundary of its own size, since the first does and each is exactly one
+    /// object wide.
+    pub fn object_address(self: *const Region, kind: ObjectKind, start: u64, index: u32) u64 {
+        assert(index < max_objects); // invariant: the index stands inside one carve's bound
+        const each = object_bytes(kind);
+        const address = self.origin + start + each * @as(u64, index);
+        // invariant: every object of a carve stands on a boundary of its own size.
+        assert(aligned_to(address, object_bits(kind)));
+        return address;
+    }
+
+    /// Re-prove the whole region: a width seL4 would name, an origin standing on
+    /// its own boundary, and a watermark inside what the region holds. Returns
+    /// true when all three hold.
+    pub fn whole(self: *const Region) bool {
+        if (self.size_bits < min_untyped_bits) return false;
+        if (self.size_bits > max_untyped_bits) return false;
+        if (!aligned_to(self.origin, self.size_bits)) return false;
+        const total: u64 = @as(u64, 1) << @intCast(self.size_bits);
+        if (self.watermark > total) return false;
+        return true;
+    }
+};
+
+// =========================================================================
+// The kinds and a worked carve, printed
+// =========================================================================
+
+fn print_table() u8 {
+    // A region one page wide, opened at a page boundary. The carve below spends
+    // a single endpoint first, which leaves the watermark sixteen bytes in --
+    // far short of a page boundary, so the page that follows it is refused even
+    // though thousands of bytes stand unspent. That is the whole lesson in one
+    // printed pair of lines.
+    var region = Region.open(0x8000_0000, 12) catch return 1;
+
+    print("untyped: version {s}\n", .{caravan_untyped_version});
+    for (all_object_kinds) |kind| {
+        print("untyped: kind {s} is {d} bits, {d} bytes, aligned to its own size\n", .{
+            kind_name(kind),
+            object_bits(kind),
+            object_bytes(kind),
+        });
+    }
+
+    const first = region.retype(.endpoint, 1) catch return 1;
+    print("untyped: carving 1 endpoint answers {s} -- {d} bytes spent, {d} free\n", .{
+        refusals.kernel_symbol(first),
+        region.watermark,
+        region.free_bytes(),
+    });
+
+    const second = region.retype(.page, 1) catch return 1;
+    print("untyped: carving 1 page answers {s} -- {d} bytes free, yet the next page boundary stands at {d}\n", .{
+        refusals.kernel_symbol(second),
+        region.free_bytes(),
+        region.next_start(.page),
+    });
+    print("untyped: {s} -- {s}\n", .{
+        refusals.kernel_symbol(.not_enough_memory),
+        refusals.kernel_meaning(.not_enough_memory),
+    });
+    return 0;
+}
+
+// =========================================================================
+// Self-test -- the asserts are the specification
+// =========================================================================
+
+/// Movement one -- a region opens with a width seL4 would name, and refuses by
+/// name every width and origin it would not.
+fn prove_opening() void {
+    var region = try_region(Region.open(0x8000_0000, 20));
+    assert(region.size_bits == 20);
+    assert(region.watermark == 0);
+    assert(region.bytes() == @as(u64, 1) << 20);
+    assert(region.free_bytes() == region.bytes());
+    assert(region.whole());
+
+    // A width below seL4's own smallest untyped is refused by name.
+    if (Region.open(0, min_untyped_bits - 1)) |_| {
+        assert(false); // invariant: a region narrower than the kernel's smallest never opens
+    } else |err| {
+        assert(err == UntypedError.RegionTooSmall);
+    }
+
+    // A width past its largest, likewise.
+    if (Region.open(0, max_untyped_bits + 1)) |_| {
+        assert(false); // invariant: a region wider than the kernel's largest never opens
+    } else |err| {
+        assert(err == UntypedError.RegionTooLarge);
+    }
+
+    // An origin that does not stand on a boundary of the region's own size is
+    // refused: every untyped in seL4 is naturally aligned.
+    if (Region.open(0x8000_0008, 12)) |_| {
+        assert(false); // invariant: a misaligned region never opens
+    } else |err| {
+        assert(err == UntypedError.RegionMisaligned);
+    }
+
+    // Both ends of the honest range open.
+    assert(try_region(Region.open(0, min_untyped_bits)).size_bits == min_untyped_bits);
+    assert(try_region(Region.open(0, max_untyped_bits)).size_bits == max_untyped_bits);
+}
+
+/// Movement two -- the refusal this module owes, measured after alignment, and
+/// a floor that refuses one request without closing the region.
+fn prove_alignment_floor() void {
+    var region = try_region(Region.open(0x8000_0000, 12));
+
+    // One endpoint, sixteen bytes wide, spends sixteen bytes.
+    assert(try_answer(region.retype(.endpoint, 1)) == .no_error);
+    assert(region.watermark == 16);
+
+    // Four thousand and eighty bytes stand unspent -- a whole page short by
+    // sixteen. A page needs four thousand and ninety-six of them *and* a page
+    // boundary to begin on, and the next such boundary is the far end of the
+    // region. So the honest answer is the refusal this module owes.
+    assert(region.free_bytes() == 4080);
+    assert(region.next_start(.page) == 4096);
+    assert(!region.room_for(.page, 1));
+    assert(try_answer(region.retype(.page, 1)) == .not_enough_memory);
+
+    // And the region is untouched by the refusal.
+    assert(region.watermark == 16);
+    assert(region.free_bytes() == 4080);
+    assert(region.whole());
+
+    // Slots, being far narrower, still fit in what remains -- the region is not
+    // exhausted, it is merely unable to seat a page. A floor refuses one
+    // request without closing the region.
+    assert(try_answer(region.retype(.slot, 8)) == .no_error);
+    assert(region.watermark == 32 + 8 * 32);
+    assert(region.whole());
+}
+
+/// Movement three -- every carved object stands on a boundary of its own size,
+/// and the padding that puts it there is counted against the region.
+fn prove_alignment_holds() void {
+    var region = try_region(Region.open(0x4000_0000, 16));
+
+    // A single slot leaves the watermark thirty-two bytes in, which is not a
+    // page boundary. The page that follows must climb to one, and the climb is
+    // spent memory.
+    assert(try_answer(region.retype(.slot, 1)) == .no_error);
+    assert(region.watermark == 32);
+
+    const page_start = region.next_start(.page);
+    assert(page_start == 4096);
+    assert(try_answer(region.retype(.page, 1)) == .no_error);
+    assert(region.watermark == 4096 + 4096);
+
+    // The padding was really spent: the region has given out one slot and one
+    // page, thirty-two plus four thousand and ninety-six bytes of object, and
+    // yet eight thousand one hundred and ninety-two bytes stand behind the
+    // watermark. The difference is the climb, and counting it is the point.
+    assert(region.watermark - (32 + 4096) == 4064);
+
+    // Every object of a carve lands on its own boundary, first to last.
+    var index: u32 = 0;
+    while (index < 4) : (index += 1) {
+        const address = region.object_address(.page, page_start, index);
+        assert(aligned_to(address, object_bits(.page)));
+    }
+    assert(region.whole());
+}
+
+/// Movement four -- a region spends until it honestly cannot, and every refusal
+/// after that leaves it exactly where it stood.
+fn prove_exhaustion() void {
+    var region = try_region(Region.open(0x1_0000, 12));
+
+    // A page-wide region seats exactly one page and no more.
+    assert(try_answer(region.retype(.page, 1)) == .no_error);
+    assert(region.free_bytes() == 0);
+    assert(try_answer(region.retype(.page, 1)) == .not_enough_memory);
+    assert(try_answer(region.retype(.slot, 1)) == .not_enough_memory);
+    assert(try_answer(region.retype(.endpoint, 1)) == .not_enough_memory);
+    assert(region.watermark == 4096);
+    assert(region.whole());
+
+    // A carve larger than the whole region is refused rather than partially
+    // seated -- a floor answers the request that was made, never a smaller one.
+    var fresh = try_region(Region.open(0x1_0000, 12));
+    assert(try_answer(fresh.retype(.page, 2)) == .not_enough_memory);
+    assert(fresh.watermark == 0);
+    assert(fresh.free_bytes() == fresh.bytes());
+
+    // The same region seats the whole of what it can hold in slots, in one
+    // carve, and refuses one slot past it.
+    assert(try_answer(fresh.retype(.slot, 64)) == .no_error);
+    assert(fresh.watermark == 64 * 32);
+    assert(fresh.free_bytes() == 4096 - 2048);
+    assert(fresh.whole());
+}
+
+/// Movement five -- the claim this module refused to overstate, proven by
+/// sweep rather than asserted once.
+///
+/// A naturally aligned, power-of-two region needs no second opinion: reading
+/// the floor after alignment and reading it as a plain remainder give the same
+/// answer for every kind, every count, and every watermark a region can reach.
+/// The reason is arithmetic, and it is worth holding in view -- any carve large
+/// enough to matter forces the region to be at least as wide as the object,
+/// which makes the origin aligned to the object, which makes the span from an
+/// aligned start to the region's end an exact multiple of the object's size.
+/// The request is such a multiple too, and the padding is always strictly less
+/// than one object, so no request can land between the two readings.
+///
+/// What this movement really guards is `open`'s refusal of a misaligned origin.
+/// That refusal is what buys the agreement; drop it, and the two readings part.
+fn prove_readings_agree() void {
+    var kinds_swept: u32 = 0;
+    for (all_object_kinds) |kind| {
+        const each = object_bytes(kind);
+
+        var size_bits: u32 = min_untyped_bits;
+        while (size_bits <= 20) : (size_bits += 1) {
+            // A handful of origins, each naturally aligned as `open` requires,
+            // so the sweep covers regions placed high as well as at zero.
+            const step: u64 = @as(u64, 1) << @intCast(size_bits);
+            var which: u32 = 0;
+            while (which < 3) : (which += 1) {
+                const origin = step * @as(u64, which) * 7;
+                var region = try_region(Region.open(origin, size_bits));
+                const total = region.bytes();
+
+                // Walk the watermark across the whole region in strides fine
+                // enough to land off every object boundary in play.
+                var watermark: u64 = 0;
+                while (watermark <= total) : (watermark += 8) {
+                    region.watermark = watermark;
+
+                    var count: u32 = 1;
+                    while (count <= max_objects) : (count += 1) {
+                        const needed = each * @as(u64, count);
+                        const plain = needed <= total - watermark;
+                        // invariant: the aligned reading and the plain remainder
+                        // agree, because the region is naturally aligned.
+                        assert(region.room_for(kind, count) == plain);
+                    }
+                }
+            }
+        }
+        kinds_swept += 1;
+    }
+    // invariant: the sweep covered every kind on the roster.
+    assert(kinds_swept == all_object_kinds.len);
+}
+
+/// Movement six -- the module's own bounds, which refuse by named Rye error
+/// rather than by a kernel answer, because the kernel offers no word for "the
+/// userland asked for nothing" or "the userland asked for more than one carve
+/// may hold."
+fn prove_bounds() void {
+    var region = try_region(Region.open(0, max_untyped_bits));
+
+    // A carve of no objects is refused by name, and seats nothing.
+    if (region.retype(.slot, 0)) |_| {
+        assert(false); // invariant: a carve of nothing never seats
+    } else |err| {
+        assert(err == UntypedError.EmptyRequest);
+    }
+    assert(region.watermark == 0);
+
+    // A carve past this module's own bound is refused by name, even though the
+    // region is vast enough to hold it -- the bound is Caravan's, not seL4's.
+    if (region.retype(.slot, max_objects + 1)) |_| {
+        assert(false); // invariant: a carve past the bound never seats
+    } else |err| {
+        assert(err == UntypedError.TooManyObjects);
+    }
+    assert(region.watermark == 0);
+
+    // Exactly the bound is welcome.
+    assert(try_answer(region.retype(.slot, max_objects)) == .no_error);
+    assert(region.watermark == max_objects * 32);
+    assert(region.whole());
+}
+
+fn run_self_test() u8 {
+    prove_opening();
+    prove_alignment_floor();
+    prove_alignment_holds();
+    prove_exhaustion();
+    prove_readings_agree();
+    prove_bounds();
+
+    // The debt is answered in the kernel's own vocabulary, taken from the module
+    // that reads the eleven out of seL4's header rather than from memory.
+    assert(refusals.owed_by(.not_enough_memory) == .untyped_retyping);
+
+    print("untyped: version {s}\n", .{caravan_untyped_version});
+    print("untyped: memory a dependent receives is carved from a region with a real floor.\n", .{});
+    print("untyped: a carve the region cannot seat after alignment answers {s}.\n", .{
+        refusals.kernel_symbol(.not_enough_memory),
+    });
+    print("untyped: every object stands on a boundary of its own size, and the padding that puts it there is spent.\n", .{});
+    print("untyped: a refused carve spends nothing -- the watermark stands exactly where it stood.\n", .{});
+    print("untyped: a naturally aligned region needs no second opinion -- the aligned floor and the plain remainder agree across every kind, count, and watermark swept.\n", .{});
+    print("untyped: a region stands between {d} and {d} bits and carves at most {d} objects at once, both bounds refusing by named error.\n", .{ min_untyped_bits, max_untyped_bits, max_objects });
+    print("untyped: floor measured after alignment, refusal spending nothing, the owed refusal answered -- GREEN.\n", .{});
+    return 0;
+}
+
+/// Unwrap an answer the self-test expects to succeed, so a bound refusing where
+/// it should not aborts loudly rather than reading as a mismatch.
+fn try_answer(result: UntypedError!refusals.KernelRefusal) refusals.KernelRefusal {
+    const answer = result catch {
+        assert(false); // invariant: this call is inside every bound the module names
+        unreachable;
+    };
+    // invariant: every answer is one of the kernel's eleven.
+    assert(@intFromEnum(answer) < refusals.kernel_refusal_count);
+    return answer;
+}
+
+/// Unwrap a region the self-test expects to open, for the same reason.
+fn try_region(result: UntypedError!Region) Region {
+    const region = result catch {
+        assert(false); // invariant: this region stands inside every bound the module names
+        unreachable;
+    };
+    assert(region.whole()); // invariant: an opened region is a whole one
+    return region;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
+    if (args.len >= 2) return 1;
+    return run_self_test();
+}

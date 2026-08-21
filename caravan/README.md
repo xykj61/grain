@@ -1920,6 +1920,34 @@ Proven by [`tools/caravan_ipc_buffer_witness.rish`](../tools/caravan_ipc_buffer_
 **Four of the seven remain owed** -- argument, bounds, and alignment checking, and untyped retyping. `refusals.rye` still counts seven, and rightly: its count is what the *policy table* can answer, and the table above the line has not yet learned to speak through either the tree or the buffer.
 
 
+## Untyped retyping -- a region with a real floor
+
+`untyped.rye` (`20260821.060758`) pays the last of the three subsystem debts, and `refusals.rye` had written its reason a rung in advance: *memory a dependent receives is carved from an untyped region with a real floor*. Neither the policy table nor the derivation tree can answer `seL4_NotEnoughMemory`. A table says who may ask; a tree says whose reach a grant descends from. Only a region that knows how much of itself is spent can say there is too little left.
+
+**Alignment is what makes the floor cost something.** seL4 places every object at an address that is a multiple of the object's own size, so the watermark climbs to the next boundary before a carve begins -- and the climb is spent memory. Sixteen bytes of endpoint followed by a page costs the whole four-thousand-and-ninety-sixth byte of boundary, and the region's yield says so. A page-wide region that has given out one endpoint holds four thousand and eighty unspent bytes and still refuses a page, honestly, because the only page boundary left is its own far end.
+
+**The flattering sentence was refused.** It reads well to say that a raw remainder therefore over-promises, and that a region with a page of bytes free can be unable to hold a page. Reasoning it through to build the RED path showed it is **false** for a naturally aligned power-of-two region, and the module says so rather than shipping the flourish. Any carve large enough to be worth asking about forces the region to be at least as wide as the object, which makes the origin aligned to the object, which makes the span from an aligned start to the region's end an exact multiple of the object's size; the request is such a multiple too, and the padding is always strictly smaller than one object, so no request can land in the gap between the two readings. **The aligned floor and the plain remainder agree, always** -- proven by sweeping every kind, every count to the bound, and every reachable watermark over regions four to twenty bits wide at three origins apiece, rather than asserted once.
+
+That agreement is a consequence of natural alignment rather than a licence to drop it, and the module holds the distinction structurally: `open` refusing a misaligned origin is what buys the theorem, so one of the three RED paths removes exactly that refusal.
+
+| Measured `20260821` | Value |
+|---|---|
+| Kernel refusals this rung answers | **1** -- `seL4_NotEnoughMemory` |
+| Region width | **4 to 38 bits**, seL4's own `seL4_MinUntypedBits` and `seL4_MaxUntypedBits`, re-read from the vendored riscv64 header each run |
+| Object kinds carved | **3** -- slot 5 bits, endpoint 4 bits, page 12 bits, each stated by seL4 with no `#ifdef` above it |
+| Configured sizes deliberately absent | **2** -- `seL4_TCBBits` (11 with an FPU, 10 without) and `seL4_NotificationBits` (6 under MCS, 5 without), each proven still config-dependent upstream |
+| Objects one carve may ask for | **64**, Caravan's own bound rather than seL4's |
+| Bounds refusing by named Rye error rather than kernel answer | **5** -- `RegionTooSmall`, `RegionTooLarge`, `RegionMisaligned`, `TooManyObjects`, `EmptyRequest` |
+
+**The absent object kinds are earned rather than habitual.** In the very header these sizes are read from, two stand behind kernel configuration -- a TCB is 2,048 bytes with an FPU and 1,024 without, a notification 64 bytes under MCS and 32 without. A userland reciting one number for either would be right on one build and wrong on another, so the roster carves only what seL4 states unconditionally, and the witness asserts both are **still** stated two ways. The day seL4 names one size, the rung reds and is invited to carve it.
+
+Proven by [`tools/caravan_untyped_witness.rish`](../tools/caravan_untyped_witness.rish), GREEN on metal, with all three RED paths planted rather than described: a carve seating at the raw watermark never spends its climb, a refusal that eats the region turns a declined request into spent memory, and an `open` that welcomes a misaligned origin breaks the very precondition the swept equivalence rests on. The choir sang **103 GREEN** with it registered, and the ladder meters moved their module pins 105 to 106 in the same commit as the code.
+
+**Registering it found REDS %109.** Growing the ladder reddened the copy meter on a line that had nothing to do with the module count: REDS %108's own strongest RED path reached for `git show HEAD:` to hand the guard the drifted spine meter, and the fix and the guard had ridden in the same commit -- so `HEAD` named the repaired file from the moment it landed, and the control proved itself on exactly one lap. Closed by freezing the elder meter as a tracked copy at [`tools/fixtures/caravan_ladder_prose_count_elder/`](../tools/fixtures/caravan_ladder_prose_count_elder/), byte for byte as it shipped, which cannot follow `HEAD` and outlives a deep debride that would rewrite every hash in the tree.
+
+**The three edge debts remain** -- argument, bounds, and alignment checking. They are one family and may well be one rung. `refusals.rye` still counts seven owed, and rightly: its count is what the *policy table* can answer, and the table has not yet learned to speak through the tree, the buffer, or the region.
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.
