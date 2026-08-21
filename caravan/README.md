@@ -2465,6 +2465,34 @@ What the body does is the whole dependent half of the arc, stated once. A depend
 **The lesson this lap adds is about the shape of a fold rather than its price.** A queue names one family; a reach graph names a cluster. Reading the closure first cost one audit and lifted three families in a single lap, and the same reading drew the line the fold must stop at. The widest family on the ladder was never the right unit of work -- the widest family a harness may honestly reach is.
 
 
+## Fold AC -- the appeal cluster, and the reading that bought five folds
+
+The queue named **twenty-seven rungs by fifty-six lines, 1,456 carried**, and hashing every `read_the_appeal` on the ladder found twenty-eight bodies at one length. Twenty-seven stand byte for byte alike; the twenty-eighth is `appeal.rye`, the tier owner, which reaches its own report directly where every rung above it reaches through `appeal_of`. Eight lines of the fifty-six differ, and all eight differ that one way -- the same shape fold AA met in `amend.rye`, so the owner stays home again.
+
+Fold Z's rule ran first, before scope was chosen. `read_the_appeal` reaches thirteen symbols on its rung; twelve already stood public in all twenty-seven, and the thirteenth, `appeal_of`, cost one word in nineteen. That alone would have been a clean lap. **The reading gave more than that.** Four of the twelve are themselves whole carrying families standing above the harness line: `address_published` in **thirty-five** rungs, `told_of` in **twenty-nine**, `pressed_by` in **twenty-eight**, `appeal_published` in **twenty-eight** -- each byte for byte alike, each a wire reader that opens a note through its own rung's path builder and plan name. One reach reading bought five folds.
+
+The fifth reached helper, `appeal_note`, stayed home for the plainest reason on this ladder: its body is three lines, and a delegate is three lines. A fold that trades a body for a body of equal length moves nothing, so the queue is right to leave it where it stands.
+
+What the folded body does is the arc's whole appeal half, stated once. A run finds the address a reader published, counts what an unread answer costs, refuses by name where a position would be published that nobody voiced, writes the note, and reads it back out of the place an operator would open before the report believes a word of it.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding `read_the_appeal` | 27 | **0**, each keeping a three-line delegate |
+| Rungs holding `address_published` | 35 | **0**, each keeping a three-line delegate |
+| Rungs holding `told_of` | 29 | **0**, each keeping a three-line delegate |
+| Rungs holding `pressed_by` | 28 | **0**, each keeping a three-line delegate |
+| Rungs holding `appeal_published` | 28 | **0**, each keeping a three-line delegate |
+| Lines the five families carried | 2,937 | **426** |
+| Widenings the fold cost | -- | **111**, one word each, no accessor born |
+| The ladder's whole carry | 109,932 | **107,395** |
+| Carry ceiling | 110,000 | **107,500** |
+| Carrying families | 706 | **707** |
+
+**The arithmetic closes with no remainder, and the remainder it seemed to have was a fifth gift.** Out went 26x56, 34x13, 28x13, 27x13, and 27x12 -- 1,456 plus 442 plus 364 plus 351 plus 324, or **2,937**. Back came the same five cohorts at three lines apiece -- 78 plus 102 plus 84 plus 81 plus 81, or **426**. That is a fall of 2,511, and the meter read **2,537**. The extra twenty-six came from `note_path`: a forty-five-rung family that widening split into thirty-five public and ten private, and a family split into two smaller ones carries one fewer copy of itself. Fold Z's split-by-the-word-`pub` recurred a third time, and this time it paid rather than cost -- which is also why carrying families rose by one.
+
+**The lesson this lap adds is that the reach closure has depth.** Fold AB read one hop out and found a cluster; this lap read one hop out and found four families larger than several the queue had been printing all along. A body's own reach is the cheapest survey on the ladder, because every symbol it names is already audited by the fold that lifts it. The next fold reads its closure first, as this one did -- and reads it for families, not merely for words to widen.
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.

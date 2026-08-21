@@ -1353,7 +1353,7 @@ pub fn admissible_in(
 pub const NoteError = reposing_rung.NoteError;
 
 /// Writes the path of one dependent's note.
-fn note_path(buf: *[max_note_path_len]u8, domain: []const u8, suffix: []const u8) NoteError![]const u8 {
+pub fn note_path(buf: *[max_note_path_len]u8, domain: []const u8, suffix: []const u8) NoteError![]const u8 {
     // invariant: a note always names the dependent it belongs to
     assert(domain.len >= 1);
     // invariant: a note always carries one of the suffixes
@@ -2100,17 +2100,7 @@ pub fn escort_written(io: std.Io) ?Settlement {
 /// down or it did not. This answers which -- plainly, with a null where no
 /// address stands, so a run never has to guess where a person is.
 pub fn address_published(io: std.Io, out: *[max_address_len]u8) ?[]const u8 {
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = note_path(&path_buf, plan_name, ".at") catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    const got = file.readPositionalAll(io, out, 0) catch return null;
-    // invariant: an address never outgrows the bound its wire carries
-    assert(got <= max_address_len);
-    var len: u32 = 0;
-    while (len < got and out[len] != 0 and out[len] != '\n') : (len += 1) {}
-    const address = out[0..len];
-    return if (addressable(address)) address else null;
+    return ladder_checks.address_published(@This(), io, out);
 }
 
 /// Seats the address a reader was reached at, beside the reading they took.
@@ -2532,7 +2522,7 @@ pub fn standing_written(io: std.Io) ?Stand {
 }
 
 /// Writes the path of the answer one reader is owed about their own quarrel.
-fn tell_path(buf: *[max_note_path_len]u8, address: []const u8) NoteError![]const u8 {
+pub fn tell_path(buf: *[max_note_path_len]u8, address: []const u8) NoteError![]const u8 {
     return ladder_checks.tell_path(@This(), buf, address);
 }
 
@@ -2558,17 +2548,7 @@ pub fn tell_outcome(io: std.Io, address: []const u8, result: Result) NoteError!v
 /// remembering having written it. A supervisor that believed its own telling
 /// could report a raiser reached whose box was never opened.
 pub fn told_of(io: std.Io, address: []const u8) ?Result {
-    if (!addressable(address)) return null;
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = tell_path(&path_buf, address) catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    var bytes: [1]u8 = @splat(0);
-    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
-    // invariant: an answer never outgrows the one result it names
-    assert(got <= 1);
-    if (got < 1) return null;
-    return result_of_byte(bytes[0]);
+    return ladder_checks.told_of(@This(), io, address);
 }
 
 /// Clears what one reader was told, so a lap begins with a reader who has heard
