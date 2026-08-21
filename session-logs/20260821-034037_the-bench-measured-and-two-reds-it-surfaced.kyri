@@ -1,0 +1,35 @@
+format session-log-v1
+stamp 20260821.034037
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The bench measured, the gauge protocol booked, and the two reds the measuring surfaced
+prompt Write an external-research piece booking the first performance test of the other agent's compute essay, then align the loops for restart -- or run the performance test here and see whether this instance is satisfactory.
+think The counsel essay closed on exactly the right recommendation -- run four gauges through a full parity run and let the measured colours choose before any purchase order exists. So the answer to "write it or run it" is run it, then write what the running found. An essay about whether compute is sufficient is settled by load, not by prose.
+think Took the baseline before any load and the first premise fell immediately. The essay reasons throughout from "the 4 GB pier"; free reports 7,937 MB and nproc reports 4. GLOW_PROFILE.bron has read AMD 4vCPU/8GB - 180GB NVMe correctly all along, and vda is 193,273,528,320 bytes, so the profile is right to the byte. The operator card's Host line still said 2vCPU/4GB. The essay did not reason carelessly; it reasoned carefully from a living card that had drifted.
+think Two more baseline facts worth having before an incident rather than after: there is no swap at all, so an overrun is a hard kill rather than a slowdown and the essay's suggested vmstat swap gauge can never move here; and the jail's HOME is a 3.9 GB tmpfs, which is a second claim on the same RAM pool.
+think Checked the third claim while I was at it. The essay guessed the history cleanup drew the bundle "almost certainly well below its old seated 192 MB." Measured, .git is 911 MB with size-pack at 844 MiB -- roughly four times the figure it was guessed to be under. Almost certainly is a guess wearing a measurement's clothes.
+think First attempt at the load test measured nothing: /usr/bin/time is absent on this pier and the run exited 127 with empty logs. Caught it by reading the empty output rather than trusting the exit notification, which reported success for a command that never ran. Rebuilt the harness around a sampler and the shell's own clock.
+think Ran the two heaviest suites cold with a three-second sampler on available memory, used memory, steal, and load. Caravan's 99 rungs took 372 s and peaked at 1,735 MB used with 6,201 MB still available; Crypto's 81 took 535 s and peaked lower at 1,652 MB. Zero OOM kills in the kernel log, ever.
+obs Memory is not the limit and is not close -- the heaviest suite in the tree used about 22 percent of installed RAM at peak. Caravan and Tally could grow several times over before memory bound them, and the essay's instinct that 4 GB is a floor rather than a wall was right against a figure twice as roomy as the one it had.
+obs Cores are not the limit either, and this is the more useful finding. Peak one-minute load reached 2.67 on four vCPU and the crypto suite never passed 1.85, because the suites run their rungs serially. A machine with four times the cores would finish in very nearly the same wall time. Wall time here is a parallelism question, not a hardware question, and a parallel runner costs nothing where a bigger droplet does not.
+obs Steal was the only gauge that showed real colour, touching 12 percent during Caravan and near zero at rest. That is the shared-tenancy tax and the one thing a dedicated box would buy -- perhaps forty seconds off a 372-second suite. Worth knowing, not worth a purchase order.
+obs Running the crypto suite as a load rather than as a proof surfaced a red nobody had read in months. Its closing line claims seventy-four crypto files and cites the count guard as confirming the number; the guard had just said 81, and ls shows 86 of which five are shims the guard correctly excludes. Three numbers for one thing in one afternoon, with the suite naming its own auditor as agreeing with a figure that auditor never produced.
+obs Booked that as REDS %105 and widened the loom rather than fixing the number. This is REDS %77 and %80's family a third time; the loom booked after the second firing proves a bijection between files and registrations, which stayed GREEN throughout, while the drift lived in prose no check covered. The suite now recites no count at all and the guard refuses any recited count, spelled or numeric, with the RED path proven by planting eighty-one crypto files into the suite and watching the guard name the line.
+obs A guard that measures a fact does not thereby guard the prose that repeats it. That is the same lesson the stale Host line teaches, and both landed in one round by accident, which is probably not an accident.
+obs Aligned both loops without moving the route, because the route was already right -- REDS %104 settled that the Microkernel Target outranks Seasons A-H on Keaton's seated word. The two real alignment items are preconditions: submodules must be initialised before the first lap or every vendored rung reds on an empty directory rather than a defect, and the crypto guards are now named in prove-before-GREEN.
+obs Named the open leg rather than omitting it: no wire lab was measured, so QEMU-guest memory is still unknown. The protocol names it as its next lap.
+loom suite=caravan_suite_witness rungs=99 wall_s=372 peak_used_mb=1735 min_avail_mb=6201 peak_steal_pct=12 peak_load1=2.67 verdict=green
+loom suite=crypto_suite_witness rungs=81 wall_s=535 peak_used_mb=1652 min_avail_mb=6284 peak_steal_pct=5 peak_load1=1.85 verdict=green
+loom bench=vultr_sea vcpu=4 mem_total_mb=7937 swap_mb=0 disk_bytes=193273528320 oom_kills=0 baseline_used_mb=1416
+loom repo=grain commits=3167 git_dir_mb=911 size_pack_mib=844
+file external-research/20260821-034037_the-bench-measured-and-the-standing-gauge-protocol.md the measurement, the four premise corrections, and the booked repeatable protocol
+file crux/REDS.md REDS %105 -- the recited count that cited its own auditor
+file tools/crypto_suite_witness.rish the count removed rather than corrected; it now points at the guard
+file tools/crypto_count_guard_witness.rish the loom widened to refuse any recited count, RED path proven on metal
+file crux/REMEMBER.md Host line corrected to the measured 4vCPU/8GB, the root of the essay's drift
+file recursion-prompts/seed/autonomous-loop.seed.md submodule precondition and the crypto guards seated in the lens list
+file tools/launch-claude-season.rish step 0a -- initialise submodules before the first lap
+file recursion-prompts/versions/20260821-034037_autonomous-loop-bench-measured.md the alignment recorded, route deliberately unmoved
+recommend check-in The bench is not the constraint -- buy nothing, change nothing, restart the loops as aligned. Two rounds earn their place ahead of any purchase: measure a wire lab to close the protocol's open leg, and consider a parallel witness runner, the only measured lever on wall time that costs nothing.

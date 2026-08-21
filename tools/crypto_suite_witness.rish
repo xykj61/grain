@@ -1,7 +1,8 @@
 # tools/crypto_suite_witness.rish — the whole Season G crypto library, greened by one command. A choir that runs every per-file crypto
 # witness in dependency order and refuses unless each prints its own GREEN line, so a keeper, CI, or the public seed can re-prove the entire
-# Rye-native, parity-checked crypto stack — fifty primitives and twenty-four compositions, seventy-four files — without trusting any commit
-# message (Season G · Cryptography · measurement beats memory). Fifty primitives and twenty-four compositions, seventy-four files.
+# Rye-native, parity-checked crypto stack — every primitive and composition in crypto/ — without trusting any commit
+# message (Season G · Cryptography · measurement beats memory). This file NAMES NO COUNT on purpose: tools/crypto_count_guard_witness.rish
+# computes it, and a number recited here would drift from it -- which it did, three times (REDS %77, %80, %105).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
 # Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
@@ -33,4 +34,4 @@ for-each witnesses as w do assert (run ["rishi/bin/rishi" "run" w]).ok else "cry
 # disagree without this going RED, and the computed count it prints is the source of truth for the spelled numbers in the front-door docs.
 assert (run ["rishi/bin/rishi" "run" "tools/crypto_count_guard_witness.rish"]).ok else "crypto-suite: the count guard went RED — a crypto/*.rye file and its suite registration disagree"
 
-say "GREEN: crypto-suite — all seventy-four Season G crypto files (fifty primitives + twenty-four compositions) built fresh and proven, each its own GREEN line, in dependency order; the count guard confirms the file count"
+say "GREEN: crypto-suite — every Season G crypto file registered here built fresh and proven, each its own GREEN line, in dependency order. The file COUNT is not recited here: tools/crypto_count_guard_witness.rish computes it and is the single source of truth for it"
