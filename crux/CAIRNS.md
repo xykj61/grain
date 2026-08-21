@@ -24,6 +24,16 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260821.020803` -- the fold-L live edge folds as fold M lands and the printed queue proves itself
+
+**Walk-back nib:** `445da815d9` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when the fourth meter had just opened stands at this nib and every commit before it.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for **fold L** and the bullet naming the loom that outlived it, folded into the condensed-pointer line beneath them, and the **Now** block rewritten from `mend_the_plan`, the crux fold M just closed, to the crux the meter names next. Roughly a screenful falls away; every word stands at the nib above.
+
+**What waits there, worth recalling:** fold L's full accounting as it was written -- `stand_taking_and_returning_reach` standing byte for byte in 42 of its 44 rungs at forty-four lines apiece with no mask needed, 1,638 lines deleted for 281 of harness and call, four symbols widened by one word each, and every one of the 42 sorted multisets identical with zero lines differing. Beside it stands the birth of the fourth meter and the reasoning that made it necessary: three honest meters each reading through a **named window**, and a ladder whose real carry is two orders of magnitude past all three. Both accounts live on in `session-logs/20260821-014514_caravan-ladder-fold-l-and-the-meter-with-no-name-in-its-window.kyri` and the fold sections of `caravan/README.md`.
+
+**What the departing Now got right, and what the fold added:** it named `mend_the_plan` at 36 rungs by 178 lines, 6,230 carried, straight off the meter -- and the fold found a thirty-seventh rung the meter could not have named, `recant.rye`, which owns the recanting tier and so reached its own report directly in two lines out of a hundred and seventy-eight. One three-line accessor made it byte-identical, and the carry lifted climbed to **6,408**. The departing card's queue was honest and slightly conservative, for the same reason fold L's estimate was: a meter compares exact text, and a body that is *nearly* alike is invisible to it until a hand looks. That is the standing limit of the fourth meter, named here so a later lap reads it as a known edge rather than a surprise.
+
 ### `20260821.014514` -- the fold-K live edge folds as fold L lands and the fourth meter opens
 
 **Walk-back nib:** `c352a3b7ee` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when the run-telling had just folded stands at this nib and every commit before it.

@@ -1822,6 +1822,37 @@ This is a **ratchet rather than a red against the three**. Each named its window
 The meter is proven by [`caravan_ladder_carry_witness.rish`](../tools/caravan_ladder_carry_witness.rish) -- the living count under a named ceiling, the three windows read beside it so no reader mistakes a window for the room, the counting proven by hand on a two-rung corpus whose added body opens on a prefix no meter names, and three RED paths refusing by name. It is **registered in the choir on the lap it was born**, which is [`REDS %101`](../crux/REDS.md)'s whole lesson, and the choir now sings **99**.
 
 
+### Fold M -- `mend_the_plan`, the largest body on the ladder, and the accessor that brought the last rung in
+
+The fourth meter was born on the lap before this one, and its first printed queue named `mend_the_plan` at the top. This lap folded it. **That is the whole argument for a printed queue**: fold L was found by hand after riding past three meters for six folds, and fold M was found by reading one line of output.
+
+`mend_the_plan` is the body that repairs the losses a plan took which its author never asked it to carry, then settles whatever the repair could not reach. It stood **byte for byte in thirty-six rungs at a hundred and seventy-eight lines apiece** -- and nearly in a thirty-seventh.
+
+That thirty-seventh is the interesting one. [`recant.rye`](recant.rye) *owns* the recanting tier, so where every rung above it reaches its recantation through `recanting_of`, `recant.rye` reached its own report directly -- two lines out of a hundred and seventy-eight. Naming the accessor there, three lines returning the report itself, brought the last rung into the fold. Fold J learned this on the staircase and it holds again: **an accessor born for the tier a rung owns is the cheapest line in the arc.** Thirty-six rungs became thirty-seven, and the carry to lift climbed 6,230 to **6,408**.
+
+Twelve symbols were widened by one word each before a line moved, every one verified `pub` across all thirty-seven first: `Table`, `standing`, `appraising_of`, `abandoning_of`, `below_of`, `bearing_of`, `recanting_of`, `run_of`, and the four spine bodies the repair runs -- `seat_the_record`, `fill_table`, `reap_oldest`, `judge_outcome`. **427 widenings in all.** Every other symbol the body names -- its plan's phases, the wire it published its judgment to, and each refusal it may raise -- already stood public from earlier folds, which is ten folds of the habit compounding.
+
+Widening those four spine bodies is the compounding made visible: `fill_table` carries 2,484 lines across 37 rungs and `reap_oldest` 1,716 across 40, and both now stand public for the folds that will come for them. A fold's own widening puts the next fold in view, exactly as fold L first noticed.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding the body | 37 | **0**, each keeping a nineteen-line delegate |
+| Lines the body carried | 6,408 | **0** |
+| The ladder's whole carry | 142,850 | **137,140** |
+| Carry ceiling | 143,000 | **137,300** |
+| Lines on disk, all `caravan/*.rye` | 378,383 | **372,895** |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+Both endpoints of that disk row were re-measured this lap by the same command rather than carried forward from fold L's note, since a tally repeated from memory drifts ([`REDS %93`](../crux/REDS.md)).
+
+**6,403 lines deleted for 747 of harness and call, and 5,488 lines came off disk** -- the largest fold this arc has taken, more than three times fold L. The two rows a lift could most easily have inflated stood still for the **ninth** fold running: the byte-identical check carry at 47 and the orchestration spine at 0. A cost removed rather than traded, nine laps in a row.
+
+Proven the way this arc proves things: the whole choir sang **99 GREEN from a cold tree**, every one of the thirty-seven folded rungs among them, with `tame_style_check` bans clean, `width-check` clean, and the ladder reach guard holding at one rung below per rung. The carry meter's own pins moved with the measurement rather than after it, and its ceiling came down in the same commit -- because a meter whose ceiling lags its subject is a guard that has stopped guarding.
+
+`reckon_the_plan` leads the queue now at 2,700 lines across 37 rungs, with `fill_table` at 2,484 behind it. **703 families still carry a copy**, so the queue outlasts many laps and no lap need guess what is next.
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.

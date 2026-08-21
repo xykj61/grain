@@ -339,32 +339,32 @@ fn amending_of(report_out: *Report) *amending_rung.Report {
 }
 
 /// The recanting rung's tally, one tier further down.
-fn recanting_of(report_out: *Report) *recanting_rung.Report {
+pub fn recanting_of(report_out: *Report) *recanting_rung.Report {
     return &report_out.inner.inner;
 }
 
 /// The appraising rung's tally, two tiers further down.
-fn appraising_of(report_out: *Report) *appraising_rung.Report {
+pub fn appraising_of(report_out: *Report) *appraising_rung.Report {
     return &report_out.inner.inner.inner;
 }
 
 /// The bearing rung's tally, three tiers further down.
-fn bearing_of(report_out: *Report) *bearing_rung.Report {
+pub fn bearing_of(report_out: *Report) *bearing_rung.Report {
     return &report_out.inner.inner.inner.inner;
 }
 
 /// The mending rung's tally, four tiers further down.
-fn below_of(report_out: *Report) *mending_rung.Report {
+pub fn below_of(report_out: *Report) *mending_rung.Report {
     return &report_out.inner.inner.inner.inner.inner;
 }
 
 /// The abandoning rung's tally, seven tiers further down.
-fn abandoning_of(report_out: *Report) *abandon_rung.Report {
+pub fn abandoning_of(report_out: *Report) *abandon_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The run's own tally, reached without spelling the whole nesting each time.
-fn run_of(report_out: *Report) *overtake.Report {
+pub fn run_of(report_out: *Report) *overtake.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.run;
 }
 
@@ -1651,7 +1651,7 @@ const Finished = struct {
 };
 
 /// Folds one reaped outcome into the report, or names the mismatch.
-fn judge_outcome(done: Finished, report_out: *Report) RunError!void {
+pub fn judge_outcome(done: Finished, report_out: *Report) RunError!void {
     // invariant: a judged dependent always names its domain
     assert(done.domain.len >= 1);
     // invariant: the report never counts more successes than dependents reaped
@@ -1670,7 +1670,7 @@ fn judge_outcome(done: Finished, report_out: *Report) RunError!void {
 
 /// The queue's own bookkeeping for one run, over dependents whose conferrals
 /// may leave with them.
-const Table = struct {
+pub const Table = struct {
     live: [max_in_flight]cohort.Running = undefined,
     lines: [max_in_flight]Task = undefined,
     reserves: [max_in_flight]?Task = @splat(null),
@@ -1692,7 +1692,7 @@ const Table = struct {
 };
 
 /// The record as it stands right now.
-fn standing(table: *const Table) []const unhand.Phase {
+pub fn standing(table: *const Table) []const unhand.Phase {
     // invariant: a record never outgrows the queue one supervisor may hold
     assert(table.held <= max_queue_len);
     return table.record[0..table.held];
@@ -1990,7 +1990,7 @@ fn start_one(
 
 /// Admits as much of the record as the table and the reading allow, and
 /// answers how many phases it took up.
-fn fill_table(
+pub fn fill_table(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,
@@ -2095,7 +2095,7 @@ fn abandon_one(
 
 /// Waits on the eldest dependent, takes back what it was conferred, answers for
 /// the work that conferral never bought, and closes the table over its slot.
-fn reap_oldest(
+pub fn reap_oldest(
     io: std.Io,
     table: *Table,
     answer: Answer,
@@ -2174,7 +2174,7 @@ fn seat_the_ground(
 /// and for the names it keeps, closed over its own turns, and its reserves
 /// carried across -- all before a single dependent is spawned, so the record a
 /// run enforces is the record its author wrote.
-fn seat_the_record(base: []const Phase, table: *Table) RunError!void {
+pub fn seat_the_record(base: []const Phase, table: *Table) RunError!void {
     // invariant: a record always seats a plan that names phases
     assert(base.len >= 1);
     // invariant: a record is always seated into a table that holds nothing yet
@@ -2447,168 +2447,9 @@ fn mend_the_plan(
     table: *Table,
     report_out: *Report,
 ) (RunError || NoteError || cohort.RunError || boot.BootError)!void {
-    // invariant: a mend always reads a record the run has drained
-    assert(table.left == 0);
-    // invariant: a mend always reads a plan the run actually held
-    assert(base.len == table.held);
-    const lost = abandoning_of(report_out).abandoned;
-    if (lost == 0) {
-        // invariant: a plan that lost nothing leaves nothing standing
-        assert(below_of(report_out).unserved == 0);
-        below_of(report_out).settled = .carried;
-        bearing_of(report_out).settlement = .carried;
-        return;
-    }
-
-    // The wire before the memory: what this run published about itself, read
-    // back the way an operator would read it.
-    const published = verdict_published(io);
-    const named = lost_published(io, table.held);
-    const marked = if (bearing == .borne) bearing_published(io, table.held) & named else 0;
-    // The judgment, read from the wire the run wrote it to rather than folded
-    // again here. A standard applied twice is a standard nobody published.
-    const judged = if (standard == .weighed) appraisal_published(io, table.held) & named else 0;
-    if (marked_reach(marked, judged)) |why| return why;
-    // The reversal, read from the same wire and never folded again here. Under
-    // `.stand` the run published none, so this is zero and every appraised loss
-    // is spared exactly as the rung below spares it.
-    const taken_back = if (review == .revisit) recant_published(io, table.held) & named else 0;
-    // A judgment is kept or taken back, never both -- the honesty of the count,
-    // read straight off the two notes rather than inferred from either.
-    if ((judged & taken_back) != 0) return error.RecantMiscounted;
-    const on_the_wire = judged | taken_back;
-    if (on_the_wire != 0) {
-        if (recant_refusal(
-            published,
-            @popCount(on_the_wire),
-            @popCount(judged),
-            @popCount(taken_back),
-        )) |why| return why;
-    }
-    const spared = marked | judged;
-    var seating: u32 = 0;
-    var bore: u32 = 0;
-    var weighed: u32 = 0;
-    var at: u32 = 0;
-    while (at < table.held) : (at += 1) {
-        if ((named & phase_bit(at)) == 0) continue;
-        if ((judged & phase_bit(at)) != 0) {
-            weighed += 1;
-            bore += 1;
-            continue;
-        }
-        if ((marked & phase_bit(at)) != 0) {
-            bore += 1;
-            continue;
-        }
-        seating += 1;
-    }
-    // invariant: the walk weighed every phase of the record, none skipped
-    assert(at == table.held);
-    // invariant: a run never weighs more loss than it carried in all
-    assert(weighed <= bore);
-    if (appraise_refusal(published, lost, bore - weighed, weighed, seating)) |why| return why;
-    if (bear_refusal(published, lost, bore, seating)) |why| return why;
-    if (seating >= 1) {
-        if (mend_refusal(published, lost, seating)) |why| return why;
-    }
-    bearing_of(report_out).bore = bore;
-    appraising_of(report_out).weighed = weighed;
-
-    var again: [max_queue_len]Phase = undefined;
-    var wrote: u32 = 0;
-    var seated_mask: u32 = 0;
-    at = 0;
-    while (at < table.held) : (at += 1) {
-        if ((named & phase_bit(at)) == 0) continue;
-        if ((spared & phase_bit(at)) != 0) continue;
-        again[wrote] = reseated(base[at], wrote);
-        seated_mask |= phase_bit(at);
-        wrote += 1;
-    }
-    // The obedience this rung measures, taken before the repair runs rather
-    // than inferred from it afterwards: arcs the plan asked to bear that the
-    // repair is about to run anyway. The measurement weighs what the *plan*
-    // asked, so the elder reading is counted rather than refused -- and the
-    // refusal weighs what this run's own bearing *published*, so a repair that
-    // reaches past the wire it read is stopped by name before it spawns, and
-    // before any invariant beneath it has to catch a supervisor in the act.
-    bearing_of(report_out).overrepaired = overrepaired(table.bear_mask & named, seated_mask);
-    if (overrepaired(marked, seated_mask) >= 1) return error.BearOverrepaired;
-    // This rung's own name for the same overreach, one tier out: a repair that
-    // seats a phase its run's own appraisal spared has reached past the wire it
-    // read, and it is stopped here -- before it spawns, and before any invariant
-    // beneath it has to catch a supervisor in the act.
-    if (repaired_spent(judged, seated_mask) >= 1) return error.AppraiseUnweighed;
-    // The judgment this rung measures, taken the same way and at the same
-    // moment: arcs the run's own evidence said the plan had got past, that the
-    // repair is about to run anyway. The measurement weighs what the *run
-    // learned*, so the elder reading is counted rather than refused, while the
-    // refusal above weighs what this run's own appraisal published.
-    appraising_of(report_out).repaired_spent = repaired_spent(
-        appraised_in(standing(table), named, table.bear_mask),
-        seated_mask,
+    return ladder_checks.mend_the_plan(
+        @This(), allocator, io, self_path, sys, caps, base, wake, keeping, bearing, standard, review, table, report_out,
     );
-    // The answer of this rung, taken at the same moment and in the same shape:
-    // a recanted arc that the repair then declines to run has published a
-    // reversal it never carried out, and it is stopped here -- before it spawns,
-    // and before an operator reads a settlement the wire does not support.
-    if (@popCount(taken_back & ~seated_mask) >= 1) return error.RecantUnspoken;
-    recanting_of(report_out).recanted = @popCount(taken_back);
-    // The measurement this rung moves, weighed against what the *run learned*
-    // rather than what any wire said, so the elder reading is counted rather
-    // than refused: arcs a judgment spared while this run's own evidence
-    // declines to weigh them spent. A marked loss stays outside it, since no
-    // judgment was ever made about an arc its author named.
-    recanting_of(report_out).spared_disproved = spared_disproved(
-        judged,
-        appraised_in(standing(table), named, table.bear_mask),
-    );
-    // invariant: the mend seated exactly the phases the wire left it
-    assert(wrote == seating);
-
-    if (wrote == 0) {
-        // Every loss this plan took is loss its author asked to carry, so the
-        // repair has nothing to run and the settlement says the plan is as
-        // whole as it was ever asked to be.
-        try settle_the_plan(io, lost, 0, report_out);
-        return;
-    }
-
-    var second: Table = .{};
-    try seat_the_record(again[0..wrote], &second);
-    below_of(report_out).reseated += wrote;
-
-    while (second.left > 0 or second.in_flight > 0) {
-        const took_up = try fill_table(
-            allocator, io, self_path, sys, caps, wake, .preceded, keeping, &second, report_out,
-        );
-        if (second.in_flight > run_of(report_out).peak_in_flight) {
-            run_of(report_out).peak_in_flight = second.in_flight;
-        }
-        if (second.left > 0) {
-            const free = max_in_flight - second.in_flight;
-            run_of(report_out).slots_unspent += free;
-            if (took_up == 0 and free > 0) run_of(report_out).idle_turns += 1;
-        }
-        if (second.in_flight == 0) return error.OrderStalled;
-        try reap_oldest(io, &second, .answered, report_out);
-    }
-    // invariant: the repair was taken up whole, and every dependent reaped
-    assert(second.left == 0);
-    assert(second.in_flight == 0);
-
-    var j: u32 = 0;
-    while (j < second.finished) : (j += 1) try judge_outcome(second.done[j], report_out);
-    // invariant: every dependent of the repair was judged, none skipped
-    assert(j == second.finished);
-    // invariant: a repair never loses an arc of its own, since it confers none
-    assert(second.lost_mask == 0);
-
-    // What the repair carried is what it seated, since every phase of it was
-    // judged against the outcome its own author declared and none was
-    // conferred away. So the work still standing is the loss minus the repair.
-    try settle_the_plan(io, lost, wrote, report_out);
 }
 
 /// Publishes what the plan came to and what that means, and reads both back.
@@ -2617,7 +2458,7 @@ fn mend_the_plan(
 /// answers what an operator should do about it. Both go to the wire and both
 /// are read back before the report believes either, since a supervisor that
 /// trusts its own memory of what it published has published nothing.
-fn settle_the_plan(
+pub fn settle_the_plan(
     io: std.Io,
     lost: u32,
     served_again: u32,
