@@ -606,7 +606,7 @@ pub fn endure_of(report_out: *Report) *endure_rung.Report {
 }
 
 /// The appeal rung's tally, one tier further down.
-fn appeal_of(report_out: *Report) *appeal_rung.Report {
+pub fn appeal_of(report_out: *Report) *appeal_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
@@ -616,22 +616,22 @@ pub fn tidings_of(report_out: *Report) *tidings_rung.Report {
 }
 
 /// The reposing rung's tally, one tier further down.
-fn reposing_of(report_out: *Report) *reposing_rung.Report {
+pub fn reposing_of(report_out: *Report) *reposing_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The lapsing rung's tally, one tier further down.
-fn lapsing_of(report_out: *Report) *lapsing_rung.Report {
+pub fn lapsing_of(report_out: *Report) *lapsing_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The abiding rung's tally, one tier further down.
-fn abiding_of(report_out: *Report) *abiding_rung.Report {
+pub fn abiding_of(report_out: *Report) *abiding_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The disputing rung's tally, one tier further down.
-fn disputing_of(report_out: *Report) *disputing_rung.Report {
+pub fn disputing_of(report_out: *Report) *disputing_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
@@ -641,17 +641,17 @@ fn hearing_of(report_out: *Report) *hearing_rung.Report {
 }
 
 /// The couriering rung's tally, one tier further down.
-fn couriering_of(report_out: *Report) *couriering_rung.Report {
+pub fn couriering_of(report_out: *Report) *couriering_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The amending rung's tally, two tiers further down.
-fn amending_of(report_out: *Report) *amending_rung.Report {
+pub fn amending_of(report_out: *Report) *amending_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The recanting rung's tally, three tiers further down.
-fn recanting_of(report_out: *Report) *recanting_rung.Report {
+pub fn recanting_of(report_out: *Report) *recanting_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
@@ -671,7 +671,7 @@ pub fn below_of(report_out: *Report) *mending_rung.Report {
 }
 
 /// The abandoning rung's tally, nine tiers further down.
-fn abandoning_of(report_out: *Report) *abandon_rung.Report {
+pub fn abandoning_of(report_out: *Report) *abandon_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
@@ -12097,54 +12097,7 @@ fn seat_the_history(io: std.Io, stands: ?Plea, stood: u32, answers: ?Finding, ow
 
 /// Tells what the two marks did, side by side, in an operator's own words.
 fn tell_desist_runs(bare_run: *Report, under_run: *Report) void {
-    // invariant: a telling always reads two runs that were actually run
-    assert(run_of(bare_run).queued >= 1);
-    // invariant: a telling never reports more dependents than a repair may add
-    assert(run_of(under_run).reaped <= run_of(under_run).queued + max_queue_len);
-    print("  phases: {d} reopening, {d} respecting\n", .{
-        run_of(bare_run).queued, run_of(under_run).queued,
-    });
-    print("  dependents: {d} reopening, {d} respecting\n", .{
-        run_of(bare_run).reaped, run_of(under_run).reaped,
-    });
-    print("  phases absorbed into a standing dependent: {d} reopening, {d} respecting\n", .{
-        abandoning_of(bare_run).inner.inner.inner.inner.absorbed,
-        abandoning_of(under_run).inner.inner.inner.inner.absorbed,
-    });
-    print("  abandoned reach, conferred and never served: {d} reopening, {d} respecting\n", .{
-        abandoning_of(bare_run).abandoned, abandoning_of(under_run).abandoned,
-    });
-    print("  phases re-seated to carry what was lost: {d} reopening, {d} respecting\n", .{
-        below_of(bare_run).reseated, below_of(under_run).reseated,
-    });
-    print("  standing judgments taken back on this run's own evidence: {d} reopening, {d} respecting\n", .{
-        recanting_of(bare_run).recanted, recanting_of(under_run).recanted,
-    });
-    print("  readings corrected where they were read: {d} reopening, {d} respecting\n", .{
-        amending_of(bare_run).amended, amending_of(under_run).amended,
-    });
-    print("  corrections carried to the place their reader was reached: {d} reopening, {d} respecting\n", .{
-        couriering_of(bare_run).delivered, couriering_of(under_run).delivered,
-    });
-    print("  disagreements written into the record: {d} reopening, {d} respecting\n", .{
-        disputing_of(bare_run).recorded, disputing_of(under_run).recorded,
-    });
-    print("  published words standing beside the reading against them: {d} reopening, {d} respecting\n", .{
-        abiding_of(bare_run).escorted, abiding_of(under_run).escorted,
-    });
-    print("  standing objections put back to the reader who raised them: {d} reopening, {d} respecting\n", .{
-        lapsing_of(bare_run).asked, lapsing_of(under_run).asked,
-    });
-    print("  marks carrying the standing of the objection they quote: {d} reopening, {d} respecting\n", .{
-        reposing_of(bare_run).stood, reposing_of(under_run).stood,
-    });
-    print("  raisers told how their own quarrel came out: {d} reopening, {d} respecting\n", .{
-        tidings_of(bare_run).told, tidings_of(under_run).told,
-    });
-    print("  readers whose reply to the answer was read back: {d} reopening, {d} respecting\n", .{
-        appeal_of(bare_run).heard_back, appeal_of(under_run).heard_back,
-    });
-    tell_desist_half(bare_run, under_run);
+    return ladder_checks.tell_desist_runs(@This(), "reopening", "respecting", bare_run, under_run);
 }
 
 /// Tells what the two runs did about the standing quarrel itself, in an

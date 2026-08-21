@@ -5183,6 +5183,82 @@ pub fn tell_the_reopener(
     assert(rung.recount_of(report_out).untold == 0);
 }
 
+/// Tells what two runs did with the phases themselves, and with every reach a
+/// phase conferred and never served.
+///
+/// The seam is the run's own: this is the movement that counts phases and
+/// dependents before the telling turns to the quarrel the desisting rung holds.
+///
+/// Eight rungs held this body at fifty lines apiece, and masked for the pair of
+/// words naming which plan each column reports, all eight collapse to one hash
+/// -- byte-identical otherwise, nesting depth included, so no staircase hides
+/// here. The pair arrives as comptime text, so each printed line comes out
+/// exactly as its rung wrote it while the body is written once.
+///
+/// One raw reach remains, and it is named rather than hidden: the absorbed tally
+/// sits four levels below `abandoning_of`, since no rung publishes an accessor
+/// that reaches it. The chain stood at the same depth in all eight rungs, and it
+/// stands once here now, where a single reading governs every rung that calls in.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn tell_desist_runs(
+    comptime rung: type,
+    comptime bare_word: []const u8,
+    comptime under_word: []const u8,
+    bare_run: *rung.Report,
+    under_run: *rung.Report,
+) void {
+    const pair = " {d} " ++ bare_word ++ ", {d} " ++ under_word ++ "\n";
+    // invariant: a telling always reads two runs that were actually run
+    assert(rung.run_of(bare_run).queued >= 1);
+    // invariant: a telling never reports more dependents than a repair may add
+    assert(rung.run_of(under_run).reaped <= rung.run_of(under_run).queued + rung.max_queue_len);
+    print("  phases:" ++ pair, .{
+        rung.run_of(bare_run).queued, rung.run_of(under_run).queued,
+    });
+    print("  dependents:" ++ pair, .{
+        rung.run_of(bare_run).reaped, rung.run_of(under_run).reaped,
+    });
+    print("  phases absorbed into a standing dependent:" ++ pair, .{
+        rung.abandoning_of(bare_run).inner.inner.inner.inner.absorbed,
+        rung.abandoning_of(under_run).inner.inner.inner.inner.absorbed,
+    });
+    print("  abandoned reach, conferred and never served:" ++ pair, .{
+        rung.abandoning_of(bare_run).abandoned, rung.abandoning_of(under_run).abandoned,
+    });
+    print("  phases re-seated to carry what was lost:" ++ pair, .{
+        rung.below_of(bare_run).reseated, rung.below_of(under_run).reseated,
+    });
+    print("  standing judgments taken back on this run's own evidence:" ++ pair, .{
+        rung.recanting_of(bare_run).recanted, rung.recanting_of(under_run).recanted,
+    });
+    print("  readings corrected where they were read:" ++ pair, .{
+        rung.amending_of(bare_run).amended, rung.amending_of(under_run).amended,
+    });
+    print("  corrections carried to the place their reader was reached:" ++ pair, .{
+        rung.couriering_of(bare_run).delivered, rung.couriering_of(under_run).delivered,
+    });
+    print("  disagreements written into the record:" ++ pair, .{
+        rung.disputing_of(bare_run).recorded, rung.disputing_of(under_run).recorded,
+    });
+    print("  published words standing beside the reading against them:" ++ pair, .{
+        rung.abiding_of(bare_run).escorted, rung.abiding_of(under_run).escorted,
+    });
+    print("  standing objections put back to the reader who raised them:" ++ pair, .{
+        rung.lapsing_of(bare_run).asked, rung.lapsing_of(under_run).asked,
+    });
+    print("  marks carrying the standing of the objection they quote:" ++ pair, .{
+        rung.reposing_of(bare_run).stood, rung.reposing_of(under_run).stood,
+    });
+    print("  raisers told how their own quarrel came out:" ++ pair, .{
+        rung.tidings_of(bare_run).told, rung.tidings_of(under_run).told,
+    });
+    print("  readers whose reply to the answer was read back:" ++ pair, .{
+        rung.appeal_of(bare_run).heard_back, rung.appeal_of(under_run).heard_back,
+    });
+    tell_desist_half(rung, bare_word, under_word, bare_run, under_run);
+}
+
 /// Tells what two runs did about the standing quarrel itself, in an operator's
 /// own words.
 ///
