@@ -2059,6 +2059,31 @@ One rung needed a line no other did: [`reclaim.rye`](reclaim.rye) had never impo
 
 **Widening a symbol moves that symbol's own family too, and the arithmetic closes because of it.** A declaration line is part of the body it opens, so making `elder_waits` public in forty-three of the fifty-one rungs that hold it split one family of fifty-one into one of forty-three and one of eight -- and a split *lowers* the carry by one body, since the new family's first copy becomes a distinct text. Eleven such splits account for the 47 lines by which the measured fall, **2,220**, exceeds the 2,173 the fold's own family gave back. Nothing is unexplained, and none of it is estimated.
 
+## Fold P -- `confer_slot`, and the first fold the arc has taken for free
+
+The printed queue named `confer_slot` at **forty-three rungs by thirty-nine lines, 1,638 carried**, and this time the queue was exactly right. Hashing every `confer_slot` body on the ladder before folding it confirmed the count rather than correcting it: forty-three rungs hold one body byte for byte, and 39 x 42 is 1,638 precisely. The check is worth running either way -- a lead that agrees with the reading is still a lead that was read.
+
+`confer_slot` answers which standing dependent could carry this phase, if any could. It matches the phase's domain against a live dependent's, weighs the hops the phase declares against the reach that dependent still holds in reserve, and walks every arc it would take, checking each for both name and write intent before it answers.
+
+**Fold O prepared this fold entirely, and the cost shows it: zero widenings.** The five symbols this body reaches through the rung -- `hop_count`, `reserve_depth`, `Table`, `max_in_flight`, and the harness import itself -- were all made public across the same forty-three rungs one lap earlier, for `fill_table`. Not a single file needed a word changed before a line could move. **A fold pays its successors**, so the honest price of a widening is charged once and spent several times over; a lap reading only the widening count of the fold in front of it reads that price too high. That sentence now stands in the scan's own header beside the caution fold O left there.
+
+`confer.reserve_arc_at`, `intent.declares_write`, and `cycle.max_hops` stay module-level, since a reserve's arcs, an arc's write intent, and the bound on how many hops one item may name are the same for every rung on the ladder.
+
+**Two elder rungs keep their own copies, for reasons that are real rather than stylistic.** [`confer.rye`](confer.rye) *owns* `reserve_arc_at` and calls it unqualified where every folded rung reaches it through this module -- and folding it would ask the module this harness imports to import the harness back. [`revoke.rye`](revoke.rye) predates the in-flight invariant and states one assert fewer, so folding it would quietly add a check rather than move a body. Both differences are two lines, and both stay home named.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding the body | 43 | **0**, each keeping a three-line delegate |
+| Lines the body carried | 1,638 | **126** -- the delegate is itself a copy |
+| Widenings the fold cost | -- | **0**, every symbol already public from fold O |
+| The ladder's whole carry | 132,589 | **131,077** |
+| Carry ceiling | 132,700 | **131,200** |
+| Lines on disk, all `caravan/*.rye` | 371,654 | **370,181** |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+**The arithmetic closes exactly, with no remainder at all.** The family gave back 1,638 and the new three-line delegate family carries 126, so the carry falls 1,512 -- which is what the meter measured. Fold O's 47-line gap came from eleven family splits its widenings caused; a fold that widens nothing splits nothing, so this one leaves nothing to explain. On disk the same closure holds: forty-three rungs each shed thirty-six lines for 1,548, the harness took 75, and 370,181 is what remains.
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.
