@@ -1,0 +1,42 @@
+format session-log-v1
+stamp 20260821.164000
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The room folds to date/, and the bound is seated so it stays folded
+prompt fold session-logs to date/ and seat the 256 bound
+think Read the tree before writing a tool, and found the tool already written. tools/session_logs_archive.rye folds flat logs by day, rewrites the index, has a preview, a witness, and a fixture selftest. Teaching it beat writing a second one -- sameness is the macro, and a rename would have cost 137 inbound references for a tidier filename.
+think Found the gap that would have silently eaten 600 files. The tool knew .bron and .md and not .kyri, exactly as the session-logs rule warned it would until someone taught it. Added the extension with a fixture beside it, because an extension added without a fixture is an extension nobody has tested.
+think Corrected the meter I built last round before it could lie. The lost-reference gate was on the whole broken count, and folding is precisely what turns a flat path into a recoverable one -- so the first fold would have red on the move the gate exists to make safe. Regated on ambiguous plus gone, what the resolver CANNOT recover, and predicted that a correct fold leaves that number where it stood.
+think Left a cairn before the largest structural move the tree has made, though a fold is not a debride and destroys nothing. The walk-back costs one line and answers a question a future reader will certainly ask.
+think Renamed archive/ to date/ first, then repointed the index, then moved -- so each step could be checked on its own rather than tangled into one act I could only inspect afterward.
+think Watched the fold rather than waiting for its exit code, and that is the only reason REDS %113 was caught. The index rewrite called a whole-string replace once per moved file: four minutes and 856 megabytes of resident set, still climbing, still unfinished, with every file already moved. Correct at every scale it had been run at, unusable at the scale it existed for.
+think Replaced it with one pass over the index that inserts date/<day>/ before any bare dated link. 0.174 seconds for the same work. Then made it run on every real fold rather than only when something moved, since the tree was sitting in exactly the state that gap creates -- files moved, index stale.
+think Shipped a bug into that single pass and caught it by reading rather than by running: it repointed EVERY bare dated link, including today's logs which stay flat. Told the pass which day stays put, added the selftest check, then defeated the guard on purpose to watch the check fail by name. The first probe would not even compile -- the language refused the unused parameter -- which is a stronger refusal than a failing test.
+think Investigated the nine-reference rise in gone rather than raising the ceiling to cover it. Four were instrument fixtures of my own making, the same class already excluded. The other five were REAL -- index rows pointing at logs that were never there.
+think Traced all six. Three name a slug spelled colour on disk and color in the index. One reads stamp 013130 where the file and its own stamp field both read 013158. Two name logs that were never written at all.
+think Stopped short of the spelling fix rather than smuggling it inside a fold. The colour spelling runs through those three logs' bodies -- 22, 13, and 10 lines -- so normalizing it means editing dated testimony, which is a word rather than a judgement I get to make while doing something else. Repaired only what was unambiguous: links now name the files that exist, and the stamp typo follows the file's own field.
+think Checked what the fold silently weakened, because a fold that leaves a guard reading a vanished path is damage even when every witness still exits zero. Two fixtures pointed at session-logs/archive; both now read date/ AND archive/, so a clone folded either way is read correctly rather than going quietly weaker.
+think Sampled the payoff instead of asserting it. Twenty-three of twenty-four stale session-log references resolve by the FOLD RULE alone -- computed from the basename, no index consulted, nothing repointed. That is the whole design working on the first real fold.
+obs The dated-path witness caught its own stale expectation. Its fold-rule test named session-logs/archive/20260710/, the file moved with the room, and the assert reddened -- which is exactly why that assert names a path rather than a shape.
+obs The bound scan discovers rooms rather than listing them, and immediately found one I had not measured: waymarks at 290 flat files. Four rooms stand over 256 -- counsel 764, active-designing 629, expanding-prompts 359, waymarks 290 -- each advisory, each a fold waiting on a word rather than a red.
+obs The one-clock witness took twenty minutes this round rather than seconds, because its provenance scan checks every renamed artifact against origin/main and this diff carries 4,443 renames. Transient by construction: the cost falls back the moment the fold is pushed. Named here so a future reader does not mistake it for a regression.
+obs REDS crossed its 24,576-byte bound by fifteen bytes when rows 113 and 114 landed, so rows 110-111 folded to archive the way the ledger already folds -- every byte kept, the living pin readable, the monotone witness moved 112 -> 114 in the same commit as the rows.
+loom fold=session_logs moved=1443 rooms_before_flat=1492 after_flat=49 day_dirs=59 renames_staged=4443
+loom index=rewrite elder_wall_s=268 elder_rss_mb=856 elder_finished=no single_pass_s=0.174 links_repointed=2193 flat_kept=49
+loom census=post_fold refs_total=21222 refs_home=15476 refs_broken=5746 recoverable=5553 ambiguous=16 gone=177 lost=193 ceiling=193
+loom payoff=fold_rule_recovery sampled=24 by_fold_rule=23 by_index=0 missing=0
+loom rooms=bound bound=256 enforced=1 enforced_over=0 advised_over=4 waymarks=290 counsel=764 active_designing=629 expanding_prompts=359
+file tools/session_logs_archive.rye taught date/ and .kyri; index rewrite made single-pass and run on every real fold
+file tools/fixtures/session_logs_archive/20260703-110000_gamma.kyri the .kyri fixture that proves the new extension rather than assuming it
+file tools/room_bound_witness.rish the 256 bound -- rooms discovered not listed, one roster enforced, the rest reported
+file tools/fixtures/room_bound_scan.sh the per-room flat census, bound named at 256 rather than at GitHub's 1,000
+file tools/fixtures/room_bound_control.sh a room built over its bound, so the gate is proven to close
+file tools/fixtures/dated_path_scan.sh the gate regated onto lost rather than broken, and the ceiling lowered 199 -> 193
+file session-logs/README.md 2,193 links repointed to date/, 49 of today's kept flat, six broken rows repaired
+file crux/CAIRNS.md the walk-back to the room's departing shape
+file crux/REDS.md rows 113 and 114 booked; rows 110-111 folded to archive to keep the pin under bound
+file tools/fixtures/one_clock_mono_scan.sh reads date/ and archive/ both, so the fold does not weaken it
+file tools/fixtures/almanac_breach_scan.sh the same repair, same reason
+recommend check-in (checkpoint) session-logs stands folded, bounded, and enforced, and the resolver carried every stale reference across. Three doors want a word rather than a kg -- the colour spelling normalization booked as REDS %114, which edits dated bodies; the four advisory rooms over 256 (counsel 764, active-designing 629, expanding-prompts 359, waymarks 290), each a fold now provably safe to run; and arc two's active-development room, which was the next thing named before this one opened.

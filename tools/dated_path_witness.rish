@@ -28,10 +28,16 @@
 #   every home the resolver names is checked to actually exist -- a resolver that returns a path
 #   which is not there would be worse than one that returns nothing.
 #
-#   The census, under a ratchet. `tools/fixtures/dated_path_scan.sh` walks every dated reference
-#   in the field, and its numbers are printed verbatim rather than recited here (REDS %108).
-#   The ceiling has no slack, so a fold that leaves a reference dangling reds on the lap it
-#   enters rather than months later.
+#   The first fold proved the design. `session-logs/` folded on `20260821.161758` -- 1,443 files
+#   moved -- and a sample of stale references afterward resolved 23 of 24 by the fold rule alone.
+#
+#   The census, under a ratchet on the right number. `tools/fixtures/dated_path_scan.sh` walks
+#   every dated reference in the field, and its numbers are printed verbatim rather than recited
+#   here (REDS %108). The gate is on the LOST references -- a basename that exists nowhere, and
+#   a basename at two paths where no single answer is safe -- rather than on the whole broken
+#   count. Under the mark law a stale reference is resolved rather than repointed, so recovered
+#   references RISE when a room folds and that is the fold working; what must never rise is what
+#   the resolver cannot recover. The lost ceiling has no slack.
 #
 # WHAT IS NOT PROVEN. Nothing here moves a file or repairs a reference; the resolver reads and
 # reports, and the repairing is a later round's work. The 183 references whose basename exists
@@ -47,7 +53,7 @@
 #   rishi/bin/rishi run tools/dated_path_witness.rish
 
 say "dated-path: Language EN -- a fold that breaks its own references costs more connective tissue than the clutter it cleared. This proves a stale reference can be resolved rather than rewritten, so a room may fold without the tree losing its way back."
-say "dated-path: Style Radiant -- four claims in order. The five verdicts each land on a real case. The fold rule recovers a room that has never folded. Three RED paths refuse. And the census stands under a ratchet with no slack."
+say "dated-path: Style Radiant -- four claims in order. The five verdicts each land on a real case. The fold rule recovers a room that has never folded. Three RED paths refuse. And the lost-reference census stands under a ratchet with no slack."
 say "dated-path: Lens TAME -- every number below comes from the scan's own output rather than from this file's memory, the ceiling is asserted rather than hoped, and each named home is checked to exist before it is believed."
 
 let bin = "rishi/bin/rishi"
@@ -75,12 +81,14 @@ assert with_citer.out contains "verdict=home" else "dated-path: given its citing
 assert with_citer.out contains "home=crux/archive/20260618-155212_open-threads.md" else "dated-path: the relative reading must resolve against the citer's own directory"
 say "verdict two GREEN -- a relative reference resolves from its citing file's directory"
 
-# The fold rule on a real folded log: computed from the basename, no index consulted.
+# The fold rule on a real folded log: computed from the basename, no index consulted. This
+# expectation named archive/ until the session-log fold of `20260821.161758` moved the room, and
+# this assert is what noticed -- which is the whole reason it names a path rather than a shape.
 let folded_ref = "session-logs/20260710-000045_one-clock-resins-plainly.md"
 let folded = run [bin "run" tool folded_ref]
 assert folded.ok else "dated-path: a folded session log must still resolve"
 assert folded.out contains "verdict=recovered-by-fold-rule" else "dated-path: a folded log must be recovered by computation, not by search"
-assert folded.out contains "home=session-logs/archive/20260710/20260710-000045_one-clock-resins-plainly.md" else "dated-path: the fold rule must name the day directory the file actually lives in"
+assert folded.out contains "home=session-logs/date/20260710/20260710-000045_one-clock-resins-plainly.md" else "dated-path: the fold rule must name the day directory the file actually lives in"
 say "verdict three GREEN -- a folded log is recovered by the fold rule alone"
 
 # A move the fold rule cannot predict -- yonder is a judgement, not a date -- so the index answers.
@@ -141,7 +149,7 @@ say "RED two GREEN -- a shared basename is never collapsed to one answer"
 
 # Every home named above must actually exist. A resolver that returns a path which is not there
 # would be worse than one that returns nothing, because it would be believed.
-let homes = [standing_ref "crux/archive/20260618-155212_open-threads.md" "session-logs/archive/20260710/20260710-000045_one-clock-resins-plainly.md" "active-designing/yonder/20260710-230433_dimeroll-lap4-filters.md" "foundations/20260703-182612_sameness-is-the-macro.md" "external-research/20260703-182612_sameness-is-the-macro.md"]
+let homes = [standing_ref "crux/archive/20260618-155212_open-threads.md" "session-logs/date/20260710/20260710-000045_one-clock-resins-plainly.md" "active-designing/yonder/20260710-230433_dimeroll-lap4-filters.md" "foundations/20260703-182612_sameness-is-the-macro.md" "external-research/20260703-182612_sameness-is-the-macro.md"]
 let present = where homes as h: (run ["test" "-e" h]).ok
 assert (length present) == (length homes) else "dated-path: every home the resolver named must exist on disk"
 say "RED three GREEN -- every home the resolver named exists on disk"
@@ -154,7 +162,7 @@ let census = run ["sh" scan]
 assert census.ok else "dated-path: the census must complete -- see stderr"
 say census.out
 assert census.out contains "verdict=ok" else "dated-path: the census is trustworthy only when every reference landed in exactly one bucket"
-assert census.out contains "under_ceiling=yes" else "dated-path: broken references have risen above the ceiling -- a fold left something dangling, or a new document cites a path that no longer stands"
+assert census.out contains "under_ceiling=yes" else "dated-path: LOST references have risen above the ceiling -- a reference now resolves nowhere, or resolves to two places at once, and neither is something the resolver can repair"
 
 # The scan's own RED path, proven by construction rather than by trust. A throwaway corpus is
 # built whose right answer is known before the walker runs: two dated references cited from one
@@ -168,4 +176,4 @@ assert control.out contains "broken_gone=1" else "dated-path: the control's ghos
 assert control.out contains "verdict=ok" else "dated-path: the control census must balance"
 say "census control GREEN -- a corpus whose answer is known by construction is walked correctly, one home and one ghost"
 
-say "GREEN: dated-path -- five verdicts on real cases, the fold rule proven on a room that never folded, three RED paths refused, and the census standing under a ceiling with no slack. A room may now fold without the tree losing its way back."
+say "GREEN: dated-path -- five verdicts on real cases, the fold rule proven on a room that never folded, three RED paths refused, and the lost-reference census standing under a ceiling with no slack. A room may now fold without the tree losing its way back."

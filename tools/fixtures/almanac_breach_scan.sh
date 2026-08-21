@@ -54,7 +54,9 @@ done
 echo "living_refs_turned=$turned"
 
 # Dated testimony must be untouched: still pointing at the elder address.
-dated=$(grep -rl "ALMANAC\|almanac" --include=*.md session-logs/archive expanding-prompts/yonder waymarks 2>/dev/null | wc -l | tr -d ' ')
+# session-logs/date is where a folded log lives since 20260821.161758 (the mark law);
+# the elder archive/ stays in the list so this reads a tree folded either way.
+dated=$(grep -rl "ALMANAC\|almanac" --include=*.md session-logs/date session-logs/archive expanding-prompts/yonder waymarks 2>/dev/null | wc -l | tr -d ' ')
 echo "dated_testimony_untouched=$dated"
 echo "faults=$faults"
 if [ "$faults" -eq 0 ]; then echo "verdict=ok"; exit 0; fi

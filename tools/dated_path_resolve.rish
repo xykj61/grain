@@ -7,12 +7,18 @@
 # them by hand would mean editing thousands of dated logs, which accrete-never-break forbids at
 # that scale. So the reference is not rewritten -- it is RESOLVED.
 #
+# PROVEN BY THE FIRST FOLD. When `session-logs/` folded on `20260821.161758`, 1,443 files moved
+# and every reference already written at their flat paths stopped landing. Sampled afterward, 23
+# of 24 stale session-log references resolved **by the fold rule alone** -- computed from the
+# basename, no index consulted, nothing repointed. That is the whole design working.
+#
 # WHY IT CAN WORK AT ALL. The mark law keeps the whole stamp in every filename, so a dated
 # basename is very nearly unique across the tree. That uniqueness is what turns a stale path
 # into a solvable lookup rather than a lost one, and it is the concrete reason the day is
 # repeated in `date/20260821/20260821-152409_slug` rather than shortened away. Measured
-# `20260821`: 3,939 of the 4,138 broken references resolve to exactly one home, 16 to more
-# than one, and 183 to none.
+# `20260821.160050`, before the first fold: 3,939 of 4,138 broken references resolved to exactly
+# one home, 16 to more than one, and 183 to none. The recoverable count rises whenever a room
+# folds -- that is folding working, not damage -- so the living gate is on the other two.
 #
 # THE FIVE READINGS, first hit winning. The order is deliberate -- the two that cost nothing
 # come first, the pure computation before the index, and the index before giving up.

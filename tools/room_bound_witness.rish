@@ -1,0 +1,61 @@
+# tools/room_bound_witness.rish -- no room grows past what a reader can open.
+#
+# WHY THIS RUNG. `session-logs/` held 1,492 dated files at room level on `20260821`, and GitHub's
+# web listing stops at 1,000 entries, so the room was genuinely unopenable in a browser. The fold
+# to `date/YYYYMMDD/` fixed it. This rung is what keeps it fixed -- because at roughly a hundred
+# and eight logs a day, an emptied room refills past a thousand in nine days, and a one-time sweep
+# would have bought nine days. The bound is the root fix; the sweep was only the symptom.
+#
+# WHAT IS PROVEN HERE.
+#
+#   Every room is discovered rather than listed. `tools/fixtures/room_bound_scan.sh` walks every
+#   top-level directory holding a dated file at its own level, so a room created tomorrow appears
+#   in the report without anyone remembering to add it.
+#
+#   The enforced roster holds. `session-logs` earned enforcement by folding, and its flat count
+#   must stay at or under 256. Two hundred fifty-six rather than a thousand, because a bound
+#   placed at the cliff fails on the day it matters.
+#
+#   Every other room is reported and books nothing. Four stand over the bound today --
+#   `counsel`, `active-designing`, `expanding-prompts`, and `waymarks` -- and each is a fold
+#   waiting on a word rather than a red. A ratchet turns on touch; a sweep nobody asked for is
+#   not a fix.
+#
+#   The RED path is proven by construction. A throwaway room is built over a deliberately tiny
+#   bound and must be refused, so the gate is known to close rather than assumed to.
+#
+# WHAT IS NOT PROVEN. This counts files; it does not judge whether a room's contents belong
+# together, and it says nothing about nesting depth beneath a room. A room could satisfy the
+# bound and still be badly organised, and no integer will notice.
+#
+# Season: the Standfast restrategizing of `20260821`, arc one -- the mark and the path.
+# Kin: .claude/rules/stamp-and-name.md (the fold's law) - tools/dated_path_witness.rish (the
+# resolver that makes a fold safe) - tools/session_logs_archive.rish (the fold itself).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/room_bound_witness.rish
+
+say "room-bound: Language EN -- a room that outgrows a reader stops being a room and starts being a pile. This holds every enforced room at a size a person can open, and reports the rest honestly rather than sweeping them unasked."
+say "room-bound: Style Radiant -- three claims. Rooms are discovered rather than listed. The enforced roster stands under 256. And the gate is proven to close on a room built to break it."
+say "room-bound: Lens TAME -- the bound is named at 256 rather than at GitHub's 1,000, because a maximum set at the cliff fails on the day it matters; every count below is the scan's own output rather than this file's memory."
+
+let scan = "tools/fixtures/room_bound_scan.sh"
+
+let roster = run ["sh" scan]
+assert roster.ok else "room-bound: an ENFORCED room stands over the bound -- fold it to date/YYYYMMDD/ with tools/session_logs_archive.rish, and read tools/dated_path_witness.rish first"
+say roster.out
+assert roster.out contains "bound=256" else "room-bound: the seated bound is 256 -- a change to it is a seated decision, not a default"
+assert roster.out contains "enforced_over=0" else "room-bound: every enforced room must stand at or under the bound"
+assert roster.out contains "verdict=ok" else "room-bound: the roster must balance before it is believed"
+assert roster.out contains "room=session-logs" else "room-bound: session-logs must appear in the roster -- a room that vanishes from a meter is not a room that passed it"
+assert roster.out contains "roster=enforce" else "room-bound: at least one room must be enforced, or the gate guards nothing"
+
+# The RED path, built rather than trusted. A room of three dated files under a bound of two must
+# be refused, and refused by name, so the gate is known to close.
+let control = run ["sh" "tools/fixtures/room_bound_control.sh"]
+assert (control.ok == false) else "room-bound: a room over its bound must refuse"
+assert control.out contains "verdict=over" else "room-bound: an over-bound room must be refused by name"
+assert control.out contains "enforced_over=1" else "room-bound: the refusal must name exactly which roster caught it"
+say "RED path GREEN -- a room built over its bound is refused, and refused by name"
+
+say "GREEN: room-bound -- rooms discovered rather than listed, every enforced room under 256, the rest reported and booking nothing, and the gate proven to close on a room built to break it."

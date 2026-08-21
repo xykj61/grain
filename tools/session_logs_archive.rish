@@ -1,8 +1,12 @@
-# session_logs_archive.rish — fold prior days' session logs into archive/YYYYMMDD/.
+# session_logs_archive.rish -- fold prior days' session logs into date/YYYYMMDD/.
 #
 # Convention (ORGANIZING.md): the working day stays flat; earlier days live under
-# session-logs/archive/<YYYYMMDD>/. Folds both living Bron (.bron) and historical
-# Markdown (.md) session logs; README.md stays flat and has links rewritten.
+# session-logs/date/<YYYYMMDD>/. Folds Kyri (.kyri), the elder Bron (.bron), and historical
+# Markdown (.md); README.md stays flat and has its links rewritten in place.
+#
+# The destination molted archive/ -> date/ on 20260821.161758 with the mark law
+# (.claude/rules/stamp-and-name.md). The file keeps its elder name because 137 references
+# across the tree already name it.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/session_logs_archive.rish
@@ -21,7 +25,7 @@ let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} ${rye} b
 assert build.ok else "session_logs_archive build failed"
 
 let today = run ["sh" "-c" "date +%Y%m%d"]
-say "archive fold: keeping day ${today.out} flat; moving earlier days beneath archive/."
+say "fold: keeping day ${today.out} flat; moving earlier days beneath date/."
 
 let cmd = run ["sh" "-c" "${bin} fold 2>&1"]
 assert cmd.ok else "session logs archive fold failed"

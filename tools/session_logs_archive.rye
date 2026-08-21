@@ -1,7 +1,18 @@
-//! Session-log archive fold — tidy prior days beneath `session-logs/archive/YYYYMMDD/`.
+//! Session-log fold — tidy prior days beneath `session-logs/date/YYYYMMDD/`.
 //!
 //! Convention ([`ORGANIZING.md`](../ORGANIZING.md)): today's logs stay flat; earlier days
-//! fold under `archive/<day>/`. README links rewrite in place when `fold` runs.
+//! fold under `date/<day>/`. README links rewrite in place when `fold` runs.
+//!
+//! The destination molted `archive/` -> `date/` on `20260821.161758` with the mark law
+//! ([`../.claude/rules/stamp-and-name.md`](../.claude/rules/stamp-and-name.md)): ORGANIZING
+//! defines archive as backward-pointing and finished, while a log from nine days ago is the
+//! live record, so `date/` claims only *when* -- the one thing true of every file in it. The
+//! FILE keeps its elder name, because 137 references across the tree name it and a promise
+//! kept is worth more than a tidy filename.
+//!
+//! Extensions folded: `.kyri` (living), `.bron` (the elder notation), `.md` (historical).
+//! `.kyri` was taught on `20260821` -- 600 such logs stood flat when the room folded, and a
+//! tool that knew only `.bron` and `.md` would have left every one of them behind.
 //!
 //! Entry points (read and mutate stay separate):
 //!   `rye run tools/session_logs_archive.rye preview [--today YYYYMMDD]` — count only
@@ -27,13 +38,58 @@ pub fn should_fold_flat(fname: []const u8, today: []const u8) bool {
     return !std.mem.eql(u8, day, today);
 }
 
-pub fn rewrite_readme_link(readme: []const u8, fname: []const u8, day: []const u8, a: std.mem.Allocator) ![]const u8 {
-    const archived = try std.fmt.allocPrint(a, "](archive/{s}/{s})", .{ day, fname });
-    defer a.free(archived);
-    if (std.mem.indexOf(u8, readme, archived) != null) return try a.dupe(u8, readme);
-    const flat = try std.fmt.allocPrint(a, "]({s})", .{ fname });
-    defer a.free(flat);
-    return std.mem.replaceOwned(u8, a, readme, flat, archived);
+/// Repoint every flat dated link in the index, in ONE pass over the README.
+///
+/// The elder shape called a whole-string replace once per moved file, which is
+/// O(files * README) in time and, on an arena that reclaims nothing, in memory too. That cost
+/// stayed invisible while the room was small and became a wall the day it was needed: folding
+/// 1,443 logs out of a 2.7 MB index took over four minutes and 856 MB and had not finished
+/// (REDS %113). This walks the README once and inserts `date/<day>/` before any link target
+/// that is a bare dated filename -- O(README), independent of how many files moved.
+///
+/// `today` is the day that stays flat, and its links are left alone -- repointing a file that
+/// has not moved is how an index starts lying. The elder shape got this right by iterating only
+/// the moved names; the single pass has to be told, so it is.
+///
+/// Idempotent by construction: a target already carrying a slash is left exactly as it stands,
+/// so a second run over a folded index changes nothing.
+pub fn rewrite_readme_links(readme: []const u8, today: []const u8, a: std.mem.Allocator) ![]const u8 {
+    var out = std.ArrayListUnmanaged(u8).empty;
+    errdefer out.deinit(a);
+    // invariant: the rewrite only ever grows the index, so reserving its length up front is a
+    // floor rather than a guess, and the common case appends without reallocating.
+    try out.ensureTotalCapacity(a, readme.len);
+
+    var i: usize = 0;
+    while (i < readme.len) {
+        const rest = readme.len - i;
+        if (rest >= 2 and readme[i] == ']' and readme[i + 1] == '(') {
+            const start = i + 2;
+            if (std.mem.indexOfScalarPos(u8, readme, start, ')')) |end| {
+                const target = readme[start..end];
+                // A bare dated filename is the only thing repointed. A target already holding a
+                // slash is a path someone wrote on purpose, and it is left whole.
+                if (std.mem.indexOfScalar(u8, target, '/') == null) {
+                    if (day_from_log_fname(target)) |day| if (!std.mem.eql(u8, day, today)) {
+                        try out.appendSlice(a, "](date/");
+                        try out.appendSlice(a, day);
+                        try out.append(a, '/');
+                        try out.appendSlice(a, target);
+                        try out.append(a, ')');
+                        i = end + 1;
+                        continue;
+                    };
+                }
+            }
+        }
+        try out.append(a, readme[i]);
+        i += 1;
+    }
+
+    // invariant: nothing is ever dropped, so the rewritten index is at least as long as the one
+    // that went in -- a shorter result would mean a link was eaten rather than repointed.
+    std.debug.assert(out.items.len >= readme.len);
+    return try out.toOwnedSlice(a);
 }
 
 fn list_flat_logs(a: std.mem.Allocator, io: std.Io, logs_dir: []const u8) ![][]const u8 {
@@ -48,9 +104,12 @@ fn list_flat_logs(a: std.mem.Allocator, io: std.Io, logs_dir: []const u8) ![][]c
     while (try it.next(io)) |entry| {
         if (entry.kind != .file) continue;
         if (std.mem.eql(u8, entry.name, "README.md")) continue;
+        // Every notation the room has ever held. A new extension added here without a
+        // fixture in the selftest is an extension nobody has tested, so both move together.
         const is_md = std.mem.endsWith(u8, entry.name, ".md");
         const is_bron = std.mem.endsWith(u8, entry.name, ".bron");
-        if (!is_md and !is_bron) continue;
+        const is_kyri = std.mem.endsWith(u8, entry.name, ".kyri");
+        if (!is_md and !is_bron and !is_kyri) continue;
         if (day_from_log_fname(entry.name) == null) continue;
         try names.append(a, try a.dupe(u8, entry.name));
     }
@@ -66,7 +125,7 @@ fn move_log_file(a: std.mem.Allocator, io: std.Io, logs_dir: []const u8, fname: 
     const cwd = std.Io.Dir.cwd();
     const src = try std.fs.path.join(a, &.{ logs_dir, fname });
     defer a.free(src);
-    const dest_dir_rel = try std.fs.path.join(a, &.{ logs_dir, "archive", day });
+    const dest_dir_rel = try std.fs.path.join(a, &.{ logs_dir, "date", day });
     defer a.free(dest_dir_rel);
     try cwd.createDirPath(io, dest_dir_rel);
     const dest = try std.fs.path.join(a, &.{ dest_dir_rel, fname });
@@ -113,24 +172,23 @@ pub fn fold_session_logs(a: std.mem.Allocator, io: std.Io, root: []const u8, tod
         moved += 1;
     }
 
-    if (!dry_run and moved > 0) {
+    // The index is reconciled on every real run, not only when something moved. The rewrite is
+    // a single idempotent pass now, so it costs one read and one write, and it means the index
+    // can never sit drifted from the tree just because the moves happened in an earlier run --
+    // which is exactly the state the 20260821 fold left behind when its elder rewrite ran out of
+    // patience partway (REDS %113).
+    if (!dry_run) {
         const readme_path = try std.fs.path.join(a, &.{ logs_dir, "README.md" });
         defer a.free(readme_path);
         const cwd = std.Io.Dir.cwd();
         const readme = try cwd.readFileAlloc(io, readme_path, a, .unlimited);
         defer a.free(readme);
-        var current: []const u8 = readme;
-        var owned: ?[]const u8 = null;
-        for (names) |fname| {
-            const day = day_from_log_fname(fname) orelse continue;
-            if (std.mem.eql(u8, day, today)) continue;
-            const next = try rewrite_readme_link(current, fname, day, a);
-            if (owned) |o| a.free(o);
-            owned = next;
-            current = next;
-        }
-        try cwd.writeFile(io, .{ .sub_path = readme_path, .data = current });
-        if (owned) |o| a.free(o);
+        // One pass repoints every moved link at once. Today's logs are still flat and their
+        // links carry no slash either, so the pass is told which day stays put rather than left
+        // to guess -- repointing a file that has not moved is how an index starts lying.
+        const rewritten = try rewrite_readme_links(readme, today, a);
+        defer a.free(rewritten);
+        try cwd.writeFile(io, .{ .sub_path = readme_path, .data = rewritten });
     }
 
     return moved;
@@ -182,27 +240,36 @@ fn run_selftest(a: std.mem.Allocator, io: std.Io, root: []const u8) !void {
 
     const today = "20260704";
 
+    // Two prior-day files now: alpha (.md) and gamma (.kyri). The count is the whole proof
+    // that the new extension is folded rather than merely accepted by the filter.
     const preview_count = try fold_session_logs(a, io, sandbox, today, true);
-    if (preview_count != 1) return error.SelftestPreviewCount;
+    if (preview_count != 2) return error.SelftestPreviewCount;
     const alpha_flat = try std.fs.path.join(a, &.{ logs, "20260703-100000_alpha.md" });
     defer a.free(alpha_flat);
     if (!path_exists(io, alpha_flat)) return error.SelftestPreviewMutated;
 
     const moved1 = try fold_session_logs(a, io, sandbox, today, false);
-    if (moved1 != 1) return error.SelftestMovedCount;
+    if (moved1 != 2) return error.SelftestMovedCount;
 
-    const alpha_arch = try std.fs.path.join(a, &.{ logs, "archive", "20260703", "20260703-100000_alpha.md" });
+    const alpha_arch = try std.fs.path.join(a, &.{ logs, "date", "20260703", "20260703-100000_alpha.md" });
     defer a.free(alpha_arch);
     const beta_flat = try std.fs.path.join(a, &.{ logs, "20260704-100000_beta.md" });
     defer a.free(beta_flat);
-    if (!path_exists(io, alpha_arch)) return error.SelftestAlphaNotArchived;
+    const gamma_dated = try std.fs.path.join(a, &.{ logs, "date", "20260703", "20260703-110000_gamma.kyri" });
+    defer a.free(gamma_dated);
+    if (!path_exists(io, alpha_arch)) return error.SelftestAlphaNotFolded;
+    if (!path_exists(io, gamma_dated)) return error.SelftestKyriNotFolded;
     if (!path_exists(io, beta_flat)) return error.SelftestBetaNotFlat;
 
     const readme_path = try std.fs.path.join(a, &.{ logs, "README.md" });
     defer a.free(readme_path);
     const readme1 = try cwd.readFileAlloc(io, readme_path, a, .unlimited);
     defer a.free(readme1);
-    if (std.mem.indexOf(u8, readme1, "](archive/20260703/20260703-100000_alpha.md)") == null) return error.SelftestReadmeLink;
+    if (std.mem.indexOf(u8, readme1, "](date/20260703/20260703-100000_alpha.md)") == null) return error.SelftestReadmeLink;
+    if (std.mem.indexOf(u8, readme1, "](date/20260703/20260703-110000_gamma.kyri)") == null) return error.SelftestKyriReadmeLink;
+    // Today's log did not move, so its link must not move either. The single-pass rewrite would
+    // happily repoint it if it were not told which day stays flat.
+    if (std.mem.indexOf(u8, readme1, "](20260704-100000_beta.md)") == null) return error.SelftestTodayLinkMoved;
 
     const moved2 = try fold_session_logs(a, io, sandbox, today, false);
     if (moved2 != 0) return error.SelftestNotIdempotent;
@@ -211,7 +278,7 @@ fn run_selftest(a: std.mem.Allocator, io: std.Io, root: []const u8) !void {
     defer a.free(readme2);
     if (!std.mem.eql(u8, readme1, readme2)) return error.SelftestReadmeDrift;
 
-    std.debug.print("GREEN: session_logs_archive selftest — preview, fold, link rewrite, idempotency.\n", .{});
+    std.debug.print("GREEN: session_logs_archive selftest — preview, fold of .md and .kyri, link rewrite, idempotency.\n", .{});
 }
 
 fn parse_today_arg(a: std.mem.Allocator, args: []const []const u8, start: usize) !?[]const u8 {
@@ -271,10 +338,10 @@ test "should_fold_flat keeps today flat" {
 test "rewrite_readme_link is idempotent" {
     const a = std.testing.allocator;
     const readme = "| [alpha](20260703-100000_alpha.md) | note |\n";
-    const once = try rewrite_readme_link(readme, "20260703-100000_alpha.md", "20260703", a);
+    const once = try rewrite_readme_links(readme, "20260704", a);
     defer a.free(once);
-    try std.testing.expect(std.mem.indexOf(u8, once, "archive/20260703/") != null);
-    const twice = try rewrite_readme_link(once, "20260703-100000_alpha.md", "20260703", a);
+    try std.testing.expect(std.mem.indexOf(u8, once, "date/20260703/") != null);
+    const twice = try rewrite_readme_links(once, "20260704", a);
     defer a.free(twice);
     try std.testing.expectEqualStrings(once, twice);
 }
