@@ -2904,16 +2904,7 @@ pub fn standing_note(io: std.Io, plea: Plea) NoteError!void {
 /// which is the whole point -- and it says so with a null rather than by
 /// guessing when nobody has ever pressed anything here.
 pub fn position_standing(io: std.Io) ?Plea {
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = note_path(&path_buf, plan_name, ".standing") catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    var bytes: [1]u8 = @splat(0);
-    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
-    // invariant: a standing position never outgrows the one quarrel it names
-    assert(got <= 1);
-    if (got < 1) return null;
-    return plea_of_byte(bytes[0]);
+    return ladder_checks.position_standing(@This(), io);
 }
 
 /// Clears the standing position, so a lap begins with a plan nobody has pressed
@@ -2973,20 +2964,7 @@ pub fn dwell_note(io: std.Io, runs: u32) NoteError!void {
 /// reading, since an undated position may have stood since long before this
 /// wire learned to count.
 pub fn dwell_published(io: std.Io) ?u32 {
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = note_path(&path_buf, plan_name, ".dwell") catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    var bytes: [1]u8 = @splat(0);
-    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
-    // invariant: an age never outgrows the one byte it is written in
-    assert(got <= 1);
-    if (got < 1) return null;
-    const seen: u32 = bytes[0];
-    if (seen == 0) return null;
-    // invariant: an age read off the wire stands within the byte carrying it
-    assert(seen <= max_dwell_runs);
-    return seen;
+    return ladder_checks.dwell_published(@This(), io);
 }
 
 /// Takes down the age beside a position, because the position itself is gone.

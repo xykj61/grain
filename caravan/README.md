@@ -1975,7 +1975,7 @@ Proven by [`tools/caravan_edge_witness.rish`](../tools/caravan_edge_witness.rish
 **Every one of the seven owed refusals now has a module that answers it.** `refusals.rye` still counts seven owed, and that stays exactly right: its count is what the **policy table** can answer, and the table has not learned to speak through the tree, the buffer, the region, or the edge. The debt closes when the table itself can answer, never when a neighbour can -- which names the next real rung on this arc rather than letting four green modules quietly claim it.
 
 
-## The reply -- the policy table speaks through its neighbours, and the agenda closes by measurement
+## The reply -- the policy table speaks through its neighbors, and the agenda closes by measurement
 
 `reply.rye` (`20260821.071421`) answers the question the edge rung deliberately left open. Four modules had paid every debt on the refusal agenda -- the edge for argument, range, and alignment; the buffer for truncation; the tree for delete-first and revoke-first; the region for not-enough-memory -- and `refusals.rye` still counted **four answered and seven owed**. That count was right, and it stayed right on purpose: it measures what the **policy table** can reach, and a table that has never learned to ask a neighbour reaches exactly as far as it did before the neighbour was born. A debt closes when the table itself can answer, never when a neighbour can.
 
@@ -1983,7 +1983,7 @@ So this rung is the asking. One **ask** arrives carrying everything a supervised
 
 **The order is Caravan's own, and each stage names its own reason in code.** The edge stands first because a request whose size no object can be gives every later question nothing to be about. The message stands second because until its method's words have arrived, the dependent and resource it names cannot be read out of it at all -- the table would be asked about nobody. The table stands third because whom and what are legible by then, and permission is settled before anything is acted upon. The deed stands last because acting is the one stage that spends something, and only a well-formed, legible, permitted ask ever reaches it.
 
-**The reach is run, never credited.** Eleven named asks run against eleven fresh benches, and the measurement is counted from what they actually earn. Crediting the table by proximity -- four green neighbours therefore eleven answers -- would have closed the agenda five rungs ago and proven nothing. Both truths stand side by side in the self-test, each counted rather than recited: the table alone answers **four**, and the table speaking through its neighbours answers **eleven**.
+**The reach is run, never credited.** Eleven named asks run against eleven fresh benches, and the measurement is counted from what they actually earn. Crediting the table by proximity -- four green neighbors therefore eleven answers -- would have closed the agenda five rungs ago and proven nothing. Both truths stand side by side in the self-test, each counted rather than recited: the table alone answers **four**, and the table speaking through its neighbours answers **eleven**.
 
 | Measured `20260821` | Value |
 |---|---|
@@ -1991,7 +1991,7 @@ So this rung is the asking. One **ask** arrives carrying everything a supervised
 | Refusals owned, one author each | **10**, plus success owned by no stage -- the eleven |
 | Named asks the reach is measured from | **11**, each on its own fresh bench |
 | Reach of the table alone | **4** of 11, unmoved -- `refusals.rye` was always right |
-| Reach through its neighbours | **11** of 11 |
+| Reach through its neighbors | **11** of 11 |
 | Asks swept, both arms exercised | **5,184** -- 30 welcomed, 5,154 refused |
 
 **The one overlap is published rather than hidden.** The deed may answer `seL4_FailedLookup` or `seL4_IllegalOperation`, which the table owns, because a derivation tree looks a capability up in a slot and narrows rights along a lineage exactly as the table looks a dependent up by label and narrows rights by mask. Two different lookups about two different things, giving one sentence. `stage_echoes` says so in code, and the self-test earns the echo rather than describing it.
@@ -2491,6 +2491,38 @@ What the folded body does is the arc's whole appeal half, stated once. A run fin
 **The arithmetic closes with no remainder, and the remainder it seemed to have was a fifth gift.** Out went 26x56, 34x13, 28x13, 27x13, and 27x12 -- 1,456 plus 442 plus 364 plus 351 plus 324, or **2,937**. Back came the same five cohorts at three lines apiece -- 78 plus 102 plus 84 plus 81 plus 81, or **426**. That is a fall of 2,511, and the meter read **2,537**. The extra twenty-six came from `note_path`: a forty-five-rung family that widening split into thirty-five public and ten private, and a family split into two smaller ones carries one fewer copy of itself. Fold Z's split-by-the-word-`pub` recurred a third time, and this time it paid rather than cost -- which is also why carrying families rose by one.
 
 **The lesson this lap adds is that the reach closure has depth.** Fold AB read one hop out and found a cluster; this lap read one hop out and found four families larger than several the queue had been printing all along. A body's own reach is the cheapest survey on the ladder, because every symbol it names is already audited by the fold that lifts it. The next fold reads its closure first, as this one did -- and reads it for families, not merely for words to widen.
+
+
+## Fold AD -- the quarrel cluster, and the fold that cost one word
+
+The queue named **twenty-one rungs by seventy-two lines, 1,440 carried**, and hashing every `refer_the_quarrel` on the ladder found twenty-two bodies at one length. Twenty-one stand byte for byte alike; the twenty-second is `refer.rye`, the tier owner, which reaches its own report directly where every rung above it reaches through `refer_of`. Nine lines of the seventy-two differ, and all nine differ that one way -- the shape fold AA met in `amend.rye` and fold AC met in `appeal.rye`. Three laps, three tier owners, one rule: the owner stays home.
+
+Fold Z's rule ran first, before scope was chosen, and this lap it reported the plainest number the arc has seen. `refer_the_quarrel` reaches **eighteen** symbols on its rung, and **all eighteen already stood public in all twenty-one**. The main fold cost nothing at all -- no widening, no accessor, no word.
+
+**The reach reading paid again, and deeper.** Six of those eighteen are themselves whole carrying families standing above the harness line: `position_standing` in **twenty-seven** rungs, `dwell_published` in **twenty-four**, `forum_published`, `refer_refusal`, `case_delivered`, and `refer_note` in **twenty-two** each. Four are wire readers that open a note through their rung's own path builder and plan name; one is a wire writer; one is pure arithmetic that refuses by name. All six lifted. The whole seven-family lap cost exactly one widened word -- `case_path`, which `case_delivered` and `refer_note` share, made public in twenty-two rungs.
+
+Six further reached bodies stayed home, and honestly rather than by rule: `endures`, `stands_loud`, `unheard_outside`, `referred_in`, `unreferred_in`, `is_party`, `refer_holds`, `referral_bytes`, and `settlement_published` each run three to seven lines, where a delegate runs three. They still carry a few hundred lines between them, so they are the next lap's cheap remainder rather than nothing at all -- the honest claim is that the gain is small, never that it is zero.
+
+What the folded check does is the arc's whole referral half, stated once. A run reads what stands, refuses to act on a quarrel nobody presses, dates the position off the wire rather than out of memory, leaves this morning's argument with the people having it, refuses by name where a referral would go unaddressed or land back inside the argument, copies the case off the record rather than summarizing it, and reads the case back out of the box a third hand opens before the report believes a word.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding `refer_the_quarrel` | 21 | **0**, each keeping a three-line delegate |
+| Rungs holding `position_standing` | 27 | **0**, each keeping a three-line delegate |
+| Rungs holding `dwell_published` | 24 | **0**, each keeping a three-line delegate |
+| Rungs holding `forum_published` | 22 | **0**, each keeping a three-line delegate |
+| Rungs holding `refer_refusal` | 22 | **0**, each keeping a three-line delegate |
+| Rungs holding `case_delivered` | 22 | **0**, each keeping a three-line delegate |
+| Rungs holding `refer_note` | 22 | **0**, each keeping a three-line delegate |
+| Lines the seven families carried | 3,128 | **459** |
+| Widenings the fold cost | -- | **22**, one word, one shared path builder |
+| The ladder's whole carry | 107,395 | **104,726** |
+| Carry ceiling | 107,500 | **104,800** |
+| Carrying families | 707 | **707** |
+
+**The arithmetic closes with no remainder.** Out went 20x72, 26x12, 23x16, 21x13, 21x12, 21x13, and 21x10 -- 1,440 plus 312 plus 368 plus 273 plus 252 plus 273 plus 210, or **3,128**. Back came the same seven cohorts at three lines apiece -- **459**. The fall is 2,669, and the meter read **2,669**. Fold AC's extra twenty-six came from a family that widening split in two; this lap widened one word inside a family that was already whole, so nothing split and nothing was gained by accident.
+
+**The lesson this lap adds is that a free fold is a signal, not luck.** Eighteen reaches, eighteen already public: the appeal, dependent, reap, and amendment clusters had each widened the symbols this tier shares, so by the time the quarrel came up the queue its whole neighborhood was already open. Folds pay forward. The cheapest fold on any ladder is the one taken after its neighbors have gone first, and the queue -- ordered by carried lines alone -- happens to walk a tier in roughly that order because a tier's families rise together.
 
 
 ## Held
