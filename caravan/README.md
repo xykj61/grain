@@ -2605,6 +2605,47 @@ The fall the meter read is **2,745**. Carrying families held at 707, since all s
 **The lesson this lap adds is that a family with no absentee is a signal about its neighborhood, not only about itself.** Every prior lead family carried at least one rung standing apart, and reading that rung is what taught the arc its five kinds of absentee. This one stood whole -- and the reason is that the whole cluster was written at one moment, by one hand, as one movement, and has never been touched since. A body that varies has a history; a body that does not has a birthday.
 
 
+## Fold AH -- the courier cluster, the largest fall on the ladder, and the price was two words
+
+The queue named **`carry_the_amendment` at thirty-four rungs by forty-one lines, 1,353 carried**, and hashing every body by that name found **thirty-five**. `courier.rye` stood apart by four lines, and all four differed the one way: the owner reaches its own report directly where every rung above reaches through `couriering_of`. That is the second kind of absentee, met now for the seventh time and recognized on sight -- three lines of identity accessor, and the family folded **whole at thirty-five**.
+
+What the body does is the outward reach of the whole correspondence arc. A run that posted no correction carries nothing, and says so by weighing nothing rather than by inventing an errand. A reader who left no address cannot be reached, and the run refuses by name rather than choosing a destination on their behalf. Only a posted correction with somewhere to go travels -- and under `.waiting` even that one stays where it was written, which is precisely the number this tier moves. The hard half comes at the end: the run reads the reader's own box back before it believes a word of its own report, because a delivery claimed from memory of having written is a claim rather than a delivery.
+
+**Fold Z's rule was walked to closure this lap rather than one hop out, and that is the whole story of the fall.** One hop from the lead named ten symbols, and every one of them proved a whole carrying family standing byte for byte across the same cohort. A second hop, from `deliver` and `delivered_to` down to the path builder they share, named **`box_path` at twenty-five lines over thirty-five rungs** -- the second-largest family in the cluster, and one the lead body never mentions. A reach graph read to its closure is a survey; a reach graph read one step is a glimpse.
+
+| Family | Rungs | Lines | Carried before |
+|---|---|---|---|
+| `carry_the_amendment` | 35 | 41 | 1,353 |
+| `box_path` | 35 | 25 | 850 |
+| `carry_refusal` | 35 | 19 | 646 |
+| `delivered_to` | 35 | 15 | 510 |
+| `amend_published` | 36 | 14 | 490 |
+| `deliver` | 35 | 13 | 442 |
+| `addressable` | 35 | 11 | 374 |
+| `carried_in` | 35 | 7 | 238 |
+| `posted_unreached` | 35 | 6 | 204 |
+| `unaddressed_reach` | 35 | 6 | 204 |
+| `held_in` | 35 | 5 | 170 |
+
+**The price was two words.** Every other symbol the cluster reaches already stood public in all thirty-five rungs, interest paid in full by the folds before it. `couriering_of` was private in `hear.rye` alone, and `note_path` private in `amend.rye` alone -- the amending tier owner, which joins this lap for `amend_published` and nothing else, since it carries no readers' directory and no box of its own. Two widened words and one accessor born bought eleven families.
+
+**The cluster drew its own boundary honestly.** `address_published` is reached by the lead and stands in thirty-five rungs, yet it is already a delegate three lines long -- folded on an earlier lap -- so it stayed exactly where it was. A three-line body traded for a three-line delegate moves nothing, and a fold that reached for it anyway would be counting motion rather than making it.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding the eleven bodies | 35 or 36 apiece | **0**, each keeping a delegate |
+| Widenings the fold cost | -- | **2**, plus one accessor born |
+| The ladder's whole carry | 98,507 | **94,151** |
+| Carry ceiling | 98,600 | **94,200** |
+| Carrying families | 707 | **707** |
+| The `check_` window | 47 | **47** |
+| The orchestration spine | 0 | **0** |
+
+The fall the meter read is **4,356** -- the largest this arc has taken, half again the previous best. It closes with no remainder: the eleven families carried 5,481 lines between them and the delegates that replace them carry 1,125. Carrying families held at 707, since every family folded whole and no visibility split opened or closed inside a carrying cohort. Checks 47 and spine 0 stand unmoved for the **eleventh** fold running.
+
+**The lesson this lap adds is that a delegate keeps the visibility of the body it replaces.** Two of these eleven were private in their rungs and stayed private, because nothing outside the rung ever called them and the harness reaches them as itself rather than through the type. Publishing a delegate that nobody outside reads would widen the module's surface for the fold's own convenience -- and a fold that quietly widens what it touches is charging a price it never names.
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.

@@ -8005,3 +8005,333 @@ pub fn pruned(comptime rung: type, io: std.Io, domain: []const u8, count: u32) r
     assert(count <= cycle.max_hops);
     try rung.seat_note(io, domain, ".pruned", &[_]u8{@intCast(count)});
 }
+
+/// Whether an address names a place a correction may actually be carried to.
+///
+/// Bounded and plain: a reader's address is a short name, never empty and never
+/// longer than the wire's own bound, and never a path a run could be talked into
+/// walking somewhere it was not asked to go. A run that cannot name where a
+/// reader is refuses rather than guessing.
+///
+/// Thirty-five rungs held this body byte for byte. It lifts here whole, and each
+/// one still measures against its own ceiling, because the bound arrives with
+/// the type handed in.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn addressable(comptime rung: type, address: []const u8) bool {
+    if (address.len == 0) return false;
+    if (address.len > rung.max_address_len) return false;
+    for (address) |byte| {
+        const lower = byte >= 'a' and byte <= 'z';
+        const upper = byte >= 'A' and byte <= 'Z';
+        const digit = byte >= '0' and byte <= '9';
+        if (!(lower or upper or digit or byte == '_')) return false;
+    }
+    return true;
+}
+
+
+/// Writes the path of one reader's own box.
+///
+/// The one path this tier builds outside `note_dir`, and the shape of its whole
+/// claim: a delivery lands where the reader is rather than where the record
+/// lives. The address is bounded and checked before a byte of it reaches a path.
+///
+/// Thirty-five rungs held this body byte for byte, and each of them now reaches
+/// its own readers' directory and its own path ceiling through the type it hands
+/// in -- so a rung that moves where its readers live moves the box it writes.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn box_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: []const u8) rung.NoteError![]const u8 {
+    // invariant: a box is only ever built for an address a run may carry to
+    assert(addressable(rung, address));
+    const suffix = ".told";
+    const total = rung.reader_dir.len + 1 + address.len + suffix.len;
+    if (total > rung.max_note_path_len) return error.NotePathTooLong;
+    var at: u32 = 0;
+    for (rung.reader_dir) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    buf[at] = '/';
+    at += 1;
+    for (address) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    for (suffix) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    // invariant: a box path is written exactly as long as it was measured
+    assert(at == total);
+    return buf[0..at];
+}
+
+
+/// Reads the published amendment back as the two readings it names.
+///
+/// A run that reads nothing here corrected nobody, and says so with a null
+/// rather than by guessing -- which leaves a reader exactly where the rung below
+/// leaves them, holding a word the plan no longer stands behind.
+///
+/// Thirty-six rungs held this body byte for byte, one of them the amending tier
+/// that owns the note. Each still opens its own plan's own drawer, because the
+/// path builder and the plan name both arrive with the type handed in.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn amend_published(comptime rung: type, io: std.Io) ?[2]rung.Settlement {
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = rung.note_path(&path_buf, rung.plan_name, ".amend") catch return null;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
+    defer file.close(io);
+    var bytes: [2]u8 = @splat(0);
+    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
+    // invariant: an amendment never outgrows the two readings it names
+    assert(got <= 2);
+    if (got < 2) return null;
+    const was = rung.settlement_of_byte(bytes[0]) orelse return null;
+    const now = rung.settlement_of_byte(bytes[1]) orelse return null;
+    return .{ was, now };
+}
+
+
+/// Carries one correction to the reader's own box, in the words they read.
+///
+/// The outward reach of the whole arc, and it is deliberately the same two
+/// bytes the wire carries: the reading superseded and the reading that
+/// supersedes it, so `bc` reads *you were told the plan was borne; it is
+/// carried out whole* wherever a person finds it. The box is made here, since a
+/// reader's address is a place this plan has never written to before.
+///
+/// Thirty-five rungs held this body byte for byte, and each still writes into
+/// its own readers' directory in its own settlement alphabet.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn deliver(comptime rung: type, io: std.Io, address: []const u8, was: rung.Settlement, now: rung.Settlement) rung.NoteError!void {
+    // invariant: a delivery always names two readings that actually differ
+    assert(was != now);
+    // invariant: a delivery is only ever carried to an address a run may reach
+    assert(addressable(rung, address));
+    Dir.cwd().createDirPath(io, rung.reader_dir) catch return error.NoteUnavailable;
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = try box_path(rung, &path_buf, address);
+    const file = Dir.cwd().createFile(io, path, .{ .truncate = true }) catch return error.NoteUnavailable;
+    defer file.close(io);
+    const bytes = [_]u8{ rung.settlement_byte(was), rung.settlement_byte(now) };
+    file.writePositionalAll(io, &bytes, 0) catch return error.NoteUnavailable;
+}
+
+
+/// Reads one reader's box back as the two readings it carries.
+///
+/// The hard half of this tier, read from the box rather than from the run's own
+/// memory of writing to it. A run that reads nothing here delivered nothing,
+/// and says so with a null rather than by believing its own report -- which is
+/// the difference between a delivery and a claim about one.
+///
+/// Thirty-five rungs held this body byte for byte, and each still reads back out
+/// of the box it just wrote into, since the box and the alphabet both arrive
+/// with the type handed in.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn delivered_to(comptime rung: type, io: std.Io, address: []const u8) ?[2]rung.Settlement {
+    if (!addressable(rung, address)) return null;
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = box_path(rung, &path_buf, address) catch return null;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
+    defer file.close(io);
+    var bytes: [2]u8 = @splat(0);
+    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
+    // invariant: a delivery never outgrows the two readings it names
+    assert(got <= 2);
+    if (got < 2) return null;
+    const was = rung.settlement_of_byte(bytes[0]) orelse return null;
+    const now = rung.settlement_of_byte(bytes[1]) orelse return null;
+    return .{ was, now };
+}
+
+
+/// Which posted correction this run carries, counted as the one it can be.
+///
+/// A run under `.waiting` carries none, however truly it corrected the wire --
+/// which is exactly where the rung below leaves a reader who does not return. A
+/// run under `.carried` carries the one correction it posted, and only where the
+/// reading it answers left an address to carry it to.
+///
+/// Thirty-five rungs held this body byte for byte, each reading its own dispatch
+/// alphabet through the type handed in.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn carried_in(comptime rung: type, amended: u32, addressed: bool, dispatch: rung.Dispatch) u32 {
+    // invariant: a run never posts more corrections than a wire may hold
+    assert(amended <= 1);
+    if (dispatch == .waiting) return 0;
+    if (!addressed) return 0;
+    return amended;
+}
+
+
+/// Which posted correction this run leaves standing where it wrote it.
+///
+/// The other half of the same count, named rather than inferred, so the honesty
+/// of the count reads straight as an equality: every posted correction is
+/// carried or held.
+///
+/// Thirty-five rungs held this body byte for byte.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn held_in(comptime rung: type, amended: u32, addressed: bool, dispatch: rung.Dispatch) u32 {
+    // invariant: a run never posts more corrections than a wire may hold
+    assert(amended <= 1);
+    return amended - carried_in(rung, amended, addressed, dispatch);
+}
+
+
+/// Counts the corrections this run wrote and left waiting for a reader who
+/// never comes back.
+///
+/// The first measurement in this family that weighs a record against the
+/// **distance** between where it was written and where its reader actually is.
+/// The count before it names the sentence a person carried away and the answer
+/// this run owed them; this names that answer, written honestly, sitting in the
+/// writer's own drawer. Every note below this tier reaches a reader who returns,
+/// and this is the first that reaches one who does not.
+///
+/// The measurement reaches only a correction whose reading left an address. A
+/// reader who can be named and was not written to is a loss this run could have
+/// prevented; a reader who left no way to be found is a duty nobody can
+/// discharge, and counting it would be measuring the weather.
+///
+/// Thirty-five rungs held this body byte for byte.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn posted_unreached(comptime rung: type, amended: u32, addressed: bool, dispatch: rung.Dispatch) u32 {
+    // invariant: a run never posts more corrections than a wire may hold
+    assert(amended <= 1);
+    if (amended == 0 or !addressed) return 0;
+    return if (dispatch == .carried) 0 else 1;
+}
+
+
+/// Refuses a delivery bound for a reader who left no address.
+///
+/// The supply this tier is bounded by, stated as its own refusal so it can be
+/// read straight rather than inferred from a count. Carrying a correction to a
+/// reader nobody can name invents a destination, which is the same overreach as
+/// correcting a reader who never read.
+///
+/// Thirty-five rungs held this body byte for byte, each naming the refusal out
+/// of its own error set.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn unaddressed_reach(comptime rung: type, addressed: bool, carried: u32) ?rung.RunError {
+    // invariant: a run never carries more corrections than it posted
+    assert(carried <= 1);
+    if (carried >= 1 and !addressed) return error.CourierUnaddressed;
+    return null;
+}
+
+
+/// Answers why one correction may not be carried, or that it may.
+///
+/// Every refusal this tier earns before a correction leaves the wire. `posted`
+/// is the amendment this run read back from its own record, `addressed` is
+/// whether the reading it answers named a place to carry it to, `held` is how
+/// many corrections stay where they were written, and `carried` is how many
+/// travel.
+///
+/// The order is the rung below's order one tier out. A delivery asks whether
+/// there is a correction to carry before it asks where to carry it, because a
+/// courier setting out with an empty satchel is delivering from memory of a
+/// letter nobody wrote.
+///
+/// Thirty-five rungs held this body byte for byte.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn carry_refusal(
+    comptime rung: type,
+    posted: ?[2]rung.Settlement,
+    addressed: bool,
+    held: u32,
+    carried: u32,
+) ?rung.RunError {
+    // invariant: a run never carries more corrections than it posted
+    assert(carried <= 1);
+    // invariant: a run never holds more corrections than a wire may hold
+    assert(held <= 1);
+    _ = posted orelse return error.CourierEarly;
+    if (!addressed) return error.CourierUnaddressed;
+    if (held + carried > 1) return error.CourierMiscounted;
+    // Every posted correction is carried or held -- never both and never
+    // neither. A count that does not close is a supervisor about to report a
+    // journey its own record cannot support.
+    if (held + carried != 1) return error.CourierMiscounted;
+    return null;
+}
+
+
+/// Carries the run's own correction to the reader who is owed it.
+///
+/// A run that posted no correction carries nothing, and says so by weighing
+/// nothing rather than by inventing an errand. A reader who left no address
+/// cannot be reached, and the run refuses by name rather than choosing a
+/// destination on their behalf. Only a posted correction with somewhere to go
+/// travels -- and under `.waiting` even that one stays where it was written,
+/// which is where the rung below leaves every reader who does not come back,
+/// and precisely the number this tier moves.
+///
+/// Thirty-four rungs held this body byte for byte, and the couriering tier owner
+/// held it too once the identity accessor it never needed was named -- so the
+/// family folds whole at thirty-five. Each rung still reads its own record, its
+/// own address ceiling, and its own box, because every symbol it reaches arrives
+/// with the type handed in, including the accessor that finds this tier's own
+/// report inside a report nested as deep as that rung stands.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn carry_the_amendment(
+    comptime rung: type,
+    io: std.Io,
+    dispatch: rung.Dispatch,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    const amended = rung.amending_of(report_out).amended;
+    if (amended == 0) {
+        // invariant: a run that corrected nobody leaves no correction waiting
+        assert(rung.couriering_of(report_out).unreached == 0);
+        return;
+    }
+    var address_buf: [rung.max_address_len]u8 = @splat(0);
+    const address = address_published(rung, io, &address_buf);
+    const addressed = address != null;
+
+    // The measurement this tier moves, weighed against what the run actually
+    // posted rather than against what any dispatch asked for, so a correction
+    // left in the drawer is counted rather than refused.
+    rung.couriering_of(report_out).unreached = posted_unreached(rung, amended, addressed, dispatch);
+    const carried = carried_in(rung, amended, addressed, dispatch);
+    const held = held_in(rung, amended, addressed, dispatch);
+    if (dispatch == .waiting) {
+        // invariant: a waiting run carries nothing, however truly it corrected
+        assert(carried == 0);
+        return;
+    }
+    // The supply, refused by name while the address it must reach is still in
+    // hand: a correction may travel only to a place a reader actually left.
+    if (unaddressed_reach(rung, addressed, carried)) |why| return why;
+    const posted = amend_published(rung, io);
+    if (carry_refusal(rung, posted, addressed, held, carried)) |why| return why;
+    // invariant: a run that reached the carrying refuses nothing it must carry
+    assert(carried == 1);
+    const letter = posted orelse return error.CourierEarly;
+    const where = address orelse return error.CourierUnaddressed;
+    try deliver(rung, io, where, letter[0], letter[1]);
+    // The answer, and the hard half of this tier: a run that reports a reader
+    // reached whose box holds nothing has made a claim rather than a delivery,
+    // and a report read on that claim is worse than the silence below it.
+    const in_the_box = delivered_to(rung, io, where) orelse return error.CourierUndelivered;
+    if (in_the_box[0] != letter[0] or in_the_box[1] != letter[1]) return error.CourierUndelivered;
+    rung.couriering_of(report_out).delivered = carried;
+    // invariant: a carrying run leaves no correction waiting for its reader
+    assert(rung.couriering_of(report_out).unreached == 0);
+}

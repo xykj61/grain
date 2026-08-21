@@ -1,0 +1,54 @@
+format session-log-v1
+stamp 20260821.142011
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Fold AH -- the courier cluster, the largest fall on the ladder, and the price was two words
+prompt Pick up the running thread Lindy-first crux-first, close open agent-closable reds first, take the next agent-doable lap, and send each finished increment as its own signed round.
+think Opened on the tree rather than on memory. Fold AG stood complete in the working tree and uncommitted -- forty-five caravan rungs modified, the meter repinned, the log written, README sections for AF and AG both present. So the first honest act of the lap was to prove it and ship it rather than to start something new beside it.
+think Standfast first. Read crux/REDS.md end to end: every living row through REDS %110 stands CLOSED, so no red preempted the constructive queue. Ran the ledger monotone witness to check that reading rather than trust it -- rows=110, expect_next=111, gaps_or_dupes=0, verdict=ok.
+think Proved fold AG on metal before sending: choir GREEN at 105, carry meter GREEN at 98,507 under its 98,600 ceiling, TAME bans clean, width-check silent at exit 0. Then committed and pushed both remotes, signature verified good.
+think Read the road ahead as asked -- the 1024-round itinerary, the eight-season double-seat, and the Rye-first crypto parity wave. The Lindy-priority Microkernel Target double-seat orders ahead of Seasons A-H, and its Equinox 1 is Caravan on the microkernel. The fold arc is that equinox's own work, so the running thread and the Lindy-first crux are the same thread. Continued it.
+think Council rota this lap: active-designing/20260812-171050_the-1024-round-itinerary.md, item 26 of the 27-doc ring -- read whole, which is also one of the three docs the prompt named.
+think Chose the lap by the printed queue rather than by hand. It named carry_the_amendment at thirty-four rungs by forty-one lines, 1,353 carried. Hashed every body by that name across caravan/ and found thirty-five: thirty-four byte for byte, and courier.rye apart by four lines.
+think Read the four differing lines before deciding anything. Every one of them differs the same way -- the owner reaches its own report directly where the cohort reaches through couriering_of. That is the second kind of absentee, met now for the seventh time, and the arc already knows its answer: three lines of identity accessor, exactly as abide.rye took in fold AE and relent.rye in fold X.
+think Ran fold Z's rule, and this time walked the reach to closure rather than one hop. One hop from the lead named ten symbols and every one proved a whole carrying family over the same cohort. A second hop, from deliver and delivered_to down to the path builder they share, named box_path at twenty-five lines over thirty-five rungs -- the second-largest family in the cluster, and one the lead body never mentions.
+think Checked the fold line before touching anything: none of the thirty-five cohort rungs appears among the harness's own imports, so fold AB's inversion trap does not bite this lap.
+think Let the cluster draw its own boundary honestly. address_published is reached by the lead and stands in thirty-five rungs, yet it is already a three-line delegate from an earlier lap. A three-line body traded for a three-line delegate moves nothing, so it stayed exactly where it was.
+think Wrote the eleven harness bodies as comptime-rung generics, each reaching its rung's ceilings, directories, alphabets, and error sets through the type handed in, and carried each body's own doc comment forward rather than writing new prose over proven meaning.
+obs Carry falls 98,507 -> 94,151, a fall of 4,356 -- the largest this arc has taken, half again the previous best at fold AB. It closes with no remainder: the eleven families carried 5,481 lines between them and the delegates that replace them carry 1,125.
+obs The price was two words. couriering_of stood private in hear.rye alone and note_path in amend.rye alone; every other symbol the cluster reaches already stood public in all thirty-five, interest paid in full by the folds before it. Two widened words and one accessor born bought eleven families.
+obs A delegate keeps the visibility of the body it replaces. Two of the eleven were private in their rungs and stayed private, since nothing outside the rung ever called them and the harness reaches them as itself rather than through the type. Caught this after a first pass had published both -- publishing a delegate nobody outside reads widens a module's surface for the fold's own convenience, which is a price charged without being named.
+obs Carrying families held at 707. Every family folded whole, no visibility split opened or closed inside a carrying cohort, and the note_path widening merged a singleton into an existing family rather than a carrying one. Checks 47 and spine 0 stand unmoved for the eleventh fold running.
+obs REDS %111 booked and closed in-round. The throwaway lift helper re-queried its rung cohort after the harness block had already been appended, so ladder_checks.rye matched its own eleven new bodies and every one was overwritten with a delegate calling itself. Caught by the helper printing thirty-six where the lap had measured thirty-five -- one rung too many, and the one was the harness. Repaired by restoring the harness from HEAD, re-appending, and folding only the held list. The lesson is that a cohort is a measurement of the tree at the head of the lap, never a query re-run against the tree the lap is changing.
+obs Checked a suspicion rather than acting on it. Two hundred and seven living docs cite work-in-progress/REMEMBER.md and its siblings, which the crux rename might have left dangling. Measurement answered plainly: work-in-progress is a symlink to crux, so all two hundred and seven promises are kept and there is nothing to sweep. Recorded here so the next lap does not rediscover the same non-problem.
+loom witness=caravan_ladder_carry carry_before=98507 carry_after=94151 fall=4356 ceiling_before=98600 ceiling_after=94200
+loom fold=carry_the_amendment cohort=35 identical_text=34 body_lines=41 carried_before=1353 absentee_home=none absentee_brought_home=courier.rye kind=tier_owner
+loom fold=box_path cohort=35 identical_text=35 body_lines=25 carried_before=850
+loom fold=carry_refusal cohort=35 identical_text=35 body_lines=19 carried_before=646
+loom fold=delivered_to cohort=35 identical_text=35 body_lines=15 carried_before=510
+loom fold=amend_published cohort=36 identical_text=36 body_lines=14 carried_before=490
+loom fold=deliver cohort=35 identical_text=35 body_lines=13 carried_before=442
+loom fold=addressable cohort=35 identical_text=35 body_lines=11 carried_before=374
+loom fold=carried_in cohort=35 identical_text=35 body_lines=7 carried_before=238
+loom fold=posted_unreached cohort=35 identical_text=35 body_lines=6 carried_before=204
+loom fold=unaddressed_reach cohort=35 identical_text=35 body_lines=6 carried_before=204
+loom fold=held_in cohort=35 identical_text=35 body_lines=5 carried_before=170
+loom widenings=2 couriering_of=1 note_path=1 accessors_born=1 imports_added=0
+loom carried_in_total=5481 carried_out_total=1125 remainder=0
+loom disk=caravan bodies=18118 distinct=7913 copies=10205 families=707 modules=108
+loom windows check_lines=47 print_carried=2686 spine_carried=0
+loom disk_lines added=821 deleted=4959 harness_added=330
+loom suite=caravan_suite_witness rungs_green=105
+file caravan/ladder_checks.rye eleven bodies lifted here as comptime-rung generics, 330 lines added
+file caravan/courier.rye the couriering tier owner gains the identity accessor that folded its body whole
+file caravan/hear.rye couriering_of widened, one of the fold's two words
+file caravan/amend.rye note_path widened, the other word, so the amending tier owner joins amend_published
+file caravan/README.md fold AH section -- the cluster table, the two-word price, and the delegate-visibility lesson
+file tools/caravan_ladder_carry_witness.rish repinned to 94,151 under a 94,200 ceiling, queue prose rewritten to name this lap
+file tools/fixtures/caravan_ladder_carry_scan.sh ceiling brought down 98,600 -> 94,200 in the same commit as the code it measures
+file crux/REDS.md REDS %111 booked and closed -- the cohort re-query that folded the harness into its own family
+file tools/gen/season/reds_ledger_monotone_witness.rish spine repinned to rows=111
+file crux/REMEMBER.md live edge refreshed to fold AH, fold AG condensed into the prior-edges row
+recommend keep-going the queue now names run_in_forbear at 10 rungs by 137 lines, 1,233 carried, with weigh_the_standing at 22 by 57 behind it -- take weigh_the_standing first, since ten rungs paying a hundred and thirty-seven lines each spread a widening very little while twenty-two rungs spread it twice as far, and the standing cluster around it (date_the_standing at 22 by 56, herald_the_standing at 22 by 53, carry_the_position at 22 by 50) is plainly one cohort the reach reading will lift together; hash the family before trusting the count, walk the reach to closure rather than one hop, and hold the rung list before the harness grows.
