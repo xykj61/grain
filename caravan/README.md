@@ -1609,6 +1609,14 @@ Nothing observable moved, and the shape of the change is why. A rung that keeps 
 
 **A rung now costs the ladder its own new checks and nothing else**, and four rungs have now proved it by being born: `abate.rye`, then `conclude.rye`, then `respect.rye`, then `refrain.rye` -- each a whole new rung, and each time the carry stood exactly where it was, at **47** lines, while the ladder grew to 101 modules and 1,275 checks. The ceiling of 4,000 stops being the thing that refuses first, and the meter's job shifts from watching a carry climb to holding a wall at zero: no rung carries a stub that only forwards itself to the harness.
 
+### The spine beside the checks -- what a byte-identical meter cannot see
+
+That meter counts **byte-identical bodies**, and it says so in its own first sentence. Beside it, measured `20260820.204641`, stands the ladder's **orchestration spine**: every rung holds one `close_the_quarrel` that runs the whole correspondence in order, and a rung born from the rung beneath it copies that function whole and inserts its own step. The staircase is exact -- sixteen lines at `refer`, three more at each rung, eighty-six at `refrain` -- so no two rungs hold the same body and the whole spine rode free past a meter reading 47.
+
+Read two ways that agree, the spine is **106 distinct lines standing on disk 1,003 times across 21 rungs, 897 of them a line the ladder has already written**. The union count asks how many different lines the ladder holds; the neighbor walk asks of each spine how many of its lines already stand in the spine directly beneath it. Both answer 897.
+
+This is a ratchet rather than a red: nothing was measured wrong, and something was never measured. So the close is a second meter beside the first -- [`../tools/caravan_ladder_spine_witness.rish`](../tools/caravan_ladder_spine_witness.rish) over [`../tools/fixtures/caravan_ladder_spine_scan.sh`](../tools/fixtures/caravan_ladder_spine_scan.sh) -- which holds both numbers in one place so neither can be read alone, keeps the spine carry under a ceiling of 1,100 with about two rungs of headroom, and reports TAME's seventy-line function ratchet where the spine has grown past it: four rungs today, `refrain` longest at 86. Fold D, which would lift the spine into the harness the way folds B and C lifted the checks, is reasoned and waits its own round in [`../active-designing/20260820-204641_caravan-ladder-the-spine-the-meter-cannot-see.md`](../active-designing/20260820-204641_caravan-ladder-the-spine-the-meter-cannot-see.md).
+
 
 ## Held
 
