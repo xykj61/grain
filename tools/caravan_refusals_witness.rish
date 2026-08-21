@@ -1,0 +1,93 @@
+# tools/caravan_refusals_witness.rish -- Caravan's refusal vocabulary, proven against the kernel's own.
+#
+# WHY THIS RUNG. The `20260821.043831` reach round compiled seL4's published userlevel headers under our own compiler and
+# read out of the compiled enums that a capability invocation answers with ELEVEN named errors. `caravan/capabilities.rye`
+# names four outcomes. The seven that remain are a design agenda arrived at by measurement, and this rung turns that reading
+# into code the compiler holds: `caravan/refusals.rye` states the whole eleven, maps Caravan's four onto them totally, and
+# names for each of the seven remaining which subsystem owes the answer.
+#
+# WHAT IS PROVEN HERE. Three things, each on metal. The mapping is total, its answers are distinct, and the agenda partitions
+# the vocabulary four-and-seven -- proven by the module's own self-test, whose asserts are the specification. The eleven
+# symbols and their ORDER match seL4's own BSD-2-Clause header, read from the vendored file at run time rather than recited,
+# so a vendored bump that moves the vocabulary reds this witness on the lap it lands. And the right to read that header is
+# re-checked at the file level rather than inherited from a verdict.
+#
+# WHAT IS NOT PROVEN. No kernel booted and no capability was invoked, so which of the eleven each Caravan outcome SHOULD
+# become is design judgement, named as such in the module and earning its proof the day an invocation actually runs. This
+# witness binds the vocabulary and the totality; it does not bind the semantics.
+#
+# Season: the Lindy-priority Microkernel Target double-seat (seated `20260817`, ordered ahead of Seasons A-H), Equinox 1 --
+# Caravan on the microkernel. Kin: tools/microkernel_libsel4_reach_witness.rish (the reach that measured the eleven) -
+# tools/caravan_capabilities.rish (the four this maps from) -
+# external-research/20260821-043831_the-libsel4-reach-and-the-vocabulary-caravan-inherits.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_refusals_witness.rish
+
+say "caravan-refusals: Language EN -- a verified kernel offers a small, honest vocabulary and asks the userland to mean something with it. This proves Caravan now holds the whole of that vocabulary rather than the quarter of it a hosted table needed."
+say "caravan-refusals: Style Radiant -- three claims in order. The mapping is total and its answers are distinct. The agenda partitions the eleven into four answered and seven owed. And the eleven themselves are read from seL4's own header, never recited."
+say "caravan-refusals: Lens TAME -- the module's asserts are the specification, and both RED paths are proven on metal: a header whose order drifts must be refused, and a mapping that collapses two answers into one must fail to pass its own self-test."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/refusals"
+let header = "vendor/sel4/libsel4/include/sel4/errors.h"
+let scan = "tools/fixtures/caravan_refusal_symbol_scan.sh"
+let build_dir = "tools/.build/caravan_refusals"
+
+let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]
+assert mk.ok else "caravan-refusals: could not make the build directories"
+
+# 0. PRECONDITION, an environment fact rather than a tree red: the gitlink must actually be checked out.
+let checked_out = run ["sh" "-c" "test -f ${header} && echo yes || echo no"]
+assert (trim checked_out.out) == "yes" else "caravan-refusals: vendor/sel4 is not checked out -- run `git submodule update --init --recursive` first; this is an environment precondition, not a tree red"
+
+# 1. THE RIGHT TO READ, re-checked at the file level. Intent is not a licence.
+let bsd = run ["sh" "-c" "grep -c SPDX-License-Identifier:.BSD-2-Clause ${header} | tr -d ' \n'"]
+assert (trim bsd.out) == "1" else "caravan-refusals: seL4's errors.h no longer carries its own BSD-2-Clause tag -- stop and re-read the licence before reading it"
+
+# 2. THE MODULE BUILDS AND PROVES ITSELF. Its asserts are the specification.
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/refusals.rye -femit-bin=${bin}"]
+assert build.ok else "caravan-refusals: the module did not build"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan-refusals: the self-test exited non-zero"
+assert test.out contains "GREEN" else "caravan-refusals: the self-test is not GREEN"
+assert test.out contains "the kernel answers with 11; Caravan answers 4 and owes 7" else "caravan-refusals: the agenda did not partition four-and-seven"
+assert test.out contains "three distinct answers" else "caravan-refusals: the three refusals did not stay distinct"
+assert test.out contains "the derivation tree owes delete-first and revoke-first" else "caravan-refusals: the derivation-tree debt was not named"
+assert test.out contains "untyped retyping owes not-enough-memory" else "caravan-refusals: the untyped-retyping debt was not named"
+assert test.out contains "the IPC buffer owes truncated-message" else "caravan-refusals: the IPC-buffer debt was not named"
+
+# 3. THE VOCABULARY MATCHES THE KERNEL'S OWN, in symbol and in order, read from the header at run time.
+let table = run ["sh" "-c" "${bin} table > ${build_dir}/table.txt 2>&1; echo done"]
+assert (trim table.out) == "done" else "caravan-refusals: the table did not print"
+
+let parity = run ["sh" "-c" "sh ${scan} ${header} ${build_dir}/table.txt"]
+assert parity.ok else "caravan-refusals: the symbol scan did not run"
+assert parity.out contains "header_count=11" else "caravan-refusals: seL4's header no longer declares eleven refusals -- the vendored vocabulary moved, and the module must move with it"
+assert parity.out contains "table_count=11" else "caravan-refusals: the module no longer prints eleven refusals"
+assert parity.out contains "mismatch=0" else "caravan-refusals: the module's symbols or their order drifted from the header's"
+assert parity.out contains "verdict=ok" else "caravan-refusals: the vocabulary parity did not hold"
+
+# 4. RED PATH ONE -- a header whose order drifts must be refused. Proven by making one, never by describing it.
+let drift_header = run ["sh" "-c" "sed s/seL4_RangeError/seL4_ZangeError/ ${header} > ${build_dir}/drift_errors.h; echo made"]
+assert (trim drift_header.out) == "made" else "caravan-refusals: could not plant the drifted header"
+
+let red_header = run ["sh" "-c" "sh ${scan} ${build_dir}/drift_errors.h ${build_dir}/table.txt"]
+assert red_header.out contains "verdict=drift" else "caravan-refusals: RED path one did not fire -- a renamed refusal passed the parity check"
+
+# 5. RED PATH TWO -- a mapping that collapses two answers into one must fail its own self-test. Planted in a COPY, so the
+#    living module is never touched, and built with the same compiler that built the green one.
+let collapse = run ["sh" "-c" "sh tools/fixtures/caravan_refusal_collapse_control.sh ${zig} ${build_dir}"]
+assert collapse.ok else "caravan-refusals: the collapse control did not run"
+assert collapse.out contains "planted=1" else "caravan-refusals: the collapsed copy was not planted -- the RED path would have proven nothing"
+assert collapse.out contains "verdict=refused" else "caravan-refusals: RED path two did not fire -- a mapping collapsing two refusals into one passed its own self-test"
+
+let cleanup = run ["sh" "-c" "rm -f ${build_dir}/drift_errors.h; echo swept"]
+assert (trim cleanup.out) == "swept" else "caravan-refusals: could not sweep the planted controls"
+
+say "caravan-refusals: the mapping is total -- every Caravan outcome carries a kernel answer, and only `allowed` reaches success."
+say "caravan-refusals: the answers stay distinct -- an unknown dependent is a failed lookup, an ungranted resource an invalid capability, short rights an illegal operation."
+say "caravan-refusals: the agenda partitions the eleven -- four answered today, seven owed, named to the subsystem that will owe each."
+say "caravan-refusals: the eleven symbols and their order match seL4's own BSD-2-Clause header, read at run time; both RED paths fired on metal."
+say "GREEN: Caravan's refusal vocabulary stands against the kernel's own."

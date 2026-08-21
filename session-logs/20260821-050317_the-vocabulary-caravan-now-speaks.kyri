@@ -1,0 +1,35 @@
+format session-log-v1
+stamp 20260821.050317
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The vocabulary Caravan now speaks -- eleven refusals held, four mapped, seven owed by name
+prompt Take the next agent-doable lap Lindy-first crux-first on the Microkernel Target double-seat, closing open reds first and surfacing every gate.
+think Standfast first, as the law asks. The REDS ledger reads with %104, %105 and %106 all closed on `20260821.043012`, and no row stands open beneath them. The corrective queue is genuinely empty, so constructive work may begin rather than being begun beside a red.
+think The running thread needs no guessing. The newest log's recommend line names the next rung outright, the operator card's Now names the same one, and the reach round's own research doc lists it first among four -- design Caravan's refusal mapping against the eleven, in Rye, on hosted ground. Three independent records agreeing is the handoff working as designed.
+think Ordering checked rather than felt, remembering REDS %104. The Microkernel Target double-seat is seated ahead of Seasons A-H on Keaton's word `20260817`, so the DISC crypto arc and the Caravan fold queue both wait, and this rung leads. Read the seating; do not reason from an impression of what seems foundational.
+think The crux inside the rung is what makes the mapping worth writing rather than describing. A design list in prose drifts the moment the code moves; a design list held as enum arms, a total switch, and a partition assert cannot drift without the compiler or a witness saying so. So the agenda becomes code.
+think Chose three distinct answers deliberately and named the judgement as judgement. An unknown dependent is a slot with nothing in it, a failed lookup. A dependent holding no capability for the resource holds the wrong capability, an invalid capability. A dependent holding it yet lacking the right asks a real object for a closed method, an illegal operation. Two Rooms governs the register: the eleven and their order are checkable and bound by a witness, while which one each outcome should become is design and says so at the door.
+think Made the vocabulary read rather than recited. The module prints its own table, the fixture scan reads seL4's enum out of the vendored BSD-2-Clause header in declaration order, and the witness diffs the two lists -- so a vendored bump that moves the vocabulary reds this rung on the lap it lands rather than the lap somebody notices. That is REDS %105's lesson applied before it could repeat.
+think Both RED paths proven by doing. A header with one refusal renamed must fail the parity scan, and it does. A copy of the module with two answers collapsed into one must fail its own self-test, and it aborts on the distinctness assert -- planted in a copy, built with the same compiler, swept after.
+think Hit the Rishi quoting wall the previous round recorded, in a new form, and moved the logic where it belongs. An unquoted `=>` inside a `run` string is read by the shell as a redirect, so both the plant's sed and its grep were mangled. The fix is the same one that keeps working: put the shell logic in a fixture script where the shell owns its own quoting, and read a small integer report back.
+think The meters caught my own change, which is the whole reason they stand. Adding one module moved the ladder's module count 102 to 103 and three meters went RED on their pins. Moved all three plus the body count in the same commit as the code -- a meter whose pins lag its subject has stopped guarding -- and the copies and carried lines stood unmoved, so the new module adds zero carry.
+obs The seven owed refusals sort into six subsystems, and the derivation tree owes two of them. That makes the tree the largest single debt and the natural next rung: a granted capability may be handed on, so grants form a tree, and only a tree can answer delete-first and revoke-first. The agenda ordered itself once it was written down as data.
+obs Registering the witness in the choir before running it mattered. The Caravan suite proves a bijection between witnesses on disk and roster entries, so a rung born unheard is refused rather than merely missed -- REDS %81's shape, guarded. Roster whole at 100 in both directions.
+obs seL4's own header drops `seL4_NumErrors` from the errors it names, calling it the count rather than one of them. The scan honors that reading rather than imposing our own, which is why header and module agree at eleven with zero mismatch.
+loom witness=caravan_refusals wall_s=13 kernel_refusals=11 answered=4 owed=7 header_symbols=11 mismatch=0 red_paths=2
+loom witness=caravan_suite wall_s=431 rungs=100 roster_disk=100 roster_registered=100
+loom meter=caravan_ladder_carry modules=103 bodies=17988 distinct=7794 copies=10194 carried_lines=137140 added_carry=0
+file caravan/refusals.rye the rung -- the eleven stated, Caravan's four mapped totally, the seven owed each named to a subsystem
+file tools/caravan_refusals_witness.rish the proof -- self-test, run-time parity against seL4's own header, both RED paths, the licence re-read per file
+file tools/fixtures/caravan_refusal_symbol_scan.sh the vocabulary diff, in a fixture so the shell owns its quoting (REDS %85's loom)
+file tools/fixtures/caravan_refusal_collapse_control.sh the collapsed-mapping control, planted in a copy and swept after
+file tools/caravan_suite_witness.rish the new rung registered, so the choir's bijection stays whole at 100
+file tools/caravan_ladder_carry_witness.rish module pin 102 -> 103 and the body count moved with the measurement
+file tools/caravan_ladder_spine_witness.rish module pin moved in the same commit as the code it measures
+file tools/caravan_ladder_print_witness.rish module pin moved in the same commit as the code it measures
+file caravan/README.md the durable record -- the three distinct answers, the seven debts, and what this rung does not claim
+file external-research/20260821-043831_the-libsel4-reach-and-the-vocabulary-caravan-inherits.md next-rung one marked landed, in the same commit as the code that landed it
+file crux/REMEMBER.md Now refilled with live work; the reached-ground chronicle folded to a prior-edge pointer
+recommend keep-going The derivation tree is the next rung and it is ungated: grants that may be handed on form a tree, which is what makes delete-first and revoke-first answerable, and it is the largest of the seven debts this round named. The one gate worth Keaton's eye stays small -- jinja2 and ply on the pier's Python environment open five more libsel4 headers in a single step.

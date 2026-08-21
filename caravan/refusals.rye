@@ -1,0 +1,327 @@
+//! Caravan refusals -- the vocabulary a verified kernel answers with, mapped
+//! onto the vocabulary Caravan's own supervision speaks today.
+//!
+//! WHY THIS MODULE EXISTS. `capabilities.rye` names four outcomes: allowed, no
+//! such dependent, no such resource, rights insufficient. Those four were
+//! enough while the table sat on hosted ground, answering only to itself. A
+//! root task on seL4 answers to a kernel, and that kernel refuses a capability
+//! invocation with one of **eleven** named errors -- a count read out of
+//! seL4's own compiled enums on `20260821.043831`, never recited. Seven of the
+//! eleven name refusals a policy table above the line has never had to answer.
+//!
+//! So this module does one thing, completely: it states the whole eleven, maps
+//! Caravan's four onto them totally, and names for each of the seven remaining
+//! which subsystem owes the answer. The mapping is policy -- pure Rye, hosted,
+//! no kernel beneath it -- and it is asserted rather than described, so the
+//! design agenda is a thing the compiler and a witness both hold.
+//!
+//! TWO ROOMS. The eleven names and their ordering are checkable, and
+//! `tools/caravan_refusals_witness.rish` binds them against the vendored
+//! BSD-2-Clause header on metal. Which of the eleven each Caravan outcome
+//! *should* map to is a design judgement, named as one below, and it earns its
+//! proof the day a capability is actually invoked.
+//!
+//! CLEAN ROOM. No seL4 line is reproduced here. The identifiers below are
+//! interface names, written so a later binding can be diffed against the
+//! header we are licensed to include.
+//!
+//! Usage:
+//!   refusals          Run the self-test (default)
+//!   refusals selftest Same as default
+//!   refusals table    Print the eleven, their symbols, and who owes each
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const caravan_refusals_version = "20260821.050317";
+
+/// How many refusals a capability invocation may answer with, seL4's
+/// `seL4_NumErrors`. Read from the compiled enum `20260821.043831`; the
+/// witness re-reads it from the vendored header on every run, so a vendored
+/// bump that moves the vocabulary reds this module on the lap it lands.
+pub const kernel_refusal_count: u32 = 11;
+
+// =========================================================================
+// The eleven -- what a capability invocation may answer with
+// =========================================================================
+
+/// One kernel answer to an invocation. Value order matches the interface
+/// numbering, so a later binding may cast rather than translate.
+pub const KernelRefusal = enum(u8) {
+    no_error = 0,
+    invalid_argument = 1,
+    invalid_capability = 2,
+    illegal_operation = 3,
+    range_error = 4,
+    alignment_error = 5,
+    failed_lookup = 6,
+    truncated_message = 7,
+    delete_first = 8,
+    revoke_first = 9,
+    not_enough_memory = 10,
+};
+
+/// The interface symbol each answer carries, so a witness can diff this
+/// module against the header rather than against a memory of it.
+pub fn kernel_symbol(refusal: KernelRefusal) []const u8 {
+    // invariant: every arm returns a non-empty symbol -- the switch is total.
+    const symbol: []const u8 = switch (refusal) {
+        .no_error => "seL4_NoError",
+        .invalid_argument => "seL4_InvalidArgument",
+        .invalid_capability => "seL4_InvalidCapability",
+        .illegal_operation => "seL4_IllegalOperation",
+        .range_error => "seL4_RangeError",
+        .alignment_error => "seL4_AlignmentError",
+        .failed_lookup => "seL4_FailedLookup",
+        .truncated_message => "seL4_TruncatedMessage",
+        .delete_first => "seL4_DeleteFirst",
+        .revoke_first => "seL4_RevokeFirst",
+        .not_enough_memory => "seL4_NotEnoughMemory",
+    };
+    assert(symbol.len > 0); // invariant: a named answer always carries its name
+    return symbol;
+}
+
+/// Plain English for the answer, in Caravan's own words.
+pub fn kernel_meaning(refusal: KernelRefusal) []const u8 {
+    const meaning: []const u8 = switch (refusal) {
+        .no_error => "the invocation was carried out",
+        .invalid_argument => "an argument fell outside what the method accepts",
+        .invalid_capability => "the capability named is not one this method may take",
+        .illegal_operation => "the capability is real, and this method is closed to it",
+        .range_error => "a value stood outside the range the object allows",
+        .alignment_error => "an address or size missed the alignment the object requires",
+        .failed_lookup => "no capability stands in the slot that was named",
+        .truncated_message => "the message carried fewer words than the method reads",
+        .delete_first => "a child capability stands beneath this one",
+        .revoke_first => "derived capabilities stand beneath this one",
+        .not_enough_memory => "the untyped region holds too little to retype",
+    };
+    assert(meaning.len > 0); // invariant: every answer is legible
+    return meaning;
+}
+
+// =========================================================================
+// Caravan's four, mapped onto the eleven
+// =========================================================================
+
+/// The outcomes `capabilities.rye` names today, held here so the mapping
+/// stands on its own without importing the table.
+pub const CaravanRefusal = enum(u8) {
+    allowed = 0,
+    no_such_dependent = 1,
+    no_such_resource = 2,
+    rights_insufficient = 3,
+};
+
+/// Which kernel answer each Caravan outcome becomes once the table sits on a
+/// kernel rather than above one.
+///
+/// DESIGN JUDGEMENT, named as one. A dependent the table has never heard of is
+/// a slot with nothing in it, so it becomes a **failed lookup**. A dependent
+/// that holds no capability for the named resource holds the wrong capability
+/// for the request, so it becomes an **invalid capability**. A dependent that
+/// holds the capability yet lacks the right is asking a real object for a
+/// method closed to it, so it becomes an **illegal operation**. The three are
+/// deliberately distinct: a capability system that answers every refusal the
+/// same way cannot audit itself, which is the reason `refusal_reason` exists
+/// at all.
+pub fn from_caravan(refusal: CaravanRefusal) KernelRefusal {
+    // invariant: the mapping is total -- every Caravan outcome has a kernel answer.
+    const mapped: KernelRefusal = switch (refusal) {
+        .allowed => .no_error,
+        .no_such_dependent => .failed_lookup,
+        .no_such_resource => .invalid_capability,
+        .rights_insufficient => .illegal_operation,
+    };
+    // invariant: only `allowed` may map onto the kernel's success answer.
+    assert((mapped == .no_error) == (refusal == .allowed));
+    return mapped;
+}
+
+// =========================================================================
+// The seven Caravan cannot yet answer, and who owes each
+// =========================================================================
+
+/// The subsystem that will owe an answer for a refusal Caravan cannot make
+/// today. `answered` marks the four already spoken for.
+pub const Owed = enum(u8) {
+    answered = 0,
+    argument_checking = 1,
+    bounds_checking = 2,
+    alignment_checking = 3,
+    ipc_buffer = 4,
+    derivation_tree = 5,
+    untyped_retyping = 6,
+};
+
+/// Who owes the answer, for each of the eleven.
+pub fn owed_by(refusal: KernelRefusal) Owed {
+    // invariant: the switch is total over the eleven.
+    const owner: Owed = switch (refusal) {
+        .no_error, .failed_lookup, .invalid_capability, .illegal_operation => .answered,
+        .invalid_argument => .argument_checking,
+        .range_error => .bounds_checking,
+        .alignment_error => .alignment_checking,
+        .truncated_message => .ipc_buffer,
+        .delete_first, .revoke_first => .derivation_tree,
+        .not_enough_memory => .untyped_retyping,
+    };
+    // invariant: `answered` is claimed only where a Caravan outcome maps onto it.
+    assert((owner == .answered) == answered_today(refusal));
+    return owner;
+}
+
+/// True when some Caravan outcome already maps onto this kernel answer.
+pub fn answered_today(refusal: KernelRefusal) bool {
+    // invariant: the four Caravan outcomes are the whole of what is answered.
+    var found = false;
+    for ([_]CaravanRefusal{ .allowed, .no_such_dependent, .no_such_resource, .rights_insufficient }) |own| {
+        if (from_caravan(own) == refusal) found = true;
+    }
+    return found;
+}
+
+/// One line naming why the owing subsystem owes it, so the agenda reads as
+/// design rather than as a list.
+pub fn debt_reason(owner: Owed) []const u8 {
+    const reason: []const u8 = switch (owner) {
+        .answered => "Caravan's table answers this today",
+        .argument_checking => "a supervised method must bound its own arguments before invoking",
+        .bounds_checking => "a resource's range belongs in the grant, checked at the edge",
+        .alignment_checking => "an address handed across the line carries an alignment the object requires",
+        .ipc_buffer => "the message a dependent sends is a bounded buffer with a named minimum",
+        .derivation_tree => "a granted capability may be handed on, so grants form a tree Caravan must keep",
+        .untyped_retyping => "memory a dependent receives is carved from an untyped region with a real floor",
+    };
+    assert(reason.len > 0); // invariant: every debt names its reason
+    return reason;
+}
+
+// =========================================================================
+// Counting the agenda
+// =========================================================================
+
+/// The eleven, in interface order. One list, so no count is ever recited.
+pub const all_kernel_refusals = [_]KernelRefusal{
+    .no_error,          .invalid_argument, .invalid_capability,
+    .illegal_operation, .range_error,      .alignment_error,
+    .failed_lookup,     .truncated_message, .delete_first,
+    .revoke_first,      .not_enough_memory,
+};
+
+/// How many of the eleven Caravan answers today.
+pub fn answered_count() u32 {
+    var count: u32 = 0;
+    for (all_kernel_refusals) |refusal| {
+        if (answered_today(refusal)) count += 1;
+    }
+    assert(count <= kernel_refusal_count); // invariant: answers never exceed the vocabulary
+    assert(count >= 1); // invariant: success is always answered
+    return count;
+}
+
+/// How many of the eleven remain as design debt.
+pub fn unanswered_count() u32 {
+    const answered = answered_count();
+    assert(answered <= kernel_refusal_count); // invariant: the subtraction stays in range
+    const remaining = kernel_refusal_count - answered;
+    assert(answered + remaining == kernel_refusal_count); // invariant: the two partition the vocabulary
+    return remaining;
+}
+
+// =========================================================================
+// The table, printed
+// =========================================================================
+
+fn print_table() u8 {
+    print("refusals: version {s}\n", .{caravan_refusals_version});
+    for (all_kernel_refusals) |refusal| {
+        print("refusals: {d:>2} {s} -- {s} [{s}] {s}\n", .{
+            @intFromEnum(refusal),
+            kernel_symbol(refusal),
+            kernel_meaning(refusal),
+            @tagName(owed_by(refusal)),
+            debt_reason(owed_by(refusal)),
+        });
+    }
+    return 0;
+}
+
+// =========================================================================
+// Self-test -- assert the mapping is total, distinct, and honestly counted
+// =========================================================================
+
+fn run_self_test() u8 {
+    // The list and the enum agree, so the count is read rather than recited.
+    assert(all_kernel_refusals.len == kernel_refusal_count);
+    var seen: u32 = 0;
+    for (all_kernel_refusals, 0..) |refusal, index| {
+        assert(@intFromEnum(refusal) == index);
+        seen += 1;
+    }
+    assert(seen == kernel_refusal_count);
+
+    // Caravan's four map onto four distinct kernel answers -- a capability
+    // system that collapses its refusals cannot audit itself.
+    const allowed = from_caravan(.allowed);
+    const unknown = from_caravan(.no_such_dependent);
+    const ungranted = from_caravan(.no_such_resource);
+    const short = from_caravan(.rights_insufficient);
+    assert(allowed == .no_error);
+    assert(unknown == .failed_lookup);
+    assert(ungranted == .invalid_capability);
+    assert(short == .illegal_operation);
+    assert(unknown != ungranted);
+    assert(ungranted != short);
+    assert(short != unknown);
+
+    // Success stands alone: only `allowed` reaches the kernel's success answer.
+    assert(unknown != .no_error);
+    assert(ungranted != .no_error);
+    assert(short != .no_error);
+
+    // The agenda partitions the vocabulary: four answered, seven owed.
+    const answered = answered_count();
+    const owed = unanswered_count();
+    assert(answered == 4);
+    assert(owed == 7);
+    assert(answered + owed == kernel_refusal_count);
+
+    // Every owed refusal names a real subsystem, never `answered`.
+    for (all_kernel_refusals) |refusal| {
+        const owner = owed_by(refusal);
+        assert(debt_reason(owner).len > 0);
+        assert(kernel_symbol(refusal).len > 0);
+        assert(kernel_meaning(refusal).len > 0);
+        if (answered_today(refusal)) {
+            assert(owner == .answered);
+        } else {
+            assert(owner != .answered);
+        }
+    }
+
+    // The three families the reading named, held as assertions rather than prose.
+    assert(owed_by(.delete_first) == .derivation_tree);
+    assert(owed_by(.revoke_first) == .derivation_tree);
+    assert(owed_by(.not_enough_memory) == .untyped_retyping);
+    assert(owed_by(.truncated_message) == .ipc_buffer);
+
+    print("refusals: version {s}\n", .{caravan_refusals_version});
+    print("refusals: the kernel answers with {d}; Caravan answers {d} and owes {d}.\n", .{ kernel_refusal_count, answered, owed });
+    print("refusals: unknown dependent is a failed lookup, ungranted resource an invalid capability, short rights an illegal operation -- three distinct answers.\n", .{});
+    print("refusals: the derivation tree owes delete-first and revoke-first, untyped retyping owes not-enough-memory, the IPC buffer owes truncated-message.\n", .{});
+    print("refusals: mapping total, answers distinct, agenda partitioned -- GREEN.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
+    if (args.len >= 2) return 1;
+    return run_self_test();
+}

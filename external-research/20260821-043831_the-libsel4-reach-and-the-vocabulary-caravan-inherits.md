@@ -73,7 +73,7 @@ No kernel booted, so nothing here proves a capability invocation succeeds -- onl
 
 ## The next rungs, in order
 
-1. **Design Caravan's refusal mapping** against the eleven, in Rye, on the hosted ground it already runs on -- the seven unanswered refusals are the design's own agenda, and no gate blocks writing it.
+1. ~~**Design Caravan's refusal mapping** against the eleven, in Rye, on the hosted ground it already runs on~~ -- **LANDED `20260821.050317`**. [`caravan/refusals.rye`](../caravan/refusals.rye) states the whole eleven, maps Caravan's four onto them totally, and names for each of the seven remaining which subsystem owes the answer -- the derivation tree for delete-first and revoke-first, untyped retyping for not-enough-memory, the IPC buffer for truncated-message, and argument, bounds, and alignment checking for the rest. The eleven symbols and their order are diffed against this header at run time by [`tools/caravan_refusals_witness.rish`](../tools/caravan_refusals_witness.rish), GREEN on metal with both RED paths proven, so a vendored bump that moves the vocabulary reds the rung on the lap it lands.
 2. **Open the generator gate** when convenient, by adding `jinja2` and `ply` to the pier's Python environment, which unlocks `types.h`, `syscalls.h`, `bootinfo.h`, `faults.h`, and the `sel4.h` umbrella in one step. Environment change, so it is Keaton's word.
 3. **A root-task skeleton** freestanding for riscv64 once the generated headers stand, linking `libsel4` rather than a stub.
 4. **Aurora on RISC-V under QEMU**, where Equinox 4's close waits: the parity-witness happy-zone suite running GREEN on the new target, which is the proof that ends the arc.
