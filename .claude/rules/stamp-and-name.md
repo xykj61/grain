@@ -27,7 +27,8 @@
 
 - **Waymarks stay.** A waymark is a **name** drawn for a ladder, not a number counted up (`waymark-ladders.md`). HAWM, STOA, JABS keep their draws. What retires is the numbered **rung** after the waymark, for planned work.
 - **`rung` stays where a real ladder exists.** `caravan/ladder_checks.rye` genuinely runs its checks in a load-bearing order; its entries are rungs and the metaphor is exact. What retires is `rung` as a label for a step of *planned* work.
-- **`lap` and `round` carry planned work.** Both are already seated here: a lap is complete in itself and owes nothing to the lap before it; a round is a bounded unit of session with an opening and a close.
+- **`lap` and `round` carry planned work.** Both are already seated here: a lap is complete in itself and owes nothing to the lap before it; a round is a bounded unit of session with an opening and a close. All ten daily words -- arc, round, lap, ladder, rung, fold, lift, carry, delegate, fascia -- are defined for a first-day reader in [`../../foundations/20260821-175723_the-words-a-round-uses.md`](../../foundations/20260821-175723_the-words-a-round-uses.md).
+- **`fold` files; `lift` takes out of a ladder.** One word held both, and both are operational verbs about moving things around the tree -- the one real collision. `fold` keeps the filing sense (seated in this law and three tools); **`lift`** takes the ladder sense from `20260821.175723` forward.
 - **Version stamps are unchanged.** The one-clock naming law already marks files chronologically; this law simply extends the same habit from filenames to the marks used in prose, plans, and commit bodies.
 
 ## The path -- how a folded room is named

@@ -1,4 +1,11 @@
 # tools/sundial.rish — accrete shim → tools/gen/season/sundial.rish (Generator Season s4)
+# NAME NOTE (`20260821.175633`). This meter is named **Plumb** -- a plumb line tells you whether a
+# thing is true, which is what this reads of a recursion prompt. It wore the word `sundial` until
+# the vocabulary pruning found two live meters under one name, told apart only by a capital
+# letter: the health face `sundial/sundial.rye` keeps **Sundial**, and this one became Plumb.
+# The FILE keeps its elder name because seven living files call it by that path, and a promise
+# kept is worth more than a tidy filename -- the same reason tools/session_logs_archive.rye kept
+# its name when its destination molted.
 if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/sundial.rish"]
 if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/sundial.rish" args[0]]
 if r.out != "" then say r.out

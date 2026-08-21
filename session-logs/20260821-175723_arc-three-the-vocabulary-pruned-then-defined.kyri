@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20260821.175723
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Arc three -- the vocabulary pruned, then defined, and one of my own findings revised
+prompt open arc three
+think Measured before pruning, and the measurement overturned my own survey. The survey argued that Glow owns `fold` as a language primitive and the filing sense should yield. Reading the source and the commits, Glow exposes no `fold` primitive to a user -- the word appears descriptively in generated-code prose, and "Glow's fold" in those commit subjects means the whole toolchain lowering, which is a FIFTH sense rather than the one I had cited.
+think So the recommendation inverted on evidence. The filing sense is now the seated operational meaning -- a law, three tools, a Lexicon row, 148 living hits -- and the honest prune is to give the word to that and take the LADDER sense away, which was the one real collision: two operational verbs about moving things around the tree.
+think Chose `lift` because the Caravan commits already reached for it unprompted -- fold AI lifts weigh_the_standing. A word the work already uses needs no arguing for.
+think Sized the retired ascending marks in living code and then declined the sweep, which is the law's own answer. 150 occurrences of `fold <LETTER>` stand in caravan doc comments and witness headers, and the mark law says living Now lines sweep ON TOUCH rather than in a campaign. Those comments are historical narration -- they describe what a past round did -- so they are nearer testimony than to a Now line, and rewriting 150 of them by hand would need judgement per occurrence and would likely make the prose worse.
+think Split the two sundials, which was a real braid and cheap. Two live meters wore one word, told apart by a capital letter, which is not a distinction but a typo waiting to happen.
+think Drew `plumb` for the confidence meter and checked it against the whole tree first -- zero hits anywhere. A plumb line tells you whether a thing is TRUE, which is exactly what that meter reads of a prompt. Sundial keeps the health face, since a sundial tells the health of the day and that is the one that ships in the seed.
+think Kept the meter's FILE at its elder path rather than renaming it. Seven living files call it by that name, and the tree already accepted this trade twice this week for the fold tool with 137. A banner in the file itself tells a reader meeting the path what the word is now.
+think Gave the carry meter its second reading, which the survey asked for and no round had yet delivered. Carry counts lines, and a three-line delegate forwarding to a two-hundred-line body reports as three -- so carry alone can be satisfied by moving lines rather than removing them. Delegates are precisely what carry cannot see, and there are 2,365 of them across 44 files.
+think Wrote ONE foundation rather than the two documents the ask allowed, because arc three's success condition is a shorter glossary and two overlapping writings would be the duplication the arc exists to prevent. The reasoning already lives in the survey; the definitions belong where durable meaning lives.
+think Held the same discipline in the Lexicon: two rows rather than ten. The ten words are defined once in the foundation and pointed at from here, since a vocabulary problem is almost never solved by more vocabulary.
+obs Kept `fascia` and declined `myofascia` on the evidence rather than on taste. Myo- means muscle, which narrows the word away from the between-everything sense actually meant, so the longer name is the less accurate one. What fascia needed was a definition and a working meter, and the meter is honestly named RED in the foundation itself (REDS %112) rather than glossed over.
+obs Not one of the ten words is coined. Every one was already in daily use and merely undefined, which is exactly how `fold` came to carry four senses before anyone noticed -- a word in constant use and never written down drifts.
+loom vocabulary=pruned senses_retired=2 words_seated=2 coinages=0 lexicon_rows_added=2 foundation_entries=10
+loom meter=caravan_carry second_reading=CARRY_DELEGATES delegates=2365 in_files=44 carry_lines=89010 modules=108
+loom marks=living_ascending occurrences=150 files=24 swept=0 reason=law_says_on_touch_not_campaign
+file foundations/20260821-175723_the-words-a-round-uses.md the ten words defined for a first morning, and the two that were carrying more than one meaning
+file context/LEXICON.md two rows -- a pointer to the foundation, and the `lift` seat; not ten
+file tools/fixtures/caravan_ladder_carry_scan.sh CARRY_DELEGATES beside carry, so no single number can dress movement as progress
+file tools/gen/season/sundial.rish the name note -- this meter is Plumb; the path keeps its elder name and says why
+file .claude/rules/stamp-and-name.md fold files, lift takes out of a ladder; the ten words cited where a reader will look
+recommend check-in (checkpoint) arc three is closed -- pruned first, defined second, and shorter at the end than at the start. Two doors remain from the survey and both want a word rather than a kg: the colour normalization booked as REDS %114, which edits dated bodies, and arc four, the first-hour tutorial with the README metrics block, which is gated on REDS %112 -- the fascia meter this arc just defined and could not fix, since unbraiding it from the Amphora laps is its own round.
