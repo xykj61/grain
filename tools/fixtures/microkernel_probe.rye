@@ -1,0 +1,44 @@
+//! tools/fixtures/microkernel_probe.rye -- the smallest honest answer to the Microkernel Target arc's Equinox 3 question: can the Rye
+//! compiler lower to a capability-microkernel target with today's real toolchain? Probe, not a port.
+//!
+//! THE QUESTION, AS SEATED. external-research/20260817-185851 names it and leaves it open: "Can Zig target seL4 / Genode today? ... This is
+//! the external-research question the request named, and it should be answered against real toolchain versions, not from memory." The
+//! `20260819` recenter restates it as still open and leading Equinox 3.
+//!
+//! WHAT THIS PROBES, and what it deliberately does not. A capability microkernel asks three things of a root task: that it be FREESTANDING
+//! (no host OS beneath it), that it carry NO LIBC, and that it call a C ABI which traps into the kernel. This module is those three things
+//! and nothing more. It calls `cap_invoke` from tools/fixtures/microkernel_cap_stub.c -- OUR OWN capability-shaped stub -- and folds the
+//! result so the witness can prove every argument crossed the C boundary intact.
+//!
+//! CLEAN ROOM. No seL4 or Genode source, header, or line is fetched, copied, or reproduced anywhere in this probe; both are copyleft and
+//! studied for design concepts only (.claude/rules/gratitude-licenses.md). The stub's names are ours. What is proven here is the mechanism
+//! the whole family requires, which is exactly the part a toolchain either supports or does not.
+//!
+//! Built by tools/microkernel_zig_target_probe_witness.rish for riscv64, aarch64, and x86_64, each freestanding.
+
+const cap_word = u64;
+const cap_handle = u64;
+
+/// The capability invocation, reached across the C ABI. In a real system this traps into the kernel; here it reaches our own stub, which
+/// is the same call shape either way -- and the call shape is what the toolchain has to be able to emit.
+extern fn cap_invoke(capability: cap_handle, label: cap_word, word: cap_word) cap_word;
+
+/// A bounded fold over three invocations, so the probe proves more than that one call links: it proves arguments and returns survive the
+/// boundary across repeated calls, with every value named and no allocation anywhere.
+export fn probe_capability_path() cap_word {
+    var total: cap_word = 0;
+    var i: cap_word = 1;
+    // invariant: the loop is bounded by a named constant, never by an input.
+    const rounds: cap_word = 3;
+    while (i <= rounds) : (i += 1) {
+        total +%= cap_invoke(i, i +% 1, i +% 2);
+    }
+    return total;
+}
+
+/// The entry symbol a freestanding image needs. A real root task would receive its initial capability space here; the probe only proves
+/// the image links and the symbol is reachable with no host runtime beneath it.
+export fn _start() callconv(.c) noreturn {
+    _ = probe_capability_path();
+    while (true) {}
+}
