@@ -9,6 +9,8 @@
 
 ## What This Folder Is
 
+**The boundary, seated `20260821.174047`.** This room holds **essays** -- design that outlives the code it describes. Round scoping, lap plans, survey ledgers, and evaluations of choices already shipped now live next door in [`../active-development/README.md`](../active-development/README.md). One question decides: *would this still be worth reading if the code it describes were deleted?* Yes here, no there ([`../.claude/rules/design-rooms.md`](../.claude/rules/design-rooms.md)). Nothing already filed moves -- the test governs what is born from here forward.
+
 This is the clean room. The `active-designing/` folder holds the living design of our own work — the modules we are actually building, reasoned from first principles, in our own words. Where the external-research stack studies the world and thanks the works that taught us, this stack does something different and complementary: it designs.
 
 This file, `README.md`, is the foundation stone. It rests at the bottom of the stack and explains how the stack works and what rule keeps it clean, so anyone who opens this folder understands its shape and its discipline at a glance.

@@ -16,9 +16,12 @@
 #
 #   ENFORCE -- over the bound is a RED. A room earns this by FOLDING: once it has been carried
 #              across, its references repointed and its resolver proven, letting it drift back
-#              over the bound is a choice rather than an inheritance. Five rooms earned it on
-#              `20260821` -- `session-logs` first, then `counsel`, `active-designing`,
+#              over the bound is a choice rather than an inheritance. Five rooms earned it that
+#              way on `20260821` -- `session-logs` first, then `counsel`, `active-designing`,
 #              `expanding-prompts`, and `waymarks` when the four folded together.
+#              A room BORN under the law is enforced from birth instead, since it never
+#              accumulated a backlog and so has nothing to grandfather: `active-development`
+#              opened `20260821.174047` already bounded.
 #   ADVISE  -- over the bound prints and books nothing. Every unfolded room starts here, because
 #              a ratchet turns on touch and a sweep nobody asked for is not a fix. `external-
 #              research` at 160 is the next one likely to cross, and it will be reported for a
@@ -36,7 +39,7 @@
 set -eu
 
 BOUND="${1:-256}"
-ENFORCE="session-logs counsel active-designing expanding-prompts waymarks"
+ENFORCE="session-logs counsel active-designing active-development expanding-prompts waymarks"
 
 echo "bound=$BOUND"
 
