@@ -456,7 +456,7 @@ pub fn disputing_of(report_out: *Report) *disputing_rung.Report {
 }
 
 /// The hearing rung's tally, one tier further down.
-fn hearing_of(report_out: *Report) *hearing_rung.Report {
+pub fn hearing_of(report_out: *Report) *hearing_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
@@ -5671,58 +5671,7 @@ fn weigh_the_term(io: std.Io, term: Term, report_out: *Report) (RunError || Note
 /// never wrote at all is a silence no run can close, counted nowhere and
 /// refused only where a run claims to have heard it.
 fn hear_the_reader(io: std.Io, receipt: Receipt, report_out: *Report) (RunError || NoteError)!void {
-    const carried = couriering_of(report_out).delivered;
-    if (carried == 0) {
-        // invariant: a run that carried nothing leaves no answer unheard
-        assert(hearing_of(report_out).unheard == 0);
-        return;
-    }
-    var address_buf: [max_address_len]u8 = @splat(0);
-    const address = address_published(io, &address_buf) orelse return error.CourierUnaddressed;
-    const hand = answered_by(io, address);
-    const letter = delivered_to(io, address) orelse return error.HearEarly;
-    // The stricter question this rung asks of the same hearing: a hand agrees
-    // when it names the reading the letter carried, and a hand that names any
-    // other reading has answered without agreeing. Below this rung the second
-    // case ended the run; here it is simply not an agreement, and the record
-    // that follows is where it goes.
-    const agreed = if (hand) |said| hand_agrees(letter, said) else false;
-
-    // The rung below's measurement, weighed against what the reader actually
-    // agreed to rather than against what any receipt asked for, so an answer
-    // nobody read is counted rather than refused.
-    hearing_of(report_out).unheard = carried_unheard(carried, agreed, receipt);
-    const heard = heard_in(carried, agreed, receipt);
-    const left = unheard_in(carried, agreed, receipt);
-    if (receipt == .unasked) {
-        // invariant: an unasking run hears nothing, however plainly its reader
-        // wrote back
-        assert(heard == 0);
-        return;
-    }
-    if (!agreed) {
-        // A reader who answered in a word this plan cannot accept leaves the
-        // hearing exactly where it stood: nothing heard, and the correction
-        // still owed an answer. What that reader said is this rung's business,
-        // and the step below reaches for it next.
-        //
-        // invariant: a run hearing no agreement claims none
-        assert(heard == 0);
-        // The rung below's own refusal, kept live rather than retired: a run
-        // that counted a disagreeing hand as agreement would report a consent
-        // nobody gave, and it refuses by the name it has always refused by.
-        if (heard >= 1) return error.HearMisheard;
-        return;
-    }
-    // The supply, refused by name while the box it must read is still in hand:
-    // a run hears an answer only where an agreeing hand actually stands in it.
-    if (unanswered_reach(agreed, heard)) |why| return why;
-    if (hear_refusal(letter, agreed, left, heard)) |why| return why;
-    // invariant: a run that reached the hearing refuses nothing it must hear
-    assert(heard == 1);
-    hearing_of(report_out).heard = heard;
-    // invariant: a hearing run leaves no reader's answer unread
-    assert(hearing_of(report_out).unheard == 0);
+    return ladder_checks.hear_the_reader(@This(), io, receipt, report_out);
 }
 
 /// Records the disagreement its reader answered with, or sets that answer aside.
