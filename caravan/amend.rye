@@ -758,7 +758,7 @@ pub fn admissible_in(
 pub const NoteError = recanting_rung.NoteError;
 
 /// Writes the path of one dependent's note.
-fn note_path(buf: *[max_note_path_len]u8, domain: []const u8, suffix: []const u8) NoteError![]const u8 {
+pub fn note_path(buf: *[max_note_path_len]u8, domain: []const u8, suffix: []const u8) NoteError![]const u8 {
     // invariant: a note always names the dependent it belongs to
     assert(domain.len >= 1);
     // invariant: a note always carries one of the suffixes
@@ -1378,18 +1378,7 @@ pub fn amend_note(io: std.Io, was: Settlement, now: Settlement) NoteError!void {
 /// rather than by guessing -- which leaves a reader exactly where the rung below
 /// leaves them, holding a word the plan no longer stands behind.
 pub fn amend_published(io: std.Io) ?[2]Settlement {
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = note_path(&path_buf, plan_name, ".amend") catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    var bytes: [2]u8 = @splat(0);
-    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
-    // invariant: an amendment never outgrows the two readings it names
-    assert(got <= 2);
-    if (got < 2) return null;
-    const was = settlement_of_byte(bytes[0]) orelse return null;
-    const now = settlement_of_byte(bytes[1]) orelse return null;
-    return .{ was, now };
+    return ladder_checks.amend_published(@This(), io);
 }
 
 // =========================================================================
