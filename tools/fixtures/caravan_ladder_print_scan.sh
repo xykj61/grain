@@ -84,7 +84,7 @@
 #   which the first reading cannot see at all, and which the fourth fold shows is
 #   worth reaching for.
 #
-# CARAVAN_PRINT_CEILING (default 3700): how many carried printing lines the
+# CARAVAN_PRINT_CEILING (default 3500): how many carried printing lines the
 # ladder may hold. 3,433 stand today, and a new rung adds roughly 250 now that
 # five families are written once -- so the ceiling still catches the SECOND
 # rung written before the next fold lands rather than the tenth. It came down
@@ -106,7 +106,7 @@
 # PASS and FAIL fixtures prove both paths without touching the tree.
 set -eu
 
-CEILING=${CARAVAN_PRINT_CEILING:-3700}
+CEILING=${CARAVAN_PRINT_CEILING:-3500}
 BOUND=${CARAVAN_PRINT_BOUND:-70}
 PREFIX=${CARAVAN_PRINT_PREFIX:-tell_}
 DIR=${CARAVAN_LADDER_DIR:-caravan}
