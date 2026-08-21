@@ -24,6 +24,17 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260821.010702` -- the fold-I and fold-J live edges fold as fold K lands and the carry proves unspent
+
+**Walk-back nib:** `6f976f31d9` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when the whole staircase had just folded stands at this nib and every commit before it.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullets for **fold J** and **fold I**, folded into the condensed-pointer line beneath them so the card leads with the round that just landed rather than carrying a second copy of the log index. Roughly two screenfuls fall away; every word stands at the nib above.
+
+**What waits there, worth recalling:** the inline account of **fold J** as it was written -- the seven rungs from thirty-four lines to a hundred and eleven whose length looked like content, revealed under a pair-and-depth mask as one thirty-five-line sequence in strict prefix order, and the discovery that the depth needed no counting at all because every rung already publishes one named reach per tier it wraps, those reaches forming an exact triangle of eleven, ten, and five. That reasoning -- a rung's share **derived** from the accessors it declares rather than kept in a hand-maintained list -- is REDS %102's lesson applied at design time, and it is the single most transferable idea this fold arc produced. Beside it stands **fold I**, whose whole cost came to zero widening because folds F and G had already published every accessor it reached. Both accounts live on in `session-logs/20260821-005102_caravan-ladder-fold-j-the-staircase-and-the-accessor-already-born.kyri`, `session-logs/20260821-002546_caravan-ladder-fold-i-the-staircase-the-accessors-already-reached.kyri`, and the fold sections of `caravan/README.md`.
+
+**One correction the departing card carried:** its closing claim that *the staircase is spent* read a subset in the voice of the whole. Six folds all lived inside the `tell_` family; asking the masked question of every printing body found `stand_taking_and_returning_reach` carrying 1,435 lines across 42 of its 44 rungs at one hash. The claim is corrected in the same commit that folds this card, and the corrected reading is what the new Now stands on.
+
+
 ### `20260821.005102` -- the fold-G and fold-H live edges fold as fold J spends the staircase
 
 **Walk-back nib:** `bbc07cff0c` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when the staircase's first half had just lifted stands at this nib and every commit before it.

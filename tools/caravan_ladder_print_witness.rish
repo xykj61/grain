@@ -84,7 +84,7 @@ let living = run ["sh" "tools/fixtures/caravan_ladder_print_scan.sh"]
 assert living.ok else "caravan-ladder-print: the living ladder scan must exit 0 -- ${living.out}"
 assert living.out contains "PRINT_OK" else "caravan-ladder-print: want the living printing under its named ceiling"
 assert living.out contains "PRINT_MODULES 102 holding=43" else "caravan-ladder-print: want 43 of the 102 modules holding a printing family -- the 42 rungs and the harness the fold gave two bodies to"
-assert living.out contains "PRINT_LINES total=4919 distinct=1987 carried=2932" else "caravan-ladder-print: want the printing carry standing where this lap measured it"
+assert living.out contains "PRINT_LINES total=4600 distinct=1914 carried=2686" else "caravan-ladder-print: want the printing carry standing where this lap measured it"
 
 say "caravan-ladder-print: living ladder -- ${living.out}"
 
@@ -92,8 +92,8 @@ say "caravan-ladder-print: living ladder -- ${living.out}"
 # a body standing byte-for-byte in more than one rung lifts into `caravan/ladder_checks.rye` exactly the way a check
 # body lifted under fold B. Naming it apart from the staircase is what keeps the coming fold from being sized as one
 # undifferentiated number -- a third of this carry is a lift the ladder has already done twice.
-assert living.out contains "PRINT_BODIES 213 distinct=120 identical=93 identical_lines=279" else "caravan-ladder-print: want the whole-body split read off the ladder"
-say "caravan-ladder-print: whole bodies -- 93 of 213 printing bodies stand byte-for-byte in a rung below, carrying 279 of the 2,932 lines"
+assert living.out contains "PRINT_BODIES 214 distinct=121 identical=93 identical_lines=279" else "caravan-ladder-print: want the whole-body split read off the ladder"
+say "caravan-ladder-print: whole bodies -- 93 of 214 printing bodies stand byte-for-byte in a rung below, carrying 279 of the 2,686 lines"
 
 # The second reading, computed beside the first and asserted on its own. The count above asks how many different lines
 # the whole ladder holds; the neighbor walk asks of each rung's printing how many of its lines already stand in the
@@ -112,8 +112,8 @@ say "caravan-ladder-print: whole bodies -- 93 of 213 printing bodies stand byte-
 # apiece moves the walk's own pairing beneath it. Widening and narrowing are the same property seen twice, rather than
 # two findings. The tolerance the assert names stays at twenty-one percent, and the eleven percent measured this lap
 # sits well inside it -- the two readings are converging as the carry falls, which is what a real fold looks like.
-assert living.out contains "PRINT_NEIGHBOR carried=2616" else "caravan-ladder-print: want the neighbor walk agreeing within twenty-one percent"
-say "caravan-ladder-print: second reading -- the rung-by-rung walk counts 2,616 where the union counts 2,932, two questions landing within twenty-one percent"
+assert living.out contains "PRINT_NEIGHBOR carried=2355" else "caravan-ladder-print: want the neighbor walk agreeing within twenty-one percent"
+say "caravan-ladder-print: second reading -- the rung-by-rung walk counts 2,355 where the union counts 2,686, two questions landing within thirteen percent"
 
 # TAME's seventy-line ratchet, reported rather than gated, exactly as TAME asks. Four printing bodies stand past the
 # bound today, the longest being the meet rung's half-telling at 93 lines. Five left this lap by construction rather
@@ -133,7 +133,7 @@ assert copy.out contains "copied_lines=47" else "caravan-ladder-print: want the 
 let spine = run ["sh" "tools/fixtures/caravan_ladder_spine_scan.sh"]
 assert spine.ok else "caravan-ladder-print: the spine meter must still stand -- ${spine.out}"
 assert spine.out contains "SPINE_LINES total=19 distinct=19 carried=0" else "caravan-ladder-print: want the orchestration spine still folded"
-say "caravan-ladder-print: the meters beside it -- checks carry 47, the spine carries 0, the printing carries 2,932"
+say "caravan-ladder-print: the meters beside it -- checks carry 47, the spine carries 0, the printing carries 2,686"
 
 # The counting proven by hand, over a corpus no fold has touched. The corpus holds two rungs: the foot writes one
 # three-line telling, and the rung above writes that same telling byte for byte plus a second that is the first plus one
@@ -167,4 +167,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_p
 assert (ceiling.ok == false) else "caravan-ladder-print: a printing carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-print: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-print -- the ladder's printing stands counted at 2,932 carried lines of 4,919 across 42 rungs and the harness beside them, read two independent ways that agree within eleven percent, down 299 lines since the own-telling staircase lifted into `caravan/ladder_checks.rye` as one comptime table each rung reads its own share of, held under a ceiling lowered to 3,100 so the fold stays folded, proven by hand on a two-rung corpus holding both shapes, and all three RED paths refusing by name."
+say "GREEN: caravan-ladder-print -- the ladder's printing stands counted at 2,686 carried lines of 4,600 across 42 rungs and the harness beside them, read two independent ways that agree within thirteen percent, down 246 lines since the run-telling movement lifted into `caravan/ladder_checks.rye`, where eight rungs holding fifty lines apiece became one body and eight lines of call, held under a ceiling lowered to 2,800 so the fold stays folded, proven by hand on a two-rung corpus holding both shapes, and all three RED paths refusing by name."

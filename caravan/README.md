@@ -1765,7 +1765,24 @@ The ceiling came down 3,500 to **3,100**. All seven rungs were built and run bef
 
 Five of the nine bodies past TAME's seventy-line bound left by construction rather than by a split, the ratchet and the fold wanting the same lap. `tame_style_check` and `width-check` are clean, all three ladder meters GREEN, and the whole choir of **98 Caravan witnesses** sang GREEN cold beside them.
 
-**The printing carry has fallen 5,955 to 2,932 across five folds, and the staircase is spent.**
+**Fold K lifted the run-telling on `20260821.013000`, and it was the plainest fold this arc has had.** `tell_desist_runs` stood in **eight rungs at fifty lines apiece** -- 400 lines carried, the movement that counts phases and dependents before the telling turns to the quarrel the desisting rung holds. Its shape was measured rather than guessed: masked for the pair of words naming which plan each column reports, all eight collapse to **one hash**, and this time the nesting depth stood identical across all eight as well. No staircase hid here at all.
+
+So the fold is fold H's shape with nothing added. The body lifts whole into `ladder_checks.rye` as `tell_desist_runs`, the pair arrives as comptime text, and each rung keeps a one-line delegate handing in its own two words. Nine symbols widened by one word each across the eight -- `abandoning_of`, `recanting_of`, `amending_of`, `couriering_of`, `disputing_of`, `abiding_of`, `lapsing_of`, `reposing_of`, `appeal_of`, with `below_of` making a tenth in the desisting rung -- verified as `pub` before a line moved, the check that has made every fold in this arc safe. **457 lines deleted for 157 of harness and call.**
+
+One raw reach remains, and the harness names it rather than hiding it: the absorbed tally sits four levels below `abandoning_of`, since no rung publishes an accessor reaching that tier. The chain stood at the same depth in all eight rungs, and it stands once now, where a single reading governs every rung that calls in. Naming it is the honest form of fold J's lesson -- an accessor born for that tier is the next lap's cheap work, and the comment says so where the code is.
+
+Parity is the strongest form this arc has settled on. All eight rungs were built and run before the edit and after it, and **every sorted multiset stands identical with zero lines differing**. The ordered comparisons differ by four to sixteen lines, every one a concurrent-client line present in the same count on both sides -- and an unchanged binary run twice against itself differs by fourteen in exactly the same way, so the interleave is the run rather than the fold, as folds I and J each proved before it.
+
+The two rows a lift could most easily have inflated stood still for the seventh fold running: the byte-identical check carry holds at **47** and the orchestration spine at **0**. The ceiling came down 3,100 to **2,800**. The neighbor walk's gap narrowed 21 percent to **13**, by the same mechanism that widens it -- the walk orders rungs by file length, so a fold that shrinks eight rungs by forty-nine lines apiece moves its own pairing. `tame_style_check` and `width-check` are clean, all three ladder meters GREEN, and all eight rung witnesses GREEN beside them.
+
+**The printing carry has fallen 5,955 to 2,686 across six folds -- and this lap found that the carry is far from spent.**
+
+Six folds all lived inside the `tell_` family, and the arc's own record had begun to read "the staircase is spent" as though the family were the ladder. Asking the masked question of **every** printing body rather than the `tell_` ones alone answers otherwise, and the two largest carriers in the ladder had never been looked at:
+
+- **`stand_taking_and_returning_reach`** -- **42 of its 44 rungs share one hash** at thirty-five lines apiece, **1,435 lines carried**. Larger than any single fold this arc has taken, and the two rungs that differ stand at seventy-six and eighty lines, which is their own content rather than a variation.
+- **`run_dependent`** -- **43 of its 67 rungs share one hash** at thirty-three lines apiece, **1,386 lines carried**, with the remaining twenty-four genuinely various.
+
+Naming this correction plainly matters more than the fold that found it. A narrative built from six laps in one family had quietly become a claim about the whole, and only asking the meter a wider question could disagree with it. **Measurement beats memory, including the memory written down six laps in a row.**
 
 
 ## Held
