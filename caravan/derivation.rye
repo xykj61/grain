@@ -1,0 +1,503 @@
+//! Caravan derivation -- the tree a granted capability makes when it is
+//! handed on, and the two kernel refusals only a tree can answer.
+//!
+//! WHY THIS MODULE EXISTS. `refusals.rye` read seL4's own compiled enums and
+//! found that a capability invocation answers with eleven named errors, of
+//! which Caravan's policy table answers four. It then named, for each of the
+//! seven remaining, the subsystem that owes it -- and the **derivation tree**
+//! owed two, more than any other, because `seL4_DeleteFirst` and
+//! `seL4_RevokeFirst` are questions about *lineage* rather than about rights.
+//! A table that maps a dependent to what it may do can never answer them. A
+//! table that also knows **who handed each capability on** answers both.
+//!
+//! THE TWO REFUSALS, AS THIS MODULE MEANS THEM.
+//!
+//!   delete_first  The destination slot already holds a capability. Seating
+//!                 another there would silently drop the one standing, so the
+//!                 standing one is deleted deliberately, first.
+//!
+//!   revoke_first  The capability named has capabilities derived from it. An
+//!                 operation that would remove it must first revoke what
+//!                 stands beneath it, because a child whose parent vanished
+//!                 is reach nobody granted and nobody can audit.
+//!
+//! Those two sentences are the whole of what the tree adds, and this module
+//! makes both of them things the compiler holds rather than things a comment
+//! promises.
+//!
+//! THE PROPERTY IT KEEPS: **reach only ever narrows along a lineage.** A
+//! derived capability carries a subset of its parent's rights, always, so no
+//! path down the tree can widen what the root was granted. Attenuation is
+//! checked at the edge, on every derivation, and the whole-table invariant
+//! re-proves it across every live slot afterward.
+//!
+//! WHAT IS BOUNDED. The table holds `max_slots` capabilities and the tree
+//! stands at most `max_depth` deep. Both bounds refuse with **named Rye
+//! errors** rather than with a kernel refusal, since they are this module's
+//! own capacity rather than an answer the kernel offers -- the general
+//! bounds-checking debt `refusals.rye` names stays open, and this rung does
+//! not claim it.
+//!
+//! CLEAN ROOM. No seL4 line is reproduced. The vocabulary is imported from
+//! `refusals.rye`, which the witness diffs against the vendored BSD-2-Clause
+//! header at run time.
+//!
+//! Usage:
+//!   derivation          Run the self-test (default)
+//!   derivation selftest Same as default
+//!   derivation table    Print a worked tree and every refusal it can answer
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const refusals = @import("refusals.rye");
+
+const caravan_derivation_version = "20260821.052104";
+
+/// How many capabilities one derivation table may hold. Bounded on purpose:
+/// a supervisor's cspace is a fixed allotment, never a growing one.
+pub const max_slots: u32 = 32;
+
+/// How deep a lineage may stand, counting the root as depth zero. Bounded so
+/// every walk up the tree terminates in a known number of steps, which is what
+/// lets `descends_from` stay a loop rather than a recursion.
+pub const max_depth: u32 = 4;
+
+/// The slot number meaning "this capability was seated, not derived."
+pub const no_parent: u32 = max_slots;
+
+/// What this module refuses with when its own capacity is reached. These are
+/// Rye errors rather than kernel refusals on purpose -- the kernel offers no
+/// answer for "the userland's table is full."
+pub const DerivationError = error{
+    SlotOutOfRange,
+    DerivationTooDeep,
+};
+
+// =========================================================================
+// One slot -- a capability and the lineage that produced it
+// =========================================================================
+
+/// A single seated or derived capability.
+///
+/// Invariant, held by the table rather than by the struct: when `occupied` is
+/// true, either `parent == no_parent` and `depth == 0`, or the parent slot is
+/// itself occupied, `depth == parent.depth + 1`, and `rights` is a subset of
+/// the parent's rights.
+pub const Slot = struct {
+    occupied: bool = false,
+    parent: u32 = no_parent,
+    resource: u32 = 0,
+    rights: u8 = 0,
+    depth: u32 = 0,
+};
+
+/// True when `have` carries every right in `need` -- the attenuation test,
+/// written once so every caller means the same thing by it.
+pub fn carries(have: u8, need: u8) bool {
+    return (have & need) == need;
+}
+
+// =========================================================================
+// The table
+// =========================================================================
+
+pub const Tree = struct {
+    slots: [max_slots]Slot = [_]Slot{.{}} ** max_slots,
+
+    /// An empty tree. Every slot free, no lineage yet.
+    pub fn init() Tree {
+        const tree: Tree = .{};
+        // invariant: a fresh tree holds nothing.
+        assert(tree.live_count() == 0);
+        // invariant: the sentinel stands outside every real slot number.
+        assert(no_parent >= max_slots);
+        return tree;
+    }
+
+    /// How many capabilities stand in the table right now.
+    pub fn live_count(self: *const Tree) u32 {
+        var count: u32 = 0;
+        for (self.slots) |slot| {
+            if (slot.occupied) count += 1;
+        }
+        // invariant: a count of live slots never exceeds the allotment.
+        assert(count <= max_slots);
+        return count;
+    }
+
+    /// Seat an original capability -- one nobody handed on, standing at the
+    /// root of its own lineage.
+    ///
+    /// Answers `.no_error` when it seats, `.delete_first` when the slot is
+    /// already held. Refuses a slot number outside the allotment by name.
+    pub fn seat(self: *Tree, slot: u32, resource: u32, rights: u8) DerivationError!refusals.KernelRefusal {
+        if (slot >= max_slots) return DerivationError.SlotOutOfRange;
+        // invariant: the slot number is a real index once the bound is passed.
+        assert(slot < max_slots);
+
+        const index: usize = @intCast(slot);
+        if (self.slots[index].occupied) return .delete_first;
+
+        self.slots[index] = .{
+            .occupied = true,
+            .parent = no_parent,
+            .resource = resource,
+            .rights = rights,
+            .depth = 0,
+        };
+        // invariant: a seated capability is a root, and a root stands at depth zero.
+        assert(self.slots[index].parent == no_parent);
+        assert(self.slots[index].depth == 0);
+        return .no_error;
+    }
+
+    /// Hand a capability on: derive `child` from `parent`, carrying `rights`.
+    ///
+    /// Answers `.failed_lookup` when no capability stands in the parent slot,
+    /// `.delete_first` when the child slot is already held, and
+    /// `.illegal_operation` when the requested rights exceed the parent's --
+    /// reach narrows along a lineage and never widens. Refuses an out-of-range
+    /// slot or an over-deep lineage by name.
+    pub fn derive(self: *Tree, parent: u32, child: u32, rights: u8) DerivationError!refusals.KernelRefusal {
+        if (parent >= max_slots or child >= max_slots) return DerivationError.SlotOutOfRange;
+        // invariant: both slot numbers are real indices once the bound is passed.
+        assert(parent < max_slots);
+        assert(child < max_slots);
+
+        const parent_index: usize = @intCast(parent);
+        const child_index: usize = @intCast(child);
+
+        if (!self.slots[parent_index].occupied) return .failed_lookup;
+        if (self.slots[child_index].occupied) return .delete_first;
+        if (!carries(self.slots[parent_index].rights, rights)) return .illegal_operation;
+
+        const depth = self.slots[parent_index].depth + 1;
+        if (depth >= max_depth) return DerivationError.DerivationTooDeep;
+
+        self.slots[child_index] = .{
+            .occupied = true,
+            .parent = parent,
+            .resource = self.slots[parent_index].resource,
+            .rights = rights,
+            .depth = depth,
+        };
+        // invariant: a derived capability carries no right its parent lacks.
+        assert(carries(self.slots[parent_index].rights, self.slots[child_index].rights));
+        // invariant: a child stands exactly one step below the parent it came from.
+        assert(self.slots[child_index].depth == self.slots[parent_index].depth + 1);
+        return .no_error;
+    }
+
+    /// True when `slot` descends from `ancestor` -- a walk up the lineage,
+    /// bounded by `max_depth` so it always terminates.
+    pub fn descends_from(self: *const Tree, slot: u32, ancestor: u32) bool {
+        // invariant: both arguments name real slots.
+        assert(slot < max_slots);
+        assert(ancestor < max_slots);
+
+        var walker = slot;
+        var steps: u32 = 0;
+        while (steps <= max_depth) : (steps += 1) {
+            const index: usize = @intCast(walker);
+            if (!self.slots[index].occupied) return false;
+            const parent = self.slots[index].parent;
+            if (parent == no_parent) return false;
+            if (parent == ancestor) return true;
+            walker = parent;
+        }
+        // invariant: a bounded tree is walked to its root inside its own depth.
+        assert(steps > max_depth);
+        return false;
+    }
+
+    /// How many capabilities stand beneath `slot` in its lineage.
+    pub fn descendant_count(self: *const Tree, slot: u32) u32 {
+        // invariant: the slot named is a real index.
+        assert(slot < max_slots);
+
+        var count: u32 = 0;
+        var index: u32 = 0;
+        while (index < max_slots) : (index += 1) {
+            if (index == slot) continue;
+            if (self.descends_from(index, slot)) count += 1;
+        }
+        // invariant: a lineage never holds more than the whole allotment.
+        assert(count < max_slots);
+        return count;
+    }
+
+    /// Delete one capability.
+    ///
+    /// Answers `.failed_lookup` when the slot is empty, `.revoke_first` when
+    /// capabilities stand derived beneath it, and `.no_error` when it clears a
+    /// leaf. This is the refusal that makes the tree worth keeping: without
+    /// lineage there is no honest way to know a deletion would orphan reach.
+    pub fn delete(self: *Tree, slot: u32) DerivationError!refusals.KernelRefusal {
+        if (slot >= max_slots) return DerivationError.SlotOutOfRange;
+        // invariant: the slot number is a real index once the bound is passed.
+        assert(slot < max_slots);
+
+        const index: usize = @intCast(slot);
+        if (!self.slots[index].occupied) return .failed_lookup;
+        if (self.descendant_count(slot) > 0) return .revoke_first;
+
+        self.slots[index] = .{};
+        // invariant: a deleted slot holds nothing and claims no lineage.
+        assert(!self.slots[index].occupied);
+        assert(self.slots[index].parent == no_parent);
+        return .no_error;
+    }
+
+    /// Revoke everything derived from `slot`, keeping `slot` itself.
+    ///
+    /// Answers `.failed_lookup` when the slot is empty, and `.no_error` once
+    /// the lineage beneath it is clear. The sweep is a single bounded pass:
+    /// descent is decided against the tree as it stood on entry, so clearing a
+    /// slot can never hide a deeper one from the same pass.
+    pub fn revoke(self: *Tree, slot: u32) DerivationError!refusals.KernelRefusal {
+        if (slot >= max_slots) return DerivationError.SlotOutOfRange;
+        // invariant: the slot number is a real index once the bound is passed.
+        assert(slot < max_slots);
+
+        const index: usize = @intCast(slot);
+        if (!self.slots[index].occupied) return .failed_lookup;
+
+        const before = self.slots;
+        const doomed = self.descendant_count(slot);
+
+        var walker: u32 = 0;
+        while (walker < max_slots) : (walker += 1) {
+            if (walker == slot) continue;
+            const view: Tree = .{ .slots = before };
+            if (view.descends_from(walker, slot)) self.slots[@intCast(walker)] = .{};
+        }
+
+        // invariant: the capability revoked from stands untouched.
+        assert(self.slots[index].occupied);
+        // invariant: nothing derives from it any longer.
+        assert(self.descendant_count(slot) == 0);
+        assert(doomed <= max_slots);
+        return .no_error;
+    }
+
+    /// Re-prove the whole table: no orphans, honest depths, and reach that
+    /// only ever narrows. Returns true when every live slot holds.
+    pub fn whole(self: *const Tree) bool {
+        var index: u32 = 0;
+        var checked: u32 = 0;
+        while (index < max_slots) : (index += 1) {
+            const slot = self.slots[@intCast(index)];
+            if (!slot.occupied) continue;
+            checked += 1;
+
+            if (slot.depth >= max_depth) return false;
+
+            if (slot.parent == no_parent) {
+                if (slot.depth != 0) return false;
+                continue;
+            }
+            if (slot.parent >= max_slots) return false;
+
+            const parent = self.slots[@intCast(slot.parent)];
+            if (!parent.occupied) return false;
+            if (slot.depth != parent.depth + 1) return false;
+            if (!carries(parent.rights, slot.rights)) return false;
+            if (slot.resource != parent.resource) return false;
+        }
+        // invariant: the walk visited exactly the live slots.
+        assert(checked == self.live_count());
+        // invariant: the whole allotment was considered.
+        assert(index == max_slots);
+        return true;
+    }
+};
+
+// =========================================================================
+// The worked tree, printed
+// =========================================================================
+
+fn print_table() u8 {
+    var tree = Tree.init();
+
+    _ = tree.seat(0, 77, rights_all) catch return 1;
+    _ = tree.derive(0, 1, rights_read_write) catch return 1;
+    _ = tree.derive(1, 2, rights_read) catch return 1;
+
+    print("derivation: version {s}\n", .{caravan_derivation_version});
+    var index: u32 = 0;
+    while (index < max_slots) : (index += 1) {
+        const slot = tree.slots[@intCast(index)];
+        if (!slot.occupied) continue;
+        print("derivation: slot {d:>2} resource {d} rights {b:0>3} depth {d} parent {d} children {d}\n", .{
+            index,
+            slot.resource,
+            slot.rights,
+            slot.depth,
+            slot.parent,
+            tree.descendant_count(index),
+        });
+    }
+
+    print("derivation: {s} -- {s}\n", .{
+        refusals.kernel_symbol(.delete_first),
+        refusals.kernel_meaning(.delete_first),
+    });
+    print("derivation: {s} -- {s}\n", .{
+        refusals.kernel_symbol(.revoke_first),
+        refusals.kernel_meaning(.revoke_first),
+    });
+    return 0;
+}
+
+// =========================================================================
+// Self-test -- the asserts are the specification
+// =========================================================================
+
+/// Every right this module's worked examples hand around. Named once, so the
+/// three movements below mean the same thing by each of them.
+const rights_all: u8 = 0b0000_0111;
+const rights_read_write: u8 = 0b0000_0011;
+const rights_read: u8 = 0b0000_0001;
+const rights_write: u8 = 0b0000_0010;
+
+/// Movement one -- lineage, attenuation, and the two owed refusals.
+fn prove_lineage() void {
+    var tree = Tree.init();
+    assert(tree.live_count() == 0);
+    assert(tree.whole());
+
+    // A seated capability is a root standing at depth zero.
+    assert(try_answer(tree.seat(0, 77, rights_all)) == .no_error);
+    assert(tree.live_count() == 1);
+    assert(tree.slots[0].parent == no_parent);
+    assert(tree.slots[0].depth == 0);
+
+    // Seating over a held slot is the first of the two debts: delete_first.
+    assert(try_answer(tree.seat(0, 99, rights_all)) == .delete_first);
+    assert(tree.slots[0].resource == 77);
+
+    // Handing the capability on narrows it, and the child knows its parent.
+    assert(try_answer(tree.derive(0, 1, rights_read_write)) == .no_error);
+    assert(try_answer(tree.derive(1, 2, rights_read)) == .no_error);
+    assert(tree.slots[2].depth == 2);
+    assert(tree.descends_from(2, 0));
+    assert(tree.descends_from(2, 1));
+    assert(!tree.descends_from(0, 2));
+
+    // Reach narrows along a lineage and never widens.
+    assert(try_answer(tree.derive(1, 3, rights_all)) == .illegal_operation);
+    assert(try_answer(tree.derive(2, 3, rights_write)) == .illegal_operation);
+    assert(!tree.slots[3].occupied);
+
+    // A parent nobody seated cannot hand anything on.
+    assert(try_answer(tree.derive(9, 3, rights_read)) == .failed_lookup);
+
+    // Deriving into a held slot is delete_first, exactly as seating is.
+    assert(try_answer(tree.derive(0, 1, rights_read)) == .delete_first);
+
+    // The second debt: a capability with children refuses deletion outright.
+    assert(tree.descendant_count(0) == 2);
+    assert(try_answer(tree.delete(0)) == .revoke_first);
+    assert(try_answer(tree.delete(1)) == .revoke_first);
+    assert(tree.slots[0].occupied);
+
+    // A leaf deletes cleanly, and its parent becomes deletable in turn.
+    assert(try_answer(tree.delete(2)) == .no_error);
+    assert(try_answer(tree.delete(1)) == .no_error);
+    assert(try_answer(tree.delete(0)) == .no_error);
+    assert(tree.live_count() == 0);
+    assert(try_answer(tree.delete(0)) == .failed_lookup);
+
+    assert(tree.whole()); // invariant: an emptied table is still a whole one
+}
+
+/// Movement two -- revoking a lineage whole, in one bounded pass.
+fn prove_revoke() void {
+    var deep = Tree.init();
+    assert(try_answer(deep.seat(5, 12, rights_all)) == .no_error);
+    assert(try_answer(deep.derive(5, 6, rights_read_write)) == .no_error);
+    assert(try_answer(deep.derive(6, 7, rights_read)) == .no_error);
+    assert(try_answer(deep.derive(5, 8, rights_read)) == .no_error);
+    assert(deep.live_count() == 4);
+    assert(deep.descendant_count(5) == 3);
+    assert(deep.whole());
+
+    assert(try_answer(deep.revoke(5)) == .no_error);
+    assert(deep.live_count() == 1);
+    assert(deep.slots[5].occupied);
+    assert(deep.descendant_count(5) == 0);
+    assert(deep.whole());
+    assert(try_answer(deep.delete(5)) == .no_error);
+    assert(try_answer(deep.revoke(5)) == .failed_lookup);
+
+    assert(deep.live_count() == 0); // invariant: the revoked root deletes cleanly after
+}
+
+/// Movement three -- the module's own bounds, which refuse by named Rye error
+/// rather than by a kernel answer, because the kernel offers no word for "the
+/// userland's table is full."
+fn prove_bounds() void {
+    var tall = Tree.init();
+    assert(try_answer(tall.seat(0, 3, rights_all)) == .no_error);
+    assert(try_answer(tall.derive(0, 1, rights_all)) == .no_error);
+    assert(try_answer(tall.derive(1, 2, rights_all)) == .no_error);
+    assert(try_answer(tall.derive(2, 3, rights_all)) == .no_error);
+    assert(tall.slots[3].depth == max_depth - 1);
+    if (tall.derive(3, 4, rights_all)) |_| {
+        assert(false); // invariant: an over-deep lineage never seats
+    } else |err| {
+        assert(err == DerivationError.DerivationTooDeep);
+    }
+    if (tall.seat(max_slots, 1, rights_all)) |_| {
+        assert(false); // invariant: a slot outside the allotment never seats
+    } else |err| {
+        assert(err == DerivationError.SlotOutOfRange);
+    }
+    assert(tall.whole());
+    assert(tall.live_count() == 4); // invariant: a refused bound seats nothing
+}
+
+fn run_self_test() u8 {
+    prove_lineage();
+    prove_revoke();
+    prove_bounds();
+
+    // The two debts are answered in the kernel's own words, taken from the
+    // module that reads them out of seL4's header rather than from memory.
+    assert(refusals.owed_by(.delete_first) == .derivation_tree);
+    assert(refusals.owed_by(.revoke_first) == .derivation_tree);
+
+    print("derivation: version {s}\n", .{caravan_derivation_version});
+    print("derivation: reach narrows along a lineage and never widens -- a derived capability carries a subset of its parent's rights.\n", .{});
+    print("derivation: a held slot answers {s}; a capability with children answers {s}.\n", .{
+        refusals.kernel_symbol(.delete_first),
+        refusals.kernel_symbol(.revoke_first),
+    });
+    print("derivation: revoke clears a lineage in one bounded pass and keeps the capability it was asked about.\n", .{});
+    print("derivation: the tree stands at most {d} deep over {d} slots, both bounds refusing by named error.\n", .{ max_depth, max_slots });
+    print("derivation: lineage kept, attenuation held, both owed refusals answered -- GREEN.\n", .{});
+    return 0;
+}
+
+/// Unwrap an answer the self-test expects to succeed, so a bound refusing
+/// where it should not aborts loudly rather than reading as a mismatch.
+fn try_answer(result: DerivationError!refusals.KernelRefusal) refusals.KernelRefusal {
+    const answer = result catch {
+        assert(false); // invariant: this call is inside every bound the module names
+        unreachable;
+    };
+    // invariant: every answer is one of the kernel's eleven.
+    assert(@intFromEnum(answer) < refusals.kernel_refusal_count);
+    return answer;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
+    if (args.len >= 2) return 1;
+    return run_self_test();
+}
