@@ -1975,6 +1975,32 @@ Proven by [`tools/caravan_edge_witness.rish`](../tools/caravan_edge_witness.rish
 **Every one of the seven owed refusals now has a module that answers it.** `refusals.rye` still counts seven owed, and that stays exactly right: its count is what the **policy table** can answer, and the table has not learned to speak through the tree, the buffer, the region, or the edge. The debt closes when the table itself can answer, never when a neighbour can -- which names the next real rung on this arc rather than letting four green modules quietly claim it.
 
 
+## The reply -- the policy table speaks through its neighbours, and the agenda closes by measurement
+
+`reply.rye` (`20260821.071421`) answers the question the edge rung deliberately left open. Four modules had paid every debt on the refusal agenda -- the edge for argument, range, and alignment; the buffer for truncation; the tree for delete-first and revoke-first; the region for not-enough-memory -- and `refusals.rye` still counted **four answered and seven owed**. That count was right, and it stayed right on purpose: it measures what the **policy table** can reach, and a table that has never learned to ask a neighbour reaches exactly as far as it did before the neighbour was born. A debt closes when the table itself can answer, never when a neighbour can.
+
+So this rung is the asking. One **ask** arrives carrying everything a supervised request holds, and four stages read it in an order Caravan chose. The **edge** reads the request alone. The **message** reads whether enough words arrived for the method to name a subject. The **table** reads whether this dependent may do this thing. The **deed** carries out what a permitted ask asked for. Exactly one answer comes back, and the earliest stage wins -- the same rule the edge keeps among its own three checks, kept one floor up among the four.
+
+**The order is Caravan's own, and each stage names its own reason in code.** The edge stands first because a request whose size no object can be gives every later question nothing to be about. The message stands second because until its method's words have arrived, the dependent and resource it names cannot be read out of it at all -- the table would be asked about nobody. The table stands third because whom and what are legible by then, and permission is settled before anything is acted upon. The deed stands last because acting is the one stage that spends something, and only a well-formed, legible, permitted ask ever reaches it.
+
+**The reach is run, never credited.** Eleven named asks run against eleven fresh benches, and the measurement is counted from what they actually earn. Crediting the table by proximity -- four green neighbours therefore eleven answers -- would have closed the agenda five rungs ago and proven nothing. Both truths stand side by side in the self-test, each counted rather than recited: the table alone answers **four**, and the table speaking through its neighbours answers **eleven**.
+
+| Measured `20260821` | Value |
+|---|---|
+| Stages one ask reads through | **4** -- edge, message, table, deed |
+| Refusals owned, one author each | **10**, plus success owned by no stage -- the eleven |
+| Named asks the reach is measured from | **11**, each on its own fresh bench |
+| Reach of the table alone | **4** of 11, unmoved -- `refusals.rye` was always right |
+| Reach through its neighbours | **11** of 11 |
+| Asks swept, both arms exercised | **5,184** -- 30 welcomed, 5,154 refused |
+
+**The one overlap is published rather than hidden.** The deed may answer `seL4_FailedLookup` or `seL4_IllegalOperation`, which the table owns, because a derivation tree looks a capability up in a slot and narrows rights along a lineage exactly as the table looks a dependent up by label and narrows rights by mask. Two different lookups about two different things, giving one sentence. `stage_echoes` says so in code, and the self-test earns the echo rather than describing it.
+
+**A refused ask spends nothing, one floor up.** Each neighbour already keeps that promise alone; the reply keeps it across all four stages -- an ask refused at the edge or at the table leaves the tree exactly as it was found, and a two-page carve leaves a one-page region whole. And the two lines stay apart here too: a carve of sixty-five is welcomed by the edge, because the kernel permits 256, and refused by the region's own named Rye error, because Caravan holds 64. The reply carries that error out as the region's own rather than dressing it as a kernel word.
+
+**The agenda in `refusals.rye` is unmoved, and that is the point.** A rung that closed the agenda by editing the count would have closed nothing. Proven by [`tools/caravan_reply_witness.rish`](../tools/caravan_reply_witness.rish), GREEN on metal, with all three RED paths planted rather than described: a reversed reading order answers an ask by its last fault rather than its first, a collapsed seam gives one sentence for a resource never granted and a dependent never heard of, and a **muted table** -- the very fault this rung exists to fix, planted in reverse -- lets every ask walk through to the deed while the measured reach quietly falls from eleven to eight. A reach credited by proximity would not have noticed a thing.
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.

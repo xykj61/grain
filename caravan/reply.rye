@@ -1,0 +1,772 @@
+//! Caravan reply -- the whole answer the policy table gives once it learns to
+//! speak through its neighbours.
+//!
+//! WHY THIS MODULE EXISTS. `refusals.rye` states the eleven answers a
+//! capability invocation may earn, maps Caravan's four onto them, and names for
+//! each of the seven remaining the subsystem that owes it. Four rungs then paid
+//! every one of those debts: `edge.rye` answers argument, range, and alignment;
+//! `ipc_buffer.rye` answers truncation; `derivation.rye` answers delete-first
+//! and revoke-first; `untyped.rye` answers not-enough-memory. And still
+//! `refusals.rye` counted four answered and seven owed -- **rightly**, because
+//! its count is what the **policy table** can reach, and the table had never
+//! learned to speak through a neighbour. A debt closes when the table itself
+//! can answer, never when a neighbour can.
+//!
+//! So this module is the speaking. One **ask** arrives, and it is read by four
+//! stages standing in an order Caravan chose: the **edge** reads the request
+//! alone, the **message** reads whether enough words arrived to name a subject,
+//! the **table** reads whether this dependent may do this thing, and the
+//! **deed** attempts what a permitted ask asked for. Exactly one answer comes
+//! back, and the earliest stage wins -- the same rule the edge already keeps
+//! among its own three checks, kept one floor up among the four.
+//!
+//! THE ORDER, AND WHY IT IS THIS ONE. Each stage depends only on facts the
+//! stages before it established. The edge stands first because a request whose
+//! size no object can be has no subject for any later question. The message
+//! stands second because until it carries the words its method reads, the
+//! dependent and resource it names cannot be read out of it at all -- the table
+//! would be asked about nobody. The table stands third because whom and what
+//! are legible by then, and permission is decided before anything is acted
+//! upon. The deed stands last because acting is the one stage that spends
+//! something, and it is reached only by an ask that is well-formed, legible,
+//! and permitted.
+//!
+//! WHAT CLOSES BY MEASUREMENT. `reach` runs a corpus of named asks and records
+//! which of the eleven each earns. All eleven are earned, and the number is
+//! **counted from asks that actually ran** rather than claimed from the roster
+//! of neighbours -- proximity would have credited the table five rungs ago.
+//! Both truths stand side by side in the self-test: the table alone answers
+//! four, and the table speaking through its neighbours answers eleven.
+//!
+//! THE OVERLAP IS NAMED RATHER THAN HIDDEN. The deed stage may answer
+//! `failed_lookup` or `illegal_operation` -- refusals the table stage owns --
+//! because a derivation tree looks capabilities up in slots and narrows rights
+//! along a lineage, exactly as the table looks dependents up in labels and
+//! narrows rights by mask. Those are two different lookups about two different
+//! things, and a stage that echoes an earlier stage's answer is honest so long
+//! as it says so. `stage_echoes` says so, and the self-test proves the echo is
+//! real by earning `failed_lookup` from the deed.
+//!
+//! CLEAN ROOM. No seL4 line is reproduced here. Every kernel answer this module
+//! returns comes from a neighbour that already binds its own reading against
+//! the vendored BSD-2-Clause headers on every run.
+//!
+//! Usage:
+//!   reply          Run the self-test (default)
+//!   reply selftest Same as default
+//!   reply table    Print the stages, their order reasons, and the reach
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const refusals = @import("refusals.rye");
+const capabilities = @import("capabilities.rye");
+const edge = @import("edge.rye");
+const ipc_buffer = @import("ipc_buffer.rye");
+const derivation = @import("derivation.rye");
+const untyped = @import("untyped.rye");
+
+const caravan_reply_version = "20260821.071421";
+
+/// What a reply may be refused by, when the refusal is a bound of Caravan's own
+/// rather than an answer the kernel publishes. Each neighbour keeps its own
+/// named errors for exactly this reason, and a reply carries all of them
+/// forward unchanged rather than flattening them into one.
+pub const ReplyError = ipc_buffer.IpcError ||
+    derivation.DerivationError ||
+    untyped.UntypedError;
+
+// =========================================================================
+// The four stages, and the order Caravan chose
+// =========================================================================
+
+/// The four readings an ask passes through, in the order they are asked.
+pub const Stage = enum(u8) {
+    edge = 0,
+    message = 1,
+    table = 2,
+    deed = 3,
+};
+
+/// The whole roster, in reading order. One list, so no count is recited and the
+/// order lives in exactly one place.
+pub const all_stages = [_]Stage{ .edge, .message, .table, .deed };
+
+/// The name each stage carries, so a printed table reads as supervision.
+pub fn stage_name(stage: Stage) []const u8 {
+    const name: []const u8 = switch (stage) {
+        .edge => "edge",
+        .message => "message",
+        .table => "table",
+        .deed => "deed",
+    };
+    assert(name.len > 0); // invariant: a named stage always carries its name
+    return name;
+}
+
+/// Why this stage stands where it does. The order is Caravan's own, so the
+/// reason travels with the code rather than living only in a header comment.
+pub fn order_reason(stage: Stage) []const u8 {
+    const reason: []const u8 = switch (stage) {
+        .edge => "first, because a request whose size no object can be gives every later question nothing to be about",
+        .message => "second, because until the words its method reads have arrived, the dependent and resource it names cannot be read out of it",
+        .table => "third, because whom and what are legible by now, and permission is settled before anything is acted upon",
+        .deed => "last, because acting is the one stage that spends something, and only a well-formed, legible, permitted ask reaches it",
+    };
+    assert(reason.len > 0); // invariant: every position in the order names its reason
+    return reason;
+}
+
+/// The refusals this stage is the sole author of, in Caravan's order. The four
+/// owned sets are disjoint, and together with success they are the whole
+/// eleven -- asserted in the self-test rather than described here.
+pub fn stage_owns(stage: Stage) []const refusals.KernelRefusal {
+    return switch (stage) {
+        .edge => &[_]refusals.KernelRefusal{ .invalid_argument, .range_error, .alignment_error },
+        .message => &[_]refusals.KernelRefusal{.truncated_message},
+        .table => &[_]refusals.KernelRefusal{ .failed_lookup, .invalid_capability, .illegal_operation },
+        .deed => &[_]refusals.KernelRefusal{ .delete_first, .revoke_first, .not_enough_memory },
+    };
+}
+
+/// The refusals this stage may also answer, which an earlier stage owns.
+///
+/// The deed echoes two, and the reason is real rather than incidental: a
+/// derivation tree looks a capability up in a slot and narrows rights along a
+/// lineage, which are the same two questions the table asks of a label and a
+/// mask. Two different lookups about two different things, giving the same
+/// sentence. An echo is honest while it is named, so it is named.
+pub fn stage_echoes(stage: Stage) []const refusals.KernelRefusal {
+    return switch (stage) {
+        .edge, .message, .table => &[_]refusals.KernelRefusal{},
+        .deed => &[_]refusals.KernelRefusal{ .failed_lookup, .illegal_operation },
+    };
+}
+
+// =========================================================================
+// The seam -- where the policy table meets the kernel's vocabulary
+// =========================================================================
+
+/// Carry the table's own outcome across into the vocabulary `refusals.rye`
+/// maps. This one function is the whole of the table learning to speak: it is
+/// the point where `capabilities.Refusal`, which knows nothing of a kernel,
+/// becomes a word a kernel would answer with.
+///
+/// The two enums are held to agreeing number for number, so a right added to
+/// one and forgotten in the other reds here rather than mistranslating quietly.
+pub fn as_caravan(own: capabilities.Refusal) refusals.CaravanRefusal {
+    // invariant: the switch is total over the table's outcomes.
+    const carried: refusals.CaravanRefusal = switch (own) {
+        .allowed => .allowed,
+        .no_such_dependent => .no_such_dependent,
+        .no_such_resource => .no_such_resource,
+        .rights_insufficient => .rights_insufficient,
+    };
+    // invariant: the table's vocabulary and the mapped one agree number for number.
+    assert(@intFromEnum(carried) == @intFromEnum(own));
+    return carried;
+}
+
+// =========================================================================
+// The ask -- one whole request, as it arrives
+// =========================================================================
+
+/// What a dependent asks of Caravan, carrying everything the four stages read.
+///
+/// One struct rather than four arguments, because the stages read overlapping
+/// parts of a single request: the deed carves the very objects the edge already
+/// vetted, and the table answers about the dependent whose message had to be
+/// long enough to name it.
+pub const Ask = struct {
+    /// What the request says about the objects it wants -- read by the edge,
+    /// and spent by a carve.
+    request: edge.Request = .{},
+    /// Which supervision method the message invokes, and how many words it
+    /// actually carried.
+    method: ipc_buffer.Method = .entrust,
+    words: u32 = 3,
+    /// Whom the ask is from, what it names, and which rights it needs.
+    dependent: []const u8 = "vfs",
+    resource: []const u8 = "/usr",
+    need: u8 = capabilities.right_read,
+    /// What a permitted ask then does, and the slots it does it with.
+    deed: Deed = .ask_only,
+    slot: u32 = 0,
+    parent: u32 = 0,
+    resource_number: u32 = 0,
+};
+
+/// What a permitted ask goes on to do. `ask_only` is a bare permission
+/// question, which is the whole of what the table could ever answer alone.
+pub const Deed = enum(u8) {
+    ask_only = 0,
+    seat = 1,
+    derive = 2,
+    release = 3,
+    carve = 4,
+};
+
+/// The name each deed carries, so a printed table reads as supervision.
+pub fn deed_name(deed: Deed) []const u8 {
+    const name: []const u8 = switch (deed) {
+        .ask_only => "ask-only",
+        .seat => "seat",
+        .derive => "derive",
+        .release => "release",
+        .carve => "carve",
+    };
+    assert(name.len > 0); // invariant: a named deed always carries its name
+    return name;
+}
+
+// =========================================================================
+// The bench -- the table and the neighbours it speaks through
+// =========================================================================
+
+/// Everything a reply reads: the policy table, and the three neighbours that
+/// hold state a deed can move.
+pub const Bench = struct {
+    table: capabilities.CapabilityTable = .{},
+    tree: derivation.Tree = .{},
+    region: untyped.Region = .{},
+    buffer: ipc_buffer.Buffer = .{},
+};
+
+// =========================================================================
+// Reading an ask
+// =========================================================================
+
+/// What one stage alone would answer, asked against a bench it never moves.
+///
+/// The tree, the region, and the buffer are taken by value, so examining a
+/// stage spends nothing and seats nothing. That is what makes the order
+/// provable rather than assumed: each stage can be asked in isolation, and the
+/// answer `read` gives can then be held against the earliest stage that refuses.
+pub fn examine(bench: *const Bench, ask: Ask, stage: Stage) ReplyError!refusals.KernelRefusal {
+    switch (stage) {
+        .edge => {
+            // The request alone, before a slot is touched or a byte is spent.
+            return edge.read(ask.request);
+        },
+        .message => {
+            if (ask.words > ipc_buffer.max_message_words) return ipc_buffer.IpcError.MessageTooLong;
+            var buffer = bench.buffer;
+            var carried = [_]u64{0} ** ipc_buffer.max_message_words;
+            const seated = try buffer.send(@intFromEnum(ask.method), carried[0..@intCast(ask.words)], 0);
+            // invariant: a message inside the buffer's bound always seats.
+            assert(seated == .no_error);
+            return buffer.read(ask.method);
+        },
+        .table => {
+            const own = bench.table.refusal_reason(ask.dependent, ask.resource, ask.need);
+            return refusals.from_caravan(as_caravan(own));
+        },
+        .deed => {
+            var tree = bench.tree;
+            var region = bench.region;
+            return switch (ask.deed) {
+                .ask_only => .no_error,
+                .seat => try tree.seat(ask.slot, ask.resource_number, ask.need),
+                .derive => try tree.derive(ask.parent, ask.slot, ask.need),
+                .release => try tree.delete(ask.slot),
+                .carve => try region.retype(ask.request.kind, ask.request.count),
+            };
+        },
+    }
+}
+
+/// The first stage that refuses this ask, or nothing when every stage passes.
+///
+/// Held apart from `read` on purpose: the sweep proves the answer `read` gives
+/// is genuinely the earliest stage's, by finding that stage independently.
+pub fn first_refusing(bench: *const Bench, ask: Ask) ReplyError!?Stage {
+    for (all_stages) |stage| {
+        const answer = try examine(bench, ask, stage);
+        if (answer != .no_error) return stage;
+    }
+    return null;
+}
+
+/// Read a whole ask, answering the first refusal it earns.
+///
+/// Answers `.no_error` when every stage passes, having committed the deed to
+/// the bench; otherwise the kernel refusal of the **earliest** refusing stage,
+/// with the bench standing exactly as it was found. A refused ask spends
+/// nothing, which is the same promise each neighbour already keeps alone.
+pub fn read(bench: *Bench, ask: Ask) ReplyError!refusals.KernelRefusal {
+    for (all_stages) |stage| {
+        const answer = try examine(bench, ask, stage);
+        if (answer != .no_error) {
+            // invariant: a refused ask is answered by one of the kernel's eleven.
+            assert(@intFromEnum(answer) < refusals.kernel_refusal_count);
+            return answer;
+        }
+    }
+    const done = try commit(bench, ask);
+    // invariant: a deed every stage welcomed carries out without refusing.
+    assert(done == .no_error);
+    return .no_error;
+}
+
+/// Carry out the deed of an ask every stage has welcomed. Reached only from
+/// `read`, and only after the deed was examined and passed.
+fn commit(bench: *Bench, ask: Ask) ReplyError!refusals.KernelRefusal {
+    return switch (ask.deed) {
+        .ask_only => .no_error,
+        .seat => try bench.tree.seat(ask.slot, ask.resource_number, ask.need),
+        .derive => try bench.tree.derive(ask.parent, ask.slot, ask.need),
+        .release => try bench.tree.delete(ask.slot),
+        .carve => try bench.region.retype(ask.request.kind, ask.request.count),
+    };
+}
+
+// =========================================================================
+// The bench the corpus runs against
+// =========================================================================
+
+/// A worked bench: three dependents with real grants, a lineage two deep, and
+/// a region exactly one page wide.
+///
+/// Every fact here is load-bearing for some ask in the corpus. The region holds
+/// one page so a two-page carve is refused for memory rather than for arithmetic;
+/// slot 0 is seated and slot 1 derived from it, so seating slot 0 again earns
+/// delete-first and releasing it earns revoke-first.
+pub fn demo_bench() ReplyError!Bench {
+    var bench: Bench = .{
+        .tree = derivation.Tree.init(),
+        .region = try untyped.Region.open(0, untyped.object_bits(.page)),
+        .buffer = ipc_buffer.Buffer.init(),
+    };
+
+    const vfs = bench.table.add_dependent("vfs") catch unreachable;
+    vfs.grant(capabilities.Capability.init("/usr", capabilities.right_read)) catch unreachable;
+    vfs.grant(capabilities.Capability.init("/lib", capabilities.right_read)) catch unreachable;
+
+    const display = bench.table.add_dependent("display") catch unreachable;
+    display.grant(capabilities.Capability.init("gpu0", capabilities.right_read | capabilities.right_device)) catch unreachable;
+
+    const repl = bench.table.add_dependent("repl") catch unreachable;
+    repl.grant(capabilities.Capability.init("here", capabilities.right_read | capabilities.right_write)) catch unreachable;
+
+    const both = capabilities.right_read | capabilities.right_write;
+    const seated = try bench.tree.seat(0, 7, both);
+    assert(seated == .no_error); // invariant: an empty tree always seats its first root
+    const handed = try bench.tree.derive(0, 1, capabilities.right_read);
+    assert(handed == .no_error); // invariant: narrowing rights along a fresh lineage always carries
+
+    // invariant: the bench the corpus runs against is a whole one, every part.
+    assert(bench.tree.whole());
+    assert(bench.region.whole());
+    assert(bench.buffer.whole());
+    assert(bench.table.dependent_count == 3);
+    return bench;
+}
+
+// =========================================================================
+// The corpus -- one named ask per answer, so the reach is run rather than told
+// =========================================================================
+
+/// One ask, with the name of what it is meant to earn.
+pub const Named = struct {
+    name: []const u8,
+    ask: Ask,
+};
+
+const page_bits = untyped.object_bits(.page);
+
+/// A clean ask: a well-formed request, a message long enough for its method, a
+/// dependent that holds the resource with the right it needs, and nothing done.
+const clean_ask: Ask = .{
+    .dependent = "vfs",
+    .resource = "/usr",
+    .need = capabilities.right_read,
+};
+
+/// The asks the reach is measured over. Each earns one of the eleven, and each
+/// runs against its own fresh bench so no ask can be answered by a state an
+/// earlier one left behind.
+pub const corpus = [_]Named{
+    .{ .name = "a well-formed, permitted ask that does nothing", .ask = clean_ask },
+    .{
+        .name = "a slot asked for at a width no slot can be",
+        .ask = .{ .request = .{ .kind = .slot, .size_bits = 6 } },
+    },
+    .{
+        .name = "a request for no objects at all",
+        .ask = .{ .request = .{ .kind = .slot, .size_bits = 5, .count = 0 } },
+    },
+    .{
+        .name = "a page asked to land off its own boundary",
+        .ask = .{ .request = .{ .kind = .page, .size_bits = page_bits, .address = 1 } },
+    },
+    .{
+        .name = "a message one word long where the method reads three",
+        .ask = .{ .method = .entrust, .words = 1 },
+    },
+    .{
+        .name = "an ask from a dependent the table has never heard of",
+        .ask = .{ .dependent = "stranger" },
+    },
+    .{
+        .name = "an ask for a resource the dependent was never granted",
+        .ask = .{ .dependent = "vfs", .resource = "/etc" },
+    },
+    .{
+        .name = "an ask to write what the dependent may only read",
+        .ask = .{ .dependent = "vfs", .resource = "/usr", .need = capabilities.right_write },
+    },
+    .{
+        .name = "a capability seated into a slot already held",
+        .ask = .{ .deed = .seat, .slot = 0 },
+    },
+    .{
+        .name = "a capability released while others stand derived from it",
+        .ask = .{ .deed = .release, .slot = 0 },
+    },
+    .{
+        .name = "two pages carved from a region one page wide",
+        .ask = .{
+            .deed = .carve,
+            .request = .{ .kind = .page, .size_bits = page_bits, .count = 2 },
+        },
+    },
+};
+
+/// Which of the eleven the corpus actually earns, one flag per answer.
+///
+/// This is the measurement the whole rung turns on. It runs asks; it reads no
+/// roster of neighbours and credits nothing by proximity.
+pub fn reach() ReplyError![refusals.kernel_refusal_count]bool {
+    var earned = [_]bool{false} ** refusals.kernel_refusal_count;
+    for (corpus) |named| {
+        var bench = try demo_bench();
+        const answer = try read(&bench, named.ask);
+        const index: u32 = @intFromEnum(answer);
+        // invariant: every answer stands inside the kernel's own vocabulary.
+        assert(index < refusals.kernel_refusal_count);
+        earned[@intCast(index)] = true;
+    }
+    return earned;
+}
+
+/// How many of the eleven the table reaches once it speaks through its
+/// neighbours -- counted from the flags, so no number is ever recited.
+pub fn reach_count() ReplyError!u32 {
+    const earned = try reach();
+    var count: u32 = 0;
+    for (earned) |flag| {
+        if (flag) count += 1;
+    }
+    // invariant: a reach never exceeds the vocabulary it is measured against.
+    assert(count <= refusals.kernel_refusal_count);
+    return count;
+}
+
+// =========================================================================
+// The stages and the reach, printed
+// =========================================================================
+
+fn print_table() u8 {
+    print("reply: version {s}\n", .{caravan_reply_version});
+    for (all_stages, 0..) |stage, position| {
+        print("reply: stage {d} {s} -- {s}\n", .{ position + 1, stage_name(stage), order_reason(stage) });
+        for (stage_owns(stage)) |owned| {
+            print("reply:   owns {s}\n", .{refusals.kernel_symbol(owned)});
+        }
+        for (stage_echoes(stage)) |echoed| {
+            print("reply:   echoes {s}, which the table owns\n", .{refusals.kernel_symbol(echoed)});
+        }
+    }
+
+    const earned = reach() catch {
+        print("reply: the corpus did not run\n", .{});
+        return 1;
+    };
+    for (corpus, 0..) |named, index| {
+        var bench = demo_bench() catch {
+            print("reply: the bench did not build\n", .{});
+            return 1;
+        };
+        const answer = read(&bench, named.ask) catch {
+            print("reply: ask {d} did not read\n", .{index});
+            return 1;
+        };
+        print("reply: {s} answers {s}\n", .{ named.name, refusals.kernel_symbol(answer) });
+    }
+
+    var count: u32 = 0;
+    for (earned) |flag| {
+        if (flag) count += 1;
+    }
+    print("reply: the table alone answers {d}; speaking through its neighbours it answers {d} of {d}.\n", .{
+        refusals.answered_count(),
+        count,
+        refusals.kernel_refusal_count,
+    });
+    return 0;
+}
+
+// =========================================================================
+// Self-test -- assert the order, the reach, and the honesty of the echo
+// =========================================================================
+
+fn run_self_test() u8 {
+    // ---- The roster is read rather than recited, and the order lives in one list.
+    assert(all_stages.len == 4);
+    for (all_stages, 0..) |stage, position| {
+        assert(@intFromEnum(stage) == position);
+        assert(stage_name(stage).len > 0);
+        assert(order_reason(stage).len > 0);
+    }
+
+    // ---- The four owned sets are disjoint, and with success they are the eleven.
+    var claimed = [_]u32{0} ** refusals.kernel_refusal_count;
+    for (all_stages) |stage| {
+        for (stage_owns(stage)) |owned| {
+            assert(owned != .no_error); // invariant: no stage owns success -- success is every stage passing
+            claimed[@intCast(@intFromEnum(owned))] += 1;
+        }
+    }
+    var owned_total: u32 = 0;
+    for (refusals.all_kernel_refusals) |refusal| {
+        const times = claimed[@intCast(@intFromEnum(refusal))];
+        if (refusal == .no_error) {
+            assert(times == 0); // invariant: success is owned by no stage
+        } else {
+            assert(times == 1); // invariant: every refusal has exactly one author in the order
+            owned_total += 1;
+        }
+    }
+    assert(owned_total + 1 == refusals.kernel_refusal_count);
+
+    // ---- Every echo is a refusal some earlier stage owns, never a new answer.
+    for (all_stages) |stage| {
+        for (stage_echoes(stage)) |echoed| {
+            var owner_found = false;
+            for (all_stages) |earlier| {
+                if (@intFromEnum(earlier) >= @intFromEnum(stage)) continue;
+                for (stage_owns(earlier)) |owned| {
+                    if (owned == echoed) owner_found = true;
+                }
+            }
+            assert(owner_found); // invariant: an echo repeats an earlier stage's answer
+        }
+    }
+
+    // ---- The seam carries the table's four across without reordering them.
+    assert(as_caravan(.allowed) == .allowed);
+    assert(as_caravan(.no_such_dependent) == .no_such_dependent);
+    assert(as_caravan(.no_such_resource) == .no_such_resource);
+    assert(as_caravan(.rights_insufficient) == .rights_insufficient);
+
+    // ---- Each corpus ask earns exactly what it was written to earn.
+    const expected = [_]refusals.KernelRefusal{
+        .no_error,          .invalid_argument, .range_error,
+        .alignment_error,   .truncated_message, .failed_lookup,
+        .invalid_capability, .illegal_operation, .delete_first,
+        .revoke_first,      .not_enough_memory,
+    };
+    assert(expected.len == corpus.len);
+    for (corpus, 0..) |named, index| {
+        var bench = demo_bench() catch return 1;
+        const answer = read(&bench, named.ask) catch return 1;
+        assert(answer == expected[index]);
+        assert(named.name.len > 0);
+    }
+
+    // ---- The reach is measured, and it is the whole vocabulary.
+    const earned = reach() catch return 1;
+    for (earned) |flag| {
+        assert(flag); // invariant: every one of the eleven is earned by an ask that ran
+    }
+    const reached = reach_count() catch return 1;
+    assert(reached == refusals.kernel_refusal_count);
+
+    // ---- Both truths, side by side. The table alone still answers four, and
+    //      `refusals.rye` is right to say so; speaking through its neighbours
+    //      it answers all eleven. Neither number is recited -- each is counted.
+    const alone = refusals.answered_count();
+    const owed_alone = refusals.unanswered_count();
+    assert(alone == 4);
+    assert(owed_alone == 7);
+    assert(alone + owed_alone == refusals.kernel_refusal_count);
+    assert(reached > alone);
+    assert(reached - alone == owed_alone);
+
+    // ---- The earliest stage wins, proven on asks that fail several at once.
+    {
+        var bench = demo_bench() catch return 1;
+        // Bad at every stage: an impossible width, a message a word too short,
+        // a dependent nobody has heard of, and a slot already held.
+        const all_bad: Ask = .{
+            .request = .{ .kind = .slot, .size_bits = 6 },
+            .method = .entrust,
+            .words = 1,
+            .dependent = "stranger",
+            .deed = .seat,
+            .slot = 0,
+        };
+        const failing = first_refusing(&bench, all_bad) catch return 1;
+        assert(failing != null);
+        assert(failing.? == .edge);
+        const answer = read(&bench, all_bad) catch return 1;
+        assert(answer == .invalid_argument);
+        // invariant: an ask refused at the edge moved nothing at all.
+        assert(bench.tree.live_count() == 2);
+    }
+    {
+        var bench = demo_bench() catch return 1;
+        // Clean at the edge, short at the message, and bad at both later stages.
+        const short: Ask = .{ .method = .entrust, .words = 2, .dependent = "stranger", .deed = .seat, .slot = 0 };
+        const answer = read(&bench, short) catch return 1;
+        assert(answer == .truncated_message);
+    }
+    {
+        var bench = demo_bench() catch return 1;
+        // Clean and legible, refused by the table, so the deed never runs.
+        const unheard: Ask = .{ .dependent = "stranger", .deed = .seat, .slot = 0 };
+        const answer = read(&bench, unheard) catch return 1;
+        assert(answer == .failed_lookup);
+        assert(bench.tree.live_count() == 2); // invariant: a table refusal spends nothing below it
+    }
+
+    // ---- The echo is real: the deed answers a failed lookup of its own, about
+    //      a slot rather than a dependent, on an ask the table welcomed.
+    {
+        var bench = demo_bench() catch return 1;
+        const empty_parent: Ask = .{ .deed = .derive, .parent = 9, .slot = 5 };
+        const table_says = examine(&bench, empty_parent, .table) catch return 1;
+        assert(table_says == .no_error);
+        const answer = read(&bench, empty_parent) catch return 1;
+        assert(answer == .failed_lookup);
+    }
+
+    // ---- A welcomed deed actually happens, which is what makes a refusal mean
+    //      something. Seating an empty slot leaves the tree one capability wider.
+    {
+        var bench = demo_bench() catch return 1;
+        const before = bench.tree.live_count();
+        const seating: Ask = .{ .deed = .seat, .slot = 4, .resource_number = 12 };
+        const answer = read(&bench, seating) catch return 1;
+        assert(answer == .no_error);
+        assert(bench.tree.live_count() == before + 1);
+        assert(bench.tree.whole());
+    }
+
+    // ---- A carve that fits spends the region; one that does not spends nothing.
+    {
+        var bench = demo_bench() catch return 1;
+        const one_page: Ask = .{
+            .deed = .carve,
+            .request = .{ .kind = .page, .size_bits = page_bits, .count = 1 },
+        };
+        const answer = read(&bench, one_page) catch return 1;
+        assert(answer == .no_error);
+        assert(bench.region.free_bytes() == 0);
+
+        var untouched = demo_bench() catch return 1;
+        const two_pages: Ask = .{
+            .deed = .carve,
+            .request = .{ .kind = .page, .size_bits = page_bits, .count = 2 },
+        };
+        const refused = read(&untouched, two_pages) catch return 1;
+        assert(refused == .not_enough_memory);
+        assert(untouched.region.free_bytes() == untouched.region.bytes());
+    }
+
+    // ---- The two lines stay apart, one floor up. The kernel creates at most
+    //      256 objects in one invocation and Caravan's region carves at most 64,
+    //      so a carve of sixty-five is welcomed by the edge and refused by the
+    //      region -- by the region's own named error, never by a kernel word.
+    {
+        var bench = demo_bench() catch return 1;
+        const sixty_five: Ask = .{
+            .deed = .carve,
+            .request = .{ .kind = .slot, .size_bits = 5, .count = 65 },
+        };
+        assert(edge.read(sixty_five.request) == .no_error);
+        const outcome = read(&bench, sixty_five);
+        assert(outcome == ReplyError.TooManyObjects);
+    }
+
+    // ---- The sweep. Over a swept space of asks, the answer `read` gives is
+    //      always the answer of the earliest stage that refuses, found
+    //      independently -- and every stage before it genuinely passes.
+    var swept: u32 = 0;
+    var welcomed: u32 = 0;
+    var refused: u32 = 0;
+    const labels = [_][]const u8{ "vfs", "display", "repl", "stranger" };
+    const resources = [_][]const u8{ "/usr", "/etc", "gpu0", "here" };
+    const needs = [_]u8{ capabilities.right_read, capabilities.right_write, capabilities.right_device };
+    const deeds = [_]Deed{ .ask_only, .seat, .release };
+    const widths = [_]u32{ 4, 5, 12 };
+    const lengths = [_]u32{ 1, 2, 3 };
+
+    for (untyped.all_object_kinds) |kind| {
+        for (widths) |width| {
+            for (labels) |label| {
+                for (resources) |resource| {
+                    for (needs) |need| {
+                        for (deeds) |deed| {
+                            for (ipc_buffer.all_methods) |method| {
+                                const length = lengths[@intCast(@intFromEnum(method) % lengths.len)];
+                                const ask: Ask = .{
+                                    .request = .{ .kind = kind, .size_bits = width, .count = 1, .address = 0 },
+                                    .method = method,
+                                    .words = length,
+                                    .dependent = label,
+                                    .resource = resource,
+                                    .need = need,
+                                    .deed = deed,
+                                    .slot = 0,
+                                };
+                                var bench = demo_bench() catch return 1;
+                                const failing = first_refusing(&bench, ask) catch return 1;
+                                const answer = read(&bench, ask) catch return 1;
+                                if (failing) |stage| {
+                                    var probe = demo_bench() catch return 1;
+                                    const stage_says = examine(&probe, ask, stage) catch return 1;
+                                    assert(answer == stage_says);
+                                    for (all_stages) |earlier| {
+                                        if (@intFromEnum(earlier) >= @intFromEnum(stage)) continue;
+                                        const earlier_says = examine(&probe, ask, earlier) catch return 1;
+                                        assert(earlier_says == .no_error);
+                                    }
+                                    refused += 1;
+                                } else {
+                                    assert(answer == .no_error);
+                                    welcomed += 1;
+                                }
+                                swept += 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // invariant: both arms of the sweep were genuinely exercised.
+    assert(welcomed >= 1);
+    assert(refused >= 1);
+    assert(welcomed + refused == swept);
+
+    print("reply: version {s}\n", .{caravan_reply_version});
+    print("reply: four stages read one ask -- edge, message, table, deed -- and the earliest wins.\n", .{});
+    print("reply: the order is Caravan's own, each stage depending only on facts the ones before it established.\n", .{});
+    print("reply: the table alone answers {d} of {d}; speaking through its neighbours it answers {d}.\n", .{ alone, refusals.kernel_refusal_count, reached });
+    print("reply: the reach is measured from {d} named asks that ran, never credited by proximity.\n", .{corpus.len});
+    print("reply: the deed echoes seL4_FailedLookup and seL4_IllegalOperation, which the table owns -- named rather than hidden.\n", .{});
+    print("reply: swept {d} asks, {d} welcomed and {d} refused, every answer the earliest refusing stage's.\n", .{ swept, welcomed, refused });
+    print("reply: the refusal agenda closes by measurement -- GREEN.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
+    if (args.len >= 2) return 1;
+    return run_self_test();
+}
