@@ -51,8 +51,11 @@ while IFS= read -r stamp; do
 done <"$tmp"
 
 # Erratum integrity: each listed stamp must still exist in the tree — as a living
-# file, or (accrete-never-break) as a folded log under session-logs/archive/, since a
+# file, or (accrete-never-break) as a folded log under session-logs/date/, since a
 # day's logs fold there by stamp and leave the top-level living glob unchanged in name.
+# The fold destination molted archive/ -> date/ on 20260821.161758 with the mark law; the
+# elder name is still searched so this guard reads a tree folded either way rather than
+# going quietly weaker on a clone that has not moved yet.
 while IFS= read -r line; do
   case "$line" in
     ''|\#*) continue ;;
@@ -62,7 +65,7 @@ while IFS= read -r line; do
   fi
   d="${line%.*}"
   t="${line#*.}"
-  if find session-logs/archive -name "${d}-${t}_*" 2>/dev/null | grep -q .; then
+  if find session-logs/date session-logs/archive -name "${d}-${t}_*" 2>/dev/null | grep -q .; then
     echo "ERRATUM_ARCHIVED $line"
     continue
   fi

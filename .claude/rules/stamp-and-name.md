@@ -46,13 +46,13 @@ A room folds when it outgrows a reader. The shape is:
 - **The basename stays globally unique.** `152409_align.md` can exist on two hundred days; `grep -r` would then find the wrong one, silently, which is the worst failure a reference can have.
 - **The name survives leaving its path.** Editor tabs, `find` output, a filename pasted into a message -- `20260821-152409_the-standfast-read` still says when and what. `152409_the-standfast-read` says neither.
 
-**A fold repoints nothing.** With 4,138 broken dated references already standing across 19,787, repointing by hand would mean editing thousands of dated logs -- a Tier 2 breach at scale, in service of tidiness. A stale reference is **resolved**, never rewritten:
+**A fold repoints nothing** -- except a **living index**, which is repointed in the same pass because an index's whole job is to point correctly. Everything else is left as written. With 4,138 broken dated references already standing across 19,787 before the first fold, repointing by hand would mean editing thousands of dated logs -- a Tier 2 breach at scale, in service of tidiness. A stale reference is **resolved**, never rewritten:
 
 ```
 rishi/bin/rishi run tools/dated_path_resolve.rish <reference> [<citing-file>]
 ```
 
-**No fold ships without the witness green.** [`tools/dated_path_witness.rish`](../../tools/dated_path_witness.rish) proves the resolver's five verdicts on real cases, proves the fold rule on a room that has never folded, refuses three RED paths, and holds the broken-reference census under a ceiling with **no slack** -- so a fold that leaves a reference dangling reds on the lap it enters. Lower the ceiling when a repair lands; never raise it.
+**No fold ships without the witness green.** [`tools/dated_path_witness.rish`](../../tools/dated_path_witness.rish) proves the resolver's five verdicts on real cases, proves the fold rule on a room that has never folded, refuses three RED paths, and holds the **lost-reference** census under a ceiling with **no slack**. The gate is on what the resolver *cannot* recover -- a basename that exists nowhere, or one at two paths where no answer is safe -- rather than on the whole broken count, because a reference the resolver recovers is the expected steady state and rises whenever a room folds. Moving a file changes its path and never its basename, so a correct fold leaves the lost count exactly where it stood. Lower it when a repair lands; never raise it.
 
 ## Write an illustration as a shape
 

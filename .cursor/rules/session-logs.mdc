@@ -12,7 +12,7 @@ At the end of **every** response -- before finishing the turn -- write a session
 
 **New logs are `.bron`**, not Markdown. Bron carries immutable values at seams (key-value, one field per line, `#` comments, no quotes, no braces). See `active-designing/yonder/20260621-063912_bron-notation.md` and counsel `20260707-222500`.
 
-Historical Markdown logs live under `session-logs/archive/YYYYMMDD/` (folded by day). Do not create new `.md` session logs.
+Historical Markdown logs live under `session-logs/date/YYYYMMDD/` (folded by day). Do not create new `.md` session logs.
 
 ## Filename
 
@@ -63,7 +63,9 @@ recommend keep-going|check-in what and why
 
 ## Archive fold
 
-Prior (and closed) days' logs live under `session-logs/archive/YYYYMMDD/`. **Preview:** `rishi/bin/rishi run tools/session_logs_archive_preview.rish`. **Fold:** `rishi/bin/rishi run tools/session_logs_archive.rish` -- folds both `.bron` and historical `.md`; today's stamp stays flat. Run fold on Keaton's word.
+Prior (and closed) days' logs live under `session-logs/date/YYYYMMDD/` -- molted from `archive/` on `20260821.161758` with the mark law (`.cursor/rules/stamp-and-name.mdc`), since archive means finished while a log from nine days ago is the live record. **Preview:** `rishi/bin/rishi run tools/session_logs_archive_preview.rish`. **Fold:** `rishi/bin/rishi run tools/session_logs_archive.rish` -- folds `.kyri`, `.bron`, and historical `.md`; today's stamp stays flat and the index is repointed in the same pass. Run fold on Keaton's word.
+
+**The room is bounded at 256 flat files** (`tools/room_bound_witness.rish`), and a stale reference is **resolved, never rewritten**: `rishi/bin/rishi run tools/dated_path_resolve.rish <reference> [<citing-file>]`.
 
 Bron session logs prefer `product_nib` - `suite_nib` - `git_nib` (or `nib <hash>`) over legacy `tip` fields.
 

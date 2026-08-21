@@ -1,4 +1,4 @@
-# session_logs_archive_preview.rish — read-only count of logs that would fold.
+# session_logs_archive_preview.rish -- read-only count of logs that would fold into date/YYYYMMDD/.
 #
 # Counts prior-day flat logs; touches no files. Pair with fold for mutate.
 # Run from the repository root:
@@ -13,7 +13,7 @@ let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} ${rye} b
 assert build.ok else "session_logs_archive build failed"
 
 let today = run ["sh" "-c" "date +%Y%m%d"]
-say "archive preview: keeping day ${today.out} flat; counting earlier days for archive/."
+say "fold preview: keeping day ${today.out} flat; counting earlier days for date/."
 
 let cmd = run ["sh" "-c" "${bin} preview 2>&1"]
 assert cmd.ok else "session logs archive preview failed"
