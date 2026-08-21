@@ -1229,43 +1229,7 @@ pub fn choose_pass(
 
 /// Answers which standing dependent could carry this phase, if any could.
 pub fn confer_slot(table: *const Table, at: u32) ?u32 {
-    // invariant: a candidate always stands inside the record
-    assert(at < table.held);
-    // invariant: a run never remembers more lines than it may hold
-    assert(table.in_flight <= max_in_flight);
-    const wanted = table.record[at].task;
-    var i: u32 = 0;
-    while (i < table.in_flight) : (i += 1) {
-        if (!std.mem.eql(u8, table.live[i].domain, wanted.item.domain)) continue;
-        const held = table.reserves[i] orelse continue;
-        const depth = hop_count(wanted);
-        if (table.taken[i] + depth > reserve_depth(held)) continue;
-        var matched: u32 = 0;
-        var wanted_arcs = std.mem.splitScalar(u8, wanted.item.hops, ',');
-        var fits = true;
-        while (wanted_arcs.next()) |hop| {
-            // invariant: the walk stays inside the hops one item may name
-            assert(matched < cycle.max_hops);
-            const at_reserve = table.taken[i] + matched;
-            const on_offer = confer.reserve_arc_at(held, at_reserve) orelse {
-                fits = false;
-                break;
-            };
-            if (!std.mem.eql(u8, on_offer, hop)) fits = false;
-            if (intent.declares_write(held, at_reserve) != intent.declares_write(wanted, matched)) {
-                fits = false;
-            }
-            if (!fits) break;
-            matched += 1;
-        }
-        if (!fits) continue;
-        // invariant: every arc the phase names was weighed against the reserve
-        assert(matched == depth);
-        return i;
-    }
-    // invariant: the walk read every dependent standing, none skipped
-    assert(i == table.in_flight);
-    return null;
+    return ladder_checks.confer_slot(@This(), table, at);
 }
 
 /// Takes back the reach one standing dependent no longer needs, from the rung
