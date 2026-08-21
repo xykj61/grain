@@ -109,6 +109,8 @@
 !/vendor/genode/
 !/vendor/monocypher/
 !/vendor/pqclean/
+!/vendor/sel4/
+!/vendor/microkit/
 !/.cursor/
 !/.vscode/
 !/.vscode/settings.json

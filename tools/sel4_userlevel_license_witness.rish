@@ -1,0 +1,55 @@
+# tools/sel4_userlevel_license_witness.rish -- the obligation the license read recorded, turned into a check that runs every lap.
+#
+# WHAT THIS ENFORCES, AND WHY IT IS NOT DECORATIVE. seL4 splits its licensing at the kernel boundary: the kernel is GPL-2.0 and the
+# userlevel is BSD-2-Clause, and seL4's own LICENSE.md states the GPL "does not cover user-level code that uses kernel services by normal
+# system calls." Caravan is a root task on the permissive side, so it may LINK libsel4 rather than clean-room it
+# (external-research/20260821-041056_the-microkernel-license-read.md, granted `20260821`).
+#
+# A project-level verdict is not a licence, though. seL4 issue #245 reported in 2020 that roughly fourteen files inside libsel4 carried
+# GPL headers despite the project's stated intent -- a project that once shipped mixed headers can ship them again, and "the project
+# intends BSD" would be a poor thing to have linked against. So the license read recorded a per-file SPDX sweep as a standing obligation
+# at fetch time. The fetch has happened; this is the sweep, and it runs from here on rather than once.
+#
+# THE FOUR CLAIMS, each counted from the files on disk by tools/fixtures/vendored_license_scan.sh:
+#   1. Every file in libsel4 carries an SPDX tag -- an untagged file is an unknown licence, which is worse than a wrong one.
+#   2. Every one of those tags is BSD-2-Clause, and none is any flavour of GPL. This is the claim Caravan's right to link rests on.
+#   3. The kernel side really is copyleft, counted rather than assumed, so the boundary is proven to exist rather than described.
+#   4. Microkit carries GPL files ONLY inside its board device-tree overlay directory. Two exist today -- iot-gate.dts and
+#      overlay-zynqmp-kria-k26.dts -- and they are board descriptions rather than linkable code. A GPL file appearing ANYWHERE else in
+#      Microkit reds here, by path, on the lap it arrives.
+#
+# WHAT IT DOES NOT CLAIM. It does not audit licence TEXT, only SPDX tags -- a mistagged file would pass, and no automated sweep can
+# replace counsel where real money or real distribution is at stake. It says nothing about the kernel beyond confirming it is copyleft;
+# no kernel source is linked, and none enters our git history (both trees are gitlink submodules, exactly as Monocypher and Genode are).
+#
+# Kin: `.claude/rules/gratitude-licenses.md` (the seated verdict table) - external-research/20260821-041056 (the read) -
+# external-research/20260817-185851 (the arc, whose blind spot one this closes).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/sel4_userlevel_license_witness.rish
+
+say "sel4-userlevel-license: Language EN -- a project-level licence verdict is not a licence. seL4 splits at the kernel boundary, so what matters for Caravan is whether every file it would actually link is permissive, counted file by file rather than taken from a README."
+say "sel4-userlevel-license: Style Radiant -- the boundary is proven from both sides. The userlevel must be wholly BSD-2-Clause and wholly tagged; the kernel must really be the copyleft half, counted rather than described. A split asserted from one side only is a claim, and from both sides it is a measurement."
+say "sel4-userlevel-license: Lens TAME -- the sweep is per file, the numbers come from disk at run time, and Microkit's GPL files are bounded BY PATH rather than by count, so a new one outside the board-overlay directory cannot hide inside a tally that still reads two. This audits SPDX tags, never licence text; counsel remains the authority where distribution or money is at stake."
+
+let scan = run ["sh" "tools/fixtures/vendored_license_scan.sh"]
+assert scan.ok else "sel4-userlevel-license: the SPDX census could not run -- are vendor/sel4 and vendor/microkit checked out? (git submodule update --init --recursive)"
+
+# 1. Nothing untagged: an unknown licence is worse than a wrong one.
+assert (scan.out contains "libsel4_files=185") else "sel4-userlevel-license: libsel4's file count moved -- re-read the census before trusting any tag claim below it: ${scan.out}"
+assert (scan.out contains "libsel4_tagged=185") else "sel4-userlevel-license: some file in libsel4 carries NO SPDX tag, which is an unknown licence: ${scan.out}"
+
+# 2. The claim Caravan's right to link rests on.
+assert (scan.out contains "libsel4_bsd2=185") else "sel4-userlevel-license: not every libsel4 file is BSD-2-Clause: ${scan.out}"
+assert (scan.out contains "libsel4_gpl=0") else "sel4-userlevel-license: a GPL-tagged file has appeared inside libsel4 -- this is seL4 issue #245's fault returning, and Caravan must not link it until it is resolved: ${scan.out}"
+
+# 3. The boundary proven from the copyleft side too.
+assert (scan.out contains "kernel_gpl=618") else "sel4-userlevel-license: the kernel's GPL tag count moved -- the split may have shifted, so re-read it before relying on the userlevel verdict: ${scan.out}"
+
+# 4. Microkit's GPL files bounded by PATH, never by count.
+assert (scan.out contains "microkit_gpl_outside_dts=0") else "sel4-userlevel-license: a GPL-tagged file exists in Microkit OUTSIDE its board device-tree overlay directory -- that is linkable surface and must be read before anything depends on it: ${scan.out}"
+assert (scan.out contains "microkit_bsd2=303") else "sel4-userlevel-license: Microkit's BSD-2-Clause tag count moved -- re-read the census: ${scan.out}"
+
+say "sel4-userlevel-license: census -- ${scan.out}"
+
+say "GREEN sel4-userlevel-license: the vendored userlevel is clean and the boundary is proven from both sides. All 185 files in libsel4 carry an SPDX tag and all 185 read BSD-2-Clause, with zero GPL -- so seL4 issue #245's mixed headers are genuinely resolved, checked file by file rather than taken on intent. The kernel side counts 618 GPL tags, so the split seL4 describes is real rather than described. Microkit is 303 BSD-2-Clause with exactly two GPL files, both board device-tree overlays under custom_dts and neither linkable code, and the guard bounds them BY PATH so a new one anywhere else reds on the lap it arrives. Both trees are gitlink submodules, so no vendored source enters our git history. This audits SPDX tags rather than licence text, and counsel stays the authority where distribution or money is at stake."
