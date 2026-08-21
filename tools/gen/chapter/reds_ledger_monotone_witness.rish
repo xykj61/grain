@@ -40,7 +40,7 @@ assert scan.ok else "reds-monotone: the verdict reads ok while the status fails 
 
 # The spine says how far it reaches, so a shrinking set of rows is a red rather than a
 # quieter GREEN. It read 73 of 101 on the lap before this one and said ok about it.
-assert scan.out contains "rows=119" else "reds-monotone: want the spine reaching every row the ledger holds"
+assert scan.out contains "rows=120" else "reds-monotone: want the spine reaching every row the ledger holds"
 
 # RED path one -- a gap. The control is generated rather than tracked, so it can never
 # drift from the shape this scan enforces.
