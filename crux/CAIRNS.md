@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260821.005102` -- the fold-G and fold-H live edges fold as fold J spends the staircase
+
+**Walk-back nib:** `bbc07cff0c` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when the staircase's first half had just lifted stands at this nib and every commit before it.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullets for **fold H** and **fold G**, folded into the condensed-pointer line beneath them so the card leads with the round that just landed rather than carrying a second copy of the log index. Roughly two screenfuls fall away; every word stands at the nib above.
+
+**What waits there, worth recalling:** the inline account of **fold H** as it was written -- the mask that found eight twins no hash could reach, the six symbols widened by one word in each of eight rungs, and the parity proven on printed output because byte-identity had run out -- beside **fold G**, which spent the last whole body of the printing family and, by running the whole choir cold, surfaced **REDS %101** and **REDS %102**: a meter that proved itself GREEN yet stood unregistered in its choir for two laps, and a ledger spine guard proving seventy-three rows of a hundred and one while printing `verdict=ok`. Both closures replaced a hand-kept list with something discovered on disk, which is the reasoning fold J then applied at the moment of design rather than after a guard went blind. Both accounts live on in `session-logs/20260820-235259_caravan-ladder-fold-h-the-mask-that-found-eight-twins.kyri`, `session-logs/20260820-233406_caravan-ladder-fold-g-and-the-guards-that-could-not-see.kyri`, and the fold sections of `caravan/README.md`.
+
+
 ### `20260820.232126` -- the fold-F live edge folds as fold G spends the last whole body
 
 **Walk-back nib:** `078135e0da` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when the reader-telling body had just lifted into the harness stands at this nib and every commit before it.

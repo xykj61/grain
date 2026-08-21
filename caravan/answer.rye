@@ -629,12 +629,12 @@ fn appraising_of(report_out: *Report) *appraising_rung.Report {
 }
 
 /// The bearing rung's tally, five tiers further down.
-fn bearing_of(report_out: *Report) *bearing_rung.Report {
+pub fn bearing_of(report_out: *Report) *bearing_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The mending rung's tally, six tiers further down.
-fn below_of(report_out: *Report) *mending_rung.Report {
+pub fn below_of(report_out: *Report) *mending_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
@@ -654,7 +654,7 @@ fn masked_of(report_out: *Report) *mask.Report {
 }
 
 /// The turn-order counters, reached the same way.
-fn preceded_of(report_out: *Report) *precede.Report {
+pub fn preceded_of(report_out: *Report) *precede.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
@@ -13002,87 +13002,14 @@ pub fn main(init: std.process.Init) !u8 {
     return run_self_test(allocator, io, self_path);
 }
 
-/// Prints the tiers whose correspondence closes the loop: the second look
-/// carried home, the reply that reader wrote back, the impasse this run hands
-/// to the next one, and the impasse it opened holding.
+/// Tells what this run carried, tier by tier, and then the three lines every
+/// rung of this family closes on.
 ///
-/// Split from the telling above it because the arc grew past the length a
-/// reader holds in one glance, and a line the eye skips is a line nobody
-/// checks. The numbers are unchanged; only where they are printed moved.
+/// The whole staircase stands once in `ladder_checks.rye`. This rung's share of
+/// it is read off the tier accessors this rung declares, so the body here is the
+/// two words naming which plan each column reports.
 fn tell_beckon_own(bare_run: *Report, under_run: *Report) void {
-    // invariant: a telling always reads two runs that were actually run
-    assert(run_of(bare_run).queued >= 1);
-    // invariant: a telling never names more impasses than one forbearance carries
-    assert(under_run.inner.inner.inner.minded <= 1);
-    print("  second looks this run carried home to the reader who asked: {d} leaving, {d} hearing\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.recounted, under_run.inner.inner.inner.inner.inner.inner.recounted,
-    });
-    print("  second looks this run kept inside its own notes: {d} leaving, {d} hearing\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.withheld, under_run.inner.inner.inner.inner.inner.inner.withheld,
-    });
-    print("  second looks a run made whose reader was never told: {d} against {d}\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.untold, under_run.inner.inner.inner.inner.inner.inner.untold,
-    });
-    print("  tellings this run read its reader's own word on: {d} leaving, {d} hearing\n", .{
-        bare_run.inner.inner.inner.inner.inner.read_back, under_run.inner.inner.inner.inner.inner.read_back,
-    });
-    print("  tellings this run made with nobody's reply opened: {d} leaving, {d} hearing\n", .{
-        bare_run.inner.inner.inner.inner.inner.unread, under_run.inner.inner.inner.inner.inner.unread,
-    });
-    print("  tellings a run made whose reader's word was never read back: {d} against {d}\n", .{
-        bare_run.inner.inner.inner.inner.inner.unheard, under_run.inner.inner.inner.inner.inner.unheard,
-    });
-    print("  standing matters this run handed to the run after it: {d} leaving, {d} hearing\n", .{
-        bare_run.inner.inner.inner.inner.forborne, under_run.inner.inner.inner.inner.forborne,
-    });
-    print("  standing matters this run left for the next run to open afresh: {d} leaving, {d} hearing\n", .{
-        bare_run.inner.inner.inner.inner.opened, under_run.inner.inner.inner.inner.opened,
-    });
-    print("  matters a run left standing with nothing handed on: {d} against {d}\n", .{
-        bare_run.inner.inner.inner.inner.unhanded, under_run.inner.inner.inner.inner.unhanded,
-    });
-    print("  inherited impasses this run named where the outcome is read: {d} leaving, {d} hearing\n", .{
-        bare_run.inner.inner.inner.minded, under_run.inner.inner.inner.minded,
-    });
-    print("  inherited impasses this run began the matter again from: {d} leaving, {d} hearing\n", .{
-        bare_run.inner.inner.inner.begun, under_run.inner.inner.inner.begun,
-    });
-    print("  impasses a run opened holding and never named: {d} against {d}\n", .{
-        bare_run.inner.inner.inner.unminded, under_run.inner.inner.inner.unminded,
-    });
-    print("  twice-carried impasses this run stood a wall around: {d} leaving, {d} hearing\n", .{
-        bare_run.inner.inner.walled, under_run.inner.inner.walled,
-    });
-    print("  impasses a plan carried round twice and relayed anyway: {d} against {d}\n", .{
-        bare_run.inner.inner.unbounded, under_run.inner.inner.unbounded,
-    });
-    print("  stood walls this run carried out to the person who can act on it: {d} leaving, {d} hearing\n", .{
-        bare_run.inner.beckoned, under_run.inner.beckoned,
-    });
-    print("  stood walls this run kept in the plan's own drawer: {d} leaving, {d} hearing\n", .{
-        bare_run.inner.kept, under_run.inner.kept,
-    });
-    print("  walls a plan stood and told nobody about: {d} against {d}\n", .{
-        bare_run.inner.unheralded, under_run.inner.unheralded,
-    });
-    print("  carried calls this run opened its reader's own answer to: {d} leaving, {d} hearing\n", .{
-        bare_run.opened, under_run.opened,
-    });
-    print("  carried calls this run left the reader's answer to standing shut: {d} leaving, {d} hearing\n", .{
-        bare_run.left, under_run.left,
-    });
-    print("  answers a reader wrote back that the plan never opened: {d} against {d}\n", .{
-        bare_run.unopened, under_run.unopened,
-    });
-    print("  work still standing when the supervisor exits: {d} leaving, {d} hearing\n", .{
-        below_of(bare_run).unserved, below_of(under_run).unserved,
-    });
-    print("  the plan, as an operator finally reads it: {s} leaving, {s} hearing\n", .{
-        settlement_words(bearing_of(bare_run).settlement), settlement_words(bearing_of(under_run).settlement),
-    });
-    print("  breaks a named turn: {d} leaving, {d} hearing\n", .{
-        preceded_of(bare_run).out_of_precede, preceded_of(under_run).out_of_precede,
-    });
+    ladder_checks.tell_beckon_own(@This(), "leaving", "hearing", bare_run, under_run);
 }
 
 
