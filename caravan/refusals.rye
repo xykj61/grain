@@ -17,9 +17,15 @@
 //!
 //! TWO ROOMS. The eleven names and their ordering are checkable, and
 //! `tools/caravan_refusals_witness.rish` binds them against the vendored
-//! BSD-2-Clause header on metal. Which of the eleven each Caravan outcome
-//! *should* map to is a design judgement, named as one below, and it earns its
-//! proof the day a capability is actually invoked.
+//! BSD-2-Clause header on metal. So are three of the **meanings**: seL4
+//! publishes a description for each refusal in its own interface files, and
+//! the witness holds our sentence and the kernel's to each other, reporting
+//! the eight still unbound rather than passing over them. That leg exists
+//! because it had to: for one lap `delete_first` carried `revoke_first`'s
+//! meaning, inside a rung whose parity check looked only at names (REDS %107).
+//! Which of the eleven each Caravan outcome *should* map to remains a design
+//! judgement, named as one below, earning its proof the day a capability is
+//! actually invoked.
 //!
 //! CLEAN ROOM. No seL4 line is reproduced here. The identifiers below are
 //! interface names, written so a later binding can be diffed against the
@@ -34,7 +40,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-const caravan_refusals_version = "20260821.050317";
+const caravan_refusals_version = "20260821.052104";
 
 /// How many refusals a capability invocation may answer with, seL4's
 /// `seL4_NumErrors`. Read from the compiled enum `20260821.043831`; the
@@ -94,8 +100,8 @@ pub fn kernel_meaning(refusal: KernelRefusal) []const u8 {
         .alignment_error => "an address or size missed the alignment the object requires",
         .failed_lookup => "no capability stands in the slot that was named",
         .truncated_message => "the message carried fewer words than the method reads",
-        .delete_first => "a child capability stands beneath this one",
-        .revoke_first => "derived capabilities stand beneath this one",
+        .delete_first => "the destination slot already holds a capability",
+        .revoke_first => "capabilities stand derived from this one, so it cannot be derived further",
         .not_enough_memory => "the untyped region holds too little to retype",
     };
     assert(meaning.len > 0); // invariant: every answer is legible
@@ -146,6 +152,13 @@ pub fn from_caravan(refusal: CaravanRefusal) KernelRefusal {
 
 /// The subsystem that will owe an answer for a refusal Caravan cannot make
 /// today. `answered` marks the four already spoken for.
+///
+/// The count here is what `capabilities.rye`'s **policy table** can answer, and
+/// it stays at four on purpose. `derivation.rye` (`20260821.052104`) now answers
+/// `delete_first` and `revoke_first` from a real lineage, yet the table above
+/// the line has not learned to speak through the tree, so claiming them here
+/// would credit the table with reach it does not have. The debt closes when the
+/// table itself can answer, never when a neighbour can.
 pub const Owed = enum(u8) {
     answered = 0,
     argument_checking = 1,
