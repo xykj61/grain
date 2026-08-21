@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20260821.193339
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The reader's walk, and the room no reader ever received
+prompt do the reader's full walk
+think Made the walk real rather than simulated. Cloning this repository to a clean directory gives exactly what a stranger gets, because everything untracked stays behind by definition -- no toolchain, no rye, no rishi. That is the test, and nothing short of it would have found what it found.
+think Followed the first-hour page verbatim, extracting its commands from the page rather than typing what I remembered, so the thing under test was the page and not my memory of it.
+think Steps one through five held exactly. The toolchain fetched and verified, zig reported 0.16.0, the bootstrap raised a compiler, the compiler built the shell, hello printed its three lines, and the witness printed its green line -- each matching the page word for word.
+think Step six disagreed, and the disagreement was the whole point of walking. The reader's own five-line program printed 71 rooms where the page promised 78. The command was right, the path was right, the OUTPUT was not -- which is the class no guard reaches, and the most quietly damaging for a beginner, since their very first program contradicts the tutorial and they have no way to know which is wrong.
+think Traced the seventy-eight and found something worse than a stale number. The gap is gitignored rooms, and one of them is active-development -- the room I opened two rounds ago as arc two's deliverable, announced in ORGANIZING, CLAUDE.md, the Lexicon, a seated rule, and a commit message, and never once in git.
+think Read the .gitignore and found it says so itself. Line 8 is /*, ignoring everything at the root, with each room let back in by name, and the comment above it reads: when we add a new top-level project directory, we list it here too. I did not, so git add -A added nothing from that room while succeeding loudly on every other file in the same commit.
+think Named the shape of the fault rather than just fixing it. An allow-list fails SILENTLY by construction: a deny-list forgets and lets something through, which shows up; an allow-list forgets and keeps something out, which shows up nowhere, because absence has no error message.
+think Understood why nothing caught it. The commit was green, every link resolved, every witness passed, and the room existed perfectly on the one machine that never needed it. A defect visible only from outside is invisible to every check taken from inside.
+obs And then the walk vindicated a habit. Running the room-bound witness in the clone went RED on room=active-development flat=absent verdict=missing roster=enforce. That check was written two rounds earlier on pure principle -- a room that vanishes from a meter is not a room that passed it -- with no defect in view and nothing to catch. It caught this one the first minute a clean clone existed.
+obs Its assertion message was wrong for the case it caught, though: it told a reader to fold a room that was over the bound when the room was simply absent. Now it names both causes, since a guard that fires with the wrong advice sends the next person looking in the wrong place.
+obs The walk found two smaller things by the same method. ORGANIZING still described old/ and vere/ as live rooms nine days after the lineage drop removed them -- now named as departed so the absence is legible. And a stray top-level directory named with a single quote character, left by my own mis-quoted debugging earlier today, swept away.
+obs The demos page held on the clone: the resolver recovered by fold rule, and our own Keccak printed the exact digest the page quotes. Only the room-bound demo differed, for the good reason above.
+loom walk=fresh_clone steps=6 matched=5 diverged=1 clone_rooms=71 working_tree_rooms=79 page_promised=78
+loom fetch=on_clone verified=yes installed=0.16.0 bootstrap=ok rishi_built=ok hello=ok witness=green
+loom defect=invisible_room announced_in=5_places tracked_files=0 caught_by=readers_walk_only
+loom guard=room_bound wrote_on=principle caught=active_development_missing first_clean_clone=yes
+file .gitignore the allow-list gains the room it was missing
+file active-development/README.md the room, in git at last
+file tools/fixtures/documented_room_scan.sh every room the filing guide names must reach a clone
+file tools/documented_room_witness.rish refusal and departure both proven on a planted repository
+file ORGANIZING.md old/ and vere/ named as departed rather than described as live
+file docs-geode/tutorials/the-first-hour.md the room count explained rather than promised
+file tools/room_bound_witness.rish the assertion message names both causes now
+file crux/REDS.md %120 -- a room announced in four places that no reader ever received
+recommend check-in (checkpoint) the walk is taken and its findings are fixed, guarded, and booked. The honest next step is small and mechanical: re-clone once more after this send and confirm the room now arrives and the room-bound witness goes green from outside -- a fix for readers is only proven from where a reader stands, which is the whole lesson of this round.

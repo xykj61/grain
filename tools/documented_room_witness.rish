@@ -1,0 +1,46 @@
+# tools/documented_room_witness.rish -- a room this tree documents is a room a reader receives.
+#
+# WHY THIS RUNG. `.gitignore` here is an ALLOW-LIST: line 8 is `/*`, and every project room is let
+# back in by name. Its own comment says "When we add a new top-level project directory, we list it
+# here too." Miss that line and the room is invisible to every clone -- while `git add -A` reports
+# success on the other files in the same commit, the links resolve locally, and the whole thing
+# looks shipped.
+#
+# `active-development/` was opened as an arc's deliverable, announced in ORGANIZING, CLAUDE.md, the
+# Lexicon, and a commit message, and **no reader ever received it** (REDS %120). Nothing caught it
+# because nothing was broken: the commit was green and the room existed on the one machine that did
+# not need it. Only a reader's walk on a clean clone found it, which is the whole argument for
+# taking that walk -- and for this rung, so the next one is caught without one.
+#
+# WHAT IS PROVEN, on metal.
+#   Every room ORGANIZING names is carried by a clone -- tracked, or a symlink to something tracked.
+#   A room named as DEPARTED is allowed to be absent, since a filing guide that cannot say "this is
+#   gone" would have to either lie or forget. `old/` and `vere/` went with the lineage drop.
+#   The check REFUSES an invisible room, proven on a planted one.
+#
+# WHAT IS NOT PROVEN. That a room's CONTENTS are complete -- a room can be tracked and still hold
+# less than its README claims. This proves a documented room is not a private one.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/documented_room_witness.rish
+
+say "documented-room: Language EN -- a room announced in the filing guide and absent from every clone is a promise only the author can keep. This asks the reader's question mechanically."
+say "documented-room: Style Radiant -- every named room is carried, a departed one may be absent by saying so, and the refusal is proven on a planted room."
+say "documented-room: Lens TAME -- the failure was silent by construction: a green commit, resolving links, and a room that existed on the one machine that did not need it."
+
+let scan = run ["sh" "tools/fixtures/documented_room_scan.sh"]
+assert scan.ok else "documented-room: a room this tree documents is absent from every clone -- add it to the .gitignore allow-list"
+say scan.out
+assert scan.out contains "rooms_invisible=0" else "documented-room: every documented room must reach a reader"
+assert scan.out contains "verdict=ok" else "documented-room: the scan must balance before it is believed"
+say "field GREEN -- every room the filing guide names is carried by a clone"
+
+let control = run ["sh" "tools/fixtures/documented_room_control.sh"]
+assert control.ok else "documented-room: the control must complete"
+say control.out
+assert control.out contains "invisible_refused=yes" else "documented-room: a documented room absent from git must be refused"
+assert control.out contains "departed_allowed=yes" else "documented-room: a room named as departed must be allowed to be absent"
+assert control.out contains "control_verdict=ok" else "documented-room: the control must agree with itself"
+say "RED and GREEN paths proven -- an invisible room refused, a departed one allowed"
+
+say "GREEN: documented-room -- every room this tree names in its filing guide is a room a clone actually carries."

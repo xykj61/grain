@@ -122,8 +122,10 @@ rishi/bin/rishi run first.rish
 ```
 
 ```
-this tree has 78 rooms at its root
+this tree has 71 rooms at its root
 ```
+
+**Your number may differ, and that is worth understanding on your first day.** A fresh clone holds 71 rooms; a working tree holds more, because `.gitignore` keeps personal files, build output, and the public-seed projection out of git while they still sit on disk. The page said **78** until the reader's walk was actually taken on a clean clone (`20260821.192600`) -- a hand-typed count measured in one tree and promised to every other. Your program is not wrong if it says something else; it is reading *your* tree, which is the whole point of it reading rather than reciting.
 
 Five lines, and **two of them are assertions**. That ratio is the whole discipline in miniature: the program checks that the listing actually succeeded *before* it trusts the number, and checks the number is sane before it reports it. Delete either assert and the program still prints something -- it just stops being able to tell you when it is wrong.
 
