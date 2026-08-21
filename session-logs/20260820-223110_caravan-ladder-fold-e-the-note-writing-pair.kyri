@@ -1,0 +1,34 @@
+format session-log-v1
+stamp 20260820.223110
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Fold E -- the note-writing pair lifts, and the printing carry falls 894 lines
+prompt Take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, one council-rota doc per lap, send each finished increment as its own signed round.
+think Standfast first. `crux/REDS.md` reads 100 rows with every living one closed -- 96, 97, 98, 99, 100 all CLOSED, nothing open and agent-closable. The line is clear, so constructive work may begin.
+think The running thread is unambiguous. The newest log's recommend names the fold and names its halves: lift the 93 byte-identical printing bodies into `caravan/ladder_checks.rye` first, because that is fold B's move already done twice on this ladder, then take the staircase the way fold D took the spine. Crux-first says take the half whose seam is already written.
+think Rota lap 547 mod 27 = 7 -- deep-read foundations/20260813-142420_mycelium-the-consensus-protocol.md. Its invariant discipline is this lap in three lines: everything bounded, every refusal named, every claim proven on metal. Its map-through-nine-families shape is also the argument for the README section this lap adds -- a reader meeting a fold for the first time should find it without reading the whole.
+think Before moving a line, measure which bodies actually stand identical. The scan reports 93 copies; walking the same extraction by hand names four groups: `tell_path` at 27 lines in 29 rungs, `tell_outcome` at 11 lines in 29, `tell_the_reader` at 60 lines in 28, `tell_the_reopener` at 48 lines in 11. Copies past the first sum to 28+28+27+10 = 93 and their lines to 3,164 -- the scan's own numbers, reproduced independently rather than trusted.
+think The four groups split cleanly by what they reach, and that decides the round's scope. The note-writing pair reaches six symbols and nothing else. The reader-telling pair reaches roughly nineteen apiece, including helpers each rung writes over its own report. One keystone per round, so this lap takes the pair whose reach is small enough to verify exhaustively.
+think The verification came before the edit, which is REDS %99's lesson applied forward. Every symbol the pair names -- max_note_path_len, reader_dir, addressable, NoteError, result_byte, Result -- was grepped as `pub` across all 29 rungs before a single line moved. All 29 already exported all six, so the lift needed no widening of any rung's surface.
+think The shape that keeps churn honest is the three-line shim rather than a call-site rewrite. Each rung keeps its own signature and doc comment and returns the harness body, so `tell_path`'s three local call sites per rung stay untouched and `tell_outcome` keeps its public surface exactly. 29 x 34 = 986 predicted deletions; git counted 986.
+think Prose in the harness needed care the guard already teaches. REDS %100 left a wall refusing the harness parameter name inside any comment or string in `ladder_checks.rye`, so the two lifted doc comments were written to say what they mean without ever reaching for that token -- the harness-prose meter confirms it clean over 560 comments and 1,084 literals.
+obs The two rows that should not have moved did not move. The byte-identical check carry stands at 47 and the orchestration spine at 0, exactly where fold D left them. That is the same honest proof fold D itself rested on: a lift that removed a cost rather than trading it for a cheaper-looking one would leave untouched precisely the numbers it could most easily have inflated.
+obs A fold that leaves its ceiling where it found it hands back the room it just won. The printing ceiling came down 7,800 to 6,900 in the same lap, still sized to catch the second rung written before the next fold rather than the tenth -- the same move fold D made when it took the spine ceiling 1,100 to 40.
+obs The shims are themselves a body every rung writes identically, so the whole-body reading holds at 93 while its line count falls 3,164 to 2,268. Reading that as a failure would be a misread: the carry that matters is the line reading, and it fell 894. Naming both in the witness keeps the next reader from drawing the wrong conclusion from a number that stood still.
+obs A fabricated stamp caught in my own prose before it landed, the second lap running. The README section first read `20260820.230429`, ahead of the live clock at `20260820.222728` -- REDS %96's exact class. Corrected against the clock. A cited design document that does not exist was caught in the same read and repointed at the brief and the session log that do.
+obs The witness prose needed the same sync the code did. Seven figures inside the print witness named the pre-fold ladder; each moved to what the scan now prints, with the elder numbers kept in the past tense rather than deleted, so a reader sees both the standing and the fall.
+loom fold=caravan_ladder_print_E rungs=29 bodies_lifted=58 lines_deleted=986 lines_added=174
+loom meter=caravan_ladder_print carried_before=6849 carried_after=5955 total_before=9317 total_after=8427 ceiling=6900
+loom meter=caravan_ladder_print neighbor_before=6641 neighbor_after=5735 identical_bodies=93 identical_lines=2268
+loom meter=caravan_ladder_copy copied_lines=47 unmoved=true
+loom meter=caravan_ladder_spine carried=0 unmoved=true
+loom witness=caravan_farewell wall_s=10 closure_modules=88 touched_rungs_covered=29
+file caravan/ladder_checks.rye the two lifted bodies and the Dir alias they write through -- one note-writing pair for twenty-nine rungs
+file caravan/abate.rye one of the twenty-nine rungs, each trading thirty-four lines of copy for six lines of call
+file tools/fixtures/caravan_ladder_print_scan.sh ceiling tightened to 6900 and the header told the truth after the fold
+file tools/caravan_ladder_print_witness.rish every figure re-read off the ladder as it stands now, the elder numbers kept in the past tense
+file caravan/README.md the printing meter and fold E written down where a reader meets the ladder, with the before-and-after table
+file crux/REMEMBER.md live edge rotated to fold E, the prior edge demoted, the third folded away to the logs
+recommend keep-going the other half of the printing carry is named and sized: `tell_the_reader` at 60 lines in 28 rungs and `tell_the_reopener` at 48 in 11, together 2,100 carried lines. Both read a run's own report through helpers each rung writes for itself, so they want fold D's `comptime` seam rather than this lap's whole-body lift -- the same seam, one tier deeper. Verify the reach of each symbol as `pub` before moving a line, exactly as this lap did, since that check is what made a 986-line edit safe.
