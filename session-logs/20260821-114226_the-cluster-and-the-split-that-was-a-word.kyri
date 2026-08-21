@@ -1,0 +1,34 @@
+format session-log-v1
+stamp 20260821.114226
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Fold Z -- the reap cluster, and the split that was only a word
+prompt Autonomous loop -- take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, council rota one doc, send as its own signed round
+think Standfast first -- walked crux/REDS.md by opened-versus-closed row with a script rather than by eye. Every opened row carries a closure; %83 reads as prevention LANDED 20260817 rather than the word CLOSED, which is why a naive grep flags it. No open agent-closable red, so the line is clear.
+think Council rota, lap index 26 of 27 -- deep-read active-designing/20260812-171050_the-1024-round-itinerary.md. Its filling law is the one this arc runs under: Lindy-first crux-first orders everything, reds preempt, a quest is filled rather than invented, and the gates are the fence.
+think Ran tools/caravan_ladder_carry_witness.rish to let the fourth meter choose the crux by measurement -- reap_oldest at the head, 37 rungs by 44 lines, 1584 carried, exactly as the last lap predicted.
+think Hashed every reap_oldest across caravan/*.rye rather than trusting the queue. Forty files hold the 44-line body; thirty-seven are pub and three are not, and the three are byte-for-byte identical otherwise. A third kind of absentee -- a family split by one word of visibility, which a meter keyed on text cannot help but read as two.
+think Audited pub-ness before moving a line. Eleven of the thirteen reached symbols already stood public in all forty. The two that did not are reclaim_one and abandon_one, the private helpers the body calls -- so the fold could not happen without widening them.
+think Hashed those two as well, which turned the lap. Each stands byte-identical in the SAME forty rungs, with the same three elder outsiders -- reclaim.rye, reckon.rye, abandon.rye. One body, two helpers, one cohort, one shared fossil record.
+think Chose to lift the cluster whole rather than the family alone. It is one dependency closure found by one audit; splitting it into three laps would repeat the same widening and the same audit three times, and the round's own shape bounds it.
+think Audited the helpers' own reach before appending -- max_in_flight, read_count, reclaim_refusal, reclaim_notes, abandon_refusal, abandoned_reach, abandon_note, abandoned_by -- all eight already public in all forty. So the widening stops at the two helpers and needs no accessor.
+think Wrote the three harness bodies into caravan/ladder_checks.rye with every rung-owned reach seated through the rung handed in, and cohort, carry, and cycle reached from the harness's own imports the way every lifted body already does.
+think Replaced the bodies by script, verifying each of the 120 bodies against its expected digest BEFORE touching it and refusing on any mismatch -- measurement before the edit rather than after.
+obs The third kind of absentee is the gentlest one this arc has met. Fold R's two kinds were a body dated by a shape born after it and a tier owner reaching its own report directly; this one is neither. Nothing about the ladder differed at all -- only what a text-keyed meter could see.
+obs Carrying families fell 707 -> 706, the first fall in this arc. Every fold before it traded one carrying family for another and left the count unmoved; this one traded four for three, because the visibility split was healed by the same act that lifted the body. The clearest way to fix a measurement is to remove the thing that made it wrong.
+obs The new reading -- the widening a fold needs names the next fold. A body and the helpers it reaches enter the ladder together and settle together, so the reach graph is the queue read one step ahead of the meter. Fold Y predicted its own shape from the tier structure; this lap predicted the NEXT two families from the reach closure.
+obs The carry meter's GREEN close and its three-windows line each still recited a number no assert in that file held. Freed both of their numbers rather than repinning them, which is REDS %110's rule applied where the rule came from -- the second lap running that this has been needed, which says the habit is in the prose rather than in one line.
+loom witness=caravan_ladder_carry carry_before=116524 carry_after=114189 fall=2335 ceiling_before=116600 ceiling_after=114200
+loom fold=reap_cluster rungs=40 bodies=3 body_lines=44+26+16 carried_before=3310 carried_after=975 widenings=83 accessors_born=0
+loom disk=caravan lines_added=335 lines_deleted=2653 net=-2318 files=43 bodies=18074 distinct=7872 copies=10202 families=706
+loom suite=caravan_suite_witness rungs_green=105
+file caravan/ladder_checks.rye the harness gains the whole reap cluster -- reclaim_one, abandon_one, reap_oldest -- each reach seated through the rung handed in
+file caravan/abate.rye forty rungs each trade three bodies for three delegates; abate stands for the cohort
+file caravan/mend.rye one of the three that differed by the word pub alone, now public with the rest
+file tools/caravan_ladder_carry_witness.rish repinned to the carry this fold measured, the queue's new head named, two prose lines freed of numbers no assert held
+file tools/fixtures/caravan_ladder_carry_scan.sh ceiling down 116600 -> 114200, because a ceiling that lags its subject has stopped guarding
+file caravan/README.md fold Z section -- the third kind of absentee, the cluster, and why the family count fell
+file crux/REMEMBER.md Now refilled with fold Z, fold Y condensed into the prior-edges line, git nib moved
+recommend keep-going the queue now names post_the_amendment at 35 rungs by 45 lines, 1530 carried, with run_dependent at 43 by 35 behind it -- post_the_amendment is the better crux on carried lines; hash the family before trusting the count, and read its reach closure BEFORE choosing scope, since this lap proved the helpers a body reaches are often its own cohort and fold with it for the price of one audit
