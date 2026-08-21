@@ -6592,7 +6592,7 @@ pub fn confer_slot(table: *const Table, at: u32) ?u32 {
 
 /// Takes back the reach one standing dependent no longer needs, from the rung
 /// below -- kept whole here, since a reclamation is what happens after it.
-fn revoke_one(
+pub fn revoke_one(
     io: std.Io,
     table: *Table,
     slot: u32,
@@ -6650,48 +6650,7 @@ pub fn confer_one(
     keeping: Keep,
     report_out: *Report,
 ) (RunError || NoteError)!void {
-    // invariant: a conferral always names a dependent the run is holding
-    assert(slot < table.in_flight);
-    // invariant: a conferral always names a phase inside the record
-    assert(at < table.held);
-    const grown = table.taken[slot] + hop_count(table.record[at].task);
-    var line: entrust.Line = .{};
-    if (entrust.entrust_refusal(
-        sys,
-        table.lines[0..table.in_flight],
-        table.reserves[0..table.in_flight],
-        slot,
-        table.taken[slot],
-        grown,
-        &line,
-    )) |why| return why;
-
-    var words: Words = .{};
-    try confer.write_words(
-        caps,
-        table.reserves[slot],
-        grown,
-        hop_count(table.lines[slot]),
-        &words,
-    );
-    try confer_words(io, table.live[slot].domain, &words, grown);
-    if (!confirm(io, table.live[slot].domain, grown)) return error.ConferUnheld;
-    table.granted[slot] += grown - table.taken[slot];
-    table.taken[slot] = grown;
-    // The dependent answers `.held` only after it has read every arc it grafted,
-    // so the work this reach served is carried by the time the run reads it.
-    table.served[slot] = grown;
-    abandoning_of(report_out).inner.inner.inner.conferred += 1;
-    abandoning_of(report_out).inner.inner.inner.inner.entrusted += 1;
-    abandoning_of(report_out).inner.inner.inner.inner.absorbed += 1;
-    // Which phase this conferral carried, remembered against the slot that
-    // took it up. A reclamation later sweeps the dependent's notes clean and
-    // the report keeps only a count, so without this the run knows an arc was
-    // lost and never which one -- and a mend that cannot name the phase can
-    // only re-run the plan whole, which is the thing `MendOvereach` refuses.
-    table.absorbed_mask[slot] |= phase_bit(at);
-
-    if (keeping == .pruned) try revoke_one(io, table, slot, 0, report_out);
+    return ladder_checks.confer_one(@This(), io, sys, caps, table, slot, at, keeping, report_out);
 }
 
 /// Starts one phase, handing the capability words this reach calls for and
