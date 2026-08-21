@@ -563,7 +563,7 @@ pub fn lapsing_of(report_out: *Report) *lapsing_rung.Report {
 }
 
 /// The abiding rung's tally, one tier further down.
-fn abiding_of(report_out: *Report) *abiding_rung.Report {
+pub fn abiding_of(report_out: *Report) *abiding_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
@@ -4580,18 +4580,7 @@ pub fn dispute_note(io: std.Io, ours: Settlement, theirs: Settlement) NoteError!
 /// null rather than by guessing -- which leaves the record exactly where the
 /// rung below leaves it, reading as one voice whatever its reader answered.
 pub fn dispute_recorded(io: std.Io) ?[2]Settlement {
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = note_path(&path_buf, plan_name, ".dispute") catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    var bytes: [2]u8 = @splat(0);
-    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
-    // invariant: a dispute never outgrows the two readings it names
-    assert(got <= 2);
-    if (got < 2) return null;
-    const ours = settlement_of_byte(bytes[0]) orelse return null;
-    const theirs = settlement_of_byte(bytes[1]) orelse return null;
-    return .{ ours, theirs };
+    return ladder_checks.dispute_recorded(@This(), io);
 }
 
 /// Stands the published word up beside the reading recorded against it.
@@ -8085,51 +8074,7 @@ fn record_the_dispute(
 /// a disagreement that stands recorded, read by an operator who finds no sign of
 /// it, is the number this rung moves.
 fn escort_the_word(io: std.Io, escort: Escort, report_out: *Report) (RunError || NoteError)!void {
-    const said = settlement_published(io);
-    const published: u32 = if (said == null) 0 else 1;
-    if (published == 0) {
-        // invariant: a run that published nothing leaves no word unattended
-        assert(abiding_of(report_out).unattended == 0);
-        return;
-    }
-    const held = dispute_recorded(io);
-    const disputed = held != null;
-
-    // The measurement this rung moves, weighed against what the wire actually
-    // carries rather than against what any escort asked for, so a word left
-    // standing alone is counted rather than refused.
-    abiding_of(report_out).unattended = published_unattended(published, disputed, escort);
-    const escorted = escorted_in(published, disputed, escort);
-    const alone_count = alone_in(published, disputed, escort);
-    if (escort == .alone) {
-        // invariant: a word read alone carries no mark, however plainly its
-        // reader objected
-        assert(escorted == 0);
-        return;
-    }
-    if (!disputed) {
-        // A record holding no disagreement has nothing to stand beside the word,
-        // and the wire says so by leaving the settlement exactly as it reads.
-        //
-        // invariant: an unquarrelled word is never escorted
-        assert(escorted == 0);
-        return;
-    }
-    // The supply, refused by name while the record it read is still in hand: a
-    // run escorts a word only where a disagreement actually stands.
-    if (unrecorded_escort(disputed, escorted)) |why| return why;
-    if (abide_refusal(held, alone_count, escorted)) |why| return why;
-    // invariant: a run that reached the escort refuses nothing it must write
-    assert(escorted == 1);
-    const record = held orelse return error.AbideUnrecorded;
-    const marked = record[1];
-    // The mark, and the hard half of this rung: an escort carries one person's
-    // word to whoever reads another, so it must be that person's word.
-    if (!quotes(marked, record)) return error.AbideMisquoted;
-    try abide_note(io, marked);
-    abiding_of(report_out).escorted = escorted;
-    // invariant: an escorting run leaves no published word unattended
-    assert(abiding_of(report_out).unattended == 0);
+    return ladder_checks.escort_the_word(@This(), io, escort, report_out);
 }
 
 /// Answers the reader of a settlement this run has since replaced.
