@@ -39,7 +39,18 @@ Read from each project's own authoritative text, not from memory. Full verdict a
 
 **The obligation that rides with it:** a **per-file SPDX sweep at fetch time**. seL4 issue #245 (2020) reported ~14 GPL-tagged files inside `libsel4`; the two most prominent read `BSD-2-Clause` on master today, checked directly, yet a project that once shipped mixed headers can again. Intent is not a licence -- check every file's own tag and record it.
 
-**Nothing is fetched by this read.** Bringing any of these into `vendor/` is a separate step and stays Keaton's word.
+**FETCHED `20260821.042612` on Keaton's word** (*I grant the fetch, vendor sel4 userlevel and microkit*). Both are **gitlink submodules**, so no vendored source enters our git history: `vendor/sel4` (the whole seL4 repo -- the BSD userlevel is what we may link, the GPL kernel rides along on disk and is neither linked nor in our history) and `vendor/microkit`.
+
+**The per-file sweep is now a standing check, not a one-time read:** [`../../tools/sel4_userlevel_license_witness.rish`](../../tools/sel4_userlevel_license_witness.rish) over [`../../tools/fixtures/vendored_license_scan.sh`](../../tools/fixtures/vendored_license_scan.sh), GREEN on metal with both RED legs proven.
+
+| Measured `20260821.042612` | Count |
+|---|---|
+| `libsel4` files / tagged / **BSD-2-Clause** / GPL | 185 / 185 / **185** / **0** |
+| seL4 kernel (`src/` + `include/`) GPL tags | 618 -- the split is proven from both sides |
+| Microkit BSD-2-Clause | 303 |
+| Microkit GPL, **by path** | exactly 2, both board device-tree overlays under `custom_dts/`, neither linkable code |
+
+**seL4 issue #245 is genuinely resolved** -- checked file by file rather than taken on intent. Microkit's two GPL files are bounded **by path** rather than by count, so a new one anywhere else reds on the lap it arrives. The witness audits SPDX **tags**, never licence text; counsel stays the authority where distribution or money is at stake.
 
 ## skarnet (s6, skalibs) — ISC, not GPL
 

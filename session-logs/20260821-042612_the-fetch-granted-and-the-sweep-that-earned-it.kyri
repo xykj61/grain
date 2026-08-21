@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20260821.042612
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The fetch granted -- and the per-file sweep that earned the right to link
+prompt I grant the fetch, vendor sel4 userlevel and microkit.
+think The license read had recorded an obligation rather than a conclusion: a per-file SPDX sweep at fetch time, because a project that once shipped mixed headers can ship them again and the project intends BSD is not a licence. The fetch was granted, so the sweep was the round's real work and the cloning was only its precondition.
+think Held both trees as gitlink submodules rather than copied source, which is what lets the GPL kernel ride along on disk without ever entering our git history -- the same shape Monocypher, PQClean, and Genode already have. The seL4 userlevel is not a separate repository, so vendoring the whole tree and linking only the permissive half is the honest arrangement rather than a workaround.
+think Ran the sweep before adding either as a submodule, so a bad result would have meant deleting a directory rather than unwinding a commit.
+obs libsel4 came back perfectly clean: 185 files, 185 tagged, 185 BSD-2-Clause, zero GPL, zero untagged. seL4 issue #245's mixed headers are genuinely resolved -- and now checked file by file rather than taken on the project's stated intent, which is the whole difference between a read and a check.
+obs Counted the kernel side too rather than only the side that suited the argument. 618 GPL tags across src and include, so the split seL4 describes is proven from both sides instead of asserted from the convenient one. A boundary claimed from one side only is a claim.
+obs Microkit is where the sweep earned its keep. 303 BSD-2-Clause -- and two GPL-2.0-only files. Found them rather than reporting a number: both are board device-tree overlays under custom_dts, iot-gate and overlay-zynqmp-kria-k26, which are board descriptions rather than linkable code and are entirely avoidable since we need neither board.
+obs Bounded those two BY PATH rather than by count, which is the design decision that matters. A guard asserting exactly two GPL files would pass silently if one of them moved into linkable surface and one overlay were deleted. Asserting that zero GPL files exist outside custom_dts catches the case that actually hurts, on the lap it arrives.
+obs Proved both RED legs on metal and cleaned up after: a GPL file planted in microkit outside custom_dts, and a GPL tag planted inside libsel4, each making the witness refuse and name the fault, then removed with both submodules confirmed clean so no gitlink was dirtied.
+obs Named what the witness cannot do inside its own GREEN line. It audits SPDX tags rather than licence text, so a mistagged file would pass, and counsel remains the authority wherever real distribution or real money is at stake. A licence guard that implied more than it checked would be worse than none.
+obs Both loops learned the grown submodule list, and the outer recipe's block was rewritten rather than patched after a sed left a dangling fragment and a non-ASCII separator -- caught by reading the rendered output rather than trusting the edit.
+loom sweep=libsel4 files=185 tagged=185 bsd2=185 gpl=0
+loom sweep=sel4_kernel gpl_tags=618 boundary=proven_both_sides
+loom sweep=microkit bsd2=303 gpl_total=2 gpl_outside_dts=0 bound=by_path
+file tools/sel4_userlevel_license_witness.rish the obligation turned into a standing check, both RED legs proven
+file tools/fixtures/vendored_license_scan.sh the per-file census, counted from disk at run time
+file .gitmodules vendor/sel4 and vendor/microkit as gitlinks -- no vendored source in our history
+file .claude/rules/gratitude-licenses.md the fetch seated with its measured census table
+file external-research/20260821-041056_the-microkernel-license-read.md the obligation closed by doing, prior text kept
+file recursion-prompts/seed/autonomous-loop.seed.md the grown submodule precondition
+file tools/launch-claude-season.rish step 0a rewritten to name all four vendored trees
+recommend keep-going Caravan on the capability model is now ordinary design work with a permissively-licensed API on disk and a formally verified kernel beneath it. The first rung wants a clean-room read of the capability IPC model against libsel4's own headers, which we may now read closely and link rather than study through a wall.

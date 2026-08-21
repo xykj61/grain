@@ -48,3 +48,9 @@
 [submodule "vendor/pqclean"]
 	path = vendor/pqclean
 	url = https://github.com/PQClean/PQClean
+[submodule "vendor/sel4"]
+	path = vendor/sel4
+	url = https://github.com/seL4/seL4
+[submodule "vendor/microkit"]
+	path = vendor/microkit
+	url = https://github.com/seL4/microkit
