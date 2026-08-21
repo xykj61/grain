@@ -22,7 +22,9 @@ alwaysApply: true
 
 **Living things are repointed; dated testimony is resolved.** A room index and living code are repointed in the same round (`tools/dated_path_repoint.rish`), because a witness running `grep -q ... <room>/<file>.md` resolves nothing -- it fails. Dated testimony is never rewritten, and the line needs no roster: a file whose own basename carries a one-clock stamp is testimony. A stale reference in testimony is resolved: `rishi/bin/rishi run tools/dated_path_resolve.rish <reference> [<citing-file>]`.
 
-**A room folds past 256 flat files** (`tools/room_bound_witness.rish`), and the fold, the resolver, and the census must agree on what a dated file is -- each disagreement cost a round. No fold ships without `tools/dated_path_witness.rish` green -- it gates the **lost**-reference count (a basename that exists nowhere, or one at two paths) with no slack, rather than the whole broken count, since a recovered reference is the expected steady state and rises whenever a room folds.
+**A room folds past 256 flat files** (`tools/room_bound_witness.rish`), and the fold, the resolver, and the census must agree on what a dated file is -- each disagreement cost a round.
+
+**A room earns ENFORCE by folding** -- `session-logs`, `counsel`, `active-designing`, `expanding-prompts`, `waymarks` (`20260821.171331`). An enforced room is reported even at zero flat files, since a room that vanishes from a meter is not a room that passed it. Everything else stays advisory until its own fold. No fold ships without `tools/dated_path_witness.rish` green -- it gates the **lost**-reference count (a basename that exists nowhere, or one at two paths) with no slack, rather than the whole broken count, since a recovered reference is the expected steady state and rises whenever a room folds.
 
 **Illustrate with placeholders, cite only what exists.** An example path in prose is a shape -- `date/YYYYMMDD/YYYYMMDD-HHMMSS_slug.ext` -- never a concrete-looking path to a file that is not there, which reads as a real citation to every reader and every tool.
 

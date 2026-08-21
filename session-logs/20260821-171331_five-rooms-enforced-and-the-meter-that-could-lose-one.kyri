@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20260821.171331
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Five rooms enforced, and the meter that could quietly lose one
+prompt add the four rooms to the ENFORCE roster
+think Widened the roster to five and ran it, and only three of the five came back. counsel and expanding-prompts were simply absent from the report.
+think Saw why at once: the scan DISCOVERS rooms by finding at least one flat dated file, and both rooms hold zero now -- folding emptied them completely. So the two rooms most recently proven safe to enforce were the two the meter could no longer see.
+think Recognized my own words from the lap before. The witness already asserted `room=session-logs` present, with the reason written beside it -- a room that vanishes from a meter is not a room that passed it. The assertion was right and the scan had the hole it was written against.
+think Fixed it where the fault was rather than where it showed. Discovery still finds rooms that hold something, and an ENFORCED room is now always reported afterward whether or not it holds anything -- with its real count, so the number stays measured rather than assumed.
+think Took the fix one step further than asked. An enforced room that is not in the tree AT ALL now reports verdict=missing and counts against the gate, because a roster naming a room nobody can find is a roster guarding nothing.
+think Asserted the five rooms by name, one assert apiece, rather than checking the roster in aggregate. An aggregate check is exactly what let two rooms fall out of this report in the first place.
+think Extended the control to two phases, since the gate can fail in two directions: a room over its bound must refuse BY NAME, and a tree holding none of the enforced rooms must refuse too. Both proven on metal before the wider roster shipped.
+obs The scan's own arithmetic taught something in passing. In phase one of the control the throwaway tree holds only session-logs, so enforced_over reads 5 rather than 1 -- one room over its bound and four named absent. That is correct and it is also why the control now asserts on which room was named rather than on a bare count, which would have read as a stronger refusal than it was.
+obs active-designing sits at 2 flat rather than 0 because 33 day-only names like 20260814-fill-alesN-x.md are not one-clock stamps and are counted by nothing here -- not the fold, not the resolver, not the bound. They stay flat, and they are a naming deviation worth its own word rather than a silent normalization inside a roster change.
+obs external-research at 160 is the next room likely to cross. It stays advisory and will be reported for a while before anyone has to act, which is what the advisory tier is for.
+loom rooms=enforce_roster enforced=5 advised=12 enforced_over=0 advised_over=0 bound=256
+loom rooms=flat session_logs=51 counsel=0 active_designing=2 expanding_prompts=0 waymarks=1 external_research=160
+loom control=two_phase over_refused=yes missing_refused=yes enforced_rooms_named_absent=5
+file tools/fixtures/room_bound_scan.sh five rooms enforced; an enforced room is reported even at zero, and refused when absent
+file tools/fixtures/room_bound_control.sh two phases -- over the bound, and gone from the tree
+file tools/room_bound_witness.rish each of the five asserted by name; both RED paths proven
+file .claude/rules/stamp-and-name.md a room earns ENFORCE by folding, and an enforced room is always reported
+file context/LEXICON.md the roster named in the date-fold row
+recommend check-in (checkpoint) the whole tree stands folded, bounded, and enforced with zero rooms over. Three doors still want a word rather than a kg -- the colour normalization booked as REDS %114, which edits dated bodies; the 33 day-only names in active-designing that no instrument counts; and arc two, the active-development room and the counsel close, which has been named twice now and not yet opened.
