@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260821.015007
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The pin-after-push red, and the spine guard that refused a hundred and third row
+prompt Close the round; standfast on reds found in the round itself.
+think Reading `.claude/rules/remember-git-nib.md` after fold L's push rather than before it showed the order had been broken: stage, commit, amend once so the nib names HEAD, never a pin-only follow-up. Fold L ran commit, then push, then noticed the card still named `c352a3b7ee` -- the commit before the round it describes.
+think The only sanctioned repair after a push is a force-push, which `.claude/rules/send-word.md` reserves for Keaton's explicit word. So the repair had to be the one the rules actually allow: correct the nib in the working tree and let it ride the next work commit, which is exactly the lag the pin rule tolerates when it says not to chase a fixed-point hash.
+think Booked it as REDS %103 rather than fixing it quietly. REDS %84's whole lesson is that the ledger is part of the fix, since the next reader inherits the ledger rather than the commit that repaired something in silence.
+obs Adding the row made `reds_ledger_monotone_witness` refuse by name -- it pins the row count it reached, so a spine that grows past the pin is a red rather than a quieter GREEN. That is precisely what REDS %102 rebuilt it to do two laps ago, and this is the first time the rebuilt behavior fired on a real row. A guard earning its keep on the lap after it was hardened is the cheapest possible proof that the hardening was real.
+obs The red is a process slip rather than a defect in the tree, and it is worth the row anyway. An ordered rule is only kept if the order is read before the first step; the amend is a step inside a send, not a tidy-up after one.
+loom reds rows=103 ledger_bytes=21690 bound=24576
+file crux/REDS.md row %103 -- what went wrong, what caught it, what it taught
+file crux/REMEMBER.md the nib corrected to `253a714cce`, riding a work commit rather than a pin-only one
+file tools/gen/season/reds_ledger_monotone_witness.rish repinned from measurement, GREEN at 1..103
+recommend keep-going the fold queue the new meter prints stands ready and mechanical -- `mend_the_plan` at 36 rungs by 178 lines, 6,230 carried. Read the pin rule's order before the first step of the next send, not after the last.
