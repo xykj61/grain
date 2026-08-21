@@ -48,6 +48,7 @@ const mask = @import("mask.rye");
 const confer = @import("confer.rye");
 const intent = @import("intent.rye");
 const boot = @import("boot.rye");
+const entrust = @import("entrust.rye");
 const Dir = std.Io.Dir;
 
 const harness = @This();
@@ -6170,4 +6171,103 @@ pub fn confer_slot(comptime rung: type, table: *const rung.Table, at: u32) ?u32 
     // invariant: the walk read every dependent standing, none skipped
     assert(i == table.in_flight);
     return null;
+}
+
+/// Hands one phase, and the reach it needs, to a dependent already standing --
+/// then takes that reach back once the dependent answers that the work is done.
+///
+/// A conferral is the moment the run stops starting things and starts *reusing*
+/// one. The phase's hops are added to what this dependent has already taken, the
+/// grown reach is offered to `entrust` for refusal, the words are written, the
+/// dependent is asked, and only an answer read back off the wire lets the table
+/// believe the reach was carried. Then the report counts it three ways and the
+/// slot remembers which phase it absorbed, so a later mend can name the arc it
+/// lost rather than re-running the plan whole.
+///
+/// **Forty rungs hold this body byte for byte, and the queue said so exactly.**
+/// Fold O taught that a queue is a lead rather than a verdict, so every one of
+/// the forty-five bodies named `confer_one` was hashed before a line moved. The
+/// reading agreed with the meter: forty share one text at fifty-three lines,
+/// 2,067 carried. A check that confirms is still a check worth running.
+///
+/// **The five that stand apart are the ladder's own fossil record.** Every one
+/// of them differs in exactly one place -- how deep it reaches into the report
+/// -- and read in ladder order they climb a staircase: `confer.rye` writes
+/// `report_out.conferred`, `revoke.rye` one `inner` down, `reclaim.rye` two.
+/// At `abandon.rye` the ladder stops counting hops and names the reach instead,
+/// through `below_of`; `reckon.rye` settles the depth at three; and from
+/// `amend.rye` upward the accessor's name settles too, as `abandoning_of`.
+/// After that nothing about the reach is a per-rung fact any more, which is
+/// precisely why the forty above are identical and the five below cannot be.
+/// A family's absentees are worth reading, since they say when the shape they
+/// refuse was born.
+///
+/// The two eldest also predate whole lines rather than a depth: `confer.rye` and
+/// `revoke.rye` were written before a conferral granted, served, or pruned, so
+/// folding either would quietly add behavior rather than move a body. Both stay
+/// home named.
+///
+/// Every symbol this body reaches through the rung -- `hop_count`, `Words`,
+/// `confer_words`, `confirm`, `abandoning_of`, `phase_bit`, and `revoke_one` --
+/// belongs to the rung, since each is a body a rung writes over its own report
+/// or its own wire. `entrust.entrust_refusal`, `entrust.Line`, and
+/// `confer.write_words` stay module-level, since a refusal's arithmetic and the
+/// words a conferral writes are the same for every rung on the ladder.
+///
+/// Nothing varies between the forty, so nothing arrives as comptime text.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_carry_scan.sh`.
+pub fn confer_one(
+    comptime rung: type,
+    io: std.Io,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    table: *rung.Table,
+    slot: u32,
+    at: u32,
+    keeping: rung.Keep,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    // invariant: a conferral always names a dependent the run is holding
+    assert(slot < table.in_flight);
+    // invariant: a conferral always names a phase inside the record
+    assert(at < table.held);
+    const grown = table.taken[slot] + rung.hop_count(table.record[at].task);
+    var line: entrust.Line = .{};
+    if (entrust.entrust_refusal(
+        sys,
+        table.lines[0..table.in_flight],
+        table.reserves[0..table.in_flight],
+        slot,
+        table.taken[slot],
+        grown,
+        &line,
+    )) |why| return why;
+
+    var words: rung.Words = .{};
+    try confer.write_words(
+        caps,
+        table.reserves[slot],
+        grown,
+        rung.hop_count(table.lines[slot]),
+        &words,
+    );
+    try rung.confer_words(io, table.live[slot].domain, &words, grown);
+    if (!rung.confirm(io, table.live[slot].domain, grown)) return error.ConferUnheld;
+    table.granted[slot] += grown - table.taken[slot];
+    table.taken[slot] = grown;
+    // The dependent answers `.held` only after it has read every arc it grafted,
+    // so the work this reach served is carried by the time the run reads it.
+    table.served[slot] = grown;
+    rung.abandoning_of(report_out).inner.inner.inner.conferred += 1;
+    rung.abandoning_of(report_out).inner.inner.inner.inner.entrusted += 1;
+    rung.abandoning_of(report_out).inner.inner.inner.inner.absorbed += 1;
+    // Which phase this conferral carried, remembered against the slot that
+    // took it up. A reclamation later sweeps the dependent's notes clean and
+    // the report keeps only a count, so without this the run knows an arc was
+    // lost and never which one -- and a mend that cannot name the phase can
+    // only re-run the plan whole, which is the thing `MendOvereach` refuses.
+    table.absorbed_mask[slot] |= rung.phase_bit(at);
+
+    if (keeping == .pruned) try rung.revoke_one(io, table, slot, 0, report_out);
 }

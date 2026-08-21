@@ -2084,6 +2084,42 @@ The printed queue named `confer_slot` at **forty-three rungs by thirty-nine line
 
 **The arithmetic closes exactly, with no remainder at all.** The family gave back 1,638 and the new three-line delegate family carries 126, so the carry falls 1,512 -- which is what the meter measured. Fold O's 47-line gap came from eleven family splits its widenings caused; a fold that widens nothing splits nothing, so this one leaves nothing to explain. On disk the same closure holds: forty-three rungs each shed thirty-six lines for 1,548, the harness took 75, and 370,181 is what remains.
 
+## Fold Q -- `confer_one`, and the absentees that dated the family
+
+The printed queue named `confer_one` at **forty rungs by fifty-three lines, 2,067 carried**, and hashing every body by that name on the ladder agreed exactly: forty rungs share one text byte for byte, and 53 x 39 is 2,067 precisely. Fold O taught that a queue is a lead rather than a verdict, so the reading runs either way -- and twice now it has confirmed what the meter printed rather than corrected it.
+
+`confer_one` is the moment a supervised run stops starting things and starts *reusing* one. The phase's hops are added to what a standing dependent has already taken, the grown reach is offered to `entrust` for refusal, the words are written, the dependent is asked, and only an answer read back off the wire lets the table believe the reach was carried. Then the report counts it three ways, and the slot remembers which phase it absorbed -- so a later mend can name the arc it lost rather than re-running the plan whole.
+
+**The five rungs that stand apart are the ladder's own fossil record.** Every one of them writes a body by this name, and every one differs in exactly one place: how deep it reaches into the report. Read in ladder order they climb a staircase.
+
+| Rung | How it reaches the report | Depth |
+|---|---|---|
+| [`confer.rye`](confer.rye) | `report_out.conferred` | 0 |
+| [`revoke.rye`](revoke.rye) | `report_out.inner.conferred` | 1 |
+| [`reclaim.rye`](reclaim.rye) | `report_out.inner.inner.conferred` | 2 |
+| [`abandon.rye`](abandon.rye) | `below_of(report_out).inner.inner.conferred` | accessor + 2 |
+| [`reckon.rye`](reckon.rye) | `below_of(report_out).inner.inner.inner.conferred` | accessor + 3 |
+| the forty above | `abandoning_of(report_out).inner.inner.inner.conferred` | accessor + 3 |
+
+Two things settle on that staircase, one rung apart. At `abandon.rye` the ladder stops counting hops and **names** the reach through an accessor; at `reckon.rye` the depth settles at three and never moves again; and from `amend.rye` upward the accessor's own name settles too, as `abandoning_of`. After those settlings nothing about the reach is a per-rung fact -- which is precisely why the forty above are identical and the five below cannot be. **A family's absentees are worth reading, since they say when the shape it shares was born.**
+
+The two eldest also predate whole lines rather than a depth. `confer.rye` and `revoke.rye` were written before a conferral granted, served, or pruned, so folding either would quietly add behavior rather than move a body. Both stay home named, as they did for fold P.
+
+**The fold cost forty-three widenings**, and both are bodies a rung writes over its own report or its own wire: `revoke_one` made public in all forty, and `abandoning_of` in the three that still held it private. `entrust.entrust_refusal`, `entrust.Line`, and `confer.write_words` stay module-level, since a refusal's arithmetic and the words a conferral writes are the same for every rung on the ladder.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding the body | 40 | **0**, each keeping a twelve-line delegate |
+| Lines the body carried | 2,067 | **468** -- the delegate is itself a copy |
+| Widenings the fold cost | -- | **43** (`revoke_one` x 40, `abandoning_of` x 3) |
+| The ladder's whole carry | 131,077 | **129,478** |
+| Carry ceiling | 131,200 | **129,600** |
+| Lines on disk, all `caravan/*.rye` | 370,181 | **368,641** |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+**The arithmetic closes with no remainder.** The family gave back 2,067 and the new twelve-line delegate family carries 468, so the carry falls 1,599 -- which is what the meter measured. On disk the same closure holds independently: forty rungs each shed forty-one lines for 1,640, the harness took 100, and 368,641 is what `wc` reports. **The forty-three widenings split no family, and measuring why is more interesting than the number.** Fold O's own gap came from splits -- a declaration line belongs to the body it opens, so making a symbol public in some holders and not others cuts one family in two. Here neither widened symbol could split. `revoke_one` stands in forty-four rungs as **five** families already, the folded forty sharing one body and the four elders each writing their own, so the whole family moved together. And `abandoning_of` stands in forty rungs as **forty** distinct bodies carrying nothing at all, since each names its own rung's report type -- widening three of them changed no family's membership. A widening is free of splits exactly when it moves a whole family or moves nothing, and this one did both.
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.
