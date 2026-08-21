@@ -6,7 +6,7 @@ At the end of **every** response -- before finishing the turn -- write a session
 
 **New logs are `.kyri`** -- the notation formerly named **Bron**, molted to Kyri on Keaton's word (`20260810`): the same immutable-value format (key-value, one field per line, `#` comments, no quotes, no braces), a warmer name from the favorites list. Spec: `active-designing/yonder/20260621-063912_bron-notation.md` (bannered as the Kyri notation; kept readable) and counsel `20260707-222500`. The **2,163 existing `.bron` logs are never renamed** -- the one-clock law and accrete-never-break protect every dated artifact, and tools read both extensions. A full sweep of the remaining living Bron references to Kyri, and teaching the fold/align tools `.kyri`, follow as their own rounds.
 
-Historical Markdown logs live under `session-logs/archive/YYYYMMDD/` (folded by day). Do not create new `.md` session logs.
+Historical Markdown logs live under `session-logs/date/YYYYMMDD/` (folded by day). Do not create new `.md` session logs.
 
 ## Filename
 
@@ -57,7 +57,9 @@ recommend keep-going|check-in what and why
 
 ## Archive fold
 
-Prior (and closed) days' logs live under `session-logs/archive/YYYYMMDD/`. **Preview:** `rishi/bin/rishi run tools/session_logs_archive_preview.rish`. **Fold:** `rishi/bin/rishi run tools/session_logs_archive.rish` -- folds both `.bron` and historical `.md`; today's stamp stays flat. Run fold on Keaton's word.
+Prior (and closed) days' logs live under `session-logs/date/YYYYMMDD/` -- the destination molted from `archive/` on `20260821.161758` with the mark law ([`stamp-and-name.md`](stamp-and-name.md)), since ORGANIZING defines archive as finished-and-historical while a log from nine days ago is the live record. **Preview:** `rishi/bin/rishi run tools/session_logs_archive_preview.rish`. **Fold:** `rishi/bin/rishi run tools/session_logs_archive.rish` -- folds `.kyri`, `.bron`, and historical `.md`; today's stamp stays flat, and the index is repointed in the same pass. Run fold on Keaton's word.
+
+**The room is bounded at 256 flat files**, enforced by `rishi/bin/rishi run tools/room_bound_witness.rish` -- because at roughly a hundred and eight logs a day an emptied room refills past GitHub's 1,000-entry listing cap in nine days, so the bound is the fix and the fold is only how it is met. **A stale reference is resolved, never rewritten:** `rishi/bin/rishi run tools/dated_path_resolve.rish <reference> [<citing-file>]`.
 
 Bron session logs prefer `product_nib` - `suite_nib` - `git_nib` (or `nib <hash>`) over legacy `tip` fields.
 

@@ -20,11 +20,17 @@
 #              double every reference the projection carries (8,425 of them, measured).
 #   vendor/ -- third-party source held unmodified.
 #   .git/   -- object storage, not authored prose.
-#   dated_path_* -- the resolver, this scan, its control corpus, and their witness. Their example references are
-#              deliberately stale BY CONSTRUCTION -- a resolver is demonstrated on paths that no
-#              longer stand, and a witness proves its verdicts on exactly such paths. Those are
-#              fixtures, not defects, and counting the instrument inside its own measurement
-#              would make the ceiling rise every time the proof got stronger.
+#   INSTRUMENT FIXTURES -- files whose dated paths are selftest literals and demonstration
+#              examples rather than citations of the field. Counting the instrument inside its
+#              own measurement makes the meter rise every time a proof gets stronger, which is
+#              exactly backwards. Each is named with its reason rather than matched by a loose
+#              pattern, so the list stays short and every entry has to justify itself:
+#                dated_path_*             the resolver, this scan, its control, their witness --
+#                                         a resolver is demonstrated on paths that no longer
+#                                         stand, and its witness proves verdicts on exactly such
+#                                         paths
+#                room_bound_control.sh    builds a throwaway room under a mktemp root
+#                session_logs_archive.rye its selftest asserts on links inside a sandbox index
 #
 # USAGE
 #   sh tools/fixtures/dated_path_scan.sh            # census -- key=value lines
@@ -36,11 +42,23 @@ set -eu
 
 verb="${1:-census}"
 
-# THE RATCHET. Broken references only ever come down. This ceiling was set to the count
-# measured on `20260821` when the resolver landed, with no slack: from here a fold that leaves a
-# reference dangling, or a new document citing a path that no longer stands, reds on the lap it
-# enters rather than months later. Lower it whenever a repair lands; never raise it.
-BROKEN_CEILING=4138
+# THE RATCHET, and what it is honestly a ratchet ON. Corrected `20260821.171500` before the first
+# fold ran, because the first shape of this gate would have red on the very move it was built to
+# make safe.
+#
+# Under the mark law a stale reference is RESOLVED, never repointed. So a reference the resolver
+# recovers is not damage -- it is the expected steady state, and it necessarily RISES when a room
+# folds, since folding is exactly what turns a flat path into a recoverable one. Gating on the
+# whole broken count would therefore punish the fold for working.
+#
+# What must never rise is what the resolver CANNOT recover: a basename that exists nowhere
+# (`gone`), and a basename at more than one path where no single answer is safe (`ambiguous`).
+# Together those are the LOST references, and they are the honest defect count. Moving a file
+# changes its path and never its basename, so a correct fold leaves this number exactly where it
+# stood. Set with no slack to the measured count: 199 when the resolver landed, lowered to 193
+# on `20260821` when the session-log fold surfaced six index rows pointing at files that were
+# never there and they were repaired. Lower it whenever a repair lands; never raise it.
+LOST_CEILING=193
 
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
@@ -53,7 +71,7 @@ grep -rIoE '(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}_[A-Za-z0-9._-]+\.(md|br
   --include=*.md --include=*.bron --include=*.kyri --include=*.rish \
   --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
   --exclude-dir=.git --exclude-dir=seed --exclude-dir=vendor \
-  --exclude=dated_path_* \
+  --exclude=dated_path_* --exclude=room_bound_control.sh --exclude=session_logs_archive.rye \
   . 2>/dev/null | sed 's|^\./||' > "$work/pairs.txt"
 
 # Six fields out, so no later step has to guess which path a column holds:
@@ -124,9 +142,11 @@ echo "refs_broken=$broken"
 echo "broken_recoverable=$recoverable"
 echo "broken_ambiguous=$ambiguous"
 echo "broken_gone=$gone"
-echo "ceiling=$BROKEN_CEILING"
+lost=$((ambiguous + gone))
+echo "refs_lost=$lost"
+echo "lost_ceiling=$LOST_CEILING"
 
-if [ "$broken" -le "$BROKEN_CEILING" ]; then
+if [ "$lost" -le "$LOST_CEILING" ]; then
   echo "under_ceiling=yes"
 else
   echo "under_ceiling=no"

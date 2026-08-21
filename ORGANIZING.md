@@ -49,7 +49,7 @@ Read the sections below whenever you wonder where a new file belongs. When a sea
 
 **`expanding-prompts/`** — intent expanded into runnable plans. Counts upward from `10000`; each prompt is a dated artifact that agents can execute.
 
-**`session-logs/`** — reasoning traces as **Bron** (`.bron`); one-clock filenames; newest-first index in `README.md`. Historical Markdown logs live under `archive/YYYYMMDD/`. What happened lives here; what is next lives in `TASKS.md`.
+**`session-logs/`** — reasoning traces as **Bron** (`.bron`); one-clock filenames; newest-first index in `README.md`. Dated logs live under `date/YYYYMMDD/` (molted from `archive/` `20260821.161758`; the room is bounded at 256 flat files). What happened lives here; what is next lives in `TASKS.md`.
 
 **`rye-learning-process/`** — the almanac and learning record. How we grow capability in the open.
 
@@ -112,7 +112,7 @@ The placements for any given season are recorded in `session-logs/` — what mov
 
 Every dated artifact names itself `YYYYMMDD-HHMMSS_short-slug.md`. Later is always larger. Living documents (`README.md`, `ROADMAP.md`, `TASKS.md`, the discipline files) carry **Last updated** and evolve in place. Full law: `context/specs/20260627-102012_one-clock-naming-law.md`.
 
-This one stamp is Glow's **warm-aura date atom**, and it renders exactly three ways: a version string `YYYYMMDD.HHMMSS` (dot), a filename stamp `YYYYMMDD-HHMMSS_slug` (hyphen), and a **dated folder bare `YYYYMMDD`** (day precision — the `session-logs/archive/20260619/` pattern every archive fold matches, never slugged or counted). Naming and TAME framing: `context/specs/20260714-024800_warm-aura-date-atom-naming.md`.
+This one stamp is Glow's **warm-aura date atom**, and it renders exactly three ways: a version string `YYYYMMDD.HHMMSS` (dot), a filename stamp `YYYYMMDD-HHMMSS_slug` (hyphen), and a **dated folder bare `YYYYMMDD`** (day precision — the `session-logs/date/20260619/` pattern every fold matches, never slugged or counted). Naming and TAME framing: `context/specs/20260714-024800_warm-aura-date-atom-naming.md`.
 
 ---
 
@@ -157,7 +157,7 @@ A re-stamp that bubbles a file to the bottom suits an *ordinary, lightly-cited* 
 
 The tree signs its work. The keeper's canonical fingerprints live in `context/PUBKEYS.md` (committed); a keeper may also place `PUBKEYS.md` at the repository root for local override. A fork begins from `PUBKEYS.template.md` and records its own four public lines, and `tools/identity_check.rish` proves the shape either way — template-only checkouts pass kindly, and when a pubkey file is present it must carry exactly two SSH and two OpenPGP fingerprints. The private halves never enter the tree.
 
-Session logs keep the working day flat as **`.bron`** files and fold closed days beneath `session-logs/archive/YYYYMMDD/` (Markdown era fully folded; Bron days fold when that tool grows). **Preview** (read-only): `rishi/bin/rishi run tools/session_logs_archive_preview.rish`. **Fold** (mutate): `rishi/bin/rishi run tools/session_logs_archive.rish` — core logic in `tools/session_logs_archive.rye`; witness `tools/session_logs_archive_witness.rish`. Run fold on Kaeden's word. Living law: `.cursor/rules/session-logs.mdc` · `.claude/rules/session-logs.md`.
+Session logs keep the working day flat and fold closed days beneath `session-logs/date/YYYYMMDD/` -- `.kyri`, `.bron`, and historical `.md` alike, all three taught to the tool by `20260821`. The room is bounded at **256** flat files (`tools/room_bound_witness.rish`), and a reference left pointing at a flat path is **resolved rather than rewritten** (`tools/dated_path_resolve.rish`). **Preview** (read-only): `rishi/bin/rishi run tools/session_logs_archive_preview.rish`. **Fold** (mutate): `rishi/bin/rishi run tools/session_logs_archive.rish` — core logic in `tools/session_logs_archive.rye`; witness `tools/session_logs_archive_witness.rish`. Run fold on Kaeden's word. Living law: `.cursor/rules/session-logs.mdc` · `.claude/rules/session-logs.md`.
 
 ---
 

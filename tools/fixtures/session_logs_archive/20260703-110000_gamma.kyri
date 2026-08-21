@@ -1,0 +1,11 @@
+format session-log-v1
+stamp 20260703.110000
+editor fixture
+model fixture
+voice Kyri
+title gamma -- a Kyri-notation log from a prior day
+think This fixture exists because the fold tool learned .kyri on 20260821, and a new
+think extension that is added without being proven is an extension nobody has tested.
+obs The 600 .kyri logs standing flat when the room folded would have been silently
+obs left behind by a tool that only knew .bron and .md.
+recommend keep-going the selftest folds this file beside alpha and finds it under date/20260703/

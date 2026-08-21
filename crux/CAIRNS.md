@@ -24,6 +24,16 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260821.161758` -- the session-log room folds flat to `date/YYYYMMDD/`
+
+**Walk-back nib:** `66875be46b` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The whole session-log room as it stood flat -- 1,492 dated files at room level, 892 `.bron` and 600 `.kyri`, beside the elder `archive/` holding 3,000 more across 44 day directories -- reads at this nib exactly as it read for the two months it grew that way.
+
+**Swept:** no file is removed and no byte is lost -- this is a `git mv` of every flat dated log into `session-logs/date/<day>/`, plus a rename of the elder `archive/` to `date/` so one room has one shape. `session-logs/README.md` is a **living** index, so its 1,491 flat links and its `archive/` links are repointed in place; every other reference in the tree is left exactly as written, to be **resolved** rather than rewritten (`tools/dated_path_resolve.rish`).
+
+**What waits there, worth recalling:** the flat room is the last look at what two months of daily logging looks like in one `ls` -- and the honest reason the fold happened, since GitHub's web listing stops at 1,000 entries and the room held 1,492. The elder `archive/` name waits here too; it retires because ORGANIZING defines archive as finished-and-historical while a log from nine days ago is the live record.
+
+**Why a cairn for a move rather than a debride:** the cairn rule asks for one before a *debride*, and this is not one -- nothing is destroyed. It is recorded anyway because it is the largest structural move the tree has made, and a walk-back to the room's departing shape costs one line and answers a question a future reader will certainly ask.
+
 ### `20260821.073606` -- the reply and edge live edges condense as fold N lands
 
 **Walk-back nib:** `b356c54b8e` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read while the refusal agenda was closing stands whole at this nib.
