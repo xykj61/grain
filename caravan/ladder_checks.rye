@@ -7750,3 +7750,131 @@ pub fn dispute_recorded(comptime rung: type, io: std.Io) ?[2]rung.Settlement {
     const theirs = rung.settlement_of_byte(bytes[1]) orelse return null;
     return .{ ours, theirs };
 }
+
+
+/// Starts one dependent, from the entrustment it may claim to the generation it
+/// will stand in.
+///
+/// The whole opening of a run reads here in one sequence, and the order is the
+/// meaning. A start first asks what the line may still claim, since a dependent
+/// entrusted with nothing has no business opening a generation at all. It then
+/// narrows the grant to the one domain this task names, so what the document
+/// allows and what the run reaches are the same set rather than two sets that
+/// happen to agree today.
+///
+/// Only then do the notes land, each a promise a later hand reads back off the
+/// wire rather than out of anyone's memory: the generation this dependent stands
+/// in, the depth it was offered, whether its reserve is held on or pruned, and
+/// whether the run expects it to fall. A start that seated a spawn before those
+/// notes would leave a dependent running under promises nothing had recorded.
+///
+/// Every reach is seated through the rung handed in, so one text starts whichever
+/// rung called it. Two rungs stood apart from the forty and both came home: the
+/// tier owner `abandon.rye` reaches its own report directly, and `reckon.rye`
+/// stands one rung above it and reaches through the neighbor it names, so three
+/// lines of accessor apiece folded their thirty-five with the rest and the family
+/// closed whole at forty-two.
+pub fn start_one(
+    comptime rung: type,
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    phase: unhand.Phase,
+    reserve: ?rung.Task,
+    keeping: rung.Keep,
+    wake: gap.Wake,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError || cohort.RunError || boot.BootError)!cohort.Running {
+    // invariant: a start always names the domain it starts
+    assert(phase.task.item.domain.len >= 1);
+    // invariant: a start always hands a line that names arcs
+    assert(phase.task.item.hops.len >= 1);
+    var line: entrust.Line = .{};
+    const widest = entrust.entrusted_task(phase.task, reserve, rung.reserve_depth(reserve), &line) orelse
+        return error.EntrustExhausted;
+    if (!entrust.entrust_granted(sys, widest)) return error.EntrustUngranted;
+    const narrowed = intent.narrow(caps, phase.task) orelse return error.UnknownDomain;
+    const slot = narrowed.find_dependent(phase.task.item.domain) orelse return error.UnknownDomain;
+    // invariant: a narrowed line stays inside what the document grants
+    assert(boot.line_within(sys, slot));
+    const generation = try rung.open_generation(io, phase.task.item.domain);
+    // invariant: every dependent stands in a generation of its own
+    assert(generation >= 1);
+    try rung.offer(io, phase.task.item.domain, rung.reserve_depth(reserve));
+    try rung.promise_pruning(io, phase.task.item.domain, keeping);
+    try rung.promise_falling(io, phase.task.item.domain, phase.task.item.expect != carry.Outcome.carried_ok);
+    rung.abandoning_of(report_out).inner.inner.stale_at_home += rung.revoke_rung.stale_reach(rung.reserve_depth(reserve), keeping);
+    return cohort.spawn_one_within(
+        allocator, io, self_path, sys, &narrowed, phase.task.item, wake, &.{},
+    );
+}
+
+
+/// Opens the generation a dependent will stand in, and hands back its number.
+///
+/// A generation is read off the wire and written back one higher, so the count a
+/// later hand reads is the count this run actually opened rather than a number
+/// anyone carried in memory. A domain with no epoch note yet reads as zero and
+/// opens at one, which is how a first run and a resumed run tell themselves
+/// apart without either asking.
+pub fn open_generation(comptime rung: type, io: std.Io, domain: []const u8) rung.NoteError!u32 {
+    // invariant: a generation always names the domain it opens in
+    assert(domain.len >= 1);
+    const standing_now = rung.read_count(io, domain, ".epoch") catch 0;
+    // invariant: a run never opens more generations than one byte may name
+    assert(standing_now < 255);
+    const opened: u8 = standing_now + 1;
+    try rung.seat_note(io, domain, ".epoch", &[_]u8{opened});
+    return opened;
+}
+
+
+/// Records the depth a dependent was offered, as a note a later hand reads back.
+///
+/// The offer lands on the wire before the spawn, so a dependent never runs under
+/// a depth nothing recorded. A depth past what one line may name is refused here
+/// rather than truncated into a note that would read as a smaller promise than
+/// the one the run made.
+pub fn offer(comptime rung: type, io: std.Io, domain: []const u8, depth: u32) rung.NoteError!void {
+    // invariant: an offer always names the dependent it is made to
+    assert(domain.len >= 1);
+    // invariant: an offer never promises more than one line may name
+    assert(depth <= cycle.max_hops);
+    try rung.seat_note(io, domain, ".offered", &[_]u8{@intCast(depth)});
+}
+
+
+/// Promises whether a dependent's reserve is held on or pruned.
+///
+/// The two the keep may carry are written as the two bytes a reader knows, so the
+/// note says which of them stands rather than leaving a later hand to infer it
+/// from the absence of the other.
+pub fn promise_pruning(comptime rung: type, io: std.Io, domain: []const u8, keep: rung.Keep) rung.NoteError!void {
+    // invariant: a promise always names the dependent it is made to
+    assert(domain.len >= 1);
+    const byte: u8 = switch (keep) {
+        .held_on => 0,
+        .pruned => 1,
+    };
+    // invariant: a promise is always one of the two the keep may carry
+    assert(byte <= 1);
+    try rung.seat_note(io, domain, ".pruning", &[_]u8{byte});
+}
+
+
+/// Declares whether the run expects this dependent to fall.
+///
+/// A dependent that ends the way its plan expected and one that ends any other
+/// way are the two endings a supervisor must tell apart, and this note is where
+/// the expectation is written down before either happens -- so the reading later
+/// is a comparison rather than a recollection.
+pub fn promise_falling(comptime rung: type, io: std.Io, domain: []const u8, falling: bool) rung.NoteError!void {
+    // invariant: a declaration always names the dependent it is made to
+    assert(domain.len >= 1);
+    const byte: u8 = if (falling) 1 else 0;
+    // invariant: a declaration is always one of the two ways a dependent ends
+    assert(byte <= 1);
+    try rung.seat_note(io, domain, ".falls", &[_]u8{byte});
+}

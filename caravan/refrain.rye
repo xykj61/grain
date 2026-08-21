@@ -89,7 +89,7 @@ const overtake = @import("overtake.rye");
 const unhand = @import("unhand.rye");
 const entrust = @import("entrust.rye");
 const confer = @import("confer.rye");
-const revoke_rung = @import("revoke.rye");
+pub const revoke_rung = @import("revoke.rye");
 const reclaim_rung = @import("reclaim.rye");
 const abandon_rung = @import("abandon.rye");
 const bearing_rung = @import("bear.rye");
@@ -5196,11 +5196,7 @@ pub fn provision_notes(io: std.Io, sys: *const system.System) NoteError!u32 {
 
 /// Tells one dependent how much reach may yet arrive for it.
 pub fn offer(io: std.Io, domain: []const u8, depth: u32) NoteError!void {
-    // invariant: an offer always names the dependent it is made to
-    assert(domain.len >= 1);
-    // invariant: an offer never promises more than one line may name
-    assert(depth <= cycle.max_hops);
-    try seat_note(io, domain, ".offered", &[_]u8{@intCast(depth)});
+    return ladder_checks.offer(@This(), io, domain, depth);
 }
 
 /// Reads how much reach this dependent was told may yet arrive.
@@ -5215,15 +5211,7 @@ pub fn offered(io: std.Io, domain: []const u8) NoteError!u32 {
 
 /// Tells one dependent whether a pruning will come for it at all.
 pub fn promise_pruning(io: std.Io, domain: []const u8, keep: Keep) NoteError!void {
-    // invariant: a promise always names the dependent it is made to
-    assert(domain.len >= 1);
-    const byte: u8 = switch (keep) {
-        .held_on => 0,
-        .pruned => 1,
-    };
-    // invariant: a promise is always one of the two the keep may carry
-    assert(byte <= 1);
-    try seat_note(io, domain, ".pruning", &[_]u8{byte});
+    return ladder_checks.promise_pruning(@This(), io, domain, keep);
 }
 
 /// Reads whether a pruning was promised to this dependent.
@@ -5242,12 +5230,7 @@ pub fn pruning_promised(io: std.Io, domain: []const u8) bool {
 /// grafts a conferral and before it carries the work. So the declaration rides
 /// the same wire as the pruning promise, written before the spawn.
 pub fn promise_falling(io: std.Io, domain: []const u8, falling: bool) NoteError!void {
-    // invariant: a declaration always names the dependent it is made to
-    assert(domain.len >= 1);
-    const byte: u8 = if (falling) 1 else 0;
-    // invariant: a declaration is always one of the two ways a dependent ends
-    assert(byte <= 1);
-    try seat_note(io, domain, ".falls", &[_]u8{byte});
+    return ladder_checks.promise_falling(@This(), io, domain, falling);
 }
 
 /// Answers whether this dependent's author declared that it falls.
@@ -5283,14 +5266,7 @@ pub fn confer_words(io: std.Io, domain: []const u8, words: *const Words, depth: 
 /// one further. The number is seated before the spawn, so a dependent always
 /// finds its own generation waiting for it.
 pub fn open_generation(io: std.Io, domain: []const u8) NoteError!u32 {
-    // invariant: a generation always names the domain it opens in
-    assert(domain.len >= 1);
-    const standing_now = read_count(io, domain, ".epoch") catch 0;
-    // invariant: a run never opens more generations than one byte may name
-    assert(standing_now < 255);
-    const opened: u8 = standing_now + 1;
-    try seat_note(io, domain, ".epoch", &[_]u8{opened});
-    return opened;
+    return ladder_checks.open_generation(@This(), io, domain);
 }
 
 /// Tells the run this dependent has grafted the reach it was conferred.
@@ -7996,28 +7972,7 @@ pub fn start_one(
     wake: gap.Wake,
     report_out: *Report,
 ) (RunError || NoteError || cohort.RunError || boot.BootError)!cohort.Running {
-    // invariant: a start always names the domain it starts
-    assert(phase.task.item.domain.len >= 1);
-    // invariant: a start always hands a line that names arcs
-    assert(phase.task.item.hops.len >= 1);
-    var line: entrust.Line = .{};
-    const widest = entrust.entrusted_task(phase.task, reserve, reserve_depth(reserve), &line) orelse
-        return error.EntrustExhausted;
-    if (!entrust.entrust_granted(sys, widest)) return error.EntrustUngranted;
-    const narrowed = intent.narrow(caps, phase.task) orelse return error.UnknownDomain;
-    const slot = narrowed.find_dependent(phase.task.item.domain) orelse return error.UnknownDomain;
-    // invariant: a narrowed line stays inside what the document grants
-    assert(boot.line_within(sys, slot));
-    const generation = try open_generation(io, phase.task.item.domain);
-    // invariant: every dependent stands in a generation of its own
-    assert(generation >= 1);
-    try offer(io, phase.task.item.domain, reserve_depth(reserve));
-    try promise_pruning(io, phase.task.item.domain, keeping);
-    try promise_falling(io, phase.task.item.domain, phase.task.item.expect != carry.Outcome.carried_ok);
-    abandoning_of(report_out).inner.inner.stale_at_home += revoke_rung.stale_reach(reserve_depth(reserve), keeping);
-    return cohort.spawn_one_within(
-        allocator, io, self_path, sys, &narrowed, phase.task.item, wake, &.{},
-    );
+    return ladder_checks.start_one(@This(), allocator, io, self_path, sys, caps, phase, reserve, keeping, wake, report_out);
 }
 
 /// Admits as much of the record as the table and the reading allow, and
