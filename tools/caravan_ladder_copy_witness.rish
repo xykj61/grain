@@ -188,7 +188,7 @@ assert prose_elder.out contains "HARNESS_PROSE_OK" else "caravan-ladder-copy: wa
 # scan's own output.
 let recited = run ["sh" "tools/fixtures/caravan_ladder_prose_count_scan.sh"]
 assert recited.ok else "caravan-ladder-copy: no ladder meter may recite a module count in prose -- ${recited.out}"
-assert recited.out contains "LADDER_PROSE_COUNT_OK" else "caravan-ladder-copy: want every ladder meter's prose free of a recited module count"
+assert recited.out contains "LADDER_PROSE_COUNT_OK" else "caravan-ladder-copy: want every ladder meter's prose free of a recited module count and every closing number held by an assert"
 say "caravan-ladder-copy: recited counts -- ${trim recited.out}"
 
 # RED path eleven -- the spine meter exactly as it shipped, which is the strongest available control: the guard must
@@ -201,6 +201,21 @@ say "caravan-ladder-copy: recited counts -- ${trim recited.out}"
 let recited_elder = run ["sh" "tools/fixtures/caravan_ladder_prose_count_scan.sh" "tools/fixtures/caravan_ladder_prose_count_elder"]
 assert (recited_elder.ok == false) else "caravan-ladder-copy: the drifted spine prose must refuse"
 assert recited_elder.out contains "LADDER_PROSE_BAD say" else "caravan-ladder-copy: want the drifted line named by file and number"
+
+# The closing-line rule, and RED path twelve -- the carry meter exactly as it shipped (REDS %110). The rule above
+# refuses one phrase, and the very next meter drifted on words it does not name: the carry meter closed every run
+# reciting "137,176 lines across 10,198 copied bodies of the 18,039 standing on it" while its own assert four lines
+# earlier said 137,185, 10,199, and 18,055. So the guard grew a second rule bounded by a PROPERTY rather than by a
+# vocabulary -- every number in a meter's closing GREEN line stands asserted in that same file, separators stripped --
+# and it is strictly stronger than the first: pointed at the elder spine meter it refuses that line too, on the number
+# rather than on the noun. Drawn at the closing line first, it widened to every `say` within the same lap -- the line
+# directly above the carry meter's close recited the same stale number, so the boundary proved too narrow before it was
+# an hour old.
+let recited_close = run ["sh" "tools/fixtures/caravan_ladder_prose_count_scan.sh" "tools/fixtures/caravan_ladder_prose_close_elder"]
+assert (recited_close.ok == false) else "caravan-ladder-copy: the drifted carry close must refuse"
+assert recited_close.out contains "LADDER_PROSE_BAD printed" else "caravan-ladder-copy: want the drifted printed number named by file, line, and value"
+assert recited_close.out contains "recites 137176 with no assert holding it" else "caravan-ladder-copy: want the carried-line drift named by the number that actually shipped"
+assert recited_elder.out contains "LADDER_PROSE_BAD printed" else "caravan-ladder-copy: want the printed-number rule refusing the elder spine line as well, on the number rather than the noun"
 
 # The counting proven by hand. The corpus holds two rungs: the lower carries two distinct checks, the
 # upper carries one of them forward byte for byte and adds one of its own. So four checks stand, three

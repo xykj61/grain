@@ -82,7 +82,7 @@ say "caravan-ladder-print: Lens TAME -- safety first: the ceiling is named, the 
 
 let living = run ["sh" "tools/fixtures/caravan_ladder_print_scan.sh"]
 assert living.ok else "caravan-ladder-print: the living ladder scan must exit 0 -- ${living.out}"
-assert living.out contains "PRINT_OK" else "caravan-ladder-print: want the living printing under its named ceiling"
+assert living.out contains "PRINT_OK carried=2686 ceiling=2800" else "caravan-ladder-print: want the living printing under its named ceiling"
 assert living.out contains "PRINT_MODULES 108 holding=43" else "caravan-ladder-print: want 43 of the 108 modules holding a printing family -- the 42 rungs and the harness the fold gave two bodies to"
 assert living.out contains "PRINT_LINES total=4600 distinct=1914 carried=2686" else "caravan-ladder-print: want the printing carry standing where this lap measured it"
 
@@ -167,4 +167,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_p
 assert (ceiling.ok == false) else "caravan-ladder-print: a printing carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-print: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-print -- the ladder's printing stands counted at 2,686 carried lines of 4,600 across 42 rungs and the harness beside them, read two independent ways that agree within thirteen percent, down 246 lines since the run-telling movement lifted into `caravan/ladder_checks.rye`, where eight rungs holding fifty lines apiece became one body and eight lines of call, held under a ceiling lowered to 2,800 so the fold stays folded, proven by hand on a two-rung corpus holding both shapes, and all three RED paths refusing by name."
+say "GREEN: caravan-ladder-print -- the ladder's printing stands counted at 2,686 carried lines of 4,600 across 42 rungs and the harness beside them, read two independent ways that agree within thirteen percent, down since the run-telling movement lifted into `caravan/ladder_checks.rye`, where eight rungs holding fifty lines apiece became one body and eight lines of call, held under the ceiling the scan printed above so the fold stays folded, proven by hand on a two-rung corpus holding both shapes, and all three RED paths refusing by name."

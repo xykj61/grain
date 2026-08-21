@@ -1850,7 +1850,7 @@ Both endpoints of that disk row were re-measured this lap by the same command ra
 
 Proven the way this arc proves things: the whole choir sang **99 GREEN from a cold tree**, every one of the thirty-seven folded rungs among them, with `tame_style_check` bans clean, `width-check` clean, and the ladder reach guard holding at one rung below per rung. The carry meter's own pins moved with the measurement rather than after it, and its ceiling came down in the same commit -- because a meter whose ceiling lags its subject is a guard that has stopped guarding.
 
-`reckon_the_plan` leads the queue now at 2,700 lines across 37 rungs, with `fill_table` at 2,484 behind it. **703 families still carry a copy**, so the queue outlasts many laps and no lap need guess what is next.
+`reckon_the_plan` led the queue as fold M closed, at 2,700 lines across 37 rungs, with `fill_table` at 2,484 behind it -- and fold N below lifted it. **703 families still carry a copy**, so the queue outlasts many laps and no lap need guess what is next.
 
 
 ## `refusals.rye` -- the whole vocabulary a verified kernel answers with, and the four Caravan speaks today
@@ -2000,6 +2000,38 @@ So this rung is the asking. One **ask** arrives carrying everything a supervised
 
 **The agenda in `refusals.rye` is unmoved, and that is the point.** A rung that closed the agenda by editing the count would have closed nothing. Proven by [`tools/caravan_reply_witness.rish`](../tools/caravan_reply_witness.rish), GREEN on metal, with all three RED paths planted rather than described: a reversed reading order answers an ask by its last fault rather than its first, a collapsed seam gives one sentence for a resource never granted and a dependent never heard of, and a **muted table** -- the very fault this rung exists to fix, planted in reverse -- lets every ask walk through to the deed while the measured reach quietly falls from eleven to eight. A reach credited by proximity would not have noticed a thing.
 
+
+## Fold N -- `reckon_the_plan`, and a closing sentence that had drifted while nobody counted it
+
+The printed queue named the next fold, exactly as it is meant to. `reckon_the_plan` stood **byte for byte in thirty-seven rungs at seventy-five lines apiece -- 2,700 carried lines**, the largest family on the ladder from the moment `mend_the_plan` lifted out of the same thirty-seven. No lap had to guess, and no name had to catch anybody's eye.
+
+`reckon_the_plan` is the body that publishes what a run came to, weighs the judgments standing on that run's own wire, and leaves the report holding exactly the loss a repair must answer. It moves into [`ladder_checks.rye`](ladder_checks.rye) whole, takes the rung as a comptime parameter, and reaches every symbol through it -- so each rung still reckons its own plan, against its own wire, into its own report.
+
+**This fold cost no accessor at all.** Fold L needed a three-line `recanting_of` in `recant.rye` to bring its thirty-seventh rung in; here all eighteen symbols the body reaches already stood `pub` on all thirty-seven, verified before a line moved. That is what a ladder looks like after eleven folds have taught it to publish what it shares.
+
+**Four elder rungs keep a body of their own** -- [`reckon.rye`](reckon.rye) at 27 lines, [`mend.rye`](mend.rye) at 35, [`bear.rye`](bear.rye) at 41, and [`appraise.rye`](appraise.rye) at 51. Each is the rung where a tier grew, and each body genuinely differs; sweeping them in would have folded four meanings into one. They stay home, and the meter keeps counting them apart.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding the body | 37 | **0**, each keeping a nine-line delegate |
+| Lines the body carried | 2,700 | **324** -- the delegate is itself a copy |
+| The ladder's whole carry | 137,185 | **134,809** |
+| Carry ceiling | 137,300 | **135,000** |
+| Lines on disk, all `caravan/*.rye` | 375,997 | **373,828** |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+**A fold shrinks a family to its call; it never erases it from the count.** The carry fell 2,376 rather than the 2,700 the queue named, and the difference is the nine-line delegate now standing byte-identical in thirty-seven rungs. Any lap expecting a folded family to vanish whole is reading the meter wrong, so the meter says so in its own header now.
+
+### The red this fold walked into (REDS %110)
+
+Re-pinning the carry meter meant reading its closing sentence, and the sentence was wrong. It had been closing every GREEN run reciting *"137,176 lines across 10,198 copied bodies of the 18,039 standing on it"* while its own assert, four lines earlier, pinned **137,185, 10,199, and 18,055** -- and the line above the close recited the same stale number again.
+
+The meter had stayed GREEN straight through, because the guard [`REDS %108`](../crux/archive/REDS-caravan-meter-prose-rows-108-109.md) built refuses exactly one phrase: a number followed by the word `modules`. This meter drifted on lines, bodies, and copies instead. **A guard bounded by a vocabulary catches the incident, never the class.**
+
+So the rule is bounded by a property now: **every number a ladder meter prints in a `say` line stands asserted in that same file**, thousands separators stripped, since `137,176` and `137185` are one claim in two costumes. A subject number is asserted and survives; a context number earns an assert or leaves the sentence. Two frozen controls hold the RED path under version control rather than pinned to `HEAD` ([`REDS %109`](../crux/archive/REDS-caravan-meter-prose-rows-108-109.md)'s lesson): the carry meter exactly as it shipped, and the elder spine meter, which the new rule refuses too -- on the number rather than on the noun. The second rule is strictly stronger than the first rather than merely beside it.
+
+The rule proved itself on the way in twice over. Drawn first at the closing line alone, it was too narrow within the hour -- the line directly above the close carried the same stale number -- so it widened to every printed line. And its first pattern, an `(^|[^0-9])` alternation, matched nothing at all, because this shell's grep reads a `^` inside a group as a literal caret; the probe caught it by refusing a number the file plainly asserts. A guard that has never refused what it should welcome is a guard nobody has tested.
 
 ## Held
 
