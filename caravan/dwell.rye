@@ -375,7 +375,7 @@ fn appeal_of(report_out: *Report) *appeal_rung.Report {
 }
 
 /// The tidings rung's tally, one tier further down.
-fn tidings_of(report_out: *Report) *tidings_rung.Report {
+pub fn tidings_of(report_out: *Report) *tidings_rung.Report {
     return &report_out.inner.inner.inner.inner.inner;
 }
 
@@ -4277,64 +4277,7 @@ fn read_the_appeal(io: std.Io, appeal: Appeal, report_out: *Report) (RunError ||
 /// nothing rather than by inventing a correspondent. A quarrel weighed whose
 /// raiser was never told how it came out is the number this rung moves.
 fn tell_the_reader(io: std.Io, tidings: Tidings, report_out: *Report) (RunError || NoteError)!void {
-    const quarrel = dispute_recorded(io);
-    const raised: u32 = if (quarrel == null) 0 else 1;
-    if (raised == 0) {
-        // invariant: a run holding no quarrel leaves no raiser unreturned
-        assert(tidings_of(report_out).unreturned == 0);
-        return;
-    }
-    const life = term_written(io);
-    const weighed = life != null;
-
-    // The measurement this rung moves, weighed against what the wire actually
-    // carries rather than against what any plan asked for, so a raiser left in
-    // the dark is counted rather than refused.
-    tidings_of(report_out).unreturned = objection_untold(raised, weighed, tidings);
-    const told_count = told_in(raised, weighed, tidings);
-    const untold_count = untold_in(raised, weighed, tidings);
-    if (tidings == .silent) {
-        // invariant: a silent run writes to nobody, however plainly its own
-        // wire weighed the quarrel
-        assert(told_count == 0);
-        tidings_of(report_out).untold = untold_count;
-        return;
-    }
-    if (!weighed) {
-        // A quarrel nobody decided has no outcome to report, and the wire says
-        // so by leaving the reader's box exactly as it reads.
-        //
-        // invariant: an unweighed quarrel is never reported on
-        assert(told_count == 0);
-        tidings_of(report_out).untold = untold_count;
-        return;
-    }
-    // The supply, refused by name while the term it read is still in hand: a run
-    // writes back only where somebody actually decided the quarrel.
-    if (unweighed_tidings(if (weighed) 1 else 0, told_count)) |why| return why;
-    if (tidings_refusal(raised, told_count, untold_count)) |why| return why;
-    // invariant: a run that reached the tidings refuses nothing it must write
-    assert(told_count == 1);
-    const held = quarrel orelse return error.TidingsEarly;
-    const settled = settlement_published(io) orelse return error.TidingsUnweighed;
-    var address_buf: [max_address_len]u8 = undefined;
-    const address = address_published(io, &address_buf) orelse return error.TidingsEarly;
-    // The word this reader stood against is the plan's own reading at the time
-    // of the quarrel, which the record names first.
-    const objected_to = held[0];
-    const result = results_as(objected_to, settled);
-    // The hard half of this rung: a tiding carries one finding to the one person
-    // who asked for it, so it must be that finding.
-    if (!tells_true(result, objected_to, settled)) return error.TidingsMisread;
-    try tell_outcome(io, address, result);
-    // The wire before the memory, once more: the answer is read back out of the
-    // reader's own box, and only then does the report believe it.
-    const reached = told_of(io, address) orelse return error.TidingsMisread;
-    if (!tells_true(reached, objected_to, settled)) return error.TidingsMisread;
-    tidings_of(report_out).told = told_count;
-    tidings_of(report_out).untold = untold_count;
-    // invariant: a returning run leaves no weighed quarrel unreturned
-    assert(tidings_of(report_out).unreturned == 0);
+    return ladder_checks.tell_the_reader(@This(), io, tidings, report_out);
 }
 
 /// Carries the term's own answer into the mark an operator actually opens.
