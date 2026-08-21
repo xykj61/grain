@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260821.005102
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan ladder fold J -- the whole staircase folds, and the accessor it was said to want was already born
+prompt Pick up the running thread, close open agent-closable reds first, then take the next agent-doable lap Lindy-first crux-first; read one council-rota doc; sweep the prose Radiant; send.
+think Standfast first. The living REDS rows are 101 and 102, both closed last lap with looms and RED paths proven on metal; every earlier row carries a closure note. Nothing agent-closable stands open, so the constructive queue opens.
+think Council rota by lap index. The index holds 1,480 rows, and 1480 mod 27 + 1 lands on item 23, the one-clock naming law. Its lesson reads straight onto this lap: a number that names nothing points at four files and lands on none, while a name carrying its own meaning needs no convention to read. That is the same argument the accessor table makes against a chain of `inner` -- a named reach says which tier; a count of hops says nothing until you count it.
+think The card named the crux and sized it honestly: `tell_beckon_own` in seven rungs from 34 to 111 lines, where the length itself is content, so neither a hash nor a mask reaches it. It asked to measure the shared prefix against the per-rung suffix before proposing a shape. Measured before a line moved.
+think First reading -- depth and field, per rung. Every body is a stack of tier groups, three printed lines apiece, and the depths descend by exactly one per group. Group index equals start depth minus depth, uniformly, in all seven.
+think Second reading -- the prose, masked for the pair of words. Every group line is byte-identical across the seven. Third reading -- the sequence. Splitting each body into its group part and its trailing three lines shows the tails identical across all seven and the group parts in strict prefix order: beckon 17, answer 20, abate 23, conclude 26, respect 29, refrain 32, farewell 35. Seven different lengths of one staircase, proven by diff rather than argued.
+think The hard question was the depth, and it answered itself. Every rung of this arc already publishes one named reach per tier it wraps -- and the doc comment above them says exactly why, so a miscount cannot hide inside a chain of `inner`. Those reaches form an exact triangle: farewell declares eleven, refrain ten, beckon five. So a rung's share of the staircase is derived from the accessors it declares, and the accessor the fold was said to want has been standing the whole time.
+think Deriving rather than listing is REDS %102's lesson applied at design time. That red found a guard reading a hand-kept list of archives that had gone stale, and closed by discovering them on disk. Here the same choice is available before anything drifts, so the harness gates each tier on `@hasDecl(rung, tier.of)` for the tiers below and `@hasField(rung.Report, tier.mine)` for the rung's own, and the probe fields are unique to exactly one rung -- checked on metal, not assumed.
+think The asserts lifted too. Every rung's second assert reaches through raw nesting to a depth that turned out, in all seven, to be exactly the mind tier -- so it is written as a named reach in the harness rather than a hop count.
+obs Only three symbols wanted widening by one word each across the seven -- below_of, bearing_of, preceded_of -- the same move fold F made across twenty-eight rungs. Every accessor the staircase itself reaches already stood pub, which is folds F, G, and I compounding for the third lap running.
+obs The proof is the strongest this arc has shown. All seven rungs built and run before the edit and after it, and every sorted multiset stands identical with zero lines differing. The ordered comparisons differ by ten to sixteen lines, every one a concurrent-client line present in the same count on both sides, and an unchanged binary run twice against itself differs by eight in exactly the same way -- the interleave proven to be the run rather than the fold, as fold I taught.
+obs `tame_style_check` earned its keep. The first cut of the harness invariant read `assert(!(below and own))`, and the compound-assert ban refused it by name. Restated as a bounded count of ways a tier may be reached, it is single, positive, and explicitly widthed -- a better assert than the one the ban caught.
+obs The printing meter earned its keep too. Splitting that assert added one line to the harness, and the meter refused the stale pin on the next run rather than letting a number drift by one. Repinned from measurement.
+obs A docs-sync gap closed in the same commit: fold I had never reached `caravan/README.md`, and the section's closing paragraph still claimed the staircase wanted an accessor born. Both folds are recorded now and the claim corrected, since the code has disproved it.
+loom fold=caravan_ladder_own_telling rungs=7 lines_deleted=603 lines_of_call=7 print_carried_before=3231 print_carried_after=2932 print_disk_before=5522 print_disk_after=4919 ceiling_before=3500 ceiling_after=3100 neighbor_before=2646 neighbor_after=2616 ratchet_before=9 ratchet_after=4 checks=47 spine=0 witnesses_green=98 parity_multiset_diff=0
+file caravan/ladder_checks.rye the staircase stands once as a comptime table of twelve tiers, each rung reading its own share off the accessors it declares
+file caravan/farewell.rye three chained telling bodies leave; one call remains
+file caravan/refrain.rye the 111-line body TAME's ratchet named twice leaves; one call remains
+file caravan/respect.rye the 102-line body the ratchet named leaves; one call remains
+file caravan/conclude.rye body lifted, one call kept, below_of and its two kin widened by one word
+file caravan/abate.rye body lifted, one call kept, below_of and its two kin widened by one word
+file caravan/answer.rye body lifted, one call kept, below_of and its two kin widened by one word
+file caravan/beckon.rye body lifted, one call kept, below_of and its two kin widened by one word
+file tools/caravan_ladder_print_witness.rish repinned from measurement and its prose synced to the numbers it now proves
+file tools/fixtures/caravan_ladder_print_scan.sh ceiling tightened 3500 to 3100 so the fold stays folded
+file caravan/README.md folds I and J recorded, and the stale claim that the staircase wanted an accessor born corrected
+file crux/CAIRNS.md walk-back nib bbc07cff0c recorded before the card condensed two live edges
+file crux/REMEMBER.md live edge rotated to fold J, folds H and G condensed to a pointer, Now refilled with the next sized crux
+recommend keep-going tell_desist_runs stands in eight rungs at fifty lines apiece and all eight collapse to one hash under the pair-and-depth mask -- fold H's shape with fold J's answer to the depth already in hand, mechanical and policy-written.

@@ -1726,7 +1726,46 @@ The proof this fold rests on is stronger than a hash, because a hash could no lo
 
 The ceiling came down 4,300 to **3,700**, sized as before so a first new rung passes and a second refuses. All eight touched rungs ran their own witness GREEN, and the whole choir sang GREEN cold beside them.
 
-What remains carried is the **true staircase** -- `tell_desist_tail` and `tell_beckon_own`, bodies that read three tiers through a nesting each rung writes at its own depth, nine and ten `inner` hops in one rung where the next writes eight. Those want an accessor **born** rather than a body lifted, which is a different move than any of the four folds before it.
+What remained carried was the **true staircase** -- `tell_desist_tail` and `tell_beckon_own`, bodies that read tiers through a nesting each rung writes at its own depth, nine and ten `inner` hops in one rung where the next writes eight. Both looked like they wanted an accessor **born** rather than a body lifted. The two folds below found otherwise: every accessor those bodies needed was already standing.
+
+**Fold I lifted the staircase's first half on `20260821.002546`, and widened nothing.** `tell_desist_tail` stood in **eight rungs** at fifty-two lines apiece with no two hashing alike, varying in two things: the pair of words fold H had already learned to lift, and the depth of the raw nesting reaching three tiers. The whole cost was read before a line moved, and it came to zero. Mapping each rung's nesting depth against its own accessor table showed all three tiers -- sufficing, reopening, reweighing -- already had an accessor standing at exactly that depth, and all **six symbols the body reaches already stood `pub` across all eight rungs**. That is folds F and G compounding: F widened one accessor by hand across twenty-eight rungs, G found eighteen of eighteen already public because of it, and this lap found six of six.
+
+Substituted, masked, and hashed, all eight collapsed to one hash, and seven of the eight were then identical outright -- `desist` differing in one more thing, its trailing hop naming its own next tier where the other seven name theirs. That hop stayed in the rung's own delegate rather than widening seven symbols or reaching for indirection, so the staircase stayed written where each rung writes it.
+
+| Reading | Before | After |
+|---|---|---|
+| Printing lines on disk | 5,848 | **5,522** |
+| Carried printing lines | 3,433 | **3,231** |
+| Lines deleted from rungs | -- | **392**, for 8 lines of call |
+| Neighbor walk, read independently | 2,715 | **2,646** -- the gap narrowing for the first time |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+The ceiling came down 3,700 to **3,500**. Parity was proven by building and running all eight rungs before and after: every sorted multiset identical, zero non-client differences, and the interleave proven to be the run rather than the fold by running one *unfolded* binary twice and watching it disagree with itself by more lines than the fold did.
+
+**Fold J lifted the whole staircase on `20260821.005102`, and the accessor it was said to want was already born.** `tell_beckon_own` stood in **seven rungs** from thirty-four lines to a hundred and eleven, and the length itself looked like content: each rung walks up to the tiers it owns, so neither a hash nor a mask could reach it. Reading the seven side by side against their own accessor tables showed what the lengths were hiding.
+
+Each body is a staircase of **tier groups**, three printed lines apiece, and every rung prints the groups reaching from the recount tier up to its own. Masked for the pair of words and for nesting depth, the seven are **one thirty-five-line sequence in strict prefix order** -- beckon says the first seventeen lines, answer the first twenty, farewell all thirty-five -- each followed by the same three-line tail. Nothing in the seven is a variation; they are seven different lengths of one staircase.
+
+And the depth needs no counting at all. Every rung of this arc already publishes **one named reach per tier it wraps**, exactly so a miscount cannot hide inside a chain of `inner`, and those reaches form an exact triangle: farewell declares eleven, refrain ten, beckon five. So a rung's share of the staircase is **derived** from the accessors it declares rather than kept in a list somebody maintains by hand -- the lesson REDS %102 taught, applied at the moment of design rather than after a guard went blind.
+
+The staircase stands once in `ladder_checks.rye` as a comptime table of twelve tiers, and each rung keeps a one-line call handing in its own two words. The two invariant asserts lifted with it, written as named reaches -- every rung's second assert turned out to reach exactly the mind tier. Three symbols widened by one word each across the seven -- `below_of`, `bearing_of`, `preceded_of` -- the same one-word move fold F made.
+
+| Reading | Before | After |
+|---|---|---|
+| Printing lines on disk | 5,522 | **4,919** |
+| Carried printing lines | 3,231 | **2,932** |
+| Lines deleted from rungs | -- | **603**, for 7 lines of call |
+| Neighbor walk, read independently | 2,646 | **2,616** -- within eleven percent, converging |
+| Bodies past TAME's seventy-line bound | 9 | **4** |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+The ceiling came down 3,500 to **3,100**. All seven rungs were built and run before the edit and after it, and **every sorted multiset stands identical with zero lines differing** -- the strongest parity any fold in this arc has shown. The ordered comparisons differ by ten to sixteen lines, every one of them a concurrent-client line present in the same count on both sides, and an unchanged binary run twice against itself differs by eight in exactly the same way.
+
+Five of the nine bodies past TAME's seventy-line bound left by construction rather than by a split, the ratchet and the fold wanting the same lap. `tame_style_check` and `width-check` are clean, all three ladder meters GREEN, and the whole choir of **98 Caravan witnesses** sang GREEN cold beside them.
+
+**The printing carry has fallen 5,955 to 2,932 across five folds, and the staircase is spent.**
 
 
 ## Held
