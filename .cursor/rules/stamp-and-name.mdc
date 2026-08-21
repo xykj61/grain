@@ -1,0 +1,27 @@
+---
+description: A mark is a stamp and a name -- never an ascending letter or number; a folded room is date/YYYYMMDD/ and keeps the whole stamp in every filename.
+alwaysApply: true
+---
+
+# Stamp and Name -- how a piece of work is marked
+
+**Seated:** `20260821.160050` on Keaton's word. Canonical twin: `.claude/rules/stamp-and-name.md` (full form). Kin: `waymark-ladders.mdc`, the one-clock naming law, `lindy-first-crux.mdc`.
+
+**A mark is a stamp and a name.** The stamp orders it; the name means it.
+
+1. **Mark by stamp and name** -- `the standing movement (20260821-142939)`.
+2. **Never mint an ascending mark** -- no `Fold A -> Fold AH`, no `f0-f63`, no `X0/X1` rungs for planned work.
+3. **Count, never number** -- derive a total by measurement rather than carrying it inside a name.
+4. **Keep the whole stamp in every filename** -- `date/YYYYMMDD/YYYYMMDD-HHMMSS_slug.ext`.
+
+**Why.** Four seated ladders announced a length and stopped short (`f0-f63` at f3, `u0-u127` at u91, `i0-i15` at i6, sixteen Geode rounds at two rooms of twelve), so each number was a forecast written where it can never be corrected. An ascending mark also implies a dependency that is not there, sorts wrong in every text-sorting tool (`Fold Z` before `Fold AA`), and collides across ladders. The commit subject already carries a stamp and a name, so the law is subtraction rather than substitution.
+
+**What keeps its place.** Waymarks are names, not counts -- they stay. `rung` stays where a real ladder exists in code (`caravan/ladder_checks.rye`); `lap` and `round` carry planned work.
+
+**The path.** A room that outgrows a reader folds to `<room>/date/YYYYMMDD/`. `date/`, not `archive/` -- archive means finished, and a log from nine days ago is the live record. The whole stamp stays in the filename because it makes old-path-to-new a pure invertible function, keeps the basename globally unique, and survives leaving its directory.
+
+**A fold repoints nothing.** A stale reference is resolved, never rewritten: `rishi/bin/rishi run tools/dated_path_resolve.rish <reference> [<citing-file>]`. No fold ships without `tools/dated_path_witness.rish` green -- it holds the broken-reference census under a ceiling with no slack.
+
+**Illustrate with placeholders, cite only what exists.** An example path in prose is a shape -- `date/YYYYMMDD/YYYYMMDD-HHMMSS_slug.ext` -- never a concrete-looking path to a file that is not there, which reads as a real citation to every reader and every tool.
+
+**Accrete-never-break.** Every dated log and commit that already wrote `Fold AI` or `f0-f63` keeps every letter. This governs what is marked from here forward.
