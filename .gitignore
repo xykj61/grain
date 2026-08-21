@@ -108,6 +108,7 @@
 /vendor/*
 !/vendor/genode/
 !/vendor/monocypher/
+!/vendor/pqclean/
 !/.cursor/
 !/.vscode/
 !/.vscode/settings.json
