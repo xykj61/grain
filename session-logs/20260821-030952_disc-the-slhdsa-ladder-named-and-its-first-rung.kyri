@@ -1,0 +1,39 @@
+format session-log-v1
+stamp 20260821.030952
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title DISC -- the SLH-DSA ladder named, and its first rung standing
+prompt Name the SLH-DSA arc and start it.
+think A multi-rung arc wants a waymark before its first rung is written as DISC0 anywhere, so the draw came before the code. Chose the canonical input slh-dsa-hash-based-signature-ladder, set it in tools/waymark_derive.rish, and ran the derive rather than picking a word: SHA3-512 to index 1079 of 5526, drawing DISC with no collision against any seated name.
+think Seated it in all four places the law names -- the Lexicon, the derive script's exclude roster and seated-draws comment, the rule table -- and then in the sealed registry, which is the one that actually keeps the truth. Inserted the row alphabetically, re-sealed over the body, and the witness re-derived every corpus mark on metal to GREEN. My independently computed seal matched what the verify reported, which is the check worth having.
+think One friction: openssl is not on PATH in this jail, and the verify script already knew that, carrying its own /nix/store fallback. Read the script rather than fighting the environment.
+think Then the real question -- what is rung zero. The tempting answer is WOTS+, since it is the first thing a reader of FIPS 205 meets. The crux-first answer is the address. SLH-DSA has no field arithmetic and no curve; it is hashes all the way down, and the only thing keeping one hash from colliding with another in a different role is the 32-byte address mixed into every call. A field written one byte off does not compute the wrong answer -- it silently merges two domains the standard keeps apart, which is an insecurity a top-level vector might never name. So the address is built and proven alone, first.
+think Checked before designing whether the rung could even be diffed. PQClean's thash and prf_addr are namespaced and non-static, so they are callable from a harness -- the internals are diffable function-for-function, not only at sign and verify. That single fact decided the shape of the whole rung, and it is the deeper reason the vendoring was worth its cost.
+think Read PQClean's thash_shake_simple.c and hash_shake.c for the exact framing rather than working from the specification alone, and found the family is one function wearing three names: for the SHAKE instances F is T_1 and H is T_2, all of them SHAKE256 over the public seed, the address, and the message. Authored one thash over a block count instead of three near-identical bodies, which is what the simple instances actually define.
+think Wrote the module on crypto/shake.rye, already GREEN against Zig's std.crypto and the FIPS 202 answers, so this rung authors no new sponge -- only the addressing and the framing around one. Bounded the working buffer at the widest call the scheme ever makes, a WOTS+ public key at 67 blocks, and named that ceiling rather than leaving a literal.
+think Then the oracle earned its entire cost on the first rung it was asked to judge. All five parity digests disagreed. Rather than guess, dumped both address structures byte by byte and compared: identical everywhere except the key-pair field, where mine held 0x0a at offset 22 and PQClean held zero.
+think Read address.c rather than assuming a bug in my endianness. set_keypair_addr writes ONE byte, at offset 23 only. The reason is parameter-dependent and easy to miss: this set's Merkle trees have height 8, so a tree holds 256 one-time key pairs, the index fits a single byte, and the two-byte form belongs to parameter sets with taller trees. Corrected the Rye to the one-byte form, named tree_height and key_pairs_per_tree so the bound cites its reason, and wrote down in the module why offset 22 stays zero -- so the next reader is not tempted to fill it.
+think Split the proving into two witnesses on purpose. The structural one proves everything the module can establish alone and carries no dependency on a submodule being checked out, so it joins the crypto suite; the parity one diffs against PQClean and joins the vendored roster. That split also respects the count guard's bijection, which would have gone RED if a witness with no crypto/<name>.rye had been registered in the suite.
+obs All five digests match after the one-byte correction -- PRF, T_1, T_2, T_22, and T_67 at one fully-populated address. The count guard stands GREEN at 81 files with its bijection intact, the vendored roster is now six rungs in about ten seconds, and TAME bans and width-check are clean.
+obs The key-pair find is the round's whole argument in miniature. A top-level known-answer test would eventually have caught it, as a signature that simply does not verify, and would not have said which of a dozen look-alike fields moved. The function-level diff named it in one comparison. That is the difference between an oracle and a smoke test.
+obs Proved domain separation by doing rather than asserting it in prose: one message hashed at two addresses differing in the type byte alone must produce different bytes. It is the property the entire address structure exists to provide, so it is checked rather than described.
+obs Also checked what no field names: every byte of the address outside the named offsets must stay zero, so an address can never carry an accidental payload from a reused buffer. That test is cheap and would catch a whole class of future mistakes.
+obs Named the remaining rungs in the order the structure forces -- WOTS+, FORS, the XMSS hypertree, then the composed signature against the NIST KAT end to end -- so the arc reads as a plan rather than a mood.
+loom witness=crypto_slhdsa_thash rungs=1 digests=5 verdict=green
+loom witness=crypto_slhdsa_thash_parity digests=5 matched=5 verdict=green
+loom witness=crypto_vendored_parity_suite rungs=6 wall_s=10 verdict=green
+loom witness=crypto_count_guard files=81 registered=81 verdict=green
+loom waymark=DISC input=slh-dsa-hash-based-signature-ladder index=1079 corpus=5526 collision=none
+file crypto/slhdsa_thash.rye rung DISC0 -- the address and the tweakable hash family, one thash over a block count
+file tools/crypto_slhdsa_thash_witness.rish the structural proofs, suite-registered, no vendor dependency
+file tools/crypto_slhdsa_thash_parity_witness.rish the function-level diff that found the key-pair byte
+file tools/fixtures/pqclean_slhdsa_thash_harness.c PQClean's own prf_addr and thash over identical inputs
+file crux/waymark-registry.bron DISC seated and the body re-sealed, every corpus mark re-derived GREEN
+file context/LEXICON.md DISC seated with the ladder's rungs named
+file .claude/rules/waymark-ladders.md the rule table's DISC row
+file tools/waymark_derive.rish input drawn, DISC added to the exclude roster so it can never redraw
+file active-designing/20260821-022912_slhdsa-vendored-oracle-and-both-legs-kept.md the arc named, the rungs ordered, DISC0's landing recorded
+file crux/REMEMBER.md live edge seated, prior edge demoted, git nib pinned inside the send
+recommend keep-going DISC1 is WOTS+ -- 67 Winternitz chains at w = 16, standing on the address DISC0 just proved. Its chain function and its base-w message encoding are both diffable against PQClean's own wots.c the same way, so the rung has a named oracle before a line is written.
