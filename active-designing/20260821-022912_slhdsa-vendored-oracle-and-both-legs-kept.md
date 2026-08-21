@@ -50,8 +50,31 @@ They cannot join `crypto_suite_witness.rish`, and that is by correct design -- `
 
 The answer is a separate roster: [`tools/crypto_vendored_parity_suite.rish`](../tools/crypto_vendored_parity_suite.rish), running all five vendored rungs in about twenty-six seconds. This is REDS %81's exact lesson -- nine rungs on disk, none registered, a loom firing unheard -- caught one rung before it repeated. The roster is born with the rung that needed it rather than after a sixth one goes unheard.
 
-## The next rung
+## The arc, named -- DISC
 
-Author SLH-DSA-SHAKE-256s in Rye on `crypto/shake.rye`, the sponge already GREEN, and diff it against this oracle: WOTS+, then FORS, then the XMSS hypertree, each a rung with its own witness, each proven against both the published FIPS 205 answer and PQClean's bytes. That is a multi-lap arc and should be named as one.
+Seated `20260821.023219` on Keaton's word (*name the arc and start it*). The draw: `slh-dsa-hash-based-signature-ladder` -> SHA3-512 -> index 1079 of 5526 -> **DISC**, no collision with any seated name. Recorded in `context/LEXICON.md`, `.claude/rules/waymark-ladders.md`, the derive script's exclude roster, and re-sealed into `crux/waymark-registry.bron`, whose witness re-derives every corpus mark on metal.
+
+The rungs, in the order the structure forces:
+
+- **DISC0 -- the address and the tweakable hash family.** *Landed.*
+- **DISC1 -- WOTS+**, the one-time signature: 67 Winternitz chains at w = 16.
+- **DISC2 -- FORS**, the few-time signature over a random subset: 22 trees of height 14.
+- **DISC3 -- the XMSS hypertree** binding them: 8 layers, total height 64.
+- **DISC4 -- the composed signature**, and parity against the NIST KAT end to end.
+
+## DISC0, landed
+
+`crypto/slhdsa_thash.rye` builds the **address** first, alone, before any signature exists -- because SLH-DSA carries no field arithmetic and no curve, and the only thing keeping one hash from colliding with another in a different role is the 32-byte address mixed into every call. A field written one byte off does not merely compute the wrong answer; it silently merges two domains FIPS 205 keeps apart.
+
+The module authors **one** `thash` over a block count where the standard appears to give three: for the SHAKE instances F is T_1 and H is T_2, all of them SHAKE256 over the public seed, the address, and the message. FIPS 205's simple instances define them that way and PQClean's own C is the same single function, so naming it once is how a reader sees that truth rather than inferring it from three copies.
+
+**The oracle earned its whole cost on the first rung.** The key-pair address field was implemented as the standard's general **two** big-endian bytes at offsets 22 and 23, and all five parity digests disagreed. The cause is parameter-dependent and easy to miss: this set's Merkle trees have height 8, so a tree holds 256 one-time key pairs, the index fits **one** byte, and only offset 23 is written -- the two-byte form belongs to parameter sets with taller trees. One byte in one field, invisible from the top of the scheme, named immediately by a function-level diff. This is precisely why the vendoring was worth its cost, demonstrated on the lap after it was paid.
+
+Two witnesses, kept apart on purpose:
+
+- [`tools/crypto_slhdsa_thash_witness.rish`](../tools/crypto_slhdsa_thash_witness.rish) proves the structure **alone**, with no dependency on the submodule being checked out -- every field on the byte the standard names, every unnamed byte zero, the subtree and key-pair carries keeping exactly what they should, **domain separation proven by doing** (one message at two addresses differing in the type byte alone must hash differently), and both bounds refusing with named errors. It joins `crypto_suite_witness`, and the count guard stays GREEN at 81 files with its bijection intact.
+- [`tools/crypto_slhdsa_thash_parity_witness.rish`](../tools/crypto_slhdsa_thash_parity_witness.rish) diffs PRF, T_1, T_2, T_22, and T_67 against PQClean's own `prf_addr` and `thash`, both sides building the address through their own setters so the addressing is compared too. It joins the vendored roster, now six rungs GREEN in about ten seconds.
+
+*Two arguments that seemed to be a fork were a missing oracle wearing a fork's clothes. Vendoring the stranger let both stay true -- and the stranger paid for itself on the first rung it was asked to judge.*
 
 *Two arguments that seemed to be a fork were a missing oracle wearing a fork's clothes. Vendoring the stranger let both stay true.*
