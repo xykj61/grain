@@ -44,6 +44,7 @@ const capabilities = @import("capabilities.rye");
 const cycle = @import("cycle.rye");
 const carry = @import("carry.rye");
 const gap = @import("gap.rye");
+const mask = @import("mask.rye");
 const boot = @import("boot.rye");
 const Dir = std.Io.Dir;
 
@@ -5991,4 +5992,107 @@ pub fn reckon_the_plan(
     // this number and nothing else moves it.
     rung.below_of(report_out).unserved = lost;
     rung.below_of(report_out).settled = said;
+}
+
+/// Takes up every phase a run may start right now -- conferring the slots that
+/// are owed, admitting what the doors allow, and recording each turn, fence,
+/// mask, and precedence a pick stepped past on the way.
+///
+/// **This is the largest family the ladder has ever folded, and finding its
+/// true size took reading past the meter's own answer.** The carry scan names
+/// families by exact text, so `fill_table` printed as thirty-seven rungs at
+/// sixty-nine lines. Forty-three rungs hold this body, and the six the queue
+/// left out differ from the other thirty-seven **by the word `pub` and nothing
+/// else** -- one line of a sixty-nine-line body. Fold M had already measured it
+/// at 2,898 lines across forty-three and written that number down beside the
+/// four spine bodies it widened for exactly this fold; the queue, reading text
+/// rather than meaning, could only see 2,484 of it.
+///
+/// So a fold queue is a lead rather than a verdict: it names where to look, and
+/// the reading that follows is what says how much is actually there. A family
+/// split by one keyword is one family.
+///
+/// Every symbol this body reaches -- the five bodies that move the table
+/// (`advance_head`, `confer_slot`, `confer_one`, `choose_pass`, `start_one`),
+/// the three that weigh a pick (`door_admits`, `sibling_waits`, `elder_waits`),
+/// the three report reaches (`run_of`, `masked_of`, `preceded_of`), and the
+/// shapes and bounds it names -- is reached through the rung handed in, so each
+/// rung still fills its own table, against its own doors, into its own report.
+///
+/// `mask.prefix_mask` and `mask.fence_after` stay module-level, since a mask is
+/// the same arithmetic for every rung on the ladder rather than something a
+/// rung writes over its own report.
+///
+/// Nothing varies between the forty-three, so nothing arrives as comptime text.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_carry_scan.sh`.
+pub fn fill_table(
+    comptime rung: type,
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    caps: *const capabilities.CapabilityTable,
+    wake: gap.Wake,
+    reading: rung.Reading,
+    keeping: rung.Keep,
+    table: *rung.Table,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError || cohort.RunError || boot.BootError)!u32 {
+    // invariant: a fill always reads a record the run has seated
+    assert(table.held >= 1);
+    // invariant: a run never remembers more lines than it may hold
+    assert(table.in_flight <= rung.max_in_flight);
+    var took_up: u32 = 0;
+    while (table.left > 0) {
+        rung.advance_head(table);
+        // invariant: work still waiting always leaves a head to weigh
+        assert(table.head < table.held);
+
+        if (rung.confer_slot(table, table.head)) |slot| {
+            try rung.confer_one(io, sys, caps, table, slot, table.head, keeping, report_out);
+            table.started[table.head] = true;
+            table.left -= 1;
+            took_up += 1;
+            continue;
+        }
+
+        if (table.in_flight >= rung.max_in_flight) break;
+
+        var pick: u32 = table.head;
+        if (!try rung.door_admits(sys, table, table.head)) {
+            pick = try rung.choose_pass(sys, table, reading) orelse break;
+            rung.run_of(report_out).passes += 1;
+            const gained = pick - table.head;
+            if (gained > rung.run_of(report_out).pass_reach) rung.run_of(report_out).pass_reach = gained;
+        }
+        const chosen = table.record[pick];
+        if (rung.sibling_waits(table, pick, mask.prefix_mask(chosen.step))) {
+            rung.masked_of(report_out).out_of_turn += 1;
+        }
+        if (rung.sibling_waits(table, pick, mask.prefix_mask(mask.fence_after(chosen.follows)))) {
+            rung.masked_of(report_out).out_of_fence += 1;
+        }
+        if (rung.sibling_waits(table, pick, chosen.follows)) rung.masked_of(report_out).out_of_mask += 1;
+        if (rung.elder_waits(table, pick)) rung.preceded_of(report_out).out_of_precede += 1;
+
+        table.live[table.in_flight] = try rung.start_one(
+            allocator, io, self_path, sys, caps, chosen, table.reserve_of[pick], keeping, wake, report_out,
+        );
+        table.lines[table.in_flight] = chosen.task;
+        table.reserves[table.in_flight] = table.reserve_of[pick];
+        table.taken[table.in_flight] = 0;
+        table.served[table.in_flight] = 0;
+        table.granted[table.in_flight] = 0;
+        table.in_flight += 1;
+        table.started[pick] = true;
+        table.left -= 1;
+        took_up += 1;
+        rung.run_of(report_out).admitted += 1;
+    }
+    // invariant: a fill never overruns the table it fills
+    assert(table.in_flight <= rung.max_in_flight);
+    // invariant: a preceded reading never runs a phase past a turn its turn named
+    assert(reading != .preceded or rung.preceded_of(report_out).out_of_precede == 0);
+    return took_up;
 }
