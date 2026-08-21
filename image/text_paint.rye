@@ -5,7 +5,7 @@
 //! module is that later rung. It joins the whole open-font family into one act -- a string SEEN on an image:
 //!   - image/text_layout.rye places each glyph along a line (its pen origin, borrowed from the atlas),
 //!   - image/glyph.rye hands each glyph a coverage grid (one byte per cell, 0 no ink .. 255 full ink),
-//!   - image/color.rye composites an ink colour over the destination (Porter-Duff src-over, straight alpha),
+//!   - image/color.rye composites an ink color over the destination (Porter-Duff src-over, straight alpha),
 //!   - image/qoi.rye owns the RGBA target (a Pixmap, pixels held RGBA, four bytes per cell).
 //! Pure composition over those public APIs -- no new storage, codec, palette, or geometry. A coverage byte is the
 //! ink's alpha at that cell (scaled by the ink's own alpha), so full-ink over an opaque ink writes the ink exactly,
@@ -60,7 +60,7 @@ fn scale_alpha(base: u8, cov: u8) u8 {
     return @intCast(scaled);
 }
 
-/// Allocate a fresh RGBA Pixmap of `width` x `height`, every pixel the one colour `fill` -- the canvas a paint needs
+/// Allocate a fresh RGBA Pixmap of `width` x `height`, every pixel the one color `fill` -- the canvas a paint needs
 /// before it has anything to paint on. Bounded by qoi's own pixel ceiling, so the buffer size is proven at birth.
 pub fn solid(allocator: std.mem.Allocator, width: u32, height: u32, fill: color.Rgba) !qoi.Pixmap {
     // invariant: a canvas has real extent on both axes, within the image module's named pixel ceiling.
@@ -591,7 +591,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const white = color.Rgba{ .r = 255, .g = 255, .b = 255, .a = 255 };
     const red = color.Rgba{ .r = 255, .g = 0, .b = 0, .a = 255 };
 
-    // solid(): a fresh canvas is the fill colour in every pixel, on both channels and alpha.
+    // solid(): a fresh canvas is the fill color in every pixel, on both channels and alpha.
     const canvas = try solid(garden, 20, 8, white);
     assert(canvas.width == 20);
     assert(canvas.height == 8);
@@ -659,7 +659,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const canvas4 = try solid(garden, 20, 8, white);
     try paint_placed(&atlas, scratch[0..line.count], @constCast(&canvas4), 0, 0, half_red);
     {
-        // At least one pixel must carry the exact blend (a covered cell), and none may be a stray colour.
+        // At least one pixel must carry the exact blend (a covered cell), and none may be a stray color.
         var seen_blend = false;
         var i: usize = 0;
         while (i < canvas4.pixels.len) : (i += 4) {

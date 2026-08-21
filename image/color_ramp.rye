@@ -1,18 +1,18 @@
-//! image/color_ramp.rye -- a piecewise-linear ramp across many control colours (Season G, the multi-stop gradient).
+//! image/color_ramp.rye -- a piecewise-linear ramp across many control colors (Season G, the multi-stop gradient).
 //!
 //! Season G (Open Media Primitives) -- the general form of image/color_gradient.rye, which grew an even gradient between
-//! exactly TWO colours. A real gradient editor and a heat map want MORE than two control colours: a warm start, a bright
+//! exactly TWO colors. A real gradient editor and a heat map want MORE than two control colors: a warm start, a bright
 //! middle, a cool end -- the CSS `linear-gradient(red, yellow, green)` stop list. This rung grows that piecewise-linear
-//! ramp: given K evenly-spaced control colours (K >= 2) it fills any number of output stops, each stop an even blend
-//! within whichever of the K-1 segments it lands in. The control colours themselves fall at evenly-spaced positions from
+//! ramp: given K evenly-spaced control colors (K >= 2) it fills any number of output stops, each stop an even blend
+//! within whichever of the K-1 segments it lands in. The control colors themselves fall at evenly-spaced positions from
 //! 0 (the first control) to 1 (the last), and a stop that lands exactly on a control reads that control byte-for-byte.
 //!
-//! Compose, not braid: colour DECIDES the blend (color.mix lerps within a segment) and this module only ROUTES each
-//! output stop to its segment and its local fraction -- no new colour maths. The two-control ramp is exactly
+//! Compose, not braid: color DECIDES the blend (color.mix lerps within a segment) and this module only ROUTES each
+//! output stop to its segment and its local fraction -- no new color maths. The two-control ramp is exactly
 //! color_gradient.gradient (proven byte-for-byte in the selftest), so the GENERAL verb contains the SPECIAL one: a
 //! gradient is a ramp of two controls. The routing is integer fixed-point, so a ramp is deterministic; the interpolation
 //! runs in straight sRGB (color.mix's own space), the CSS default. Alpha rides the same lerp. No network, no key, no
-//! funds -- the multi-stop gradient Brushstroke and Skate paint the day the design system lands, on our own colour model.
+//! funds -- the multi-stop gradient Brushstroke and Skate paint the day the design system lands, on our own color model.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_ramp.rye selftest
 
@@ -24,7 +24,7 @@ const gradient = @import("color_gradient.rye");
 
 pub const color_ramp_version = "20260817.135338";
 
-/// The most control colours a single ramp ever holds -- a bounded stop list, so no ramp is ever unbounded. A gradient
+/// The most control colors a single ramp ever holds -- a bounded stop list, so no ramp is ever unbounded. A gradient
 /// editor rarely wants more than a handful of stops; sixteen is generous headroom the loop will never breach.
 pub const ramp_max_control: u32 = 16;
 
@@ -42,12 +42,12 @@ fn local_t(num: u32, den: u32) u8 {
     return @intCast(t);
 }
 
-/// Fill `dst` with a piecewise-linear ramp across the `control` colours -- dst.len evenly-spaced stops, dst[0] the first
+/// Fill `dst` with a piecewise-linear ramp across the `control` colors -- dst.len evenly-spaced stops, dst[0] the first
 /// control exactly and dst[len-1] the last control exactly. Each output stop is routed to one of the K-1 segments and an
-/// even blend within it. A control list of fewer than two colours or more than the ceiling, or a dst of fewer than two
+/// even blend within it. A control list of fewer than two colors or more than the ceiling, or a dst of fewer than two
 /// stops or more than color_gradient's ceiling, refuses by name having written nothing a caller could mistake for a ramp.
 pub fn ramp(control: []const color.Rgba, dst: []color.Rgba) !void {
-    // invariant: the control list holds at least two colours and never more than the bounded ceiling.
+    // invariant: the control list holds at least two colors and never more than the bounded ceiling.
     if (control.len < 2) return error.RampTooFewControls;
     if (control.len > ramp_max_control) return error.RampTooManyControls;
     // invariant: the output holds at least two stops and never more than the shared gradient ceiling.
@@ -80,7 +80,7 @@ pub fn ramp(control: []const color.Rgba, dst: []color.Rgba) !void {
     assert(dst[dst.len - 1].eql(control[control.len - 1]));
 }
 
-// --- selftest: prove a ramp hits its controls, contains the two-colour gradient, ascends a light ramp, refuses by name --
+// --- selftest: prove a ramp hits its controls, contains the two-color gradient, ascends a light ramp, refuses by name --
 
 fn run_selftest(garden: std.mem.Allocator) !u8 {
     _ = garden;
@@ -128,7 +128,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         prev_lum = lum;
     }
 
-    // A ramp between a colour and itself (two identical controls) stays flat -- every stop that colour, no phantom drift.
+    // A ramp between a color and itself (two identical controls) stays flat -- every stop that color, no phantom drift.
     const same = [_]color.Rgba{ red, red };
     var flat: [6]color.Rgba = undefined;
     try ramp(same[0..], flat[0..]);
@@ -158,7 +158,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (!a_ramp[di].eql(b_ramp[di])) return error.RampNotDeterministic;
     }
 
-    print("GREEN image-color-ramp: a piecewise-linear ramp across many controls hits its endpoints byte-for-byte and reads each aligned control exactly (red/green/blue at 5 stops over 3 controls); a two-control ramp equals color_gradient.gradient byte-for-byte (the general contains the special); a black-grey-white ramp ascends non-decreasing in luminance across both segments; a colour-to-itself ramp stays flat; too few controls and an out-of-band length refuse by name; the same controls grow the same ramp byte-for-byte\n", .{});
+    print("GREEN image-color-ramp: a piecewise-linear ramp across many controls hits its endpoints byte-for-byte and reads each aligned control exactly (red/green/blue at 5 stops over 3 controls); a two-control ramp equals color_gradient.gradient byte-for-byte (the general contains the special); a black-grey-white ramp ascends non-decreasing in luminance across both segments; a color-to-itself ramp stays flat; too few controls and an out-of-band length refuse by name; the same controls grow the same ramp byte-for-byte\n", .{});
     return 0;
 }
 

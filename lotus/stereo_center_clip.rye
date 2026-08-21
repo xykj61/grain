@@ -144,7 +144,7 @@ fn run_selftest() !u8 {
         if (!eq(r, &[_]i16{ 0, 3000, 0, 1200 })) return error.RightPhaseWrong;
     }
 
-    // 3b. THE PER-CHANNEL ODD LAW, output shape and idempotence — every output on both channels is either 0 or exactly its input (the center clip never colours a passed sample), and center-clipping twice equals
+    // 3b. THE PER-CHANNEL ODD LAW, output shape and idempotence — every output on both channels is either 0 or exactly its input (the center clip never colors a passed sample), and center-clipping twice equals
     //     once (a silenced 0 stays 0, a passed sample still clears t), the map memoryless and idempotent.
     {
         const li = [_]i16{ 700, -1500, 400, -90, 4000 };
@@ -156,8 +156,8 @@ fn run_selftest() !u8 {
         const r = once.right.samples();
         var i: u32 = 0;
         while (i < 5) : (i += 1) {
-            if (l[i] != 0 and l[i] != li[i]) return error.LeftColoured;
-            if (r[i] != 0 and r[i] != ri[i]) return error.RightColoured;
+            if (l[i] != 0 and l[i] != li[i]) return error.LeftColored;
+            if (r[i] != 0 and r[i] != ri[i]) return error.RightColored;
         }
         var twice = pan.StereoClip{};
         try load_stereo(&twice, &li, &ri);

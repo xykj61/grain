@@ -1,14 +1,14 @@
-//! image/color.rye — the open sRGB colour algebra (Season G, the smallest tractable crux).
+//! image/color.rye — the open sRGB color algebra (Season G, the smallest tractable crux).
 //!
-//! Season G (Open Media Primitives) · the colour floor beside image/qoi.rye and the audio wire.
+//! Season G (Open Media Primitives) · the color floor beside image/qoi.rye and the audio wire.
 //! Design read: active-designing/date/20260816/20260816-210735_season-g-color-algebra-crux.md
 //! Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + sRGB — public standards only).
 //!
-//! A colour is four bytes — sRGB red · green · blue · alpha — held exactly, so a colour that goes in comes
+//! A color is four bytes — sRGB red · green · blue · alpha — held exactly, so a color that goes in comes
 //! back out byte-for-byte. Every other form is a *reading* of those four bytes: a hex text, a functional
 //! rgb()/hsl() text, an HSL triple, a blend of two, a quantization to fewer levels. A malformed text refuses
 //! BY NAME (BadHexLength · BadHexDigit · BadFunctionForm · ChannelOutOfRange · BadLevels) rather than
-//! guessing a colour. All arithmetic is integer fixed-point, so the results are deterministic across targets;
+//! guessing a color. All arithmetic is integer fixed-point, so the results are deterministic across targets;
 //! integer HSL cannot round-trip byte-exact, and this module states its measured tolerance rather than
 //! claiming an exactness it does not have. On top of the WCAG luminance and contrast floor it offers the
 //! readable-ink pick (readable_ink · best_ink) and the AA/AAA conformance predicates (meets_aa ·
@@ -26,10 +26,10 @@ const print = std.debug.print;
 
 pub const color_version = "20260816.210735";
 
-/// The longest colour text we will read — a generous ceiling over `#rrggbbaa` and `hsla(360,100%,100%,255)`.
+/// The longest color text we will read — a generous ceiling over `#rrggbbaa` and `hsla(360,100%,100%,255)`.
 pub const color_max_text: u32 = 64;
 
-/// A colour — always four sRGB bytes in memory, alpha last, opaque by default.
+/// A color — always four sRGB bytes in memory, alpha last, opaque by default.
 pub const Rgba = struct {
     r: u8 = 0,
     g: u8 = 0,
@@ -41,7 +41,7 @@ pub const Rgba = struct {
     }
 };
 
-/// An HSL reading of a colour — hue in degrees, saturation and lightness in percent, alpha carried through.
+/// An HSL reading of a color — hue in degrees, saturation and lightness in percent, alpha carried through.
 pub const Hsl = struct {
     h: u16 = 0, // 0..=360
     s: u8 = 0, // 0..=100
@@ -83,10 +83,10 @@ fn write_hex_byte(dst: []u8, v: u8) void {
     dst[1] = nibble_hex[v & 0x0F];
 }
 
-/// Parse a hex colour: `#rgb`, `#rgba`, `#rrggbb`, or `#rrggbbaa` (the leading `#` optional). Short forms
+/// Parse a hex color: `#rgb`, `#rgba`, `#rrggbb`, or `#rrggbbaa` (the leading `#` optional). Short forms
 /// double each nibble, exactly as CSS does; a length that is none of {3,4,6,8} refuses BadHexLength.
 pub fn parse_hex(text: []const u8) !Rgba {
-    // invariant: a hex colour is bounded text — never longer than the module's ceiling.
+    // invariant: a hex color is bounded text — never longer than the module's ceiling.
     if (text.len > color_max_text) return error.BadHexLength;
     const body = if (text.len > 0 and text[0] == '#') text[1..] else text;
     if (body.len == 3 or body.len == 4) {
@@ -114,7 +114,7 @@ pub fn parse_hex(text: []const u8) !Rgba {
     return error.BadHexLength;
 }
 
-/// Format a colour as canonical lowercase `#rrggbbaa` into a caller buffer (needs 9 bytes); returns the slice
+/// Format a color as canonical lowercase `#rrggbbaa` into a caller buffer (needs 9 bytes); returns the slice
 /// written. Canonical always carries all four channels, so parse(format(c)) recovers c byte-for-byte.
 pub fn format_hex(c: Rgba, dst: []u8) ![]const u8 {
     // invariant: the canonical form is exactly nine bytes — a hash and four byte-pairs.
@@ -152,7 +152,7 @@ fn parse_uint(field: []const u8) !u32 {
 }
 
 fn split_fields(inner: []const u8, out: *[4][]const u8) !u32 {
-    // invariant: a functional colour carries three or four comma-separated fields, never more.
+    // invariant: a functional color carries three or four comma-separated fields, never more.
     var n: u32 = 0;
     var start: u32 = 0;
     var i: u32 = 0;
@@ -232,7 +232,7 @@ pub fn parse_func(text: []const u8) !Rgba {
     return c;
 }
 
-/// Parse any supported colour text — a `#`/bare hex form, or a functional form — dispatching on the first
+/// Parse any supported color text — a `#`/bare hex form, or a functional form — dispatching on the first
 /// non-space byte. This is the front door the surface calls.
 pub fn parse(text: []const u8) !Rgba {
     const t = trim_spaces(text);
@@ -254,7 +254,7 @@ fn min3(a: u32, b: u32, c: u32) u32 {
 }
 
 /// RGB → HSL by integer arithmetic with rounding. Deterministic; the standard CSS formulas, computed so the
-/// primary colours land exactly (pure red is hsl(0,100,50), the greys are hsl(0,0,l)).
+/// primary colors land exactly (pure red is hsl(0,100,50), the greys are hsl(0,0,l)).
 pub fn rgb_to_hsl(c: Rgba) Hsl {
     const r: u32 = c.r;
     const g: u32 = c.g;
@@ -301,7 +301,7 @@ pub fn rgb_to_hsl(c: Rgba) Hsl {
     return Hsl{ .h = @intCast(hh), .s = @intCast(s_pct), .l = @intCast(l_pct), .a = c.a };
 }
 
-/// One HSL colour-wheel channel, the reference hue2rgb helper in /10000 fixed point. `p` and `q` are the two
+/// One HSL color-wheel channel, the reference hue2rgb helper in /10000 fixed point. `p` and `q` are the two
 /// lightness anchors; `t_deg` is this channel's hue offset in degrees.
 fn hue_channel(p: i32, q: i32, t_deg_in: i32) u8 {
     const t = @mod(t_deg_in, 360);
@@ -328,7 +328,7 @@ fn hue_channel(p: i32, q: i32, t_deg_in: i32) u8 {
     return @intCast(v);
 }
 
-/// HSL → RGB by the reference integer algorithm in /10000 fixed point. A zero-saturation colour is the exact
+/// HSL → RGB by the reference integer algorithm in /10000 fixed point. A zero-saturation color is the exact
 /// grey l*255/100; otherwise the two lightness anchors p and q drive the three hue channels.
 pub fn hsl_to_rgb(hsl: Hsl) Rgba {
     // invariant: an HSL reading arrives already inside its named bands.
@@ -377,7 +377,7 @@ fn mix_channel(a: u8, b: u8, t: u8) u8 {
     return @intCast(v);
 }
 
-/// Linear blend of two colours by `t` in 0..255 (0 = all `a`, 255 = all `b`), each channel independently.
+/// Linear blend of two colors by `t` in 0..255 (0 = all `a`, 255 = all `b`), each channel independently.
 pub fn mix(a: Rgba, b: Rgba, t: u8) Rgba {
     return Rgba{
         .r = mix_channel(a.r, b.r, t),
@@ -422,7 +422,7 @@ fn quantize_channel(v: u8, levels: u32) u8 {
     return @intCast(out);
 }
 
-/// Quantize the three colour channels to `levels` steps each (2..=256), alpha carried through unchanged.
+/// Quantize the three color channels to `levels` steps each (2..=256), alpha carried through unchanged.
 /// `levels == 256` is the identity. Fewer than 2 or more than 256 refuses BadLevels.
 pub fn quantize(c: Rgba, levels: u32) !Rgba {
     if (levels < 2 or levels > quantize_max_levels) return error.BadLevels;
@@ -455,8 +455,8 @@ const srgb_linear: [256]u32 = blk: {
     break :blk table;
 };
 
-/// Relative luminance of a colour (WCAG 2.x), scaled to 0..luminance_scale. Alpha is ignored — luminance is a
-/// property of the three colour channels. Pure black is 0, pure white is luminance_scale.
+/// Relative luminance of a color (WCAG 2.x), scaled to 0..luminance_scale. Alpha is ignored — luminance is a
+/// property of the three color channels. Pure black is 0, pure white is luminance_scale.
 pub fn relative_luminance(c: Rgba) u32 {
     const rl: u64 = srgb_linear[c.r];
     const gl: u64 = srgb_linear[c.g];
@@ -471,7 +471,7 @@ pub fn relative_luminance(c: Rgba) u32 {
 /// The 0.05 luminance offset WCAG adds to both terms, in luminance_scale units (0.05 × 100000).
 const contrast_offset: u32 = 5_000;
 
-/// WCAG contrast ratio between two colours, scaled ×100 (so 21.00 is 2100, 1.00 is 100). The lighter colour's
+/// WCAG contrast ratio between two colors, scaled ×100 (so 21.00 is 2100, 1.00 is 100). The lighter color's
 /// luminance leads the ratio; order of the arguments does not matter. White on black is the maximum, 2100.
 pub fn contrast_ratio_x100(a: Rgba, b: Rgba) u32 {
     const la = relative_luminance(a);
@@ -566,7 +566,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
             const c = try parse_hex(f);
             var buf = [_]u8{0} ** 9;
             const hex = try format_hex(c, buf[0..]);
-            // invariant: canonical text re-parses to the same four bytes — an exact colour round-trip.
+            // invariant: canonical text re-parses to the same four bytes — an exact color round-trip.
             const c2 = try parse_hex(hex);
             try expect_color(c2, c);
         }

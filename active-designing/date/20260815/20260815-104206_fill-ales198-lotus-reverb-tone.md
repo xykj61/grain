@@ -9,7 +9,7 @@
 
 ## The crux this round takes
 
-The reverb now carries *which room* (ALES190 presets), *how much* (ALES192/193 wet/dry), and *when* (ALES194–197 pre-delay, mono · stereo · console). The one axis a mixing keeper reaches for next is **how bright** — the **tone** of the tail. A real room absorbs high frequencies as the sound bounces, so the reverberant tail is always *darker* than the source: the highs die first and the low wash lingers. Every console and plugin names this knob — *damping*, *high-cut*, *tone*, *colour*. Without it a reverb rings metallic and glassy; with it the tail sits behind the mix the way a real space does.
+The reverb now carries *which room* (ALES190 presets), *how much* (ALES192/193 wet/dry), and *when* (ALES194–197 pre-delay, mono · stereo · console). The one axis a mixing keeper reaches for next is **how bright** — the **tone** of the tail. A real room absorbs high frequencies as the sound bounces, so the reverberant tail is always *darker* than the source: the highs die first and the low wash lingers. Every console and plugin names this knob — *damping*, *high-cut*, *tone*, *color*. Without it a reverb rings metallic and glassy; with it the tail sits behind the mix the way a real space does.
 
 By Lindy-first, crux-first this is the highest-Lindy tractable move: a genuinely new expressive axis (spectrum, not time or level), read for years, and a **clean composition of two proven pieces** — no new audio arithmetic. It reverberates the span WET through ALES190's `reverb_preset` unchanged, then rolls the treble off the wet with ALES40's proven one-pole low-pass (`tone.low_pass`).
 

@@ -1,21 +1,21 @@
 //! image/color_ramp_stops.rye -- a positioned multi-stop gradient (Season G, the general form of the ramp).
 //!
 //! Season G (Open Media Primitives) -- the general form of both image/color_gradient.rye (an even gradient between TWO
-//! colours) and image/color_ramp.rye (an even ramp across K EVENLY-SPACED controls). A real gradient editor and a CSS
+//! colors) and image/color_ramp.rye (an even ramp across K EVENLY-SPACED controls). A real gradient editor and a CSS
 //! stylesheet place each control at its OWN position: `linear-gradient(red 0%, yellow 80%, green 100%)` bunches the warm
 //! half of the ramp into the last fifth. This rung grows that positioned ramp: given K controls (K >= 2) each carrying a
 //! position in 0..pos_max, strictly ascending from 0 (the first control) to pos_max (the last), it reads the blended
-//! colour at any global position, or fills a whole buffer of evenly-spaced output stops sampling that positioned ramp.
+//! color at any global position, or fills a whole buffer of evenly-spaced output stops sampling that positioned ramp.
 //!
-//! Compose, not braid: colour DECIDES the blend (color.mix lerps within a segment) and this module only ROUTES a global
-//! position to its segment and local fraction -- no new colour maths. The two-control positioned ramp (positions
+//! Compose, not braid: color DECIDES the blend (color.mix lerps within a segment) and this module only ROUTES a global
+//! position to its segment and local fraction -- no new color maths. The two-control positioned ramp (positions
 //! {0, pos_max}) equals color_gradient.gradient byte-for-byte (proven in the selftest), so the GENERAL verb contains the
 //! SPECIAL one: a gradient is a positioned ramp of two controls at the ends. color_ramp is a SIBLING, not a sub-case --
 //! it routes in segment units where this routes in the shared 0..pos_max position domain, so uneven positions bend the
 //! ramp where the even ramp cannot. The routing is integer fixed-point, so a ramp is deterministic; interpolation runs in
 //! straight sRGB (color.mix's own space), the CSS default. Alpha rides the same lerp. A CSS percent p maps to p * pos_max
 //! / 100. No network, no key, no funds -- the positioned gradient Brushstroke and Skate paint the day the design system
-//! lands, on our own colour model.
+//! lands, on our own color model.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_ramp_stops.rye selftest
 
@@ -67,7 +67,7 @@ pub fn check(control: []const color.Rgba, positions: []const u8) !void {
     }
 }
 
-/// Read the blended colour at global position `pos`, assuming a control/position pair already validated by `check`. Finds
+/// Read the blended color at global position `pos`, assuming a control/position pair already validated by `check`. Finds
 /// the segment whose start boundary is the greatest position <= pos (the last segment catches pos == pos_max), then blends
 /// its two controls by the local fraction. A position landing exactly on a control reads that control byte-for-byte.
 pub fn sample_checked(control: []const color.Rgba, positions: []const u8, pos: u8) color.Rgba {
@@ -92,7 +92,7 @@ pub fn sample_checked(control: []const color.Rgba, positions: []const u8, pos: u
     return color.mix(control[s], control[s + 1], blend_param(num, den));
 }
 
-/// Read the blended colour at global position `pos` across the positioned `control` ramp. Validates the pair first, so a
+/// Read the blended color at global position `pos` across the positioned `control` ramp. Validates the pair first, so a
 /// malformed ramp refuses by name rather than blending a shape it never checked.
 pub fn sample_at(control: []const color.Rgba, positions: []const u8, pos: u8) !color.Rgba {
     try check(control, positions);
@@ -127,7 +127,7 @@ pub fn ramp_positioned(control: []const color.Rgba, positions: []const u8, dst: 
     assert(dst[dst.len - 1].eql(control[control.len - 1]));
 }
 
-// --- selftest: prove a positioned ramp reads its controls, contains the two-colour gradient, bends with position --------
+// --- selftest: prove a positioned ramp reads its controls, contains the two-color gradient, bends with position --------
 
 fn run_selftest(garden: std.mem.Allocator) !u8 {
     _ = garden;

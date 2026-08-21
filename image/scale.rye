@@ -166,7 +166,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         var ux: u32 = 0;
         while (ux < 4) : (ux += 1) {
             const px = pixel_at(&up, ux, uy);
-            if (!px.eql(red) and !px.eql(green) and !px.eql(blue) and !px.eql(black)) return error.UpInventedColour;
+            if (!px.eql(red) and !px.eql(green) and !px.eql(blue) and !px.eql(black)) return error.UpInventedColor;
         }
     }
 

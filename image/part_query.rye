@@ -196,7 +196,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     if (parse_query("material:")) |_| return error.ValueSlipped else |e| {
         if (e != error.EmptyValue) return error.WrongValue;
     }
-    if (parse_query("colour:red")) |_| return error.UnknownSlipped else |e| {
+    if (parse_query("color:red")) |_| return error.UnknownSlipped else |e| {
         if (e != error.UnknownKey) return error.WrongUnknown;
     }
     if (parse_query("max:xy")) |_| return error.PriceSlipped else |e| {

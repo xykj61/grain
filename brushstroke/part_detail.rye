@@ -118,12 +118,12 @@ pub fn detail_page(
     return grid;
 }
 
-// --- selftest: a bands sheet, parts in known colour bands — the detail page paints each part's picture in its own
-//     colour and stacks its facts, each fact line equal to the stored fact (no drift); a different part paints a
+// --- selftest: a bands sheet, parts in known color bands — the detail page paints each part's picture in its own
+//     color and stacks its facts, each fact line equal to the stored fact (no drift); a different part paints a
 //     different picture and different facts; the page rasterizes to a lit canvas; the refusals fire; and the capstone:
 //     a tap on a narrowed search opens a detail page of the very part the search reached. -----------------------------
 
-/// A 16×8 sheet in four solid vertical bands — red, green, blue, yellow — so a 4-wide window is one known colour.
+/// A 16×8 sheet in four solid vertical bands — red, green, blue, yellow — so a 4-wide window is one known color.
 fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     const w: u32 = 16;
     const h: u32 = 8;
@@ -154,7 +154,7 @@ fn row_text(grid: *const skate.Grid, row: u32, out: []u8) u32 {
     return n;
 }
 
-/// Every picture cell of a page's top band is a solid colour block wearing one slot — read that slot (and assert the
+/// Every picture cell of a page's top band is a solid color block wearing one slot — read that slot (and assert the
 /// band paints blocks). Returns the slot the top-left picture cell wears.
 fn picture_slot(grid: *const skate.Grid, cols: u32, pic_rows: u32) u8 {
     var r: u32 = 0;
@@ -250,7 +250,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(std.mem.eql(u8, buf[0..row_text(&page, pic_rows + 3, buf[0..])], "$0.55"));
     }
 
-    print("GREEN part-detail: a tapped ref paints a detail page — the part's own window down-mapped as a solid-colour " ++
+    print("GREEN part-detail: a tapped ref paints a detail page — the part's own window down-mapped as a solid-color " ++
         "picture band (bolt red slot 3, gear blue slot 5) above its facts, each fact line EQUAL to the stored fact " ++
         "(bolt · HX-M8-40 · stainless-304 · $1.25; gear · $8.45 — no drift); the page rasterizes to a lit canvas; " ++
         "EmptyPage, PageTooLarge, EmptyPicture, and PageTooShort each refuse by name; and the capstone — a " ++

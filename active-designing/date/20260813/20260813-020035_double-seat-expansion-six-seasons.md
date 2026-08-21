@@ -1,7 +1,7 @@
 # The Double-Seat Expansion — Six New To-Do Seasons
 
 **Stamp:** `20260813.020035` · **Status:** Mixed -- Writing fossil — molted `20260816.205859` · **Voice:** Kyri
-> **Fossil banner.** The living itinerary is [`20260816-205859_double-seat-expansion-eight-seasons.md`](20260816-205859_double-seat-expansion-eight-seasons.md), which accretes these six seasons whole and folds in two more — open media primitives (the colour module, fonts, video) and open-weight intelligence. This file is kept intact per accrete-never-break; the molt opens no cut. Prepped as a Class H fossil in [`../work-in-progress/SHRED_PREP.md`](../work-in-progress/SHRED_PREP.md).
+> **Fossil banner.** The living itinerary is [`20260816-205859_double-seat-expansion-eight-seasons.md`](20260816-205859_double-seat-expansion-eight-seasons.md), which accretes these six seasons whole and folds in two more — open media primitives (the color module, fonts, video) and open-weight intelligence. This file is kept intact per accrete-never-break; the molt opens no cut. Prepped as a Class H fossil in [`../work-in-progress/SHRED_PREP.md`](../work-in-progress/SHRED_PREP.md).
 
 **Register:** Radiant, with discerning **Twilight** where earned (approved `20260813` on Keaton's word)
 **Double-seats beside:** [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) — the fixed four-season, 1,024-round road, untouched.
@@ -24,7 +24,7 @@ The number chosen, from the offered four or six: **six.** The threads cluster cl
 The device family, buildable from honest parts.
 
 - **Mikrophone** — the **crux** and the near-term joy: a hybrid of the **Grainphone** and the **Mantrapod** ([`../foundations/20260801-005853_mantrapod-venture-pitch.md`](../foundations/20260801-005853_mantrapod-venture-pitch.md)) that **exists to buy right now** for a limited, honest set of purposes — a field recorder / civic microphone / voice terminal, firmware-first. Emphasis on **firmware** (the Mantrapod's real near-term surface).
-- **Grainphone hybrid** — right-to-repair from the ground: a **colour e-ink touchscreen** (Crowd Supply–compatible — *research task, web search deferred*), a **single front + single back camera** (no array), Bluetooth and speakers **only from certified-refurbished or used parts** sourced through **MCP-API-friendly** marketplaces in the shape of eBay / Newegg / Framework.
+- **Grainphone hybrid** — right-to-repair from the ground: a **color e-ink touchscreen** (Crowd Supply–compatible — *research task, web search deferred*), a **single front + single back camera** (no array), Bluetooth and speakers **only from certified-refurbished or used parts** sourced through **MCP-API-friendly** marketplaces in the shape of eBay / Newegg / Framework.
 - **The parts marketplace** — built like **McMaster-Carr**: one massive sprite image web-hosted, each product rendered in **Realidream · Skate · Pond** as an index into that single image (their speed trick). **Tablecloth** holds the sprite in an existing **open-source image format** with the compression wanted; **Skate + Brushstroke** paint it.
 - **Photos app** — named plainly *Photos*: cropping plus the common iCloud Photos / Google Photos gestures, built on the open image module above. **Gratitude** to iCloud Photos / Google Photos, siloed.
 
@@ -101,7 +101,7 @@ A poetic theme for `queyqwinqkri`: **aether-water dual · Pisces · Shatabhisha 
 
 ## Deferred web-search research rounds (named, not yet run)
 
-Honest note: the following were **not** searched this turn — each is a named research round for the loop, so no fact here is fabricated: SiFive "SKI" kernel interface · RISC-V veganic robotics demos · colour e-ink Crowd Supply panels + right-to-repair phone parts · MCP-API-friendly parts marketplaces · the Vedic sources above · federal MMT budget precedents.
+Honest note: the following were **not** searched this turn — each is a named research round for the loop, so no fact here is fabricated: SiFive "SKI" kernel interface · RISC-V veganic robotics demos · color e-ink Crowd Supply panels + right-to-repair phone parts · MCP-API-friendly parts marketplaces · the Vedic sources above · federal MMT budget precedents.
 
 ## VPS pier finding *(read this round, per Keaton's word)*
 

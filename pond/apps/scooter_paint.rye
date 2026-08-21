@@ -21,24 +21,24 @@
 //!     would paint from the same cells, so the fold stays referentially transparent and the image round-trips
 //!     through the open QOI codec unchanged.
 //!
-//! The coloured twin brings text_grid's per-cell foreground palette to a LIVE conversation: render_channel_fg paints
-//! the status header (row 0, "scooter: N posts") in one colour and the conversation body in another, over a solid
-//! ground -- a terminal shows its status line in an accent colour and the reading beneath in the reading colour, and
+//! The colored twin brings text_grid's per-cell foreground palette to a LIVE conversation: render_channel_fg paints
+//! the status header (row 0, "scooter: N posts") in one color and the conversation body in another, over a solid
+//! ground -- a terminal shows its status line in an accent color and the reading beneath in the reading color, and
 //! this is that affordance made pixels. paint_frame_fg is the palette-taking sibling of paint_frame; both share the
-//! same paintability guard, and the coloured verbs stand BESIDE the single-ink ones (which are untouched), so the
-//! render is still a pure pass-through of text_grid.render_grid_fg. Colour moves ink, it adds none.
+//! same paintability guard, and the colored verbs stand BESIDE the single-ink ones (which are untouched), so the
+//! render is still a pure pass-through of text_grid.render_grid_fg. Color moves ink, it adds none.
 //!
-//! The full coloured cell brings text_grid's per-cell foreground AND background to a LIVE conversation: render_channel_bar
-//! paints the status header as a real coloured BAR -- the header ink over a header GROUND (a filled band), the body over
+//! The full colored cell brings text_grid's per-cell foreground AND background to a LIVE conversation: render_channel_bar
+//! paints the status header as a real colored BAR -- the header ink over a header GROUND (a filled band), the body over
 //! the reading ground -- so a keeper's status line reads white-on-blue the way a terminal's status bar does, not merely
-//! coloured text over the page. Where render_channel_fg gave the header its own ink, this gives the header its own
-//! ground too: the one move that turns a coloured word into a coloured bar. paint_frame_cells is the two-palette sibling
+//! colored text over the page. Where render_channel_fg gave the header its own ink, this gives the header its own
+//! ground too: the one move that turns a colored word into a colored bar. paint_frame_cells is the two-palette sibling
 //! of paint_frame_fg, sharing the same paintability guard and standing BESIDE the single-ink and fg-only verbs (all
 //! untouched), so it is still a pure pass-through of text_grid.render_grid_cells. Ground first, ink over it, per cell.
 //!
 //! The drawn caret joins a composing session (scooter_compose) to the painted face: render_session folds the session
 //! to a frame and paints it with a visible block CURSOR at the caret cell -- inverse video (the glyph in the ground
-//! colour over an ink-colour ground), the classic terminal cursor a keeper watches. It is a pure pass-through of
+//! color over an ink-color ground), the classic terminal cursor a keeper watches. It is a pure pass-through of
 //! text_grid.render_grid_cursor -- the abstract cursor primitive every grid surface shares -- so the caret is one
 //! inverted cell, the conversation untouched: the drawn face equals the plain painted session everywhere but that
 //! single cell, and the cursor clears and follows the keeper as the caret moves.
@@ -120,9 +120,9 @@ pub fn render_channel(
     return paint_frame(allocator, atlas, &frame, fg, bg);
 }
 
-/// Paint a folded Scooter frame with a per-cell foreground palette -- the coloured-terminal twin of paint_frame.
-/// `fg` carries one colour per cell (row-major, exactly frame_cells), so a status header, a caret, or an unread
-/// badge each reads its own colour while the body reads the default. Refuses ScooterFrameUnpaintable by name if any
+/// Paint a folded Scooter frame with a per-cell foreground palette -- the colored-terminal twin of paint_frame.
+/// `fg` carries one color per cell (row-major, exactly frame_cells), so a status header, a caret, or an unread
+/// badge each reads its own color while the body reads the default. Refuses ScooterFrameUnpaintable by name if any
 /// cell carries a byte the font cannot draw, before a pixel moves; a mis-sized palette refuses GridFgMismatch (the
 /// painter's own guard) before any pixel is allocated.
 pub fn paint_frame_fg(
@@ -139,10 +139,10 @@ pub fn paint_frame_fg(
     return grid.render_grid_fg(allocator, atlas, frame.cells[0..], view.frame_cols, view.frame_rows, fg, bg);
 }
 
-/// The coloured verb a surface reaches for: fold a channel to a terminal frame, then paint the status row (row 0,
+/// The colored verb a surface reaches for: fold a channel to a terminal frame, then paint the status row (row 0,
 /// "scooter: N posts") in `header` and every other row in `body`, over a solid `bg`. This is a terminal's status
-/// line in an accent colour and the conversation beneath in the reading colour, made pixels. The same channel and
-/// colours render the same image every time; a pure pass-through of text_grid.render_grid_fg over the built palette.
+/// line in an accent color and the conversation beneath in the reading color, made pixels. The same channel and
+/// colors render the same image every time; a pure pass-through of text_grid.render_grid_fg over the built palette.
 pub fn render_channel_fg(
     allocator: std.mem.Allocator,
     atlas: *const glyph.GlyphAtlas,
@@ -156,20 +156,20 @@ pub fn render_channel_fg(
     assert(frame.cells.len == frame_cells);
     assert(frame.rows_used <= view.frame_rows);
 
-    // Build the per-cell palette: the first row (the status header, cells [0, frame_cols)) reads the accent colour,
-    // every other row the body colour. One colour per cell, exactly frame_cells -- the shape render_grid_fg trusts.
+    // Build the per-cell palette: the first row (the status header, cells [0, frame_cols)) reads the accent color,
+    // every other row the body color. One color per cell, exactly frame_cells -- the shape render_grid_fg trusts.
     const fg = try allocator.alloc(color.Rgba, frame_cells);
     var i: u32 = 0;
     while (i < frame_cells) : (i += 1) {
         fg[i] = if (i < view.frame_cols) header else body;
     }
-    // invariant: the palette carries exactly one colour per cell of the fixed grid.
+    // invariant: the palette carries exactly one color per cell of the fixed grid.
     assert(fg.len == frame_cells);
     return paint_frame_fg(allocator, atlas, &frame, fg, bg);
 }
 
-/// Paint a folded Scooter frame with a per-cell foreground AND background palette -- the full-coloured-cell twin of
-/// paint_frame_fg. `fg` and `bg` each carry one colour per cell (row-major, exactly frame_cells), so a status BAR fills
+/// Paint a folded Scooter frame with a per-cell foreground AND background palette -- the full-colored-cell twin of
+/// paint_frame_fg. `fg` and `bg` each carry one color per cell (row-major, exactly frame_cells), so a status BAR fills
 /// its whole band a header ground with header ink over it, a selected row inverts, an unread badge highlights -- a real
 /// terminal cell holds an ink over a ground. Refuses ScooterFrameUnpaintable by name if any cell carries a byte the
 /// font cannot draw, before a pixel moves; a mis-sized palette refuses GridFgMismatch/GridBgMismatch (the painter's own
@@ -188,11 +188,11 @@ pub fn paint_frame_cells(
     return grid.render_grid_cells(allocator, atlas, frame.cells[0..], view.frame_cols, view.frame_rows, fg, bg);
 }
 
-/// The full-coloured verb a surface reaches for: fold a channel to a terminal frame, then paint the status row (row 0,
+/// The full-colored verb a surface reaches for: fold a channel to a terminal frame, then paint the status row (row 0,
 /// "scooter: N posts") as a real BAR -- `header` ink over a `header_bg` ground band -- and every other row `body` ink
 /// over a `body_bg` ground. This is a terminal's status bar (white-on-blue) and the conversation beneath (dark-on-page),
-/// made pixels: where render_channel_fg coloured only the header's letters, this colours the whole header band. The same
-/// channel and colours render the same image every time; a pure pass-through of text_grid.render_grid_cells over the two
+/// made pixels: where render_channel_fg colored only the header's letters, this colors the whole header band. The same
+/// channel and colors render the same image every time; a pure pass-through of text_grid.render_grid_cells over the two
 /// built palettes.
 pub fn render_channel_bar(
     allocator: std.mem.Allocator,
@@ -208,8 +208,8 @@ pub fn render_channel_bar(
     assert(frame.cells.len == frame_cells);
     assert(frame.rows_used <= view.frame_rows);
 
-    // Build the two per-cell palettes: the first row (the status bar, cells [0, frame_cols)) reads the header colours,
-    // every other row the body colours. One colour per cell in each, exactly frame_cells -- the shape render_grid_cells
+    // Build the two per-cell palettes: the first row (the status bar, cells [0, frame_cols)) reads the header colors,
+    // every other row the body colors. One color per cell in each, exactly frame_cells -- the shape render_grid_cells
     // trusts.
     const fg = try allocator.alloc(color.Rgba, frame_cells);
     const bg = try allocator.alloc(color.Rgba, frame_cells);
@@ -219,7 +219,7 @@ pub fn render_channel_bar(
         fg[i] = if (in_header) header else body;
         bg[i] = if (in_header) header_bg else body_bg;
     }
-    // invariant: each palette carries exactly one colour per cell of the fixed grid.
+    // invariant: each palette carries exactly one color per cell of the fixed grid.
     assert(fg.len == frame_cells);
     assert(bg.len == frame_cells);
     return paint_frame_cells(allocator, atlas, &frame, fg, bg);
@@ -257,7 +257,7 @@ pub fn render_session(
 // --- selftest: fold a real conversation to pixels, prove the bridge faithful, deterministic, and refusing --------
 
 /// Count pixels that carry ink over a white ground -- any pixel not pure opaque white. Both the single-ink and the
-/// coloured face paint ink over the same white ground, so this is the inked-pixel count each must share; colour
+/// colored face paint ink over the same white ground, so this is the inked-pixel count each must share; color
 /// moves ink, it adds none.
 fn inked_over_white(pixels: []const u8) u32 {
     // invariant: the buffer is a whole number of RGBA pixels.
@@ -270,7 +270,7 @@ fn inked_over_white(pixels: []const u8) u32 {
     return n;
 }
 
-/// Does the RGBA pixel at byte offset `bi` equal the colour `c`? A single-expression predicate so a solid-cell check
+/// Does the RGBA pixel at byte offset `bi` equal the color `c`? A single-expression predicate so a solid-cell check
 /// reads as one non-compound assert (TAME bans a compound conjunction in an assert); the conjunction lives in this
 /// returned boolean, not the assert that calls it.
 fn pixel_is(pixels: []const u8, bi: usize, c: color.Rgba) bool {
@@ -320,7 +320,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const back = try qoi.decode(garden, dst[0..enc.len]);
     assert(back.same_bytes(&face));
 
-    // Per-cell colour on a LIVE conversation: the same channel painted with the status header (row 0) in red and the
+    // Per-cell color on a LIVE conversation: the same channel painted with the status header (row 0) in red and the
     // body in black. render_channel_fg is a pure pass-through -- it renders BYTE-FOR-BYTE what text_grid paints from
     // the same cells and the same header/body palette. (This block runs BEFORE the frame-poking refusal below, so the
     // folded frame's cells are still clean here.)
@@ -337,15 +337,15 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         const straight_fg = try grid.render_grid_fg(garden, &atlas, frame.cells[0..], view.frame_cols, view.frame_rows, palette, white);
         assert(colored.same_bytes(&straight_fg));
 
-        // Colour moves ink, adds none: the coloured face inks exactly the same pixel count as the single-ink face.
+        // Color moves ink, adds none: the colored face inks exactly the same pixel count as the single-ink face.
         assert(colored.width == face.width);
         assert(colored.height == face.height);
         assert(inked_over_white(colored.pixels) == inked_over_white(face.pixels));
 
         const cell_h: u32 = atlas.cell_h;
 
-        // The status header (row 0) reads red where the single-ink face read black -- the accent colour landed on the
-        // status line. Find the first fully-black inked pixel in row 0's band and prove the coloured face paints it red.
+        // The status header (row 0) reads red where the single-ink face read black -- the accent color landed on the
+        // status line. Find the first fully-black inked pixel in row 0's band and prove the colored face paints it red.
         {
             var found = false;
             var y: u32 = 0;
@@ -354,7 +354,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
                 while (x < face.width) : (x += 1) {
                     const bi = (@as(usize, y) * @as(usize, face.width) + @as(usize, x)) * 4;
                     if (face.pixels[bi + 3] != 0 and face.pixels[bi] == 0 and face.pixels[bi + 1] == 0 and face.pixels[bi + 2] == 0) {
-                        // invariant: the single-ink header pixel is black; the coloured header paints it red.
+                        // invariant: the single-ink header pixel is black; the colored header paints it red.
                         assert(colored.pixels[bi] == 255);
                         assert(colored.pixels[bi + 1] == 0);
                         assert(colored.pixels[bi + 2] == 0);
@@ -367,8 +367,8 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
             assert(found);
         }
 
-        // The conversation body (every row below the header) stays black on the coloured face -- the reading colour,
-        // distinct from the accent header. Find the first black-inked body pixel and prove it stays black when coloured.
+        // The conversation body (every row below the header) stays black on the colored face -- the reading color,
+        // distinct from the accent header. Find the first black-inked body pixel and prove it stays black when colored.
         {
             var found = false;
             var y: u32 = cell_h;
@@ -377,7 +377,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
                 while (x < face.width) : (x += 1) {
                     const bi = (@as(usize, y) * @as(usize, face.width) + @as(usize, x)) * 4;
                     if (face.pixels[bi + 3] != 0 and face.pixels[bi] == 0 and face.pixels[bi + 1] == 0 and face.pixels[bi + 2] == 0) {
-                        // invariant: a body-row inked pixel stays black on the coloured face -- the body colour.
+                        // invariant: a body-row inked pixel stays black on the colored face -- the body color.
                         assert(colored.pixels[bi] == 0);
                         assert(colored.pixels[bi + 1] == 0);
                         assert(colored.pixels[bi + 2] == 0);
@@ -390,11 +390,11 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
             assert(found);
         }
 
-        // Determinism: the same channel and colours render the same coloured image every time.
+        // Determinism: the same channel and colors render the same colored image every time.
         const colored2 = try render_channel_fg(garden, &atlas, &ch, red, black, white);
         assert(colored2.same_bytes(&colored));
 
-        // The coloured conversation is a real portable image -- it round-trips through the open QOI codec byte-for-byte.
+        // The colored conversation is a real portable image -- it round-trips through the open QOI codec byte-for-byte.
         const ccap = qoi.encoded_bound(colored.width * colored.height);
         const cdst = try garden.alloc(u8, ccap);
         const cenc = try qoi.encode(&colored, cdst);
@@ -408,7 +408,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         } else |e| if (e != error.GridFgMismatch) return error.WrongFgMismatch;
     }
 
-    // The full coloured cell on a LIVE conversation: the same channel painted with the status row as a real BAR --
+    // The full colored cell on a LIVE conversation: the same channel painted with the status row as a real BAR --
     // YELLOW ink over a BLUE header ground (a bright-on-blue status bar), the body black over white. render_channel_bar
     // is a pure pass-through of text_grid.render_grid_cells over the two built palettes. The header ink is yellow, not
     // white, so it is distinct from BOTH the page and the ground -- the measure below can then prove no header pixel
@@ -435,7 +435,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
 
         const cell_h: u32 = atlas.cell_h;
 
-        // The status row is a real BAR, not merely coloured letters: walk row 0's whole pixel band and prove no pixel
+        // The status row is a real BAR, not merely colored letters: walk row 0's whole pixel band and prove no pixel
         // stays the old white ground (the blue bar covers the band), and at least one pixel is pure blue (the ground
         // shows between the header glyphs). This is exactly what render_channel_fg could NOT do -- there the header band
         // stayed white between the letters.
@@ -456,25 +456,25 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
             assert(seen_blue);
         }
 
-        // Below the bar the conversation body is untouched by the colouring: the body reads black-on-white, exactly
+        // Below the bar the conversation body is untouched by the coloring: the body reads black-on-white, exactly
         // as the single-ink face does, so every pixel from the first body row down is byte-for-byte identical between
-        // the bar and face. The coloured bar is confined to the status row; the reading area is left as it was.
+        // the bar and face. The colored bar is confined to the status row; the reading area is left as it was.
         {
             var bi: usize = @as(usize, cell_h) * @as(usize, bar.width) * 4;
             // invariant: the compared span is the whole body region, a whole number of RGBA pixels within both buffers.
             assert(bi <= bar.pixels.len);
             assert(bar.pixels.len == face.pixels.len);
             while (bi < bar.pixels.len) : (bi += 1) {
-                // invariant: a body pixel of the coloured bar equals the same pixel of the single-ink face.
+                // invariant: a body pixel of the colored bar equals the same pixel of the single-ink face.
                 assert(bar.pixels[bi] == face.pixels[bi]);
             }
         }
 
-        // Determinism: the same channel and colours render the same coloured-bar image every time.
+        // Determinism: the same channel and colors render the same colored-bar image every time.
         const bar2 = try render_channel_bar(garden, &atlas, &ch, yellow, blue, black, white);
         assert(bar2.same_bytes(&bar));
 
-        // The coloured-bar conversation is a real portable image -- it round-trips through the open QOI codec byte-for-byte.
+        // The colored-bar conversation is a real portable image -- it round-trips through the open QOI codec byte-for-byte.
         const bcap = qoi.encoded_bound(bar.width * bar.height);
         const bdst = try garden.alloc(u8, bcap);
         const benc = try qoi.encode(&bar, bdst);
@@ -599,7 +599,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         } else |e| if (e != error.ScooterFrameUnpaintable) return error.WrongUnpaintable;
     }
 
-    print("GREEN scooter-paint: a real 2-post channel folded to a {d}x{d} frame and painted into a {d}x{d} image, byte-for-byte what text_grid paints from the same cells, deterministic, round-trips through QOI; a coloured face paints the status header red and the body black while inking the same pixels; a coloured BAR paints the whole status band yellow-on-blue (no header pixel stays white, the body page below untouched), byte-for-byte text_grid's per-cell render, deterministic, round-trips through QOI, a mis-sized bg refusing GridBgMismatch by name; a composing session's DRAWN CARET fills its caret cell a solid inverse-video block (solid ink where the plain face is solid ground), confined byte-for-byte to that one cell, clearing and following the keeper when the caret walks home, round-trips through QOI; and an unpaintable frame refuses ScooterFrameUnpaintable by name\n", .{
+    print("GREEN scooter-paint: a real 2-post channel folded to a {d}x{d} frame and painted into a {d}x{d} image, byte-for-byte what text_grid paints from the same cells, deterministic, round-trips through QOI; a colored face paints the status header red and the body black while inking the same pixels; a colored BAR paints the whole status band yellow-on-blue (no header pixel stays white, the body page below untouched), byte-for-byte text_grid's per-cell render, deterministic, round-trips through QOI, a mis-sized bg refusing GridBgMismatch by name; a composing session's DRAWN CARET fills its caret cell a solid inverse-video block (solid ink where the plain face is solid ground), confined byte-for-byte to that one cell, clearing and following the keeper when the caret walks home, round-trips through QOI; and an unpaintable frame refuses ScooterFrameUnpaintable by name\n", .{
         view.frame_cols, view.frame_rows, face.width, face.height,
     });
     return 0;

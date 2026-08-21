@@ -221,7 +221,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     if (e0 != 0) return error.EasedLeftEdgeWrong;
     if (e3 != 255) return error.EasedRightEdgeWrong;
     if (!(e0 < e1 and e1 < e2 and e2 < e3)) return error.EasedNotAscending;
-    if (!(e1 > 0 and e1 < 255 and e2 > 0 and e2 < 255)) return error.EasedNoBetweenColour;
+    if (!(e1 > 0 and e1 < 255 and e2 > 0 and e2 < 255)) return error.EasedNoBetweenColor;
 
     // --- a SOLID image eases to the SAME solid color: every blend is of equal colors, so no ringing appears -----------
     const teal = color.Rgba{ .r = 0, .g = 128, .b = 128, .a = 255 };

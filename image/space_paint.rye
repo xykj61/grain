@@ -203,7 +203,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         var tx: u32 = 0;
         while (tx < 4) : (tx += 1) {
             const want = pixel_at(&pattern, tx % 2, ty % 2); // exact fit repeats by a pure modulo
-            if (!pixel_at(&img, tx, ty).eql(want)) return error.ExactColourWrong;
+            if (!pixel_at(&img, tx, ty).eql(want)) return error.ExactColorWrong;
         }
     }
     if (!pixel_at(&img, 3, 3).eql(black)) return error.ExactFarWrong; // the far copy is a full fresh pattern

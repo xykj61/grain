@@ -16,6 +16,6 @@ loom witness=hunk_part_row parts=3 shelf_cols=48 shelf_rows=3 price_cases=4 refu
 file brushstroke/part_row.rye part_shelf / format_price / format_fact_line — a part row, picture beside honest facts
 file brushstroke/sprite_shelf.rye extracted pub paint_swatch, reused by both shelves (additive; HUNK38 GREEN)
 file brushstroke/part_catalog.rye symlink to image/part_catalog.rye so imports resolve under brushstroke
-file tools/hunk_part_row_witness.rish proves no-drift, exact price, swatch colour, refusals; HUNK71 + HUNK38 GREEN beneath
+file tools/hunk_part_row_witness.rish proves no-drift, exact price, swatch color, refusals; HUNK71 + HUNK38 GREEN beneath
 file active-designing/20260813-232756_hunk-part-row-picture-and-facts-exploration.md self-approved design round
 recommend keep-going — the part is now seen; next crux is the paged part shelf (a catalog larger than the screen, mirroring catalog_window) or a tapped part row opening the product, both agent-doable in this journey

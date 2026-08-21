@@ -158,7 +158,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         while (tx < 4) : (tx += 1) {
             // Each target pixel maps to the pattern pixel at (tx % 2, ty % 2) -- the repeat is a pure modulo.
             const want = pixel_at(&pattern, tx % 2, ty % 2);
-            if (!pixel_at(&img, tx, ty).eql(want)) return error.TileColourWrong;
+            if (!pixel_at(&img, tx, ty).eql(want)) return error.TileColorWrong;
         }
     }
     // The far tile (2,2)..(3,3) is a full fresh copy of the pattern -- corner (3,3) is the pattern's own (1,1) black.

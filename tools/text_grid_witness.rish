@@ -20,8 +20,8 @@
 #   rishi/bin/rishi run tools/text_grid_witness.rish
 
 say "text-grid: Language EN -- Season G bridge rung; a monospace grid of character bytes (the shape scooter_view.Frame.cells carries) painted into a real RGBA image through the open font-and-paint family -- the terminal grid and the pixel family meeting on metal for the first time."
-say "text-grid: Style Radiant -- lead with what is: a terminal face is now pixels a surface can show, not only bytes a reader parses; the paint is faithful by a measured ink count, the blank row is ground, a cell block equals its standalone glyph, each cell can carry its OWN foreground and its OWN background (a real coloured header, an ink over its own ground), and every face round-trips through our own open QOI codec byte-for-byte."
-say "text-grid: Lens TAME -- u32 in-memory counts, u8 coverage and colour bytes; every buffer names a maximum (grid_cols_max, grid_rows_max, qoi's pixel ceiling); the box is checked all-or-nothing ONCE up front so an overflow refuses GridOutOfBounds before a pixel moves; each mis-shape refuses by its own named error; pure composition over image family public APIs, no new storage or codec; no network, no key, no funds."
+say "text-grid: Style Radiant -- lead with what is: a terminal face is now pixels a surface can show, not only bytes a reader parses; the paint is faithful by a measured ink count, the blank row is ground, a cell block equals its standalone glyph, each cell can carry its OWN foreground and its OWN background (a real colored header, an ink over its own ground), and every face round-trips through our own open QOI codec byte-for-byte."
+say "text-grid: Lens TAME -- u32 in-memory counts, u8 coverage and color bytes; every buffer names a maximum (grid_cols_max, grid_rows_max, qoi's pixel ceiling); the box is checked all-or-nothing ONCE up front so an overflow refuses GridOutOfBounds before a pixel moves; each mis-shape refuses by its own named error; pure composition over image family public APIs, no new storage or codec; no network, no key, no funds."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/text_grid"

@@ -71,8 +71,8 @@ pub fn open_book(
 // --- selftest: bank the stock book content-addressed, reopen it from cold, apply a preset from the reopened book,
 //     prove the dedup dividend, and prove a tampered book and an unknown name each refuse before a preset is read -
 
-/// Build a small colour image so a preset applied from a reopened book is unambiguous.
-fn craft_colour(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
+/// Build a small color image so a preset applied from a reopened book is unambiguous.
+fn craft_color(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
     const buf = try allocator.alloc(u8, w * h * 4);
     var y: u32 = 0;
     while (y < h) : (y += 1) {
@@ -89,7 +89,7 @@ fn craft_colour(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
 }
 
 fn run_selftest(garden: std.mem.Allocator) !u8 {
-    const img = try craft_colour(garden, 6, 6);
+    const img = try craft_color(garden, 6, 6);
     const book = try filter_preset.stock_book();
 
     // What a preset applied from the reopened book must equal — `noir` over the live stock book, by hand.

@@ -35,7 +35,7 @@ The witness pins the exact numbers: a dim red ramp `[40, 60, 80, 100]` with gree
 
 ## Why this over the alternatives
 
-Edge detection (Sobel/Laplacian) is one kernel over `convolve` — a fine next rung, yet it adds no new *analytical* capability. A per-luma histogram equalization is the richer cousin, yet it wants a per-pixel luma remap with a colour-preservation choice that is harder to prove byte-for-byte in one round. Per-channel contrast stretch is the clean, decisive, still-tractable move: it introduces the measure-then-map shape with fully provable integer arithmetic, and the levels/curves family grows from it.
+Edge detection (Sobel/Laplacian) is one kernel over `convolve` — a fine next rung, yet it adds no new *analytical* capability. A per-luma histogram equalization is the richer cousin, yet it wants a per-pixel luma remap with a color-preservation choice that is harder to prove byte-for-byte in one round. Per-channel contrast stretch is the clean, decisive, still-tractable move: it introduces the measure-then-map shape with fully provable integer arithmetic, and the levels/curves family grows from it.
 
 ## Boundaries
 

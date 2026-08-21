@@ -1,18 +1,18 @@
-//! image/color_gradient.rye -- an even gradient ramp between two colours (Season G, the two-endpoint palette rung).
+//! image/color_gradient.rye -- an even gradient ramp between two colors (Season G, the two-endpoint palette rung).
 //!
 //! Season G (Open Media Primitives) -- a single-stranded consumer of image/color.rye's blend, the two-endpoint SIBLING
 //! of image/color_scale.rye. Where color_scale grows a tonal ramp from ONE seed (its hue and saturation held, only the
-//! lightness stepping), this rung grows a ramp between TWO arbitrary colours -- the CSS linear-gradient stop list, a row
-//! of evenly-spaced blends from a start colour to an end colour. A keeper names two colours (a warm start, a cool end)
+//! lightness stepping), this rung grows a ramp between TWO arbitrary colors -- the CSS linear-gradient stop list, a row
+//! of evenly-spaced blends from a start color to an end color. A keeper names two colors (a warm start, a cool end)
 //! and reads back the whole ramp between them: the stops a background fade, a heat map, or a two-tone chart legend needs.
 //!
-//! Compose, not braid: colour DECIDES the blend (color.mix lerps each channel between the two endpoints) and this module
+//! Compose, not braid: color DECIDES the blend (color.mix lerps each channel between the two endpoints) and this module
 //! only SPACES the stops -- it sets the mix parameter of stop `i` to an evenly-stepped value from 0 (stop 0 is the start
-//! colour exactly) to 255 (the last stop is the end colour exactly). No new storage, codec, or colour maths -- every stop
-//! is a color.mix over the two endpoints, so colour's own proofs carry through untouched. The step is integer fixed-point,
+//! color exactly) to 255 (the last stop is the end color exactly). No new storage, codec, or color maths -- every stop
+//! is a color.mix over the two endpoints, so color's own proofs carry through untouched. The step is integer fixed-point,
 //! so a ramp is deterministic; the interpolation runs in straight sRGB (color.mix's own space), the CSS default. Alpha
 //! rides the same lerp, so a fade from opaque to clear steps its alpha evenly too. No network, no key, no funds -- the
-//! gradient Brushstroke and Skate paint the day the design system lands, on our own open colour model.
+//! gradient Brushstroke and Skate paint the day the design system lands, on our own open color model.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_gradient.rye selftest
 
@@ -28,8 +28,8 @@ pub const color_gradient_version = "20260817.135338";
 /// stop-parameter step strictly ascending (255 / 63 >= 1, so no two stops share a mix value).
 pub const gradient_max_stops: u32 = 64;
 
-/// The mix parameter (0..255) for stop `i` of a `count`-stop gradient -- an even lerp from 0 (stop 0, the start colour
-/// exactly) to 255 (stop count-1, the end colour exactly). Integer fixed-point, so the ramp is deterministic; count >= 2
+/// The mix parameter (0..255) for stop `i` of a `count`-stop gradient -- an even lerp from 0 (stop 0, the start color
+/// exactly) to 255 (stop count-1, the end color exactly). Integer fixed-point, so the ramp is deterministic; count >= 2
 /// keeps the denominator at least one, and the bound above keeps the step strictly ascending.
 pub fn stop_t(i: u32, count: u32) u8 {
     // invariant: a gradient holds at least two stops and never more than the module's ceiling.
@@ -54,8 +54,8 @@ pub fn sample(a: color.Rgba, b: color.Rgba, i: u32, count: u32) color.Rgba {
     return color.mix(a, b, stop_t(i, count));
 }
 
-/// Fill `dst` with a whole gradient from `a` to `b` -- dst.len evenly-spaced stops, dst[0] the start colour exactly and
-/// dst[len-1] the end colour exactly. A gradient of fewer than two stops or more than the ceiling refuses by name, having
+/// Fill `dst` with a whole gradient from `a` to `b` -- dst.len evenly-spaced stops, dst[0] the start color exactly and
+/// dst[len-1] the end color exactly. A gradient of fewer than two stops or more than the ceiling refuses by name, having
 /// written nothing a caller could mistake for a ramp.
 pub fn gradient(a: color.Rgba, b: color.Rgba, dst: []color.Rgba) !void {
     // invariant: a gradient holds at least two stops and never more than the bounded ceiling.
@@ -118,7 +118,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         prev_lum = lum;
     }
 
-    // A gradient between one colour and itself is a flat ramp -- every stop equals that colour, no phantom drift.
+    // A gradient between one color and itself is a flat ramp -- every stop equals that color, no phantom drift.
     var flat: [6]color.Rgba = undefined;
     try gradient(red, red, flat[0..]);
     var fi: u32 = 0;
@@ -162,7 +162,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (!a_ramp[di].eql(b_ramp[di])) return error.GradientNotDeterministic;
     }
 
-    print("GREEN image-color-gradient: an even gradient between two colours hits both endpoints byte-for-byte (stop 0 the start, the last stop the end); the stop parameter steps strictly 0..255; a red-to-blue mid stop carries both channels (a true blend, not a cut); a black-to-white ramp ascends strictly in luminance; a colour-to-itself ramp stays flat; alpha rides the lerp so an opaque-to-clear fade steps its alpha strictly down; sample agrees with the filled ramp; an out-of-band length refuses GradientTooShort by name; the same endpoints grow the same ramp byte-for-byte\n", .{});
+    print("GREEN image-color-gradient: an even gradient between two colors hits both endpoints byte-for-byte (stop 0 the start, the last stop the end); the stop parameter steps strictly 0..255; a red-to-blue mid stop carries both channels (a true blend, not a cut); a black-to-white ramp ascends strictly in luminance; a color-to-itself ramp stays flat; alpha rides the lerp so an opaque-to-clear fade steps its alpha strictly down; sample agrees with the filled ramp; an out-of-band length refuses GradientTooShort by name; the same endpoints grow the same ramp byte-for-byte\n", .{});
     return 0;
 }
 

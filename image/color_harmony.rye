@@ -1,11 +1,11 @@
-//! image/color_harmony.rye -- named colour-wheel schemes grown from one seed (Season G, the palette a design system names).
+//! image/color_harmony.rye -- named color-wheel schemes grown from one seed (Season G, the palette a design system names).
 //!
 //! Season G (Open Media Primitives) -- a single-stranded consumer that JOINS one proven floor a rung above it. The palette
-//! toolkit (image/color_adjust.rye) already owns rotate_hue: it reads a colour as HSL, turns the hue around the wheel by a
-//! bounded number of degrees, and writes it back, saturation and lightness held, alpha carried through. Colour-wheel
+//! toolkit (image/color_adjust.rye) already owns rotate_hue: it reads a color as HSL, turns the hue around the wheel by a
+//! bounded number of degrees, and writes it back, saturation and lightness held, alpha carried through. Color-wheel
 //! harmony -- complementary, analogous, triadic, split-complementary, tetradic, square -- is nothing but that one verb
 //! called at the classical angles, the same relationships painters and printers have leaned on for centuries. This rung
-//! names each scheme so a keeper reads back a ready set of partner colours from one brand seed, exactly as a design system
+//! names each scheme so a keeper reads back a ready set of partner colors from one brand seed, exactly as a design system
 //! offers "triadic" or "analogous" as a swatch a designer picks rather than an angle they compute by hand.
 //!
 //! Compose, not braid: color_adjust DECIDES the hue turn (rotate_hue steps the wheel and wraps a full circle back to zero),
@@ -13,9 +13,9 @@
 //! seed untouched. No new storage, codec, palette, or maths -- each scheme is a fixed, small, named set of hue turns over
 //! the existing verb, so color_adjust's own proofs (the wheel turns, the wrap, the held saturation and lightness, the
 //! carried alpha) carry through untouched. A grey seed has no hue to turn, so every scheme collapses it back to the same
-//! grey -- honest, never a guessed colour. Every scheme's cardinality is fixed at authoring time (two, three, or four), so
+//! grey -- honest, never a guessed color. Every scheme's cardinality is fixed at authoring time (two, three, or four), so
 //! a palette is bounded by construction rather than by a runtime ceiling. No network, no key, no funds -- the named palette
-//! Brushstroke and Skate grow the day the design system lands, on our own open colour model.
+//! Brushstroke and Skate grow the day the design system lands, on our own open color model.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_harmony.rye selftest
 
@@ -27,11 +27,11 @@ const color_adjust = @import("color_adjust.rye");
 
 pub const color_harmony_version = "20260817.122600";
 
-/// The classical wheel angles, in degrees, each named for the scheme it grows. These are the fixed relationships colour
+/// The classical wheel angles, in degrees, each named for the scheme it grows. These are the fixed relationships color
 /// theory has leaned on for centuries -- the reason each is a named constant is so a reader sees the angle and the scheme
 /// together, never a bare number in a call.
 pub const analogous_step: u16 = 30; // a neighbour a twelfth of the wheel to either side of the seed.
-pub const triadic_step: u16 = 120; // three colours evenly spaced a third of the wheel apart.
+pub const triadic_step: u16 = 120; // three colors evenly spaced a third of the wheel apart.
 pub const split_low: u16 = 150; // the near side of the seed's complement, thirty degrees before the half turn.
 pub const split_high: u16 = 210; // the far side of the seed's complement, thirty degrees past the half turn.
 pub const half_turn: u16 = 180; // the complement -- straight across the wheel.
@@ -40,9 +40,9 @@ pub const rect_long: u16 = 240; // the long side of the tetradic rectangle.
 pub const quarter_turn: u16 = 90; // the square scheme's even quarter step.
 pub const three_quarter_turn: u16 = 270; // the square scheme's third even quarter step.
 
-/// The most colours any single scheme ever holds -- the square and tetradic four. Named so a reader knows a scheme is a
+/// The most colors any single scheme ever holds -- the square and tetradic four. Named so a reader knows a scheme is a
 /// small bounded set, never an unbounded palette; every scheme returns a fixed array no larger than this.
-pub const scheme_max_colours: u32 = 4;
+pub const scheme_max_colors: u32 = 4;
 
 /// The seed's partner turned `deg` degrees around the wheel -- a thin name over color_adjust.rotate_hue, so every scheme
 /// below reads as a list of classical angles rather than a repeated call. Saturation and lightness held, alpha carried.
@@ -55,7 +55,7 @@ fn at_angle(seed: color.Rgba, deg: u16) color.Rgba {
     return turned;
 }
 
-/// The complementary pair: the seed and its opposite across the wheel (a half turn). The everyday two-colour scheme --
+/// The complementary pair: the seed and its opposite across the wheel (a half turn). The everyday two-color scheme --
 /// element 1 is exactly color_adjust.complement(seed), so this module hides nothing the toolkit did not already prove.
 pub fn complementary(seed: color.Rgba) [2]color.Rgba {
     const out = [2]color.Rgba{ seed, at_angle(seed, half_turn) };
@@ -67,7 +67,7 @@ pub fn complementary(seed: color.Rgba) [2]color.Rgba {
 }
 
 /// The analogous trio: the seed and its two neighbours a twelfth of the wheel to either side. The gentlest scheme --
-/// colours that sit beside one another, a design system's "harmonious" set.
+/// colors that sit beside one another, a design system's "harmonious" set.
 pub fn analogous(seed: color.Rgba) [3]color.Rgba {
     const out = [3]color.Rgba{ seed, at_angle(seed, analogous_step), at_angle(seed, 360 - analogous_step) };
     // invariant: a scheme leads with the keeper's own seed untouched.
@@ -78,8 +78,8 @@ pub fn analogous(seed: color.Rgba) [3]color.Rgba {
     return out;
 }
 
-/// The triadic trio: three colours evenly spaced a third of the wheel apart -- the seed, a third turn, two thirds turn.
-/// The boldest balanced scheme, each colour as far from the others as three can be on one wheel.
+/// The triadic trio: three colors evenly spaced a third of the wheel apart -- the seed, a third turn, two thirds turn.
+/// The boldest balanced scheme, each color as far from the others as three can be on one wheel.
 pub fn triadic(seed: color.Rgba) [3]color.Rgba {
     const out = [3]color.Rgba{ seed, at_angle(seed, triadic_step), at_angle(seed, triadic_step * 2) };
     // invariant: a scheme leads with the keeper's own seed untouched.
@@ -90,7 +90,7 @@ pub fn triadic(seed: color.Rgba) [3]color.Rgba {
     return out;
 }
 
-/// The split-complementary trio: the seed and the two colours flanking its complement, thirty degrees to either side of
+/// The split-complementary trio: the seed and the two colors flanking its complement, thirty degrees to either side of
 /// the half turn. A softer contrast than the straight complement -- the tension of an opposite without its harshness.
 pub fn split_complementary(seed: color.Rgba) [3]color.Rgba {
     const out = [3]color.Rgba{ seed, at_angle(seed, split_low), at_angle(seed, split_high) };
@@ -103,23 +103,23 @@ pub fn split_complementary(seed: color.Rgba) [3]color.Rgba {
 }
 
 /// The tetradic (rectangle) quartet: two complementary pairs set as a rectangle on the wheel -- the seed, a short side,
-/// the complement, and the long side. Four colours in two balanced pairs, the richest scheme a small palette carries.
+/// the complement, and the long side. Four colors in two balanced pairs, the richest scheme a small palette carries.
 pub fn tetradic(seed: color.Rgba) [4]color.Rgba {
     const out = [4]color.Rgba{ seed, at_angle(seed, rect_short), at_angle(seed, half_turn), at_angle(seed, rect_long) };
     // invariant: a scheme leads with the keeper's own seed untouched.
     assert(out[0].eql(seed));
-    // invariant: the third colour is the seed's own complement -- the rectangle's near corner.
+    // invariant: the third color is the seed's own complement -- the rectangle's near corner.
     assert(out[2].eql(color_adjust.complement(seed)));
     return out;
 }
 
-/// The square quartet: four colours evenly spaced a quarter of the wheel apart -- the seed, a quarter turn, the half turn
-/// (complement), and three quarters. The most balanced four-colour scheme, each an even step from the last.
+/// The square quartet: four colors evenly spaced a quarter of the wheel apart -- the seed, a quarter turn, the half turn
+/// (complement), and three quarters. The most balanced four-color scheme, each an even step from the last.
 pub fn square(seed: color.Rgba) [4]color.Rgba {
     const out = [4]color.Rgba{ seed, at_angle(seed, quarter_turn), at_angle(seed, half_turn), at_angle(seed, three_quarter_turn) };
     // invariant: a scheme leads with the keeper's own seed untouched.
     assert(out[0].eql(seed));
-    // invariant: the third colour is the seed's own complement -- the square's opposite corner.
+    // invariant: the third color is the seed's own complement -- the square's opposite corner.
     assert(out[2].eql(color_adjust.complement(seed)));
     return out;
 }
@@ -152,7 +152,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     // slack, stated rather than claimed exact. Well under any scheme's smallest step (30), so no two schemes blur together.
     const tol: u16 = 4;
 
-    // Every scheme leads with the keeper's own seed, byte-for-byte -- a palette never quietly alters the colour a keeper named.
+    // Every scheme leads with the keeper's own seed, byte-for-byte -- a palette never quietly alters the color a keeper named.
     if (!complementary(blue)[0].eql(blue)) return error.CompLeadNotSeed;
     if (!analogous(blue)[0].eql(blue)) return error.AnaLeadNotSeed;
     if (!triadic(blue)[0].eql(blue)) return error.TriLeadNotSeed;
@@ -197,7 +197,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const g_sq = square(glassy);
     if (!(g_sq[0].a == 128 and g_sq[3].a == 128)) return error.SquareDroppedAlpha;
 
-    // A grey has no hue to turn, so every scheme collapses it back to the very same grey -- honest, never a guessed colour.
+    // A grey has no hue to turn, so every scheme collapses it back to the very same grey -- honest, never a guessed color.
     const grey = color.Rgba{ .r = 128, .g = 128, .b = 128, .a = 255 };
     const grey_tri = triadic(grey);
     var i: u32 = 0;
@@ -218,7 +218,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         if (!a_tri[i].eql(b_tri[i])) return error.TriadNotDeterministic;
     }
 
-    print("GREEN image-color-harmony: six named colour-wheel schemes grown from one seed by composing color_adjust.rotate_hue at the classical angles; every scheme leads with the keeper's own seed byte-for-byte; the complementary partner is exactly color_adjust.complement (compose, not re-derive); triadic hues sit a third of the wheel apart and square hues an even quarter, both within a stated 4-degree round-trip tolerance; analogous flanks the seed by thirty degrees and split-complementary flanks its complement; tetradic holds the complement at its third corner with rectangle sides at sixty and two-forty; alpha rides through every scheme; a grey seed collapses every scheme back to the same grey; determinism holds\n", .{});
+    print("GREEN image-color-harmony: six named color-wheel schemes grown from one seed by composing color_adjust.rotate_hue at the classical angles; every scheme leads with the keeper's own seed byte-for-byte; the complementary partner is exactly color_adjust.complement (compose, not re-derive); triadic hues sit a third of the wheel apart and square hues an even quarter, both within a stated 4-degree round-trip tolerance; analogous flanks the seed by thirty degrees and split-complementary flanks its complement; tetradic holds the complement at its third corner with rectangle sides at sixty and two-forty; alpha rides through every scheme; a grey seed collapses every scheme back to the same grey; determinism holds\n", .{});
     return 0;
 }
 

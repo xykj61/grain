@@ -5,7 +5,7 @@
 # that placement into an RGBA image. It is pure composition over the family's public APIs:
 #   - image/text_layout.rye places each glyph (its pen origin),
 #   - image/glyph.rye hands each glyph a coverage grid (one byte per cell, 0 no ink .. 255 full ink),
-#   - image/color.rye composites an ink colour over the destination (Porter-Duff src-over),
+#   - image/color.rye composites an ink color over the destination (Porter-Duff src-over),
 #   - image/qoi.rye owns the RGBA target (a Pixmap, four bytes per cell).
 # So the nine hand-drawn open corpora become not only usable geometry but a string SEEN on an image.
 #
@@ -21,7 +21,7 @@
 
 say "text-paint: Language EN -- Season G's paint rung; the half that composites a laid-out string's glyph coverage into an RGBA image, so the nine open corpora become a string seen, not only measured."
 say "text-paint: Style Radiant -- pure composition over image/text_layout (geometry), image/glyph (coverage), image/color (src-over), and image/qoi (the RGBA target); no new storage, codec, palette, or geometry."
-say "text-paint: Lens TAME -- u32 pixel coordinates, u8 colour and coverage bytes; the painted box is bound-checked ONCE up front so the inner loop is proven in-bounds; an overflowing paint is a named refusal (PaintOutOfBounds); no network, no key, no funds."
+say "text-paint: Lens TAME -- u32 pixel coordinates, u8 color and coverage bytes; the painted box is bound-checked ONCE up front so the inner loop is proven in-bounds; an overflowing paint is a named refusal (PaintOutOfBounds); no network, no key, no funds."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "image/bin/text_paint"

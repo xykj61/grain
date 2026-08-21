@@ -214,7 +214,7 @@ fn run_selftest() !u8 {
     }
 
     // 4. THE BASS BOOST LIFTS — each bass-boost channel's total energy is strictly greater than that channel's un-shelved wet's: the low wash rises on
-    //    both ears, the colour the darkness knob could never reach.
+    //    both ears, the color the darkness knob could never reach.
     {
         var shelved = pan.StereoClip{};
         try load_stereo(&shelved, &left, &right);

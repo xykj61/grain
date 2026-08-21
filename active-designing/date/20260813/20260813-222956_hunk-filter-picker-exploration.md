@@ -27,7 +27,7 @@ The tool invents no pixel op and no new failure mode: previews and commits ride 
 
 ## The proof (selftest)
 
-A small colour image where each pixel carries a distinct colour, so a filter's colour work shows in the down-mapped grid:
+A small color image where each pixel carries a distinct color, so a filter's color work shows in the down-mapped grid:
 
 1. The picker opens over the stock book, selection at the first filter; `select_next`/`select_prev` walk it and **clamp at both ends** (never off the book).
 2. `preview` of the selected filter equals a direct `edit_preview.preview` of that recipe over the current view **cell-for-cell** — no drift between what the picker shows and what the recipe means.

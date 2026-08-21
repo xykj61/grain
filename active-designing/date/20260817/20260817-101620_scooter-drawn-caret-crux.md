@@ -30,8 +30,8 @@ ever drawn shows this cursor; it is Lindy-durable floor.
 ## The crux, proven on metal
 
 - **The cursor is a visible block.** With the caret at the end of a typed prompt
-  (over a space), the caret cell's whole pixel block reads the INK colour on the
-  drawn face, where the plain face reads the GROUND colour -- the cell flipped.
+  (over a space), the caret cell's whole pixel block reads the INK color on the
+  drawn face, where the plain face reads the GROUND color -- the cell flipped.
 - **Confined to one cell (values apart, never braided).** Every pixel OUTSIDE the
   caret cell is byte-for-byte the plain face (`paint_frame` of the same frame);
   the cursor touches its own cell and nothing of the conversation.

@@ -1,20 +1,20 @@
-//! image/color_scale.rye -- a tonal palette scale grown from one seed colour (Season G, the design-system ramp).
+//! image/color_scale.rye -- a tonal palette scale grown from one seed color (Season G, the design-system ramp).
 //!
 //! Season G (Open Media Primitives) -- a single-stranded consumer of image/color.rye's HSL algebra, one rung above
 //! image/color_adjust.rye. The adjust module gave a surface the everyday palette moves (lighten/darken, saturate,
 //! rotate). This rung gives it the move a design system actually reaches for first: grow a whole even tonal SCALE from
-//! ONE seed colour -- the Tailwind 50..900 / Material tonal ramp, a row of tones from lightest to darkest that share the
-//! seed's hue and saturation while their lightness steps evenly down a named band. A keeper names one brand colour and
+//! ONE seed color -- the Tailwind 50..900 / Material tonal ramp, a row of tones from lightest to darkest that share the
+//! seed's hue and saturation while their lightness steps evenly down a named band. A keeper names one brand color and
 //! reads back a ready palette: a light tint for a card ground, the seed's own tone in the middle, a dark shade for text
 //! or a pressed state.
 //!
-//! Compose, not braid: colour DECIDES the base algebra (rgb_to_hsl reads the seed, hsl_to_rgb writes each tone) and this
+//! Compose, not braid: color DECIDES the base algebra (rgb_to_hsl reads the seed, hsl_to_rgb writes each tone) and this
 //! module only sets the lightness field of each tone to an evenly-stepped value between scale_light_max (the lightest
 //! tone) and scale_light_min (the darkest). No new storage, codec, palette, or maths -- every tone is a read-set-write
-//! over the existing algebra, so colour's own proofs carry through. The lightness step is integer fixed-point, so a scale
+//! over the existing algebra, so color's own proofs carry through. The lightness step is integer fixed-point, so a scale
 //! is deterministic. Tone 0 is the lightest, tone count-1 the darkest; the seed's hue, saturation, and alpha ride through
 //! untouched. No network, no key, no funds -- the palette Brushstroke and Skate grow the day the design system lands, on
-//! our own open colour model.
+//! our own open color model.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_scale.rye selftest
 

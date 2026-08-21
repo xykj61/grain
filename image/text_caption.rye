@@ -62,7 +62,7 @@ const block_x0: u32 = 4; // the block's first left edge
 
 /// The still ground behind the moving block -- a calm slate the block and caption sit on.
 const ground_color = color.Rgba{ .r = 30, .g = 34, .b = 44, .a = 255 };
-/// The moving block's colour -- a warm accent distinct from the ground, so its motion is unmistakable.
+/// The moving block's color -- a warm accent distinct from the ground, so its motion is unmistakable.
 const block_color = color.Rgba{ .r = 220, .g = 140, .b = 40, .a = 255 };
 
 /// The lower-third caption panel -- a fixed rectangle, an opaque warm fill, a blue border ring, a padding gap. Opaque by

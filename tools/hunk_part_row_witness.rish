@@ -10,7 +10,7 @@
 # left, the product's thumbnail swatch (HUNK38/39's shared `paint_swatch`) at the right. The selftest indexes three
 # parts into one four-band sheet and proves the painted facts equal the stored facts cell-for-cell (no drift), the
 # price formats as exact dollars-and-cents ($8.45, a five-cent dime $0.05, $0.00, $1000.00 — no float, no loss), each
-# swatch wears its product's own colour, the shelf rasterizes to a lit canvas, and the shelf refusals fire. Pure
+# swatch wears its product's own color, the shelf rasterizes to a lit canvas, and the shelf refusals fire. Pure
 # composition over public APIs. Price is a fact formatted for reading, never moved — no network, no key, no funds.
 #
 # Run from the repository root:

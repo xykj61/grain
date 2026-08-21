@@ -49,7 +49,7 @@ Note also that the jail's `HOME` is a **3.9 GB tmpfs** (116 MB used). Tmpfs page
 
 **Cores are not the limit either, and more would not help much.** Peak one-minute load reached 2.67 on four vCPU, and the crypto suite never passed 1.85. The suites run their rungs **serially** -- 99 witnesses in one voice, one after another. A machine with four times the cores would finish these suites in very nearly the same wall time, because nothing is waiting on a core. **Wall time here is a parallelism question, not a hardware question**, and a parallel runner is free where a bigger droplet is not.
 
-**Steal is the one gauge that showed real colour.** It touched **12 %** during the Caravan run and sat near zero at rest. That is the shared-tenancy tax, and it is the only measured signal that a dedicated machine would improve. Twelve per cent is noticeable and is not an emergency; it means a 372-second suite might run nearer 330 on unshared cores. Worth knowing, not worth a purchase order.
+**Steal is the one gauge that showed real color.** It touched **12 %** during the Caravan run and sat near zero at rest. That is the shared-tenancy tax, and it is the only measured signal that a dedicated machine would improve. Twelve per cent is noticeable and is not an emergency; it means a 372-second suite might run nearer 330 on unshared cores. Worth knowing, not worth a purchase order.
 
 **The 844 MiB repository is the finding with the longest tail.** It bears on clone time, bundle sends, and every fresh jail that has to pull the tree -- and it is now compounded by a new submodule (`vendor/pqclean`, 34 MB shallow, more on a full init). This is the one measured number that argues for its own round, and none of the hardware options address it.
 
@@ -80,7 +80,7 @@ Plus two checks that bracket the run: `journalctl -k` for OOM kills before and a
 
 **When to re-run.** On any lap that adds a suite, a QEMU guest, or a parallel runner; before any droplet resize; and before any hardware purchase is discussed again. A re-run costs about fifteen minutes and settles the argument.
 
-**The colours, and what each earns.**
+**The colors, and what each earns.**
 
 | Reading | Verdict | What it earns |
 |---|---|---|

@@ -18,7 +18,7 @@ Two things did change, both preconditions rather than direction:
 
 `AMD 4vCPU/8GB, 180 GB NVMe, no swap.` The operator card had said `2vCPU/4GB` and was corrected in the same round; `GLOW_PROFILE.bron` had it right all along.
 
-Under the two heaviest suites in the tree -- Caravan's 99 rungs at 372 s, Crypto's 81 at 535 s -- peak memory reached **1,735 MB against 7,937 MB installed**, never dropping below **6.2 GB available**, with zero OOM kills ever recorded. Peak one-minute load touched **2.67 on four vCPU**, so the suites run serially and more cores would barely move the wall clock. The one gauge that showed colour was **CPU steal at 12 %** -- the shared-tenancy tax, noticeable and not an emergency.
+Under the two heaviest suites in the tree -- Caravan's 99 rungs at 372 s, Crypto's 81 at 535 s -- peak memory reached **1,735 MB against 7,937 MB installed**, never dropping below **6.2 GB available**, with zero OOM kills ever recorded. Peak one-minute load touched **2.67 on four vCPU**, so the suites run serially and more cores would barely move the wall clock. The one gauge that showed color was **CPU steal at 12 %** -- the shared-tenancy tax, noticeable and not an emergency.
 
 **A run started today is not compute-limited.** The loop may climb without watching its footing, and the gauge protocol in the measurement doc names exactly which readings would change that answer.
 

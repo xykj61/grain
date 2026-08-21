@@ -298,7 +298,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // A malformed clause surfaces the parser's own named refusal — a bad OR draws nothing, never a wrong shelf.
-    if (parse_or("material:stainless-304 colour:red")) |_| return error.BadClauseSlipped else |e| {
+    if (parse_or("material:stainless-304 color:red")) |_| return error.BadClauseSlipped else |e| {
         if (e != error.UnknownKey) return error.WrongClause;
     }
     if (parse_or("material:stainless-304 nocolonhere")) |_| return error.BadClauseSlipped else |e| {

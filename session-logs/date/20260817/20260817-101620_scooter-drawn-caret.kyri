@@ -6,7 +6,7 @@ voice Kyri
 host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
 title scooter_paint -- the drawn caret, a visible cursor made pixels, GREEN
 prompt take the next agent-doable lap Lindy-first crux-first on the recursion loop; deep-read one council-rota doc; send often; stop at custody gates
-think Read the road-ahead docs (1024-round itinerary, eight-season double-seat, rye-first crypto wave) and REMEMBER's live edge -- Season G open-media terminal family, last lap a live status bar in colour (eb888f6f9a).
+think Read the road-ahead docs (1024-round itinerary, eight-season double-seat, rye-first crypto wave) and REMEMBER's live edge -- Season G open-media terminal family, last lap a live status bar in color (eb888f6f9a).
 think Rota this lap is item 24, active-designing/20260702-184312_the-grain-and-the-crossing.md -- the grain's strands, chiefly 'values apart, never braided' (a value crosses a boundary whole, composition over tangling). Chose the crux this strand points at.
 think The crux: the DRAWN CARET. Two proven halves had never met -- scooter_compose.Session tracks caret_col but its fold carries only bytes; text_grid's per-cell fg+bg (paint_frame_cells) paints each cell its own ink over its own ground. A block cursor is exactly those two joined -- swap ink and ground at the caret cell.
 think render_session folds the session to a frame, computes the caret cell (prompt_row*frame_cols + caret_col), builds two per-cell palettes inverted only at that cell, and hands them to paint_frame_cells -- pure pass-through of render_grid_cells. No new primitive, no new symlink (scooter_compose closure already in pond/apps).
@@ -19,4 +19,4 @@ file pond/apps/scooter_paint.rye render_session paints a composing session with 
 file tools/scooter_paint_witness.rish docstring names the drawn caret (docs-sync)
 file active-designing/20260817-101620_scooter-drawn-caret-crux.md the self-approved design read for this rung
 file crux/REMEMBER.md live edge + Git nib refreshed to the drawn caret; prior nib demoted
-recommend keep-going the DRAWN PROMPT is done; next Lindy-first crux is a coloured caret over a coloured status face, or the multi-cell selection highlight -- both pure composition over paint_frame_cells; the live keystroke reader reaches the serve gate
+recommend keep-going the DRAWN PROMPT is done; next Lindy-first crux is a colored caret over a colored status face, or the multi-cell selection highlight -- both pure composition over paint_frame_cells; the live keystroke reader reaches the serve gate

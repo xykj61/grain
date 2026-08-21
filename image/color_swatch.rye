@@ -1,11 +1,11 @@
-//! image/color_swatch.rye -- a tonal scale where every tone carries its own legible ink (Season G, the on-colour ramp).
+//! image/color_swatch.rye -- a tonal scale where every tone carries its own legible ink (Season G, the on-color ramp).
 //!
 //! Season G (Open Media Primitives) -- a single-stranded consumer that JOINS two proven floors one rung above them.
-//! image/color_scale.rye grows a whole tonal SCALE from one seed colour (lightest tint to darkest shade). image/color.rye
+//! image/color_scale.rye grows a whole tonal SCALE from one seed color (lightest tint to darkest shade). image/color.rye
 //! picks the legible ink for text on any fill (readable_ink -- pure black or pure white, whichever clears the higher WCAG
-//! contrast). Neither module knew about the other. This rung pairs them: a Swatch is a fill colour AND the ink a keeper
-//! writes on it, and readable_scale grows a whole row of swatches from one seed -- the design-system "on-colour" token
-//! (Material's on-primary, Tailwind's paired text colour). A keeper names one brand colour and reads back a ready palette
+//! contrast). Neither module knew about the other. This rung pairs them: a Swatch is a fill color AND the ink a keeper
+//! writes on it, and readable_scale grows a whole row of swatches from one seed -- the design-system "on-color" token
+//! (Material's on-primary, Tailwind's paired text color). A keeper names one brand color and reads back a ready palette
 //! where every tone already knows the ink that stays legible on it: dark text on the light tints, light text on the deep
 //! shades, the crossover found for free.
 //!
@@ -16,7 +16,7 @@
 //! lightness steps down monotonically and readable_ink flips at a single luminance threshold, the inks partition into one
 //! clean crossover -- black on the light tones above, white on the dark tones below, never a black tone beneath a white.
 //! No network, no key, no funds -- the paired palette Brushstroke and Skate grow the day the design system lands, on our
-//! own open colour model.
+//! own open color model.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run image/color_swatch.rye selftest
 
@@ -32,7 +32,7 @@ pub const color_swatch_version = "20260817.122600";
 /// very same budget as the bare tonal scale it is grown from. No paired palette is ever unbounded.
 pub const swatch_max_tones: u32 = color_scale.scale_max_tones;
 
-/// A swatch: a fill colour and the legible ink to write text on it. The design-system "on-colour" token -- a tone plus the
+/// A swatch: a fill color and the legible ink to write text on it. The design-system "on-color" token -- a tone plus the
 /// pure black or pure white that stays readable against it, so a surface never picks a caption ink by hand.
 pub const Swatch = struct {
     fill: color.Rgba = .{},
@@ -55,7 +55,7 @@ pub fn swatch_at(seed: color.Rgba, i: u32, count: u32) Swatch {
     return .{ .fill = fill, .ink = ink };
 }
 
-/// Fill `dst` with a whole on-colour scale grown from `seed` -- dst.len swatches from the lightest tint (index 0) to the
+/// Fill `dst` with a whole on-color scale grown from `seed` -- dst.len swatches from the lightest tint (index 0) to the
 /// darkest shade, each pairing color_scale's tone with color's legible ink. A scale of fewer than two swatches or more than
 /// the ceiling refuses by name, having written nothing.
 pub fn readable_scale(seed: color.Rgba, dst: []Swatch) !void {
@@ -77,7 +77,7 @@ pub fn readable_scale(seed: color.Rgba, dst: []Swatch) !void {
 
 /// Swatch `i` of a `count`-swatch scale grown from `seed`, inked from a keeper's own brand PAIR rather than pure black and
 /// white: the fill is color_scale's tone, the ink is color's best_ink of that fill among `ink_light` and `ink_dark` --
-/// whichever of the two brand inks clears the higher WCAG contrast. A brand's own light and dark text colours, placed
+/// whichever of the two brand inks clears the higher WCAG contrast. A brand's own light and dark text colors, placed
 /// against the ramp the same brand seed grows.
 pub fn branded_swatch_at(seed: color.Rgba, ink_light: color.Rgba, ink_dark: color.Rgba, i: u32, count: u32) Swatch {
     // invariant: the index names a real swatch in a real scale (mirrors swatch_at's own bound).
@@ -90,7 +90,7 @@ pub fn branded_swatch_at(seed: color.Rgba, ink_light: color.Rgba, ink_dark: colo
     return .{ .fill = fill, .ink = ink };
 }
 
-/// Fill `dst` with a whole on-colour scale grown from `seed` and inked from a brand PAIR (`ink_light`, `ink_dark`) rather
+/// Fill `dst` with a whole on-color scale grown from `seed` and inked from a brand PAIR (`ink_light`, `ink_dark`) rather
 /// than pure black and white -- the general form of readable_scale. Passing pure white and black (in that order) recovers
 /// readable_scale byte-for-byte, since best_ink and readable_ink both break a tie toward the first, lighter ink. A length
 /// under two or over the ceiling refuses by name, having written nothing.
@@ -141,7 +141,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     if (!color.meets_aa(swatches[8].ink, swatches[8].fill)) return error.DarkestInkFailsAa;
 
     // The crossover is CLEAN -- one flip, top to bottom: once a swatch takes white ink no later swatch takes black again.
-    // This is the on-colour guarantee: dark text on the light tones above, light text on the dark tones below, no island.
+    // This is the on-color guarantee: dark text on the light tones above, light text on the dark tones below, no island.
     var seen_white = false;
     var c: u32 = 0;
     while (c < 9) : (c += 1) {
@@ -204,7 +204,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // A real brand pair -- a deep navy and a warm cream -- inks the same ramp: each swatch's ink is exactly best_ink of its
-    // own fill among the two, and always one of the two brand inks, never an invented third colour.
+    // own fill among the two, and always one of the two brand inks, never an invented third color.
     const navy = color.Rgba{ .r = 20, .g = 30, .b = 70, .a = 255 };
     const cream = color.Rgba{ .r = 250, .g = 245, .b = 225, .a = 255 };
     var branded: [9]Swatch = undefined;
@@ -228,7 +228,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    print("GREEN image-color-swatch: an on-colour scale grown from one seed pairs each tone with its legible ink; the fills are byte-for-byte the color_scale ramp and each ink is color.readable_ink of its own fill; the lightest tone takes black ink and the darkest white, both endpoints clearing WCAG AA; the crossover is clean (one flip top to bottom, never a black tone beneath a white); text ink is fully opaque while a translucent seed keeps its fill glass; a grey seed grows grey fills each still legible; an out-of-band length refuses ScaleTooShort by name; the same seed grows the same scale byte-for-byte; a brand-pair scale (branded_scale over best_ink) inks the ramp from a keeper's own two colours, each ink the best_ink pick of its fill and always one of the pair, and passing white then black reduces to the readable scale byte-for-byte (the general form contains the special one)\n", .{});
+    print("GREEN image-color-swatch: an on-color scale grown from one seed pairs each tone with its legible ink; the fills are byte-for-byte the color_scale ramp and each ink is color.readable_ink of its own fill; the lightest tone takes black ink and the darkest white, both endpoints clearing WCAG AA; the crossover is clean (one flip top to bottom, never a black tone beneath a white); text ink is fully opaque while a translucent seed keeps its fill glass; a grey seed grows grey fills each still legible; an out-of-band length refuses ScaleTooShort by name; the same seed grows the same scale byte-for-byte; a brand-pair scale (branded_scale over best_ink) inks the ramp from a keeper's own two colors, each ink the best_ink pick of its fill and always one of the pair, and passing white then black reduces to the readable scale byte-for-byte (the general form contains the special one)\n", .{});
     return 0;
 }
 

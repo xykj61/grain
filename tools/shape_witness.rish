@@ -7,7 +7,7 @@
 # progress-bar track are drawn from.
 #
 # The crux this witness proves is that the two verbs paint EXACTLY the pixels they name and refuse every overrun BY
-# NAME: fill_rect changes exactly w*h pixels of an opaque paint (the colour exactly) and leaves the rest untouched,
+# NAME: fill_rect changes exactly w*h pixels of an opaque paint (the color exactly) and leaves the rest untouched,
 # and blends true where the paint is translucent (a half-alpha fill over white equals color.over, uniform across the
 # area); stroke_rect changes exactly the border ring (ring_cells) with the interior untouched, and -- the property
 # that earns the single-pass ring -- composites every ring pixel including the four corners EXACTLY ONCE, so a
@@ -20,7 +20,7 @@
 #   rishi/bin/rishi run tools/shape_witness.rish
 
 say "shape: Language EN -- Season G's geometry floor; two bounded rectangle verbs (fill_rect, stroke_rect) over an RGBA grid, the shapes a surface frames a picture with, beneath the glyph painter."
-say "shape: Style Radiant -- pure geometry over color.over and qoi.Pixmap, braiding neither; an opaque paint writes the colour exactly, a translucent paint blends true, and the single-pass ring composites each corner exactly once so a translucent frame reads uniform."
+say "shape: Style Radiant -- pure geometry over color.over and qoi.Pixmap, braiding neither; an opaque paint writes the color exactly, a translucent paint blends true, and the single-pass ring composites each corner exactly once so a translucent frame reads uniform."
 say "shape: Lens TAME -- u32 in-memory counts, u64 only for the wrap-safe box sums; every rectangle's box is checked ONCE up front so the inner loop is proven in-bounds; each verb refuses its overruns by name (BadRectDims - RectOutOfBounds - BadThickness - StrokeTooThick); no network, no key, no funds."
 
 let zig = "vendor/zig-toolchain/zig"

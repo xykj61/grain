@@ -11,7 +11,7 @@
 //! The crux this rung proves is CONTAINMENT: the text lives strictly inside the frame and never touches the border. The
 //! inner content box is the panel inset on every side by the border thickness PLUS a padding gap, and the paragraph is
 //! placed all-or-nothing within that inner box -- so the border ring and the inked cells are DISJOINT by construction,
-//! and a border pixel reads the border colour exactly, never an ink pixel that bled onto the frame. The whole panel is
+//! and a border pixel reads the border color exactly, never an ink pixel that bled onto the frame. The whole panel is
 //! checked against the target ONCE up front (PanelOutOfBounds by name), the inner box is proven to have real extent
 //! (PanelTooSmall), and the wrapped block is proven to fit the inner box BEFORE a single pixel is committed
 //! (PanelContentTooWide / PanelContentTooTall) -- so a panel that cannot hold its text refuses by name having painted
@@ -34,7 +34,7 @@ const text_paint = @import("text_paint.rye");
 pub const text_panel_version = "20260817.114500";
 
 /// A framed text panel: a rectangle on the target, a border ring `thickness` pixels wide, a `pad` gap between the ring
-/// and the text, a `fill` behind everything and a `border` colour for the ring. The inner content box a paragraph is
+/// and the text, a `fill` behind everything and a `border` color for the ring. The inner content box a paragraph is
 /// placed in is the rectangle inset on every side by `thickness + pad`. A `thickness` of zero is a borderless card --
 /// the fill and text paint with no ring, and `border` is then unused.
 pub const Panel = struct {
@@ -167,7 +167,7 @@ pub fn paint_text_panel_auto_ink(
 
 // --- selftest: prove the panel composes fill + frame + text, contains the text within the frame, and refuses by name -
 
-/// Mint a one-colour RGBA canvas -- a local bounded builder, so this rung leans on no higher module for its ground.
+/// Mint a one-color RGBA canvas -- a local bounded builder, so this rung leans on no higher module for its ground.
 fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi.Pixmap {
     // invariant: a canvas has real extent within the image module's named pixel ceiling.
     assert(w >= 1);
@@ -233,9 +233,9 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     if (painted != 1) return error.LineCountWrong;
 
     // CONTAINMENT -- the crux. Walk every pixel of the panel rectangle and classify it:
-    //   * a ring pixel MUST read the border colour exactly (the fill was painted first, the opaque frame over it, and
+    //   * a ring pixel MUST read the border color exactly (the fill was painted first, the opaque frame over it, and
     //     no ink ever reaches the ring), and
-    //   * every pixel that reads the ink colour MUST lie strictly inside the inner box (the text never escapes the frame).
+    //   * every pixel that reads the ink color MUST lie strictly inside the inner box (the text never escapes the frame).
     // Outside the panel the canvas stays the untouched white background. Together these prove fill, frame, and text
     // compose into one card with the text sealed inside the border.
     var ink_seen: u32 = 0;
@@ -247,7 +247,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
             const p = pixel_at(&c1, px, py);
             if (on_ring(panel, px, py)) {
                 ring_pixels += 1;
-                // A ring pixel is the border colour exactly -- neither ink bled onto it nor fill showed through.
+                // A ring pixel is the border color exactly -- neither ink bled onto it nor fill showed through.
                 if (!p.eql(border)) return error.RingNotBorder;
             }
             if (p.eql(ink)) {
@@ -281,7 +281,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     _ = try paint_text_panel(&atlas, "Hi", 1, .left, .top, flat, buf, scratch, &c3, ink);
     if (!pixel_at(&c3, 4, 3).eql(paper)) return error.BorderlessCornerNotFill; // the very corner is fill, no ring
     {
-        // No pixel anywhere on the borderless canvas is the border colour -- the ring was genuinely skipped.
+        // No pixel anywhere on the borderless canvas is the border color -- the ring was genuinely skipped.
         var any_border = false;
         var i: usize = 0;
         while (i < c3.pixels.len) : (i += 4) {
@@ -351,7 +351,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
     if (!std.mem.eql(u8, c4.pixels, before4)) return error.TooTallTouchedBuffer;
 
-    print("GREEN image-text-panel: fill + frame + text compose into one card; the text is SEALED inside the frame ({d} ink px all within the inner box, {d} ring px all the border colour); a borderless panel skips the ring; auto-ink picks a legible caption from color.readable_ink (white on a dark fill, black on a light one) equalling the explicit paint over that ink byte-for-byte and clearing WCAG AA; determinism holds; BadPanelDims/PanelOutOfBounds/PanelTooSmall/PanelContentTooTall all refuse by name, buffer untouched\n", .{
+    print("GREEN image-text-panel: fill + frame + text compose into one card; the text is SEALED inside the frame ({d} ink px all within the inner box, {d} ring px all the border color); a borderless panel skips the ring; auto-ink picks a legible caption from color.readable_ink (white on a dark fill, black on a light one) equalling the explicit paint over that ink byte-for-byte and clearing WCAG AA; determinism holds; BadPanelDims/PanelOutOfBounds/PanelTooSmall/PanelContentTooTall all refuse by name, buffer untouched\n", .{
         ink_seen, ring_pixels,
     });
     return 0;

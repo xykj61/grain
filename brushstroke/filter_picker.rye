@@ -154,13 +154,13 @@ pub const FilterPicker = struct {
     }
 };
 
-// --- selftest: a colour image — the picker walks the stock filters (clamping at both ends), previews the selected
+// --- selftest: a color image — the picker walks the stock filters (clamping at both ends), previews the selected
 //     filter over the current view with no drift, commits named filters that chain, walks them with undo/redo, and
 //     recovers the source byte-for-byte -----------------------------------------------------------------------------
 
-/// A small image where each pixel carries a distinct colour, so a filter's colour work shows in the view. Pixel (x,y) =
+/// A small image where each pixel carries a distinct color, so a filter's color work shows in the view. Pixel (x,y) =
 /// (x·40+20, y·30+10, (x·3+y·7)·5, 255).
-fn craft_colour(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
+fn craft_color(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
     const buf = try allocator.alloc(u8, w * h * 4);
     var y: u32 = 0;
     while (y < h) : (y += 1) {
@@ -177,7 +177,7 @@ fn craft_colour(allocator: std.mem.Allocator, w: u32, h: u32) !qoi.Pixmap {
 }
 
 fn run_selftest(garden: std.mem.Allocator) !u8 {
-    const pm = try craft_colour(garden, 4, 4);
+    const pm = try craft_color(garden, 4, 4);
     var pk = try FilterPicker.open(&pm, 4, 4);
 
     // The book is the stock filters; the selection opens on the first, and walking clamps at both ends.
@@ -279,7 +279,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         }
     }
 
-    print("GREEN filter-picker: a 4x4 colour source — the picker walks the nine stock filters (clamping at both ends), " ++
+    print("GREEN filter-picker: a 4x4 color source — the picker walks the nine stock filters (clamping at both ends), " ++
         "previews the selected filter over the current view cell-for-cell (no drift), commits \"mono\" (the view the " ++
         "named filter byte-for-byte), chains \"bright\" over it (the view the two recipes in order), walks them with " ++
         "undo/redo and recovers the source byte-for-byte (non-destructive throughout); a two-verb \"noir\" commits two " ++
