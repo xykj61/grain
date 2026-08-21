@@ -2358,6 +2358,33 @@ On disk the twenty-five rung files and the harness together shed **1,741 lines f
 
 The choir stands **105 GREEN**, TAME bans clean, width-check clean.
 
+## Fold Y -- `stand_the_mark`, and the second family to fold whole
+
+The queue named **twenty-nine rungs by fifty-eight lines, 1,624 carried**, and hashing every body by that name found a **thirtieth**. That is the second kind of absentee, read now for the fifth time: `repose.rye` **owns** the reposing tier, so it reached its own report directly where all twenty-nine rungs above reach it through `reposing_of`. Seven lines differed out of fifty-eight, and every one of them was that same difference. Three lines of identity accessor, and the family folded **whole at thirty, with no elder left home** -- the second fold of this arc to leave nothing standing apart, and the first time the arc has done it twice running.
+
+`stand_the_mark` carries the term's own answer into the mark an operator actually opens. The wire before the memory, one tier further out than the term below it: the run reads its own mark out of the note an operator would open, reads the term out of the note that decided it, writes both into that same mark, and reads the mark back before the report believes a word of it. **A run that escorted nothing has no mark to speak for. An objection nobody asked about has no standing to carry.** Each is a silence no standing can fill, and each says so by weighing nothing rather than by inventing a finding. The number this rung moves is the mark that names an objection and never says whether anybody still holds it -- read live by every operator, however long ago the quarrel was let go.
+
+**The fold cost twenty-one widenings and split nothing.** Fifteen of the sixteen symbols the body reaches -- `escort_written`, `term_written`, `mark_unstanding`, `read_in`, `bare_in`, `unweighed_stand`, `repose_refusal`, `stands_as`, `agrees`, `repose_note`, and `standing_written`, with `Mark`, `Report`, `RunError`, and `NoteError` beside them -- already stood public in all thirty, interest paid by the folds before this one. Only `reposing_of` needed it, and its whole family is exactly the twenty-nine rungs above the tier owner, so fold T's rule had nothing left to protect: widening the twenty-one private bodies covered the family entire, and each of the twenty-nine is a distinct text naming its own nesting depth, so the widening handed back nothing and split nothing.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding the body | 30 | **0**, each keeping a three-line delegate |
+| Lines the body carried | 1,624 | **87** -- the delegate is itself a copy |
+| Widenings the fold cost | -- | **21**, plus one accessor born |
+| Bodies standing apart, kept home | -- | **0**, the arc's second whole family |
+| The ladder's whole carry | 118,061 | **116,524** |
+| Carry ceiling | 118,100 | **116,600** |
+| Carrying families | 707 | **707**, unmoved |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+**The arithmetic closes with no remainder, and it closes the same from either end.** Read forward: twenty-eight copies of fifty-eight gave back 1,624 exactly as the queue promised, and the thirty three-line delegates carry 87, so the fall is 1,624 less 87 -- **1,537**, exactly what the meter measured. Read through the normalization: `repose.rye` joining first made thirty copies at 1,682, which the fold gave back whole, and 1,682 less 87 less the fifty-eight that came home is the same 1,537. The tier owner's own body was never carried and never counted, which is why the two readings agree. Bodies climb 18,069 to 18,071 and distinct texts 7,869 to 7,870, the newborn identity accessor and the harness body being texts the ladder did not have.
+
+On disk the thirty rung files and the harness together shed **1,701 lines for 148 added** -- a net of **1,553 lines** off the tracked tree. The diff is smaller than thirty times fifty-eight because a delegate keeps the body's own signature line and its closing brace, so each rung reads as fifty-six lines out and one in, with the twenty-one widenings making up the rest exactly.
+
+**What this fold adds to the reading of a whole family.** Fold X met the first family with no fossil record and drew the rule from it: a body that arrived after the vocabulary beneath it had settled has no shallower version to date it out of its family. `stand_the_mark` says the same thing from the other side. It exists only in the reposing tier and above -- `heed`, `endure`, `appeal`, and `relent` carry no body by that name -- and the hash found its whole family at a glance, with the tier owner standing apart by exactly the difference owning a tier makes. **A rule read once is a reading; a rule that predicts the next lap is a rule.** This fold is that second reading, and it came in on the discipline rather than on a surprise.
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.
