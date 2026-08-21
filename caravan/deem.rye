@@ -366,7 +366,7 @@ pub const Report = struct {
 /// Every rung of this arc wraps the report of the rung below it, so one named
 /// reach per tier keeps the supervisor readable and keeps a miscount from
 /// hiding inside a chain of `inner`.
-fn refer_of(report_out: *Report) *referring_rung.Report {
+pub fn refer_of(report_out: *Report) *referring_rung.Report {
     return &report_out.inner;
 }
 
@@ -466,7 +466,7 @@ fn abandoning_of(report_out: *Report) *abandon_rung.Report {
 }
 
 /// The run's own tally, reached without spelling the whole nesting each time.
-fn run_of(report_out: *Report) *overtake.Report {
+pub fn run_of(report_out: *Report) *overtake.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.run;
 }
 
@@ -4518,42 +4518,10 @@ pub fn run_in_deem(
     // may answer that answering, and the record says where they stand.
     try read_the_appeal(io, appeal, report_out);
 
-    // Everything a run owes the quarrel standing over it, in the order the arc
-    // grew: carried past this run, weighed into its word, dated, heralded, and
-    // finally referred. Why each step sits where it sits: the doc below.
-    try close_the_quarrel(io, taken_up, quarrel, report_out);
-}
-
-/// Closes the six acts a run owes the quarrel still standing over its plan.
-///
-/// The order is the order the arc grew, and every step of it is load-bearing.
-/// The endurance runs first, because there is nothing to carry past a run until
-/// that run has heard everything it is going to hear. The heeding follows, since
-/// a regard qualifies a settlement and there is no settlement to qualify until
-/// the plan has finished reckoning itself. The dating comes after, because a
-/// position has stood through this run only once the run is over. The heralding
-/// reads the age that dating just wrote. The referring carries out the very
-/// standing the heralding just published. And the reading comes last of all,
-/// because the case a finding is weighed against is the case the referring just
-/// carried.
-fn close_the_quarrel(
-    io: std.Io,
-    taken_up: ?Plea,
-    quarrel: Quarrel,
-    report_out: *Report,
-) (RunError || NoteError)!void {
-    // invariant: a run closes a quarrel only after its own record is settled
-    assert(settlement_published(io) != null or run_of(report_out).reaped == 0);
-    try carry_the_position(io, quarrel.endurance, report_out);
-    try weigh_the_standing(io, taken_up, quarrel.heed, report_out);
-    try date_the_standing(io, quarrel.dwell, report_out);
-    try herald_the_standing(io, quarrel.swell, report_out);
-    try refer_the_quarrel(io, quarrel.refer, report_out);
-    // invariant: a run never refers more positions than one case holds
-    assert(refer_of(report_out).referred <= 1);
-    try read_the_finding(io, quarrel.deem, report_out);
-    // invariant: a run never reads more findings than one case may earn
-    assert(report_out.answered <= 1);
+    // Every act a run owes the quarrel standing over it, in the order the
+    // arc grew. The spine lives in the harness now, so this rung runs the
+    // steps it declares and copies none of the order: `ladder_checks.rye`.
+    try ladder_checks.close_the_quarrel(@This(), io, taken_up, quarrel, report_out);
 }
 
 /// Reads back what the hand this run referred to made of the case.
@@ -4573,7 +4541,7 @@ fn close_the_quarrel(
 /// argument is refused by name rather than filed beside today's word -- each is
 /// an ending this rung reaches by publishing nothing. The number it moves is the
 /// case carried out that nobody is ever heard back on.
-fn read_the_finding(io: std.Io, deem: Deem, report_out: *Report) (RunError || NoteError)!void {
+pub fn read_the_finding(io: std.Io, deem: Deem, report_out: *Report) (RunError || NoteError)!void {
     const sent_count = refer_of(report_out).referred;
     if (sent_count == 0) {
         // invariant: a run that carried no case reads no finding
@@ -4649,7 +4617,7 @@ fn read_the_finding(io: std.Io, deem: Deem, report_out: *Report) (RunError || No
 /// enough that its age is the whole story is fairly left with the people having
 /// it -- each is an ending this rung reaches by carrying nothing. The number it
 /// moves is the long-standing quarrel nobody outside the argument ever sees.
-fn refer_the_quarrel(io: std.Io, refer: Refer, report_out: *Report) (RunError || NoteError)!void {
+pub fn refer_the_quarrel(io: std.Io, refer: Refer, report_out: *Report) (RunError || NoteError)!void {
     const stood_plea = position_standing(io) orelse {
         // invariant: a run with nothing standing refers no quarrel
         assert(refer_of(report_out).referred == 0);
@@ -4741,7 +4709,7 @@ fn refer_the_quarrel(io: std.Io, refer: Refer, report_out: *Report) (RunError ||
 /// enough that its age is the whole story is heralded honestly as quiet, and
 /// costs the count nothing -- the number this rung moves is the long-standing
 /// position an operator reads no louder than a fresh one.
-fn herald_the_standing(io: std.Io, swell: Swell, report_out: *Report) (RunError || NoteError)!void {
+pub fn herald_the_standing(io: std.Io, swell: Swell, report_out: *Report) (RunError || NoteError)!void {
     const stood_plea = position_standing(io) orelse {
         // invariant: a run with nothing standing heralds no position
         assert(swell_of(report_out).heralded == 0);
@@ -4814,7 +4782,7 @@ fn herald_the_standing(io: std.Io, swell: Swell, report_out: *Report) (RunError 
 /// this rung reaches by writing nothing rather than by dating a quarrel nobody
 /// holds. A standing quarrel whose note says nothing at all about how long it
 /// has stood is the number this rung moves.
-fn date_the_standing(io: std.Io, dwell: Dwell, report_out: *Report) (RunError || NoteError)!void {
+pub fn date_the_standing(io: std.Io, dwell: Dwell, report_out: *Report) (RunError || NoteError)!void {
     const stood_plea = position_standing(io) orelse {
         // invariant: a run with nothing standing dates no position
         assert(dwell_of(report_out).aged == 0);
@@ -4974,7 +4942,7 @@ fn release_the_standing(io: std.Io, relent: Relent, report_out: *Report) (RunErr
 /// outcomes this rung reaches by weighing nothing rather than by publishing a
 /// qualification nobody is owed. A plan reported carried while an inherited
 /// quarrel stood against it is the number this rung moves.
-fn weigh_the_standing(
+pub fn weigh_the_standing(
     io: std.Io,
     taken_up: ?Plea,
     heed: Heed,
@@ -5046,7 +5014,7 @@ fn weigh_the_standing(
 /// endings this rung reaches for by weighing nothing rather than by inventing a
 /// position. A pressed quarrel a run heard and the run after it began without is
 /// the number this rung moves.
-fn carry_the_position(io: std.Io, endurance: Endurance, report_out: *Report) (RunError || NoteError)!void {
+pub fn carry_the_position(io: std.Io, endurance: Endurance, report_out: *Report) (RunError || NoteError)!void {
     const plea = appeal_published(io) orelse {
         // invariant: a run that heard nobody carries no position forward
         assert(endure_of(report_out).kept == 0);

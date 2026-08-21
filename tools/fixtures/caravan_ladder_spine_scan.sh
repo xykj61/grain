@@ -2,36 +2,46 @@
 # caravan_ladder_spine_scan.sh -- how many lines of the Caravan ladder's own
 # orchestration spine are a line the ladder has already written somewhere else.
 #
-# Every rung of the Caravan arc holds one function that runs the whole
-# correspondence in order -- `close_the_quarrel`, which carries a position, hears
-# a finding, answers it, takes a matter up again, walls it, calls a person, and
-# books what is owed. A rung born from the rung beneath it copies that function
-# whole and inserts its own step, so the spine grows about three lines a rung:
-# one `try`, one `// invariant:` line, one assert.
+# Every rung of the Caravan arc runs the whole correspondence in order --
+# `close_the_quarrel`, which carries a position, hears a finding, answers it,
+# takes a matter up again, walls it, calls a person, and books what is owed.
+# Until fold D each rung wrote that order out by hand: a rung born from the rung
+# beneath it copied its neighbor's whole function and inserted one step, so the
+# spine grew about three lines a rung -- one `try`, one `// invariant:` line, one
+# assert.
 #
 # The copy meter beside this one (caravan_ladder_copy_scan.sh) counts
-# BYTE-IDENTICAL bodies, and by that measure the spine costs nothing at all --
-# no two rungs hold the same `close_the_quarrel`, because each is the rung
+# BYTE-IDENTICAL bodies, and by that measure the spine cost nothing at all --
+# no two rungs held the same `close_the_quarrel`, because each was the rung
 # below's plus three lines. The claim was always honest; the shape it cannot
 # see is a NEAR copy, which is what a staircase is. So the spine rode free past
 # a meter reading 47.
 #
-# Measured here rather than recalled, the ladder's spine is 106 distinct lines
-# standing on disk 1,003 times across 21 rungs -- 897 of them lines the ladder
-# has already written. That is the number fold D exists to move, and naming it
-# is what turns a hunch about duplication into a design call resting on a count
-# (REDS %93: a tally repeated from memory drifts; REDS %97: a count that cannot
-# see what it measures is a guess wearing a measurement's clothes).
+# Measured here on `20260820.204641` rather than recalled, that spine was 106
+# distinct lines standing on disk 1,003 times across 21 rungs -- 897 of them
+# lines the ladder had already written. Naming the number is what turned a hunch
+# about duplication into a design call resting on a count (REDS %93: a tally
+# repeated from memory drifts; REDS %97: a count that cannot see what it measures
+# is a guess wearing a measurement's clothes).
+#
+# Fold D moved it. The spine lives in `caravan/ladder_checks.rye` now, one body
+# taking the rung as a `comptime` parameter and running the steps that rung
+# declares, so the staircase is a property the harness derives rather than
+# twenty-one hand-copies of it. **The carry reads 0 across 101 modules**, and
+# this scan's job changed with it: it stopped sizing a cost and became the wall
+# that keeps the fold folded. What it counts is unchanged -- only the number did.
 #
 # The scan also reports, as an ADVISORY ratchet rather than a refusal, how many
 # rungs hold a spine past TAME's seventy-line function bound. TAME names that a
 # ratchet -- it prints and migrates on touch -- so this scan prints it and lets
 # the ceiling below be the only wall.
 #
-# CARAVAN_SPINE_CEILING (default 1100): how many carried spine lines the ladder
-# may hold. 897 stand today, and the spine carries roughly a rung's whole length
-# forward each time a rung is born, so this leaves about two rungs of headroom
-# -- the same discipline the copy ceiling keeps.
+# CARAVAN_SPINE_CEILING (default 40): how many carried spine lines the ladder
+# may hold. Zero stand today. Fold D on `20260820.212419` lifted the spine into
+# `ladder_checks.rye`, where one body serves every rung, so the ceiling stopped
+# being headroom for growth and became a wall that keeps the fold folded. It is
+# set to catch the SECOND rung that writes a spine of its own rather than the
+# tenth -- roughly twice the length of the one spine now standing.
 #
 # CARAVAN_SPINE_FN (default close_the_quarrel): the orchestration function to
 # read, so a corpus small enough to count by hand can prove the counter.
@@ -42,7 +52,7 @@
 # PASS and FAIL fixtures prove both paths without touching the tree.
 set -eu
 
-CEILING=${CARAVAN_SPINE_CEILING:-1100}
+CEILING=${CARAVAN_SPINE_CEILING:-40}
 BOUND=${CARAVAN_SPINE_BOUND:-70}
 FN=${CARAVAN_SPINE_FN:-close_the_quarrel}
 DIR=${CARAVAN_LADDER_DIR:-caravan}

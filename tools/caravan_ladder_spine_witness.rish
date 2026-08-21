@@ -1,32 +1,37 @@
-# tools/caravan_ladder_spine_witness.rish -- the Caravan ladder's orchestration spine is a measured number too, and the meter beside it never claimed to see this shape.
+# tools/caravan_ladder_spine_witness.rish -- the Caravan ladder's orchestration spine stands in one place, and the meter that found it is the wall that keeps it there.
 #
-# Every rung of the Caravan arc holds one function that runs the whole correspondence in order: `close_the_quarrel`
-# carries a position, hears a finding, answers it, takes a matter up again, walls it, calls a person about the wall,
-# spares a reader who is done, and books what is owed. A rung born from the rung beneath it copies that function whole
-# and inserts its own step, so the spine grows about three lines a rung -- one `try`, one `// invariant:` line, one
-# assert.
+# Every rung of the Caravan arc runs the whole correspondence in order: `close_the_quarrel` carries a position, hears a
+# finding, answers it, takes a matter up again, walls it, calls a person about the wall, spares a reader who is done,
+# and books what is owed. Until fold D each rung wrote that order out by hand -- a rung born from the rung beneath it
+# copied its neighbor's whole function and inserted one step, so the spine grew about three lines a rung.
 #
-# The copy meter beside this one counts BYTE-IDENTICAL bodies, and by that measure the spine costs the ladder nothing:
-# no two rungs hold the same `close_the_quarrel`, because each is the rung below's plus three lines. That claim was
+# The copy meter beside this one counts BYTE-IDENTICAL bodies, and by that measure the spine cost the ladder nothing:
+# no two rungs held the same `close_the_quarrel`, because each was the rung below's plus three lines. That claim was
 # always honest, and its scan says so at the top in as many words. What it cannot see is a NEAR copy, which is exactly
 # what a staircase is -- so a thousand lines of orchestration rode free past a meter reading 47.
 #
-# Measured here rather than recalled, the ladder's spine is **106 distinct lines standing on disk 1,003 times across 21
-# rungs** -- 897 of them a line the ladder has already written. Two independent readings agree on 897: the union count
-# this scan takes, and a neighbor walk that asks of each rung how many of its spine lines already stand in the rung
-# directly beneath it. A number that survives being counted two ways is a number a design call may rest on (REDS %93).
+# Measured on `20260820.204641`, the spine was **106 distinct lines standing on disk 1,003 times across 21 rungs**,
+# 897 of them lines the ladder had already written, counted two independent ways that agreed. Fold D moved that number
+# on `20260820.212419`: the spine lives in `caravan/ladder_checks.rye` now, one body taking the rung as a `comptime`
+# parameter and running the steps that rung declares, so the staircase became a property the harness derives. **The
+# carry reads 0, and 21 rungs hold no spine at all.**
 #
-# This witness makes no claim about what the ladder should do next. It states the size of the thing, keeps it under a
-# named ceiling with about two rungs of headroom, and reports TAME's seventy-line function ratchet where the spine has
-# grown past it -- four rungs today, `refrain` longest at 86. TAME names function length a ratchet that turns on touch
-# rather than a gate, so the ratchet prints and the ceiling is the only wall here.
+# So this witness changed jobs without changing what it counts. It used to size a cost; it is the wall that keeps the
+# fold folded, its ceiling lowered from 1,100 to 40 -- tight enough to catch the SECOND rung that writes a spine of its
+# own rather than the tenth. TAME's seventy-line ratchet, which four rungs had grown past, reads zero: the one spine
+# standing is 19 lines, and the four movements it calls are 15, 37, 27, and 59, every one under the bound.
+#
+# Read `total=19` for what it is. This scan measures the spine CARRIED ACROSS RUNGS, which is the thing fold D removed
+# and the thing that could come back. The whole orchestration in the harness -- the entry, its four movements, and the
+# tally helper they share -- is 170 lines, and it stands exactly once.
 #
 # Five claims, each proven on metal:
 #   1. The living ladder's spine counts clean under a named ceiling.
-#   2. The spine's size is read off the ladder rather than believed -- 21 rungs, 1,003 lines, 106 of them distinct.
-#   3. The copy meter's own reading stands true beside it, so this is a shape it never claimed rather than a fault in it.
+#   2. The fold is read off the ladder rather than believed -- one spine, 19 lines, 0 carried, 21 rungs freed.
+#   3. The copy meter's own reading stands unmoved at 47 beside it, which is what proves the lift added no
+#      byte-identical carry while removing the near carry.
 #   4. The counting itself is right, proven on a two-rung corpus whose twelve lines, seven distinct and five carried,
-#      are countable by eye in the fixture.
+#      are countable by eye in the fixture -- the same proof, over a corpus the fold never touched.
 #   5. Every RED path refuses by name -- a corpus with no modules, a corpus whose modules hold no spine at all (the
 #      REDS %97 shape, a count that cannot see what it measures), and a spine carry grown past its ceiling.
 #
@@ -37,40 +42,42 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/caravan_ladder_spine_witness.rish
 
-say "caravan-ladder-spine: Language EN -- the orchestration every rung copies forward is counted rather than recalled, so the fold that answers it rests on a number."
-say "caravan-ladder-spine: Style Radiant -- measurement beats memory; a meter reading zero over a real cost is a shape it cannot see rather than a claim it got wrong."
+say "caravan-ladder-spine: Language EN -- the orchestration no rung copies forward any longer is counted rather than recalled, so the fold that answered it stays answered."
+say "caravan-ladder-spine: Style Radiant -- measurement beats memory; the meter that found a cost a neighbor could not see is the wall that keeps the fold answering it."
 say "caravan-ladder-spine: Lens TAME -- safety first: the ceiling is named, the counting is proven by hand on a corpus, the seventy-line ratchet prints rather than gates, and every refusal has a name."
 
 let living = run ["sh" "tools/fixtures/caravan_ladder_spine_scan.sh"]
 assert living.ok else "caravan-ladder-spine: the living ladder scan must exit 0 -- ${living.out}"
 assert living.out contains "SPINE_OK" else "caravan-ladder-spine: want the living spine under its named ceiling"
-assert living.out contains "SPINE_MODULES 101 holding=21" else "caravan-ladder-spine: want 21 of the 101 rung modules holding a spine"
-assert living.out contains "SPINE_LINES total=1003 distinct=106 carried=897" else "caravan-ladder-spine: want the spine read at 1,003 lines, 106 of them distinct"
-assert living.out contains "SPINE_RATCHET over_bound=4 bound=70 longest=refrain:86" else "caravan-ladder-spine: want four rungs named past the seventy-line bound"
+assert living.out contains "SPINE_MODULES 101 holding=1" else "caravan-ladder-spine: want exactly one of the 101 rung modules holding a spine -- the harness"
+assert living.out contains "SPINE_LINES total=19 distinct=19 carried=0" else "caravan-ladder-spine: want one 19-line spine standing, every line of it distinct and none carried"
+assert living.out contains "SPINE_RATCHET over_bound=0 bound=70 longest=ladder_checks:19" else "caravan-ladder-spine: want no spine past the seventy-line bound, the four the fold answered included"
 
 say "caravan-ladder-spine: living ladder -- ${living.out}"
 
 # The second reading, computed beside the first and asserted on its own. The count above asks how many different lines
 # the whole ladder holds; the neighbor walk asks of each spine how many of its lines already stand in the spine
-# directly beneath it. Two different questions over one extraction, and both answer 897 -- which is what makes the
-# number safe to build a design call on. A reading that agreed with the first by construction would prove nothing, so
-# note what would separate them: a line dropped by one rung and written again three rungs up counts as carried in the
-# union reading and not in the walk.
-assert living.out contains "SPINE_NEIGHBOR carried=897" else "caravan-ladder-spine: want the neighbor walk to agree at 897"
-say "caravan-ladder-spine: second reading -- 897 spine lines already stand in the rung directly beneath"
+# directly beneath it. Two different questions over one extraction, and they agreed at 897 before the fold and agree at
+# 0 after -- which is what made the number safe to build a design call on and makes the zero safe to trust now. A
+# reading that agreed with the first by construction would prove nothing, so note what would separate them: a line
+# dropped by one rung and written again three rungs up counts as carried in the union reading and not in the walk.
+assert living.out contains "SPINE_NEIGHBOR carried=0" else "caravan-ladder-spine: want the neighbor walk to agree at 0"
+say "caravan-ladder-spine: second reading -- no spine line stands in the rung directly beneath, because no rung holds a spine to carry"
 
-# The meter beside this one, read here so the two numbers stand together. 47 carried lines is the byte-identical carry
-# and it is true; 897 is the near carry and it is also true. A reader who saw only the first would conclude the ladder
-# carries almost nothing forward, which is the whole reason this witness exists.
+# The meter beside this one, read here so the two numbers stand together -- and now so one of them can be seen NOT to
+# move. 47 was the byte-identical carry before the lift and it is the byte-identical carry after. That is the honest
+# proof the lift removed a cost rather than trading it for a cheaper-looking one: the near carry fell 897 to 0 while
+# the number a lift could most easily have inflated stayed exactly where it stood.
 let copy = run ["sh" "tools/fixtures/caravan_ladder_copy_scan.sh"]
 assert copy.ok else "caravan-ladder-spine: the copy meter must still stand -- ${copy.out}"
-assert copy.out contains "copied_lines=47" else "caravan-ladder-spine: want the byte-identical meter still reading 47 beside the near carry"
-say "caravan-ladder-spine: the meter beside it -- byte-identical carry stands at 47 while the spine carries 897"
+assert copy.out contains "copied_lines=47" else "caravan-ladder-spine: want the byte-identical meter standing exactly where the lift found it"
+say "caravan-ladder-spine: the meter beside it -- byte-identical carry stands at 47, unmoved, while the near carry fell 897 to 0"
 
-# The counting proven by hand. The corpus holds two rungs: the foot writes a five-line spine, and the rung above writes
-# those same five lines plus two of its own. So twelve lines stand, seven of them different, and exactly five are a line
-# already written -- countable by eye in the fixture itself, which is what makes this a proof of the counter rather than
-# a second opinion from it.
+# The counting proven by hand, over a corpus the fold never touched. The corpus holds two rungs: the foot writes a
+# five-line spine, and the rung above writes those same five lines plus two of its own. So twelve lines stand, seven of
+# them different, and exactly five are a line already written -- countable by eye in the fixture itself, which is what
+# makes this a proof of the counter rather than a second opinion from it. The living reading now says zero, and a
+# counter that could only ever say zero would prove nothing; this corpus is what keeps the zero meaningful.
 let corpus = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_spine_corpus CARAVAN_SPINE_FN=walk_the_case CARAVAN_SPINE_CEILING=10 CARAVAN_SPINE_BOUND=6 sh tools/fixtures/caravan_ladder_spine_scan.sh"]
 assert corpus.ok else "caravan-ladder-spine: the corpus scan must exit 0 -- ${corpus.out}"
 assert corpus.out contains "SPINE_MODULES 2 holding=2" else "caravan-ladder-spine: want the corpus read as two rungs, both holding a spine"
@@ -96,4 +103,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_s
 assert (ceiling.ok == false) else "caravan-ladder-spine: a spine carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-spine: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-spine -- the ladder's orchestration spine stands at 1,003 lines across 21 rungs, 106 of them distinct and 897 already written, counted two independent ways that agree, held under a named ceiling with the seventy-line ratchet reported beside it, proven by hand on a two-rung corpus, and all three RED paths refusing by name."
+say "GREEN: caravan-ladder-spine -- the ladder's orchestration spine stands once, 19 lines in the harness with 0 carried across 101 modules, counted two independent ways that agree, the byte-identical meter unmoved at 47 beside it, the seventy-line ratchet reading zero where four rungs had grown past it, held under a ceiling lowered to 40 so the fold stays folded, proven by hand on a two-rung corpus the fold never touched, and all three RED paths refusing by name."
