@@ -40,7 +40,7 @@ assert scan.ok else "reds-monotone: the verdict reads ok while the status fails 
 
 # The spine says how far it reaches, so a shrinking set of rows is a red rather than a
 # quieter GREEN. It read 73 of 101 on the lap before this one and said ok about it.
-assert scan.out contains "rows=103" else "reds-monotone: want the spine reaching every row the ledger holds"
+assert scan.out contains "rows=104" else "reds-monotone: want the spine reaching every row the ledger holds"
 
 # RED path one -- a gap. The control is generated rather than tracked, so it can never
 # drift from the shape this scan enforces.
@@ -69,4 +69,4 @@ let empty = run ["sh" "-c" "d=$(mktemp -d); echo '# a ledger with nothing in it'
 assert (empty.ok == false) else "reds-monotone: a ledger holding no rows must refuse"
 assert empty.out contains "verdict=no_rows" else "reds-monotone: want the empty ledger refused by name"
 
-say "GREEN: reds-monotone -- the spine accretes 1..103 with no gaps across every fold archive found on disk and the living pin, both row shapes read, a closure note welcomed as the row it speaks about, and every refusal named"
+say "GREEN: reds-monotone -- the spine accretes 1..104 with no gaps across every fold archive found on disk and the living pin, both row shapes read, a closure note welcomed as the row it speaks about, and every refusal named"
