@@ -2220,6 +2220,31 @@ It is also the body that the arc's second-largest fold already calls. `stand_tak
 
 The choir stands **105 GREEN**, TAME bans clean, width-check clean.
 
+## Fold U -- `hear_the_reader`, and the absentee that stays home
+
+The printed queue named `hear_the_reader` at **thirty-three rungs by fifty-four lines, 1,728 carried**, second behind `provision_notes`, and it was the better crux for the same reason the last four laps chose the wider family: `provision_notes` at ninety-one lines stays the body most likely to reach a rung's own wire, and reaching the wire is what keeps a body home.
+
+Hashing every body by that name found **thirty-four**, and the thirty-fourth is the finding. `caravan/hear.rye` owns the hearing tier, and its body stands at forty lines against fifty-four -- yet no accessor brings this one home. Fold R named two kinds of absentee, and this is the **first**: a body genuinely dated by a shape born after it. Where every rung above records a disagreeing hand as a non-agreement and carries on, `hear.rye` ends the run on it with `error.HearMisheard`. Two texts, two meanings, one name. The elder stays home, named in the harness for what it is, rather than folded into a shape it predates.
+
+`hear_the_reader` is the body that reads back what the reader answered and says whether the plan ever listened. It reads the letter it carried out of the reader's own box, then reads that reader's hand out of the box beside it -- the wire before the memory, because a plan that heard its reader agree from its own memory has agreed with itself. A run that carried nothing owes nobody a hearing. A reader who answered in a word this plan cannot accept leaves the hearing exactly where it stood, and that is a record rather than a refusal.
+
+**The fold cost one widened symbol, and it split nothing.** Every symbol the body reaches -- `couriering_of`, `max_address_len`, `address_published`, `answered_by`, `delivered_to`, `hand_agrees`, `carried_unheard`, `heard_in`, `unheard_in`, `unanswered_reach`, `hear_refusal`, and the four types `Receipt`, `Report`, `RunError`, `NoteError` -- already stood public in all thirty-three, the interest paid by folds before it. Only `hearing_of` was private, and fold T's lesson said to hash that symbol's own family before widening it. Its thirty-three copies are each a **different** text, three lines naming a different nesting depth apiece, so it is no fold family at all: widening it costs its thirty-three and hands no successor a split.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding the body | 33 | **0**, each keeping a three-line delegate |
+| Lines the body carried | 1,728 | **96** -- the delegate is itself a copy |
+| Widenings the fold cost | -- | **33**, one accessor, no family split |
+| Bodies standing apart, kept home | -- | **1**, `hear.rye`, named in the harness |
+| The ladder's whole carry | 124,620 | **122,988** |
+| Carry ceiling | 124,700 | **123,100** |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+**The arithmetic closes with no remainder.** The family gave back 1,728 -- thirty-two copies of fifty-four lines, the thirty-third being the distinct text itself -- and the new three-line delegate family carries 96 across those same thirty-two copies, so the carry falls **1,632**, which is exactly what the meter measured. Bodies climb 18,064 to 18,065 and distinct texts 7,867 to 7,868, the one new body being the harness's own.
+
+The choir stands **105 GREEN**, TAME bans clean, width-check clean.
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.
