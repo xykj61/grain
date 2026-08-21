@@ -1874,6 +1874,28 @@ Proven by [`tools/caravan_refusals_witness.rish`](../tools/caravan_refusals_witn
 
 **What this does not claim.** No kernel booted and no capability was invoked, so *which* of the eleven each Caravan outcome should become is design judgement, named as such at the door. This rung binds the vocabulary and the totality; the semantics earn their proof the day an invocation actually runs.
 
+**Corrected one lap later, and the correction became a check (REDS %107).** The parity scan bound the eleven **names** and their order, and said nothing about what a name means -- so two of the meanings shipped wrong, `seL4_DeleteFirst` carrying `seL4_RevokeFirst`'s sentence. seL4 publishes a description for every refusal in its own BSD-2-Clause interface files, and it is unambiguous: `seL4_DeleteFirst` means *the destination slot already contains a capability*, in nine occurrences across `object-api.xml`, every one that sentence. Both meanings now read as seL4 publishes them, and [`tools/fixtures/caravan_refusal_meaning_scan.sh`](../tools/fixtures/caravan_refusal_meaning_scan.sh) holds three of them **two-sidedly** -- the kernel's own load-bearing phrase must still stand in the vendored XML, and our sentence must still carry its own, so a reword on either side reds the rung. The eight meanings still unbound are counted and reported rather than passed over. A parity check that binds a name proves nothing about what the name means.
+
+## The derivation tree -- the two refusals only a lineage can answer
+
+`derivation.rye` (`20260821.052104`) pays the largest of the seven debts the rung above named. A capability that may be handed on makes a **tree**, and a tree is the only thing that can honestly say whether removing one grant would orphan reach somebody is still holding. So the module keeps lineage: every derived capability knows the slot it came from, its depth beneath the root, and the rights it was narrowed to.
+
+**Reach only ever narrows along a lineage.** A derived capability carries a subset of its parent's rights, always. A request to widen is refused with `seL4_IllegalOperation` at the edge, and the whole-table invariant re-proves attenuation across every live slot afterward -- so the property is checked twice, once where it could go wrong and once over the result.
+
+**The two owed refusals, as the tree means them.** A **held destination slot** answers `seL4_DeleteFirst`: seating another capability there would silently drop the one standing, so the standing one is deleted deliberately, first. A capability with **capabilities derived from it** answers `seL4_RevokeFirst`: removing it would leave a child whose parent vanished, which is reach nobody granted and nobody can audit. Revoke clears a whole lineage in one bounded pass and keeps the capability it was asked about, deciding descent against the tree as it stood on entry so clearing one slot can never hide a deeper one from the same pass.
+
+| Measured `20260821` | Value |
+|---|---|
+| Kernel refusals this rung answers | **2** -- `seL4_DeleteFirst`, `seL4_RevokeFirst` |
+| Kernel refusals it reuses from the table above | **2** -- `seL4_FailedLookup`, `seL4_IllegalOperation` |
+| Slots one tree holds | **32**, bounded on purpose |
+| Depth a lineage may stand | **4**, so every walk up terminates in a known number of steps |
+| Bounds refusing by named Rye error rather than kernel answer | **2** -- `SlotOutOfRange`, `DerivationTooDeep` |
+
+Proven by [`tools/caravan_derivation_witness.rish`](../tools/caravan_derivation_witness.rish), GREEN on metal, with both RED paths planted rather than described: a tree that lets reach **widen** as it is handed on fails its own self-test, and a revoke that sweeps only **direct** children leaves a grandchild standing and the postcondition inside `revoke` names it. The choir sang **101 GREEN** with it registered, and the four ladder meters moved their module pins 103 to 104 in the same commit as the code.
+
+**What this does not claim.** The bounds are this module's own capacity rather than an answer the kernel offers, so they refuse by named Rye error and the general bounds-checking debt stays open. No kernel booted; the lineage rules are ours, written to the shape of the answers seL4 publishes, and they earn their behavioural proof the day a root task actually invokes a capability. **Five of the seven the rung above named remain owed** -- argument, bounds, and alignment checking, the IPC buffer, and untyped retyping. `refusals.rye` still counts seven, and rightly: its count is what the *policy table* can answer, and the table above the line has not yet learned to speak through the tree.
+
 
 ## Held
 
