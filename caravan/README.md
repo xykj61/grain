@@ -2245,6 +2245,38 @@ Hashing every body by that name found **thirty-four**, and the thirty-fourth is 
 
 The choir stands **105 GREEN**, TAME bans clean, width-check clean.
 
+## Fold V -- `settle_the_plan`, the fossil record, and a fold that cost nothing
+
+The printed queue named `settle_the_plan` at **thirty-six rungs by forty-seven lines, 1,645 carried**, second behind `provision_notes`, and the last two laps had already named it the better crux for the reason five laps running have chosen the wider family: `provision_notes` at ninety-one lines stays the body most likely to reach a rung's own wire, and reaching the wire is what keeps a body home.
+
+`settle_the_plan` weighs what a plan came to, publishes the verdict and the settlement, and reads both back. The reckoning waits until the last dependent has been reaped and every abandonment already answered for, since a verdict taken any earlier would judge work that may yet be carried. Every claim it makes it first writes to the wire and then reads back, because a settlement a run believes from its own memory has agreed with itself. Four refusals stand in it, each naming a story the wire cannot support: a loss called carried while an arc stands unserved, a plan called borne that re-ran what its author asked it to bear, a judgment weighed in private, and a recantation never spoken aloud.
+
+**Hashing the family first found three bodies standing apart, and they are not the same kind.** `caravan/recant.rye` owns the recanting tier and stood apart by exactly two lines, reaching its own report directly where every rung above reaches it through `recanting_of`. That is fold R's **second** kind of absentee, and this time the accessor that brings it home had already been born -- fold M widened `recanting_of` in this very file, five folds ago. Two words came home and the family became thirty-seven.
+
+**Two more stand apart, and they stay home: they are the ladder's own fossil record.** `caravan/bear.rye` holds twenty-eight lines and `caravan/appraise.rye` thirty-five, against the folded body's forty-seven. `bear.rye` predates the appraisal check and the recantation checks alike; `appraise.rye` carries the appraisal and predates the recantation. Read together, the three depths are a staircase naming the two laps on which settling learned to weigh an appraisal and then a recantation -- fold Q's finding, arriving again on a different body.
+
+**An absentee can wear both kinds at once, and the first kind wins.** Each of these two elders also reaches its own report directly, exactly as `recant.rye` did -- `report_out.bore` in one, `report_out.weighed` in the other -- so each carries the second kind's signature too. Yet no accessor can give a body back a check it never had. Where the two kinds meet in one body, the dating decides, and the elder stays home named.
+
+**The fold cost nothing at all.** All thirteen symbols the body reaches -- `below_of`, `unserved_after`, `settled_verdict`, `verdict_note`, `verdict_published`, `settlement_of`, `bearing_of`, `settlement_note`, `settlement_published`, `appraising_of`, `appraisal_published`, `recanting_of`, `recant_published` -- along with `max_queue_len` and the three types `Report`, `RunError`, `NoteError`, already stood public in every one of the thirty-seven. This is the arc's second zero-widening fold after fold P, and it says the same thing from the other side: **a fold's price is set by what its predecessors already made public**, rather than by how many rungs it lifts out of.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding the body | 36, and a thirty-seventh two lines apart | **0**, each keeping an eight-line delegate |
+| Lines the body carried | 1,645 | **288** -- the delegate is itself a copy |
+| Widenings the fold cost | -- | **0**, every symbol already public |
+| Absentees an accessor brought home | -- | **1**, `recant.rye`, for two words |
+| Bodies standing apart, kept home | -- | **2**, `bear.rye` and `appraise.rye`, named in the harness |
+| The ladder's whole carry | 122,988 | **121,631** |
+| Carry ceiling | 123,100 | **121,700** |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+**The arithmetic closes with no remainder, and it names what bringing an absentee home costs.** Thirty-five copies of forty-seven gave back 1,645 as the queue promised; `recant.rye` joining first *added* forty-seven to the carry, making thirty-six copies at 1,692; and the thirty-six eight-line delegates carry 288. So the fall is 1,692 less 288, less the forty-seven that came home -- **1,357**, exactly what the meter measured. **The accessor's two words paid for themselves thirty-six times over.** Bodies climb 18,065 to 18,066 and copies 10,197 to 10,198, the one new body being the harness's own; distinct texts hold at 7,868, since the body the harness now owns is a text the ladder already had.
+
+On disk the thirty-seven rung files shed 1,480 lines for 37 of delegate, and `ladder_checks.rye` grew 88 -- a net of **1,355 lines** off the tracked tree.
+
+The choir stands **105 GREEN**, TAME bans clean, width-check clean.
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.
