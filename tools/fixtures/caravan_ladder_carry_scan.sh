@@ -178,6 +178,17 @@ if [ "$bodies" -eq 0 ]; then
 fi
 
 echo "CARRY_MODULES ${modules} dir=${DIR}"
+
+# THE SECOND READING, added `20260821.175633`. Carry counts LINES, and a three-line delegate that
+# forwards to a two-hundred-line body reports as three. So carry alone can be satisfied by MOVING
+# lines rather than removing them, and a meter that can be satisfied by relocation will eventually
+# be satisfied that way. Delegates are the thing carry cannot see, so they are counted beside it:
+# when carry falls and delegates rise by the same shape, a fold traded a cost for a cheaper-looking
+# one; when carry falls and delegates hold, lines genuinely left the tree. Two readings, so no
+# single number can dress movement as progress.
+delegates=$(grep -rhc "return ladder_checks\." "${DIR}"/*.rye 2>/dev/null | awk '{n += $1} END {print n + 0}')
+delegate_files=$(grep -rl "return ladder_checks\." "${DIR}"/*.rye 2>/dev/null | wc -l | tr -d ' ')
+echo "CARRY_DELEGATES ${delegates} in_files=${delegate_files} note=lines_carry_cannot_see"
 echo "CARRY_BODIES ${bodies} distinct=${distinct} copies=${copies} carried_lines=${carried}"
 
 if [ -f "$work/families" ]; then
