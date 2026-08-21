@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.203922` -- the respect live edge folds as the refrain rung seats
+
+**Walk-back nib:** `d3dd720335` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when a run could name the ending it inherited and still write to the reader who made it stands at this nib and every commit before it.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **respect** rung, folded into the condensed-pointer line beneath it so the card leads with the round that just landed rather than carrying a second copy of the log index. Roughly one screenful falls away; every word stands at the nib above.
+
+**What waits there, worth recalling:** the inline account of the **respect** rung as it was written -- the run after reading the ending it inherited, the twelve bytes of the mark with every byte save one copied from outside the plan, the naming landing before the inheritance comes down, and `RespectUnended` named as the consent guard mirroring `ConcludeUnended`. The numbers it named -- 94 rungs GREEN in 344s, the carry unmoved at 47 across 100 modules and 1,229 checks, fold A climbing 835 to 874 -- live on in `session-logs/` and `caravan/README.md`.
+
+
 ### `20260820.200710` -- the conclude live edge folds as the respect rung seats
 
 **Walk-back nib:** `139d350123` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when a reader's ending could be written down and no run had yet opened one stands at this nib and every commit before it.

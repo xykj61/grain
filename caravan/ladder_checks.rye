@@ -4245,3 +4245,225 @@ pub fn check_conclude_refusals(comptime rung: type) u8 {
     }
     return link(rung, "check_conclude_measure");
 }
+
+/// Weighs the number this rung moves, as a pure fold.
+pub fn check_conclude_measure(comptime rung: type) u8 {
+    if (rung.unclosed_endings(1, true, .leaves) != 1) {
+        print("  RED: an ending a reader made and nobody kept went uncounted\n", .{});
+        return 1;
+    }
+    if (rung.unclosed_endings(1, true, .concludes) != 0) {
+        print("  RED: an ending written down still counted as one nobody kept\n", .{});
+        return 1;
+    }
+    // A reader who took the matter up left with it rather than ending it, so a
+    // plan writing nothing costs the count nothing -- the harm this rung names
+    // is the ending a person actually made and the plan let fall.
+    if (rung.unclosed_endings(1, false, .leaves) != 0) {
+        print("  RED: a plan was charged for an ending its reader never made\n", .{});
+        return 1;
+    }
+    // And a run that heard nobody has no ending to keep at all.
+    if (rung.unclosed_endings(0, true, .leaves) != 0) {
+        print("  RED: a run that opened no answer was charged an ending unkept\n", .{});
+        return 1;
+    }
+    if (rung.closed_in(1, true, .concludes) != 1 or rung.left_open_in(1, true, .concludes) != 0) {
+        print("  RED: a concluding run miscounted the one correspondence it closed\n", .{});
+        return 1;
+    }
+    if (rung.closed_in(1, true, .leaves) != 0 or rung.left_open_in(1, true, .leaves) != 1) {
+        print("  RED: a leaving run miscounted the correspondence it handed on open\n", .{});
+        return 1;
+    }
+
+    print("  five refusals stand by name: unopened, unended, mismatched, miscounted, misrecorded\n", .{});
+    print("  the concluding this rung keeps: {s}\n", .{rung.conclude_words(.concludes)});
+    print("  what a leaving plan tells an operator: {s}\n", .{rung.conclude_words(.leaves)});
+    print("  a closure carries eleven bytes: the record it ends on, echoed whole, and this run's own byte last\n", .{});
+    return link(rung, "check_respect");
+}
+
+/// A closure across a provisioning, proven outside any run.
+///
+/// The lap below proves the concluding end to end under a real plan. This
+/// proves the one property that makes a closure worth writing at all: **it
+/// survives a provisioning**, and it survives the taking down of every record
+/// beneath it. A closure is addressed to a run that has not started, so a note
+/// swept with the lap that wrote it would leave the next run exactly as unable
+/// to tell a closed correspondence from an absent one as before.
+pub fn check_conclude_wire(comptime rung: type, io: std.Io, sys: *const system.System) u8 {
+    rung.clear_close(io);
+    rung.clear_abate(io);
+    rung.clear_answer(io);
+    rung.clear_hands(io, rung.standing_address);
+    rung.clear_calls(io, rung.standing_address);
+    rung.clear_desist(io);
+    rung.clear_mind(io);
+    if (rung.close_standing(io) != null) {
+        print("  RED: a closure stood in a plan that had written none\n", .{});
+        return 1;
+    }
+    const held = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .stands));
+    const mark = rung.minds_bytes(held);
+    const wall = rung.walls_bytes(mark);
+    const call = rung.calls_bytes(wall);
+    const accepted = rung.answers_bytes(rung.hands_bytes(call, .accepts));
+    // The run before today, standing in for itself: it opened this record among
+    // the plan's own notes, exactly as the rung below leaves a wire.
+    rung.answer_note(io, rung.hands_bytes(call, .accepts)) catch |err| {
+        print("  RED: a record could not be opened: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    rung.conclude_note(io, accepted) catch |err| {
+        print("  RED: a closure could not be written: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    const provisioned = rung.provision_notes(io, sys) catch |err| {
+        print("  RED: a plan could not be provisioned: {s}\n", .{@errorName(err)});
+        return 1;
+    };
+    // invariant: a provisioning always seats the domains the declaration names
+    assert(provisioned == sys.graph.domain_count);
+    const survived = rung.close_standing(io) orelse {
+        print("  RED: a provisioning cleared the closure a later run inherits\n", .{});
+        return 1;
+    };
+    if (!rung.closes_carries(survived, accepted)) {
+        print("  RED: a closure carried past a provisioning stopped naming its record\n", .{});
+        return 1;
+    }
+    if (rung.closes_hand(survived) != .accepts) {
+        print("  RED: a closure carried past a provisioning forgot the word it was built on\n", .{});
+        return 1;
+    }
+    // And the closure outlives the records beneath it, which is the whole point
+    // of writing it for a run that has not started: the record it quotes may
+    // fall with this lap, and the ending it keeps must not.
+    rung.clear_answer(io);
+    if (rung.close_standing(io) == null) {
+        print("  RED: a closure fell with the record it was only quoting\n", .{});
+        return 1;
+    }
+    rung.clear_close(io);
+    if (rung.close_standing(io) != null) {
+        print("  RED: a closure outlived the taking down of the plan's own note\n", .{});
+        return 1;
+    }
+    rung.clear_mind(io);
+    print("  a closure survives a provisioning, and outlives the record it quotes\n", .{});
+    return link_wire(rung, "check_respect_wire", io, sys);
+}
+
+/// Weighs the respecting this rung adds, as a pure fold.
+pub fn check_respect(comptime rung: type) u8 {
+    const held = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .stands));
+    const call = rung.calls_bytes(rung.walls_bytes(rung.minds_bytes(held)));
+    const hand = rung.hands_bytes(call, .accepts);
+    const closure = rung.closes_bytes(rung.answers_bytes(hand));
+    const mark = rung.respects_bytes(closure);
+    if (!rung.respects_carries(mark, closure)) {
+        print("  RED: a mark lost the closure it was built from\n", .{});
+        return 1;
+    }
+    if (rung.respects_hand(mark) != .accepts) {
+        print("  RED: a mark lost the reader's own word seven tiers down\n", .{});
+        return 1;
+    }
+    if (mark[rung.max_respects_bytes - 1] != rung.respected_byte) {
+        print("  RED: a mark did not say what it was\n", .{});
+        return 1;
+    }
+    // A mark built on some other closure names some other ending, and reading
+    // it as this one's would tell an operator a person had closed a matter they
+    // never heard of.
+    const taken = rung.closes_bytes(rung.answers_bytes(rung.hands_bytes(call, .takes_up)));
+    if (rung.respects_carries(rung.respects_bytes(taken), closure)) {
+        print("  RED: a mark over some other ending passed as this one's\n", .{});
+        return 1;
+    }
+    if (rung.respects_carries(null, closure)) {
+        print("  RED: an absent mark carried a closure all the same\n", .{});
+        return 1;
+    }
+    if (rung.respects_hand(null) != null) {
+        print("  RED: an absent mark carried a reader's word all the same\n", .{});
+        return 1;
+    }
+    // The reader-match, which is what keeps a mark from naming the wrong
+    // ending: the closure opens with the very bytes its reader wrote, read
+    // where that reader left them.
+    if (!rung.respects_reader(closure, hand)) {
+        print("  RED: a closure did not carry the word its reader wrote\n", .{});
+        return 1;
+    }
+    if (rung.respects_reader(closure, rung.hands_bytes(call, .takes_up))) {
+        print("  RED: a closure built on one word read as built on the other\n", .{});
+        return 1;
+    }
+    const elder = rung.holds_bytes(rung.rests_bytes(rung.knows_bytes(rung.anew_bytes(rung.inherited_matter)), .allays));
+    if (rung.respects_reader(closure, rung.hands_bytes(rung.calls_bytes(rung.walls_bytes(rung.minds_bytes(elder))), .accepts))) {
+        print("  RED: a closure read as built on a word about some older matter entirely\n", .{});
+        return 1;
+    }
+    if (rung.respects_reader(closure, null)) {
+        print("  RED: a closure read as built on a word nobody ever wrote\n", .{});
+        return 1;
+    }
+    return link(rung, "check_respect_refusals");
+}
+
+/// Weighs every refusal this rung earns, as a pure fold.
+pub fn check_respect_refusals(comptime rung: type) u8 {
+    if (rung.respect_refusal(1, 1, 0, false, true, true)) |why| {
+        if (why != error.RespectUninherited) {
+            print("  RED: a respecting by a run that inherited nothing refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a respecting by a run that inherited nothing was allowed\n", .{});
+        return 1;
+    }
+    if (rung.respect_refusal(1, 1, 0, true, false, true)) |why| {
+        if (why != error.RespectUnended) {
+            print("  RED: a respecting over a word that ended nothing refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a respecting over a word that ended nothing was allowed\n", .{});
+        return 1;
+    }
+    if (rung.respect_refusal(1, 1, 0, true, true, false)) |why| {
+        if (why != error.RespectMismatched) {
+            print("  RED: a mark over some other reader's word refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: a mark over some other reader's word was allowed\n", .{});
+        return 1;
+    }
+    if (rung.respect_refusal(1, 1, 1, true, true, true)) |why| {
+        if (why != error.RespectMiscounted) {
+            print("  RED: an ending both named and begun again refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: an ending both named and begun again was allowed\n", .{});
+        return 1;
+    }
+    if (rung.respect_refusal(1, 0, 0, true, true, true)) |why| {
+        if (why != error.RespectMiscounted) {
+            print("  RED: an ending neither named nor begun again refused as {s}\n", .{@errorName(why)});
+            return 1;
+        }
+    } else {
+        print("  RED: an ending neither named nor begun again was allowed\n", .{});
+        return 1;
+    }
+    // And the honest pass: one ending inherited, one ending named, counted once.
+    if (rung.respect_refusal(1, 1, 0, true, true, true)) |why| {
+        print("  RED: an honest respecting refused as {s}\n", .{@errorName(why)});
+        return 1;
+    }
+    return link(rung, "check_respect_measure");
+}
