@@ -7457,3 +7457,199 @@ pub fn read_the_appeal(
     // invariant: an open run leaves no answered reader unread
     assert(rung.appeal_of(report_out).unread == 0);
 }
+
+/// Reads the wire for the position a run left standing, or nothing when nobody
+/// has left one.
+///
+/// One text for the whole quarrel tier: the note opens through the rung's own
+/// path builder and its own plan name, so a rung keeps its standing wherever it
+/// keeps its notes and still reads it with this body.
+pub fn position_standing(comptime rung: type, io: std.Io) ?rung.Plea {
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = rung.note_path(&path_buf, rung.plan_name, ".standing") catch return null;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
+    defer file.close(io);
+    var bytes: [1]u8 = @splat(0);
+    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
+    // invariant: a standing position never outgrows the one quarrel it names
+    assert(got <= 1);
+    if (got < 1) return null;
+    return rung.plea_of_byte(bytes[0]);
+}
+
+/// Reads back how long a position has stood, in runs, off the wire rather than
+/// out of anything a run believes it wrote.
+pub fn dwell_published(comptime rung: type, io: std.Io) ?u32 {
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = rung.note_path(&path_buf, rung.plan_name, ".dwell") catch return null;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
+    defer file.close(io);
+    var bytes: [1]u8 = @splat(0);
+    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
+    // invariant: an age never outgrows the one byte it is written in
+    assert(got <= 1);
+    if (got < 1) return null;
+    const seen: u32 = bytes[0];
+    if (seen == 0) return null;
+    // invariant: an age read off the wire stands within the byte carrying it
+    assert(seen <= rung.max_dwell_runs);
+    return seen;
+}
+
+/// Reads the wire for the forum a quarrel may be referred to, bounded by the
+/// rung's own address ceiling.
+pub fn forum_published(comptime rung: type, io: std.Io, out: *[rung.max_address_len]u8) ?[]const u8 {
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = rung.note_path(&path_buf, rung.plan_name, ".forum") catch return null;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
+    defer file.close(io);
+    const got = file.readPositionalAll(io, out, 0) catch return null;
+    // invariant: a forum never outgrows the bound its wire carries
+    assert(got <= rung.max_address_len);
+    var len: u32 = 0;
+    while (len < got and out[len] != 0 and out[len] != '\n') : (len += 1) {}
+    const forum = out[0..len];
+    return if (rung.addressable(forum)) forum else null;
+}
+
+/// Refuses by name every way a referral could be claimed that the run's own
+/// counts cannot account for.
+pub fn refer_refusal(
+    comptime rung: type,
+    loud_count: u32,
+    sent_count: u32,
+    held_count: u32,
+    addressed: bool,
+    party: bool,
+) ?rung.RunError {
+    // invariant: a run never refers more positions than one note may carry
+    assert(sent_count <= 1);
+    if (sent_count >= 1 and loud_count == 0) return error.ReferEarly;
+    if (sent_count >= 1 and !addressed) return error.ReferUnaddressed;
+    if (sent_count >= 1 and party) return error.ReferParty;
+    // Every long-standing position is referred or kept inside the argument --
+    // never both and never neither. A count that does not close is a supervisor
+    // about to claim a hearing its own wire cannot account for.
+    if (sent_count + held_count != loud_count) return error.ReferMiscounted;
+    return null;
+}
+
+/// Reads back the case a third hand would open at this forum, or nothing when
+/// the box holds no whole case.
+pub fn case_delivered(comptime rung: type, io: std.Io, forum: []const u8) ?[rung.max_referral_bytes]u8 {
+    if (!rung.addressable(forum)) return null;
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = rung.case_path(&path_buf, forum) catch return null;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
+    defer file.close(io);
+    var bytes: [rung.max_referral_bytes]u8 = @splat(0);
+    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
+    // invariant: a case never outgrows the three facts it carries
+    assert(got <= rung.max_referral_bytes);
+    if (got < rung.max_referral_bytes) return null;
+    return bytes;
+}
+
+/// Carries a case to a forum outside both parties, written whole into the box a
+/// third hand opens.
+pub fn refer_note(comptime rung: type, io: std.Io, forum: []const u8, case: [rung.max_referral_bytes]u8) rung.NoteError!void {
+    // invariant: a case is only ever carried to an address a run may carry to
+    assert(rung.addressable(forum));
+    Dir.cwd().createDirPath(io, rung.reader_dir) catch return error.NoteUnavailable;
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = try rung.case_path(&path_buf, forum);
+    const file = Dir.cwd().createFile(io, path, .{ .truncate = true }) catch return error.NoteUnavailable;
+    defer file.close(io);
+    file.writePositionalAll(io, &case, 0) catch return error.NoteUnavailable;
+}
+
+/// Refers a long-standing quarrel to a forum outside both parties, and believes
+/// the report only after reading the case back out of the box a third hand opens.
+///
+/// The arc's referral half, stated once. A run reads what stands, refuses to act
+/// on a quarrel nobody presses, dates the position off the wire, counts what a
+/// carried-nowhere quarrel costs, leaves this morning's argument with the people
+/// having it, refuses by name where a referral would go unaddressed or land back
+/// inside the argument, copies the case off the record rather than summarizing
+/// it, writes the note, and reads it back before the report believes a word.
+///
+/// Every reach here is seated through the rung handed in, so one text refers the
+/// quarrel for whichever rung called it -- that rung's own wire, its own
+/// refusals, its own report.
+pub fn refer_the_quarrel(
+    comptime rung: type,
+    io: std.Io,
+    refer: rung.Refer,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    const stood_plea = rung.position_standing(io) orelse {
+        // invariant: a run with nothing standing refers no quarrel
+        assert(rung.refer_of(report_out).referred == 0);
+        // invariant: a run with nothing standing leaves none unheard
+        assert(rung.refer_of(report_out).unheard == 0);
+        return;
+    };
+    if (!rung.endures(stood_plea)) {
+        // invariant: a quarrel nobody presses is never referred on their behalf
+        assert(rung.refer_of(report_out).referred == 0);
+        return;
+    }
+    const standing_count: u32 = 1;
+
+    // The age this rung reads is the age on the wire, never the age it believes
+    // it wrote. A position no run has dated reads null, and an undated quarrel
+    // is honestly nothing to build a case from -- so it stays where it is.
+    const age = rung.dwell_published(io) orelse 0;
+
+    // The measurement this rung moves, weighed against the position actually
+    // left standing rather than against anything the plan asked for, so a
+    // long-standing quarrel carried nowhere is counted rather than refused.
+    rung.refer_of(report_out).unheard = rung.unheard_outside(standing_count, age, refer);
+    const volume = rung.stands_loud(age);
+    if (volume == .quiet) {
+        // invariant: a quarrel raised this morning is left with the people having it
+        assert(rung.refer_of(report_out).referred == 0);
+        return;
+    }
+    const loud_count: u32 = 1;
+    const sent_count = rung.referred_in(loud_count, refer);
+    const kept_count = rung.unreferred_in(loud_count, refer);
+    if (refer == .unheard) {
+        // invariant: an unheard run refers nothing, however long the quarrel stood
+        assert(sent_count == 0);
+        rung.refer_of(report_out).kept_in = kept_count;
+        return;
+    }
+
+    // The forum comes off the wire, and the reader's own address beside it, so
+    // the one comparison this rung exists to make is made against two facts a
+    // run found rather than two a run chose.
+    var forum_buf: [rung.max_address_len]u8 = @splat(0);
+    const named = rung.forum_published(io, &forum_buf);
+    var reader_buf: [rung.max_address_len]u8 = @splat(0);
+    const reader = rung.address_published(io, &reader_buf);
+    const addressed = named != null;
+    const party = if (named) |forum| (if (reader) |at| rung.is_party(forum, at) else false) else false;
+    if (rung.refer_refusal(loud_count, sent_count, kept_count, addressed, party)) |why| return why;
+    const forum = named orelse return error.ReferUnaddressed;
+
+    // The case is copied off the record in the run that sends it, never
+    // summarized: a summary is exactly where a supervisor would get to shade
+    // the argument against itself.
+    const settled = rung.settlement_published(io) orelse return error.ReferEarly;
+    const case = rung.referral_bytes(settled, volume, age);
+    // invariant: a referring run carries the one long-standing position it left
+    assert(sent_count == 1);
+    try rung.refer_note(io, forum, case);
+    // The wire before the memory, once more: the box a third hand opens is read
+    // back, and only then does the report believe the case arrived.
+    const standing_case = rung.case_delivered(io, forum);
+    // The record half of this rung: this is the one note of the whole arc that
+    // lands outside both parties, so a case disagreeing with the record it was
+    // copied from would mislead the only hand able to end the argument.
+    if (!rung.refer_holds(standing_case, case)) return error.ReferMisrecorded;
+    rung.refer_of(report_out).referred = sent_count;
+    rung.refer_of(report_out).kept_in = kept_count;
+    // invariant: a referring run leaves no long-standing quarrel unheard
+    assert(rung.refer_of(report_out).unheard == 0);
+}

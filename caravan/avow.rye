@@ -1714,16 +1714,7 @@ pub fn unreferred_in(loud_count: u32, refer: Refer) u32 {
 /// case delivered to a desk that has already spoken is worse than a case never
 /// sent, wearing as it does the look of a hearing.
 pub fn refer_refusal(loud_count: u32, sent_count: u32, held_count: u32, addressed: bool, party: bool) ?RunError {
-    // invariant: a run never refers more positions than one note may carry
-    assert(sent_count <= 1);
-    if (sent_count >= 1 and loud_count == 0) return error.ReferEarly;
-    if (sent_count >= 1 and !addressed) return error.ReferUnaddressed;
-    if (sent_count >= 1 and party) return error.ReferParty;
-    // Every long-standing position is referred or kept inside the argument --
-    // never both and never neither. A count that does not close is a supervisor
-    // about to claim a hearing its own wire cannot account for.
-    if (sent_count + held_count != loud_count) return error.ReferMiscounted;
-    return null;
+    return ladder_checks.refer_refusal(@This(), loud_count, sent_count, held_count, addressed, party);
 }
 
 /// Renders the case one referral carries, in the three bytes a third hand reads.
@@ -3433,16 +3424,7 @@ pub fn standing_note(io: std.Io, plea: Plea) NoteError!void {
 /// which is the whole point -- and it says so with a null rather than by
 /// guessing when nobody has ever pressed anything here.
 pub fn position_standing(io: std.Io) ?Plea {
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = note_path(&path_buf, plan_name, ".standing") catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    var bytes: [1]u8 = @splat(0);
-    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
-    // invariant: a standing position never outgrows the one quarrel it names
-    assert(got <= 1);
-    if (got < 1) return null;
-    return plea_of_byte(bytes[0]);
+    return ladder_checks.position_standing(@This(), io);
 }
 
 /// Clears the standing position, so a lap begins with a plan nobody has pressed
@@ -3507,20 +3489,7 @@ pub fn dwell_note(io: std.Io, runs: u32) NoteError!void {
 /// reading, since an undated position may have stood since long before this
 /// wire learned to count.
 pub fn dwell_published(io: std.Io) ?u32 {
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = note_path(&path_buf, plan_name, ".dwell") catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    var bytes: [1]u8 = @splat(0);
-    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
-    // invariant: an age never outgrows the one byte it is written in
-    assert(got <= 1);
-    if (got < 1) return null;
-    const seen: u32 = bytes[0];
-    if (seen == 0) return null;
-    // invariant: an age read off the wire stands within the byte carrying it
-    assert(seen <= max_dwell_runs);
-    return seen;
+    return ladder_checks.dwell_published(@This(), io);
 }
 
 /// Takes down the age beside a position, because the position itself is gone.
@@ -3583,17 +3552,7 @@ pub fn clear_swell(io: std.Io) void {
 /// existed, and a run's entire part is to read it and to say plainly when it
 /// finds nothing.
 pub fn forum_published(io: std.Io, out: *[max_address_len]u8) ?[]const u8 {
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = note_path(&path_buf, plan_name, ".forum") catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    const got = file.readPositionalAll(io, out, 0) catch return null;
-    // invariant: a forum never outgrows the bound its wire carries
-    assert(got <= max_address_len);
-    var len: u32 = 0;
-    while (len < got and out[len] != 0 and out[len] != '\n') : (len += 1) {}
-    const forum = out[0..len];
-    return if (addressable(forum)) forum else null;
+    return ladder_checks.forum_published(@This(), io, out);
 }
 
 /// Seats the forum a long-standing quarrel would be referred to.
@@ -3622,7 +3581,7 @@ pub fn clear_forum(io: std.Io) void {
 /// reason one tier further out: a referral lands where the third hand is rather
 /// than where either party keeps its records. The address is bounded and
 /// checked before a byte of it reaches a path.
-fn case_path(buf: *[max_note_path_len]u8, forum: []const u8) NoteError![]const u8 {
+pub fn case_path(buf: *[max_note_path_len]u8, forum: []const u8) NoteError![]const u8 {
     // invariant: a case is only ever built for an address a run may carry to
     assert(addressable(forum));
     const suffix = ".case";
@@ -3655,14 +3614,7 @@ fn case_path(buf: *[max_note_path_len]u8, forum: []const u8) NoteError![]const u
 /// yet. The directory is made first, since a forum may be named long before any
 /// run of this plan has provisioned a thing.
 pub fn refer_note(io: std.Io, forum: []const u8, case: [max_referral_bytes]u8) NoteError!void {
-    // invariant: a case is only ever carried to an address a run may carry to
-    assert(addressable(forum));
-    Dir.cwd().createDirPath(io, reader_dir) catch return error.NoteUnavailable;
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = try case_path(&path_buf, forum);
-    const file = Dir.cwd().createFile(io, path, .{ .truncate = true }) catch return error.NoteUnavailable;
-    defer file.close(io);
-    file.writePositionalAll(io, &case, 0) catch return error.NoteUnavailable;
+    return ladder_checks.refer_note(@This(), io, forum, case);
 }
 
 /// Reads the case standing in one forum's box, or nothing at all.
@@ -3672,17 +3624,7 @@ pub fn refer_note(io: std.Io, forum: []const u8, case: [max_referral_bytes]u8) N
 /// standing on somebody's desk are two facts, and only the second one is about
 /// a hand outside the argument.
 pub fn case_delivered(io: std.Io, forum: []const u8) ?[max_referral_bytes]u8 {
-    if (!addressable(forum)) return null;
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = case_path(&path_buf, forum) catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    var bytes: [max_referral_bytes]u8 = @splat(0);
-    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
-    // invariant: a case never outgrows the three facts it carries
-    assert(got <= max_referral_bytes);
-    if (got < max_referral_bytes) return null;
-    return bytes;
+    return ladder_checks.case_delivered(@This(), io, forum);
 }
 
 /// Clears one forum's box, so a lap begins with a hand that holds no case.
@@ -4560,76 +4502,7 @@ pub fn say_the_word(io: std.Io, avow: Avow, report_out: *Report) (RunError || No
 /// it -- each is an ending this rung reaches by carrying nothing. The number it
 /// moves is the long-standing quarrel nobody outside the argument ever sees.
 pub fn refer_the_quarrel(io: std.Io, refer: Refer, report_out: *Report) (RunError || NoteError)!void {
-    const stood_plea = position_standing(io) orelse {
-        // invariant: a run with nothing standing refers no quarrel
-        assert(refer_of(report_out).referred == 0);
-        // invariant: a run with nothing standing leaves none unheard
-        assert(refer_of(report_out).unheard == 0);
-        return;
-    };
-    if (!endures(stood_plea)) {
-        // invariant: a quarrel nobody presses is never referred on their behalf
-        assert(refer_of(report_out).referred == 0);
-        return;
-    }
-    const standing_count: u32 = 1;
-
-    // The age this run reads is the age on the wire, never the age it believes
-    // it wrote. A position no run has dated reads null, and an undated quarrel
-    // is honestly nothing to build a case from -- so it stays where it is.
-    const age = dwell_published(io) orelse 0;
-
-    // The measurement this rung moves, weighed against the position actually
-    // left standing rather than against anything the plan asked for, so a
-    // long-standing quarrel carried nowhere is counted rather than refused.
-    refer_of(report_out).unheard = unheard_outside(standing_count, age, refer);
-    const volume = stands_loud(age);
-    if (volume == .quiet) {
-        // invariant: a quarrel raised this morning is left with the people having it
-        assert(refer_of(report_out).referred == 0);
-        return;
-    }
-    const loud_count: u32 = 1;
-    const sent_count = referred_in(loud_count, refer);
-    const kept_count = unreferred_in(loud_count, refer);
-    if (refer == .unheard) {
-        // invariant: an unheard run refers nothing, however long the quarrel stood
-        assert(sent_count == 0);
-        refer_of(report_out).kept_in = kept_count;
-        return;
-    }
-
-    // The forum comes off the wire, and the reader's own address beside it, so
-    // the one comparison this rung exists to make is made against two facts a
-    // run found rather than two a run chose.
-    var forum_buf: [max_address_len]u8 = @splat(0);
-    const named = forum_published(io, &forum_buf);
-    var reader_buf: [max_address_len]u8 = @splat(0);
-    const reader = address_published(io, &reader_buf);
-    const addressed = named != null;
-    const party = if (named) |forum| (if (reader) |at| is_party(forum, at) else false) else false;
-    if (refer_refusal(loud_count, sent_count, kept_count, addressed, party)) |why| return why;
-    const forum = named orelse return error.ReferUnaddressed;
-
-    // The case is copied off the record in the run that sends it, never
-    // summarized: a summary is exactly where a supervisor would get to shade
-    // the argument against itself.
-    const settled = settlement_published(io) orelse return error.ReferEarly;
-    const case = referral_bytes(settled, volume, age);
-    // invariant: a referring run carries the one long-standing position it left
-    assert(sent_count == 1);
-    try refer_note(io, forum, case);
-    // The wire before the memory, once more: the box a third hand opens is read
-    // back, and only then does the report believe the case arrived.
-    const standing_case = case_delivered(io, forum);
-    // The record half of this rung: this is the one note of the whole arc that
-    // lands outside both parties, so a case disagreeing with the record it was
-    // copied from would mislead the only hand able to end the argument.
-    if (!refer_holds(standing_case, case)) return error.ReferMisrecorded;
-    refer_of(report_out).referred = sent_count;
-    refer_of(report_out).kept_in = kept_count;
-    // invariant: a referring run leaves no long-standing quarrel unheard
-    assert(refer_of(report_out).unheard == 0);
+    return ladder_checks.refer_the_quarrel(@This(), io, refer, report_out);
 }
 
 /// Publishes, beside the outcome, how loudly the quarrel standing here reads.
