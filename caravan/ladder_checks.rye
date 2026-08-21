@@ -45,6 +45,8 @@ const cycle = @import("cycle.rye");
 const carry = @import("carry.rye");
 const gap = @import("gap.rye");
 const mask = @import("mask.rye");
+const confer = @import("confer.rye");
+const intent = @import("intent.rye");
 const boot = @import("boot.rye");
 const Dir = std.Io.Dir;
 
@@ -6095,4 +6097,77 @@ pub fn fill_table(
     // invariant: a preceded reading never runs a phase past a turn its turn named
     assert(reading != .preceded or rung.preceded_of(report_out).out_of_precede == 0);
     return took_up;
+}
+
+/// Answers which standing dependent could carry this phase, if any could --
+/// matching the phase's domain against a live dependent's, weighing the hops it
+/// declares against the reach that dependent still holds in reserve, and
+/// checking every arc it would walk for both name and write intent.
+///
+/// **Fold O prepared this fold entirely, and it shows in the cost: zero.** The
+/// five bodies fold O widened to reach `fill_table` through the rung were the
+/// same five this body needs -- `hop_count`, `reserve_depth`, `Table`,
+/// `max_in_flight`, and the harness import itself already stood public in all
+/// forty-three rungs before this round opened a file. A fold that widens for
+/// one family often pays for the next several, and this is the first time the
+/// arc has measured that debt coming back whole.
+///
+/// The queue's number was right this time: forty-three rungs, thirty-nine lines
+/// apiece, 1,638 carried -- one body free and forty-two copies. Hashing the
+/// family before folding it confirmed the count rather than correcting it,
+/// which is what makes the check worth running either way.
+///
+/// Two elder rungs keep their own copies, and the reasons are real rather than
+/// stylistic. `caravan/confer.rye` **owns** `reserve_arc_at`, so it calls that
+/// body unqualified where every folded rung reaches it through this module --
+/// and a fold would ask the module this harness imports to import the harness
+/// back. `caravan/revoke.rye` predates the in-flight invariant and states one
+/// assert fewer, so folding it would quietly add a check rather than move a
+/// body. Both differences are two lines, and both stay home honestly.
+///
+/// `confer.reserve_arc_at`, `intent.declares_write`, and `cycle.max_hops` stay
+/// module-level, since a reserve's arcs, an arc's write intent, and the bound
+/// on how many hops one item may name are the same for every rung on the ladder.
+///
+/// Nothing varies between the forty-three, so nothing arrives as comptime text.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_carry_scan.sh`.
+pub fn confer_slot(comptime rung: type, table: *const rung.Table, at: u32) ?u32 {
+    // invariant: a candidate always stands inside the record
+    assert(at < table.held);
+    // invariant: a run never remembers more lines than it may hold
+    assert(table.in_flight <= rung.max_in_flight);
+    const wanted = table.record[at].task;
+    var i: u32 = 0;
+    while (i < table.in_flight) : (i += 1) {
+        if (!std.mem.eql(u8, table.live[i].domain, wanted.item.domain)) continue;
+        const held = table.reserves[i] orelse continue;
+        const depth = rung.hop_count(wanted);
+        if (table.taken[i] + depth > rung.reserve_depth(held)) continue;
+        var matched: u32 = 0;
+        var wanted_arcs = std.mem.splitScalar(u8, wanted.item.hops, ',');
+        var fits = true;
+        while (wanted_arcs.next()) |hop| {
+            // invariant: the walk stays inside the hops one item may name
+            assert(matched < cycle.max_hops);
+            const at_reserve = table.taken[i] + matched;
+            const on_offer = confer.reserve_arc_at(held, at_reserve) orelse {
+                fits = false;
+                break;
+            };
+            if (!std.mem.eql(u8, on_offer, hop)) fits = false;
+            if (intent.declares_write(held, at_reserve) != intent.declares_write(wanted, matched)) {
+                fits = false;
+            }
+            if (!fits) break;
+            matched += 1;
+        }
+        if (!fits) continue;
+        // invariant: every arc the phase names was weighed against the reserve
+        assert(matched == depth);
+        return i;
+    }
+    // invariant: the walk read every dependent standing, none skipped
+    assert(i == table.in_flight);
+    return null;
 }

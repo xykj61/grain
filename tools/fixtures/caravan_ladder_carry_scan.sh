@@ -43,15 +43,22 @@
 #   remembered, so the next fold is chosen by measurement rather than by which
 #   family somebody happened to look at.
 #
-# CARAVAN_CARRY_CEILING (default 132700): how many carried lines the ladder may
-# hold. 132,589 stand today across 10,195 copied bodies, and 708 families carry
+# CARAVAN_CARRY_CEILING (default 131200): how many carried lines the ladder may
+# hold. 131,077 stand today across 10,195 copied bodies, and 708 families carry
 # a copy. That number is far larger than any the three named meters report, and
 # naming it plainly is the whole point of this scan -- the ladder's real carry
 # was never the few thousand lines inside two prefixes. Each fold hands back the
 # room it wins by lowering this ceiling: 143,000 came down to 137,300 when
 # `mend_the_plan` lifted out of thirty-seven rungs, to 135,000 when
-# `reckon_the_plan` lifted out of the same thirty-seven, and to 132,700 when
-# `fill_table` lifted out of forty-three.
+# `reckon_the_plan` lifted out of the same thirty-seven, to 132,700 when
+# `fill_table` lifted out of forty-three, and to 131,200 when `confer_slot`
+# lifted out of the same forty-three at no widening cost at all.
+#
+# A FOLD PAYS ITS SUCCESSORS. `confer_slot` needed five symbols public across
+# forty-three rungs and found all five already public, because the fold before
+# it had widened exactly those five for `fill_table`. So the honest price of a
+# fold is charged once and spent several times, and a lap that reads only the
+# widening count of the fold in front of it reads that price too high.
 #
 # A FOLD QUEUE IS A LEAD, NEVER A VERDICT. This scan names families by exact
 # text, so `fill_table` printed here as thirty-seven rungs carrying 2,484 lines
@@ -65,7 +72,7 @@
 # PASS and FAIL fixtures prove both paths without touching the tree.
 set -eu
 
-CEILING=${CARAVAN_CARRY_CEILING:-132700}
+CEILING=${CARAVAN_CARRY_CEILING:-131200}
 TOP=${CARAVAN_CARRY_TOP:-12}
 DIR=${CARAVAN_LADDER_DIR:-caravan}
 
