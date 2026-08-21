@@ -48,7 +48,9 @@ say "room-bound: Lens TAME -- the bound is named at 256 rather than at GitHub's 
 let scan = "tools/fixtures/room_bound_scan.sh"
 
 let roster = run ["sh" scan]
-assert roster.ok else "room-bound: an ENFORCED room stands over the bound -- fold it to date/YYYYMMDD/ with tools/session_logs_archive.rish, and read tools/dated_path_witness.rish first"
+# The message names BOTH causes, because it fired for the second one on a real clone and sent a
+# reader looking for a room to fold when the room was simply absent (REDS %120).
+assert roster.ok else "room-bound: an ENFORCED room either stands OVER the bound -- fold it to date/YYYYMMDD/ with tools/session_logs_archive.rish -- or is MISSING from this tree entirely, which on a fresh clone means it never entered the .gitignore allow-list. Read the roster lines above: verdict=over is the first, verdict=missing is the second."
 say roster.out
 assert roster.out contains "bound=256" else "room-bound: the seated bound is 256 -- a change to it is a seated decision, not a default"
 assert roster.out contains "enforced_over=0" else "room-bound: every enforced room must stand at or under the bound"

@@ -3,7 +3,7 @@
 *A durable guide to where work lives, how new writing earns its place, and how the tree stays honest over time.*
 
 **Language:** EN
-**Last updated:** 2026-08-02 (`20260802.183244` — e237 valve · narrowing spend returned · session-logs fold stands)
+**Last updated:** 2026-08-02 (`20260802.183244` -- e237 valve - narrowing spend returned - session-logs fold stands)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
 **Voice:** Kyri
 
@@ -13,7 +13,7 @@
 
 ## A Word First
 
-This repository holds an operating system, a civic application built upon it, the research and design that feed both, and the disciplines that govern how we write code, prose, product, and public benefit. The tree is large on purpose. This guide names its shape so a person or an agent arriving fresh can orient in one calm read — without memorizing countdown conventions, count-up exceptions, or season-specific snapshots that go stale the moment they are written.
+This repository holds an operating system, a civic application built upon it, the research and design that feed both, and the disciplines that govern how we write code, prose, product, and public benefit. The tree is large on purpose. This guide names its shape so a person or an agent arriving fresh can orient in one calm read -- without memorizing countdown conventions, count-up exceptions, or season-specific snapshots that go stale the moment they are written.
 
 Read the sections below whenever you wonder where a new file belongs. When a season's placements settle, record them in `session-logs/`; this guide stays evergreen.
 
@@ -21,63 +21,63 @@ Read the sections below whenever you wonder where a new file belongs. When a sea
 
 ## The Shape of the Tree
 
-**`context/`** — memory and compass. The disciplines we keep across every track: Tiger and TAME for code rigor, Radiant for prose, Simple-Lovable-Complete for product scope, and Civic for designing public benefit so the reward points at the good. Identity (`KYRI.md`, the standing writing voice, molted from Riyo `20260810`; `QUIN.md` for the fifth OS variant beside Reya · Riyo · Trey · Triz · Trya and the inference Q-vane; Reya 2, Rio 3, and the Riyo writing seasons rest in `archive/`), and `specs/` for plain-English decisions that deserve a durable home.
+**`context/`** -- memory and compass. The disciplines we keep across every track: Tiger and TAME for code rigor, Radiant for prose, Simple-Lovable-Complete for product scope, and Civic for designing public benefit so the reward points at the good. Identity (`KYRI.md`, the standing writing voice, molted from Riyo `20260810`; `QUIN.md` for the fifth OS variant beside Reya - Riyo - Trey - Triz - Trya and the inference Q-vane; Reya 2, Rio 3, and the Riyo writing seasons rest in `archive/`), and `specs/` for plain-English decisions that deserve a durable home.
 
-**`foundations/`** — the why beneath the work: foundation briefs, the distilled essays and the weave that composes them, and the civic visions. Dated artifacts rest beneath a living README.
+**`foundations/`** -- the why beneath the work: foundation briefs, the distilled essays and the weave that composes them, and the civic visions. Dated artifacts rest beneath a living README.
 
-**`saga/`** — season close narratives (final draft / seated validator reports and end-of-arc arithmetic). Counsel proposes; this shelf keeps what a season names as its lasting close. Opened `20260727.234128`; first resident is The Sound's saga of the end (**seated** `20260727.234617`). Living season: The Tensegral Season (`counsel/date/20260727/20260727-234617_the-tensegral-season.md`).
+**`saga/`** -- season close narratives (final draft / seated validator reports and end-of-arc arithmetic). Counsel proposes; this shelf keeps what a season names as its lasting close. Opened `20260727.234128`; first resident is The Sound's saga of the end (**seated** `20260727.234617`). Living season: The Tensegral Season (`counsel/date/20260727/20260727-234617_the-tensegral-season.md`).
 
-**`classical-vedic-astrology/`** — the reading craft: a siloed study library in topic folders (`studies/nakshatras/`, `planets-in-signs/`, `planet-in-house/`, …), composable templates in `templates/`, demonstration readings in `readings/`, and the dual-zodiac caster. Names stay siloed to the placeholder **Alice** by consent and by design; the fuller originals rest in the private lane, and gratitude to teachers lives inside each study.
+**`classical-vedic-astrology/`** -- the reading craft: a siloed study library in topic folders (`studies/nakshatras/`, `planets-in-signs/`, `planet-in-house/`, ...), composable templates in `templates/`, demonstration readings in `readings/`, and the dual-zodiac caster. Names stay siloed to the placeholder **Alice** by consent and by design; the fuller originals rest in the private lane, and gratitude to teachers lives inside each study.
 
-**`manual/`** — the four rooms that teach the system: tutorials by the hand, guides for the task, living reference specifications for stable surfaces, and pointers to the understanding essays. Every page teaches only what runs; the first reference open is the Rishi language, derived from the witness corpus.
+**`manual/`** -- the four rooms that teach the system: tutorials by the hand, guides for the task, living reference specifications for stable surfaces, and pointers to the understanding essays. Every page teaches only what runs; the first reference open is the Rishi language, derived from the witness corpus.
 
-**`linengrow/`** — the civic-application track: Linengrow's README, business model, and venture pitch, sharing the one spine with the operating system. It graduates to its own repository once its first lap runs.
+**`linengrow/`** -- the civic-application track: Linengrow's README, business model, and venture pitch, sharing the one spine with the operating system. It graduates to its own repository once its first lap runs.
 
-**`work-in-progress/`** — the workbench. The living roadmap (`ROADMAP.md`), the granular plan (`TASKS.md`), open threads, and dated artifacts for work still in motion. Finished scaffolding graduates to `archive/`.
+**`work-in-progress/`** -- the workbench. The living roadmap (`ROADMAP.md`), the granular plan (`TASKS.md`), open threads, and dated artifacts for work still in motion. Finished scaffolding graduates to `archive/`.
 
-**`active-designing/`** — design in motion. Our own module names, RISC-V-first, siloed from gratitude sources. Dated briefs; living README index. **Raw layer** for the docs compression shelf — dated notes stay here; they are not yondered when `docs/` compresses them. High-level seats and naming rounds live here; **lap claims** (what just went green) land forward-only in **`waymarks/`** from `20260724.143155`.
+**`active-designing/`** -- design in motion. Our own module names, RISC-V-first, siloed from gratitude sources. Dated briefs; living README index. **Raw layer** for the docs compression shelf -- dated notes stay here; they are not yondered when `docs/` compresses them. High-level seats and naming rounds live here; **lap claims** (what just went green) land forward-only in **`waymarks/`** from `20260724.143155`.
 
-**`waymarks/`** — claim shelf by genre, not age. Season indexes (`stoa-100s/` · `stoa-200s/` · `stoa-300s/`) keep one-line-per-claim listings. Elder claim briefs stay in `active-designing/` until archived; new claims do not mix genres back into design sittings.
+**`waymarks/`** -- claim shelf by genre, not age. Season indexes (`stoa-100s/` - `stoa-200s/` - `stoa-300s/`) keep one-line-per-claim listings. Elder claim briefs stay in `active-designing/` until archived; new claims do not mix genres back into design sittings.
 
-**`active-development/`** — where a **round** thinks out loud: lap plans, scoping, survey ledgers, evaluations of a choice already shipped. Sibling to `active-designing/`, which keeps the **essays**. One question files a piece: *would this still be worth reading if the code it describes were deleted?* Yes → `active-designing/`; no → here. Bounded at **256** flat files from birth (`tools/room_bound_witness.rish`), since a room born under the law has no backlog to grandfather. Opened `20260821.174047`; law at [`.claude/rules/design-rooms.md`](.claude/rules/design-rooms.md).
+**`active-development/`** -- where a **round** thinks out loud: lap plans, scoping, survey ledgers, evaluations of a choice already shipped. Sibling to `active-designing/`, which keeps the **essays**. One question files a piece: *would this still be worth reading if the code it describes were deleted?* Yes -> `active-designing/`; no -> here. Bounded at **256** flat files from birth (`tools/room_bound_witness.rish`), since a room born under the law has no backlog to grandfather. Opened `20260821.174047`; law at [`.claude/rules/design-rooms.md`](.claude/rules/design-rooms.md).
 
-**`active-reviving/`** — reviving in motion, sibling to `active-designing/`. Where an existing working thing (an `old/` vane, a running Rye OS module, a retired seam) is re-grown into the Glow direction as a **new artifact born with its Glow name, beside the elder** — never a rename. The elder keeps its name and green witnesses until the revival is proven and supersedes it (the Pond-superseded-ai-jail pattern). Living README index; concept seated at [`context/specs/20260714-004428_reviving-replaces-renaming.md`](context/specs/20260714-004428_reviving-replaces-renaming.md).
+**`active-reviving/`** -- reviving in motion, sibling to `active-designing/`. Where an existing working thing (an `old/` vane, a running Rye OS module, a retired seam) is re-grown into the Glow direction as a **new artifact born with its Glow name, beside the elder** -- never a rename. The elder keeps its name and green witnesses until the revival is proven and supersedes it (the Pond-superseded-ai-jail pattern). Living README index; concept seated at [`context/specs/20260714-004428_reviving-replaces-renaming.md`](context/specs/20260714-004428_reviving-replaces-renaming.md).
 
-**`docs/`** — compression layer at the repo root (TigerBeetle `docs/` precedent). Living guides that compress many dated sources in `active-designing/`, counsel, and witnesses. Pages compress the record; they never replace it. Pin-strings point at witnesses — docs carry no load-bearing pins. Design law: [`active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md`](active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md).
+**`docs/`** -- compression layer at the repo root (TigerBeetle `docs/` precedent). Living guides that compress many dated sources in `active-designing/`, counsel, and witnesses. Pages compress the record; they never replace it. Pin-strings point at witnesses -- docs carry no load-bearing pins. Design law: [`active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md`](active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md).
 
-**`external-research/`** — study of the world with attribution. Explorations, comparisons, voiced adaptations of gratitude sources. Living README. **Research for understanding — advice stays elsewhere:** surveys and memos here frame understanding only — they recommend no purchase, no treasury action, and no licensed professional course; policy and money choices belong to Kaeden in their own season. Say so in each file's status line; CIVIC stays policy-shaped in `context/`. Proposed register law: [`context/TWO_ROOMS.md`](context/TWO_ROOMS.md) (seats on Kaeden's word).
+**`external-research/`** -- study of the world with attribution. Explorations, comparisons, voiced adaptations of gratitude sources. Living README. **Research for understanding -- advice stays elsewhere:** surveys and memos here frame understanding only -- they recommend no purchase, no treasury action, and no licensed professional course; policy and money choices belong to Kaeden in their own season. Say so in each file's status line; CIVIC stays policy-shaped in `context/`. Proposed register law: [`context/TWO_ROOMS.md`](context/TWO_ROOMS.md) (seats on Kaeden's word).
 
-**`counsel/`** — the bench's answer to a pending project decision. Analysis, rulings, proposals, and recommendations from Claude (or the bench) in response to a specific question Kaeden asked — propose-never-seat. Each piece stays as filed; Kaeden's word seats decisions in `active-designing/`, `context/specs/`, or the module home. Living README at [`counsel/README.md`](counsel/README.md). **`counsel/replies/`** holds dated bench replies (What landed · What resisted · What the bench asks) so future counsel reads a short measured note rather than a season of logs.
+**`counsel/`** -- the bench's answer to a pending project decision. Analysis, rulings, proposals, and recommendations from Claude (or the bench) in response to a specific question Kaeden asked -- propose-never-seat. Each piece stays as filed; Kaeden's word seats decisions in `active-designing/`, `context/specs/`, or the module home. Living README at [`counsel/README.md`](counsel/README.md). **`counsel/replies/`** holds dated bench replies (What landed - What resisted - What the bench asks) so future counsel reads a short measured note rather than a season of logs.
 
-**`expanding-prompts/`** — intent expanded into runnable plans. Counts upward from `10000`; each prompt is a dated artifact that agents can execute.
+**`expanding-prompts/`** -- intent expanded into runnable plans. Counts upward from `10000`; each prompt is a dated artifact that agents can execute.
 
-**`session-logs/`** — reasoning traces as **Bron** (`.bron`); one-clock filenames; newest-first index in `README.md`. Dated logs live under `date/YYYYMMDD/` (molted from `archive/` `20260821.161758`; the room is bounded at 256 flat files). What happened lives here; what is next lives in `TASKS.md`.
+**`session-logs/`** -- reasoning traces as **Bron** (`.bron`); one-clock filenames; newest-first index in `README.md`. Dated logs live under `date/YYYYMMDD/` (molted from `archive/` `20260821.161758`; the room is bounded at 256 flat files). What happened lives here; what is next lives in `TASKS.md`.
 
-**`rye-learning-process/`** — the almanac and learning record. How we grow capability in the open.
+**`rye-learning-process/`** -- the almanac and learning record. How we grow capability in the open.
 
-**`external-research/yonder/strengthening-compiler/`** — the strengthening chronicle. Analysis complete; record, not active product track.
+**`external-research/yonder/strengthening-compiler/`** -- the strengthening chronicle. Analysis complete; record, not active product track.
 
-**`gratitude/`** — works we honor, held whole for clean-room study. Never copy code or text into our modules.
+**`gratitude/`** -- works we honor, held whole for clean-room study. Never copy code or text into our modules.
 
-**`vendor/`** — third-party source the build leans on, local and unmodified.
+**`vendor/`** -- third-party source the build leans on, local and unmodified.
 
-**`old/`** — this proposal's own predecessor material, kept whole rather than discarded: the original `urbit/urbit` tree this project's `.git` history descends from, plus a legacy personal collection (`nockchain`, `urbit.org`) that predated the downstream work. Each subfolder keeps its own original `README.md` untouched; [`old/PROPOSAL_NOTES.md`](old/PROPOSAL_NOTES.md) names what sits here and why. See [`context/specs/20260713-222416_new-journey-identity-marker.md`](context/specs/20260713-222416_new-journey-identity-marker.md) for the project's own identity seam.
+**`old/`** -- **gone `20260817`, and named here so the absence is legible.** It held this project's predecessor material, the original `urbit/urbit` tree the `.git` history once descended from. That lineage was dropped when the history was re-rooted at Grain's own first commit and every kept commit re-signed; the room went with it. The gratitude is kept rather than carried -- [`gratitude/Urbit.md`](gratitude/Urbit.md) and [`.claude/rules/urbit-reframe.md`](.claude/rules/urbit-reframe.md) thank the ancestor by name. Reading this entry as a live room is the mistake it now exists to prevent.
 
-**`vere/`** — the `urbit/vere` runtime, cloned downstream the same way as the top-level project: `vere/old/` holds the original tree, and `vere/`'s own `.git` history now lives outside this project at `~/.git-vere-backup/` rather than inside it, per this project's own chosen variant for that module.
+**`vere/`** -- **gone `20260817`**, with `old/` and for the same reason: it held the `urbit/vere` runtime cloned downstream, and the lineage drop took it. Named here so a reader who meets the word in an older log knows where it went rather than going looking.
 
-**Module homes** — [`rye/README.md`](rye/README.md) · [`rishi/README.md`](rishi/README.md) · [`tally/README.md`](tally/README.md) · [`caravan/README.md`](caravan/README.md) · [`mantra/README.md`](mantra/README.md) · [`comlink/README.md`](comlink/README.md) · [`pond/README.md`](pond/README.md) · [`aurora/README.md`](aurora/README.md) · [`brushstroke/`](brushstroke/) · [`linengrow/`](linengrow/) (vision until graduation), and the rest: each grows a seed toward a running whole.
+**Module homes** -- [`rye/README.md`](rye/README.md) - [`rishi/README.md`](rishi/README.md) - [`tally/README.md`](tally/README.md) - [`caravan/README.md`](caravan/README.md) - [`mantra/README.md`](mantra/README.md) - [`comlink/README.md`](comlink/README.md) - [`pond/README.md`](pond/README.md) - [`aurora/README.md`](aurora/README.md) - [`brushstroke/`](brushstroke/) - [`linengrow/`](linengrow/) (vision until graduation), and the rest: each grows a seed toward a running whole.
 
-**`src/`** — the Glow **userland**: code written in Glow, five rooms — `til/` tilaks (the type-marks), `sur/` structures (the data-shape museum), `app/` Pool agents, `gen/` generators, `lib/` shared gates. The Glow *implementation* (tokenizer, runes, lowerers — Rye) stays at `glow/`; the desks stay at `glow/gen/` until the O2–O3 breach is declared and witnessed (design in counsel; law in `context/BREACH.md`). Opened as O1 skeleton `20260727.064038`.
+**`src/`** -- the Glow **userland**: code written in Glow, five rooms -- `til/` tilaks (the type-marks), `sur/` structures (the data-shape museum), `app/` Pool agents, `gen/` generators, `lib/` shared gates. The Glow *implementation* (tokenizer, runes, lowerers -- Rye) stays at `glow/`; the desks stay at `glow/gen/` until the O2-O3 breach is declared and witnessed (design in counsel; law in `context/BREACH.md`). Opened as O1 skeleton `20260727.064038`.
 
-**`edu/`** — the learning floor: the PLEAC puzzle lane, the beginner's first steps with Grain and Glow, and clean-room worked examples in the spirit of the elder collections (studied whole in gratitude). The manual teaches what runs; edu teaches the reader.
+**`edu/`** -- the learning floor: the PLEAC puzzle lane, the beginner's first steps with Grain and Glow, and clean-room worked examples in the spirit of the elder collections (studied whole in gratitude). The manual teaches what runs; edu teaches the reader.
 
-**`GLOW_HOST.bron`** — Grain's own root host-and-toolchain config, the sibling in Bron to `.claude/rules`/`.cursor/rules` (those configure agent behavior; this configures the host). Copy [`GLOW_HOST.template.bron`](GLOW_HOST.template.bron) to `GLOW_HOST.bron` (gitignored, personal) and fill in this host's own `os`/`arch`/`rye_zig`/`rye_lib`. [`tools/glow_host_run.sh`](tools/glow_host_run.sh) reads it and refuses to run rather than silently reach for a mismatched toolchain on `PATH` — see [`context/specs/20260714-011504_glow-host-config-and-vpn-reification.md`](context/specs/20260714-011504_glow-host-config-and-vpn-reification.md).
+**`GLOW_HOST.bron`** -- Grain's own root host-and-toolchain config, the sibling in Bron to `.claude/rules`/`.cursor/rules` (those configure agent behavior; this configures the host). Copy [`GLOW_HOST.template.bron`](GLOW_HOST.template.bron) to `GLOW_HOST.bron` (gitignored, personal) and fill in this host's own `os`/`arch`/`rye_zig`/`rye_lib`. [`tools/glow_host_run.sh`](tools/glow_host_run.sh) reads it and refuses to run rather than silently reach for a mismatched toolchain on `PATH` -- see [`context/specs/20260714-011504_glow-host-config-and-vpn-reification.md`](context/specs/20260714-011504_glow-host-config-and-vpn-reification.md).
 
-**`GLOW_PROFILE.bron`** — Grain's own root contributor-profile config, sibling to `GLOW_HOST.bron`. Where `GLOW_HOST.bron` declares the *host*, this declares the *contributor*: the professional name that signs the work, forge handles, the clock stamps come from, and the editor/model/voice defaults for session logs. It lets the reader-facing docs stay generically addressed (to a generic Acme Corporation employee) while the specifics live in one loadable place. Copy [`GLOW_PROFILE.template.bron`](GLOW_PROFILE.template.bron) to `GLOW_PROFILE.bron` (gitignored, personal); canonical public fingerprints stay in `PUBKEYS.md`, which the profile points at rather than copies. Seated at [`context/specs/20260714-015200_glow-profile-and-acme-generic-voice.md`](context/specs/20260714-015200_glow-profile-and-acme-generic-voice.md).
+**`GLOW_PROFILE.bron`** -- Grain's own root contributor-profile config, sibling to `GLOW_HOST.bron`. Where `GLOW_HOST.bron` declares the *host*, this declares the *contributor*: the professional name that signs the work, forge handles, the clock stamps come from, and the editor/model/voice defaults for session logs. It lets the reader-facing docs stay generically addressed (to a generic Acme Corporation employee) while the specifics live in one loadable place. Copy [`GLOW_PROFILE.template.bron`](GLOW_PROFILE.template.bron) to `GLOW_PROFILE.bron` (gitignored, personal); canonical public fingerprints stay in `PUBKEYS.md`, which the profile points at rather than copies. Seated at [`context/specs/20260714-015200_glow-profile-and-acme-generic-voice.md`](context/specs/20260714-015200_glow-profile-and-acme-generic-voice.md).
 
-**`tools/`** — gates, witnesses, launch scripts, and the strict checks that keep the tree honest. Some `.sh` scripts are POSIX seams (QEMU backgrounding, cold-start bootstrap, external interpreters) and stay `.sh` by design — see [`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md) · counsel [`counsel/date/20260707/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](counsel/date/20260707/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md).
+**`tools/`** -- gates, witnesses, launch scripts, and the strict checks that keep the tree honest. Some `.sh` scripts are POSIX seams (QEMU backgrounding, cold-start bootstrap, external interpreters) and stay `.sh` by design -- see [`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md) - counsel [`counsel/date/20260707/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](counsel/date/20260707/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md).
 
-**Root** — `SOURCE.md`, `CLAUDE.md`, this guide, and a few allow-listed files that orient newcomers before they dive.
+**Root** -- `SOURCE.md`, `CLAUDE.md`, this guide, and a few allow-listed files that orient newcomers before they dive.
 
 ---
 
@@ -85,20 +85,20 @@ Read the sections below whenever you wonder where a new file belongs. When a sea
 
 Read the piece aloud. Ask what it is *doing*:
 
-- **Governing how we write or decide** → `context/` (discipline or spec).
-- **Naming why the work means something** → `foundations/` (brief, essay, vision, or weave).
-- **Reading a friend's sky** → `classical-vedic-astrology/` (study, template, reading, or caster).
-- **Teaching or looking something up** → `manual/` (tutorial, guide, or reference — only what runs).
-- **Carrying Linengrow's application vision** → `linengrow/`.
-- **Deciding our own design** → `active-designing/`.
-- **Compressing many dated design notes into one operator guide** → `docs/` (Checkable; cites witnesses).
-- **Advising on a decision this project is about to make** → `counsel/` (analysis, ruling, proposal, or recommendation — awaiting Kaeden's word).
-- **Studying an external work** → `external-research/`.
-- **Expanding intent into a runnable plan** → `expanding-prompts/`.
-- **Tracking what is open or next** → `work-in-progress/`.
-- **Recording what a session settled** → `session-logs/`.
-- **Implementing** → the module the code belongs to; **code written in Glow** → `src/` (its five rooms), with `glow/` reserved for the language's own implementation.
-- **Teaching a beginner or solving the shared puzzle book** → `edu/`.
+- **Governing how we write or decide** -> `context/` (discipline or spec).
+- **Naming why the work means something** -> `foundations/` (brief, essay, vision, or weave).
+- **Reading a friend's sky** -> `classical-vedic-astrology/` (study, template, reading, or caster).
+- **Teaching or looking something up** -> `manual/` (tutorial, guide, or reference -- only what runs).
+- **Carrying Linengrow's application vision** -> `linengrow/`.
+- **Deciding our own design** -> `active-designing/`.
+- **Compressing many dated design notes into one operator guide** -> `docs/` (Checkable; cites witnesses).
+- **Advising on a decision this project is about to make** -> `counsel/` (analysis, ruling, proposal, or recommendation -- awaiting Kaeden's word).
+- **Studying an external work** -> `external-research/`.
+- **Expanding intent into a runnable plan** -> `expanding-prompts/`.
+- **Tracking what is open or next** -> `work-in-progress/`.
+- **Recording what a session settled** -> `session-logs/`.
+- **Implementing** -> the module the code belongs to; **code written in Glow** -> `src/` (its five rooms), with `glow/` reserved for the language's own implementation.
+- **Teaching a beginner or solving the shared puzzle book** -> `edu/`.
 
 If two folders seem right, choose the one whose README you would update first. If still unsure, write a one-line note in `work-in-progress/TASKS.md` open questions and place the file where a future reader will look first.
 
@@ -106,7 +106,7 @@ If two folders seem right, choose the one whose README you would update first. I
 
 ## Season placements and the log
 
-The placements for any given season are recorded in `session-logs/` — what moved, what stayed, what was confirmed without churn. The durable test above outlives any snapshot list. When this season placed the seven distilled essays, the weave, the foundation briefs, and the civic visions in `foundations/`, and the Linengrow pieces in `linengrow/`, that record lives in the logs, not here, so this guide does not pretend to be a catalog that expires.
+The placements for any given season are recorded in `session-logs/` -- what moved, what stayed, what was confirmed without churn. The durable test above outlives any snapshot list. When this season placed the seven distilled essays, the weave, the foundation briefs, and the civic visions in `foundations/`, and the Linengrow pieces in `linengrow/`, that record lives in the logs, not here, so this guide does not pretend to be a catalog that expires.
 
 ---
 
@@ -114,33 +114,33 @@ The placements for any given season are recorded in `session-logs/` — what mov
 
 Every dated artifact names itself `YYYYMMDD-HHMMSS_short-slug.md`. Later is always larger. Living documents (`README.md`, `ROADMAP.md`, `TASKS.md`, the discipline files) carry **Last updated** and evolve in place. Full law: `context/specs/20260627-102012_one-clock-naming-law.md`.
 
-This one stamp is Glow's **warm-aura date atom**, and it renders exactly three ways: a version string `YYYYMMDD.HHMMSS` (dot), a filename stamp `YYYYMMDD-HHMMSS_slug` (hyphen), and a **dated folder bare `YYYYMMDD`** (day precision — the `session-logs/date/20260619/` pattern every fold matches, never slugged or counted). Naming and TAME framing: `context/specs/20260714-024800_warm-aura-date-atom-naming.md`.
+This one stamp is Glow's **warm-aura date atom**, and it renders exactly three ways: a version string `YYYYMMDD.HHMMSS` (dot), a filename stamp `YYYYMMDD-HHMMSS_slug` (hyphen), and a **dated folder bare `YYYYMMDD`** (day precision -- the `session-logs/date/20260619/` pattern every fold matches, never slugged or counted). Naming and TAME framing: `context/specs/20260714-024800_warm-aura-date-atom-naming.md`.
 
 ---
 
 ## Sort as Priority: the `yonder/` Horizon
 
-A folder's own alphabetical order carries its priority, so the listing itself shows what matters now. Presently active implementation — the specs, prompts, and strategies driving an SLC or a working product in progress — rests one level deep, where date-stamped names surface the recent first. Deferred yet alive work rests one level deeper, in a **`yonder/`** whose name sorts toward the bottom and points ahead: dormant strategies, horizon ideas, research whose module has since been built, prompts already consumed whose ideas still beckon.
+A folder's own alphabetical order carries its priority, so the listing itself shows what matters now. Presently active implementation -- the specs, prompts, and strategies driving an SLC or a working product in progress -- rests one level deep, where date-stamped names surface the recent first. Deferred yet alive work rests one level deeper, in a **`yonder/`** whose name sorts toward the bottom and points ahead: dormant strategies, horizon ideas, research whose module has since been built, prompts already consumed whose ideas still beckon.
 
 Three tiers, each with a clear purpose:
 
-- **Active** (one level deep) — what we are engaged with now.
-- **`yonder/`** (two levels deep) — points *forward*; kept because the idea is alive and may return.
-- **`archive/`** (two levels deep) — points *backward*; done or retired, kept only for the honest record.
+- **Active** (one level deep) -- what we are engaged with now.
+- **`yonder/`** (two levels deep) -- points *forward*; kept because the idea is alive and may return.
+- **`archive/`** (two levels deep) -- points *backward*; done or retired, kept only for the honest record.
 
 The distinction matters: `yonder/` is a horizon, rather than a graveyard. A truly finished or dead file goes to `archive/` rather than `yonder/`.
 
 **The active test:** a document stays one level deep while it drives present implementation; it moves to `yonder/` when it becomes future, dormant, consumed, or realized-as-code. Move by `git mv` so history stays whole, and update any reference that points at the old path.
 
-**Age is a hint, not the test.** What sends a file to `yonder/` is that it has become future, dormant, consumed, or realized-as-code — never its stamp alone. A document that is foundational to the design, or that is actively cited by other living files, stays where it is however old it reads. Relevance and inbound references outrank the date.
+**Age is a hint, not the test.** What sends a file to `yonder/` is that it has become future, dormant, consumed, or realized-as-code -- never its stamp alone. A document that is foundational to the design, or that is actively cited by other living files, stays where it is however old it reads. Relevance and inbound references outrank the date.
 
-**Affirming a kept file does four small things in one touch:** strip its dead `NNN ·` number prefix (the timestamp filename is the true name now), re-date its `Last updated`, add the reviewed-and-kept line, and lightly freshen the Radiant voice where it has drifted. No rename, no reference change. Vibrancy rides on this touch and on writing Radiant by default — never on a sweeping restyle.
+**Affirming a kept file does four small things in one touch:** strip its dead `NNN -` number prefix (the timestamp filename is the true name now), re-date its `Last updated`, add the reviewed-and-kept line, and lightly freshen the Radiant voice where it has drifted. No rename, no reference change. Vibrancy rides on this touch and on writing Radiant by default -- never on a sweeping restyle.
 
-**Titles.** A title carries no legacy `NNN ·` number prefix; the timestamp filename is the identifier. The H1 leads with the concept its filename slug names, so file and title cohere at a glance, in the Radiant `Name — clause` form. Living documents use their plain spoken name as the H1.
+**Titles.** A title carries no legacy `NNN -` number prefix; the timestamp filename is the identifier. The H1 leads with the concept its filename slug names, so file and title cohere at a glance, in the Radiant `Name -- clause` form. Living documents use their plain spoken name as the H1.
 
-**Affirm-in-place titling:** when affirming, also strip the number prefix and align the H1 with the slug's concept — all in the same touch, still with no rename and no reference change.
+**Affirm-in-place titling:** when affirming, also strip the number prefix and align the H1 with the slug's concept -- all in the same touch, still with no rename and no reference change.
 
-A re-stamp that bubbles a file to the bottom suits an *ordinary, lightly-cited* document, where the sort cue helps and the few references are cheap to move. A *canonical reference* — one many files cite — keeps its stable name and is affirmed in place: its `Last updated` and a short affirmation line carry the signal, and its citation density already tells anyone it is load-bearing. Renaming what a hundred files depend on, to gain a sort cue nobody needed, trades a real promise away for a small convenience.
+A re-stamp that bubbles a file to the bottom suits an *ordinary, lightly-cited* document, where the sort cue helps and the few references are cheap to move. A *canonical reference* -- one many files cite -- keeps its stable name and is affirmed in place: its `Last updated` and a short affirmation line carry the signal, and its citation density already tells anyone it is load-bearing. Renaming what a hundred files depend on, to gain a sort cue nobody needed, trades a real promise away for a small convenience.
 
 ### Reviewed and kept (`2026-06-29`)
 
@@ -157,9 +157,9 @@ A re-stamp that bubbles a file to the bottom suits an *ordinary, lightly-cited* 
 
 ## The Identity Layer, and Tidy Days
 
-The tree signs its work. The keeper's canonical fingerprints live in `context/PUBKEYS.md` (committed); a keeper may also place `PUBKEYS.md` at the repository root for local override. A fork begins from `PUBKEYS.template.md` and records its own four public lines, and `tools/identity_check.rish` proves the shape either way — template-only checkouts pass kindly, and when a pubkey file is present it must carry exactly two SSH and two OpenPGP fingerprints. The private halves never enter the tree.
+The tree signs its work. The keeper's canonical fingerprints live in `context/PUBKEYS.md` (committed); a keeper may also place `PUBKEYS.md` at the repository root for local override. A fork begins from `PUBKEYS.template.md` and records its own four public lines, and `tools/identity_check.rish` proves the shape either way -- template-only checkouts pass kindly, and when a pubkey file is present it must carry exactly two SSH and two OpenPGP fingerprints. The private halves never enter the tree.
 
-Session logs keep the working day flat and fold closed days beneath `session-logs/date/YYYYMMDD/` -- `.kyri`, `.bron`, and historical `.md` alike, all three taught to the tool by `20260821`. The room is bounded at **256** flat files (`tools/room_bound_witness.rish`), and a reference left pointing at a flat path is **resolved rather than rewritten** (`tools/dated_path_resolve.rish`). **Preview** (read-only): `rishi/bin/rishi run tools/session_logs_archive_preview.rish`. **Fold** (mutate): `rishi/bin/rishi run tools/session_logs_archive.rish` — core logic in `tools/session_logs_archive.rye`; witness `tools/session_logs_archive_witness.rish`. Run fold on Kaeden's word. Living law: `.cursor/rules/session-logs.mdc` · `.claude/rules/session-logs.md`.
+Session logs keep the working day flat and fold closed days beneath `session-logs/date/YYYYMMDD/` -- `.kyri`, `.bron`, and historical `.md` alike, all three taught to the tool by `20260821`. The room is bounded at **256** flat files (`tools/room_bound_witness.rish`), and a reference left pointing at a flat path is **resolved rather than rewritten** (`tools/dated_path_resolve.rish`). **Preview** (read-only): `rishi/bin/rishi run tools/session_logs_archive_preview.rish`. **Fold** (mutate): `rishi/bin/rishi run tools/session_logs_archive.rish` -- core logic in `tools/session_logs_archive.rye`; witness `tools/session_logs_archive_witness.rish`. Run fold on Kaeden's word. Living law: `.cursor/rules/session-logs.mdc` - `.claude/rules/session-logs.md`.
 
 ---
 
@@ -169,7 +169,7 @@ Session logs keep the working day flat and fold closed days beneath `session-log
 - **Prune with care:** release what no longer serves; graduate finished work out of `work-in-progress/`.
 - **Commit logs with work:** session logs ship in the same commit whenever possible.
 - **Clean room:** study in `gratitude/` and `external-research/`; implement in our modules with our vocabulary.
-- **Confirm before churn:** when a filing guide predates a folder that now exists, update the guide — do not move settled work to match an old plan.
+- **Confirm before churn:** when a filing guide predates a folder that now exists, update the guide -- do not move settled work to match an old plan.
 
 ---
 
