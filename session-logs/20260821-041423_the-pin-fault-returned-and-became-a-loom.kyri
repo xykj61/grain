@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260821.041423
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The pin fault returned within the hour, and this time it became a loom
+prompt (Round close on the granted license read -- the send ran out of order and the remote refused it.)
+think The license-read send ran commit, then push, then pin, then amend -- pushing before the nib was pinned. So the commit that reached both remotes carried a card naming the previous round, which is REDS %103 exactly, booked and closed earlier the same day.
+think The remote caught it rather than any check of ours, refusing the second push as non-fast-forward. That is a poor place to learn it: by the time the remote objects, the wrong card is already public. The refusal was the alarm, not the guard.
+think Faced the tempting fix first and refused it. Force-pushing the amended commit would have tidied everything in one command, and a history rewrite plus force-push of the living tree is custody gate five. No round's tidiness is worth crossing a gate, so the divergent amend was reset away instead and the nib rode the next work commit, which is where the rule puts it anyway.
+think Reset mixed rather than hard, so the card edit survived as an unstaged change and could ride the next commit rather than being retyped. Local HEAD, origin, and xykj61 all read the same hash afterwards, checked rather than assumed.
+think Then the harder question: %103 was already booked and closed, so why did it recur. The honest answer is that it closed by doing the next send correctly, and doing a thing correctly once is a habit rather than a check. The rule was written, read, and followed three times running, then missed on the fourth when the round's shape shifted slightly.
+think A lantern that fires twice becomes a loom, so the loom had to be built rather than the habit re-affirmed. The design question was what is actually checkable, since no commit can contain its own hash and the pin is therefore always written in the same breath as the commit it names.
+think Settled on guarding the reachable invariant: the card's nib must name HEAD or HEAD's parent. Those are the only two honest states -- the pin rode inside the send, or the card lags by the single amend the rule explicitly tolerates. Anything older means the card describes a round that already passed, which is the defect itself.
+obs Two Rishi frictions worth recording rather than rediscovering. Backslash-escaped grep patterns do not survive interpolation into a run string, so the extractor moved to awk with no escapes; and a function call inside interpolation is an UndefinedName, so the whole head-parent-stale comparison collapsed into one shell verdict computed in one place. Both are the same lesson: keep the logic in one shell breath rather than assembling it across Rishi string boundaries.
+obs Proved the RED path twice rather than once. The witness carries an in-run leg that requires a four-commit-old hash to be judged stale by the identical predicate, so the guard cannot silently stop discriminating; and the round also planted a genuinely stale nib in the card, watched the witness refuse and name the rule, then restored.
+obs The witness is deliberately read-only. It never edits the card and never pushes, because the fix for a RED here is to pin in the next work commit, and a witness that helpfully repaired the card would be manufacturing the pin-only follow-up the rule forbids.
+obs This is the third loom of the session built on the same shape -- the crypto count guard widened because a bijection did not guard the prose that repeated it, and now a pin rule that was followed until it was not. The pattern is that a fact being true is not the same as a fact being checked, and the tree keeps learning it in new rooms.
+file crux/REDS.md REDS %106 -- the recurrence, why the first closure was a habit, and the gate refused rather than crossed
+file tools/remember_git_nib_witness.rish the loom -- HEAD or HEAD's parent, RED path proven twice, read-only by design
+file tools/gen/season/reds_ledger_monotone_witness.rish row pins moved with the ledger
+file crux/REMEMBER.md the nib pinned inside this send, in the order the rule seats
+recommend keep-going Both microkernel gates are open and the arc's crux is ordinary work now -- Caravan designed against a permissively-licensed capability API. The next real step is the fetch, vendoring the seL4 userlevel and Microkit as Monocypher and PQClean are held, and that stays Keaton's word with a per-file SPDX sweep riding along.

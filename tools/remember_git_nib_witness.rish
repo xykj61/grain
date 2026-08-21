@@ -1,0 +1,56 @@
+# tools/remember_git_nib_witness.rish -- the loom for the operator card's Git nib, booked after REDS %103 fired a SECOND time.
+#
+# WHY A LOOM AND NOT ANOTHER HABIT. `.claude/rules/remember-git-nib.md` seats one order for a send: stage `crux/REMEMBER.md` with the
+# round's work, commit signed, then amend at most once so the nib names HEAD -- and push AFTER that, never before. REDS %103 booked the
+# first time the push came before the pin, and closed by doing the next send correctly. That closure was a habit, and a habit is not a
+# check: the same fault recurred within the hour on a later round (REDS %106). A lantern that fires twice becomes a loom, so here is the
+# loom.
+#
+# WHAT IT PROVES. The nib written on the card names either HEAD or HEAD's parent. Those are the only two honest states:
+#   * HEAD          -- the pin rode inside the send, exactly where the rule puts it.
+#   * HEAD's parent -- the card lags by the single amend the rule explicitly tolerates ("the card may lag HEAD by one amend").
+# Anything older means the card is describing a round that is not the current one, which is precisely the defect %103 named: the card
+# naming the round before it. The witness cannot force the pin to be right at commit time -- a commit cannot contain its own hash -- so it
+# guards the reachable invariant instead, and catches the drift on the very next lap rather than months later.
+#
+# WHAT IT DELIBERATELY DOES NOT DO. It never edits the card and never pushes. It reads and refuses. Fixing a RED here means pinning the
+# nib in the next work commit, never a pin-only follow-up, which the rule already forbids.
+#
+# Kin: `.claude/rules/remember-git-nib.md` (the order) - `.claude/rules/reds-first.md` (a lantern that fires twice becomes a loom) -
+# `crux/REDS.md` rows %103 and %106.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/remember_git_nib_witness.rish
+
+say "remember-git-nib: Language EN -- a commit cannot contain its own hash, so the card's nib is always written in the same breath as the commit it names. That narrow seam is where REDS %103 lived, and where it returned. This guards the seam rather than trusting the hand."
+say "remember-git-nib: Style Radiant -- two honest states and no third. The nib names HEAD, meaning the pin rode inside the send; or it names HEAD's parent, the one amend of lag the rule allows. Older than that and the card is describing a round that already passed."
+say "remember-git-nib: Lens TAME -- the nib is read from the card, resolved against the repository, and compared to two computed hashes; nothing is recited. The RED path is proven in the same run against a deliberately older commit, so the refusal is shown rather than described. Read-only: this witness never edits the card and never pushes."
+
+let card = run ["test" "-f" "crux/REMEMBER.md"]
+assert card.ok else "remember-git-nib: crux/REMEMBER.md not found -- run from the repo root"
+
+# The extractor, kept in one place so the witness and its own RED proof read the card the same way.
+let read_nib = "awk '/Git nib:/{ if (match($0, /[0-9a-f]{7,40}/)) { print substr($0, RSTART, RLENGTH); exit } }' crux/REMEMBER.md"
+
+# 1. The nib the card actually carries, rather than any number recited in prose elsewhere.
+let pin = run ["sh" "-c" read_nib]
+assert pin.ok else "remember-git-nib: the card carries no readable Git nib line"
+let nib = trim pin.out
+assert nib != "" else "remember-git-nib: the card's Git nib line is present but empty"
+
+# 2. It must name a commit this repository actually has.
+let known = run ["sh" "-c" "git cat-file -t ${nib} 2>/dev/null | tr -d ' \n'"]
+assert (trim known.out) == "commit" else "remember-git-nib: the card's Git nib does not name a commit in this repository -- ${nib}"
+
+# 3. The verdict: head, parent, or stale. Computed once, in one place, so no interpolation can disagree with itself.
+let state = run ["sh" "-c" "F=$(git rev-parse ${nib}); H=$(git rev-parse HEAD); P=$(git rev-parse HEAD~1); if [ \"$F\" = \"$H\" ]; then echo head; elif [ \"$F\" = \"$P\" ]; then echo parent; else echo stale; fi"]
+assert state.ok else "remember-git-nib: could not resolve the card's nib against HEAD and its parent"
+assert (trim state.out) != "stale" else "remember-git-nib: the card's Git nib is STALE -- it names neither HEAD nor HEAD's parent, so the card describes a round that already passed (REDS %103, %106). Pin it in the NEXT work commit, never a pin-only follow-up."
+
+# 4. The RED path, proven in the same run: the identical predicate must REFUSE a four-commit-old hash.
+let red = run ["sh" "-c" "F=$(git rev-parse HEAD~4); H=$(git rev-parse HEAD); P=$(git rev-parse HEAD~1); if [ \"$F\" = \"$H\" ]; then echo head; elif [ \"$F\" = \"$P\" ]; then echo parent; else echo stale; fi"]
+assert (trim red.out) == "stale" else "remember-git-nib: the staleness predicate ACCEPTED a four-commit-old hash -- the guard does not discriminate and would pass a stale card"
+
+say "remember-git-nib: card nib ${nib} resolves to ${state.out} -- head means the pin rode inside the send, parent means the single amend of lag the rule tolerates."
+
+say "GREEN remember-git-nib: the operator card's Git nib names HEAD or HEAD's parent, which are the only two honest states -- the pin inside the send, or the single amend of lag the rule tolerates. Proven against the repository rather than recited, with the RED path shown in the same run by refusing a four-commit-old hash. Booked as the loom after REDS %103 fired twice: the first closure was a habit, and a habit is not a check. Read-only -- this witness never edits the card and never pushes."
