@@ -5,7 +5,7 @@
 **Voice:** Quin  
 **Status:** Design — Mixed · **Checkable** where it cites TAME root rule 5 and the Glow→Rye→Zig path · **Vision** where RISC-V lowering detail still widens  
 **Room:** Design (hot shelf) — graduates to [`docs/`](../../../docs/) when witnesses bind the claims below as compressors  
-**Ground:** [`../../../context/TAME_GUIDANCE.md`](../../../context/TAME_GUIDANCE.md) §5 · [`../../../glow/README.md`](../../../glow/README.md) · counsel [`../../../counsel/20260726-020825_the-cheap-hour.md`](../../../counsel/20260726-020825_the-cheap-hour.md)
+**Ground:** [`../../../context/TAME_GUIDANCE.md`](../../../context/TAME_GUIDANCE.md) §5 · [`../../../glow/README.md`](../../../glow/README.md) · counsel [`../../../counsel/date/20260726/20260726-020825_the-cheap-hour.md`](../../../counsel/date/20260726/20260726-020825_the-cheap-hour.md)
 
 ---
 

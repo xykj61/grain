@@ -30,8 +30,8 @@
 //!   rye build pond/apps/constel_net_ledger_bron.rye -femit-bin=pond/bin/constel-net-ledger-bron
 //!   pond/bin/constel-net-ledger-bron selftest
 //!
-//! Law:   active-designing/20260813-022222_constel-test-network-naming-law.md
-//! Scope: active-designing/20260813-030005_constel-devnet-ledger-exploration.md
+//! Law:   active-designing/date/20260813/20260813-022222_constel-test-network-naming-law.md
+//! Scope: active-designing/date/20260813/20260813-030005_constel-devnet-ledger-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

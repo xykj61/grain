@@ -1,7 +1,7 @@
 # tools/wade1_brush_style_witness.rish — WADE1 authoring loop, source → pixels.
 #
 # Closes the seam the WADE1 bridge names
-# (active-designing/20260812-000456_wade1-brush-surface-bridge-seam.md): a
+# (active-designing/date/20260812/20260812-000456_wade1-brush-surface-bridge-seam.md): a
 # `.brush` *file* declares an OPTIONAL `style:` token block; brush_parse.rye
 # reassembles it into a flat Bron token sheet; tokens.rye's infuse cascade
 # resolves it; and a resolved sheet dresses a Skate grid to the declared colors.

@@ -9,7 +9,7 @@ say "pin-tidy: Language EN — scroll history · same-commit git nib."
 say "pin-tidy: Style Radiant — measure habit follow-ups; keep real sends."
 say "pin-tidy: Lens TAME — full habit tidy 20260728.205833."
 
-let seat = run ["test" "-f" "counsel/20260728-205833_history-tidy-remember-pin-squash-full.md"]
+let seat = run ["test" "-f" "counsel/date/20260728/20260728-205833_history-tidy-remember-pin-squash-full.md"]
 assert seat.ok else "pin-tidy: full tidy counsel seat missing"
 
 let rule_c = run ["test" "-f" ".cursor/rules/remember-git-nib.mdc"]

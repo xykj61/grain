@@ -22,7 +22,7 @@
 //!   pond/bin/entity-books-true measure   # prints "<entries> <amount_sum> <cash_net>" for the awk cross-check
 //!   pond/bin/entity-books-true selftest
 //!
-//! Scope: active-designing/20260812-195711_gism-ayre-journey8-cash-first-entity-books-exploration.md
+//! Scope: active-designing/date/20260812/20260812-195711_gism-ayre-journey8-cash-first-entity-books-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

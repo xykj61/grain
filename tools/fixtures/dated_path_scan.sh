@@ -11,7 +11,16 @@
 # HOW EACH ONE IS RESOLVED, first hit winning:
 #   1. relative to the file that cites it   -- how a Markdown link actually resolves
 #   2. root-relative, leading ../ stripped  -- how this tree's prose usually cites
-#   3. by basename across every tracked file -- the recovery the full stamp buys
+#   3. THE FOLD RULE: <room>/date/<YYYYMMDD>/<basename>, computed from the stamp alone -- and for
+#      a BARE basename, the same rule inside the CITING file own room, since a bare reference was
+#      a sibling and a day fold is what separated the siblings
+#   4. by basename across every tracked file -- the recovery the full stamp buys
+#
+# Reading 3 was missing here for one lap while `tools/dated_path_resolve.rish` already had it,
+# and the two instruments disagreed the moment four rooms folded: 82 references the resolver
+# recovers by computation were reported ambiguous by this scan, because the same basename exists
+# in two rooms and the scan had thrown away the room the reference itself names. A census that
+# grades by a weaker rule than the tool it measures is not measuring that tool.
 # A reference landing by 1 or 2 is HOME. One landing only by 3 is BROKEN and RECOVERABLE --
 # the file is here, the path is stale. One that lands nowhere is BROKEN and GONE.
 #
@@ -98,7 +107,39 @@ NR==FNR { ex[$0] = 1; n = split($0, p, "/"); base = p[n]; cnt[base]++; where[bas
   n = split(ref, p, "/"); base = p[n]
   found = (base in cnt) ? where[base] : "-"
 
+  # The fold rule, computed rather than searched: a reference names its own room, and a folded
+  # file sits under that rooms own date/<day>/ directory. Applied before the basename index so a
+  # reference naming its room is never called ambiguous on account of another rooms namesake.
+  # (No apostrophes in here -- this comment lives inside a single-quoted awk program.)
+  folded = ""
+  if (base ~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]_/) {
+    day = substr(base, 1, 8)
+    room = substr(root, 1, length(root) - length(base) - 1)
+    if (room != "") {
+      c1 = room "/date/" day "/" base
+      c2 = room "/archive/" day "/" base
+      if (c1 in ex) folded = c1
+      else if (c2 in ex) folded = c2
+    }
+    # A BARE basename was a sibling reference: two files sitting flat in one room, one naming
+    # the other with no directory at all. A day fold puts siblings in different day folders and
+    # breaks exactly those. The citing file still names the room, so the room is read off it --
+    # this uses context the reference already carries rather than guessing between namesakes.
+    if (folded == "" && root == base) {
+      citer_room = dir
+      sub(/\/date\/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$/, "", citer_room)
+      sub(/\/archive\/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$/, "", citer_room)
+      if (citer_room != "") {
+        s1 = citer_room "/date/" day "/" base
+        s2 = citer_room "/archive/" day "/" base
+        if (s1 in ex) folded = s1
+        else if (s2 in ex) folded = s2
+      }
+    }
+  }
+
   if (rel in ex || root in ex) { verdict = "home" }
+  else if (folded != "")       { verdict = "recoverable"; found = folded }
   else if (cnt[base] == 1)     { verdict = "recoverable" }
   else if (cnt[base] > 1)      { verdict = "ambiguous" }
   else                         { verdict = "gone" }

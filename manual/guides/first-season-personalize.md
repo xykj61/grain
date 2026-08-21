@@ -32,7 +32,7 @@ Grain’s shared tree still carries the source pier’s living face in places �
    ```
 3. Edit `PERSONALIZE.brix`: set every `your_*` field and every `replace_N_to` value.  
 4. Ask Cursor (Agent mode) to apply the replace map to **your living pier papers only** — not to rewrite upstream dated counsel.  
-5. Paste the large recursion prompt from [`expanding-prompts/20260730-144833_first-season-256-recursion-template.md`](../../expanding-prompts/20260730-144833_first-season-256-recursion-template.md), inheriting your Brix fields.  
+5. Paste the large recursion prompt from [`expanding-prompts/date/20260730/20260730-144833_first-season-256-recursion-template.md`](../../expanding-prompts/date/20260730/20260730-144833_first-season-256-recursion-template.md), inheriting your Brix fields.  
 6. Walk journey 0 (personalize) until a signed Verified commit lands under your name.  
 7. Walk journey 1 one question at a time; store answers in `first_season_answers.brix` (never commit it).
 

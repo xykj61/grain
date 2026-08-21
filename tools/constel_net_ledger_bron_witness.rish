@@ -8,7 +8,7 @@
 # sovereign key no longer matches the facts' signatures, so the fold refuses IdentityRefused). Demo
 # keeper seeds only — no real key, no funds, no network, no custody (gate %3 and gate %4 untouched).
 #
-# Scope: active-designing/20260813-030005_constel-devnet-ledger-exploration.md
+# Scope: active-designing/date/20260813/20260813-030005_constel-devnet-ledger-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/constel_net_ledger_bron_witness.rish

@@ -19,7 +19,7 @@
 # real bytes, and a tampered record refuses. Composes cord_bron + cord + lapse + statement public API only;
 # demo keeper seeds — no key, no funds, no network, no custody.
 #
-# Scope: active-designing/20260813-091851_mycelium-statement-account-voice-exploration.md
+# Scope: active-designing/date/20260813/20260813-091851_mycelium-statement-account-voice-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mycelium_statement_true_witness.rish

@@ -1,7 +1,7 @@
 //! glow-book: runes.md#g-cast
 //! glow/rune_cast.rye — parses Glow's `^-` cast rune, for real.
 //!
-//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
+//! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
 //! reading-runes section: `^-  <mold>` casts the following expression's
 //! result to the stated mold, catching a type mismatch at the boundary
 //! rather than three calls downstream. glow/rune_bounded_trap.rye already

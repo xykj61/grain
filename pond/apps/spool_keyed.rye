@@ -23,7 +23,7 @@
 //!   rye build pond/apps/spool_keyed.rye -femit-bin=pond/bin/spool-keyed
 //!   pond/bin/spool-keyed selftest
 //!
-//! Scope: active-designing/20260812-191206_gism-red73-spool-chunking-storage-exploration.md
+//! Scope: active-designing/date/20260812/20260812-191206_gism-red73-spool-chunking-storage-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

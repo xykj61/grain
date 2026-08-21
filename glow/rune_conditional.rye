@@ -1,7 +1,7 @@
 //! glow-book: runes.md#g-conditional
 //! glow/rune_conditional.rye — parses Glow's `?:` if/then/else rune head.
 //!
-//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
+//! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
 //! `?` category: `?:` is if/then/else. The brief's worked examples name the
 //! test as the first child — `(gth tick 32)`, `(dropped-this-tick rand)` —
 //! with then/else arms following. glow/rune_bounded_trap.rye and

@@ -28,7 +28,7 @@ assert selftest.out contains "signed_sha256 2010d1606c18cafac511b630be7e6bcaf1a9
 assert selftest.out contains "true to the real bytes (a neighbor refuses)" else "gism-j6r4: tight-binding line missing"
 
 # The crux cross-check: the signed facts equal an independent measurement of the real file.
-let real = "waymarks/20260801-134653_e182-q46-errors-named-green.md"
+let real = "waymarks/date/20260801/20260801-134653_e182-q46-errors-named-green.md"
 let wc = run ["sh" "-c" "wc -c < ${real} | tr -d ' '"]
 assert wc.ok else "gism-j6r4: wc -c over the real file failed"
 assert wc.out contains "213" else "gism-j6r4: wc -c disagrees with the signed length"

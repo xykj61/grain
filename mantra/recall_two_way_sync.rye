@@ -8,7 +8,7 @@
 //!   rye build mantra/recall_two_way_sync.rye -femit-bin=mantra/bin/recall-two-way-sync
 //!   mantra/bin/recall-two-way-sync selftest
 //!
-//! Counsel: [`counsel/20260707-000112_claude-counsel-two-way-sync-and-subscribe.md`](../counsel/20260707-000112_claude-counsel-two-way-sync-and-subscribe.md)
+//! Counsel: [`counsel/date/20260707/20260707-000112_claude-counsel-two-way-sync-and-subscribe.md`](../counsel/date/20260707/20260707-000112_claude-counsel-two-way-sync-and-subscribe.md)
 
 const std = @import("std");
 const assert = std.debug.assert;

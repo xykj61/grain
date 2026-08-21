@@ -19,7 +19,7 @@
 //!   rye build pond/apps/tablecloth.rye -femit-bin=pond/bin/tablecloth
 //!   pond/bin/tablecloth selftest
 //!
-//! Scope: active-designing/20260812-142132_buhr-journey7-tablecloth-artifact-store-exploration.md
+//! Scope: active-designing/date/20260812/20260812-142132_buhr-journey7-tablecloth-artifact-store-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

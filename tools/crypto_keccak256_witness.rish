@@ -6,7 +6,7 @@
 # already-GREEN stone — the Keccak-f[1600] permutation and sponge proven in crypto/sha3.rye against FIPS 202 and std.crypto — and passes
 # it the original Keccak 0x01 delimiter rather than FIPS 202's 0x06. Keccak-256 is NOT SHA3-256; the two share the exact permutation and
 # pad10*1 rule and differ in that single marker byte, because Ethereum standardized before FIPS 202 changed it.
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 # Clean-room: the 0x01 delimiter and the sponge law are the public Keccak/FIPS 202 standard's own; the arithmetic is our GREEN sha3.rye,
 # never a copied line (.claude/rules/gratitude-licenses.md).
 #

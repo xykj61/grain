@@ -1,6 +1,6 @@
 //! glow/lower_null.rye — lower a parsed `?~` null-test to runnable `.rye`.
 //!
-//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
+//! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `?~` is the null test. This hop lowers `records.cur` with then/else as
 //! named faces (defaults root/cont), decimal literals, nested
 //! `^-  @uN  <decimal>`, `(lent <face>)`, `(mix <face> <face>)`, or

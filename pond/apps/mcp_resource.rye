@@ -24,7 +24,7 @@
 //!   rye build pond/apps/mcp_resource.rye -femit-bin=pond/bin/mcp-resource
 //!   pond/bin/mcp-resource selftest
 //!
-//! Scope: active-designing/20260812-151959_buhr-journey10-artifacts-served-as-mcp-resources-exploration.md
+//! Scope: active-designing/date/20260812/20260812-151959_buhr-journey10-artifacts-served-as-mcp-resources-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

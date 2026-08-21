@@ -6,7 +6,7 @@
 # quest · round-in-quest), the equinox theme, the ranking it tends (rankings[r%27],
 # context/rankings.kyri), and the carry-over from the round before. Arithmetic lives
 # in tools/fixtures/itinerary_compute.sh; this prints it and gates the bound.
-# Plan: expanding-prompts/20260810-213133_rankings-and-the-season-itinerary-plan.md.
+# Plan: expanding-prompts/date/20260810/20260810-213133_rankings-and-the-season-itinerary-plan.md.
 
 say "itinerary: Language EN — a round's whole day from its number."
 say "itinerary: Style Radiant — place · theme · the one living thing tended · the carry."

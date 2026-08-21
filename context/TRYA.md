@@ -31,7 +31,7 @@ Quin remains the standing writing voice and the fifth unpaired OS variant. Trya 
 - Kin to Civic Style: reward pointed at the good; output over activity.  
 - Close documentary frames may still use **Trey**; Trya frames tend the soil of a seat.
 
-Seat record: [`../counsel/20260728-024417_inner-scope-checkpoint-trya-ariana.md`](../counsel/20260728-024417_inner-scope-checkpoint-trya-ariana.md).
+Seat record: [`../counsel/date/20260728/20260728-024417_inner-scope-checkpoint-trya-ariana.md`](../counsel/date/20260728/20260728-024417_inner-scope-checkpoint-trya-ariana.md).
 
 ---
 

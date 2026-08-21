@@ -24,7 +24,7 @@
 //!   rye build pond/apps/constel_net_ledger.rye -femit-bin=pond/bin/constel-net-ledger
 //!   pond/bin/constel-net-ledger selftest
 //!
-//! Scope: active-designing/20260813-030005_constel-devnet-ledger-exploration.md
+//! Scope: active-designing/date/20260813/20260813-030005_constel-devnet-ledger-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

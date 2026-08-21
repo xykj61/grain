@@ -8,7 +8,7 @@
 //!   rye build mantra/recall_tablecloth_query.rye -femit-bin=mantra/bin/recall-tablecloth-query
 //!   mantra/bin/recall-tablecloth-query selftest
 //!
-//! Counsel: [`counsel/20260707-005612_claude-counsel-tablecloth-query.md`](../counsel/20260707-005612_claude-counsel-tablecloth-query.md)
+//! Counsel: [`counsel/date/20260707/20260707-005612_claude-counsel-tablecloth-query.md`](../counsel/date/20260707/20260707-005612_claude-counsel-tablecloth-query.md)
 
 const std = @import("std");
 const assert = std.debug.assert;

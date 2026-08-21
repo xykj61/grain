@@ -10,7 +10,7 @@ When ordering any allocation — a **season**, **equinox**, **journey**, **quest
 ## How it composes with the disciplines already seated
 
 - **Reds still come first of all.** A red booked under [`reds-first`](reds-first.md) preempts this ordering — a wrong thing is fixed before new durable work begins. Lindy-first orders the *constructive* queue; reds-first governs the *corrective* one.
-- **The finishing edge still holds.** Lindy-first is not license to start many durable things at once; ship one real thing before naming the next (`../counsel/20260715-190000_the-design-over-build-ratio-and-finishing.md`). Crux-first picks *which* one.
+- **The finishing edge still holds.** Lindy-first is not license to start many durable things at once; ship one real thing before naming the next (`../counsel/date/20260715/20260715-190000_the-design-over-build-ratio-and-finishing.md`). Crux-first picks *which* one.
 - **Narrow scope still holds.** One keystone per round unless the round's own shape bounds it (`collaboration.md`). This rule chooses the keystone; it does not widen the round.
 - **`align` reads by this order.** When Keaton says **align**, the reconcile pass reorders the plan Lindy-first, crux-first, brief and green witnesses winning (`align.md`).
 - **Power-of-two divisions inherit it.** A season's four equinoxes, an equinox's four journeys, a journey's four quests — each division leads with its own highest-Lindy crux, so the ordering is self-similar at every scale.

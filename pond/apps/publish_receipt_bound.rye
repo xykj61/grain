@@ -20,7 +20,7 @@
 //!   rye build pond/apps/publish_receipt_bound.rye -femit-bin=pond/bin/publish-receipt-bound
 //!   pond/bin/publish-receipt-bound selftest
 //!
-//! Scope: active-designing/20260812-173656_tact-journey2-publishing-exploration.md
+//! Scope: active-designing/date/20260812/20260812-173656_tact-journey2-publishing-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

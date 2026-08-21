@@ -7,7 +7,7 @@
 
 let cache = "tools/.cache/proven-seat"
 let img = "${cache}/sculpt-26-04.img"
-let pin = "active-designing/20260712-195339_proven-seat-g1-crossing-pin.md"
+let pin = "active-designing/date/20260712/20260712-195339_proven-seat-g1-crossing-pin.md"
 let expected = "241b916ab9e3ed25a089c27119aac98f80fe4d3e67101936b4e69d7f1c708f14"
 
 say "proven-seat G1 crossing: G0 ground — Sculpt image…"

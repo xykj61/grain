@@ -24,7 +24,7 @@
 //!   rye build pond/apps/fairtrade_cert_bron.rye -femit-bin=pond/bin/fairtrade-cert-bron
 //!   pond/bin/fairtrade-cert-bron selftest
 //!
-//! Scope: active-designing/20260812-193727_ayre-journey7-fair-trade-exploration.md
+//! Scope: active-designing/date/20260812/20260812-193727_ayre-journey7-fair-trade-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

@@ -104,7 +104,7 @@ class_a="$(rg -n --no-heading 'Seva Fund|%seva|seva\.fund' \
 class_a="${class_a:-0}"
 class_a_held="$(rg -n --no-heading 'Seva Fund|%seva|seva\.fund' \
   context/LEXICON.md \
-  counsel/20260727-152801_the-siya-turn.md \
+  counsel/date/20260727/20260727-152801_the-siya-turn.md \
   mycelium/constellation/SPEC.md \
   2>/dev/null | wc -l | tr -d ' ')"
 class_a_held="${class_a_held:-0}"

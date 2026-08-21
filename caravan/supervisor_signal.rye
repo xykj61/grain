@@ -2,7 +2,7 @@
 //!
 //! The handler's whole job is one atomic store; ordinary code at the supervisor
 //! loop top creates the sentinel file. Counsel:
-//! [`counsel/20260707-021012_claude-counsel-ring4-signal-handler.md`](../counsel/20260707-021012_claude-counsel-ring4-signal-handler.md)
+//! [`counsel/date/20260707/20260707-021012_claude-counsel-ring4-signal-handler.md`](../counsel/date/20260707/20260707-021012_claude-counsel-ring4-signal-handler.md)
 
 const std = @import("std");
 const posix = std.posix;

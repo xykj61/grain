@@ -32,9 +32,9 @@ echo "fascia_fields=$fascia_fields"
 # Three completed tend waymarks (docs-and-measurement only).
 marks=0
 for f in \
-  waymarks/20260730-041039_tend-one-fascia-delta.md \
-  waymarks/20260730-085559_tend-two-fascia-delta.md \
-  waymarks/20260730-102430_tend-three-fascia-delta.md
+  waymarks/date/20260730/20260730-041039_tend-one-fascia-delta.md \
+  waymarks/date/20260730/20260730-085559_tend-two-fascia-delta.md \
+  waymarks/date/20260730/20260730-102430_tend-three-fascia-delta.md
 do
   if [ -f "$f" ]; then
     marks=$((marks + 1))

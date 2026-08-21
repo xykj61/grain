@@ -5,7 +5,7 @@
 # tools/place_paint_witness.rish (no-repeat, one anchored copy). Where those tile at the pattern's native size, round
 # RESIZES each copy so a whole count paves the box exactly -- no gap and no clip. It composes over image/scale.rye (the
 # nearest-neighbor resize) and image/compose.rye (the src-over blit), adding no new resample, no color math, no codec.
-# Design read: active-designing/20260816-210735_season-g-color-algebra-crux.md (the open-media floor this joins).
+# Design read: active-designing/date/20260816/20260816-210735_season-g-color-algebra-crux.md (the open-media floor this joins).
 # Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS spec -- public standards only).
 #
 # The crux this witness proves is that round SCALES the tile rather than clipping or gapping it: an exact fit rounds to a

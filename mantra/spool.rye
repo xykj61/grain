@@ -23,7 +23,7 @@
 //!   rye build mantra/spool.rye -femit-bin=mantra/bin/spool
 //!   mantra/bin/spool selftest
 //!
-//! Scope: active-designing/20260812-191206_gism-red73-spool-chunking-storage-exploration.md
+//! Scope: active-designing/date/20260812/20260812-191206_gism-red73-spool-chunking-storage-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

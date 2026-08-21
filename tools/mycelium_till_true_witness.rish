@@ -14,7 +14,7 @@
 # The fixture is reproducible (the generator re-emits byte-identical bytes), and a tampered record refuses
 # BadFormat. Composes cord_bron + cord + till public API only; demo keeper seeds — no key/funds/network/custody.
 #
-# Scope: active-designing/20260813-064129_mycelium-till-double-spend-exploration.md
+# Scope: active-designing/date/20260813/20260813-064129_mycelium-till-double-spend-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mycelium_till_true_witness.rish

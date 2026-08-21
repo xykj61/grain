@@ -28,7 +28,7 @@ grep -q 'quint' context/LEXICON.md
 test -f context/CIVIC_STYLE.md
 test -f gratitude/kia.md
 test -f foundations/yonder/20260728-032134_keeh-and-kia.md
-test -f counsel/20260728-032134_keeh-kia-sponsor.md
+test -f counsel/date/20260728/20260728-032134_keeh-kia-sponsor.md
 test -f "$PAGE"
 grep -q 'Keeh' "$PAGE"
 grep -q 'Aquarius' "$PAGE"
@@ -40,7 +40,7 @@ grep -q 'Facebook Marketplace' "$PAGE"
 grep -q 'non-CVT\|not CVT' "$PAGE"
 grep -q 'no live deploy' "$PAGE"
 grep -q 'witness:keeh-open GREEN' "$PAGE"
-test -f counsel/20260728-030310_the-keeh-season-quint-charter.md
+test -f counsel/date/20260728/20260728-030310_the-keeh-season-quint-charter.md
 
 name=Keeh
 len=$(printf '%s' "$name" | wc -c)

@@ -5,7 +5,7 @@
 **Voice:** Quin  
 **Status:** Design — Mixed · **Checkable** where it cites the Nock interpreter pin, truth seam, and loobean conversions · **Vision** where future noun codecs widen  
 **Room:** Design (hot shelf) — graduates to [`docs/`](../../../docs/) when interop claims compress under witnesses  
-**Ground:** [`../../../glow/nock/README.md`](../../../glow/nock/README.md) · [`../../../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](../../../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md) · counsel [`../../../counsel/20260726-020825_the-cheap-hour.md`](../../../counsel/20260726-020825_the-cheap-hour.md)
+**Ground:** [`../../../glow/nock/README.md`](../../../glow/nock/README.md) · [`../../../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](../../../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md) · counsel [`../../../counsel/date/20260726/20260726-020825_the-cheap-hour.md`](../../../counsel/date/20260726/20260726-020825_the-cheap-hour.md)
 
 ---
 

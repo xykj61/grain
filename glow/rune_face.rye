@@ -1,7 +1,7 @@
 //! glow-book: runes.md#g-face
 //! glow/rune_face.rye — parses Glow's `=/` typed-let (face binding) rune head.
 //!
-//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
+//! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
 //! `=` category: `=/` is let, typed. The brief's composition uses
 //! `=/  cur-record=record` and `=/  next-root=@u32` before the bound value.
 //! This extracts the face clause only — the value expression is not this

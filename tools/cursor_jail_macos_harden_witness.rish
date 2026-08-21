@@ -1,7 +1,7 @@
 # cursor_jail_macos_harden_witness.rish — proves the --harden-home profile
 # emitted by tools/cursor_jail_macos.rish actually denies reads to real
 # home dotfiles (the .ssh/.gnupg exfiltration path named in
-# session-logs/20260714-074900_read-fence-vs-jail-local-keys-security-question.bron),
+# session-logs/date/20260714/20260714-074900_read-fence-vs-jail-local-keys-security-question.bron),
 # while the small, named allow-back list (git identity, shell rc) still
 # works, and the ordinary project read/write fence is untouched.
 #

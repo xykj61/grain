@@ -22,4 +22,4 @@ rishi/bin/rishi run tools/mand_ring2_witness.rish
 rishi/bin/rishi run tools/mand_ring3_witness.rish
 ```
 
-Counsel: [`../counsel/20260725-001200_forgetting-without-breaking.md`](../counsel/20260725-001200_forgetting-without-breaking.md) · claim [`../waymarks/20260725-120701_mand-home-ring3.md`](../waymarks/20260725-120701_mand-home-ring3.md)
+Counsel: [`../counsel/date/20260725/20260725-001200_forgetting-without-breaking.md`](../counsel/date/20260725/20260725-001200_forgetting-without-breaking.md) · claim [`../waymarks/date/20260725/20260725-120701_mand-home-ring3.md`](../waymarks/date/20260725/20260725-120701_mand-home-ring3.md)

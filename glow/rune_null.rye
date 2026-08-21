@@ -1,7 +1,7 @@
 //! glow-book: runes.md#g-null
 //! glow/rune_null.rye — parses Glow's `?~` null-test rune head.
 //!
-//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
+//! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
 //! `?` category: `?~` is the null test. The brief's composition uses
 //! `?~  records.cur  root` — if the subject is null, take the then arm
 //! (`root`); else continue. This extracts the subject wing only. Then/else

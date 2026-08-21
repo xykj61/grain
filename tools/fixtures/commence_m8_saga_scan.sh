@@ -67,14 +67,14 @@ while IFS='|' read -r label path; do
     exit 1
   fi
 done <<'BEATS'
-M1|waymarks/20260731-014410_commence-m1-census-green.md
-M2|waymarks/20260731-020306_commence-m2-glow-rune-census-green.md
-e93|waymarks/20260731-114927_e93-ironbeetle-ep044-ch7-open-green.md
-e94|waymarks/20260731-115725_e94-ironbeetle-ep045-green.md
-M4b|waymarks/20260731-120704_e95-census-control-ch7-green.md
-M5|waymarks/20260731-122009_e96-commence-m5-recut-green.md
-M6|waymarks/20260731-124325_e97-commence-m6-see-green.md
-M7|waymarks/20260731-124815_e98-commence-m7-shed-weave-green.md
+M1|waymarks/date/20260731/20260731-014410_commence-m1-census-green.md
+M2|waymarks/date/20260731/20260731-020306_commence-m2-glow-rune-census-green.md
+e93|waymarks/date/20260731/20260731-114927_e93-ironbeetle-ep044-ch7-open-green.md
+e94|waymarks/date/20260731/20260731-115725_e94-ironbeetle-ep045-green.md
+M4b|waymarks/date/20260731/20260731-120704_e95-census-control-ch7-green.md
+M5|waymarks/date/20260731/20260731-122009_e96-commence-m5-recut-green.md
+M6|waymarks/date/20260731/20260731-124325_e97-commence-m6-see-green.md
+M7|waymarks/date/20260731/20260731-124815_e98-commence-m7-shed-weave-green.md
 BEATS
 
 if test "$BEATS_OK" -ne "$BEATS_WANT"; then

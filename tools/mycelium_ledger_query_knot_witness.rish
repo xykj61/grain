@@ -17,7 +17,7 @@
 # Additive: composes ledger_query (r1's answer_over_state / answer_over), cord_knot, and fold public API
 # only; both rung one and the Knot stay their own GREEN binaries under this one.
 #
-# Scope: active-designing/20260813-053843_mycelium-ledger-voice-exploration.md
+# Scope: active-designing/date/20260813/20260813-053843_mycelium-ledger-voice-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mycelium_ledger_query_knot_witness.rish

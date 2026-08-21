@@ -8,7 +8,7 @@ say "e50: Language EN — yes seats the future dual-equinox expedition."
 say "e50: Style Radiant — approve · gate · do not begin."
 say "e50: Lens TAME — e50 · geode · +128 · outer pause."
 
-let counsel = read-file "counsel/20260730-162222_e50-dual-equinox-geode-expedition-breach.md"
+let counsel = read-file "counsel/date/20260730/20260730-162222_e50-dual-equinox-geode-expedition-breach.md"
 assert counsel contains "approved · seated · gated" else "e50: counsel want approved gated"
 assert counsel contains "does **not** begin this stamp" else "e50: counsel want gated begin"
 assert counsel contains "extend +128" else "e50: counsel want extend +128"

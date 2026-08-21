@@ -25,7 +25,7 @@
 //!   rye build pond/apps/ship_pilot.rye -femit-bin=pond/bin/ship-pilot
 //!   pond/bin/ship-pilot selftest
 //!
-//! Scope: active-designing/20260812-172129_tact-journey1-ship-pilot-exploration.md
+//! Scope: active-designing/date/20260812/20260812-172129_tact-journey1-ship-pilot-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

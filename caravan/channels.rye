@@ -5,7 +5,7 @@
 //! that link them, every link declared at construction and readable whole.
 //!
 //! The shape comes from the Microkit clean-room brief
-//! (`active-designing/20260819-094721_clean-room-microkit-protection-domains-channels.md`):
+//! (`active-designing/date/20260819/20260819-094721_clean-room-microkit-protection-domains-channels.md`):
 //! a channel joins exactly two domains, channels are the only way domains
 //! talk, and the entire communication graph is visible in the declaration
 //! rather than emerging at runtime. A static graph is a graph a witness can

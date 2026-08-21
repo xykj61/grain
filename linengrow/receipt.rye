@@ -3,7 +3,7 @@
 //!   rye build linengrow/receipt.rye -femit-bin=linengrow/bin/receipt
 //!   linengrow/bin/receipt selftest
 //!
-//! Scope: [`active-designing/20260702-195426_slcl1-verifiable-receipt.md`](../active-designing/20260702-195426_slcl1-verifiable-receipt.md)
+//! Scope: [`active-designing/date/20260702/20260702-195426_slcl1-verifiable-receipt.md`](../active-designing/date/20260702/20260702-195426_slcl1-verifiable-receipt.md)
 
 const std = @import("std");
 const assert = std.debug.assert;

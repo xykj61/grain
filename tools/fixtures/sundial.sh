@@ -40,7 +40,7 @@ MISS $1"
 }
 
 # Living door (tree) — always required for a healthy pier
-if test -f counsel/20260728-030310_the-keeh-season-quint-charter.md; then
+if test -f counsel/date/20260728/20260728-030310_the-keeh-season-quint-charter.md; then
   ok "live: Keeh quint charter"
 else
   miss "live: Keeh quint charter"

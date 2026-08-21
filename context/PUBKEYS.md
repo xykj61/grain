@@ -51,7 +51,7 @@ SHA256:2nVRCdyzWhT2XWk0vS9lWt8VJumFS1rDZBD9lrRlgWE
 DBF8 5343 7A93 7B4E 36B9 3611 D949 807A C26B 2B99
 ```
 
-**SSH · Cursor cloud lane-key** is a dedicated, revocable ed25519 key the Cursor cloud bench uses for SSHSIG commit signatures (`gpg.format=ssh`). It sits beside the ai-jail OpenPGP sandbox key as a third named lane — forge-mechanical, revocable, not the master. Seated `20260712.062656` after counsel park [`../counsel/20260712-061012_cloud-signing-key-park.md`](../counsel/20260712-061012_cloud-signing-key-park.md). Public form (OpenSSH one-line):
+**SSH · Cursor cloud lane-key** is a dedicated, revocable ed25519 key the Cursor cloud bench uses for SSHSIG commit signatures (`gpg.format=ssh`). It sits beside the ai-jail OpenPGP sandbox key as a third named lane — forge-mechanical, revocable, not the master. Seated `20260712.062656` after counsel park [`../counsel/date/20260712/20260712-061012_cloud-signing-key-park.md`](../counsel/date/20260712/20260712-061012_cloud-signing-key-park.md). Public form (OpenSSH one-line):
 
 ```
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPqiJsBjAsv4KymedFcUR891X1lgC90DW8yMtjcHJ/p0
