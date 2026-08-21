@@ -5,7 +5,7 @@
 **Last refreshed:** `20260801.033305` · e149 hygiene (halls · voice · rooms honest)  
 **Voice:** Kyri  
 **Kind:** root prod folder — most-inner crystallized canonical docs for live / real-time shipping  
-**Status:** Living crystal — Sangha pages + Glow tutorial seated; remaining genre rooms still crush-empty · Geode Season crush gated
+**Status:** Living crystal -- ten rooms filled `20260821.190149`: six crushed from real sources, three with named entry criteria, one pointer crush
 
 *Written together by Keaton and Riyo (charter with Quin; writing voice Riyo).*
 
@@ -17,18 +17,20 @@
 
 | Room | Role | Living content |
 |------|------|----------------|
-| [`api/`](api/README.md) | Professional API surface | crush-empty |
-| [`wiki/`](wiki/README.md) | Bidirectional relative-link Markdown wiki | crush-empty |
-| [`study/`](study/README.md) | Study guides | crush-empty |
-| [`libraries/`](libraries/README.md) | Library docs | crush-empty |
-| [`edu/`](edu/README.md) | Tutorials (shipped; `../edu/` may draft) | crush-empty · drafts in `../edu/` |
-| [`demos/`](demos/README.md) | Demos | crush-empty |
-| [`templates/`](templates/README.md) | Templates | **pointer crush** — Acme personalize + Bron (e149) |
-| [`blog/`](blog/README.md) | Blog posts | crush-empty |
-| [`press/`](press/README.md) | Press releases | crush-empty |
-| [`etc/`](etc/README.md) | Further shipping genres as seated | crush-empty |
-| [`sangha/`](sangha/README.md) | Sangha patterns (page-zero · three patterns) | **living** |
-| [`tutorials/`](tutorials/the-first-hour.md) | Shipped tutorials | **living** -- [The First Hour](tutorials/the-first-hour.md), the beginner path from `git clone` to a program you wrote that refuses to lie; and [Glow recursion](tutorials/recursion-in-glow.md) |
+| [`api/`](api/rishi-language-reference.md) | Professional API surface | **living** -- [the Rishi language reference](api/rishi-language-reference.md): every form the shell understands, each line run before it was written, and the edges |
+| [`wiki/`](wiki/README.md) | Bidirectional relative-link Markdown wiki | **living** -- the shelf's own crosslink map: every page, what it leads to, what leads back |
+| [`study/`](study/README.md) | Study guides | **living** -- [how to read this tree](study/README.md): four questions, four rooms, and two habits worth borrowing first |
+| [`libraries/`](libraries/README.md) | Library docs | **living, generated** -- 38 rooms holding Rye modules, counted off the tree by `tools/geode_libraries.rish` and held true by its witness |
+| [`edu/`](edu/README.md) | Tutorials (shipped; `../edu/` may draft) | **living** -- the index of teaching surfaces and which door leads where |
+| [`demos/`](demos/README.md) | Demos | **living** -- four things you can run in a minute, output included |
+| [`templates/`](templates/README.md) | Templates | **pointer crush** -- Acme personalize + Bron (e149) |
+| [`blog/`](blog/README.md) | Blog posts | **open, empty on purpose** -- the entry criterion is named, and nothing has met it |
+| [`press/`](press/README.md) | Press releases | **living** -- three announcements, indexed with their honest scope |
+| [`etc/`](etc/README.md) | Further shipping genres as seated | **open, empty on purpose** -- a waiting area, not a destination |
+| [`sangha/`](sangha/README.md) | Sangha patterns (page-zero - three patterns) | **living** |
+| [`tutorials/`](tutorials/the-first-hour.md) | Shipped tutorials | **living** -- [The First Hour](tutorials/the-first-hour.md) and [Glow recursion](tutorials/recursion-in-glow.md) |
+
+**Filled `20260821.190149`.** Ten rooms read *crush-empty* for three weeks. Six now hold real pages crushed from real sources; three name their entry criterion and say plainly why nothing has met it; one carries a pointer crush. **No room was filled with invented content** -- a shelf padded to look complete is worse than one that says what it has, and the discipline this room asks for (crush from what exists) is exactly the discipline that forbids it.
 
 ## Laws
 

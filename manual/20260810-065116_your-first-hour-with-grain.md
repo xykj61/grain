@@ -5,7 +5,7 @@
 **Voice:** Kyri
 **Audience:** an Acme Corporation employee meeting Grain for the first time — no prior knowledge assumed
 **Law:** [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md)
-**Status:** Tutorial — every command below runs today, on this tree, and ends at a line you can see with your own eyes
+**Status:** Tutorial — every command below runs today, on this tree, and ends at a line you can see with your own eyes. Step 2 corrected `20260821.190149` (REDS %117): the clone does not carry the built tools, and now says how to build them.
 
 ---
 
@@ -67,12 +67,20 @@ You will see the modules named above as folders — `kumara`, `scribe`, `vault`,
 
 ## Step 2 — Meet the Two Commands
 
-Grain speaks through two tools that already live inside your clone. You will not install them separately — they came with the copy.
+Grain speaks through two tools, and you build them once before anything else. They are **not** in the clone -- neither binary is tracked, because a compiler and a shell are things this tree builds rather than ships, and a 172 MB toolchain does not belong in a git history. Three commands put all three in place, and the first is the only one that reaches the network:
+
+```bash
+sh tools/fetch-toolchain.sh
+cd rye && ./bootstrap.sh && cd ..
+mkdir -p rishi/bin && env RYE_ZIG="$PWD/vendor/zig-toolchain/zig" rye/bin/rye build rishi/src/main.rye -femit-bin=rishi/bin/rishi
+```
+
+The first fetches the pinned Zig 0.16.0 and **refuses to extract a byte unless it matches a checksum kept in this repository**. The second is a language bootstrapping itself. The third builds the shell with the compiler you just built. *(Corrected `20260821.190149`: this page previously said the two tools "came with the copy," which was never true of a fresh clone -- REDS %117. The short exact form of these steps is [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md); this page is the welcome, that one is the path.)*
 
 - **`rye`** — the *builder*. It turns a module's source (a file ending in `.rye`) into a small program you can run. Think of it as the workshop that shapes a part.
 - **`rishi`** — the *witness runner*. It runs the little scripts (ending in `.rish`) that prove a fact about the system is true. Think of it as the inspector who checks the part after the workshop is done.
 
-They sit at `rye/bin/rye` and `rishi/bin/rishi` inside your clone. When this tutorial writes `rye build …` or `rishi/bin/rishi run …`, it means those tools, right there in your folder.
+They sit at `rye/bin/rye` and `rishi/bin/rishi` once the three commands above have run. When this tutorial writes `rye build …` or `rishi/bin/rishi run …`, it means those tools, right there in your folder.
 
 One idea will carry you through everything that follows: a **witness**. A *witness* is a short script that proves exactly one honest fact about Grain, and ends with a line that starts `GREEN:` when the fact holds. Green means true, checked, seen — not hoped, not remembered. Grain never asks you to take its word; it shows you the green line instead.
 
