@@ -1,0 +1,16 @@
+//! Printing corpus, the rung above -- the foot's telling again, byte for byte,
+//! beside a second telling that is the first plus one line of its own. So the
+//! corpus holds both shapes this scan reads: a whole body copied, and a
+//! staircase only the line reading can see.
+
+const std = @import("std");
+const print = std.debug.print;
+
+fn tell_the_run(report_out: *Report) void {
+    print("  positions this run carried: {d}\n", .{report_out.carried});
+}
+
+fn tell_the_tier(report_out: *Report) void {
+    print("  positions this run carried: {d}\n", .{report_out.carried});
+    print("  findings this run heard: {d}\n", .{report_out.heard});
+}
