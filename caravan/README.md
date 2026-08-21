@@ -2437,6 +2437,34 @@ What the body does is the arc's correspondence half, stated once. A run measures
 **The lesson this lap adds is about price rather than shape.** Twenty-six folds in, a family of thirty-five reached fifteen symbols and found every one of them already public. A fold pays its widenings once, and every fold after it inherits them; the ladder is now mostly paid, so the folds ahead are mostly free. What still costs is the reading -- hashing the family, auditing the reach, naming the absentee -- and that reading has never once been wasted.
 
 
+## Fold AB -- the dependent cluster, and the absentee that stands below the line
+
+The queue named **forty-three rungs by thirty-five lines, 1,470 carried**, and hashing every `run_dependent` on the ladder found sixty-seven bodies at eleven different lengths. Forty-three stand byte for byte alike; the other twenty-four are the arc's own memory of the walk growing. Fold Z's rule ran first this time, before scope was chosen: read the reach closure, since the helpers a body reaches are often its own cohort and fold with it for the price of one audit. They were, and they did.
+
+`run_dependent` reaches six symbols on its rung. Three already stood public in all forty-three -- `fixed_argv_words`, `inherited`, and `outcome_name`. Of the three that did not, one was already a delegate from fold L (`stand_taking_and_returning_reach`, needing only the word `pub`), and **two were real bodies that fold with it**: `inherited_at_first_breath`, standing byte for byte in exactly the same forty-three rungs at thirty lines apiece, and `slot_from_argv`, standing byte for byte in **fifty-nine**. So one reading bought three folds.
+
+**The fifty-nine named a third kind of absentee.** The sixteen rungs holding `slot_from_argv` outside the cohort are precisely the rungs the harness itself imports -- `cohort`, `cycle`, `confer`, `entrust`, `gap`, and the rest beneath the fold line. Folding them would have a rung the harness reaches for reach back through the harness, which inverts the ladder rather than lifting it. So the fold line is not the widest family; it is the widest family standing **above** the harness. The arc has now met an absentee dated by a shape born later, an absentee a single accessor brings home, and an absentee that stays home because of where it stands in the import order.
+
+What the body does is the whole dependent half of the arc, stated once. A dependent reads the plan it was handed, defers to the rung below for any verb this rung does not own, refuses an unreadable or over-wide capability count by name, rebuilds its own hands from the words on its argv line, counts the reach it inherited at its first breath **before** touching those hands, answers for that finding on the wire, and only then stands.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding `run_dependent` | 43 | **0**, each keeping a three-line delegate |
+| Rungs holding `inherited_at_first_breath` | 43 | **0**, each keeping a seven-line delegate |
+| Rungs holding `slot_from_argv` above the line | 43 | **0**; the sixteen below it keep their body |
+| Lines the three families carried | 3,600 | **771** |
+| Widenings the fold cost | -- | **130**, one word each, no accessor born |
+| The ladder's whole carry | 112,761 | **109,932** |
+| Carry ceiling | 112,800 | **110,000** |
+| Carrying families | 706 | **706** |
+
+**The arithmetic closes with no remainder.** Out went 42x35, 42x30, and 58x15 -- 1,470 plus 1,260 plus 870, or **3,600**. Back came 42x3, 42x7, 42x3, and the sixteen rungs below the line at 15x15 -- 126 plus 294 plus 126 plus 225, or **771**. The fall is **2,829**, exactly what the meter measured, and the largest single fall this arc has taken.
+
+**Carrying families held at 706 for a reason worth naming.** `slot_from_argv` split into two families, its delegates above the line and its bodies below -- one family gained. In the same act, widening `reachable_between` in `reclaim.rye` healed a two-rung private family into the forty-two-rung public one, leaving a singleton that carries nothing -- one family lost. Fold Z's split-by-the-word-`pub` recurred here and closed incidentally, which is what a paid ladder looks like.
+
+**The lesson this lap adds is about the shape of a fold rather than its price.** A queue names one family; a reach graph names a cluster. Reading the closure first cost one audit and lifted three families in a single lap, and the same reading drew the line the fold must stop at. The widest family on the ladder was never the right unit of work -- the widest family a harness may honestly reach is.
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.

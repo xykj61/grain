@@ -5644,20 +5644,8 @@ fn reckon_the_plan(
 // =========================================================================
 
 /// Reads the capability words a dependent was handed at its spawn into its slot.
-fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32) ?capabilities.DependentSlot {
-    // invariant: a dependent always knows which domain it is
-    assert(domain.len >= 1);
-    // invariant: the count stays within what one dependent may hold
-    assert(cap_count <= capabilities.max_caps_per_dependent);
-    var slot = capabilities.DependentSlot.init(domain);
-    var i: u32 = 0;
-    while (i < cap_count) : (i += 1) {
-        const cap = boot.read_cap_word(args[fixed_argv_words + i]) orelse return null;
-        slot.grant(cap) catch return null;
-    }
-    // invariant: the dependent holds exactly the capability words it was handed
-    assert(slot.cap_count == cap_count);
-    return slot;
+pub fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32) ?capabilities.DependentSlot {
+    return ladder_checks.slot_from_argv(@This(), args, domain, cap_count);
 }
 
 /// Answers whether this dependent already holds a capability over one region.
@@ -5753,35 +5741,12 @@ pub fn reachable_between(
 /// between the spawn and this first breath, so *something standing here* is no
 /// evidence at all. A word addressed to an **earlier** generation of this
 /// domain is evidence, and it is the whole of what inherited reach means.
-fn inherited_at_first_breath(
+pub fn inherited_at_first_breath(
     io: std.Io,
     base: *const capabilities.DependentSlot,
     domain: []const u8,
 ) u32 {
-    // invariant: a first breath always names the dependent drawing it
-    assert(domain.len >= 1);
-    // invariant: a first breath reads hands that hold their own line
-    assert(base.cap_count <= capabilities.max_caps_per_dependent);
-    const found: u32 = read_count(io, domain, ".given") catch return 0;
-    if (found == 0) return 0;
-    const mine: u32 = read_count(io, domain, ".epoch") catch return 0;
-    const meant_for: u32 = read_count(io, domain, ".for") catch return 0;
-    // invariant: a conferral is never addressed past the generation standing now
-    assert(meant_for <= mine);
-    if (meant_for == mine) return 0;
-    // invariant: a conferral never stands wider than one line may name
-    assert(found <= cycle.max_hops);
-    var words: Words = .{};
-    read_words(io, domain, &words) catch return 0;
-    var probe = base.*;
-    var i: u32 = 0;
-    while (i < found) : (i += 1) {
-        const word = word_at(&words, i) orelse break;
-        const cap = boot.read_cap_word(word) orelse break;
-        if (already_holds(&probe, cap.name_slice())) continue;
-        probe.grant(cap) catch break;
-    }
-    return reachable_between(io, &probe, &words, 0, found);
+    return ladder_checks.inherited_at_first_breath(@This(), io, base, domain);
 }
 
 /// One dependent's own line, read arc by arc against the count it was handed.
@@ -5867,7 +5832,7 @@ pub fn return_promised_reach(
 
 /// Reads the arcs this dependent was handed, then every arc it is conferred, and
 /// returns the reach the run asks back before it comes home.
-fn stand_taking_and_returning_reach(
+pub fn stand_taking_and_returning_reach(
     io: std.Io,
     base: *const capabilities.DependentSlot,
     slot: *capabilities.DependentSlot,
@@ -5880,39 +5845,7 @@ fn stand_taking_and_returning_reach(
 
 /// Runs as one supervised dependent, reading the wire before it trusts it.
 fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
-    // invariant: a dependent always receives its marker, domain, plan, and count
-    assert(args.len >= fixed_argv_words);
-    // invariant: a dependent always knows which domain it is
-    assert(args[2].len >= 1);
-    const domain = args[2];
-    const task = cycle.read_plan(args[3]) orelse return cohort.run_dependent(io, args);
-    if (task.verb != .stand) return cohort.run_dependent(io, args);
-
-    const cap_count = tally_parse_int.parse_int(u32, args[6], .{}) catch {
-        print("    {s}: refused an unreadable capability count\n", .{domain});
-        return carry.Outcome.malformed;
-    };
-    if (cap_count > capabilities.max_caps_per_dependent) {
-        print("    {s}: more capabilities than one dependent holds\n", .{domain});
-        return carry.Outcome.malformed;
-    }
-    if (fixed_argv_words + cap_count > args.len) {
-        print("    {s}: a capability count past the words it was handed\n", .{domain});
-        return carry.Outcome.malformed;
-    }
-    var slot = slot_from_argv(args, domain, cap_count) orelse {
-        print("    {s}: refused a malformed capability word\n", .{domain});
-        return carry.Outcome.malformed;
-    };
-    const base = slot;
-    const found = inherited_at_first_breath(io, &base, domain);
-    inherited(io, domain, found) catch {
-        print("    {s}: could not answer for what it found on the wire\n", .{domain});
-        return carry.Outcome.malformed;
-    };
-    const code = stand_taking_and_returning_reach(io, &base, &slot, domain, task, found);
-    print("    {s}: {s}\n", .{ domain, outcome_name(code) });
-    return code;
+    return ladder_checks.run_dependent(@This(), io, args);
 }
 
 // =========================================================================

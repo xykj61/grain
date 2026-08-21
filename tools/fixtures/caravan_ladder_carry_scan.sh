@@ -43,7 +43,7 @@
 #   remembered, so the next fold is chosen by measurement rather than by which
 #   family somebody happened to look at.
 #
-# CARAVAN_CARRY_CEILING (default 112800): how many carried lines the ladder may
+# CARAVAN_CARRY_CEILING (default 110000): how many carried lines the ladder may
 # hold. The scan prints what stands today rather than reciting it here, since a
 # number written into a comment drifts the moment a fold lands (REDS %110). That number is far larger than any the three named meters report, and
 # naming it plainly is the whole point of this scan -- the ladder's real carry
@@ -56,7 +56,10 @@
 # `confer_one` lifted out of forty, to 127,600 when `weigh_the_term` lifted
 # out of thirty-one, to 126,000 when `record_the_dispute` lifted out of
 # thirty-three, and to 124,700 when `graft_promised_reach` lifted out of
-# forty-two.
+# forty-two -- and downward on every fold since. The chain stops naming
+# figures here on purpose: a list of past ceilings written into a comment
+# drifts the moment a fold lands (REDS %110), and the ceiling standing
+# today is the default named below, beside the carry the scan prints.
 #
 # A FOLD PAYS ITS SUCCESSORS. `confer_slot` needed five symbols public across
 # forty-three rungs and found all five already public, because the fold before
@@ -92,6 +95,16 @@
 # set is therefore its SHAPE -- one depth means one shape born later, thirteen
 # depths mean thirteen laps of growth, and both stay home for the same reason.
 #
+# AN ABSENTEE CAN STAND BELOW THE FOLD LINE. `slot_from_argv` stood byte for
+# byte in FIFTY-NINE rungs, sixteen more than the body that reaches it -- and
+# those sixteen are the rungs the harness itself imports. Folding them would
+# have a rung the harness reaches for reach back through the harness, which
+# inverts the ladder rather than lifting it. So the fold line is not the widest
+# family; it is the widest family standing ABOVE the harness. This is the third
+# kind of absentee the arc has met: one dated by a shape born later, one a
+# single accessor brings home, and one that stays home because of where it
+# stands in the import order.
+#
 # A FOLD QUEUE IS A LEAD, NEVER A VERDICT. This scan names families by exact
 # text, so `fill_table` printed here as thirty-seven rungs carrying 2,484 lines
 # while forty-three rungs actually held it -- the six it left out differ by the
@@ -104,7 +117,7 @@
 # PASS and FAIL fixtures prove both paths without touching the tree.
 set -eu
 
-CEILING=${CARAVAN_CARRY_CEILING:-112800}
+CEILING=${CARAVAN_CARRY_CEILING:-110000}
 TOP=${CARAVAN_CARRY_TOP:-12}
 DIR=${CARAVAN_LADDER_DIR:-caravan}
 
