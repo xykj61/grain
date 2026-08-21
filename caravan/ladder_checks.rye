@@ -7317,3 +7317,143 @@ pub fn run_dependent(comptime rung: type, io: std.Io, args: []const [:0]const u8
     print("    {s}: {s}\n", .{ domain, rung.outcome_name(code) });
     return code;
 }
+
+/// Reads the wire for the address a reader published, bounded by the rung's own
+/// address ceiling.
+///
+/// One text for the whole correspondence tier: the note is opened through the
+/// rung's own path builder and its own plan name, so a rung keeps its notes
+/// wherever it keeps them and still reads them with this body.
+pub fn address_published(comptime rung: type, io: std.Io, out: *[rung.max_address_len]u8) ?[]const u8 {
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = rung.note_path(&path_buf, rung.plan_name, ".at") catch return null;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
+    defer file.close(io);
+    const got = file.readPositionalAll(io, out, 0) catch return null;
+    // invariant: an address never outgrows the bound its wire carries
+    assert(got <= rung.max_address_len);
+    var len: u32 = 0;
+    while (len < got and out[len] != 0 and out[len] != '\n') : (len += 1) {}
+    const address = out[0..len];
+    return if (rung.addressable(address)) address else null;
+}
+
+/// Reads back the one result a reader at this address was told, or nothing when
+/// nobody was told at all.
+pub fn told_of(comptime rung: type, io: std.Io, address: []const u8) ?rung.Result {
+    if (!rung.addressable(address)) return null;
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = rung.tell_path(&path_buf, address) catch return null;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
+    defer file.close(io);
+    var bytes: [1]u8 = @splat(0);
+    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
+    // invariant: an answer never outgrows the one result it names
+    assert(got <= 1);
+    if (got < 1) return null;
+    return rung.result_of_byte(bytes[0]);
+}
+
+/// Reads back the one plea a reader at this address pressed, or nothing when
+/// they wrote nothing.
+pub fn pressed_by(comptime rung: type, io: std.Io, address: []const u8) ?rung.Plea {
+    if (!rung.addressable(address)) return null;
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = rung.press_path(&path_buf, address) catch return null;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
+    defer file.close(io);
+    var bytes: [1]u8 = @splat(0);
+    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
+    // invariant: a reply never outgrows the one plea it names
+    assert(got <= 1);
+    if (got < 1) return null;
+    return rung.plea_of_byte(bytes[0]);
+}
+
+/// Reads back the position this run published, out of the place an operator
+/// would open to find it.
+pub fn appeal_published(comptime rung: type, io: std.Io) ?rung.Plea {
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = rung.note_path(&path_buf, rung.plan_name, ".appeal") catch return null;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
+    defer file.close(io);
+    var bytes: [1]u8 = @splat(0);
+    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
+    // invariant: a plea never outgrows the one position it names
+    assert(got <= 1);
+    if (got < 1) return null;
+    return rung.plea_of_byte(bytes[0]);
+}
+
+/// Reads where a living person stands and publishes it, then believes the report
+/// only after reading the posting back off the wire.
+///
+/// The arc's appeal half, stated once. A run finds the reader's address, counts
+/// what an unread answer costs, refuses by name where a position would be
+/// published that nobody voiced, writes the note, and reads it back out of the
+/// place an operator would open before the report believes a word of it.
+///
+/// Every reach here is seated through the rung handed in, so one text reads the
+/// appeal for whichever rung called it -- that rung's own wire, its own
+/// refusals, its own report.
+pub fn read_the_appeal(
+    comptime rung: type,
+    io: std.Io,
+    appeal: rung.Appeal,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    var address_buf: [rung.max_address_len]u8 = undefined;
+    const address = rung.address_published(io, &address_buf) orelse {
+        // invariant: a run with nobody to read leaves no reader unread
+        assert(rung.appeal_of(report_out).unread == 0);
+        return;
+    };
+    const told: u32 = if (rung.told_of(io, address) == null) 0 else 1;
+    if (told == 0) {
+        // invariant: a run that told nobody leaves no reader unread
+        assert(rung.appeal_of(report_out).unread == 0);
+        return;
+    }
+    const wrote = rung.pressed_by(io, address);
+    const replied = wrote != null;
+
+    // The measurement this rung moves, weighed against what the reader's own box
+    // actually carries rather than against what any plan asked for, so an answer
+    // left sitting unread is counted rather than refused.
+    rung.appeal_of(report_out).unread = rung.answer_unread(told, replied, appeal);
+    const heard_count = rung.appeal_heard_in(told, replied, appeal);
+    const unheard_count = rung.appeal_unheard_in(told, replied, appeal);
+    if (appeal == .closed) {
+        // invariant: a closed run reads nobody, however plainly they wrote
+        assert(heard_count == 0);
+        rung.appeal_of(report_out).unheard_back = unheard_count;
+        return;
+    }
+    if (!replied) {
+        // A reader who said nothing has nothing to publish, and the wire says so
+        // by leaving the record exactly as it reads.
+        //
+        // invariant: an unanswered telling is never published as a position
+        assert(heard_count == 0);
+        rung.appeal_of(report_out).unheard_back = unheard_count;
+        return;
+    }
+    // The supply, refused by name while the reply it read is still in hand: a
+    // run publishes a position only where the reader actually wrote one.
+    if (rung.unvoiced_appeal(if (replied) 1 else 0, heard_count)) |why| return why;
+    if (rung.appeal_refusal(told, heard_count, unheard_count)) |why| return why;
+    // invariant: a run that reached the appeal refuses nothing it must read
+    assert(heard_count == 1);
+    const plea = wrote orelse return error.AppealUnvoiced;
+    try rung.appeal_note(io, plea);
+    // The wire before the memory, once more: the position is read back out of
+    // the plan's own note, and only then does the report believe it.
+    const standing_plea = rung.appeal_published(io) orelse return error.AppealMisrecorded;
+    // The record half of this rung: an operator reads where a living person
+    // stands, so it must be where they actually stand.
+    if (!rung.quotes_plea(standing_plea, plea)) return error.AppealMisrecorded;
+    rung.appeal_of(report_out).heard_back = heard_count;
+    rung.appeal_of(report_out).unheard_back = unheard_count;
+    // invariant: an open run leaves no answered reader unread
+    assert(rung.appeal_of(report_out).unread == 0);
+}
