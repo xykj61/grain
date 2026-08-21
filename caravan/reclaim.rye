@@ -74,8 +74,8 @@ const notify = @import("notify.rye");
 const roundtrip = @import("roundtrip.rye");
 const cycle = @import("cycle.rye");
 const regions = @import("regions.rye");
-const queue_store = @import("queue.rye");
-const serve = @import("serve.rye");
+pub const queue_store = @import("queue.rye");
+pub const serve = @import("serve.rye");
 const gap = @import("gap.rye");
 const cohort = @import("cohort.rye");
 const intent = @import("intent.rye");
@@ -373,7 +373,7 @@ fn seat_note(io: std.Io, domain: []const u8, suffix: []const u8, bytes: []const 
 }
 
 /// Reads the one byte a counting note carries.
-fn read_count(io: std.Io, domain: []const u8, suffix: []const u8) NoteError!u8 {
+pub fn read_count(io: std.Io, domain: []const u8, suffix: []const u8) NoteError!u8 {
     // invariant: a note always names the dependent it belongs to
     assert(domain.len >= 1);
     // invariant: a note always carries one of the suffixes
@@ -389,7 +389,7 @@ fn read_count(io: std.Io, domain: []const u8, suffix: []const u8) NoteError!u8 {
 }
 
 /// Reads the word list a dependent's domain has been handed so far.
-fn read_words(io: std.Io, domain: []const u8, out: *Words) NoteError!void {
+pub fn read_words(io: std.Io, domain: []const u8, out: *Words) NoteError!void {
     // invariant: a word list always names the dependent that listens
     assert(domain.len >= 1);
     // invariant: a word list is always read into a list that starts empty
@@ -1115,7 +1115,7 @@ fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32
 }
 
 /// Answers whether this dependent already holds a capability over one region.
-fn already_holds(slot: *const capabilities.DependentSlot, region_name: []const u8) bool {
+pub fn already_holds(slot: *const capabilities.DependentSlot, region_name: []const u8) bool {
     // invariant: a holding is always asked about a named region
     assert(region_name.len >= 1);
     // invariant: a holding never reads past what one dependent may hold
@@ -1130,7 +1130,7 @@ fn already_holds(slot: *const capabilities.DependentSlot, region_name: []const u
 }
 
 /// Names the word at one depth of a list, or answers that the list is shorter.
-fn word_at(words: *const Words, index: u32) ?[]const u8 {
+pub fn word_at(words: *const Words, index: u32) ?[]const u8 {
     // invariant: a word is only ever sought inside what one dependent may hold
     assert(index < capabilities.max_caps_per_dependent);
     var seen: u32 = 0;
