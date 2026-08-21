@@ -216,7 +216,7 @@ pub fn facets_paged_screen(
 //     zero-result line carries no page tail, the named page equals the drawn page (no drift), the screen stacks header
 //     over shelf cell-for-cell, and the named refusals fire ---------------------------------------------------------
 
-/// A 16×8 sheet in four solid vertical bands (the part_row fixture), so a 4-wide window carries one known colour.
+/// A 16×8 sheet in four solid vertical bands (the part_row fixture), so a 4-wide window carries one known color.
 fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     const w: u32 = 16;
     const h: u32 = 8;
@@ -354,7 +354,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // A malformed clause surfaces the parser's own named refusal through the header (before any page work).
-    if (facets_paged_screen(garden, &cat, "material:stainless-304|colour:red", cols, 2, 0)) |_| {
+    if (facets_paged_screen(garden, &cat, "material:stainless-304|color:red", cols, 2, 0)) |_| {
         return error.LineSlipped;
     } else |e| {
         if (e != error.UnknownKey) return error.WrongLine;

@@ -231,7 +231,7 @@ fn craft_gradient(allocator: std.mem.Allocator) !qoi.Pixmap {
             const off = (@as(usize, y) * @as(usize, w) + @as(usize, x)) * 4;
             buf[off] = @intCast(x * 20 + 10); // r — a per-column gradient
             buf[off + 1] = @intCast(y * 20 + 10); // g — a per-row gradient
-            buf[off + 2] = @intCast(((x + y) * 12) & 0xff); // b — a diagonal, so a filter's colour work shows
+            buf[off + 2] = @intCast(((x + y) * 12) & 0xff); // b — a diagonal, so a filter's color work shows
             buf[off + 3] = 255;
         }
     }

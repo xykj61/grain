@@ -112,7 +112,7 @@ pub fn facets_sorted_shelf(
 //     (same parts, only reordered), is stable on ties, the sorted page equals a hand-sorted window, and the named
 //     refusals fire --------------------------------------------------------------------------------------------
 
-/// A 16×8 sheet in four solid vertical bands (the part_row fixture), so a 4-wide window carries one known colour.
+/// A 16×8 sheet in four solid vertical bands (the part_row fixture), so a 4-wide window carries one known color.
 fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     const w: u32 = 16;
     const h: u32 = 8;
@@ -264,7 +264,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // A malformed clause surfaces the parser's own named refusal before any sort.
-    if (facets_sorted_shelf(garden, &cat, "material:stainless-304|colour:red", cols, 4, 0)) |_| {
+    if (facets_sorted_shelf(garden, &cat, "material:stainless-304|color:red", cols, 4, 0)) |_| {
         return error.LineSlipped;
     } else |e| {
         if (e != error.UnknownKey) return error.WrongLine;

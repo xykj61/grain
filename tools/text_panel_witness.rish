@@ -9,7 +9,7 @@
 #
 # The crux this witness proves is CONTAINMENT: the text lives strictly inside the frame and never touches the border.
 # The inner content box is the panel inset on every side by the border thickness PLUS a padding gap, so the border ring
-# and the inked cells are DISJOINT by construction -- every ring pixel reads the border colour exactly (no ink bled onto
+# and the inked cells are DISJOINT by construction -- every ring pixel reads the border color exactly (no ink bled onto
 # the frame), and every ink pixel lies strictly inside the inner box (the text is sealed within the card). A borderless
 # panel (thickness 0) paints fill and text with no ring; determinism holds; and a panel that cannot hold its text refuses
 # BY NAME having painted nothing (BadPanelDims - PanelOutOfBounds - PanelTooSmall - PanelContentTooTall). Pure composition

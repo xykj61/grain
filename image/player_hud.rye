@@ -68,7 +68,7 @@ const block_x0: u32 = 4; // the block's first left edge
 
 /// The still ground behind the moving block -- a calm slate the block and both overlays sit on.
 const ground_color = color.Rgba{ .r = 30, .g = 34, .b = 44, .a = 255 };
-/// The moving block's colour -- a warm accent distinct from the ground and both overlays, so its motion is unmistakable.
+/// The moving block's color -- a warm accent distinct from the ground and both overlays, so its motion is unmistakable.
 const block_color = color.Rgba{ .r = 220, .g = 140, .b = 40, .a = 255 };
 
 /// Build one background frame: a still ground with the moving block in the mid-band for frame `k`. This is the plain,
@@ -195,7 +195,7 @@ fn diff_outside_hud(a: *const qoi.Pixmap, b: *const qoi.Pixmap, badge: text_pane
     return count;
 }
 
-/// Count the pixels of `img` whose RGBA equals `want` -- the honest measure of "how much of this colour is on screen".
+/// Count the pixels of `img` whose RGBA equals `want` -- the honest measure of "how much of this color is on screen".
 /// The scrubber's elapsed fill is opaque, so its pixel count is exactly the elapsed width times the inner height.
 fn count_color(img: *const qoi.Pixmap, want: color.Rgba) u32 {
     // invariant: the buffer holds four bytes per pixel -- the RGBA invariant a Pixmap carries.

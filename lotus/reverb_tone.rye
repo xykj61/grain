@@ -1,7 +1,7 @@
 //! lotus/reverb_tone.rye — ALES198: THE TONE — the reverb's DARKNESS knob, the high-cut on the reverberant tail. ALES190 gave the reverb WHICH
 //! room, ALES192/193 HOW MUCH (the wet/dry balance), ALES194–197 WHEN (the pre-delay). The axis left is HOW BRIGHT: a real room absorbs high
 //! frequencies as the sound bounces, so its reverberant tail is always DARKER than the source — the highs die first and the low wash lingers. Every
-//! console names this knob (damping · high-cut · tone · colour); without it a reverb rings metallic, with it the tail sits behind the mix the way a
+//! console names this knob (damping · high-cut · tone · color); without it a reverb rings metallic, with it the tail sits behind the mix the way a
 //! real space does. This rung is that knob.
 //!
 //! The shape: reverberate the span WET in place through ALES190's reverb_preset UNCHANGED, then roll the treble off the wet with ALES40's proven

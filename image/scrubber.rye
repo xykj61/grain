@@ -48,8 +48,8 @@ pub const scrubber_fps: u8 = 12;
 pub const scrubber_max_frames: u32 = 256;
 
 /// The playback scrubber -- a fixed rectangle drawn along the bottom edge of the frame. The border ring frames the bar;
-/// the inner track (the rect inset by `thickness` on every side) holds the empty `track` colour, over which the elapsed
-/// portion is filled in `fill`. Opaque by construction (every colour's alpha is 255): the bar fully overwrites the
+/// the inner track (the rect inset by `thickness` on every side) holds the empty `track` color, over which the elapsed
+/// portion is filled in `fill`. Opaque by construction (every color's alpha is 255): the bar fully overwrites the
 /// background beneath it, so its pixels depend only on the progress, never on what moves underneath. Shared by builder
 /// and witness so both name the exact same rectangle.
 pub const Scrubber = struct {
@@ -58,9 +58,9 @@ pub const Scrubber = struct {
     w: u32,
     h: u32,
     thickness: u32, // border ring width on every side; zero draws no ring
-    track: color.Rgba, // the empty (un-elapsed) bar colour
-    fill: color.Rgba, // the elapsed (played) portion colour
-    border: color.Rgba, // the ring colour
+    track: color.Rgba, // the empty (un-elapsed) bar color
+    fill: color.Rgba, // the elapsed (played) portion color
+    border: color.Rgba, // the ring color
 };
 
 /// The default scrubber for the selftest -- a lower-edge bar with a one-pixel blue frame, a dim track, a warm fill.
@@ -87,7 +87,7 @@ const block_x0: u32 = 4; // the block's first left edge
 
 /// The still ground behind the moving block -- a calm slate the block and the bar sit on.
 const ground_color = color.Rgba{ .r = 30, .g = 34, .b = 44, .a = 255 };
-/// The moving block's colour -- a cool accent distinct from the ground and the bar fill, so its motion is unmistakable.
+/// The moving block's color -- a cool accent distinct from the ground and the bar fill, so its motion is unmistakable.
 const block_color = color.Rgba{ .r = 90, .g = 200, .b = 160, .a = 255 };
 
 /// Prove a scrubber is well-formed BEFORE a pixel is painted: real extent, a border that fits, an inner track with real
@@ -155,7 +155,7 @@ pub fn paint_scrubber(frame: *qoi.Pixmap, bar: Scrubber, k: u32, frame_count: u3
     const inner_y: u32 = bar.y + bar.thickness;
     const inner_w: u32 = bar.w - 2 * bar.thickness;
     const inner_h: u32 = bar.h - 2 * bar.thickness;
-    // The empty track fills the whole inner area first, so an un-elapsed column reads the track colour, not background.
+    // The empty track fills the whole inner area first, so an un-elapsed column reads the track color, not background.
     try shape.fill_rect(frame, inner_x, inner_y, inner_w, inner_h, bar.track);
     const filled: u32 = elapsed_width(inner_w, k, frame_count);
     // invariant: the elapsed fill never exceeds the inner track it sits in.
@@ -208,7 +208,7 @@ pub fn videos_equal(a: *const frames.Video, b: *const frames.Video) bool {
     return true;
 }
 
-/// Count the pixels of `img` whose RGBA equals `want` -- the honest measure of "how much of this colour is on screen".
+/// Count the pixels of `img` whose RGBA equals `want` -- the honest measure of "how much of this color is on screen".
 /// The elapsed fill is opaque, so its pixel count is exactly the elapsed width times the inner height.
 fn count_color(img: *const qoi.Pixmap, want: color.Rgba) u32 {
     // invariant: the buffer holds four bytes per pixel -- the RGBA invariant a Pixmap carries.
@@ -267,14 +267,14 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const pixel_count = video.frame_pixels();
 
     // The CRUX, halves one and three -- the elapsed fill grows with playback and never runs backward. Measured as the
-    // count of opaque fill-colour pixels per frame: empty at the first frame, full at the last, non-decreasing between.
+    // count of opaque fill-color pixels per frame: empty at the first frame, full at the last, non-decreasing between.
     var prev_fill: u32 = 0;
     {
         var k: u32 = 0;
         while (k < frame_count) : (k += 1) {
             const lit = count_color(&video.frames[k], bar.fill);
             const want = elapsed_width(inner_w, k, frame_count) * inner_h;
-            // The fill colour on screen matches the pure progress map exactly (opaque, so count == width * height).
+            // The fill color on screen matches the pure progress map exactly (opaque, so count == width * height).
             if (lit != want) return error.FillCountOffModel;
             // invariant: the elapsed fill never shrinks from one frame to the next.
             if (lit < prev_fill) return error.FillRanBackward;
@@ -299,7 +299,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     // The bar's corner reads the opaque border, not a background pixel -- the bar really is where we claim.
     const corner = pixel_at(&video.frames[frame_count - 1], bar.x, bar.y);
     if (!corner.eql(bar.border)) return error.ScrubberCornerNotBorder;
-    // A mid-reel frame's leading un-elapsed column reads the track colour, proving the empty track was laid down.
+    // A mid-reel frame's leading un-elapsed column reads the track color, proving the empty track was laid down.
     const mid: u32 = frame_count / 2;
     const inner_x: u32 = bar.x + bar.thickness;
     const inner_y: u32 = bar.y + bar.thickness;

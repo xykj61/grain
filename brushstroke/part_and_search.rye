@@ -95,7 +95,7 @@ pub fn and_search_shelf(
 //     the hand-filtered window draws), the clauses commute on glass, a match-none compound draws a real empty page, a
 //     bad offset and a malformed clause each refuse by name ---------------------------------------------------------
 
-/// A 16×8 sheet in four solid vertical bands (the part_row fixture), so a 4-wide window carries one known colour.
+/// A 16×8 sheet in four solid vertical bands (the part_row fixture), so a 4-wide window carries one known color.
 fn craft_bands(allocator: std.mem.Allocator) !qoi.Pixmap {
     const w: u32 = 16;
     const h: u32 = 8;
@@ -210,7 +210,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     }
 
     // A malformed clause surfaces the parser's own named refusal to the glass layer — a bad facet draws nothing.
-    if (and_search_shelf(garden, &cat, "material:stainless-304 colour:red", cols, 4, 0)) |_| return error.LineSlipped else |e| {
+    if (and_search_shelf(garden, &cat, "material:stainless-304 color:red", cols, 4, 0)) |_| return error.LineSlipped else |e| {
         if (e != error.UnknownKey) return error.WrongLine;
     }
     if (and_search_result_count(&cat, "nocolonhere")) |_| return error.LineSlipped else |e| {
