@@ -11597,55 +11597,7 @@ fn tell_desist_half(bare_run: *Report, under_run: *Report) void {
 /// and this lap's own begin, so neither reading grows past the length a person
 /// takes in at one glance.
 pub fn tell_desist_tail(bare_run: *Report, under_run: *Report) void {
-    // invariant: a telling always reads two runs that were actually run
-    assert(run_of(bare_run).queued >= 1);
-    // invariant: a telling never reads more deliveries than one finding earns
-    assert(apprise_of(under_run).apprised <= 1);
-    print("  meetings this run said the upshot of: {d} holding, {d} abating\n", .{
-        redress_of(bare_run).redressed, redress_of(under_run).redressed,
-    });
-    print("  meetings this run closed without a word: {d} holding, {d} abating\n", .{
-        redress_of(bare_run).bare, redress_of(under_run).bare,
-    });
-    print("  debts a plan met whose meeting never said what it found: {d} against {d}\n", .{
-        redress_of(bare_run).hollow, redress_of(under_run).hollow,
-    });
-    print("  findings this run carried to the reader who won them: {d} holding, {d} abating\n", .{
-        apprise_of(bare_run).apprised, apprise_of(under_run).apprised,
-    });
-    print("  findings this run kept inside its own notes: {d} holding, {d} abating\n", .{
-        apprise_of(bare_run).withheld, apprise_of(under_run).withheld,
-    });
-    print("  findings a plan reached whose raiser was never told: {d} against {d}\n", .{
-        apprise_of(bare_run).unheard, apprise_of(under_run).unheard,
-    });
-    print("  answers this run read its reader's own word on: {d} holding, {d} abating\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.weighed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.weighed,
-    });
-    print("  answers this run carried with nobody asked about them: {d} holding, {d} abating\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unweighed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unweighed,
-    });
-    print("  answers a plan carried whose worth it never learned: {d} against {d}\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unmeasured, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.unmeasured,
-    });
-    print("  matters this run took up again on its reader's word: {d} holding, {d} abating\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.taken_up, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.taken_up,
-    });
-    print("  short words this run read and left closed: {d} holding, {d} abating\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.left_closed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.left_closed,
-    });
-    print("  words calling an answer short that opened nothing: {d} holding, {d} abating\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheeded, under_run.inner.inner.inner.inner.inner.inner.inner.inner.inner.unheeded,
-    });
-    print("  reopened matters this run looked at again and took down: {d} holding, {d} abating\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.looked, under_run.inner.inner.inner.inner.inner.inner.inner.inner.looked,
-    });
-    print("  reopened matters left standing for the run after: {d} holding, {d} abating\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.passed, under_run.inner.inner.inner.inner.inner.inner.inner.inner.passed,
-    });
-    print("  reopened matters a plan inherited that the run never looked at: {d} against {d}\n", .{
-        bare_run.inner.inner.inner.inner.inner.inner.inner.inner.unlooked, under_run.inner.inner.inner.inner.inner.inner.inner.inner.unlooked,
-    });
+    ladder_checks.tell_desist_tail(@This(), "holding", "abating", bare_run, under_run);
     tell_beckon_own(bare_run, under_run);
 }
 
