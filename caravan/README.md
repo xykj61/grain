@@ -2120,6 +2120,38 @@ The two eldest also predate whole lines rather than a depth. `confer.rye` and `r
 
 **The arithmetic closes with no remainder.** The family gave back 2,067 and the new twelve-line delegate family carries 468, so the carry falls 1,599 -- which is what the meter measured. On disk the same closure holds independently: forty rungs each shed forty-one lines for 1,640, the harness took 100, and 368,641 is what `wc` reports. **The forty-three widenings split no family, and measuring why is more interesting than the number.** Fold O's own gap came from splits -- a declaration line belongs to the body it opens, so making a symbol public in some holders and not others cuts one family in two. Here neither widened symbol could split. `revoke_one` stands in forty-four rungs as **five** families already, the folded forty sharing one body and the four elders each writing their own, so the whole family moved together. And `abandoning_of` stands in forty rungs as **forty** distinct bodies carrying nothing at all, since each names its own rung's report type -- widening three of them changed no family's membership. A widening is free of splits exactly when it moves a whole family or moves nothing, and this one did both.
 
+## Fold R -- `weigh_the_term`, and the absentee a single accessor brought home
+
+The printed queue named `weigh_the_term` at **thirty rungs by sixty-nine lines, 2,001 carried**, and hashing every body by that name on the ladder found a **thirty-first**. Fold O taught that a queue is a lead rather than a verdict; fold Q found five absentees a shape born later had dated out of the family. This lap found the other kind -- an absentee that could simply be invited in.
+
+`weigh_the_term` is the run's answer to the question an objection leaves open: how long does a recorded disagreement stand? A perpetual term never asks, so nothing expires and nothing is counted. Every other term reaches the reader's own published box, puts the question there, reads it back before weighing a word of the answer, and refuses a second hand that names any other quarrel. Past that refusal a hand at all is the objection raised again, and silence is the objection let go -- called so only where somebody was actually asked.
+
+**The thirty-first rung differed in six places, and every one of them was the same difference.** `lapse.rye` *owns* the lapsing tier, so it reached its own report directly where all thirty rungs above reach it through `lapsing_of`.
+
+| Rung | How it reaches the report |
+|---|---|
+| [`lapse.rye`](lapse.rye) | `report_out.unbounded`, `.asked`, `.renewed`, `.lapsed` -- its own tier, reached directly |
+| the thirty above | `lapsing_of(report_out).unbounded`, and the same three beside it |
+
+A rung that owns a tier can name the reach anyway. Three lines of identity accessor -- `pub fn lapsing_of(report_out: *Report) *Report { return report_out; }` -- and its sixty-nine folded with the other thirty. Fold M learned this on `recant.rye` and fold J on the staircase, and it holds here for the third time. **So the reading to make about an absentee is which kind it is:** one dated by a shape born after it, which stays home named, or one a single accessor brings home.
+
+**The fold cost twenty-two widenings, and fourteen of its sixteen symbols were already paid for.** Every helper this body names -- `escort_written`, `dispute_recorded`, `objection_unbounded`, `asked_in`, `address_published`, `ask_again`, `asked_of`, `renewed_by`, `renews`, `renewed_in`, `lapsed_in`, `unasked_lapse`, `lapse_refusal`, `lapse_note` -- along with `max_address_len` and the four types stood public in all thirty-one rungs already, widened by the folds before it. **A fold pays its successors**, and fold P's lesson reads truer each lap. Only `lapsing_of` needed widening, in the twenty-two rungs that still held it private.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding the body | 31 | **0**, each keeping a three-line delegate |
+| Lines the body carried | 2,001 | **90** -- the delegate is itself a copy |
+| Widenings the fold cost | -- | **22** (`lapsing_of` x 22) |
+| The ladder's whole carry | 129,478 | **127,567** |
+| Carry ceiling | 129,600 | **127,600** |
+| Lines on disk, tracked `caravan/*.rye` | 368,473 | **366,543** |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+**Both arithmetics close with no remainder.** The family gave back 2,001 -- twenty-nine copies of sixty-nine lines, since `lapse.rye` was unique and carried nothing -- and the new three-line delegate family carries 90 across thirty copies, so the carry falls 1,911, which is what the meter measured. On disk the same closure holds independently: thirty rungs each shed sixty-six lines, `lapse.rye` shed sixty-six and gained thirteen for its accessor, the harness took a hundred and three, and 1,930 is the fall `wc` reports over the tracked rungs.
+
+**The twenty-two widenings split no family and handed back nothing.** Fold Q measured why a widening can be free; this one is free for the simpler of the two reasons. Every one of the thirty `lapsing_of` bodies is a **distinct text**, since each names its own rung's report type, so the family carried zero lines before the widening and carries zero after. A widening that moves a whole family or moves nothing cannot split one, and thirty singletons are thirty nothings.
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.

@@ -6271,3 +6271,106 @@ pub fn confer_one(
 
     if (keeping == .pruned) try rung.revoke_one(io, table, slot, 0, report_out);
 }
+
+
+/// Weighs one published objection against the term the run was given -- asking
+/// the reader again where a term can expire, and reading their silence as a
+/// letting-go only where somebody was actually asked.
+///
+/// A term is the run's answer to the question an objection leaves open: how long
+/// does a recorded disagreement stand? A perpetual term never asks, so nothing
+/// expires and nothing is counted; every other term reaches the reader's own
+/// published box, puts the question there, reads it back before weighing a word
+/// of the answer, and refuses a second hand that names any other quarrel. Past
+/// that refusal a hand at all is the objection raised again, and silence is the
+/// objection let go.
+///
+/// **Thirty-one rungs hold this body byte for byte, and the queue could see
+/// thirty of them.** Fold O taught that a queue is a lead rather than a verdict,
+/// so every body named `weigh_the_term` was hashed before a line moved. Thirty
+/// stood alike at sixty-nine lines; the thirty-first, `lapse.rye`, differed in
+/// six places and every one of them was the same difference -- it *owns* the
+/// lapsing tier, so it reached its own report directly where every rung above
+/// reaches it through `lapsing_of`. A three-line identity accessor, born the way
+/// fold M and fold J each taught, folds all sixty-nine.
+///
+/// **The fold cost twenty-two widenings and gave back nothing to a family.**
+/// Fourteen of the sixteen symbols this body names stood public in all thirty-one
+/// rungs already, paid for by the folds before it -- a fold pays its successors.
+/// Only `lapsing_of` needed widening, and every one of its thirty bodies is a
+/// distinct text, since each reaches a different depth, so widening splits no
+/// family and hands back no carry.
+pub fn weigh_the_term(
+    comptime rung: type,
+    io: std.Io,
+    term: rung.Term,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    const marked = rung.escort_written(io);
+    const escorted: u32 = if (marked == null) 0 else 1;
+    if (escorted == 0) {
+        // invariant: a run that escorted nothing leaves no objection unbounded
+        assert(rung.lapsing_of(report_out).unbounded == 0);
+        return;
+    }
+    const held = rung.dispute_recorded(io);
+    const disputed = held != null;
+
+    // The measurement this rung moves, weighed against what the wire actually
+    // carries rather than against what any term asked for, so an objection left
+    // standing forever is counted rather than refused.
+    rung.lapsing_of(report_out).unbounded = rung.objection_unbounded(escorted, disputed, term);
+    const asked = rung.asked_in(escorted, disputed, term);
+    if (term == .perpetual) {
+        // invariant: an objection that stands forever was never asked about
+        assert(asked == 0);
+        return;
+    }
+    if (!disputed) {
+        // A record holding no disagreement has nothing to put a term on, and the
+        // wire says so by leaving the escort exactly as it reads.
+        //
+        // invariant: an unquarrelled word is never asked about
+        assert(asked == 0);
+        return;
+    }
+    const record = held orelse return error.LapseEarly;
+
+    // The asking, and the act that earns the right to read a later silence as
+    // silence. It reaches the reader's own box, and it is read back out of that
+    // box before a single word of the answer is weighed.
+    var address_buf: [rung.max_address_len]u8 = @splat(0);
+    const address = rung.address_published(io, &address_buf) orelse return error.CourierUnaddressed;
+    try rung.ask_again(io, address, record);
+    const question = rung.asked_of(io, address) orelse return error.LapseUnasked;
+    // A question naming any other quarrel would put a term on an objection this
+    // reader never raised, which is the same overreach as quoting them wrongly.
+    if (question[0] != record[0] or question[1] != record[1]) return error.LapseMisrenewed;
+    rung.lapsing_of(report_out).asked = asked;
+
+    // The reader's own second hand, or its absence. Neither is guessed at, and
+    // the supervisor writes neither.
+    const again = rung.renewed_by(io, address);
+    // The hard half of this rung: a hand naming any other reading raises a
+    // different quarrel entirely, and counting it as a renewal would keep a word
+    // standing that its reader let go.
+    if (again) |said| {
+        if (!rung.renews(said, record)) return error.LapseMisrenewed;
+    }
+    // Past that refusal, a second hand at all is this objection raised again.
+    const raised = again != null;
+    const renewed_count = rung.renewed_in(asked, raised);
+    const lapsed = rung.lapsed_in(asked, raised);
+    // The silence, refused by name while the question it followed is still in
+    // hand: a run calls an objection let go only where somebody was asked.
+    if (rung.unasked_lapse(asked, lapsed)) |why| return why;
+    if (rung.lapse_refusal(held, renewed_count, lapsed)) |why| return why;
+    // invariant: a run that reached the term refuses nothing it must write
+    assert(renewed_count + lapsed == 1);
+    const life: rung.Life = if (raised) .renewed else .lapsed;
+    try rung.lapse_note(io, life);
+    rung.lapsing_of(report_out).renewed = renewed_count;
+    rung.lapsing_of(report_out).lapsed = lapsed;
+    // invariant: a bounded run leaves no published objection unbounded
+    assert(rung.lapsing_of(report_out).unbounded == 0);
+}

@@ -43,8 +43,8 @@
 #   remembered, so the next fold is chosen by measurement rather than by which
 #   family somebody happened to look at.
 #
-# CARAVAN_CARRY_CEILING (default 129600): how many carried lines the ladder may
-# hold. 129,478 stand today across 10,195 copied bodies, and 708 families carry
+# CARAVAN_CARRY_CEILING (default 127600): how many carried lines the ladder may
+# hold. 127,567 stand today across 10,196 copied bodies, and 708 families carry
 # a copy. That number is far larger than any the three named meters report, and
 # naming it plainly is the whole point of this scan -- the ladder's real carry
 # was never the few thousand lines inside two prefixes. Each fold hands back the
@@ -52,8 +52,9 @@
 # `mend_the_plan` lifted out of thirty-seven rungs, to 135,000 when
 # `reckon_the_plan` lifted out of the same thirty-seven, to 132,700 when
 # `fill_table` lifted out of forty-three, to 131,200 when `confer_slot` lifted
-# out of the same forty-three at no widening cost at all, and to 129,600 when
-# `confer_one` lifted out of forty.
+# out of the same forty-three at no widening cost at all, to 129,600 when
+# `confer_one` lifted out of forty, and to 127,600 when `weigh_the_term` lifted
+# out of thirty-one.
 #
 # A FOLD PAYS ITS SUCCESSORS. `confer_slot` needed five symbols public across
 # forty-three rungs and found all five already public, because the fold before
@@ -69,6 +70,16 @@
 # stops being a per-rung fact. So the rungs a family leaves out say when the
 # shape it shares was born, and that is worth reading before folding.
 #
+# AN ABSENTEE CAN ALSO BE INVITED. `weigh_the_term` printed here as thirty rungs,
+# and hashing every body by that name found a thirty-first -- `lapse.rye`, which
+# differs in six places that are all one difference: it OWNS the lapsing tier, so
+# it reaches its own report directly where every rung above reaches it through
+# `lapsing_of`. A rung that owns a tier can name the reach anyway, and a
+# three-line identity accessor folded all sixty-nine of its lines with the other
+# thirty. Fold M learned this on `recant.rye` and fold J on the staircase; the
+# reading to make is which kind of absentee stands before you -- one dated by a
+# shape born later, or one a single accessor brings home.
+#
 # A FOLD QUEUE IS A LEAD, NEVER A VERDICT. This scan names families by exact
 # text, so `fill_table` printed here as thirty-seven rungs carrying 2,484 lines
 # while forty-three rungs actually held it -- the six it left out differ by the
@@ -81,7 +92,7 @@
 # PASS and FAIL fixtures prove both paths without touching the tree.
 set -eu
 
-CEILING=${CARAVAN_CARRY_CEILING:-129600}
+CEILING=${CARAVAN_CARRY_CEILING:-127600}
 TOP=${CARAVAN_CARRY_TOP:-12}
 DIR=${CARAVAN_LADDER_DIR:-caravan}
 
