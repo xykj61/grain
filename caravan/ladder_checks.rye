@@ -8335,3 +8335,434 @@ pub fn carry_the_amendment(
     // invariant: a carrying run leaves no correction waiting for its reader
     assert(rung.couriering_of(report_out).unreached == 0);
 }
+
+
+/// Reads what this plan's word stands in, or nothing at all.
+///
+/// The read an operator makes beside the settlement, and the read this run makes
+/// of its own note before the report believes a word of it. A plan nobody has
+/// pressed a quarrel against answers with a null rather than by claiming its
+/// word stands alone, since the honest reading of an empty note is that no run
+/// has said anything yet.
+///
+/// Twenty-six rungs held this body byte for byte.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn regard_published(comptime rung: type, io: std.Io) ?rung.Regard {
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = rung.note_path(&path_buf, rung.plan_name, ".regard") catch return null;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
+    defer file.close(io);
+    var bytes: [1]u8 = @splat(0);
+    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
+    // invariant: a regard never outgrows the one word it names
+    assert(got <= 1);
+    if (got < 1) return null;
+    return rung.regard_of_byte(bytes[0]);
+}
+
+
+/// Publishes what this plan's own word stands in, beside the word itself.
+///
+/// One byte into `plan.regard`, seated among the plan's own notes rather than in
+/// any reader's box, because the person this is written for is the operator who
+/// opens the outcome. The settlement says what the work came to; this says what
+/// company that word keeps.
+///
+/// Twenty-six rungs held this body byte for byte.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn regard_note(comptime rung: type, io: std.Io, regard: rung.Regard) rung.NoteError!void {
+    // invariant: only a word standing under a quarrel is ever published as one
+    assert(regard == .under);
+    try rung.seat_note(io, rung.plan_name, ".regard", &[_]u8{rung.regard_byte(regard)});
+}
+
+
+/// Carries one position past the run that heard it.
+///
+/// One byte into `plan.standing`, which is the only note of this arc a
+/// provisioning leaves alone. Every other note an operator opens is a finding of
+/// the run that wrote it; this one is a living person's statement that the
+/// matter is not over, quoted rather than composed, and it is written here so
+/// the run after this one opens already knowing.
+///
+/// Twenty-seven rungs held this body byte for byte.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn standing_note(comptime rung: type, io: std.Io, plea: rung.Plea) rung.NoteError!void {
+    // invariant: only a pressed quarrel is ever carried past its own run
+    assert(rung.endures(plea));
+    try rung.seat_note(io, rung.plan_name, ".standing", &[_]u8{rung.plea_byte(plea)});
+}
+
+
+/// Writes how long the position standing over this plan has stood, in runs.
+///
+/// One byte into `plan.dwell`, seated beside the standing note and living
+/// exactly as long as it does. A provisioning leaves both alone, since the age
+/// of a quarrel belongs to the quarrel rather than to any run that met it; a
+/// withdrawal takes both down together.
+///
+/// Twenty-four rungs held this body byte for byte.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn dwell_note(comptime rung: type, io: std.Io, runs: u32) rung.NoteError!void {
+    // invariant: an age only ever reaches the wire once it has stood a run
+    assert(runs >= 1);
+    // invariant: an age always fits the single byte that carries it
+    assert(runs <= rung.max_dwell_runs);
+    try rung.seat_note(io, rung.plan_name, ".dwell", &[_]u8{@intCast(runs)});
+}
+
+
+/// Reads how loudly the quarrel standing over this plan reads, or nothing.
+///
+/// A run that reads nothing here has met a plan whose standing no run has yet
+/// published, and says so with a null rather than by calling it quiet -- which
+/// is the honest reading, since an unpublished position may have outlasted a
+/// season.
+///
+/// Twenty-three rungs held this body byte for byte.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn swell_published(comptime rung: type, io: std.Io) ?rung.Volume {
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = rung.note_path(&path_buf, rung.plan_name, ".swell") catch return null;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
+    defer file.close(io);
+    var bytes: [1]u8 = @splat(0);
+    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
+    // invariant: a standing never outgrows the one byte it is written in
+    assert(got <= 1);
+    if (got < 1) return null;
+    return rung.volume_of_byte(bytes[0]);
+}
+
+
+/// Carries a pressed quarrel past the run that heard it, or lets it end there.
+///
+/// The wire before the memory, one tier further out than the reading below it:
+/// this run reads the plea it just published, weighs whether that plea is one a
+/// run may carry, writes it into the standing note the next provisioning leaves
+/// alone, and reads that note back before the report believes a word of it. A
+/// plan that carried a position from memory of having written one would be
+/// handing every run after it a quarrel on the strength of its own expectation.
+///
+/// A run that heard nobody has nothing to carry, and a reader content with how
+/// their quarrel came out has nothing that ought to survive them; both are
+/// endings this rung reaches for by weighing nothing rather than by inventing a
+/// position. A pressed quarrel a run heard and the run after it began without is
+/// the number this rung moves.
+///
+/// Twenty-two rungs held this body byte for byte, four more differed only by the word
+/// `pub`, and the enduring tier owner came home on three lines of identity accessor.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn carry_the_position(
+    comptime rung: type,
+    io: std.Io,
+    endurance: rung.Endurance,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    const plea = rung.appeal_published(io) orelse {
+        // invariant: a run that heard nobody carries no position forward
+        assert(rung.endure_of(report_out).kept == 0);
+        // invariant: a run that heard nobody drops no position either
+        assert(rung.endure_of(report_out).dropped == 0);
+        return;
+    };
+    const heard: u32 = 1;
+
+    // The measurement this rung moves, weighed against the plea the wire itself
+    // carries rather than against what any plan asked for, so a quarrel left to
+    // die with its run is counted rather than refused.
+    rung.endure_of(report_out).dropped = rung.position_dropped(heard, plea, endurance);
+    const kept_count = rung.kept_in(heard, plea, endurance);
+    const spent_count = rung.spent_in(heard, plea, endurance);
+    if (endurance == .spent) {
+        // invariant: a spending run carries nothing, however plainly its reader pressed
+        assert(kept_count == 0);
+        rung.endure_of(report_out).spent = spent_count;
+        return;
+    }
+    if (!rung.endures(plea)) {
+        // A reader content with the outcome has closed their own quarrel, and
+        // the wire says so by leaving the standing note exactly as it reads.
+        //
+        // invariant: a contentment is never carried past the run that earned it
+        assert(kept_count == 0);
+        rung.endure_of(report_out).spent = spent_count;
+        return;
+    }
+    // The supply, refused by name while the plea it read is still in hand: a run
+    // carries a position only where its holder actually pressed one.
+    if (rung.unpressed_endurance(if (rung.endures(plea)) 1 else 0, kept_count)) |why| return why;
+    if (rung.endure_refusal(heard, kept_count, spent_count)) |why| return why;
+    // invariant: a run that reached the endurance carries the one position it heard
+    assert(kept_count == 1);
+    try standing_note(rung, io, plea);
+    // The wire before the memory, once more: the position is read back out of
+    // the note the next run will open, and only then does the report believe it.
+    const carried = rung.position_standing(io) orelse return error.EndureMisremembered;
+    // The record half of this rung: the next run opens this byte and begins its
+    // whole season believing a person is still in a quarrel, so it must be the
+    // quarrel this run actually heard.
+    if (!rung.quotes_standing(carried, plea)) return error.EndureMisremembered;
+    rung.endure_of(report_out).kept = kept_count;
+    rung.endure_of(report_out).spent = spent_count;
+    // invariant: a keeping run drops no position it heard
+    assert(rung.endure_of(report_out).dropped == 0);
+}
+
+
+/// Weighs the quarrel this run inherited into the word an operator will read.
+///
+/// The wire before the memory, one tier further out than the carrying below it:
+/// this run takes the position it read before its record was ever opened, takes
+/// the settlement it has since published, weighs whether that word ought to
+/// stand alone, writes the regard beside the settlement, and reads that byte
+/// back before the report believes it. A plan that published a regard from
+/// memory of having written one would be telling every operator its outcome is
+/// qualified on the strength of its own expectation.
+///
+/// A run nobody has pressed a quarrel against has nothing to weigh, and a plan
+/// that came up short already tells its reader the work is unfinished; both are
+/// outcomes this rung reaches by weighing nothing rather than by publishing a
+/// qualification nobody is owed. A plan reported carried while an inherited
+/// quarrel stood against it is the number this rung moves.
+///
+/// Twenty-two rungs held this body byte for byte, three more held it differing only by
+/// the word `pub`, and the heeding tier owner held it too once the identity accessor
+/// it never needed was named -- so the family reads as one text across twenty-six.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn weigh_the_standing(
+    comptime rung: type,
+    io: std.Io,
+    taken_up: ?rung.Plea,
+    heed: rung.Heed,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    const pressed = taken_up orelse {
+        // invariant: a run nobody pressed a quarrel against weighs no position
+        assert(rung.heed_of(report_out).heeded == 0);
+        // invariant: a run nobody pressed a quarrel against leaves none unweighed
+        assert(rung.heed_of(report_out).unheeded == 0);
+        return;
+    };
+    const stood: u32 = 1;
+    const settled = rung.settlement_published(io) orelse return error.HeedEarly;
+
+    // The measurement this rung moves, weighed against the position the wire
+    // itself carried and the word this run itself published, so a quarrel left
+    // to stand unanswered is counted rather than refused.
+    rung.heed_of(report_out).unheeded = rung.standing_unweighed(stood, pressed, settled, heed);
+    const weighed_count = rung.heeded_in(stood, pressed, heed);
+    const left_count = rung.unweighed_in(stood, pressed, heed);
+    if (heed == .unweighed) {
+        // invariant: an unweighing run publishes nothing, however plainly the quarrel stands
+        assert(weighed_count == 0);
+        rung.heed_of(report_out).unweighed = left_count;
+        return;
+    }
+    if (!rung.endures(pressed)) {
+        // A byte no endurance of this arc would ever have written is no position
+        // to stand under, and the wire says so by leaving the regard unwritten.
+        //
+        // invariant: a word never stands under a quarrel nobody pressed
+        assert(weighed_count == 0);
+        rung.heed_of(report_out).unweighed = left_count;
+        return;
+    }
+    // The supply, refused by name while the position it read is still in hand: a
+    // run stands under a quarrel only where a living person actually pressed one.
+    if (rung.unpressed_regard(if (rung.endures(pressed)) 1 else 0, weighed_count)) |why| return why;
+    if (rung.heed_refusal(stood, weighed_count, left_count)) |why| return why;
+    // invariant: a run that reached the heeding weighs the one position it inherited
+    assert(weighed_count == 1);
+    try regard_note(rung, io, .under);
+    // The wire before the memory, once more: the regard is read back out of the
+    // note an operator opens beside the settlement, and only then does the report
+    // believe it.
+    const published = regard_published(rung, io) orelse return error.HeedMisrecorded;
+    // The record half of this rung: an operator takes that byte and the
+    // settlement together as the whole outcome, so it must be the regard this
+    // plan truly stands in.
+    if (!rung.regard_holds(published, pressed)) return error.HeedMisrecorded;
+    rung.heed_of(report_out).heeded = weighed_count;
+    rung.heed_of(report_out).unweighed = left_count;
+    // invariant: a weighing run leaves no inherited quarrel unanswered
+    assert(rung.heed_of(report_out).unheeded == 0);
+}
+
+
+/// Says how long the position still standing over this plan has stood.
+///
+/// It runs last of all, because a position has stood through this run only once
+/// the run is over -- and because the relenting at the top of the run may
+/// already have taken down the very note an age would be written beside.
+///
+/// The wire before the memory, one tier further out than the relenting above
+/// it: this run opens whatever position survived it, reads the age already on
+/// the wire, climbs that age by the run just finished, refuses by name an age
+/// that would forget runs already counted, writes it, and reads it back before
+/// the report believes a word of it. A plan reporting an age from memory of
+/// having written one would hand every later operator a number the wire never
+/// carried.
+///
+/// A run with nothing standing has no age to write, and a byte no endurance of
+/// this arc would ever have written is no position to date; each is an ending
+/// this rung reaches by writing nothing rather than by dating a quarrel nobody
+/// holds. A standing quarrel whose note says nothing at all about how long it
+/// has stood is the number this rung moves.
+///
+/// Twenty-two rungs held this body byte for byte, one more differed only by the word
+/// `pub`, and the dating tier owner came home on three lines of identity accessor.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn date_the_standing(
+    comptime rung: type,
+    io: std.Io,
+    dwell: rung.Dwell,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    const stood_plea = rung.position_standing(io) orelse {
+        // invariant: a run with nothing standing dates no position
+        assert(rung.dwell_of(report_out).aged == 0);
+        // invariant: a run with nothing standing leaves none ageless
+        assert(rung.dwell_of(report_out).ageless == 0);
+        return;
+    };
+    if (!rung.endures(stood_plea)) {
+        // A byte no endurance of this arc would ever have written is no
+        // position to date, and the wire says so by leaving it exactly as it
+        // reads.
+        //
+        // invariant: a quarrel nobody pressed is never dated on their behalf
+        assert(rung.dwell_of(report_out).aged == 0);
+        return;
+    }
+    const standing_count: u32 = 1;
+
+    // The measurement this rung moves, weighed against the position actually
+    // left standing rather than against anything the plan asked for, so a
+    // quarrel standing undated is counted rather than refused.
+    rung.dwell_of(report_out).ageless = rung.standing_ageless(standing_count, dwell);
+    const told_count = rung.aged_in(standing_count, dwell);
+    const undated_count = rung.undated_in(standing_count, dwell);
+    if (dwell == .untold) {
+        // invariant: an untelling run dates nothing, however long the quarrel stood
+        assert(told_count == 0);
+        rung.dwell_of(report_out).undated = undated_count;
+        return;
+    }
+    if (rung.dwell_refusal(standing_count, told_count, undated_count)) |why| return why;
+
+    // The age already on the wire, read before a byte of it is replaced. A
+    // quarrel no run has yet dated reads null, and null is honestly nothing --
+    // this run is the first to count it, and it counts one.
+    const before = rung.dwell_published(io) orelse 0;
+    const now = rung.stood_longer(before);
+    // The hard half, refused by name while the byte it read is still in view: an
+    // age only ever climbs, since the runs a position stood through already
+    // happened and no later run can unhappen them.
+    if (rung.forgotten_dwell(before, now)) |why| return why;
+    // invariant: a telling run dates the one position it left standing
+    assert(told_count == 1);
+    try dwell_note(rung, io, now);
+    // The wire before the memory, once more: the note every run after this one
+    // opens is read back, and only then does the report believe it was written.
+    const after = rung.dwell_published(io);
+    // The record half of this rung: a note disagreeing with the age this run
+    // actually stood hands every future operator a number that means nothing.
+    if (!rung.dwell_holds(after, now)) return error.DwellMisrecorded;
+    rung.dwell_of(report_out).aged = told_count;
+    rung.dwell_of(report_out).undated = undated_count;
+    // invariant: a telling run leaves no standing quarrel undated
+    assert(rung.dwell_of(report_out).ageless == 0);
+}
+
+
+/// Publishes, beside the outcome, how loudly the quarrel standing here reads.
+///
+/// It runs last of all, after the dating below it, because the age this rung
+/// reads is the age that dating just left on the wire -- and because the
+/// relenting at the top of the run may already have taken down the very
+/// position a standing would speak about.
+///
+/// The wire before the memory, one tier further out than the dating above it:
+/// this run opens whatever position survived it, reads the age actually on the
+/// wire rather than any age it believes it wrote, weighs that age against a
+/// bound no run may move, writes the reading beside the settlement an operator
+/// opens, and reads it back before the report believes a word of it.
+///
+/// A run with nothing standing has no quarrel to herald, and a byte no
+/// endurance of this arc would ever have written is no position to speak for;
+/// each is an ending this rung reaches by publishing nothing. A quarrel young
+/// enough that its age is the whole story is heralded honestly as quiet, and
+/// costs the count nothing -- the number this rung moves is the long-standing
+/// position an operator reads no louder than a fresh one.
+///
+/// Twenty-two rungs held this body byte for byte, and the heralding tier owner came
+/// home on three lines of identity accessor.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn herald_the_standing(
+    comptime rung: type,
+    io: std.Io,
+    swell: rung.Swell,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    const stood_plea = rung.position_standing(io) orelse {
+        // invariant: a run with nothing standing heralds no position
+        assert(rung.swell_of(report_out).heralded == 0);
+        // invariant: a run with nothing standing leaves none unheralded
+        assert(rung.swell_of(report_out).unheralded == 0);
+        return;
+    };
+    if (!rung.endures(stood_plea)) {
+        // invariant: a quarrel nobody pressed is never heralded on their behalf
+        assert(rung.swell_of(report_out).heralded == 0);
+        return;
+    }
+    const standing_count: u32 = 1;
+
+    // The age this run reads is the age on the wire, never the age it believes
+    // it wrote. A position no run has dated reads null, and null is honestly
+    // nothing to speak from -- so the reading refuses by name rather than
+    // guessing at a volume.
+    const age = rung.dwell_published(io) orelse 0;
+    const dated = rung.dwell_published(io) != null;
+
+    // The measurement this rung moves, weighed against the position actually
+    // left standing rather than against anything the plan asked for, so a
+    // long-standing quarrel published nowhere is counted rather than refused.
+    rung.swell_of(report_out).unheralded = rung.standing_unheralded(standing_count, age, swell);
+    const loud_count = rung.heralded_in(standing_count, swell);
+    const quiet_count = rung.unpublished_in(standing_count, swell);
+    if (swell == .hushed) {
+        // invariant: a hushed run heralds nothing, however long the quarrel stood
+        assert(loud_count == 0);
+        rung.swell_of(report_out).unpublished = quiet_count;
+        return;
+    }
+    if (rung.swell_refusal(standing_count, loud_count, quiet_count, dated)) |why| return why;
+
+    const reading = rung.stands_loud(age);
+    // invariant: a heralding run speaks for the one position it left standing
+    assert(loud_count == 1);
+    try rung.swell_note(io, reading);
+    // The wire before the memory, once more: the note an operator opens beside
+    // the settlement is read back, and only then does the report believe it was
+    // written.
+    const after = swell_published(rung, io);
+    // The record half of this rung: this byte sits where the outcome is read,
+    // so a note disagreeing with the standing this run actually weighed would
+    // be the loudest wrong word on the wire.
+    if (!rung.swell_holds(after, reading)) return error.SwellMisrecorded;
+    rung.swell_of(report_out).heralded = loud_count;
+    rung.swell_of(report_out).unpublished = quiet_count;
+    // invariant: a heralding run leaves no long-standing quarrel unheralded
+    assert(rung.swell_of(report_out).unheralded == 0);
+}

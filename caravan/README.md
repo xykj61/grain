@@ -2646,6 +2646,45 @@ The fall the meter read is **4,356** -- the largest this arc has taken, half aga
 **The lesson this lap adds is that a delegate keeps the visibility of the body it replaces.** Two of these eleven were private in their rungs and stayed private, because nothing outside the rung ever called them and the harness reaches them as itself rather than through the type. Publishing a delegate that nobody outside reads would widen the module's surface for the fold's own convenience -- and a fold that quietly widens what it touches is charging a price it never names.
 
 
+## Fold AI -- the whole standing movement, and four tier owners home in one lap
+
+The queue named **`weigh_the_standing` at twenty-two rungs by fifty-seven lines, 1,197 carried**, and reading one tier out found its three siblings standing beside it: `date_the_standing` at twenty-two by fifty-six, `herald_the_standing` at twenty-two by fifty-three, and `carry_the_position` at twenty-two by fifty. Together they are one movement -- **what a run owes a quarrel still standing over its plan**, carried past the run that heard it, weighed into the word an operator reads, dated by how long it has stood, and heralded as loudly as that age deserves. The harness already runs them as a movement; `the_standing` calls all four in the order the arc grew.
+
+**Every one of the four carried its own tier owner, and every one came home.** `heed.rye`, `dwell.rye`, `swell.rye`, and `endure.rye` each own the tier their sibling body reports into, so each reached its own report directly where the rungs above reach through an accessor. Four identity accessors, three lines apiece, and four families that had never once stood whole stood whole together.
+
+| Family | Rungs | Lines | Carried before | Tier owner brought home |
+|---|---|---|---|---|
+| `weigh_the_standing` | 26 | 57 | 1,197 | `heed.rye` |
+| `date_the_standing` | 24 | 56 | 1,176 | `dwell.rye` |
+| `herald_the_standing` | 23 | 53 | 1,113 | `swell.rye` |
+| `carry_the_position` | 27 | 50 | 1,050 | `endure.rye` |
+| `regard_published` | 26 | 12 | 300 | -- |
+| `swell_published` | 23 | 12 | 264 | -- |
+| `dwell_note` | 24 | 7 | 161 | -- |
+| `standing_note` | 27 | 5 | 130 | -- |
+| `regard_note` | 26 | 5 | 125 | -- |
+
+**The second hop was nearly free, and it stopped where it should.** Of the forty-odd symbols the four bodies reach, every one already stood public in every rung that has it at all, and the ones absent from a rung are absent exactly where the tier structure says they should be -- `swell_published` and `Volume` live only from the heralding tier up. Most of the reached helpers are already three-line delegates from earlier laps and were left exactly where they are. Five were real bodies and lifted; the rest moved nothing and so did not move.
+
+**The visibility split here is meaning rather than accident.** Twenty-two rungs publish these bodies and four or five keep them private, and the reason is legible: a rung that only ever reaches the body through the harness's `the_standing` must publish it, since the harness calls `rung.weigh_the_standing`, while a rung that calls it itself has no reason to widen its own surface. Fold Z met this shape as a split to heal; this lap met it as a split to **keep**. So each delegate wears the visibility its body wore, and the meter honestly reads two families where the ladder honestly holds two.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding the nine bodies | 23 to 27 apiece | **0**, each keeping a delegate |
+| Widenings the fold cost | -- | **64**, plus four accessors born |
+| The ladder's whole carry | 94,151 | **89,010** |
+| Carry ceiling | 94,200 | **89,100** |
+| Carrying families | 707 | **708** |
+| The `check_` window | 47 | **47** |
+| The orchestration spine | 0 | **0** |
+
+The fall the meter read is **5,141** -- larger again than the lap before it, and it closes with no remainder: 5,780 carried in across the nine families and their visibility twins, 639 carried back out in delegates. Checks 47 and spine 0 stand unmoved for the **twelfth** fold running.
+
+**Carrying families rose by exactly one, and the one is a family born rather than a family split.** Before this lap `dwell.rye` and `swell.rye` each held their own private `date_the_standing`, two distinct texts standing alone. Folding gave both the same three-line delegate, so two singletons became one carrying pair. A fold that lifts bodies out can still leave a new family behind it, and the honest reading is that the meter counts texts rather than intentions.
+
+**The lesson this lap adds is that a movement is a better fold unit than a body.** The queue names one family at a time because it measures one name at a time, yet `the_standing` had been calling these four in sequence since the spine finished growing at `refer`. Reading the harness for what it already runs together found four families where the queue showed one -- and four tier owners whose accessors, born together, cost twelve lines and folded two hundred and sixteen.
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.
