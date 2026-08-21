@@ -2884,16 +2884,7 @@ pub fn standing_note(io: std.Io, plea: Plea) NoteError!void {
 /// which is the whole point -- and it says so with a null rather than by
 /// guessing when nobody has ever pressed anything here.
 pub fn position_standing(io: std.Io) ?Plea {
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = note_path(&path_buf, plan_name, ".standing") catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    var bytes: [1]u8 = @splat(0);
-    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
-    // invariant: a standing position never outgrows the one quarrel it names
-    assert(got <= 1);
-    if (got < 1) return null;
-    return plea_of_byte(bytes[0]);
+    return ladder_checks.position_standing(@This(), io);
 }
 
 /// Clears the standing position, so a lap begins with a plan nobody has pressed
