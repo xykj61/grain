@@ -2152,6 +2152,39 @@ A rung that owns a tier can name the reach anyway. Three lines of identity acces
 
 **The twenty-two widenings split no family and handed back nothing.** Fold Q measured why a widening can be free; this one is free for the simpler of the two reasons. Every one of the thirty `lapsing_of` bodies is a **distinct text**, since each names its own rung's report type, so the family carried zero lines before the widening and carries zero after. A widening that moves a whole family or moves nothing cannot split one, and thirty singletons are thirty nothings.
 
+## Fold S -- `record_the_dispute`, and the second tier-owner an accessor brought home
+
+The printed queue named `record_the_dispute` at **thirty-two rungs by sixty-one lines, 1,891 carried**, and hashing every body by that name on the ladder found a **thirty-third**. That is three consecutive laps where reading past the queue paid, and this one paid the same way fold R did -- an absentee that could simply be invited in.
+
+`record_the_dispute` is the run's answer to what a reader's objection earns. A run that carried nothing owes nobody a record, and says so by weighing nothing rather than by inventing a quarrel. A reader who agreed is left exactly as the rung below leaves them, agreed with and undisputed. Only a reader who answered in a word this plan cannot accept is written down -- and under `.settled` even that one is set aside, which is precisely the number this rung moves. Its hard half refuses a pair naming one reading twice: that is agreement wearing a quarrel's clothes, and writing it down would manufacture a disagreement nobody ever had.
+
+**The thirty-third rung differed in five places, and every one of them was the same difference.** `dispute.rye` *owns* the disputing tier, so it reached its own report directly where all thirty-two rungs above reach it through `disputing_of`.
+
+| Rung | How it reaches the report |
+|---|---|
+| [`dispute.rye`](dispute.rye) | `report_out.unrecorded` and `.recorded` -- its own tier, reached directly |
+| the thirty-two above | `disputing_of(report_out).unrecorded`, and `.recorded` beside it |
+
+Three lines of identity accessor -- `pub fn disputing_of(report_out: *Report) *Report { return report_out; }` -- and its sixty-one folded with the other thirty-two. **Fold R read this shape for the first time one lap ago, and fold S found it again immediately.** So a tier-owner standing outside its own family is no longer a surprise to stumble on; it is a shape to look for, every time a family is hashed before it is folded.
+
+**The fold cost forty-nine widenings, and fourteen of its sixteen symbols were already paid for.** Every helper this body names -- `address_published`, `answered_by`, `delivered_to`, `hand_agrees`, `answered_unrecorded`, `recorded_in`, `unwritten_in`, `unheard_record`, `dispute_refusal`, `founded`, `dispute_note` -- along with `max_address_len` and the types stood public in all thirty-three rungs already, widened by the folds before it. Only the two accessors needed widening: `couriering_of` in twenty-five rungs and `disputing_of` in twenty-four. Every one of their bodies is a distinct text, since each reaches a different depth, so the widening split no family and handed back no carry.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding the body | 33 | **0**, each keeping an eight-line delegate |
+| Lines the body carried | 1,891 | **256** -- the delegate is itself a copy |
+| Widenings the fold cost | -- | **49** (`couriering_of` x 25, `disputing_of` x 24) |
+| The ladder's whole carry | 127,567 | **125,932** |
+| Carry ceiling | 127,600 | **126,000** |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+**Both arithmetics close with no remainder.** The family gave back 1,891 -- thirty-one copies of sixty-one lines, since `dispute.rye` stood distinct and carried nothing -- and the new eight-line delegate family carries 256 across thirty-two copies, so the carry falls 1,635, which is what the meter measured. On disk the same closure holds independently: thirty-two rungs each shed fifty-three lines for 1,696, `dispute.rye` shed fifty-three and gained ten for its accessor, `ladder_checks.rye` took ninety-one, and 1,648 is the net fall over the real rung files.
+
+A naive count of tracked lines reads 366,543 -> 365,063, a fall of 1,480, and the 168-line gap has a name rather than a mystery: `caravan/parse_int.rye` and `caravan/tally_copy.rye` are tracked symlinks whose target text `wc` follows and `git show` does not. Naming the artifact is what keeps a discrepancy from becoming a drift.
+
+The choir stands **105 GREEN**, TAME bans clean, width-check clean.
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.

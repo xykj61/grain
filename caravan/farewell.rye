@@ -10915,60 +10915,7 @@ fn record_the_dispute(
     record: Standing,
     report_out: *Report,
 ) (RunError || NoteError)!void {
-    const carried = couriering_of(report_out).delivered;
-    if (carried == 0 or receipt == .unasked) {
-        // invariant: a run that heard nothing sets no answer aside
-        assert(disputing_of(report_out).unrecorded == 0);
-        return;
-    }
-    var address_buf: [max_address_len]u8 = @splat(0);
-    const address = address_published(io, &address_buf) orelse return error.CourierUnaddressed;
-    const hand = answered_by(io, address);
-    if (hand == null) {
-        // invariant: a reader who never wrote leaves no answer to record
-        assert(disputing_of(report_out).unrecorded == 0);
-        return;
-    }
-    const letter = delivered_to(io, address) orelse return error.DisputeEarly;
-    const said = hand orelse return error.DisputeUnheard;
-    const agreed = hand_agrees(letter, said);
-    const answered: u32 = 1;
-
-    // The measurement this rung moves, weighed against what the reader actually
-    // wrote rather than against what any standing asked for, so an answer set
-    // aside is counted rather than refused.
-    disputing_of(report_out).unrecorded = answered_unrecorded(answered, agreed, record);
-    const recorded = recorded_in(answered, agreed, record);
-    const unwritten = unwritten_in(answered, agreed, record);
-    if (record == .settled) {
-        // invariant: a settled record holds no disagreement, however plainly
-        // its reader objected
-        assert(recorded == 0);
-        return;
-    }
-    if (agreed) {
-        // A reader who agreed has nothing to dispute, and the record says so by
-        // holding one voice rather than manufacturing a second.
-        //
-        // invariant: an agreeing reader is never written down as disputing
-        assert(recorded == 0);
-        return;
-    }
-    // The supply, refused by name while the box it read is still in hand: a run
-    // records a disagreement only where a hand actually answered.
-    if (unheard_record(hand != null, recorded)) |why| return why;
-    if (dispute_refusal(said, agreed, unwritten, recorded)) |why| return why;
-    // invariant: a run that reached the record refuses nothing it must write
-    assert(recorded == 1);
-    const ours = letter[1];
-    // The record, and the hard half of this rung: a pair naming one reading
-    // twice is agreement wearing a quarrel's clothes, and writing it down would
-    // manufacture a disagreement nobody ever had.
-    if (!founded(.{ ours, said })) return error.DisputeUnfounded;
-    try dispute_note(io, ours, said);
-    disputing_of(report_out).recorded = recorded;
-    // invariant: an open record sets no answer of its reader aside
-    assert(disputing_of(report_out).unrecorded == 0);
+    return ladder_checks.record_the_dispute(@This(), io, receipt, record, report_out);
 }
 
 /// Stands the word this run published up beside the reading recorded against it.
