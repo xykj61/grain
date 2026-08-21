@@ -65,7 +65,9 @@ So the files themselves were checked rather than the issue. On `master` today, b
 
 **Unlocked by this read:** designing Caravan directly against the seL4 userlevel API rather than through a clean-room wall; treating `libsel4`, Microkit, and LionsOS as permissive references that may be read closely and, on a later word, vendored the way Monocypher and PQClean are.
 
-**Still waiting, and deliberately not taken here:** the **fetch itself**. The gate the study wrote is *"license read per component precedes any fetch"* -- the read comes first and its output is a verdict, which is what this document is. Bringing any of these into `vendor/` is the next step and a separate one, and it stays Keaton's word. Nothing has been cloned, vendored, or added to the tree by this document.
+**FETCH GRANTED AND TAKEN `20260821.042612`** (Keaton: *I grant the fetch, vendor sel4 userlevel and microkit*). `vendor/sel4` and `vendor/microkit` are gitlink submodules -- no vendored source in our history. **The per-file SPDX sweep this document named as an obligation was run, and is now a standing check** ([`../tools/sel4_userlevel_license_witness.rish`](../tools/sel4_userlevel_license_witness.rish)): **185 of 185 libsel4 files tagged, all 185 BSD-2-Clause, zero GPL** -- issue #245 genuinely resolved, checked rather than assumed. The kernel counts **618** GPL tags, proving the split from both sides. Microkit is **303** BSD-2-Clause with **exactly two** GPL files, both board device-tree overlays under `custom_dts/` and neither linkable code, bounded **by path** so a new one elsewhere reds. Both RED legs proven on metal.
+
+**Superseded below, kept for the record:** the fetch itself. The gate the study wrote is *"license read per component precedes any fetch"* -- the read comes first and its output is a verdict, which is what this document is. Bringing any of these into `vendor/` is the next step and a separate one, and it stays Keaton's word. Nothing has been cloned, vendored, or added to the tree by this document.
 
 **Also still waiting:** hardware, which was never at issue here, and the Genode C++ question, which this read leaves exactly where it stood.
 
