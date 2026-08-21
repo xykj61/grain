@@ -18,7 +18,7 @@
 #
 # WHAT THE WIDER QUESTION ANSWERS, MEASURED THIS LAP:
 #
-#   * **137,149 carried lines across 10,195 copied bodies**, out of 17,996 bodies standing in 104 modules. The three
+#   * **137,158 carried lines across 10,196 copied bodies**, out of 18,007 bodies standing in 105 modules. The three
 #     named meters together report 47 carried check lines, 2,686 carried printing lines, and 0 spine lines. Every one of
 #     those numbers is true. None of them is the ladder's carry, and the difference is two orders of magnitude.
 #   * **704 families carry at least one copy.** The largest this meter ever named was `mend_the_plan` -- 37 rungs
@@ -54,8 +54,8 @@ say "caravan-ladder-carry: Lens TAME -- safety first: the ceiling is named, the 
 let living = run ["sh" "tools/fixtures/caravan_ladder_carry_scan.sh"]
 assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
 assert living.out contains "CARRY_OK" else "caravan-ladder-carry: want the living carry under its named ceiling"
-assert living.out contains "CARRY_MODULES 104" else "caravan-ladder-carry: want all 104 ladder modules read, the rungs and the harness alike"
-assert living.out contains "CARRY_BODIES 17996 distinct=7801 copies=10195 carried_lines=137149" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
+assert living.out contains "CARRY_MODULES 105" else "caravan-ladder-carry: want all 105 ladder modules read, the rungs and the harness alike"
+assert living.out contains "CARRY_BODIES 18007 distinct=7811 copies=10196 carried_lines=137158" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
 
 say "caravan-ladder-carry: living ladder -- ${living.out}"
 
@@ -79,7 +79,7 @@ assert print_meter.out contains "PRINT_LINES total=4600 distinct=1914 carried=26
 let spine = run ["sh" "tools/fixtures/caravan_ladder_spine_scan.sh"]
 assert spine.ok else "caravan-ladder-carry: the spine meter must still stand -- ${spine.out}"
 assert spine.out contains "SPINE_LINES total=19 distinct=19 carried=0" else "caravan-ladder-carry: want the orchestration spine still folded"
-say "caravan-ladder-carry: three windows and the room -- checks carry 47, printing carries 2,686, the spine carries 0, and the whole ladder carries 137,149"
+say "caravan-ladder-carry: three windows and the room -- checks carry 47, printing carries 2,686, the spine carries 0, and the whole ladder carries 137,158"
 
 # The counting proven by hand, over a corpus no fold has touched. The foot writes one three-line body; the rung above
 # copies it byte for byte and adds one of its own. So three bodies stand, two of them different texts, and one is a
@@ -111,4 +111,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_c
 assert (ceiling.ok == false) else "caravan-ladder-carry: a carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-carry: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-carry -- the Caravan ladder carries 137,149 lines across 10,195 copied bodies of the 17,996 standing in 104 modules, held under a ceiling this fold brought down to 137,300, with the fold queue printed largest-first and led now by reckon_the_plan at 2,700 lines across 37 rungs, the three named meters read beside it so no window is mistaken for the room, the counting proven by hand on a two-rung corpus whose added body opens on a prefix no meter names, and all three RED paths refusing by name."
+say "GREEN: caravan-ladder-carry -- the Caravan ladder carries 137,158 lines across 10,196 copied bodies of the 18,007 standing on it, held under a ceiling this fold brought down to 137,300, with the fold queue printed largest-first and led now by reckon_the_plan at 2,700 lines across 37 rungs, the three named meters read beside it so no window is mistaken for the room, the counting proven by hand on a two-rung corpus whose added body opens on a prefix no meter names, and all three RED paths refusing by name."
