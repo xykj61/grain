@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260820.224901` -- the fold-E live edge folds as fold F lifts the reader-telling body
+
+**Walk-back nib:** `da143b789b` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when the note-writing pair had just lifted into the harness stands at this nib and every commit before it.
+
+**Swept:** `crux/REMEMBER.md` INNER LOOP -- the *live edge* bullet for **fold E** and the *prior live edge* bullet for the **printing meter**, folded together into one condensed-pointer line so the card leads with the round that just landed rather than carrying a second copy of the log index. Roughly two screenfuls fall away; every word stands at the nib above.
+
+**What waits there, worth recalling:** the inline account of **fold E** as it was written -- the six symbols `tell_path` and `tell_outcome` reach, the 29 x 34 arithmetic that predicted 986 deletions exactly, and the three-line call each rung kept -- beside the **printing meter** lap that found the carry in the first place: 2,468 distinct printing lines standing on disk 9,317 times across 42 rungs, 6,849 already written, and the honest naming of why two elder meters could not see it. Both accounts live on in `session-logs/20260820-223110_caravan-ladder-fold-e-the-note-writing-pair.kyri`, `session-logs/20260820-221349_caravan-ladder-the-printing-two-meters-cannot-see.kyri`, and the fold sections of `caravan/README.md`.
+
+
 ### `20260820.220352` -- the fold-D live edge folds as the farewell rung seats
 
 **Walk-back nib:** `1899f68b67` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read when the ladder's orchestration spine had just lifted into the harness stands at this nib and every commit before it.
