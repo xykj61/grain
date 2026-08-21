@@ -1853,6 +1853,28 @@ Proven the way this arc proves things: the whole choir sang **99 GREEN from a co
 `reckon_the_plan` leads the queue now at 2,700 lines across 37 rungs, with `fill_table` at 2,484 behind it. **703 families still carry a copy**, so the queue outlasts many laps and no lap need guess what is next.
 
 
+## `refusals.rye` -- the whole vocabulary a verified kernel answers with, and the four Caravan speaks today
+
+`capabilities.rye` names four outcomes: allowed, no such dependent, no such resource, rights insufficient. Those four were enough while the table sat on hosted ground answering only to itself. A root task on seL4 answers to a kernel, and that kernel refuses a capability invocation with one of **eleven** named errors -- a count read out of seL4's own compiled enums on `20260821.043831` rather than recited from a manual.
+
+`refusals.rye` states the whole eleven, maps Caravan's four onto them **totally**, and names for each of the seven remaining which subsystem will owe the answer. The mapping is pure policy -- hosted, no kernel beneath it -- and it is asserted rather than described, so the design agenda is a thing the compiler holds rather than a paragraph somebody remembers.
+
+**Three distinct answers, chosen on purpose.** A dependent the table has never heard of is a slot with nothing in it, so it becomes a **failed lookup**. A dependent holding no capability for the named resource holds the wrong capability for the request, so it becomes an **invalid capability**. A dependent holding the capability yet lacking the right is asking a real object for a method closed to it, so it becomes an **illegal operation**. Collapsing any two of those is what the RED path plants, and the module's own self-test refuses it -- because a capability system that answers every refusal the same way cannot audit itself, which is the reason `refusal_reason` exists at all.
+
+**The seven owed, each to a subsystem rather than to a wish.** The **derivation tree** owes *delete-first* and *revoke-first*, since a granted capability may be handed on and grants therefore form a tree Caravan must keep. **Untyped retyping** owes *not-enough-memory*, since memory a dependent receives is carved from a region with a real floor. The **IPC buffer** owes *truncated-message*. Argument, bounds, and alignment checking owe the remaining three, each at the edge where a supervised method meets its own arguments. That is a design list arrived at by measurement.
+
+| Measured `20260821` | Value |
+|---|---|
+| Refusals seL4's header declares, read at run time | **11** |
+| Caravan outcomes mapped onto them, totally | **4** |
+| Refusals still owed, each named to a subsystem | **7** |
+| Lines this module adds to the ladder's carry | **0** -- eleven distinct bodies, none a copy |
+
+Proven by [`tools/caravan_refusals_witness.rish`](../tools/caravan_refusals_witness.rish), GREEN on metal. The eleven symbols **and their order** are diffed against the vendored BSD-2-Clause `sel4/errors.h` at run time, so a vendored bump that moves the vocabulary reds this rung on the lap it lands, and the right to read that header is re-checked at the file level rather than inherited from a verdict. Both RED paths fire: a header whose refusal names drift is refused by the parity scan, and a copy of the module with two answers collapsed into one fails its own self-test. The choir sang **100 GREEN** with it registered, and the four ladder meters moved their module pins 102 to 103 in the same commit as the code -- a meter whose pins lag its subject has stopped guarding.
+
+**What this does not claim.** No kernel booted and no capability was invoked, so *which* of the eleven each Caravan outcome should become is design judgement, named as such at the door. This rung binds the vocabulary and the totality; the semantics earn their proof the day an invocation actually runs.
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.
