@@ -1948,6 +1948,33 @@ Proven by [`tools/caravan_untyped_witness.rish`](../tools/caravan_untyped_witnes
 **The three edge debts remain** -- argument, bounds, and alignment checking. They are one family and may well be one rung. `refusals.rye` still counts seven owed, and rightly: its count is what the *policy table* can answer, and the table has not yet learned to speak through the tree, the buffer, or the region.
 
 
+## The edge -- three refusals asked of the request alone
+
+`edge.rye` (`20260821.063720`) closes the last family on the refusal agenda, and the agenda had already grouped it: argument checking owes `seL4_InvalidArgument`, bounds checking owes `seL4_RangeError`, alignment checking owes `seL4_AlignmentError`. They are one family because they are **one moment** -- each is a question asked of the *request* rather than of the system, answerable before a slot is touched, before a lineage is walked, before a byte of a region is spent. That moment is the edge, and one rung is the honest shape for it.
+
+**The ground is seL4's own, and `Untyped_Retype` publishes all three at once** -- which makes retyping the place to stand rather than an abstraction invented for the rung. A `size_bits` too big or too small for the requested object type is `seL4_InvalidArgument`; a `num_objects` greater than `CONFIG_RETYPE_FAN_OUT_LIMIT` is `seL4_RangeError`; and riscv's own page method gives alignment its sentence, *"the vaddr is not aligned to the page size."* Each is re-read from the vendored BSD-2-Clause XML every run, so a reword upstream reds the rung rather than leaving our reading quietly orphaned.
+
+**The order is Caravan's own, and the module says so.** seL4 lists a method's errors **alphabetically** -- `DeleteFirst`, `FailedLookup`, `IllegalOperation`, `InvalidArgument`, `InvalidCapability`, `NotEnoughMemory`, `RangeError` -- which is a reading order for a manual rather than a checking order for a kernel. That was measured rather than assumed, and [`tools/fixtures/caravan_edge_order_scan.sh`](../tools/fixtures/caravan_edge_order_scan.sh) re-asks it every run, so the day seL4 publishes a real sequence the rung reds and asks for the reading instead of keeping ours by default. Ours is chosen so each check depends only on facts the checks before it established: **argument** first, since until a request names a real object at a size that kind can be there is no count to bound and no size to align to; **range** second, since a count is answerable the moment the kind is known and needs no address at all; **alignment** last, since it alone needs both the kind's size and an address the caller supplies.
+
+Exactly one answer comes back, and where a request fails more than one check the **earliest** wins. That is proven by building requests that fail two and three at once -- including one failing the first and third while the second passes, so the answer is genuinely the earliest rather than the first found by luck of adjacency -- and then swept: over every kind, eleven widths, counts spanning the kernel's fan-out limit, and a thousand-odd addresses, every request is either welcomed with no check failing or refused by its earliest failing check, with both arms of the proof exercised.
+
+| Measured `20260821` | Value |
+|---|---|
+| Kernel refusals this rung answers | **3** -- `seL4_InvalidArgument`, `seL4_RangeError`, `seL4_AlignmentError` |
+| Debts closed on the agenda | **3** -- argument checking, bounds checking, alignment checking |
+| Objects one seL4 invocation may create | **256**, stated two independent ways upstream and read both ways |
+| Objects Caravan's own region carves | **64** -- a different line, kept apart on purpose |
+| Published sentences bound two-sidedly | **3**, one per refusal |
+
+**Two lines, both real, and which is which.** seL4 lets one retype create up to 256 objects; Caravan's region carves at most 64. A request for sixty-five is **welcomed** by the edge, because the kernel permits it, and **refused** by the region, because we do not hold that much. Both refusals are honest, and the rung proves each names its own author -- a reader who conflated them would think the kernel forbids what only we do.
+
+**What this pays, and what it leaves standing.** Two conditions `untyped.rye` refuses by named Rye error have published kernel answers, and the edge now speaks them: a `size_bits` outside the untyped limits is `seL4_InvalidArgument`, a count past the fan-out limit is `seL4_RangeError`. `untyped.rye` keeps its own Rye errors unchanged, because they are its capacity rather than the kernel's line. The edge is the boundary; the region is the room.
+
+Proven by [`tools/caravan_edge_witness.rish`](../tools/caravan_edge_witness.rish), GREEN on metal, with all three RED paths planted rather than described: a reversed checking order answers a request by the wrong one of its two failures, two checks collapsed into one answer tell a caller to fix the wrong argument, and an alignment check that welcomes every address is the quietest failure of the three since nothing refuses and every request looks healthy. The choir sang **104 GREEN** with it registered, and the ladder meters moved their module pins 106 to 107 in the same commit as the code.
+
+**Every one of the seven owed refusals now has a module that answers it.** `refusals.rye` still counts seven owed, and that stays exactly right: its count is what the **policy table** can answer, and the table has not learned to speak through the tree, the buffer, the region, or the edge. The debt closes when the table itself can answer, never when a neighbour can -- which names the next real rung on this arc rather than letting four green modules quietly claim it.
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.
