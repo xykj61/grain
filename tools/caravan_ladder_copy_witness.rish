@@ -163,6 +163,15 @@ let prose_comment = run ["sh" "-c" "d=$(mktemp -d); printf '// a body rung.reach
 assert (prose_comment.ok == false) else "caravan-ladder-copy: a rewritten comment must refuse"
 assert prose_comment.out contains "HARNESS_PROSE_BAD comment" else "caravan-ladder-copy: want the corrupted comment named by line"
 
+# The welcome the tightening earned. The rule is about a `rung.` that *reaches a symbol*, so the pattern names exactly
+# that -- a `rung.` with an identifier character after it. The elder pattern named any `rung.` at all, and so it refused
+# two hand-written sentences closing on the ordinary English noun (REDS %100). A lift can only ever write `rung.` with a
+# name behind it, so the gap this leaves open is one the fault cannot reach through; proven here rather than reasoned,
+# by handing the scan a comment and a printed line that each end on the plain word.
+let prose_english = run ["sh" "-c" "d=$(mktemp -d); printf '// one body serves every rung.\npub fn check_a(comptime rung: type) u8 { print(\042  the same from every rung.\\n\042, .{}); return rung.n(); }\n' > $d/plain.rye; CARAVAN_HARNESS=$d/plain.rye sh tools/fixtures/caravan_ladder_harness_prose_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert prose_english.ok else "caravan-ladder-copy: the plain English word must be welcomed -- ${prose_english.out}"
+assert prose_english.out contains "HARNESS_PROSE_OK" else "caravan-ladder-copy: want a sentence closing on the ordinary noun read clean"
+
 # And the welcome beside the refusals, so a guard that reds on valid input can never teach the bench to route around it:
 # the harness exactly as it stood before this lap, with eighty-odd bodies already lifted, reads clean.
 let prose_elder = run ["sh" "-c" "d=$(mktemp -d); git show HEAD:caravan/ladder_checks.rye > $d/elder.rye; CARAVAN_HARNESS=$d/elder.rye sh tools/fixtures/caravan_ladder_harness_prose_scan.sh; s=$?; rm -rf $d; exit $s"]

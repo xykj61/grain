@@ -14,9 +14,18 @@
 # exact sentence (REDS %99).
 #
 # So the rule is stated where a machine can check it: inside
-# `ladder_checks.rye`, the token `rung.` belongs in code and never in a string
-# literal or a comment. A guard costs one grep and catches the next lift on the
-# lap it enters, rather than months later when somebody reads the output.
+# `ladder_checks.rye`, a `rung.` that *reaches a symbol* belongs in code and
+# never in a string literal or a comment. A guard costs one grep and catches the
+# next lift on the lap it enters, rather than months later when somebody reads
+# the output.
+#
+# The reach is what the rule is about, so the reach is what the pattern names: a
+# `rung.` followed by an identifier character. English keeps its own word freely,
+# and a sentence closing on "every rung." reads clean -- a lift prefixes symbols
+# and can only ever produce `rung.` with a name after it, so nothing the fault
+# writes escapes through the gap this leaves open. Tightened `20260820.212419`
+# after the fold D spine lift, when the elder pattern refused two hand-written
+# sentences that end on the ordinary noun (REDS %100).
 #
 # CARAVAN_HARNESS (default caravan/ladder_checks.rye): the file to weigh, so the
 # PASS and FAIL fixtures can prove both paths without touching the tree.
@@ -43,13 +52,13 @@ awk '{ n = 0; s = $0; gsub(/\\"/, "__", s)
 bad=0
 while IFS='	' read -r n text; do
   case "$text" in
-    *rung.*) echo "HARNESS_PROSE_BAD comment line ${n}: ${text}"; bad=$((bad + 1)) ;;
+    *rung.[A-Za-z_]*) echo "HARNESS_PROSE_BAD comment line ${n}: ${text}"; bad=$((bad + 1)) ;;
   esac
 done < "$work/comments"
 
 while IFS='	' read -r n text; do
   case "$text" in
-    *rung.*) echo "HARNESS_PROSE_BAD literal line ${n}: ${text}"; bad=$((bad + 1)) ;;
+    *rung.[A-Za-z_]*) echo "HARNESS_PROSE_BAD literal line ${n}: ${text}"; bad=$((bad + 1)) ;;
   esac
 done < "$work/literals"
 

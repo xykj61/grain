@@ -4467,3 +4467,258 @@ pub fn check_respect_refusals(comptime rung: type) u8 {
     }
     return link(rung, "check_respect_measure");
 }
+
+// ---------------------------------------------------------------------------
+// The orchestration spine -- fold D.
+//
+// Every rung of the correspondence arc runs the whole exchange in order, and
+// until this fold every rung wrote that order out by hand. A rung born from the
+// rung beneath it copied its neighbor's whole function and inserted one step, so
+// the lengths formed an exact staircase -- sixteen lines at `refer`, three more
+// at each rung, eighty-six at `refrain`. Because no two of those bodies were
+// byte-identical, the copy meter beside them read zero over the whole spine, and
+// a thousand lines of orchestration rode free past it. The spine meter measured
+// the real number on `20260820.204641`: 106 distinct lines standing 1,003 times,
+// 897 of them a line the ladder had already written.
+//
+// The spine lives here now, in one body, and a rung keeps none of it. The order
+// is one canonical sequence of twenty-five steps; a rung runs the steps it
+// declares, in that order, and the staircase becomes a property this harness
+// derives rather than twenty-one hand-copies of it. Adding a step to the arc is
+// three lines in this file rather than a fresh copy of everything beneath it.
+//
+// Brief: `../active-designing/20260820-204641_caravan-ladder-the-spine-the-meter-cannot-see.md`
+// Meter: `../tools/caravan_ladder_spine_witness.rish`
+// ---------------------------------------------------------------------------
+
+/// Reads a step's tally the same way from every rung.
+///
+/// A rung's own newest step writes its count into that rung's own report, so the
+/// rung reads it as a plain field. Every step a rung inherited keeps its count in
+/// the report of the rung beneath, reached through a named accessor. One
+/// `comptime` test tells the two apart -- the same reach `link` already uses for
+/// a check body -- so one assert serves the rung that owns a step and the twenty
+/// that climb to it.
+fn tally(
+    comptime rung: type,
+    comptime accessor: []const u8,
+    comptime field: []const u8,
+    report_out: anytype,
+) u32 {
+    // invariant: a tally always names an accessor, never some other decl
+    comptime assert(std.mem.endsWith(u8, accessor, "_of"));
+    if (comptime @hasDecl(rung, accessor)) {
+        return @field(@field(rung, accessor)(report_out), field);
+    }
+    return @field(report_out.*, field);
+}
+
+/// The standing -- what a run owes the quarrel still standing over its plan.
+///
+/// The order is the order the arc grew, and every step of it is load-bearing.
+/// The endurance runs first, because there is nothing to carry past a run until
+/// that run has heard everything it is going to hear. The heeding follows, since
+/// a regard qualifies a settlement and there is no settlement to qualify until
+/// the plan has finished reckoning itself. The dating comes after, because a
+/// position has stood through this run only once the run is over. The heralding
+/// reads the age that dating just wrote. And the referring carries out the very
+/// standing the heralding just published.
+///
+/// This movement finished growing at `refer`, the foot of the spine, so every
+/// rung holding a spine at all holds all five of these steps. It needs no gate.
+fn the_standing(
+    comptime rung: type,
+    io: std.Io,
+    taken_up: anytype,
+    quarrel: anytype,
+    report_out: anytype,
+) !void {
+    try rung.carry_the_position(io, quarrel.endurance, report_out);
+    try rung.weigh_the_standing(io, taken_up, quarrel.heed, report_out);
+    try rung.date_the_standing(io, quarrel.dwell, report_out);
+    try rung.herald_the_standing(io, quarrel.swell, report_out);
+    try rung.refer_the_quarrel(io, quarrel.refer, report_out);
+    // invariant: a run never refers more positions than one case holds
+    assert(tally(rung, "refer_of", "referred", report_out) <= 1);
+}
+
+/// The finding -- a case is read, answered, met, redressed, and carried home.
+///
+/// The reading comes first, because the case a finding is weighed against is the
+/// case the referring just carried. The word follows the finding it answers, the
+/// meeting follows the word it keeps, the redress follows the meeting it makes
+/// good, the apprising carries that redress to the person who raised the matter,
+/// and the weighing reads what they made of it. This movement finished growing
+/// at `suffice`.
+fn the_finding(
+    comptime rung: type,
+    io: std.Io,
+    quarrel: anytype,
+    report_out: anytype,
+) !void {
+    if (comptime @hasDecl(rung, "read_the_finding")) {
+        try rung.read_the_finding(io, quarrel.deem, report_out);
+        // invariant: a run never reads more findings than one case may earn
+        assert(tally(rung, "deem_of", "answered", report_out) <= 1);
+    }
+    if (comptime @hasDecl(rung, "say_the_word")) {
+        try rung.say_the_word(io, quarrel.avow, report_out);
+        // invariant: a run never answers more findings than one it read
+        assert(tally(rung, "avow_of", "said", report_out) <= 1);
+    }
+    if (comptime @hasDecl(rung, "meet_the_debt")) {
+        try rung.meet_the_debt(io, quarrel.meet, report_out);
+        // invariant: a run never meets more debts than one plan may book
+        assert(tally(rung, "meet_of", "met", report_out) <= 1);
+    }
+    if (comptime @hasDecl(rung, "redress_the_meeting")) {
+        try rung.redress_the_meeting(io, quarrel.redress, quarrel.upshot, report_out);
+        // invariant: a run never redresses more meetings than it made
+        assert(tally(rung, "redress_of", "redressed", report_out) <= 1);
+    }
+    if (comptime @hasDecl(rung, "apprise_the_raiser")) {
+        try rung.apprise_the_raiser(io, quarrel.apprise, report_out);
+        // invariant: a run never carries out more findings than it reached
+        assert(tally(rung, "apprise_of", "apprised", report_out) <= 1);
+    }
+    if (comptime @hasDecl(rung, "weigh_the_answer")) {
+        try rung.weigh_the_answer(io, quarrel.suffice, report_out);
+        // invariant: a run never weighs more answers than it carried
+        assert(tally(rung, "suffice_of", "weighed", report_out) <= 1);
+    }
+}
+
+/// The second look -- a reader reopens the matter and the plan looks again.
+///
+/// The taking up comes first, since a reader's short word is what opens the
+/// matter at all. The looking answers it, the telling carries that second look
+/// back to the reader who asked for it, and the reading opens the reply they
+/// wrote. This movement finished growing at `allay`.
+fn the_second_look(
+    comptime rung: type,
+    io: std.Io,
+    quarrel: anytype,
+    report_out: anytype,
+) !void {
+    if (comptime @hasDecl(rung, "take_up_again")) {
+        try rung.take_up_again(io, quarrel.reopen, report_out);
+        // invariant: a run never takes up more matters than one word earns
+        assert(tally(rung, "reopen_of", "taken_up", report_out) <= 1);
+    }
+    if (comptime @hasDecl(rung, "look_again")) {
+        try rung.look_again(io, quarrel.reweigh, report_out);
+        // invariant: a run never looks again at more matters than one reader reopened
+        assert(tally(rung, "reweigh_of", "looked", report_out) <= 1);
+    }
+    if (comptime @hasDecl(rung, "tell_the_reopener")) {
+        try rung.tell_the_reopener(io, quarrel.recount, report_out);
+        // invariant: a run never tells of more second looks than it made
+        assert(tally(rung, "recount_of", "recounted", report_out) <= 1);
+    }
+    if (comptime @hasDecl(rung, "read_the_reply")) {
+        try rung.read_the_reply(io, quarrel.allay, report_out);
+        // invariant: a run never reads more replies than one telling earns
+        assert(tally(rung, "allay_of", "read_back", report_out) <= 1);
+    }
+}
+
+/// The correspondence -- the movement still growing, and the reason for a rung.
+///
+/// A matter that comes round twice meets a wall, a person outside the plan is
+/// called about it, that person answers, and their word moves the plan: the wall
+/// comes down, or the ending they named spares them the next letter. Every rung
+/// born from here forward extends this movement, which is exactly why it is the
+/// one worth reading in order.
+fn the_correspondence(
+    comptime rung: type,
+    io: std.Io,
+    quarrel: anytype,
+    report_out: anytype,
+) !void {
+    if (comptime @hasDecl(rung, "bound_the_relay")) {
+        // The mark the run before this one left, read before this run's own
+        // minding writes over it. This is the only moment a run can see whether
+        // the matter it is about to name is one the correspondence has already
+        // carried, so the reading stands ahead of the naming rather than beside it.
+        const named_before = rung.mind_published(io);
+        try rung.mind_the_impasse(io, quarrel.mind, report_out);
+        // invariant: a run never names more impasses than one forbearance carries
+        assert(tally(rung, "mind_of", "minded", report_out) <= 1);
+        try rung.bound_the_relay(io, named_before, quarrel.desist, report_out);
+        // invariant: a run never bounds more matters than one mark carries
+        assert(tally(rung, "desist_of", "walled", report_out) <= 1);
+    } else if (comptime @hasDecl(rung, "mind_the_impasse")) {
+        try rung.mind_the_impasse(io, quarrel.mind, report_out);
+        // invariant: a run never names more impasses than one forbearance carries
+        assert(tally(rung, "mind_of", "minded", report_out) <= 1);
+    }
+    if (comptime @hasDecl(rung, "carry_the_wall")) {
+        try rung.carry_the_wall(io, quarrel.beckon, report_out);
+        // invariant: a run never calls a person about more walls than it stood
+        assert(tally(rung, "beckon_of", "beckoned", report_out) <= 1);
+    }
+    if (comptime @hasDecl(rung, "open_the_answer")) {
+        try rung.open_the_answer(io, quarrel.answer, report_out);
+        // invariant: a run never opens more answers than one call it carried
+        assert(tally(rung, "answer_of", "opened", report_out) <= 1);
+    }
+    if (comptime @hasDecl(rung, "abate_the_wall")) {
+        try rung.abate_the_wall(io, quarrel.abate, report_out);
+        // invariant: a run never abates more walls than one answer releases
+        assert(tally(rung, "abate_of", "abated", report_out) <= 1);
+    }
+    if (comptime @hasDecl(rung, "refrain_from_calling")) {
+        try rung.refrain_from_calling(io, quarrel.refrain, report_out);
+        // invariant: a run never spares more readers than one mark names
+        assert(tally(rung, "refrain_of", "refrained", report_out) <= 1);
+    }
+    if (comptime @hasDecl(rung, "respect_the_ending")) {
+        try rung.respect_the_ending(io, quarrel.respect, report_out);
+        // invariant: a run never names more endings than one closure carries
+        assert(tally(rung, "respect_of", "respected", report_out) <= 1);
+    }
+    if (comptime @hasDecl(rung, "close_the_matter")) {
+        try rung.close_the_matter(io, quarrel.conclude, report_out);
+        // invariant: a run never closes more correspondences than one answer ends
+        assert(tally(rung, "conclude_of", "closed", report_out) <= 1);
+    }
+    if (comptime @hasDecl(rung, "hold_the_matter")) {
+        try rung.hold_the_matter(io, quarrel.forbear, report_out);
+        // invariant: a run never forbears on more matters than one word leaves standing
+        assert(tally(rung, "forbear_of", "forborne", report_out) <= 1);
+    }
+}
+
+/// Closes every act a run owes the quarrel still standing over its plan.
+///
+/// One body, twenty-one rungs. The steps run in one canonical order, and a rung
+/// runs the ones it declares -- so the rung holding five steps and the rung
+/// holding twenty-five reach the same spine, and each gets exactly its own.
+///
+/// The order reads as four movements and a closing line. **The standing** is what
+/// a run owes a position that outlived it. **The finding** is a case read,
+/// answered, met, and carried home to whoever raised it. **The second look** is
+/// what a reader's short word costs the plan that answered them. **The
+/// correspondence** is the movement still growing, where a matter that comes
+/// round twice meets a wall and a person outside the plan finally gets a say in
+/// it. **The booking comes last of all**, because a debt is what remains once
+/// everything a run could do about a matter has been done.
+pub fn close_the_quarrel(
+    comptime rung: type,
+    io: std.Io,
+    taken_up: anytype,
+    quarrel: anytype,
+    report_out: anytype,
+) !void {
+    // invariant: a run closes a quarrel only after its own record is settled
+    assert(rung.settlement_published(io) != null or rung.run_of(report_out).reaped == 0);
+    try the_standing(rung, io, taken_up, quarrel, report_out);
+    try the_finding(rung, io, quarrel, report_out);
+    try the_second_look(rung, io, quarrel, report_out);
+    try the_correspondence(rung, io, quarrel, report_out);
+    if (comptime @hasDecl(rung, "book_the_debt")) {
+        try rung.book_the_debt(io, quarrel.owe, report_out);
+        // invariant: a run never books more debts than one concession earns
+        assert(tally(rung, "owe_of", "booked", report_out) <= 1);
+    }
+}

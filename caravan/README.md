@@ -1609,13 +1609,29 @@ Nothing observable moved, and the shape of the change is why. A rung that keeps 
 
 **A rung now costs the ladder its own new checks and nothing else**, and four rungs have now proved it by being born: `abate.rye`, then `conclude.rye`, then `respect.rye`, then `refrain.rye` -- each a whole new rung, and each time the carry stood exactly where it was, at **47** lines, while the ladder grew to 101 modules and 1,275 checks. The ceiling of 4,000 stops being the thing that refuses first, and the meter's job shifts from watching a carry climb to holding a wall at zero: no rung carries a stub that only forwards itself to the harness.
 
-### The spine beside the checks -- what a byte-identical meter cannot see
+### The spine beside the checks -- what a byte-identical meter cannot see, and where it went
 
-That meter counts **byte-identical bodies**, and it says so in its own first sentence. Beside it, measured `20260820.204641`, stands the ladder's **orchestration spine**: every rung holds one `close_the_quarrel` that runs the whole correspondence in order, and a rung born from the rung beneath it copies that function whole and inserts its own step. The staircase is exact -- sixteen lines at `refer`, three more at each rung, eighty-six at `refrain` -- so no two rungs hold the same body and the whole spine rode free past a meter reading 47.
+That meter counts **byte-identical bodies**, and it says so in its own first sentence. Beside it, measured `20260820.204641`, stood the ladder's **orchestration spine**: every rung held one `close_the_quarrel` that ran the whole correspondence in order, and a rung born from the rung beneath it copied that function whole and inserted its own step. The staircase was exact -- sixteen lines at `refer`, three more at each rung, eighty-six at `refrain` -- so no two rungs held the same body and the whole spine rode free past a meter reading 47.
 
-Read two ways that agree, the spine is **106 distinct lines standing on disk 1,003 times across 21 rungs, 897 of them a line the ladder has already written**. The union count asks how many different lines the ladder holds; the neighbor walk asks of each spine how many of its lines already stand in the spine directly beneath it. Both answer 897.
+Read two ways that agreed, the spine was **106 distinct lines standing on disk 1,003 times across 21 rungs, 897 of them a line the ladder had already written**. The union count asks how many different lines the ladder holds; the neighbor walk asks of each spine how many of its lines already stand in the spine directly beneath it. Both answered 897.
 
-This is a ratchet rather than a red: nothing was measured wrong, and something was never measured. So the close is a second meter beside the first -- [`../tools/caravan_ladder_spine_witness.rish`](../tools/caravan_ladder_spine_witness.rish) over [`../tools/fixtures/caravan_ladder_spine_scan.sh`](../tools/fixtures/caravan_ladder_spine_scan.sh) -- which holds both numbers in one place so neither can be read alone, keeps the spine carry under a ceiling of 1,100 with about two rungs of headroom, and reports TAME's seventy-line function ratchet where the spine has grown past it: four rungs today, `refrain` longest at 86. Fold D, which would lift the spine into the harness the way folds B and C lifted the checks, is reasoned and waits its own round in [`../active-designing/20260820-204641_caravan-ladder-the-spine-the-meter-cannot-see.md`](../active-designing/20260820-204641_caravan-ladder-the-spine-the-meter-cannot-see.md).
+That was a ratchet rather than a red -- nothing was measured wrong, and something was never measured -- so the close was a second meter beside the first: [`../tools/caravan_ladder_spine_witness.rish`](../tools/caravan_ladder_spine_witness.rish) over [`../tools/fixtures/caravan_ladder_spine_scan.sh`](../tools/fixtures/caravan_ladder_spine_scan.sh), holding both numbers in one place so neither can be read alone.
+
+**Fold D moved it on `20260820.212419`.** The spine lives in [`ladder_checks.rye`](ladder_checks.rye) now -- one body taking the rung as a `comptime` parameter and running the steps that rung declares, so the rung holding five steps and the rung holding twenty-five reach the same spine and each gets exactly its own. The staircase became a property the harness derives rather than twenty-one hand-copies of it, and adding a step to the arc costs three lines in one file rather than a fresh copy of everything beneath it.
+
+The numbers moved as the design call predicted, and the one that should have stood still stood still:
+
+| Reading | Before | After |
+|---|---|---|
+| Rungs holding a spine | 21 | **1** -- the harness |
+| Spine lines on disk | 1,003 | **19** at the entry, 170 counting its four movements |
+| Carried spine lines | 897 | **0** |
+| Spines past TAME's seventy-line bound | 4 | **0** -- the longest movement is 59 |
+| Byte-identical carry, beside it | 47 | **47**, unmoved |
+
+That last row is the honest proof: a lift removed a cost rather than trading it for a cheaper-looking one, since the number a lift could most easily have inflated stayed exactly where it stood. The spine ceiling came down 1,100 to **40**, tight enough to catch the second rung that writes a spine of its own rather than the tenth -- the meter stopped sizing a cost and became the wall that keeps the fold folded.
+
+Read in order, the harness spine is four movements and a closing line, the seam the arc has shown since it began: **the standing** (what a run owes a position that outlived it), **the finding** (a case read, answered, met, and carried home), **the second look** (what a reader's short word costs the plan that answered them), **the correspondence** (the movement still growing, where a matter that comes round twice meets a wall and a person outside the plan finally gets a say), and **the booking**, always last. What it cost is named plainly in the brief: opening `refrain.rye` no longer shows the whole arc on one screen. That order lives in the harness now, in the one complete copy there is -- so it is written to be read. Full reasoning: [`../active-designing/20260820-204641_caravan-ladder-the-spine-the-meter-cannot-see.md`](../active-designing/20260820-204641_caravan-ladder-the-spine-the-meter-cannot-see.md).
 
 
 ## Held

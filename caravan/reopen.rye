@@ -416,42 +416,42 @@ pub const Report = struct {
 /// Every rung of this arc wraps the report of the rung below it, so one named
 /// reach per tier keeps the supervisor readable and keeps a miscount from
 /// hiding inside a chain of `inner`.
-fn suffice_of(report_out: *Report) *sufficing_rung.Report {
+pub fn suffice_of(report_out: *Report) *sufficing_rung.Report {
     return &report_out.inner;
 }
 
 /// The apprise rung's tally, one tier further down.
-fn apprise_of(report_out: *Report) *apprising_rung.Report {
+pub fn apprise_of(report_out: *Report) *apprising_rung.Report {
     return &report_out.inner.inner;
 }
 
 /// The redress rung's tally, one tier further down.
-fn redress_of(report_out: *Report) *redressing_rung.Report {
+pub fn redress_of(report_out: *Report) *redressing_rung.Report {
     return &report_out.inner.inner.inner;
 }
 
 /// The meet rung's tally, one tier further down.
-fn meet_of(report_out: *Report) *meeting_rung.Report {
+pub fn meet_of(report_out: *Report) *meeting_rung.Report {
     return &report_out.inner.inner.inner.inner;
 }
 
 /// The owe rung's tally, one tier further down.
-fn owe_of(report_out: *Report) *owing_rung.Report {
+pub fn owe_of(report_out: *Report) *owing_rung.Report {
     return &report_out.inner.inner.inner.inner.inner;
 }
 
 /// The avow rung's tally, one tier further down.
-fn avow_of(report_out: *Report) *avowing_rung.Report {
+pub fn avow_of(report_out: *Report) *avowing_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner;
 }
 
 /// The deem rung's tally, one tier further down.
-fn deem_of(report_out: *Report) *deeming_rung.Report {
+pub fn deem_of(report_out: *Report) *deeming_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The refer rung's tally, one tier further down.
-fn refer_of(report_out: *Report) *referring_rung.Report {
+pub fn refer_of(report_out: *Report) *referring_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
@@ -551,7 +551,7 @@ fn abandoning_of(report_out: *Report) *abandon_rung.Report {
 }
 
 /// The run's own tally, reached without spelling the whole nesting each time.
-fn run_of(report_out: *Report) *overtake.Report {
+pub fn run_of(report_out: *Report) *overtake.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.run;
 }
 
@@ -6118,63 +6118,10 @@ pub fn run_in_reopen(
     // may answer that answering, and the record says where they stand.
     try read_the_appeal(io, appeal, report_out);
 
-    // Everything a run owes the quarrel standing over it, in the order the arc
-    // grew: carried past this run, weighed into its word, dated, heralded, and
-    // finally referred. Why each step sits where it sits: the doc below.
-    try close_the_quarrel(io, taken_up, quarrel, report_out);
-}
-
-/// Closes the six acts a run owes the quarrel still standing over its plan.
-///
-/// The order is the order the arc grew, and every step of it is load-bearing.
-/// The endurance runs first, because there is nothing to carry past a run until
-/// that run has heard everything it is going to hear. The heeding follows, since
-/// a regard qualifies a settlement and there is no settlement to qualify until
-/// the plan has finished reckoning itself. The dating comes after, because a
-/// position has stood through this run only once the run is over. The heralding
-/// reads the age that dating just wrote. The referring carries out the very
-/// standing the heralding just published. And the reading comes last of all,
-/// because the case a finding is weighed against is the case the referring just
-/// carried.
-fn close_the_quarrel(
-    io: std.Io,
-    taken_up: ?Plea,
-    quarrel: Quarrel,
-    report_out: *Report,
-) (RunError || NoteError)!void {
-    // invariant: a run closes a quarrel only after its own record is settled
-    assert(settlement_published(io) != null or run_of(report_out).reaped == 0);
-    try carry_the_position(io, quarrel.endurance, report_out);
-    try weigh_the_standing(io, taken_up, quarrel.heed, report_out);
-    try date_the_standing(io, quarrel.dwell, report_out);
-    try herald_the_standing(io, quarrel.swell, report_out);
-    try refer_the_quarrel(io, quarrel.refer, report_out);
-    // invariant: a run never refers more positions than one case holds
-    assert(refer_of(report_out).referred <= 1);
-    try read_the_finding(io, quarrel.deem, report_out);
-    // invariant: a run never reads more findings than one case may earn
-    assert(deem_of(report_out).answered <= 1);
-    try say_the_word(io, quarrel.avow, report_out);
-    // invariant: a run never answers more findings than one it read
-    assert(avow_of(report_out).said <= 1);
-    try meet_the_debt(io, quarrel.meet, report_out);
-    // invariant: a run never meets more debts than one plan may book
-    assert(meet_of(report_out).met <= 1);
-    try redress_the_meeting(io, quarrel.redress, quarrel.upshot, report_out);
-    // invariant: a run never redresses more meetings than it made
-    assert(redress_of(report_out).redressed <= 1);
-    try apprise_the_raiser(io, quarrel.apprise, report_out);
-    // invariant: a run never carries out more findings than it reached
-    assert(apprise_of(report_out).apprised <= 1);
-    try weigh_the_answer(io, quarrel.suffice, report_out);
-    // invariant: a run never weighs more answers than it carried
-    assert(suffice_of(report_out).weighed <= 1);
-    try take_up_again(io, quarrel.reopen, report_out);
-    // invariant: a run never takes up more matters than one word earns
-    assert(report_out.taken_up <= 1);
-    try book_the_debt(io, quarrel.owe, report_out);
-    // invariant: a run never books more debts than one concession earns
-    assert(owe_of(report_out).booked <= 1);
+    // Every act a run owes the quarrel standing over it, in the order the
+    // arc grew. The spine lives in the harness now, so this rung runs the
+    // steps it declares and copies none of the order: `ladder_checks.rye`.
+    try ladder_checks.close_the_quarrel(@This(), io, taken_up, quarrel, report_out);
 }
 
 /// Carries the finding this run reached to the reader who won the admission.
@@ -6195,7 +6142,7 @@ fn close_the_quarrel(
 /// the record where the next run reads it, and the delivery where its reader
 /// does. The number it moves is the finding a plan reached whose raiser was
 /// never told.
-fn apprise_the_raiser(io: std.Io, apprise: Apprise, report_out: *Report) (RunError || NoteError)!void {
+pub fn apprise_the_raiser(io: std.Io, apprise: Apprise, report_out: *Report) (RunError || NoteError)!void {
     const finding = redress_written(io);
     const redressed_count: u32 = if (finding != null) 1 else 0;
     if (redressed_count == 0) {
@@ -6265,7 +6212,7 @@ fn apprise_the_raiser(io: std.Io, apprise: Apprise, report_out: *Report) (RunErr
 /// word in the reader's hand, and the plan's copy where an operator opens it.
 /// The number it moves is the answer a plan carried whose worth it never
 /// learned.
-fn weigh_the_answer(io: std.Io, suffice: Suffice, report_out: *Report) (RunError || NoteError)!void {
+pub fn weigh_the_answer(io: std.Io, suffice: Suffice, report_out: *Report) (RunError || NoteError)!void {
     var address_buf: [max_address_len]u8 = undefined;
     const address = address_published(io, &address_buf);
     const carried = if (address) |box| apprised_of(io, box) else null;
@@ -6341,7 +6288,7 @@ fn weigh_the_answer(io: std.Io, suffice: Suffice, report_out: *Report) (RunError
 /// age, its standing, the case on the desk, the finding, the plan's own word,
 /// the concession, the meeting, the redress, the delivery, and the reader's own
 /// verdict each come out of a reopening run exactly as they went in.
-fn take_up_again(io: std.Io, reopen: Reopen, report_out: *Report) (RunError || NoteError)!void {
+pub fn take_up_again(io: std.Io, reopen: Reopen, report_out: *Report) (RunError || NoteError)!void {
     var address_buf: [max_address_len]u8 = undefined;
     const address = address_published(io, &address_buf);
     const carried = if (address) |box| apprised_of(io, box) else null;
@@ -6408,7 +6355,7 @@ fn take_up_again(io: std.Io, reopen: Reopen, report_out: *Report) (RunError || N
 /// a meeting rather than replacing one, so both notes stand together: one saying
 /// the admission was looked at, the other saying what the look found. The number
 /// it moves is the debt a plan met whose meeting never said what it found.
-fn redress_the_meeting(io: std.Io, redress: Redress, upshot: Upshot, report_out: *Report) (RunError || NoteError)!void {
+pub fn redress_the_meeting(io: std.Io, redress: Redress, upshot: Upshot, report_out: *Report) (RunError || NoteError)!void {
     const receipt = meeting_written(io);
     const met_count: u32 = if (receipt != null) 1 else 0;
     if (met_count == 0) {
@@ -6472,7 +6419,7 @@ fn redress_the_meeting(io: std.Io, redress: Redress, upshot: Upshot, report_out:
 /// **A plan inheriting nothing meets nothing** -- an ending this rung reaches by
 /// writing nothing at all, since only a standing admission can be answered. The
 /// number it moves is the debt a plan inherited that the run never met.
-fn meet_the_debt(io: std.Io, meet: Meet, report_out: *Report) (RunError || NoteError)!void {
+pub fn meet_the_debt(io: std.Io, meet: Meet, report_out: *Report) (RunError || NoteError)!void {
     const on_wire = debt_standing(io);
     const inherited_count: u32 = if (on_wire != null) 1 else 0;
     if (inherited_count == 0) {
@@ -6539,7 +6486,7 @@ fn meet_the_debt(io: std.Io, meet: Meet, report_out: *Report) (RunError || NoteE
 /// books nothing** -- each is an ending this rung reaches by writing nothing at
 /// all, since only an admission can be owed. The number it moves is the
 /// concession a plan made that reaches no run after it.
-fn book_the_debt(io: std.Io, owe: Owe, report_out: *Report) (RunError || NoteError)!void {
+pub fn book_the_debt(io: std.Io, owe: Owe, report_out: *Report) (RunError || NoteError)!void {
     const spoken = avow_written(io);
     const stance = stance_in(spoken);
     const conceded_count: u32 = if (stance == .concedes) 1 else 0;
@@ -6611,7 +6558,7 @@ fn book_the_debt(io: std.Io, owe: Owe, report_out: *Report) (RunError || NoteErr
 /// argument is refused by name rather than filed beside today's word -- each is
 /// an ending this rung reaches by publishing nothing. The number it moves is the
 /// case carried out that nobody is ever heard back on.
-fn read_the_finding(io: std.Io, deem: Deem, report_out: *Report) (RunError || NoteError)!void {
+pub fn read_the_finding(io: std.Io, deem: Deem, report_out: *Report) (RunError || NoteError)!void {
     const sent_count = refer_of(report_out).referred;
     if (sent_count == 0) {
         // invariant: a run that carried no case reads no finding
@@ -6683,7 +6630,7 @@ fn read_the_finding(io: std.Io, deem: Deem, report_out: *Report) (RunError || No
 /// is refused by name rather than filed beside today's finding -- each is an
 /// ending this rung reaches by publishing nothing. The number it moves is the
 /// finding a plan published and never said one word about.
-fn say_the_word(io: std.Io, avow: Avow, report_out: *Report) (RunError || NoteError)!void {
+pub fn say_the_word(io: std.Io, avow: Avow, report_out: *Report) (RunError || NoteError)!void {
     const heard_count = deem_of(report_out).answered;
     if (heard_count == 0) {
         // invariant: a run that read no finding says no word about one
@@ -6750,7 +6697,7 @@ fn say_the_word(io: std.Io, avow: Avow, report_out: *Report) (RunError || NoteEr
 /// enough that its age is the whole story is fairly left with the people having
 /// it -- each is an ending this rung reaches by carrying nothing. The number it
 /// moves is the long-standing quarrel nobody outside the argument ever sees.
-fn refer_the_quarrel(io: std.Io, refer: Refer, report_out: *Report) (RunError || NoteError)!void {
+pub fn refer_the_quarrel(io: std.Io, refer: Refer, report_out: *Report) (RunError || NoteError)!void {
     const stood_plea = position_standing(io) orelse {
         // invariant: a run with nothing standing refers no quarrel
         assert(refer_of(report_out).referred == 0);
@@ -6842,7 +6789,7 @@ fn refer_the_quarrel(io: std.Io, refer: Refer, report_out: *Report) (RunError ||
 /// enough that its age is the whole story is heralded honestly as quiet, and
 /// costs the count nothing -- the number this rung moves is the long-standing
 /// position an operator reads no louder than a fresh one.
-fn herald_the_standing(io: std.Io, swell: Swell, report_out: *Report) (RunError || NoteError)!void {
+pub fn herald_the_standing(io: std.Io, swell: Swell, report_out: *Report) (RunError || NoteError)!void {
     const stood_plea = position_standing(io) orelse {
         // invariant: a run with nothing standing heralds no position
         assert(swell_of(report_out).heralded == 0);
@@ -6915,7 +6862,7 @@ fn herald_the_standing(io: std.Io, swell: Swell, report_out: *Report) (RunError 
 /// this rung reaches by writing nothing rather than by dating a quarrel nobody
 /// holds. A standing quarrel whose note says nothing at all about how long it
 /// has stood is the number this rung moves.
-fn date_the_standing(io: std.Io, dwell: Dwell, report_out: *Report) (RunError || NoteError)!void {
+pub fn date_the_standing(io: std.Io, dwell: Dwell, report_out: *Report) (RunError || NoteError)!void {
     const stood_plea = position_standing(io) orelse {
         // invariant: a run with nothing standing dates no position
         assert(dwell_of(report_out).aged == 0);
@@ -7075,7 +7022,7 @@ fn release_the_standing(io: std.Io, relent: Relent, report_out: *Report) (RunErr
 /// outcomes this rung reaches by weighing nothing rather than by publishing a
 /// qualification nobody is owed. A plan reported carried while an inherited
 /// quarrel stood against it is the number this rung moves.
-fn weigh_the_standing(
+pub fn weigh_the_standing(
     io: std.Io,
     taken_up: ?Plea,
     heed: Heed,
@@ -7147,7 +7094,7 @@ fn weigh_the_standing(
 /// endings this rung reaches for by weighing nothing rather than by inventing a
 /// position. A pressed quarrel a run heard and the run after it began without is
 /// the number this rung moves.
-fn carry_the_position(io: std.Io, endurance: Endurance, report_out: *Report) (RunError || NoteError)!void {
+pub fn carry_the_position(io: std.Io, endurance: Endurance, report_out: *Report) (RunError || NoteError)!void {
     const plea = appeal_published(io) orelse {
         // invariant: a run that heard nobody carries no position forward
         assert(endure_of(report_out).kept == 0);
