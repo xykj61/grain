@@ -16,6 +16,11 @@
 # WHAT IT DELIBERATELY DOES NOT DO. It never edits the card and never pushes. It reads and refuses. Fixing a RED here means pinning the
 # nib in the next work commit, never a pin-only follow-up, which the rule already forbids.
 #
+# ONE HONEST FLAW IN THE CONVENTION, surfaced by building this guard and NOT fixed here. Because the rule's sequence pins the nib and then
+# amends, the hash the card carries is the pre-amend commit -- which is unreachable from HEAD and exists only in this clone's reflog. A
+# fresh clone cannot resolve it at all, so `git show <the card's nib>` fails for anyone else. That is a property of the seated convention
+# rather than of this witness, and changing a seated convention is Keaton's word, so it is named here and left standing.
+#
 # Kin: `.claude/rules/remember-git-nib.md` (the order) - `.claude/rules/reds-first.md` (a lantern that fires twice becomes a loom) -
 # `crux/REDS.md` rows %103 and %106.
 #
@@ -42,15 +47,23 @@ assert nib != "" else "remember-git-nib: the card's Git nib line is present but 
 let known = run ["sh" "-c" "git cat-file -t ${nib} 2>/dev/null | tr -d ' \n'"]
 assert (trim known.out) == "commit" else "remember-git-nib: the card's Git nib does not name a commit in this repository -- ${nib}"
 
-# 3. The verdict: head, parent, or stale. Computed once, in one place, so no interpolation can disagree with itself.
-let state = run ["sh" "-c" "F=$(git rev-parse ${nib}); H=$(git rev-parse HEAD); P=$(git rev-parse HEAD~1); if [ \"$F\" = \"$H\" ]; then echo head; elif [ \"$F\" = \"$P\" ]; then echo parent; else echo stale; fi"]
+# 3. The verdict. THREE honest states, not two -- and the third was learned by this witness refusing its own author's send.
+#    The rule says: commit, then amend at most once so the nib names HEAD. Yet the amend CHANGES HEAD, so the nib the card ends up
+#    carrying is the PRE-AMEND commit -- a sibling of HEAD sharing HEAD's parent, never HEAD itself. The rule knows this and tolerates it
+#    ("the card may lag HEAD by one amend"). A guard that demanded HEAD-or-parent would therefore red on every correctly-run send, which is
+#    exactly what happened the first time this witness ran after its own round. So the accepted states are:
+#      head    -- the nib names HEAD (possible only when no amend followed the pin)
+#      sibling -- the nib shares HEAD's parent: the pre-amend commit, which is what the rule's own sequence produces
+#      parent  -- the nib names HEAD's parent: the card lags a whole round, still readable and still honest
+#    Anything older describes a round that already passed, which is the defect REDS %103 and %106 name.
+let state = run ["sh" "-c" "F=$(git rev-parse ${nib}); H=$(git rev-parse HEAD); P=$(git rev-parse HEAD^); FP=$(git rev-parse ${nib}^ 2>/dev/null); if [ \"$F\" = \"$H\" ]; then echo head; elif [ \"$FP\" = \"$P\" ]; then echo sibling; elif [ \"$F\" = \"$P\" ]; then echo parent; else echo stale; fi"]
 assert state.ok else "remember-git-nib: could not resolve the card's nib against HEAD and its parent"
-assert (trim state.out) != "stale" else "remember-git-nib: the card's Git nib is STALE -- it names neither HEAD nor HEAD's parent, so the card describes a round that already passed (REDS %103, %106). Pin it in the NEXT work commit, never a pin-only follow-up."
+assert (trim state.out) != "stale" else "remember-git-nib: the card's Git nib is STALE -- it names neither HEAD, nor HEAD's pre-amend sibling, nor HEAD's parent, so the card describes a round that already passed (REDS %103, %106). Pin it in the NEXT work commit, never a pin-only follow-up."
 
 # 4. The RED path, proven in the same run: the identical predicate must REFUSE a four-commit-old hash.
-let red = run ["sh" "-c" "F=$(git rev-parse HEAD~4); H=$(git rev-parse HEAD); P=$(git rev-parse HEAD~1); if [ \"$F\" = \"$H\" ]; then echo head; elif [ \"$F\" = \"$P\" ]; then echo parent; else echo stale; fi"]
+let red = run ["sh" "-c" "F=$(git rev-parse HEAD~4); H=$(git rev-parse HEAD); P=$(git rev-parse HEAD^); FP=$(git rev-parse HEAD~4^ 2>/dev/null); if [ \"$F\" = \"$H\" ]; then echo head; elif [ \"$FP\" = \"$P\" ]; then echo sibling; elif [ \"$F\" = \"$P\" ]; then echo parent; else echo stale; fi"]
 assert (trim red.out) == "stale" else "remember-git-nib: the staleness predicate ACCEPTED a four-commit-old hash -- the guard does not discriminate and would pass a stale card"
 
-say "remember-git-nib: card nib ${nib} resolves to ${state.out} -- head means the pin rode inside the send, parent means the single amend of lag the rule tolerates."
+say "remember-git-nib: card nib ${nib} resolves to state ${state.out} (head - sibling - parent are the three honest states)."
 
-say "GREEN remember-git-nib: the operator card's Git nib names HEAD or HEAD's parent, which are the only two honest states -- the pin inside the send, or the single amend of lag the rule tolerates. Proven against the repository rather than recited, with the RED path shown in the same run by refusing a four-commit-old hash. Booked as the loom after REDS %103 fired twice: the first closure was a habit, and a habit is not a check. Read-only -- this witness never edits the card and never pushes."
+say "GREEN remember-git-nib: the operator card's Git nib names HEAD, HEAD's pre-amend sibling, or HEAD's parent -- the three honest states the seated send order can produce. The sibling state is the usual one, because the rule pins the nib and then amends, and the amend changes the very hash just pinned; a guard demanding HEAD-or-parent reds on every correctly-run send, which this witness proved by refusing its own author's. Proven against the repository rather than recited, with the RED path shown in the same run by refusing a four-commit-old hash. Booked as the loom after REDS %103 fired twice: the first closure was a habit, and a habit is not a check. One flaw in the convention is named in this file and deliberately not fixed here -- the pre-amend hash is unreachable from HEAD, so a fresh clone cannot resolve it, and changing a seated convention is Keaton's word. Read-only -- this witness never edits the card and never pushes."
