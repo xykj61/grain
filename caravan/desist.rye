@@ -528,27 +528,27 @@ pub fn refer_of(report_out: *Report) *referring_rung.Report {
 }
 
 /// The swell rung's tally, one tier further down.
-fn swell_of(report_out: *Report) *swelling_rung.Report {
+pub fn swell_of(report_out: *Report) *swelling_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The dwell rung's tally, one tier further down.
-fn dwell_of(report_out: *Report) *dwelling_rung.Report {
+pub fn dwell_of(report_out: *Report) *dwelling_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The relent rung's tally, one tier further down.
-fn relent_of(report_out: *Report) *relent_rung.Report {
+pub fn relent_of(report_out: *Report) *relent_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The heed rung's tally, one tier further down.
-fn heed_of(report_out: *Report) *heed_rung.Report {
+pub fn heed_of(report_out: *Report) *heed_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
 /// The endure rung's tally, one tier further down.
-fn endure_of(report_out: *Report) *endure_rung.Report {
+pub fn endure_of(report_out: *Report) *endure_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
@@ -10626,102 +10626,7 @@ fn tell_desist_runs(bare_run: *Report, under_run: *Report) void {
 /// and stands still under both plans, and everything here turns on whether a
 /// quarrel its holder let go is finally allowed to end.
 fn tell_desist_half(bare_run: *Report, under_run: *Report) void {
-    // invariant: a reading never publishes more findings than one case earns
-    assert(deem_of(bare_run).answered <= 1);
-    // invariant: a reading never leaves more cases unanswered than one desk holds
-    assert(deem_of(under_run).unanswered <= 1);
-    print("  positions carried past the run that heard them: {d} relaying, {d} bounding\n", .{
-        endure_of(bare_run).kept, endure_of(under_run).kept,
-    });
-    print("  inherited positions weighed into the run's own word: {d} relaying, {d} bounding\n", .{
-        heed_of(bare_run).heeded, heed_of(under_run).heeded,
-    });
-    print("  standing positions let go on their holder's own word: {d} relaying, {d} bounding\n", .{
-        relent_of(bare_run).withdrawn, relent_of(under_run).withdrawn,
-    });
-    print("  standing positions left exactly where they were found: {d} relaying, {d} bounding\n", .{
-        relent_of(bare_run).standing, relent_of(under_run).standing,
-    });
-    print("  withdrawn quarrels still standing over the plan: {d} relaying, {d} bounding\n", .{
-        relent_of(bare_run).uncleared, relent_of(under_run).uncleared,
-    });
-    print("  standing positions this run said the age of: {d} relaying, {d} bounding\n", .{
-        dwell_of(bare_run).aged, dwell_of(under_run).aged,
-    });
-    print("  standing positions left with no age at all: {d} relaying, {d} bounding\n", .{
-        dwell_of(bare_run).undated, dwell_of(under_run).undated,
-    });
-    print("  standing quarrels whose note never said how long: {d} relaying, {d} bounding\n", .{
-        dwell_of(bare_run).ageless, dwell_of(under_run).ageless,
-    });
-    print("  standing quarrels published where the outcome is read: {d} relaying, {d} bounding\n", .{
-        swell_of(bare_run).heralded, swell_of(under_run).heralded,
-    });
-    print("  standing quarrels left unpublished at the outcome: {d} relaying, {d} bounding\n", .{
-        swell_of(bare_run).unpublished, swell_of(under_run).unpublished,
-    });
-    print("  long-standing quarrels an operator reads no louder than a fresh one: {d} against {d}\n", .{
-        swell_of(bare_run).unheralded, swell_of(under_run).unheralded,
-    });
-    tell_desist_third(bare_run, under_run);
-}
-
-/// Prints what a hand outside the argument was given, and what the plan said.
-///
-/// The third of the telling, split at the seam where the quarrel's own record
-/// ends and the case carried outside it begins, so no one reading grows past the
-/// length a person takes in at one glance.
-fn tell_desist_third(bare_run: *Report, under_run: *Report) void {
-    // invariant: a telling always reads two runs that were actually run
-    assert(run_of(bare_run).queued >= 1);
-    // invariant: a telling never reads more findings than one case may earn
-    assert(deem_of(under_run).answered <= 1);
-    print("  long-standing quarrels carried to a hand that is neither party: {d} relaying, {d} bounding\n", .{
-        refer_of(bare_run).referred, refer_of(under_run).referred,
-    });
-    print("  long-standing quarrels kept inside the argument: {d} relaying, {d} bounding\n", .{
-        refer_of(bare_run).kept_in, refer_of(under_run).kept_in,
-    });
-    print("  long-standing quarrels nobody outside the argument ever sees: {d} against {d}\n", .{
-        refer_of(bare_run).unheard, refer_of(under_run).unheard,
-    });
-    print("  carried cases whose answer was read and published: {d} relaying, {d} bounding\n", .{
-        deem_of(bare_run).answered, deem_of(under_run).answered,
-    });
-    print("  carried cases still waiting on a third hand's word: {d} relaying, {d} bounding\n", .{
-        deem_of(bare_run).awaited_in, deem_of(under_run).awaited_in,
-    });
-    print("  cases carried out that nobody is ever heard back on: {d} against {d}\n", .{
-        deem_of(bare_run).unanswered, deem_of(under_run).unanswered,
-    });
-    print("  published findings the plan answered on the record: {d} relaying, {d} bounding\n", .{
-        avow_of(bare_run).said, avow_of(under_run).said,
-    });
-    print("  published findings left without a word from the plan: {d} relaying, {d} bounding\n", .{
-        avow_of(bare_run).withheld, avow_of(under_run).withheld,
-    });
-    print("  findings a plan published and never said one word about: {d} against {d}\n", .{
-        avow_of(bare_run).unavowed, avow_of(under_run).unavowed,
-    });
-    print("  concessions booked as a debt the next run finds: {d} relaying, {d} bounding\n", .{
-        owe_of(bare_run).booked, owe_of(under_run).booked,
-    });
-    print("  concessions left owing nothing to any run after: {d} relaying, {d} bounding\n", .{
-        owe_of(bare_run).unowed, owe_of(under_run).unowed,
-    });
-    print("  concessions a plan made that reach no run after them: {d} against {d}\n", .{
-        owe_of(bare_run).unbooked, owe_of(under_run).unbooked,
-    });
-    print("  inherited debts this run met and took down: {d} relaying, {d} bounding\n", .{
-        meet_of(bare_run).met, meet_of(under_run).met,
-    });
-    print("  inherited debts left standing for the run after: {d} relaying, {d} bounding\n", .{
-        meet_of(bare_run).deferred, meet_of(under_run).deferred,
-    });
-    print("  debts a plan inherited that the run never met: {d} against {d}\n", .{
-        meet_of(bare_run).unmet, meet_of(under_run).unmet,
-    });
-    tell_desist_tail(bare_run, under_run);
+    return ladder_checks.tell_desist_half(@This(), "relaying", "bounding", bare_run, under_run);
 }
 
 /// Prints this rung's own three numbers, and the plan an operator finally reads.
@@ -10729,7 +10634,7 @@ fn tell_desist_third(bare_run: *Report, under_run: *Report) void {
 /// Split from the half above at the seam where the arc's inherited counts end
 /// and this lap's own begin, so neither reading grows past the length a person
 /// takes in at one glance.
-fn tell_desist_tail(bare_run: *Report, under_run: *Report) void {
+pub fn tell_desist_tail(bare_run: *Report, under_run: *Report) void {
     // invariant: a telling always reads two runs that were actually run
     assert(run_of(bare_run).queued >= 1);
     // invariant: a telling never reads more deliveries than one finding earns

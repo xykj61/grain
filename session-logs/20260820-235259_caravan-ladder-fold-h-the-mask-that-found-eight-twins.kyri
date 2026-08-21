@@ -1,0 +1,39 @@
+format session-log-v1
+stamp 20260820.235259
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Caravan ladder fold H -- the mask that found eight twins the hash could not
+prompt Autonomous loop -- take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, one rota doc per lap, send each finished increment.
+think Standfast first. Walked crux/REDS.md before touching anything: rows %101 and %102 both closed on the previous lap with looms rather than fixes, and every earlier row reads closed. No open agent-closable red stands, so the constructive queue opens honestly.
+think Rota lap 550 mod 27 = 10 -- deep-read foundations/20260703-182612_sameness-is-the-macro.md. It is this arc's own argument stated years earlier: compress by making things publicly similar, and refuse the compression that costs a private dialect. It also named the risk this lap ran toward. Lifting eight near-identical bodies behind a comptime parameter is sameness; lifting them behind a clever generator would have been the dialect. The body reads as ordinary Rye with two words handed in, which is the test that passed.
+think The running thread named the next move and named it honestly as undecided: the whole-body carry is spent, and what remains is the staircase, so size it from PRINT_LINES against PRINT_BODIES before moving a line. Did exactly that. PRINT_BODIES read 219 with 93 identical over 279 lines -- the shims three folds left behind, and nothing more to lift. PRINT_LINES read 3,944 carried. So 3,665 carried lines stood where the whole-body reading was blind.
+think Grouped the printing bodies by name to find where that blindness lives. Four families stood out: tell_beckon_own at 7 rungs, and tell_desist_third, tail, runs, half at 8 rungs each. Hashed the eight tell_desist_half bodies and got eight different hashes at forty lines apiece -- which is why the first reading counted them all distinct.
+think Diffed two of them rather than accepting the hash's verdict, and the whole lap turned on what came back. abate and answer differ in nothing but a pair of words repeated down the body -- holding, abating in one and leaving, hearing in the other. Masked that pair with sed and rehashed all eight: one hash for every half, one for every third. Eight twins the hash could not see, found by masking one thing.
+think Scope came from what each body reaches. half and third read every number through accessors and hold zero raw nesting; runs holds two raw lines and tail holds nine. The raw lines are the true staircase -- nine and ten inner hops in abate where answer writes eight -- and those want an accessor born, which is a different move. So this lap takes the pair that is pure parameterization and leaves the staircase whole.
+think Reach verified before a line moved, the check that made every fold in this arc safe. Fifteen symbols named by the pair; nine already stood pub in all eight rungs, and six did not -- dwell_of, endure_of, heed_of, relent_of, swell_of, and tell_desist_tail, the body the harness hands control back to. Uniform across all eight, one declaration each, so the widening is one word in forty-eight places. awaited_in and kept_in read as symbols to the first grep and are struct fields reached through deem_of and refer_of, so they wanted nothing.
+think The format string is where a parameterized print could quietly lie. Zig needs the format comptime, so the pair arrives as comptime text and the line is built by concatenation -- one pair constant per body, spliced where the two labels stood. A line that carried no labels at all, the against form, stays written out.
+think Third rung needs no shim. The rung's half shim calls the harness half, the harness half calls the harness third directly, and the harness third hands back to the rung's own tail -- so the rung's third body leaves entirely rather than shrinking to a call.
+think Captured the whole printed output of all eight rungs before the edit and hashed it, because a fold that changes what an operator reads is not a fold. A first comparison after the edit read as a difference, and running one binary twice showed the moving lines are forty-two concurrent-client lines whose order the runtime sets. Compared modulo those and held their count exactly: all eight rungs print line for line what they printed before.
+obs The two rows a lift could most easily have inflated stood still for the fifth fold running. The byte-identical check carry holds at 47 and the orchestration spine at 0. That is the same honest proof every fold in this arc has rested on -- a cost removed rather than traded for a cheaper-looking one.
+obs The first reading moved this time where it had stood still through folds E, F, and G. PRINT_BODIES fell 219 to 213 and distinct 126 to 120, because sixteen bodies left the rungs and two arrived in the harness. A fold that reaches past byte-identity is the first one this meter registers as fewer bodies rather than fewer lines.
+obs The neighbor walk's gap widened again, 589 to 718, for the reason the last lap measured rather than guessed -- the walk orders rungs by file length, so eight rungs shrinking by ninety-two lines apiece reorder its own pairing. Widened the assert's stated tolerance from twelve percent to twenty-one in the same act, because a bound that no longer describes what the meters do is a claim wearing a check's clothes.
+obs Masking rather than hashing is the transferable move here. Three folds asked what is byte-identical and lifted what answered; this one asked what is identical once the one thing that varies is held aside. The scan's own second reading had been counting these lines all along -- the design call was reading it rather than adding a meter.
+loom ladder=print carried_before=3944 carried_after=3433 disk_before=6454 disk_after=5848 deleted=816 call_lines=56 rungs=8 bodies=16 ceiling=3700
+loom ladder=print bodies_before=219 bodies_after=213 distinct_before=126 distinct_after=120 identical=93 identical_lines=279
+loom ladder=neighbor before=3483 after=2715 gap_before=589 gap_after=718
+loom witnesses=caravan_rungs green=8 suite=98 wall_s=9.6_per_rung
+file caravan/ladder_checks.rye the desisting half and third written once, the label pair arriving as comptime text
+file caravan/abate.rye the half body replaced by a three-line call handing in holding and abating; the third body left entirely; six symbols widened
+file caravan/answer.rye same fold, leaving and hearing
+file caravan/beckon.rye same fold, keeping and beckoning
+file caravan/conclude.rye same fold, leaving and concluding
+file caravan/desist.rye same fold, relaying and bounding
+file caravan/farewell.rye same fold, quiet and parting
+file caravan/refrain.rye same fold, calling and refraining
+file caravan/respect.rye same fold, reopening and respecting
+file tools/fixtures/caravan_ladder_print_scan.sh the fourth fold recorded, the ceiling down 4,300 to 3,700, and the second reading's new reach named
+file tools/caravan_ladder_print_witness.rish pins moved to what the scan now prints, the neighbor tolerance widened to what the meters actually do
+file caravan/README.md the fold H section -- what the mask found, what the widening cost, and the output comparison the proof rests on
+recommend keep-going the true staircase is what remains, and it is named and sized: tell_desist_tail at fifty-two lines in eight rungs and tell_beckon_own at thirty-four to a hundred and eleven in seven. Both read tiers through raw inner nesting written at a different depth in every rung, so neither a hash nor a mask reaches them. What they want is the move fold F made once by hand -- an accessor born for each raw tier, widened one word per rung, so the body above lifts and the staircase stays where it is written. Size it by counting the raw nesting lines per body first, since that count is the whole cost of the fold.

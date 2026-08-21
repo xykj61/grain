@@ -5182,3 +5182,139 @@ pub fn tell_the_reopener(
     // invariant: a telling run leaves no second look of its own untold
     assert(rung.recount_of(report_out).untold == 0);
 }
+
+/// Tells what two runs did about the standing quarrel itself, in an operator's
+/// own words.
+///
+/// The seam is the desisting rung's own: everything above belongs to the rungs
+/// beneath it and stands still under both plans, and everything here turns on
+/// whether a quarrel its holder let go is finally allowed to end.
+///
+/// Eight rungs held this body, and it read the same in every one save two words
+/// -- the pair naming which plan each column reports. Those two arrive as
+/// comptime text, so the printed line comes out exactly as each rung wrote it
+/// while the body is written once. Every accessor it names arrives with the type
+/// handed in, so each rung still reads its own report wherever that rung nests
+/// it.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn tell_desist_half(
+    comptime rung: type,
+    comptime bare_word: []const u8,
+    comptime under_word: []const u8,
+    bare_run: *rung.Report,
+    under_run: *rung.Report,
+) void {
+    const pair = " {d} " ++ bare_word ++ ", {d} " ++ under_word ++ "\n";
+    // invariant: a reading never publishes more findings than one case earns
+    assert(rung.deem_of(bare_run).answered <= 1);
+    // invariant: a reading never leaves more cases unanswered than one desk holds
+    assert(rung.deem_of(under_run).unanswered <= 1);
+    print("  positions carried past the run that heard them:" ++ pair, .{
+        rung.endure_of(bare_run).kept, rung.endure_of(under_run).kept,
+    });
+    print("  inherited positions weighed into the run's own word:" ++ pair, .{
+        rung.heed_of(bare_run).heeded, rung.heed_of(under_run).heeded,
+    });
+    print("  standing positions let go on their holder's own word:" ++ pair, .{
+        rung.relent_of(bare_run).withdrawn, rung.relent_of(under_run).withdrawn,
+    });
+    print("  standing positions left exactly where they were found:" ++ pair, .{
+        rung.relent_of(bare_run).standing, rung.relent_of(under_run).standing,
+    });
+    print("  withdrawn quarrels still standing over the plan:" ++ pair, .{
+        rung.relent_of(bare_run).uncleared, rung.relent_of(under_run).uncleared,
+    });
+    print("  standing positions this run said the age of:" ++ pair, .{
+        rung.dwell_of(bare_run).aged, rung.dwell_of(under_run).aged,
+    });
+    print("  standing positions left with no age at all:" ++ pair, .{
+        rung.dwell_of(bare_run).undated, rung.dwell_of(under_run).undated,
+    });
+    print("  standing quarrels whose note never said how long:" ++ pair, .{
+        rung.dwell_of(bare_run).ageless, rung.dwell_of(under_run).ageless,
+    });
+    print("  standing quarrels published where the outcome is read:" ++ pair, .{
+        rung.swell_of(bare_run).heralded, rung.swell_of(under_run).heralded,
+    });
+    print("  standing quarrels left unpublished at the outcome:" ++ pair, .{
+        rung.swell_of(bare_run).unpublished, rung.swell_of(under_run).unpublished,
+    });
+    print("  long-standing quarrels an operator reads no louder than a fresh one: {d} against {d}\n", .{
+        rung.swell_of(bare_run).unheralded, rung.swell_of(under_run).unheralded,
+    });
+    tell_desist_third(rung, bare_word, under_word, bare_run, under_run);
+}
+
+/// Prints what a hand outside the argument was given, and what the plan said.
+///
+/// The third of the telling, split at the seam where the quarrel's own record
+/// ends and the case carried outside it begins, so no one reading grows past the
+/// length a person takes in at one glance.
+///
+/// Eight rungs held this body too, identical save the same two words, and it
+/// lifts here beside the half it follows. Its own tail stays in each rung,
+/// because that body reads three tiers through a nesting each rung writes at its
+/// own depth -- the staircase, which wants an accessor born rather than a body
+/// lifted.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn tell_desist_third(
+    comptime rung: type,
+    comptime bare_word: []const u8,
+    comptime under_word: []const u8,
+    bare_run: *rung.Report,
+    under_run: *rung.Report,
+) void {
+    const pair = " {d} " ++ bare_word ++ ", {d} " ++ under_word ++ "\n";
+    // invariant: a telling always reads two runs that were actually run
+    assert(rung.run_of(bare_run).queued >= 1);
+    // invariant: a telling never reads more findings than one case may earn
+    assert(rung.deem_of(under_run).answered <= 1);
+    print("  long-standing quarrels carried to a hand that is neither party:" ++ pair, .{
+        rung.refer_of(bare_run).referred, rung.refer_of(under_run).referred,
+    });
+    print("  long-standing quarrels kept inside the argument:" ++ pair, .{
+        rung.refer_of(bare_run).kept_in, rung.refer_of(under_run).kept_in,
+    });
+    print("  long-standing quarrels nobody outside the argument ever sees: {d} against {d}\n", .{
+        rung.refer_of(bare_run).unheard, rung.refer_of(under_run).unheard,
+    });
+    print("  carried cases whose answer was read and published:" ++ pair, .{
+        rung.deem_of(bare_run).answered, rung.deem_of(under_run).answered,
+    });
+    print("  carried cases still waiting on a third hand's word:" ++ pair, .{
+        rung.deem_of(bare_run).awaited_in, rung.deem_of(under_run).awaited_in,
+    });
+    print("  cases carried out that nobody is ever heard back on: {d} against {d}\n", .{
+        rung.deem_of(bare_run).unanswered, rung.deem_of(under_run).unanswered,
+    });
+    print("  published findings the plan answered on the record:" ++ pair, .{
+        rung.avow_of(bare_run).said, rung.avow_of(under_run).said,
+    });
+    print("  published findings left without a word from the plan:" ++ pair, .{
+        rung.avow_of(bare_run).withheld, rung.avow_of(under_run).withheld,
+    });
+    print("  findings a plan published and never said one word about: {d} against {d}\n", .{
+        rung.avow_of(bare_run).unavowed, rung.avow_of(under_run).unavowed,
+    });
+    print("  concessions booked as a debt the next run finds:" ++ pair, .{
+        rung.owe_of(bare_run).booked, rung.owe_of(under_run).booked,
+    });
+    print("  concessions left owing nothing to any run after:" ++ pair, .{
+        rung.owe_of(bare_run).unowed, rung.owe_of(under_run).unowed,
+    });
+    print("  concessions a plan made that reach no run after them: {d} against {d}\n", .{
+        rung.owe_of(bare_run).unbooked, rung.owe_of(under_run).unbooked,
+    });
+    print("  inherited debts this run met and took down:" ++ pair, .{
+        rung.meet_of(bare_run).met, rung.meet_of(under_run).met,
+    });
+    print("  inherited debts left standing for the run after:" ++ pair, .{
+        rung.meet_of(bare_run).deferred, rung.meet_of(under_run).deferred,
+    });
+    print("  debts a plan inherited that the run never met: {d} against {d}\n", .{
+        rung.meet_of(bare_run).unmet, rung.meet_of(under_run).unmet,
+    });
+    rung.tell_desist_tail(bare_run, under_run);
+}

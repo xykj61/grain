@@ -46,10 +46,23 @@
 # It reaches eighteen symbols, and every one of them already stood public on all
 # eleven, so this fold widened nothing: the accessor that finds this tier's
 # report inside a rung's own nesting was already reachable, which is what the
-# previous fold's widening bought. The carry fell to 3,944 of 6,454, and the
-# ceiling below fell with each fold, so a fold stays folded rather than quietly
-# refilling. What remains carried is the staircase of per-tier bodies, which
-# wants a different fold than a whole-body lift.
+# previous fold's widening bought. The carry fell to 3,944 of 6,454.
+#
+# The fourth fold reached past byte-identity for the first time. The desisting
+# telling -- `tell_desist_half` and the `tell_desist_third` it chains into --
+# stood in eight rungs at forty and fifty-two lines apiece, and no two of the
+# sixteen bodies hashed alike, so the whole-body reading could not see them at
+# all. Normalizing one thing showed what they are: the pair of words naming which
+# plan each column reports -- `holding, abating` in one rung, `leaving, hearing`
+# in the next. With that pair masked, all eight halves are one hash and all eight
+# thirds are another. So the pair lifts as comptime text and the bodies lift
+# whole, each rung keeping a three-line call that hands in its own two words, and
+# every printed line comes out exactly as that rung wrote it. Six symbols widened
+# by one word in each of the eight. The carry fell to 3,433 of 5,848.
+#
+# What remains carried is the true staircase -- `tell_desist_tail` and
+# `tell_beckon_own`, bodies that read three tiers through a nesting each rung
+# writes at its own depth. That wants an accessor born rather than a body lifted.
 #
 # The scan reports the carry two ways on purpose, because they answer different
 # questions and the answer decides what the fold should be:
@@ -66,16 +79,20 @@
 #
 #   PRINT_LINES names the carry at the line level, which also counts the
 #   staircase: a body that is the rung below's plus three lines is a new body to
-#   the first reading and 90-odd already-written lines to the second.
+#   the first reading and 90-odd already-written lines to the second. It also
+#   counts the near-identical body -- the one differing only in a word or two --
+#   which the first reading cannot see at all, and which the fourth fold shows is
+#   worth reaching for.
 #
-# CARAVAN_PRINT_CEILING (default 4300): how many carried printing lines the
-# ladder may hold. 3,944 stand today, and a new rung adds roughly 342 now that
-# three families are written once -- so the ceiling still catches the SECOND
+# CARAVAN_PRINT_CEILING (default 3700): how many carried printing lines the
+# ladder may hold. 3,433 stand today, and a new rung adds roughly 250 now that
+# five families are written once -- so the ceiling still catches the SECOND
 # rung written before the next fold lands rather than the tenth. It came down
 # 7,800 to 6,900 when the note-writing pair lifted, 6,900 to 4,800 when the
-# reader-telling body followed, and 4,800 to 4,300 when the reader-asking body
-# joined them, because a ceiling left where a fold found it hands back exactly
-# the room the fold just won.
+# reader-telling body followed, 4,800 to 4,300 when the reader-asking body
+# joined them, and 4,300 to 3,700 when the desisting telling followed, because
+# a ceiling left where a fold found it hands back exactly the room the fold
+# just won.
 #
 # CARAVAN_PRINT_PREFIX (default tell_): the function-name prefix that opens the
 # printing family, so a corpus small enough to count by hand can prove the
@@ -89,7 +106,7 @@
 # PASS and FAIL fixtures prove both paths without touching the tree.
 set -eu
 
-CEILING=${CARAVAN_PRINT_CEILING:-4300}
+CEILING=${CARAVAN_PRINT_CEILING:-3700}
 BOUND=${CARAVAN_PRINT_BOUND:-70}
 PREFIX=${CARAVAN_PRINT_PREFIX:-tell_}
 DIR=${CARAVAN_LADDER_DIR:-caravan}
