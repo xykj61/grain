@@ -110,8 +110,8 @@ These four numbers are **generated**, never typed. A README's whole promise is t
 | Reading | Now |
 |---|---|
 | **Fascia** -- can a reader follow any thread home | **45** / 100 |
-| **Witnesses** running on metal | **1635** |
-| **Rye modules** they stand over | **1887** |
+| **Witnesses** running on metal | **1636** |
+| **Rye modules** they stand over | **1888** |
 | **Rooms grown past what a browser can list** | **0** |
 
 <!-- metrics:end -->

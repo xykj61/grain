@@ -11,20 +11,21 @@ CORP=tools/.cache/waymark/corpus.txt
 FIX=tools/fixtures/flw-four-letter.txt
 
 [ -f "$REG" ] || { echo "REG_MISSING"; exit 2; }
-OSSL=$(command -v openssl || ls /run/current-system/sw/bin/openssl 2>/dev/null || ls /nix/store/*-openssl-*/bin/openssl 2>/dev/null | head -1)
-[ -n "$OSSL" ] || { echo "OPENSSL_MISSING"; exit 2; }
+# SHA3-512 from this tree's own Keccak, not from an openssl the host may or may not carry. The
+# seal and every re-derived mark below are unchanged, because the algorithm is unchanged.
+SHA3="$(CDPATH= cd "$(dirname "$0")" && pwd)/sha3.sh"
 
 sh tools/fixtures/waymark_corpus_extract.sh "$FIX" "$CORP" >/dev/null 2>&1 || { echo "CORPUS_FAIL"; exit 2; }
 SIZE=$(wc -l < "$CORP" | tr -d ' ')
 
 # 1) corpus digest must match the registry's recorded pin
-DIG=$("$OSSL" dgst -sha3-512 "$CORP" | awk '{print $NF}')
+DIG=$(sh "$SHA3" 512 "$CORP")
 REGDIG=$(grep '^corpus_digest ' "$REG" | awk '{print $2}')
 [ "$DIG" = "$REGDIG" ] || { echo "DIGEST_FAIL"; exit 1; }
 
 # 2) seal: SHA3-512 of the sealed body (rows after the marker) must equal `seal`
 awk '/^# ---- sealed body ----/{f=1;next} f' "$REG" > /tmp/wreg_body.txt
-COMP=$("$OSSL" dgst -sha3-512 /tmp/wreg_body.txt | awk '{print $NF}')
+COMP=$(sh "$SHA3" 512 /tmp/wreg_body.txt)
 SEAL=$(grep '^seal ' "$REG" | awk '{print $2}')
 [ "$COMP" = "$SEAL" ] || { echo "SEAL_FAIL want $SEAL got $COMP"; exit 1; }
 echo "SEAL_OK"
@@ -38,7 +39,7 @@ while IFS= read -r line; do
   mk=$(printf '%s' "$line" | sed -n 's/^mark \([A-Z][A-Z][A-Z][A-Z]\) .*/\1/p')
   inp=$(printf '%s' "$line" | sed -n 's/.*| input \([a-z0-9-]*\) |.*/\1/p')
   idx=$(printf '%s' "$line" | sed -n 's/.*| index \([0-9]*\) |.*/\1/p')
-  H=$(printf '%s' "$inp" | "$OSSL" dgst -sha3-512 | awk '{print $NF}' | cut -c1-8)
+  H=$(printf '%s' "$inp" | sh "$SHA3" 512 - | cut -c1-8)
   D=$(printf '%d' 0x"$H")
   I=$(( D % SIZE + 1 ))
   W=$(awk -v k="$I" 'NR==k' "$CORP")
