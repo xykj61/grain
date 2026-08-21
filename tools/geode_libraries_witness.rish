@@ -1,0 +1,45 @@
+# tools/geode_libraries_witness.rish -- the library index is generated, and still true.
+#
+# WHY THIS RUNG. An index of what a tree contains is the fastest-rotting page a tree can own. Every
+# module added makes it a little less true, and nobody notices, because an index is trusted rather
+# than checked -- that is what an index is FOR. So this one is read off disk each run and compared,
+# byte for byte, against the page on the shelf.
+#
+# WHAT IS PROVEN, on metal.
+#   The page on disk equals a fresh render. A module added without regenerating reds here.
+#   The page says it is generated, so a reader knows not to spend effort editing it.
+#   Every room it names has the README it claims, so no row points at a door that is not there.
+#   The witness count is taken by REFERENCE, not by filename glob -- the glob reported zero for
+#   `image` and `lotus`, 463 modules between them, because their proofs are named for what they
+#   prove rather than where it lives. A confident wrong zero is worse than no number.
+#
+# WHAT IS NOT PROVEN. Whether each library is any good, or whether its README says anything true.
+# This proves the index is honest about what exists, not that what exists is well made.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/geode_libraries_witness.rish
+
+say "geode-libraries: Language EN -- an index is trusted rather than checked, which is exactly why it must be generated and compared."
+say "geode-libraries: Style Radiant -- three claims. The page equals a fresh render. It says it is generated. And every room it names has the door it claims."
+say "geode-libraries: Lens TAME -- the witness count is taken by reference rather than by filename, because a glob reported a confident zero for two rooms holding 463 modules."
+
+let fresh = run ["sh" "-c" "sh tools/fixtures/geode_libraries_scan.sh render | cksum"]
+assert fresh.ok else "geode-libraries: a fresh render must succeed"
+let onshelf = run ["sh" "-c" "cksum < docs-geode/libraries/README.md"]
+assert onshelf.ok else "geode-libraries: the page must be readable"
+assert (trim fresh.out) == (trim onshelf.out) else "geode-libraries: the page has drifted from the tree -- regenerate with rishi/bin/rishi run tools/geode_libraries.rish write"
+say "freshness GREEN -- the page equals a render taken this second"
+
+let marked = run ["grep" "-cF" "This page is generated" "docs-geode/libraries/README.md"]
+assert marked.ok else "geode-libraries: the page must tell a reader it is generated"
+say "marker GREEN -- the page says plainly that it is generated"
+
+# Every row must point at a README that exists. A row naming a door that is not there is the one
+# failure an index can have that a reader cannot see from the index itself.
+let doors = run ["sh" "-c" "miss=0; for p in $(grep -oE '\\]\\(\\.\\./\\.\\./[a-z-]+/README\\.md\\)' docs-geode/libraries/README.md | sed 's|](../../||; s|)$||'); do [ -f \"$p\" ] || miss=$((miss+1)); done; echo missing=$miss"]
+assert doors.ok else "geode-libraries: the door check must run"
+say doors.out
+assert doors.out contains "missing=0" else "geode-libraries: every room named must have the README the row links to"
+say "doors GREEN -- every row opens on a README that is there"
+
+say "GREEN: geode-libraries -- the index equals a fresh reading of the tree, says it is generated, and every door it names is open."

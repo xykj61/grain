@@ -129,6 +129,10 @@ Five lines, and **two of them are assertions**. That ratio is the whole discipli
 
 That is what this tree means by bounded, asserted, and proven. You have now written it.
 
+## The longer welcome
+
+This page is the **path** -- six commands, no branching. [`../../manual/20260810-065116_your-first-hour-with-grain.md`](../../manual/20260810-065116_your-first-hour-with-grain.md) is the **welcome**: two hundred lines that say what Grain is, what custody-first means, and why a witness is the unit of truth here. Read whichever suits the morning you are having; they now point at each other rather than each pretending to be the only first hour.
+
 ## Where to go next
 
 - **[`../../SOURCE.md`](../../SOURCE.md)** -- the full first day: keys, the enclosure, the signed forge home.

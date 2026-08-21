@@ -129,6 +129,8 @@ Two root config files hold what is specific to *your* machine and *your* identit
 
 **New here? Start with one hour, not one map.** [`docs-geode/tutorials/the-first-hour.md`](docs-geode/tutorials/the-first-hour.md) walks a single path from nothing to something you made work: clone, run one witness, read the green line it prints, write five lines of Rishi, run them. One page, one path, no branching. Everything below is the map you want *after* that hour.
 
+**The shipped documentation shelf** is [`docs-geode/`](docs-geode/README.md): the [Rishi language reference](docs-geode/api/rishi-language-reference.md) and its edges, a [generated index of all 38 libraries](docs-geode/libraries/README.md), [four demos you can run in a minute](docs-geode/demos/README.md), and [how to read this tree](docs-geode/study/README.md) when you want the room rather than the file.
+
 Then read, in order: **[`SOURCE.md`](SOURCE.md)** (clone · keys · enclosure) → **[`ORGANIZING.md`](ORGANIZING.md)** (where each kind of work lives) → **[`MAP.md`](MAP.md)** (the seven rooms of the tree) → **[`manual/glow-os/`](manual/glow-os/README.md)** (the onboarding rooms and the five variants) → **[`docs/TUBE.md`](docs/TUBE.md)** and **[`glow/README.md`](glow/README.md)** (what the app ladder and language desk prove today) → **[`CONTRIBUTING.md`](CONTRIBUTING.md)** (how a contribution arrives: small, signed, component-prefixed, in Radiant voice).
 
 ---
