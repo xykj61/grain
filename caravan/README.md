@@ -1892,9 +1892,32 @@ Proven by [`tools/caravan_refusals_witness.rish`](../tools/caravan_refusals_witn
 | Depth a lineage may stand | **4**, so every walk up terminates in a known number of steps |
 | Bounds refusing by named Rye error rather than kernel answer | **2** -- `SlotOutOfRange`, `DerivationTooDeep` |
 
-Proven by [`tools/caravan_derivation_witness.rish`](../tools/caravan_derivation_witness.rish), GREEN on metal, with both RED paths planted rather than described: a tree that lets reach **widen** as it is handed on fails its own self-test, and a revoke that sweeps only **direct** children leaves a grandchild standing and the postcondition inside `revoke` names it. The choir sang **101 GREEN** with it registered, and the four ladder meters moved their module pins 103 to 104 in the same commit as the code.
+Proven by [`tools/caravan_derivation_witness.rish`](../tools/caravan_derivation_witness.rish), GREEN on metal, with both RED paths planted rather than described: a tree that lets reach **widen** as it is handed on fails its own self-test, and a revoke that sweeps only **direct** children leaves a grandchild standing and the postcondition inside `revoke` names it. The choir sang **101 GREEN** with it registered, and the four ladder meters moved their module pins 103 to 104 in the same commit as the code. (The ladder stands one module wider since, and the meters moved with it -- REDS %108 caught a meter's closing prose reciting a module count its own scan contradicted, and closed it the way REDS %105 closed: the number is gone from the sentence and reaches the reader through the scan's own printed output.)
 
 **What this does not claim.** The bounds are this module's own capacity rather than an answer the kernel offers, so they refuse by named Rye error and the general bounds-checking debt stays open. No kernel booted; the lineage rules are ours, written to the shape of the answers seL4 publishes, and they earn their behavioural proof the day a root task actually invokes a capability. **Five of the seven the rung above named remain owed** -- argument, bounds, and alignment checking, the IPC buffer, and untyped retyping. `refusals.rye` still counts seven, and rightly: its count is what the *policy table* can answer, and the table above the line has not yet learned to speak through the tree.
+
+
+## The IPC buffer -- a bounded message with a named minimum
+
+`ipc_buffer.rye` (`20260821.053811`) pays the next debt on the agenda, and its shape was named for it in advance: `refusals.rye` gave the IPC buffer's reason as *the message a dependent sends is a bounded buffer with a named minimum*. Truncation is a question about how many words arrived, rather than about rights or lineage, so neither the policy table nor the derivation tree can answer it. A message that declares its own length, read against a minimum each method states for itself, answers it exactly.
+
+**The minimum belongs to the method.** Four supervision methods stand, each naming what it reads before it can act at all: `restart` reads a dependent, `enlist` reads a dependent and the cohort it joins, `apprise` reads a dependent and the status it reports, and `entrust` reads a dependent, a resource, and the rights handed over. A two-word message therefore satisfies three of the four and answers `seL4_TruncatedMessage` to the fourth -- so truncation reads as a floor rather than a mood, and a method never gets read half-way.
+
+**Three properties carry the buffer.** A tag never claims more than the buffer holds, since the declared length is taken from the words actually written rather than from a caller's word for it. A reader never reaches past that length, and a read one word beyond it refuses by named Rye error with a hundred and nineteen words of array still standing behind it. And a shorter message leaves no residue of a longer one: the tail is cleared on every send, so a drifted length can never surface a word from the message that came before.
+
+| Measured `20260821` | Value |
+|---|---|
+| Kernel refusals this rung answers | **1** -- `seL4_TruncatedMessage` |
+| Words one message may carry | **120**, seL4's own `seL4_MsgMaxLength`, re-read from the vendored header each run |
+| Capabilities riding beside them | **3**, derived from `seL4_MsgExtraCapBits` exactly as seL4 derives it |
+| Methods naming a minimum | **4** -- `enlist` 2, `entrust` 3, `apprise` 2, `restart` 1 |
+| Bounds refusing by named Rye error rather than kernel answer | **3** -- `MessageTooLong`, `TooManyExtraCaps`, `ReadOutOfRange` |
+
+**The meaning is honestly unbound, and the witness proves that rather than assuming it.** seL4 publishes a per-method description for several of the eleven, and `caravan_refusal_meaning_scan.sh` binds ours to the kernel's two-sidedly wherever it does. `seL4_TruncatedMessage` is not among them: it stands in `errors.h` as a name and appears in no interface description, measured on this run. So the sentence beside it is Caravan's own reading, named as such -- and the witness asserts the absence, so the day seL4 publishes a description the rung reds and asks for the binding.
+
+Proven by [`tools/caravan_ipc_buffer_witness.rish`](../tools/caravan_ipc_buffer_witness.rish), GREEN on metal, with both RED paths planted rather than described: a buffer that stops comparing the declared length against the method's minimum reads a short message as satisfied and fails its own self-test, and one that stops clearing its tail lets a word of a longer message survive a shorter one and the postcondition inside `send` names it. The choir sang **102 GREEN** with it registered.
+
+**Four of the seven remain owed** -- argument, bounds, and alignment checking, and untyped retyping. `refusals.rye` still counts seven, and rightly: its count is what the *policy table* can answer, and the table above the line has not yet learned to speak through either the tree or the buffer.
 
 
 ## Held

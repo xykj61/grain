@@ -179,6 +179,24 @@ let prose_elder = run ["sh" "-c" "d=$(mktemp -d); git show HEAD:caravan/ladder_c
 assert prose_elder.ok else "caravan-ladder-copy: the elder harness must read clean -- ${prose_elder.out}"
 assert prose_elder.out contains "HARNESS_PROSE_OK" else "caravan-ladder-copy: want the elder harness welcomed"
 
+# The recited-count rule -- a ladder meter's own prose recites no module count. The spine meter closed every run saying
+# its spine stood "across 102 modules" while the scan it had just asserted printed 104, and then 105: the assert bound
+# the SCAN OUTPUT and left the closing sentence unguarded, so it drifted twice without a RED (REDS %108, the family
+# REDS %105 named one shelf over). A meter's own subject is pinned in an assert beside its prose and moves with it; the
+# module count is nobody's subject, which is exactly why nobody updates it. So the rule is no number at all -- the
+# measurement is already printed verbatim by each meter's `living ladder` line, which cannot drift because it is the
+# scan's own output.
+let recited = run ["sh" "tools/fixtures/caravan_ladder_prose_count_scan.sh"]
+assert recited.ok else "caravan-ladder-copy: no ladder meter may recite a module count in prose -- ${recited.out}"
+assert recited.out contains "LADDER_PROSE_COUNT_OK" else "caravan-ladder-copy: want every ladder meter's prose free of a recited module count"
+say "caravan-ladder-copy: recited counts -- ${trim recited.out}"
+
+# RED path eleven -- the living tree exactly as it stood this morning, which is the strongest available control: the
+# guard must name the very line that shipped, rather than a shape invented to be caught.
+let recited_elder = run ["sh" "-c" "d=$(mktemp -d); git show HEAD:tools/caravan_ladder_spine_witness.rish > $d/caravan_ladder_spine_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+assert (recited_elder.ok == false) else "caravan-ladder-copy: the drifted spine prose must refuse"
+assert recited_elder.out contains "LADDER_PROSE_BAD say" else "caravan-ladder-copy: want the drifted line named by file and number"
+
 # The counting proven by hand. The corpus holds two rungs: the lower carries two distinct checks, the
 # upper carries one of them forward byte for byte and adds one of its own. So four checks stand, three
 # bodies are distinct, exactly one is a copy, and that copy is six lines long -- countable by eye in the
@@ -240,4 +258,4 @@ let bare = run ["sh" "-c" "d=$(mktemp -d); CARAVAN_TOOLS_DIR=$d sh tools/fixture
 assert (bare.ok == false) else "caravan-ladder-copy: a directory holding no witnesses must refuse"
 assert bare.out contains "reason=no_witnesses" else "caravan-ladder-copy: want the empty witness directory refused by name"
 
-say "GREEN: caravan-ladder-copy -- the folded ladder stands counted under a named ceiling, all three folds are read out of the ladder rather than claimed, the counting is proven by hand on a two-rung corpus, the fold walks down one rung at a time in either form a rung may write it, the Caravan roster is asked here every lap so no witness is born unheard, and all ten RED paths refuse by name, the prose rule and both roster directions among them, welcomed on the elder harness and refused on a planted one."
+say "GREEN: caravan-ladder-copy -- the folded ladder stands counted under a named ceiling, all three folds are read out of the ladder rather than claimed, the counting is proven by hand on a two-rung corpus, the fold walks down one rung at a time in either form a rung may write it, the Caravan roster is asked here every lap so no witness is born unheard, and all eleven RED paths refuse by name, the two prose rules and both roster directions among them, welcomed on the elder harness and refused on the drifted line that actually shipped."

@@ -1,0 +1,459 @@
+//! Caravan IPC buffer -- the bounded message a dependent sends, and the one
+//! kernel refusal that only a message with a declared length can answer.
+//!
+//! WHY THIS MODULE EXISTS. `refusals.rye` read seL4's own compiled enums and
+//! found eleven named answers a capability invocation may receive, of which
+//! Caravan's policy table answers four. It named, for each of the seven
+//! remaining, the subsystem that owes it -- and the **IPC buffer** owes
+//! `seL4_TruncatedMessage`, because truncation is a question about *how many
+//! words arrived* rather than about rights or lineage. A table that maps a
+//! dependent to what it may do can never answer it. A buffer that carries a
+//! declared length beside a named minimum per method answers it exactly.
+//!
+//! THE REFUSAL, AS THIS MODULE MEANS IT.
+//!
+//!   truncated_message  The message carried fewer words than the method reads.
+//!                      A method that read on anyway would be reading words
+//!                      nobody sent, which is the whole class this refusal
+//!                      exists to make impossible.
+//!
+//! HONEST NOTE ON THAT SENTENCE. seL4 publishes a per-method description for
+//! several of the eleven, and `tools/fixtures/caravan_refusal_meaning_scan.sh`
+//! binds ours to the kernel's two-sidedly wherever it does. `seL4_TruncatedMessage`
+//! is **not** among them: it appears in the vendored tree as a name in
+//! `errors.h` and nowhere else, measured rather than assumed. So the sentence
+//! above is Caravan's own reading, named as such, and the scan reports it among
+//! the unbound rather than pretending a binding exists (REDS %107's lesson,
+//! kept one rung on).
+//!
+//! THE THREE PROPERTIES IT KEEPS.
+//!
+//!   A tag never claims more than the buffer holds. `length` is taken from the
+//!   words actually written, never from a caller's word for it.
+//!
+//!   A reader never sees past the declared length. Every word read is bounded
+//!   by the tag, and a read beyond it refuses by named Rye error.
+//!
+//!   A shorter message leaves no residue of a longer one. Sending clears the
+//!   tail, so a drifted length can never surface a word from a message that
+//!   came before it.
+//!
+//! WHAT IS BOUNDED. The buffer holds `max_message_words` words and carries at
+//! most `max_extra_caps` capabilities beside them. Both bounds refuse with
+//! **named Rye errors** rather than with a kernel refusal, since they are this
+//! module's own capacity rather than an answer the kernel offers -- the general
+//! bounds-checking debt `refusals.rye` names stays open, and this rung does not
+//! claim it.
+//!
+//! CLEAN ROOM. No seL4 line is reproduced. The two sizes are taken from the
+//! vendored BSD-2-Clause `constants.h`, and the witness re-reads that header at
+//! run time, so a vendored bump that moves either one reds this rung on the lap
+//! it lands.
+//!
+//! Usage:
+//!   ipc_buffer          Run the self-test (default)
+//!   ipc_buffer selftest Same as default
+//!   ipc_buffer table    Print the methods, their minimums, and a worked send
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const refusals = @import("refusals.rye");
+
+const caravan_ipc_buffer_version = "20260821.053811";
+
+/// How many words one message may carry, seL4's `seL4_MsgMaxLength`. Read from
+/// the vendored `constants.h` on `20260821.053811`; the witness re-reads it on
+/// every run, so a vendored bump reds this rung rather than drifting past it.
+pub const max_message_words: u32 = 120;
+
+/// How many capabilities may ride beside the words, seL4's
+/// `seL4_MsgMaxExtraCaps` -- one less than two raised to `seL4_MsgExtraCapBits`,
+/// which the vendored header states as two.
+pub const max_extra_caps: u32 = 3;
+
+/// What this module refuses with when its own capacity is reached, or when a
+/// reader reaches past what the tag declares. These are Rye errors rather than
+/// kernel refusals on purpose -- the kernel offers no answer for "the
+/// userland's buffer is smaller than the thing you handed it."
+pub const IpcError = error{
+    MessageTooLong,
+    TooManyExtraCaps,
+    ReadOutOfRange,
+};
+
+// =========================================================================
+// The methods a dependent invokes, each with the minimum it reads
+// =========================================================================
+
+/// The supervision methods a dependent may invoke on Caravan. Each names a
+/// **minimum word count** it reads, which is precisely what makes truncation
+/// answerable: without a named minimum there is no honest way to say a message
+/// arrived short.
+pub const Method = enum(u8) {
+    enlist = 0,
+    entrust = 1,
+    apprise = 2,
+    restart = 3,
+};
+
+/// The whole roster, in declaration order. One list, so no count is recited.
+pub const all_methods = [_]Method{ .enlist, .entrust, .apprise, .restart };
+
+/// How many words the method reads before it can act at all.
+///
+/// DESIGN JUDGEMENT, named as one. `enlist` reads the dependent's number and
+/// the cohort it joins. `entrust` reads a dependent, a resource, and the rights
+/// handed over -- three, the widest of the four. `apprise` reads a dependent
+/// and the status it reports. `restart` reads the dependent alone. Each number
+/// is the method's own contract, so a message shorter than it is refused rather
+/// than read half-way.
+pub fn words_read(method: Method) u32 {
+    // invariant: the switch is total over the roster.
+    const minimum: u32 = switch (method) {
+        .enlist => 2,
+        .entrust => 3,
+        .apprise => 2,
+        .restart => 1,
+    };
+    // invariant: a method that reads nothing could never be truncated.
+    assert(minimum >= 1);
+    // invariant: a minimum a message could never satisfy is a contract nobody can keep.
+    assert(minimum <= max_message_words);
+    return minimum;
+}
+
+/// The interface name each method carries in Caravan's own vocabulary, so a
+/// printed table reads as supervision rather than as numbers.
+pub fn method_name(method: Method) []const u8 {
+    const name: []const u8 = switch (method) {
+        .enlist => "enlist",
+        .entrust => "entrust",
+        .apprise => "apprise",
+        .restart => "restart",
+    };
+    assert(name.len > 0); // invariant: a named method always carries its name
+    return name;
+}
+
+// =========================================================================
+// The tag -- what the message says about itself
+// =========================================================================
+
+/// What a message declares about itself, ahead of its words.
+///
+/// Invariant, held by the buffer rather than by the struct: `length` never
+/// exceeds `max_message_words`, and `extra_caps` never exceeds `max_extra_caps`.
+pub const MessageInfo = struct {
+    label: u32 = 0,
+    extra_caps: u32 = 0,
+    length: u32 = 0,
+};
+
+// =========================================================================
+// The buffer
+// =========================================================================
+
+pub const Buffer = struct {
+    words: [max_message_words]u64 = [_]u64{0} ** max_message_words,
+    tag: MessageInfo = .{},
+
+    /// An empty buffer. No words, no tag, nothing standing from before.
+    pub fn init() Buffer {
+        const buffer: Buffer = .{};
+        // invariant: a fresh buffer declares an empty message.
+        assert(buffer.tag.length == 0);
+        // invariant: an empty buffer is a whole one.
+        assert(buffer.whole());
+        return buffer;
+    }
+
+    /// Put a whole message in the buffer: the words a sender carries, the label
+    /// naming what it wants, and the capabilities riding beside them.
+    ///
+    /// Answers `.no_error` when the message is seated. Refuses a message longer
+    /// than the buffer, or more capabilities than may ride, by named error.
+    ///
+    /// The tail is cleared deliberately: a shorter message must leave no word of
+    /// a longer one standing, or a drifted length would surface reach nobody
+    /// sent this time.
+    pub fn send(self: *Buffer, label: u32, message: []const u64, extra_caps: u32) IpcError!refusals.KernelRefusal {
+        if (message.len > max_message_words) return IpcError.MessageTooLong;
+        if (extra_caps > max_extra_caps) return IpcError.TooManyExtraCaps;
+        // invariant: the length is a real count once both bounds are passed.
+        assert(message.len <= max_message_words);
+
+        const length: u32 = @intCast(message.len);
+
+        var index: u32 = 0;
+        while (index < length) : (index += 1) {
+            self.words[@intCast(index)] = message[@intCast(index)];
+        }
+        while (index < max_message_words) : (index += 1) {
+            self.words[@intCast(index)] = 0;
+        }
+
+        self.tag = .{ .label = label, .extra_caps = extra_caps, .length = length };
+
+        // invariant: the tag claims exactly the words that were written.
+        assert(self.tag.length == length);
+        // invariant: nothing of an earlier, longer message stands past the tail.
+        assert(self.whole());
+        return .no_error;
+    }
+
+    /// Whether the message standing here satisfies what `method` reads.
+    ///
+    /// Answers `.truncated_message` when the message carries fewer words than
+    /// the method's named minimum, and `.no_error` when it carries enough. This
+    /// is the refusal that makes the declared length worth carrying: without it
+    /// a method reads words nobody sent and calls the result an argument.
+    pub fn read(self: *const Buffer, method: Method) refusals.KernelRefusal {
+        const needs = words_read(method);
+        // invariant: the minimum is one the buffer could hold.
+        assert(needs <= max_message_words);
+
+        if (self.tag.length < needs) return .truncated_message;
+
+        // invariant: a satisfied read never reaches past what the tag declares.
+        assert(needs <= self.tag.length);
+        return .no_error;
+    }
+
+    /// One word of the message, bounded by what the tag declares rather than by
+    /// what the array can hold. A reader that reaches past the declared length
+    /// is refused by name.
+    pub fn word(self: *const Buffer, index: u32) IpcError!u64 {
+        if (index >= self.tag.length) return IpcError.ReadOutOfRange;
+        // invariant: a readable index stands inside both the tag and the array.
+        assert(index < self.tag.length);
+        assert(index < max_message_words);
+        return self.words[@intCast(index)];
+    }
+
+    /// Re-prove the whole buffer: an honest length, capabilities inside their
+    /// allotment, and a clear tail past the declared message. Returns true when
+    /// every one of the three holds.
+    pub fn whole(self: *const Buffer) bool {
+        if (self.tag.length > max_message_words) return false;
+        if (self.tag.extra_caps > max_extra_caps) return false;
+
+        var index: u32 = self.tag.length;
+        var swept: u32 = 0;
+        while (index < max_message_words) : (index += 1) {
+            if (self.words[@intCast(index)] != 0) return false;
+            swept += 1;
+        }
+        // invariant: the sweep covered exactly the words past the declared message.
+        assert(swept + self.tag.length == max_message_words);
+        return true;
+    }
+};
+
+// =========================================================================
+// The methods and a worked send, printed
+// =========================================================================
+
+fn print_table() u8 {
+    var buffer = Buffer.init();
+    // Two words on purpose: it satisfies three of the four methods and falls
+    // short of the fourth, so the table shows both answers rather than one.
+    _ = buffer.send(7, &[_]u64{ 11, 22 }, 1) catch return 1;
+
+    print("ipc_buffer: version {s}\n", .{caravan_ipc_buffer_version});
+    for (all_methods) |method| {
+        print("ipc_buffer: method {s} reads {d} -- message of {d} answers {s}\n", .{
+            method_name(method),
+            words_read(method),
+            buffer.tag.length,
+            refusals.kernel_symbol(buffer.read(method)),
+        });
+    }
+    print("ipc_buffer: label {d}, words carried {d}, capabilities riding beside them {d}\n", .{
+        buffer.tag.label,
+        buffer.tag.length,
+        buffer.tag.extra_caps,
+    });
+    print("ipc_buffer: {s} -- {s}\n", .{
+        refusals.kernel_symbol(.truncated_message),
+        refusals.kernel_meaning(.truncated_message),
+    });
+    return 0;
+}
+
+// =========================================================================
+// Self-test -- the asserts are the specification
+// =========================================================================
+
+/// Movement one -- a message declares its own length, and a reader never gets
+/// past it.
+fn prove_declared_length() void {
+    var buffer = Buffer.init();
+    assert(buffer.tag.length == 0);
+    assert(buffer.whole());
+
+    // A read against an empty buffer is truncated for every method, since every
+    // method reads at least one word.
+    for (all_methods) |method| {
+        assert(buffer.read(method) == .truncated_message);
+    }
+
+    assert(try_answer(buffer.send(9, &[_]u64{ 41, 42, 43 }, 0)) == .no_error);
+    assert(buffer.tag.length == 3);
+    assert(buffer.tag.label == 9);
+
+    // The words read back exactly as they were written.
+    assert(try_word(buffer.word(0)) == 41);
+    assert(try_word(buffer.word(1)) == 42);
+    assert(try_word(buffer.word(2)) == 43);
+
+    // A reader reaching past the declared length is refused by name, even though
+    // the array behind it is far larger.
+    if (buffer.word(3)) |_| {
+        assert(false); // invariant: a read past the tag never succeeds
+    } else |err| {
+        assert(err == IpcError.ReadOutOfRange);
+    }
+    assert(buffer.whole());
+}
+
+/// Movement two -- the refusal this module owes, answered against a named
+/// minimum per method rather than against an ad-hoc number.
+fn prove_truncation() void {
+    var buffer = Buffer.init();
+
+    // One word satisfies `restart` alone -- the only method that reads one.
+    assert(try_answer(buffer.send(1, &[_]u64{5}, 0)) == .no_error);
+    assert(buffer.read(.restart) == .no_error);
+    assert(buffer.read(.enlist) == .truncated_message);
+    assert(buffer.read(.apprise) == .truncated_message);
+    assert(buffer.read(.entrust) == .truncated_message);
+
+    // Two words reach the pair that read two, and still fall short of `entrust`.
+    assert(try_answer(buffer.send(1, &[_]u64{ 5, 6 }, 0)) == .no_error);
+    assert(buffer.read(.restart) == .no_error);
+    assert(buffer.read(.enlist) == .no_error);
+    assert(buffer.read(.apprise) == .no_error);
+    assert(buffer.read(.entrust) == .truncated_message);
+
+    // Three words satisfy every method on the roster.
+    assert(try_answer(buffer.send(1, &[_]u64{ 5, 6, 7 }, 0)) == .no_error);
+    for (all_methods) |method| {
+        assert(buffer.read(method) == .no_error);
+    }
+
+    // A message longer than any minimum stays satisfying -- truncation is a
+    // floor, never a ceiling.
+    assert(try_answer(buffer.send(1, &[_]u64{ 5, 6, 7, 8, 9 }, 0)) == .no_error);
+    for (all_methods) |method| {
+        assert(buffer.read(method) == .no_error);
+    }
+    assert(buffer.whole());
+}
+
+/// Movement three -- a shorter message leaves no residue of a longer one.
+fn prove_no_residue() void {
+    var buffer = Buffer.init();
+
+    assert(try_answer(buffer.send(2, &[_]u64{ 100, 200, 300, 400 }, 0)) == .no_error);
+    assert(try_word(buffer.word(3)) == 400);
+
+    // The next message is shorter. The words past its tail must be gone, or a
+    // drifted length would surface a word from the message before it.
+    assert(try_answer(buffer.send(2, &[_]u64{ 700, 800 }, 0)) == .no_error);
+    assert(buffer.tag.length == 2);
+    assert(buffer.words[2] == 0);
+    assert(buffer.words[3] == 0);
+    assert(buffer.whole());
+
+    if (buffer.word(2)) |_| {
+        assert(false); // invariant: the cleared tail is unreadable as well as zero
+    } else |err| {
+        assert(err == IpcError.ReadOutOfRange);
+    }
+}
+
+/// Movement four -- the module's own bounds, which refuse by named Rye error
+/// rather than by a kernel answer, because the kernel offers no word for "the
+/// userland's buffer is smaller than what you handed it."
+fn prove_bounds() void {
+    var buffer = Buffer.init();
+
+    // A message exactly the size of the buffer is welcome; the tail it leaves
+    // is empty, and `whole` still holds.
+    const full = [_]u64{1} ** max_message_words;
+    assert(try_answer(buffer.send(3, &full, max_extra_caps)) == .no_error);
+    assert(buffer.tag.length == max_message_words);
+    assert(buffer.tag.extra_caps == max_extra_caps);
+    assert(buffer.whole());
+
+    // One word past it is refused by name, and seats nothing.
+    const over = [_]u64{1} ** (max_message_words + 1);
+    if (buffer.send(3, &over, 0)) |_| {
+        assert(false); // invariant: a message past the buffer never seats
+    } else |err| {
+        assert(err == IpcError.MessageTooLong);
+    }
+    assert(buffer.tag.length == max_message_words);
+
+    // One capability past the allotment is refused by name, and seats nothing.
+    if (buffer.send(3, &[_]u64{1}, max_extra_caps + 1)) |_| {
+        assert(false); // invariant: more capabilities than may ride never seat
+    } else |err| {
+        assert(err == IpcError.TooManyExtraCaps);
+    }
+    assert(buffer.tag.length == max_message_words);
+    assert(buffer.whole());
+}
+
+fn run_self_test() u8 {
+    prove_declared_length();
+    prove_truncation();
+    prove_no_residue();
+    prove_bounds();
+
+    // The debt is answered in the kernel's own vocabulary, taken from the module
+    // that reads the eleven out of seL4's header rather than from memory.
+    assert(refusals.owed_by(.truncated_message) == .ipc_buffer);
+
+    print("ipc_buffer: version {s}\n", .{caravan_ipc_buffer_version});
+    print("ipc_buffer: a message carries a declared length, and a reader never reaches past it.\n", .{});
+    print("ipc_buffer: a message shorter than a method's named minimum answers {s}.\n", .{
+        refusals.kernel_symbol(.truncated_message),
+    });
+    print("ipc_buffer: a shorter message leaves no residue -- the tail is cleared on every send.\n", .{});
+    print("ipc_buffer: the buffer holds at most {d} words beside {d} capabilities, both bounds refusing by named error.\n", .{ max_message_words, max_extra_caps });
+    print("ipc_buffer: length declared, tail cleared, the owed refusal answered -- GREEN.\n", .{});
+    return 0;
+}
+
+/// Unwrap an answer the self-test expects to succeed, so a bound refusing where
+/// it should not aborts loudly rather than reading as a mismatch.
+fn try_answer(result: IpcError!refusals.KernelRefusal) refusals.KernelRefusal {
+    const answer = result catch {
+        assert(false); // invariant: this call is inside every bound the module names
+        unreachable;
+    };
+    // invariant: every answer is one of the kernel's eleven.
+    assert(@intFromEnum(answer) < refusals.kernel_refusal_count);
+    return answer;
+}
+
+/// Unwrap a word the self-test expects to be readable, for the same reason.
+fn try_word(result: IpcError!u64) u64 {
+    const value = result catch {
+        assert(false); // invariant: this index stands inside the declared length
+        unreachable;
+    };
+    return value;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
+    if (args.len >= 2) return 1;
+    return run_self_test();
+}

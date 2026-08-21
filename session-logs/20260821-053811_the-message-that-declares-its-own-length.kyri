@@ -1,0 +1,49 @@
+format session-log-v1
+stamp 20260821.053811
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The message that declares its own length, and the meter that recited a number nobody guarded
+prompt Autonomous loop -- pick up the running thread, Standfast on reds first, take the next agent-doable lap Lindy-first crux-first on the Lindy-priority Microkernel Target double-seat, read one council-rota doc, sweep the prose Radiant, send.
+
+think Read KYRI and RADIANT_STYLE before the route, so the whole lap is written in Kyri from the first token. Then the operator card, then the double-seat itinerary line 101 where the Microkernel Target's precedence over Seasons A-H is seated on Keaton's word, then the newest three logs. The baton was unambiguous three ways over: the newest recommend names the IPC buffer, the card's Now names it, and refusals.rye's own debt table names it. Three independent records agreeing is the handoff working as designed.
+think Standfast first. Every REDS row in the living pin reads CLOSED -- %81, %83's prevention, %84, %98, %101 through %107 -- so the corrective queue was empty and constructive work could open. That reading was measured off the ledger rather than recalled.
+think The rung's scope came from the debt's own reason line. refusals.rye had written the IPC buffer's debt as "the message a dependent sends is a bounded buffer with a named minimum" -- which is not a description of the problem, it is a description of the answer. So the module is exactly that: a bounded buffer, and a minimum per method.
+think The minimum belongs to the method rather than to the buffer, and that is the whole design call. A buffer with one global minimum could only ever say "too short for something." A method that states what it reads makes truncation a per-invocation fact, which is what the kernel's own answer means.
+think Three properties fell out and each earned an assert rather than a comment. The tag takes its length from the words actually written, never from a caller's word for it. A read past the declared length refuses even though the array behind it is far larger. And the tail is cleared on every send, so a shorter message can leave no residue of a longer one -- the property most worth having and the one nothing would have forced.
+think The two sizes are seL4's, and reciting them would have been the very fault the arc keeps finding. So the witness re-reads seL4_MsgMaxLength from the vendored constants.h on every run, and it does not read the extra-capability count at all: it asserts seL4 still DERIVES it from seL4_MsgExtraCapBits, so our 3 stands on two-raised-to-two-less-one rather than on a number somebody liked.
+think REDS %107's lesson said a parity check binding a name proves nothing about what the name means. So the meaning was measured before it was written: seL4_TruncatedMessage appears in errors.h once and in no interface description anywhere in the vendored tree. The witness asserts that absence, so the sentence is named as Caravan's own reading and the rung reds the day seL4 publishes one.
+think Registering the rung moved the ladder 104 modules to 105 and reddened three meters at once. Bumping their pins meant reading each closing line beside a freshly measured scan -- and the spine meter's closing GREEN line said "across 102 modules" while its own assert three lines up had been at 104 and was now 105. Two numbers for one thing, in one witness, three lines apart.
+think That is REDS %105's family a third time, and the root is now sharp enough to state: a meter's own subject is pinned in an assert beside its prose and moves with it, while the module count is nobody's subject -- which is exactly why no lap updates it. Guarded fact, unguarded repetition.
+think The fix follows %105 verbatim: not a better number, no number. Both meters say "anywhere on the ladder" and "standing on it", and the measurement reaches the reader through each meter's own printed scan output, which cannot drift because it is the scan. The loom refuses any recited module count in a ladder meter's say line, and its RED path is not an invented shape -- it is the spine witness straight out of HEAD, named by file and line.
+think Closing that red found the same habit one shelf further: the REDS spine witness closed GREEN on "the spine accretes 1..107" while its own assert had just moved to 108. Repaired the same way, and both repairs recorded as one lesson -- say the number once, where it is measured.
+
+obs The rota doc this lap was item 21, ORGANIZING.md, taken as choir count 102 mod 27. It named the filing law this round leaned on without being asked: module homes carry their own README, and a rung's durable record belongs in caravan/README.md rather than accreting on the operator card. It also showed its own age -- it still calls the workbench work-in-progress/ and still calls session logs Bron -- two living-doc drifts worth a ratchet on a lap that touches it, left named here rather than swept mid-round.
+obs Complete at its own scope, again. The buffer could have grown a receive path, a badge, or the extra-capability payload; each would have made it three half-things. One structure answering exactly the refusal a declared length can answer is whole, and it claims no more.
+obs The general bounds-checking debt stays open on purpose. Every bound this module names is its own capacity, so all three refuse by named Rye error rather than by a kernel answer -- the same line the derivation tree drew, kept in the same place.
+obs Four of the seven remain owed and refusals.rye still counts seven, correctly. Its count is what the policy table can answer, and the table above the line has not yet learned to speak through either the tree or the buffer. Crediting it with a neighbour's reach would be the cheapest possible lie.
+obs The red was found by the ordinary work of the round rather than by a hunt. A new module widened the ladder, the widening reddened the meters, and the meters made someone read their own sentences beside their own measurements. Measurement beats memory, and a count that moves is the cheapest auditor there is.
+
+loom witness=caravan_ipc_buffer_witness verdict=green red_paths=2 methods=4 max_words=120 max_extra_caps=3
+loom choir=caravan_suite_witness witnesses=102 verdict=green
+loom ladder=carry modules=105 bodies=18007 copies=10196 carried_lines=137158 ceiling=137300
+loom ladder=print modules=105 holding=43 carried=2686
+loom ladder=spine modules=105 holding=1 carried=0
+loom reds=spine rows=108 verdict=ok
+
+file caravan/ipc_buffer.rye the bounded message, a minimum per method, and the owed refusal answered
+file tools/caravan_ipc_buffer_witness.rish GREEN on metal, both sizes re-read from the vendored header, the unbound meaning proven unbound
+file tools/fixtures/caravan_ipc_buffer_control.sh the two plants -- the truncation check removed, the tail clear removed
+file tools/caravan_suite_witness.rish the new rung registered, bijection whole at 102
+file tools/caravan_ladder_carry_witness.rish module pin 104 to 105, carry re-measured, the recited module count removed from its prose
+file tools/caravan_ladder_print_witness.rish module pin 104 to 105
+file tools/caravan_ladder_spine_witness.rish module pin 104 to 105, and REDS %108's root -- the drifted sentence removed
+file tools/caravan_ladder_copy_witness.rish the new loom wired in, with the shipped line as its RED path
+file tools/fixtures/caravan_ladder_prose_count_scan.sh the loom -- no ladder meter recites a module count in prose
+file tools/gen/season/reds_ledger_monotone_witness.rish spine pin to 108, and its own recited count removed
+file crux/REDS.md REDS %108 booked and closed, tally re-measured at 108
+file crux/REMEMBER.md live edge and Now moved to the bounded message, prior edges demoted
+file caravan/README.md the rung's durable record, and the meter note beside the derivation section
+
+recommend keep-going Untyped retyping is the next rung and it is ungated: it owes seL4_NotEnoughMemory, it is the last of the three subsystem debts before the agenda narrows to edge checks, and carving a dependent's memory from a region with a real floor composes directly with the capabilities the derivation tree already keeps. The three edge debts -- argument, bounds, and alignment checking -- are one family after it and may well be one rung. The one gate worth Keaton's eye stays small and unchanged: jinja2 and ply on the pier's Python environment open five more libsel4 headers in a single step.

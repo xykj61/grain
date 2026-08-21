@@ -1,0 +1,131 @@
+# tools/caravan_ipc_buffer_witness.rish -- the bounded message, and the one kernel refusal a declared length can answer.
+#
+# WHY THIS RUNG. `caravan/refusals.rye` stated the eleven answers a capability invocation may receive, mapped Caravan's
+# four onto them, and named for each of the seven remaining which subsystem owes it. The IPC BUFFER owes
+# `seL4_TruncatedMessage`, and its debt reason names the shape of the answer outright: the message a dependent sends is
+# a bounded buffer with a named minimum. `caravan/ipc_buffer.rye` is that buffer, and the minimum is per method.
+#
+# WHAT IS PROVEN HERE, each on metal.
+#
+#   The owed refusal is answered against a NAMED MINIMUM PER METHOD rather than an ad-hoc number. A one-word message
+#   satisfies the method that reads one and is refused by the three that read more, each in the kernel's own symbol,
+#   imported from the module the witness above binds against seL4's BSD-2-Clause header at run time.
+#
+#   A tag never claims more than the buffer holds, and a reader never reaches past what the tag declares -- a read one
+#   word past the declared length refuses by NAMED RYE ERROR even though the array behind it holds a hundred and
+#   nineteen more.
+#
+#   A shorter message leaves NO RESIDUE of a longer one. The tail is cleared on every send, so a drifted length can
+#   never surface a word from the message that came before it.
+#
+#   The two sizes are seL4's own, RE-READ FROM THE VENDORED HEADER on every run rather than recited -- `seL4_MsgMaxLength`
+#   and `seL4_MsgExtraCapBits`, with the extra-capability count derived from the bit count exactly as seL4 derives it.
+#   A vendored bump that moves either one reds this rung on the lap it lands.
+#
+#   The meaning is HONESTLY UNBOUND, and the witness proves that rather than assuming it. `seL4_TruncatedMessage` stands
+#   in `errors.h` as a name and appears in no published interface description, so the meaning scan reports it among the
+#   unbound and this module's sentence is named as Caravan's own reading (REDS %107's lesson, kept one rung on).
+#
+# WHAT IS NOT PROVEN. No kernel booted and no message crossed a real boundary. This is policy on hosted ground: the
+# length rules are ours, written to the shape of the answer seL4 publishes, and they earn their behavioural proof the
+# day a root task actually sends.
+#
+# Season: the Lindy-priority Microkernel Target double-seat (seated `20260817`, ordered ahead of Seasons A-H),
+# Equinox 1 -- Caravan on the microkernel. Kin: tools/caravan_refusals_witness.rish (the vocabulary this pays into) -
+# tools/caravan_derivation_witness.rish (the sibling debt, paid the lap before) -
+# external-research/20260821-043831_the-libsel4-reach-and-the-vocabulary-caravan-inherits.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_ipc_buffer_witness.rish
+
+say "caravan-ipc-buffer: Language EN -- a message that declares its own length is the only kind of message that can honestly say it arrived short."
+say "caravan-ipc-buffer: Style Radiant -- three claims in order. A method names the minimum it reads. A reader never reaches past the declared length. And a shorter message leaves no word of a longer one standing."
+say "caravan-ipc-buffer: Lens TAME -- the module's asserts are the specification, and both RED paths are proven by planting them: a buffer that stops comparing against the minimum must refuse itself, and one that stops clearing its tail must refuse itself."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/ipc_buffer"
+let errors = "vendor/sel4/libsel4/include/sel4/errors.h"
+let constants = "vendor/sel4/libsel4/include/sel4/constants.h"
+let interfaces = "vendor/sel4/libsel4/include/interfaces"
+let control = "tools/fixtures/caravan_ipc_buffer_control.sh"
+let build_dir = "tools/.build/caravan_ipc_buffer"
+
+let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]
+assert mk.ok else "caravan-ipc-buffer: could not make the build directories"
+
+# 0. PRECONDITION, an environment fact rather than a tree red: the gitlink must actually be checked out, since both the
+#    vocabulary and the two sizes are read from seL4's own headers.
+let checked_out = run ["sh" "-c" "test -f ${constants} && test -f ${errors} && echo yes || echo no"]
+assert (trim checked_out.out) == "yes" else "caravan-ipc-buffer: vendor/sel4 is not checked out -- run `git submodule update --init --recursive` first; this is an environment precondition, not a tree red"
+
+# 1. THE MODULE BUILDS AND PROVES ITSELF. Its asserts are the specification.
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/ipc_buffer.rye -femit-bin=${bin}"]
+assert build.ok else "caravan-ipc-buffer: the module did not build"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan-ipc-buffer: the self-test exited non-zero"
+assert test.out contains "GREEN" else "caravan-ipc-buffer: the self-test is not GREEN"
+assert test.out contains "a message carries a declared length, and a reader never reaches past it" else "caravan-ipc-buffer: the declared-length claim was not made"
+assert test.out contains "shorter than a method's named minimum answers seL4_TruncatedMessage" else "caravan-ipc-buffer: the owed refusal is not seL4_TruncatedMessage"
+assert test.out contains "leaves no residue -- the tail is cleared on every send" else "caravan-ipc-buffer: the no-residue claim was not made"
+assert test.out contains "at most 120 words beside 3 capabilities" else "caravan-ipc-buffer: the module's own bounds moved without the witness moving with them"
+assert test.out contains "refusing by named error" else "caravan-ipc-buffer: the bounds no longer refuse by named Rye error"
+
+# 2. THE MINIMUM IS PER METHOD, and the table shows both answers at once. Two words satisfy the three methods that read
+#    one or two, and fall short of the one that reads three -- so truncation reads as a floor rather than a mood.
+let table = run ["sh" "-c" "${bin} table > ${build_dir}/table.txt 2>&1; echo done"]
+assert (trim table.out) == "done" else "caravan-ipc-buffer: the worked send did not print"
+
+let printed = run ["sh" "-c" "cat ${build_dir}/table.txt"]
+assert printed.out contains "method restart reads 1 -- message of 2 answers seL4_NoError" else "caravan-ipc-buffer: the one-word method did not accept a two-word message"
+assert printed.out contains "method enlist reads 2 -- message of 2 answers seL4_NoError" else "caravan-ipc-buffer: a method reading exactly the message length was refused"
+assert printed.out contains "method apprise reads 2 -- message of 2 answers seL4_NoError" else "caravan-ipc-buffer: a method reading exactly the message length was refused"
+assert printed.out contains "method entrust reads 3 -- message of 2 answers seL4_TruncatedMessage" else "caravan-ipc-buffer: a method reading past the message was not refused as truncated"
+assert printed.out contains "label 7, words carried 2, capabilities riding beside them 1" else "caravan-ipc-buffer: the tag did not describe the message that was sent"
+
+# 3. THE REFUSAL IS THE KERNEL'S OWN, printed through `refusals.rye` rather than spelled here, so the binding that
+#    witness holds against seL4's BSD-2-Clause header carries through to this rung.
+assert printed.out contains "seL4_TruncatedMessage -- the message carried fewer words than the method reads" else "caravan-ipc-buffer: the owed refusal did not carry this module's meaning"
+
+# 4. THE TWO SIZES ARE seL4's OWN, re-read from the vendored header at run time. `seL4_MsgMaxLength` is stated
+#    directly; the extra-capability count is DERIVED from `seL4_MsgExtraCapBits` exactly as seL4 derives it, so our 3
+#    is two-raised-to-two-less-one rather than a number somebody liked.
+let length_pin = run ["sh" "-c" "grep -c 'seL4_MsgMaxLength = 120' ${constants}"]
+assert (trim length_pin.out) == "1" else "caravan-ipc-buffer: seL4_MsgMaxLength is no longer 120 in the vendored header -- max_message_words must move with it"
+
+let cap_bits = run ["sh" "-c" "grep -c 'seL4_MsgExtraCapBits = 2' ${constants}"]
+assert (trim cap_bits.out) == "1" else "caravan-ipc-buffer: seL4_MsgExtraCapBits is no longer 2 in the vendored header -- max_extra_caps must move with it"
+
+let cap_derivation = run ["sh" "-c" "grep -c 'LIBSEL4_BIT(seL4_MsgExtraCapBits)-1' ${constants}"]
+assert (trim cap_derivation.out) == "1" else "caravan-ipc-buffer: seL4 no longer derives seL4_MsgMaxExtraCaps from the bit count, so our derivation of 3 has lost its ground"
+
+let licence = run ["sh" "-c" "grep -c 'SPDX-License-Identifier: BSD-2-Clause' ${constants}"]
+assert (trim licence.out) == "1" else "caravan-ipc-buffer: constants.h is no longer tagged BSD-2-Clause -- the per-file sweep governs what we may read"
+
+# 5. THE MEANING IS HONESTLY UNBOUND, proven rather than assumed. The refusal stands in errors.h as a name, and seL4
+#    publishes no interface description for it, so this module's sentence is named as Caravan's own reading.
+let named = run ["sh" "-c" "grep -c 'seL4_TruncatedMessage' ${errors}"]
+assert (trim named.out) == "1" else "caravan-ipc-buffer: seL4_TruncatedMessage is no longer stated once in the vendored errors.h"
+
+let described = run ["sh" "-c" "grep -rl 'seL4_TruncatedMessage' ${interfaces} | wc -l"]
+assert (trim described.out) == "0" else "caravan-ipc-buffer: seL4 now publishes a description for seL4_TruncatedMessage -- bind our meaning to it in caravan_refusal_meaning_scan.sh rather than leaving it unbound"
+
+# 6. RED PATH ONE -- a buffer that stops comparing the declared length against the method's named minimum reads a short
+#    message as satisfied, and must refuse itself. Planted in a copy, built with the same compiler, swept after.
+let truncation = run ["sh" "-c" "sh ${control} ${zig} ${build_dir} truncation 2>/dev/null"]
+assert truncation.ok else "caravan-ipc-buffer: the truncation control did not run"
+assert truncation.out contains "planted=1" else "caravan-ipc-buffer: the unchecked copy was not planted -- the RED path would have proven nothing"
+assert truncation.out contains "verdict=refused" else "caravan-ipc-buffer: RED path one did not fire -- a buffer answering every read as satisfied passed the self-test"
+
+# 7. RED PATH TWO -- a buffer that stops clearing its tail lets a word from a longer message survive a shorter one, and
+#    the postcondition inside `send` must name it.
+let residue = run ["sh" "-c" "sh ${control} ${zig} ${build_dir} residue 2>/dev/null"]
+assert residue.ok else "caravan-ipc-buffer: the residue control did not run"
+assert residue.out contains "planted=1" else "caravan-ipc-buffer: the uncleared copy was not planted -- the RED path would have proven nothing"
+assert residue.out contains "verdict=refused" else "caravan-ipc-buffer: RED path two did not fire -- a shorter message leaving a longer one's word standing passed the self-test"
+
+say "caravan-ipc-buffer: every method names the minimum it reads, so a message shorter than that minimum answers seL4_TruncatedMessage rather than being read half-way."
+say "caravan-ipc-buffer: the tag claims exactly the words that were written, and a read one past the declared length refuses by named Rye error with a hundred and nineteen words of array still behind it."
+say "caravan-ipc-buffer: the tail is cleared on every send, so no shorter message can surface a word of the longer one before it -- and a copy that skips the clear fails its own self-test."
+say "caravan-ipc-buffer: both sizes are seL4's own, re-read from the vendored BSD-2-Clause header on this run, with the extra-capability count derived from the bit count exactly as seL4 derives it."
+say "GREEN: Caravan carries a bounded message, and the IPC buffer's debt is paid."
