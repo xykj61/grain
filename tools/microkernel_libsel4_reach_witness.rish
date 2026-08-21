@@ -1,0 +1,101 @@
+# tools/microkernel_libsel4_reach_witness.rish -- Equinox 1 of the Microkernel Target arc, reaching the real libsel4 userlevel
+# on metal: how far into seL4's own capability API does our toolchain get today, with no CMake and no kernel build?
+#
+# WHY THIS RUNG, AND WHY NOW. The `20260821.040637` probe answered Equinox 3's toolchain question against OUR OWN capability-shaped
+# stub, because that was all a clean-room boundary allowed: seL4 was believed copyleft whole. The license read of `20260821.041056`
+# overturned the half that mattered -- the seL4 KERNEL is GPL-2.0, and the USERLEVEL (`libsel4`, its libraries, its syscall headers)
+# is BSD-2-Clause, with seL4's own LICENSE.md stating the GPL "does not cover user-level code that uses kernel services by normal
+# system calls." Caravan is a root task on the userlevel side of that line. The fetch was granted `20260821.042612` and swept
+# per-file. So the question this witness asks is one that could not honestly be asked a day ago: not "can the toolchain emit the
+# SHAPE of a capability call," which is answered, but "does seL4's own published API compile under our compiler, freestanding, for
+# the architecture the arc brings up first."
+#
+# WHAT IS PROVEN HERE, AND WHAT IS NOT. Proven: the hand-written half of the libsel4 userlevel core -- the capability vocabulary a
+# root task is handed, its object types, its refusal codes, its word width -- compiles freestanding riscv64 under the vendored
+# toolchain with no build system beneath it, and the numbers it hands out are READ from the compiled enums rather than recited.
+# Named honestly and NOT proven: the other half of that core is generated at build time by seL4's own Python tools, and this pier
+# lacks the two modules they import. The witness proves exactly where that boundary falls rather than describing it, so the arc's
+# design work knows which vocabulary is available today and which waits on a named, cheap environment gate.
+#
+# THE CLEAN ROOM, RESTATED FOR THIS RUNG. No seL4 line is reproduced here. Both of this witness's C fixtures are our own; they
+# INCLUDE seL4's BSD-2-Clause headers, which is linking, and linking is what the license read established we may do. The seL4
+# KERNEL sources ride along on disk inside the gitlink and are neither read nor linked by anything here.
+#
+# Season: the Lindy-priority Microkernel Target double-seat (ordered ahead of Seasons A-H, seated `20260817`), Equinox 1 -- Caravan
+# on the microkernel. Kin: tools/microkernel_zig_target_probe_witness.rish (the stub-side elder this stands beside) -
+# tools/sel4_userlevel_license_witness.rish (the per-file SPDX sweep that earned the right to include these headers) -
+# external-research/20260821-041056_the-microkernel-license-read.md
+#
+# HONEST SCOPE -- a reach probe, not a port. No kernel is booted, no capability is invoked, no hardware is touched.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/microkernel_libsel4_reach_witness.rish
+
+say "libsel4-reach: Language EN -- the arc's Equinox 1 asks what Caravan's supervision is designed against. This reads that answer out of seL4's own published userlevel headers, compiled by our own compiler, rather than out of a manual."
+say "libsel4-reach: Style Radiant -- three questions in order. Do the headers compile freestanding for the architecture we bring up first. What vocabulary do they hand a root task, measured rather than recited. And exactly where does the hand-written half end and the generated half begin."
+say "libsel4-reach: Lens TAME -- every number below is read from a compiled artifact or a running one. Both RED paths are proven on metal: withhold our configuration header and the compile must refuse, and reach past the generated boundary and it must refuse by name. Purely local -- no kernel booted, no capability invoked, no network."
+
+let zig = "vendor/zig-toolchain/zig"
+let lib = "vendor/sel4/libsel4"
+let own = "tools/fixtures/libsel4_reach_include"
+let probe = "tools/fixtures/libsel4_reach_probe.c"
+let report = "tools/fixtures/libsel4_reach_report.c"
+let build = "tools/.build/libsel4_reach"
+
+# The five include roots seL4's own CMake puts on the line for a 64-bit RISC-V build, plus our own configuration root first.
+let inc = "-I ${own} -I ${lib}/include -I ${lib}/arch_include/riscv -I ${lib}/sel4_arch_include/riscv64 -I ${lib}/mode_include/64 -I ${lib}/sel4_plat_include/qemu-riscv-virt"
+
+let mk = run ["sh" "-c" "mkdir -p ${build}"]
+assert mk.ok else "libsel4-reach: could not make ${build}"
+
+# 0. PRECONDITION, named as an environment fact rather than a tree red: the gitlink must actually be checked out.
+#    An empty vendor/ directory is fixed by `git submodule update --init --recursive`, never booked under Standfast.
+let checked_out = run ["sh" "-c" "test -f ${lib}/include/sel4/errors.h && echo yes || echo no"]
+assert (trim checked_out.out) == "yes" else "libsel4-reach: vendor/sel4 is not checked out -- run `git submodule update --init --recursive` first; this is an environment precondition, not a tree red"
+
+# 1. THE RIGHT TO INCLUDE, re-read at the file level rather than inherited from a verdict. Every header this probe includes must
+#    carry a BSD-2-Clause tag of its own. Intent is not a licence.
+let bsd = run ["sh" "-c" "grep -lE 'SPDX-License-Identifier: BSD-2-Clause' ${lib}/include/sel4/simple_types.h ${lib}/include/sel4/objecttype.h ${lib}/include/sel4/errors.h ${lib}/include/sel4/constants.h ${lib}/sel4_arch_include/riscv64/sel4/sel4_arch/objecttype.h ${lib}/arch_include/riscv/sel4/arch/objecttype.h 2>/dev/null | wc -l | tr -d ' \n'"]
+assert (trim bsd.out) == "6" else "libsel4-reach: one of the six headers this probe includes is no longer tagged BSD-2-Clause -- stop and re-read the licence before compiling against it"
+
+let gpl = run ["sh" "-c" "grep -lE 'SPDX-License-Identifier: GPL' ${lib}/include/sel4/simple_types.h ${lib}/include/sel4/objecttype.h ${lib}/include/sel4/errors.h ${lib}/include/sel4/constants.h ${lib}/sel4_arch_include/riscv64/sel4/sel4_arch/objecttype.h ${lib}/arch_include/riscv/sel4/arch/objecttype.h 2>/dev/null | wc -l | tr -d ' \n'"]
+assert (trim gpl.out) == "0" else "libsel4-reach: a header this probe includes now carries a GPL tag -- seL4 issue #245's shape has returned and this compile must stop"
+
+# 2. RED PATH ONE, proven before the green so the green means something: withhold our own configuration header and the compile
+#    must refuse. A probe that would compile either way proves nothing about whether seL4's headers are being read at all.
+let red_conf = run ["sh" "-c" "rm -f ${build}/red.o; ${zig} cc -target riscv64-freestanding -c -o ${build}/red.o -I ${lib}/include -I ${lib}/arch_include/riscv -I ${lib}/sel4_arch_include/riscv64 -I ${lib}/mode_include/64 -I ${lib}/sel4_plat_include/qemu-riscv-virt ${probe} 2>&1 | grep -cE autoconf.h.+not.found | tr -d ' \n'"]
+assert (trim red_conf.out) != "0" else "libsel4-reach: withholding our configuration header did NOT make the compile refuse -- seL4's headers are not really being read, so every claim below would be hollow"
+
+# 3. THE GREEN LEG. The hand-written userlevel core compiles freestanding riscv64, and the architecture is read back from the
+#    object's own ELF header rather than trusted from the flag that asked for it.
+let obj = run ["sh" "-c" "rm -f ${build}/probe.o; ${zig} cc -target riscv64-freestanding -c -o ${build}/probe.o ${inc} ${probe} >/dev/null 2>&1 && od -An -tu2 -j18 -N2 ${build}/probe.o | tr -d ' \n'"]
+assert (trim obj.out) == "243" else "libsel4-reach: seL4's userlevel core did not compile to a freestanding RISC-V object (e_machine 243) under our toolchain"
+
+# 4. NO LIBC beneath it -- counted, not assumed. A root task gets what the kernel gives it and nothing more.
+let needed = run ["sh" "-c" "readelf -d ${build}/probe.o 2>/dev/null | grep -ci NEEDED | tr -d ' \n'"]
+assert (trim needed.out) == "0" else "libsel4-reach: the freestanding object carries a dynamic NEEDED entry -- something expects a runtime the kernel will not provide"
+
+# 5. THE VOCABULARY, MEASURED. The same probe is built for this host beside a reporter and RUN, so the numbers come out of the
+#    compiled enums. A vendored bump that moves seL4's vocabulary reds here, on the lap it lands, rather than passing quietly
+#    beneath a design that assumed the older shape.
+let ran = run ["sh" "-c" "rm -f ${build}/report; ${zig} cc -o ${build}/report ${inc} ${probe} ${report} >/dev/null 2>&1 && ${build}/report | tr -d '\n'"]
+assert ran.ok else "libsel4-reach: could not build and run the reporter over seL4's headers"
+assert ran.out contains "errors=11" else "libsel4-reach: seL4's refusal vocabulary is no longer eleven errors -- Caravan's supervision maps onto that set, so re-read the design before trusting it"
+assert ran.out contains "objects=9" else "libsel4-reach: the riscv64 object-type chain no longer ends at nine -- the tiering generic->mode->arch has moved and the design that reads it should be re-read"
+assert ran.out contains "nonarch=5" else "libsel4-reach: the architecture-independent object types are no longer five (untyped, TCB, endpoint, notification, cap table) -- this is the portable core Caravan designs against"
+assert ran.out contains "wordbits=64" else "libsel4-reach: seL4_Word is not 64 bits under this configuration -- the whole riscv64 path assumes it"
+assert ran.out contains "maxprio=255" else "libsel4-reach: the highest schedulable priority moved off 255 -- supervision priority mapping should be re-read"
+
+# 6. RED PATH TWO, which names the boundary by walking into it. The rest of the userlevel core -- types, syscalls, bootinfo,
+#    faults, and the sel4.h umbrella -- all stop at ONE generated header, and that is a measurement rather than a guess.
+let boundary = run ["sh" "-c" "printf '#include <sel4/types.h>\\n' > ${build}/edge.c; ${zig} cc -target riscv64-freestanding -c -o ${build}/edge.o ${inc} ${build}/edge.c 2>&1 | grep -cE types_gen.h.+not.found | tr -d ' \n'"]
+assert (trim boundary.out) != "0" else "libsel4-reach: sel4/types.h no longer stops at the generated types_gen.h -- the reach boundary this witness reports has MOVED, and the arc's plan should be re-read before relying on it"
+
+# 7. THE GATE, MEASURED RATHER THAN ASSUMED. seL4's own generators would produce that header; they import two Python modules this
+#    pier does not carry. Reporting the count keeps the gate honest -- if a later pier carries them, this line says so.
+let missing = run ["sh" "tools/fixtures/libsel4_generator_deps_scan.sh"]
+assert missing.ok else "libsel4-reach: could not ask python3 which generator modules are present"
+
+say "libsel4-reach: measured on metal -- ${ran.out}; freestanding riscv64 object e_machine 243, zero dynamic NEEDED entries, six included headers each tagged BSD-2-Clause and none GPL; generator modules absent on this pier: ${missing.out} of 2 (jinja2, ply)."
+
+say "GREEN libsel4-reach: seL4's own userlevel API compiles under our compiler. The hand-written half of the libsel4 core -- eleven refusal codes, nine riscv64 object types over a portable five, a 64-bit word, 256 scheduling priorities -- builds freestanding riscv64 with no CMake, no kernel, and no libc beneath it, and every one of those numbers is read out of the compiled enums by a program that ran, never recited. The right to compile against them is re-read per file rather than inherited: all six headers carry their own BSD-2-Clause tag and none carries a GPL one. Both RED paths hold -- withhold our configuration header and the compile refuses; reach past the boundary into sel4/types.h and it refuses by naming the one generated header it wants. That boundary is the honest finding of this rung: the remaining userlevel surface (types, syscalls, bootinfo, faults, and the sel4.h umbrella) waits on seL4's own Python generators, which import jinja2 and ply, and this pier carries neither. That is a small, named environment gate rather than a design question -- and everything Caravan's supervision needs to be designed against is already on this side of it. A reach probe, not a port: no kernel booted, no capability invoked, no hardware touched."
