@@ -1,0 +1,535 @@
+//! Caravan edge checking -- the three refusals a supervised invocation earns
+//! before any capability is exercised, and the order Caravan checks them in.
+//!
+//! WHY THIS MODULE EXISTS. `refusals.rye` read seL4's own compiled enums, mapped
+//! Caravan's four outcomes onto them, and named for each of the seven remaining
+//! the subsystem that owes it. Three of those seven are one family, and the
+//! agenda said so from the start:
+//!
+//!   invalid_argument   argument_checking   a supervised method must bound its
+//!                                          own arguments before invoking
+//!   range_error        bounds_checking     a resource's range belongs in the
+//!                                          grant, checked at the edge
+//!   alignment_error    alignment_checking  an address handed across the line
+//!                                          carries an alignment the object
+//!                                          requires
+//!
+//! They are one family because they are one moment. Each is a question asked of
+//! the *request* rather than of the system -- answerable with nothing held but
+//! the arguments themselves, before a slot is touched, before a lineage is
+//! walked, before a byte of a region is spent. That moment is the **edge**, and
+//! this module is it.
+//!
+//! WHAT GROUNDS IT. seL4 publishes a per-method description for all three, and
+//! for `Untyped_Retype` it publishes all three at once -- which makes retyping
+//! the honest place to stand rather than an abstraction invented for the rung:
+//!
+//!   invalid_argument  "The size_bits is too big or too small for the requested
+//!                      object type."
+//!   range_error       "num_objects is greater than CONFIG_RETYPE_FAN_OUT_LIMIT."
+//!   alignment_error   riscv's own page method: "The vaddr is not aligned to the
+//!                      page size."
+//!
+//! THE ORDER IS CARAVAN'S OWN, AND SAYS SO. seL4 lists a method's errors
+//! **alphabetically** in its interface XML -- `DeleteFirst`, `FailedLookup`,
+//! `IllegalOperation`, `InvalidArgument`, `InvalidCapability`, `NotEnoughMemory`,
+//! `RangeError` -- which is a reading order rather than a checking order. No
+//! check sequence is published, measured rather than assumed. So the order below
+//! is a design judgement, named as one, and it is chosen so that **each check
+//! depends only on facts the checks before it established**:
+//!
+//!   1. argument   Does the request name an object at all, at a size that kind
+//!                 can be? Until this holds, the other two questions have no
+//!                 subject -- there is no count of a nonexistent object to
+//!                 range-check, and no size to align to.
+//!   2. range      Does the count stand inside what one invocation may create?
+//!                 A count is cheap, independent of any address, and answerable
+//!                 the moment the kind is known.
+//!   3. alignment  Does the address carry the alignment this object requires?
+//!                 Last, because it is the only question needing both the kind's
+//!                 size and an address the caller supplies.
+//!
+//! Exactly one answer comes back, and where a request fails more than one check
+//! the **earlier** answer wins. The self-test proves that by building requests
+//! that fail two and three at once rather than by asserting it.
+//!
+//! TWO LINES, BOTH REAL, AND WHICH IS WHICH. seL4 lets one retype create up to
+//! `seL4_UntypedRetypeMaxObjects` objects, which the vendored tree states as 256
+//! two independent ways. Caravan's own region carves at most
+//! `untyped.max_objects`, which is 64. **These are different lines and this
+//! module keeps them apart:** the edge answers `seL4_RangeError` at the
+//! *kernel's* line, because that is the kernel's own published sentence, and
+//! `untyped.rye` refuses by named Rye error at *Caravan's* line, because that is
+//! this tree's own capacity. A reader who conflated them would think the kernel
+//! forbids what only we do.
+//!
+//! WHAT THIS PAYS, AND WHAT IT DOES NOT. Two conditions `untyped.rye` refused by
+//! named Rye error have published kernel answers, and the edge now speaks them:
+//! a `size_bits` outside the untyped limits is seL4's `seL4_InvalidArgument`,
+//! and a count past the fan-out limit is its `seL4_RangeError`. `untyped.rye`
+//! keeps its own Rye errors unchanged -- they are its capacity, checked where a
+//! region is opened. The edge is the boundary; the region is the room. Neither
+//! claims the other's ground.
+//!
+//! CLEAN ROOM. No seL4 line is reproduced. Every size and limit is taken from
+//! the vendored BSD-2-Clause headers, and the witness re-reads them at run time
+//! together with the three published sentences, so a vendored bump or a reword
+//! on either side reds this rung on the lap it lands.
+//!
+//! Usage:
+//!   edge          Run the self-test (default)
+//!   edge selftest Same as default
+//!   edge table    Print the three checks, their order, and a worked request
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const refusals = @import("refusals.rye");
+const untyped = @import("untyped.rye");
+
+const caravan_edge_version = "20260821.063720";
+
+/// How many objects one seL4 retype invocation may create, its
+/// `seL4_UntypedRetypeMaxObjects`. The vendored tree states 256 two independent
+/// ways -- as `KernelRetypeFanOutLimit`'s CMake default and as the fallback in
+/// `types.h` when the config macro is absent -- and the witness re-reads both.
+///
+/// This is **the kernel's line, not Caravan's.** `untyped.max_objects` is 64 and
+/// stands for a different reason; the two are deliberately kept apart.
+pub const retype_fan_out_limit: u32 = 256;
+
+// =========================================================================
+// The three checks, and the order Caravan chose
+// =========================================================================
+
+/// The three questions the edge asks, in the order it asks them.
+pub const Check = enum(u8) {
+    argument = 0,
+    range = 1,
+    alignment = 2,
+};
+
+/// The whole roster, in checking order. One list, so no count is recited and
+/// the order lives in exactly one place.
+pub const all_checks = [_]Check{ .argument, .range, .alignment };
+
+/// Which kernel refusal this check answers when it fails.
+pub fn answers(check: Check) refusals.KernelRefusal {
+    // invariant: the switch is total over the roster.
+    const answer: refusals.KernelRefusal = switch (check) {
+        .argument => .invalid_argument,
+        .range => .range_error,
+        .alignment => .alignment_error,
+    };
+    // invariant: an edge check never answers success -- a passing check answers nothing.
+    assert(answer != .no_error);
+    return answer;
+}
+
+/// Which subsystem on the refusal agenda this check pays.
+pub fn pays(check: Check) refusals.Owed {
+    const owner: refusals.Owed = switch (check) {
+        .argument => .argument_checking,
+        .range => .bounds_checking,
+        .alignment => .alignment_checking,
+    };
+    // invariant: the check pays exactly the debt its own answer is owed by.
+    assert(owner == refusals.owed_by(answers(check)));
+    return owner;
+}
+
+/// The name each check carries, so a printed table reads as supervision.
+pub fn check_name(check: Check) []const u8 {
+    const name: []const u8 = switch (check) {
+        .argument => "argument",
+        .range => "range",
+        .alignment => "alignment",
+    };
+    assert(name.len > 0); // invariant: a named check always carries its name
+    return name;
+}
+
+/// Why this check stands where it does in the order. The order is Caravan's own,
+/// since seL4 publishes its errors alphabetically rather than by check sequence,
+/// so the reason travels with the code rather than living only in a comment at
+/// the top of the file.
+pub fn order_reason(check: Check) []const u8 {
+    const reason: []const u8 = switch (check) {
+        .argument => "first, because until the request names a real object at a size that kind can be, the other two questions have no subject",
+        .range => "second, because a count is answerable the moment the kind is known and needs no address at all",
+        .alignment => "last, because it is the only question needing both the kind's size and an address the caller supplies",
+    };
+    assert(reason.len > 0); // invariant: every position in the order names its reason
+    return reason;
+}
+
+// =========================================================================
+// The request the edge reads
+// =========================================================================
+
+/// One retype request, exactly as it arrives at the edge: what to make, how wide
+/// each is, how many, and where the first one is asked to land.
+pub const Request = struct {
+    kind: untyped.ObjectKind = .slot,
+    size_bits: u32 = 5,
+    count: u32 = 1,
+    address: u64 = 0,
+};
+
+/// Read a request at the edge, answering the first refusal it earns.
+///
+/// Answers `.no_error` when every check passes, and otherwise the kernel refusal
+/// of the **earliest failing check** in Caravan's stated order. Exactly one
+/// answer comes back; a request failing two checks is answered by the earlier.
+pub fn read(request: Request) refusals.KernelRefusal {
+    for (all_checks) |check| {
+        if (!passes(request, check)) {
+            const answer = answers(check);
+            // invariant: a refused request is answered by one of the kernel's eleven.
+            assert(@intFromEnum(answer) < refusals.kernel_refusal_count);
+            return answer;
+        }
+    }
+    // invariant: a request passing every check earns no refusal at all.
+    assert(clean(request));
+    return .no_error;
+}
+
+/// Whether this one check passes for this request, asked independently of the
+/// others so the order can be proven rather than assumed.
+pub fn passes(request: Request, check: Check) bool {
+    return switch (check) {
+        // seL4: "The size_bits is too big or too small for the requested object
+        // type." A kind has exactly one width, and the untyped limits bound what
+        // any region can hold, so a size outside either is not a size this
+        // object can be.
+        .argument => request.size_bits == untyped.object_bits(request.kind) and
+            request.size_bits >= untyped.min_untyped_bits and
+            request.size_bits <= untyped.max_untyped_bits,
+
+        // seL4: "num_objects is greater than CONFIG_RETYPE_FAN_OUT_LIMIT." A
+        // request for no objects is refused here too -- one invocation that
+        // creates nothing is a request the kernel's own window arithmetic has no
+        // room for, and the kernel's own check reads the window as at least one.
+        .range => request.count >= 1 and request.count <= retype_fan_out_limit,
+
+        // riscv seL4: "The vaddr is not aligned to the page size." An object
+        // lands on a boundary of its own size, which is the same rule the
+        // untyped region holds when it carves -- read here from one place so the
+        // edge and the region can never disagree about what aligned means.
+        .alignment => untyped.aligned_to(request.address, untyped.object_bits(request.kind)),
+    };
+}
+
+/// Whether every check passes -- the postcondition `read` proves when it answers
+/// success, so a passing answer is never a check quietly skipped.
+pub fn clean(request: Request) bool {
+    for (all_checks) |check| {
+        if (!passes(request, check)) return false;
+    }
+    return true;
+}
+
+/// How many checks this request fails, so the self-test can build requests that
+/// fail more than one and prove the earlier answer wins.
+pub fn failures(request: Request) u32 {
+    var count: u32 = 0;
+    for (all_checks) |check| {
+        if (!passes(request, check)) count += 1;
+    }
+    // invariant: a request can fail at most every check there is.
+    assert(count <= all_checks.len);
+    return count;
+}
+
+// =========================================================================
+// The checks and a worked request, printed
+// =========================================================================
+
+fn print_table() u8 {
+    print("edge: version {s}\n", .{caravan_edge_version});
+    for (all_checks, 0..) |check, position| {
+        print("edge: check {d} {s} answers {s} -- {s}\n", .{
+            position + 1,
+            check_name(check),
+            refusals.kernel_symbol(answers(check)),
+            order_reason(check),
+        });
+    }
+
+    // One request failing all three at once: a page asked for at a slot's width,
+    // a count past the kernel's fan-out limit, and an address off every boundary.
+    // The earliest answer wins, and the table shows the other two still failing.
+    const worst: Request = .{ .kind = .page, .size_bits = 5, .count = retype_fan_out_limit + 1, .address = 1 };
+    print("edge: a request failing {d} checks answers {s} -- the earliest, never the loudest\n", .{
+        failures(worst),
+        refusals.kernel_symbol(read(worst)),
+    });
+
+    const good: Request = .{ .kind = .page, .size_bits = 12, .count = 4, .address = 0x8000_0000 };
+    print("edge: a request passing all three answers {s}\n", .{refusals.kernel_symbol(read(good))});
+    print("edge: the kernel creates at most {d} objects in one invocation; Caravan's own region carves at most {d}\n", .{
+        retype_fan_out_limit,
+        untyped.max_objects,
+    });
+    return 0;
+}
+
+// =========================================================================
+// Self-test -- the asserts are the specification
+// =========================================================================
+
+/// Movement one -- each check answers the refusal it owes, and pays the debt the
+/// agenda booked against it.
+fn prove_agenda() void {
+    var seen: u32 = 0;
+    for (all_checks, 0..) |check, position| {
+        // The roster is in checking order, so a check's position is its own.
+        assert(@intFromEnum(check) == position);
+        assert(check_name(check).len > 0);
+        assert(order_reason(check).len > 0);
+        // Each answers a distinct kernel refusal, and pays the matching debt.
+        assert(refusals.owed_by(answers(check)) == pays(check));
+        seen += 1;
+    }
+    assert(seen == all_checks.len);
+
+    // The three answers are distinct -- an edge that collapsed two of them would
+    // tell a caller to fix the wrong argument.
+    assert(answers(.argument) != answers(.range));
+    assert(answers(.range) != answers(.alignment));
+    assert(answers(.argument) != answers(.alignment));
+
+    // And they are exactly the three debts the agenda calls one family.
+    assert(pays(.argument) == .argument_checking);
+    assert(pays(.range) == .bounds_checking);
+    assert(pays(.alignment) == .alignment_checking);
+}
+
+/// Movement two -- each check refuses alone, on a request that fails only it.
+/// A check proven only in company is a check that might never have run.
+fn prove_each_alone() void {
+    // A clean request, which every failing case below is one field away from.
+    const good: Request = .{ .kind = .page, .size_bits = 12, .count = 4, .address = 0x8000_0000 };
+    assert(clean(good));
+    assert(failures(good) == 0);
+    assert(read(good) == .no_error);
+
+    // Argument alone: a page asked for at an endpoint's width. The count and the
+    // address are untouched, so the other two checks still pass.
+    var wrong_size = good;
+    wrong_size.size_bits = 4;
+    assert(failures(wrong_size) == 1);
+    assert(read(wrong_size) == .invalid_argument);
+    assert(passes(wrong_size, .range));
+    assert(passes(wrong_size, .alignment));
+
+    // Range alone: one object past the kernel's own fan-out limit.
+    var too_many = good;
+    too_many.count = retype_fan_out_limit + 1;
+    assert(failures(too_many) == 1);
+    assert(read(too_many) == .range_error);
+    assert(passes(too_many, .argument));
+    assert(passes(too_many, .alignment));
+
+    // Range alone, the other end: an invocation creating nothing.
+    var none = good;
+    none.count = 0;
+    assert(failures(none) == 1);
+    assert(read(none) == .range_error);
+
+    // Alignment alone: a page asked for one byte off a page boundary.
+    var askew = good;
+    askew.address = 0x8000_0001;
+    assert(failures(askew) == 1);
+    assert(read(askew) == .alignment_error);
+    assert(passes(askew, .argument));
+    assert(passes(askew, .range));
+}
+
+/// Movement three -- the order is real. Where a request fails more than one
+/// check, the earlier answer wins, and the later checks are still genuinely
+/// failing rather than accidentally passing.
+fn prove_order_holds() void {
+    const good: Request = .{ .kind = .page, .size_bits = 12, .count = 4, .address = 0x8000_0000 };
+
+    // Argument and range both fail: argument wins.
+    var one_two = good;
+    one_two.size_bits = 5;
+    one_two.count = retype_fan_out_limit + 1;
+    assert(failures(one_two) == 2);
+    assert(!passes(one_two, .argument));
+    assert(!passes(one_two, .range));
+    assert(read(one_two) == .invalid_argument);
+
+    // Range and alignment both fail: range wins.
+    var two_three = good;
+    two_three.count = 0;
+    two_three.address = 0x8000_0007;
+    assert(failures(two_three) == 2);
+    assert(!passes(two_three, .range));
+    assert(!passes(two_three, .alignment));
+    assert(read(two_three) == .range_error);
+
+    // Argument and alignment both fail, with range standing between them
+    // passing: argument still wins, so the order is not merely "the first
+    // failure found by luck of adjacency."
+    var one_three = good;
+    one_three.size_bits = 4;
+    one_three.address = 0x8000_0001;
+    assert(failures(one_three) == 2);
+    assert(!passes(one_three, .argument));
+    assert(passes(one_three, .range));
+    assert(!passes(one_three, .alignment));
+    assert(read(one_three) == .invalid_argument);
+
+    // All three fail: the earliest wins, never the loudest.
+    var all_three = good;
+    all_three.kind = .page;
+    all_three.size_bits = 5;
+    all_three.count = retype_fan_out_limit + 1;
+    all_three.address = 1;
+    assert(failures(all_three) == 3);
+    assert(read(all_three) == .invalid_argument);
+}
+
+/// Movement four -- exactly one answer, for every request in a swept space. An
+/// edge that could answer twice, or answer nothing, would be no edge at all.
+fn prove_totality() void {
+    var swept: u32 = 0;
+    var clean_seen: u32 = 0;
+
+    for (untyped.all_object_kinds) |kind| {
+        var size_bits: u32 = 3;
+        while (size_bits <= 13) : (size_bits += 1) {
+            var count: u32 = 0;
+            while (count <= retype_fan_out_limit + 1) : (count += 61) {
+                var address: u64 = 0;
+                while (address <= 8192) : (address += 7) {
+                    const request: Request = .{
+                        .kind = kind,
+                        .size_bits = size_bits,
+                        .count = count,
+                        .address = address,
+                    };
+                    const answer = read(request);
+                    const failed = failures(request);
+
+                    if (failed == 0) {
+                        // invariant: a request failing nothing is answered as clean.
+                        assert(answer == .no_error);
+                        assert(clean(request));
+                        clean_seen += 1;
+                    } else {
+                        // invariant: a request failing anything is refused, never welcomed.
+                        assert(answer != .no_error);
+                        // invariant: the answer belongs to the earliest failing check.
+                        var earliest: Check = .argument;
+                        var found = false;
+                        for (all_checks) |check| {
+                            if (!found and !passes(request, check)) {
+                                earliest = check;
+                                found = true;
+                            }
+                        }
+                        assert(found);
+                        assert(answer == answers(earliest));
+                    }
+                    swept += 1;
+                }
+            }
+        }
+    }
+
+    // invariant: the sweep reached a real space rather than an empty loop.
+    assert(swept > 10000);
+    // invariant: the space held both welcomed and refused requests, so neither
+    // arm of the proof went unexercised.
+    assert(clean_seen >= 1);
+    assert(clean_seen < swept);
+}
+
+/// Movement five -- the seam with the region below. Two conditions `untyped.rye`
+/// refuses by named Rye error have published kernel answers, and the edge speaks
+/// them without the region changing at all.
+///
+/// The two lines stay apart on purpose. The kernel creates at most 256 objects
+/// in one invocation; Caravan's region carves at most 64. A request for 65 is
+/// welcomed by the edge, because the kernel permits it, and refused by the region,
+/// because we do not hold that much. Both refusals are honest, and each names its
+/// own author.
+fn prove_seam() void {
+    // A size outside the untyped limits is the kernel's `seL4_InvalidArgument`,
+    // and it is what `Region.open` refuses as `RegionTooSmall`.
+    const under: Request = .{ .kind = .endpoint, .size_bits = untyped.min_untyped_bits - 1, .count = 1, .address = 0 };
+    assert(read(under) == .invalid_argument);
+    if (untyped.Region.open(0, untyped.min_untyped_bits - 1)) |_| {
+        assert(false); // invariant: the region refuses what the edge names invalid
+    } else |err| {
+        assert(err == untyped.UntypedError.RegionTooSmall);
+    }
+
+    // A count past the kernel's fan-out limit is `seL4_RangeError`.
+    const past: Request = .{ .kind = .slot, .size_bits = 5, .count = retype_fan_out_limit + 1, .address = 0 };
+    assert(read(past) == .range_error);
+
+    // And the asymmetry, held plainly: 65 objects is fine by the kernel's line
+    // and past Caravan's own capacity. The edge welcomes it; the region refuses
+    // it by named Rye error. Neither is wrong, and neither speaks for the other.
+    const sixty_five: Request = .{ .kind = .slot, .size_bits = 5, .count = untyped.max_objects + 1, .address = 0 };
+    assert(sixty_five.count <= retype_fan_out_limit);
+    assert(read(sixty_five) == .no_error);
+
+    var region = untyped.Region.open(0, 20) catch {
+        assert(false); // invariant: a twenty-bit region stands inside every bound
+        unreachable;
+    };
+    if (region.retype(.slot, untyped.max_objects + 1)) |_| {
+        assert(false); // invariant: the region holds its own line whatever the kernel permits
+    } else |err| {
+        assert(err == untyped.UntypedError.TooManyObjects);
+    }
+
+    // The alignment the edge checks is the alignment the region carves to, read
+    // from one place, so the two can never disagree about what aligned means.
+    assert(untyped.aligned_to(0x8000_0000, untyped.object_bits(.page)));
+    const aligned_request: Request = .{ .kind = .page, .size_bits = 12, .count = 1, .address = 0x8000_0000 };
+    assert(read(aligned_request) == .no_error);
+}
+
+fn run_self_test() u8 {
+    prove_agenda();
+    prove_each_alone();
+    prove_order_holds();
+    prove_totality();
+    prove_seam();
+
+    // The whole family is answered in the kernel's own vocabulary, taken from the
+    // module that reads the eleven out of seL4's header rather than from memory.
+    assert(refusals.owed_by(.invalid_argument) == .argument_checking);
+    assert(refusals.owed_by(.range_error) == .bounds_checking);
+    assert(refusals.owed_by(.alignment_error) == .alignment_checking);
+
+    print("edge: version {s}\n", .{caravan_edge_version});
+    print("edge: three questions asked of the request alone, before a slot is touched or a byte is spent.\n", .{});
+    print("edge: a size a kind cannot be answers {s}, a count past the kernel's line answers {s}, an address off its boundary answers {s}.\n", .{
+        refusals.kernel_symbol(.invalid_argument),
+        refusals.kernel_symbol(.range_error),
+        refusals.kernel_symbol(.alignment_error),
+    });
+    print("edge: the order is Caravan's own -- seL4 lists a method's errors alphabetically, so no check sequence is published.\n", .{});
+    print("edge: exactly one answer comes back, and where a request fails more than one check the earliest wins.\n", .{});
+    print("edge: the kernel creates at most {d} objects in one invocation; Caravan's region carves at most {d} -- two lines, kept apart.\n", .{ retype_fan_out_limit, untyped.max_objects });
+    print("edge: three refusals answered, the order proven, exactly one answer swept -- GREEN.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
+    if (args.len >= 2) return 1;
+    return run_self_test();
+}
