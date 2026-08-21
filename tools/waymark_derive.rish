@@ -83,6 +83,7 @@ say "corpus sha3-512: ${digest_val}"
 #   glow-language-rune-heads-nest-and-lowering -> MAIR (20260718.202414; superseded same day)
 #   glow-language-rune-heads-nest-and-lowering-2 -> STOA (20260718.202730)
 #   source-identity-breach-onboarding-refresh -> QUIZ (abandoned redraw · not seated)
+#   slh-dsa-hash-based-signature-ladder -> DISC (seated 20260821 · Season G SLH-DSA ladder)
 #   source-identity-breach-onboarding-refresh-2 -> COIF (abandoned · Keaton chose SUNN)
 #   source-pier-papers-identity-refresh -> SUNN (20260730.143736 · Keaton's word)
 #   djinn-bozo-exec-keaton-murr-hats -> POLE (20260730.150702 · DJINN Bozo · Keaton Murr)
@@ -112,7 +113,7 @@ say "corpus sha3-512: ${digest_val}"
 # Placeholder below is the most recent seat; change it when drawing the next.
 # Most recent seats (breach molt debride replacements 20260817):
 #   input_name rests on WADE's below.
-let input_name = "dimeroll-hr-and-accounting-entities"
+let input_name = "slh-dsa-hash-based-signature-ladder"
 
 let hash_run = run ["sh" "-c" "printf '%s' '${input_name}' | ${ossl} dgst -sha3-512 | awk '{print $NF}' | cut -c1-8"]
 assert hash_run.ok else "openssl dgst -sha3-512 failed"
@@ -141,7 +142,7 @@ assert shape_check.ok else "derived waymark '${word_val}' is not exactly four up
 # Existing proper names this scheme must never echo (four-letter Lexicon
 # identities + seated waymarks). Seated waymarks also live in
 # .cursor/rules/waymark-ladders.mdc — if the word matches, append -2 and redraw.
-let exclude_check = run ["sh" "-c" "echo '${word_val}' | grep -qxE '(BRIX|BRON|POND|MURR|MALA|SEVA|MAND|MONA|POOL|QUIN|RIYO|REYA|TREY|TERA|TRIZ|OJJO|GLOW|RHYZ|PEAL|HAWM|TUBE|ZETA|JABS|LULU|SETU|MAIR|STOA|SUNN|POLE|SOON|JARL|BUHR|TACT|GISM|AYRE|DAHL|KOFF|CION|VOLS|OFFY|GRAD|BOZO|LINN|AHOY|HUNK|ALES|DREY|FORA|LOWE|WADE)'"]
+let exclude_check = run ["sh" "-c" "echo '${word_val}' | grep -qxE '(BRIX|BRON|POND|MURR|MALA|SEVA|MAND|MONA|POOL|QUIN|RIYO|REYA|TREY|TERA|TRIZ|OJJO|GLOW|RHYZ|PEAL|HAWM|TUBE|ZETA|JABS|LULU|SETU|MAIR|STOA|SUNN|POLE|SOON|JARL|BUHR|TACT|GISM|AYRE|DAHL|KOFF|CION|VOLS|OFFY|GRAD|BOZO|LINN|AHOY|HUNK|ALES|DREY|FORA|LOWE|WADE|DISC)'"]
 assert (exclude_check.ok == false) else "derived waymark collides with an already-seated name -- append -2 to input_name above and rerun"
 
 say ""

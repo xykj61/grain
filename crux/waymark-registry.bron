@@ -1,14 +1,15 @@
 format waymark-registry-v1
-stamp 20260817.224342
+stamp 20260821.023219
 voice Kyri
 corpus_digest 615dbeb79c631115505ba71713aabdae243dcf4c1ae77109f325583a2c0e282cf6fc009d54802a268f04e3c170f705f4bd7203e018f00f5c443ae5e79808d8cc
 corpus_size 5526
-seal ad2b598fb2b4562fac8ceba8d460eedb94ac7810cb7f4ffdc65f6262b0b6cb8d01e3c47de0554b6c5676eb0c06b856224ee8ca8d6945a73485ff253ef03ea806
+seal b9f77066d65053ab81d5ee61cf5dfe9996fd3a5530900a906299295c15f6d1fda42cd3395758bf88eb8d05748abe2755d297ea1ffcce059a895f7450f162de8b
 # The immutable, self-verifying registry of every waymark ever drawn (living, retired, abandoned, transient, hand-seated).
 # Each corpus-drawn row is proven on metal: SHA3-512(input)[:8] as hex, mod corpus_size, +1 = index; corpus[index] = mark.
 # The seal is the SHA3-512 of the sealed body below (from the marker line, exclusive). Any edit breaks the seal.
 # Witness: tools/waymark_registry_witness.rish -- verifies the seal AND re-derives every corpus mark. Corpus pin: tools/fixtures/flw-four-letter.txt.
 # Re-sealed 20260817.224342 under the waymark-elder debride: the five breach-elder rows removed; the registry records only living and hand-seated marks.
+# Re-sealed 20260821.023219: DISC seated for the Season G SLH-DSA ladder (Keaton's word -- name the arc and start it).
 # ---- sealed body ----
 mark ALES | input season-c-lotus-creative-suite-audio-wire-shape | index 101 | status living | note seated
 mark AYRE | input harvest-season-equinox-2-trade | index 266 | status living | note seated
@@ -16,6 +17,7 @@ mark BUHR | input realidream-surface-and-quin-inference-and-mcp-2 | index 572 | 
 mark CION | input meta-season-chronological-labeling-molt | index 748 | status living | note seated
 mark COIF | input source-identity-breach-onboarding-refresh-2 | index 798 | status abandoned | note redraw, never seated; Keaton chose SUNN
 mark DAHL | input harvest-season-equinox-3-commons | index 940 | status living | note seated
+mark DISC | input slh-dsa-hash-based-signature-ladder | index 1079 | status living | note Season G SLH-DSA hash-based signature ladder
 mark DOCS | input realidream-surface-and-quin-inference-and-mcp | index 1103 | status abandoned | note BUHR first draw, redrawn -2 to BUHR
 mark DREY | input season-a-mikrophone-forgetful-capture | index 1189 | status living | note Season A Mikrophone firmware
 mark FORA | input constel-local-test-constellations | index 1594 | status living | note Constel test-network naming

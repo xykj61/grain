@@ -1,0 +1,405 @@
+//! crypto/slhdsa_thash.rye -- DISC0, the first rung of the SLH-DSA ladder: the ADDRESS structure and the TWEAKABLE HASH FAMILY that every
+//! other rung of a hash-based signature is built from. Season G (Cryptography -- Rye-native, audit-ready).
+//!
+//! WHY THIS IS RUNG ZERO. SLH-DSA has no field arithmetic and no curve. It is hashes all the way down -- and the ONLY thing that keeps one
+//! hash from colliding with another in a different role is the 32-byte ADDRESS mixed into every call. An address names exactly where in the
+//! structure a hash lives: which hypertree layer, which tree, which key pair, which Winternitz chain, which step along that chain. Get the
+//! address wrong and the scheme is not merely incorrect, it is INSECURE in a way no test vector at the top would necessarily reveal, because
+//! two hashes that should have been in separate domains quietly share one. So the address and the hash family are built first, alone, and
+//! diffed against a second implementation function-for-function before a single signature exists.
+//!
+//! WHAT THE FAMILY IS. For the SHAKE parameter sets, FIPS 205 makes every tweakable hash the same shape -- SHAKE256 over the public seed, the
+//! address, and the message -- which is a gift to a reader and to an auditor:
+//!
+//!   PRF(PK.seed, SK.seed, ADRS) = SHAKE256(PK.seed || ADRS || SK.seed, 8n)      -- grows a secret chain start from a seed
+//!   T_l(PK.seed, ADRS, M)       = SHAKE256(PK.seed || ADRS || M,       8n)      -- compresses l blocks of n bytes to one
+//!
+//! F (one block) and H (two blocks) are exactly T_1 and T_2, so this module authors ONE `thash` over a block count rather than three
+//! near-identical functions. That is not a shortcut: FIPS 205's "simple" instances define them that way, and PQClean's own thash_shake_simple.c
+//! is the same single function. Naming it once is how the reader sees that truth rather than inferring it from three copies.
+//!
+//! PARAMETER SET. SLH-DSA-SHAKE-256s: n = 32 bytes, hypertree height 64 over 8 layers, FORS 22 trees of height 14, Winternitz w = 16 so a WOTS+
+//! signature is 67 chains. Those shape the bounds below; every one is named rather than left a bare literal.
+//!
+//! ORACLE. crypto/shake.rye is our own SHAKE-256, already GREEN against Zig's std.crypto and the published FIPS 202 answers, so this module
+//! authors no new sponge -- it authors the ADDRESSING and the FRAMING around one. Parity is proven by tools/crypto_slhdsa_thash_witness.rish
+//! against the vendored PQClean (vendor/pqclean, CC0-1.0), calling ITS OWN thash and prf_addr -- the same functions, the same inputs, the same
+//! bytes out. That the internals are diffable at all is why this ladder could open (active-designing/20260821-022912).
+//!
+//! HONEST SCOPE -- purely local arithmetic and hashing. Every seed here is a test constant; no real key, no signature at this rung, no network,
+//! no funds, no device. Constant-time timing-safety stays the Season's named horizon: nothing here branches on secret DATA (only on address
+//! fields and block counts, which are public structure), yet a timing CLAIM wants measurement on metal, so this rung proves CORRECTNESS.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run crypto/slhdsa_thash.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const shake = @import("shake.rye");
+
+pub const slhdsa_thash_version = "20260821.023219";
+
+/// The security parameter in bytes. Every seed, every chain node, every tree node, and every hash output in this parameter set is exactly this
+/// wide, which is why one constant serves them all rather than five that could drift apart.
+pub const n: u32 = 32;
+
+/// The address is 32 bytes for the SHAKE instances. (The SHA-2 instances compress it to 22; that is a different family and not this one.)
+pub const address_bytes: u32 = 32;
+
+/// The height of one Merkle tree in the hypertree: the full height 64 over 8 layers. It is load-bearing far beyond the trees themselves,
+/// because it decides HOW WIDE the key-pair address field is -- a tree of height h' holds 2^h' one-time key pairs, so h' = 8 means a key-pair
+/// index fits one byte and FIPS 205 writes exactly one. A parameter set with h' > 8 writes two, at offsets 22 and 23. This module implements
+/// the one-byte form its own parameter set fixes, and says so here rather than leaving a reader to wonder why offset 22 is never touched.
+pub const tree_height: u32 = 8;
+
+/// How many one-time key pairs live in one tree, and therefore the exclusive bound on a key-pair index.
+pub const key_pairs_per_tree: u32 = 1 << tree_height;
+
+/// The widest block count `thash` is ever called with in this parameter set: a WOTS+ public key compresses all 67 chain ends at once. FORS
+/// compresses 22, a Merkle node 2, a chain step 1. Naming the maximum here is what lets the working buffer below be a fixed size with a proven
+/// bound rather than an allocation.
+pub const max_blocks: u32 = 67;
+
+/// The working buffer's ceiling: the public seed, the address, and the widest message the family ever hashes.
+pub const max_buffer_bytes: u32 = n + address_bytes + (max_blocks * n);
+
+// The byte offsets FIPS 205 fixes inside a 32-byte SHAKE address. These are the whole reason this module exists as its own rung -- an address
+// field written one byte off is a domain separation silently lost. Each is named exactly as the standard names it.
+const offset_layer: u32 = 3;
+const offset_tree: u32 = 8;
+const offset_type: u32 = 19;
+// Offset 23 is the key-pair index's low byte, and for this parameter set its ONLY byte (see tree_height above). Offset 22 exists in
+// the standard as the high byte and stays zero here -- writing it would silently change every hash that carries a key-pair address.
+const offset_key_pair_low: u32 = 23;
+const offset_chain: u32 = 27;
+const offset_hash: u32 = 31;
+const offset_tree_height: u32 = 27;
+const offset_tree_index: u32 = 28;
+
+/// The seven reasons an address can exist. The type field is what stops a WOTS+ chain hash from ever colliding with a FORS tree hash, so these
+/// are a security boundary wearing the clothes of an enum.
+pub const AddressType = enum(u32) {
+    wots_hash = 0,
+    wots_pk = 1,
+    tree = 2,
+    fors_tree = 3,
+    fors_roots = 4,
+    wots_prf = 5,
+    fors_prf = 6,
+};
+
+/// The faults this rung can raise. Each is a bound refused at the edge, never a silent truncation.
+pub const SlhdsaThashError = error{
+    TooManyBlocks,
+    MessageLengthMismatch,
+    SelftestFailed,
+};
+
+/// A 32-byte SLH-DSA address. Held as plain bytes because that is exactly what gets hashed -- there is no packed integer view to keep in sync,
+/// and the offsets above address it directly, the same way the standard describes it.
+pub const Address = struct {
+    bytes: [address_bytes]u8,
+
+    /// A fresh, entirely zero address. Every field is then set deliberately; nothing is inherited by accident.
+    pub fn zero() Address {
+        return Address{ .bytes = [_]u8{0} ** address_bytes };
+    }
+
+    /// Which hypertree layer this hash lives on (0 at the bottom, d-1 at the top).
+    pub fn set_layer(self: *Address, layer: u32) void {
+        // invariant: the layer index fits the single byte the standard gives it.
+        assert(layer < 256);
+        self.bytes[offset_layer] = @intCast(layer);
+        // invariant: the write landed where it was aimed.
+        assert(self.bytes[offset_layer] == @as(u8, @intCast(layer)));
+    }
+
+    /// Which Merkle tree within the layer, written big-endian across eight bytes exactly as the standard fixes it.
+    pub fn set_tree(self: *Address, tree: u64) void {
+        // invariant: the eight-byte field ends inside the address.
+        assert(offset_tree + 8 <= address_bytes);
+        var i: u32 = 0;
+        while (i < 8) : (i += 1) {
+            const shift: u6 = @intCast((7 - i) * 8);
+            self.bytes[offset_tree + i] = @truncate(tree >> shift);
+        }
+        // invariant: big-endian means the most significant byte came first.
+        assert(self.bytes[offset_tree] == @as(u8, @truncate(tree >> 56)));
+    }
+
+    /// Why this hash is being computed. The field that keeps unrelated hash roles in separate domains.
+    pub fn set_type(self: *Address, t: AddressType) void {
+        const raw: u32 = @intFromEnum(t);
+        // invariant: every declared type fits the one byte the standard gives it.
+        assert(raw < 256);
+        self.bytes[offset_type] = @intCast(raw);
+        // invariant: the type field reads back as what was set.
+        assert(self.bytes[offset_type] == @as(u8, @intCast(raw)));
+    }
+
+    /// Which one-time key pair inside this tree. One byte, because a tree of height 8 holds 256 of them -- see tree_height. A parameter set
+    /// with taller trees writes a second byte at offset 22; this one must not, and the bound below is what keeps that honest.
+    pub fn set_key_pair(self: *Address, kp: u32) void {
+        // invariant: the key-pair index names a key pair that exists in a tree of this height.
+        assert(kp < key_pairs_per_tree);
+        self.bytes[offset_key_pair_low] = @intCast(kp);
+        // invariant: the write landed where it was aimed.
+        assert(self.bytes[offset_key_pair_low] == @as(u8, @intCast(kp)));
+    }
+
+    /// Which Winternitz chain within the one-time signature.
+    pub fn set_chain(self: *Address, chain: u32) void {
+        // invariant: a chain index never reaches past the WOTS+ length of this parameter set.
+        assert(chain < 256);
+        self.bytes[offset_chain] = @intCast(chain);
+        // invariant: the write landed where it was aimed.
+        assert(self.bytes[offset_chain] == @as(u8, @intCast(chain)));
+    }
+
+    /// How far along that chain this hash sits (0 to w-1).
+    pub fn set_hash(self: *Address, step: u32) void {
+        // invariant: a chain step fits the single byte the standard gives it.
+        assert(step < 256);
+        self.bytes[offset_hash] = @intCast(step);
+        // invariant: the write landed where it was aimed.
+        assert(self.bytes[offset_hash] == @as(u8, @intCast(step)));
+    }
+
+    /// The height of this node within a FORS or Merkle tree. Shares a byte offset with the chain field on purpose -- an address is only ever
+    /// one kind at a time, and the type field above says which.
+    pub fn set_tree_height(self: *Address, height: u32) void {
+        // invariant: a tree height fits the single byte the standard gives it.
+        assert(height < 256);
+        self.bytes[offset_tree_height] = @intCast(height);
+        // invariant: the write landed where it was aimed.
+        assert(self.bytes[offset_tree_height] == @as(u8, @intCast(height)));
+    }
+
+    /// Which node at that height, big-endian across four bytes.
+    pub fn set_tree_index(self: *Address, index: u32) void {
+        // invariant: the four-byte field ends inside the address.
+        assert(offset_tree_index + 4 <= address_bytes);
+        var i: u32 = 0;
+        while (i < 4) : (i += 1) {
+            const shift: u5 = @intCast((3 - i) * 8);
+            self.bytes[offset_tree_index + i] = @truncate(index >> shift);
+        }
+        // invariant: big-endian means the most significant byte came first.
+        assert(self.bytes[offset_tree_index] == @as(u8, @truncate(index >> 24)));
+    }
+
+    /// Carry the layer and tree fields into a fresh address, leaving everything below them zero. Used whenever the work moves to a different
+    /// kind of hash inside the SAME tree, so the tree's identity survives while the role resets.
+    pub fn subtree_of(self: Address) Address {
+        var out = Address.zero();
+        var i: u32 = 0;
+        // invariant: the layer and tree fields together end at the type byte's neighbourhood, never past the address.
+        assert(offset_tree + 8 <= address_bytes);
+        while (i < offset_tree + 8) : (i += 1) {
+            out.bytes[i] = self.bytes[i];
+        }
+        // invariant: everything from the type field onward reset to zero.
+        assert(out.bytes[offset_type] == 0);
+        return out;
+    }
+
+    /// Carry the layer, tree, AND key-pair fields into a fresh address. Used when moving between hash roles that stay on one one-time key pair.
+    pub fn keypair_of(self: Address) Address {
+        var out = self.subtree_of();
+        out.bytes[offset_key_pair_low] = self.bytes[offset_key_pair_low];
+        // invariant: the key-pair field carried across intact.
+        assert(out.bytes[offset_key_pair_low] == self.bytes[offset_key_pair_low]);
+        return out;
+    }
+};
+
+/// PRF -- grow a secret from the secret seed at a named address. This is how every Winternitz chain and every FORS leaf gets its private start:
+/// not stored, but derived on demand from one seed plus the address that names the place. The whole reason an SLH-DSA private key is 128 bytes
+/// rather than megabytes.
+pub fn prf(out: *[n]u8, pk_seed: *const [n]u8, sk_seed: *const [n]u8, addr: Address) SlhdsaThashError!void {
+    var buffer: [max_buffer_bytes]u8 = undefined;
+    const total: u32 = n + address_bytes + n;
+    // invariant: the framed input fits the buffer this module bounded at construction.
+    assert(total <= max_buffer_bytes);
+
+    copy_bytes(buffer[0..n], pk_seed[0..n]);
+    copy_bytes(buffer[n .. n + address_bytes], addr.bytes[0..address_bytes]);
+    copy_bytes(buffer[n + address_bytes .. total], sk_seed[0..n]);
+
+    shake.shake256(buffer[0..total], out[0..n]) catch return SlhdsaThashError.MessageLengthMismatch;
+    // invariant: the sponge filled the whole output it was handed.
+    assert(out.len == n);
+}
+
+/// T_l -- compress l blocks of n bytes into one, at a named address. F is T_1 and H is T_2; the "simple" instances of FIPS 205 define all three
+/// as this one function, so it is written once here rather than copied three times under different names.
+pub fn thash(out: *[n]u8, message: []const u8, blocks: u32, pk_seed: *const [n]u8, addr: Address) SlhdsaThashError!void {
+    // invariant: the block count stays inside the ceiling this parameter set gives it.
+    if (blocks > max_blocks) return SlhdsaThashError.TooManyBlocks;
+    // invariant: the message is exactly the block count it claims, never padded and never short.
+    if (message.len != blocks * n) return SlhdsaThashError.MessageLengthMismatch;
+
+    var buffer: [max_buffer_bytes]u8 = undefined;
+    const total: u32 = n + address_bytes + (blocks * n);
+    // invariant: the framed input fits the buffer this module bounded at construction.
+    assert(total <= max_buffer_bytes);
+
+    copy_bytes(buffer[0..n], pk_seed[0..n]);
+    copy_bytes(buffer[n .. n + address_bytes], addr.bytes[0..address_bytes]);
+    copy_bytes(buffer[n + address_bytes .. total], message[0 .. blocks * n]);
+
+    shake.shake256(buffer[0..total], out[0..n]) catch return SlhdsaThashError.MessageLengthMismatch;
+    // invariant: the sponge filled the whole output it was handed.
+    assert(out.len == n);
+}
+
+/// A bounded, disjoint byte copy. Written as a plain loop rather than reaching for a builtin, so the bound is visible at the call site and the
+/// TAME ban on bare copy builtins in application code holds without a seam.
+fn copy_bytes(destination: []u8, source: []const u8) void {
+    // invariant: a copy never writes past either end.
+    assert(destination.len == source.len);
+    var i: usize = 0;
+    while (i < source.len) : (i += 1) {
+        destination[i] = source[i];
+    }
+    // invariant: the whole source was consumed.
+    assert(i == source.len);
+}
+
+/// Print a byte slice as lowercase hex on one line -- the shape tools/crypto_slhdsa_thash_witness.rish diffs against PQClean's own output.
+fn print_hex(bytes: []const u8) void {
+    var i: usize = 0;
+    while (i < bytes.len) : (i += 1) {
+        print("{x:0>2}", .{bytes[i]});
+    }
+    print("\n", .{});
+}
+
+/// The selftest: structural proofs this module can make ALONE, then the parity lines the witness diffs against PQClean.
+fn selftest() SlhdsaThashError!void {
+    // The test seeds: byte i = i for the public seed, byte i = i + 128 for the secret. Constants, never real key material.
+    var pk_seed: [n]u8 = undefined;
+    var sk_seed: [n]u8 = undefined;
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        pk_seed[i] = @truncate(i);
+        sk_seed[i] = @truncate(i + 128);
+    }
+
+    // 1. Every address field lands on the byte the standard names, and nowhere else.
+    var addr = Address.zero();
+    addr.set_layer(7);
+    addr.set_tree(0x0102030405060708);
+    addr.set_type(AddressType.wots_hash);
+    addr.set_key_pair(0x34);
+    addr.set_chain(43);
+    addr.set_hash(11);
+    if (addr.bytes[3] != 7) return SlhdsaThashError.SelftestFailed;
+    if (addr.bytes[8] != 1 or addr.bytes[15] != 8) return SlhdsaThashError.SelftestFailed;
+    if (addr.bytes[19] != 0) return SlhdsaThashError.SelftestFailed;
+    if (addr.bytes[22] != 0 or addr.bytes[23] != 0x34) return SlhdsaThashError.SelftestFailed;
+    if (addr.bytes[27] != 43 or addr.bytes[31] != 11) return SlhdsaThashError.SelftestFailed;
+
+    // 2. Every byte the fields did NOT name stays zero -- an address carries no accidental payload.
+    const named = [_]u32{ 3, 8, 9, 10, 11, 12, 13, 14, 15, 19, 23, 27, 31 };
+    var b: u32 = 0;
+    while (b < address_bytes) : (b += 1) {
+        var is_named = false;
+        for (named) |k| {
+            if (k == b) is_named = true;
+        }
+        if (!is_named and addr.bytes[b] != 0) return SlhdsaThashError.SelftestFailed;
+    }
+
+    // 3. subtree_of keeps the layer and tree and forgets the role; keypair_of keeps the key pair too.
+    const sub = addr.subtree_of();
+    if (sub.bytes[3] != 7 or sub.bytes[8] != 1) return SlhdsaThashError.SelftestFailed;
+    if (sub.bytes[22] != 0 or sub.bytes[27] != 0) return SlhdsaThashError.SelftestFailed;
+    const kp = addr.keypair_of();
+    if (kp.bytes[22] != 0 or kp.bytes[23] != 0x34) return SlhdsaThashError.SelftestFailed;
+    if (kp.bytes[27] != 0) return SlhdsaThashError.SelftestFailed;
+
+    // 4. DOMAIN SEPARATION, proven rather than asserted in prose: the same message and seed at addresses differing ONLY in the type byte must
+    // hash to different bytes. This is the property the whole address structure exists to provide.
+    var block: [n]u8 = undefined;
+    i = 0;
+    while (i < n) : (i += 1) block[i] = @truncate(i * 3 + 1);
+
+    var a_wots = Address.zero();
+    a_wots.set_type(AddressType.wots_hash);
+    var a_fors = Address.zero();
+    a_fors.set_type(AddressType.fors_tree);
+    var out_wots: [n]u8 = undefined;
+    var out_fors: [n]u8 = undefined;
+    try thash(&out_wots, block[0..n], 1, &pk_seed, a_wots);
+    try thash(&out_fors, block[0..n], 1, &pk_seed, a_fors);
+    var same = true;
+    i = 0;
+    while (i < n) : (i += 1) {
+        if (out_wots[i] != out_fors[i]) same = false;
+    }
+    if (same) return SlhdsaThashError.SelftestFailed;
+
+    // 5. The bounds refuse rather than truncate.
+    var scratch: [n]u8 = undefined;
+    if (thash(&scratch, block[0..n], max_blocks + 1, &pk_seed, a_wots)) |_| {
+        return SlhdsaThashError.SelftestFailed;
+    } else |err| {
+        if (err != SlhdsaThashError.TooManyBlocks) return SlhdsaThashError.SelftestFailed;
+    }
+    if (thash(&scratch, block[0..n], 2, &pk_seed, a_wots)) |_| {
+        return SlhdsaThashError.SelftestFailed;
+    } else |err| {
+        if (err != SlhdsaThashError.MessageLengthMismatch) return SlhdsaThashError.SelftestFailed;
+    }
+
+    // 6. The parity lines. Each is one lowercase-hex digest the witness diffs against PQClean's OWN thash and prf_addr over identical inputs.
+    // The address used for parity carries every field set, so a single wrong offset shows up here.
+    var parity_addr = Address.zero();
+    parity_addr.set_layer(5);
+    parity_addr.set_tree(0x0011223344556677);
+    parity_addr.set_type(AddressType.wots_hash);
+    parity_addr.set_key_pair(0xbc);
+    parity_addr.set_chain(17);
+    parity_addr.set_hash(9);
+
+    var digest: [n]u8 = undefined;
+
+    // PRF at that address.
+    try prf(&digest, &pk_seed, &sk_seed, parity_addr);
+    print_hex(digest[0..n]);
+
+    // T_1 (the F of the standard) over one block.
+    try thash(&digest, block[0..n], 1, &pk_seed, parity_addr);
+    print_hex(digest[0..n]);
+
+    // T_2 (the H of the standard) over two blocks.
+    var two: [2 * n]u8 = undefined;
+    i = 0;
+    while (i < 2 * n) : (i += 1) two[i] = @truncate(i * 5 + 2);
+    try thash(&digest, two[0 .. 2 * n], 2, &pk_seed, parity_addr);
+    print_hex(digest[0..n]);
+
+    // T_22 -- the width FORS compresses its tree roots at.
+    var many: [max_blocks * n]u8 = undefined;
+    i = 0;
+    while (i < max_blocks * n) : (i += 1) many[i] = @truncate(i * 7 + 3);
+    try thash(&digest, many[0 .. 22 * n], 22, &pk_seed, parity_addr);
+    print_hex(digest[0..n]);
+
+    // T_67 -- the width a WOTS+ public key compresses at, this module's declared maximum.
+    try thash(&digest, many[0 .. max_blocks * n], max_blocks, &pk_seed, parity_addr);
+    print_hex(digest[0..n]);
+
+    print("GREEN crypto-slhdsa-thash: the SLH-DSA address structure and tweakable hash family stand -- every field lands on the byte FIPS 205 names, every unnamed byte stays zero, subtree and key-pair carries keep exactly what they should, domain separation is proven by two hashes differing in the type byte alone, and both bounds refuse rather than truncate. The five digests above are PRF, T_1, T_2, T_22, and T_67 at one fully-populated address, for the witness to diff against the vendored PQClean's own thash and prf_addr. Rung DISC0 of the SLH-DSA ladder. Purely local -- no real key, no signature yet, no network, no funds, no device.\n", .{});
+}
+
+pub fn main(init_args: std.process.Init) !u8 {
+    _ = init_args;
+    selftest() catch |err| {
+        print("RED crypto-slhdsa-thash: {any}\n", .{err});
+        return 1;
+    };
+    return 0;
+}
