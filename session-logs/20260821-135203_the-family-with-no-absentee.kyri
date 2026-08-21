@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260821.135203
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Fold AG -- the promised pruning, the cluster beneath it, and the first family with no absentee
+prompt Autonomous loop -- Kyri voice and Radiant Style first, then REMEMBER and the itineraries, Standfast on reds, take the next agent-doable lap Lindy-first crux-first, one council-rota doc deep-read, send the increment as its own signed round.
+think Standfast first. Read every living row of crux/REDS.md: rows 81, 83, 84, 98, 110 all carry closure notes proven on metal, and the ledger's tally is derived rather than recited. No open agent-closable red stands, so the constructive queue is genuinely free.
+think Council rota, lap index 595 kyri logs mod 27 -> item 1, foundations/README.md. Deep-read. Its line that the foundations rest beneath the specifications -- the specs say what to build, the foundations say what it is for -- lands straight on a fold arc, which is specification work whose whole why is that a reader three years on can follow one body rather than forty-four copies of it. Lindy-first names the fold as durable rather than merely tidy.
+think The running thread is the Caravan ladder fold arc, and the carry meter names the crux by measurement rather than by hand. Ran it: return_promised_reach at 42 rungs by 33 lines, 1,353 carried, alone at the head after fold AF lifted start_one.
+think Hashed the family before trusting the count, as the last three recommends each asked. Forty-two bodies, one hash, thirty-three lines -- no absentee at all, which is the first time this arc has met a lead family standing whole across its whole cohort.
+think Read the reach closure next. Eight symbols reached through the rung; seven already public in all forty-two, only prune_to private everywhere. Fold Z's rule pays a fourth time: the neighborhood was already widened by the folds around it.
+think Five of the reached symbols are whole carrying families -- reachable_between, prune_to, pruning_promised, kept, pruned -- each in forty-four rungs. Hashed all five. Two carry one absentee apiece, and both are revoke.rye, the tier owner.
+think revoke.rye's reachable_between differs by the word pub alone, which is a visibility split rather than a meaning. Its prune_to lacks one invariant the other forty-three carry -- a pruning always rebuilds from hands that hold their own line -- which is an elder body dated by a shape born after it. Folding heals the first and hands the elder the second, so both families close whole at forty-four.
+think Checked every one of the forty-four against the harness import list, since fold AF was bitten at forty-five by confer.rye. None of the forty-four is imported by ladder_checks.rye, so the fold line does not bite this lap.
+think Widening rode free in the delegate text itself: the replacement signature is written pub, so prune_to in forty-four rungs and reachable_between in revoke.rye gained the word in the same act that folded the body.
+obs Carry falls 101,252 -> 98,507, a fall of 2,745, and the arithmetic closes with no remainder against the six cohorts. Ceiling brought down 101,300 -> 98,600 in the same commit as the code it measures, since a ceiling that lags its subject has stopped guarding.
+obs Carrying families held at 707. All six folded whole -- one visibility split healed, none opened -- so the count neither rose nor fell, which is what a clean cluster fold looks like from the meter's side.
+obs Checks 47 and spine 0 stand unmoved for the tenth fold running. The three named windows are genuinely orthogonal to the room, which is the fourth meter's whole argument still holding.
+obs Found a docs-sync gap on the way in: fold AF landed without its caravan/README.md section, though the arc has written one per fold since fold C and the operator card points readers there for per-rung detail. Wrote AF's section beside AG's in the same commit rather than leaving the record with a hole -- a doc's claim about where the detail lives is assertable, and this one had quietly stopped being true.
+obs The carry meter carried a small drift of its own: both queue asserts named return_promised_reach, so the line meant to name the family standing second named the first twice. Repointed to run_in_forbear, the true second.
+loom witness=caravan_ladder_carry carry_before=101252 carry_after=98507 fall=2745 ceiling_before=101300 ceiling_after=98600
+loom fold=return_promised_reach cohort=42 identical_text=42 body_lines=33 carried_before=1353 absentees=0
+loom fold=reachable_between cohort=44 identical_text=43 body_lines=24 carried_before=1008 absentee_home=revoke.rye kind=visibility
+loom fold=prune_to cohort=44 identical_text=43 body_lines=23 carried_before=966 absentee_home=revoke.rye kind=elder_invariant
+loom fold=pruning_promised cohort=44 identical_text=44 body_lines=6 carried_before=258
+loom fold=kept cohort=44 identical_text=44 body_lines=8 carried_before=344
+loom fold=pruned cohort=44 identical_text=44 body_lines=7 carried_before=301
+loom widenings=45 prune_to=44 reachable_between=1 accessors_born=0 imports_added=0
+loom disk=caravan bodies=18106 distinct=7902 copies=10204 families=707 modules=108
+loom windows check_lines=47 print_carried=2686 spine_carried=0
+loom suite=caravan_suite_witness rungs_green=105
+file caravan/ladder_checks.rye six delegates seated -- a promised pruning and the five bodies it reaches, each reaching back through the rung handed in
+file caravan/revoke.rye the elder rung comes home twice -- the word it was missing and the invariant it never carried
+file tools/caravan_ladder_carry_witness.rish repinned to the carry this fold measured, queue rotated to carry_the_amendment, the doubled second-place assert repointed
+file tools/fixtures/caravan_ladder_carry_scan.sh ceiling brought down to 98600, the room this fold won handed back
+file caravan/README.md fold AG seated, and fold AF's missing section written beside it
+file crux/REMEMBER.md live edge rotated to fold AG, fold AF condensed to a pointer, Now refilled with the measured next crux
+recommend keep-going the queue now names carry_the_amendment at 34 rungs by 41 lines, 1,353 carried, alone at the head, with run_in_forbear at 10 by 137 behind it -- take carry_the_amendment first since a wider cohort spreads any widening cost further and run_in_forbear's ten rungs would pay a hundred and thirty-seven lines each for very little spread; hash the family before trusting the count, read the reach closure for whole families, and check every member against the harness import list

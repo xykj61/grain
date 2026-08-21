@@ -496,10 +496,7 @@ pub fn promise_pruning(io: std.Io, domain: []const u8, keep: Keep) NoteError!voi
 
 /// Reads whether a pruning was promised to this dependent.
 pub fn pruning_promised(io: std.Io, domain: []const u8) bool {
-    // invariant: a promise is always read by the dependent it names
-    assert(domain.len >= 1);
-    const seen = read_count(io, domain, ".pruning") catch return false;
-    return seen != 0;
+    return ladder_checks.pruning_promised(@This(), io, domain);
 }
 
 /// Tells this dependent how its author declared it would end.
@@ -586,21 +583,12 @@ pub fn revoke(io: std.Io, domain: []const u8, keep: u32) NoteError!void {
 
 /// Reads how many conferred words this dependent may still hold.
 pub fn kept(io: std.Io, domain: []const u8) NoteError!u32 {
-    // invariant: a keeping is always read by the dependent that listens
-    assert(domain.len >= 1);
-    const seen = try read_count(io, domain, ".kept");
-    // invariant: a keeping stays inside what one line may name
-    assert(seen <= cycle.max_hops);
-    return seen;
+    return ladder_checks.kept(@This(), io, domain);
 }
 
 /// Tells the run this dependent has pruned the reach it returned.
 pub fn pruned(io: std.Io, domain: []const u8, count: u32) NoteError!void {
-    // invariant: an answer always names the dependent that gives it
-    assert(domain.len >= 1);
-    // invariant: a dependent never prunes more than one line may name
-    assert(count <= cycle.max_hops);
-    try seat_note(io, domain, ".pruned", &[_]u8{@intCast(count)});
+    return ladder_checks.pruned(@This(), io, domain, count);
 }
 
 /// Waits, bounded, until this revocation has been pruned.
@@ -1223,28 +1211,12 @@ pub fn word_at(words: *const Words, index: u32) ?[]const u8 {
 
 /// Rebuilds a dependent's own hands as the line it was spawned with, plus the
 /// leading `keep` conferred words.
-fn prune_to(
+pub fn prune_to(
     base: *const capabilities.DependentSlot,
     words: *const Words,
     keep: u32,
 ) ?capabilities.DependentSlot {
-    // invariant: a pruning never keeps more than one dependent may hold
-    assert(keep <= capabilities.max_caps_per_dependent);
-    // invariant: a pruning always rebuilds from hands that hold their own line
-    assert(base.cap_count <= capabilities.max_caps_per_dependent);
-    var rebuilt = base.*;
-    var i: u32 = 0;
-    while (i < keep) : (i += 1) {
-        const word = word_at(words, i) orelse return null;
-        const cap = boot.read_cap_word(word) orelse return null;
-        if (already_holds(&rebuilt, cap.name_slice())) continue;
-        rebuilt.grant(cap) catch return null;
-    }
-    // invariant: every kept word was read back into the dependent's hands
-    assert(i == keep);
-    // invariant: a rebuilt slot never holds less than the line it was spawned with
-    assert(rebuilt.cap_count >= base.cap_count);
-    return rebuilt;
+    return ladder_checks.prune_to(@This(), base, words, keep);
 }
 
 /// Counts the conferred arcs this dependent can touch, over one range.
@@ -1255,22 +1227,7 @@ pub fn reachable_between(
     from: u32,
     to: u32,
 ) u32 {
-    // invariant: a probe always reads a range that runs forward
-    assert(from <= to);
-    // invariant: a probe never reaches past what one dependent may hold
-    assert(to <= capabilities.max_caps_per_dependent);
-    var reachable: u32 = 0;
-    var i: u32 = from;
-    while (i < to) : (i += 1) {
-        const word = word_at(words, i) orelse break;
-        const cap = boot.read_cap_word(word) orelse break;
-        if (queue_store.read_index(io, slot, cap.name_slice())) |_| {
-            reachable += 1;
-        } else |_| {}
-    }
-    // invariant: no arc counts as reachable that was never in the range
-    assert(reachable <= to - from);
-    return reachable;
+    return ladder_checks.reachable_between(@This(), io, slot, words, from, to);
 }
 
 /// Counts the reach standing on the wire at this dependent's first breath.
@@ -1348,30 +1305,7 @@ pub fn return_promised_reach(
     granted: *const Words,
     carried: u32,
 ) ?u32 {
-    // invariant: a return always names the dependent making it
-    assert(domain.len >= 1);
-    // invariant: a return never gives back more than one dependent may hold
-    assert(carried <= capabilities.max_caps_per_dependent);
-    if (carried == 0 or !pruning_promised(io, domain)) return 0;
-    var gave_back: u32 = 0;
-    var prunes: u32 = 0;
-    while (prunes < max_prune_looks) : (prunes += 1) {
-        const remaining = kept(io, domain) catch break;
-        if (remaining >= carried) {
-            std.Io.sleep(io, std.Io.Duration.fromMilliseconds(note_rest_ms), .awake) catch {};
-            continue;
-        }
-        slot.* = prune_to(base, granted, remaining) orelse return null;
-        if (reachable_between(io, slot, granted, remaining, carried) != 0) break;
-        gave_back = carried - remaining;
-        pruned(io, domain, gave_back) catch return null;
-        break;
-    }
-    // invariant: the waiting stayed inside the bound it was given
-    assert(prunes <= max_prune_looks);
-    // invariant: a dependent never returns more reach than it grafted
-    assert(gave_back <= carried);
-    return gave_back;
+    return ladder_checks.return_promised_reach(@This(), io, base, slot, domain, granted, carried);
 }
 
 /// Reads the arcs this dependent was handed, then every arc it is conferred, and

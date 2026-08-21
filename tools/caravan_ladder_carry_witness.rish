@@ -59,18 +59,18 @@ say "caravan-ladder-carry: Lens TAME -- safety first: the ceiling is named, the 
 
 let living = run ["sh" "tools/fixtures/caravan_ladder_carry_scan.sh"]
 assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
-assert living.out contains "CARRY_OK carried=101252 ceiling=101300" else "caravan-ladder-carry: want the living carry under its named ceiling"
+assert living.out contains "CARRY_OK carried=98507 ceiling=98600" else "caravan-ladder-carry: want the living carry under its named ceiling"
 assert living.out contains "CARRY_MODULES 108" else "caravan-ladder-carry: want all 108 ladder modules read, the rungs and the harness alike"
-assert living.out contains "CARRY_BODIES 18100 distinct=7898 copies=10202 carried_lines=101252" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
+assert living.out contains "CARRY_BODIES 18106 distinct=7902 copies=10204 carried_lines=98507" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
 
 say "caravan-ladder-carry: living ladder -- ${living.out}"
 
 # The fold queue, asserted so it stays a measurement rather than a memory. The largest family is named here by number
 # so a lap that folds it must come back and say so, and a lap that grows a larger one cannot pass quietly.
 assert living.out contains "CARRY_FAMILIES 707" else "caravan-ladder-carry: want every carrying family counted"
-assert living.out contains "CARRY_TOP return_promised_reach: 42 rungs x 33 lines = 1353 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
-assert living.out contains "CARRY_TOP return_promised_reach: 42 rungs x 33 lines = 1353 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
-say "caravan-ladder-carry: the fold queue -- return_promised_reach leads it now, the whole opening of a run having lifted into the harness this lap: start_one over a cohort of forty-two, with both its absentees brought home -- the tier owner abandon.rye by an identity accessor and reckon.rye, one rung above it, by naming the neighbor below -- and the four wire promises it reaches, open_generation, offer, promise_pruning, and promise_falling, over cohorts of forty-two to forty-four for the price of one widened word"
+assert living.out contains "CARRY_TOP carry_the_amendment: 34 rungs x 41 lines = 1353 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
+assert living.out contains "CARRY_TOP run_in_forbear: 10 rungs x 137 lines = 1233 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
+say "caravan-ladder-carry: the fold queue -- carry_the_amendment leads it now, the whole promised-pruning cluster having lifted into the harness this lap: return_promised_reach over a cohort of forty-two standing byte for byte with no absentee at all, and the five bodies it reaches -- reachable_between, prune_to, pruning_promised, kept, and pruned -- over cohorts of forty-four, the elder revoke.rye brought home on both the word it was missing and the invariant it never carried"
 
 # The three named meters, read here beside the wide one so no reader mistakes a window for the room. Every number below
 # is true inside its own window, and the point of printing them together is that their sum is not the ladder's carry.
@@ -117,4 +117,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_c
 assert (ceiling.ok == false) else "caravan-ladder-carry: a carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-carry: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-carry -- the Caravan ladder's whole carry stands counted under a ceiling this fold brought down, every number of it printed above as the scan's own output rather than recited here, with the fold queue standing largest-first and led now by a new family, this lap having lifted a run's whole opening and the four promises it writes to the wire out of cohorts of forty-two through forty-four, both absentees brought home rather than left behind."
+say "GREEN: caravan-ladder-carry -- the Caravan ladder's whole carry stands counted under a ceiling this fold brought down, every number of it printed above as the scan's own output rather than recited here, with the fold queue standing largest-first and led now by a new family, this lap having lifted a promised pruning and every body it reaches out of cohorts of forty-two and forty-four, the elder rung brought home rather than left standing apart."
