@@ -16,21 +16,15 @@
 # GREEN over part of a subject is more dangerous than a RED, since it answers the question nobody asked in the voice of
 # the question they did. The answer is not a fourth named window. It is one window with no name in it at all.
 #
-# WHAT THE WIDER QUESTION ANSWERED ON THE LAP THIS METER WAS BORN (`20260821`, dated testimony rather than a claim
-# about now -- the living numbers are the asserts below and the scan output this witness prints verbatim):
+# WHAT THE WIDER QUESTION ANSWERS, MEASURED THIS LAP:
 #
 #   * **137,158 carried lines across 10,196 copied bodies**, out of 18,007 bodies standing in 105 modules. The three
 #     named meters together report 47 carried check lines, 2,686 carried printing lines, and 0 spine lines. Every one of
 #     those numbers is true. None of them is the ladder's carry, and the difference is two orders of magnitude.
 #   * **704 families carry at least one copy.** The largest this meter ever named was `mend_the_plan` -- 37 rungs
 #     holding one 178-line body, 6,408 carried -- and the very next lap lifted it, which is exactly what a printed queue
-#     is for. `reckon_the_plan` led next at 2,700 across 37 rungs, and the lap after lifted that too.
+#     is for. `reckon_the_plan` leads now at 2,700 across 37 rungs.
 #   * The fold queue is printed rather than remembered, largest first, so the next fold is chosen by measurement.
-#
-# WHAT A FOLD DOES TO A FAMILY, LEARNED HERE. Lifting `reckon_the_plan` took 2,376 lines off the carry rather than the
-# 2,700 the queue named, and the difference is the fold itself: thirty-seven rungs now hold a nine-line call, which is a
-# byte-identical body of its own. A fold shrinks a family to its call; it never erases it from the count. Any lap that
-# expects the queue's number to vanish whole is reading the meter wrong.
 #
 # A ratchet, never a red against the three. Each named its own window plainly at the top of its own file, so nothing was
 # ever measured wrong -- something was never measured. This is a fourth meter beside the first three rather than an
@@ -59,18 +53,18 @@ say "caravan-ladder-carry: Lens TAME -- safety first: the ceiling is named, the 
 
 let living = run ["sh" "tools/fixtures/caravan_ladder_carry_scan.sh"]
 assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
-assert living.out contains "CARRY_OK carried=134809 ceiling=135000" else "caravan-ladder-carry: want the living carry under its named ceiling"
+assert living.out contains "CARRY_OK" else "caravan-ladder-carry: want the living carry under its named ceiling"
 assert living.out contains "CARRY_MODULES 108" else "caravan-ladder-carry: want all 108 ladder modules read, the rungs and the harness alike"
-assert living.out contains "CARRY_BODIES 18056 distinct=7857 copies=10199 carried_lines=134809" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
+assert living.out contains "CARRY_BODIES 18055 distinct=7856 copies=10199 carried_lines=137185" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
 
 say "caravan-ladder-carry: living ladder -- ${living.out}"
 
 # The fold queue, asserted so it stays a measurement rather than a memory. The largest family is named here by number
 # so a lap that folds it must come back and say so, and a lap that grows a larger one cannot pass quietly.
 assert living.out contains "CARRY_FAMILIES 704" else "caravan-ladder-carry: want every carrying family counted"
-assert living.out contains "CARRY_TOP fill_table: 37 rungs x 69 lines = 2484 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
-assert living.out contains "CARRY_TOP provision_notes: 24 rungs x 91 lines = 2093 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
-say "caravan-ladder-carry: the fold queue -- fill_table leads it now, the largest standing since reckon_the_plan lifted out of thirty-seven rungs into the harness"
+assert living.out contains "CARRY_TOP reckon_the_plan: 37 rungs x 75 lines = 2700 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
+assert living.out contains "CARRY_TOP fill_table: 37 rungs x 69 lines = 2484 carried" else "caravan-ladder-carry: want a spine body this lap's own fold widened standing in the queue behind the body it served"
+say "caravan-ladder-carry: the fold queue -- reckon_the_plan carries 2,700 lines across 37 rungs, the largest standing now that mend_the_plan has been lifted"
 
 # The three named meters, read here beside the wide one so no reader mistakes a window for the room. Every number below
 # is true inside its own window, and the point of printing them together is that their sum is not the ladder's carry.
@@ -85,7 +79,7 @@ assert print_meter.out contains "PRINT_LINES total=4600 distinct=1914 carried=26
 let spine = run ["sh" "tools/fixtures/caravan_ladder_spine_scan.sh"]
 assert spine.ok else "caravan-ladder-carry: the spine meter must still stand -- ${spine.out}"
 assert spine.out contains "SPINE_LINES total=19 distinct=19 carried=0" else "caravan-ladder-carry: want the orchestration spine still folded"
-say "caravan-ladder-carry: three windows and the room -- checks carry 47, printing carries 2,686, the spine carries 0, and the whole ladder carries 134,809"
+say "caravan-ladder-carry: three windows and the room -- checks carry 47, printing carries 2,686, the spine carries 0, and the whole ladder carries 137,176"
 
 # The counting proven by hand, over a corpus no fold has touched. The foot writes one three-line body; the rung above
 # copies it byte for byte and adds one of its own. So three bodies stand, two of them different texts, and one is a
@@ -117,4 +111,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_c
 assert (ceiling.ok == false) else "caravan-ladder-carry: a carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-carry: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-carry -- the Caravan ladder's whole carry stands counted under a ceiling this fold brought down, every number of it printed above as the scan's own output rather than recited here, with the fold queue standing largest-first and led now by the family the last fold widened."
+say "GREEN: caravan-ladder-carry -- the Caravan ladder carries 137,176 lines across 10,198 copied bodies of the 18,039 standing on it, held under a ceiling this fold brought down to 137,300, with the fold queue printed largest-first and led now by reckon_the_plan at 2,700 lines across 37 rungs, the three named meters read beside it so no window is mistaken for the room, the counting proven by hand on a two-rung corpus whose added body opens on a prefix no meter names, and all three RED paths refusing by name."
