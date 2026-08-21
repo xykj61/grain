@@ -19,7 +19,7 @@ assert rb contains "return_equinox_e50 CONSUMED 20260730.161633" else "sunn15: r
 assert rb contains "coords_equinox_status OPEN e49 GREEN · e50 next" else "sunn15: recursion want Equinox OPEN"
 assert (rb contains "coords_sunn_status SUNN0-14 GREEN · SUNN15 next · OPEN") == false else "sunn15: recursion must not keep SUNN OPEN next"
 
-let counsel = read-file "counsel/20260730-161633_sunn-handback-return-equinox-e50.md"
+let counsel = read-file "counsel/date/20260730/20260730-161633_sunn-handback-return-equinox-e50.md"
 assert counsel contains "return_equinox_e50` **CONSUMED**" else "sunn15: counsel want handback CONSUMED"
 assert counsel contains "SUNN Journey** | **CLOSED**" else "sunn15: counsel want SUNN CLOSED"
 assert counsel contains "e50 next" else "sunn15: counsel want e50 next"

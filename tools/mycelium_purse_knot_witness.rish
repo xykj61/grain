@@ -16,7 +16,7 @@
 # never-could-pay transfer (500 past the 100 Alice was ever credited) refuses NeverPaid whole. Composes
 # purse + cord_knot + cord + fold public API only; demo keeper seeds — no key held.
 #
-# Scope: active-designing/20260813-072541_mycelium-purse-knot-across-a-cut-exploration.md
+# Scope: active-designing/date/20260813/20260813-072541_mycelium-purse-knot-across-a-cut-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mycelium_purse_knot_witness.rish

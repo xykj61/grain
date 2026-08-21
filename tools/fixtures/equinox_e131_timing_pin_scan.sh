@@ -13,7 +13,7 @@ set -eu
 
 MODE=${1:-}
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
-COUNSEL=counsel/20260801-000833_e131-timing-pin-manifest-limb.md
+COUNSEL=counsel/date/20260801/20260801-000833_e131-timing-pin-manifest-limb.md
 LEXICON=context/LEXICON.md
 MAP=work-in-progress/EQUINOX_SEAT_MAP.md
 REMEMBER=work-in-progress/REMEMBER.md

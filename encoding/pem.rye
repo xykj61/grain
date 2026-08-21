@@ -9,7 +9,7 @@
 //! raw bytes to symbols, this rung wraps those symbols in the labelled envelope a real key or certificate carries, so a keeper can read what
 //! a block holds at a glance and a parser can find exactly the bytes between the markers. base64.rye's own front door already names PEM as
 //! its purpose; this rung seats that armor in our own Rye.
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 //! Clean-room: the `-----BEGIN/END LABEL-----` framing and the 64-character wrap are RFC 7468's own public convention; the composition is
 //! ours, standing on our own parity-GREEN Base64 primitive (.claude/rules/gratitude-licenses.md).
 //!

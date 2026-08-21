@@ -6,7 +6,7 @@
 //! live-TTY rung the drawn frame named "later" -- yet held pure, so no escape codes, no raw terminal, and
 //! no network enter here. A caller feeds it keystrokes; it holds a bounded, edited line and hands the text
 //! back. The wire and the raw TTY are later rungs; the editable line is the floor beneath them.
-//! Design kin: active-designing/20260817-041429_scooter-drawn-frame-crux.md (the output half).
+//! Design kin: active-designing/date/20260817/20260817-041429_scooter-drawn-frame-crux.md (the output half).
 //! Pattern elder: pond/apps/scooter_channel.rye -- the same bounded state machine, named errors, >=2 asserts.
 //!
 //! The crux is one edited line held strictly bounded:

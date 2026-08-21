@@ -3,7 +3,7 @@
 **Language:** EN  
 **Stamp:** `20260724.132812`  
 **Status:** Skeleton — decision rule seated before any run  
-**Counsel:** [`../../counsel/20260724-132812_the-workshop-and-the-warehouse.md`](../../counsel/20260724-132812_the-workshop-and-the-warehouse.md)
+**Counsel:** [`../../counsel/date/20260724/20260724-132812_the-workshop-and-the-warehouse.md`](../../counsel/date/20260724/20260724-132812_the-workshop-and-the-warehouse.md)
 
 ---
 

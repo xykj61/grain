@@ -18,7 +18,7 @@
 //! Composes testament + constel + muster + voucher public API only, editing none. Demo ship and keeper
 //! seeds — no key held, no funds, no network, no real value.
 //!
-//! Scope: active-designing/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
+//! Scope: active-designing/date/20260813/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/testament_fault.rye
 

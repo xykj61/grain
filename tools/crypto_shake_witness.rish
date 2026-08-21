@@ -9,7 +9,7 @@
 # sibling is the sponge's generality: the squeeze now emits rate bytes, permutes, and reads again, so multi-block output is proven, not just
 # the first block. That generality opens SHA3-224/384, cSHAKE, KMAC, and the post-quantum XOFs (SHAKE256 inside Ed448 and SPHINCS+, SHAKE128
 # seeding ML-KEM and ML-DSA matrices) as later rungs.
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 # Clean-room: the 0x1f delimiter, the two SHAKE rates, and the sponge law are the public FIPS 202 standard's own; the arithmetic is our GREEN
 # sha3.rye, never a copied line (.claude/rules/gratitude-licenses.md).
 #

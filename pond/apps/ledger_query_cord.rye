@@ -21,7 +21,7 @@
 //!   rye build pond/apps/ledger_query_cord.rye -femit-bin=pond/bin/ledger-query-cord
 //!   pond/bin/ledger-query-cord selftest
 //!
-//! Scope: active-designing/20260813-053843_mycelium-ledger-voice-exploration.md
+//! Scope: active-designing/date/20260813/20260813-053843_mycelium-ledger-voice-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

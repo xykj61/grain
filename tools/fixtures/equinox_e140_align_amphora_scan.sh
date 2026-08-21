@@ -11,9 +11,9 @@ set -eu
 
 MODE=${1:-}
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
-COUNSEL=counsel/20260801-013831_e140-align-amphora-cli-new-equinox.md
-CATALOG=counsel/20260801-013831_opus-relevant-at-nib-aa89d19443.md
-HANDOFF=expanding-prompts/20260801-013831_claude-opus5-1m-max-amphora-equinox-handoff.md
+COUNSEL=counsel/date/20260801/20260801-013831_e140-align-amphora-cli-new-equinox.md
+CATALOG=counsel/date/20260801/20260801-013831_opus-relevant-at-nib-aa89d19443.md
+HANDOFF=expanding-prompts/date/20260801/20260801-013831_claude-opus5-1m-max-amphora-equinox-handoff.md
 REPLY=counsel/replies/20260801-013831_re-amphora-cli-equinox-claude-opus5.md
 LEXICON=context/LEXICON.md
 MAP=work-in-progress/EQUINOX_SEAT_MAP.md

@@ -2,7 +2,7 @@
 
 **Language:** EN · **Voice:** Kyri · **Style:** Radiant · **Status:** Living
 **Kin:** [`../crypto/README.md`](../crypto/README.md) — the mathematics that produces the bytes this module renders
-**Design read:** [`../active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md)
+**Design read:** [`../active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md)
 **Clean-room law:** [`../.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md)
 
 The crypto library authors the mathematics that produces bytes — hashes, signatures,

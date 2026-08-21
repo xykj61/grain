@@ -20,7 +20,7 @@
 # fold + lapse + kumara public API only, editing none; every list bounded by the ledger's own pledge and
 # account ceilings; demo keeper seeds — no key, no funds, no network, no custody.
 #
-# Scope: active-designing/20260813-091851_mycelium-statement-account-voice-exploration.md
+# Scope: active-designing/date/20260813/20260813-091851_mycelium-statement-account-voice-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mycelium_statement_witness.rish

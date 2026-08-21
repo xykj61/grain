@@ -45,9 +45,9 @@ Tiger Style discipline: **`usize` is a boundary type, not a design type.** Read 
 - **`usize`** -- **only** at the inherited-std seam. Assert the bound, keep arithmetic in `u32`, `@intCast` at the Zig API edge. Seam casts are correct Tiger code, not debt awaiting a fork.
 - **Never** `usize` in struct fields, function parameters, return types, or locals we publish as authored API.
 - Live lint: `tools/width-check.rish`. Growing: `tools/tame-check.rish`.
-- Charter: `expanding-prompts/20260620-210812_explicit-width-audit.md`; baseline: `work-in-progress/20260620-212126_usize-width-baseline.md`.
+- Charter: `expanding-prompts/date/20260620/20260620-210812_explicit-width-audit.md`; baseline: `work-in-progress/20260620-212126_usize-width-baseline.md`.
 
-**Compiler fork (F1-F5):** deferred **horizon** -- not the active primary track. See `active-designing/20260628-043542_thin-frontend-slc-direction.md`.
+**Compiler fork (F1-F5):** deferred **horizon** -- not the active primary track. See `active-designing/date/20260628/20260628-043542_thin-frontend-slc-direction.md`.
 
 ## Supplement cheatsheet
 
@@ -72,7 +72,7 @@ When these pull against each other, safety wins. When safety and performance are
 
 ## Tidy rules (`tame_style_check`)
 
-**Witness:** `tools/tame_style_check.rish` - **Scan:** `tools/fixtures/tame_style_scan.sh` - **Brief:** `active-designing/20260707-164612_tame-tidy-rules-brief.md` - **Study:** `external-research/20260707-053212_tigerbeetle-alignment-study.md`
+**Witness:** `tools/tame_style_check.rish` - **Scan:** `tools/fixtures/tame_style_scan.sh` - **Brief:** `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md` - **Study:** `external-research/20260707-053212_tigerbeetle-alignment-study.md`
 
 **Bans fail parity** -- fix before commit:
 
@@ -102,4 +102,4 @@ No new law -- the supplement already seats this. Agents must not skip it when sh
 5. **Before claiming GREEN** -- run `tame_style_check` and the module's own witness; trust advise ratchet counts (native must match legacy after `20260717.181715`).
 6. **Glass / NativeActivity touch** -- migrate `@memcpy` and add opening lines in that file before leaving.
 
-**Ledger:** `active-designing/20260717-181715_tame-slc-rye-audit-ledger.md` - **Brief:** `active-designing/20260707-164612_tame-tidy-rules-brief.md`
+**Ledger:** `active-designing/20260717-181715_tame-slc-rye-audit-ledger.md` - **Brief:** `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md`

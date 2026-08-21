@@ -230,7 +230,7 @@ Before publishing any piece written in Radiant Style, run through these question
 
 ## Radiant Pass Playbook
 
-Seated `20260725.034254` from counsel [`../counsel/20260725-034254_always-in-it.md`](../counsel/20260725-034254_always-in-it.md). The lint catches mechanical surface; everything that makes prose radiant lives outside its reach. A pass needs a hand and a method.
+Seated `20260725.034254` from counsel [`../counsel/date/20260725/20260725-034254_always-in-it.md`](../counsel/date/20260725/20260725-034254_always-in-it.md). The lint catches mechanical surface; everything that makes prose radiant lives outside its reach. A pass needs a hand and a method.
 
 ### What only a reader can judge
 
@@ -274,6 +274,6 @@ Seated `20260725.034254` from counsel [`../counsel/20260725-034254_always-in-it.
 
 ### Coverage ledger
 
-`tools/fixtures/radiant_pass_ledger.txt` — one line per file: path · stamp · **changed | clean | legacy**. Waves write to it. Next wave takes the oldest untouched in-scope files (`sh tools/fixtures/radiant_select_wave.sh 50`). Pool scope and exemptions: [`../tools/fixtures/radiant_pool_scope.md`](../tools/fixtures/radiant_pool_scope.md). Runway counsel: [`../counsel/20260725-110128_the-runway.md`](../counsel/20260725-110128_the-runway.md).
+`tools/fixtures/radiant_pass_ledger.txt` — one line per file: path · stamp · **changed | clean | legacy**. Waves write to it. Next wave takes the oldest untouched in-scope files (`sh tools/fixtures/radiant_select_wave.sh 50`). Pool scope and exemptions: [`../tools/fixtures/radiant_pool_scope.md`](../tools/fixtures/radiant_pool_scope.md). Runway counsel: [`../counsel/date/20260725/20260725-110128_the-runway.md`](../counsel/date/20260725/20260725-110128_the-runway.md).
 
 ---

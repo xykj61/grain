@@ -12,7 +12,7 @@ hand, typed for safety, a sibling of Rye that shares its value model. The name
 is a seer who hears the human and speaks faithfully to the machine — which is a
 shell's whole work. Scripts carry the `.rish` extension. The reasoning behind
 the name and the design lives in `../active-designing/yonder/20260619-051312_the-faithful-hand.md`,
-`../active-designing/20260618-184912_growing-a-language.md`, and this README. (Historical:
+`../active-designing/date/20260618/20260618-184912_growing-a-language.md`, and this README. (Historical:
 `../external-research/20260621-051612_rishi-shell-redirect.md` is a redirect stub.)
 
 ## What This First Version Does

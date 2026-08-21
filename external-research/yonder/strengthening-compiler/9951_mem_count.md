@@ -105,7 +105,7 @@ pub fn countScalar(comptime T: type, list: []const T, element: T) usize {
 
 Tiger Style: *use explicitly-sized types like `u32`; avoid architecture-specific `usize`* ([`gratitude/TIGER_STYLE.md`](../../../gratitude/TIGER_STYLE.md) § Safety).
 
-TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_STYLE.md`](../../../context/TAME_STYLE.md), [`10024`](../../../expanding-prompts/20260620-210812_explicit-width-audit.md), [`992`](../../../work-in-progress/20260620-212126_usize-width-baseline.md).
+TAME: **`usize` is a boundary type, not a design type** — [`context/TAME_STYLE.md`](../../../context/TAME_STYLE.md), [`10024`](../../../expanding-prompts/date/20260620/20260620-210812_explicit-width-audit.md), [`992`](../../../work-in-progress/20260620-212126_usize-width-baseline.md).
 
 Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
 ### `std...mem.count`

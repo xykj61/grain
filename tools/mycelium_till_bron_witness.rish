@@ -13,7 +13,7 @@
 # (UnknownField), a bad hex key (BadHex), a broken supply law (BadInt), a missing supply line (BadFormat),
 # an over-long verdict (TooManyDraws). Composes till.rye + fold.rye public API only. Demo keeper seeds — no key held.
 #
-# Scope: active-designing/20260813-064129_mycelium-till-double-spend-exploration.md
+# Scope: active-designing/date/20260813/20260813-064129_mycelium-till-double-spend-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mycelium_till_bron_witness.rish

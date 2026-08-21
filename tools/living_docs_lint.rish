@@ -15,11 +15,11 @@
 #   8. shell bodies (>40 lines) beneath .rish wrappers — harvest ratchet (only falls)
 #
 # First-lap roster: tools/fixtures/living_docs_lint_roster.sh
-# Design: active-designing/20260712-221600_docs-compression-layer-design.md
+# Design: active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md
 # Pin law: context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md
 # Growth law: context/specs/append-only-growth-law.md
 # Python law: context/specs/20260724-143155_python-at-the-seam-law.md
-# Shell harvest: counsel/20260725-040247_what-the-shell-remembers.md
+# Shell harvest: counsel/date/20260725/20260725-040247_what-the-shell-remembers.md
 #
 # Missing Rishi verb (this wrapper's body): accumulate · filter chained · read bounded
 #

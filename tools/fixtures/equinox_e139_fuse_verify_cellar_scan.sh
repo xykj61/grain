@@ -13,8 +13,8 @@ set -eu
 
 MODE=${1:-}
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
-COUNSEL=counsel/20260801-013236_e139-fuse-verify-cellar-accretion.md
-ELDER=counsel/20260801-012557_e138-cellar-retire-by-accretion.md
+COUNSEL=counsel/date/20260801/20260801-013236_e139-fuse-verify-cellar-accretion.md
+ELDER=counsel/date/20260801/20260801-012557_e138-cellar-retire-by-accretion.md
 ELDER_SCAN=tools/fixtures/equinox_e138_cellar_accretion_scan.sh
 LEXICON=context/LEXICON.md
 MAP=work-in-progress/EQUINOX_SEAT_MAP.md

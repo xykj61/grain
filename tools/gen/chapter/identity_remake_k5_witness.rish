@@ -6,14 +6,14 @@ say "identity-k5: Language EN — confirm land; rank handback."
 say "identity-k5: Style Radiant — refuse invent pad."
 say "identity-k5: Lens TAME — Identity Remake k5."
 
-let counsel = run ["test" "-f" "counsel/20260729-160015_identity-remake-k5-it-worked-check-in.md"]
+let counsel = run ["test" "-f" "counsel/date/20260729/20260729-160015_identity-remake-k5-it-worked-check-in.md"]
 assert counsel.ok else "identity-k5: k5 counsel missing"
 
-let lean = run ["sh" "-c" "grep -qF 'return_surface_p55' counsel/20260729-160015_identity-remake-k5-it-worked-check-in.md && grep -qF 'recommend handback' counsel/20260729-160015_identity-remake-k5-it-worked-check-in.md && echo LEAN_OK"]
+let lean = run ["sh" "-c" "grep -qF 'return_surface_p55' counsel/date/20260729/20260729-160015_identity-remake-k5-it-worked-check-in.md && grep -qF 'recommend handback' counsel/date/20260729/20260729-160015_identity-remake-k5-it-worked-check-in.md && echo LEAN_OK"]
 assert lean.ok else "identity-k5: handback lean scan failed"
 assert lean.out contains "LEAN_OK" else "identity-k5: handback lean missing"
 
-let held = run ["sh" "-c" "grep -qF 'No handback metal yet' counsel/20260729-160015_identity-remake-k5-it-worked-check-in.md && echo HELD_OK"]
+let held = run ["sh" "-c" "grep -qF 'No handback metal yet' counsel/date/20260729/20260729-160015_identity-remake-k5-it-worked-check-in.md && echo HELD_OK"]
 assert held.ok else "identity-k5: no-invent scan failed"
 assert held.out contains "HELD_OK" else "identity-k5: must refuse invent this stamp"
 

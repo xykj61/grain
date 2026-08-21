@@ -6,7 +6,7 @@
 **Voice:** Kyri  
 **Status:** Living pin  
 **Bound:** keep under `living_pin_max_bytes`  
-**Counsel:** [`counsel/20260724-141612_names-maps-and-open-questions.md`](counsel/20260724-141612_names-maps-and-open-questions.md)
+**Counsel:** [`counsel/date/20260724/20260724-141612_names-maps-and-open-questions.md`](counsel/date/20260724/20260724-141612_names-maps-and-open-questions.md)
 
 *Standing writing voice is **Kyri**; **Quin** still stewards the Q-vane faculties (`ember/` · `lantern/` · `lattice/` · `scribble/`) below.*
 

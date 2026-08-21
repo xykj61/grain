@@ -10,7 +10,7 @@ When ordering any allocation — a **season**, **equinox**, **journey**, **quest
 ## How it composes with the disciplines already seated
 
 - **Reds still come first of all.** A red booked under [`reds-first`](reds-first.md) preempts this ordering — a wrong thing is fixed before new durable work begins. the Long Return orders the *constructive* queue; reds-first governs the *corrective* one.
-- **The finishing edge still holds.** the Long Return is not license to start many durable things at once; ship one real thing before naming the next (`../counsel/20260715-190000_the-design-over-build-ratio-and-finishing.md`). Lila picks *which* one.
+- **The finishing edge still holds.** the Long Return is not license to start many durable things at once; ship one real thing before naming the next (`../counsel/date/20260715/20260715-190000_the-design-over-build-ratio-and-finishing.md`). Lila picks *which* one.
 - **Narrow scope still holds.** One keystone per round unless the round's own shape bounds it (`collaboration.md`). This rule chooses the keystone; it does not widen the round.
 - **`align` reads by this order.** When Keaton says **align**, the reconcile pass reorders the plan Lila and the Long Return, brief and green witnesses winning (`align.md`).
 - **Power-of-two divisions inherit it.** A season's four equinoxes, an equinox's four journeys, a journey's four quests — each division leads with its own the long return's Lila, so the ordering is self-similar at every scale.

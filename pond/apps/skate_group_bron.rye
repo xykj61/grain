@@ -23,7 +23,7 @@
 //!   rye build pond/apps/skate_group_bron.rye -femit-bin=pond/bin/skate-group-bron
 //!   pond/bin/skate-group-bron selftest
 //!
-//! Scope: active-designing/20260812-204233_dahl-journey10-membership-quorum-exploration.md
+//! Scope: active-designing/date/20260812/20260812-204233_dahl-journey10-membership-quorum-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

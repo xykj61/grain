@@ -8,7 +8,7 @@
 //! This rung joins them into one act: a keeper types a line and watches it land in the conversation. It was
 //! designed for from both sides -- scooter_view.render_within reserves its last row "for a prompt" and passes
 //! the journal a smaller budget so the prompt has room; dexter_line holds the editable line the prompt draws.
-//! Design read: active-designing/20260817-085923_scooter-compose-crux.md
+//! Design read: active-designing/date/20260817/20260817-085923_scooter-compose-crux.md
 //! Pattern elder: pond/apps/scooter_view.rye -- the same bounded fold, held pure over the family's public API.
 //!
 //! The crux is one honest join held bounded:

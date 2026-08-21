@@ -7,7 +7,7 @@
 //!   rye build mantra/recall_catch_up.rye -femit-bin=mantra/bin/recall-catch-up
 //!   mantra/bin/recall-catch-up selftest
 //!
-//! Counsel: [`counsel/20260707-001612_claude-counsel-subscribe-revisited.md`](../counsel/20260707-001612_claude-counsel-subscribe-revisited.md)
+//! Counsel: [`counsel/date/20260707/20260707-001612_claude-counsel-subscribe-revisited.md`](../counsel/date/20260707/20260707-001612_claude-counsel-subscribe-revisited.md)
 
 const std = @import("std");
 const assert = std.debug.assert;

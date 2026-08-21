@@ -6,7 +6,7 @@
 **Depth:** guide
 **Ceiling:** ≤150 lines
 **Last updated:** 2026-07-18 (JABS living names · Mantra-rev tip wording)
-**Compresses:** [`20260716-142818_glow-application-framework-and-publishing.md`](../expanding-prompts/yonder/20260716-142818_glow-application-framework-and-publishing.md) · [`20260717-014522_native-activity-shim-and-slc-packaging.md`](../active-designing/20260717-014522_native-activity-shim-and-slc-packaging.md) · [`JABS.md`](JABS.md)
+**Compresses:** [`20260716-142818_glow-application-framework-and-publishing.md`](../expanding-prompts/yonder/20260716-142818_glow-application-framework-and-publishing.md) · [`20260717-014522_native-activity-shim-and-slc-packaging.md`](../active-designing/date/20260717/20260717-014522_native-activity-shim-and-slc-packaging.md) · [`JABS.md`](JABS.md)
 
 ---
 
@@ -95,7 +95,7 @@ rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
 
 ## Decision pinned
 
-No Glow→Kotlin/JVM transpiler — [`active-designing/20260717-014522_native-activity-shim-and-slc-packaging.md`](../active-designing/20260717-014522_native-activity-shim-and-slc-packaging.md). Full ladder plan: [`expanding-prompts/yonder/20260716-142818_…`](../expanding-prompts/yonder/20260716-142818_glow-application-framework-and-publishing.md). GrapheneOS-facing app logic stays Glow/Rye → native.
+No Glow→Kotlin/JVM transpiler — [`active-designing/date/20260717/20260717-014522_native-activity-shim-and-slc-packaging.md`](../active-designing/date/20260717/20260717-014522_native-activity-shim-and-slc-packaging.md). Full ladder plan: [`expanding-prompts/yonder/20260716-142818_…`](../expanding-prompts/yonder/20260716-142818_glow-application-framework-and-publishing.md). GrapheneOS-facing app logic stays Glow/Rye → native.
 
 Device ladder this joins: [`HAWM.md`](HAWM.md).
 

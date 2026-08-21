@@ -6,7 +6,7 @@
 **Depth:** guide
 **Ceiling:** ≤300 lines
 **Last updated:** 2026-07-12
-**Compresses:** [`counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) · [`20260712-210800_pond-enclosure-scorecard-two-column.md`](../active-designing/20260712-210800_pond-enclosure-scorecard-two-column.md) · [`20260712-210800_pond-supersede-exit-criteria.md`](../active-designing/20260712-210800_pond-supersede-exit-criteria.md) · [`20260712-212412_pond-scorecard-claude-second-walk.md`](../active-designing/20260712-212412_pond-scorecard-claude-second-walk.md) · [`20260712-213600_pond-freeze-affirm-master-seal.md`](../active-designing/20260712-213600_pond-freeze-affirm-master-seal.md) · [`20260712-113900_lane-kvm-retire-dbus-escape.md`](../active-designing/20260712-113900_lane-kvm-retire-dbus-escape.md) · [`context/specs/enclosure-editors.md`](../context/specs/enclosure-editors.md)
+**Compresses:** [`counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) · [`20260712-210800_pond-enclosure-scorecard-two-column.md`](../active-designing/date/20260712/20260712-210800_pond-enclosure-scorecard-two-column.md) · [`20260712-210800_pond-supersede-exit-criteria.md`](../active-designing/date/20260712/20260712-210800_pond-supersede-exit-criteria.md) · [`20260712-212412_pond-scorecard-claude-second-walk.md`](../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md) · [`20260712-213600_pond-freeze-affirm-master-seal.md`](../active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md) · [`20260712-113900_lane-kvm-retire-dbus-escape.md`](../active-designing/date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md) · [`context/specs/enclosure-editors.md`](../context/specs/enclosure-editors.md)
 
 ---
 
@@ -23,7 +23,7 @@ A jail with one named device lane, or a finished Pond, holds more than an enclos
 
 **What not to widen in ai-jail:** host session buses (D-Bus, systemd transient units), host `$HOME` beyond project bind, shared `/tmp`, broadened network, USB/raw disk, docker socket. Wayland/GPU pass stays as-is; KVM is **display-less by design** (`-display none` + QMP screendump).
 
-Full ruling: [`counsel/20260712-090512`](../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md).
+Full ruling: [`counsel/20260712-090512`](../counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md).
 
 ---
 
@@ -53,7 +53,7 @@ Wrappers honor `ENCLOSURE` before launch. `ENCLOSURE=pond` **refuses** unless ex
 | `rishi/bin/rishi run tools/proven_seat_g0_complete_jailed.rish` | Lane on inside jail |
 | `rishi/bin/rishi run tools/lane_kvm_onpath_host.rish` | Host one-shot Framework sitting |
 
-**Retired:** D-Bus + systemd transient units as KVM doorway — [`113900`](../active-designing/20260712-113900_lane-kvm-retire-dbus-escape.md).
+**Retired:** D-Bus + systemd transient units as KVM doorway — [`113900`](../active-designing/date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md).
 
 Proven-seat metal detail: [`PROVEN_SEAT.md`](PROVEN_SEAT.md).
 
@@ -84,7 +84,7 @@ Column one **incumbent-measured** (ai-jail today) freezes honest baseline. Colum
 
 **Policy law:** unreachable is the floor. A refusing broker is a **door** (named custom + paired witness), rather than ambient absence dressed as a daemon.
 
-Full table: [`20260712-210800` scorecard](../active-designing/20260712-210800_pond-enclosure-scorecard-two-column.md).
+Full table: [`20260712-210800` scorecard](../active-designing/date/20260712/20260712-210800_pond-enclosure-scorecard-two-column.md).
 
 ---
 
@@ -123,7 +123,7 @@ Held in a **single signed scorecard bron** at fixed path `bron-resins/pond-super
 | 5 | Durability | **N** — see below |
 | 6 | Retreat path | `ENCLOSURE=ai-jail` launchable one full season past flip |
 
-Full card: [`20260712-210800` exit criteria](../active-designing/20260712-210800_pond-supersede-exit-criteria.md).
+Full card: [`20260712-210800` exit criteria](../active-designing/date/20260712/20260712-210800_pond-supersede-exit-criteria.md).
 
 ---
 
@@ -153,7 +153,7 @@ Full card: [`20260712-210800` exit criteria](../active-designing/20260712-210800
 
 **Affirmation path (remaining):** Kaeden's **named supersede build word** → freeze release candidate → record `soak_start_nib` → soak under N → write exit bron → master-sign on host (cold key only). Ceremony command lives in exit card witness — run from card, not from this page.
 
-Freeze affirmed: [`213600`](../active-designing/20260712-213600_pond-freeze-affirm-master-seal.md).
+Freeze affirmed: [`213600`](../active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md).
 
 ---
 

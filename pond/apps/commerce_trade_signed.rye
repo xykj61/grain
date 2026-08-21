@@ -20,7 +20,7 @@
 //!   rye build pond/apps/commerce_trade_signed.rye -femit-bin=pond/bin/commerce-trade-signed
 //!   pond/bin/commerce-trade-signed selftest
 //!
-//! Scope: active-designing/20260812-175228_tact-journey4-commerce-exploration.md
+//! Scope: active-designing/date/20260812/20260812-175228_tact-journey4-commerce-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

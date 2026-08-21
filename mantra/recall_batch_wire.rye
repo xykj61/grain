@@ -2,7 +2,7 @@
 //!
 //! Reuses sync request shape; response carries one sealed batch body (≤ max_wire_payload)
 //! or multiple chunk frames when the batch exceeds one datagram.
-//! Scope: active-designing/20260706-023912_the-referential-namespace.md
+//! Scope: active-designing/date/20260706/20260706-023912_the-referential-namespace.md
 
 const std = @import("std");
 const sw = @import("recall_sync_wire.rye");

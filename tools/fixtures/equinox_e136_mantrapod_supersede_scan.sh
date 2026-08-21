@@ -13,7 +13,7 @@ set -eu
 MODE=${1:-}
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 DATED_GUARD=tools/fixtures/dated_guard_scan.sh
-COUNSEL=counsel/20260801-005853_e136-mantrapod-supersede.md
+COUNSEL=counsel/date/20260801/20260801-005853_e136-mantrapod-supersede.md
 LEXICON=context/LEXICON.md
 MAP=work-in-progress/EQUINOX_SEAT_MAP.md
 REMEMBER=work-in-progress/REMEMBER.md

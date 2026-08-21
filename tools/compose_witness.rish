@@ -4,7 +4,7 @@
 # present) proves a SOLID color composited over the grid and tools/checker_paint_witness proves the transparency GROUND,
 # this rung proves the picture ITSELF -- a SOURCE image composited over a TARGET image, each source pixel blended
 # src-over its target pixel. Stands on the open color algebra (image/color.rye over), the open QOI codec (image/qoi.rye),
-# and no new math. Design read: active-designing/20260816-210735_season-g-color-algebra-crux.md (the color floor).
+# and no new math. Design read: active-designing/date/20260816/20260816-210735_season-g-color-algebra-crux.md (the color floor).
 # Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + sRGB -- public standards only).
 #
 # The crux this witness proves is that one image becomes SEEN over another: paint_over lays a whole picture at a point,

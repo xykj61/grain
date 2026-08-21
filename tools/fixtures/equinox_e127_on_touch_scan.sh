@@ -14,7 +14,7 @@ set -eu
 MODE=${1:-}
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 LEXICON=context/LEXICON.md
-COUNSEL=counsel/20260731-231509_e127-on-touch-never-campaign.md
+COUNSEL=counsel/date/20260731/20260731-231509_e127-on-touch-never-campaign.md
 MAP=work-in-progress/EQUINOX_SEAT_MAP.md
 REMEMBER=work-in-progress/REMEMBER.md
 REDS=work-in-progress/REDS.md

@@ -24,7 +24,7 @@
 //!   rye build pond/apps/council_sky_bron.rye -femit-bin=pond/bin/council-sky-bron
 //!   pond/bin/council-sky-bron selftest
 //!
-//! Scope: active-designing/20260812-210603_dahl-journey11-council-skies-exploration.md
+//! Scope: active-designing/date/20260812/20260812-210603_dahl-journey11-council-skies-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

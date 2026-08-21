@@ -15,7 +15,7 @@ git status                   # report state
 
 Only `/home/xy/veganreyklah2` persists. Strengthening **sweep is retired**; pass 9886 does **not** resume as chronicle continuation.
 
-**Adopted direction:** `active-designing/20260628-043542_thin-frontend-slc-direction.md`
+**Adopted direction:** `active-designing/date/20260628/20260628-043542_thin-frontend-slc-direction.md`
 
 ---
 
@@ -93,7 +93,7 @@ Plan:
 - Prefer `u32`/`u64`; **avoid** `usize` in authored Rye.
 - Assert bound + `@intCast` at inherited-std seam is **correct**, not DEBT awaiting F3.
 - `tools/width-check.rish` enforces authored corpus — keep.
-- F1–F5 and F3 std rewrite → **deferred horizon** (link `active-designing/20260628-043542_thin-frontend-slc-direction.md`), not "the plan."
+- F1–F5 and F3 std rewrite → **deferred horizon** (link `active-designing/date/20260628/20260628-043542_thin-frontend-slc-direction.md`), not "the plan."
 
 **Also update** `work-in-progress/ROADMAP.md` spine:
 

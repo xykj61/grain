@@ -4,9 +4,9 @@
 
 set -e
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
-TABLE="$ROOT/active-designing/20260719-220814_glow-rune-pronunciation-closed-table.md"
-BARTIS_BRIEF="$ROOT/active-designing/20260720-033852_glow-bartis-g1-row.md"
-BARKET_BRIEF="$ROOT/active-designing/20260720-151119_glow-barket-g1-row.md"
+TABLE="$ROOT/active-designing/date/20260719/20260719-220814_glow-rune-pronunciation-closed-table.md"
+BARTIS_BRIEF="$ROOT/active-designing/date/20260720/20260720-033852_glow-bartis-g1-row.md"
+BARKET_BRIEF="$ROOT/active-designing/date/20260720/20260720-151119_glow-barket-g1-row.md"
 TOKENS="$ROOT/glow/tokens.rye"
 
 PAIRS=$(awk '/const pairs =/,/};/' "$TOKENS")

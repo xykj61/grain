@@ -31,7 +31,7 @@
 //! bottoms out where every check in this arc does -- on a number read off a plan
 //! that actually ran.
 //!
-//! Brief: `../active-designing/20260820-131713_caravan-ladder-shared-harness.md`
+//! Brief: `../active-designing/date/20260820/20260820-131713_caravan-ladder-shared-harness.md`
 //! Meter: `../tools/caravan_ladder_copy_witness.rish`
 
 const std = @import("std");
@@ -4715,7 +4715,7 @@ pub fn check_refrain_refusals(comptime rung: type) u8 {
 // derives rather than twenty-one hand-copies of it. Adding a step to the arc is
 // three lines in this file rather than a fresh copy of everything beneath it.
 //
-// Brief: `../active-designing/20260820-204641_caravan-ladder-the-spine-the-meter-cannot-see.md`
+// Brief: `../active-designing/date/20260820/20260820-204641_caravan-ladder-the-spine-the-meter-cannot-see.md`
 // Meter: `../tools/caravan_ladder_spine_witness.rish`
 // ---------------------------------------------------------------------------
 

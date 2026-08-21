@@ -29,7 +29,7 @@ The lane grows by the same law as the code: reference specifications open only w
 | [`reference/rishi-language.md`](reference/rishi-language.md) | Rishi language reference (parity **142**) | Checkable |
 | [`../glow/`](../glow/) | Eight rune heads + desk generators (`glow/gen/`) | Checkable — pin [`../glow/README.md`](../glow/README.md) |
 | Acme Glow first code | [`../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) | Checkable pointers + open-rune horizon |
-| Rune grammar brief | [`../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) | Design — full Glow textbook still horizon |
+| Rune grammar brief | [`../active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) | Design — full Glow textbook still horizon |
 | TAME (law) | [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) · Glow scope ER [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) | Root seated; Glow supplement still horizon |
 
 A beginner Glow-language textbook waits on a general parser. Until then, learn Rishi; run the eight green rune heads and desk hops in [`../glow/`](../glow/); read the Acme first-code prompt above for which runes still open.

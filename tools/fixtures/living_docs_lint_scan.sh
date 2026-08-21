@@ -164,8 +164,8 @@ for rel in \
   context/PUBKEYS.md \
   tools/pond_exit_bron_master_seal.sh \
   context/keys/gpg_signing_06462132.pub.asc \
-  active-designing/20260712-210800_pond-supersede-exit-criteria.md \
-  active-designing/20260712-213600_pond-freeze-affirm-master-seal.md
+  active-designing/date/20260712/20260712-210800_pond-supersede-exit-criteria.md \
+  active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md
 do
   [ -f "$rel" ] && cat "$rel" >>"$TMP/canon"
 done

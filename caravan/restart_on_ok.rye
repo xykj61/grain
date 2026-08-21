@@ -7,7 +7,7 @@
 //!   rye build caravan/restart_on_ok.rye -femit-bin=caravan/bin/restart-on-ok
 //!   caravan/bin/restart-on-ok
 //!
-//! Counsel: [`counsel/20260707-014212_claude-counsel-graceful-stop-reframed.md`](../counsel/20260707-014212_claude-counsel-graceful-stop-reframed.md)
+//! Counsel: [`counsel/date/20260707/20260707-014212_claude-counsel-graceful-stop-reframed.md`](../counsel/date/20260707/20260707-014212_claude-counsel-graceful-stop-reframed.md)
 
 const std = @import("std");
 const assert = std.debug.assert;

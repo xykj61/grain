@@ -27,7 +27,9 @@
 #   2. as written, root-relative, with leading ../ dropped
 #   3. THE FOLD RULE, pure: <room>/date/<YYYYMMDD>/<basename>, then the elder <room>/archive/
 #      <YYYYMMDD>/<basename> -- computed from the basename alone, needing no index, so it keeps
-#      working for rooms not yet folded and folds not yet run
+#      working for rooms not yet folded and folds not yet run. For a BARE basename the room is
+#      read off the CITING file instead, since a bare reference was a sibling and a day fold is
+#      precisely what separates siblings.
 #   4. by basename across every tracked file -- recovers a move the fold rule cannot predict
 #   5. missing -- reported plainly, never invented
 #
@@ -38,7 +40,7 @@
 # USAGE
 #   rishi/bin/rishi run tools/dated_path_resolve.rish <reference> [<citing-file>]
 #
-#   $ rishi/bin/rishi run tools/dated_path_resolve.rish session-logs/20260710-000045_one-clock-resins-plainly.md
+#   $ rishi/bin/rishi run tools/dated_path_resolve.rish session-logs/date/20260710/20260710-000045_one-clock-resins-plainly.md
 #   verdict=recovered-by-fold-rule
 #   home=session-logs/archive/20260710/20260710-000045_one-clock-resins-plainly.md
 #
@@ -107,11 +109,24 @@ let stamp_head_length = length stamp_head
 let stamped = (stamp_head_length == 15)
 
 let day = ""
+if stamped then let day = slice stamp_head 0 8
+
+# A BARE basename was a sibling reference -- two files sitting flat in one room, one naming the
+# other with no directory at all. A day fold puts siblings in different day folders and breaks
+# exactly those. The citing file still names the room, so the room is read off it: context the
+# reference already carries, rather than a guess between namesakes.
+let fold_room = room
+let citer_room = citer_dir
+let date_at = citer_dir index-of "/date/"
+let archive_at = citer_dir index-of "/archive/"
+if date_at != -1 then let citer_room = slice citer_dir 0 date_at
+if archive_at != -1 then let citer_room = slice citer_dir 0 archive_at
+if length room == 0 then let fold_room = citer_room
+
 let fold_date = ""
 let fold_archive = ""
-if stamped then let day = slice stamp_head 0 8
-if stamped then let fold_date = "${room}/date/${day}/${basename}"
-if stamped then let fold_archive = "${room}/archive/${day}/${basename}"
+if stamped then let fold_date = "${fold_room}/date/${day}/${basename}"
+if stamped then let fold_archive = "${fold_room}/archive/${day}/${basename}"
 
 let fold_date_hit = false
 let fold_archive_hit = false

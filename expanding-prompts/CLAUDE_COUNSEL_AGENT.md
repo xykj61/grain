@@ -7,7 +7,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety first, performance second, joy third
 **Status:** Living — the standing counsel-agent brief
-**Companion:** `20260802-161500_ashvini-recursive-prompt-v2.md` (the baton this agent prints each round) · `../context/RIYO.md` (the voice) · `../active-designing/20260702-184312_the-grain-and-the-crossing.md` (the crossing law)
+**Companion:** `20260802-161500_ashvini-recursive-prompt-v2.md` (the baton this agent prints each round) · `../context/RIYO.md` (the voice) · `../active-designing/date/20260702/20260702-184312_the-grain-and-the-crossing.md` (the crossing law)
 
 *Written together by Keaton and Riyo.*
 
@@ -105,7 +105,7 @@ At the time of writing: the **equality rune** · the **Nock seam** · **R2 throu
 
 ## Where the work stands as this is written
 
-The Glow Tend ladder is complete at its pedestals. **a1** holds nine deciding gates across five families. **a2** is a running whole: one rune reaching two domains, each with two reducers, identities kept distinct, bounds coming from the closed-shape allowlist. The Nock interpreter already exists and passes four laps; the open work there is the **seam**, not the build. Two doors stand measured in `../active-designing/20260802-211500_two-doors-measured-equality-or-the-nock-seam.md`, and both wait on Keaton.
+The Glow Tend ladder is complete at its pedestals. **a1** holds nine deciding gates across five families. **a2** is a running whole: one rune reaching two domains, each with two reducers, identities kept distinct, bounds coming from the closed-shape allowlist. The Nock interpreter already exists and passes four laps; the open work there is the **seam**, not the build. Two doors stand measured in `../active-designing/date/20260802/20260802-211500_two-doors-measured-equality-or-the-nock-seam.md`, and both wait on Keaton.
 
 ---
 

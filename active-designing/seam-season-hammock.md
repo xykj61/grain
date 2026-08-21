@@ -8,7 +8,7 @@
 **Voice:** Rio 3
 **Lens:** TAME · SLC · compass · wire serves the fold · sameness is the macro
 **Status:** Living hammock — studies 1–4 landed; CapTP-as-fold **declined** `054650`; giving-lane T0 **seated** · T1 **mapped** `054942` · T2 courtesy **choice seated** `062656` · **wire opened** `071405`; Door 3 **landed** tip **431** `063213`; component compile **landed** tip **432** `063558`; proven-seat **G0 GREEN** `071405` (GRUB milestone; full UI wants KVM); Spritely ally parked · product tip **430** · suite tip **432**
-**Counsel:** [`../counsel/20260712-052806_claude-counsel-three-doors-and-teacher.md`](../counsel/20260712-052806_claude-counsel-three-doors-and-teacher.md)
+**Counsel:** [`../counsel/date/20260712/20260712-052806_claude-counsel-three-doors-and-teacher.md`](../counsel/date/20260712/20260712-052806_claude-counsel-three-doors-and-teacher.md)
 **Foundations:** [`../foundations/20260706-022912_the-wire-serves-the-fold.md`](../foundations/20260706-022912_the-wire-serves-the-fold.md) · [`../foundations/20260703-182612_sameness-is-the-macro.md`](../foundations/20260703-182612_sameness-is-the-macro.md) · [`../foundations/20260628-124512_anywhere-we-are-found.md`](../foundations/20260628-124512_anywhere-we-are-found.md) · [`../foundations/20260629-014512_money-that-stays-close-to-home.md`](../foundations/20260629-014512_money-that-stays-close-to-home.md)
 **Living law:** [`../context/specs/living-vs-dated.md`](../context/specs/living-vs-dated.md) · frozen dated original [`20260712-052806_seam-season-hammock.md`](20260712-052806_seam-season-hammock.md)  
 Radiant pass `20260728.052441` — living L1 rename-forward: **MUR** (was MALA); prefer **kg u32** · WOV retire roadmap last

@@ -1,7 +1,7 @@
 //! glow-book: runes.md#g-mutate
 //! glow/rune_mutate.rye — parses Glow's `=.` mutate-one-leg rune head.
 //!
-//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
+//! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
 //! `=` category: `=.` mutates one leg. Sibling to `=/` (typed let). This
 //! extracts the wing being mutated; the new value is not this parser's job.
 //! Seventh rune head; still no general Glow grammar.

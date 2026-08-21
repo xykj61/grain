@@ -18,7 +18,7 @@
 # recovered Chorus. A wrong header · unknown field · missing field · bad hex key each refuse. Composes
 # chorus.rye + voucher.rye public API only; demo seeds — no key, no funds, no network, no custody.
 #
-# Scope: active-designing/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
+# Scope: active-designing/date/20260813/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mycelium_chorus_bron_witness.rish

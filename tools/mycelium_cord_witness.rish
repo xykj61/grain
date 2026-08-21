@@ -14,7 +14,7 @@
 # fault a DAG faces at this rung (a tampered block signature, a dangling parent, a duplicate) refuses the
 # block before the Dag grows. Demo keeper seeds only — no real key, no funds, no network, no custody.
 #
-# Scope: active-designing/20260813-032851_mycelium-consensus-cord-exploration.md
+# Scope: active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mycelium_cord_witness.rish

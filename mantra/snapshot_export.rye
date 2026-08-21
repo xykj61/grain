@@ -7,8 +7,8 @@
 //!   rye build mantra/snapshot_export.rye -femit-bin=mantra/bin/snapshot-export
 //!   mantra/bin/snapshot-export selftest
 //!
-//! Counsel: [`counsel/20260704-181612_zero-copy-resins-counsel-answers.md`](../counsel/20260704-181612_zero-copy-resins-counsel-answers.md) I2
-//! · ruling [`counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md`](../counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md)
+//! Counsel: [`counsel/date/20260704/20260704-181612_zero-copy-resins-counsel-answers.md`](../counsel/date/20260704/20260704-181612_zero-copy-resins-counsel-answers.md) I2
+//! · ruling [`counsel/date/20260706/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md`](../counsel/date/20260706/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md)
 
 const std = @import("std");
 const assert = std.debug.assert;

@@ -78,7 +78,7 @@ assert thin.out contains "verdict=thin" else "sunn14: thin stub want verdict=thi
 
 # --- Census leaf present and GREEN-stamped ----------------------------------
 
-let census = read-file "expanding-prompts/20260730-143736_sunn-census.md"
+let census = read-file "expanding-prompts/date/20260730/20260730-143736_sunn-census.md"
 assert census contains "SUNN14" else "sunn14: census want SUNN14 stamp"
 assert census contains "**Status:** GREEN" else "sunn14: census want Status GREEN"
 assert census contains "LICENSE copyright HOLD" else "sunn14: census want LICENSE hold named"

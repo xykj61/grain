@@ -77,10 +77,10 @@ echo "see_seats=97-100"
 
 # --- see waymarks e93-e96 ---
 for wm in \
-  waymarks/20260731-114927_e93-ironbeetle-ep044-ch7-open-green.md \
-  waymarks/20260731-115725_e94-ironbeetle-ep045-green.md \
-  waymarks/20260731-120704_e95-census-control-ch7-green.md \
-  waymarks/20260731-122009_e96-commence-m5-recut-green.md
+  waymarks/date/20260731/20260731-114927_e93-ironbeetle-ep044-ch7-open-green.md \
+  waymarks/date/20260731/20260731-115725_e94-ironbeetle-ep045-green.md \
+  waymarks/date/20260731/20260731-120704_e95-census-control-ch7-green.md \
+  waymarks/date/20260731/20260731-122009_e96-commence-m5-recut-green.md
 do
   git ls-files --error-unmatch "$wm" >/dev/null 2>&1 || {
     echo "see_waymarks=failed"

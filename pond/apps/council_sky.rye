@@ -28,7 +28,7 @@
 //!   rye build pond/apps/council_sky.rye -femit-bin=pond/bin/council-sky
 //!   pond/bin/council-sky selftest
 //!
-//! Scope: active-designing/20260812-210603_dahl-journey11-council-skies-exploration.md
+//! Scope: active-designing/date/20260812/20260812-210603_dahl-journey11-council-skies-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

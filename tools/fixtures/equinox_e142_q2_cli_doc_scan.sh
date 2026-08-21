@@ -9,9 +9,9 @@ set -eu
 
 MODE=${1:-}
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
-COUNSEL=counsel/20260801-024840_e142-q2-cli-doc-comment.md
-DUTY=counsel/20260731-224453_amphora-cli-nested-equinox-charter.md
-ELDER=counsel/20260801-024355_e141-amphora-cli-equinox-charter.md
+COUNSEL=counsel/date/20260801/20260801-024840_e142-q2-cli-doc-comment.md
+DUTY=counsel/date/20260731/20260731-224453_amphora-cli-nested-equinox-charter.md
+ELDER=counsel/date/20260801/20260801-024355_e141-amphora-cli-equinox-charter.md
 README=amphora/README.md
 LEXICON=context/LEXICON.md
 MAP=work-in-progress/EQUINOX_SEAT_MAP.md

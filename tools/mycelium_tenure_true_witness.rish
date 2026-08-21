@@ -14,7 +14,7 @@
 # reproducible (the generator re-emits byte-identical bytes), and a tampered record refuses BadFormat.
 # Composes cord_bron + cord + tenure public API only; demo keeper seeds — no key/funds/network/custody.
 #
-# Scope: active-designing/20260813-060935_mycelium-tenure-contested-name-exploration.md
+# Scope: active-designing/date/20260813/20260813-060935_mycelium-tenure-contested-name-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mycelium_tenure_true_witness.rish

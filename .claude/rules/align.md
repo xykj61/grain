@@ -4,10 +4,10 @@ When Keaton says **"align"** or **"align our direction,"** walk the compass rose
 
 ## What "align" does, in order
 
-1. **Walk the compass rose** (per `foundations/20260706-185112_follow-our-compass.md`): Foundations (`foundations/README.md`) → Grain (`active-designing/20260702-184312_the-grain-and-the-crossing.md`) → Two Rooms (`context/TWO_ROOMS.md`) → Active-designing (`active-designing/README.md`) → Now (`work-in-progress/TASKS.md`) → Order (`work-in-progress/ROADMAP.md`).
+1. **Walk the compass rose** (per `foundations/20260706-185112_follow-our-compass.md`): Foundations (`foundations/README.md`) → Grain (`active-designing/date/20260702/20260702-184312_the-grain-and-the-crossing.md`) → Two Rooms (`context/TWO_ROOMS.md`) → Active-designing (`active-designing/README.md`) → Now (`work-in-progress/TASKS.md`) → Order (`work-in-progress/ROADMAP.md`).
 2. **Check the current work against ROADMAP and TASKS** — is it on the plan, ahead of a gate, or superseded by a green witness the plan hasn't caught up to?
 3. **Reconcile, brief and green witnesses winning** — fix the plan to match reality (mark landed laps, update now/next, reposition stale ordering per accrete-never-break; never delete dated records).
-4. **Name the one aligned next step plainly** — honoring the finishing edge (ship one real thing before naming the next; `counsel/20260715-190000_the-design-over-build-ratio-and-finishing.md`).
+4. **Name the one aligned next step plainly** — honoring the finishing edge (ship one real thing before naming the next; `counsel/date/20260715/20260715-190000_the-design-over-build-ratio-and-finishing.md`).
 
 ## What align always keeps
 

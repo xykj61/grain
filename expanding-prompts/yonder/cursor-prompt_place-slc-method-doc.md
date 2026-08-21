@@ -11,7 +11,7 @@ Work in Radiant Style. Gate every change behind propose-then-confirm. Touch no o
 Before anything, confirm and report back:
 
 - Current branch is `main`, working tree clean, and you are level with `github/main`.
-- These anchors exist as expected: `context/RADIANT_STYLE.md`, `context/TAME_STYLE.md`, `context/REYA2.md`, `gratitude/README.md`, and the direction memo `active-designing/20260628-043542_thin-frontend-slc-direction.md`.
+- These anchors exist as expected: `context/RADIANT_STYLE.md`, `context/TAME_STYLE.md`, `context/REYA2.md`, `gratitude/README.md`, and the direction memo `active-designing/date/20260628/20260628-043542_thin-frontend-slc-direction.md`.
 - Report whether `context/` carries an index file (a `README.md` or similar). If one exists, note its shape; if none exists, say so.
 
 Stop after Step 0 and show me what you found before proceeding.
@@ -106,7 +106,7 @@ Do not edit these yet. **Propose** a small, honest set of cross-links, show me t
 
 1. **`gratitude/README.md`** — beside the existing note on the SLC source essay, add one line pointing to our distillation: that the method now lives in our own voice at `context/SIMPLE_LOVABLE_COMPLETE.md`.
 2. **`context/` index**, if one exists — add a single entry for the new document, in the same shape as the surrounding entries. If no index exists, propose nothing here and say so.
-3. **`active-designing/20260628-043542_thin-frontend-slc-direction.md`** and **`ROADMAP.md`** — only where the words "Simple, Lovable, Complete" or "SLC" already appear, offer to add a link to `context/SIMPLE_LOVABLE_COMPLETE.md` on first mention. Light touch; first mention only.
+3. **`active-designing/date/20260628/20260628-043542_thin-frontend-slc-direction.md`** and **`ROADMAP.md`** — only where the words "Simple, Lovable, Complete" or "SLC" already appear, offer to add a link to `context/SIMPLE_LOVABLE_COMPLETE.md` on first mention. Light touch; first mention only.
 
 Show the diffs and stop.
 

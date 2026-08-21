@@ -20,7 +20,7 @@ Grain keeps why-briefs in `foundations/` and living law in `context/`. Those she
 |------|------|----------|
 | 1 | [`foundations/README.md`](../foundations/README.md) | Why beneath the work |
 | 2 | [`follow-our-compass`](../foundations/20260706-185112_follow-our-compass.md) | Return habit |
-| 3 | [`the-grain-and-the-crossing`](../active-designing/20260702-184312_the-grain-and-the-crossing.md) | Ten strands |
+| 3 | [`the-grain-and-the-crossing`](../active-designing/date/20260702/20260702-184312_the-grain-and-the-crossing.md) | Ten strands |
 | 4 | [`sameness-is-the-macro`](../foundations/20260703-182612_sameness-is-the-macro.md) | Compression without magic |
 | 5 | [`happy-zone` / **witness habitat**](../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md) | Fast folds inside; thin edge outside |
 | 6 | [`TWO_ROOMS.md`](../context/TWO_ROOMS.md) | Checkable vs visionary |
