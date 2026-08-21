@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Version:** `20260820.204641`
-**Status:** OPEN -- the measurement stands GREEN on metal; fold D is proposed and reasoned, and waits its own round
+**Status:** LANDED `20260820.212419` -- the measurement stood GREEN on metal, and fold D ran the round after it, Option B written in Option A's seam
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Kin:** [`20260820-131713_caravan-ladder-shared-harness.md`](20260820-131713_caravan-ladder-shared-harness.md) -- folds A and B - [`20260820-182533_caravan-ladder-the-harness-answers-for-silence.md`](20260820-182533_caravan-ladder-the-harness-answers-for-silence.md) -- fold C
 **Meter:** [`../tools/caravan_ladder_spine_witness.rish`](../tools/caravan_ladder_spine_witness.rish) over [`../tools/fixtures/caravan_ladder_spine_scan.sh`](../tools/fixtures/caravan_ladder_spine_scan.sh)
@@ -64,8 +64,28 @@ What it costs is named plainly:
 
 **Recommended: Option B, written in Option A's seam.** Lift the spine into the harness, and write the harness spine as the four movements above, so the one remaining copy is itself under the seventy-line bound and reads as the correspondence rather than as a list. 897 lines leave the ladder, the ratchet is answered in every rung at once rather than in four of them, and a new rung's step costs three lines in one file rather than a fresh copy of everything beneath it.
 
-## What this round landed
+## What fold D landed, and what the numbers did
+
+Fold D ran on `20260820.212419`, exactly as recommended: Option B, written in Option A's seam. The spine lives in `caravan/ladder_checks.rye` -- one `close_the_quarrel` taking the rung as a `comptime` parameter, calling four movement functions that gate each step on whether the rung declares it. Twenty-one rungs keep four lines apiece at the callsite and no spine at all.
+
+Every symbol the lifted body reaches went public on each rung, a staircase of its own: six published at `refer`, eight at `deem`, two more at every rung up to forty-six at `refrain` -- one step and one accessor per rung, which is the structure the measurement predicted, confirming itself on the way out. The one shape that needed a helper is the one the brief named: a rung's own newest step reads its count as a plain field while every inherited step reaches through a named accessor, so `tally` asks for whichever form the rung publishes, the same `comptime` reach `link` already wears.
+
+| Reading | Before | After |
+|---|---|---|
+| Rungs holding a spine | 21 | **1** -- the harness |
+| Spine lines on disk | 1,003 | **19** at the entry, 170 counting its four movements |
+| Carried spine lines, both readings | 897 | **0** |
+| Spines past TAME's seventy-line bound | 4 | **0** -- the longest movement is 59 |
+| Byte-identical carry, beside it | 47 | **47**, unmoved |
+
+**Parity is the proof, and it was taken two ways.** All twenty-one rungs were built and run before the lift and again after; every one prints the same multiset of lines, and the only differences are the order of concurrent `client_a/b/c` reports. That the interleave is the run rather than the fold was proven rather than assumed -- the same folded binary run twice shows the same class of reordering and a sorted diff of zero.
+
+**The ratchet was answered everywhere at once, including in the answer.** The four rungs standing past seventy lines are gone from the list, and the harness spine itself stays under the bound in every part: 15, 37, 27, 59, plus a 19-line entry and a 13-line helper. That is what "Option B in Option A's seam" was for, and it held.
+
+**One cost arrived that the brief did not name.** The guard REDS %99 left to protect prose refused two hand-written sentences of the new harness doc, because its pattern matched any `rung.` while its stated rule was about a `rung.` that *reaches a symbol* -- and an English sentence may close on the ordinary noun. Booked and closed as **REDS %100**: the pattern narrowed to the reach it names, both planted RED controls still refusing, and a new PASS control proving the plain word welcomed. A gate that reds on valid input teaches the bench to route around it, so it was fixed rather than worked around.
+
+## What the measuring round landed
 
 The measurement and its guard, nothing more. `tools/fixtures/caravan_ladder_spine_scan.sh` reads the spine two ways, holds the carry under a named ceiling, and reports the seventy-line ratchet beside it; `tools/caravan_ladder_spine_witness.rish` proves the living reading, proves the counter by hand on a two-rung corpus whose twelve lines and five carried lines are countable by eye, holds the copy meter's 47 beside the spine's 897 so neither number can be read alone, and refuses three RED paths by name -- a corpus with no modules, a corpus whose modules hold no spine at all, and a carry grown past its ceiling. The witness is registered in `tools/caravan_suite_witness.rish`, so it is never a scan nobody runs (REDS %97).
 
-Fold D waits for its own round, with a number to move.
+Fold D took the round after this one, with that number to move -- and moved it to zero.
