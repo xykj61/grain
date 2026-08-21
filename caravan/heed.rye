@@ -365,7 +365,7 @@ pub fn tidings_of(report_out: *Report) *tidings_rung.Report {
 }
 
 /// The reposing rung's tally, one tier further down.
-fn reposing_of(report_out: *Report) *reposing_rung.Report {
+pub fn reposing_of(report_out: *Report) *reposing_rung.Report {
     return &report_out.inner.inner.inner.inner;
 }
 
@@ -3817,62 +3817,7 @@ fn tell_the_reader(io: std.Io, tidings: Tidings, report_out: *Report) (RunError 
 /// read live by every operator, however long ago the quarrel was let go -- is the
 /// number this rung moves.
 fn stand_the_mark(io: std.Io, mark: Mark, report_out: *Report) (RunError || NoteError)!void {
-    const marked = escort_written(io);
-    const escorted: u32 = if (marked == null) 0 else 1;
-    if (escorted == 0) {
-        // invariant: a run that escorted nothing leaves no mark unstanding
-        assert(reposing_of(report_out).unstanding == 0);
-        return;
-    }
-    const life = term_written(io);
-    const weighed = life != null;
-
-    // The measurement this rung moves, weighed against what the wire actually
-    // carries rather than against what any mark asked for, so a mark left
-    // reading live is counted rather than refused.
-    reposing_of(report_out).unstanding = mark_unstanding(escorted, weighed, mark);
-    const stood_count = read_in(escorted, weighed, mark);
-    const bare_count = bare_in(escorted, weighed, mark);
-    if (mark == .bare) {
-        // invariant: a bare mark carries no standing, however plainly its term
-        // weighed the objection
-        assert(stood_count == 0);
-        reposing_of(report_out).bare = bare_count;
-        return;
-    }
-    if (!weighed) {
-        // An objection nobody asked about has no standing to report, and the
-        // wire says so by leaving the mark exactly as it reads.
-        //
-        // invariant: an unweighed objection is never spoken for
-        assert(stood_count == 0);
-        reposing_of(report_out).bare = bare_count;
-        return;
-    }
-    // The supply, refused by name while the term it read is still in hand: a run
-    // speaks for a mark only where somebody actually weighed the objection.
-    if (unweighed_stand(if (weighed) 1 else 0, stood_count)) |why| return why;
-    if (repose_refusal(escorted, stood_count, bare_count)) |why| return why;
-    // invariant: a run that reached the standing refuses nothing it must write
-    assert(stood_count == 1);
-    const answer = life orelse return error.ReposeUnweighed;
-    const quoted = marked orelse return error.ReposeEarly;
-    const stand = stands_as(answer);
-    // The hard half of this rung: a standing carries one finding to the place a
-    // person reads, so it must be that finding.
-    if (!agrees(stand, answer)) return error.ReposeMisread;
-    try repose_note(io, quoted, stand);
-    // The wire before the memory, once more: the mark is read back out of the
-    // note an operator would open, and only then does the report believe it.
-    const published = standing_written(io) orelse return error.ReposeMisread;
-    if (!agrees(published, answer)) return error.ReposeMisread;
-    // The mark its reader earned, still exactly as they earned it. A repose
-    // reports on an objection rather than withdrawing it.
-    if (escort_written(io) != quoted) return error.ReposeMisread;
-    reposing_of(report_out).stood = stood_count;
-    reposing_of(report_out).bare = bare_count;
-    // invariant: a standing run leaves no escorted mark unstanding
-    assert(reposing_of(report_out).unstanding == 0);
+    return ladder_checks.stand_the_mark(@This(), io, mark, report_out);
 }
 
 /// Asks the reader who raised the standing objection whether they still hold it,
