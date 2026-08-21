@@ -1,0 +1,8 @@
+//! Printing corpus, the ladder foot -- one telling, countable by eye.
+
+const std = @import("std");
+const print = std.debug.print;
+
+fn tell_the_run(report_out: *Report) void {
+    print("  positions this run carried: {d}\n", .{report_out.carried});
+}
