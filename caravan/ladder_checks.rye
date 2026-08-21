@@ -5318,3 +5318,69 @@ pub fn tell_desist_third(
     });
     rung.tell_desist_tail(bare_run, under_run);
 }
+
+/// The desisting telling's last movement, standing once for the eight rungs
+/// that print it. Six of the symbols it reaches already stood public across all
+/// eight, and the three deepest tiers -- sufficing, reopening, reweighing -- are
+/// reached through each rung's own accessor rather than through raw nesting, so
+/// the staircase stays written where each rung writes it. Each rung's own next
+/// hop stays in the rung's delegate, since one rung of the eight hands on
+/// somewhere the other seven do not.
+pub fn tell_desist_tail(
+    comptime rung: type,
+    comptime bare_word: []const u8,
+    comptime under_word: []const u8,
+    bare_run: *rung.Report,
+    under_run: *rung.Report,
+) void {
+    const pair = " {d} " ++ bare_word ++ ", {d} " ++ under_word ++ "\n";
+    // invariant: a telling always reads two runs that were actually run
+    assert(rung.run_of(bare_run).queued >= 1);
+    // invariant: a telling never reads more deliveries than one finding earns
+    assert(rung.apprise_of(under_run).apprised <= 1);
+    print("  meetings this run said the upshot of:" ++ pair, .{
+        rung.redress_of(bare_run).redressed, rung.redress_of(under_run).redressed,
+    });
+    print("  meetings this run closed without a word:" ++ pair, .{
+        rung.redress_of(bare_run).bare, rung.redress_of(under_run).bare,
+    });
+    print("  debts a plan met whose meeting never said what it found: {d} against {d}\n", .{
+        rung.redress_of(bare_run).hollow, rung.redress_of(under_run).hollow,
+    });
+    print("  findings this run carried to the reader who won them:" ++ pair, .{
+        rung.apprise_of(bare_run).apprised, rung.apprise_of(under_run).apprised,
+    });
+    print("  findings this run kept inside its own notes:" ++ pair, .{
+        rung.apprise_of(bare_run).withheld, rung.apprise_of(under_run).withheld,
+    });
+    print("  findings a plan reached whose raiser was never told: {d} against {d}\n", .{
+        rung.apprise_of(bare_run).unheard, rung.apprise_of(under_run).unheard,
+    });
+    print("  answers this run read its reader's own word on:" ++ pair, .{
+        rung.suffice_of(bare_run).weighed, rung.suffice_of(under_run).weighed,
+    });
+    print("  answers this run carried with nobody asked about them:" ++ pair, .{
+        rung.suffice_of(bare_run).unweighed, rung.suffice_of(under_run).unweighed,
+    });
+    print("  answers a plan carried whose worth it never learned: {d} against {d}\n", .{
+        rung.suffice_of(bare_run).unmeasured, rung.suffice_of(under_run).unmeasured,
+    });
+    print("  matters this run took up again on its reader's word:" ++ pair, .{
+        rung.reopen_of(bare_run).taken_up, rung.reopen_of(under_run).taken_up,
+    });
+    print("  short words this run read and left closed:" ++ pair, .{
+        rung.reopen_of(bare_run).left_closed, rung.reopen_of(under_run).left_closed,
+    });
+    print("  words calling an answer short that opened nothing:" ++ pair, .{
+        rung.reopen_of(bare_run).unheeded, rung.reopen_of(under_run).unheeded,
+    });
+    print("  reopened matters this run looked at again and took down:" ++ pair, .{
+        rung.reweigh_of(bare_run).looked, rung.reweigh_of(under_run).looked,
+    });
+    print("  reopened matters left standing for the run after:" ++ pair, .{
+        rung.reweigh_of(bare_run).passed, rung.reweigh_of(under_run).passed,
+    });
+    print("  reopened matters a plan inherited that the run never looked at: {d} against {d}\n", .{
+        rung.reweigh_of(bare_run).unlooked, rung.reweigh_of(under_run).unlooked,
+    });
+}
