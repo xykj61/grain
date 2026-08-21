@@ -1,0 +1,30 @@
+# tools/fetch_toolchain.rish -- one command for the toolchain the whole tree compiles through.
+#
+# WHY. The first hour used to have five copyable commands and one download done by hand. This is
+# that step, smoothed. It fetches the pinned Zig 0.16.0 release for this platform, refuses it
+# unless the bytes match a checksum pinned in this repository, and extracts it to
+# vendor/zig-toolchain/ -- which is the path every build in this tree already names.
+#
+# NOTHING IS EXTRACTED UNTIL THE BYTES ARE THE BYTES WE PINNED. That is the whole promise, and it
+# is proven by tools/fetch_toolchain_witness.rish on small local files rather than assumed.
+#
+# Idempotent: if the toolchain already stands at the pinned version, this says so and does nothing.
+#
+# USAGE
+#   rishi/bin/rishi run tools/fetch_toolchain.rish          # fetch, verify, extract
+#   rishi/bin/rishi run tools/fetch_toolchain.rish plan     # say what it would do; touch nothing
+#
+# Run from the repository root.
+
+let verb = "fetch"
+if length args != 0 then let verb = args[0]
+
+say "fetch-toolchain: the pinned Zig 0.16.0, verified before a byte of it is trusted."
+
+let out = run ["sh" "tools/fixtures/fetch_toolchain_scan.sh" verb]
+say out.out
+assert out.ok else "fetch-toolchain: the fetch refused -- read the lines above; a checksum mismatch means nothing was extracted, which is the tool working rather than failing"
+assert out.out contains "verdict=ok" else "fetch-toolchain: the run must end in a verdict this tree accepts"
+assert out.out contains "version=0.16.0" else "fetch-toolchain: the pinned version must be the one reported"
+
+say "GREEN: fetch-toolchain -- vendor/zig-toolchain stands at the pinned version."

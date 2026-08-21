@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20260821.182000
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The toolchain fetch smoothed -- one command, and a refusal proven before it shipped
+prompt smooth the toolchain fetch
+think Looked for the policy before writing one, and found it already seated. context/specs/20260627-102012_one-clock-naming-law.md names the release, the checksum discipline, and Zig's own minisign public key. The tree had decided how to do this long ago and never wrote the command. So this implements a seated policy rather than inventing a new one.
+think Refused to transcribe a checksum. Fetched Zig's published index.json, took the four platform hashes from it, and then DOWNLOADED the 55 MB x86_64-linux tarball and computed its sha256 by hand to confirm the pin matches reality. A number copied from a web page into a repository is a number nobody has checked.
+think Pinned the hashes in the repository rather than fetching them beside the tarball at run time, and wrote down why. Reading the expected hash from the same host that serves the file catches a corrupted transfer and nothing else -- whoever controls the host controls both numbers. A hash in the commit history means a reader trusts the git log instead.
+think Said plainly what the tool does NOT do. minisign is absent from this pier, so the signature leg of the seated policy does not run, and a comment implying two checks where one runs would be worse than the missing check itself.
+think Proved the refusal on small local files rather than over the network, because the network is not the thing under test. Three cases with known answers: matching bytes accepted, one flipped character refused, an absent file refused. That comparison decides whether 55 megabytes become the compiler everything here builds through, and it is the single most consequential if on the beginner path.
+think Caught my own check measuring less than it claimed. The pin-table assert anchored to line start and end, so it counted two of four -- the first pin shares its line with the opening of the shell variable and the last carries the closing quote. It PASSED at 4 only after unanchoring; anchored it would have reported 2 and I would have gone looking for a missing pin that was never missing.
+think Found and fixed a real defect before shipping rather than after. The extract removed the destination and checked the new version afterward, so the one failure mode that matters -- a fetch that half-works -- would have left a reader with no toolchain at all. The new tree is now staged and asked its own version BEFORE the standing one is touched.
+think Proved the whole path end to end rather than reasoning about it, by making the destination overridable and running a real fetch into a throwaway directory: download, checksum verified, staged, version confirmed, installed, verdict ok -- with the live toolchain never at risk.
+think Wrote the entry point as plain sh because of an ordering I nearly missed. This is the SECOND thing a newcomer runs, and Rishi does not exist yet -- it is a Rye program that compiles through the very toolchain being fetched. A .rish entry point would have been unusable exactly where it was needed.
+obs Softened the tutorial's witness count from a typed 1,633 to more than sixteen hundred, pointing at the README block for the exact number. Writing a page about generated numbers and then hand-typing one two paragraphs later would have been its own small joke -- and the count moved to 1,634 within the hour, when this round's own witness landed.
+obs The README metrics block updated itself to 1,634 the moment a witness was added, which is the discipline working rather than a coincidence worth noticing.
+obs rye/README.md claimed the toolchain was fetched and verified without ever saying how. It now carries the command its own sentence implied, which is docs-implementation-sync applied to a claim rather than to a path.
+loom fetch=zig_toolchain version=0.16.0 platforms_pinned=4 confirmed_by_download=1 bytes=55478392 wall_s=4
+loom refusal=proven cases=3 matching=accepted corrupted=refused absent=refused network_used=no
+loom tutorial=first_hour hand_steps_before=1 hand_steps_after=0 commands_all_copyable=yes
+loom readme=metrics witnesses=1634 fascia=45 modules=1887 rooms_over=0 regenerated=yes
+file tools/fetch-toolchain.sh the plain-sh entry point, because Rishi cannot exist yet at step two
+file tools/fixtures/fetch_toolchain_scan.sh four pinned platforms, the refusal, and staging before replacing
+file tools/fixtures/fetch_toolchain_control.sh three cases with known answers, no network
+file tools/fetch_toolchain.rish the Rishi driver for once the shell stands
+file tools/fetch_toolchain_witness.rish the refusal, the pin shapes, and a plan that touches nothing
+file docs-geode/tutorials/the-first-hour.md step two is one command now; every step is copyable
+file rye/README.md the command its own verified-before-trusted claim always implied
+recommend check-in (checkpoint) the beginner path has no hand steps left -- six commands, all copyable, from clone to a program the reader wrote. One door still wants a word rather than a kg: the colour normalization booked as REDS %114, which edits dated bodies. Amphora lap 2 stays red for want of openssl, named in %112's closing row; teaching its export the sha256sum already present would close it and is a small, self-contained round.
