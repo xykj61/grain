@@ -45,3 +45,6 @@
 [submodule "vendor/monocypher"]
 	path = vendor/monocypher
 	url = https://github.com/LoupVaillant/Monocypher.git
+[submodule "vendor/pqclean"]
+	path = vendor/pqclean
+	url = https://github.com/PQClean/PQClean

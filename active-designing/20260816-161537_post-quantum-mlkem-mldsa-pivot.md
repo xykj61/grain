@@ -2,6 +2,7 @@
 
 **Stamp:** `20260816.161537` · **Status:** Mixed -- Living (design decision) · **Voice:** Kyri · **Style:** Radiant
 **Season:** G — Cryptography (the Six-Season double-seat)
+**Resolved forward `20260821.022912`:** this document's reasoning stands and its lattice legs stay exactly as built; its *deferral* of SLH-DSA is lifted, since the missing second oracle was vendored on Keaton's word -- see [`both legs kept`](20260821-022912_slhdsa-vendored-oracle-and-both-legs-kept.md).
 **Kin:** [`rye-first crypto parity and the decision wave`](20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md) · [`crypto/README.md`](../crypto/README.md) · [`the 1024-round itinerary`](20260812-171050_the-1024-round-itinerary.md) · [`.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md) · [`.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md)
 
 ---
