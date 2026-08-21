@@ -1747,18 +1747,7 @@ pub fn dispute_note(io: std.Io, ours: Settlement, theirs: Settlement) NoteError!
 /// null rather than by guessing -- which leaves the record exactly where the
 /// rung below leaves it, reading as one voice whatever its reader answered.
 pub fn dispute_recorded(io: std.Io) ?[2]Settlement {
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = note_path(&path_buf, plan_name, ".dispute") catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    var bytes: [2]u8 = @splat(0);
-    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
-    // invariant: a dispute never outgrows the two readings it names
-    assert(got <= 2);
-    if (got < 2) return null;
-    const ours = settlement_of_byte(bytes[0]) orelse return null;
-    const theirs = settlement_of_byte(bytes[1]) orelse return null;
-    return .{ ours, theirs };
+    return ladder_checks.dispute_recorded(@This(), io);
 }
 
 /// Reads the address the standing reading was taken at, or nothing at all.
