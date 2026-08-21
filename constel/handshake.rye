@@ -9,7 +9,7 @@
 //! a self-greet, and a vowel-bearing (real-@p-shaped) party each refuse by name.
 //!
 //! Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA2.
-//! Design read: active-designing/20260814-042804_fora2-constel-local-handshake.md
+//! Design read: active-designing/date/20260814/20260814-042804_fora2-constel-local-handshake.md
 //!
 //! Purely LOCAL — the three steps and the membership predicate over name.rye's public API and a constellation string (which
 //! roster.render produces). No network, no Comlink transport, no keys, no funds, no real address. The real transport stays

@@ -12,7 +12,7 @@ set -eu
 
 MODE=${1:-}
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
-COUNSEL=counsel/20260801-003811_e134-surface-count-six.md
+COUNSEL=counsel/date/20260801/20260801-003811_e134-surface-count-six.md
 LEXICON=context/LEXICON.md
 MAP=work-in-progress/EQUINOX_SEAT_MAP.md
 REMEMBER=work-in-progress/REMEMBER.md

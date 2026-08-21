@@ -3,7 +3,7 @@
 **Language:** EN
 **Status:** Living — the vector store · seated `20260810.031234` · **remove — full CRUD** `20260810` · **profile-loaded dim** `20260810` · **dim from a real Bron profile** `20260810` · **approximate index** `20260810` · **object-storage backing** `20260811` · **named-object bucket** `20260811` · **write-ahead log** `20260811` · **serve protocol** `20260811` · **named serve — matches resolved to spoken names** `20260811` · **served over Comlink, sealed** `20260811`
 **Voice:** Kyri
-**Kin:** the first build of the breach's new arc (`../expanding-prompts/20260810-025942_the-handoff-baton-vision-checkpoint.md`)
+**Kin:** the first build of the breach's new arc (`../expanding-prompts/date/20260810/20260810-025942_the-handoff-baton-vision-checkpoint.md`)
 
 Mandate is Grain's search organ — a **vector store**, its own answer to turbopuffer. It holds the embeddings a model turns meaning into, and answers the one question a vector store exists for: *which of my records is nearest this query?*
 

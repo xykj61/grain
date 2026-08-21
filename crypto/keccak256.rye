@@ -10,7 +10,7 @@
 //! 202 and std.crypto — and passes it the 0x01 delimiter, so the Ethereum-family hash stands on the same arithmetic the rest of Season G
 //! does. This is the sibling that unblocks Ethereum-family address derivation once a secp256k1 rung lands, and it ties straight into the
 //! encoding suite (hex today; EIP-55 mixed-case checksum a natural next rung).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
 //! Kin: crypto/sha3.rye (the SHA3 sibling and the sponge this composes). Clean-room: the 0x01 delimiter and the sponge law are the public
 //! Keccak/FIPS 202 standard's own; the arithmetic is our GREEN sha3.rye, never a copied line (.claude/rules/gratitude-licenses.md).
 //!

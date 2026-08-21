@@ -1,7 +1,7 @@
 //! mycelium/cord_true.rye — the Cord reads true (r4, the arc closes).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · rung r4 — read a real fixture true.
-//! Design read: active-designing/20260813-032851_mycelium-consensus-cord-exploration.md
+//! Design read: active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md
 //!
 //! r1 fixed the deterministic commit, r2 quarantined the equivocator, r3 let a
 //! committed Dag travel as a `format cord-dag-v1` record — all over Dags seated in

@@ -6,22 +6,22 @@ say "nona-season-n2: Language EN — living depth residual."
 say "nona-season-n2: Style Radiant — three · quad on PAUSED doors."
 say "nona-season-n2: Lens TAME — Nona Season n2."
 
-let counsel = run ["test" "-f" "counsel/20260729-130911_nona-season-n2-living-depth-residual.md"]
+let counsel = run ["test" "-f" "counsel/date/20260729/20260729-130911_nona-season-n2-living-depth-residual.md"]
 assert counsel.ok else "nona-season-n2: n2 counsel missing"
 
 let year = run ["sh" "-c" "grep -q 'three · quad · quint · sext · sept · oct · nona' context/LEXICON.md && echo YEAR_OK"]
 assert year.ok else "nona-season-n2: LEXICON year scan failed"
 assert year.out contains "YEAR_OK" else "nona-season-n2: year scopes still use retired depth words"
 
-let kiln = run ["sh" "-c" "grep -q '| \*\*three\*\* | MUR Season' counsel/20260728-234419_the-kiln-season-oct-charter.md && grep -q '| \*\*quad\*\* | Gren Season' counsel/20260728-234419_the-kiln-season-oct-charter.md && grep -q '20260729.130911' counsel/20260728-234419_the-kiln-season-oct-charter.md && echo OVEN_OK"]
+let kiln = run ["sh" "-c" "grep -q '| \*\*three\*\* | MUR Season' counsel/date/20260728/20260728-234419_the-kiln-season-oct-charter.md && grep -q '| \*\*quad\*\* | Gren Season' counsel/date/20260728/20260728-234419_the-kiln-season-oct-charter.md && grep -q '20260729.130911' counsel/date/20260728/20260728-234419_the-kiln-season-oct-charter.md && echo OVEN_OK"]
 assert kiln.ok else "nona-season-n2: kiln charter scan failed"
 assert kiln.out contains "OVEN_OK" else "nona-season-n2: kiln charter living three/quad incomplete"
 
-let gen = run ["sh" "-c" "grep -q '| \*\*three\*\* | MUR Season' counsel/20260728-183510_the-generator-season-sext-charter.md && grep -q 'paused \*\*three\*\* MUR' counsel/20260728-183510_the-generator-season-sext-charter.md && grep -q '20260729.130911' counsel/20260728-183510_the-generator-season-sext-charter.md && echo GEN_OK"]
+let gen = run ["sh" "-c" "grep -q '| \*\*three\*\* | MUR Season' counsel/date/20260728/20260728-183510_the-generator-season-sext-charter.md && grep -q 'paused \*\*three\*\* MUR' counsel/date/20260728/20260728-183510_the-generator-season-sext-charter.md && grep -q '20260729.130911' counsel/date/20260728/20260728-183510_the-generator-season-sext-charter.md && echo GEN_OK"]
 assert gen.ok else "nona-season-n2: generator charter scan failed"
 assert gen.out contains "GEN_OK" else "nona-season-n2: generator charter living three incomplete"
 
-let mur = run ["sh" "-c" "grep -q 'nest \*\*three\*\* scope' counsel/20260728-025220_the-mur-season-innermost-charter.md && grep -q '| \*\*three\*\* | \*\*MUR Season\*\*' counsel/20260728-025220_the-mur-season-innermost-charter.md && echo MUR_OK"]
+let mur = run ["sh" "-c" "grep -q 'nest \*\*three\*\* scope' counsel/date/20260728/20260728-025220_the-mur-season-innermost-charter.md && grep -q '| \*\*three\*\* | \*\*MUR Season\*\*' counsel/date/20260728/20260728-025220_the-mur-season-innermost-charter.md && echo MUR_OK"]
 assert mur.ok else "nona-season-n2: MUR charter scan failed"
 assert mur.out contains "MUR_OK" else "nona-season-n2: MUR charter living labels incomplete"
 

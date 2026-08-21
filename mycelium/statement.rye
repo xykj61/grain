@@ -1,7 +1,7 @@
 //! mycelium/statement.rye — the Statement: one account's own line, read out of the resolved ledger.
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Statement · rung r1 — the crux.
-//! Design read: active-designing/20260813-091851_mycelium-statement-account-voice-exploration.md
+//! Design read: active-designing/date/20260813/20260813-091851_mycelium-statement-account-voice-exploration.md
 //!
 //! The ledger's primitives each decide something about the agreed order — who holds what, which
 //! pledge honored, which the clock let expire. Yet a holder who opens the ledger meets a stream of

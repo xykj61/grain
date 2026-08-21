@@ -1,7 +1,7 @@
 # tools/hunk_edit_cursor_witness.rish — the Photos app undo/redo cursor on metal (HUNK16).
 #
 # Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK16.
-# Design read: active-designing/20260813-171500_hunk-edit-cursor-undo-redo-exploration.md.
+# Design read: active-designing/date/20260813/20260813-171500_hunk-edit-cursor-undo-redo-exploration.md.
 # Teacher, thanked clean-room: the undo/redo history stack of a photo editor (iCloud Photos / Google Photos) — a
 # position walks a recorded history, and a fresh edit past a rewind discards the branch not kept (concept only, siloed).
 #

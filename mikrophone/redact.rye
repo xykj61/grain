@@ -4,7 +4,7 @@
 //! one span a keeper chose to forget on purpose.
 //!
 //! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY10.
-//! Design read: active-designing/20260814-070309_drey10-redact-a-span-before-the-keep-exploration.md
+//! Design read: active-designing/date/20260814/20260814-070309_drey10-redact-a-span-before-the-keep-exploration.md
 //! Stands on: mikrophone/session.rye (DREY0) — the memory that forgets; redaction shapes its working buffer before commit.
 //!
 //! The founding promise "What forgets, protects" is a boot-time invariant in DREY0 — power-down forgets everything. This

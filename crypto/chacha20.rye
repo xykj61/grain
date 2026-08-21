@@ -6,7 +6,7 @@
 //! (the §2.3.2 block function and the §2.4.2 encryption vector), so it is provable against a neutral public reference.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-180728_open-season-g-crypto-blake2b.md (the season's opening read names the ChaCha/Poly line
+//! Design read: active-designing/date/20260815/20260815-180728_open-season-g-crypto-blake2b.md (the season's opening read names the ChaCha/Poly line
 //! as a primitive that follows the hash foundation, each its own round).
 //! Kin: crypto/blake2b.rye · crypto/sha512.rye (the first two primitives, GREEN on metal). Monocypher (vendor/monocypher, CC0/BSD-dual)
 //! is the parity TARGET, never a copied line — our own arithmetic, studied clean-room from the public RFC and Monocypher's public API

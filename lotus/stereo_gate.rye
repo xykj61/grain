@@ -19,7 +19,7 @@
 //! left.len == right.len after (values only), a refusal leaving both channels untouched and balanced, count = 0 and the empty span the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES156.
-//! Design read: active-designing/20260815-061957_fill-ales156-lotus-stereo-gate.md
+//! Design read: active-designing/date/20260815/20260815-061957_fill-ales156-lotus-stereo-gate.md
 //! Stands on: lotus/gate.rye (ALES51) — the mono noise gate, its `gate` and `GateError` reused whole (the below-both proof and the fault set); lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and
 //! its balance invariant; lotus/normalize.rye (ALES103) / lotus/stereo_normalize.rye (ALES129) — the amplitude-class linked lift this rung answers for the dynamics class; lotus/timeline.rye (ALES2) — the Clip, its
 //! buf/len/samples, and sample_max / the range-law shape.

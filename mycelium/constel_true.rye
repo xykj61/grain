@@ -2,7 +2,7 @@
 //! constellation (r4, the arc closes).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · Constel · rung r4 — reads true.
-//! Design read: active-designing/20260813-132009_mycelium-constel-named-dev-net-exploration.md
+//! Design read: active-designing/date/20260813/20260813-132009_mycelium-constel-named-dev-net-exploration.md
 //!
 //! r1 booted a named constellation and reached quorum, r2 proved its fault tolerance, r3 let it travel as a
 //! record — all over rosters seated in code. r4 carries the reader onto a REAL on-disk `format constel-v1`

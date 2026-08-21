@@ -1,7 +1,7 @@
 # tools/ales_shift_witness.rish — shift: slide the whole clip by `by` samples and drop what falls off the edge, the honest twin of rotate (ALES108).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES108.
-# Design read: active-designing/20260815-005300_fill-ales108-lotus-shift.md
+# Design read: active-designing/date/20260815/20260815-005300_fill-ales108-lotus-shift.md
 # Stands on: lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples), lotus/rotate.rye (ALES106 — the cyclic shift, to prove the wrap-vs-drop contrast), lotus/meter.rye
 # (ALES13 — the peak/RMS meter, used only to prove dropping samples never raises the peak). Where ALES106's rotate WRAPS the samples that fall off the front back onto the
 # tail (a permutation, exact and invertible), shift lets them GO and writes silence where they stood — the grid nudge every editor and DAW ships (move a clip earlier or

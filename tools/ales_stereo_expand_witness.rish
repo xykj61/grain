@@ -1,7 +1,7 @@
 # tools/ales_stereo_expand_witness.rish — stereo_expand: the downward expander carried into stereo, the gate's linked decision fused with the compressor's linked gain (ALES159).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES159.
-# Design read: active-designing/20260815-063651_fill-ales159-lotus-stereo-expand.md
+# Design read: active-designing/date/20260815/20260815-063651_fill-ales159-lotus-stereo-expand.md
 # Stands on: lotus/expand.rye (ALES60 — the mono downward expander, its expand and ExpandError reused whole for the louder-quiet-channel proof and the fault set), lotus/stereo_gate.rye (ALES156 — the linked-decision law
 # this fuses), lotus/stereo_compress.rye (ALES157 — the linked-gain law this fuses), lotus/pan.rye (ALES10 — the StereoClip and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, sample_max).
 #

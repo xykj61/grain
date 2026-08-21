@@ -1,7 +1,7 @@
 # tools/ales_stereo_shelf_witness.rish — stereo_shelf: the two-band bass-and-treble tone shelf carried into stereo, the same coefficient and band gains on both channels — the second rung of the stereo EQ / filter class (ALES171).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES171.
-# Design read: active-designing/20260815-075512_fill-ales171-lotus-stereo-shelf.md
+# Design read: active-designing/date/20260815/20260815-075512_fill-ales171-lotus-stereo-shelf.md
 # Stands on: lotus/shelf.rye (ALES41 — the mono two-band shelf run once per channel, its ShelfError reused whole), lotus/tone.rye (ALES40 — the low-pass/high-pass split the shelf scales), lotus/pan.rye (ALES10 — the
 # StereoClip), lotus/timeline.rye (ALES2 — the Clip and the one true saturate the shelf's sum reuses).
 #

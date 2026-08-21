@@ -13,7 +13,7 @@
 //! all-zero clip and the empty clip are each their own invert (−0 = 0), landing on themselves with no special-casing.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES105.
-//! Design read: active-designing/20260815-003415_fill-ales105-lotus-invert.md
+//! Design read: active-designing/date/20260815/20260815-003415_fill-ales105-lotus-invert.md
 //! Stands on: lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples, and `saturate`, the one true clamp reused here so the rail lives in one place; lotus/meter.rye
 //! (ALES13) — the peak/RMS meter, used only by the witness to prove a sign flip off the rail moves no loudness.
 //!

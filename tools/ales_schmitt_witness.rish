@@ -1,7 +1,7 @@
 # tools/ales_schmitt_witness.rish — the Schmitt trigger: a hysteresis comparator that gives ALES89's square a memory against chatter (ALES92).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES92.
-# Design read: active-designing/20260814-224452_fill-ales92-lotus-schmitt-trigger.md
+# Design read: active-designing/date/20260814/20260814-224452_fill-ales92-lotus-schmitt-trigger.md
 # Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/max) and the carried-state idiom of lotus/dc_block.rye (ALES91 — one carried implementation, the
 # from-silence form the default case). The sibling of lotus/infinite_clip.rye (ALES89 — the memoryless comparator): where the infinite clipper judges each
 # sample against one threshold on its own and chatters on a signal riding near the level, this rung carries one bit (which rail) and holds inside the band.

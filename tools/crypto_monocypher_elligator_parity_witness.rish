@@ -6,7 +6,7 @@
 # HChaCha20 · variable BLAKE2b · keyed BLAKE2b · constant-time verify · HKDF-SHA-512 came before). Season G · Cryptography.
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux names "the parity witness
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux names "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte." This rung is the first for a primitive Zig's std.crypto does not ship at all, so
 # unlike the hash and cipher rungs there is no independent std.crypto oracle beside the parity — the byte-for-byte agreement with the actual
 # vendored library IS the external anchor, standing beside the round-trip identity and Monocypher's own published vectors proven in the module's

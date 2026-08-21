@@ -1,7 +1,7 @@
 //! mycelium/cord_knot_true.rye — the Knot reads true (checkpointing r4, the arc closes).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · checkpointing · rung r4.
-//! Design read: active-designing/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
+//! Design read: active-designing/date/20260813/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
 //!
 //! r1 proved a checkpoint folds identical to the whole history, r2 let it travel, r3
 //! measured the bound win — all over Knots sealed in code. This closing rung carries

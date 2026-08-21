@@ -1,7 +1,7 @@
 //! mycelium/puddle_bron.rye — a fleet travels as a readable record, and berths the same offline (r3).
 //!
 //! Season D (Kresfa & Mycelium) · Puddle fleet orchestration · rung r3 — travel.
-//! Design read: active-designing/20260813-114651_puddle-fleet-placement-exploration.md
+//! Design read: active-designing/date/20260813/20260813-114651_puddle-fleet-placement-exploration.md
 //!
 //! r1 derived the berth; r2 healed the fleet. A fleet a node cannot hand to another is only a local layout,
 //! so r3 lets the whole roster cross as `format puddle-fleet-v1` bytes — one `host <pk-hex> <capacity>` line

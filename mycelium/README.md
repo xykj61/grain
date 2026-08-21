@@ -3,7 +3,7 @@
 **Language:** EN
 **Status:** Living — the consensus season, whole and witnessed over demo seeds · README seated `20260813`
 **Voice:** Kyri
-**Kin:** the *why* beneath this directory — [`../foundations/20260813-142420_mycelium-the-consensus-protocol.md`](../foundations/20260813-142420_mycelium-the-consensus-protocol.md) · the road that opened it — [`../active-designing/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/20260813-020035_double-seat-expansion-six-seasons.md) (Season D)
+**Kin:** the *why* beneath this directory — [`../foundations/20260813-142420_mycelium-the-consensus-protocol.md`](../foundations/20260813-142420_mycelium-the-consensus-protocol.md) · the road that opened it — [`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md) (Season D)
 
 **Mycelium** is Grain's own consensus protocol — the way many nodes that do not trust one another arrive at one shared history of who holds what, with no leader to elect and no central book to guard. The name is the picture: underground, a fungal mycelium binds many separate threads into one living network that feeds a whole forest floor without any thread being in charge. A **Cord** bundles many validators' signed blocks the same way — many threads, one strand, one agreed order.
 

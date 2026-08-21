@@ -15,7 +15,7 @@
 //! refusal (a zero denominator, a span past the samples) leaves BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both, a sub-span fade leaving the rest untouched.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES130.
-//! Design read: active-designing/20260815-030651_fill-ales130-lotus-stereo-fade.md
+//! Design read: active-designing/date/20260815/20260815-030651_fill-ales130-lotus-stereo-fade.md
 //! Stands on: lotus/fade.rye (ALES4) — the mono ramped gain run once per channel, itself reusing ALES2's one true saturate; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and
 //! its balance invariant; lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples; lotus/meter.rye (ALES13) — the peak/RMS meter, used by the witness to read each channel's peak.
 //!

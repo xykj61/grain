@@ -1,7 +1,7 @@
 //! pond/apps/constel_consensus.rye — two Constel nodes reach one agreed order.
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · gossip-convergence r1.
-//! Design read: active-designing/20260813-040613_constel-consensus-gossip-convergence-exploration.md
+//! Design read: active-designing/date/20260813/20260813-040613_constel-consensus-gossip-convergence-exploration.md
 //!
 //! The Cord proved a total order can be read out of one node's Dag, independent
 //! of the order blocks arrived (mycelium/cord.rye r1). This carries that primitive

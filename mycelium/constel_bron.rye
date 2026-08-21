@@ -1,7 +1,7 @@
 //! mycelium/constel_bron.rye — a named constellation travels as a record, self-certifying (r3).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · Constel · rung r3 — travel.
-//! Design read: active-designing/20260813-132009_mycelium-constel-named-dev-net-exploration.md
+//! Design read: active-designing/date/20260813/20260813-132009_mycelium-constel-named-dev-net-exploration.md
 //!
 //! r1 booted a named constellation and reached quorum; r2 proved its fault tolerance. Both held the roster
 //! in memory. A dev-net a keeper cannot hand to another is only a local fixture, so r3 lets the whole

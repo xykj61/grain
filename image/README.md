@@ -3,7 +3,7 @@
 **Stamp:** `20260814.020000` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
 **Status:** Living front door — the Open Image journey stands whole and witnessed (HUNK0–HUNK93)
 **Season:** A — Hardware & Right-to-Repair · **Waymark:** HUNK · opening journey **Open Image**
-**Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`../active-designing/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/20260813-020035_double-seat-expansion-six-seasons.md) · [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
+**Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md) · [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
 **Teacher, thanked clean-room:** [`../gratitude/qoi.md`](../gratitude/qoi.md) — the "Quite OK Image" format, public one-page spec only, never the reference C.
 
 ---

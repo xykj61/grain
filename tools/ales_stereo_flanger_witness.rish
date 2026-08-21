@@ -1,7 +1,7 @@
 # tools/ales_stereo_flanger_witness.rish — stereo_flanger: the short modulated delay with a feedback path, carried into stereo, the same LFO and feedback on both channels, each channel reading its own live buffer — the fifth rung of the stereo modulation class and the first stereo modulation that reads its own output (ALES180).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES180.
-# Design read: active-designing/20260815-084450_fill-ales180-lotus-stereo-flanger.md
+# Design read: active-designing/date/20260815/20260815-084450_fill-ales180-lotus-stereo-flanger.md
 # Stands on: lotus/flanger.rye (ALES73 — the mono flanger run once per channel, its FlangerError reused whole and its precheck (newly factored out) reused for the up-front atomic validation), lotus/echo.rye (ALES66 — the feedback echo
 # the zero-depth flanger reduces to, the echo-degenerate equality target), lotus/glide.rye (ALES70 — glide_scale, 256 = unity), lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip and the one true saturate).
 #

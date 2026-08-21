@@ -17,7 +17,7 @@
 //! hold their stages and the clip is untouched on a bad count.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES188.
-//! Design read: active-designing/20260815-094453_fill-ales188-lotus-reverb-in-real-time.md
+//! Design read: active-designing/date/20260815/20260815-094453_fill-ales188-lotus-reverb-in-real-time.md
 //! Stands on: lotus/reverb.rye (ALES186) — the Schroeder network this speaks in real time, delegated unchanged, and its CombSpec/
 //! AllpassSpec/ReverbError reused whole; lotus/clock.rye (ALES5) — the sample clock, its samples_for converting ms to a bounded sample
 //! count; lotus/multitap_time.rye (ALES69) — the bank-converting twin this mirrors exactly.

@@ -14,7 +14,7 @@
 //! every order-blind metric is invariant; witnessed through ALES13, the peak magnitude before and after a rotate is identical, no value ever changing, only its seat.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES106.
-//! Design read: active-designing/20260815-003935_fill-ales106-lotus-rotate.md
+//! Design read: active-designing/date/20260815/20260815-003935_fill-ales106-lotus-rotate.md
 //! Stands on: lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to prove a
 //! permutation moves no loudness. The three-reversal rotate reuses the same swap primitive ALES104's reverse is built from, so it stands on proven ground.
 //!

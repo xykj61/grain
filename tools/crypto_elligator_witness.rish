@@ -3,7 +3,7 @@
 # (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names reimplementing Monocypher
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names reimplementing Monocypher
 # primitives in Rye with byte-for-byte parity as the crux).
 # Kin: crypto/fe25519.rye (the base field this stands entirely on) and crypto/x25519.rye (the keys it hides and reveals). Monocypher
 # (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own arithmetic, studied clean-room from the public

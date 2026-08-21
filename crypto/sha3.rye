@@ -6,7 +6,7 @@
 //! buildable in authored Rye and provable against a neutral public reference.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
 //! Kin: crypto/sha512.rye and crypto/blake2b.rye (the other two hashes, GREEN on metal). Monocypher (vendor/monocypher, CC0/BSD-dual)
 //! is the parity discipline's TARGET, never a copied line — our own arithmetic, studied clean-room from the public standard FIPS 202
 //! and the well-known Keccak reference structure (.claude/rules/gratitude-licenses.md).

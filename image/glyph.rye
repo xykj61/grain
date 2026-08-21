@@ -1,7 +1,7 @@
 //! image/glyph.rye -- the open glyph atlas (Season G, the open-font rung after color).
 //!
 //! Season G (Open Media Primitives) - the font floor beside image/qoi.rye (image) and image/color.rye (color).
-//! Design read: active-designing/20260816-223956_season-g-glyph-atlas-crux.md
+//! Design read: active-designing/date/20260816/20260816-223956_season-g-glyph-atlas-crux.md
 //! Teacher, thanked clean-room: gratitude/bdf-bitmap-font.md (Adobe's public BDF spec + the run-length lineage).
 //!
 //! A font is a table of glyphs keyed by codepoint; a glyph is a small coverage grid -- one byte per cell, 0 for

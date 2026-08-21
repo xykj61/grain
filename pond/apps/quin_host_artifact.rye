@@ -18,7 +18,7 @@
 //!   rye build pond/apps/quin_host_artifact.rye -femit-bin=pond/bin/quin-host-artifact
 //!   pond/bin/quin-host-artifact selftest
 //!
-//! Scope: active-designing/20260812-144916_buhr-journey8-voice-reads-artifact-store-exploration.md
+//! Scope: active-designing/date/20260812/20260812-144916_buhr-journey8-voice-reads-artifact-store-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

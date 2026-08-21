@@ -27,9 +27,9 @@ assert parser.ok else "brush-shape: brush_parse.rye missing"
 let silo = run ["test" "-f" "gratitude/css-sail-glob.md"]
 assert silo.ok else "brush-shape: CSS/Sail/glob gratitude silo missing"
 
-let seat = run ["test" "-f" "counsel/20260728-201911_surface-season-p12-thin-brush-fixture.md"]
+let seat = run ["test" "-f" "counsel/date/20260728/20260728-201911_surface-season-p12-thin-brush-fixture.md"]
 assert seat.ok else "brush-shape: p12 counsel seat missing"
-let seat23 = run ["test" "-f" "counsel/20260728-211918_surface-season-p23-brush-parser-begun.md"]
+let seat23 = run ["test" "-f" "counsel/date/20260728/20260728-211918_surface-season-p23-brush-parser-begun.md"]
 assert seat23.ok else "brush-shape: p23 counsel seat missing"
 
 let refuse_css = run ["sh" "-c" "test ! -f brushstroke/seed-frame.css && test ! -f brushstroke/seed-frame.html && test ! -f brushstroke/seed-frame.json && echo CLEAN"]

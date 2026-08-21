@@ -1,7 +1,7 @@
 //! image/crop_gesture.rye — HUNK60: drag a rectangle on the picture, lift, and it becomes a crop edit.
 //!
 //! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK60.
-//! Design read: active-designing/20260813-222800_hunk-crop-gesture-exploration.md
+//! Design read: active-designing/date/20260813/20260813-222800_hunk-crop-gesture-exploration.md
 //! Teacher, thanked clean-room: the crop gesture of a photo app (iCloud Photos / Google Photos) — a keeper drags a
 //! rectangle over the picture and the app crops to it (concept only, siloed).
 //!

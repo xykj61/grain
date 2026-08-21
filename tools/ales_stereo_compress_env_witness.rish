@@ -1,7 +1,7 @@
 # tools/ales_stereo_compress_env_witness.rish — stereo_compress_env: the attack/release compressor carried into stereo, the linked envelope driving one linked gain over time (ALES161).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES161.
-# Design read: active-designing/20260815-065200_fill-ales161-lotus-stereo-compress-env.md
+# Design read: active-designing/date/20260815/20260815-065200_fill-ales161-lotus-stereo-compress-env.md
 # Stands on: lotus/stereo_envelope.rye (ALES160 — the linked envelope, its stereo_env_step reused whole), lotus/stereo_compress.rye (ALES157 — the linked gain this drives over time, its memoryless form the unit-coefficient
 # limit), lotus/compress_env.rye (ALES53 — the mono attack/release compressor, its CompressEnvError reused whole and its output the left-always-peak comparison), lotus/compress.rye (ALES50 — the softened ceiling),
 # lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip, sample_max).

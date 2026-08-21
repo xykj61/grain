@@ -1,7 +1,7 @@
 # tools/ales_halve_neg_witness.rish — the inverted half-wave rectifier: keep the negative half, zero the positive, y = min(x, 0) (ALES86).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES86.
-# Design read: active-designing/20260814-214941_fill-ales86-lotus-inverted-half-wave-rectifier.md
+# Design read: active-designing/date/20260814/20260814-214941_fill-ales86-lotus-inverted-half-wave-rectifier.md
 # Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/max). The half-wave rectifier (ALES85) keeps the POSITIVE half (y = max(x, 0)); this rung
 # is its mirror — it keeps the NEGATIVE half (y = min(x, 0)). Together the two half-waves PARTITION the wave: max(x, 0) + min(x, 0) = x. A keeper who
 # wants the two halves separately runs ALES85's halve and this halve_neg over the same span — both in-place maps whose outputs sum back to the dry wave.

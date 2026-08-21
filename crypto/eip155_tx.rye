@@ -9,7 +9,7 @@
 //! Season: crypto (Season G · Cryptography), the seventh composition on the shelf, beside eth_address, eth_personal_sign, and eip712. Where
 //! eip712 hashes a TREE of typed fields for an off-chain "sign this typed data," eip155_tx hashes the FLAT nine-field list of an on-chain
 //! transaction — the two shapes a key is ever asked to sign. Both stand entirely on the same GREEN Keccak-256, ecrecover, and eth_address.
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the Rye-first spine that seats Season G).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the Rye-first spine that seats Season G).
 //! Clean-room: the rules are EIP-155 and the Ethereum Yellow Paper; the arithmetic is ours (.claude/rules/gratitude-licenses.md).
 //!
 //! THE CRUX — EIP-155 replay protection, stated positively. A pre-155 legacy transaction signs the RLP of six fields

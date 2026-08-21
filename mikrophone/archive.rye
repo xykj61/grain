@@ -3,7 +3,7 @@
 //! proven whole, within a fixed entry count and byte budget that refuse by name rather than overrun.
 //!
 //! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY6.
-//! Design read: active-designing/20260814-064021_drey6-desk-archive-bounded-log-of-proven-recordings-exploration.md
+//! Design read: active-designing/date/20260814/20260814-064021_drey6-desk-archive-bounded-log-of-proven-recordings-exploration.md
 //! Stands on: mikrophone/wire.rye (DREY1) — deframe proves a payload whole BEFORE a byte is yielded.
 //!
 //! A field recorder is not one recording; a day of civic use is many, and a desk that forgets all but the newest is not

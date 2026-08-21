@@ -14,7 +14,7 @@
 //! ear darkens right with the same coefficient, so the stereo image the preset held is held through the darkening.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES199.
-//! Design read: active-designing/20260815-104900_fill-ales199-lotus-stereo-reverb-tone.md
+//! Design read: active-designing/date/20260815/20260815-104900_fill-ales199-lotus-stereo-reverb-tone.md
 //! Stands on: lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
 //! forwarded whole; lotus/tone.rye (ALES40) — the one-pole low-pass and its precheck, run per channel (its BadCoeff renamed BadTone); lotus/pan.rye
 //! (ALES) — the StereoClip, its two balanced channels; lotus/clock.rye (ALES5) — the sample clock, its samples_for converting the span (the SAME

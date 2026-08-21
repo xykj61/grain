@@ -5,7 +5,7 @@
 # XChaCha20-Poly1305 flagship came before). Season G · Cryptography.
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte." crypto/ed25519_to_x25519.rye itself named Monocypher-source parity as an honest held
 # horizon; this rung closes it, so the one-key identity story is proven against the very library Grain's audit names.
 # Kin: crypto/ed25519_to_x25519.rye (our authored maps, GREEN against Zig's std.crypto) · tools/monocypher_edx_parity.rye (our printing harness) ·

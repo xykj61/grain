@@ -13,7 +13,7 @@ set -eu
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 SAFE=SAFE.md
 LIVING_CONTROL=context/specs/living-vs-dated.md
-DATED_CONTROL=counsel/20260724-132812_the-workshop-and-the-warehouse.md
+DATED_CONTROL=counsel/date/20260724/20260724-132812_the-workshop-and-the-warehouse.md
 
 if ! test -f "$CONTROL_SCAN"; then
   echo "CONTROL=ABSENT"

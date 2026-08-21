@@ -18,7 +18,7 @@
 //! whole output — so there is no num/den mix level, and thus no BadLevel fault; the other four carry over from the chorus exactly.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES72.
-//! Design read: active-designing/20260814-195637_fill-ales72-lotus-vibrato-wet-only-modulated-delay.md
+//! Design read: active-designing/date/20260814/20260814-195637_fill-ales72-lotus-vibrato-wet-only-modulated-delay.md
 //! Stands on: lotus/chorus.rye (ALES71) — the triangle-LFO driver `triangle_delay_at` this reuses; lotus/glide.rye (ALES70) — the
 //! `glide_scale` fixed-point resolution and the interpolation read; lotus/timeline.rye (ALES2) — the Clip, sample_min/max, max_clip, saturate.
 //!

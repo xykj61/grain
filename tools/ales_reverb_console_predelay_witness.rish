@@ -1,7 +1,7 @@
 # tools/ales_reverb_console_predelay_witness.rish — the console pre-delay: the dry-composed pre-delay, end to end (ALES196).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES196.
-# Design read: active-designing/20260815-103104_fill-ales196-lotus-console-predelay.md
+# Design read: active-designing/date/20260815/20260815-103104_fill-ales196-lotus-console-predelay.md
 # Stands on: lotus/reverb_predelay.rye (ALES194 — the wet-domain pre-delay whose faults this forwards and whose full-wet edge this equals);
 # lotus/reverb_mix.rye (ALES192 — the linear wet/dry blend this reuses and whose no-gap edge this equals); lotus/reverb_preset.rye (ALES190 — the
 # named-room wet); lotus/clock.rye (ALES5 — the sample clock); lotus/timeline.rye (ALES2 — the Clip, its max_clip bounding each snapshot).

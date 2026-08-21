@@ -12,7 +12,7 @@
 //! the entry, and that voter — strictly more up-to-date — refuses. So no candidate lacking a committed entry can ever win.
 //!
 //! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
-//! FORA21. Design read: active-designing/20260814-084300_fora21-constel-vote-election-restriction.md
+//! FORA21. Design read: active-designing/date/20260814/20260814-084300_fora21-constel-vote-election-restriction.md
 //! Stands on: constel/repair.rye (FORA17) — the TermedLog, its last_term and length, the (lastTerm, lastIndex) pair §5.4.1
 //! compares; constel/quorum.rye (FORA9) — majority_of, the intersection lemma; constel/commit.rye (FORA18) — the committed prefix
 //! whose completeness this guarantees.

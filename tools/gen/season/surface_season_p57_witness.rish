@@ -8,7 +8,7 @@ say "surface-p57: Language EN — live-five ceiling fill opens."
 say "surface-p57: Style Radiant — thin LiveTranscript; refuse past bound."
 say "surface-p57: Lens TAME — Surface Season p57."
 
-let counsel = run ["test" "-f" "counsel/20260729-163034_surface-season-p57-live-five-ceiling.md"]
+let counsel = run ["test" "-f" "counsel/date/20260729/20260729-163034_surface-season-p57-live-five-ceiling.md"]
 assert counsel.ok else "surface-p57: p57 counsel missing"
 
 let metal = run ["sh" "-c" "grep -q 'const LiveTranscript' brushstroke/wayland_seed.rye && grep -q 'fn run_ceiling_witness' brushstroke/wayland_seed.rye && grep -q 'max_live_transcript_bytes' brushstroke/wayland_seed.rye && grep -q 'ceilingtest' brushstroke/wayland_seed.rye && echo METAL_OK"]
@@ -29,7 +29,7 @@ assert ceiling.out contains "live-five ceiling witness" else "surface-p57: ceili
 assert ceiling.out contains "bytes=" else "surface-p57: byte count missing"
 assert ceiling.out contains "GREEN" else "surface-p57: ceilingtest not GREEN"
 
-let seat = run ["sh" "-c" "grep -qF 'max_live_transcript_bytes' counsel/20260729-163034_surface-season-p57-live-five-ceiling.md && grep -qF 'limbs complete' counsel/20260729-163034_surface-season-p57-live-five-ceiling.md && echo SEAT_OK"]
+let seat = run ["sh" "-c" "grep -qF 'max_live_transcript_bytes' counsel/date/20260729/20260729-163034_surface-season-p57-live-five-ceiling.md && grep -qF 'limbs complete' counsel/date/20260729/20260729-163034_surface-season-p57-live-five-ceiling.md && echo SEAT_OK"]
 assert seat.ok else "surface-p57: counsel seat scan failed"
 assert seat.out contains "SEAT_OK" else "surface-p57: ceiling seat missing"
 

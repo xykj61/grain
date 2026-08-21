@@ -6,7 +6,7 @@
 #
 # Season: crypto — Season G (the Six-Season double-seat). This rung contributes only the tree grammar — the master and hardened-child HMAC data
 # forms and the ser32 index encoding — over crypto/hmac_sha512.rye and crypto/ed25519_sign.rye, both already proven byte-for-byte on metal. Design
-# read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
 # Clean-room: SLIP-0010 and its ed25519 test vectors are a public standard; the derivation is ours, standing on our own parity-GREEN HMAC-SHA-512
 # and ed25519 public derivation, never a copied line (.claude/rules/gratitude-licenses.md).
 #

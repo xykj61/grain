@@ -14,7 +14,7 @@
 # Knot refuses KnotCorrupt, a suffix tax past the checkpointed supply refuses Overdraw, a suffix star already
 # sealed refuses StarTaken. Demo keeper seeds only — no real key, no funds, no network, no custody.
 #
-# Scope: active-designing/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
+# Scope: active-designing/date/20260813/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mycelium_cord_knot_witness.rish

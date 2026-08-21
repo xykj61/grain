@@ -15,7 +15,7 @@
 //! image the preset held is held through the blend as well.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES197.
-//! Design read: active-designing/20260815-103451_fill-ales197-lotus-stereo-console-predelay.md
+//! Design read: active-designing/date/20260815/20260815-103451_fill-ales197-lotus-stereo-console-predelay.md
 //! Stands on: lotus/stereo_reverb_predelay.rye (ALES195) — the wet-domain stereo pre-delay whose StereoReverbPredelayError this forwards whole and
 //! whose full-wet edge this equals; lotus/stereo_reverb_mix.rye (ALES193) — the per-channel wet/dry blend this reuses and whose no-gap edge this
 //! equals; lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged; lotus/pan.rye (ALES) — the

@@ -1,7 +1,7 @@
 # tools/ales_silence_span_witness.rish — silence_span: write silence over a span in place, the length-preserving third of the trim/open/overwrite trio (ALES110).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES110.
-# Design read: active-designing/20260815-010618_fill-ales110-lotus-silence-span.md
+# Design read: active-designing/date/20260815/20260815-010618_fill-ales110-lotus-silence-span.md
 # Stands on: lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the length trio),
 # lotus/insert_silence.rye (ALES109 — imported by the selftest so the same span is shown growing the clip beside cut shrinking it and silence_span keeping it), lotus/meter.rye
 # (ALES13 — the peak/RMS meter, used only to prove overwriting with silence never raises the peak). ALES2's cut removes a span and SHRINKS the clip; ALES109's insert_silence

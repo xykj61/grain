@@ -6,18 +6,18 @@ say "surface-p58: Language EN — check-in next lean."
 say "surface-p58: Style Radiant — rank doors; refuse invent pad."
 say "surface-p58: Lens TAME — Surface Season p58."
 
-let counsel = run ["test" "-f" "counsel/20260729-164636_surface-season-p58-check-in-next-lean.md"]
+let counsel = run ["test" "-f" "counsel/date/20260729/20260729-164636_surface-season-p58-check-in-next-lean.md"]
 assert counsel.ok else "surface-p58: p58 counsel missing"
 
-let lean = run ["sh" "-c" "grep -qF 'return_generator_s9' counsel/20260729-164636_surface-season-p58-check-in-next-lean.md && grep -qF 'asks: residual' counsel/20260729-164636_surface-season-p58-check-in-next-lean.md && grep -qF 'asks: line-polish' counsel/20260729-164636_surface-season-p58-check-in-next-lean.md && echo LEAN_OK"]
+let lean = run ["sh" "-c" "grep -qF 'return_generator_s9' counsel/date/20260729/20260729-164636_surface-season-p58-check-in-next-lean.md && grep -qF 'asks: residual' counsel/date/20260729/20260729-164636_surface-season-p58-check-in-next-lean.md && grep -qF 'asks: line-polish' counsel/date/20260729/20260729-164636_surface-season-p58-check-in-next-lean.md && echo LEAN_OK"]
 assert lean.ok else "surface-p58: lean scan failed"
 assert lean.out contains "LEAN_OK" else "surface-p58: ranked leans missing"
 
-let rec = run ["sh" "-c" "grep -qF 'Recommend: handback' counsel/20260729-164636_surface-season-p58-check-in-next-lean.md && echo REC_OK"]
+let rec = run ["sh" "-c" "grep -qF 'Recommend: handback' counsel/date/20260729/20260729-164636_surface-season-p58-check-in-next-lean.md && echo REC_OK"]
 assert rec.ok else "surface-p58: recommend scan failed"
 assert rec.out contains "REC_OK" else "surface-p58: recommend handback missing"
 
-let held = run ["sh" "-c" "grep -qF 'No residual claim' counsel/20260729-164636_surface-season-p58-check-in-next-lean.md && echo HELD_OK"]
+let held = run ["sh" "-c" "grep -qF 'No residual claim' counsel/date/20260729/20260729-164636_surface-season-p58-check-in-next-lean.md && echo HELD_OK"]
 assert held.ok else "surface-p58: no-invent scan failed"
 assert held.out contains "HELD_OK" else "surface-p58: must refuse invent this stamp"
 

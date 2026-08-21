@@ -69,7 +69,7 @@ This holds for a same-sitting cloud agent for the reasons named above (no persis
 - `../../rye/README.md` — the persistent-host build path this recipe stands beside.
 - `../../context/specs/enclosure-editors.md` — the ai-jail-enclosed persistent-host path this guide is not a replacement for.
 - `../../work-in-progress/20260703-021412_counsel-and-confirmation-tests.md` — the earlier Cursor for iOS round that first used this exact pip recipe, against a persistent ai-jail host rather than a disposable cloud VM.
-- `../../session-logs/20260715-062000_cloud-toolchain-raised-neth-green.bron` — the session that confirmed this recipe fresh and ran the Neth witnesses GREEN on it.
+- `../../session-logs/date/20260715/20260715-062000_cloud-toolchain-raised-neth-green.bron` — the session that confirmed this recipe fresh and ran the Neth witnesses GREEN on it.
 
 ---
 

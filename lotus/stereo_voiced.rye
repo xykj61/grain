@@ -28,7 +28,7 @@
 //! span reads voiced).
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES146.
-//! Design read: active-designing/20260815-045940_fill-ales146-lotus-stereo-voiced.md
+//! Design read: active-designing/date/20260815/20260815-045940_fill-ales146-lotus-stereo-voiced.md
 //! Stands on: lotus/voiced.rye (ALES94) — the mono voiced/unvoiced/silent classifier run once per channel, its `classify`, its `Verdict`, and its `ClassifyError`, all reused whole; lotus/schmitt.rye (ALES92) — the band's
 //! own `precheck` (so the band-and-span law and named errors are the classifier's own); lotus/meter.rye (ALES13) — `sample_peak_max`, the floor ceiling; lotus/stereo_zero_cross.rye (ALES145) — the stereo analysis shape this
 //! mirrors (one shared setting, per-channel independence); lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples.

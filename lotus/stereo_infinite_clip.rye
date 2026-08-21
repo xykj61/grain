@@ -23,7 +23,7 @@
 //! is the comparator).
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES143.
-//! Design read: active-designing/20260815-043212_fill-ales143-lotus-stereo-infinite-clip.md
+//! Design read: active-designing/date/20260815/20260815-043212_fill-ales143-lotus-stereo-infinite-clip.md
 //! Stands on: lotus/infinite_clip.rye (ALES89) — the mono infinite clipper run once per channel, y = if |x| ≤ t then 0 else sign(x)·sample_max with no rail edge; lotus/stereo_center_clip.rye (ALES141) — the hard
 //! sibling whose dead zone this shares (the same samples silenced, the survivors pinned to the rail instead of passed); lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant;
 //! lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max.

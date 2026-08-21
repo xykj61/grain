@@ -1,7 +1,7 @@
 # tools/ales_stereo_reverb_shelf_witness.rish — the stereo shelf: a two-band tone shelf on the reverberant tail carried across a stereo master (ALES205).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES205.
-# Design read: active-designing/20260815-112822_fill-ales205-lotus-stereo-reverb-shelf.md
+# Design read: active-designing/date/20260815/20260815-112822_fill-ales205-lotus-stereo-reverb-shelf.md
 # Stands on: lotus/stereo_reverb_preset.rye (ALES191 — the named-room stereo wet, run over the master unchanged); lotus/shelf.rye (ALES41 — the
 # two-band tone shelf, its precheck and its BadCoeff / BadGain / BadRange, run per ear); lotus/reverb_shelf.rye (ALES204 — the mono shelf this mirrors
 # per channel); lotus/pan.rye (the StereoClip and its two balanced channels); lotus/clock.rye (ALES5 — the sample clock, converting the span);

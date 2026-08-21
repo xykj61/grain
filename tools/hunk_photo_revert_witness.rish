@@ -1,7 +1,7 @@
 # tools/hunk_photo_revert_witness.rish — the Photos app reverts on metal (HUNK14).
 #
 # Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK14.
-# Design read: active-designing/20260813-155719_hunk-photo-edits-non-destructive-exploration.md (HUNK14 horizon).
+# Design read: active-designing/date/20260813/20260813-155719_hunk-photo-edits-non-destructive-exploration.md (HUNK14 horizon).
 # Teacher, thanked clean-room: the "revert to original" of iCloud Photos / Google Photos (concept only, siloed).
 #
 # HUNK11 recorded the six Photos verbs as a bounded edit-list and replayed them over an untouched source. This rung

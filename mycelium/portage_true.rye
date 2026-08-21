@@ -2,7 +2,7 @@
 //! the arc closes).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · Portage · rung r4 — reads true.
-//! Design read: active-designing/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
+//! Design read: active-designing/date/20260813/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
 //!
 //! r1 proved value crosses two worlds and the pair conserves, r2 made the crossing atomic, r3 let it travel as
 //! text — all over worlds seated in code. r4 carries the reader onto a REAL on-disk `format portage-v1` record

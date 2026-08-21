@@ -40,7 +40,7 @@ Dated prompts carry `YYYYMMDD-HHMMSS_short-slug.md`; this README is the living f
 | Additive gate | `tools/additive-gate.rish` |
 | Strengthening enricher | `tools/enrich_strengthening_docs.rye` |
 | Session log aligner | `tools/align_session_logs.rye` |
-| Width audit (hosted gate) | `tools/width-check.rish` in `tools/parity.rish`; charter [`20260620-210812_explicit-width-audit.md`](20260620-210812_explicit-width-audit.md) |
+| Width audit (hosted gate) | `tools/width-check.rish` in `tools/parity.rish`; charter [`20260620-210812_explicit-width-audit.md`](date/20260620/20260620-210812_explicit-width-audit.md) |
 
 
 ### Topic routing (from retired `10010_reserved`)
@@ -48,13 +48,13 @@ Dated prompts carry `YYYYMMDD-HHMMSS_short-slug.md`; this README is the living f
 | Topic | Lives in |
 |-------|----------|
 | Tablecloth + Brix compose | [`20260620-043812_tablecloth-brix-split.md`](yonder/20260620-043812_tablecloth-brix-split.md) through [`20260620-044112_tablecloth-v1-seed.md`](yonder/20260620-044112_tablecloth-v1-seed.md) |
-| Main track (Rye · Rishi · strengthening · width fork) | [`yonder/20260621-051612_main-track-rye-rishi-strengthening.md`](yonder/20260621-051612_main-track-rye-rishi-strengthening.md) (consumed), [`20260620-210812_explicit-width-audit.md`](20260620-210812_explicit-width-audit.md), [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md), [`../work-in-progress/TASKS.md`](../work-in-progress/TASKS.md) |
+| Main track (Rye · Rishi · strengthening · width fork) | [`yonder/20260621-051612_main-track-rye-rishi-strengthening.md`](yonder/20260621-051612_main-track-rye-rishi-strengthening.md) (consumed), [`20260620-210812_explicit-width-audit.md`](date/20260620/20260620-210812_explicit-width-audit.md), [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md), [`../work-in-progress/TASKS.md`](../work-in-progress/TASKS.md) |
 | Strengthening doc + width enricher | [`yonder/20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md`](yonder/20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md) → [`../tools/enrich_strengthening_docs.rye`](../tools/enrich_strengthening_docs.rye) |
 | Literal `usize` ban / language fork | [`../external-research/20260621-051312_literal-usize-ban-language-fork.md`](../external-research/20260621-051312_literal-usize-ban-language-fork.md), [`../active-designing/yonder/20260621-051312_explicit-width-in-rye.md`](../active-designing/yonder/20260621-051312_explicit-width-in-rye.md), [`../external-research/20260621-050312_usize-boundary-not-design.md`](../external-research/20260621-050312_usize-boundary-not-design.md) |
 
 **Retired in new prompts:** `tools/parity.sh`, `enrich_strengthening_docs.py`, `align_session_logs.py`, `parity.rye` as gate target, `init.arena`, authored `ArenaAllocator`, “`usize` only at seam” as **permanent** policy (interim only — see width fork links above).
 
-**Width:** charter [`20260620-210812_explicit-width-audit.md`](20260620-210812_explicit-width-audit.md); baseline [`../work-in-progress/20260620-212126_usize-width-baseline.md`](../work-in-progress/20260620-212126_usize-width-baseline.md); fork research [`../external-research/20260621-051312_literal-usize-ban-language-fork.md`](../external-research/20260621-051312_literal-usize-ban-language-fork.md); design [`../active-designing/yonder/20260621-051312_explicit-width-in-rye.md`](../active-designing/yonder/20260621-051312_explicit-width-in-rye.md); interim seam [`../external-research/20260621-050312_usize-boundary-not-design.md`](../external-research/20260621-050312_usize-boundary-not-design.md).
+**Width:** charter [`20260620-210812_explicit-width-audit.md`](date/20260620/20260620-210812_explicit-width-audit.md); baseline [`../work-in-progress/20260620-212126_usize-width-baseline.md`](../work-in-progress/20260620-212126_usize-width-baseline.md); fork research [`../external-research/20260621-051312_literal-usize-ban-language-fork.md`](../external-research/20260621-051312_literal-usize-ban-language-fork.md); design [`../active-designing/yonder/20260621-051312_explicit-width-in-rye.md`](../active-designing/yonder/20260621-051312_explicit-width-in-rye.md); interim seam [`../external-research/20260621-050312_usize-boundary-not-design.md`](../external-research/20260621-050312_usize-boundary-not-design.md).
 
 ## What Belongs Here
 
@@ -73,12 +73,12 @@ What does *not* belong here is the work itself — that lands in the research, d
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
-| `20260728.025220` | [MUR Season u0 recursion](20260728-025220_mur-season-u0-recursion-prompt.md) | **Active walk** — innermost OPEN · u0 bowed · u1 next · Gren CLOSED handback |
+| `20260728.025220` | [MUR Season u0 recursion](date/20260728/20260728-025220_mur-season-u0-recursion-prompt.md) | **Active walk** — innermost OPEN · u0 bowed · u1 next · Gren CLOSED handback |
 | `20260728.012725` | [Constellation Season m0 recursion](yonder/20260728-012725_constellation-season-m0-recursion-prompt.md) | **yonder** · outer PAUSED · not the active walk |
 | `20260728.025634` | [Gren Season recursion](yonder/20260728-025634_gren-season-g0-recursion-prompt.md) | **yonder** · Archival — core CLOSED · handed back `return_mur_u0` · living Gren doors |
 | `20260728.030310` | [Keeh Season recursion](yonder/20260728-030310_keeh-season-q0-recursion-prompt.md) | **yonder** · Archival — quint CLOSED · handed back `return_gren_g0` · living Keeh/Shyu/Linn doors |
 | `20260728.015541` | [Inner Scope Season i0 recursion](yonder/20260728-015541_inner-scope-season-i0-recursion-prompt.md) | **yonder** · Archival — inner PAUSED i6/i7 · living seat 2 Gren · fascia wait |
-| `20260725.040520` | [Four Rishi harvest laps](20260725-040520_rishi-four-harvest-laps.md) | accumulate · read bounded · filter chained · quote safe — shell harvest |
+| `20260725.040520` | [Four Rishi harvest laps](date/20260725/20260725-040520_rishi-four-harvest-laps.md) | accumulate · read bounded · filter chained · quote safe — shell harvest |
 | `20260724.143155` | [Vanes, shelves, names, maps — braided](yonder/20260724-143155_vanes-shelves-names-maps-braid.md) | **yonder** · Files second+third counsel · P3 under 8KB · waymarks · replies · stewards · Aparigraha · letters · rung 1 · coverage GREEN |
 | `20260724.132812` | [Workshop and Warehouse — context economy](yonder/20260724-132812_workshop-and-warehouse-context-economy.md) | **yonder** · Files Fable 5 counsel · seats pin-and-ledger `24576` · untracks `tools/bin/` · rolls living pins · watcher excludes · sixth lint duty · workshop/warehouse doctrine · P3 rules partial · P6–P7 skeletons |
 | `20260718.122145` | [Glow Glass display, short home, Dexter send, Wired Glass](yonder/20260718-122145_glow-glass-display-short-home-and-dexter-send.md) | **yonder** · Expands ret=newline · ↑ send · Hearth short home `kd` · LULU display presets (Pixel 10a 1080×2424 → same-ratio lower → Mantrapod Skate floor) · Wired Glass SLC (used Pixel, no cellular, USB to Desk) · draws waymark **LULU** · seats silo + ER + align |
@@ -94,7 +94,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 | `20260710.125953` | [Dimeroll — books view](yonder/20260710-125953_dimeroll-lap1-books-view.md) | **yonder** · Chart · journal · fold · Skate booksviewtest; parity **207**/**208** |
 | `20260709.225159` | [MUR kind field — gated](yonder/20260709-225159_mala-kind-field-gated.md) | K0 keep memos; K1 still gated; in `yonder/` · dated path kept (was MALA) |
 | `20260709.224531` | [WOV dual monarch — gated](yonder/20260709-224531_wov-dual-monarch-gated.md) | D1 twin-lines landed (parity **205**); D2 later; in `yonder/` |
-| `20260709.224325` | [SLC-L4 width — gated](20260709-224325_slcl4-lap2-width-gated.md) | W0 cleared; W1/W2 soak |
+| `20260709.224325` | [SLC-L4 width — gated](date/20260709/20260709-224325_slcl4-lap2-width-gated.md) | W0 cleared; W1/W2 soak |
 | `20260709.204026` | [WOV lap 2b TB client wrapper](yonder/20260709-204026_wov-lap2b-tb-client-wrapper.md) | **yonder** · Seam A host landed (parity **204**); unify 0–5 GREEN |
 | `20260709.203527` | [WOV — TigerBeetle pin](yonder/20260709-203527_wov-lap2-tigerbeetle-pin-presence.md) | **yonder** · Pin presence; parity **203** · TB pin retired |
 | `20260709.202427` | [Realidream thin view](yonder/20260709-202427_realidream-thin-view-local-facts.md) | **yonder** · Local fixtures → Skate; parity **202** |
@@ -119,7 +119,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 | `20260705.022512` | [Cursor infusion — final Brooke round](yonder/20260705-022512_cursor-infusion-final-brooke-round.md) | Consumed — batches A–D placed and gate-verified; in `yonder/` |
 | `20260704.185412` | [Cursor lane — unified zip-42 intake](yonder/20260704-185412_cursor-lane-zip42-counsel-unified.md) | **yonder** · One paste for the whole sitting: both counsels, Kaeden's words listed with the lens gate added, mechanical stops smallest-first, zip 43 cut discipline. |
 | `20260704.181012` | [Zero-copy resins — Claude counsel](yonder/20260704-181012_zero-copy-resins-claude-counsel.md) | **yonder** · Snapshot + Comlink batch architecture; ROADMAP/TASKS/decoder refresh; CIVIC alignment — **answered** at `181612`/`185412` |
-| `20260704-030300` | [Cursor recursion prompt v4 — itinerary, stops, journey's pause](20260704-030300_cursor-recursion-prompt-v4.md) | **Active loop** — open itinerary · STOPS · journey's pause; supersedes v2/v3 |
+| `20260704-030300` | [Cursor recursion prompt v4 — itinerary, stops, journey's pause](date/20260704/20260704-030300_cursor-recursion-prompt-v4.md) | **Active loop** — open itinerary · STOPS · journey's pause; supersedes v2/v3 |
 | `20260703-020012` | [Cursor recursion prompt v3 — land eight, then hold the doors](yonder/20260703-020012_cursor-recursion-prompt-v3.md) | Replaced by v4 — **yonder** (u70 prune) |
 | `20260702-202612` | [Astrology silos 19–20 — Cursor](yonder/20260702-202612_cursor-astrology-silos-19-20.md) | Consumed — studies 19–20 distilled and landed; raw transcripts never committed; in `yonder/` |
 | `20260702-030112` | [SLC-2b — keyboard from the window](yonder/20260702-030112_cursor-slc-2b-keyboard-from-window.md) | **yonder** · **Next open question** — Dexter genesis; awaits Kaeden nod |
@@ -130,7 +130,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 | `20260621-051612` | [10025 · Strengthening Stdlib Doc + Width Pass — Redirect](yonder/20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md) | Redirect stub — in `yonder/` |
 | `20260621-051612` | [10015 · Documentation and Almanac Sync — Redirect](yonder/20260621-051612_documentation-and-almanac-sync-redirect.md) | Redirect stub — in `yonder/` |
 | `20260621-051612` | [10013 · What We Mean by Seed — Redirect](yonder/20260621-051612_what-we-mean-by-seed-redirect.md) | Redirect stub — in `yonder/` |
-| `20260620-210812` | [10024 · Explicit Width Audit — `usize` to `u32` / `u64`](20260620-210812_explicit-width-audit.md) | Expanded at `210812` from the seed: TAME modeled on Tiger Style demands explicitly sized types; our  |
+| `20260620-210812` | [10024 · Explicit Width Audit — `usize` to `u32` / `u64`](date/20260620/20260620-210812_explicit-width-audit.md) | Expanded at `210812` from the seed: TAME modeled on Tiger Style demands explicitly sized types; our  |
 | `20260620-044112` | [10022 · Tablecloth v1 — Smallest Living Store](yonder/20260620-044112_tablecloth-v1-seed.md) | Rung 4 of the Tablecloth ladder (`10018`). Expanded at `044112`: grow **Tablecloth v1** from Mantra' |
 | `20260620-044012` | [10021 · Tablecloth in the One-Value Model](yonder/20260620-044012_tablecloth-value-model.md) | Rung 3 of the Tablecloth ladder (`10018`). Expanded at `044012`: **remember** — how Tablecloth sits  |
 | `20260620-044012` | [10018 · Tablecloth Ladder — Index and Vocabulary](yonder/20260620-044012_tablecloth-ladder-index.md) | Expanded at `043712` to unify every expanding prompt that named the content-addressed **store** — no |

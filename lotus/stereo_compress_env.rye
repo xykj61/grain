@@ -20,7 +20,7 @@
 //! each of the four refusals leaving both channels untouched and balanced, count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES161.
-//! Design read: active-designing/20260815-065200_fill-ales161-lotus-stereo-compress-env.md
+//! Design read: active-designing/date/20260815/20260815-065200_fill-ales161-lotus-stereo-compress-env.md
 //! Stands on: lotus/stereo_envelope.rye (ALES160) — the LINKED envelope, its stereo_env_step advancing the one shared detector toward the linked peak, reused whole; lotus/stereo_compress.rye (ALES157) — the LINKED gain this
 //! drives over time, its instantaneous form the unit-coefficient limit re-proven beside it; lotus/compress_env.rye (ALES53) — the mono attack/release compressor, its CompressEnvError reused whole and its output the
 //! left-always-peak comparison; lotus/compress.rye (ALES50) — the softened ceiling comp = threshold + excess·den/num; lotus/pan.rye (ALES10) — the StereoClip; lotus/timeline.rye (ALES2) — the Clip, sample_max.

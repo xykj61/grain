@@ -1,7 +1,7 @@
 //! mycelium/voucher_knot.rye — a voucher's position survives a checkpoint (rung r3).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Voucher · rung r3 — across a Knot.
-//! Design read: active-designing/20260813-095216_mycelium-voucher-attested-statement-exploration.md
+//! Design read: active-designing/date/20260813/20260813-095216_mycelium-voucher-attested-statement-exploration.md
 //!
 //! r1 made a node's signed attestation bind an account's position to a named ORDER-HEAD, checkable
 //! against the ledger it vouches; r2 let that proof travel as bytes. Yet a ledger a family runs for years

@@ -12,7 +12,7 @@
 //! so the two compose into one chain: identity → attested subkey → sealed record, verifiable end to end holding only the identity's public key.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G, "the library that serves Kumara
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G, "the library that serves Kumara
 //! identity, Vault, Comlink, and the Lotus signed carry." crypto/kumara_subkey.rye names this rung outright: "The attestation that binds a subkey
 //! to its parent (the identity SIGNING a short 'this subkey is mine at record r' statement, which a verifier then checks against the identity's
 //! public key) is the named next rung — a signed delegation over exactly the door crypto/kumara_carry.rye already opens." The 1,024-round

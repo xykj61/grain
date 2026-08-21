@@ -1,7 +1,7 @@
 //! mycelium/cord_batch.rye — the batched Cord: one block seals many facts.
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · fact batching · rung r1 — the crux.
-//! Design read: active-designing/20260813-043303_mycelium-fact-batching-exploration.md
+//! Design read: active-designing/date/20260813/20260813-043303_mycelium-fact-batching-exploration.md
 //!
 //! The single-fact Cord (mycelium/cord.rye) buys — for one author signature, one
 //! node in the agreed order, one round of admission — exactly one fact. From

@@ -1,7 +1,7 @@
 //! mycelium/freight_conservation.rye — the whole fleet's state is conserved across a healing (r2).
 //!
 //! Season D (Kresfa & Mycelium) · Puddle fleet orchestration × Mycelium consensus · rung r2.
-//! Design read: active-designing/20260813-121424_puddle-freight-world-state-migration-exploration.md
+//! Design read: active-designing/date/20260813/20260813-121424_puddle-freight-world-state-migration-exploration.md
 //!
 //! r1 proved one moved world reads the byte-identical position on its new berth, and a freight tampered in
 //! transit refuses. r2 raises the claim from one world to the WHOLE FLEET: when a host departs and Puddle

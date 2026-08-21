@@ -13,7 +13,7 @@
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, audit-ready). Double-seats BESIDE crypto/kumara_sealed.rye, which
 //! stays the correct CLASSICAL sealed-to-identity door; nothing already GREEN moves.
-//! Design read: active-designing/20260816-192400_post-quantum-identity-is-dual-key.md — "the coming kumara_pq_sealed seals to the identity's ML-KEM
+//! Design read: active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md — "the coming kumara_pq_sealed seals to the identity's ML-KEM
 //! half, and — where provenance is also wanted — signs the frame with the identity's ML-DSA key. Confidentiality and provenance come from the two
 //! halves, composed." This rung is that door.
 //! Kin: crypto/kumara_pq_identity.rye (the dual-key identity this seals to and signs with, GREEN) · crypto/mlkem_sealed.rye (the confidentiality,

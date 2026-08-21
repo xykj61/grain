@@ -1,7 +1,7 @@
 # tools/ales_stereo_echo_witness.rish — stereo_echo: the feedback delay carried into stereo, the same delay and feedback on both channels, each channel reading and feeding back through its own live buffer — the first rung of the stereo time-based wing (ALES181).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES181.
-# Design read: active-designing/20260815-085411_fill-ales181-lotus-stereo-echo.md
+# Design read: active-designing/date/20260815/20260815-085411_fill-ales181-lotus-stereo-echo.md
 # Stands on: lotus/echo.rye (ALES66 — the mono feedback delay run once per channel, its EchoError reused whole and its precheck (newly factored out) reused for the up-front atomic validation), lotus/pan.rye (ALES10 — the StereoClip),
 # lotus/timeline.rye (ALES2 — the Clip and the one true saturate the mono echo reuses).
 #

@@ -18,7 +18,7 @@
 //! definition, stated plainly so the carried and from-silence forms cannot drift.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES93.
-//! Design read: active-designing/20260814-225557_fill-ales93-lotus-zero-crossing-counter.md
+//! Design read: active-designing/date/20260814/20260814-225557_fill-ales93-lotus-zero-crossing-counter.md
 //! Stands on: lotus/schmitt.rye (ALES92) — the hysteresis comparator whose flips this counts, composed over its public schmitt_step and its public precheck (so
 //! the band-and-span law and the named errors are the trigger's own, not a second copy); lotus/timeline.rye (ALES2) — the Clip, sample_min/max; the read-only
 //! analysis shape is meter's (lotus/meter.rye) — a struct that accumulates, accessors that report.

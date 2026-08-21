@@ -20,7 +20,7 @@
 # Composes pledge + cord_knot + cord + fold public API only; demo keeper seeds — no key, no funds, no network,
 # no custody.
 #
-# Scope: active-designing/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
+# Scope: active-designing/date/20260813/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mycelium_pledge_knot_witness.rish

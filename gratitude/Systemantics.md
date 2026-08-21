@@ -35,7 +35,7 @@ Large complex systems are extremely difficult to design correctly, despite the b
 
 ## How it shapes our work
 
-Gall's Law is the temper beneath our whole method: we grow each module from the smallest version that runs, by proven degrees, rather than designing the finished, intricate whole and hoping it breathes. It is honored in our own voice in `../external-research/20260620-014412_system.md`, its abstracted principle is embedded in `../active-designing/20260618-184912_growing-a-language.md`, and it is lived as a plan in `../work-in-progress/ROADMAP.md`.
+Gall's Law is the temper beneath our whole method: we grow each module from the smallest version that runs, by proven degrees, rather than designing the finished, intricate whole and hoping it breathes. It is honored in our own voice in `../external-research/20260620-014412_system.md`, its abstracted principle is embedded in `../active-designing/date/20260618/20260618-184912_growing-a-language.md`, and it is lived as a plan in `../work-in-progress/ROADMAP.md`.
 
 ---
 

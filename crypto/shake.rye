@@ -10,7 +10,7 @@
 //! and std.crypto — passing it the 0x1f SHAKE delimiter and asking for an arbitrary output length. The decisive extension it earns from the
 //! sibling is the sponge's generality: the squeeze now emits rate bytes, permutes, and reads again, so one function serves the fixed digests
 //! AND these extendable outputs. That generality is what opens SHA3-224/384, cSHAKE, KMAC, and the post-quantum XOF needs as later rungs.
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
 //! Kin: crypto/sha3.rye (the SHA3 siblings and the sponge this composes) · crypto/keccak256.rye (the other composition over the same sponge).
 //! Clean-room: the 0x1f delimiter, the two SHAKE rates, and the sponge law are the public FIPS 202 standard's own; the arithmetic is our
 //! GREEN sha3.rye, never a copied line (.claude/rules/gratitude-licenses.md).

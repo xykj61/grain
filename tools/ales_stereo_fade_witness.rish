@@ -1,7 +1,7 @@
 # tools/ales_stereo_fade_witness.rish — stereo_fade: the fade envelope carried into stereo with ONE SHARED RAMP, both channels in lockstep, validated once before either mutates (ALES130).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES130.
-# Design read: active-designing/20260815-030651_fill-ales130-lotus-stereo-fade.md
+# Design read: active-designing/date/20260815/20260815-030651_fill-ales130-lotus-stereo-fade.md
 # Stands on: lotus/fade.rye (ALES4 — the mono ramped gain run once per channel, itself reusing ALES2's one true saturate), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its
 # balance invariant), lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples), lotus/meter.rye (ALES13 — the peak/RMS meter, read-only). A Lotus master is a StereoClip whose defining invariant
 # is that left and right hold the same length. This rung carries ALES4's fade into stereo the way the amplitude class asks: run the proven mono fade on each channel with the SAME ramp, so a fade

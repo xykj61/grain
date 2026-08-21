@@ -1,7 +1,7 @@
 # tools/ales_zero_cross_witness.rish — the zero-crossing counter: the suite's first analysis rung, reading ALES92's flips as a count (ALES93).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES93.
-# Design read: active-designing/20260814-225557_fill-ales93-lotus-zero-crossing-counter.md
+# Design read: active-designing/date/20260814/20260814-225557_fill-ales93-lotus-zero-crossing-counter.md
 # Stands on: lotus/schmitt.rye (ALES92 — the hysteresis comparator whose flips this counts, composed over its public schmitt_step and precheck) and
 # lotus/timeline.rye (ALES2 — the Clip, sample_min/max). The read-only analysis shape is meter's (lotus/meter.rye): a struct that accumulates, accessors that
 # report. Every Lotus rung before this one WRITES a clip in place; this one READS a clip and returns a number, changing not one sample.

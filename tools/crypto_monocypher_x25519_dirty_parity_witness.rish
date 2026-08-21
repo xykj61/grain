@@ -7,7 +7,7 @@
 # keyed BLAKE2b · constant-time verify · HKDF-SHA-512 · Elligator 2 came before). Season G · Cryptography.
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux names "the parity witness
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux names "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte." Like the Elligator rung this is a primitive Zig's std.crypto does not ship, so
 # there is no independent std.crypto oracle beside the parity — the byte-for-byte agreement with the actual vendored library IS the external
 # anchor, and here it is DOUBLED: Monocypher itself carries two dirty paths (dirty_small over an order-8L base point, dirty_fast over the Edwards

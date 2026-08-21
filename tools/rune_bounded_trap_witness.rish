@@ -1,6 +1,6 @@
 # rune_bounded_trap_witness.rish — the bounded |- rune's front half, proves out.
 #
-# Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
+# Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 # that brief proved the back half real (RISC-V disassembly, not guesswork).
 # This proves the front half connects to it -- real rune-shaped text, parsed,
 # feeding the exact checked mechanism the RISC-V section quoted.

@@ -1,7 +1,7 @@
 # tools/ales_stereo_gate_env_witness.rish — stereo_gate_env: the attack/release noise gate carried into stereo, the linked envelope driving one linked gate over time (ALES162).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES162.
-# Design read: active-designing/20260815-065745_fill-ales162-lotus-stereo-gate-env.md
+# Design read: active-designing/date/20260815/20260815-065745_fill-ales162-lotus-stereo-gate-env.md
 # Stands on: lotus/stereo_envelope.rye (ALES160 — the linked envelope, its stereo_env_step reused whole), lotus/stereo_gate.rye (ALES156 — the linked gate this drives over time, its memoryless form the unit-coefficient
 # limit), lotus/gate_env.rye (ALES54 — the mono attack/release gate, its GateEnvError reused whole and its output the left-always-peak comparison), lotus/gate.rye (ALES51 — the silenced floor),
 # lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip, sample_max).

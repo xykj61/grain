@@ -25,7 +25,7 @@ Read the sections below whenever you wonder where a new file belongs. When a sea
 
 **`foundations/`** — the why beneath the work: foundation briefs, the distilled essays and the weave that composes them, and the civic visions. Dated artifacts rest beneath a living README.
 
-**`saga/`** — season close narratives (final draft / seated validator reports and end-of-arc arithmetic). Counsel proposes; this shelf keeps what a season names as its lasting close. Opened `20260727.234128`; first resident is The Sound's saga of the end (**seated** `20260727.234617`). Living season: The Tensegral Season (`counsel/20260727-234617_the-tensegral-season.md`).
+**`saga/`** — season close narratives (final draft / seated validator reports and end-of-arc arithmetic). Counsel proposes; this shelf keeps what a season names as its lasting close. Opened `20260727.234128`; first resident is The Sound's saga of the end (**seated** `20260727.234617`). Living season: The Tensegral Season (`counsel/date/20260727/20260727-234617_the-tensegral-season.md`).
 
 **`classical-vedic-astrology/`** — the reading craft: a siloed study library in topic folders (`studies/nakshatras/`, `planets-in-signs/`, `planet-in-house/`, …), composable templates in `templates/`, demonstration readings in `readings/`, and the dual-zodiac caster. Names stay siloed to the placeholder **Alice** by consent and by design; the fuller originals rest in the private lane, and gratitude to teachers lives inside each study.
 
@@ -41,7 +41,7 @@ Read the sections below whenever you wonder where a new file belongs. When a sea
 
 **`active-reviving/`** — reviving in motion, sibling to `active-designing/`. Where an existing working thing (an `old/` vane, a running Rye OS module, a retired seam) is re-grown into the Glow direction as a **new artifact born with its Glow name, beside the elder** — never a rename. The elder keeps its name and green witnesses until the revival is proven and supersedes it (the Pond-superseded-ai-jail pattern). Living README index; concept seated at [`context/specs/20260714-004428_reviving-replaces-renaming.md`](context/specs/20260714-004428_reviving-replaces-renaming.md).
 
-**`docs/`** — compression layer at the repo root (TigerBeetle `docs/` precedent). Living guides that compress many dated sources in `active-designing/`, counsel, and witnesses. Pages compress the record; they never replace it. Pin-strings point at witnesses — docs carry no load-bearing pins. Design law: [`active-designing/20260712-221600_docs-compression-layer-design.md`](active-designing/20260712-221600_docs-compression-layer-design.md).
+**`docs/`** — compression layer at the repo root (TigerBeetle `docs/` precedent). Living guides that compress many dated sources in `active-designing/`, counsel, and witnesses. Pages compress the record; they never replace it. Pin-strings point at witnesses — docs carry no load-bearing pins. Design law: [`active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md`](active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md).
 
 **`external-research/`** — study of the world with attribution. Explorations, comparisons, voiced adaptations of gratitude sources. Living README. **Research for understanding — advice stays elsewhere:** surveys and memos here frame understanding only — they recommend no purchase, no treasury action, and no licensed professional course; policy and money choices belong to Kaeden in their own season. Say so in each file's status line; CIVIC stays policy-shaped in `context/`. Proposed register law: [`context/TWO_ROOMS.md`](context/TWO_ROOMS.md) (seats on Kaeden's word).
 
@@ -73,7 +73,7 @@ Read the sections below whenever you wonder where a new file belongs. When a sea
 
 **`GLOW_PROFILE.bron`** — Grain's own root contributor-profile config, sibling to `GLOW_HOST.bron`. Where `GLOW_HOST.bron` declares the *host*, this declares the *contributor*: the professional name that signs the work, forge handles, the clock stamps come from, and the editor/model/voice defaults for session logs. It lets the reader-facing docs stay generically addressed (to a generic Acme Corporation employee) while the specifics live in one loadable place. Copy [`GLOW_PROFILE.template.bron`](GLOW_PROFILE.template.bron) to `GLOW_PROFILE.bron` (gitignored, personal); canonical public fingerprints stay in `PUBKEYS.md`, which the profile points at rather than copies. Seated at [`context/specs/20260714-015200_glow-profile-and-acme-generic-voice.md`](context/specs/20260714-015200_glow-profile-and-acme-generic-voice.md).
 
-**`tools/`** — gates, witnesses, launch scripts, and the strict checks that keep the tree honest. Some `.sh` scripts are POSIX seams (QEMU backgrounding, cold-start bootstrap, external interpreters) and stay `.sh` by design — see [`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md) · counsel [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md).
+**`tools/`** — gates, witnesses, launch scripts, and the strict checks that keep the tree honest. Some `.sh` scripts are POSIX seams (QEMU backgrounding, cold-start bootstrap, external interpreters) and stay `.sh` by design — see [`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md) · counsel [`counsel/date/20260707/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](counsel/date/20260707/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md).
 
 **Root** — `SOURCE.md`, `CLAUDE.md`, this guide, and a few allow-listed files that orient newcomers before they dive.
 
@@ -144,11 +144,11 @@ A re-stamp that bubbles a file to the bottom suits an *ordinary, lightly-cited* 
 
 | File | Why kept |
 |------|----------|
-| `active-designing/20260618-182412_single-stranded.md` | Foundational one-value-model brief; widely cited |
-| `active-designing/20260618-184912_growing-a-language.md` | Canonical TAME Guidance organization brief |
+| `active-designing/date/20260618/20260618-182412_single-stranded.md` | Foundational one-value-model brief; widely cited |
+| `active-designing/date/20260618/20260618-184912_growing-a-language.md` | Canonical TAME Guidance organization brief |
 | `active-designing/yonder/20260618-184912_recommended-architecture.md` | Foundational clean-room architecture brief; third of the trio |
 | `work-in-progress/20260620-212126_usize-width-baseline.md` | Canonical width inventory; cited from `TAME_GUIDANCE` |
-| `expanding-prompts/20260620-210812_explicit-width-audit.md` | Width charter; heavily cited across strengthening docs |
+| `expanding-prompts/date/20260620/20260620-210812_explicit-width-audit.md` | Width charter; heavily cited across strengthening docs |
 | `external-research/20260618-180812_pond-foundation.md` | Pond lap foundation brief; cited; affirmed pass eight |
 
 ---

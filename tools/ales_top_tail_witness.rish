@@ -1,7 +1,7 @@
 # tools/ales_top_tail_witness.rish — the top-and-tail trimmer: segment the clip through ALES95, then cut ONLY the leading and trailing silence, keeping every internal pause (ALES98).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES98.
-# Design read: active-designing/20260814-234106_fill-ales98-lotus-top-tail-trimmer.md
+# Design read: active-designing/date/20260814/20260814-234106_fill-ales98-lotus-top-tail-trimmer.md
 # Stands on: lotus/segment.rye (ALES95 — the voice-activity segmenter), lotus/trim_silence.rye (ALES96 — the full silence stripper, the length-bracket twin), lotus/
 # split_silence.rye (ALES97 — the auto-splitter, the outer-boundary twin), lotus/timeline.rye (ALES2 — the Clip and cut), lotus/voiced.rye (ALES94 — the .silent verdict).
 # ALES96 removes EVERY silent run and closes ranks; ALES97 cuts AT every silence and keeps each region apart. Between them lives the most-used silence gesture of all —

@@ -16,7 +16,7 @@
 //! samples or a count past the remainder or a dest past len − count each BadRange, before any write.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES113.
-//! Design read: active-designing/20260815-012632_fill-ales113-lotus-move.md
+//! Design read: active-designing/date/20260815/20260815-012632_fill-ales113-lotus-move.md
 //! Stands on: lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, the EditError reused whole, and the cut + splice this rung composes; lotus/meter.rye (ALES13) — the
 //! peak/RMS meter, used only by the witness to prove that relocating existing samples never moves the peak.
 //!

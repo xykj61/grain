@@ -8,7 +8,7 @@
 //! are EQUAL — a reject band of zero width — is the identity, byte-for-byte. It adds no arithmetic on the audio path.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES47.
-//! Design read: active-designing/20260814-165728_fill-ales47-lotus-band-reject.md
+//! Design read: active-designing/date/20260814/20260814-165728_fill-ales47-lotus-band-reject.md
 //! Stands on: lotus/tone.rye (ALES40) — the low-pass and high-pass it sums; lotus/timeline.rye (ALES2) — the Clip and the one
 //! true saturation it reuses; the shape follows lotus/shelf.rye (ALES41)'s scale-two-bands-and-clamp-once.
 //!

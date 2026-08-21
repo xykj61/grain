@@ -1,7 +1,7 @@
 # tools/ales_stereo_compress_env_hold_witness.rish — stereo_compress_env_hold: the attack/hold/release compressor carried into stereo, the linked held envelope driving one linked gain over time (ALES166).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES166.
-# Design read: active-designing/20260815-072211_fill-ales166-lotus-stereo-compress-env-hold.md
+# Design read: active-designing/date/20260815/20260815-072211_fill-ales166-lotus-stereo-compress-env-hold.md
 # Stands on: lotus/stereo_hold_env.rye (ALES165 — the linked held follower, its stereo_env_step_hold reused whole), lotus/stereo_compress_env.rye (ALES161 — the un-held linked compressor this reduces to at a hold of zero),
 # lotus/compress_env_hold.rye (ALES58 — the mono attack/hold/release compressor, its CompressEnvHoldError reused whole and its output the left-always-peak comparison), lotus/compress.rye (ALES50 — the softened ceiling),
 # lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip, sample_max, max_clip).

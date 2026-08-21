@@ -6,7 +6,7 @@
 //! it over a TEST keypair, and signing a real record with the maintainer's own identity key stays the custody gate.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — "once a Rye signing primitive is
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — "once a Rye signing primitive is
 //! parity-GREEN, Lotus's 'who made this record' signed carry becomes buildable — the library is engineering." The 1,024-round itinerary,
 //! Season 2 Journey 6 (Provenance): "a real document carries a Kumara-signed, content-addressed chain of custody end to end."
 //! Kin: crypto/ed25519_sign.rye · crypto/ed25519_verify.rye (the signature, GREEN) · crypto/blake2b.rye (the content-address digest, GREEN).

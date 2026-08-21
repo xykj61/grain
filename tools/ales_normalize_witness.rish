@@ -1,7 +1,7 @@
 # tools/ales_normalize_witness.rish — peak normalization: measure the loudest sample, then scale the whole clip so it lands on a chosen target (ALES103).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES103.
-# Design read: active-designing/20260815-001849_fill-ales103-lotus-peak-normalize.md
+# Design read: active-designing/date/20260815/20260815-001849_fill-ales103-lotus-peak-normalize.md
 # Stands on: lotus/meter.rye (ALES13 — the peak/RMS meter, `measure` and `peak` read the loudest sample read-only), lotus/timeline.rye (ALES2 — the Clip and the
 # saturating `gain` that scales it), lotus/power.rye (ALES11 — the isqrt the meter is built on, reached only through ALES13). Peak normalization is the single most-
 # reached-for gesture in every editor and DAW: a take recorded quiet and a take recorded hot both leave the same peak after normalize, so a keeper mixes without

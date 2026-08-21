@@ -14,7 +14,7 @@
 # before any block, and an empty batch each refuse. Demo keeper seeds only — no key, funds, network,
 # or custody.
 #
-# Scope: active-designing/20260813-043303_mycelium-fact-batching-exploration.md
+# Scope: active-designing/date/20260813/20260813-043303_mycelium-fact-batching-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mycelium_cord_batch_bron_witness.rish

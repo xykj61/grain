@@ -5,7 +5,7 @@
 # crypto/hkdf_sha512.rye the RFC 5869 domain-separated key expansion), authoring no new cryptography (Season G).
 #
 # Season: crypto — the construction of the learned discovery that a post-quantum identity is DUAL-KEY, because the lattice schemes share no curve for
-# one key to sign and agree the way Ed25519's edwards and montgomery halves do (active-designing/20260816-192400_post-quantum-identity-is-dual-key.md).
+# one key to sign and agree the way Ed25519's edwards and montgomery halves do (active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md).
 # One HKDF extract over the 512-bit BIP-39 seed, three domain-separated expansions carve the ML-DSA seed ξ and the ML-KEM seeds d and z — so a keeper
 # still remembers ONE phrase yet holds two independent keys. The door holds no key: every mnemonic, seed, and identity is a public test vector.
 # Clean-room: BIP-39, RFC 5869, FIPS 203/204 are public standards studied through their specs; the composition is our own Rye wiring over our own GREEN

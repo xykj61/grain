@@ -1,7 +1,7 @@
 # tools/hunk_photos_scale_area_witness.rish — the Photos app downscales by area averaging on metal (HUNK22).
 #
 # Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Open Image · rung HUNK22.
-# Design read: active-designing/20260813-171223_hunk-photos-scale-area-exploration.md (the area-downscale round).
+# Design read: active-designing/date/20260813/20260813-171223_hunk-photos-scale-area-exploration.md (the area-downscale round).
 # Teacher, thanked clean-room: the box filter every photo app and thumbnailer carries (concept only, siloed).
 #
 # HUNK9 gave the open module a nearest-neighbor `scale`, honest for an upscale yet aliasing when an image shrinks.

@@ -11,7 +11,7 @@
 # epoch/prev/next, an unknown field, a bad hex digest, a bad epoch, and a repeated endorser each refuse.
 # Composes warrant + muster + kumara public API only; demo seeds — no key, no funds, no network, no custody.
 #
-# Scope: active-designing/20260813-112420_mycelium-warrant-validator-set-rotation-exploration.md
+# Scope: active-designing/date/20260813/20260813-112420_mycelium-warrant-validator-set-rotation-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mycelium_warrant_bron_witness.rish

@@ -1,7 +1,7 @@
 //! mycelium/muster_true.rye — a real quorum passes a real roll, true to the bytes (r4, the arc closes).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Muster · rung r4.
-//! Design read: active-designing/20260813-110039_mycelium-muster-known-validator-set-exploration.md
+//! Design read: active-designing/date/20260813/20260813-110039_mycelium-muster-known-validator-set-exploration.md
 //!
 //! r1 bound a Chorus to a known validator set (a Muster) — believed only when its enrolled voices meet the
 //! Byzantine threshold read from the roll's size; r2 let the whole roll travel as bytes; r3 judged a quorum

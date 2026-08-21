@@ -5,7 +5,7 @@
 
 
 **Season:** the Six-Season double-seat, Season C thread (Lotus · the creative suite) · **Waymark:** ALES
-**Kin:** [`../active-designing/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/20260813-020035_double-seat-expansion-six-seasons.md) · [`../active-designing/yonder/20260630-014012_lotus-the-daw.md`](../active-designing/yonder/20260630-014012_lotus-the-daw.md) · [`../active-designing/20260814-fill-ales0-lotus-audio-wire-shape.md`](../active-designing/20260814-fill-ales0-lotus-audio-wire-shape.md) · [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
+**Kin:** [`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md) · [`../active-designing/yonder/20260630-014012_lotus-the-daw.md`](../active-designing/yonder/20260630-014012_lotus-the-daw.md) · [`../active-designing/20260814-fill-ales0-lotus-audio-wire-shape.md`](../active-designing/20260814-fill-ales0-lotus-audio-wire-shape.md) · [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
 
 ---
 

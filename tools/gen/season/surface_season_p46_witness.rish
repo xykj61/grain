@@ -6,10 +6,10 @@ say "surface-p46: Language EN — check-in report; museum lane full."
 say "surface-p46: Style Radiant — report doors; refuse invent pad."
 say "surface-p46: Lens TAME — Surface Season p46."
 
-let counsel = run ["test" "-f" "counsel/20260729-133829_surface-season-p46-check-in.md"]
+let counsel = run ["test" "-f" "counsel/date/20260729/20260729-133829_surface-season-p46-check-in.md"]
 assert counsel.ok else "surface-p46: p46 counsel missing"
 
-let report = run ["sh" "-c" "grep -q 'REPORT' counsel/20260729-133829_surface-season-p46-check-in.md && grep -q 'museum lane' counsel/20260729-133829_surface-season-p46-check-in.md && grep -q 'return_generator_s9' counsel/20260729-133829_surface-season-p46-check-in.md && echo REPORT_OK"]
+let report = run ["sh" "-c" "grep -q 'REPORT' counsel/date/20260729/20260729-133829_surface-season-p46-check-in.md && grep -q 'museum lane' counsel/date/20260729/20260729-133829_surface-season-p46-check-in.md && grep -q 'return_generator_s9' counsel/date/20260729/20260729-133829_surface-season-p46-check-in.md && echo REPORT_OK"]
 assert report.ok else "surface-p46: report scan failed"
 assert report.out contains "REPORT_OK" else "surface-p46: check-in shape incomplete"
 

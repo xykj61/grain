@@ -1,7 +1,7 @@
 # tools/drey_archive_witness.rish — the desk archive: a bounded log of proven recordings in order (DREY6).
 #
 # Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY6.
-# Design read: active-designing/20260814-064021_drey6-desk-archive-bounded-log-of-proven-recordings-exploration.md
+# Design read: active-designing/date/20260814/20260814-064021_drey6-desk-archive-bounded-log-of-proven-recordings-exploration.md
 # Stands on: mikrophone/wire.rye (DREY1) — deframe proves a payload whole before a byte is yielded.
 #
 # mikrophone/archive.rye grows the receiving hand from DREY4's single inbox slot to a bounded log that keeps a sequence

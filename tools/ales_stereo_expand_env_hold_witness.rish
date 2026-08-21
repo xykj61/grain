@@ -1,7 +1,7 @@
 # tools/ales_stereo_expand_env_hold_witness.rish — stereo_expand_env_hold: the attack/hold/release downward expander carried into stereo, the linked held envelope driving one linked widening over time (ALES168).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES168.
-# Design read: active-designing/20260815-073427_fill-ales168-lotus-stereo-expand-env-hold.md
+# Design read: active-designing/date/20260815/20260815-073427_fill-ales168-lotus-stereo-expand-env-hold.md
 # Stands on: lotus/stereo_hold_env.rye (ALES165 — the linked held follower, its stereo_env_step_hold reused whole), lotus/stereo_expand_env.rye (ALES164 — the un-held linked expander this reduces to at a hold of zero),
 # lotus/expand_env_hold.rye (ALES62 — the mono attack/hold/release expander, its ExpandEnvHoldError reused whole and its output the left-always-peak comparison), lotus/expand.rye (ALES60 — the deepened floor), lotus/pan.rye
 # (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip, sample_max, max_clip).

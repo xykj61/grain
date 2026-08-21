@@ -7,7 +7,7 @@
 # HKDF-SHA-512 · Elligator 2 · dirty X25519 came before). Season G · Cryptography.
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux names "the parity witness
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux names "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte." Like the Elligator and dirty-X25519 rungs beneath it, this is a piece Zig's
 # std.crypto does not ship, so there is no independent std.crypto oracle beside the parity — the byte-for-byte agreement with the actual vendored
 # library IS the external anchor. This rung anchors a whole COMPOSITION: the parity proves not one primitive but the exact loop that marries

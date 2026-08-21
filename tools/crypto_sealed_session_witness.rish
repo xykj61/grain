@@ -3,7 +3,7 @@
 # BLAKE2b-512 (the KDF), and ChaCha20-Poly1305 (authenticated encryption), authoring no new cryptography (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names X25519 as the key-agreement
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names X25519 as the key-agreement
 # primitive Comlink's confidential session reaches for; this composition is the confidentiality twin of the signed carry's provenance).
 # Kin: crypto/x25519.rye · crypto/blake2b.rye · crypto/aead.rye (the GREEN primitives this composes) · crypto/signed_carry.rye (the
 # provenance twin). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET of the primitives beneath, never a copied line — our

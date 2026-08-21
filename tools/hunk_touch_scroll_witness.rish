@@ -1,7 +1,7 @@
 # tools/hunk_touch_scroll_witness.rish — the touch session: finger down · move · up become a live cursor (HUNK46).
 #
 # Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK46.
-# Design read: active-designing/20260813-201244_hunk-touch-session-exploration.md.
+# Design read: active-designing/date/20260813/20260813-201244_hunk-touch-session-exploration.md.
 # Teacher, thanked clean-room: the event-loop face of any touch scroll surface — a touchscreen reports finger down, a
 # stream of finger move, then finger up, and ticks between frames; the surface scrolls, drags under the finger, and
 # coasts when released (concept only, siloed).

@@ -6,7 +6,7 @@
 //! SHA3 pair already stand. It is the 32-bit sibling of SHA-512: the same Merkle–Damgård shape over 32-bit words instead of 64.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats Season G).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats Season G).
 //! Kin: crypto/sha512.rye (the 64-bit sibling, GREEN on metal), crypto/sha3.rye (the Keccak hash). Monocypher (vendor/monocypher,
 //! CC0/BSD-dual) does not itself ship SHA-256; this hash is authored from FIPS 180-4 directly and proven against Zig's independent
 //! std.crypto, exactly as SHA3 was added for Aurora's need (.claude/rules/gratitude-licenses.md — our own arithmetic, clean-room).

@@ -1,6 +1,6 @@
 //! glow/lower_switch.rye — lower a parsed `?-` subject to runnable `.rye`.
 //!
-//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
+//! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `?-` is the exhaustive switch over a cold-atom-tagged subject. This hop
 //! lowers `kind.cur-record` to a Zig switch over `.mint` / `.send`. Arms are
 //! named faces (defaults minted/sent), decimal literals, nested

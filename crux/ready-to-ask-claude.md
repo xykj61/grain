@@ -23,9 +23,9 @@
 
 ## ANSWERED — Parity speed · graph is not a vane (`20260726.044729`)
 
-**Ask:** [`../counsel/20260726-042641_parity-speed-safety-joy-ford-ask.md`](../counsel/20260726-042641_parity-speed-safety-joy-ford-ask.md)
+**Ask:** [`../counsel/date/20260726/20260726-042641_parity-speed-safety-joy-ford-ask.md`](../counsel/date/20260726/20260726-042641_parity-speed-safety-joy-ford-ask.md)
 
-**Ruling:** [`../counsel/20260726-044729_the-graph-is-not-a-vane.md`](../counsel/20260726-044729_the-graph-is-not-a-vane.md) — no P-vane; S0→S3 ladder; receipts inside Mantra; lane (b) gated on S0 table.
+**Ruling:** [`../counsel/date/20260726/20260726-044729_the-graph-is-not-a-vane.md`](../counsel/date/20260726/20260726-044729_the-graph-is-not-a-vane.md) — no P-vane; S0→S3 ladder; receipts inside Mantra; lane (b) gated on S0 table.
 
 **Status:** Answered. Relay landing S0 instrument · S1a/S1b sidecar · S3 hammock; S2 after S0 table; F COLD undisturbed.
 
@@ -59,7 +59,7 @@
 
 ## Hoon · Azimuth · Ames — **verdicts filed** (`20260712.092212`)
 
-**Counsel:** [`../counsel/20260712-092212_claude-counsel-hoon-azimuth-ames-verdicts.md`](../counsel/20260712-092212_claude-counsel-hoon-azimuth-ames-verdicts.md)
+**Counsel:** [`../counsel/date/20260712/20260712-092212_claude-counsel-hoon-azimuth-ames-verdicts.md`](../counsel/date/20260712/20260712-092212_claude-counsel-hoon-azimuth-ames-verdicts.md)
 
 | Like | Over | Teacher keeps |
 |------|------|---------------|
@@ -93,7 +93,7 @@
 
 **Disposition:** **A-narrow interim → B supersede-by-witness** — `lane_kvm` (off by default, `/dev/kvm` only, no sessions) as wall-repair; Pond earns the daily seat by refusal-parity, never by feature list.
 
-**Counsel:** [`../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) (addendum: red-team escapes→asserts · `-nic none` · two-lane exit criteria before season · lane→customs graduation)
+**Counsel:** [`../counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) (addendum: red-team escapes→asserts · `-nic none` · two-lane exit criteria before season · lane→customs graduation)
 
 **Ask closed:** [`../session-logs/archive/20260712/20260712-004012_framework-metal-g0c-pond-ask.md`](../session-logs/archive/20260712/20260712-004012_framework-metal-g0c-pond-ask.md)
 
@@ -103,7 +103,7 @@
 
 **Metal parity pin (chaptered):** suite **GREEN** — 2 chapters · composition **324** GREEN say-lines · suite nib **432**. Env[256] cleared by fresh Env per chapter. wasmtime 31.0.0 via PATH or `tools/.cache/wasmtime/`.
 
-**`lane_kvm` seated (`113900` word):** `LANE_KVM=false` default · refuse GREEN · D-Bus/systemd escape retired [`../active-designing/20260712-113900_lane-kvm-retire-dbus-escape.md`](../active-designing/20260712-113900_lane-kvm-retire-dbus-escape.md) · on-path scripts ready behind host kvm grant.
+**`lane_kvm` seated (`113900` word):** `LANE_KVM=false` default · refuse GREEN · D-Bus/systemd escape retired [`../active-designing/date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md`](../active-designing/date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md) · on-path scripts ready behind host kvm grant.
 
 **Bron session-log law (`120007` · Claude affirm `120812` · index hygiene `121409`):** living logs are `.bron`; Markdown folded under `archive/YYYYMMDD/`. Order holds: host on-path G0-complete first, then G1, then Pond.
 
@@ -121,9 +121,9 @@
 
 **Host metal parity re-pin `193958`:** full suite **GREEN** at git nib `826bcea` — chapter 1 GREEN · chapter 2 GREEN · full witness suite under Env binding ceiling. Tee log `tools/.cache/parity-host.log`. Fresh-sitting first act **closed**. Go `ee1c37f`.
 
-**Claude `195155` G1 check-in:** walked `ee1c37f` Good on reachable GitHub remote; affirmed re-pin. Recommend **open G1** scoped SLC — spike *which Genode libc build path* first (fetches under `tools/.cache/proven-seat/`), then same `receipt_core` seed on jailed TCG serial for one GREEN line; guest never merger; Route two watch-post. Parks: module-home/name · red×2 · chapter early · no keys. Counsel seated [`../active-designing/20260712-195155_proven-seat-g1-claude-opening-counsel.md`](../active-designing/20260712-195155_proven-seat-g1-claude-opening-counsel.md).
+**Claude `195155` G1 check-in:** walked `ee1c37f` Good on reachable GitHub remote; affirmed re-pin. Recommend **open G1** scoped SLC — spike *which Genode libc build path* first (fetches under `tools/.cache/proven-seat/`), then same `receipt_core` seed on jailed TCG serial for one GREEN line; guest never merger; Route two watch-post. Parks: module-home/name · red×2 · chapter early · no keys. Counsel seated [`../active-designing/date/20260712/20260712-195155_proven-seat-g1-claude-opening-counsel.md`](../active-designing/date/20260712/20260712-195155_proven-seat-g1-claude-opening-counsel.md).
 
-**Kaeden `195339` go+open+kg:** G1 **opened**. Crossing pin [`../active-designing/20260712-195339_proven-seat-g1-crossing-pin.md`](../active-designing/20260712-195339_proven-seat-g1-crossing-pin.md) — Genode toolchain + posix/libc; refuse host Zig-alone. Probe witness GREEN. Skeleton refuses until guest binary. Next: Framework toolchain fetch matching Sculpt 26.04 → serial GREEN.
+**Kaeden `195339` go+open+kg:** G1 **opened**. Crossing pin [`../active-designing/date/20260712/20260712-195339_proven-seat-g1-crossing-pin.md`](../active-designing/date/20260712/20260712-195339_proven-seat-g1-crossing-pin.md) — Genode toolchain + posix/libc; refuse host Zig-alone. Probe witness GREEN. Skeleton refuses until guest binary. Next: Framework toolchain fetch matching Sculpt 26.04 → serial GREEN.
 
 **Claude `201200` (evening handoff [`../bron-resins/20260712-200445_claude-evening-g1-toolchain.bron`](../bron-resins/20260712-200445_claude-evening-g1-toolchain.bron) · tip `130d374` Good):** all three asks cleared. (1) Toolchain **25.05** affirmed for Sculpt 26.04 ground — publisher equal-or-next-smaller · no park; pin **sources 25.05** beside toolchain for G1; META trio toolchain/sources 25.05 · ground Sculpt 26.04. (2) Kg **no reorder** — first motion = source fetch witness (toolchain shape) → `prepare_port libc` → `create_builddir` x86_64 → SLC guest (smallest receipt-verify · `Libc::Component::construct` · serial GREEN); jailed TCG needs no KVM. (3) Module home/name **park holds** until first serial GREEN; then `vendor/` is the shaped precedent. Counsel seated [`../active-designing/yonder/20260712-201200_proven-seat-g1-claude-three-asks.md`](../active-designing/yonder/20260712-201200_proven-seat-g1-claude-three-asks.md).
 
@@ -131,25 +131,25 @@
 
 **G1 serial GREEN `203900`:** posix guest under `tools/proven_seat_g1_guest/` · digest-grade fixture (receipt_core / slcl1) · `KERNEL=nova` jailed TCG · `[init -> g1-receipt-verify] GREEN: … seat speaks`. Witnesses: `proven_seat_g1_build_guest.rish` · `proven_seat_g1.rish`.
 
-**Claude `204549` close (three asks):** (1) **G1 closed digest-grade** — signed Ed25519 is next lap (host Kumara signs · guest verifies only · Monocypher / libsodium when that morning opens). (2) **`vendor/genode` open** — submodule @ `492a510…` tag 26.05 Codeberg · `ignore = untracked` · cache remains workbench. (3) **Pond next** — six-bar baseline while enclosure greens stay warm. Counsel [`../active-designing/20260712-204549_proven-seat-g1-claude-close.md`](../active-designing/20260712-204549_proven-seat-g1-claude-close.md).
+**Claude `204549` close (three asks):** (1) **G1 closed digest-grade** — signed Ed25519 is next lap (host Kumara signs · guest verifies only · Monocypher / libsodium when that morning opens). (2) **`vendor/genode` open** — submodule @ `492a510…` tag 26.05 Codeberg · `ignore = untracked` · cache remains workbench. (3) **Pond next** — six-bar baseline while enclosure greens stay warm. Counsel [`../active-designing/date/20260712/20260712-204549_proven-seat-g1-claude-close.md`](../active-designing/date/20260712/20260712-204549_proven-seat-g1-claude-close.md).
 
-**Claude `210800` shape (three asks):** (1) two-column scorecard affirmed — incumbent-measured · pond-required; named-gap-beside-green stands. (2) Exit criteria first — draft [`../active-designing/20260712-210800_pond-supersede-exit-criteria.md`](../active-designing/20260712-210800_pond-supersede-exit-criteria.md); signed-Kumara waits a fresh morning. (3) Bar6 three-door rewrite — env · `$XDG_RUNTIME_DIR/bus` · netns unshared; bar5 exactly-one secret; bars 2/4 incumbent-anchored. Counsel [`../active-designing/20260712-210800_pond-sixbar-claude-shape-exit.md`](../active-designing/20260712-210800_pond-sixbar-claude-shape-exit.md) · scorecard [`../active-designing/20260712-210800_pond-enclosure-scorecard-two-column.md`](../active-designing/20260712-210800_pond-enclosure-scorecard-two-column.md).
+**Claude `210800` shape (three asks):** (1) two-column scorecard affirmed — incumbent-measured · pond-required; named-gap-beside-green stands. (2) Exit criteria first — draft [`../active-designing/date/20260712/20260712-210800_pond-supersede-exit-criteria.md`](../active-designing/date/20260712/20260712-210800_pond-supersede-exit-criteria.md); signed-Kumara waits a fresh morning. (3) Bar6 three-door rewrite — env · `$XDG_RUNTIME_DIR/bus` · netns unshared; bar5 exactly-one secret; bars 2/4 incumbent-anchored. Counsel [`../active-designing/date/20260712/20260712-210800_pond-sixbar-claude-shape-exit.md`](../active-designing/date/20260712/20260712-210800_pond-sixbar-claude-shape-exit.md) · scorecard [`../active-designing/date/20260712/20260712-210800_pond-enclosure-scorecard-two-column.md`](../active-designing/date/20260712/20260712-210800_pond-enclosure-scorecard-two-column.md).
 
 **Claude `211400` N:** **six consecutive green sittings spanning at least seven calendar days** — breadth (editor · parity · QEMU · cold-start-after-reboot) · soak clock on frozen candidate (enclosure-enforcing edits reset) · red law (one red resets; two on one witness parks). Softening hinge (wrappers free) available if solo bench bites. Exit card complete; Claude second walk next (tip `40673e0`).
 
 **Kg `211900`:** living two-column witness `tools/pond_enclosure_scorecard.rish` — column one GREEN · column two gaps named · supersede season closed.
 
-**Claude `212412` second walk:** **freeze-worthy** affirmed. Four accretions landed — enforcing seam · `ENCLOSURE=ai-jail` retreat flag · exit bron path `bron-resins/pond-supersede-exit.bron` (absent measured) · `soak_start_nib`. Ask two: keep enforcing-code-resets until bite. Ask three: col2 probes landed refuse-until-candidate. Counsel [`../active-designing/20260712-212412_pond-scorecard-claude-second-walk.md`](../active-designing/20260712-212412_pond-scorecard-claude-second-walk.md).
+**Claude `212412` second walk:** **freeze-worthy** affirmed. Four accretions landed — enforcing seam · `ENCLOSURE=ai-jail` retreat flag · exit bron path `bron-resins/pond-supersede-exit.bron` (absent measured) · `soak_start_nib`. Ask two: keep enforcing-code-resets until bite. Ask three: col2 probes landed refuse-until-candidate. Counsel [`../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md`](../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md).
 
-**Claude `213600` freeze affirm:** **freeze affirmed** with master-seal custody — exit bron counts only when detached `.asc` verifies against master `0646 2132…` alone (`tools/pond_exit_bron_master_seal.sh`). Season held for named build word (no clock). Counsel [`../active-designing/20260712-213600_pond-freeze-affirm-master-seal.md`](../active-designing/20260712-213600_pond-freeze-affirm-master-seal.md).
+**Claude `213600` freeze affirm:** **freeze affirmed** with master-seal custody — exit bron counts only when detached `.asc` verifies against master `0646 2132…` alone (`tools/pond_exit_bron_master_seal.sh`). Season held for named build word (no clock). Counsel [`../active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md`](../active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md).
 
-**Claude `214200` latch affirm:** seal **rests** — zero rewrites. Ceremony command on exit-card affirmation path (primary `!`). Doorway Status on `213600` note → **Checkable**. Crypto teacher **Monocypher** — must use `monocypher-ed25519` / `crypto_ed25519_check` (RFC 8032/SHA-512); default BLAKE2b EdDSA is the named red-to-avoid. Counsel [`../active-designing/20260712-214200_proven-seat-signed-kumara-monocypher.md`](../active-designing/20260712-214200_proven-seat-signed-kumara-monocypher.md).
+**Claude `214200` latch affirm:** seal **rests** — zero rewrites. Ceremony command on exit-card affirmation path (primary `!`). Doorway Status on `213600` note → **Checkable**. Crypto teacher **Monocypher** — must use `monocypher-ed25519` / `crypto_ed25519_check` (RFC 8032/SHA-512); default BLAKE2b EdDSA is the named red-to-avoid. Counsel [`../active-designing/date/20260712/20260712-214200_proven-seat-signed-kumara-monocypher.md`](../active-designing/date/20260712/20260712-214200_proven-seat-signed-kumara-monocypher.md).
 
-**Claude `214900` pin:** ask one resting. Ask two — `vendor/monocypher` @ **4.0.3** / `ab2b16d…`. Counsel [`../active-designing/20260712-214900_signed-kumara-monocypher-pin.md`](../active-designing/20260712-214900_signed-kumara-monocypher-pin.md).
+**Claude `214900` pin:** ask one resting. Ask two — `vendor/monocypher` @ **4.0.3** / `ab2b16d…`. Counsel [`../active-designing/date/20260712/20260712-214900_signed-kumara-monocypher-pin.md`](../active-designing/date/20260712/20260712-214900_signed-kumara-monocypher-pin.md).
 
-**Kaeden `215400` open + kg:** signed-Kumara **GREEN** — generator · guest pair · TCG both lines · grade signed-Kumara. Lap [`../active-designing/20260712-214200_proven-seat-signed-kumara-monocypher.md`](../active-designing/20260712-214200_proven-seat-signed-kumara-monocypher.md).
+**Kaeden `215400` open + kg:** signed-Kumara **GREEN** — generator · guest pair · TCG both lines · grade signed-Kumara. Lap [`../active-designing/date/20260712/20260712-214200_proven-seat-signed-kumara-monocypher.md`](../active-designing/date/20260712/20260712-214200_proven-seat-signed-kumara-monocypher.md).
 
-**Claude `220400` resting affirm:** signed-Kumara **rests** — no one-line. Reframe: Rye already freestanding (Aurora); Genode wants a linked runtime, not syscalls — seam-C is the thinnest plank; meaning stayed in Rye. Horizon: Rye-body+C-shim (trigger when logic outgrows seam-C or second Genode guest) · Zig genode std layer · own seat via Aurora/Puddle. Morning: living-docs lint first; parity-chapter word is Kaeden’s over coffee. Counsel [`../active-designing/20260712-220400_proven-seat-seam-c-and-rye-body.md`](../active-designing/20260712-220400_proven-seat-seam-c-and-rye-body.md).
+**Claude `220400` resting affirm:** signed-Kumara **rests** — no one-line. Reframe: Rye already freestanding (Aurora); Genode wants a linked runtime, not syscalls — seam-C is the thinnest plank; meaning stayed in Rye. Horizon: Rye-body+C-shim (trigger when logic outgrows seam-C or second Genode guest) · Zig genode std layer · own seat via Aurora/Puddle. Morning: living-docs lint first; parity-chapter word is Kaeden’s over coffee. Counsel [`../active-designing/date/20260712/20260712-220400_proven-seat-seam-c-and-rye-body.md`](../active-designing/date/20260712/20260712-220400_proven-seat-seam-c-and-rye-body.md).
 
 **Docs compression layer — shipped:** five pages under ceiling · [`living_docs_lint.rish`](../tools/living_docs_lint.rish) seated (ratchet-advisory · five duties) · doorway roster joins `docs/` · Status Checkable on every page · **keeper folds GREEN** `223300` (keeps-list · module Status · ORGANIZING inbound · Karpathy/ai-memory dispositions closed).
 
@@ -167,7 +167,7 @@
 | — | **Parity word** — advisory ch.1 · signed-Kumara append ch.2 | **Landed** `20260713` · suite **433** |
 | **1** | **Forge courtesy** | Open · ~2 min |
 | **2** | **G2 naming** — seL4-kernel-swap · hw-kernel · Sculpt-integration | **Open** — word today never named |
-| — | Named supersede build word | Parked · [`210800`](../active-designing/20260712-210800_pond-supersede-exit-criteria.md) |
+| — | Named supersede build word | Parked · [`210800`](../active-designing/date/20260712/20260712-210800_pond-supersede-exit-criteria.md) |
 | — | Route two · Rye-body shim · libsodium | Parked on triggers |
 
 **Plan:** [`TASKS.md`](TASKS.md) · [`ROADMAP.md`](ROADMAP.md).
@@ -194,8 +194,8 @@
 
 | Item | Path |
 |------|------|
-| Uncompressed counsel | [`counsel/20260712-052806_claude-counsel-three-doors-and-teacher.md`](../counsel/20260712-052806_claude-counsel-three-doors-and-teacher.md) |
-| Hammock (our names) | [`active-designing/seam-season-hammock.md`](../active-designing/seam-season-hammock.md) (living) · frozen dated [`052806`](../active-designing/20260712-052806_seam-season-hammock.md) |
+| Uncompressed counsel | [`counsel/date/20260712/20260712-052806_claude-counsel-three-doors-and-teacher.md`](../counsel/date/20260712/20260712-052806_claude-counsel-three-doors-and-teacher.md) |
+| Hammock (our names) | [`active-designing/seam-season-hammock.md`](../active-designing/seam-season-hammock.md) (living) · frozen dated [`052806`](../active-designing/date/20260712/20260712-052806_seam-season-hammock.md) |
 | TASKS / ROADMAP | [`TASKS.md`](TASKS.md) · [`ROADMAP.md`](ROADMAP.md) |
 
 ### Four RTAC studies (smallest-first)
@@ -220,11 +220,11 @@ Understanding filed. CapTP formal decline · Door 3 · component compile · prov
 
 ### Bud / mudra — **seated** (`20260712.062656`)
 
-Warm names for Pedersen / Sigma — [`../context/specs/20260712-061012_bud-and-mudra-names-seated.md`](../context/specs/20260712-061012_bud-and-mudra-names-seated.md). T2 courtesy choice brief [`../active-designing/20260712-062656_giving-lane-t2-choice-brief.md`](../active-designing/20260712-062656_giving-lane-t2-choice-brief.md).
+Warm names for Pedersen / Sigma — [`../context/specs/20260712-061012_bud-and-mudra-names-seated.md`](../context/specs/20260712-061012_bud-and-mudra-names-seated.md). T2 courtesy choice brief [`../active-designing/date/20260712/20260712-062656_giving-lane-t2-choice-brief.md`](../active-designing/date/20260712/20260712-062656_giving-lane-t2-choice-brief.md).
 
 ### Giving-lane T0 — **seated** (`20260712.054650`) · T1 — **mapped** (`20260712.054942`)
 
-Private payer · transparent payee — [`foundations/20260629-014512_money-that-stays-close-to-home.md`](../foundations/20260629-014512_money-that-stays-close-to-home.md) · study [`054521`](../external-research/20260712-054521_taler-giving-lane-asymmetry.md) · OA field map [`054942`](../active-designing/20260712-054942_giving-lane-t1-open-asks-field-map.md) (top gaps: public completion `amount` and `from`).
+Private payer · transparent payee — [`foundations/20260629-014512_money-that-stays-close-to-home.md`](../foundations/20260629-014512_money-that-stays-close-to-home.md) · study [`054521`](../external-research/20260712-054521_taler-giving-lane-asymmetry.md) · OA field map [`054942`](../active-designing/date/20260712/20260712-054942_giving-lane-t1-open-asks-field-map.md) (top gaps: public completion `amount` and `from`).
 
 ### Encrypt-to-future-identity — **horizon park** (`20260712.114600`)
 
@@ -250,7 +250,7 @@ In-process pass admits published read + signed submit; refuses unpublished diges
 
 | Item | Path |
 |------|------|
-| Claude ruling (Q1–Q5) | [`counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md`](../counsel/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md) |
+| Claude ruling (Q1–Q5) | [`counsel/date/20260706/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md`](../counsel/date/20260706/20260706-232812_claude-ruling-oal4-mala-edit5-and-horizons.md) |
 | Zip 58 handoff prompt | [`expanding-prompts/yonder/20260706-190644_claude-zip58-ns-l3-handoff.md`](../expanding-prompts/yonder/20260706-190644_claude-zip58-ns-l3-handoff.md) |
 | Handoff log | [`session-logs/archive/20260706/20260706-190312_claude-handoff-ns-l3-complete.md`](../session-logs/archive/20260706/20260706-190312_claude-handoff-ns-l3-complete.md) |
 
@@ -278,7 +278,7 @@ Full-tree zip discipline unchanged; use **58** not 43.
 
 | Item | Path |
 |------|------|
-| Zero-copy counsel (A–H, I1–I7) | [`counsel/20260704-181612_zero-copy-resins-counsel-answers.md`](../counsel/20260704-181612_zero-copy-resins-counsel-answers.md) |
+| Zero-copy counsel (A–H, I1–I7) | [`counsel/date/20260704/20260704-181612_zero-copy-resins-counsel-answers.md`](../counsel/date/20260704/20260704-181612_zero-copy-resins-counsel-answers.md) |
 | Ends-first orientation (Part Three addendum) | [`external-research/20260704-185412_ends-first-map-orientation.md`](../external-research/20260704-185412_ends-first-map-orientation.md) |
 | Unified Cursor lane | [`expanding-prompts/yonder/20260704-185412_cursor-lane-zip42-counsel-unified.md`](../expanding-prompts/yonder/20260704-185412_cursor-lane-zip42-counsel-unified.md) |
 | Unified cut log | [`session-logs/archive/20260704/20260704-185412_unified-packet-cut.md`](../session-logs/archive/20260704/20260704-185412_unified-packet-cut.md) |
@@ -316,7 +316,7 @@ Full-tree zip at `git rev-parse HEAD` after intake commits; comment **is** the t
 | Item | Path |
 |------|------|
 | Orientation | [`external-research/20260704-031812_the-view-from-the-floor.md`](../external-research/20260704-031812_the-view-from-the-floor.md) |
-| Eight asks counsel | [`counsel/20260704-031812_eight-asks-one-sitting.md`](../counsel/20260704-031812_eight-asks-one-sitting.md) |
+| Eight asks counsel | [`counsel/date/20260704/20260704-031812_eight-asks-one-sitting.md`](../counsel/date/20260704/20260704-031812_eight-asks-one-sitting.md) |
 | Claude log | [`session-logs/archive/20260704/20260704-031812_zip41-152-eight-asks.md`](../session-logs/archive/20260704/20260704-031812_zip41-152-eight-asks.md) |
 
 ### Counsel summary (gates stay Kaeden's)
@@ -401,7 +401,7 @@ Claude bench still pins **150** until recipe v5 re-run on Claude metal at zip **
 
 | Item | Path |
 |------|------|
-| Recursion v4 (STOPS · journey's pause) | `expanding-prompts/20260704-030300_cursor-recursion-prompt-v4.md` |
+| Recursion v4 (STOPS · journey's pause) | `expanding-prompts/date/20260704/20260704-030300_cursor-recursion-prompt-v4.md` |
 | v2/v3 | supersede banners only |
 
 #### Renames (staged in index)
@@ -428,7 +428,7 @@ Broad forward-facing sweep: lap/toll/itinerary vocabulary across active-designin
 | **A1** | **Bench raise** | Run recipe v5 on zip **41** tip; pin parity **152 GREEN**; report gate trio + any zip hygiene failures |
 | **A2** | **Canonical gloss spec** | Draft or review `context/specs/*_canonical-glosses.md` — one table mapping nine senses → grain strand → filing rule; reconcile *canonical primer* vs *proposed canon* vs *affirm-in-place* |
 | **A3** | **TWO_ROOMS seating** | Recommend: seat `context/TWO_ROOMS.md` as context canon, or hold proposed; if seat, exact LEXICON rows + ORGANIZING cross-link |
-| **A4** | **SLC-L1 edge** | Affirm receipt scope closed at lap 1, or name SLC-L2 vs Open Asks priority — [`active-designing/20260702-195426_slcl1-verifiable-receipt.md`](../active-designing/20260702-195426_slcl1-verifiable-receipt.md) |
+| **A4** | **SLC-L1 edge** | Affirm receipt scope closed at lap 1, or name SLC-L2 vs Open Asks priority — [`active-designing/date/20260702/20260702-195426_slcl1-verifiable-receipt.md`](../active-designing/date/20260702/20260702-195426_slcl1-verifiable-receipt.md) |
 | **A5** | **Claim register** | Review claim quartet; propose witness hooks (if any) for checkable-room discipline in parity or width-check |
 | **A6** | **Amphora lap one** | Crossing manifest: witness design for Tilak marks on seed [`work-in-progress/20260703-202312_crossing_manifest_seed.rye`](20260703-202312_crossing_manifest_seed.rye) per [`external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) |
 | **A7** | **Fold reading map** | Lap 3 of canonical refinement — where does *fold canon* live (plural docs); interface-as-fold currency |
@@ -443,9 +443,9 @@ Broad forward-facing sweep: lap/toll/itinerary vocabulary across active-designin
 5. Vocabulary quartet (`024600` → `024800` → `024900` → `025600`)
 6. `context/TWO_ROOMS.md`
 7. `foundations/20260703-182612_sameness-is-the-macro.md`
-8. `linengrow/receipt.rye` + `active-designing/20260702-195426_slcl1-verifiable-receipt.md`
+8. `linengrow/receipt.rye` + `active-designing/date/20260702/20260702-195426_slcl1-verifiable-receipt.md`
 9. `session-logs/archive/20260704/20260704-030800_canonical-vocabulary-audit.md` + `031000_canonical-refinement-counsel.md`
-10. `expanding-prompts/20260704-030300_cursor-recursion-prompt-v4.md`
+10. `expanding-prompts/date/20260704/20260704-030300_cursor-recursion-prompt-v4.md`
 
 ### Amphora / Tilak / Pottery marks (dogfood)
 
@@ -519,13 +519,13 @@ Current tip: `2eb346b` (+ intake files uncommitted)
 
 ## Claude — gate terminology unify counsel (`20260704.004912`) — **SEATED** (`20260704.020800`)
 
-**Memo:** [`counsel/20260704-004912_gate-unify-counsel.md`](../counsel/20260704-004912_gate-unify-counsel.md) · **Spec:** [`context/specs/20260704-020800_one-word-one-gate.md`](../context/specs/20260704-020800_one-word-one-gate.md)
+**Memo:** [`counsel/date/20260704/20260704-004912_gate-unify-counsel.md`](../counsel/date/20260704/20260704-004912_gate-unify-counsel.md) · **Spec:** [`context/specs/20260704-020800_one-word-one-gate.md`](../context/specs/20260704-020800_one-word-one-gate.md)
 
 | Strand | Seat |
 |--------|------|
 | **Gate** | Checkpoint only — itinerary precondition; Kaeden's boxes |
 | **Witness** | Machine proof; forward prose *the trio*; program filenames frozen |
-| **Toll** | Price of shared order — [`what-needs-ordering`](../active-designing/20260703-200712_what-needs-ordering.md) |
+| **Toll** | Price of shared order — [`what-needs-ordering`](../active-designing/date/20260703/20260703-200712_what-needs-ordering.md) |
 
 ## Bench pins (`20260703.235512`) — replaced
 
@@ -554,15 +554,15 @@ Zip 39 five commits early — cut next full-tree zip at `bad68b4`.
 | **Pottery** | Value-object tier (`.pott`) |
 | **Amphora** | Crossing-vessel vocabulary |
 
-Law: [`active-designing/20260703-202312_the-marked-value.md`](../active-designing/20260703-202312_the-marked-value.md) · [`context/LEXICON.md`](../context/LEXICON.md). Next: crossing seed witness.
+Law: [`active-designing/date/20260703/20260703-202312_the-marked-value.md`](../active-designing/date/20260703/20260703-202312_the-marked-value.md) · [`context/LEXICON.md`](../context/LEXICON.md). Next: crossing seed witness.
 
 ## Landed `20260703.202312` — marked value + crossing suite (Claude Fable 5 · Cursor seated)
 
 | Item | Path |
 |------|------|
-| Type-marks silo | [`active-designing/20260703-202312_the-marked-value.md`](../active-designing/20260703-202312_the-marked-value.md) |
-| Sealed crossing | [`active-designing/20260703-201612_the-sealed-crossing.md`](../active-designing/20260703-201612_the-sealed-crossing.md) |
-| What needs ordering | [`active-designing/20260703-200712_what-needs-ordering.md`](../active-designing/20260703-200712_what-needs-ordering.md) |
+| Type-marks silo | [`active-designing/date/20260703/20260703-202312_the-marked-value.md`](../active-designing/date/20260703/20260703-202312_the-marked-value.md) |
+| Sealed crossing | [`active-designing/date/20260703/20260703-201612_the-sealed-crossing.md`](../active-designing/date/20260703/20260703-201612_the-sealed-crossing.md) |
+| What needs ordering | [`active-designing/date/20260703/20260703-200712_what-needs-ordering.md`](../active-designing/date/20260703/20260703-200712_what-needs-ordering.md) |
 | Amphora (research) | [`external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) |
 | Pottery suite (4 research) | `200712` mysticeti · move-for-rye · compute-commerce · cloneable-repo |
 | Seed (witnessed) | [`work-in-progress/20260703-202312_crossing_manifest_seed.rye`](20260703-202312_crossing_manifest_seed.rye) · `tools/crossing_manifest_seed.rish` |
@@ -597,7 +597,7 @@ Prior tip: `999359e`
 
 | Item | Path |
 |------|------|
-| Season vocabulary | [`active-designing/20260703-071212_cellar-seasons.md`](../active-designing/20260703-071212_cellar-seasons.md) |
+| Season vocabulary | [`active-designing/date/20260703/20260703-071212_cellar-seasons.md`](../active-designing/date/20260703/20260703-071212_cellar-seasons.md) |
 | Placement counsel | [`session-logs/archive/20260703/20260703-071212_placement-counsel.md`](../session-logs/archive/20260703/20260703-071212_placement-counsel.md) — recommends `pond/apps` + Dexter graduation trigger; ratifications order; not-advice in ORGANIZING |
 
 **Cursor metal:** parity **144 GREEN** · chrono **148** after seat · Amber lap 1 held from tip `7395bd1`. LEXICON season/lap/green rows + spec scrub companion line seated with intake.
@@ -631,8 +631,8 @@ Prior tip: `778f4b8` · parity **143** · chrono **143** · Doors 1–3 closed
 - **Value-object alternates (`200712`):** Grain · Bead · Murti · Tulsi · Loam · Kiln — beside seated **Pottery** (`.pott`); **Mudra** released `062656` → seated as fixed-tier proof ([`../context/specs/20260712-061012_bud-and-mudra-names-seated.md`](../context/specs/20260712-061012_bud-and-mudra-names-seated.md))
 - **Marketplace (`200712`):** Mela · Haat · Mandi (one live collision noted)
 - **Practice ground (`200712`):** Lila · Greenhouse · Nursery · Chalk · Slate · Rehearsal
-- **Itinerary vocabulary (`001012` → `030300` → `030600`):** **Itinerary** · **open itinerary** · **stops** · **journey's pause** · **off-route** — [`context/specs/20260704-030300_itinerary-retires-diet.md`](../context/specs/20260704-030300_itinerary-retires-diet.md); primer [`external-research/20260704-030600_itinerary-and-the-crossing-manifest.md`](../external-research/20260704-030600_itinerary-and-the-crossing-manifest.md); recursion prompt v4 [`expanding-prompts/20260704-030300_cursor-recursion-prompt-v4.md`](../expanding-prompts/20260704-030300_cursor-recursion-prompt-v4.md)
-- **Toll word (`004912` counsel):** **Toll** *(proposed)* — ordering price beside itinerary; *levy* · *the narrows* parked — [`counsel/20260704-004912_gate-unify-counsel.md`](../counsel/20260704-004912_gate-unify-counsel.md)
+- **Itinerary vocabulary (`001012` → `030300` → `030600`):** **Itinerary** · **open itinerary** · **stops** · **journey's pause** · **off-route** — [`context/specs/20260704-030300_itinerary-retires-diet.md`](../context/specs/20260704-030300_itinerary-retires-diet.md); primer [`external-research/20260704-030600_itinerary-and-the-crossing-manifest.md`](../external-research/20260704-030600_itinerary-and-the-crossing-manifest.md); recursion prompt v4 [`expanding-prompts/date/20260704/20260704-030300_cursor-recursion-prompt-v4.md`](../expanding-prompts/date/20260704/20260704-030300_cursor-recursion-prompt-v4.md)
+- **Toll word (`004912` counsel):** **Toll** *(proposed)* — ordering price beside itinerary; *levy* · *the narrows* parked — [`counsel/date/20260704/20260704-004912_gate-unify-counsel.md`](../counsel/date/20260704/20260704-004912_gate-unify-counsel.md)
 - **Build watcher aspect:** *Tend* · *Agni* (no seat until a seed runs) — *Tend* also a Tilak duty; watcher name still open
 
 ## Landed `20260703.020909` — handoff ROUND ZERO (Cursor)
@@ -684,7 +684,7 @@ Repo intaken at `cbb2b96`; all six Kaeden asks served in one proposal zip.
 
 | Ask | Landed |
 |-----|--------|
-| Metalsmoke, siloed | [`active-designing/20260703-013412_metalsmoke.md`](../active-designing/20260703-013412_metalsmoke.md) |
+| Metalsmoke, siloed | [`active-designing/date/20260703/20260703-013412_metalsmoke.md`](../active-designing/date/20260703/20260703-013412_metalsmoke.md) |
 | Yonder pass eleven | Zed-rules + astrology-silos prompts to `expanding-prompts/yonder/`; index + spec repointed; Lap 3 prompt held until Door 2 closes |
 | Recursion-prompt craft guide | [`external-research/20260703-013412_writing-recursion-prompts.md`](../external-research/20260703-013412_writing-recursion-prompts.md) |
 | ER audit | Verdict: healthy; four flags — compiler-fork memo wants a held-under-thin-frontend status line; two early editor memos are next-pass yonder candidates; license table refresh when next gratitude lands; blueprint companion line accreted (done) |

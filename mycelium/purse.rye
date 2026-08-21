@@ -1,7 +1,7 @@
 //! mycelium/purse.rye — the Purse: a per-account double-spend decided by the order.
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · Journey rung r1 — the crux.
-//! Design read: active-designing/20260813-070923_mycelium-purse-per-account-balances-exploration.md
+//! Design read: active-designing/date/20260813/20260813-070923_mycelium-purse-per-account-balances-exploration.md
 //!
 //! A purse is where one holder's own coins sit — one purse per account, distinct
 //! from the Till's single shared drawer. The truest double-spend a value ledger

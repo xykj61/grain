@@ -6,7 +6,7 @@
 //! Season: encoding — the serialization sibling of Season G (Cryptography). Where crypto/ authors the mathematics that produces bytes
 //! (hashes, signatures, sealed boxes), encoding/ authors the text forms those bytes travel in. Both keep the same discipline: authored
 //! from the standard, calling no std.base64 in the primitive, proven byte-for-byte against a reference runnable now.
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 //! Clean-room: the alphabet and the padding law are RFC 4648's own; the arithmetic is ours (.claude/rules/gratitude-licenses.md).
 //!
 //! THE CRUX — Base64 packs three 8-bit bytes into four 6-bit symbols, each symbol an index into a 64-character alphabet. The standard

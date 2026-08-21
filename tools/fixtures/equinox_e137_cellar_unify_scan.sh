@@ -10,8 +10,8 @@ set -eu
 
 MODE=${1:-}
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
-COUNSEL=counsel/20260801-011942_e137-cellar-amphora-unify-breach.md
-E138=counsel/20260801-012557_e138-cellar-retire-by-accretion.md
+COUNSEL=counsel/date/20260801/20260801-011942_e137-cellar-amphora-unify-breach.md
+E138=counsel/date/20260801/20260801-012557_e138-cellar-retire-by-accretion.md
 LEXICON=context/LEXICON.md
 MAP=work-in-progress/EQUINOX_SEAT_MAP.md
 REMEMBER=work-in-progress/REMEMBER.md

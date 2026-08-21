@@ -1,7 +1,7 @@
 # tools/fora_tenure_witness.rish — a leader holds tenure only while a majority still answers, CheckQuorum (FORA24).
 #
 # Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
-# FORA24. Design read: active-designing/20260814-084900_fora24-constel-tenure-checkquorum.md
+# FORA24. Design read: active-designing/date/20260814/20260814-084900_fora24-constel-tenure-checkquorum.md
 #
 # constel/tenure.rye adds CheckQuorum (Raft §6.2/§9.6), the proactive half of FORA20's reactive read guard: each election-timeout
 # window the leader counts how many piers answered its heartbeats (counting itself); if that backing falls below the majority

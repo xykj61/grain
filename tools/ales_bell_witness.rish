@@ -1,7 +1,7 @@
 # tools/ales_bell_witness.rish — a parametric bell (peaking EQ): turn the middle band, hold the edges (ALES48).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES48.
-# Design read: active-designing/20260814-170143_fill-ales48-lotus-parametric-bell.md
+# Design read: active-designing/date/20260814/20260814-170143_fill-ales48-lotus-parametric-bell.md
 # Stands on: lotus/tone.rye (ALES40 — low_pass, high_pass, precheck), lotus/notch.rye (ALES47 — the zero-gain equality target),
 # lotus/timeline.rye (ALES2 — the Clip and saturate); residual shape from lotus/stack.rye (ALES42).
 #

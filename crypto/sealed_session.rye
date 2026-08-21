@@ -5,7 +5,7 @@
 //! key agreement), BLAKE2b-512 (the key-derivation hash), and ChaCha20-Poly1305 (the authenticated encryption).
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — X25519 "lets two keepers agree a shared
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — X25519 "lets two keepers agree a shared
 //! secret before they trust each other" (Comlink session keys, Vault sealed storage). The 1,024-round itinerary, Season 3 Journey 9 (Skate)
 //! and the Comlink session surface both stand on exactly this shape.
 //! Kin: crypto/x25519.rye (the agreement, GREEN) · crypto/aead.rye (the seal, GREEN) · crypto/blake2b.rye (the KDF, GREEN) ·

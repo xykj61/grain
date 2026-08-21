@@ -19,7 +19,7 @@
 //! real key, no network, no funds. Signing with the maintainer's own Kumara key, and the Comlink
 //! transport that carries a signed post between Constel piers, stay Keaton's hand (custody/serve gates).
 //!
-//! Design read: active-designing/20260817-035757_scooter-signed-post-crux.md
+//! Design read: active-designing/date/20260817/20260817-035757_scooter-signed-post-crux.md
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build pond/apps/scooter_keyed.rye -femit-bin=pond/bin/scooter-keyed
 //!   pond/bin/scooter-keyed selftest

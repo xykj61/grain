@@ -3,8 +3,8 @@
 # algebraic known-answers and byte-for-byte against an independent implementation (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-# Design read: active-designing/20260816-023743_secp256k1-scalar-the-order-field.md (this rung's claim) and
-# active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
+# Design read: active-designing/date/20260816/20260816-023743_secp256k1-scalar-the-order-field.md (this rung's claim) and
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
 # Kin: crypto/secp256k1_scalarmul.rye (the point ladder these scalars multiply, GREEN) · crypto/ed25519_scalar.rye (the sibling scalar field mod
 # L). secp256k1 is not in Monocypher, so its source parity is not a rung here; the reference known-answers plus Zig's independent std.crypto are
 # the two witnesses (.claude/rules/gratitude-licenses.md).

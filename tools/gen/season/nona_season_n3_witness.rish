@@ -6,7 +6,7 @@ say "nona-season-n3: Language EN — handback return_surface_p41."
 say "nona-season-n3: Style Radiant — pause nona · open sept."
 say "nona-season-n3: Lens TAME — Nona Season n3."
 
-let handback = run ["test" "-f" "counsel/20260729-131327_nona-handback-return-surface-p41.md"]
+let handback = run ["test" "-f" "counsel/date/20260729/20260729-131327_nona-handback-return-surface-p41.md"]
 assert handback.ok else "nona-season-n3: handback counsel missing"
 
 let scope = run ["sh" "-c" "grep -q 'sept:   Surface Season — OPEN' tools/gen/season/prin_scope.rish && grep -q 'nona:  Nona Season — PAUSED' tools/gen/season/prin_scope.rish && grep -q 'return_surface_p41' tools/gen/season/prin_scope.rish && grep -q 'return_generator_s9' tools/gen/season/prin_scope.rish && echo SCOPE_OK"]

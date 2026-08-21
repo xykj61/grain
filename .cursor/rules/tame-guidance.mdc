@@ -40,7 +40,7 @@ Tiger Style discipline: **`usize` is a boundary type, not a design type.** Full 
 - **`u64`** -- wire-persistent offsets, timestamps, cross-target sizes.
 - **`usize`** -- **only** at the inherited-std seam (`buf.len`, `[]T` indexing, Zig `std` APIs). Pair every `@intCast` with `assert(value <= std.math.maxInt(Target))`. Seam casts are correct Tiger code, not debt.
 - **Never** `usize` in struct fields, public params, or return types we publish.
-- Charter: `expanding-prompts/20260620-210812_explicit-width-audit.md`; inventory: `work-in-progress/20260620-212126_usize-width-baseline.md`.
+- Charter: `expanding-prompts/date/20260620/20260620-210812_explicit-width-audit.md`; inventory: `work-in-progress/20260620-212126_usize-width-baseline.md`.
 - Live lint: `tools/width-check.rish`; growing: `tools/tame-check.rish` (unqualified-assert, no `Self = @This()`, whitespace).
 
 ## Season memory (authored Rye)
@@ -52,11 +52,11 @@ Tiger Style discipline: **`usize` is a boundary type, not a design type.** Full 
 
 ## Priority
 
-Safety first, performance second, joy third. Compiler fork (slice `len: u32`) is a **horizon** -- see `active-designing/20260628-043542_thin-frontend-slc-direction.md`; the active track is explicit widths + lint beside SLC.
+Safety first, performance second, joy third. Compiler fork (slice `len: u32`) is a **horizon** -- see `active-designing/date/20260628/20260628-043542_thin-frontend-slc-direction.md`; the active track is explicit widths + lint beside SLC.
 
 ## Tidy rules (`tame_style_check`)
 
-**Witness:** `tools/tame_style_check.rish` - **Scan:** `tools/fixtures/tame_style_scan.sh` - **Brief:** `active-designing/20260707-164612_tame-tidy-rules-brief.md`
+**Witness:** `tools/tame_style_check.rish` - **Scan:** `tools/fixtures/tame_style_scan.sh` - **Brief:** `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md`
 
 **Bans fail parity** -- fix before commit:
 
@@ -86,7 +86,7 @@ No new law -- the supplement already seats this. Agents must not skip it when sh
 5. **Before claiming GREEN** -- run `tame_style_check` and the module's own witness; trust advise ratchet counts (native must match legacy after `20260717.181715`).
 6. **Glass / NativeActivity touch** -- migrate `@memcpy` and add opening lines in that file before leaving.
 
-**Ledger:** `active-designing/20260717-181715_tame-slc-rye-audit-ledger.md` - **Brief:** `active-designing/20260707-164612_tame-tidy-rules-brief.md`
+**Ledger:** `active-designing/20260717-181715_tame-slc-rye-audit-ledger.md` - **Brief:** `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md`
 
 ## SLC Rye Definition of Done (hosted - linengrow - glass)
 

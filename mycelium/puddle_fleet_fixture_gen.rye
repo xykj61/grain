@@ -1,7 +1,7 @@
 //! mycelium/puddle_fleet_fixture_gen.rye — reproducibly emit the Puddle fleet fixture (r4 support).
 //!
 //! Season D (Kresfa & Mycelium) · Puddle fleet orchestration · rung r4 support.
-//! Design read: active-designing/20260813-114651_puddle-fleet-placement-exploration.md
+//! Design read: active-designing/date/20260813/20260813-114651_puddle-fleet-placement-exploration.md
 //!
 //! Seats the honest four-host, six-world fleet r1/r2/r3 use (each host capacity four), renders it to a
 //! `format puddle-fleet-v1` record on stderr — the exact bytes `mycelium/puddle_true.rye` reads back and the

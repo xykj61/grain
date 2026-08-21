@@ -23,7 +23,7 @@
 //!   rye build pond/apps/mcp_prompt_voice.rye -femit-bin=pond/bin/mcp-prompt-voice
 //!   pond/bin/mcp-prompt-voice selftest
 //!
-//! Scope: active-designing/20260812-153255_buhr-journey11-mcp-prompts-surface-exploration.md
+//! Scope: active-designing/date/20260812/20260812-153255_buhr-journey11-mcp-prompts-surface-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

@@ -3,7 +3,7 @@
 # (Edwards base ↔ u = 9) and byte-for-byte against Zig's independent std.crypto.ecc.Edwards25519 and std.crypto.dh.X25519 (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names the crypto parity wave; this
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names the crypto parity wave; this
 # rung unifies the identity story so Kumara's one key serves both signing and key agreement).
 # Kin: crypto/fe25519.rye (the GREEN base field beneath both maps) · crypto/x25519.rye (the key agreement the forward map feeds) ·
 # crypto/ed25519_sign.rye (the signing the same key serves). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET — its

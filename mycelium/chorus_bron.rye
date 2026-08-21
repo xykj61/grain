@@ -1,7 +1,7 @@
 //! mycelium/chorus_bron.rye — a quorum of vouchers travels as a readable record (r2).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Chorus · rung r2 — travel.
-//! Design read: active-designing/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
+//! Design read: active-designing/date/20260813/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
 //!
 //! r1 gathered a Chorus — a bounded quorum of independent Vouchers for one account position at one
 //! order-head — and proved it is believed only when a threshold of distinct nodes agree. A quorum a

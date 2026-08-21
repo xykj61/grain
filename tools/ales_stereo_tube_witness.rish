@@ -2,7 +2,7 @@
 # class (ALES135).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES135.
-# Design read: active-designing/20260815-034120_fill-ales135-lotus-stereo-tube.md
+# Design read: active-designing/date/20260815/20260815-034120_fill-ales135-lotus-stereo-tube.md
 # Stands on: lotus/tube.rye (ALES82 — the mono asymmetric tube drive run once per channel, itself ALES78's pre-gain split into one ceiling per sign), lotus/stereo_drive.rye (ALES132 — the odd hard-drive
 # sibling equal ceilings recover), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max).
 # A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES82's uneven rail into stereo — the positive half of each wave pinned at ceil_pos and

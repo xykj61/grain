@@ -11,7 +11,7 @@
 # signing list [chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit, to, value, data, accessList], the sighash over it, and the
 # twelve-field signed form that appends [yParity, r, s]). Where eip155_tx hashes the FLAT legacy nine-field list, eip1559_tx hashes the TYPED,
 # type-prefixed list of the London fork's default transaction — the two on-chain shapes a key is asked to sign, both over the same GREEN tower.
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
 # Clean-room: EIP-1559, EIP-2718, and the Yellow Paper are Ethereum's own public standards; the encoding is ours, standing on our own
 # parity-GREEN rungs, never a copied line (.claude/rules/gratitude-licenses.md).
 #

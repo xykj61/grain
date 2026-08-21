@@ -5,7 +5,7 @@
 //! its name and the Sha256 of its whole `album_manifest` bytes (the album's own content address, ALES224).
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES226.
-//! Design read: active-designing/20260815-141539_fill-ales226-lotus-library-manifest.md
+//! Design read: active-designing/date/20260815/20260815-141539_fill-ales226-lotus-library-manifest.md
 //! Stands on: lotus/seal.rye (ALES38) — begin/finish/open, the verify-before-trust frame reused WHOLE; lotus/album_manifest.rye
 //! (ALES224) — the album content-address this names, and its max_track_name bound reused for album names; std.crypto Sha256 for
 //! each album's manifest digest, the same hash the seal and every manifest already carry. No new hash, no new frame.

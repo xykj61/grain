@@ -14,7 +14,7 @@
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, audit-ready). Double-seats BESIDE the classical and post-quantum
 //! identities, retiring neither — a keeper who wants only one family uses that door directly; the hybrid door is for the keeper who wants both at once.
-//! Design read: active-designing/20260816-192400_post-quantum-identity-is-dual-key.md — the hybrid decision this module is the construction of.
+//! Design read: active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md — the hybrid decision this module is the construction of.
 //! Kin: crypto/kumara_identity.rye (the classical Ed25519 half, GREEN) · crypto/kumara_pq_identity.rye (the dual-key post-quantum half, GREEN) ·
 //! crypto/kumara_pq_sealed.rye (the post-quantum sealed-to-identity door the lattice half plugs into). Clean-room: BIP-39, SLIP-0010, RFC 5869, FIPS
 //! 203/204 are public standards studied through their specs; the composition is our own Rye wiring over our own GREEN rungs (.claude/rules/gratitude-licenses.md).

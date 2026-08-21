@@ -17,7 +17,7 @@
 //! refuses BadRange before any write.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES110.
-//! Design read: active-designing/20260815-010618_fill-ales110-lotus-silence-span.md
+//! Design read: active-designing/date/20260815/20260815-010618_fill-ales110-lotus-silence-span.md
 //! Stands on: lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the length trio against
 //! ALES109's insert_silence; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to prove that overwriting with silence never raises the peak.
 //!

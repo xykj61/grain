@@ -1,7 +1,7 @@
 //! pond/apps/constel_consensus_partition.rye — a partition heals (gossip-convergence r2).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · gossip-convergence r2.
-//! Design read: active-designing/20260813-040613_constel-consensus-gossip-convergence-exploration.md
+//! Design read: active-designing/date/20260813/20260813-040613_constel-consensus-gossip-convergence-exploration.md
 //!
 //! r1 proved two nodes begun from their own genesis converge once they gossip.
 //! This round proves convergence is **content-dependent, not timing-dependent**:

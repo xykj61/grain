@@ -5,7 +5,7 @@
 //! of two opened album manifests, a BEFORE and an AFTER, into three verdicts — added, removed, changed — every other track unchanged.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES232.
-//! Design read: active-designing/20260815-144541_fill-ales232-lotus-album-diff.md
+//! Design read: active-designing/date/20260815/20260815-144541_fill-ales232-lotus-album-diff.md
 //! Stands on: lotus/album_find.rye (ALES231) — the find / digest_of resolve this composes on; lotus/album_manifest.rye (ALES224) — the
 //! two opened AlbumManifest values this compares. The album level's own second-order primitive, standing ON album_find rather than
 //! beside it — the shape the level grows in, mirroring library_diff (ALES229). No new hash, no new frame.

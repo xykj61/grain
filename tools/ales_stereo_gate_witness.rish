@@ -1,7 +1,7 @@
 # tools/ales_stereo_gate_witness.rish — stereo_gate: the noise gate carried into stereo, one LINKED DETECTOR, the image the gate refuses to tear (ALES156).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES156.
-# Design read: active-designing/20260815-061957_fill-ales156-lotus-stereo-gate.md
+# Design read: active-designing/date/20260815/20260815-061957_fill-ales156-lotus-stereo-gate.md
 # Stands on: lotus/gate.rye (ALES51 — the mono noise gate, its gate and GateError reused whole for the below-both proof and the fault set), lotus/pan.rye (ALES10 — the StereoClip and its balance invariant),
 # lotus/normalize.rye (ALES103) / lotus/stereo_normalize.rye (ALES129 — the amplitude-class linked lift this rung answers for the dynamics class), lotus/timeline.rye (ALES2 — the Clip, sample_max, and the range-law shape).
 #

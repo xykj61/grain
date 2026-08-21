@@ -6,7 +6,7 @@
 //! `theirs`, every track reconciled into one verdict — resolved, dropped, or a named conflict.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES235.
-//! Design read: active-designing/20260815-150324_fill-ales235-lotus-album-merge.md
+//! Design read: active-designing/date/20260815/20260815-150324_fill-ales235-lotus-album-merge.md
 //! Stands on: lotus/album_find.rye (ALES231) — the find / digest_of resolve this composes on, the same resolve album_diff uses;
 //! lotus/album_manifest.rye (ALES224) — the three opened AlbumManifest values this reconciles. It mirrors library_merge (ALES234) one
 //! level down (album→track, catalog→record), unchanged in shape, and stands BESIDE album_diff (ALES232): both are second-order

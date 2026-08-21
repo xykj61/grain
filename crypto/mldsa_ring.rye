@@ -9,10 +9,10 @@
 //! sign/verify) stands on. It is the signature-side counterpart to crypto/mlkem_ring.rye, and the post-quantum successor to crypto/fe25519.rye.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — the pivot that seats ML-KEM/ML-DSA on the doubled oracle
+//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — the pivot that seats ML-KEM/ML-DSA on the doubled oracle
 //! (a FIPS known-answer AND an independent second implementation agreeing byte-for-byte), because the vendored Zig std.crypto ships ml_kem.zig
 //! and ml_dsa.zig but no SLH-DSA. ML-DSA is the post-quantum successor to the Ed25519 that every Kumara identity, subkey, and attestation rests
-//! on. Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+//! on. Rye-first spine: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 //! Kin: crypto/mlkem_ring.rye (the KEM-side ring sibling, GREEN) · crypto/shake.rye (the XOF that will seed ML-DSA's matrix and noise) ·
 //! crypto/fe25519.rye (the classical field this scheme outlives). The parity TARGET is Zig's std.crypto ml_dsa (q = 8380417, zeta = 1753,
 //! confirmed at vendor/zig-toolchain/lib/std/crypto/ml_dsa.zig) and the FIPS 204 known-answers, studied clean-room — never a copied line

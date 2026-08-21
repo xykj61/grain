@@ -15,7 +15,7 @@
 //! master cannot fault — the loop refuses whole up front or completes whole. The up-front check and the first pass's precheck are the atomicity crux.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES209.
-//! Design read: active-designing/20260815-115900_fill-ales209-lotus-stereo-reverb-freeze.md
+//! Design read: active-designing/date/20260815/20260815-115900_fill-ales209-lotus-stereo-reverb-freeze.md
 //! Stands on: lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged and composed with itself, its
 //! StereoReverbPresetError forwarded whole; lotus/reverb_freeze.rye (ALES208) — the mono freeze this carries across, the same iterated
 //! reverberation and the same max_passes bound; lotus/pan.rye — the StereoClip; lotus/clock.rye (ALES5) — the sample clock the freeze is spoken

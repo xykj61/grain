@@ -12,7 +12,7 @@ set -eu
 MODE=${1:-}
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 DIVERGE=tools/fixtures/dated_roof_divergence_scan.sh
-COUNSEL=counsel/20260731-172902_e118-metal-corrections.md
+COUNSEL=counsel/date/20260731/20260731-172902_e118-metal-corrections.md
 MAP=work-in-progress/EQUINOX_SEAT_MAP.md
 REMEMBER=work-in-progress/REMEMBER.md
 PRIN=tools/gen/season/prin_scope.rish

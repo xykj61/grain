@@ -6,8 +6,8 @@
 # behind a one-bit hint rather than truncating a ciphertext).
 #
 # Season: crypto — Season G's ML-DSA ladder, rung 2. Authors the encoding layer only; it holds no key and runs no protocol.
-# Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (the ML-DSA ladder, same rung shapes as ML-KEM). Rye-first
-# spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (the ML-DSA ladder, same rung shapes as ML-KEM). Rye-first
+# spine: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 # Clean-room: the FIPS 204 algorithms and constants (q = 8380417, d = 13, gamma2 = (q-1)/88 and (q-1)/32) are the public NIST standard's own; the
 # arithmetic is our own Rye, never a copied line (.claude/rules/gratitude-licenses.md).
 #

@@ -1,7 +1,7 @@
 //! mycelium/testament_fixture_gen.rye — reproducibly emit the Testament certificate fixture (r4 support).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · Testament · rung r4 support.
-//! Design read: active-designing/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
+//! Design read: active-designing/date/20260813/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
 //!
 //! Boots the named dev-net roster, seals a reading over a fixed demo Dag, and renders the whole Testament to
 //! a `format testament-v1` record — the exact bytes `mycelium/testament_true.rye` reads back and the r4

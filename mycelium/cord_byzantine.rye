@@ -1,7 +1,7 @@
 //! mycelium/cord_byzantine.rye — the Cord survives equivocation (r2).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · rung r2 — Byzantine refusal.
-//! Design read: active-designing/20260813-032851_mycelium-consensus-cord-exploration.md
+//! Design read: active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md
 //!
 //! r1 fixed the deterministic-commit crux over an *honest* mesh; r2 wires the
 //! adversary a leaderless DAG must survive onto that spine, known correct. The

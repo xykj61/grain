@@ -5,8 +5,8 @@
 # crypto/mlkem_sample.rye, with one new shape the KEM never needs: the weight-tau ball.
 #
 # Season: crypto — Season G's ML-DSA ladder, rung 3. Turns a seed into ring elements; it holds no key and runs no protocol.
-# Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (the ML-DSA ladder). Rye-first spine:
-# active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (the ML-DSA ladder). Rye-first spine:
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 # Clean-room: the FIPS 204 algorithms and constants (q = 8380417, eta 2/4, tau 39/49/60, CoefFromThreeBytes/CoefFromHalfByte) are the public NIST
 # standard's own; the arithmetic is our own Rye, never a copied line (.claude/rules/gratitude-licenses.md).
 #

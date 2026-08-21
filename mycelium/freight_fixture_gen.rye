@@ -1,7 +1,7 @@
 //! mycelium/freight_fixture_gen.rye — reproducibly emit the Freight manifest fixture (r4 support).
 //!
 //! Season D (Kresfa & Mycelium) · Puddle fleet orchestration × Mycelium consensus · rung r4 support.
-//! Design read: active-designing/20260813-121424_puddle-freight-world-state-migration-exploration.md
+//! Design read: active-designing/date/20260813/20260813-121424_puddle-freight-world-state-migration-exploration.md
 //!
 //! Seats one world's real ledger (a funder credits the owner 100, the owner pledges 40 to a stranger under a
 //! far deadline the two-block order never reaches — so the owner reads balance 60, reserved 40, received 0),

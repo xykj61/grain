@@ -5,7 +5,7 @@
 //! device, so custody can rest on something a hand remembers rather than a secret a disk holds.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
 //! Kin: crypto/blake2b.rye (the hash beneath it — Argon2's whole diffusion is BLAKE2b's, GREEN on metal). Monocypher (vendor/monocypher,
 //! CC0/BSD-dual) is the parity DISCIPLINE target — our own Rye, studied clean-room from the public standard RFC 9106 and Zig's own MIT
 //! reference (.claude/rules/gratitude-licenses.md).

@@ -1,7 +1,7 @@
 # tools/ales_reverb_width_witness.rish — reverb_width: reverberate the master WET, then set how wide the reverberated result sits, closing the width axis the reverb series opened (ALES212).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES212.
-# Design read: active-designing/20260815-122004_fill-ales212-lotus-reverb-width.md
+# Design read: active-designing/date/20260815/20260815-122004_fill-ales212-lotus-reverb-width.md
 # Stands on: lotus/stereo_reverb_preset.rye (ALES191 — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError forwarded
 # whole), lotus/stereo_width.rye (ALES211 — the width control, encode/scale-the-side/decode, run over the wet result), lotus/mid_side.rye (ALES210 —
 # the reversible mid/side primitive width spends), lotus/pan.rye (ALES10 — the StereoClip and its balance invariant), lotus/clock.rye (ALES5 — the

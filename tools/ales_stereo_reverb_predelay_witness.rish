@@ -1,7 +1,7 @@
 # tools/ales_stereo_reverb_predelay_witness.rish — the stereo pre-delay: the reverb's WHEN knob, the silent gap before the reverberant tail, across a stereo master (ALES195).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES195.
-# Design read: active-designing/20260815-102559_fill-ales195-lotus-stereo-reverb-predelay.md
+# Design read: active-designing/date/20260815/20260815-102559_fill-ales195-lotus-stereo-reverb-predelay.md
 # Stands on: lotus/stereo_reverb_preset.rye (ALES191 — the named-room stereo wet, run over the master unchanged); lotus/reverb_predelay.rye (ALES194
 # — the mono pre-delay this mirrors per ear); lotus/clock.rye (ALES5 — the sample clock, converting both the span and the pre-delay);
 # lotus/timeline.rye (ALES2 — the Clip each channel holds, its max_clip bounding each wet snapshot); lotus/pan.rye (ALES — the StereoClip).

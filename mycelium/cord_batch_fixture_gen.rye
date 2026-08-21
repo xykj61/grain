@@ -1,7 +1,7 @@
 //! mycelium/cord_batch_fixture_gen.rye — reproducibly emit the batched Cord fixture (r4 support).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · fact batching · rung r4 support.
-//! Design read: active-designing/20260813-043303_mycelium-fact-batching-exploration.md
+//! Design read: active-designing/date/20260813/20260813-043303_mycelium-fact-batching-exploration.md
 //!
 //! Seats the honest batched scene r1/r2/r3 use — a round-0 batch of the two genesis
 //! issues and a round-1 batch of the tax and the star reserve — commits it, and

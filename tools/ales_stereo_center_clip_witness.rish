@@ -2,7 +2,7 @@
 # class (ALES141).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES141.
-# Design read: active-designing/20260815-042021_fill-ales141-lotus-stereo-center-clip.md
+# Design read: active-designing/date/20260815/20260815-042021_fill-ales141-lotus-stereo-center-clip.md
 # Stands on: lotus/center_clip.rye (ALES87 — the mono center clipper run once per channel, y = if |x| ≤ t then 0 else x with no rail edge), lotus/stereo_crush.rye (ALES136 — the not-odd sibling whose
 # antisymmetry-break this rung mirrors by HOLDING it), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples,
 # sample_min/max). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES87's dead zone into stereo — silencing the quiet middle and passing the

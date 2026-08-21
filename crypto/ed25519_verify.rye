@@ -7,7 +7,7 @@
 //! a Rye-native verifier stands whole: a hand can prove a record was signed by a named key without trusting any std.crypto or any C library.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock;
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock;
 //! verify is the composition every prior rung was building toward).
 //! Kin: crypto/ed25519_decode.rye · crypto/ed25519_scalarmul.rye · crypto/ed25519_group.rye · crypto/ed25519_scalar.rye · crypto/sha512.rye
 //! (all GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own composition, studied

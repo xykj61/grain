@@ -1,7 +1,7 @@
 # tools/ales_stereo_hold_env_witness.rish — stereo_hold_env: the held envelope follower carried into stereo, one linked detector given the hold stage (ALES165).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES165.
-# Design read: active-designing/20260815-071625_fill-ales165-lotus-stereo-hold-env.md
+# Design read: active-designing/date/20260815/20260815-071625_fill-ales165-lotus-stereo-hold-env.md
 # Stands on: lotus/stereo_envelope.rye (ALES160 — the linked follower, its plain form the zero-hold limit re-proven beside it, its linked-peak key shared whole), lotus/hold_env.rye (ALES56 — the mono held follower, its
 # env_step_hold reasoning carried over the linked key, its HoldEnvError reused whole and its output the left-always-peak comparison), lotus/envelope.rye (ALES52 — the proven env_step and coeff_ok every held move delegates to),
 # lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip, sample_max, max_clip).

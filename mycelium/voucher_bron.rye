@@ -1,7 +1,7 @@
 //! mycelium/voucher_bron.rye — a signed voucher travels as a readable record.
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Voucher · rung r2 — travel.
-//! Design read: active-designing/20260813-095216_mycelium-voucher-attested-statement-exploration.md
+//! Design read: active-designing/date/20260813/20260813-095216_mycelium-voucher-attested-statement-exploration.md
 //!
 //! r1 made a Voucher — a node's signature over an account's position bound to an order-head — and proved
 //! it verifies offline and checks against the ledger it vouches. A proof a holder cannot hand to another

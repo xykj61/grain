@@ -6,7 +6,7 @@
 //! This rung seats that resolve, so an album is an index a keeper reaches into, not only a scroll they read down.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES231.
-//! Design read: active-designing/20260815-144122_fill-ales231-lotus-album-find.md
+//! Design read: active-designing/date/20260815/20260815-144122_fill-ales231-lotus-album-find.md
 //! Stands on: lotus/album_manifest.rye (ALES224) — the opened AlbumManifest (its ordered (name, digest) entries) this reads. The find /
 //! name_of resolve idiom is the exact shape of lotus/library_find.rye (ALES228), lifted from a catalog of records to a record of
 //! tracks, unchanged. No new frame, no new hash — a read over fields the seal already proved whole.

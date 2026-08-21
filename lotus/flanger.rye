@@ -20,7 +20,7 @@
 //! rest, the interpolation exact at the whole delay).
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES73.
-//! Design read: active-designing/20260814-200314_fill-ales73-lotus-flanger-feedback-modulated-delay.md
+//! Design read: active-designing/date/20260814/20260814-200314_fill-ales73-lotus-flanger-feedback-modulated-delay.md
 //! Stands on: lotus/chorus.rye (ALES71) — the triangle-LFO driver `triangle_delay_at`; lotus/echo.rye (ALES66) — the feedback delay whose
 //! in-place delay-line-is-the-buffer idiom this reuses, and which a zero-depth flanger equals byte-for-byte; lotus/glide.rye (ALES70) — the
 //! `glide_scale` fixed-point resolution and the interpolation read; lotus/timeline.rye (ALES2) — the Clip, sample_min/max, max_clip, saturate.

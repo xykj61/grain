@@ -4,7 +4,7 @@
 # rung, added later without changing a byte here." The vendored fetch is no longer held; this closes that horizon (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte." Grain will face a security audit; parity against the ACTUAL library an auditor names,
 # not merely a recited constant, is the honest way to earn it.
 # Kin: crypto/blake2b.rye (our authored primitive, GREEN against Zig's std.crypto) · tools/monocypher_blake2b_parity.rye (our printing harness) ·

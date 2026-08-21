@@ -1,7 +1,7 @@
 # tools/ales_glide_witness.rish — the gliding delay: a fractional delay read by linear interpolation (ALES70).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES70.
-# Design read: active-designing/20260814-194031_fill-ales70-lotus-gliding-interpolated-delay.md
+# Design read: active-designing/date/20260814/20260814-194031_fill-ales70-lotus-gliding-interpolated-delay.md
 # Stands on: lotus/taps.rye (ALES68 — the multi-tap whose fixed integer taps this generalizes to a moving fractional one, and whose
 # snapshot-before-write idiom this reuses); lotus/timeline.rye (ALES2 — the Clip, sample_max, max_clip, and the one true saturate).
 #

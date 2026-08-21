@@ -6,13 +6,13 @@ say "nona-season-n1: Language EN — Season-Driven Development named."
 say "nona-season-n1: Style Radiant — research · foundations · template."
 say "nona-season-n1: Lens TAME — Nona Season n1."
 
-let counsel = run ["test" "-f" "counsel/20260729-130535_nona-season-n1-season-driven-development.md"]
+let counsel = run ["test" "-f" "counsel/date/20260729/20260729-130535_nona-season-n1-season-driven-development.md"]
 assert counsel.ok else "nona-season-n1: n1 counsel missing"
 let research = run ["test" "-f" "external-research/20260729-130535_season-driven-development.md"]
 assert research.ok else "nona-season-n1: external-research missing"
 let law = run ["test" "-f" "foundations/20260729-130535_season-driven-development.md"]
 assert law.ok else "nona-season-n1: foundations law missing"
-let tmpl = run ["test" "-f" "expanding-prompts/20260729-130535_season-open-template.md"]
+let tmpl = run ["test" "-f" "expanding-prompts/date/20260729/20260729-130535_season-open-template.md"]
 assert tmpl.ok else "nona-season-n1: season-open template missing"
 
 let lex = run ["sh" "-c" "grep -q 'Season-Driven Development' context/LEXICON.md && grep -q 'Nest-Season Development' context/LEXICON.md && echo LEX_OK"]

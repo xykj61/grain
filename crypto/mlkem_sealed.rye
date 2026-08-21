@@ -6,7 +6,7 @@
 //! authenticated data), BLAKE2b-512 (the key-derivation hash), and ChaCha20-Poly1305 (the authenticated encryption).
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, doubled-oracle parity, audit-ready).
-//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — "ML-KEM is the post-quantum successor to X25519 … the sealed
+//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — "ML-KEM is the post-quantum successor to X25519 … the sealed
 //! session (sealed_session.rye, kumara_sealed.rye) … With this, the post-quantum sealed-session sibling of kumara_sealed.rye becomes buildable."
 //! The 1,024-round itinerary, Season 3 Journey 9 (Skate) and the Comlink session surface both stand on exactly this shape, made quantum-resistant.
 //! Kin: crypto/mlkem_encaps.rye + crypto/mlkem_decaps.rye (the KEM, GREEN) · crypto/mlkem_keygen.rye (the recipient keypair, GREEN) · crypto/aead.rye

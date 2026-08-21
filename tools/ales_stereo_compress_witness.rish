@@ -1,7 +1,7 @@
 # tools/ales_stereo_compress_witness.rish — stereo_compress: the compressor carried into stereo, one LINKED GAIN from the max detector, the image held to the sample (ALES157).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES157.
-# Design read: active-designing/20260815-062700_fill-ales157-lotus-stereo-compress.md
+# Design read: active-designing/date/20260815/20260815-062700_fill-ales157-lotus-stereo-compress.md
 # Stands on: lotus/compress.rye (ALES50 — the mono compressor, its compress and CompressError reused whole for the loud-channel proof and the fault set), lotus/stereo_gate.rye (ALES156 — the sibling that opened the stereo
 # dynamics family with the linked-detector law this rung deepens into a linked-gain law), lotus/stereo_normalize.rye (ALES129 — the amplitude-class one-shared-gain this rung makes dynamic and per-pair), lotus/pan.rye
 # (ALES10 — the StereoClip and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, sample_max).

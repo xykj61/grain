@@ -1,7 +1,7 @@
 # tools/ales_stereo_reverb_time_witness.rish — the stereo reverb in real time: a linked Schroeder network named in milliseconds (ALES189).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES189.
-# Design read: active-designing/20260815-095002_fill-ales189-lotus-stereo-reverb-in-real-time.md
+# Design read: active-designing/date/20260815/20260815-095002_fill-ales189-lotus-stereo-reverb-in-real-time.md
 # Stands on: lotus/stereo_reverb.rye (ALES187 — the linked stereo reverb this speaks in real time, delegated unchanged); lotus/reverb_time.rye
 # (ALES188 — the mono timed twin this mirrors, its CombSpecMs / AllpassSpecMs reused); lotus/clock.rye (ALES5 — the sample clock, its
 # samples_for converting ms to a bounded sample count); lotus/stereo_echo_time.rye (ALES182 — the first stereo real-time face, the pattern).

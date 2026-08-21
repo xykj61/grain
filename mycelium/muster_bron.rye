@@ -1,7 +1,7 @@
 //! mycelium/muster_bron.rye — a validator set travels as a readable record (r2).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Muster · rung r2 — travel.
-//! Design read: active-designing/20260813-110039_mycelium-muster-known-validator-set-exploration.md
+//! Design read: active-designing/date/20260813/20260813-110039_mycelium-muster-known-validator-set-exploration.md
 //!
 //! r1 bound a Chorus to a known validator set — a Muster — and proved a quorum is believed only when its
 //! enrolled voices meet the Byzantine threshold read from the roll's size. A roll a holder cannot hand to

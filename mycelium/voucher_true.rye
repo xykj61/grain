@@ -1,7 +1,7 @@
 //! mycelium/voucher_true.rye — a voucher reads a real ledger record true (r4, the arc closes).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Voucher · rung r4.
-//! Design read: active-designing/20260813-095216_mycelium-voucher-attested-statement-exploration.md
+//! Design read: active-designing/date/20260813/20260813-095216_mycelium-voucher-attested-statement-exploration.md
 //!
 //! r1 fixed the crux (a node's signed attestation binds a position to a named order-head, checkable
 //! against the ledger it vouches), r2 let the proof travel as bytes, r3 read a voucher across a Knot — all

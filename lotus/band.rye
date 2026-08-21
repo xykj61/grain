@@ -8,7 +8,7 @@
 //! seamless. The one correctness is that `Bandpass.run` equals `tone.high_pass` then `tone.low_pass` over a copy, byte-for-byte.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES46.
-//! Design read: active-designing/20260814-165106_fill-ales46-lotus-band-pass.md
+//! Design read: active-designing/date/20260814/20260814-165106_fill-ales46-lotus-band-pass.md
 //! Stands on: lotus/tone.rye (ALES40, ALES45) — high_pass_carry and low_pass_carry, each a pure function of (state, x), threaded
 //! here across the whole span; lotus/timeline.rye (ALES2) — the Clip it filters.
 //!

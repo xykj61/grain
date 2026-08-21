@@ -6,16 +6,16 @@ say "equinox-e0: Language EN — nest deca opens."
 say "equinox-e0: Style Radiant — Glow=code Brix=data; Cursor paused."
 say "equinox-e0: Lens TAME — Equinox Season e0."
 
-let charter = run ["test" "-f" "counsel/20260729-165912_the-equinox-season-deca-charter.md"]
+let charter = run ["test" "-f" "counsel/date/20260729/20260729-165912_the-equinox-season-deca-charter.md"]
 assert charter.ok else "equinox-e0: charter missing"
 
-let bow = run ["test" "-f" "counsel/20260729-165912_equinox-season-e0-bow.md"]
+let bow = run ["test" "-f" "counsel/date/20260729/20260729-165912_equinox-season-e0-bow.md"]
 assert bow.ok else "equinox-e0: bow missing"
 
 let reply = run ["test" "-f" "counsel/replies/20260729-165912_re-equinox-deca-claude-continuation.md"]
 assert reply.ok else "equinox-e0: Claude reply missing"
 
-let paste = run ["test" "-f" "expanding-prompts/20260729-165912_equinox-season-e0-recursion-prompt.md"]
+let paste = run ["test" "-f" "expanding-prompts/date/20260729/20260729-165912_equinox-season-e0-recursion-prompt.md"]
 assert paste.ok else "equinox-e0: recursion paste missing"
 
 let brix = run ["test" "-f" "tools/gen/season/recursion_block.brix"]
@@ -40,7 +40,7 @@ let run_clock = run ["sh" "-c" "${bin} 2>&1"]
 assert run_clock.ok else "equinox-e0: mod-clock failed"
 assert run_clock.out contains "GREEN" else "equinox-e0: mod-clock not GREEN"
 
-let pause = run ["sh" "-c" "grep -qF 'Cursor **PAUSED**' counsel/20260729-165912_the-equinox-season-deca-charter.md && grep -qF 'PAUSED' counsel/20260729-165912_the-equinox-season-deca-charter.md && grep -qF 'return_surface_p59' counsel/20260729-165912_the-equinox-season-deca-charter.md && echo PAUSE_OK"]
+let pause = run ["sh" "-c" "grep -qF 'Cursor **PAUSED**' counsel/date/20260729/20260729-165912_the-equinox-season-deca-charter.md && grep -qF 'PAUSED' counsel/date/20260729/20260729-165912_the-equinox-season-deca-charter.md && grep -qF 'return_surface_p59' counsel/date/20260729/20260729-165912_the-equinox-season-deca-charter.md && echo PAUSE_OK"]
 assert pause.ok else "equinox-e0: pause/handback scan failed"
 assert pause.out contains "PAUSE_OK" else "equinox-e0: Cursor pause · handback missing"
 

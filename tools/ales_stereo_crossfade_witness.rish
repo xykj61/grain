@@ -1,7 +1,7 @@
 # tools/ales_stereo_crossfade_witness.rish — stereo_crossfade: the equal-power crossfade carried into stereo with ONE SHARED LAW, both channels in lockstep, validated once before either mutates (ALES131).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES131.
-# Design read: active-designing/20260815-031427_fill-ales131-lotus-stereo-crossfade.md
+# Design read: active-designing/date/20260815/20260815-031427_fill-ales131-lotus-stereo-crossfade.md
 # Stands on: lotus/crossfade.rye (ALES12 — the mono equal-power crossfade run once per channel, itself reusing ALES11's split and ALES2's one true saturate), lotus/pan.rye (ALES10 — the StereoClip, two
 # mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, and the EditError reused whole). A Lotus master is a StereoClip whose defining invariant
 # is that left and right hold the same length. ALES130's fade closed on the recognition that a stereo fade-out laid under a stereo fade-in IS a stereo crossfade; this rung makes that gesture its own

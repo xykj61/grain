@@ -8,7 +8,7 @@
 //! EIP-1559 — the two on-chain shapes a key is asked to sign since the London fork made type-2 the default.
 //!
 //! Season: crypto (Season G · Cryptography), the ninth composition on the shelf, beside eth_address, eth_personal_sign, eip712, and eip155_tx.
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the Rye-first spine that seats Season G).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the Rye-first spine that seats Season G).
 //! Clean-room: the rules are EIP-1559, EIP-2718 (typed transaction envelope), and the Ethereum Yellow Paper; the arithmetic is ours
 //! (.claude/rules/gratitude-licenses.md).
 //!

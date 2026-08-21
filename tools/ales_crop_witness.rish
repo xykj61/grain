@@ -1,7 +1,7 @@
 # tools/ales_crop_witness.rish — crop: keep the named span and drop the rest, the exact complement of ALES2's cut (ALES111).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES111.
-# Design read: active-designing/20260815-011317_fill-ales111-lotus-crop.md
+# Design read: active-designing/date/20260815/20260815-011317_fill-ales111-lotus-crop.md
 # Stands on: lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the complement law),
 # lotus/meter.rye (ALES13 — the peak/RMS meter, used only to prove that dropping samples never raises the peak). ALES2's cut REMOVES the named span and keeps everything around
 # it (the clip SHRINKS by the span); crop KEEPS the named span and removes everything else (the clip becomes the span) — the Trim to Selection / Crop button every editor ships

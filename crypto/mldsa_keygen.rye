@@ -7,7 +7,7 @@
 //! public test vector.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — the sixth rung of the ladder ("mldsa_ring.rye … its front door is
+//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — the sixth rung of the ladder ("mldsa_ring.rye … its front door is
 //! the post-quantum successor to Kumara's Ed25519 identity"), the ML-DSA sibling of the ML-KEM keygen rung.
 //! Kin: crypto/mldsa_ring.rye (NTT · pointwise multiply, GREEN) · crypto/mldsa_encode.rye (SimpleBitPack · BitPack · Power2Round, GREEN) ·
 //! crypto/mldsa_sample.rye (RejNTTPoly · RejBoundedPoly, GREEN) · crypto/shake.rye (SHAKE256 for H). The parity TARGET is Zig's std.crypto

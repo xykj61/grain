@@ -10,8 +10,8 @@
 //! (crypto/eth_address.rye) at selftest to show the full ecrecover → sender-address chain.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-//! Design read: active-designing/20260816-040220_secp256k1-ecrecover.md (this rung's claim) and
-//! active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
+//! Design read: active-designing/date/20260816/20260816-040220_secp256k1-ecrecover.md (this rung's claim) and
+//! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
 //! Kin: crypto/secp256k1_ecdsa.rye (the verifier — recovery is verification run backward, GREEN) · crypto/secp256k1_ecdsa_sign.rye (the
 //! signer whose (r, s) this reads a key out of, GREEN) · crypto/eth_address.rye (the address the recovered key resolves to, GREEN) ·
 //! crypto/fe_secp256k1.rye (the base field whose square root this rung adds, GREEN). secp256k1 is not in Monocypher, so its source parity is

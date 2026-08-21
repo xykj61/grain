@@ -6,14 +6,14 @@ say "kiln-season-o2: Language EN — tidy living orientation after the cut."
 say "kiln-season-o2: Style Radiant — re-point doors; refuse fossil rewrite."
 say "kiln-season-o2: Lens TAME — Kiln Season o2."
 
-let counsel = run ["test" "-f" "counsel/20260728-235951_oven-season-o2-residual-tidy.md"]
+let counsel = run ["test" "-f" "counsel/date/20260728/20260728-235951_oven-season-o2-residual-tidy.md"]
 assert counsel.ok else "kiln-season-o2: o2 counsel missing"
 
 let stewards = run ["sh" "-c" "grep -q 'kiln/' STEWARDS.md && ! grep -q '\`anvil/\`' STEWARDS.md && echo STEWARDS_OK"]
 assert stewards.ok else "kiln-season-o2: STEWARDS faculty row scan failed"
 assert stewards.out contains "STEWARDS_OK" else "kiln-season-o2: STEWARDS still names anvil/ faculty"
 
-let homes = run ["sh" "-c" "grep -q 'amphora/ · kiln/' expanding-prompts/20260728-193914_surface-season-p0-recursion-prompt.md && grep -q 'amphora/ · kiln/' expanding-prompts/20260728-233053_surface-season-p37-recursion-prompt.md && echo HOMES_OK"]
+let homes = run ["sh" "-c" "grep -q 'amphora/ · kiln/' expanding-prompts/date/20260728/20260728-193914_surface-season-p0-recursion-prompt.md && grep -q 'amphora/ · kiln/' expanding-prompts/date/20260728/20260728-233053_surface-season-p37-recursion-prompt.md && echo HOMES_OK"]
 assert homes.ok else "kiln-season-o2: Surface homes scan failed"
 assert homes.out contains "HOMES_OK" else "kiln-season-o2: Surface recursion homes not kiln/"
 

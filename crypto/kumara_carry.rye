@@ -13,7 +13,7 @@
 //! wrong keeper is caught here, rather than mistaken for the right one.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G, "the library that serves Kumara
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G, "the library that serves Kumara
 //! identity, Vault, Comlink, and the Lotus signed carry." The 1,024-round itinerary, Season 2 Journey 6 (Provenance): "a real document carries a
 //! Kumara-signed, content-addressed chain of custody end to end." This rung stands both ends of that chain in one door: the identity that seals,
 //! and the binding that verifies the seal came from exactly that identity.

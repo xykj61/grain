@@ -8,7 +8,7 @@
 //! (crypto/fe25519.rye); the secret half names crypto/ed25519_sign.rye's own secret scalar rather than re-deriving it.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave). The map
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave). The map
 //! is the identity-unification crux: Kumara's one key both signs (Ed25519, crypto/ed25519_sign.rye) and agrees (X25519, crypto/x25519.rye),
 //! so the sealed session need not carry a second, separate key.
 //! Kin: crypto/fe25519.rye (the base field beneath both maps, GREEN) · crypto/x25519.rye (the key agreement the forward map feeds) ·

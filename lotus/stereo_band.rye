@@ -22,7 +22,7 @@
 //! refuse by name with BOTH channels and all four states byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES172.
-//! Design read: active-designing/20260815-075923_fill-ales172-lotus-stereo-band.md
+//! Design read: active-designing/date/20260815/20260815-075923_fill-ales172-lotus-stereo-band.md
 //! Stands on: lotus/band.rye (ALES46) — the mono two-stage band-pass Bandpass run once per channel, its ToneError reused whole and its cascade shared; lotus/tone.rye (ALES40, ALES45) — the high-pass and low-pass stages and the
 //! `precheck` sharing one coefficient-and-span validation; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples.
 //!

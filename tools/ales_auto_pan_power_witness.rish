@@ -1,7 +1,7 @@
 # tools/ales_auto_pan_power_witness.rish — the equal-power auto-pan: ALES11's equal-power split swept across the stereo field (ALES77).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES77.
-# Design read: active-designing/20260814-203749_fill-ales77-lotus-equal-power-auto-pan.md
+# Design read: active-designing/date/20260814/20260814-203749_fill-ales77-lotus-equal-power-auto-pan.md
 # Stands on: lotus/power.rye (ALES11 — the equal-power split `split(pos, den)`, reused verbatim); lotus/auto_pan.rye (ALES76 — the same
 # triangle-swept-position shape, only the linear split swapped for the equal-power one); lotus/chorus.rye (ALES71 — the triangle-LFO driver
 # `triangle_delay_at`, now the pan position); lotus/pan.rye (ALES10 — the StereoClip); lotus/glide.rye (ALES70 — `glide_scale`, 256 = hard

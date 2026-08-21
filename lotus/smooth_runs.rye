@@ -17,7 +17,7 @@
 //! leaves an already-coalesced input unchanged, so min_run = 0 is exactly the identity.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES101.
-//! Design read: active-designing/20260815-000323_fill-ales101-lotus-run-length-smoother.md
+//! Design read: active-designing/date/20260815/20260815-000323_fill-ales101-lotus-run-length-smoother.md
 //! Stands on: lotus/segment.rye (ALES95) — the voice-activity segmenter, whose Segments this reads and rewrites; lotus/voiced.rye (ALES94) — the Verdict the runs carry.
 //!
 //! HONEST SCOPE — software only, purely LOCAL, and READ-ONLY over the LABELS. A bounded in-process rewrite of one Segments on one bench, siloed to lotus/, touching no

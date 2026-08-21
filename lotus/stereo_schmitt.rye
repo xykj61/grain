@@ -29,7 +29,7 @@
 //! flip); any refusal (BadThreshold, BadRange) leaves BOTH channels byte for byte untouched, both rails untouched, and the pair balanced; count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES144.
-//! Design read: active-designing/20260815-044135_fill-ales144-lotus-stereo-schmitt.md
+//! Design read: active-designing/date/20260815/20260815-044135_fill-ales144-lotus-stereo-schmitt.md
 //! Stands on: lotus/schmitt.rye (ALES92) — the mono Schmitt trigger run once per channel, its from-silence `schmitt`, its carried `SchmittTrigger`, its `precheck` band-and-span law, and its SchmittError, all reused
 //! whole; lotus/stereo_infinite_clip.rye (ALES143) — the memoryless comparator whose odd antisymmetry this state-carrying member honestly parts from; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right)
 //! and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max.

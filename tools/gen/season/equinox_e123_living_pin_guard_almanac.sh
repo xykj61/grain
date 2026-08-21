@@ -32,7 +32,7 @@ entry = (
     "**Ran:** `sh tools/fixtures/equinox_e123_living_pin_guard_scan.sh` · **Stamp:** `"
     + stamp
     + "` · **Witness:** `tools/gen/season/equinox_e123_living_pin_guard_witness.rish` · "
-    "counsel `counsel/20260731-222426_e123-living-pin-guard.md` · "
+    "counsel `counsel/date/20260731/20260731-222426_e123-living-pin-guard.md` · "
     "roster `tools/fixtures/living_pin_guard_roster.txt` · "
     "emptied `tools/fixtures/living_pin_emptied_control.md`\n"
     "Expected control_gate · pins=honored · emptied_control=honored · kinds=honored · "

@@ -8,7 +8,7 @@ say "surface-p50: Language EN — hosted .brush on Wayland pinned."
 say "surface-p50: Style Radiant — one present; refuse live-five invent."
 say "surface-p50: Lens TAME — Surface Season p50."
 
-let counsel = run ["test" "-f" "counsel/20260729-135422_surface-season-p50-hosted-brush-choir.md"]
+let counsel = run ["test" "-f" "counsel/date/20260729/20260729-135422_surface-season-p50-hosted-brush-choir.md"]
 assert counsel.ok else "surface-p50: p50 counsel missing"
 
 let display = run ["sh" "-c" "test x$WAYLAND_DISPLAY != x"]
@@ -31,7 +31,7 @@ let hosted = run ["sh" "-c" "${seed_bin} brush brushstroke/seed-frame.brush 2>&1
 assert hosted.ok else "surface-p50: hosted brush failed"
 assert hosted.out contains "GREEN: brushstroke wayland seed — .brush on Wayland" else "surface-p50: hosted brush missing GREEN"
 
-let held = run ["sh" "-c" "grep -q 'live-five still' counsel/20260729-135422_surface-season-p50-hosted-brush-choir.md && echo HELD_OK"]
+let held = run ["sh" "-c" "grep -q 'live-five still' counsel/date/20260729/20260729-135422_surface-season-p50-hosted-brush-choir.md && echo HELD_OK"]
 assert held.ok else "surface-p50: live-five held scan failed"
 assert held.out contains "HELD_OK" else "surface-p50: live-five must stay held"
 

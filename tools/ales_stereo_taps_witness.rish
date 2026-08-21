@@ -1,7 +1,7 @@
 # tools/ales_stereo_taps_witness.rish — stereo_taps: the multi-tap delay carried into stereo, the same tap set on both channels, each channel read off its own frozen dry snapshot — the second rung of the stereo time-based wing, the echo's snapshot sibling (ALES183).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES183.
-# Design read: active-designing/20260815-090818_fill-ales183-lotus-stereo-multi-tap.md
+# Design read: active-designing/date/20260815/20260815-090818_fill-ales183-lotus-stereo-multi-tap.md
 # Stands on: lotus/taps.rye (ALES68 — the mono multi-tap run once per channel, its TapError reused whole and its precheck (newly factored out) reused for the up-front atomic validation), lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye
 # (ALES2 — the Clip and the one true saturate the mono multi-tap reuses).
 #

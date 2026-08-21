@@ -7,7 +7,7 @@
 # conversion: it composes one already-GREEN stone — the standard-Base64 rendering from encoding/base64.rye (RFC 4648, parity-GREEN against
 # std.base64) — and adds only the RFC 7468 label framing and the 64-character line wrap a real key or certificate carries, so a keeper reads
 # what a block holds at a glance and a parser finds exactly the bytes between the markers.
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 # Clean-room: the -----BEGIN/END LABEL----- framing and the 64-character wrap are RFC 7468's own public convention; the composition is ours,
 # standing on our own parity-GREEN Base64 primitive (.claude/rules/gratitude-licenses.md).
 #

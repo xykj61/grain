@@ -16,7 +16,7 @@
 //! every sample the full trimmer keeps PLUS the internal silences between them, so the two lengths are equal exactly when the clip carries no interior silence.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES98.
-//! Design read: active-designing/20260814-234106_fill-ales98-lotus-top-tail-trimmer.md
+//! Design read: active-designing/date/20260814/20260814-234106_fill-ales98-lotus-top-tail-trimmer.md
 //! Stands on: lotus/segment.rye (ALES95) — the voice-activity segmenter, reused by name so it keeps exactly the span the segmenter's outer non-silent runs name;
 //! lotus/trim_silence.rye (ALES96) — the full silence stripper, the length-bracket twin; lotus/split_silence.rye (ALES97) — the auto-splitter, the outer-boundary twin;
 //! lotus/timeline.rye (ALES2) — the Clip and cut; lotus/voiced.rye (ALES94) — the .silent verdict.

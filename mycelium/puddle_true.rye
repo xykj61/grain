@@ -2,7 +2,7 @@
 //! closes).
 //!
 //! Season D (Kresfa & Mycelium) · Puddle fleet orchestration · rung r4 — reads true.
-//! Design read: active-designing/20260813-114651_puddle-fleet-placement-exploration.md
+//! Design read: active-designing/date/20260813/20260813-114651_puddle-fleet-placement-exploration.md
 //!
 //! r1 derived the berth, r2 healed the fleet, r3 let it travel — all over fleets seated in code. r4 carries
 //! the reader onto a REAL on-disk `format puddle-fleet-v1` record a keeper can open and count —

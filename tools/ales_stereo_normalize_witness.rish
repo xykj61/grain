@@ -1,7 +1,7 @@
 # tools/ales_stereo_normalize_witness.rish — stereo_normalize_peak: peak normalization carried into stereo with ONE SHARED GAIN, the linked normalize that preserves the stereo image (ALES129).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES129.
-# Design read: active-designing/20260815-025919_fill-ales129-lotus-stereo-normalize.md
+# Design read: active-designing/date/20260815/20260815-025919_fill-ales129-lotus-stereo-normalize.md
 # Stands on: lotus/normalize.rye (ALES103 — the mono peak normalizer, its NormalizeError reused by name), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance
 # invariant), lotus/meter.rye (ALES13 — the peak/RMS meter, its measure_stereo reads both channels read-only and peak reads the loudest of each), lotus/timeline.rye (ALES2 — the Clip and its
 # saturating gain). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length. This rung opens the stereo AMPLITUDE class on the one member where the

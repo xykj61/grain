@@ -49,7 +49,7 @@
 | Baton museum | [`../context/baton-museum/`](../context/baton-museum/) — **thirteen** halls · counsel close living baton · cell hall |
 | Design shapes | [`../context/design-shapes/`](../context/design-shapes/) — sibling wing (bounds · tend · relay resin · fact fold) |
 | Acme personalize (source) | [`../manual/guides/first-season-personalize.md`](../manual/guides/first-season-personalize.md) · [`../tools/gen/season/personalize.template.brix`](../tools/gen/season/personalize.template.brix) |
-| Charter | [`../counsel/20260728-031722_the-geode-season-charter.md`](../counsel/20260728-031722_the-geode-season-charter.md) |
+| Charter | [`../counsel/date/20260728/20260728-031722_the-geode-season-charter.md`](../counsel/date/20260728/20260728-031722_the-geode-season-charter.md) |
 
 ## Not crushed here (yet)
 

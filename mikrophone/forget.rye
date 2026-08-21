@@ -5,7 +5,7 @@
 //! device's `redact` (DREY10), one level up: from a working buffer of samples to a packed desk of recordings.
 //!
 //! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY13.
-//! Design read: active-designing/20260814-071720_drey13-desk-forgets-one-recording-exploration.md
+//! Design read: active-designing/date/20260814/20260814-071720_drey13-desk-forgets-one-recording-exploration.md
 //! Stands on: mikrophone/catalog.rye (DREY7) — the content-addressed store this forgetting shapes.
 //!
 //! The founding promise "What forgets, protects" already stands on the device in two shapes: `power_down` forgets whole

@@ -1,7 +1,7 @@
 //! mycelium/cord_knot.rye — the Knot: a bounded Cord ties off its committed past.
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · checkpointing · rung r1 — the crux.
-//! Design read: active-designing/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
+//! Design read: active-designing/date/20260813/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
 //!
 //! The Cord's Dag is statically allocated (cord.cord_max_blocks = 256) — a
 //! feature, exactly TigerBeetle's discipline: a consensus that cannot fail by

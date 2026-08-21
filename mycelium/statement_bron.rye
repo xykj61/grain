@@ -1,7 +1,7 @@
 //! mycelium/statement_bron.rye — an account statement travels as a readable record.
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Statement · rung r2 — travel.
-//! Design read: active-designing/20260813-091851_mycelium-statement-account-voice-exploration.md
+//! Design read: active-designing/date/20260813/20260813-091851_mycelium-statement-account-voice-exploration.md
 //!
 //! r1 read one account's line out of a resolved ledger — balance, reserved, received, and every
 //! pledge it made or received — and proved the line RECONCILES (reserved equals the sum of its own

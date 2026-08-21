@@ -6,8 +6,8 @@
 # Season: crypto — the ML-DSA sibling of crypto/kumara_identity.rye. Where that renders a backup phrase to the Ed25519 identity every Grain module signs
 # with today, this renders a 32-byte seed to the ML-DSA identity a keeper's name wants on the morning a large quantum computer breaks the old elliptic
 # curves. The front door holds no key: every seed, message, and signature is a public test vector.
-# Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md ("its front door is the post-quantum successor to Kumara's Ed25519
-# identity"). Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md ("its front door is the post-quantum successor to Kumara's Ed25519
+# identity"). Rye-first spine: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 # Clean-room: ML-DSA is the public NIST FIPS 204 standard; the composition is our own Rye wiring over our own GREEN rungs, with Zig's std.crypto read only
 # as the reference to diff against — never a copied line (.claude/rules/gratitude-licenses.md).
 #

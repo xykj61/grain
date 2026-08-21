@@ -4,8 +4,8 @@
 # known-answers and byte-for-byte against an independent implementation (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-# Design read: active-designing/20260816-022000_secp256k1-group-law-the-proven-curve.md (the group law this composes over) and
-# active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
+# Design read: active-designing/date/20260816/20260816-022000_secp256k1-group-law-the-proven-curve.md (the group law this composes over) and
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
 # Kin: crypto/secp256k1_group.rye (the group this composes over, GREEN) · crypto/fe_secp256k1.rye (the base field beneath, GREEN) ·
 # crypto/ed25519_scalarmul.rye (the sibling ladder). secp256k1 is not in Monocypher, so its source parity is not a rung here; the reference
 # known-answers plus Zig's independent std.crypto are the two witnesses (.claude/rules/gratitude-licenses.md).

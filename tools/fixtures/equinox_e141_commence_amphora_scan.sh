@@ -11,8 +11,8 @@ set -eu
 
 MODE=${1:-}
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
-COUNSEL=counsel/20260801-024355_e141-amphora-cli-equinox-charter.md
-BOW=counsel/20260801-024355_e141-q1-bow.md
+COUNSEL=counsel/date/20260801/20260801-024355_e141-amphora-cli-equinox-charter.md
+BOW=counsel/date/20260801/20260801-024355_e141-q1-bow.md
 SEND=tools/gen/season/equinox_bundle_send.sh
 LEXICON=context/LEXICON.md
 MAP=work-in-progress/EQUINOX_SEAT_MAP.md

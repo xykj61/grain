@@ -1,7 +1,7 @@
 //! mycelium/chorus_knot.rye — a quorum's position survives a checkpoint (rung r3).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Chorus · rung r3 — across a Knot.
-//! Design read: active-designing/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
+//! Design read: active-designing/date/20260813/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
 //!
 //! r1 gathered a Chorus (a bounded quorum of independent Vouchers for one account position at one
 //! order-head) believed only when a threshold of distinct nodes agree; r2 let the whole quorum travel as

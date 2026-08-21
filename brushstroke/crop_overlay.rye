@@ -1,7 +1,7 @@
 //! brushstroke/crop_overlay.rye — HUNK61: paint the crop rectangle's outline on the picture, so a keeper sees what they will keep.
 //!
 //! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK61.
-//! Design read: active-designing/20260813-222800_hunk-crop-gesture-exploration.md ("The road on from here" — the overlay)
+//! Design read: active-designing/date/20260813/20260813-222800_hunk-crop-gesture-exploration.md ("The road on from here" — the overlay)
 //! Teacher, thanked clean-room: the crop overlay of a photo app (iCloud Photos / Google Photos) — the picture stays
 //! visible and a bright rectangle outlines the region a keeper will keep as they drag (concept only, siloed).
 //!

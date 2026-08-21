@@ -1,7 +1,7 @@
 # tools/drey_wire_witness.rish — the wire frame that carries only what was committed (DREY1).
 #
 # Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY1.
-# Design read: active-designing/20260814-021218_drey1-wire-frame-carry-only-committed-exploration.md
+# Design read: active-designing/date/20260814/20260814-021218_drey1-wire-frame-carry-only-committed-exploration.md
 # Stands on: mikrophone/session.rye (DREY0) — the memory that forgets.
 #
 # mikrophone/wire.rye frames a session's committed payload into a self-describing wire frame (magic · version · length ·

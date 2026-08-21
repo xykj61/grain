@@ -1,7 +1,7 @@
 # tools/ales_stereo_cut_witness.rish — stereo_cut: the foundational span-remove carried into stereo, both channels in lockstep, validate-both-before-either (ALES117).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES117.
-# Design read: active-designing/20260815-015354_fill-ales117-lotus-stereo-cut.md
+# Design read: active-designing/date/20260815/20260815-015354_fill-ales117-lotus-stereo-cut.md
 # Stands on: lotus/timeline.rye (ALES2 — the Clip, the mono cut run once per channel, and the EditError reused whole), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right,
 # and its balance invariant), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length so the
 # channels stay aligned in time; circling a span on the master and deleting it removes it from both speakers at once. This rung carries ALES2's cut into stereo the way ALES116 carried

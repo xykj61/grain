@@ -8,9 +8,9 @@
 //! holds no key of its own: every dk and ciphertext here is a public test vector.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — rung 6 of the ML-KEM ladder, the decapsulation rung whose
+//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — rung 6 of the ML-KEM ladder, the decapsulation rung whose
 //! recovered shared secret meets Zig's independent std.crypto ML-KEM decaps on BOTH the honest and the implicit-rejection path.
-//! Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+//! Rye-first spine: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 //! Kin: crypto/mlkem_encaps.rye (the fifth rung, ciphertext and shared secret GREEN) · crypto/mlkem_keygen.rye (dk layout) · crypto/mlkem_ring.rye
 //! (NTT · InvNTT · pointwise multiply, GREEN) · crypto/mlkem_encode.rye (ByteDecode · Decompress · Compress · ByteEncode, GREEN) · crypto/shake.rye
 //! (SHAKE256 for the rejection secret J). The parity TARGET is Zig's std.crypto ml_kem (nist.MLKem512/768/1024) SecretKey.decaps, studied clean-room —

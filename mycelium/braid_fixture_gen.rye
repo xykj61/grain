@@ -1,7 +1,7 @@
 //! mycelium/braid_fixture_gen.rye — reproducibly emit a linked-chain Cord dev-net fixture (r4 support).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Braid · rung r4 support.
-//! Design read: active-designing/20260813-081709_mycelium-braid-linked-atomic-chain-exploration.md
+//! Design read: active-designing/date/20260813/20260813-081709_mycelium-braid-linked-atomic-chain-exploration.md
 //!
 //! Seats a real five-block scene carrying a genuine REVERTING linked chain — the Braid's signature crux.
 //! A demo funder issues genesis credits of 100 to Alice and 50 to Bob (round 0); then a three-link braid

@@ -19,7 +19,7 @@
 //! all-silent master follows to all zeros on both, an illegal coefficient and an out-of-range span each refuse by name with both channels untouched and balanced, count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES160.
-//! Design read: active-designing/20260815-064459_fill-ales160-lotus-stereo-envelope.md
+//! Design read: active-designing/date/20260815/20260815-064459_fill-ales160-lotus-stereo-envelope.md
 //! Stands on: lotus/envelope.rye (ALES52) — the mono envelope follower, its `env_step`, `coeff_ok`, and `EnvelopeError` reused whole (the forced-unit-step exact-reach guarantee and the attack/release asymmetry, and the
 //! per-sample proof that both channels equal the mono follow of the linked key); lotus/stereo_gate.rye (ALES156) — the linked-DECISION law whose linked key (max of the two magnitudes) this shares; lotus/pan.rye (ALES10) —
 //! the StereoClip and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, buf/len/samples, sample_max.

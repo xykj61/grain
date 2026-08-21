@@ -18,7 +18,7 @@
 //! whole multiple of `hold`); a partial run holds its anchor across however many samples remain, exactly as a full run would.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES83.
-//! Design read: active-designing/20260814-213107_fill-ales83-lotus-sample-rate-decimator.md
+//! Design read: active-designing/date/20260814/20260814-213107_fill-ales83-lotus-sample-rate-decimator.md
 //! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/max, max_clip. It carries NO pre-gain and NO grid — like the bit-crush it is a pure
 //! resolution map, here on the TIME axis; a keeper who wants a boosted or clipped decimation runs lotus/drive.rye (ALES78) or lotus/crush.rye (ALES81)
 //! then decimate over the same span, all in-place span maps that compose.

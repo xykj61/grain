@@ -18,7 +18,7 @@
 //! peak magnitude (re-measured through ALES13) is unchanged; an empty pair and a single-sample pair are each their own rotation for any shift.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES126.
-//! Design read: active-designing/20260815-024103_fill-ales126-lotus-stereo-rotate.md
+//! Design read: active-designing/date/20260815/20260815-024103_fill-ales126-lotus-stereo-rotate.md
 //! Stands on: lotus/rotate.rye (ALES106) — the mono cyclic left-shift run once per channel; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant;
 //! lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples; lotus/meter.rye (ALES13) — the peak/RMS meter, used by the witness to prove a permutation moves no loudness in either channel.
 //!

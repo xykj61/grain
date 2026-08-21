@@ -1,7 +1,7 @@
 //! mycelium/freight_bron.rye — a world's freight travels as a readable record, and reads the same offline (r3).
 //!
 //! Season D (Kresfa & Mycelium) · Puddle fleet orchestration × Mycelium consensus · rung r3 — travel.
-//! Design read: active-designing/20260813-121424_puddle-freight-world-state-migration-exploration.md
+//! Design read: active-designing/date/20260813/20260813-121424_puddle-freight-world-state-migration-exploration.md
 //!
 //! r1 proved a moved world reads the byte-identical position on its new berth; r2 proved the whole fleet's
 //! state is conserved across a healing. Both read the world's own ledger blocks in hand. Yet a receiving node

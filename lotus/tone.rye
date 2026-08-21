@@ -6,7 +6,7 @@
 //! wrapping. It reuses ALES2's one true clamp (timeline.saturate) where the high-pass difference runs past the i16 range.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES40.
-//! Design read: active-designing/20260814-160501_fill-ales40-lotus-tone-control.md
+//! Design read: active-designing/date/20260814/20260814-160501_fill-ales40-lotus-tone-control.md
 //! Stands on: lotus/timeline.rye (ALES2) — the Clip it filters and the saturation it reuses. A tone control shapes what gain
 //! and fade cannot: not louder or softer, but brighter or warmer.
 //!

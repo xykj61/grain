@@ -12,7 +12,7 @@
 //! refuses BadDelay — so a sub-sample echo refuses honestly rather than silently doing nothing.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES67.
-//! Design read: active-designing/20260814-191951_fill-ales67-lotus-echo-in-real-time.md
+//! Design read: active-designing/date/20260814/20260814-191951_fill-ales67-lotus-echo-in-real-time.md
 //! Stands on: lotus/echo.rye (ALES66) — the feedback delay this speaks in real time, delegated unchanged; lotus/clock.rye (ALES5) —
 //! the sample clock, its samples_for converting ms to a bounded sample count and its fade_ms/place_at the payoff pattern this follows.
 //!

@@ -6,14 +6,14 @@ say "kiln-season-o0: Language EN — pause Surface; open Kiln oct."
 say "kiln-season-o0: Style Radiant — seat the nest; refuse silent path cut."
 say "kiln-season-o0: Lens TAME — Kiln Season o0."
 
-let charter = run ["test" "-f" "counsel/20260728-234419_the-kiln-season-oct-charter.md"]
+let charter = run ["test" "-f" "counsel/date/20260728/20260728-234419_the-kiln-season-oct-charter.md"]
 assert charter.ok else "kiln-season-o0: oct charter missing"
-let bow = run ["test" "-f" "counsel/20260728-234419_oven-season-o0-bow-surface-paused.md"]
+let bow = run ["test" "-f" "counsel/date/20260728/20260728-234419_oven-season-o0-bow-surface-paused.md"]
 assert bow.ok else "kiln-season-o0: o0 bow missing"
-let prompt = run ["test" "-f" "expanding-prompts/20260728-234419_oven-season-o0-recursion-prompt.md"]
+let prompt = run ["test" "-f" "expanding-prompts/date/20260728/20260728-234419_oven-season-o0-recursion-prompt.md"]
 assert prompt.ok else "kiln-season-o0: recursion printout missing"
 
-let pins = run ["sh" "-c" "grep -q 'PAUSED' counsel/20260728-234419_the-kiln-season-oct-charter.md && grep -q 'return_surface_p39' counsel/20260728-234419_the-kiln-season-oct-charter.md && grep -q 'o0' counsel/20260728-234419_the-kiln-season-oct-charter.md && grep -q 'oct' context/LEXICON.md && grep -q 'The Kiln Season' context/LEXICON.md && echo O0_OK"]
+let pins = run ["sh" "-c" "grep -q 'PAUSED' counsel/date/20260728/20260728-234419_the-kiln-season-oct-charter.md && grep -q 'return_surface_p39' counsel/date/20260728/20260728-234419_the-kiln-season-oct-charter.md && grep -q 'o0' counsel/date/20260728/20260728-234419_the-kiln-season-oct-charter.md && grep -q 'oct' context/LEXICON.md && grep -q 'The Kiln Season' context/LEXICON.md && echo O0_OK"]
 assert pins.ok else "kiln-season-o0: seat pin scan failed"
 assert pins.out contains "O0_OK" else "kiln-season-o0: oct lexicon or handback not seated"
 

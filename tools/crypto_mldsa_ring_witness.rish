@@ -9,10 +9,10 @@
 # protocol. ML-DSA's modulus q = 8380417 satisfies q = 1 mod 512, so a primitive 512th root of unity exists and X^256 + 1 splits ALL the way into
 # 256 linear factors — the NTT is COMPLETE and its domain multiply is plain coefficient-wise scalar multiplication, one structural simplification
 # ML-DSA's ring enjoys over ML-KEM's (whose q = 3329 leaves 128 degree-1 factors and a gamma base case).
-# Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (the pivot to ML-KEM/ML-DSA on the doubled oracle, and the
+# Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (the pivot to ML-KEM/ML-DSA on the doubled oracle, and the
 # honest parity boundary: FIPS standard-domain vs Zig's Montgomery domain agree only at the encoded byte boundary, so this rung proves
 # correctness by self-consistency and the byte parity against Zig std.crypto arrives at the keygen rung). Rye-first spine:
-# active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 # Clean-room: q = 8380417, zeta = 1753, and the FIPS 204 butterfly schedule are the public NIST standard's own (confirmed against Zig std.crypto
 # ml_dsa at vendor/zig-toolchain/lib/std/crypto/ml_dsa.zig); the arithmetic is our own Rye, never a copied line (.claude/rules/gratitude-licenses.md).
 #

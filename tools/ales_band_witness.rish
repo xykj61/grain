@@ -1,7 +1,7 @@
 # tools/ales_band_witness.rish — a band-pass: keep the middle, drop the lows below one cutoff and the highs above another (ALES46).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES46.
-# Design read: active-designing/20260814-165106_fill-ales46-lotus-band-pass.md
+# Design read: active-designing/date/20260814/20260814-165106_fill-ales46-lotus-band-pass.md
 # Stands on: lotus/tone.rye (ALES40, ALES45 — high_pass_carry, low_pass_carry, precheck) and lotus/timeline.rye (ALES2 — the Clip).
 #
 # lotus/band.rye composes the two proven carried filters into one band-pass: the high-pass at the LOW cutoff then the low-pass at

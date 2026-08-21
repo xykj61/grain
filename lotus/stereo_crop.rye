@@ -16,7 +16,7 @@
 //! LAW: any refusal leaves BOTH channels byte for byte untouched and still balanced; crop(0, len) the identity on both, crop(start, 0) the empty pair, a span past the samples BadRange.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES118.
-//! Design read: active-designing/20260815-015904_fill-ales118-lotus-stereo-crop.md
+//! Design read: active-designing/date/20260815/20260815-015904_fill-ales118-lotus-stereo-crop.md
 //! Stands on: lotus/crop.rye (ALES111) — the mono Trim to Selection run once per channel; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant;
 //! lotus/timeline.rye (ALES2) — the Clip, its cut/splice used by the selftest to prove the complement law, and the EditError reused whole; lotus/meter.rye (ALES13) — the peak/RMS meter.
 //!

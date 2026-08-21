@@ -2,7 +2,7 @@
 # even corner (ALES139).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES139.
-# Design read: active-designing/20260815-040747_fill-ales139-lotus-stereo-half-wave-rectifier.md
+# Design read: active-designing/date/20260815/20260815-040747_fill-ales139-lotus-stereo-half-wave-rectifier.md
 # Stands on: lotus/halve.rye (ALES85 — the mono half-wave rectifier run once per channel, max(x, 0) with no rail edge), lotus/stereo_rectify.rye (ALES138 — the pure-even full-wave sibling this rung partitions where
 # that one collapsed), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max). A Lotus master is a
 # StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES85's half-wave rectifier into stereo — keeping the positive half of the wave whole and folding the negative

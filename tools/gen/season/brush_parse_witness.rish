@@ -34,17 +34,17 @@ assert path.out contains "present=Frame" else "brush-parse: present Frame missin
 assert path.out contains "line-count=3" else "brush-parse: line-count not 3"
 assert path.out contains "GREEN: brush-parse" else "brush-parse: path run not GREEN"
 
-let seat = run ["test" "-f" "counsel/20260728-211918_surface-season-p23-brush-parser-begun.md"]
+let seat = run ["test" "-f" "counsel/date/20260728/20260728-211918_surface-season-p23-brush-parser-begun.md"]
 assert seat.ok else "brush-parse: p23 counsel seat missing"
-let seat24 = run ["test" "-f" "counsel/20260728-212328_surface-season-p24-brush-parse-tame-tidy.md"]
+let seat24 = run ["test" "-f" "counsel/date/20260728/20260728-212328_surface-season-p24-brush-parse-tame-tidy.md"]
 assert seat24.ok else "brush-parse: p24 counsel seat missing"
-let seat25 = run ["test" "-f" "counsel/20260728-212855_surface-season-p25-brush-refuse-suite.md"]
+let seat25 = run ["test" "-f" "counsel/date/20260728/20260728-212855_surface-season-p25-brush-refuse-suite.md"]
 assert seat25.ok else "brush-parse: p25 counsel seat missing"
-let seat26 = run ["test" "-f" "counsel/20260728-213205_surface-season-p26-brush-frame-lower.md"]
+let seat26 = run ["test" "-f" "counsel/date/20260728/20260728-213205_surface-season-p26-brush-frame-lower.md"]
 assert seat26.ok else "brush-parse: p26 counsel seat missing"
-let seat27 = run ["test" "-f" "counsel/20260728-215052_surface-season-p27-brush-stdout-redraw.md"]
+let seat27 = run ["test" "-f" "counsel/date/20260728/20260728-215052_surface-season-p27-brush-stdout-redraw.md"]
 assert seat27.ok else "brush-parse: p27 counsel seat missing"
-let seat28 = run ["test" "-f" "counsel/20260728-215608_surface-season-p28-brush-skate-grid.md"]
+let seat28 = run ["test" "-f" "counsel/date/20260728/20260728-215608_surface-season-p28-brush-skate-grid.md"]
 assert seat28.ok else "brush-parse: p28 counsel seat missing"
 
 say "brush-parse: refuse helpers..."

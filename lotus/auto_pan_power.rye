@@ -20,7 +20,7 @@
 //! source and writes a fresh StereoClip: the source is untouched, a stereo render rather than an in-place edit.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES77.
-//! Design read: active-designing/20260814-203749_fill-ales77-lotus-equal-power-auto-pan.md
+//! Design read: active-designing/date/20260814/20260814-203749_fill-ales77-lotus-equal-power-auto-pan.md
 //! Stands on: lotus/power.rye (ALES11) — the equal-power split `split(pos, den)` = [isqrt(den·(den−pos)), isqrt(den·pos)], the two amplitude
 //! weights on the quarter circle, reused verbatim; lotus/auto_pan.rye (ALES76) — the same triangle-swept-position shape, only the linear split
 //! swapped for the equal-power one; lotus/chorus.rye (ALES71) — the triangle-LFO driver `triangle_delay_at`, now the pan position; lotus/pan.rye

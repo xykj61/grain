@@ -2,7 +2,7 @@
 # proven against the FIPS 180-4 known-answer and byte-for-byte against an independent implementation (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-180728_open-season-g-crypto-blake2b.md (the season's opening read names SHA-512 as following
+# Design read: active-designing/date/20260815/20260815-180728_open-season-g-crypto-blake2b.md (the season's opening read names SHA-512 as following
 # the hash foundation).
 # Kin: crypto/blake2b.rye (the first primitive, GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a
 # copied line — our own arithmetic, studied clean-room from the public standard (.claude/rules/gratitude-licenses.md).

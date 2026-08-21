@@ -4,7 +4,7 @@
 # verifier checks it against the identity's public key (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md; crypto/kumara_subkey.rye names this rung outright
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md; crypto/kumara_subkey.rye names this rung outright
 # as "a signed delegation over exactly the door crypto/kumara_carry.rye already opens." The 1,024-round itinerary, Season 2 Journey 6 (Provenance):
 # an attested subkey is how one identity's chain of custody reaches, through many per-record keys, to a record a stranger can trust to the identity.
 # Kin: crypto/kumara_subkey.rye (the subkey this attests, GREEN) · crypto/kumara_identity.rye (the identity that issues the attestation, GREEN) ·

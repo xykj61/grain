@@ -28,7 +28,7 @@
 //! BadRange) leaves both counters untouched and the clip unchanged; count = 0 the identity (zero crossings) on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES145.
-//! Design read: active-designing/20260815-044940_fill-ales145-lotus-stereo-zero-cross.md
+//! Design read: active-designing/date/20260815/20260815-044940_fill-ales145-lotus-stereo-zero-cross.md
 //! Stands on: lotus/zero_cross.rye (ALES93) — the mono zero-crossing counter run once per channel, its from-silence `count_crossings`, its carried `ZeroCounter`, and its `ZeroCrossError`, all reused whole; lotus/schmitt.rye
 //! (ALES92) — the hysteresis comparator whose flips these count (through ALES93); lotus/stereo_meter.rye (ALES17) — the stereo analysis shape this mirrors (two mono readers, per-channel accessors); lotus/pan.rye (ALES10)
 //! — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples.

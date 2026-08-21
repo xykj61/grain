@@ -5,7 +5,7 @@
 //! `format lotus-album-v1` body listing the track count and, per track, its name and the Sha256 of its whole bundle bytes.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES224.
-//! Design read: active-designing/20260815-140211_fill-ales224-lotus-album-manifest.md
+//! Design read: active-designing/date/20260815/20260815-140211_fill-ales224-lotus-album-manifest.md
 //! Stands on: lotus/seal.rye (ALES38) — begin/finish/open, the verify-before-trust frame reused WHOLE; lotus/render_album.rye
 //! (ALES223) — the TrackIn (name · bundle bytes) this manifest names, and its max_tracks / max_track_name bounds; std.crypto Sha256
 //! for each track's bundle digest, the same hash the seal and the render manifest already carry. No new hash, no new frame.

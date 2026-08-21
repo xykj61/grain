@@ -1,7 +1,7 @@
 //! mycelium/lapse_fixture_gen.rye — reproducibly emit a deadline-clock Cord dev-net fixture (r4 support).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Lapse · rung r4 support.
-//! Design read: active-designing/20260813-085046_mycelium-lapse-pending-timeout-exploration.md
+//! Design read: active-designing/date/20260813/20260813-085046_mycelium-lapse-pending-timeout-exploration.md
 //!
 //! Seats a real four-block scene carrying a genuine LAPSED reservation — a pledge opened under a
 //! short deadline the order reaches before it is settled, and a second pledge left standing open

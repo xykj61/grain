@@ -5,7 +5,7 @@
 # Season: encoding — the text-form sibling of the crypto library, beside base64.rye, base58.rye, base58check.rye, and base32.rye. Where
 # crypto/ authors the mathematics that produces bytes, encoding/ authors the text those bytes travel in, keeping the same parity discipline:
 # authored from the standard, calling no std codec in the primitive, proven byte-for-byte against a reference runnable now.
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 # Clean-room: the alphabet is RFC 4648's own; the arithmetic is ours (.claude/rules/gratitude-licenses.md).
 #
 # encoding/hex.rye authors Base16 from the alphabet directly — two lowercase characters per byte, high nibble first, never padded; decode

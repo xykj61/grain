@@ -16,7 +16,7 @@
 //! payloads the identity on both, mismatched payloads BadRange, a paste past the samples BadRange.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES121.
-//! Design read: active-designing/20260815-021504_fill-ales121-lotus-stereo-paste-over.md
+//! Design read: active-designing/date/20260815/20260815-021504_fill-ales121-lotus-stereo-paste-over.md
 //! Stands on: lotus/paste_over.rye (ALES114) — the mono overwrite paste run once per channel; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance
 //! invariant; lotus/stereo_replace.rye (ALES116) — the insert-mode stereo paste imported by the selftest to prove the insert-contrast law; lotus/timeline.rye (ALES2) — the Clip, its
 //! max_clip bound, and the EditError reused whole; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to read the result.

@@ -4,7 +4,7 @@
 # independent implementation (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock;
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock;
 # signing's S = (r + k·a) mod L is the multiply-add this rung authors, the piece between the GREEN reduce and the signing composition).
 # Kin: crypto/ed25519_scalar.rye (reduce / is_canonical, GREEN — mul_add composes reduce over its own 512-bit product) · crypto/sha512.rye ·
 # crypto/ed25519_scalarmul.rye (all GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own

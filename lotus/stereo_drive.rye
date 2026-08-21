@@ -20,7 +20,7 @@
 //! identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES132.
-//! Design read: active-designing/20260815-032122_fill-ales132-lotus-stereo-drive.md
+//! Design read: active-designing/date/20260815/20260815-032122_fill-ales132-lotus-stereo-drive.md
 //! Stands on: lotus/drive.rye (ALES78) — the mono hard-clip drive run once per channel, itself ALES6's i64 gain into ALES49's ceiling law; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips,
 //! left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max.
 //!

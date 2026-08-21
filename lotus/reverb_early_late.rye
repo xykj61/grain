@@ -15,7 +15,7 @@
 //! sample is the honest weighted average. The early bank and the late preset are the SAME named room, so one word chooses both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES206.
-//! Design read: active-designing/20260815-113645_fill-ales206-lotus-reverb-early-late.md
+//! Design read: active-designing/date/20260815/20260815-113645_fill-ales206-lotus-reverb-early-late.md
 //! Stands on: lotus/multitap_time.rye (ALES69) — the timed multi-tap voicing the early reflections, run over a copy of the dry, its
 //! MultitapTimeError forwarded whole; lotus/reverb_preset.rye (ALES190) — the named-room late wash, run over the span unchanged, its
 //! ReverbPresetError forwarded whole; lotus/taps.rye (ALES68) — the max_taps bound each early bank stays within; lotus/clock.rye (ALES5) — the

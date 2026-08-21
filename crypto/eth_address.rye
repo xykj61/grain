@@ -8,7 +8,7 @@
 //! cryptography: it composes one already-GREEN stone — Keccak-256 proven in crypto/keccak256.rye against the canonical known-answers and
 //! Zig's independent std.crypto — into the address derivation and the EIP-55 checksum, the natural next rung crypto/keccak256.rye's own note
 //! named. It is the Ethereum sibling of encoding/base58check.rye, which wears the self-verifying envelope for the Bitcoin world.
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
 //! Kin: crypto/keccak256.rye (the hash this composes) · encoding/base58check.rye (the Bitcoin-world self-verifying address). Clean-room: the
 //! address rule and the EIP-55 checksum algorithm are Ethereum's own public standard; the composition is ours, standing on our own
 //! parity-GREEN Keccak-256, never a copied line (.claude/rules/gratitude-licenses.md).

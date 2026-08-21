@@ -8,7 +8,7 @@
 //! hyphen-joined whole always passes check_constellation — so the roster can never present a string the naming law rejects.
 //!
 //! Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA1.
-//! Design read: active-designing/20260814-041928_fora1-constel-roster-fake-pier-registry.md
+//! Design read: active-designing/date/20260814/20260814-041928_fora1-constel-roster-fake-pier-registry.md
 //!
 //! Purely LOCAL — a bounded in-memory registry over name.rye's public API, siloed to constel/, run from inside the jailed
 //! pier. No network, no Comlink transport, no handshake, no keys, no funds, no real address ever formed. The handshake and

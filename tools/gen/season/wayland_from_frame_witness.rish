@@ -9,11 +9,11 @@ say "wayland-from-frame: Language EN — Frame is the glass; Wayland hosts it."
 say "wayland-from-frame: Style Radiant — prove living hop; refuse invent pad."
 say "wayland-from-frame: Lens TAME — Surface Season p50."
 
-let counsel = run ["test" "-f" "counsel/20260729-134259_surface-season-p48-wayland-from-frame.md"]
+let counsel = run ["test" "-f" "counsel/date/20260729/20260729-134259_surface-season-p48-wayland-from-frame.md"]
 assert counsel.ok else "wayland-from-frame: p48 counsel missing"
-let feed = run ["test" "-f" "counsel/20260729-134827_surface-season-p49-brushframe-wayland-feed.md"]
+let feed = run ["test" "-f" "counsel/date/20260729/20260729-134827_surface-season-p49-brushframe-wayland-feed.md"]
 assert feed.ok else "wayland-from-frame: p49 feed counsel missing"
-let hosted_doc = run ["test" "-f" "counsel/20260729-135422_surface-season-p50-hosted-brush-choir.md"]
+let hosted_doc = run ["test" "-f" "counsel/date/20260729/20260729-135422_surface-season-p50-hosted-brush-choir.md"]
 assert hosted_doc.ok else "wayland-from-frame: p50 hosted counsel missing"
 
 let display = run ["sh" "-c" "test x$WAYLAND_DISPLAY != x"]
@@ -65,7 +65,7 @@ assert glow_quiet.ok else "wayland-from-frame: Glow quiet scan failed"
 let leak_count = trim glow_quiet.out
 assert leak_count == "0" else "wayland-from-frame: Glow src must not speak Wayland C"
 
-let held = run ["sh" "-c" "grep -q 'live-five' counsel/20260729-134259_surface-season-p48-wayland-from-frame.md && grep -q 'held' counsel/20260729-134259_surface-season-p48-wayland-from-frame.md && echo HELD_OK"]
+let held = run ["sh" "-c" "grep -q 'live-five' counsel/date/20260729/20260729-134259_surface-season-p48-wayland-from-frame.md && grep -q 'held' counsel/date/20260729/20260729-134259_surface-season-p48-wayland-from-frame.md && echo HELD_OK"]
 assert held.ok else "wayland-from-frame: live-five held scan failed"
 assert held.out contains "HELD_OK" else "wayland-from-frame: live-five must stay held this stamp"
 

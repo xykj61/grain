@@ -17,7 +17,7 @@
 //! byte, a wild length, or a truncated tail each fails closed — never a partial restore.
 //!
 //! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung FORA30.
-//! Design read: active-designing/20260814-105746_fora30-constel-durable-state.md
+//! Design read: active-designing/date/20260814/20260814-105746_fora30-constel-durable-state.md
 //! Stands on: constel/repair.rye (FORA17) — the TermedLog it persists; constel/roster.rye (FORA1) — max_piers, the slot bound.
 //!
 //! Purely LOCAL — the "stable storage" is a plain in-memory byte buffer on the bench: no real file descriptor, no fsync, no socket,

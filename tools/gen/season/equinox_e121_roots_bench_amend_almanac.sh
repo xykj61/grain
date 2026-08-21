@@ -31,7 +31,7 @@ entry = (
     "**Ran:** `sh tools/fixtures/equinox_e121_roots_bench_amend_scan.sh` · **Stamp:** `"
     + stamp
     + "` · **Witness:** `tools/gen/season/equinox_e121_roots_bench_amend_witness.rish` · "
-    "counsel `counsel/20260731-220432_e121-roots-bench-amend.md` · "
+    "counsel `counsel/date/20260731/20260731-220432_e121-roots-bench-amend.md` · "
     "Lexicon `context/LEXICON.md`\n"
     "Expected control_gate · roots=honored · bench_kinship=honored · six members · "
     "prove-red RED_claimed_bench_not_raised_root · seat_128 reserved · "

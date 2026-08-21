@@ -1,7 +1,7 @@
 //! image/color.rye — the open sRGB colour algebra (Season G, the smallest tractable crux).
 //!
 //! Season G (Open Media Primitives) · the colour floor beside image/qoi.rye and the audio wire.
-//! Design read: active-designing/20260816-210735_season-g-color-algebra-crux.md
+//! Design read: active-designing/date/20260816/20260816-210735_season-g-color-algebra-crux.md
 //! Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + sRGB — public standards only).
 //!
 //! A colour is four bytes — sRGB red · green · blue · alpha — held exactly, so a colour that goes in comes

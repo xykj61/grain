@@ -16,7 +16,7 @@
 //! classical single-family carry) and crypto/hybrid_signed_sealed.rye (the confidential-and-signed door), retiring neither — a keeper who trusts one
 //! family alone uses the classical carry; a keeper who wants the payload hidden uses the sealed door; this carry is for a PUBLIC record whose
 //! authorship must hold on both families at once.
-//! Design read: active-designing/20260816-201310_the-hybrid-signed-carry-provenance-on-both-worlds.md · active-designing/20260816-192400_post-quantum-identity-is-dual-key.md.
+//! Design read: active-designing/date/20260816/20260816-201310_the-hybrid-signed-carry-provenance-on-both-worlds.md · active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md.
 //! Kin: crypto/signed_carry.rye (the classical sibling) · crypto/hybrid_identity.rye (the hybrid signature, GREEN) · crypto/blake2b.rye (the content
 //! address, GREEN) · crypto/hybrid_signed_sealed.rye (the sealed sibling this mirrors). Clean-room: BIP-39, SLIP-0010, RFC 5869, FIPS 203/204 are
 //! public standards studied through their specs; the framing is our own Rye wiring over our own GREEN rungs (.claude/rules/gratitude-licenses.md).

@@ -15,7 +15,7 @@
 //! any refusal leaves BOTH channels byte for byte untouched and still balanced; count 0 the identity on both, dest = start the identity, a bad range BadRange.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES119.
-//! Design read: active-designing/20260815-020325_fill-ales119-lotus-stereo-move.md
+//! Design read: active-designing/date/20260815/20260815-020325_fill-ales119-lotus-stereo-move.md
 //! Stands on: lotus/move.rye (ALES113) — the mono drag gesture run once per channel; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant;
 //! lotus/timeline.rye (ALES2) — the Clip and the EditError reused whole; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to read the result.
 //!

@@ -1,6 +1,6 @@
 //! glow/lower_conditional.rye — lower a parsed `?:` test to runnable `.rye`.
 //!
-//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
+//! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `?:` is if/then/else. This hop lowers `(gth tick 32)` and bare `ready`,
 //! with then/else as named faces (defaults delivered/dropped), decimal
 //! literals, nested `^-  @uN  <decimal>`, `(lent <face>)`,

@@ -15,7 +15,7 @@
 //! ed25519 admits ONLY hardened derivation — a normal (non-hardened) index has no defined public-parent child and is refused NotHardened.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave — the library
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave — the library
 //! that serves Kumara identity, Vault, Comlink, and the Lotus signed carry; this rung is the wallet arc turned toward Grain's OWN ed25519 identity).
 //! Kin: crypto/bip32.rye (the secp256k1 HD sibling) · crypto/bip39_seed.rye (the seed this grows a master from) · crypto/ed25519_sign.rye (the
 //! public-key derivation this composes) · crypto/hmac_sha512.rye (the PRF). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity DISCIPLINE

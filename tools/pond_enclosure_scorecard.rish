@@ -9,8 +9,8 @@
 
 let cache = "tools/.cache/pond-enclosure"
 let meta = "${cache}/scorecard-meta.txt"
-let scorecard = "active-designing/20260712-210800_pond-enclosure-scorecard-two-column.md"
-let exit_card = "active-designing/20260712-210800_pond-supersede-exit-criteria.md"
+let scorecard = "active-designing/date/20260712/20260712-210800_pond-enclosure-scorecard-two-column.md"
+let exit_card = "active-designing/date/20260712/20260712-210800_pond-supersede-exit-criteria.md"
 let exit_bron = "bron-resins/pond-supersede-exit.bron"
 let example = "tools/enclosure.conf.example"
 let master_seal = "tools/pond_exit_bron_master_seal.sh"

@@ -1,7 +1,7 @@
 # tools/ales_stereo_notch_witness.rish — stereo_notch: the band-reject carried into stereo, the same two cutoffs on both channels, each channel a stateless parallel sum — the fourth rung of the stereo EQ / filter class (ALES173).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES173.
-# Design read: active-designing/20260815-080408_fill-ales173-lotus-stereo-notch.md
+# Design read: active-designing/date/20260815/20260815-080408_fill-ales173-lotus-stereo-notch.md
 # Stands on: lotus/notch.rye (ALES47 — the mono band-reject run once per channel, its ToneError reused whole), lotus/tone.rye (ALES40 — the low-pass and high-pass the notch sums and the precheck sharing one validation),
 # lotus/band.rye (ALES46 — the band-pass this notch complements), lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip and the one true saturate the notch's sum reuses).
 #

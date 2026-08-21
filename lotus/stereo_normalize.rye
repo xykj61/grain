@@ -21,7 +21,7 @@
 //! and a zero target or a target past sample_max each refuse BadTarget, both channels untouched.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES129.
-//! Design read: active-designing/20260815-025919_fill-ales129-lotus-stereo-normalize.md
+//! Design read: active-designing/date/20260815/20260815-025919_fill-ales129-lotus-stereo-normalize.md
 //! Stands on: lotus/normalize.rye (ALES103) — the mono peak normalizer, its NormalizeError reused by name; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance
 //! invariant; lotus/meter.rye (ALES13) — the peak/RMS meter, its `measure_stereo` reads both channels read-only and `peak` reads the loudest of each; lotus/timeline.rye (ALES2) — the Clip and the
 //! saturating `gain` that scales it.

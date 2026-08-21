@@ -1,7 +1,7 @@
 # tools/ales_reverb_pan_witness.rish — reverb_pan: reverberate the master WET, then place the reverberated result WHERE it sits in the field, the next rung after ALES212 closed HOW WIDE (ALES213).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES213.
-# Design read: active-designing/20260815-123603_fill-ales213-lotus-reverb-pan.md
+# Design read: active-designing/date/20260815/20260815-123603_fill-ales213-lotus-reverb-pan.md
 # Stands on: lotus/stereo_reverb_preset.rye (ALES191 — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError forwarded
 # whole), lotus/power.rye (ALES11 — the equal-power split split(pos, den) = [isqrt(den·(den−pos)), isqrt(den·pos)], the two amplitude weights on the
 # quarter circle, reused verbatim), lotus/timeline.rye (ALES2 — the Clip and its proven gain, each wet channel scaled by a fraction, saturated once),

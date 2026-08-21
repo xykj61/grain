@@ -6,7 +6,7 @@
 # top and the ramp sweeps around, every ray from the center one constant wedge color (the CSS conic-gradient shape). Stands
 # on the positioned ramp (image/color_ramp_stops.rye), the open color algebra (image/color.rye), and the open QOI codec
 # (image/qoi.rye).
-# Design read: active-designing/20260816-210735_season-g-color-algebra-crux.md (the color floor this stands on).
+# Design read: active-designing/date/20260816/20260816-210735_season-g-color-algebra-crux.md (the color floor this stands on).
 # Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color / Images specs -- public standards only).
 #
 # The crux this witness proves is that a conic positioned gradient becomes a real image: paint_gradient_conic fills a box

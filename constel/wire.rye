@@ -4,7 +4,7 @@
 //! deframed verify-before-trust, exactly as DREY1 proved the Mikrophone's committed payload before any real wire.
 //!
 //! Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA3.
-//! Design read: active-designing/20260814-043551_fora3-constel-local-wire-frame.md
+//! Design read: active-designing/date/20260814/20260814-043551_fora3-constel-local-wire-frame.md
 //! Stands on: constel/handshake.rye (FORA2) — the three values; constel/name.rye (FORA0) — the naming law at the border.
 //!
 //! Purely LOCAL — a bounded in-memory frame on the bench, siloed to constel/, run from inside the jailed pier. No network,

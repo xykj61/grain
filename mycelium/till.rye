@@ -1,7 +1,7 @@
 //! mycelium/till.rye — the Till: a contested draw decided by the agreed order.
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · Journey rung r1 — the crux.
-//! Design read: active-designing/20260813-064129_mycelium-till-double-spend-exploration.md
+//! Design read: active-designing/date/20260813/20260813-064129_mycelium-till-double-spend-exploration.md
 //!
 //! A till is the drawer a treasury's coins sit in. When two keepers reach into one
 //! till for coins that cannot pay both, the first draw the agreed order places takes

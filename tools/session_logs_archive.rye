@@ -10,13 +10,20 @@
 //! FILE keeps its elder name, because 137 references across the tree name it and a promise
 //! kept is worth more than a tidy filename.
 //!
+//! ANY ROOM, not only session-logs (`20260821.171200`). `--room <name>` folds any top-level room
+//! that has outgrown a reader, using that room's own `README.md` as the index to repoint. The
+//! bound is 256 flat files (`tools/room_bound_witness.rish`), and four rooms crossed it the day
+//! session-logs did: `counsel`, `active-designing`, `expanding-prompts`, and `waymarks`. The file
+//! keeps its elder name for the same reason its destination molted rather than its filename --
+//! 137 references already name it.
+//!
 //! Extensions folded: `.kyri` (living), `.bron` (the elder notation), `.md` (historical).
 //! `.kyri` was taught on `20260821` -- 600 such logs stood flat when the room folded, and a
 //! tool that knew only `.bron` and `.md` would have left every one of them behind.
 //!
 //! Entry points (read and mutate stay separate):
-//!   `rye run tools/session_logs_archive.rye preview [--today YYYYMMDD]` — count only
-//!   `rye run tools/session_logs_archive.rye fold [--today YYYYMMDD]`     — move + rewrite
+//!   `rye run tools/session_logs_archive.rye preview [--today YYYYMMDD] [--room NAME]` — count
+//!   `rye run tools/session_logs_archive.rye fold [--today YYYYMMDD] [--room NAME]`    — move
 //!   `rye run tools/session_logs_archive.rye selftest`                    — fixture proof
 //!
 //! Witness: `rishi/bin/rishi run tools/session_logs_archive_witness.rish`
@@ -26,11 +33,24 @@ const root_mod = @import("enrich/root.rye");
 
 const fixture_root = "tools/fixtures/session_logs_archive";
 
+/// The day a dated file folds into, or null when the name is not a one-clock stamp.
+///
+/// The shape required is the WHOLE stamp -- `YYYYMMDD-HHMMSS_`, sixteen characters before the
+/// slug -- and that strictness is load-bearing rather than fussy. Three tools must agree on what
+/// a dated file is: this one moves them, `tools/dated_path_resolve.rish` recovers references to
+/// them from the stamp alone, and `tools/fixtures/room_bound_scan.sh` counts them against the
+/// bound. An older, looser test here accepted a day-only name like `20260814-fill-ales28-x.md`
+/// and would have folded 33 such files in `active-designing` that the resolver cannot recover,
+/// since it needs the time to compute a home. A file a fold can move but a resolver cannot find
+/// is the one thing this whole arc exists to prevent, so the loose test is gone.
 pub fn day_from_log_fname(fname: []const u8) ?[]const u8 {
-    if (fname.len < 9 or fname[8] != '-') return null;
-    const ymd = fname[0..8];
-    for (ymd) |c| if (c < '0' or c > '9') return null;
-    return ymd;
+    // YYYYMMDD-HHMMSS_ is 16 characters, and a slug has to follow it.
+    if (fname.len < 17) return null;
+    if (fname[8] != '-') return null;
+    if (fname[15] != '_') return null;
+    for (fname[0..8]) |c| if (c < '0' or c > '9') return null;
+    for (fname[9..15]) |c| if (c < '0' or c > '9') return null;
+    return fname[0..8];
 }
 
 pub fn should_fold_flat(fname: []const u8, today: []const u8) bool {
@@ -152,9 +172,13 @@ fn move_log_file(a: std.mem.Allocator, io: std.Io, logs_dir: []const u8, fname: 
     if (mv_code != 0) return error.MoveFailed;
 }
 
-pub fn fold_session_logs(a: std.mem.Allocator, io: std.Io, root: []const u8, today: []const u8, dry_run: bool) !u32 {
+pub fn fold_session_logs(a: std.mem.Allocator, io: std.Io, root: []const u8, room: []const u8, today: []const u8, dry_run: bool) !u32 {
+    // invariant: a stamp is eight digits, so a caller that hands over anything else is confused
+    // about which day stays flat and must not be allowed to move files on that belief.
     std.debug.assert(today.len == 8);
-    const logs_dir = try std.fs.path.join(a, &.{ root, "session-logs" });
+    // invariant: a room must be named, since an empty name would fold the repository root.
+    std.debug.assert(room.len != 0);
+    const logs_dir = try std.fs.path.join(a, &.{ root, room });
     defer a.free(logs_dir);
     const names = try list_flat_logs(a, io, logs_dir);
     defer {
@@ -242,13 +266,13 @@ fn run_selftest(a: std.mem.Allocator, io: std.Io, root: []const u8) !void {
 
     // Two prior-day files now: alpha (.md) and gamma (.kyri). The count is the whole proof
     // that the new extension is folded rather than merely accepted by the filter.
-    const preview_count = try fold_session_logs(a, io, sandbox, today, true);
+    const preview_count = try fold_session_logs(a, io, sandbox, "session-logs", today, true);
     if (preview_count != 2) return error.SelftestPreviewCount;
     const alpha_flat = try std.fs.path.join(a, &.{ logs, "20260703-100000_alpha.md" });
     defer a.free(alpha_flat);
     if (!path_exists(io, alpha_flat)) return error.SelftestPreviewMutated;
 
-    const moved1 = try fold_session_logs(a, io, sandbox, today, false);
+    const moved1 = try fold_session_logs(a, io, sandbox, "session-logs", today, false);
     if (moved1 != 2) return error.SelftestMovedCount;
 
     const alpha_arch = try std.fs.path.join(a, &.{ logs, "date", "20260703", "20260703-100000_alpha.md" });
@@ -271,7 +295,7 @@ fn run_selftest(a: std.mem.Allocator, io: std.Io, root: []const u8) !void {
     // happily repoint it if it were not told which day stays flat.
     if (std.mem.indexOf(u8, readme1, "](20260704-100000_beta.md)") == null) return error.SelftestTodayLinkMoved;
 
-    const moved2 = try fold_session_logs(a, io, sandbox, today, false);
+    const moved2 = try fold_session_logs(a, io, sandbox, "session-logs", today, false);
     if (moved2 != 0) return error.SelftestNotIdempotent;
 
     const readme2 = try cwd.readFileAlloc(io, readme_path, a, .unlimited);
@@ -292,16 +316,31 @@ fn parse_today_arg(a: std.mem.Allocator, args: []const []const u8, start: usize)
     return null;
 }
 
+fn parse_named_arg(a: std.mem.Allocator, args: []const []const u8, start: usize, flag: []const u8) !?[]const u8 {
+    var i = start;
+    while (i < args.len) : (i += 1) {
+        if (std.mem.eql(u8, args[i], flag) and i + 1 < args.len) {
+            i += 1;
+            return try a.dupe(u8, args[i]);
+        }
+    }
+    return null;
+}
+
 fn run_preview_or_fold(a: std.mem.Allocator, io: std.Io, root: []const u8, dry_run: bool, args: []const []const u8) !u8 {
     const today_owned = try parse_today_arg(a, args, 2);
     defer if (today_owned) |t| a.free(t);
     const today = today_owned orelse try today_from_env_or_date(a, io);
-    const moved = try fold_session_logs(a, io, root, today, dry_run);
+    const room_owned = try parse_named_arg(a, args, 2, "--room");
+    defer if (room_owned) |r| a.free(r);
+    const room = room_owned orelse "session-logs";
+    std.debug.print("room={s}\n", .{room});
+    const moved = try fold_session_logs(a, io, root, room, today, dry_run);
     std.debug.print("moved={d}\n", .{moved});
     if (dry_run) {
         std.debug.print("PREVIEW: no files moved; README untouched.\n", .{});
     } else {
-        std.debug.print("GREEN: session-logs archive fold complete — links in README.md updated in place.\n", .{});
+        std.debug.print("GREEN: fold complete — files moved and links in README.md updated in place.\n", .{});
     }
     return 0;
 }
@@ -324,6 +363,11 @@ fn today_from_env_or_date(a: std.mem.Allocator, io: std.Io) ![]const u8 {
 
 test "day_from_log_fname parses stamp prefix" {
     try std.testing.expectEqualStrings("20260703", day_from_log_fname("20260703-100000_alpha.md").?);
+    // A day-only name is NOT a one-clock stamp: the resolver cannot compute a home without the
+    // time, so a fold must not move what a resolver cannot find. active-designing holds 33 of
+    // these and they stay flat.
+    try std.testing.expect(day_from_log_fname("20260814-fill-ales28-lotus-insert.md") == null);
+    try std.testing.expect(day_from_log_fname("20260703-100000-alpha.md") == null);
     try std.testing.expectEqualStrings("20260717", day_from_log_fname("20260717-125858_skate-seen-on-pixel.bron").?);
     try std.testing.expect(day_from_log_fname("README.md") == null);
 }
@@ -354,7 +398,7 @@ pub fn main(init: std.process.Init) !u8 {
 
     const args = init.minimal.args.toSlice(a) catch return error.OutOfMemory;
     if (args.len < 2) {
-        std.debug.print("usage: session_logs_archive.rye preview|fold [--today YYYYMMDD] | selftest\n", .{});
+        std.debug.print("usage: session_logs_archive.rye preview|fold [--today YYYYMMDD] [--room NAME] | selftest\n", .{});
         return 2;
     }
 

@@ -18,7 +18,7 @@
 //! up-front check is the atomicity crux.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES202.
-//! Design read: active-designing/20260815-110731_fill-ales202-lotus-reverb-gate-env.md
+//! Design read: active-designing/date/20260815/20260815-110731_fill-ales202-lotus-reverb-gate-env.md
 //! Stands on: lotus/reverb_preset.rye (ALES190) — the named-room wet, run over the span unchanged, its ReverbPresetError forwarded whole;
 //! lotus/gate_env.rye (ALES54) — the attack/release envelope gate and its guards, the gating applied to the wet span (its BadThreshold / BadRatio /
 //! BadCoeff forwarded, its BadRange the reverb's own); lotus/envelope.rye (ALES52) — the coeff_ok rule the coefficients are prechecked against, the

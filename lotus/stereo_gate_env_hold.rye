@@ -22,7 +22,7 @@
 //! envelope never falls below the threshold passing byte for byte, silence staying silence, left.len == right.len after, each of the five refusals leaving both channels untouched and balanced, count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES167.
-//! Design read: active-designing/20260815-072727_fill-ales167-lotus-stereo-gate-env-hold.md
+//! Design read: active-designing/date/20260815/20260815-072727_fill-ales167-lotus-stereo-gate-env-hold.md
 //! Stands on: lotus/stereo_hold_env.rye (ALES165) — the LINKED HELD follower, its stereo_env_step_hold advancing the one shared envelope with the one shared hold countdown toward the linked peak, reused whole;
 //! lotus/stereo_gate_env.rye (ALES162) — the un-held linked breathing gate this reduces to at a hold of zero, re-proven beside it as the zero-hold limit; lotus/gate_env_hold.rye (ALES57) — the mono attack/hold/release gate,
 //! its GateEnvHoldError reused whole and its output the left-always-peak comparison; lotus/gate.rye (ALES51) — the silenced floor gat = e·den/num; lotus/pan.rye (ALES10) — the StereoClip; lotus/timeline.rye (ALES2) — the

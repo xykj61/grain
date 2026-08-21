@@ -6,7 +6,7 @@ say "anvil-path-survey: Language EN — survey seated; path cut landed o1."
 say "anvil-path-survey: Style Radiant — prove the cut; refuse silent rename."
 say "anvil-path-survey: Lens TAME — Kiln Season o1."
 
-let counsel = "counsel/20260728-233638_surface-season-p38-anvil-path-breach-survey.md"
+let counsel = "counsel/date/20260728/20260728-233638_surface-season-p38-anvil-path-breach-survey.md"
 let c = run ["test" "-f" counsel]
 assert c.ok else "anvil-path-survey: counsel missing"
 

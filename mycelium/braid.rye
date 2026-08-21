@@ -1,7 +1,7 @@
 //! mycelium/braid.rye — the Braid: a linked chain of transfers, committed whole or not at all.
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · Journey rung r1 — the crux.
-//! Design read: active-designing/20260813-081709_mycelium-braid-linked-atomic-chain-exploration.md
+//! Design read: active-designing/date/20260813/20260813-081709_mycelium-braid-linked-atomic-chain-exploration.md
 //!
 //! Every Mycelium ledger before this settles the fate of ONE transfer — the Purse decides a
 //! per-account double-spend, the Pledge carries a single transfer across two phases. Yet a

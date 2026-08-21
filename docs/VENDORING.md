@@ -6,7 +6,7 @@
 **Depth:** recipe
 **Ceiling:** ≤150 lines
 **Last updated:** 2026-07-12
-**Compresses:** [`20260712-204549_proven-seat-g1-claude-close.md`](../active-designing/20260712-204549_proven-seat-g1-claude-close.md) · [`20260712-214900_signed-kumara-monocypher-pin.md`](../active-designing/20260712-214900_signed-kumara-monocypher-pin.md) · [`ORGANIZING.md`](../ORGANIZING.md) · [`external-research/20260620-014412_system.md`](../external-research/20260620-014412_system.md) (Gratitude Licenses)
+**Compresses:** [`20260712-204549_proven-seat-g1-claude-close.md`](../active-designing/date/20260712/20260712-204549_proven-seat-g1-claude-close.md) · [`20260712-214900_signed-kumara-monocypher-pin.md`](../active-designing/date/20260712/20260712-214900_signed-kumara-monocypher-pin.md) · [`ORGANIZING.md`](../ORGANIZING.md) · [`external-research/20260620-014412_system.md`](../external-research/20260620-014412_system.md) (Gratitude Licenses)
 
 ---
 
@@ -52,7 +52,7 @@ Every pin lives in **two banks** that must agree:
 
 Drift between banks is a visible failure. Living `docs/` pages name the witness path rather than the pin string.
 
-**G1 META trio example:** toolchain · sources · ground — separate fetch witnesses write `g1-toolchain-meta.txt` and `g1-sources-meta.txt`. Crossing pin: [`20260712-195339`](../active-designing/20260712-195339_proven-seat-g1-crossing-pin.md).
+**G1 META trio example:** toolchain · sources · ground — separate fetch witnesses write `g1-toolchain-meta.txt` and `g1-sources-meta.txt`. Crossing pin: [`20260712-195339`](../active-designing/date/20260712/20260712-195339_proven-seat-g1-crossing-pin.md).
 
 ---
 
@@ -69,7 +69,7 @@ When a teacher submodule **must be written inside** during builds (Genode `contr
 
 Untracked files inside the submodule stay out of `git status` at the superproject root. **Workbench** paths (`CONTRIB_DIR`, builddirs, toolchain tarballs) still prefer `tools/.cache/` when the tool accepts an outside location — cache first, ignore-stitch when the teacher insists on in-tree writes.
 
-Seated: `vendor/genode` per [`204549`](../active-designing/20260712-204549_proven-seat-g1-claude-close.md).
+Seated: `vendor/genode` per [`204549`](../active-designing/date/20260712/20260712-204549_proven-seat-g1-claude-close.md).
 
 ---
 

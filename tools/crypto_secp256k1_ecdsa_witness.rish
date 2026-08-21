@@ -4,8 +4,8 @@
 # Proven against algebraic known-answers and byte-for-byte against an independent implementation (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-# Design read: active-designing/20260816-025516_secp256k1-ecdsa-verify.md (this rung's claim) and
-# active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
+# Design read: active-designing/date/20260816/20260816-025516_secp256k1-ecdsa-verify.md (this rung's claim) and
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
 # Kin: crypto/secp256k1_scalar.rye (the order field ECDSA runs in, GREEN) · crypto/secp256k1_scalarmul.rye (the point ladder, GREEN) ·
 # crypto/ed25519_verify.rye (the sibling verifier over the twisted Edwards group). secp256k1 is not in Monocypher, so its source parity is not
 # a rung here; the algebraic known-answers plus Zig's independent std.crypto.sign.ecdsa are the two witnesses (.claude/rules/gratitude-licenses.md).

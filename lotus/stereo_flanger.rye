@@ -26,7 +26,7 @@
 //! refuse by name with BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES180.
-//! Design read: active-designing/20260815-084450_fill-ales180-lotus-stereo-flanger.md
+//! Design read: active-designing/date/20260815/20260815-084450_fill-ales180-lotus-stereo-flanger.md
 //! Stands on: lotus/flanger.rye (ALES73) — the mono flanger run once per channel, its FlangerError reused whole and its `precheck` (newly factored out) reused for the up-front atomic validation; lotus/echo.rye (ALES66) — the feedback
 //! echo the zero-depth flanger reduces to, the echo-degenerate equality target; lotus/glide.rye (ALES70) — glide_scale, the fixed-point unit (256 = unity); lotus/pan.rye (ALES10) — the StereoClip and its balance invariant;
 //! lotus/timeline.rye (ALES2) — the Clip and the one true saturate.

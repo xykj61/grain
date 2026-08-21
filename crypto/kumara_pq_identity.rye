@@ -14,7 +14,7 @@
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, audit-ready). This double-seats BESIDE crypto/kumara_identity.rye,
 //! which stays exactly the correct CLASSICAL identity for the Ed25519 world it names; nothing already GREEN moves.
-//! Design read: active-designing/20260816-192400_post-quantum-identity-is-dual-key.md — the learned discovery this module is the construction of.
+//! Design read: active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md — the learned discovery this module is the construction of.
 //! Kin: crypto/mldsa_identity.rye (the signing half, GREEN) · crypto/mlkem_sealed.rye (the agreement half's keypair + the sealed door it plugs into,
 //! GREEN) · crypto/bip39_seed.rye (the mnemonic→seed fold, GREEN) · crypto/hkdf_sha512.rye (the domain-separated key expansion, GREEN) ·
 //! crypto/kumara_identity.rye (the classical Ed25519 identity this is the post-quantum sibling of). Clean-room: BIP-39, RFC 5869, FIPS 203/204 are

@@ -5,7 +5,7 @@
 //! that only the holder of that identity's seed can open.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · "a Comlink/Vault composition
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · "a Comlink/Vault composition
 //! reaching identity through this door" is the rung the kumara_attestation edge named next). This composition authors NO new cryptography and
 //! adds NO new frame — a Kumara sealed message IS a Grain Sealed Session v1 frame (crypto/sealed_session.rye) addressed through the identity's
 //! X25519 keypair.

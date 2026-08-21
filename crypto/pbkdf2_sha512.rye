@@ -7,7 +7,7 @@
 //! iteration-hard) — a security audit expects the tree to hold each, and to say which each caller should reach for.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
 //! Kin: crypto/hmac_sha512.rye (the keyed hash beneath it, GREEN on metal) · crypto/sha512.rye (the hash beneath that) ·
 //! crypto/hkdf_sha512.rye (a sibling that composes the same HMAC, extract-and-expand rather than iterate-and-XOR) ·
 //! crypto/pbkdf2_sha256.rye (the SHA-256 sibling of this exact construction). The coming BIP-39 mnemonic→seed rung stands on this one.

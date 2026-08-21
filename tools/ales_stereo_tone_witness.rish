@@ -1,7 +1,7 @@
 # tools/ales_stereo_tone_witness.rish — stereo_tone: the one-pole tone control carried into stereo, the same coefficient shaping both channels — the rung that opens the stereo EQ / filter class (ALES170).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES170.
-# Design read: active-designing/20260815-074743_fill-ales170-lotus-stereo-tone.md
+# Design read: active-designing/date/20260815/20260815-074743_fill-ales170-lotus-stereo-tone.md
 # Stands on: lotus/tone.rye (ALES40 — the mono one-pole low-pass and high-pass run once per channel, its ToneError reused whole and its precheck sharing one coefficient-and-span validation), lotus/pan.rye (ALES10 — the
 # StereoClip), lotus/timeline.rye (ALES2 — the Clip and the saturate the high-pass complement reuses).
 #

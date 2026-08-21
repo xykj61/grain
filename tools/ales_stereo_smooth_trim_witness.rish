@@ -1,7 +1,7 @@
 # tools/ales_stereo_smooth_trim_witness.rish — stereo_smooth_trim: the smoothed silence trim carried into stereo, smooth each channel's runs before intersecting the two silences, so the joint strip declicks the pause and keeps the breath while the stereo image stays whole (ALES154).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES154.
-# Design read: active-designing/20260815-060518_fill-ales154-lotus-stereo-smooth-trim.md
+# Design read: active-designing/date/20260815/20260815-060518_fill-ales154-lotus-stereo-smooth-trim.md
 # Stands on: lotus/stereo_trim_silence.rye (ALES148 — the RAW stereo silence trim, the SILENCE INTERSECTION and lockstep cut, the min-zero twin, imported to prove the min-zero law), lotus/stereo_smooth_runs.rye (ALES153 — the stereo run-length
 # smoother, its smooth_runs_stereo run once to smooth BOTH channels' runs, StereoSmoothError reused whole), lotus/stereo_segment.rye (ALES147 — the stereo segmenter over one shared frame grid, segment_stereo/StereoSegments/StereoSegmentError
 # reused whole), lotus/smooth_trim.rye (ALES102 — the mono smoothed trim, imported to prove the LOCKSTEP law that running it per channel would desync the pair), lotus/segment.rye (ALES95 — the mono Segments and max_segments), lotus/pan.rye

@@ -6,7 +6,7 @@
 # it composes two already-GREEN stones — the double SHA-256 from crypto/sha256.rye (FIPS 180-4, parity-GREEN against std.crypto) and the
 # Base58 rendering from encoding/base58.rye (parity-GREEN against the Bitcoin Core known-answers) — into the version-and-checksum envelope a
 # human-facing address carries, so a mistyped character is caught before a value is ever sent to a wrong destination.
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 # Clean-room: the version+checksum envelope and double-SHA-256 checksum rule are Bitcoin's own public convention; the composition is ours,
 # standing on our own parity-GREEN primitives (.claude/rules/gratitude-licenses.md).
 #

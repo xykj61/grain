@@ -3,8 +3,8 @@
 # (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-193010_fe25519-the-curve-field-crux.md (this round) and
-# active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock, its field
+# Design read: active-designing/date/20260815/20260815-193010_fe25519-the-curve-field-crux.md (this round) and
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock, its field
 # math a separate gated round).
 # Kin: crypto/poly1305.rye (the limb-arithmetic sibling — five 26-bit limbs mod 2^130 − 5; this is five 51-bit limbs mod 2^255 − 19) ·
 # crypto/aead.rye · crypto/chacha20.rye. Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own

@@ -16,7 +16,7 @@
 //! phrase. The list is a public standard, embedded and hash-pinned — never recited from memory.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
 //! Kin: crypto/bip39_seed.rye (the seed rung this one feeds) · crypto/sha256.rye (the checksum hash, GREEN on metal) ·
 //! crypto/bip32.rye (the HD tree the seed grows). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity DISCIPLINE target — our own Rye,
 //! studied clean-room from the public standards (.claude/rules/gratitude-licenses.md).

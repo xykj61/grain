@@ -2,7 +2,7 @@
 # soundness price (FORA29).
 #
 # Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
-# FORA29. Design read: active-designing/20260814-081032_fora29-constel-lease-read.md
+# FORA29. Design read: active-designing/date/20260814/20260814-081032_fora29-constel-lease-read.md
 #
 # constel/lease.rye composes FORA24 (tenure — still_commands) as the grant gate and shortcuts FORA20 (read — the read-index) as the
 # fallback. `grant` gives a lease only to a leader commanding a majority (else NoMajority); `lease_sound` is the §6.4.1 inequality

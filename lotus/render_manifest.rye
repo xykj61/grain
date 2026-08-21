@@ -6,7 +6,7 @@
 //! verify-before-trust, whose body carries the Sha256 of the .wav bytes themselves.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES221.
-//! Design read: active-designing/20260815-133848_fill-ales221-lotus-render-manifest.md
+//! Design read: active-designing/date/20260815/20260815-133848_fill-ales221-lotus-render-manifest.md
 //! Stands on: lotus/seal.rye (ALES38) — begin/finish/open, the general verify-before-trust frame reused WHOLE, so the manifest
 //! adds only its own body grammar and one new promise; std.crypto Sha256 for the audio digest, the same hash the seal and the
 //! ALES0 wire already carry. No audio import — the manifest describes a render's OUTPUT bytes, it does not run one.

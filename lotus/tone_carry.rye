@@ -11,8 +11,8 @@
 //! high_pass_carry implementation in tone.rye, symmetric to the low-pass.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rungs ALES43, ALES45.
-//! Design reads: active-designing/20260814-163000_fill-ales43-lotus-carried-filter.md ·
-//!   active-designing/20260814-164244_fill-ales45-lotus-carried-highpass.md
+//! Design reads: active-designing/date/20260814/20260814-163000_fill-ales43-lotus-carried-filter.md ·
+//!   active-designing/date/20260814/20260814-164244_fill-ales45-lotus-carried-highpass.md
 //! Stands on: lotus/tone.rye (ALES40, accreted) — its lp_step is a pure function of (state, x), now reached through the public
 //! low_pass_carry; lotus/timeline.rye (ALES2) — the Clip it filters.
 //!

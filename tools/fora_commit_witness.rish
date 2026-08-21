@@ -1,7 +1,7 @@
 # tools/fora_commit_witness.rish — a leader commits an old-term entry only through a current-term one (FORA18).
 #
 # Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
-# FORA18. Design read: active-designing/20260814-083700_fora18-constel-commit-rule-current-term.md
+# FORA18. Design read: active-designing/date/20260814/20260814-083700_fora18-constel-commit-rule-current-term.md
 #
 # constel/commit.rye states the one safety rule a multi-term log requires — Raft's §5.4.2, the scenario its paper draws as
 # Figure 8: a leader may NOT conclude that an entry from a previous term is committed merely because it is stored on a majority.

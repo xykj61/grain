@@ -1,7 +1,7 @@
 //! mycelium/cord_knot_fixture_gen.rye — reproducibly emit the Knot fixture (r4 support).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · checkpointing · rung r4 support.
-//! Design read: active-designing/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
+//! Design read: active-designing/date/20260813/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
 //!
 //! Seats the honest four-fact history r1/r2/r3 checkpoint (two genesis issues, a tax,
 //! a star reserve — issued 1000 · taxed 300 · supply 700 · one star vega), seals it to

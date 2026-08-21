@@ -1,7 +1,7 @@
 # tools/ales_halve_witness.rish — the half-wave rectifier: keep the positive half, zero the negative, y = max(x, 0) (ALES85).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES85.
-# Design read: active-designing/20260814-214355_fill-ales85-lotus-half-wave-rectifier.md
+# Design read: active-designing/date/20260814/20260814-214355_fill-ales85-lotus-half-wave-rectifier.md
 # Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/max). The full-wave rectifier (ALES84) folds the negative half UP onto the positive side
 # (y = |x|, pure EVEN harmonics); the half-wave rectifier is its plain sibling — it folds the negative half AWAY to silence. Where a diode BRIDGE makes
 # full-wave rectification, a SINGLE diode makes half-wave. A keeper who wants a boosted or negatively-clamped half-wave composes this with ALES78's drive

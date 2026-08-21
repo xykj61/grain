@@ -1,7 +1,7 @@
 # tools/fora_transfer_witness.rish — leadership transfers only to a caught-up successor, TimeoutNow (FORA23).
 #
 # Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
-# FORA23. Design read: active-designing/20260814-084700_fora23-constel-transfer-leadership.md
+# FORA23. Design read: active-designing/date/20260814/20260814-084700_fora23-constel-transfer-leadership.md
 #
 # constel/transfer.rye gives the sky an orderly HANDOFF (Raft §3.10): the prior leader stops taking entries, brings a chosen
 # target fully up to date (FORA17), then sends TimeoutNow so the target campaigns immediately — skipping the election timeout. The

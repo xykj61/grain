@@ -3,7 +3,7 @@
 //! nothing, and a tampered frame refuses by name before a byte is yielded.
 //!
 //! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY3.
-//! Design read: active-designing/20260814-022312_drey3-firmware-loop-carry-committed-run-to-the-wire-exploration.md
+//! Design read: active-designing/date/20260814/20260814-022312_drey3-firmware-loop-carry-committed-run-to-the-wire-exploration.md
 //! Stands on: mikrophone/session.rye (DREY0), mikrophone/wire.rye (DREY1), mikrophone/recorder.rye (DREY2).
 //!
 //! Three rungs stand, each proven alone: the session that forgets, the wire frame that carries only what was committed,

@@ -11,7 +11,7 @@
 //! gate: where the gate's hold keeps the door OPEN across a dip, the compressor's hold keeps the gain reduction ENGAGED across a duck.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES58.
-//! Design read: active-designing/20260814-181719_fill-ales58-lotus-attack-hold-release-compressor.md
+//! Design read: active-designing/date/20260814/20260814-181719_fill-ales58-lotus-attack-hold-release-compressor.md
 //! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/sample_max, max_clip, the range law shape; lotus/compress.rye
 //! (ALES50) — the softened ceiling this drives over time, re-proven beside it; lotus/hold_env.rye (ALES56) — the HELD time base, its
 //! env_step_hold advancing the same follower one sample at a time with the hold pinning the peak; lotus/compress_env.rye (ALES53) —

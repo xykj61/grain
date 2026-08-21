@@ -1,7 +1,7 @@
 //! pond/apps/constel_consensus_true.rye — the converged mesh reads true (gossip-convergence r4, the arc closes).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · gossip-convergence r4.
-//! Design read: active-designing/20260813-040613_constel-consensus-gossip-convergence-exploration.md
+//! Design read: active-designing/date/20260813/20260813-040613_constel-consensus-gossip-convergence-exploration.md
 //!
 //! r1 converged two nodes over gossip; r2 healed a partition; r3 carried the agreed
 //! order out as a `format cord-dag-v1` record so a far node could rebuild from bytes

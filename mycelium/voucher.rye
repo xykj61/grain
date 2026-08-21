@@ -1,7 +1,7 @@
 //! mycelium/voucher.rye — the Voucher: a node's signed attestation of a holder's position.
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Voucher · rung r1 — the crux.
-//! Design read: active-designing/20260813-095216_mycelium-voucher-attested-statement-exploration.md
+//! Design read: active-designing/date/20260813/20260813-095216_mycelium-voucher-attested-statement-exploration.md
 //!
 //! The Statement answered WHERE DO I STAND as a pure projection of one account, and statement_bron let
 //! it cross a wire. Yet a statement that travels is still only a READING: a recipient can check the

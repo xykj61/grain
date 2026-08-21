@@ -1,7 +1,7 @@
 # tools/ales_stereo_segment_witness.rish — stereo_segment: the voice-activity segmenter carried into stereo with ONE SHARED FRAME GRID and TWO INDEPENDENT SEGMENTATIONS, the suite's third stereo analysis rung (ALES147).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES147.
-# Design read: active-designing/20260815-050741_fill-ales147-lotus-stereo-segment.md
+# Design read: active-designing/date/20260815/20260815-050741_fill-ales147-lotus-stereo-segment.md
 # Stands on: lotus/segment.rye (ALES95 — the mono voice-activity segmenter run once per channel, its segment, its Segments run list, its Segment run, its SegmentError, all reused whole), lotus/voiced.rye (ALES94 — the
 # per-frame classifier the segmenter sequences), lotus/schmitt.rye (ALES92 — the band's own precheck), lotus/meter.rye (ALES13 — sample_peak_max, the floor ceiling), lotus/stereo_voiced.rye (ALES146 — the stereo analysis shape
 # this mirrors, one shared setting with per-channel independence), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, its balance invariant), lotus/timeline.rye (ALES2 — the Clip). A Lotus master is a StereoClip

@@ -18,7 +18,7 @@
 **Sources (public study doorways):**
 
 - Fuller on tensegrity (public encyclopedia / museum primers): start from <https://en.wikipedia.org/wiki/Tensegrity> and Fuller's own published writings where licensed for personal study.
-- Local season seat: [`../counsel/20260727-234617_the-tensegral-season.md`](../counsel/20260727-234617_the-tensegral-season.md) · Lexicon **stay tensegral**.
+- Local season seat: [`../counsel/date/20260727/20260727-234617_the-tensegral-season.md`](../counsel/date/20260727/20260727-234617_the-tensegral-season.md) · Lexicon **stay tensegral**.
 
 **Shelf note:** Affirmed `20260727.234617` with The Tensegral Season. Held in summary, as we hold other copyrighted teachers' principles.
 

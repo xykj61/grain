@@ -14,7 +14,7 @@
 //! bad tone leaves the clip DRY rather than half-reverbed — the up-front check is the atomicity crux.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES198.
-//! Design read: active-designing/20260815-104206_fill-ales198-lotus-reverb-tone.md
+//! Design read: active-designing/date/20260815/20260815-104206_fill-ales198-lotus-reverb-tone.md
 //! Stands on: lotus/reverb_preset.rye (ALES190) — the named-room wet, run over the span unchanged, its ReverbPresetError forwarded whole;
 //! lotus/tone.rye (ALES40) — the one-pole low-pass and its precheck, the darkening applied to the wet span (its BadCoeff renamed BadTone);
 //! lotus/clock.rye (ALES5) — the sample clock, its samples_for converting the span (the SAME conversion reverb_preset uses) into a sample count;

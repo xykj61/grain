@@ -1,7 +1,7 @@
 # tools/ales_stereo_split_silence_witness.rish — stereo_split_silence: the auto-splitter carried into stereo, one cut line for both channels, the stereo twin of the silence stripper (ALES149).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES149.
-# Design read: active-designing/20260815-052853_fill-ales149-lotus-stereo-split-silence.md
+# Design read: active-designing/date/20260815/20260815-052853_fill-ales149-lotus-stereo-split-silence.md
 # Stands on: lotus/stereo_segment.rye (ALES147 — the stereo voice-activity segmenter, run once to read BOTH channels' silences over one shared frame grid, its segment_stereo, its StereoSegments, its StereoSegmentError, reused
 # whole), lotus/segment.rye (ALES95 — the mono segmenter and max_segments, through ALES147), lotus/stereo_trim_silence.rye (ALES148 — the stereo silence stripper, the join-law twin, imported by the selftest), lotus/split_silence.rye
 # (ALES97 — the mono auto-splitter, the shape carried up), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its splice, its max_clip, the EditError reused

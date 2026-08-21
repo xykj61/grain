@@ -6,7 +6,7 @@
 //! channel, exactly as stereo_render widened the raw chain.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES220.
-//! Design read: active-designing/20260815-133213_fill-ales220-lotus-stereo-preset.md
+//! Design read: active-designing/date/20260815/20260815-133213_fill-ales220-lotus-stereo-preset.md
 //! Stands on: lotus/preset.rye (ALES219) — from_name and build, reused verbatim; lotus/stereo_render.rye (ALES218) — the balanced
 //! render over both channels; lotus/pan.rye (ALES10) — the StereoClip and its equal-length invariant.
 //!

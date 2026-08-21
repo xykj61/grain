@@ -1,7 +1,7 @@
 //! image/font5x7.rye -- the first permissive font corpus: a 5x7 numeral set (Season G, the font content rung).
 //!
 //! Season G (Open Media Primitives) - the first real content for the open glyph atlas image/glyph.rye (gfa1).
-//! Design read: active-designing/20260816-230846_season-g-font5x7-corpus-crux.md
+//! Design read: active-designing/date/20260816/20260816-230846_season-g-font5x7-corpus-crux.md
 //!
 //! The glyph atlas proved an empty vessel: verified bytes that decode to a table of glyphs, refusing malformed
 //! streams by name. This module fills it with the corpus a surface reaches for first and keeps forever -- the ten

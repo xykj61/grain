@@ -6,7 +6,7 @@
 **Last updated:** 2026-07-11 (steward demo nib **419** `004652`)
 **Status:** Seated — name + listing (`165634`); floor view (`170700`); listing settle (`171202`); settle view (`172955`); **steward demo** list→settle→Dimeroll (`004652`, nib **419**); live TigerBeetle rests until its brief
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Seating:** [`../context/specs/20260710-165634_mandi-name-seated.md`](../context/specs/20260710-165634_mandi-name-seated.md) · settle [`../context/specs/20260710-171202_mandi-listing-settle-seated.md`](../context/specs/20260710-171202_mandi-listing-settle-seated.md) · steward [`../active-designing/20260711-004652_commerce-citizen-steward-demo-hammock.md`](../active-designing/20260711-004652_commerce-citizen-steward-demo-hammock.md)
+**Seating:** [`../context/specs/20260710-165634_mandi-name-seated.md`](../context/specs/20260710-165634_mandi-name-seated.md) · settle [`../context/specs/20260710-171202_mandi-listing-settle-seated.md`](../context/specs/20260710-171202_mandi-listing-settle-seated.md) · steward [`../active-designing/date/20260711/20260711-004652_commerce-citizen-steward-demo-hammock.md`](../active-designing/date/20260711/20260711-004652_commerce-citizen-steward-demo-hammock.md)
 **Study:** [`../external-research/20260703-200712_compute-commerce-on-the-network.md`](../external-research/20260703-200712_compute-commerce-on-the-network.md)
 
 ## What this room is

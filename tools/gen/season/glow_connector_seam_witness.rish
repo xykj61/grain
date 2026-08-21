@@ -8,9 +8,9 @@ say "glow-connector: Language EN — values · Frame · Wayland hop named."
 say "glow-connector: Style Radiant — harden hop pins; refuse invent stack."
 say "glow-connector: Lens TAME — Surface Season p14."
 
-let sketch = run ["test" "-f" "counsel/20260728-195456_surface-season-p5-glow-connector-seam-sketch.md"]
+let sketch = run ["test" "-f" "counsel/date/20260728/20260728-195456_surface-season-p5-glow-connector-seam-sketch.md"]
 assert sketch.ok else "glow-connector: p5 sketch counsel missing"
-let harden = run ["test" "-f" "counsel/20260728-202752_surface-season-p14-connector-harden.md"]
+let harden = run ["test" "-f" "counsel/date/20260728/20260728-202752_surface-season-p14-connector-harden.md"]
 assert harden.ok else "glow-connector: p14 harden counsel missing"
 
 say "glow-connector: hop 1 Glow/src userland..."
@@ -61,7 +61,7 @@ assert noweb.out contains "NOWEB" else "glow-connector: src/web must stay refuse
 say "glow-connector: hop 2 Mantra Weave Tilak..."
 let weave = run ["test" "-f" "mantra/src/weave.rye"]
 assert weave.ok else "glow-connector: hop2 weave.rye missing"
-let graph = run ["test" "-f" "counsel/20260728-200159_surface-season-p8-one-graph-dag-redraw-paper.md"]
+let graph = run ["test" "-f" "counsel/date/20260728/20260728-200159_surface-season-p8-one-graph-dag-redraw-paper.md"]
 assert graph.ok else "glow-connector: hop2 one-graph paper missing"
 let tilak = run ["sh" "-c" "grep -q 'plain-bytes' src/til/tilak-root-count.glow && grep -q 'manifest' src/til/tilak-root-count.glow && echo TILAK_OK"]
 assert tilak.ok else "glow-connector: hop2 tilak roots scan failed"
@@ -89,7 +89,7 @@ assert present.ok else "glow-connector: hop4 Skate present scan failed"
 assert present.out contains "SKATE_OK" else "glow-connector: hop4 Frame to Skate path not named"
 
 say "glow-connector: hop 5 Wayland host..."
-let ledger = run ["test" "-f" "counsel/20260728-195228_surface-season-p4-river-zig-wayland-study-ledger.md"]
+let ledger = run ["test" "-f" "counsel/date/20260728/20260728-195228_surface-season-p4-river-zig-wayland-study-ledger.md"]
 assert ledger.ok else "glow-connector: hop5 Wayland ledger missing"
 let pond = run ["test" "-f" "tools/gen/season/pond_brushstroke_frame_witness.rish"]
 assert pond.ok else "glow-connector: hop5 pond frame witness missing"

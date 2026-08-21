@@ -1,7 +1,7 @@
 //! mycelium/muster.rye — the Muster: a known validator set a Chorus must pass (r1, the crux).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Muster · rung r1 — the crux.
-//! Design read: active-designing/20260813-110039_mycelium-muster-known-validator-set-exploration.md
+//! Design read: active-designing/date/20260813/20260813-110039_mycelium-muster-known-validator-set-exploration.md
 //!
 //! The Chorus made a position BELIEVABLE by a quorum of distinct independent Vouchers. Yet it counts ANY
 //! distinct keys: `verify_chorus(3)` passes the instant three fresh keypairs each sign the claim, and

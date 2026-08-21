@@ -27,7 +27,7 @@ test -f context/CIVIC_STYLE.md
 test -f gratitude/hyundai.md
 test -f gratitude/wayne-hsiung.md
 test -f foundations/yonder/20260728-033820_shyu-and-hyundai.md
-test -f counsel/20260728-033820_shyu-hyundai-sponsor.md
+test -f counsel/date/20260728/20260728-033820_shyu-hyundai-sponsor.md
 test -f "$PAGE"
 grep -q 'Shyu' "$PAGE"
 grep -q 'Libra' "$PAGE"

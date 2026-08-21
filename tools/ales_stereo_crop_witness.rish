@@ -1,7 +1,7 @@
 # tools/ales_stereo_crop_witness.rish — stereo_crop: Trim to Selection carried into stereo, both channels in lockstep, validate-both-before-either (ALES118).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES118.
-# Design read: active-designing/20260815-015904_fill-ales118-lotus-stereo-crop.md
+# Design read: active-designing/date/20260815/20260815-015904_fill-ales118-lotus-stereo-crop.md
 # Stands on: lotus/crop.rye (ALES111 — the mono Trim to Selection run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant),
 # lotus/timeline.rye (ALES2 — the Clip, its cut/splice proving the complement law, and the EditError reused whole), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a
 # StereoClip whose defining invariant is that left and right hold the same length so the channels stay aligned in time; circling the one phrase worth keeping trims both speakers to it

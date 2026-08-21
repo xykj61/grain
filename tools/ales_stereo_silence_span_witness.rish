@@ -1,7 +1,7 @@
 # tools/ales_stereo_silence_span_witness.rish — stereo_silence_span: silencing a span carried into stereo, both channels in lockstep, validate-both-before-either (ALES122).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES122.
-# Design read: active-designing/20260815-021904_fill-ales122-lotus-stereo-silence-span.md
+# Design read: active-designing/date/20260815/20260815-021904_fill-ales122-lotus-stereo-silence-span.md
 # Stands on: lotus/silence_span.rye (ALES110 — the mono span-silence run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant),
 # lotus/stereo_paste_over.rye (ALES121 — the stereo overwrite this rung specializes with zero paint), lotus/timeline.rye (ALES2 — the Clip and the EditError reused whole), lotus/meter.rye
 # (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length so the channels stay aligned in time; muting a bleed

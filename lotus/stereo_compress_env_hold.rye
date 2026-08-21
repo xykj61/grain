@@ -23,7 +23,7 @@
 //! the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES166.
-//! Design read: active-designing/20260815-072211_fill-ales166-lotus-stereo-compress-env-hold.md
+//! Design read: active-designing/date/20260815/20260815-072211_fill-ales166-lotus-stereo-compress-env-hold.md
 //! Stands on: lotus/stereo_hold_env.rye (ALES165) — the LINKED HELD follower, its stereo_env_step_hold advancing the one shared envelope with the one shared hold countdown toward the linked peak, reused whole;
 //! lotus/stereo_compress_env.rye (ALES161) — the un-held linked breathing compressor this reduces to at a hold of zero, re-proven beside it as the zero-hold limit; lotus/compress_env_hold.rye (ALES58) — the mono
 //! attack/hold/release compressor, its CompressEnvHoldError reused whole and its output the left-always-peak comparison; lotus/compress.rye (ALES50) — the softened ceiling comp = threshold + excess·den/num; lotus/pan.rye

@@ -3,8 +3,8 @@
 # independent implementation (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names the ChaCha20-Poly1305 AEAD
-# as the composition that unblocks the Lotus signed carry) and active-designing/20260815-180728_open-season-g-crypto-blake2b.md.
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names the ChaCha20-Poly1305 AEAD
+# as the composition that unblocks the Lotus signed carry) and active-designing/date/20260815/20260815-180728_open-season-g-crypto-blake2b.md.
 # Kin: crypto/chacha20.rye · crypto/poly1305.rye (the two halves this composes, GREEN) · crypto/blake2b.rye · crypto/sha512.rye. Monocypher
 # (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own composition, studied clean-room from the public RFC
 # and Monocypher's public API (.claude/rules/gratitude-licenses.md).

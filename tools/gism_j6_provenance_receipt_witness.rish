@@ -36,7 +36,7 @@ assert selftest.out contains "unknown record field refused (UnknownField)" else 
 
 # The crux cross-check: the digest the receipt signs equals an independent sha256sum of
 # the real file — two tools, one answer.
-let real = "waymarks/20260801-134653_e182-q46-errors-named-green.md"
+let real = "waymarks/date/20260801/20260801-134653_e182-q46-errors-named-green.md"
 let sha = run ["sh" "-c" "sha256sum ${real} | cut -d' ' -f1"]
 assert sha.ok else "gism-j6r2: sha256sum over the real file failed"
 assert sha.out contains "2010d1606c18cafac511b630be7e6bcaf1a9ec34cf9902ca7106deb4aaee0a6d" else "gism-j6r2: sha256sum disagrees with the receipt's signed digest"

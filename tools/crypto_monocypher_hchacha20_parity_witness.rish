@@ -6,7 +6,7 @@
 # ChaCha20 · standalone SHA-512 · HMAC-SHA-512 came before). Season G · Cryptography.
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte." crypto/xchacha20.rye proved HChaCha20 against the draft §2.2.1 known-answer and inside
 # the AEAD flagship, yet never STANDALONE against Monocypher's own crypto_chacha20_h — so the subkey-derivation core the whole XChaCha nonce-extension
 # rests on now stands proven in its own right, the nonce-extension counterpart to the standalone ChaCha20 and Poly1305 rungs that prove the AEAD's other halves.

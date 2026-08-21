@@ -1,7 +1,7 @@
 # tools/ales_stereo_tremolo_witness.rish — stereo_tremolo: the tremolo (triangle LFO on amplitude) carried into stereo, the same swing on both channels — the rung that OPENS the stereo modulation class (ALES176).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES176.
-# Design read: active-designing/20260815-082400_fill-ales176-lotus-stereo-tremolo.md
+# Design read: active-designing/date/20260815/20260815-082400_fill-ales176-lotus-stereo-tremolo.md
 # Stands on: lotus/tremolo.rye (ALES74 — the mono tremolo run once per channel, its TremoloError reused whole and its precheck reused for the up-front atomic validation), lotus/glide.rye (ALES70 — glide_scale, 256 = unity gain),
 # lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip and the one true saturate).
 #

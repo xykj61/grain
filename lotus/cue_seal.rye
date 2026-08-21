@@ -6,7 +6,7 @@
 //! reveals that the seal is not specific to a rack: it is a law for any travels-as-text record.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES37.
-//! Design read: active-designing/20260814-153033_fill-ales37-lotus-cue-seal.md
+//! Design read: active-designing/date/20260814/20260814-153033_fill-ales37-lotus-cue-seal.md
 //! Stands on: lotus/cue_sheet.rye (ALES22) — render_sheet / parse_sheet reused WHOLE as the sealed body, so the seal adds only the
 //! digest layer and no new grammar; lotus/markers.rye (ALES20) — the Markers track sealed and rebuilt. Mirrors lotus/rack_seal.rye
 //! (ALES34) and the Sha256 verify-before-trust of lotus/wire.rye (ALES0) — an integrity check the reader recomputes itself, not a

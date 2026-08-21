@@ -7,7 +7,7 @@
 //! decode, the GREEN scalar ladder, the GREEN group law, and GREEN SHA-512 — the last arithmetic rung the verify equation needs.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus
 //! unblock; the scalar reduction mod L is the piece between SHA-512 and the group equation).
 //! Kin: crypto/ed25519_scalarmul.rye (the ladder that consumes a reduced scalar, GREEN) · crypto/sha512.rye (the hash whose 64-byte output this
 //! reduces, GREEN) · crypto/ed25519_decode.rye (the point decode verify also composes, GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is

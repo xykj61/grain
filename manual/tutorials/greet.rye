@@ -1,7 +1,7 @@
 //! manual/tutorials/greet.rye — your first Grain module: a bounded greeting.
 //!
 //! The first-hour reference (Acme DX design season, Equinox 2 contract
-//! `../../active-designing/20260811-163927_acme-dx-first-hour-witness-contract.md`).
+//! `../../active-designing/date/20260811/20260811-163927_acme-dx-first-hour-witness-contract.md`).
 //! It teaches the whole TAME discipline at its smallest: an opening triad, a named
 //! bound, an invariant assert at each edge, a selftest that proves by comparison, and
 //! a GREEN line a witness reads.

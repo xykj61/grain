@@ -11,7 +11,7 @@ say "pond-gui: Language EN — Pond GUI spine from living pins."
 say "pond-gui: Style Radiant — fold what works; refuse invent stack."
 say "pond-gui: Lens TAME — Surface Season p16 constructive."
 
-let seat = run ["test" "-f" "counsel/20260728-203321_surface-season-p16-pond-gui-spine.md"]
+let seat = run ["test" "-f" "counsel/date/20260728/20260728-203321_surface-season-p16-pond-gui-spine.md"]
 assert seat.ok else "pond-gui: p16 counsel seat missing"
 
 say "pond-gui: connector hops (p5/p14)..."

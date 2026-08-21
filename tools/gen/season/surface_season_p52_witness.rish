@@ -8,7 +8,7 @@ say "surface-p52: Language EN — glass Frame feeds host Frame."
 say "surface-p52: Style Radiant — one named hop; refuse invent pad."
 say "surface-p52: Lens TAME — Surface Season p52."
 
-let counsel = run ["test" "-f" "counsel/20260729-140036_surface-season-p52-frame-tidy.md"]
+let counsel = run ["test" "-f" "counsel/date/20260729/20260729-140036_surface-season-p52-frame-tidy.md"]
 assert counsel.ok else "surface-p52: p52 counsel missing"
 
 let glass = run ["sh" "-c" "grep -q 'pub const Frame = BrushFrame' brushstroke/brush_parse.rye && echo GLASS_OK"]
@@ -29,7 +29,7 @@ assert brushtest.out contains "from_brush" else "surface-p52: from_brush banner 
 assert brushtest.out contains "at-nib=brushstroke-seed" else "surface-p52: seed-frame nib missing"
 assert brushtest.out contains "GREEN" else "surface-p52: brushtest not GREEN"
 
-let held = run ["sh" "-c" "grep -q 'live-five still' counsel/20260729-140036_surface-season-p52-frame-tidy.md && echo HELD_OK"]
+let held = run ["sh" "-c" "grep -q 'live-five still' counsel/date/20260729/20260729-140036_surface-season-p52-frame-tidy.md && echo HELD_OK"]
 assert held.ok else "surface-p52: live-five held scan failed"
 assert held.out contains "HELD_OK" else "surface-p52: live-five must stay held"
 

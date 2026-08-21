@@ -5,7 +5,7 @@
 # first packet reach for (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names reimplementing Monocypher
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names reimplementing Monocypher
 # primitives in Rye with byte-for-byte parity as the crux; this completes the key-hiding family beside crypto/elligator.rye).
 # Kin: crypto/x25519.rye (the CLEAN ladder whose field composition this reuses unchanged) · crypto/elligator.rye (the map that hides the dirty
 # key) · crypto/fe25519.rye (the base field both stand on) · crypto/ed25519_scalar.rye (the group order L, whose defining form add_xl derives).

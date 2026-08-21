@@ -14,8 +14,8 @@ ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 SAGA_PROSE=saga/20260731-130200_saga-of-the-commence-arc.md
 SAGA_README=saga/README.md
 PRIN=tools/gen/season/prin_scope.rish
-GEODE=counsel/20260730-162222_e50-dual-equinox-geode-expedition-breach.md
-M9_WAYMARK=waymarks/20260731-131407_e100-commence-m9-ascent-green.md
+GEODE=counsel/date/20260730/20260730-162222_e50-dual-equinox-geode-expedition-breach.md
+M9_WAYMARK=waymarks/date/20260731/20260731-131407_e100-commence-m9-ascent-green.md
 
 if ! test -f "$CONTROL_SCAN"; then
   echo "CONTROL=ABSENT"

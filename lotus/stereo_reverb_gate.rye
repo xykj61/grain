@@ -14,7 +14,7 @@
 //! gates right with the same threshold and ratio, so the stereo image the preset held is held through the gating.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES201.
-//! Design read: active-designing/20260815-110035_fill-ales201-lotus-stereo-reverb-gate.md
+//! Design read: active-designing/date/20260815/20260815-110035_fill-ales201-lotus-stereo-reverb-gate.md
 //! Stands on: lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
 //! forwarded whole; lotus/gate.rye (ALES49) — the downward gate and its guards, run per channel (its BadThreshold / BadRatio forwarded, its BadRange
 //! the reverb's own); lotus/pan.rye (ALES) — the StereoClip, its two balanced channels; lotus/clock.rye (ALES5) — the sample clock, its samples_for

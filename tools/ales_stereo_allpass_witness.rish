@@ -1,7 +1,7 @@
 # tools/ales_stereo_allpass_witness.rish — the allpass filter carried into stereo: Schroeder's diffusion stage on both channels (ALES185).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES185.
-# Design read: active-designing/20260815-091646_fill-ales184-lotus-allpass.md (ALES184's read; this is its stereo carry).
+# Design read: active-designing/date/20260815/20260815-091646_fill-ales184-lotus-allpass.md (ALES184's read; this is its stereo carry).
 # Stands on: lotus/allpass.rye (ALES184 — the mono allpass run once per channel, its AllpassError and precheck reused); lotus/pan.rye
 # (ALES10 — the StereoClip and its balance invariant); lotus/timeline.rye (ALES2 — the Clip and the one true saturate the mono allpass reuses).
 #

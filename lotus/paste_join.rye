@@ -6,7 +6,7 @@
 //! a carried span into the middle of a mix and both new boundaries flow through power rather than stepping.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES31.
-//! Design read: active-designing/20260814-144834_fill-ales31-lotus-paste-join.md
+//! Design read: active-designing/date/20260814/20260814-144834_fill-ales31-lotus-paste-join.md
 //! Stands on: lotus/clipboard.rye (ALES25) — the held stereo span (its own bounded left/right buffers, `held()` the length), read
 //! whole as the span to insert; lotus/stereo_insert_join.rye (ALES29) — `insert_join_stereo`, the two-sided stereo insert-join run
 //! whole so both seams of both channels cross equal-power with proven scratch-clip atomicity; lotus/pan.rye (ALES10) — the StereoClip.

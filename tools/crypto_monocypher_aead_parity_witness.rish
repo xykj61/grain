@@ -5,7 +5,7 @@
 # closes the ChaCha/Poly line the decision wave named, so all four primitive families now meet the actual audit target. Season G · Cryptography.
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G names "the ChaCha/Poly line" among the
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G names "the ChaCha/Poly line" among the
 # four primitives to prove against the vendored Monocypher, and the ChaCha20-Poly1305 AEAD as the composition that unblocks the Lotus signed carry.
 # Kin: crypto/aead.rye (our authored AEAD, GREEN against Zig's std.crypto and the RFC known-answer) · crypto/chacha20.rye · crypto/poly1305.rye
 # (the two halves it composes) · tools/monocypher_aead_parity.rye (our printing harness) · tools/fixtures/monocypher_aead_harness.c (Monocypher's

@@ -6,7 +6,7 @@
 **Status:** Living pin — seated  
 **Bound:** under `living_pin_max_bytes`  
 **Room:** Checkable  
-**Counsel:** [`../../counsel/20260725-040247_what-the-shell-remembers.md`](../../counsel/20260725-040247_what-the-shell-remembers.md)
+**Counsel:** [`../../counsel/date/20260725/20260725-040247_what-the-shell-remembers.md`](../../counsel/date/20260725/20260725-040247_what-the-shell-remembers.md)
 
 ---
 

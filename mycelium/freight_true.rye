@@ -2,7 +2,7 @@
 //! the arc closes).
 //!
 //! Season D (Kresfa & Mycelium) · Puddle fleet orchestration × Mycelium consensus · rung r4 — reads true.
-//! Design read: active-designing/20260813-121424_puddle-freight-world-state-migration-exploration.md
+//! Design read: active-designing/date/20260813/20260813-121424_puddle-freight-world-state-migration-exploration.md
 //!
 //! r1 proved a moved world reads the byte-identical position on its new berth, r2 conserved the whole fleet's
 //! state across a healing, r3 let a world's freight travel as text — all over ledgers seated in code. r4

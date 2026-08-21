@@ -1,7 +1,7 @@
 //! mycelium/portage_fixture_gen.rye — reproducibly emit the Portage record fixture (r4 support).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · Portage · rung r4 support.
-//! Design read: active-designing/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
+//! Design read: active-designing/date/20260813/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
 //!
 //! Seats the two real worlds of one crossing — World A where a funder credits Alice 100 and Alice signs a
 //! portage-OUT of 40 to Bob, and World B where a gateway signs the matching portage-IN bound to the crossing

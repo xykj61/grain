@@ -1,7 +1,7 @@
 //! mycelium/pledge_bron.rye — the two-phase verdict travels as a readable record.
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · Pledge rung r2 — travel.
-//! Design read: active-designing/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
+//! Design read: active-designing/date/20260813/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
 //!
 //! r1 resolved a Cord's agreed order into a Ledger — every account's spendable balance
 //! and reserved holdings, and every pledge's settlement (open, posted, or voided). A

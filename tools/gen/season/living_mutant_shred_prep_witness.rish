@@ -10,9 +10,9 @@ say "shred-prep: Lens TAME — Surface Season p34."
 
 let list = run ["test" "-f" "work-in-progress/SHRED_PREP.md"]
 assert list.ok else "shred-prep: SHRED_PREP.md missing"
-let seat = run ["test" "-f" "counsel/20260728-224716_surface-season-p32-living-mutant-shred-prep.md"]
+let seat = run ["test" "-f" "counsel/date/20260728/20260728-224716_surface-season-p32-living-mutant-shred-prep.md"]
 assert seat.ok else "shred-prep: p32 counsel seat missing"
-let seat34 = run ["test" "-f" "counsel/20260728-225638_surface-season-p34-transitive-writing-crawl.md"]
+let seat34 = run ["test" "-f" "counsel/date/20260728/20260728-225638_surface-season-p34-transitive-writing-crawl.md"]
 assert seat34.ok else "shred-prep: p34 transitive crawl counsel missing"
 
 say "shred-prep: lexicon..."

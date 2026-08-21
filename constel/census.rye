@@ -5,7 +5,7 @@
 //! concern — the collect-and-tally half of a gossip round — and nothing more.
 //!
 //! Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA8.
-//! Design read: active-designing/20260814-051119_fora8-constel-census-liveness-round.md
+//! Design read: active-designing/date/20260814/20260814-051119_fora8-constel-census-liveness-round.md
 //! Stands on: constel/gossip.rye (FORA7) — the announce; constel/switchboard.rye (FORA6) — the medium; constel/exchange.rye
 //! (FORA4) — a member's own greeting, reused as its "present" token (no new frame kind).
 //!

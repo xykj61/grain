@@ -20,7 +20,7 @@ assert q.ok else "personalize-brix: first_season_questions.brix ABSENT"
 let a = run ["test" "-f" "tools/gen/season/first_season_answers.template.brix"]
 assert a.ok else "personalize-brix: first_season_answers.template.brix ABSENT"
 
-let r = run ["test" "-f" "expanding-prompts/20260730-144833_first-season-256-recursion-template.md"]
+let r = run ["test" "-f" "expanding-prompts/date/20260730/20260730-144833_first-season-256-recursion-template.md"]
 assert r.ok else "personalize-brix: recursion template ABSENT"
 
 let g = run ["test" "-f" "manual/guides/first-season-personalize.md"]

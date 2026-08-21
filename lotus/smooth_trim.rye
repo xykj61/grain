@@ -17,7 +17,7 @@
 //! min_run removes more clicks yet keeps more gaps, so the length can rise or fall; the declick and keep-gap laws are the two sides of that.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES102.
-//! Design read: active-designing/20260815-001200_fill-ales102-lotus-smoothed-silence-trim.md
+//! Design read: active-designing/date/20260815/20260815-001200_fill-ales102-lotus-smoothed-silence-trim.md
 //! Stands on: lotus/trim_silence.rye (ALES96) — the silence stripper, the min-zero twin; lotus/smooth_runs.rye (ALES101) — the run-length smoother; lotus/segment.rye
 //! (ALES95) — the segmenter; lotus/timeline.rye (ALES2) — the Clip and cut; lotus/voiced.rye (ALES94) — the .silent verdict.
 //!

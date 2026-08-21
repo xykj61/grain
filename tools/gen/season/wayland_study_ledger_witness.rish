@@ -17,7 +17,7 @@ assert wayland.ok else "wayland-study: gratitude/wayland.md missing"
 let zigw = run ["test" "-f" "gratitude/zig-wayland.md"]
 assert zigw.ok else "wayland-study: gratitude/zig-wayland.md missing"
 
-let ledger = run ["test" "-f" "counsel/20260728-195228_surface-season-p4-river-zig-wayland-study-ledger.md"]
+let ledger = run ["test" "-f" "counsel/date/20260728/20260728-195228_surface-season-p4-river-zig-wayland-study-ledger.md"]
 assert ledger.ok else "wayland-study: p4 ledger counsel missing"
 
 let seed = run ["test" "-f" "brushstroke/wayland_seed.rye"]

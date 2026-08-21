@@ -12,4 +12,4 @@ Numbered notes live here as a lexicon-shaped catalog. This README is the living 
 | Parent organizing | [`../ORGANIZING.md`](../../../ORGANIZING.md) |
 | Stewards | [`../STEWARDS.md`](../../../STEWARDS.md) — study shelf |
 
-Counsel shelf sweep: [`../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md`](../../../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md).
+Counsel shelf sweep: [`../counsel/date/20260724/20260724-135312_vanes-shelves-and-the-glow-ladder.md`](../../../counsel/date/20260724/20260724-135312_vanes-shelves-and-the-glow-ladder.md).

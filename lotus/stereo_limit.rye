@@ -18,7 +18,7 @@
 //! and balanced, count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES158.
-//! Design read: active-designing/20260815-063222_fill-ales158-lotus-stereo-limit.md
+//! Design read: active-designing/date/20260815/20260815-063222_fill-ales158-lotus-stereo-limit.md
 //! Stands on: lotus/limit.rye (ALES49) — the mono brickwall limiter, its `limit` and `LimitError` reused whole (the peak-channel proof and the fault set); lotus/stereo_compress.rye (ALES157) — the linked-gain sibling
 //! whose ratio→∞ corner this rung is; lotus/stereo_gate.rye (ALES156) — the rung that opened the stereo dynamics family with the linked detector; lotus/pan.rye (ALES10) — the StereoClip and its balance invariant;
 //! lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, and sample_max.

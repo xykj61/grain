@@ -5,8 +5,8 @@
 //! (that is its own next round); it is the tractable, highest-Lindy move that turns a proven field into a proven group.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-193010_fe25519-the-curve-field-crux.md (the field this stands on) and
-//! active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock, its
+//! Design read: active-designing/date/20260815/20260815-193010_fe25519-the-curve-field-crux.md (the field this stands on) and
+//! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock, its
 //! group arithmetic a composition over the field).
 //! Kin: crypto/fe25519.rye (the base field this composes over, GREEN) · crypto/poly1305.rye (the limb-arithmetic sibling). Monocypher
 //! (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own composition, studied clean-room from the public

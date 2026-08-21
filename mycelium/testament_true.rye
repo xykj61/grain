@@ -2,7 +2,7 @@
 //! constellation's verdict (r4, the Testament arc closes).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · Testament · rung r4 — reads true.
-//! Design read: active-designing/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
+//! Design read: active-designing/date/20260813/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
 //!
 //! r1 sealed a named constellation's verdict and verified it offline, r2 carried its fault tolerance, r3 let
 //! it travel as a record — all over certificates sealed in the same process. r4 carries the reader onto a

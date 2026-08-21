@@ -4,7 +4,7 @@
 # rung of the real Monocypher-source parity pattern (tools/crypto_monocypher_parity_witness.rish opened it on BLAKE2b). Season G · Cryptography.
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte." X25519 is exactly the primitive crypto/kumara_sealed.rye's confidentiality door agrees
 # with, so proving it against the actual audit target hardens that door directly.
 # Kin: crypto/x25519.rye (our authored key agreement, GREEN against Zig's std.crypto) · tools/monocypher_x25519_parity.rye (our printing harness) ·

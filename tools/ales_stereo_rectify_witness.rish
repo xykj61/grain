@@ -2,7 +2,7 @@
 # the class (ALES138).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES138.
-# Design read: active-designing/20260815-040027_fill-ales138-lotus-stereo-rectify.md
+# Design read: active-designing/date/20260815/20260815-040027_fill-ales138-lotus-stereo-rectify.md
 # Stands on: lotus/rectify.rye (ALES84 — the mono full-wave rectifier run once per channel, |x| pinned to the rail), lotus/stereo_decimate.rye (ALES137 — the image-PRESERVING member whose opposite pole this rung
 # is), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max). A Lotus master is a StereoClip
 # whose defining invariant is that left and right hold the same length. This rung carries ALES84's full-wave rectifier into stereo — folding the negative half of the wave up onto the positive side in both

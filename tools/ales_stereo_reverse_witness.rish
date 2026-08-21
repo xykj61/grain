@@ -1,7 +1,7 @@
 # tools/ales_stereo_reverse_witness.rish — stereo_reverse: turning a master end for end, both channels in lockstep, total (no refusal) (ALES125).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES125.
-# Design read: active-designing/20260815-023515_fill-ales125-lotus-stereo-reverse.md
+# Design read: active-designing/date/20260815/20260815-023515_fill-ales125-lotus-stereo-reverse.md
 # Stands on: lotus/reverse.rye (ALES104 — the mono end-for-end turn run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant),
 # lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold
 # the same length so the channels stay aligned in time; the reversed cymbal swell and the backwards reverb arrive in both speakers at once. This rung carries ALES104's reverse into stereo the way

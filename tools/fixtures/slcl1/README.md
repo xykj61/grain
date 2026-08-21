@@ -10,4 +10,4 @@ Deterministic inputs for `tools/slcl1_receipt.rish` — witness **GREEN** at par
 | `slcl1_log/empty.log` | Empty append log (created by witness) |
 | `slcl1_golden_receipt.bron` | Pinned receipt after first append (lands with witness) |
 
-Ground: [`../../active-designing/20260702-195426_slcl1-verifiable-receipt.md`](../../active-designing/20260702-195426_slcl1-verifiable-receipt.md)
+Ground: [`../../active-designing/date/20260702/20260702-195426_slcl1-verifiable-receipt.md`](../../active-designing/date/20260702/20260702-195426_slcl1-verifiable-receipt.md)

@@ -1,7 +1,7 @@
 //! brushstroke/photos_editor.rye — HUNK66: the Photos editor — crop and filter, one history behind both tools.
 //!
 //! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK66.
-//! Design read: active-designing/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here")
+//! Design read: active-designing/date/20260813/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here")
 //! Teacher, thanked clean-room: the single editing surface of a photo app (iCloud Photos / Google Photos) — crop and
 //! filter are two tools over ONE undo stack, so a keeper crops, filters, and undoes across both without a seam (concept
 //! only, siloed).

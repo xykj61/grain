@@ -1,7 +1,7 @@
 # tools/ales_smooth_runs_witness.rish — the run-length smoother: absorb every run shorter than a minimum into what surrounds it (ALES101).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES101.
-# Design read: active-designing/20260815-000323_fill-ales101-lotus-run-length-smoother.md
+# Design read: active-designing/date/20260815/20260815-000323_fill-ales101-lotus-run-length-smoother.md
 # Stands on: lotus/segment.rye (ALES95 — the voice-activity segmenter, whose Segments this reads and rewrites), lotus/voiced.rye (ALES94 — the Verdict the runs carry).
 # ALES95's own scope note named this rung: "a real voice-activity detector adds ... smoothing hysteresis this rung does not — those are later rungs." Raw per-frame
 # segmentation flickers — one loud tick reads as a .voiced blip, one quiet frame as a spurious .silent gap; every VAD fixes it the same way: a region must last a minimum

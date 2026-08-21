@@ -1,7 +1,7 @@
 //! mycelium/pledge_knot.rye — the two-phase verdict reads across a Knot (rung r3).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the two-phase transfer · rung r3.
-//! Design read: active-designing/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
+//! Design read: active-designing/date/20260813/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
 //!
 //! Rung 1 resolved a whole Cord Dag into a two-phase Ledger — which pledges reserved
 //! coins, which were honored, which released. Yet a ledger a family runs for years does

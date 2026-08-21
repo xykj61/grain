@@ -1,7 +1,7 @@
 # tools/ales_reverb_gate_env_witness.rish — the envelope gate: the reverb's GATED TAIL given a shaped edge, the time-following gated reverb (ALES202).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES202.
-# Design read: active-designing/20260815-110731_fill-ales202-lotus-reverb-gate-env.md
+# Design read: active-designing/date/20260815/20260815-110731_fill-ales202-lotus-reverb-gate-env.md
 # Stands on: lotus/reverb_preset.rye (ALES190 — the named-room wet, run over the span unchanged); lotus/gate_env.rye (ALES54 — the attack/release
 # envelope gate and its guards, the gating applied to the wet span); lotus/reverb_gate.rye (ALES200 — the static gate this contains as its
 # instantaneous limit); lotus/clock.rye (ALES5 — the sample clock, converting the span); lotus/timeline.rye (ALES2 — the Clip, its max_clip bounding

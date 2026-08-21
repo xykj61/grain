@@ -1,7 +1,7 @@
 //! image/edit_cursor.rye — HUNK16: the edit cursor — undo and redo over one history, a fresh edit forgets the road not taken.
 //!
 //! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK16.
-//! Design read: active-designing/20260813-171500_hunk-edit-cursor-undo-redo-exploration.md
+//! Design read: active-designing/date/20260813/20260813-171500_hunk-edit-cursor-undo-redo-exploration.md
 //! Teacher, thanked clean-room: the undo/redo history stack of a photo editor (iCloud Photos / Google Photos) — a
 //! position walks back and forth over one recorded history, and a fresh edit past a rewind discards the branch not
 //! kept (concept only, siloed).

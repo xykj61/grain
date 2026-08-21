@@ -7,7 +7,7 @@
 **Voice:** Quin  
 **Status:** Living pin — one line per standing question  
 **Answers:** land as dated `foundations/` or `context/specs/` documents; link from here  
-**Counsel:** [`../counsel/20260724-141612_names-maps-and-open-questions.md`](../counsel/20260724-141612_names-maps-and-open-questions.md) · redaction [`../counsel/20260725-001200_forgetting-without-breaking.md`](../counsel/20260725-001200_forgetting-without-breaking.md)
+**Counsel:** [`../counsel/date/20260724/20260724-141612_names-maps-and-open-questions.md`](../counsel/date/20260724/20260724-141612_names-maps-and-open-questions.md) · redaction [`../counsel/date/20260725/20260725-001200_forgetting-without-breaking.md`](../counsel/date/20260725/20260725-001200_forgetting-without-breaking.md)
 
 | # | Question | Status | Answer home |
 |---|----------|--------|-------------|
@@ -20,6 +20,6 @@
 | 7 | **Backup and mirror key policy** — erasure is only as complete as the least disciplined copy of the per-subject key | open | — · see [`specs/redaction-stance.md`](specs/redaction-stance.md) |
 | 8 | **Erasure under a preservation hold** — person's request meets a hold; architecture owes refuse · record · tell plainly | open | — · see [`specs/redaction-stance.md`](specs/redaction-stance.md) |
 | 9 | **Aggregates computed before an erasure** — whether derived figures are recomputed, frozen, or coarsened | open | — · see [`specs/redaction-stance.md`](specs/redaction-stance.md) |
-| 10 | **Session-log granularity** — one log per send, or one log per sitting | open | — · see [`../counsel/20260725-040247_what-the-shell-remembers.md`](../counsel/20260725-040247_what-the-shell-remembers.md) |
+| 10 | **Session-log granularity** — one log per send, or one log per sitting | open | — · see [`../counsel/date/20260725/20260725-040247_what-the-shell-remembers.md`](../counsel/date/20260725/20260725-040247_what-the-shell-remembers.md) |
 
 *Load the questions well; let them ripen; write each answer once.*

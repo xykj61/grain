@@ -19,4 +19,4 @@ When a send updates `work-in-progress/REMEMBER.md` **Git nib**, that update land
 Pin-only commits doubled Surface Season history and hurt `git log` scroll reading. Keaton seated this tidy `20260728.205029`.
 
 Canonical Cursor twin: `.cursor/rules/remember-git-nib.mdc`.  
-Counsel: `counsel/20260728-205029_surface-season-history-tidy-remember-pin-squash.md`.
+Counsel: `counsel/date/20260728/20260728-205029_surface-season-history-tidy-remember-pin-squash.md`.

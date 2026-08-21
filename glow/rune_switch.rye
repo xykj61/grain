@@ -1,7 +1,7 @@
 //! glow-book: runes.md#g-switch
 //! glow/rune_switch.rye — parses Glow's `?-` exhaustive-switch rune head.
 //!
-//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
+//! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `?-` is the exhaustive switch over a cold-atom-tagged subject (e.g.
 //! `kind.cur-record`). Arms (`%mint`, `%send`, …) are the whole mold; a later
 //! compiler refuses a missing arm. This file is only the front half: extract

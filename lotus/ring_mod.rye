@@ -18,7 +18,7 @@
 //! Every output depends only on its own input sample, so the ring modulator writes IN PLACE WITH NO SNAPSHOT (the tremolo's thinnest discipline).
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES75.
-//! Design read: active-designing/20260814-201937_fill-ales75-lotus-ring-modulator-bipolar-carrier.md
+//! Design read: active-designing/date/20260814/20260814-201937_fill-ales75-lotus-ring-modulator-bipolar-carrier.md
 //! Stands on: lotus/tremolo.rye (ALES74) — the amplitude write this generalizes by removing the floor; lotus/chorus.rye (ALES71) — the
 //! triangle-LFO driver `triangle_delay_at`, now the carrier; lotus/glide.rye (ALES70) — `glide_scale`, the fixed-point unit (256 = unity);
 //! lotus/timeline.rye (ALES2) — the Clip, sample_min/max, the one true saturate.

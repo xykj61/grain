@@ -1,7 +1,7 @@
 //! mycelium/lapse.rye — the Lapse: a two-phase transfer the order lets expire on time.
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · Journey rung r1 — the crux.
-//! Design read: active-designing/20260813-085046_mycelium-lapse-pending-timeout-exploration.md
+//! Design read: active-designing/date/20260813/20260813-085046_mycelium-lapse-pending-timeout-exploration.md
 //!
 //! The Pledge reserves coins now and settles them later — honored or released, decided once
 //! by the order. Yet a reservation neither honored nor released would lock a purse forever,

@@ -6,7 +6,7 @@
 //! declare it.
 //!
 //! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY16.
-//! Design read: active-designing/20260814-073400_drey16-desk-verify-fsck-prove-what-it-holds-exploration.md
+//! Design read: active-designing/date/20260814/20260814-073400_drey16-desk-verify-fsck-prove-what-it-holds-exploration.md
 //! Stands on: mikrophone/catalog.rye (DREY7) — the content-addressed store, `address_at`, `fetch`, and the one `address_of`
 //! rule a deposit and a later verify must share, so integrity is checked by exactly the rule it was keyed by.
 //!

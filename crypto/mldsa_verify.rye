@@ -9,7 +9,7 @@
 //! (crypto/shake.rye) — and holds no key of its own: every seed, message, and signature is a public test vector.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — the ML-DSA ladder's verification rung, the door a keeper's peer reads a
+//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — the ML-DSA ladder's verification rung, the door a keeper's peer reads a
 //! Kumara identity's post-quantum name through once the old curves fall.
 //! Kin: crypto/mldsa_sign.rye (the signature this checks, GREEN) · crypto/mldsa_keygen.rye (the keypair this verifies under, GREEN) · crypto/mldsa_ring.rye
 //! (NTT · pointwise multiply, GREEN) · crypto/mldsa_encode.rye (BitUnpack · SimpleBitUnpack · Decompose · UseHint, GREEN) · crypto/mldsa_sample.rye

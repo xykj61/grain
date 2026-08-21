@@ -10,7 +10,7 @@ say "graph-redraw: Language EN — Weave DAG · Frame fold · redraw along edges
 say "graph-redraw: Style Radiant — fold paper + living stand-in; refuse invent."
 say "graph-redraw: Lens TAME — Surface Season p17 constructive."
 
-let seat = run ["test" "-f" "counsel/20260728-203606_surface-season-p17-graph-redraw-spine.md"]
+let seat = run ["test" "-f" "counsel/date/20260728/20260728-203606_surface-season-p17-graph-redraw-spine.md"]
 assert seat.ok else "graph-redraw: p17 counsel seat missing"
 
 say "graph-redraw: one-graph paper pins (p8)..."

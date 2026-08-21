@@ -1,7 +1,7 @@
 # tools/ales_stereo_reverb_gate_env_witness.rish — the stereo envelope gate: the reverb's GATED TAIL given a shaped edge, across a stereo master (ALES203).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES203.
-# Design read: active-designing/20260815-111333_fill-ales203-lotus-stereo-reverb-gate-env.md
+# Design read: active-designing/date/20260815/20260815-111333_fill-ales203-lotus-stereo-reverb-gate-env.md
 # Stands on: lotus/stereo_reverb_preset.rye (ALES191 — the named-room stereo wet, run over the master unchanged); lotus/gate_env.rye (ALES54 — the
 # attack/release envelope gate and its guards, run per channel); lotus/reverb_gate_env.rye (ALES202 — the mono envelope gate this mirrors per ear);
 # lotus/stereo_reverb_gate.rye (ALES201 — the static stereo gate this contains as its instantaneous limit); lotus/pan.rye (the StereoClip);

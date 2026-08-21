@@ -6,7 +6,7 @@
 **Depth:** guide
 **Ceiling:** ≤300 lines
 **Last updated:** 2026-08-16
-**Compresses:** [`crypto/README.md`](../crypto/README.md) · [`crypto/CONSTANT_TIME.md`](../crypto/CONSTANT_TIME.md) · [`20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md) · the Season G `.bron` session logs (raw beneath)
+**Compresses:** [`crypto/README.md`](../crypto/README.md) · [`crypto/CONSTANT_TIME.md`](../crypto/CONSTANT_TIME.md) · [`20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md) · the Season G `.bron` session logs (raw beneath)
 
 ---
 

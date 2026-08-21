@@ -1,7 +1,7 @@
 //! image/edit_touch_input.rye — HUNK50: the finger surface proper — a tap on a strip, a swipe left or right, becomes one edit gesture.
 //!
 //! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK50.
-//! Design read: active-designing/20260813-204548_hunk-edit-touch-input-exploration.md
+//! Design read: active-designing/date/20260813/20260813-204548_hunk-edit-touch-input-exploration.md
 //! Teacher, thanked clean-room: the finger layer of a photo editor (iCloud Photos / Google Photos) — a tap on a tool
 //! commits it, a swipe walks the undo/redo history — reduced to a classifier over raw touch coordinates (concept only,
 //! siloed).

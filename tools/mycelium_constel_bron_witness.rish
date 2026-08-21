@@ -15,7 +15,7 @@
 # refuses PkMismatch); a bad header and an unknown field each refuse. Composes constel + chorus + muster +
 # voucher public API only, editing none; siloed dev fixtures — no key, no funds, no network, no real value.
 #
-# Scope: active-designing/20260813-132009_mycelium-constel-named-dev-net-exploration.md
+# Scope: active-designing/date/20260813/20260813-132009_mycelium-constel-named-dev-net-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mycelium_constel_bron_witness.rish

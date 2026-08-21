@@ -15,8 +15,8 @@
 //! key, secret key, and signature widths are computed from FIPS 204's own formulas so a smaller set simply produces smaller keys through the same door.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, doubled-oracle parity, audit-ready).
-//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — the ML-DSA ladder's front door, the post-quantum successor to
-//! Kumara's Ed25519 identity. Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — the ML-DSA ladder's front door, the post-quantum successor to
+//! Kumara's Ed25519 identity. Rye-first spine: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 //! Kin: crypto/mldsa_keygen.rye (the seed→keypair, GREEN) · crypto/mldsa_sign.rye (the deterministic signer, GREEN) · crypto/mldsa_verify.rye (the
 //! verdict, GREEN) · crypto/kumara_identity.rye (the classical Ed25519 identity front door this is the post-quantum sibling of). Clean-room: FIPS 204
 //! is a public NIST standard studied through its spec; Zig's std.crypto is read only as the reference to diff against, never a copied line

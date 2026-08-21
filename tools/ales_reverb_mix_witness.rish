@@ -1,7 +1,7 @@
 # tools/ales_reverb_mix_witness.rish — the wet/dry mix: the first reverb knob that is not a bank choice (ALES192).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES192.
-# Design read: active-designing/20260815-100815_fill-ales192-lotus-reverb-wet-dry-mix.md
+# Design read: active-designing/date/20260815/20260815-100815_fill-ales192-lotus-reverb-wet-dry-mix.md
 # Stands on: lotus/reverb_preset.rye (ALES190 — the named-room wet, run over the span unchanged); lotus/clock.rye (ALES5 — the sample clock);
 # lotus/timeline.rye (ALES2 — the Clip, its max_clip bounding the dry snapshot and its saturate clamping the blend).
 #

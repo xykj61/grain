@@ -8,7 +8,7 @@
 # sealed box is anonymous, this door adds what the dual-key shape makes reachable and one lattice key cannot: a message only the named recipient can
 # read, provably from the named sender. Opened verify-before-trust: the sender's signature over a BLAKE2b-512 digest of the inner sealed frame is
 # checked, and refused unless it is the sender the reader named, before the ciphertext is ever decapsulated.
-# Design read: active-designing/20260816-192400_post-quantum-identity-is-dual-key.md ("the coming kumara_pq_sealed seals to the identity's ML-KEM half,
+# Design read: active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md ("the coming kumara_pq_sealed seals to the identity's ML-KEM half,
 # and — where provenance is also wanted — signs the frame with the identity's ML-DSA key"). Clean-room: FIPS 203/204 are public NIST standards; the
 # framing is our own Rye wiring over our own GREEN rungs, no line copied (.claude/rules/gratitude-licenses.md).
 #

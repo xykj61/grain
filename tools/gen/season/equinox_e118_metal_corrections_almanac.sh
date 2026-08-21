@@ -30,7 +30,7 @@ entry = (
     "**Ran:** `sh tools/fixtures/equinox_e118_metal_corrections_scan.sh` · **Stamp:** `"
     + stamp
     + "` · **Witness:** `tools/gen/season/equinox_e118_metal_corrections_witness.rish` · "
-    "counsel `counsel/20260731-172902_e118-metal-corrections.md` · "
+    "counsel `counsel/date/20260731/20260731-172902_e118-metal-corrections.md` · "
     "scan `tools/fixtures/equinox_e118_metal_corrections_scan.sh`\n"
     "Expected control_gate · instruments_tracked · roofs_status=CLOSED · "
     "divergence=absent · dated_testimony agrees · stale_cloud_blocked=retired · "

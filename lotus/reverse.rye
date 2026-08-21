@@ -14,7 +14,7 @@
 //! empty clip, a single-sample clip, and a palindrome are each their own reverse — the degenerate cases land on themselves, no special-casing.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES104.
-//! Design read: active-designing/20260815-002711_fill-ales104-lotus-reverse.md
+//! Design read: active-designing/date/20260815/20260815-002711_fill-ales104-lotus-reverse.md
 //! Stands on: lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to prove a
 //! permutation moves no loudness.
 //!

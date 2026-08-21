@@ -15,7 +15,7 @@
 //! raised up front so a bad setting leaves the clip DRY rather than half-reverbed. The up-front check is the atomicity crux.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES200.
-//! Design read: active-designing/20260815-105453_fill-ales200-lotus-reverb-gate.md
+//! Design read: active-designing/date/20260815/20260815-105453_fill-ales200-lotus-reverb-gate.md
 //! Stands on: lotus/reverb_preset.rye (ALES190) — the named-room wet, run over the span unchanged, its ReverbPresetError forwarded whole;
 //! lotus/gate.rye (ALES49) — the downward gate and its guards, the gating applied to the wet span (its BadThreshold / BadRatio forwarded, its
 //! BadRange the reverb's BadRange); lotus/clock.rye (ALES5) — the sample clock, its samples_for converting the span (the SAME conversion

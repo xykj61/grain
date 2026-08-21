@@ -5,7 +5,7 @@
 //! out of a continuous byte queue, waiting when the frame is not yet complete, leaving the rest untouched.
 //!
 //! Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA5.
-//! Design read: active-designing/20260814-044915_fora5-constel-channel-byte-stream.md
+//! Design read: active-designing/date/20260814/20260814-044915_fora5-constel-channel-byte-stream.md
 //! Stands on: constel/wire.rye (FORA3) — the frame the channel delimits; constel/exchange.rye (FORA4) — the conversation the
 //! channel carries.
 //!

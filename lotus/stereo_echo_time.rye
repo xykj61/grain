@@ -18,7 +18,7 @@
 //! by name with BOTH channels byte for byte untouched and still balanced; count_ms = 0 the identity on both; and the image law inherited whole (an identical-channel master stays identical through the timed echo).
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES182.
-//! Design read: active-designing/20260815-090218_fill-ales182-lotus-stereo-echo-in-real-time.md
+//! Design read: active-designing/date/20260815/20260815-090218_fill-ales182-lotus-stereo-echo-in-real-time.md
 //! Stands on: lotus/stereo_echo.rye (ALES181) — the linked stereo feedback delay this speaks in real time, delegated unchanged, its StereoEchoError forwarded; lotus/echo.rye (ALES66) — the mono feedback delay ALES181 runs per channel, its
 //! EchoError the echo half of this face's error set; lotus/clock.rye (ALES5) — the sample clock, its samples_for converting ms to a bounded sample count and its echo_ms/fade_ms the payoff pattern this follows; lotus/pan.rye (ALES10) — the
 //! StereoClip and its balance invariant; lotus/timeline.rye (ALES2) — the Clip.

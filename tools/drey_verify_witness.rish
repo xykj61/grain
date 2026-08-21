@@ -1,7 +1,7 @@
 # tools/drey_verify_witness.rish — the desk fsck: prove the integrity of everything it holds (DREY16).
 #
 # Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY16.
-# Design read: active-designing/20260814-073400_drey16-desk-verify-fsck-prove-what-it-holds-exploration.md
+# Design read: active-designing/date/20260814/20260814-073400_drey16-desk-verify-fsck-prove-what-it-holds-exploration.md
 # Stands on: mikrophone/catalog.rye (DREY7) — the content-addressed store and the one address_of rule.
 #
 # mikrophone/verify.rye is the desk's fsck: verify walks every held recording, re-derives its content address from the

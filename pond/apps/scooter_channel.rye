@@ -4,7 +4,7 @@
 //! Season G (Open Media Primitives) -- the terminal family. Dexter owns the drawn TTY; Scooter is the
 //! permissioned command-line chat that runs on it, over Comlink and on Pond. This rung draws its heart:
 //! the channel model every later rung (the drawn frame, the signed post, the Comlink transport) stands on.
-//! Design read: active-designing/20260817-035009_scooter-channel-model-crux.md
+//! Design read: active-designing/date/20260817/20260817-035009_scooter-channel-model-crux.md
 //! Pattern elders: pond/apps/skate_circle.rye, pond/apps/skate_group.rye -- the same bounded state machine.
 //!
 //! The crux is three honest properties held at once:

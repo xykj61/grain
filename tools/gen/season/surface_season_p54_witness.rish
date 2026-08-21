@@ -8,7 +8,7 @@ say "surface-p54: Language EN — live-five type · :quit opens."
 say "surface-p54: Style Radiant — thin Prompt; dated counsel keeps later limbs hand."
 say "surface-p54: Lens TAME — Surface Season p54."
 
-let counsel = run ["test" "-f" "counsel/20260729-140917_surface-season-p54-live-five-type-quit.md"]
+let counsel = run ["test" "-f" "counsel/date/20260729/20260729-140917_surface-season-p54-live-five-type-quit.md"]
 assert counsel.ok else "surface-p54: p54 counsel missing"
 
 let metal = run ["sh" "-c" "grep -q 'const Prompt' brushstroke/wayland_seed.rye && grep -q 'fn run_live_five_witness' brushstroke/wayland_seed.rye && grep -q 'fn run_live' brushstroke/wayland_seed.rye && echo METAL_OK"]
@@ -25,7 +25,7 @@ assert livetest.out contains "live-five witness" else "surface-p54: livetest ban
 assert livetest.out contains ":quit" else "surface-p54: :quit missing from livetest"
 assert livetest.out contains "GREEN" else "surface-p54: livetest not GREEN"
 
-let hand = run ["sh" "-c" "grep -qF 'idle · ceiling still' counsel/20260729-140917_surface-season-p54-live-five-type-quit.md && grep -qF 'idle/ceiling hand' counsel/20260729-140917_surface-season-p54-live-five-type-quit.md && echo HAND_OK"]
+let hand = run ["sh" "-c" "grep -qF 'idle · ceiling still' counsel/date/20260729/20260729-140917_surface-season-p54-live-five-type-quit.md && grep -qF 'idle/ceiling hand' counsel/date/20260729/20260729-140917_surface-season-p54-live-five-type-quit.md && echo HAND_OK"]
 assert hand.ok else "surface-p54: idle/ceiling hand seat scan failed"
 assert hand.out contains "HAND_OK" else "surface-p54: p54 counsel must keep dated idle/ceiling hand seat"
 

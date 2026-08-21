@@ -1,7 +1,7 @@
 # tools/skate_styled_run_witness.rish — WADE1: Skate per-cell styled runs.
 #
 # Proves brushstroke/skate_grid.rye's additive per-cell foreground layer
-# (active-designing/20260812-000456_wade1-brush-surface-bridge-seam.md):
+# (active-designing/date/20260812/20260812-000456_wade1-brush-surface-bridge-seam.md):
 #   (a) two different cell ranges rasterize to two different colors;
 #   (b) a grid with no color runs rasterizes byte-identically to a baseline —
 #       the whole-buffer FNV signature of a no-runs grid equals a fresh grid's,

@@ -25,7 +25,7 @@
 //!   rye build mantra/recall_beaded.rye -femit-bin=mantra/bin/recall-beaded
 //!   mantra/bin/recall-beaded selftest
 //!
-//! Scope: active-designing/20260706-023912_the-referential-namespace.md
+//! Scope: active-designing/date/20260706/20260706-023912_the-referential-namespace.md
 
 const std = @import("std");
 const assert = std.debug.assert;

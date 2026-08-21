@@ -16,7 +16,7 @@
 //! count = 0 the identity, a start past the samples or a count past the remainder BadRange, a duplicate past the fixed buffer ClipFull, each before any write.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES112.
-//! Design read: active-designing/20260815-011901_fill-ales112-lotus-duplicate.md
+//! Design read: active-designing/date/20260815/20260815-011901_fill-ales112-lotus-duplicate.md
 //! Stands on: lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the inverse law;
 //! lotus/insert_silence.rye (ALES109) — opens the count-sample gap at the span's end without a caller slice; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the
 //! witness to prove that copying existing samples never moves the peak.

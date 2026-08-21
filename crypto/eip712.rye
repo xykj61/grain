@@ -8,7 +8,7 @@
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready). This rung authors NO new
 //! cryptography: every hash is the GREEN Keccak-256, every recovery the GREEN ecrecover, every address the GREEN eth_address. It contributes only
 //! the EIP-712 *encoding* — the type hash, the struct hash, the domain separator, and the 0x1901 digest framing — over stones already proven on
-//! metal beneath it. Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity
+//! metal beneath it. Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity
 //! wave, the Kumara-login / Dimeroll-receipt door this widens from flat messages to typed structured data).
 //! Kin: crypto/eth_personal_sign.rye (the EIP-191 flat-message sibling, GREEN) · crypto/keccak256.rye (the hash of every EIP-712 word, GREEN) ·
 //! crypto/secp256k1_ecrecover.rye (the recovery a typed signature is read back through, GREEN) · crypto/eth_address.rye (the address the recovered

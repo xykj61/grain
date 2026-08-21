@@ -1,7 +1,7 @@
 # tools/ales_dc_block_witness.rish — the one-pole IIR DC blocker: a drifting-offset remover with carried state, y[n] = x[n] − x[n−1] + R·y[n−1] (ALES91).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES91.
-# Design read: active-designing/20260814-223442_fill-ales91-lotus-dc-blocker.md
+# Design read: active-designing/date/20260814/20260814-223442_fill-ales91-lotus-dc-blocker.md
 # Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/max, the one true saturate) and the carried-state idiom of lotus/tone_carry.rye (ALES43 — the
 # filter that spans a re-berthed region without a fresh transient). The sibling of lotus/dc_remove.rye (ALES90 — the block-mean remover): where the block mean
 # is memoryless and subtracts one average (a CONSTANT offset over a bounded region), this rung carries state and FOLLOWS a drifting offset the block mean cannot.

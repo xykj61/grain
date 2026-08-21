@@ -1,7 +1,7 @@
 //! mycelium/statement_knot.rye — an account statement reads continuous across a Knot (rung r3).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Statement · rung r3 — across a Knot.
-//! Design read: active-designing/20260813-091851_mycelium-statement-account-voice-exploration.md
+//! Design read: active-designing/date/20260813/20260813-091851_mycelium-statement-account-voice-exploration.md
 //!
 //! r1 read one account's line out of a whole resolved ledger; r2 let it travel. Yet a ledger a family
 //! runs for years does not carry its whole past unbroken: the Knot (`cord_knot.rye`) ties off a

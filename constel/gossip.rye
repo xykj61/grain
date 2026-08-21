@@ -5,7 +5,7 @@
 //! copy, the announcer's own mailbox staying empty, the fan-out bounded by the roster.
 //!
 //! Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA7.
-//! Design read: active-designing/20260814-050539_fora7-constel-gossip-broadcast.md
+//! Design read: active-designing/date/20260814/20260814-050539_fora7-constel-gossip-broadcast.md
 //! Stands on: constel/switchboard.rye (FORA6) — the medium and its per-pier mailboxes; constel/exchange.rye (FORA4) — the
 //! frame a pier announces.
 //!

@@ -1,7 +1,7 @@
 # tools/ales_stereo_invert_witness.rish — stereo_invert: the phase flip of a master, both channels in lockstep, total (no refusal) (ALES127).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES127.
-# Design read: active-designing/20260815-024705_fill-ales127-lotus-stereo-invert.md
+# Design read: active-designing/date/20260815/20260815-024705_fill-ales127-lotus-stereo-invert.md
 # Stands on: lotus/invert.rye (ALES105 — the mono sign flip run once per channel, itself reusing ALES2's one true saturate), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and
 # its balance invariant), lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is
 # that left and right hold the same length so the channels stay aligned in time; a phase flip that brings two mics on one source into agreement or cancels a difference signal lands in both

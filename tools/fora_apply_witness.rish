@@ -1,7 +1,7 @@
 # tools/fora_apply_witness.rish — the committed log drives a state machine, each request applied exactly once (FORA19).
 #
 # Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
-# FORA19. Design read: active-designing/20260814-083900_fora19-constel-apply-linearizable-sessions.md
+# FORA19. Design read: active-designing/date/20260814/20260814-083900_fora19-constel-apply-linearizable-sessions.md
 #
 # constel/apply.rye turns FORA18's committed prefix into applied state, with linearizable client sessions — the guarantee Raft
 # §8 names: an agreed log is not a service until each REQUEST runs exactly once. A leader can commit a request, crash before

@@ -12,7 +12,7 @@ set -eu
 MODE=${1:-}
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 LEXICON=context/LEXICON.md
-COUNSEL=counsel/20260731-220432_e121-roots-bench-amend.md
+COUNSEL=counsel/date/20260731/20260731-220432_e121-roots-bench-amend.md
 MAP=work-in-progress/EQUINOX_SEAT_MAP.md
 REMEMBER=work-in-progress/REMEMBER.md
 PRIN=tools/gen/season/prin_scope.rish

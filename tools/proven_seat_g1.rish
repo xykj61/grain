@@ -7,7 +7,7 @@
 
 let cache = "tools/.cache/proven-seat"
 let guest = "${cache}/g1-receipt-verify"
-let pin = "active-designing/20260712-195339_proven-seat-g1-crossing-pin.md"
+let pin = "active-designing/date/20260712/20260712-195339_proven-seat-g1-crossing-pin.md"
 let build = "${cache}/genode-build-x86_64"
 let tools = "${cache}/host-tools"
 let log = "${cache}/g1-serial-run.log"

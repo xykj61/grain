@@ -1,7 +1,7 @@
 //! brushstroke/wade1_brush_style_test.rye — WADE1 authoring loop, end-to-end.
 //!
 //! Closes the seam the WADE1 bridge names
-//! (active-designing/20260812-000456_wade1-brush-surface-bridge-seam.md): a
+//! (active-designing/date/20260812/20260812-000456_wade1-brush-surface-bridge-seam.md): a
 //! `.brush` *file* declares a `style:` token block; the parser reassembles it
 //! into a flat Bron token sheet; tokens.rye's infuse cascade resolves it; and a
 //! resolved sheet dresses a Skate grid to the declared colors. Source → token

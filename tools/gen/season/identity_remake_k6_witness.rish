@@ -6,10 +6,10 @@ say "identity-k6: Language EN — handback Surface p55."
 say "identity-k6: Style Radiant — pause Identity Remake; open sept."
 say "identity-k6: Lens TAME — Identity Remake k6."
 
-let counsel = run ["test" "-f" "counsel/20260729-162032_identity-remake-k6-handback-return-surface-p55.md"]
+let counsel = run ["test" "-f" "counsel/date/20260729/20260729-162032_identity-remake-k6-handback-return-surface-p55.md"]
 assert counsel.ok else "identity-k6: k6 counsel missing"
 
-let seat = run ["sh" "-c" "grep -qF 'return_surface_p55' counsel/20260729-162032_identity-remake-k6-handback-return-surface-p55.md && grep -qF 'PAUSED' counsel/20260729-162032_identity-remake-k6-handback-return-surface-p55.md && grep -qF 'OPEN' counsel/20260729-162032_identity-remake-k6-handback-return-surface-p55.md && echo SEAT_OK"]
+let seat = run ["sh" "-c" "grep -qF 'return_surface_p55' counsel/date/20260729/20260729-162032_identity-remake-k6-handback-return-surface-p55.md && grep -qF 'PAUSED' counsel/date/20260729/20260729-162032_identity-remake-k6-handback-return-surface-p55.md && grep -qF 'OPEN' counsel/date/20260729/20260729-162032_identity-remake-k6-handback-return-surface-p55.md && echo SEAT_OK"]
 assert seat.ok else "identity-k6: handback seat scan failed"
 assert seat.out contains "SEAT_OK" else "identity-k6: handback seat missing"
 

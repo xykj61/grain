@@ -14,7 +14,7 @@
 //! the right ear shelves right with the same setting, so the stereo image the preset held is held through the shelving.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES205.
-//! Design read: active-designing/20260815-112822_fill-ales205-lotus-stereo-reverb-shelf.md
+//! Design read: active-designing/date/20260815/20260815-112822_fill-ales205-lotus-stereo-reverb-shelf.md
 //! Stands on: lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
 //! forwarded whole; lotus/shelf.rye (ALES41) — the two-band tone shelf, its precheck and its BadCoeff / BadGain / BadRange, run per channel;
 //! lotus/pan.rye (ALES) — the StereoClip, its two balanced channels; lotus/clock.rye (ALES5) — the sample clock, its samples_for converting the span

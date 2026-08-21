@@ -1,7 +1,7 @@
 # tools/ales_nyquist_witness.rish — nyquist_flip: flip the sign of every odd-indexed sample, the parity-cousin of invert (ALES107).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES107.
-# Design read: active-designing/20260815-004633_fill-ales107-lotus-nyquist.md
+# Design read: active-designing/date/20260815/20260815-004633_fill-ales107-lotus-nyquist.md
 # Stands on: lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples, and saturate, the one true clamp), lotus/meter.rye (ALES13 — the peak/RMS meter, used only to
 # prove a parity sign-flip moves no loudness). Where ALES105's invert flips EVERY sample's sign about zero, the Nyquist flip flips every OTHER sign, holding the even seats
 # fixed — and by that one restraint it becomes modulation by the Nyquist frequency: multiplying by (-1)^n = cos(π n) reflects the spectrum, carrying a lowpass kernel to its

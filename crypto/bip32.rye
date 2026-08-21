@@ -10,7 +10,7 @@
 //! derivation and SEC1 compression (crypto/secp256k1_pubkey.rye) turn a private scalar into serP(point(k)), the scalar field's reduction modulo the
 //! group order n (crypto/secp256k1_scalar.rye) finishes the child key (IL + k_par) mod n, HASH160 (crypto/bitcoin_address.rye) gives the four-byte
 //! parent fingerprint, and Base58Check (encoding/base58check.rye) wraps the 78-byte extended key into its "xprv…" / "xpub…" text.
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the priority spine: Rye first).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the priority spine: Rye first).
 //! Clean-room: BIP-32 is a public standard (Bitcoin BIP-32); the assembly is ours, standing on our own parity-GREEN rungs, never a copied line
 //! (.claude/rules/gratitude-licenses.md).
 //!

@@ -3,7 +3,7 @@
 # deterministically from the one Kumara identity (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md names "a per-record subkey carry (a child of
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md names "a per-record subkey carry (a child of
 # the identity node)" as the identity arc's next rung; the 1,024-round itinerary, Season 2 Journey 6 (Provenance), wants one identity to sign
 # many records without spending the same key on each.
 # Kin: crypto/kumara_identity.rye (the identity this steps beneath, GREEN) · crypto/slip10_ed25519.rye (the ckd_priv this walks one level, GREEN) ·

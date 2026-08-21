@@ -6,7 +6,7 @@
 //! push, proven pure before a single wire is strung.
 //!
 //! Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY15.
-//! Design read: active-designing/20260814-072800_drey15-desk-reconcile-two-hands-meet-on-the-union-exploration.md
+//! Design read: active-designing/date/20260814/20260814-072800_drey15-desk-reconcile-two-hands-meet-on-the-union-exploration.md
 //! Stands on: mikrophone/sync.rye (DREY12) — the pull; mikrophone/push.rye (DREY14) — the push; both over their public
 //! APIs, inventing no new transport, buffer, or error of its own.
 //!

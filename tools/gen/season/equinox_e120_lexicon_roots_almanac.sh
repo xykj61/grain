@@ -29,7 +29,7 @@ entry = (
     "**Ran:** `sh tools/fixtures/equinox_e120_lexicon_roots_scan.sh` · **Stamp:** `"
     + stamp
     + "` · **Witness:** `tools/gen/season/equinox_e120_lexicon_roots_witness.rish` · "
-    "counsel `counsel/20260731-215300_e120-lexicon-roots.md` · "
+    "counsel `counsel/date/20260731/20260731-215300_e120-lexicon-roots.md` · "
     "Lexicon `context/LEXICON.md`\n"
     "Expected control_gate · instruments_tracked · roots=honored · four members · "
     "Bench/pier/Pond distinctions · prove-red RED_claimed_roots_absent_while_seated · "

@@ -9,8 +9,8 @@
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready). This rung authors NO new
 //! cryptography: it frames a message with the EIP-191 prefix, hashes it with the GREEN Keccak-256, recovers the public key with the GREEN
 //! ecrecover, and resolves that key to an address with the GREEN eth_address — every arithmetic step already proven on metal beneath it.
-//! Design read: active-designing/20260816-040220_secp256k1-ecrecover.md (the recovery rung this stands on, which named this composition next) ·
-//! active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave, the Dimeroll receipt /
+//! Design read: active-designing/date/20260816/20260816-040220_secp256k1-ecrecover.md (the recovery rung this stands on, which named this composition next) ·
+//! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave, the Dimeroll receipt /
 //! Kumara login against an Ethereum key this unblocks).
 //! Kin: crypto/secp256k1_ecrecover.rye (the recovery this composes, GREEN) · crypto/eth_address.rye (the address the recovered key resolves to,
 //! GREEN) · crypto/keccak256.rye (the hash of the framed message, GREEN) · crypto/secp256k1_ecdsa_sign.rye (the prehashed signer whose (r, s)

@@ -1,6 +1,6 @@
 //! glow/lower_alias.rye — lower a parsed `=*` alias to runnable `.rye`.
 //!
-//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
+//! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `=*` is alias, no copy. This hop lowers a face to a Zig pointer at a named
 //! source (optional trailing wing/ident, default `source`), initialized to a
 //! demo value. Parenthesized sources refuse until a later lap.

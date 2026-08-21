@@ -25,7 +25,7 @@
 //!   rye build pond/apps/data_dignity_bron.rye -femit-bin=pond/bin/data-dignity-bron
 //!   pond/bin/data-dignity-bron selftest
 //!
-//! Scope: active-designing/20260812-212607_dahl-journey12-data-dignity-exploration.md
+//! Scope: active-designing/date/20260812/20260812-212607_dahl-journey12-data-dignity-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

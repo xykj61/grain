@@ -1,7 +1,7 @@
 //! mycelium/portage_atomic.rye — a crossing lands on BOTH worlds or NEITHER (r2, atomic all-or-nothing).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · Portage · rung r2.
-//! Design read: active-designing/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
+//! Design read: active-designing/date/20260813/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
 //!
 //! r1 proved value crosses two worlds and the pair conserves: a signed portage-out debits the sender on A,
 //! a signed portage-in credits the recipient on B only when its digest matches the verified burn. Yet r1's

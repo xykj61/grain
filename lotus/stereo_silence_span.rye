@@ -16,7 +16,7 @@
 //! count 0 the identity on both, silence_span(0, len) silences both wholly, a span past the samples BadRange.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES122.
-//! Design read: active-designing/20260815-021904_fill-ales122-lotus-stereo-silence-span.md
+//! Design read: active-designing/date/20260815/20260815-021904_fill-ales122-lotus-stereo-silence-span.md
 //! Stands on: lotus/silence_span.rye (ALES110) — the mono span-silence run once per channel; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance
 //! invariant; lotus/stereo_paste_over.rye (ALES121) — the stereo overwrite this rung specializes (zero paint), imported by the selftest to prove the specialization law; lotus/timeline.rye
 //! (ALES2) — the Clip and the EditError reused whole; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to read the result.

@@ -17,7 +17,7 @@
 //! keeps them apart, and re-joining the splitter's pieces returns exactly the trimmer's clip. This binds ALES149 to ALES148 the way ALES97 is bound to ALES96.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES149.
-//! Design read: active-designing/20260815-052853_fill-ales149-lotus-stereo-split-silence.md
+//! Design read: active-designing/date/20260815/20260815-052853_fill-ales149-lotus-stereo-split-silence.md
 //! Stands on: lotus/stereo_segment.rye (ALES147) — the stereo voice-activity segmenter, run once to read BOTH channels' silences over one shared frame grid, its
 //! `segment_stereo`, its `StereoSegments`, and its `StereoSegmentError` reused whole; lotus/segment.rye (ALES95) — the mono segmenter (the frame grid and `.silent`
 //! verdict, through ALES147) and `max_segments`; lotus/stereo_trim_silence.rye (ALES148) — the stereo silence stripper, the JOIN-law twin, imported by the selftest;

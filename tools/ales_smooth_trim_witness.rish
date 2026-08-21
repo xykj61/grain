@@ -1,7 +1,7 @@
 # tools/ales_smooth_trim_witness.rish — the smoothed silence trim: smooth the runs through ALES101 before stripping the silence (ALES102).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES102.
-# Design read: active-designing/20260815-001200_fill-ales102-lotus-smoothed-silence-trim.md
+# Design read: active-designing/date/20260815/20260815-001200_fill-ales102-lotus-smoothed-silence-trim.md
 # Stands on: lotus/trim_silence.rye (ALES96 — the silence stripper, the min-zero twin), lotus/smooth_runs.rye (ALES101 — the run-length smoother), lotus/segment.rye
 # (ALES95 — the segmenter), lotus/timeline.rye (ALES2 — the Clip and cut), lotus/voiced.rye (ALES94 — the .silent verdict). ALES96 strips the RAW segmentation, which
 # flickers — a loud tick in a pause reads voiced and is KEPT, a quiet frame between words reads silent and is CUT; smoothing first relabels the short tick silent

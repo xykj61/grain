@@ -17,7 +17,7 @@
 //!      before the read began.
 //!
 //! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
-//! FORA20. Design read: active-designing/20260814-084100_fora20-constel-read-index-linearizable-reads.md
+//! FORA20. Design read: active-designing/date/20260814/20260814-084100_fora20-constel-read-index-linearizable-reads.md
 //! Stands on: constel/apply.rye (FORA19) — Machine and apply_through, the state a read observes; constel/term.rye (FORA16) —
 //! TermTable.at_least, leadership confirmation; constel/commit.rye (FORA18) — safe_commit_len derives the read-index (shown in the
 //! witness). Because apply_one is exactly-once, applying through a read-index the machine has already reached is a no-op — a read

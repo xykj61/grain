@@ -13,7 +13,7 @@
 //! domain tag stripped — and, independently, exactly crypto/ed25519_sign.rye's derive_public of the node's key. This module asserts those two agree.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G, "the library that serves Kumara
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G, "the library that serves Kumara
 //! identity, Vault, Comlink, and the Lotus signed carry." The 1,024-round itinerary, Season 2 Journey 6 (Provenance): "a real document carries a
 //! Kumara-signed, content-addressed chain of custody end to end." This rung stands the identity end of that chain: the key a Kumara signature is
 //! made with, reached the same way from the same phrase on any device.

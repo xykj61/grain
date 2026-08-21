@@ -6,7 +6,7 @@
 //! Season: encoding — the serialization sibling of Season G (Cryptography), beside encoding/base64.rye. Where crypto/ authors the
 //! mathematics that produces bytes (hashes, signatures, sealed boxes), encoding/ authors the text those bytes travel in. Both keep the
 //! same discipline: authored from the standard, calling no std codec in the primitive, proven byte-for-byte against a reference runnable now.
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 //! Clean-room: the 58-character alphabet and the leading-zero law are Bitcoin's own public convention; the arithmetic is ours
 //! (.claude/rules/gratitude-licenses.md). Monocypher does not ship base58; the reference is the world's published vectors and a second,
 //! independent implementation written here.

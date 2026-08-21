@@ -19,7 +19,7 @@
 | **3** | **BUHR** | Surface & Intelligence — Realidream DAG · Quin's four voices · MCP-in-Bron · Tablecloth | word-gated |
 | **4** | **TACT** | The World — Ship-Pilot pitch · publishing · Grainphone · commerce · four-doors · Grain Energy PBC | word-gated |
 
-Prove: `rishi/bin/rishi run tools/rish_rune_cast_witness.rish` · baton [`../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/20260809-021406_the-compass-season-baton-four-equinoxes.md)
+Prove: `rishi/bin/rishi run tools/rish_rune_cast_witness.rish` · baton [`../expanding-prompts/date/20260809/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/date/20260809/20260809-021406_the-compass-season-baton-four-equinoxes.md)
 
 ---
 

@@ -1,7 +1,7 @@
 //! brushstroke/edit_touch_view.rye — HUNK49: the touchable Photos editor — a gesture edits, the view repaints, from one cursor.
 //!
 //! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK49.
-//! Design read: active-designing/20260813-203500_hunk-edit-touch-view-exploration.md
+//! Design read: active-designing/date/20260813/20260813-203500_hunk-edit-touch-view-exploration.md
 //! Teacher, thanked clean-room: the touch editor of a photo app (iCloud Photos / Google Photos) — a tap edits, a swipe
 //! walks the history, and the picture on glass is always what the gesture just produced (concept only, siloed).
 //!

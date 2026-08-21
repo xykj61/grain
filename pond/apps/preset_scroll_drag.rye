@@ -1,7 +1,7 @@
 //! pond/apps/preset_scroll_drag.rye — HUNK44: the drag seam — a touch drag in pixels becomes line deltas.
 //!
 //! Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK44.
-//! Design read: active-designing/20260813-195829_hunk-scroll-drag-exploration.md
+//! Design read: active-designing/date/20260813/20260813-195829_hunk-scroll-drag-exploration.md
 //! Teacher, thanked clean-room: the pixel-quantizing layer of any touch scroll surface — a finger drag in pixels
 //! becomes whole line moves over a row's pixel height, the sub-cell remainder carried between events (concept only,
 //! siloed).

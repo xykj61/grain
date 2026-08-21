@@ -21,7 +21,7 @@
 //! both, and the map is idempotent (twice equals once). THE ATOMICITY / DEGENERATE LAW: the lone refusal (BadRange) leaves BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES140.
-//! Design read: active-designing/20260815-041250_fill-ales140-lotus-stereo-inverted-half-wave.md
+//! Design read: active-designing/date/20260815/20260815-041250_fill-ales140-lotus-stereo-inverted-half-wave.md
 //! Stands on: lotus/halve_neg.rye (ALES86) — the mono inverted half-wave rectifier run once per channel, min(x, 0) with no rail edge; lotus/stereo_halve.rye (ALES139) — the positive half-wave sibling this rung mirrors,
 //! the two summing to the dry master; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max.
 //!

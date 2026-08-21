@@ -3,7 +3,7 @@
 # known-answer and byte-for-byte against an independent implementation (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave; the
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave; the
 # sealed session named the extended nonce a keeper really wants for random-nonce sealing).
 # Kin: crypto/aead.rye (the ChaCha20-Poly1305 AEAD this runs under the derived subkey, GREEN) · crypto/chacha20.rye (the quarter-round
 # HChaCha20 shares) · crypto/sealed_session.rye. Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line —

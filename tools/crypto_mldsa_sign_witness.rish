@@ -6,9 +6,9 @@
 # Season: crypto — the ML-DSA ladder's signing rung, the door a Kumara identity signs its name through once the old curves fall. The sign function holds
 # no key: every seed and message is a public test vector. Every ML-DSA signature a keeper's name will one day carry is exactly these bytes, so this
 # witness proves the whole composition agrees with the NIST-standard reference.
-# Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md ("the ML-DSA ladder … mldsa_sign.rye/mldsa_verify.rye … proven against
+# Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md ("the ML-DSA ladder … mldsa_sign.rye/mldsa_verify.rye … proven against
 # Zig's std.crypto ML-DSA-44/65/87 and the FIPS-204 KAT. Its front door is the post-quantum successor to Kumara's Ed25519 identity").
-# Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Rye-first spine: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 # Clean-room: the ML-DSA.Sign algorithm, the ExpandMask/SampleInBall/MakeHint wiring, and the signature serialization are the public NIST standard's own;
 # the arithmetic is our own Rye composed over our own GREEN rungs, with Zig's std.crypto read only as the reference to diff against — never a copied line
 # (.claude/rules/gratitude-licenses.md).

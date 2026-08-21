@@ -1,7 +1,7 @@
 # tools/hunk_edit_input_witness.rish — the Photos app edit input seam on metal (HUNK48).
 #
 # Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK48.
-# Design read: active-designing/20260813-202710_hunk-edit-input-seam-exploration.md.
+# Design read: active-designing/date/20260813/20260813-202710_hunk-edit-input-seam-exploration.md.
 # Teacher, thanked clean-room: the input layer of a photo editor (iCloud Photos / Google Photos) — a tap commits a
 # gesture, a swipe walks the undo/redo history — reduced to one move over a recorded edit-list (concept only, siloed).
 #

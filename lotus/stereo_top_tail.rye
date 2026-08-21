@@ -18,7 +18,7 @@
 //! where this brackets once for both and keeps them balanced. The tail is cut FIRST so the leading index stays valid, exactly as the mono trimmer taught.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES150.
-//! Design read: active-designing/20260815-053823_fill-ales150-lotus-stereo-top-tail.md
+//! Design read: active-designing/date/20260815/20260815-053823_fill-ales150-lotus-stereo-top-tail.md
 //! Stands on: lotus/stereo_segment.rye (ALES147) — the stereo voice-activity segmenter, run once to read BOTH channels' silences over one shared frame grid, its
 //! `segment_stereo`, its `StereoSegments`, and its `StereoSegmentError` reused whole; lotus/segment.rye (ALES95) — the mono segmenter (the frame grid and `.silent`
 //! verdict, through ALES147) and `max_segments`; lotus/trim_silence.rye (ALES96) — the mono silence stripper, through the stereo trimmer below the length bracket;

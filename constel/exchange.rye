@@ -5,7 +5,7 @@
 //! initiator's Greeting value, only its frame. Agreement is reached purely over the wire representation.
 //!
 //! Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA4.
-//! Design read: active-designing/20260814-044312_fora4-constel-exchange-over-frames.md
+//! Design read: active-designing/date/20260814/20260814-044312_fora4-constel-exchange-over-frames.md
 //! Stands on: constel/handshake.rye (FORA2) — the three steps; constel/wire.rye (FORA3) — the frame the steps cross on.
 //!
 //! Purely LOCAL — a bounded exchange over in-memory frame buffers on one bench, siloed to constel/, run from inside the

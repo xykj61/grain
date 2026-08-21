@@ -23,7 +23,7 @@
 //!   rye build pond/apps/mcp_voice_tools.rye -femit-bin=pond/bin/mcp-voice-tools
 //!   pond/bin/mcp-voice-tools selftest
 //!
-//! Scope: active-designing/20260812-150600_buhr-journey9-intelligence-served-as-mcp-tools-exploration.md
+//! Scope: active-designing/date/20260812/20260812-150600_buhr-journey9-intelligence-served-as-mcp-tools-exploration.md
 
 const std = @import("std");
 const assert = std.debug.assert;

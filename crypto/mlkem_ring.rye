@@ -7,9 +7,9 @@
 //! protocol, only the mathematics the protocol composes.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — the pivot that seats ML-KEM/ML-DSA on the doubled oracle
+//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — the pivot that seats ML-KEM/ML-DSA on the doubled oracle
 //! (a FIPS known-answer AND an independent second implementation agreeing byte-for-byte), because the vendored Zig std.crypto ships ml_kem.zig
-//! and ml_dsa.zig but no SLH-DSA. Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+//! and ml_dsa.zig but no SLH-DSA. Rye-first spine: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 //! Kin: crypto/shake.rye (the XOF that will seed ML-KEM's matrix and noise, GREEN) · crypto/fe25519.rye (the classical field sibling) ·
 //! crypto/sha3.rye. The parity TARGET is Zig's std.crypto ml_kem and the FIPS 203 known-answers, studied clean-room — never a copied line
 //! (.claude/rules/gratitude-licenses.md).

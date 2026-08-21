@@ -1,7 +1,7 @@
 # tools/fora_read_witness.rish — a linearizable read that appends nothing, the read-index (FORA20).
 #
 # Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
-# FORA20. Design read: active-designing/20260814-084100_fora20-constel-read-index-linearizable-reads.md
+# FORA20. Design read: active-designing/date/20260814/20260814-084100_fora20-constel-read-index-linearizable-reads.md
 #
 # constel/read.rye completes the linearizable service FORA19 began: exactly-once writes, and now linearizable READS without a
 # log append (Raft §8, the read-index). A deposed leader that still believes it leads must not answer a read from its stale

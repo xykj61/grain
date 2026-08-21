@@ -1,7 +1,7 @@
 # tools/hunk_part_query_witness.rish — a typed search box: parse a keeper's query text into a filter (HUNK76).
 #
 # Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK76.
-# Design read: active-designing/20260813-234932_hunk-part-query-typed-search-box-exploration.md
+# Design read: active-designing/date/20260813/20260813-234932_hunk-part-query-typed-search-box-exploration.md
 # Teacher, thanked clean-room: McMaster-Carr's search box — a typed line reaches the narrowing sidebar (concept only, siloed).
 #
 # HUNK75 built the narrowing (filter_catalog turns a catalog and a Query into the sub-catalog of matches). This rung

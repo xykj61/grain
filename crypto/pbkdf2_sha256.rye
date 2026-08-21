@@ -6,7 +6,7 @@
 //! memory-hard, PBKDF2 is iteration-hard; a security audit expects the tree to hold both, and to say which each caller should reach for.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
 //! Kin: crypto/hmac_sha256.rye (the keyed hash beneath it, GREEN on metal) · crypto/sha256.rye (the hash beneath that) ·
 //! crypto/hkdf_sha256.rye (a sibling that composes the same HMAC, extract-and-expand rather than iterate-and-XOR) ·
 //! crypto/argon2.rye (the memory-hard KDF this iteration-hard one stands beside). Monocypher (vendor/monocypher, CC0/BSD-dual) is the

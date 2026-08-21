@@ -6,7 +6,7 @@
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
 //! Design read: active-designing/20260816-*_elligator2-the-hidden-key.md (this round) and
-//! active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names reimplementing Monocypher primitives in
+//! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names reimplementing Monocypher primitives in
 //! Rye with byte-for-byte parity as the crux).
 //! Kin: crypto/fe25519.rye (the base field GF(2^255 − 19) this stands entirely on — Elligator adds no new field, only a new use of it) ·
 //! crypto/x25519.rye (the key agreement whose public keys this hides and reveals). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity

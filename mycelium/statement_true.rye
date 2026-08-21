@@ -1,7 +1,7 @@
 //! mycelium/statement_true.rye — the Statement reads a real ledger record true (r4, the arc closes).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Statement · rung r4.
-//! Design read: active-designing/20260813-091851_mycelium-statement-account-voice-exploration.md
+//! Design read: active-designing/date/20260813/20260813-091851_mycelium-statement-account-voice-exploration.md
 //!
 //! r1 fixed the reconciliation crux (a statement's reserved equals its own open made pledges), r2 let a
 //! statement travel as a `format statement-v1` record, r3 read a position continuous across a Knot — all

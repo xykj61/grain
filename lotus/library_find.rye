@@ -5,7 +5,7 @@
 //! large catalog is an index a keeper reaches into, not only a scroll they read down.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES228.
-//! Design read: active-designing/20260815-142750_fill-ales228-lotus-library-find.md
+//! Design read: active-designing/date/20260815/20260815-142750_fill-ales228-lotus-library-find.md
 //! Stands on: lotus/library_manifest.rye (ALES226) — the opened LibraryManifest (its ordered (name, digest) entries) this reads. The
 //! find / name_of lookup idiom is already proven one level down in lotus/rack.rye (ALES30); this lifts it from a rack of clips to a
 //! catalog of records, unchanged in shape. No new frame, no new hash — a read over fields the seal already proved whole.

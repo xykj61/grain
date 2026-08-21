@@ -16,7 +16,7 @@
 //!   higher seq is applied once. So a resend after a leader change is harmless, and the client's answer is stable.
 //!
 //! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
-//! FORA19. Design read: active-designing/20260814-083900_fora19-constel-apply-linearizable-sessions.md
+//! FORA19. Design read: active-designing/date/20260814/20260814-083900_fora19-constel-apply-linearizable-sessions.md
 //! Stands on: constel/commit.rye (FORA18) — safe_commit_len, the committed prefix length this machine folds; constel/roster.rye
 //! (FORA1) — max_piers, the bound the log inherits.
 //!

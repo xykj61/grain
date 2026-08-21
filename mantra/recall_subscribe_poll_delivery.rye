@@ -7,7 +7,7 @@
 //!   mantra/bin/recall-subscribe-poll-delivery selftest
 //!   mantra/bin/recall-subscribe-poll-delivery demo
 //!
-//! Counsel: [`counsel/20260707-004712_claude-counsel-outer-subscribe-and-host-mirror.md`](../counsel/20260707-004712_claude-counsel-outer-subscribe-and-host-mirror.md)
+//! Counsel: [`counsel/date/20260707/20260707-004712_claude-counsel-outer-subscribe-and-host-mirror.md`](../counsel/date/20260707/20260707-004712_claude-counsel-outer-subscribe-and-host-mirror.md)
 
 const std = @import("std");
 const assert = std.debug.assert;

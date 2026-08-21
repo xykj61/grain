@@ -1,7 +1,7 @@
 # tools/fora_prevote_witness.rish — a partitioned pier cannot disrupt a stable sky, pre-vote (FORA22).
 #
 # Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
-# FORA22. Design read: active-designing/20260814-084500_fora22-constel-prevote-no-disruption.md
+# FORA22. Design read: active-designing/date/20260814/20260814-084500_fora22-constel-prevote-no-disruption.md
 #
 # constel/prevote.rye closes the liveness cost of FORA16's terms — Raft's §9.6: a pier partitioned away keeps incrementing its
 # term, and on rejoining its ballooned term forces a healthy leader to step down, disrupting a stable sky. Pre-vote is the fix: a

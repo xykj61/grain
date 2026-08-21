@@ -9,7 +9,7 @@
 # EIP-155 assembly (the nine-field signing list [nonce, gasPrice, gas, to, value, data, chainId, 0, 0], the sighash over it, and v =
 # recovery_id + 2*chainId + 35, the chain id folded into the preimage as replay protection). Where eip712 hashes a TREE of typed fields for an
 # off-chain "sign this typed data," eip155_tx hashes the FLAT nine-field list of an on-chain transaction — the two shapes a key is ever asked to
-# sign, both over the same GREEN tower. Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G
+# sign, both over the same GREEN tower. Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G
 # · the crypto parity wave). Clean-room: EIP-155 and the Yellow Paper are Ethereum's own public standards; the encoding is ours, standing on our
 # own parity-GREEN rungs, never a copied line (.claude/rules/gratitude-licenses.md).
 #

@@ -6,7 +6,7 @@ say "kiln-seat: Language EN — Kiln living forge; Anvil tribute held."
 say "kiln-seat: Style Radiant — bread not blades."
 say "kiln-seat: Lens TAME — Kiln Season o1."
 
-let seat = run ["test" "-f" "counsel/20260728-232511_surface-season-p36-kiln-seated.md"]
+let seat = run ["test" "-f" "counsel/date/20260728/20260728-232511_surface-season-p36-kiln-seated.md"]
 assert seat.ok else "kiln-seat: p36 counsel missing"
 let living = run ["test" "-f" "foundations/20260728-232511_lantern-lattice-kiln.md"]
 assert living.ok else "kiln-seat: living Kiln foundation missing"

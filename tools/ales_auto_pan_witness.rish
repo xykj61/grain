@@ -1,7 +1,7 @@
 # tools/ales_auto_pan_witness.rish — auto-pan: the same triangle LFO swept across the stereo field (ALES76).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES76.
-# Design read: active-designing/20260814-202856_fill-ales76-lotus-auto-pan-lfo-stereo-field.md
+# Design read: active-designing/date/20260814/20260814-202856_fill-ales76-lotus-auto-pan-lfo-stereo-field.md
 # Stands on: lotus/pan.rye (ALES10 — the linear pan this sweeps in time and the StereoClip it renders into); lotus/chorus.rye (ALES71 — the
 # triangle-LFO driver `triangle_delay_at`, now the pan position); lotus/glide.rye (ALES70 — `glide_scale`, 256 = hard right); lotus/timeline.rye
 # (ALES2 — the Clip, sample_min/max, the one true saturate).

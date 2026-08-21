@@ -1,7 +1,7 @@
 //! pond/apps/constel_consensus_travels.rye — the network travels (gossip-convergence r3).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · gossip-convergence r3.
-//! Design read: active-designing/20260813-040613_constel-consensus-gossip-convergence-exploration.md
+//! Design read: active-designing/date/20260813/20260813-040613_constel-consensus-gossip-convergence-exploration.md
 //!
 //! r1 proved two nodes begun from their own genesis converge once they gossip;
 //! r2 proved a healed partition catches up because convergence is content-dependent,

@@ -20,7 +20,7 @@
 //! remove writes values only), a refusal leaves BOTH channels byte for byte untouched and still balanced, count = 0 and the empty span the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES155.
-//! Design read: active-designing/20260815-060518_fill-ales155-lotus-stereo-dc-remove.md
+//! Design read: active-designing/date/20260815/20260815-060518_fill-ales155-lotus-stereo-dc-remove.md
 //! Stands on: lotus/dc_remove.rye (ALES90) — the mono block-mean DC remover run once per channel, its `dc_remove` and `DcError` reused whole; lotus/stereo_rectify.rye (ALES138) — the EVEN map whose per-channel DC
 //! offset this rung undoes (the composition proof) and whose image-COLLAPSE this rung's image-PRESERVE answers; lotus/rectify.rye (ALES84) — the mono rectifier underneath ALES138; lotus/pan.rye (ALES10) — the
 //! StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max, and the one true saturate reused through ALES90.

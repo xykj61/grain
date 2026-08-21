@@ -16,7 +16,7 @@
 //! silence). Between, each channel's wet stands exactly predelay samples later, so the stereo image the preset held is held through the delay.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES195.
-//! Design read: active-designing/20260815-102559_fill-ales195-lotus-stereo-reverb-predelay.md
+//! Design read: active-designing/date/20260815/20260815-102559_fill-ales195-lotus-stereo-reverb-predelay.md
 //! Stands on: lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
 //! forwarded whole; lotus/pan.rye (ALES) — the StereoClip, its two balanced channels; lotus/clock.rye (ALES5) — the sample clock, its samples_for
 //! converting BOTH the span (the SAME conversion the preset uses) and the pre-delay into sample counts, so one rate governs both; lotus/timeline.rye

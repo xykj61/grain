@@ -7,7 +7,7 @@
 **Bound:** under `living_pin_max_bytes` (24576)  
 **Room:** Checkable for named assets; Mixed where a gap is named  
 **Answers:** OPEN_QUESTIONS #3  
-**Counsel:** [`../counsel/20260724-141612_names-maps-and-open-questions.md`](../counsel/20260724-141612_names-maps-and-open-questions.md)
+**Counsel:** [`../counsel/date/20260724/20260724-141612_names-maps-and-open-questions.md`](../counsel/date/20260724/20260724-141612_names-maps-and-open-questions.md)
 
 *Descriptive, not prescriptive. Each line states what is true today, or names a gap and stops. No aspiration wears a fact's clothes.*
 

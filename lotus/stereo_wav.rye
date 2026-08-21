@@ -4,7 +4,7 @@
 //! Software only — a byte container, no real file, no DAC, no acoustic or electrical fact asserted.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES216.
-//! Design read: active-designing/20260815-130649_fill-ales216-lotus-stereo-wav.md
+//! Design read: active-designing/date/20260815/20260815-130649_fill-ales216-lotus-stereo-wav.md
 //! Stands on: lotus/wav.rye (ALES215) — the same canonical header and two-gate verify-before-trust decode, differing only
 //! where stereo differs (channels 2, block align 4, byte rate rate*4) and adding one widened border: the data chunk must be a
 //! whole number of two-sample FRAMES, so neither channel ever receives a lone unpaired sample.

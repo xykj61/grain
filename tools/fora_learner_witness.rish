@@ -1,7 +1,7 @@
 # tools/fora_learner_witness.rish — a new member joins as a non-voting learner, catches up, and is promoted only once caught up (FORA25).
 #
 # Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
-# FORA25. Design read: active-designing/20260814-073705_fora25-constel-learner-non-voting-replica.md
+# FORA25. Design read: active-designing/date/20260814/20260814-073705_fora25-constel-learner-non-voting-replica.md
 #
 # constel/learner.rye adds the learner (non-voting replica), Raft's safe way to ADD a member (Ongaro §4.2.1): a new member joins as
 # a replica that receives and applies the log yet counts toward nothing, catches up out of the critical path, and is promoted to a

@@ -7,8 +7,8 @@
 # Season: crypto — Season G (the Six-Season double-seat). This rung authors NO new cryptography: it frames a message with the EIP-191 prefix,
 # hashes it with the GREEN Keccak-256, recovers the public key with the GREEN ecrecover, and resolves it to an address with the GREEN eth_address —
 # the composition crypto/secp256k1_ecrecover.rye's own note named next, unblocking a Kumara login against an Ethereum key (the Dimeroll receipt).
-# Design read: active-designing/20260816-042627_eth-personal-sign.md (this rung's claim) and
-# active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# Design read: active-designing/date/20260816/20260816-042627_eth-personal-sign.md (this rung's claim) and
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
 # Clean-room: EIP-191 is Ethereum's own public standard; the composition is ours, standing on our own parity-GREEN rungs, never a copied line
 # (.claude/rules/gratitude-licenses.md).
 #

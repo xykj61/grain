@@ -6,9 +6,9 @@
 # Season: crypto — the ML-DSA ladder's verification rung, the door a keeper's peer reads a Kumara identity's post-quantum name through once the old curves
 # fall. The verify function holds no key: every seed, message, and signature is a public test vector. Every ML-DSA signature a keeper's name will one day
 # carry is checked by exactly this composition, so this witness proves the whole path agrees with the NIST-standard reference on accept AND on reject.
-# Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md ("the ML-DSA ladder … mldsa_sign.rye/mldsa_verify.rye … proven against
+# Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md ("the ML-DSA ladder … mldsa_sign.rye/mldsa_verify.rye … proven against
 # Zig's std.crypto ML-DSA-44/65/87 and the FIPS-204 KAT. Its front door is the post-quantum successor to Kumara's Ed25519 identity").
-# Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Rye-first spine: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 # Clean-room: the ML-DSA.Verify algorithm, the tr/mu hashing, the SampleInBall/UseHint/w1Encode wiring, and the commitment equality are the public NIST
 # standard's own; the arithmetic is our own Rye composed over our own GREEN rungs, with Zig's std.crypto read only as the reference to diff against — never a
 # copied line (.claude/rules/gratitude-licenses.md).

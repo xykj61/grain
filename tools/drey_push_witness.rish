@@ -1,7 +1,7 @@
 # tools/drey_push_witness.rish — the desk push loop: give a far hand the whole of what it lacks, the pull's mirror (DREY14).
 #
 # Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY14.
-# Design read: active-designing/20260814-072200_drey14-desk-push-loop-give-the-far-hand-its-lack-exploration.md
+# Design read: active-designing/date/20260814/20260814-072200_drey14-desk-push-loop-give-the-far-hand-its-lack-exploration.md
 # Stands on: mikrophone/sync.rye (DREY12), mikrophone/manifest.rye (DREY8), mikrophone/serve.rye (DREY9), mikrophone/catalog.rye (DREY7).
 #
 # mikrophone/push.rye is the exact mirror of the pull: push reads the LOCAL desk's manifest verify-before-trust, then for

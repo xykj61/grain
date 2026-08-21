@@ -5,7 +5,7 @@
 # standalone Poly1305 · standalone ChaCha20 came before). Season G · Cryptography.
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte." crypto/sha512.rye's own selftest named Monocypher-source parity as an honest held horizon
 # ("Monocypher passes the same standard vectors — its vendored source is a held fetch"); this rung closes it. SHA-512 was proven EMBEDDED inside Ed25519
 # signing, yet never STANDALONE against Monocypher's own crypto_sha512 — so the hash the whole signing line, the HMAC/HKDF-SHA512 family, and the BIP32

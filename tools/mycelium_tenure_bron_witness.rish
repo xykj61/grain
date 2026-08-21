@@ -13,7 +13,7 @@
 # (UnknownField), a bad hex key (BadHex), a missing supply line (BadFormat), an over-long verdict
 # (TooManyHoldings). Composes tenure.rye + fold.rye public API only. Demo keeper seeds — no key held.
 #
-# Scope: active-designing/20260813-060935_mycelium-tenure-contested-name-exploration.md
+# Scope: active-designing/date/20260813/20260813-060935_mycelium-tenure-contested-name-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mycelium_tenure_bron_witness.rish

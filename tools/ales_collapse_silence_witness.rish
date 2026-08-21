@@ -1,7 +1,7 @@
 # tools/ales_collapse_silence_witness.rish — the silence collapser: cap every silent run to a maximum, keeping the pauses yet shortening the long ones (ALES100).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES100.
-# Design read: active-designing/20260814-235506_fill-ales100-lotus-silence-collapser.md
+# Design read: active-designing/date/20260814/20260814-235506_fill-ales100-lotus-silence-collapser.md
 # Stands on: lotus/trim_silence.rye (ALES96 — the silence stripper, the zero-cap twin), lotus/segment.rye (ALES95 — the voice-activity segmenter), lotus/timeline.rye
 # (ALES2 — the Clip and cut), lotus/voiced.rye (ALES94 — the .silent verdict). ALES96 removes EVERY silent sample; that is right for a sample library and wrong for a
 # spoken take, where stripping all the pauses runs a conversation together. Every podcast editor keeps the pauses and caps only the long ones — truncate silence.

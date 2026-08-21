@@ -17,7 +17,7 @@
 //! the rectifier's whole point, exactly as with full-wave.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES85.
-//! Design read: active-designing/20260814-214355_fill-ales85-lotus-half-wave-rectifier.md
+//! Design read: active-designing/date/20260814/20260814-214355_fill-ales85-lotus-half-wave-rectifier.md
 //! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/max. It carries NO gain, NO ceiling, and NO threshold — the threshold is fixed at zero,
 //! and max(x, 0) has no parameter that could be illegal; a keeper who wants a boosted or negatively-clamped half-wave composes this with ALES78's drive
 //! over the same span, both in-place span maps that compose.

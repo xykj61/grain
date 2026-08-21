@@ -8,7 +8,7 @@
 # (crypto/hmac_sha512.rye) is the derivation PRF, secp256k1 public-key derivation and SEC1 compression (crypto/secp256k1_pubkey.rye) give
 # serP(point(k)), the scalar reduction modulo the group order n (crypto/secp256k1_scalar.rye) finishes the child key (I_L + k_par) mod n, HASH160
 # (crypto/bitcoin_address.rye) gives the four-byte parent fingerprint, and Base58Check (encoding/base58check.rye) wraps the 78-byte extended key.
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave, Rye first).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave, Rye first).
 # Clean-room: BIP-32 is a public standard; the assembly is ours, standing on our own parity-GREEN rungs, never a copied line
 # (.claude/rules/gratitude-licenses.md).
 #

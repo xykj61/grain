@@ -16,7 +16,7 @@
 //! pair, where this cuts once for both and keeps them balanced. The first stereo edit that had to think, and thought the minimal honest thought.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES148.
-//! Design read: active-designing/20260815-051802_fill-ales148-lotus-stereo-trim-silence.md
+//! Design read: active-designing/date/20260815/20260815-051802_fill-ales148-lotus-stereo-trim-silence.md
 //! Stands on: lotus/stereo_segment.rye (ALES147) — the stereo voice-activity segmenter, run once to read BOTH channels' silences over one shared frame grid, its
 //! `segment_stereo`, its `StereoSegments`, and its `StereoSegmentError` reused whole; lotus/segment.rye (ALES95) — the mono segmenter (the frame grid and `.silent`
 //! verdict, through ALES147) and `max_segments`; lotus/trim_silence.rye (ALES96) — the mono silence stripper, imported by the selftest to prove the LOCKSTEP law (that

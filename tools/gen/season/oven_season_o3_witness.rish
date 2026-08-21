@@ -6,7 +6,7 @@ say "kiln-season-o3: Language EN — close the residual queue."
 say "kiln-season-o3: Style Radiant — retarget the plan; refuse fossil rewrite."
 say "kiln-season-o3: Lens TAME — Kiln Season o3."
 
-let counsel = run ["test" "-f" "counsel/20260729-000258_oven-season-o3-inference-plan-retarget.md"]
+let counsel = run ["test" "-f" "counsel/date/20260729/20260729-000258_oven-season-o3-inference-plan-retarget.md"]
 assert counsel.ok else "kiln-season-o3: o3 counsel missing"
 
 let plan = run ["sh" "-c" "grep -q 'kiln/' expanding-prompts/yonder/20260710-133500_inference-stack-lap0.md && grep -q 'oven_corpus_lap1' expanding-prompts/yonder/20260710-133500_inference-stack-lap0.md && ! grep -q '\`anvil/\`' expanding-prompts/yonder/20260710-133500_inference-stack-lap0.md && echo PLAN_OK"]

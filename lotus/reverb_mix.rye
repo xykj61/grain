@@ -10,7 +10,7 @@
 //! exactly the preset). Between, each sample is the honest weighted average of the dry and the wet.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES192.
-//! Design read: active-designing/20260815-100815_fill-ales192-lotus-reverb-wet-dry-mix.md
+//! Design read: active-designing/date/20260815/20260815-100815_fill-ales192-lotus-reverb-wet-dry-mix.md
 //! Stands on: lotus/reverb_preset.rye (ALES190) — the named-room wet, run over the span unchanged, its ReverbPresetError forwarded whole;
 //! lotus/clock.rye (ALES5) — the sample clock, its samples_for converting the span (the SAME conversion reverb_preset uses, so the spans match);
 //! lotus/timeline.rye (ALES2) — the Clip, its max_clip bounding the dry snapshot and its saturate clamping the blend; lotus/reverb.rye (ALES186)

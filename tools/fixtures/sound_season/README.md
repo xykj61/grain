@@ -3,7 +3,7 @@
 **Language:** EN  
 **Stamp:** `20260727.221508`  
 **Status:** Checkable — round 0 raised `link_witness` ROUND MODE as the Sound breach instrument  
-**Season:** [`../../../counsel/20260727-220947_the-sound-season-and-the-seated-breach.md`](../../../counsel/20260727-220947_the-sound-season-and-the-seated-breach.md)
+**Season:** [`../../../counsel/date/20260727/20260727-220947_the-sound-season-and-the-seated-breach.md`](../../../counsel/date/20260727/20260727-220947_the-sound-season-and-the-seated-breach.md)
 
 ---
 

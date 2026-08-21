@@ -20,7 +20,7 @@
 //! (append-only holds for it); only the divergent tail — which by FORA16 could never have committed — is discarded.
 //!
 //! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
-//! FORA17. Design read: active-designing/20260814-083500_fora17-constel-log-repair-matching.md
+//! FORA17. Design read: active-designing/date/20260814/20260814-083500_fora17-constel-log-repair-matching.md
 //! Stands on: constel/term.rye (FORA16) — terms, and run_termed_decree for the real-sky leader; constel/log.rye (FORA12) — the
 //! append-only order and max_entries bound; constel/switchboard.rye (FORA6) — the medium the real-sky scenario uses.
 //!

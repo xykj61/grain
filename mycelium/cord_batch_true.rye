@@ -1,7 +1,7 @@
 //! mycelium/cord_batch_true.rye — the batched Cord reads true (fact batching r4, the arc closes).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · fact batching · rung r4.
-//! Design read: active-designing/20260813-043303_mycelium-fact-batching-exploration.md
+//! Design read: active-designing/date/20260813/20260813-043303_mycelium-fact-batching-exploration.md
 //!
 //! r1 proved a batched history folds to the byte-identical supply as the same facts
 //! one-per-block, r2 let it travel, r3 measured the throughput win — all over Dags

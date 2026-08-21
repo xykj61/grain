@@ -53,10 +53,10 @@ done
 for f in \
   foundations/20260724-220625_five-pillars-direction.md \
   foundations/20260724-200912_nothing-to-give-custody-first-principle.md \
-  counsel/20260724-141612_names-maps-and-open-questions.md \
-  counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md \
-  counsel/20260724-132812_the-workshop-and-the-warehouse.md \
-  waymarks/20260724-220625_threats-pillars-mand-home.md
+  counsel/date/20260724/20260724-141612_names-maps-and-open-questions.md \
+  counsel/date/20260724/20260724-135312_vanes-shelves-and-the-glow-ladder.md \
+  counsel/date/20260724/20260724-132812_the-workshop-and-the-warehouse.md \
+  waymarks/date/20260724/20260724-220625_threats-pillars-mand-home.md
  do
   add "$f"
 done

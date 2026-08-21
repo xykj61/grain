@@ -1,7 +1,7 @@
 # tools/ales_pad_tail_witness.rish — the padded top-and-tail: trim the leading and trailing silence like ALES98, yet keep a chosen margin of silence at each end (ALES99).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES99.
-# Design read: active-designing/20260814-234744_fill-ales99-lotus-padded-top-tail.md
+# Design read: active-designing/date/20260814/20260814-234744_fill-ales99-lotus-padded-top-tail.md
 # Stands on: lotus/top_tail.rye (ALES98 — the flush top-and-tail, the pad-zero twin), lotus/segment.rye (ALES95 — the voice-activity segmenter), lotus/timeline.rye
 # (ALES2 — the Clip and cut), lotus/voiced.rye (ALES94 — the .silent verdict). ALES98 cuts the dead air flush against the first and last sound; that clips the attack of
 # a spoken take. Every recorder and DAW that trims silence also lets a keeper KEEP A MARGIN — trim the ends, but leave a quarter-second of air so the take breathes.

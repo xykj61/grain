@@ -6,9 +6,9 @@
 # Season: crypto — Season G's second post-quantum stone, rung 2 of the ML-KEM ladder the pivot doc seats. This rung authors serialization only;
 # it holds no key and runs no protocol. Every key, ciphertext, and message moves between ring coefficients and bytes through exactly these four
 # operations, and this witness proves that move correct.
-# Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (rung 2 — ByteEncode/ByteDecode and Compress/Decompress,
+# Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (rung 2 — ByteEncode/ByteDecode and Compress/Decompress,
 # proven by the encode/decode round-trip and the FIPS 203 compression bound; the byte parity against Zig std.crypto arrives at the keygen rung).
-# Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Rye-first spine: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 # Clean-room: the widths (1, 4, 5, 10, 11, 12), the LSB-first bit order, and the Compress/Decompress rounding are the public NIST standard's own;
 # the arithmetic is our own Rye, never a copied line (.claude/rules/gratitude-licenses.md).
 #

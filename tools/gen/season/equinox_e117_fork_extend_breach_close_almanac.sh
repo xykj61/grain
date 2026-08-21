@@ -31,7 +31,7 @@ entry = (
     "**Ran:** `sh tools/fixtures/equinox_e117_fork_extend_breach_close_scan.sh` · **Stamp:** `"
     + stamp
     + "` · **Witness:** `tools/gen/season/equinox_e117_fork_extend_breach_close_witness.rish` · "
-    "counsel `counsel/20260731-170354_e117-fork-extend-breach-let-close.md` · "
+    "counsel `counsel/date/20260731/20260731-170354_e117-fork-extend-breach-let-close.md` · "
     "scan `tools/fixtures/equinox_e117_fork_extend_breach_close_scan.sh`\n"
     "Expected control_gate · instruments_tracked · fork_word=EXTEND · "
     "handback_status=not_consumed · breach_status=closed_unspent · "

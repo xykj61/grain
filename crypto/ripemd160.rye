@@ -5,7 +5,7 @@
 //! in nothing but authored Grain arithmetic. It is the crux that turns the recently-landed address encoders into real addresses.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats Season G).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats Season G).
 //! Kin: crypto/sha256.rye (HASH160's first hash, GREEN), encoding/base58check.rye and encoding/bech32.rye (the address encoders that
 //! sit downstream). Monocypher (vendor/monocypher, CC0/BSD-dual) does not ship RIPEMD-160, and Zig's std.crypto ships no RIPEMD codec
 //! either, so this hash is authored from the RIPEMD-160 specification directly and proven against its published known-answer suite —

@@ -1,7 +1,7 @@
 //! mycelium/purse_fixture_gen.rye — reproducibly emit a per-account double-spend Cord dev-net fixture (r4 support).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the per-account double-spend · rung r4 support.
-//! Design read: active-designing/20260813-073500_mycelium-purse-true-real-fixture-exploration.md
+//! Design read: active-designing/date/20260813/20260813-073500_mycelium-purse-true-real-fixture-exploration.md
 //!
 //! Seats a real four-block scene carrying a genuine per-account double-spend — one holder
 //! spending the same coins twice. A demo funder issues a genesis credit of 100 to Alice;

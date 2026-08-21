@@ -17,7 +17,7 @@
 //! There is no BadDelay and no BadLevel — the tremolo has no delay line to overrun and no dry/wet mix to level; the gain IS the level.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES74.
-//! Design read: active-designing/20260814-201204_fill-ales74-lotus-tremolo-amplitude-modulation.md
+//! Design read: active-designing/date/20260814/20260814-201204_fill-ales74-lotus-tremolo-amplitude-modulation.md
 //! Stands on: lotus/chorus.rye (ALES71) — the triangle-LFO driver `triangle_delay_at` this reuses, read as a gain; lotus/glide.rye (ALES70) —
 //! `glide_scale`, the fixed-point unit (256 = unity gain); lotus/timeline.rye (ALES2) — the Clip, sample_min/max, the one true saturate.
 //!

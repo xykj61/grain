@@ -1,7 +1,7 @@
 # tools/ales_shelf_witness.rish — a two-band tone shelf: bass and treble from the one-pole split (ALES41).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES41.
-# Design read: active-designing/20260814-161231_fill-ales41-lotus-tone-shelf.md
+# Design read: active-designing/date/20260814/20260814-161231_fill-ales41-lotus-tone-shelf.md
 # Stands on: lotus/tone.rye (ALES40 — the low-pass/high-pass split) and lotus/timeline.rye (ALES2 — the Clip and saturate).
 #
 # lotus/shelf.rye scales ALES40's low band and high band independently and sums them — the everyday bass/treble equalizer.

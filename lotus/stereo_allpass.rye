@@ -29,7 +29,7 @@
 //! out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES185.
-//! Design read: active-designing/20260815-091646_fill-ales184-lotus-allpass.md (ALES184's read; this is its stereo carry)
+//! Design read: active-designing/date/20260815/20260815-091646_fill-ales184-lotus-allpass.md (ALES184's read; this is its stereo carry)
 //! Stands on: lotus/allpass.rye (ALES184) — the mono allpass run once per channel, its AllpassError reused whole and its `precheck` reused
 //! for the up-front atomic validation; lotus/pan.rye (ALES10) — the StereoClip and its balance invariant; lotus/timeline.rye (ALES2) — the
 //! Clip and the one true saturate the mono allpass reuses.

@@ -8,7 +8,7 @@ say "horizon-thin: Language EN — Weave + model layer living mutants."
 say "horizon-thin: Style Radiant — poetics held · Grain naming sharpened."
 say "horizon-thin: Lens TAME — Surface Season p31 thin."
 
-let seat = run ["test" "-f" "counsel/20260728-221253_surface-season-p31-horizon-stack-thin.md"]
+let seat = run ["test" "-f" "counsel/date/20260728/20260728-221253_surface-season-p31-horizon-stack-thin.md"]
 assert seat.ok else "horizon-thin: p31 counsel seat missing"
 
 let graph = run ["test" "-f" "foundations/20260728-221253_the-graph-beneath-the-surface.md"]

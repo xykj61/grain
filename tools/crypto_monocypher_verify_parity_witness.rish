@@ -5,7 +5,7 @@
 # Edwards↔Montgomery · Poly1305 · ChaCha20 · SHA-512 · HMAC-SHA-512 · HChaCha20 · variable BLAKE2b · keyed BLAKE2b came before). Season G · Cryptography.
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte" AND "a constant-time discipline note (timing-safety as a named horizon)." This
 # primitive is the one corner of that horizon correct by STRUCTURE rather than measurement: crypto/hmac_sha512.rye and crypto/hmac_sha256.rye each
 # named "a constant-time compare, which the composer that uses this primitive supplies" as an open horizon; crypto/verify.rye is that supplier,

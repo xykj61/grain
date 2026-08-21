@@ -8,8 +8,8 @@
 //! shape, the weight-τ ball no KEM needs.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — rung 3 of the ML-DSA ladder. Rye-first spine:
-//! active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — rung 3 of the ML-DSA ladder. Rye-first spine:
+//! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 //! Kin: crypto/mldsa_ring.rye (the base ring these draws land in, GREEN) · crypto/mldsa_encode.rye (the serialization sibling, GREEN) ·
 //! crypto/mlkem_sample.rye (the KEM-side sampler) · crypto/shake.rye (the XOF this rung drives, GREEN). The parity TARGET is Zig's std.crypto
 //! ml_dsa and the FIPS 204 known-answers, studied clean-room — never a copied line (.claude/rules/gratitude-licenses.md).

@@ -5,7 +5,7 @@
 # tools/crypto_monocypher_x25519_parity_witness.rish carried it to X25519). Season G · Cryptography.
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte," and "once a Rye signing primitive is parity-GREEN, Lotus's signed carry becomes
 # buildable — the library is engineering." The Ed25519 sign witness (tools/crypto_ed25519_sign_witness.rish) already proved RFC 8032 parity against
 # Zig's std.crypto and named Monocypher-SOURCE parity an honest horizon behind a held vendor fetch; the vendored source is now present, so this rung

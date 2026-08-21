@@ -9,7 +9,7 @@
 //! address from a key, this rung serializes the key ITSELF in its two canonical SEC 2 forms — the 33-byte COMPRESSED encoding (0x02 for an even
 //! y, 0x03 for an odd y, then the 32-byte x) that a compact wallet and BIP-32's serP(point) use, and the 65-byte UNCOMPRESSED encoding (0x04,
 //! then x, then y) that the recovery world and Ethereum's own pubkey body expand to. Both stand entirely on the same GREEN tower.
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the priority spine: Rye first).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the priority spine: Rye first).
 //! Clean-room: the SEC 2 tag-and-coordinates convention is a public standard (Standards for Efficient Cryptography, SEC 1 §2.3.3); the assembly
 //! is ours, standing on our own parity-GREEN rungs, never a copied line (.claude/rules/gratitude-licenses.md).
 //!

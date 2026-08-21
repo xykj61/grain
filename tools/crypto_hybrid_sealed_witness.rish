@@ -8,7 +8,7 @@
 # Season: crypto — confidentiality is an ONION of two GREEN doors: seal wraps the plaintext in the classical X25519 box, then wraps that whole frame in
 # the post-quantum ML-KEM box; open peels the post-quantum layer, then the classical one. To read the plaintext an adversary must break BOTH: the outer
 # ML-KEM box to reach the inner frame, AND the inner X25519 box to reach the plaintext.
-# Design read: active-designing/20260816-195850_the-hybrid-sealed-door-both-agreements.md · active-designing/20260816-192400_post-quantum-identity-is-dual-key.md
+# Design read: active-designing/date/20260816/20260816-195850_the-hybrid-sealed-door-both-agreements.md · active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md
 # ("hybrid, not either-or, is the safe default … a break in either family still leaves the identity standing on the other"). Clean-room: FIPS 203,
 # RFC 7748/8032 are public standards; the onion is our own Rye wiring over our own GREEN rungs, no line copied (.claude/rules/gratitude-licenses.md).
 #

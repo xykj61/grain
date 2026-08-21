@@ -5,7 +5,7 @@
 //! program plays. Bytes → edited samples → a real .wav. This is where the suite becomes a pipeline.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES217.
-//! Design read: active-designing/20260815-131432_fill-ales217-lotus-render.md
+//! Design read: active-designing/date/20260815/20260815-131432_fill-ales217-lotus-render.md
 //! Stands on: lotus/timeline.rye (ALES2) — the Clip and `gain`; lotus/fade.rye (ALES14-family) — the linear `fade`; lotus/
 //! invert.rye (ALES105) — the whole-clip phase `invert`; lotus/wav.rye (ALES215) — the canonical mono RIFF/WAVE container the
 //! rendered samples encode into. Every effect is reused verbatim, never re-derived; render adds only the composition and one new

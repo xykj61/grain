@@ -6,7 +6,7 @@
 //! and refuse to parse a record whose digest does not match its body.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES34.
-//! Design read: active-designing/20260814-151050_fill-ales34-lotus-rack-seal.md
+//! Design read: active-designing/date/20260814/20260814-151050_fill-ales34-lotus-rack-seal.md
 //! Stands on: lotus/rack_sheet.rye (ALES33) — render_rack / parse_rack reused WHOLE as the sealed body, so the seal adds only the
 //! digest layer and no new grammar; lotus/rack.rye (ALES30) — the Rack sealed and rebuilt. Mirrors the Sha256 verify-before-trust of
 //! lotus/wire.rye (ALES0) — an integrity check the reader recomputes itself, not a signature.

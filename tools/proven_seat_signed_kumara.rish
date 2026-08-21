@@ -7,7 +7,7 @@
 
 let cache = "tools/.cache/proven-seat"
 let guest = "${cache}/signed-kumara-verify"
-let pin = "active-designing/20260712-214200_proven-seat-signed-kumara-monocypher.md"
+let pin = "active-designing/date/20260712/20260712-214200_proven-seat-signed-kumara-monocypher.md"
 let build = "${cache}/genode-build-x86_64"
 let tools = "${cache}/host-tools"
 let log = "${cache}/signed-kumara-serial-run.log"

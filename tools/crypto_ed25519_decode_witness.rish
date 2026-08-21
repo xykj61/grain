@@ -4,7 +4,7 @@
 # independent implementation (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock,
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock,
 # point decode the last piece of curve arithmetic the verify equation needs).
 # Kin: crypto/ed25519_group.rye (compression, the inverse of this decode, GREEN) · crypto/ed25519_scalarmul.rye (the ladder, GREEN) ·
 # crypto/fe25519.rye (the base field, GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own

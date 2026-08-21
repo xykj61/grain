@@ -5,7 +5,7 @@
 //! Rye this round and provable against a neutral public reference.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-180728_open-season-g-crypto-blake2b.md (the season's opening read — SHA-512 is the second
+//! Design read: active-designing/date/20260815/20260815-180728_open-season-g-crypto-blake2b.md (the season's opening read — SHA-512 is the second
 //! primitive named there as following the hash foundation).
 //! Kin: crypto/blake2b.rye (the first primitive, GREEN on metal). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET,
 //! never a copied line — our own arithmetic, studied clean-room from the public standard and Monocypher's public API

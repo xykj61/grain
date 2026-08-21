@@ -1,7 +1,7 @@
 //! mycelium/testament.rye — a named constellation's verdict travels as an offline certificate (r1).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · Testament · rung r1 — the crux.
-//! Design read: active-designing/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
+//! Design read: active-designing/date/20260813/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
 //!
 //! The Constel journey gave the dev-net a name and a roster, and reached quorum on a real fact — yet that
 //! quorum lived and died in one process. A TESTAMENT is the carried belief: a portable certificate that a
@@ -19,7 +19,7 @@
 //! certificate's own bound facts. Composes constel + chorus + muster + voucher public API only, editing none.
 //! Demo ship and keeper seeds — no key held, no funds, no network, no real value.
 //!
-//! Scope: active-designing/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
+//! Scope: active-designing/date/20260813/20260813-135126_mycelium-testament-named-quorum-certificate-exploration.md
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/testament.rye
 

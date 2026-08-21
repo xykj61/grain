@@ -22,7 +22,7 @@
 //! a bad depth, a bad gain, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES176.
-//! Design read: active-designing/20260815-082400_fill-ales176-lotus-stereo-tremolo.md
+//! Design read: active-designing/date/20260815/20260815-082400_fill-ales176-lotus-stereo-tremolo.md
 //! Stands on: lotus/tremolo.rye (ALES74) — the mono tremolo run once per channel, its TremoloError reused whole and its `precheck` reused for the up-front atomic validation; lotus/glide.rye (ALES70) — glide_scale, the fixed-point
 //! unit (256 = unity gain); lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip and the one true saturate.
 //!

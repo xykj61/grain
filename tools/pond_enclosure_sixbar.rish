@@ -18,7 +18,7 @@
 
 let cache = "tools/.cache/pond-enclosure"
 let meta = "${cache}/sixbar-baseline-meta.txt"
-let pin = "active-designing/20260712-205600_pond-enclosure-sixbar-baseline.md"
+let pin = "active-designing/date/20260712/20260712-205600_pond-enclosure-sixbar-baseline.md"
 # Framework jail-local signing (PUBKEYS.md) — not the elder veganreyklah2 sandbox.
 let sandbox_fpr = "CC8BA67125E202E1DB0CBFD70E632656F07DD30B"
 # Elder Kaeden master — must stay out of the jail keyring (public may).

@@ -1,6 +1,6 @@
 //! glow/lower_face.rye — lower a parsed `=/` face binding to runnable `.rye`.
 //!
-//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
+//! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `=/` is typed let. This hop lowers `next-root=@u32` and bare `tick`, trailing
 //! decimal literals (default 7), nested `^-  @uN  <decimal>`, `(lent <face>)`
 //! — length of a demo subject — `(mix <face> <face>)` — bitwise XOR of two

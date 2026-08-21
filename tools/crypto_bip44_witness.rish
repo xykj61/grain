@@ -5,7 +5,7 @@
 #
 # Season: crypto — Season G (the Six-Season double-seat). This rung contributes only the path grammar — decimal-index parsing bounded overflow-safe
 # below 2³¹, the hardened ' / h / H marker, and the fixed BIP-44 purpose/coin/change convention — over crypto/bip32.rye, already proven byte-for-byte
-# on metal. Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# on metal. Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
 # Clean-room: BIP-44 and its path convention are a public standard; the parsing and the walk are ours, standing on our own parity-GREEN BIP-32,
 # never a copied line (.claude/rules/gratitude-licenses.md).
 #

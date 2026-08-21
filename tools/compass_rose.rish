@@ -12,7 +12,7 @@ assert f.ok else "foundations missing"
 assert f.out contains "FOUNDATIONS_OK" else "foundations check failed"
 
 say "compass rose: grain index…"
-let g = run ["sh" "-c" "test -f active-designing/20260702-184312_the-grain-and-the-crossing.md && echo GRAIN_OK"]
+let g = run ["sh" "-c" "test -f active-designing/date/20260702/20260702-184312_the-grain-and-the-crossing.md && echo GRAIN_OK"]
 assert g.ok else "grain index missing"
 assert g.out contains "GRAIN_OK" else "grain check failed"
 
@@ -42,12 +42,12 @@ assert p.ok else "plain stories missing"
 assert p.out contains "STORIES_OK" else "stories check failed"
 
 say "compass rose: sealed crossing Landed + kitchen twins…"
-let sc = run ["sh" "-c" "test -f active-designing/20260703-201612_the-sealed-crossing.md && test -f external-research/20260710-002952_sealed-crossing-plainly.md && test -f external-research/20260710-145313_amphora-crossing-plainly.md && test -d amphora && grep -q 'Landed' active-designing/20260703-201612_the-sealed-crossing.md && grep -q 'Landed' external-research/20260710-002952_sealed-crossing-plainly.md && echo CROSS_OK"]
+let sc = run ["sh" "-c" "test -f active-designing/date/20260703/20260703-201612_the-sealed-crossing.md && test -f external-research/20260710-002952_sealed-crossing-plainly.md && test -f external-research/20260710-145313_amphora-crossing-plainly.md && test -d amphora && grep -q 'Landed' active-designing/date/20260703/20260703-201612_the-sealed-crossing.md && grep -q 'Landed' external-research/20260710-002952_sealed-crossing-plainly.md && echo CROSS_OK"]
 assert sc.ok else "sealed crossing pair missing"
 assert sc.out contains "CROSS_OK" else "sealed crossing status drift"
 
 say "compass rose: cellar seasons silo + kitchen twin…"
-let as = run ["sh" "-c" "test -f active-designing/20260703-071212_cellar-seasons.md && test -f external-research/20260710-002422_cellar-seasons-plainly.md && grep -q 'Reviewed and kept' active-designing/20260703-071212_cellar-seasons.md && ! grep -q 'parks the candidate' active-designing/20260703-071212_cellar-seasons.md && echo SEASON_OK"]
+let as = run ["sh" "-c" "test -f active-designing/date/20260703/20260703-071212_cellar-seasons.md && test -f external-research/20260710-002422_cellar-seasons-plainly.md && grep -q 'Reviewed and kept' active-designing/date/20260703/20260703-071212_cellar-seasons.md && ! grep -q 'parks the candidate' active-designing/date/20260703/20260703-071212_cellar-seasons.md && echo SEASON_OK"]
 assert as.ok else "cellar seasons pair missing"
 assert as.out contains "SEASON_OK" else "cellar seasons affirm drift"
 
@@ -57,7 +57,7 @@ assert fl.ok else "first-lap pair missing"
 assert fl.out contains "LAP_OK" else "first-lap pair check failed"
 
 say "compass rose: metalsmoke silo + kitchen twin…"
-let ms = run ["sh" "-c" "test -f active-designing/20260703-013412_metalsmoke.md && test -f external-research/20260710-002017_metalsmoke-plainly.md && grep -q 'Reviewed and kept' active-designing/20260703-013412_metalsmoke.md && ! grep -q 'awaiting ratification' active-designing/20260703-013412_metalsmoke.md && echo METAL_OK"]
+let ms = run ["sh" "-c" "test -f active-designing/date/20260703/20260703-013412_metalsmoke.md && test -f external-research/20260710-002017_metalsmoke-plainly.md && grep -q 'Reviewed and kept' active-designing/date/20260703/20260703-013412_metalsmoke.md && ! grep -q 'awaiting ratification' active-designing/date/20260703/20260703-013412_metalsmoke.md && echo METAL_OK"]
 assert ms.ok else "metalsmoke pair missing"
 assert ms.out contains "METAL_OK" else "metalsmoke affirm drift"
 
@@ -102,17 +102,17 @@ assert gr.ok else "graduation rule pair missing"
 assert gr.out contains "GRAD_OK" else "graduation pair check failed"
 
 say "compass rose: Dimeroll books-view packet…"
-let gc = run ["sh" "-c" "test -f active-designing/20260710-125953_dimeroll-hammock.md && test -f external-research/20260710-125953_dimeroll-kick-digits-clean-room.md && test -f expanding-prompts/yonder/20260710-125953_dimeroll-lap1-books-view.md && test -f dimeroll/dimeroll_core.rye && test -f dimeroll/fixtures/journal.bron && test -f dimeroll/README.md && echo DIMEROLL_OK"]
+let gc = run ["sh" "-c" "test -f active-designing/date/20260710/20260710-125953_dimeroll-hammock.md && test -f external-research/20260710-125953_dimeroll-kick-digits-clean-room.md && test -f expanding-prompts/yonder/20260710-125953_dimeroll-lap1-books-view.md && test -f dimeroll/dimeroll_core.rye && test -f dimeroll/fixtures/journal.bron && test -f dimeroll/README.md && echo DIMEROLL_OK"]
 assert gc.ok else "Dimeroll books-view packet missing"
 assert gc.out contains "DIMEROLL_OK" else "Dimeroll packet check failed"
 
 say "compass rose: Dimeroll sight-view packet…"
-let gv = run ["sh" "-c" "test -f active-designing/20260710-132548_dimeroll-lap3-sight-view.md && test -f tools/dimeroll_sight_view.rish && echo SIGHT_OK"]
+let gv = run ["sh" "-c" "test -f active-designing/date/20260710/20260710-132548_dimeroll-lap3-sight-view.md && test -f tools/dimeroll_sight_view.rish && echo SIGHT_OK"]
 assert gv.ok else "Dimeroll sight-view packet missing"
 assert gv.out contains "SIGHT_OK" else "sight packet check failed"
 
 say "compass rose: inference stack packet…"
-let inf = run ["sh" "-c" "test -f active-designing/20260710-133500_inference-stack-lap0-hammock.md && test -f external-research/20260710-133500_local-forge-minisforum-inference.md && test -f lattice/lattice_core.rye && test -f scribble/scribble_core.rye && test -f lantern/lantern_core.rye && test -f ember/ember_core.rye && test -f tools/inference_assist_view.rish && echo INFERENCE_OK"]
+let inf = run ["sh" "-c" "test -f active-designing/date/20260710/20260710-133500_inference-stack-lap0-hammock.md && test -f external-research/20260710-133500_local-forge-minisforum-inference.md && test -f lattice/lattice_core.rye && test -f scribble/scribble_core.rye && test -f lantern/lantern_core.rye && test -f ember/ember_core.rye && test -f tools/inference_assist_view.rish && echo INFERENCE_OK"]
 assert inf.ok else "inference stack packet missing"
 assert inf.out contains "INFERENCE_OK" else "inference packet check failed"
 

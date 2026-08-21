@@ -1,7 +1,7 @@
 //! brushstroke/crop_editor.rye — HUNK62: the whole crop, end to end — drag a frame, see it, commit it into the history, chain another.
 //!
 //! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK62.
-//! Design read: active-designing/20260813-222800_hunk-crop-gesture-exploration.md ("The road on from here")
+//! Design read: active-designing/date/20260813/20260813-222800_hunk-crop-gesture-exploration.md ("The road on from here")
 //! Teacher, thanked clean-room: the crop tool of a photo app (iCloud Photos / Google Photos) — a keeper drags a frame,
 //! sees it over the picture, commits it, and can crop again or undo (concept only, siloed).
 //!

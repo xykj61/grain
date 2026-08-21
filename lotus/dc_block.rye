@@ -19,7 +19,7 @@
 //! filter whose coefficient must move forward (num ≥ 1); a DC blocker at R = 0 is a real, useful filter, so its coefficient law is its own.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES91.
-//! Design read: active-designing/20260814-223442_fill-ales91-lotus-dc-blocker.md
+//! Design read: active-designing/date/20260814/20260814-223442_fill-ales91-lotus-dc-blocker.md
 //! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/max, and the one true saturate; the carried-state idiom is ALES43's (lotus/tone_carry.rye) —
 //! a tiny value the keeper holds beside a clip, the from-silence form the state = 0 case of one carried implementation so the two can never drift.
 //!

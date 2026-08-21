@@ -20,7 +20,7 @@
 //! decode cannot fault — the op refuses whole up front or completes whole.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES211.
-//! Design read: active-designing/20260815-121345_fill-ales211-lotus-stereo-width.md
+//! Design read: active-designing/date/20260815/20260815-121345_fill-ales211-lotus-stereo-width.md
 //! Stands on: lotus/mid_side.rye (ALES210) — the reversible mid/side change of basis, encode and decode, spent whole; lotus/timeline.rye (ALES2) —
 //! the Clip and its proven `gain` (the side scaled by a fraction, saturated once); lotus/pan.rye (ALES10) — the StereoClip and its balance invariant.
 //!

@@ -1,7 +1,7 @@
 # tools/ales_ring_mod_witness.rish — the ring modulator: the tremolo's triangle carrier let cross zero (ALES75).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES75.
-# Design read: active-designing/20260814-201937_fill-ales75-lotus-ring-modulator-bipolar-carrier.md
+# Design read: active-designing/date/20260814/20260814-201937_fill-ales75-lotus-ring-modulator-bipolar-carrier.md
 # Stands on: lotus/tremolo.rye (ALES74 — the amplitude write this generalizes by removing the floor); lotus/chorus.rye (ALES71 — the
 # triangle-LFO driver `triangle_delay_at`, now the carrier); lotus/glide.rye (ALES70 — `glide_scale`, 256 = unity); lotus/timeline.rye
 # (ALES2 — the Clip, sample_min/max, the one true saturate).

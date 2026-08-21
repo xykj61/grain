@@ -4,7 +4,7 @@
 **Depth:** routing
 **Ceiling:** ≤40 lines
 **Last updated:** 2026-08-15 (CRYPTO — Season G audit front door)
-**Compresses:** [`20260712-221600`](../active-designing/20260712-221600_docs-compression-layer-design.md) · [`20260717-173848`](../active-designing/20260717-173848_compass-card-and-foundations-compress.md)
+**Compresses:** [`20260712-221600`](../active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md) · [`20260717-173848`](../active-designing/date/20260717/20260717-173848_compass-card-and-foundations-compress.md)
 
 ---
 
@@ -34,7 +34,7 @@
 | [`VENDORING.md`](VENDORING.md) | recipe · ≤150 | Vendor · gratitude · cache · pin habit |
 | [`WITNESS_PATTERNS.md`](WITNESS_PATTERNS.md) | thin · ≤120 | Witness habits → TAME_GUIDANCE (self-deleting if canon) |
 
-Design law: [`active-designing/20260712-221600_docs-compression-layer-design.md`](../active-designing/20260712-221600_docs-compression-layer-design.md).
+Design law: [`active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md`](../active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md).
 
 **Lint roster (inbound):** [`proven-seat-guest-hammock`](../active-designing/proven-seat-guest-hammock.md) · [`seam-season-hammock`](../active-designing/seam-season-hammock.md) · [`wasm hammock`](../active-designing/yonder/20260712-063558_receipt-verify-wasm-hammock.md) · [`door3 hammock`](../active-designing/yonder/20260712-063213_door3-consumer-edge-pass-hammock.md)
 

@@ -6,7 +6,7 @@ say "wafer-thin: Language EN — living wafer over June fossil."
 say "wafer-thin: Style Radiant — poetics held · invent held."
 say "wafer-thin: Lens TAME — Surface Season p33."
 
-let seat = run ["test" "-f" "counsel/20260728-225239_surface-season-p33-wafer-thin.md"]
+let seat = run ["test" "-f" "counsel/date/20260728/20260728-225239_surface-season-p33-wafer-thin.md"]
 assert seat.ok else "wafer-thin: p33 counsel missing"
 let living = run ["test" "-f" "foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md"]
 assert living.ok else "wafer-thin: living wafer missing"

@@ -1,7 +1,7 @@
 //! brushstroke/photo_save.rye — HUNK67: save the edited picture — the Photos editor meets the content-addressed store.
 //!
 //! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK67.
-//! Design read: active-designing/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
+//! Design read: active-designing/date/20260813/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
 //! Teacher, thanked clean-room: the "Save a Copy" of a photo app (iCloud Photos / Google Photos) — an edit becomes a new
 //! image the library holds, the original untouched (concept only, siloed).
 //!

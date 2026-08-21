@@ -6,8 +6,8 @@
 //! (crypto/fe25519.rye), exactly as Ed25519's scalar multiply composed over the GREEN group law.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names X25519 beside Ed25519 as a
-//! Monocypher-parity primitive) and active-designing/20260815-193010_fe25519-the-curve-field-crux.md (the field this stands on).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names X25519 beside Ed25519 as a
+//! Monocypher-parity primitive) and active-designing/date/20260815/20260815-193010_fe25519-the-curve-field-crux.md (the field this stands on).
 //! Kin: crypto/fe25519.rye (the base field beneath it, GREEN) · crypto/ed25519_scalarmul.rye (the Edwards-curve scalar multiply, its twin over
 //! the same prime). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own arithmetic, studied
 //! clean-room from RFC 7748 and Monocypher's public API (.claude/rules/gratitude-licenses.md).

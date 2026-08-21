@@ -7,7 +7,7 @@
 //! to persist real PCM.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES33.
-//! Design read: active-designing/20260814-150213_fill-ales33-lotus-rack-sheet.md
+//! Design read: active-designing/date/20260814/20260814-150213_fill-ales33-lotus-rack-sheet.md
 //! Stands on: lotus/rack.rye (ALES30) — copy_to reused WHOLE so every rack bound (BadName / Duplicate / RackFull) is enforced at the
 //! one place, and name_of / the slot boards read for render; lotus/selection.rye (ALES23) — make grabs the whole rebuilt span, its
 //! empty-span refusal the reason a rack slot always holds >=1 sample; lotus/timeline.rye (ALES2) — splice builds the temp master a

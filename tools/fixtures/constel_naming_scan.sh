@@ -14,7 +14,7 @@
 # convention: context/specs/20260729-215600_scan-seam-convention.md — the scan carries the
 # verdict; a caller checks status before trusting the lines.
 #
-# Law: active-designing/20260813-022222_constel-test-network-naming-law.md
+# Law: active-designing/date/20260813/20260813-022222_constel-test-network-naming-law.md
 set -eu
 
 if [ "$#" -ne 1 ]; then

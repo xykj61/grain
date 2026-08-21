@@ -3,7 +3,7 @@
 //!   rye build glow/rune_cast_witness.rye -femit-bin=glow/bin/rune_cast_witness
 //!   glow/bin/rune_cast_witness
 //!
-//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
+//! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
 //! reading-runes section and glow/rune_cast.rye. Six claims:
 //!   1. An aura mold ("^-  @u32") parses to CastSpec naming "@u32" -- the
 //!      brief's own worked example, read back exactly by mold_slice.

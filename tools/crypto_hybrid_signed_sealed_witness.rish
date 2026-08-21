@@ -7,7 +7,7 @@
 # Season: crypto — provenance is a hybrid signature (Ed25519 beside ML-DSA, genuine only when both verify) over a BLAKE2b-512 digest of the sealed frame;
 # confidentiality is the onion of the classical X25519 box inside the post-quantum ML-KEM box. The envelope is opened verify-before-trust: the sender's two
 # public keys are checked against the reader's expectation and the hybrid signature verified BEFORE either agreement is opened.
-# Design read: active-designing/20260816-195850_the-hybrid-sealed-door-both-agreements.md · active-designing/20260816-192400_post-quantum-identity-is-dual-key.md.
+# Design read: active-designing/date/20260816/20260816-195850_the-hybrid-sealed-door-both-agreements.md · active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md.
 # Clean-room: BIP-39, SLIP-0010, RFC 5869, FIPS 203/204 are public standards; the framing is our own Rye wiring over our own GREEN rungs, no line copied
 # (.claude/rules/gratitude-licenses.md).
 #

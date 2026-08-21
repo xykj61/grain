@@ -19,7 +19,7 @@
 # Knot refuses whole, so no position is ever read from a tampered checkpoint. Composes voucher + statement +
 # lapse_knot + lapse + cord + fold public API only; demo keeper seeds — no key, no funds, no network, no custody.
 #
-# Scope: active-designing/20260813-095216_mycelium-voucher-attested-statement-exploration.md
+# Scope: active-designing/date/20260813/20260813-095216_mycelium-voucher-attested-statement-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/mycelium_voucher_knot_witness.rish

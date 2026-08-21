@@ -1,7 +1,7 @@
 //! mycelium/cord_knot_bench.rye — checkpointing is a genuine bound win, measured honestly.
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · checkpointing · rung r3 — the measured bound win.
-//! Design read: active-designing/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
+//! Design read: active-designing/date/20260813/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
 //!
 //! r1 proved a checkpoint folds identical to the whole history; r2 let it travel.
 //! r3 measures what the Knot buys: the Cord's Dag is statically allocated

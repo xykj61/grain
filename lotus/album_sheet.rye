@@ -4,7 +4,7 @@
 //! size. This rung draws that page — a bounded, human-readable listing rendered from an already-unpacked album.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES225.
-//! Design read: active-designing/20260815-140635_fill-ales225-lotus-album-sheet.md
+//! Design read: active-designing/date/20260815/20260815-140635_fill-ales225-lotus-album-sheet.md
 //! Stands on: lotus/render_album.rye (ALES223) — the unpacked Album (its Tracks and their parsed Manifests) this reads; through
 //! it render_manifest.rye (ALES221, the manifest fields) and render_bundle.rye (ALES222). No new frame, no new hash — a projection.
 //!

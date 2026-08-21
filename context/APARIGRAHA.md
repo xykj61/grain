@@ -33,7 +33,7 @@
 ## Cite rather than restate
 
 - Workshop/warehouse doctrine: [`specs/20260724-132812_workshop-and-warehouse-context-economy.md`](specs/20260724-132812_workshop-and-warehouse-context-economy.md)  
-- First sitting counsel: [`../counsel/20260724-132812_the-workshop-and-the-warehouse.md`](../counsel/20260724-132812_the-workshop-and-the-warehouse.md)  
-- Third sitting (name seat): [`../counsel/20260724-141612_names-maps-and-open-questions.md`](../counsel/20260724-141612_names-maps-and-open-questions.md)
+- First sitting counsel: [`../counsel/date/20260724/20260724-132812_the-workshop-and-the-warehouse.md`](../counsel/date/20260724/20260724-132812_the-workshop-and-the-warehouse.md)  
+- Third sitting (name seat): [`../counsel/date/20260724/20260724-141612_names-maps-and-open-questions.md`](../counsel/date/20260724/20260724-141612_names-maps-and-open-questions.md)
 
 Plain-spoken alternate title if ever needed: `CONTEXT_ECONOMY.md` — this pin keeps the Sanskrit name.

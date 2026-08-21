@@ -1,7 +1,7 @@
 # tools/ales_stereo_ring_mod_witness.rish — stereo_ring_mod: the ring modulator (bipolar triangle carrier on amplitude) carried into stereo, the same carrier on both channels — the second rung of the stereo modulation class (ALES177).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES177.
-# Design read: active-designing/20260815-083200_fill-ales177-lotus-stereo-ring-mod.md
+# Design read: active-designing/date/20260815/20260815-083200_fill-ales177-lotus-stereo-ring-mod.md
 # Stands on: lotus/ring_mod.rye (ALES75 — the mono ring modulator run once per channel, its RingModError reused whole and its precheck reused for the up-front atomic validation), lotus/tremolo.rye (ALES74 — the non-negative-carrier
 # equality target, carried into stereo at ALES176), lotus/glide.rye (ALES70 — glide_scale, 256 = unity), lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip and the one true saturate).
 #

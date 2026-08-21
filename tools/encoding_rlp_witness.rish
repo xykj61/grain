@@ -6,7 +6,7 @@
 # bech32.rye, and pem.rye. Where crypto/ authors the mathematics that produces bytes, encoding/ authors the forms those bytes travel in. RLP
 # is the form the Ethereum-family primitives already GREEN in crypto/ — keccak256, secp256k1 ECDSA sign/recover, eth_address, eip712 — reach
 # for next: a signed transaction is the keccak256 of the RLP of its fields, recovered back to its sender's address.
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 # Clean-room: the rules are the Ethereum Yellow Paper's Appendix B; the arithmetic is ours (.claude/rules/gratitude-licenses.md).
 #
 # encoding/rlp.rye authors RLP from the standard's three cases directly: a single byte in [0x00, 0x7f] is its own encoding; a byte string is

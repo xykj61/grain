@@ -1,7 +1,7 @@
 //! mycelium/purse_true.rye — the Purse reads a real per-account double-spend fixture true (r4, the arc closes).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the per-account double-spend · rung r4.
-//! Design read: active-designing/20260813-073500_mycelium-purse-true-real-fixture-exploration.md
+//! Design read: active-designing/date/20260813/20260813-073500_mycelium-purse-true-real-fixture-exploration.md
 //!
 //! r1 fixed the per-account verdict, r2 let it travel, r3 read it across a Knot — all over Dags
 //! seated in code. This closing rung carries the reader onto a **real** on-disk Cord record carrying

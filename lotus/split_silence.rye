@@ -15,7 +15,7 @@
 //! returns exactly the trimmer's clip. This binds ALES97 to ALES96 the way ALES96 is bound to ALES95.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES97.
-//! Design read: active-designing/20260814-232954_fill-ales97-lotus-silence-splitter.md
+//! Design read: active-designing/date/20260814/20260814-232954_fill-ales97-lotus-silence-splitter.md
 //! Stands on: lotus/segment.rye (ALES95) — the voice-activity segmenter, reused by name so the splitter keeps exactly the runs the segmenter named; lotus/
 //! trim_silence.rye (ALES96) — the silence stripper, the join-law twin; lotus/timeline.rye (ALES2) — the Clip and splice; lotus/voiced.rye (ALES94) — the .silent
 //! verdict.

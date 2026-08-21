@@ -1,7 +1,7 @@
 # tools/ales_sweep_witness.rish — a filter sweep: a low-pass whose cutoff moves across a span, seamless because state carries (ALES44).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES44.
-# Design read: active-designing/20260814-163647_fill-ales44-lotus-filter-sweep.md
+# Design read: active-designing/date/20260814/20260814-163647_fill-ales44-lotus-filter-sweep.md
 # Stands on: lotus/tone_carry.rye (ALES43) and lotus/tone.rye (ALES40 — low_pass_carry) and lotus/timeline.rye (ALES2 — the Clip).
 #
 # lotus/sweep.rye gives ALES40's one-pole low-pass a moving coefficient: it partitions a span into blocks, filters each with a

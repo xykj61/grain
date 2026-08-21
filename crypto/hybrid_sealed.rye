@@ -17,7 +17,7 @@
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, audit-ready). Double-seats BESIDE crypto/kumara_sealed.rye (the
 //! classical confidential door) and crypto/mlkem_sealed.rye (the post-quantum one), retiring neither — a keeper who trusts one family alone uses that
 //! door directly; the hybrid door is for the keeper who wants both agreements guarding one message at once.
-//! Design read: active-designing/20260816-195850_the-hybrid-sealed-door-both-agreements.md (this door's own note) · active-designing/20260816-192400_post-quantum-identity-is-dual-key.md — the dual-key decision this door is the confidentiality construction of.
+//! Design read: active-designing/date/20260816/20260816-195850_the-hybrid-sealed-door-both-agreements.md (this door's own note) · active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md — the dual-key decision this door is the confidentiality construction of.
 //! Kin: crypto/hybrid_identity.rye (the SIGNING sibling — a signature genuine only when both families verify, GREEN) · crypto/kumara_sealed.rye (the
 //! classical inner layer, GREEN) · crypto/mlkem_sealed.rye (the post-quantum outer layer, GREEN) · crypto/kumara_pq_sealed.rye (the signed post-quantum
 //! door). Clean-room: FIPS 203, RFC 7748/8032 are public standards studied through their specs; the onion is our own Rye wiring over our own GREEN rungs

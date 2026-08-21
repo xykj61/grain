@@ -1,7 +1,7 @@
 # tools/fora_wire_witness.rish — the handshake's three values cross a self-describing local frame, verify-before-trust (FORA3).
 #
 # Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA3.
-# Design read: active-designing/20260814-043551_fora3-constel-local-wire-frame.md
+# Design read: active-designing/date/20260814/20260814-043551_fora3-constel-local-wire-frame.md
 # Law kin: .claude/rules/placeholder-ship-names.md — the naming law reaches into the wire: a vowel-bearing (real-@p-shaped)
 # name smuggled into a payload whose digest was fixed up STILL refuses VowelPresent at the border. Integrity and safety are
 # two independent gates; a real address can never cross a Constel channel even inside a whole frame.

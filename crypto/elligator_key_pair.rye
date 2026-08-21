@@ -7,7 +7,7 @@
 //! obfuscated first packet carries: a handshake public key that looks like nothing at all.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G names reimplementing Monocypher
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G names reimplementing Monocypher
 //! primitives in Rye with byte-for-byte parity as the crux; the prior rung (crypto/x25519_dirty.rye) named this composition as its next crux.
 //! Kin: crypto/elligator.rye (the map/rev this drives) · crypto/x25519_dirty.rye (the dirty public key it hides) · crypto/chacha20.rye (the
 //! keystream that turns one seed into each candidate secret) · crypto/fe25519.rye (the field all three stand on). Monocypher (vendor/monocypher,

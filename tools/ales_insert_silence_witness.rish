@@ -1,7 +1,7 @@
 # tools/ales_insert_silence_witness.rish — insert_silence: open `count` samples of silence at position `at`, growing the clip, the lossless twin of shift (ALES109).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES109.
-# Design read: active-designing/20260815-010035_fill-ales109-lotus-insert-silence.md
+# Design read: active-designing/date/20260815/20260815-010035_fill-ales109-lotus-insert-silence.md
 # Stands on: lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the exact-inverse law),
 # lotus/meter.rye (ALES13 — the peak/RMS meter, used only to prove opening a silent gap never changes the peak). Where ALES108's shift slides the whole clip within a fixed
 # frame and DROPS what falls off the edge (a lossy translation), insert_silence makes room without translating and KEEPS every sample — the length grows by exactly count.

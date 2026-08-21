@@ -22,7 +22,7 @@
 //! refusal (BadRange) leaves BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES139.
-//! Design read: active-designing/20260815-040747_fill-ales139-lotus-stereo-half-wave-rectifier.md
+//! Design read: active-designing/date/20260815/20260815-040747_fill-ales139-lotus-stereo-half-wave-rectifier.md
 //! Stands on: lotus/halve.rye (ALES85) — the mono half-wave rectifier run once per channel, max(x, 0) with no rail edge; lotus/stereo_rectify.rye (ALES138) — the pure-even full-wave sibling this rung partitions
 //! where that one collapsed; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max.
 //!

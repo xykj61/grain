@@ -18,7 +18,7 @@
 //! monotonic tick (u64, no wrap), purely local — no wall clock, no real time.
 //!
 //! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
-//! FORA29. Design read: active-designing/20260814-081032_fora29-constel-lease-read.md
+//! FORA29. Design read: active-designing/date/20260814/20260814-081032_fora29-constel-lease-read.md
 //! Stands on: constel/tenure.rye (FORA24) — still_commands, the majority-backing gate; constel/roster.rye (FORA1) — max_piers, the
 //! bound the backing poll runs within.
 //!

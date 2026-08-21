@@ -1,7 +1,7 @@
 //! mycelium/constel_fixture_gen.rye — reproducibly emit the Constel roster fixture (r4 support).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · Constel · rung r4 support.
-//! Design read: active-designing/20260813-132009_mycelium-constel-named-dev-net-exploration.md
+//! Design read: active-designing/date/20260813/20260813-132009_mycelium-constel-named-dev-net-exploration.md
 //!
 //! Boots the named dev-net roster and renders it to a `format constel-v1` record — the exact bytes
 //! `mycelium/constel_true.rye` reads back and the r4 witness cross-checks against an independent awk reading.

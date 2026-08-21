@@ -2,7 +2,7 @@
 # canonical interleaved stereo RIFF/WAVE .wav, atomically, verify-before-trust (ALES218).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES218.
-# Design read: active-designing/20260815-132120_fill-ales218-lotus-stereo-render.md
+# Design read: active-designing/date/20260815/20260815-132120_fill-ales218-lotus-stereo-render.md
 # Idiom kin: lotus/render.rye (ALES217, the Step chain and its per-Clip check/apply, reused per channel) · lotus/pan.rye
 # (ALES10, the StereoClip) · lotus/stereo_wav.rye (ALES216, the interleaved container). The mono→stereo twin of ALES217: it
 # invents no new effect and no new check, it only widens the render to the second channel.

@@ -1,7 +1,7 @@
 //! glow-book: runes.md#g-alias
 //! glow/rune_alias.rye — parses Glow's `=*` alias (no-copy) rune head.
 //!
-//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
+//! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md's
 //! `=` category: `=*` is alias, no copy — the last of the three binding
 //! siblings (`=/` let, `=.` mutate, `=*` alias). This extracts the face being
 //! aliased; the source wing/value is not this parser's job. Eighth rune head.

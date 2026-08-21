@@ -1,7 +1,7 @@
 //! mycelium/lapse_knot.rye — the deadline verdict reads across a Knot (rung r3).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the deadline verdict · rung r3.
-//! Design read: active-designing/20260813-085046_mycelium-lapse-pending-timeout-exploration.md
+//! Design read: active-designing/date/20260813/20260813-085046_mycelium-lapse-pending-timeout-exploration.md
 //!
 //! Rung 1 resolved a whole Cord Dag into a deadline-clock Ledger — which pledges reserved
 //! coins, which were honored, released, or LAPSED when the order's clock passed their

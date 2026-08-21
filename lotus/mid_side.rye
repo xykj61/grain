@@ -23,7 +23,7 @@
 //! round-trip is always exact (l + r = 2l is even).
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES210.
-//! Design read: active-designing/20260815-120505_fill-ales210-lotus-mid-side.md
+//! Design read: active-designing/date/20260815/20260815-120505_fill-ales210-lotus-mid-side.md
 //! Stands on: lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant, the ground both ops preserve;
 //! lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples, and `saturate`, the one true clamp reused so the rail lives in one place.
 //!

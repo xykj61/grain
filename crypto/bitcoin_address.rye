@@ -8,7 +8,7 @@
 //! cryptography: it composes stones already proven byte-for-byte on metal — SHA-256 and RIPEMD-160 (whose own witness already exercises HASH160),
 //! Base58Check (the version+checksum envelope), and Bech32 (the SegWit encoder) — into the two Bitcoin address forms the crypto wave's REMEMBER
 //! note named next: "a Bitcoin-side address composition over the GREEN HASH160." It is the Bitcoin sibling of crypto/eth_address.rye.
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
 //! Kin: crypto/sha256.rye · crypto/ripemd160.rye (HASH160's two hashes, both GREEN) · encoding/base58check.rye (P2PKH envelope) ·
 //! encoding/bech32.rye (P2WPKH SegWit encoder). Clean-room: the HASH160 rule, the P2PKH version byte, and the SegWit v0 address construction
 //! are Bitcoin's own public standards (the Bitcoin wiki, BIP-141, BIP-173); the composition is ours, standing on our own parity-GREEN stones,

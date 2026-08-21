@@ -12,7 +12,7 @@ set -eu
 MODE=${1:-}
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 MUSEUM=tools/fixtures/baton_museum_census_scan.sh
-COUNSEL=counsel/20260731-170354_e117-fork-extend-breach-let-close.md
+COUNSEL=counsel/date/20260731/20260731-170354_e117-fork-extend-breach-let-close.md
 MAP=work-in-progress/EQUINOX_SEAT_MAP.md
 REMEMBER=work-in-progress/REMEMBER.md
 PRIN=tools/gen/season/prin_scope.rish

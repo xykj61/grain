@@ -3,7 +3,7 @@
 # (the seal), authoring no new cryptography (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names the signed carry as the
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names the signed carry as the
 # Lotus "who made this record" unblock, and Season 2 Journey 6's content-addressed chain of custody).
 # Kin: crypto/blake2b.rye · crypto/ed25519_sign.rye · crypto/ed25519_verify.rye (the GREEN primitives this composes) ·
 # crypto/sealed_session.rye (the confidentiality twin). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET of the primitives

@@ -8,9 +8,9 @@
 # ciphertext is a public test vector. Every ML-KEM sealed session and Comlink door will one day rest on exactly this recovery, so this witness proves
 # the whole composition — the decryption, the FO re-encryption verify, and the implicit-rejection derivation — agrees with the NIST-standard reference
 # to the byte, whether the ciphertext is honest or tampered.
-# Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (rung 6 — the decapsulation rung whose recovered shared secret meets
+# Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (rung 6 — the decapsulation rung whose recovered shared secret meets
 # Zig's std.crypto ML-KEM-512/768/1024 decaps on both branches).
-# Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Rye-first spine: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 # Clean-room: the K-PKE.Decrypt algorithm, the G hash wiring, the FO re-encryption check, and the SHAKE256 implicit-rejection secret are the public NIST
 # standard's own; the arithmetic is our own Rye composed over our own GREEN rungs, with Zig's std.crypto read only as the reference to diff against —
 # never a copied line (.claude/rules/gratitude-licenses.md).

@@ -8,7 +8,7 @@
 //! (crypto/mldsa_sample.rye), and SHAKE (crypto/shake.rye) — and holds no key of its own: every seed is a public test vector.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — the ML-DSA ladder's signing rung, the door a Kumara identity signs
+//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — the ML-DSA ladder's signing rung, the door a Kumara identity signs
 //! its name through once the old curves fall.
 //! Kin: crypto/mldsa_keygen.rye (the keypair this signs under, GREEN) · crypto/mldsa_ring.rye (NTT · pointwise multiply, GREEN) · crypto/mldsa_encode.rye
 //! (BitPack · Decompose · HighBits · LowBits · MakeHint, GREEN) · crypto/mldsa_sample.rye (RejNTTPoly · RejBoundedPoly · SampleInBall, GREEN) ·

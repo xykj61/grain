@@ -16,7 +16,7 @@
 //! source has no reverb width to turn.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES212.
-//! Design read: active-designing/20260815-122004_fill-ales212-lotus-reverb-width.md
+//! Design read: active-designing/date/20260815/20260815-122004_fill-ales212-lotus-reverb-width.md
 //! Stands on: lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
 //! forwarded whole; lotus/stereo_width.rye (ALES211) — the width control, encode/scale-the-side/decode, run over the wet result; lotus/pan.rye
 //! (ALES10) — the StereoClip and its balance invariant; lotus/clock.rye (ALES5) — the validated sample clock the preset speaks its span against.

@@ -22,7 +22,7 @@
 //! The postcondition of every non-refusing catch_up is follower.equivalent(leader) — asserted, not hoped.
 //!
 //! Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
-//! FORA15. Design read: active-designing/20260814-083100_fora15-constel-catchup-snapshot-install.md
+//! FORA15. Design read: active-designing/date/20260814/20260814-083100_fora15-constel-catchup-snapshot-install.md
 //! Stands on: constel/snapshot.rye (FORA14) — the CompactLog, its snapshot, and the order-sensitive fold; constel/log.rye
 //! (FORA12) — the append-only order both piers replicate; constel/switchboard.rye (FORA6) — the medium the real-sky scenario uses.
 //!

@@ -4,7 +4,7 @@
 //! bounded byte frame carrying the manifest and the .wav side by side, opened verify-before-trust.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES222.
-//! Design read: active-designing/20260815-134607_fill-ales222-lotus-render-bundle.md
+//! Design read: active-designing/date/20260815/20260815-134607_fill-ales222-lotus-render-bundle.md
 //! Stands on: lotus/render_manifest.rye (ALES221) — open_manifest and verify_wav, the whole verify-before-trust the bundle
 //! inherits; lotus/wav.rye (ALES215) — the .wav bytes the bundle carries. No new hash, no new grammar — only a frame.
 //!

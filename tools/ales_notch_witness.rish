@@ -1,7 +1,7 @@
 # tools/ales_notch_witness.rish — a band-reject (notch): keep the edges, drop the middle — the complement of ALES46's band-pass (ALES47).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES47.
-# Design read: active-designing/20260814-165728_fill-ales47-lotus-band-reject.md
+# Design read: active-designing/date/20260814/20260814-165728_fill-ales47-lotus-band-reject.md
 # Stands on: lotus/tone.rye (ALES40 — low_pass, high_pass, precheck) and lotus/timeline.rye (ALES2 — the Clip and saturate); shape from lotus/shelf.rye (ALES41).
 #
 # lotus/notch.rye sums a low-pass (keeps the lows) and a high-pass (keeps the highs) in parallel, clamped once, so what neither

@@ -1,7 +1,7 @@
 # tools/ales_stereo_band_witness.rish — stereo_band: the band-pass carried into stereo, the same two cutoffs on both channels, each channel carrying its own cascade state — the third rung of the stereo EQ / filter class (ALES172).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES172.
-# Design read: active-designing/20260815-075923_fill-ales172-lotus-stereo-band.md
+# Design read: active-designing/date/20260815/20260815-075923_fill-ales172-lotus-stereo-band.md
 # Stands on: lotus/band.rye (ALES46 — the mono two-stage band-pass Bandpass run once per channel, its ToneError reused whole), lotus/tone.rye (ALES40, ALES45 — the high-pass and low-pass stages and the precheck sharing one
 # coefficient-and-span validation), lotus/pan.rye (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip).
 #

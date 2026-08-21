@@ -1,7 +1,7 @@
 # tools/ales_trim_silence_witness.rish — the silence stripper: segment the clip through ALES95, then cut every silent run (ALES96).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES96.
-# Design read: active-designing/20260814-232010_fill-ales96-lotus-silence-stripper.md
+# Design read: active-designing/date/20260814/20260814-232010_fill-ales96-lotus-silence-stripper.md
 # Stands on: lotus/segment.rye (ALES95 — the voice-activity segmenter), lotus/timeline.rye (ALES2 — the Clip and cut), lotus/voiced.rye (ALES94 — the .silent
 # verdict), the band read through lotus/schmitt.rye's precheck (ALES92). ALES95 read a whole clip into a run-length sequence of regions yet changed not one sample;
 # its own scope note named the first tool built on it — a silence trimmer that drops the .silent runs. This is the FIRST Lotus rung to turn an analysis result back

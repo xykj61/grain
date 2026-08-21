@@ -1,7 +1,7 @@
 # tools/ales_stereo_nyquist_witness.rish — stereo_nyquist_flip: the Nyquist flip of a master, both channels in lockstep, total (no refusal), completing the stereo pure-rearrangement class (ALES128).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES128.
-# Design read: active-designing/20260815-025105_fill-ales128-lotus-stereo-nyquist.md
+# Design read: active-designing/date/20260815/20260815-025105_fill-ales128-lotus-stereo-nyquist.md
 # Stands on: lotus/nyquist.rye (ALES107 — the mono parity sign flip run once per channel, itself reusing ALES2's one true saturate), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips
 # left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose
 # defining invariant is that left and right hold the same length so the channels stay aligned in time; because both channels hold the same length the parity pattern is identical in each, so

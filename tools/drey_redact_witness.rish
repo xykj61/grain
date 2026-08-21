@@ -1,7 +1,7 @@
 # tools/drey_redact_witness.rish — redact a span before the keep: the memory forgets on purpose (DREY10).
 #
 # Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY10.
-# Design read: active-designing/20260814-070309_drey10-redact-a-span-before-the-keep-exploration.md
+# Design read: active-designing/date/20260814/20260814-070309_drey10-redact-a-span-before-the-keep-exploration.md
 # Stands on: mikrophone/session.rye (DREY0) — the memory that forgets; redaction shapes its working buffer before commit.
 #
 # mikrophone/redact.rye strikes a span from the forgetful working buffer and proves it leaves no residue — the struck

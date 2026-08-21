@@ -7,7 +7,7 @@
 //! Vault, Comlink, and the Lotus "who made this record" carry, all with no std.crypto and no C library.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock;
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock;
 //! "once a Rye signing primitive is parity-GREEN, Lotus's signed carry becomes buildable — the library is engineering").
 //! Kin: crypto/ed25519_muladd.rye (S = (r + k·a) mod L, GREEN) · crypto/ed25519_scalar.rye (reduce, GREEN) · crypto/ed25519_scalarmul.rye (the
 //! ladder, GREEN) · crypto/ed25519_group.rye (point compression, GREEN) · crypto/ed25519_decode.rye (base-point derivation, GREEN) ·

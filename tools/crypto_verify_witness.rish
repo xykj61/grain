@@ -3,7 +3,7 @@
 # std.crypto.timing_safe.eql across every single-bit difference at all three Monocypher widths (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name the primitive,
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name the primitive,
 # the parity witness, and "a constant-time discipline note (timing-safety as a named horizon)." This primitive is the one corner of that
 # horizon correct by STRUCTURE rather than measurement: its control flow visits every byte regardless of contents, so no branch depends on the
 # compared data. crypto/CONSTANT_TIME.md is its natural home in the auditor's reading.

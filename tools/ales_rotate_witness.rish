@@ -1,7 +1,7 @@
 # tools/ales_rotate_witness.rish — rotate: cyclic left-shift the whole clip by k samples, the third pure rearrangement beside reverse and invert (ALES106).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES106.
-# Design read: active-designing/20260815-003935_fill-ales106-lotus-rotate.md
+# Design read: active-designing/date/20260815/20260815-003935_fill-ales106-lotus-rotate.md
 # Stands on: lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples), lotus/meter.rye (ALES13 — the peak/RMS meter, used only to prove a permutation moves no
 # loudness). A cyclic shift is the loop-aligning gesture behind every "rotate the loop to the downbeat", every phase-aligned wavetable, every circular buffer read at an
 # offset. It completes the POSITION family beside ALES104's reverse (end-for-end) and ALES105's invert (the value-mirror); like reverse it invents no sample, drops none,

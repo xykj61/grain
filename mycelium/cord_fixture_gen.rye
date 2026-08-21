@@ -1,7 +1,7 @@
 //! mycelium/cord_fixture_gen.rye — reproducibly emit the Cord dev-net fixture (r4 support).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · rung r4 support.
-//! Design read: active-designing/20260813-032851_mycelium-consensus-cord-exploration.md
+//! Design read: active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md
 //!
 //! Seats the honest four-block scene r1/r2/r3 use (two genesis issues, then a tax
 //! and a star reserve each referencing both), commits it, and renders it to a

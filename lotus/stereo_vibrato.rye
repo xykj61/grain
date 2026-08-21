@@ -24,7 +24,7 @@
 //! untouched and still balanced; count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES178.
-//! Design read: active-designing/20260815-083330_fill-ales178-lotus-stereo-vibrato.md
+//! Design read: active-designing/date/20260815/20260815-083330_fill-ales178-lotus-stereo-vibrato.md
 //! Stands on: lotus/vibrato.rye (ALES72) — the mono wet-only vibrato run once per channel, its VibratoError reused whole and its `precheck` (newly factored out) reused for the up-front atomic validation; lotus/chorus.rye (ALES71) — the
 //! full-wet chorus that is the dry plus this vibrato, the chorus-family equality target; lotus/glide.rye (ALES70) — glide_scale, the fixed-point unit (256 = unity); lotus/pan.rye (ALES10) — the StereoClip and its balance invariant;
 //! lotus/timeline.rye (ALES2) — the Clip and the one true saturate.

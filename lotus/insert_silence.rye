@@ -17,7 +17,7 @@
 //! pure-silence clip, at > len refuses BadRange, and a count past the buffer refuses ClipFull.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES109.
-//! Design read: active-designing/20260815-010035_fill-ales109-lotus-insert-silence.md
+//! Design read: active-designing/date/20260815/20260815-010035_fill-ales109-lotus-insert-silence.md
 //! Stands on: lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the exact-inverse law;
 //! lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to prove that opening a silent gap never changes the peak.
 //!

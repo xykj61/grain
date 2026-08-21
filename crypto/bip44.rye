@@ -14,7 +14,7 @@
 //! two below are normal, so a watch-only xpub at the account level can still derive every receiving address.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave — the
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave — the
 //! wallet arc's named next rung after BIP-39 entropy↔mnemonic).
 //! Kin: crypto/bip32.rye (the HD tree this walks, GREEN on metal) · crypto/bip39_seed.rye (the seed that grows the master) ·
 //! crypto/bip39_mnemonic.rye (the phrase the seed comes from). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity DISCIPLINE target for

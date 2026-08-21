@@ -5,7 +5,7 @@
 //! parser consumed the verified body. This rung lifts the whole frame into one primitive both wrappers call, so neither can drift.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES38.
-//! Design read: active-designing/20260814-153840_fill-ales38-lotus-seal.md
+//! Design read: active-designing/date/20260814/20260814-153840_fill-ales38-lotus-seal.md
 //! Stands on: lotus/rack_seal.rye (ALES34) and lotus/cue_seal.rye (ALES37) — the two seals whose shared law this module owns; mirrors
 //! the Sha256 verify-before-trust of lotus/wire.rye (ALES0). A pure primitive over std.crypto only — no audio imports.
 //!

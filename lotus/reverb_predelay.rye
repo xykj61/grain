@@ -14,7 +14,7 @@
 //! wide as the region leaves silence). Between, the wet stands exactly predelay samples later.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES194.
-//! Design read: active-designing/20260815-102052_fill-ales194-lotus-reverb-predelay.md
+//! Design read: active-designing/date/20260815/20260815-102052_fill-ales194-lotus-reverb-predelay.md
 //! Stands on: lotus/reverb_preset.rye (ALES190) — the named-room wet, run over the span unchanged, its ReverbPresetError forwarded whole;
 //! lotus/clock.rye (ALES5) — the sample clock, its samples_for converting BOTH the span (the SAME conversion reverb_preset uses) and the pre-delay
 //! into sample counts, so one rate governs both; lotus/timeline.rye (ALES2) — the Clip, its max_clip bounding the wet snapshot.

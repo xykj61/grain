@@ -48,20 +48,20 @@ The discipline is simple: if reading a line aloud would make a newcomer ask "so 
 
 | Stamp | Artifact | Meaning |
 |-------|----------|---------|
-| `20260711.032657` | [Open Asks civic sight hammock](../active-designing/20260711-032657_open-asks-civic-sight-hammock.md) | Tip **430** — L1 · L3 · L4 on one Skate frame |
-| `20260711.030123` | [Open Asks reputation view hammock](../active-designing/20260711-030123_open-asks-reputation-view-hammock.md) | Tip **429** — consent-before-counting on Skate |
-| `20260711.015106` | [Open Asks escrow view hammock](../active-designing/20260711-015106_open-asks-escrow-view-hammock.md) | Tip **427** — Nyasa hold/release on Skate |
-| `20260711.014454` | [Open Asks view hammock](../active-designing/20260711-014454_open-asks-view-hammock.md) | Tip **426** — closed ask loop on Skate |
+| `20260711.032657` | [Open Asks civic sight hammock](../active-designing/date/20260711/20260711-032657_open-asks-civic-sight-hammock.md) | Tip **430** — L1 · L3 · L4 on one Skate frame |
+| `20260711.030123` | [Open Asks reputation view hammock](../active-designing/date/20260711/20260711-030123_open-asks-reputation-view-hammock.md) | Tip **429** — consent-before-counting on Skate |
+| `20260711.015106` | [Open Asks escrow view hammock](../active-designing/date/20260711/20260711-015106_open-asks-escrow-view-hammock.md) | Tip **427** — Nyasa hold/release on Skate |
+| `20260711.014454` | [Open Asks view hammock](../active-designing/date/20260711/20260711-014454_open-asks-view-hammock.md) | Tip **426** — closed ask loop on Skate |
 | `20260711.014304` | [Granary steward sight hammock](../active-designing/yonder/20260711-014304_granary-steward-sight-hammock.md) | Tip **425** — weave livelihood + books on one frame |
-| `20260711.012451` | [Granary weave steward hammock](../active-designing/20260711-012451_granary-steward-composition-hammock.md) | Tip **424** — second roof livelihood on Skate |
-| `20260711.011254` | [Steward sight composition hammock](../active-designing/20260711-011254_steward-sight-composition-hammock.md) | Tip **423** — livelihood + books on one Skate frame |
-| `20260711.010030` | [Steward composition glass hammock](../active-designing/20260711-010030_steward-composition-glass-hammock.md) | Tip **422** — livelihood loop on one Skate frame |
+| `20260711.012451` | [Granary weave steward hammock](../active-designing/date/20260711/20260711-012451_granary-steward-composition-hammock.md) | Tip **424** — second roof livelihood on Skate |
+| `20260711.011254` | [Steward sight composition hammock](../active-designing/date/20260711/20260711-011254_steward-sight-composition-hammock.md) | Tip **423** — livelihood + books on one Skate frame |
+| `20260711.010030` | [Steward composition glass hammock](../active-designing/date/20260711/20260711-010030_steward-composition-glass-hammock.md) | Tip **422** — livelihood loop on one Skate frame |
 | `20260711.005028` | [RW-5 mirrored pair contract](archive/20260711-005028_rw5-mirrored-pair-contract.md) | Tips **420**/**421** + assist integration **428** — Drawn Terminal ↔ Lantern |
-| `20260711.004652` | [Commerce citizen steward demo hammock](../active-designing/20260711-004652_commerce-citizen-steward-demo-hammock.md) | Tip **419** — list → settle → Dimeroll; live TB held |
+| `20260711.004652` | [Commerce citizen steward demo hammock](../active-designing/date/20260711/20260711-004652_commerce-citizen-steward-demo-hammock.md) | Tip **419** — list → settle → Dimeroll; live TB held |
 | `20260711.001225` | [Testing audit — second pass (Inference)](yonder/20260711-001225_testing-audit-second-pass-inference.md) | Happy-zone census tip **418**; RW-5 next season |
 | `20260710.220706` | [SLC and inference progress](archive/20260710-220706_slc-and-inference-progress.md) | How tip **354** serves the SLCs; track snapshot; Rest-until / horizon |
 | `20260702.200109` | [RW-1 mirrored-pair contract](archive/20260702-200109_rw1-mirrored-pair-contract.md) | Happy-zone prep — shell↔Mantra seam; build after SLC-2b |
-| `20260702.195426` | [SLC-L1 scope note](../active-designing/20260702-195426_slcl1-verifiable-receipt.md) | Linengrow hammock — verifiable receipt; Open Asks gated |
+| `20260702.195426` | [SLC-L1 scope note](../active-designing/date/20260702/20260702-195426_slcl1-verifiable-receipt.md) | Linengrow hammock — verifiable receipt; Open Asks gated |
 | `20260702.194512` | [Ready to ask Claude](ready-to-ask-claude.md) | Strategy checkpoint — doors, parity arithmetic, Amber pre-counsel |
 | — | [`TASKS.md`](TASKS.md) | Living granular plan — what-now (~88 commit-sized boxes) |
 | — | [`ROADMAP.md`](ROADMAP.md) | Living roadmap — current position table |

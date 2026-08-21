@@ -6,9 +6,9 @@
 # Season: crypto — Season G's third post-quantum stone, rung 3 of the ML-KEM ladder the pivot doc seats. This rung authors sampling only; it holds
 # no key and runs no protocol. Every ML-KEM key's matrix and every ciphertext's noise flow through exactly these two draws, and this witness proves
 # that flow correct and deterministic.
-# Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (rung 3 — SampleNTT and SamplePolyCBD driven by the GREEN
+# Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (rung 3 — SampleNTT and SamplePolyCBD driven by the GREEN
 # shake.rye; the byte parity against Zig std.crypto arrives at the keygen rung that composes these draws).
-# Rye-first spine: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Rye-first spine: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 # Clean-room: the 12-bit rejection rule, the centered-binomial sums, and the eta parameters are the public NIST standard's own; the arithmetic is our
 # own Rye over our own GREEN SHAKE, never a copied line (.claude/rules/gratitude-licenses.md).
 #

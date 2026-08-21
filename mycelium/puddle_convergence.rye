@@ -2,7 +2,7 @@
 //! convergence with minimal disruption).
 //!
 //! Season D (Kresfa & Mycelium) · Puddle fleet orchestration · rung r2 — the fleet heals.
-//! Design read: active-designing/20260813-114651_puddle-fleet-placement-exploration.md
+//! Design read: active-designing/date/20260813/20260813-114651_puddle-fleet-placement-exploration.md
 //!
 //! r1 fixed the berth: placement is a pure function of the fleet, derived by highest weave-score, invariant
 //! under arrival order. r2 proves the property that method was CHOSEN for over hash-mod-count — MINIMAL

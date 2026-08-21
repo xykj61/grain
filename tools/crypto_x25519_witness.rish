@@ -3,7 +3,7 @@
 # against Zig's independent std.crypto.dh.X25519 (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names X25519 as the key-agreement
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names X25519 as the key-agreement
 # primitive Comlink session keys, Vault sealed storage, and any two Ponds agreeing a secret over an open channel reach for).
 # Kin: crypto/fe25519.rye (the GREEN base field beneath the ladder) · crypto/ed25519_scalarmul.rye (its Edwards-curve twin) ·
 # crypto/sealed_session.rye (the sealed box that composes this key agreement). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity

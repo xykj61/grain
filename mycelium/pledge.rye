@@ -1,7 +1,7 @@
 //! mycelium/pledge.rye — the Pledge: a two-phase transfer decided by the order.
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · Journey rung r1 — the crux.
-//! Design read: active-designing/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
+//! Design read: active-designing/date/20260813/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
 //!
 //! Every Mycelium ledger before this settles a transfer in one committed fact — the coins
 //! move, or the transfer comes up short, the moment the order places it. The truest thing a

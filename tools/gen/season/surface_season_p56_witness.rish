@@ -8,7 +8,7 @@ say "surface-p56: Language EN — live-five idle pong opens."
 say "surface-p56: Style Radiant — hosted idletest; dated counsel keeps ceiling hand."
 say "surface-p56: Lens TAME — Surface Season p56."
 
-let counsel = run ["test" "-f" "counsel/20260729-162549_surface-season-p56-live-five-idle.md"]
+let counsel = run ["test" "-f" "counsel/date/20260729/20260729-162549_surface-season-p56-live-five-idle.md"]
 assert counsel.ok else "surface-p56: p56 counsel missing"
 
 let metal = run ["sh" "-c" "grep -q 'fn run_idle_witness' brushstroke/wayland_seed.rye && grep -q 'ping_count' brushstroke/wayland_seed.rye && grep -q 'idletest' brushstroke/wayland_seed.rye && echo METAL_OK"]
@@ -33,7 +33,7 @@ assert idletest.out contains "live-five idle witness" else "surface-p56: idle ba
 assert idletest.out contains "pongs=" else "surface-p56: pong count missing"
 assert idletest.out contains "GREEN" else "surface-p56: idletest not GREEN"
 
-let hand = run ["sh" "-c" "grep -qF 'ceiling still **hand**' counsel/20260729-162549_surface-season-p56-live-five-idle.md && grep -qF 'No ceiling invent' counsel/20260729-162549_surface-season-p56-live-five-idle.md && echo HAND_OK"]
+let hand = run ["sh" "-c" "grep -qF 'ceiling still **hand**' counsel/date/20260729/20260729-162549_surface-season-p56-live-five-idle.md && grep -qF 'No ceiling invent' counsel/date/20260729/20260729-162549_surface-season-p56-live-five-idle.md && echo HAND_OK"]
 assert hand.ok else "surface-p56: ceiling hand seat scan failed"
 assert hand.out contains "HAND_OK" else "surface-p56: dated p56 counsel must keep ceiling hand"
 

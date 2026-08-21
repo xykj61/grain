@@ -8,7 +8,7 @@
 **Bound:** under `living_pin_max_bytes`  
 **Room:** Checkable for the named split and boundary; Intent where Mand ring-3 awaits word  
 **Answers:** [`../OPEN_QUESTIONS.md`](../OPEN_QUESTIONS.md) #1  
-**Counsel:** [`../../counsel/20260725-001200_forgetting-without-breaking.md`](../../counsel/20260725-001200_forgetting-without-breaking.md)  
+**Counsel:** [`../../counsel/date/20260725/20260725-001200_forgetting-without-breaking.md`](../../counsel/date/20260725/20260725-001200_forgetting-without-breaking.md)  
 **Custody gate:** [`../../foundations/20260724-200912_nothing-to-give-custody-first-principle.md`](../../foundations/20260724-200912_nothing-to-give-custody-first-principle.md)
 
 *We forget by destroying keys, and we record the forgetting as a fact.*

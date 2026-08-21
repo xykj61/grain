@@ -6,10 +6,10 @@ say "surface-p47: Language EN — recommend next door."
 say "surface-p47: Style Radiant — rank leans; refuse invent pad."
 say "surface-p47: Lens TAME — Surface Season p47."
 
-let counsel = run ["test" "-f" "counsel/20260729-134054_surface-season-p47-recommend-next-door.md"]
+let counsel = run ["test" "-f" "counsel/date/20260729/20260729-134054_surface-season-p47-recommend-next-door.md"]
 assert counsel.ok else "surface-p47: p47 counsel missing"
 
-let lean = run ["sh" "-c" "grep -q 'Wayland from Frame' counsel/20260729-134054_surface-season-p47-recommend-next-door.md && grep -q 'return_generator_s9' counsel/20260729-134054_surface-season-p47-recommend-next-door.md && grep -q 'Refuse' counsel/20260729-134054_surface-season-p47-recommend-next-door.md && echo LEAN_OK"]
+let lean = run ["sh" "-c" "grep -q 'Wayland from Frame' counsel/date/20260729/20260729-134054_surface-season-p47-recommend-next-door.md && grep -q 'return_generator_s9' counsel/date/20260729/20260729-134054_surface-season-p47-recommend-next-door.md && grep -q 'Refuse' counsel/date/20260729/20260729-134054_surface-season-p47-recommend-next-door.md && echo LEAN_OK"]
 assert lean.ok else "surface-p47: lean scan failed"
 assert lean.out contains "LEAN_OK" else "surface-p47: recommendation incomplete"
 

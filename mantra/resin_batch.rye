@@ -10,7 +10,7 @@
 //!   rye build mantra/resin_batch.rye -femit-bin=mantra/bin/resin-batch
 //!   mantra/bin/resin-batch selftest
 //!
-//! Scope: active-designing/20260706-023912_the-referential-namespace.md
+//! Scope: active-designing/date/20260706/20260706-023912_the-referential-namespace.md
 
 const std = @import("std");
 const assert = std.debug.assert;

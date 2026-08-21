@@ -2,7 +2,7 @@
 # listing each album by name and the Sha256 of its ALES224 album_manifest, one level up from the album manifest (ALES226).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES226.
-# Design read: active-designing/20260815-141539_fill-ales226-lotus-library-manifest.md
+# Design read: active-designing/date/20260815/20260815-141539_fill-ales226-lotus-library-manifest.md
 # Idiom kin: lotus/album_manifest.rye (ALES224, the sealed content-address this mirrors one level up) · lotus/seal.rye (ALES38, the
 # verify-before-trust frame reused whole). Content-addressing composes upward — a library names each album by its manifest digest,
 # not its bytes, so the record stays kilobytes no matter how large the catalog.

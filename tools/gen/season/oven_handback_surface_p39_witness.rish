@@ -6,9 +6,9 @@ say "kiln-handback: Language EN — return Surface p39."
 say "kiln-handback: Style Radiant — pause Kiln; open sept."
 say "kiln-handback: Lens TAME — handback 20260729.000500."
 
-let hb = run ["test" "-f" "counsel/20260729-000500_oven-handback-return-surface-p39.md"]
+let hb = run ["test" "-f" "counsel/date/20260729/20260729-000500_oven-handback-return-surface-p39.md"]
 assert hb.ok else "kiln-handback: handback counsel missing"
-let p39 = run ["test" "-f" "counsel/20260729-000500_surface-season-p39-resume-after-kiln.md"]
+let p39 = run ["test" "-f" "counsel/date/20260729/20260729-000500_surface-season-p39-resume-after-kiln.md"]
 assert p39.ok else "kiln-handback: Surface p39 resume missing"
 
 let scope = run ["sh" "-c" "grep -q 'sept:   Surface Season — OPEN' tools/gen/season/prin_scope.rish && grep -q 'oct:   Kiln Season — PAUSED' tools/gen/season/prin_scope.rish && grep -q 'return_generator_s9' tools/gen/season/prin_scope.rish && echo SCOPE_OK"]

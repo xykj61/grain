@@ -1,7 +1,7 @@
 //! mycelium/till_fixture_gen.rye — reproducibly emit a double-spend Cord dev-net fixture (r4 support).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the double-spend verdict · rung r4 support.
-//! Design read: active-designing/20260813-064129_mycelium-till-double-spend-exploration.md
+//! Design read: active-designing/date/20260813/20260813-064129_mycelium-till-double-spend-exploration.md
 //!
 //! Seats a real four-block scene carrying a genuine double-spend — a genesis issue of
 //! 1000, an uncontested draw (a tax of 100), and two distinct keepers each drawing 700

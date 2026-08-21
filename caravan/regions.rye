@@ -6,7 +6,7 @@
 //! construction, so the entire surface is a thing a witness reads whole.
 //!
 //! The shape comes from the Microkit clean-room brief
-//! (`active-designing/20260819-094721_clean-room-microkit-protection-domains-channels.md`):
+//! (`active-designing/date/20260819/20260819-094721_clean-room-microkit-protection-domains-channels.md`):
 //! memory regions are explicitly declared and explicitly mapped, granted to
 //! named domains with named permissions. Sharing is deliberate and visible,
 //! never ambient -- a domain reaches exactly the regions its declaration

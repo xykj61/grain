@@ -1,7 +1,7 @@
 # tools/ales_stereo_insert_silence_witness.rish — stereo_insert_silence: opening a silent gap carried into stereo, both channels in lockstep, validate-both-before-either (ALES123).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES123.
-# Design read: active-designing/20260815-022429_fill-ales123-lotus-stereo-insert-silence.md
+# Design read: active-designing/date/20260815/20260815-022429_fill-ales123-lotus-stereo-insert-silence.md
 # Stands on: lotus/insert_silence.rye (ALES109 — the mono gap-opening gesture run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance
 # invariant), lotus/stereo_cut.rye (ALES117 — the stereo span-remove this rung inverts), lotus/timeline.rye (ALES2 — the Clip, its max_clip bound, and the EditError reused whole), lotus/meter.rye
 # (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length so the channels stay aligned in time; opening a gap for a

@@ -5,7 +5,7 @@
 # Season G · Cryptography.
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte." crypto/chacha20.rye's own selftest named Monocypher-source parity as an honest held horizon
 # ("its vendored source is a held fetch"); this rung closes it. ChaCha20 was proven inside the AEAD flagship, yet never STANDALONE against Monocypher's
 # own crypto_chacha20_ietf — so the stream cipher every AEAD, Vault seal, and Comlink session enciphers against now stands proven in its own right, the

@@ -8,7 +8,7 @@
 //! audio path, only a scale on the band the notch already rejects.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES48.
-//! Design read: active-designing/20260814-170143_fill-ales48-lotus-parametric-bell.md
+//! Design read: active-designing/date/20260814/20260814-170143_fill-ales48-lotus-parametric-bell.md
 //! Stands on: lotus/tone.rye (ALES40) — the low-pass/high-pass edges and precheck; lotus/notch.rye (ALES47) — the zero-gain
 //! equality target; lotus/timeline.rye (ALES2) — the Clip and the one true saturation; the residual shape follows lotus/stack.rye
 //! (ALES42).

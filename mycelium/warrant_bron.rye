@@ -1,7 +1,7 @@
 //! mycelium/warrant_bron.rye — a validator-set handoff travels as a readable record (r2).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Warrant · rung r2 — travel.
-//! Design read: active-designing/20260813-112420_mycelium-warrant-validator-set-rotation-exploration.md
+//! Design read: active-designing/date/20260813/20260813-112420_mycelium-warrant-validator-set-rotation-exploration.md
 //!
 //! r1 bound a succession to a quorum of the outgoing roll: a successor validator set is authorized only
 //! when a Byzantine quorum of the previous roll signed its content-address. A certificate a holder cannot

@@ -2,7 +2,7 @@
 # NONLINEAR class (ALES133).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES133.
-# Design read: active-designing/20260815-032747_fill-ales133-lotus-stereo-soft-drive.md
+# Design read: active-designing/date/20260815/20260815-032747_fill-ales133-lotus-stereo-soft-drive.md
 # Stands on: lotus/soft_drive.rye (ALES79 — the mono soft-clip overdrive run once per channel, itself ALES78's pre-gain and ceiling with a knee opened below it), lotus/stereo_drive.rye (ALES132 — the
 # hard-drive sibling this rounds), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max).
 # A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES79's rounded corner into stereo — below a knee the boosted signal passes clean,

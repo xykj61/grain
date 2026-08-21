@@ -1,7 +1,7 @@
 //! mycelium/chorus_true.rye — a quorum reads a real ledger record true (r4, the arc closes).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the Chorus · rung r4.
-//! Design read: active-designing/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
+//! Design read: active-designing/date/20260813/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
 //!
 //! r1 fixed the crux (a quorum of independent Vouchers is believed only when a threshold of distinct nodes
 //! agree), r2 let the whole quorum travel as bytes, r3 read it across a Knot — all over Dags seated in

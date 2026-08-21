@@ -7,7 +7,7 @@
 # Season: crypto — Season G (the Six-Season double-seat). This rung authors NO new cryptography: q = d·G is the GREEN derive_public, a compressed
 # key's y is recovered by the GREEN ecrecover.decompress, and it contributes only the SEC 2 tag-and-coordinates envelope (SEC 1 §2.3.3). Where
 # eth_address and bitcoin_address derive a HASHED address from a key, this serializes the key ITSELF in its two canonical dresses.
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave, Rye first).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave, Rye first).
 # Clean-room: the SEC 2 convention is a public standard; the assembly is ours, standing on our own parity-GREEN rungs, never a copied line
 # (.claude/rules/gratitude-licenses.md).
 #

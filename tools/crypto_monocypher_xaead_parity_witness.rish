@@ -6,7 +6,7 @@
 # path the IETF AEAD rung did not exercise, exercising the HChaCha20 subkey derivation against the actual source. Season G · Cryptography.
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G names the ChaCha/Poly line among the
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G names the ChaCha/Poly line among the
 # primitives to prove against the vendored Monocypher, and the AEAD as the composition that unblocks the Lotus signed carry. The IETF-nonce AEAD
 # rung (tools/crypto_monocypher_aead_parity_witness.rish) proved the inner RFC 8439 AEAD; this rung proves Monocypher's flagship crypto_aead_lock
 # — the 24-byte-nonce XChaCha20-Poly1305 that HChaCha20-derives its subkey — which is the API a caller actually invokes.

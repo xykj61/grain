@@ -6,10 +6,10 @@
 # Season: crypto — Season G's first post-quantum stone, opening the ML-KEM/ML-DSA arc the pivot doc seats. This rung authors the ring
 # mathematics only; it holds no key and runs no protocol. The whole scheme's speed rests on the NTT, the finite-field FFT cousin that turns a
 # 256-by-256 schoolbook convolution into 128 tiny degree-1 products, and this witness proves that turn correct.
-# Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (the pivot to ML-KEM/ML-DSA on the doubled oracle, and the
+# Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (the pivot to ML-KEM/ML-DSA on the doubled oracle, and the
 # honest parity boundary: FIPS standard-domain vs Zig's Montgomery domain agree only at the encoded byte boundary, so this rung proves
 # correctness by self-consistency and the byte parity against Zig std.crypto arrives at the keygen rung). Rye-first spine:
-# active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 # Clean-room: q = 3329, zeta = 17, and the FIPS 203 butterfly schedule are the public NIST standard's own; the arithmetic is our own Rye,
 # never a copied line (.claude/rules/gratitude-licenses.md).
 #

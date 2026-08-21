@@ -6,7 +6,7 @@
 //! album reconciled into one verdict — resolved, dropped, or a named conflict.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES234.
-//! Design read: active-designing/20260815-145638_fill-ales234-lotus-library-merge.md
+//! Design read: active-designing/date/20260815/20260815-145638_fill-ales234-lotus-library-merge.md
 //! Stands on: lotus/library_find.rye (ALES228) — the find / digest_of resolve this composes on, the same resolve library_diff uses;
 //! lotus/library_manifest.rye (ALES226) — the three opened LibraryManifest values this reconciles. It stands BESIDE library_diff
 //! (ALES229): both are second-order primitives over one find, and a merge is two diffs reconciled against one base. No new hash, no

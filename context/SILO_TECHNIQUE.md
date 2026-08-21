@@ -52,7 +52,7 @@ Siloing is not taking without crediting — gratitude lives openly in its own sp
 
 ## Scoped relaxation (docs compression layer)
 
-**Product-facing and civic-facing prose keeps full Silo.** Pages under `docs/`, and `active-designing/` notes that carry an explicit **Dependencies** section, may name teachers plainly in that section — naming *is* the clarity there. Every relaxed page still closes with its gratitude lines. Design law: [`active-designing/20260712-221600_docs-compression-layer-design.md`](../active-designing/20260712-221600_docs-compression-layer-design.md).
+**Product-facing and civic-facing prose keeps full Silo.** Pages under `docs/`, and `active-designing/` notes that carry an explicit **Dependencies** section, may name teachers plainly in that section — naming *is* the clarity there. Every relaxed page still closes with its gratitude lines. Design law: [`active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md`](../active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md).
 
 ## Where It Serves
 

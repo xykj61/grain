@@ -1,7 +1,7 @@
 # tools/ales_stereo_reverb_witness.rish — the REVERB carried into stereo: Schroeder's network on both channels, the same bank each (ALES187).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES187.
-# Design read: active-designing/20260815-093859_fill-ales187-lotus-stereo-reverb.md
+# Design read: active-designing/date/20260815/20260815-093859_fill-ales187-lotus-stereo-reverb.md
 # Stands on: lotus/reverb.rye (ALES186 — the mono reverb run once per channel, its ReverbError reused whole and its precheck reused for the
 # up-front atomic validation); lotus/pan.rye (ALES10 — the StereoClip and its balance invariant); lotus/timeline.rye (ALES2 — the Clip the
 # mono reverb composes over).

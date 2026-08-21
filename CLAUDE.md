@@ -11,14 +11,14 @@ Write in **Radiant Style** — see `context/RADIANT_STYLE.md` and `.claude/rules
 
 ## Code discipline
 
-**TAME Guidance** governs `.rye`, `.rish`, `.brix`, and `.bron` — operational supplement at `context/TAME_GUIDANCE.md`, voiced canon at `external-research/TAME_GUIDANCE.md`. Agent rule: `.claude/rules/tame-guidance.md`. Lint surface: supplement section **What We Check, and When** (`tools/width-check.rish`, `tools/tame_style_check.rish`, growing `tools/tame-check.rish`). Tidy brief for counsel: `active-designing/20260707-164612_tame-tidy-rules-brief.md`.
+**TAME Guidance** governs `.rye`, `.rish`, `.brix`, and `.bron` — operational supplement at `context/TAME_GUIDANCE.md`, voiced canon at `external-research/TAME_GUIDANCE.md`. Agent rule: `.claude/rules/tame-guidance.md`. Lint surface: supplement section **What We Check, and When** (`tools/width-check.rish`, `tools/tame_style_check.rish`, growing `tools/tame-check.rish`). Tidy brief for counsel: `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md`.
 
 ## Context home
 
 - `context/` — style guide, identity, durable specs, and the four disciplines (read before large decisions). Filing guide: `ORGANIZING.md`.
 - `active-designing/` — design in motion.
-- `expanding-prompts/` — intent expanded into runnable plans (counts upward from `10000`).
-- `session-logs/` — reasoning traces as **Bron** (`.bron`); one-clock filenames per `context/specs/20260627-102012_one-clock-naming-law.md` and `.claude/rules/session-logs.md` (newest-first index in `session-logs/README.md`). Historical `.md` logs under `archive/YYYYMMDD/`.
+- `expanding-prompts/` — intent expanded into runnable plans.
+- `session-logs/` — reasoning traces as **Bron** (`.bron`); one-clock filenames per `context/specs/20260627-102012_one-clock-naming-law.md` and `.claude/rules/session-logs.md` (newest-first index in `session-logs/README.md`). Dated logs fold under `date/YYYYMMDD/` (molted from `archive/` `20260821.161758`); rooms are bounded at 256 flat files (`tools/room_bound_witness.rish`), and a stale reference is resolved rather than rewritten (`tools/dated_path_resolve.rish`).
 
 ## Working conventions
 

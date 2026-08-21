@@ -13,7 +13,7 @@
 //! preset held is held through the blend as well.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES193.
-//! Design read: active-designing/20260815-101449_fill-ales193-lotus-stereo-reverb-wet-dry-mix.md
+//! Design read: active-designing/date/20260815/20260815-101449_fill-ales193-lotus-stereo-reverb-wet-dry-mix.md
 //! Stands on: lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
 //! forwarded whole; lotus/pan.rye (ALES) — the StereoClip, its two balanced channels; lotus/clock.rye (ALES5) — the sample clock, its samples_for
 //! converting the span (the SAME conversion the preset uses, so the spans match); lotus/timeline.rye (ALES2) — the Clip each channel holds, its

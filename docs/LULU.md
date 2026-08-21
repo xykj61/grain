@@ -6,7 +6,7 @@
 **Depth:** guide  
 **Ceiling:** ≤80 lines  
 **Last updated:** 2026-07-18 (SETU5 device payload GREEN)  
-**Compresses:** [`../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md`](../active-designing/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md) · ER [`../external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md`](../external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md) · Setu [`SETU.md`](SETU.md) · compose [`../active-designing/20260718-133455_glass-desk-compose-amber-amphora-revive.md`](../active-designing/20260718-133455_glass-desk-compose-amber-amphora-revive.md)
+**Compresses:** [`../active-designing/date/20260718/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md`](../active-designing/date/20260718/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md) · ER [`../external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md`](../external-research/20260718-122145_pixel10a-resolution-mantrapod-floor-and-wired-glass-slc.md) · Setu [`SETU.md`](SETU.md) · compose [`../active-designing/date/20260718/20260718-133455_glass-desk-compose-amber-amphora-revive.md`](../active-designing/date/20260718/20260718-133455_glass-desk-compose-amber-amphora-revive.md)
 
 ---
 

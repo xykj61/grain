@@ -1,6 +1,6 @@
 //! glow/lower_cast.rye — lower a parsed `^-` cast to runnable `.rye` text.
 //!
-//! Per active-designing/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
+//! Per active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md:
 //! `^-  <mold>` catches a type mismatch at the cast boundary. This hop lowers
 //! unsigned auras `@u8` · `@u16` · `@u32` · `@u64` to checked `std.math.cast`.
 //! Named molds and other auras refuse until a later lap.

@@ -22,7 +22,7 @@
 //! is therefore the identical-channel one — a centred master staying identical through the timed reverb — the sense a mix cares about.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES189.
-//! Design read: active-designing/20260815-095002_fill-ales189-lotus-stereo-reverb-in-real-time.md
+//! Design read: active-designing/date/20260815/20260815-095002_fill-ales189-lotus-stereo-reverb-in-real-time.md
 //! Stands on: lotus/stereo_reverb.rye (ALES187) — the linked stereo reverb this speaks in real time, delegated unchanged, its
 //! StereoReverbError forwarded; lotus/reverb_time.rye (ALES188) — the mono timed twin this mirrors, its CombSpecMs / AllpassSpecMs reused;
 //! lotus/reverb.rye (ALES186) — the ReverbError the reverb half of this face's error set and the max_stages bound; lotus/clock.rye (ALES5) —

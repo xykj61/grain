@@ -21,7 +21,7 @@
 //! count each refuse by name with BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES175.
-//! Design read: active-designing/20260815-081412_fill-ales175-lotus-stereo-sweep.md
+//! Design read: active-designing/date/20260815/20260815-081412_fill-ales175-lotus-stereo-sweep.md
 //! Stands on: lotus/sweep.rye (ALES44) — the mono filter sweep run once per channel, its SweepError reused whole and its `check_sweep` reused for the up-front atomic validation; lotus/tone.rye (ALES40, ALES43) — the fixed and
 //! carried-state low-pass the sweep interpolates between, the degenerate-law equality target; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip.
 //!

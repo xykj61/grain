@@ -15,7 +15,7 @@
 //! and the pre-delayed wet.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES196.
-//! Design read: active-designing/20260815-103104_fill-ales196-lotus-console-predelay.md
+//! Design read: active-designing/date/20260815/20260815-103104_fill-ales196-lotus-console-predelay.md
 //! Stands on: lotus/reverb_predelay.rye (ALES194) — the wet-domain pre-delay whose ReverbPredelayError (ReverbPresetError || BadPredelay) this
 //! forwards whole, and whose full-wet edge this equals; lotus/reverb_mix.rye (ALES192) — the linear wet/dry blend this reuses per sample, and whose
 //! no-gap edge this equals; lotus/reverb_preset.rye (ALES190) — the named-room wet, run over the span unchanged; lotus/clock.rye (ALES5) — the

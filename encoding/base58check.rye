@@ -7,7 +7,7 @@
 //! Season: encoding — the serialization sibling of Season G (Cryptography), beside base64.rye and base58.rye. Where base58.rye renders raw
 //! bytes, this rung adds the version-and-checksum envelope that a human-facing address carries, so a keeper reading or typing one is caught
 //! before a slip becomes a loss. It is the exact "guard the address" shape the identity and commerce surfaces will reach for.
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
 //! Clean-room: the version+checksum envelope and the double-SHA-256 checksum rule are Bitcoin's own public convention; the composition is
 //! ours, standing on our own parity-GREEN primitives (.claude/rules/gratitude-licenses.md).
 //!

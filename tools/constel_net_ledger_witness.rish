@@ -10,7 +10,7 @@
 # its signer's key equals the genesis galaxy Deed's keeper). Demo keeper seeds only — no real key, no
 # funds, no network, no custody (gate %3 payment rail and gate %4 the maintainer's Kumara untouched).
 #
-# Scope: active-designing/20260813-030005_constel-devnet-ledger-exploration.md
+# Scope: active-designing/date/20260813/20260813-030005_constel-devnet-ledger-exploration.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/constel_net_ledger_witness.rish

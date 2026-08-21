@@ -31,7 +31,7 @@ entry = (
     "**Ran:** `sh tools/fixtures/equinox_e119_close_seat_surfaces_scan.sh` · **Stamp:** `"
     + stamp
     + "` · **Witness:** `tools/gen/season/equinox_e119_close_seat_surfaces_witness.rish` · "
-    "counsel `counsel/20260731-214426_e119-close-seat-surfaces.md` · "
+    "counsel `counsel/date/20260731/20260731-214426_e119-close-seat-surfaces.md` · "
     "scan `tools/fixtures/equinox_e119_close_seat_surfaces_scan.sh`\n"
     "Expected control_gate · instruments_tracked · ch5+ch6 surface scans ok · "
     "surface_count=6 · e92_park=lifted · no_almanac_seat honored · prove-red "

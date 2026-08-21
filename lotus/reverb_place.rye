@@ -19,7 +19,7 @@
 //! never amplifies.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES214.
-//! Design read: active-designing/20260815-125233_fill-ales214-lotus-reverb-place.md
+//! Design read: active-designing/date/20260815/20260815-125233_fill-ales214-lotus-reverb-place.md
 //! Stands on: lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError
 //! forwarded whole; lotus/stereo_width.rye (ALES211) — the width control (encode/scale-the-side/decode), run over the wet, its BadWidth reused; lotus/
 //! power.rye (ALES11) — the equal-power split `split(pos, den)` = [isqrt(den·(den−pos)), isqrt(den·pos)], reused verbatim; lotus/timeline.rye (ALES2)

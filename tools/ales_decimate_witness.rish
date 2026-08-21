@@ -1,7 +1,7 @@
 # tools/ales_decimate_witness.rish — the sample-rate decimator: hold each sample across a run, crushing time rather than amplitude (ALES83).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES83.
-# Design read: active-designing/20260814-213107_fill-ales83-lotus-sample-rate-decimator.md
+# Design read: active-designing/date/20260814/20260814-213107_fill-ales83-lotus-sample-rate-decimator.md
 # Stands on: lotus/crush.rye (ALES81 — the bit-crush this rung mirrors: crush lowers RESOLUTION on the value axis, decimate lowers RATE on the time
 # axis); lotus/timeline.rye (ALES2 — the Clip, sample_min/max, max_clip). A keeper who wants a boosted, clipped, or bit-crushed decimation composes
 # this with ALES78's drive, ALES82's tube, or ALES81's crush over the same span — all in-place span maps that compose.

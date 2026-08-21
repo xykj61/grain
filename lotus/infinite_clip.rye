@@ -19,7 +19,7 @@
 //! The pure comparator is the degenerate t = 0: every nonzero sample pins to the rail, only exact silence survives as 0.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES89.
-//! Design read: active-designing/20260814-221404_fill-ales89-lotus-infinite-clipper.md
+//! Design read: active-designing/date/20260814/20260814-221404_fill-ales89-lotus-infinite-clipper.md
 //! Stands on: lotus/timeline.rye (ALES2) — the Clip, sample_min/max; lotus/soft_center_clip.rye (ALES88) — the soft center clip whose dead zone this rung
 //! shares and whose survivors this rung pins to the rail instead of shifting toward zero.
 //!

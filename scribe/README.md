@@ -3,7 +3,7 @@
 **Language:** EN
 **Status:** Living — the Kyri reader · seated `20260810.041230`
 **Voice:** Kyri (Kyri, coming)
-**Kin:** counsel [`../active-designing/20260810-035305_scribe-shape-and-the-structure-mapping.md`](../active-designing/20260810-035305_scribe-shape-and-the-structure-mapping.md)
+**Kin:** counsel [`../active-designing/date/20260810/20260810-035305_scribe-shape-and-the-structure-mapping.md`](../active-designing/date/20260810/20260810-035305_scribe-shape-and-the-structure-mapping.md)
 
 Scribe is where the flagship voice keeps its records — session logs, batons, and inventory — and every one of them is a **Kyri** document. This first lap is the foundation the rest of Scribe stands on: a **zero-copy Kyri reader**.
 

@@ -1,7 +1,7 @@
 //! mycelium/purse_bron.rye — the per-account verdict travels as a readable record.
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · Purse rung r2 — travel.
-//! Design read: active-designing/20260813-070923_mycelium-purse-per-account-balances-exploration.md
+//! Design read: active-designing/date/20260813/20260813-070923_mycelium-purse-per-account-balances-exploration.md
 //!
 //! r1 resolved a Cord's agreed order into a Purse — every account's balance, which
 //! transfers moved coins, which came up short. A verdict a node cannot hand to

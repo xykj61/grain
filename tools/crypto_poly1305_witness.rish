@@ -2,7 +2,7 @@
 # authenticator, proven against the RFC 8439 §2.5.2 known-answer and byte-for-byte against an independent implementation (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-180728_open-season-g-crypto-blake2b.md (the season's opening read names the ChaCha/Poly line as
+# Design read: active-designing/date/20260815/20260815-180728_open-season-g-crypto-blake2b.md (the season's opening read names the ChaCha/Poly line as
 # the primitives that follow the hash foundation, each its own round) and active-designing/20260815-175524_rye-first-crypto-parity-and-the-
 # decision-wave.md (Poly1305 completes the ChaCha20-Poly1305 AEAD, the named next Season G crux after ChaCha20).
 # Kin: crypto/chacha20.rye · crypto/blake2b.rye · crypto/sha512.rye (the first three primitives, GREEN). Monocypher (vendor/monocypher,

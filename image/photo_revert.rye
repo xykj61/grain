@@ -1,7 +1,7 @@
 //! image/photo_revert.rye — HUNK14: the Photos app reverts — step back through the edit-list, the original one apply away.
 //!
 //! Season A (Hardware & Right-to-Repair) · waymark HUNK · Photos-app journey · rung HUNK14.
-//! Design read: active-designing/20260813-155719_hunk-photo-edits-non-destructive-exploration.md (HUNK14 horizon).
+//! Design read: active-designing/date/20260813/20260813-155719_hunk-photo-edits-non-destructive-exploration.md (HUNK14 horizon).
 //! Teacher, thanked clean-room: the "revert to original" of iCloud Photos / Google Photos — the original is never
 //! overwritten, so a revert only forgets edits, it never reconstructs pixels (concept only, siloed).
 //!

@@ -1,7 +1,7 @@
 # tools/drey_recorder_witness.rish — the recorder controls: samples land only while recording (DREY2).
 #
 # Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY2.
-# Design read: active-designing/20260814-021722_drey2-recorder-control-state-machine-exploration.md
+# Design read: active-designing/date/20260814/20260814-021722_drey2-recorder-control-state-machine-exploration.md
 # Stands on: mikrophone/session.rye (DREY0) — the memory that forgets.
 #
 # mikrophone/recorder.rye wraps the session that forgets in a control state machine (idle · recording · paused ·

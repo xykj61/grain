@@ -7,7 +7,7 @@
 //! encryption whose 24-byte nonce is safe to draw at random).
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Argon2 is "the stone Vault stands on so
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Argon2 is "the stone Vault stands on so
 //! a key need never live on the device"; XChaCha20's extended nonce is the AEAD "safe with random nonces." This composition is exactly the
 //! Vault sealed-storage shape both were built toward.
 //! Kin: crypto/argon2.rye (the KDF, GREEN) · crypto/xchacha20.rye (the AEAD, GREEN) · crypto/signed_carry.rye and crypto/sealed_session.rye

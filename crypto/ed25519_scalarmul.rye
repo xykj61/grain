@@ -7,7 +7,7 @@
 //! sign and verify can be assembled.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus
 //! unblock; its scalar multiplication is a composition over the group law) and the group law's own header, crypto/ed25519_group.rye, whose
 //! closing GREEN line names scalar multiplication as its next composition.
 //! Kin: crypto/ed25519_group.rye (the group this composes over, GREEN) · crypto/fe25519.rye (the base field beneath it, GREEN). Monocypher

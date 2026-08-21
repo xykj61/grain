@@ -1,7 +1,7 @@
 //! mycelium/pledge_fixture_gen.rye — reproducibly emit a two-phase-transfer Cord dev-net fixture (r4 support).
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · the two-phase transfer · rung r4 support.
-//! Design read: active-designing/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
+//! Design read: active-designing/date/20260813/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
 //!
 //! Seats a real four-block scene carrying a genuine two-phase transfer — a pledge opened, honored,
 //! and a second pledge left standing open. A demo funder issues a genesis credit of 200 to Alice

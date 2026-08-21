@@ -19,7 +19,7 @@
 //! independent silences fused into one joint cut.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES154.
-//! Design read: active-designing/20260815-060518_fill-ales154-lotus-stereo-smooth-trim.md
+//! Design read: active-designing/date/20260815/20260815-060518_fill-ales154-lotus-stereo-smooth-trim.md
 //! Stands on: lotus/stereo_trim_silence.rye (ALES148) — the RAW stereo silence trim (the SILENCE INTERSECTION and lockstep cut), the min-zero twin, imported by the selftest
 //! to prove the min-zero law; lotus/stereo_smooth_runs.rye (ALES153) — the stereo run-length smoother, its `smooth_runs_stereo` run once to smooth BOTH channels' runs and
 //! its `StereoSmoothError` reused whole; lotus/stereo_segment.rye (ALES147) — the stereo segmenter, run once to read BOTH channels' silences over one shared frame grid, its

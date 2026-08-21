@@ -8,7 +8,7 @@ say "one-graph: Language EN — Weave DAG · Mantra · Frame redraw."
 say "one-graph: Style Radiant — paper pins; refuse invent stack."
 say "one-graph: Lens TAME — Surface Season p8."
 
-let paper = run ["test" "-f" "counsel/20260728-200159_surface-season-p8-one-graph-dag-redraw-paper.md"]
+let paper = run ["test" "-f" "counsel/date/20260728/20260728-200159_surface-season-p8-one-graph-dag-redraw-paper.md"]
 assert paper.ok else "one-graph: p8 paper counsel missing"
 
 let graph = run ["test" "-f" "foundations/20260728-221253_the-graph-beneath-the-surface.md"]
@@ -24,7 +24,7 @@ assert dream_fossil.ok else "one-graph: June realidream fossil missing"
 let weave = run ["test" "-f" "mantra/src/weave.rye"]
 assert weave.ok else "one-graph: mantra/src/weave.rye missing"
 
-let connector = run ["test" "-f" "counsel/20260728-195456_surface-season-p5-glow-connector-seam-sketch.md"]
+let connector = run ["test" "-f" "counsel/date/20260728/20260728-195456_surface-season-p5-glow-connector-seam-sketch.md"]
 assert connector.ok else "one-graph: p5 connector sketch missing"
 
 say "GREEN: one-graph — paper · foundations · weave · connector pins present"

@@ -4,7 +4,7 @@
 # X25519 · Ed25519 · IETF AEAD · Argon2 · XChaCha20-Poly1305 flagship · Edwards↔Montgomery came before). Season G · Cryptography.
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte." crypto/poly1305.rye's own selftest named Monocypher-source parity as an honest held
 # horizon ("its vendored source is a held fetch"); this rung closes it. Poly1305 was proven inside the AEAD flagship, yet never STANDALONE against
 # Monocypher's own crypto_poly1305 — so the MAC every Vault/Comlink/Lotus sealed carry rests on now stands proven in its own right.

@@ -18,7 +18,7 @@
 //! sample_min holds its peak magnitude (re-measured through ALES13); every even-indexed sample is a fixed point per channel, and an all-zero pair and an empty pair are each their own flip.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES128.
-//! Design read: active-designing/20260815-025105_fill-ales128-lotus-stereo-nyquist.md
+//! Design read: active-designing/date/20260815/20260815-025105_fill-ales128-lotus-stereo-nyquist.md
 //! Stands on: lotus/nyquist.rye (ALES107) — the mono parity sign flip run once per channel, itself reusing ALES2's one true `saturate`; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips,
 //! left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip and its buf/len/samples; lotus/meter.rye (ALES13) — the peak/RMS meter, used by the witness to prove a parity
 //! sign-flip off the rail moves no loudness in either channel.

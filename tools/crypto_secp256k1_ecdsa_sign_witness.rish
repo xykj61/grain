@@ -5,8 +5,8 @@
 # an algebraic round-trip through our own GREEN verifier (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-# Design read: active-designing/20260816-033541_secp256k1-ecdsa-sign.md (this rung's claim) and
-# active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
+# Design read: active-designing/date/20260816/20260816-033541_secp256k1-ecdsa-sign.md (this rung's claim) and
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
 # Kin: crypto/secp256k1_ecdsa.rye (the verifier this signer round-trips through, GREEN) · crypto/secp256k1_scalar.rye (the order field, GREEN) ·
 # crypto/hmac_sha256.rye (the DRBG's keyed hash, GREEN) · crypto/ed25519_sign.rye (the sibling signer over the twisted Edwards group).
 # secp256k1 is not in Monocypher, so its source parity is not a rung here; the algebraic round-trip plus Zig's independent

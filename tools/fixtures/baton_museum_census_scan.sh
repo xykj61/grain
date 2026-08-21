@@ -20,7 +20,7 @@ done
 
 # Exact elders the museum itself names — confirm present before claiming the seat.
 elder_miss=0
-if [ -f expanding-prompts/20260730-021541_build-journey-agent-cover.md ]; then
+if [ -f expanding-prompts/date/20260730/20260730-021541_build-journey-agent-cover.md ]; then
   echo "detail: ok elder agent_cover"
 else
   echo "detail: absent elder agent_cover"

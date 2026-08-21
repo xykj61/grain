@@ -4,7 +4,7 @@
 # tripped through our own GREEN verifier (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G: "once a Rye signing primitive is
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G: "once a Rye signing primitive is
 # parity-GREEN, Lotus's signed carry becomes buildable — the library is engineering; signing with the maintainer's own identity key stays the gate").
 # Kin: crypto/ed25519_muladd.rye · crypto/ed25519_scalar.rye · crypto/ed25519_scalarmul.rye · crypto/ed25519_group.rye · crypto/ed25519_decode.rye ·
 # crypto/sha512.rye · crypto/ed25519_verify.rye (all GREEN). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line

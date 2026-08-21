@@ -14,7 +14,7 @@
 //! (the peak already sits on the target, so the second gain is unity) — normalize is settled once it lands.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES103.
-//! Design read: active-designing/20260815-001849_fill-ales103-lotus-peak-normalize.md
+//! Design read: active-designing/date/20260815/20260815-001849_fill-ales103-lotus-peak-normalize.md
 //! Stands on: lotus/meter.rye (ALES13) — the peak/RMS meter, its `measure` and `peak` read the loudest sample read-only; lotus/timeline.rye (ALES2) — the Clip and the
 //! saturating `gain` that scales it; lotus/power.rye (ALES11) — the isqrt the meter is built on, reached only through ALES13.
 //!

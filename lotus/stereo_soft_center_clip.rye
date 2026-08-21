@@ -25,7 +25,7 @@
 //! count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES142.
-//! Design read: active-designing/20260815-042641_fill-ales142-lotus-stereo-soft-center-clip.md
+//! Design read: active-designing/date/20260815/20260815-042641_fill-ales142-lotus-stereo-soft-center-clip.md
 //! Stands on: lotus/soft_center_clip.rye (ALES88) — the mono soft center clipper run once per channel, y = if |x| ≤ t then 0 else x − sign(x)·t with no rail edge; lotus/stereo_center_clip.rye (ALES141) — the hard
 //! sibling whose dead zone this shares and whose survivors this pulls toward zero by t (the soft/hard bond); lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant;
 //! lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max.

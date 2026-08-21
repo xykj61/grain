@@ -1,7 +1,7 @@
 # tools/fora_channel_witness.rish — a bounded byte channel carries the handshake one frame at a time (FORA5).
 #
 # Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA5.
-# Design read: active-designing/20260814-044915_fora5-constel-channel-byte-stream.md
+# Design read: active-designing/date/20260814/20260814-044915_fora5-constel-channel-byte-stream.md
 # Law kin: .claude/rules/placeholder-ship-names.md — the channel delimits but never re-checks: a frame read cleanly off the
 # stream but carrying a smuggled vowel still refuses VowelPresent at wire.deframe. The FORA3 gates keep the only trust.
 #

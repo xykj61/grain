@@ -4,7 +4,7 @@
 **Status:** Living pin — **shred RED** · Amphora cut not opened · cellar kept · Amber name superseded (e148) · list only  
 **Voice:** Kyri  
 ****Last refreshed:** `20260801.033044` · e148 Cellar supersede · e138 keep-Amber withdrawn · Class O word-scope held  
-**Seat:** Surface p36 Kiln · Equinox e148 · e128 word-scope · elder [`../counsel/20260801-012557_e138-cellar-retire-by-accretion.md`](../counsel/20260801-012557_e138-cellar-retire-by-accretion.md)
+**Seat:** Surface p36 Kiln · Equinox e148 · e128 word-scope · elder [`../counsel/date/20260801/20260801-012557_e138-cellar-retire-by-accretion.md`](../counsel/date/20260801/20260801-012557_e138-cellar-retire-by-accretion.md)
 
 *Accrete-never-break: fossils stay on disk until a circled shred proves parity. This list prepares the hand; it does not authorize a cut. Overwrite-in-place of a living name (e148) is not a shred — git history and cold storage keep the elder commits.*
 
@@ -77,9 +77,9 @@ Add a row **every time** a living mutant seats and the prior stamp becomes fossi
 | `foundations/20260629-063512_lantern-lattice-anvil.md` | `foundations/20260728-232511_lantern-lattice-kiln.md` | p31→p36 Kiln | invent held · name Kiln |
 | `foundations/20260728-221253_lantern-lattice-anvil.md` | `foundations/20260728-232511_lantern-lattice-kiln.md` | p36 `20260728.232511` | Kiln seat · Anvil essay fossil |
 | `foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md` | `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md` | p33 `20260728.225239` | invent held |
-| `counsel/20260728-232415_anvil-forge-to-kiln-name-lean.md` | LEXICON **Ember** entry | molt `20260808.220423` | anvil→kiln naming counsel · superseded by Ember rename |
-| `counsel/20260728-234419_the-kiln-season-oct-charter.md` | LEXICON **Ember** entry | molt `20260808.220423` | Kiln Season charter · season keeps its name as history · Ember is the living module |
-| `active-designing/20260813-020035_double-seat-expansion-six-seasons.md` | `active-designing/20260816-205859_double-seat-expansion-eight-seasons.md` | molt `20260816.205859` | six-season itinerary → eight (colour module + open-weight intelligence folded in); mutant accretes all six whole · shred stays RED until circled |
+| `counsel/date/20260728/20260728-232415_anvil-forge-to-kiln-name-lean.md` | LEXICON **Ember** entry | molt `20260808.220423` | anvil→kiln naming counsel · superseded by Ember rename |
+| `counsel/date/20260728/20260728-234419_the-kiln-season-oct-charter.md` | LEXICON **Ember** entry | molt `20260808.220423` | Kiln Season charter · season keeps its name as history · Ember is the living module |
+| `active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md` | `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md` | molt `20260816.205859` | six-season itinerary → eight (colour module + open-weight intelligence folded in); mutant accretes all six whole · shred stays RED until circled |
 
 **Ember supersession (molt `20260808.220423`).** The living forge module renamed `anvil/` → `kiln/` → **`ember/`** (Keaton's word). Kiln/anvil naming writings above are prepped as Class H fossils; the rested **Kiln Season** keeps its name as history and is not touched. Any tribute framing once attached to the Anvil name is **debrided** `20260809.012200` — removed from the living tree and stripped from history, not archived. Molt remains prep only; the Class H shred of the kiln/anvil naming fossils stays RED.
 
@@ -91,7 +91,7 @@ Add a row **every time** a living mutant seats and the prior stamp becomes fossi
 | --- | --- | --- | --- |
 | `external-research/20260714-035600_pool-p-vane-content-data-market.md` | `foundations/20260810-011514_pond-the-application-module.md` | breach `20260810.011514` | Pool → Pond application module; market surfaces (Granary·Mandi·Open Asks·MUR·Neth) now apps in Pond |
 
-Plan: `../active-designing/20260809-234413_loadable-topologies-and-pond-silo-brief.md`.
+Plan: `../active-designing/date/20260809/20260809-234413_loadable-topologies-and-pond-silo-brief.md`.
 
 ### Molt seated — Riyo → Kyri (voice · `20260810`)
 
@@ -123,7 +123,7 @@ The eventual "shedding" of the elder descriptor would be a **deep git-history de
 | --- | --- | --- | --- |
 | `active-designing/yonder/20260621-063912_bron-notation.md` (spec) | a living **Kyri** notation mutant | at the breach, after JARL | spec + forward references; existing `.bron` files kept whole as fossils |
 
-Charter: `../expanding-prompts/20260810-000032_the-next-season-breach-charter.md`. Open decision recorded there: does **Kyri** name the voice, the notation, or both. Pending note only — no fossil row until the Kyri spec mutant seats; opens no cut.
+Charter: `../expanding-prompts/date/20260810/20260810-000032_the-next-season-breach-charter.md`. Open decision recorded there: does **Kyri** name the voice, the notation, or both. Pending note only — no fossil row until the Kyri spec mutant seats; opens no cut.
 
 Grep helpers: `living mutant` · `fossil — living path` · paths in this table.
 
@@ -141,7 +141,7 @@ The `claim_preserve` subsystem folded to native Rishi (match/find/sort/unique). 
 
 ## Python → Rishi molt (seated `20260809.030635` · prep only)
 
-All authored Python molts to **Rishi**. Census and order: [`../active-designing/20260809-030635_python-to-rishi-molt-seating.md`](../active-designing/20260809-030635_python-to-rishi-molt-seating.md). Each `.py` becomes a Class H fossil row **only once its Rishi mutant runs green** — no rows yet, since this seats the intent and opens no cut.
+All authored Python molts to **Rishi**. Census and order: [`../active-designing/date/20260809/20260809-030635_python-to-rishi-molt-seating.md`](../active-designing/date/20260809/20260809-030635_python-to-rishi-molt-seating.md). Each `.py` becomes a Class H fossil row **only once its Rishi mutant runs green** — no rows yet, since this seats the intent and opens no cut.
 
 | `.py` file | Verdict | Standing |
 | --- | --- | --- |
@@ -200,7 +200,7 @@ living Realidream also reaches:
 | Path | From |
 | --- | --- |
 | `external-research/20260712-054521_taler-giving-lane-asymmetry.md` | money |
-| `active-designing/20260712-054942_giving-lane-t1-open-asks-field-map.md` | money |
+| `active-designing/date/20260712/20260712-054942_giving-lane-t1-open-asks-field-map.md` | money |
 
 ---
 

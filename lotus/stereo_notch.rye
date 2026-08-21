@@ -22,7 +22,7 @@
 //! left.len == right.len after; an illegal low cutoff, an illegal high cutoff, and an out-of-range span each refuse by name with BOTH channels byte for byte untouched and still balanced; count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES173.
-//! Design read: active-designing/20260815-080408_fill-ales173-lotus-stereo-notch.md
+//! Design read: active-designing/date/20260815/20260815-080408_fill-ales173-lotus-stereo-notch.md
 //! Stands on: lotus/notch.rye (ALES47) — the mono band-reject run once per channel, its ToneError reused whole; lotus/tone.rye (ALES40) — the low-pass and high-pass the notch sums, and the `precheck` sharing one
 //! coefficient-and-span validation; lotus/band.rye (ALES46) — the band-pass this notch complements; lotus/pan.rye (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the
 //! Clip and the one true saturate the notch's sum reuses.

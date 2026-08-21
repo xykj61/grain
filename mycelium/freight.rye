@@ -1,7 +1,7 @@
 //! mycelium/freight.rye — a world carries its whole signed ledger to its new berth (r1, the freight crux).
 //!
 //! Season D (Kresfa & Mycelium) · Puddle fleet orchestration × Mycelium consensus · rung r1.
-//! Design read: active-designing/20260813-121424_puddle-freight-world-state-migration-exploration.md
+//! Design read: active-designing/date/20260813/20260813-121424_puddle-freight-world-state-migration-exploration.md
 //!
 //! Puddle proved WHICH host runs which world, and healed a departure by moving only the worlds the failed
 //! host carried. Yet it named a world by its id alone — it never carried the one thing a world exists to

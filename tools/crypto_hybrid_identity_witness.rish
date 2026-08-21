@@ -7,7 +7,7 @@
 # Season: crypto — the same mnemonic grows all three keys by two independent derivations (the classical through BIP-39 + SLIP-0010, the lattice keys
 # through BIP-39 + HKDF domain separation), so a keeper reaches three independent keys with one remembered phrase. The hybrid signature carries both an
 # Ed25519 and an ML-DSA signature and verifies iff BOTH verify, so a forger must break both families, not one.
-# Design read: active-designing/20260816-192400_post-quantum-identity-is-dual-key.md ("hybrid, not either-or, is the safe default … a break in either
+# Design read: active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md ("hybrid, not either-or, is the safe default … a break in either
 # family still leaves the identity standing on the other"). Clean-room: BIP-39, SLIP-0010, RFC 5869, FIPS 203/204 are public standards; the composition
 # is our own Rye wiring over our own GREEN rungs, no line copied (.claude/rules/gratitude-licenses.md).
 #

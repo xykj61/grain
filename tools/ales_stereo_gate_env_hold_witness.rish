@@ -1,7 +1,7 @@
 # tools/ales_stereo_gate_env_hold_witness.rish — stereo_gate_env_hold: the attack/hold/release noise gate carried into stereo, the linked held envelope driving one linked gate over time (ALES167).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES167.
-# Design read: active-designing/20260815-072727_fill-ales167-lotus-stereo-gate-env-hold.md
+# Design read: active-designing/date/20260815/20260815-072727_fill-ales167-lotus-stereo-gate-env-hold.md
 # Stands on: lotus/stereo_hold_env.rye (ALES165 — the linked held follower, its stereo_env_step_hold reused whole), lotus/stereo_gate_env.rye (ALES162 — the un-held linked gate this reduces to at a hold of zero),
 # lotus/gate_env_hold.rye (ALES57 — the mono attack/hold/release gate, its GateEnvHoldError reused whole and its output the left-always-peak comparison), lotus/gate.rye (ALES51 — the silenced floor), lotus/pan.rye
 # (ALES10 — the StereoClip), lotus/timeline.rye (ALES2 — the Clip, sample_max, max_clip).

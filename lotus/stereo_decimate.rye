@@ -21,7 +21,7 @@
 //! THE ATOMICITY / DEGENERATE LAW: any refusal (BadHold, BadRange) leaves BOTH channels byte for byte untouched and still balanced; hold = 1 the identity on both, count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES137.
-//! Design read: active-designing/20260815-035333_fill-ales137-lotus-stereo-decimate.md
+//! Design read: active-designing/date/20260815/20260815-035333_fill-ales137-lotus-stereo-decimate.md
 //! Stands on: lotus/decimate.rye (ALES83) — the mono zero-order hold run once per channel; lotus/stereo_crush.rye (ALES136) — the resolution-axis twin whose image-breaking this rung reverses; lotus/pan.rye
 //! (ALES10) — the StereoClip (two mono Clips, left/right) and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, sample_min/max, max_clip.
 //!

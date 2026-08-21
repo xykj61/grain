@@ -16,7 +16,7 @@
 //! the one-way one when it does not move). The wet is mixed at level = num/den (num ≤ den) and the sum saturates once (ALES3's saturation).
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES71.
-//! Design read: active-designing/20260814-194730_fill-ales71-lotus-chorus-triangle-lfo-modulated-delay.md
+//! Design read: active-designing/date/20260814/20260814-194730_fill-ales71-lotus-chorus-triangle-lfo-modulated-delay.md
 //! Stands on: lotus/glide.rye (ALES70) — the fractional interpolation this drives with a periodic LFO instead of a one-way ramp, whose
 //! zero-depth case this equals byte-for-byte; lotus/timeline.rye (ALES2) — the Clip, sample_max, max_clip, and the one true saturate.
 //!

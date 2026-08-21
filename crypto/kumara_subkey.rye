@@ -14,7 +14,7 @@
 //! binding to refuse any frame whose verified signer is not the subkey the reader named.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G, "the library that serves Kumara
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G, "the library that serves Kumara
 //! identity, Vault, Comlink, and the Lotus signed carry," which names "a per-record subkey carry (a child of the identity node)" as the identity
 //! arc's next rung. The 1,024-round itinerary, Season 2 Journey 6 (Provenance): "a real document carries a Kumara-signed, content-addressed chain
 //! of custody end to end." A per-record subkey is how one identity signs many records without spending the same key on each.

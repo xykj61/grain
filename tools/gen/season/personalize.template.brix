@@ -96,7 +96,7 @@ journeys_brix tools/gen/season/first_season_journeys.brix
 questions_brix tools/gen/season/first_season_questions.brix
 answers_template_path tools/gen/season/first_season_answers.template.brix
 answers_instance_path first_season_answers.brix
-recursion_template expanding-prompts/20260730-144833_first-season-256-recursion-template.md
+recursion_template expanding-prompts/date/20260730/20260730-144833_first-season-256-recursion-template.md
 guide_path manual/guides/first-season-personalize.md
 profile_template GLOW_PROFILE.template.bron
 host_template GLOW_HOST.template.bron

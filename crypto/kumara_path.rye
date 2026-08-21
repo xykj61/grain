@@ -16,7 +16,7 @@
 //! levels are hardened because ed25519 has no watch-only public-parent path — the whole tree is reached only from the seed.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-//! Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave — the library
+//! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave — the library
 //! that serves Kumara identity, Vault, Comlink, and the Lotus signed carry; this rung is the identity arc's account path, the ed25519 answer to the
 //! wallet arc's crypto/bip44.rye).
 //! Kin: crypto/slip10_ed25519.rye (the ed25519 HD tree this walks, GREEN on metal) · crypto/bip44.rye (the secp256k1 account-path sibling) ·

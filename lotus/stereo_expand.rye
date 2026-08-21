@@ -21,7 +21,7 @@
 //! SILENCE / BALANCE / ATOMICITY / DEGENERATE LAW: a both-silent pair stays silent (the key = 0 guard), left.len == right.len after, a refusal leaving both channels untouched and balanced, count = 0 the identity on both.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES159.
-//! Design read: active-designing/20260815-063651_fill-ales159-lotus-stereo-expand.md
+//! Design read: active-designing/date/20260815/20260815-063651_fill-ales159-lotus-stereo-expand.md
 //! Stands on: lotus/expand.rye (ALES60) — the mono downward expander, its `expand` and `ExpandError` reused whole (the louder-quiet-channel proof and the fault set); lotus/stereo_gate.rye (ALES156) — the linked-DECISION
 //! law this fuses; lotus/stereo_compress.rye (ALES157) — the linked-GAIN law this fuses; lotus/pan.rye (ALES10) — the StereoClip and its balance invariant; lotus/timeline.rye (ALES2) — the Clip, buf/len/samples, sample_max.
 //!

@@ -6,8 +6,8 @@
 //! signature, because the curve beneath it was never built. This file is that curve's durable stone — pure arithmetic, no key, no signature.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-//! Design read: active-designing/20260816-020351_fe-secp256k1-the-bitcoin-ethereum-field-crux.md (this round) and
-//! active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
+//! Design read: active-designing/date/20260816/20260816-020351_fe-secp256k1-the-bitcoin-ethereum-field-crux.md (this round) and
+//! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
 //! Kin: crypto/fe25519.rye (the sibling field — five 51-bit limbs mod 2^255 − 19; this is eight 32-bit limbs mod 2^256 − 2^32 − 977).
 //! Monocypher does not implement secp256k1, so the parity target here is by-hand known-answers plus Zig's independent std.crypto — the same
 //! two-witness discipline the rest of the library keeps (.claude/rules/gratitude-licenses.md).

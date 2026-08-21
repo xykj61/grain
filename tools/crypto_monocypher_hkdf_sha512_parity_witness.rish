@@ -6,7 +6,7 @@
 # Season G · Cryptography.
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness proving
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness proving
 # Rye output equals Monocypher output byte-for-byte." crypto/hkdf_sha512.rye proves itself against Zig's std.crypto HKDF-SHA-512 and transitively against
 # the RFC-4231-anchored HMAC beneath it; this rung adds the audit's own parity target, standing on the HMAC-SHA-512 Monocypher-parity rung the round
 # before. HKDF-SHA-512 is the key-derivation primitive the sealed session, the per-record subkey, and every future vault key ladder fold their shared

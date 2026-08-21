@@ -4,7 +4,7 @@
 # lays ONE picture over a target at a point, this rung lays MANY, tiling a small source pattern across a rectangle edge
 # to edge (a texture, a wallpaper, a small motif that fills a panel). Stands on the open compositing verb
 # (image/compose.rye paint_over_region) and the open QOI codec (image/qoi.rye), adding no new pixel loop.
-# Design read: active-designing/20260816-210735_season-g-color-algebra-crux.md (the color floor this stands on).
+# Design read: active-designing/date/20260816/20260816-210735_season-g-color-algebra-crux.md (the color floor this stands on).
 # Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS spec -- public standards only).
 #
 # The crux this witness proves is that a small pattern becomes a filled box: paint_tiled paves the rectangle with copies

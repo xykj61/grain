@@ -15,7 +15,7 @@
 //! cut empties both, and each channel's length is non-increasing because cut only drops samples.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES117.
-//! Design read: active-designing/20260815-015354_fill-ales117-lotus-stereo-cut.md
+//! Design read: active-designing/date/20260815/20260815-015354_fill-ales117-lotus-stereo-cut.md
 //! Stands on: lotus/timeline.rye (ALES2) — the Clip, its buf/len/samples, the mono cut run once per channel, and the EditError reused whole; lotus/pan.rye (ALES10) — the StereoClip
 //! (two mono Clips, left/right) and its balance invariant; lotus/meter.rye (ALES13) — the peak/RMS meter, used only by the witness to read the result.
 //!

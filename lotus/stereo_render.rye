@@ -6,7 +6,7 @@
 //! it only widens the render to the second channel, exactly as the reverb, width, and pan families widened their axes whole.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES218.
-//! Design read: active-designing/20260815-132120_fill-ales218-lotus-stereo-render.md
+//! Design read: active-designing/date/20260815/20260815-132120_fill-ales218-lotus-stereo-render.md
 //! Stands on: lotus/render.rye (ALES217) — the Step chain and its per-Clip check/apply, reused per channel; lotus/pan.rye
 //! (ALES10) — the StereoClip (left/right Clips, the equal-length invariant); lotus/stereo_wav.rye (ALES216) — the interleaved
 //! stereo RIFF/WAVE container the two rendered channels encode into.

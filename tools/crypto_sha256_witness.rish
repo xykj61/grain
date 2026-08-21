@@ -2,7 +2,7 @@
 # with, proven against the FIPS 180-4 known-answers and byte-for-byte against an independent implementation (Season G · Cryptography).
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats Season G).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats Season G).
 # Kin: crypto/sha512.rye (the 64-bit sibling, GREEN), crypto/sha3.rye (the Keccak hash). Monocypher does not itself ship SHA-256, so
 # this hash is authored from FIPS 180-4 directly, our own arithmetic, clean-room (.claude/rules/gratitude-licenses.md).
 #

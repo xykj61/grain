@@ -1,7 +1,7 @@
 # tools/ales_stereo_crush_witness.rish — stereo_crush: the bit-crusher carried into stereo with ONE SHARED GRID, both channels in lockstep, the resolution corner of the stereo NONLINEAR class (ALES136).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES136.
-# Design read: active-designing/20260815-034830_fill-ales136-lotus-stereo-crush.md
+# Design read: active-designing/date/20260815/20260815-034830_fill-ales136-lotus-stereo-crush.md
 # Stands on: lotus/crush.rye (ALES81 — the mono bit-crusher run once per channel, a floor toward −∞ onto the grid of step 2^(16−bits)), lotus/stereo_tube.rye (ALES135 — the not-odd sibling whose
 # antisymmetry-break lesson this shares), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/
 # max). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES81's grid into stereo — dropping the low 16−bits bits of every sample in both

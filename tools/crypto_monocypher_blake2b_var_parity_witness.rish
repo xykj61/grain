@@ -7,7 +7,7 @@
 # HMAC-SHA-512 · standalone HChaCha20 came before). Season G · Cryptography.
 #
 # Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
-# Design read: active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
 # proving Rye output equals Monocypher output byte-for-byte." The first BLAKE2b rung proved crypto_blake2b(hash, 64, ...) — the 64-byte full digest —
 # yet crypto/blake2b.rye's hash_var serves EVERY output length 1..64, the mode Monocypher's own Argon2 folds through and Grain's key derivation reaches
 # for. This rung proves that variable-output core STANDALONE against Monocypher's own length-parameterized crypto_blake2b, the output-length counterpart

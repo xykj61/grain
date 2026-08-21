@@ -7,7 +7,7 @@
 #   hashes carry no algebraic structure for the rising attacks to exploit, quantum is only a Grover quadratic dent a 256-bit output
 #   already covers, and it adds NO new assumption, since Grain already rests on the hash everywhere. Lattice is the family under
 #   active erosion, so the century-root does not anchor there.
-#   The pivot's argument (active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md): the vendored Zig toolchain ships
+#   The pivot's argument (active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md): the vendored Zig toolchain ships
 #   independent ML-KEM and ML-DSA and NO SLH-DSA, so a hash-based rung would have had ONE external oracle -- the NIST KAT alone --
 #   and broken the doubled-oracle discipline that lets an auditor trust this library without re-deriving it.
 #

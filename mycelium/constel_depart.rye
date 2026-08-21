@@ -11,7 +11,7 @@
 //! Composes constel + chorus + muster + voucher public API only, editing none. Demo ship and keeper seeds —
 //! no key held, no funds, no network, no real value.
 //!
-//! Scope: active-designing/20260813-132009_mycelium-constel-named-dev-net-exploration.md
+//! Scope: active-designing/date/20260813/20260813-132009_mycelium-constel-named-dev-net-exploration.md
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/constel_depart.rye
 

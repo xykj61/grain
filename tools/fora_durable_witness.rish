@@ -1,7 +1,7 @@
 # tools/fora_durable_witness.rish — durable state: a pier survives a restart without ever forgetting its vote (FORA30).
 #
 # Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
-# FORA30. Design read: active-designing/20260814-105746_fora30-constel-durable-state.md
+# FORA30. Design read: active-designing/date/20260814/20260814-105746_fora30-constel-durable-state.md
 #
 # constel/durable.rye persists the exact triple Raft's Figure 2 requires on stable storage — (term, voted_for, TermedLog) — into a
 # self-describing, Sha256-sealed byte image, read verify-before-trust on load (FORA3's discipline). `record_vote` is the vote-record

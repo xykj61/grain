@@ -5,7 +5,7 @@
 //! again, into any master, while every other slot keeps its own held audio untouched.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES30.
-//! Design read: active-designing/20260814-144031_fill-ales30-lotus-rack.md
+//! Design read: active-designing/date/20260814/20260814-144031_fill-ales30-lotus-rack.md
 //! Stands on: lotus/clipboard.rye (ALES25) — the single held span (copy_to / cut_to / paste), one per slot, reused WHOLE over its
 //! public API; lotus/selection.rye (ALES23) — the validated Selection a slot is filled from; lotus/pan.rye (ALES10) — the StereoClip.
 //!

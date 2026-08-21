@@ -1,7 +1,7 @@
 # tools/ales_segment_witness.rish — the voice-activity segmenter: ALES94's classifier read across a whole clip, frame by frame, coalesced into runs (ALES95).
 #
 # Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES95.
-# Design read: active-designing/20260814-231217_fill-ales95-lotus-voice-activity-segmenter.md
+# Design read: active-designing/date/20260814/20260814-231217_fill-ales95-lotus-voice-activity-segmenter.md
 # Stands on: lotus/voiced.rye (ALES94 — the per-frame voiced/unvoiced/silent classifier), the band read through lotus/schmitt.rye's precheck (ALES92), the floor
 # ceiling from lotus/meter.rye (ALES13), over lotus/timeline.rye's Clip (ALES2). ALES94 answered the oldest question in speech processing over ONE span; its own
 # scope note named this rung — a real voice-activity detector adds hysteresis over TIME. A classifier reads one window; a segmenter reads a whole clip as a

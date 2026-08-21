@@ -20,4 +20,4 @@
 - Treating it as a path to absorb River (GPL) code  
 - Replacing our Glow/Rye Frame → SHM path with a Zig-only GUI stack
 
-Surface Season p4 ledger: `counsel/20260728-195228_surface-season-p4-river-zig-wayland-study-ledger.md`
+Surface Season p4 ledger: `counsel/date/20260728/20260728-195228_surface-season-p4-river-zig-wayland-study-ledger.md`

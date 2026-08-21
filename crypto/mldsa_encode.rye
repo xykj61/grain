@@ -7,8 +7,8 @@
 //! — the same shape, a different lossy map, because ML-DSA hides a signature's low bits behind a hint rather than truncating a ciphertext.
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
-//! Design read: active-designing/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — rung 2 of the ML-DSA ladder. Rye-first spine:
-//! active-designing/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+//! Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md — rung 2 of the ML-DSA ladder. Rye-first spine:
+//! active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
 //! Kin: crypto/mldsa_ring.rye (the base ring this composes on, GREEN) · crypto/mlkem_encode.rye (the KEM-side serialization sibling) ·
 //! crypto/shake.rye (the XOF the next sampling rung will drive). The parity TARGET is Zig's std.crypto ml_dsa and the FIPS 204 known-answers,
 //! studied clean-room — never a copied line (.claude/rules/gratitude-licenses.md).

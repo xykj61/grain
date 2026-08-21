@@ -14,7 +14,7 @@
 //! channel is the honest weighted average of its own early and its own late, so the image the preset held is held through the blend as well.
 //!
 //! Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES207.
-//! Design read: active-designing/20260815-114348_fill-ales207-lotus-stereo-reverb-early-late.md
+//! Design read: active-designing/date/20260815/20260815-114348_fill-ales207-lotus-stereo-reverb-early-late.md
 //! Stands on: lotus/reverb_early_late.rye (ALES206) — the mono early/late balance this mirrors per ear, its published early banks reused whole;
 //! lotus/multitap_time.rye (ALES69) — the timed multi-tap voicing the early reflections, run per channel on the copy, its MultitapTimeError
 //! forwarded whole; lotus/stereo_reverb_preset.rye (ALES191) — the named-room stereo wet, run over the master unchanged, its StereoReverbPresetError

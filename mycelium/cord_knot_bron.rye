@@ -1,7 +1,7 @@
 //! mycelium/cord_knot_bron.rye — the Knot travels as a `format cord-knot-v1` record.
 //!
 //! Season D (Kresfa & Mycelium) · Mycelium consensus · checkpointing · rung r2 — the Knot travels.
-//! Design read: active-designing/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
+//! Design read: active-designing/date/20260813/20260813-050903_mycelium-cord-knot-checkpoint-exploration.md
 //!
 //! r1 sealed a committed Cord to a Knot and proved a continuation folds identical
 //! to the whole history. A checkpoint a node cannot hand to another node is only a

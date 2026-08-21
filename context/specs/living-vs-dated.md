@@ -7,7 +7,7 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Living
 **Voice:** Kyri
-**Ground:** one-clock naming [`20260627-102012_one-clock-naming-law.md`](20260627-102012_one-clock-naming-law.md) · TAME root §4 [`../TAME_GUIDANCE.md`](../TAME_GUIDANCE.md) · RTAC [`../../work-in-progress/ready-to-ask-claude.md`](../../work-in-progress/ready-to-ask-claude.md) · doorway finding [`../../counsel/20260802-182500_e236-the-guard-is-a-doorway.md`](../../counsel/20260802-182500_e236-the-guard-is-a-doorway.md)
+**Ground:** one-clock naming [`20260627-102012_one-clock-naming-law.md`](20260627-102012_one-clock-naming-law.md) · TAME root §4 [`../TAME_GUIDANCE.md`](../TAME_GUIDANCE.md) · RTAC [`../../work-in-progress/ready-to-ask-claude.md`](../../work-in-progress/ready-to-ask-claude.md) · doorway finding [`../../counsel/date/20260802/20260802-182500_e236-the-guard-is-a-doorway.md`](../../counsel/date/20260802/20260802-182500_e236-the-guard-is-a-doorway.md)
 
 ---
 
@@ -79,7 +79,7 @@ Plain spoken names (`README.md`, `ROADMAP.md`, `ready-to-ask-claude.md`, `seam-s
 | Path | Role |
 |------|------|
 | `active-designing/seam-season-hammock.md` | Living twin — edit here (Tier 3) |
-| `active-designing/20260712-052806_seam-season-hammock.md` | Dated original — amendable until superseded; freeze pointer still blessed |
+| `active-designing/date/20260712/20260712-052806_seam-season-hammock.md` | Dated original — amendable until superseded; freeze pointer still blessed |
 
 ---
 

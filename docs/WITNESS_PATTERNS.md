@@ -5,7 +5,7 @@
 **Ceiling:** ≤120 lines
 **Last updated:** 2026-07-12
 **Fate:** The day this page starts mirroring [`context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) or [`external-research/TAME_GUIDANCE.md`](../external-research/TAME_GUIDANCE.md), it folds in as a supplement and **deletes itself** (blurman guard).
-**Compresses:** [`20260712-221600_docs-compression-layer-design.md`](../active-designing/20260712-221600_docs-compression-layer-design.md) · witness headers across `tools/`
+**Compresses:** [`20260712-221600_docs-compression-layer-design.md`](../active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md) · witness headers across `tools/`
 
 ---
 
@@ -31,7 +31,7 @@ These are **named habits** in our witness corpus — pointers and examples only.
 | G1 crossing spike | `tools/proven_seat_g1_crossing_probe.rish` |
 | Season closed (exit bron absent) | `tools/pond_exit_bron_master_seal.sh --season-closed` |
 
-**Law:** landing probes opens no season. Season opens only on a named word against a card signed whole. Raw: [`212412`](../active-designing/20260712-212412_pond-scorecard-claude-second-walk.md).
+**Law:** landing probes opens no season. Season opens only on a named word against a card signed whole. Raw: [`212412`](../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md).
 
 ---
 
@@ -45,7 +45,7 @@ These are **named habits** in our witness corpus — pointers and examples only.
 | Red-avoid scan | same witness assert 2 |
 | Fixture freshness | same witness assert 3 |
 
-Pre-open pin note: [`214900`](../active-designing/20260712-214900_signed-kumara-monocypher-pin.md) (guest/fixture started HOLD; GREEN after open).
+Pre-open pin note: [`214900`](../active-designing/date/20260712/20260712-214900_signed-kumara-monocypher-pin.md) (guest/fixture started HOLD; GREEN after open).
 
 **Customs HOLD** (different sense — policy verdict, not witness staging): `tools/pond_customs.rish` expects `HOLD ok` beside ADMIT and REFUSE — Tilak mark at receipt.
 
