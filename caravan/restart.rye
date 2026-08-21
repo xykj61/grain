@@ -59,7 +59,7 @@ const exercise = @import("exercise.rye");
 const carry = @import("carry.rye");
 const notify = @import("notify.rye");
 const roundtrip = @import("roundtrip.rye");
-const serve = @import("serve.rye");
+pub const serve = @import("serve.rye");
 const se = @import("supervisor_exit.rye");
 
 const caravan_restart_version = "20260819.144641";

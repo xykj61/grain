@@ -2185,6 +2185,41 @@ A naive count of tracked lines reads 366,543 -> 365,063, a fall of 1,480, and th
 
 The choir stands **105 GREEN**, TAME bans clean, width-check clean.
 
+## Fold T -- `graft_promised_reach`, and the fold that had to widen a family whole
+
+The printed queue named `graft_promised_reach` at **forty-two rungs by forty-three lines, 1,763 carried**, and hashing every body by that name found exactly **forty-two** -- one text, no absentee, no tier-owner standing apart. Three consecutive laps had each turned up a rung the queue's line count could not see, and this lap turned up none. That is the same discipline reporting a clean family rather than a discipline that quietly stopped paying: the hash runs whether or not it finds anything.
+
+`graft_promised_reach` is the body that takes a promise off the wire and turns it into reach a dependent actually holds. A promise is a number and nothing more; the reach itself arrives as words the dependent must read, name, hold, and then stand up against its own store before any of it counts. So the body waits inside a bound rather than forever, reads only what has actually been given, grants only what it does not already hold, and proves each arc it took stands at the count the task names. A word that cannot be read back into a capability ends the graft by name rather than carrying quietly less than it claims.
+
+It is also the body that the arc's second-largest fold already calls. `stand_taking_and_returning_reach` lifted into the harness at fold L and reaches `rung.graft_promised_reach` on its sixth line; this lap the callee joined the caller there.
+
+**The fold cost 285 widenings, and the reason is the whole lesson of the lap.** Six symbols needed widening -- `read_count`, `read_words`, `word_at`, `already_holds`, and the two imports `queue_store` and `serve`. Four of those six are fold families in their own right, standing in **forty-five** rungs apiece where this body stands in forty-two. The carry meter reads a body by its exact text, so widening the forty-two and leaving three private would have split each of those families in two, and handed a later fold a family it could no longer lift whole.
+
+| Symbol | Stands in | Widened in | Why |
+|---|---|---|---|
+| `word_at` | 45 rungs, one text | **45** | a whole family, kept whole |
+| `read_count` | 45 rungs, two texts | **45** | both sub-families kept whole |
+| `read_words` | 45 rungs, two texts | **45** | the same shape |
+| `already_holds` | 45 rungs, two texts | **45** | the same shape |
+| `queue_store` | 47 rungs | **47** | an import, carrying no family |
+| `serve` | 58 rungs | **58** | an import, carrying no family |
+
+**A fold pays its successors, and it pays them best by never handing them a split.** Fold P found five of five symbols already public and cost nothing at all, because fold O had widened exactly those five one lap earlier. This lap is that ledger read from the other side: the cheapest thing fold T can do for the folds after it is to widen past its own family's edge, where the symbol's family is wider than the body's.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding the body | 42 | **0**, each keeping an eleven-line delegate |
+| Lines the body carried | 1,763 | **451** -- the delegate is itself a copy |
+| Widenings the fold cost | -- | **285** across six symbols |
+| The ladder's whole carry | 125,932 | **124,620** |
+| Carry ceiling | 126,000 | **124,700** |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+**Both arithmetics close with no remainder.** The family gave back 1,763 -- forty-one copies of forty-three lines, the forty-second being the distinct text itself -- and the new eleven-line delegate family carries 451 across those same forty-one copies, so the carry falls 1,312, which is what the meter measured. On disk the closure holds independently: forty-two rungs each shed thirty-two lines for 1,344, `ladder_checks.rye` took seventy-four, and **1,270** is the net fall over the real rung files. A naive count of tracked lines reads 1,102, and the 168-line gap keeps the name fold S gave it -- `caravan/parse_int.rye` and `caravan/tally_copy.rye` are tracked symlinks whose target text `wc` follows and `git show` does not.
+
+The choir stands **105 GREEN**, TAME bans clean, width-check clean.
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.
