@@ -43,7 +43,7 @@
 #   remembered, so the next fold is chosen by measurement rather than by which
 #   family somebody happened to look at.
 #
-# CARAVAN_CARRY_CEILING (default 116600): how many carried lines the ladder may
+# CARAVAN_CARRY_CEILING (default 114200): how many carried lines the ladder may
 # hold. The scan prints what stands today rather than reciting it here, since a
 # number written into a comment drifts the moment a fold lands (REDS %110). That number is far larger than any the three named meters report, and
 # naming it plainly is the whole point of this scan -- the ladder's real carry
@@ -104,7 +104,7 @@
 # PASS and FAIL fixtures prove both paths without touching the tree.
 set -eu
 
-CEILING=${CARAVAN_CARRY_CEILING:-116600}
+CEILING=${CARAVAN_CARRY_CEILING:-114200}
 TOP=${CARAVAN_CARRY_TOP:-12}
 DIR=${CARAVAN_LADDER_DIR:-caravan}
 

@@ -2385,6 +2385,34 @@ On disk the thirty rung files and the harness together shed **1,701 lines for 14
 **What this fold adds to the reading of a whole family.** Fold X met the first family with no fossil record and drew the rule from it: a body that arrived after the vocabulary beneath it had settled has no shallower version to date it out of its family. `stand_the_mark` says the same thing from the other side. It exists only in the reposing tier and above -- `heed`, `endure`, `appeal`, and `relent` carry no body by that name -- and the hash found its whole family at a glance, with the tier owner standing apart by exactly the difference owning a tier makes. **A rule read once is a reading; a rule that predicts the next lap is a rule.** This fold is that second reading, and it came in on the discipline rather than on a surprise.
 
 
+## Fold Z -- the reap cluster, and the split that was only a word
+
+The queue named **thirty-seven rungs by forty-four lines, 1,584 carried**, and hashing every `reap_oldest` on the ladder found **forty**. Three of them -- `appraise.rye`, `bear.rye`, and `mend.rye` -- held the body byte for byte and differed by the single word `pub`. That is the **third kind of absentee**, and it is the gentlest one the arc has met: no shallower ancestor, no tier owner reaching its own report directly, simply a family that a meter keyed on text read as two because one word of visibility stood between them.
+
+Then the pub-ness audit turned the lap into something larger. `reap_oldest` reaches two private helpers, `reclaim_one` and `abandon_one`, so the fold could not happen without widening them -- and hashing *those* found each standing byte-identical in **the same forty rungs**, over the same three elder outsiders, `reclaim.rye`, `reckon.rye`, and `abandon.rye`. One body, two helpers, one cohort, one shared fossil record. **The widening a fold needs names the next fold**, because a body and the helpers it reaches enter the ladder together and settle together; the reach graph *is* the queue, read one step ahead of the meter.
+
+So this lap lifted the cluster whole rather than the family alone. `reap_oldest` waits on the eldest dependent, takes back what it was conferred, answers for the work that conferral never bought, and closes the table over its slot. `reclaim_one` is the smallest of the three and the one the other two are built over. `abandon_one` names lost work only where there is lost work to name, writes it where an operator would read it, and reads it straight back off the wire before believing it. An heir found at home refuses the whole reaping rather than reporting around it, since a dependent whose children outlive it was never reaped at all.
+
+**The fold cost eighty-three widenings and split nothing.** Every symbol the three bodies reach -- `Table`, `Answer`, `Report`, `RunError`, `NoteError`, `max_queue_len`, `max_in_flight`, `inherited_by`, `abandoning_of`, `run_of`, `read_count`, `reclaim_refusal`, `reclaim_notes`, `abandon_refusal`, `abandoned_reach`, `abandon_note`, and `abandoned_by` -- already stood public in all forty, interest paid by the folds before this one. Only the two helpers needed widening, at forty each, with three `reap_oldest` declarations joining them; and since each helper's family is exactly this cohort, fold T's rule had nothing left to protect.
+
+| Row | Before | After |
+|---|---|---|
+| Rungs holding `reap_oldest` | 40 | **0**, each keeping an eight-line delegate |
+| Rungs holding `abandon_one` | 40 | **0**, each keeping a nine-line delegate |
+| Rungs holding `reclaim_one` | 40 | **0**, each keeping an eight-line delegate |
+| Lines the cluster carried | 3,310 | **975** -- the delegates are themselves copies |
+| Widenings the fold cost | -- | **83**, no accessor needed |
+| The ladder's whole carry | 116,524 | **114,189** |
+| Carry ceiling | 116,600 | **114,200** |
+| Carrying families | 707 | **706** -- four families in, three out |
+| Byte-identical check carry, beside it | 47 | **47**, unmoved |
+| Orchestration spine carry, beside it | 0 | **0**, unmoved |
+
+**The arithmetic closes with no remainder.** Four families went in: `reap_oldest` at thirty-seven copies of forty-four (1,584) and at three more (88), `abandon_one` at thirty-nine copies of twenty-six (1,014), `reclaim_one` at thirty-nine copies of sixteen (624) -- **3,310** together. Three families came out, one per delegate, at thirty-nine copies of eight, nine, and eight -- **975**. The fall is **2,335**, exactly what the meter measured. Bodies climb 18,071 to 18,074 and distinct texts 7,870 to 7,872: three harness bodies and three delegate texts born, four old texts retired. On disk the forty rung files, the harness, and the meter shed **2,653 lines for 335 added** -- a net of **2,318** off the tracked tree.
+
+**Why the family count fell for the first time in this arc.** Every fold before it traded one carrying family for another and left the count unmoved. This one traded four for three, because the visibility split was healed by the same act that lifted the body: forty delegates, all public, all one text. A meter that counts what it can see was seeing a difference the ladder never had, and the fold gave it back the truth rather than an exception. **The clearest way to fix a measurement is to remove the thing that made it wrong.**
+
+
 ## Held
 
 Extended-run stability (dozens of supervised cycles, watched for resource growth) waits for a genuine indefinite consumer to make the longer run mean something -- see [`counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md`](../counsel/20260707-195912_claude-counsel-tools-census-and-sh-rish-boundary.md) for the reasoning. `system.rye` reads flat Bron, the same notation Brix descriptors use, and it declares Caravan's own three rings alone -- composing a build remains Brix's work, and Pond's policy layer stays its own. Caravan supervises processes, and stops exactly there.

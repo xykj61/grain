@@ -5302,21 +5302,13 @@ pub fn revoke_one(
 /// into the wire the two of them spoke over, once the dependent that listened
 /// is gone. `slot` names the reaped dependent, whose row still stands in the
 /// table until the reaping closes over it.
-fn reclaim_one(
+pub fn reclaim_one(
     io: std.Io,
     table: *Table,
     slot: u32,
     report_out: *Report,
 ) (RunError || NoteError)!void {
-    // invariant: a reclamation always names a row the table still holds
-    assert(slot < max_in_flight);
-    // invariant: a reclamation never takes back more than one line may name
-    assert(table.granted[slot] <= cycle.max_hops);
-    const domain = table.live[slot].domain;
-    const already = (read_count(io, domain, ".given") catch 0) == 0;
-    if (reclaim_refusal(table.granted[slot], false, already)) |why| return why;
-    try reclaim_notes(io, domain);
-    abandoning_of(report_out).inner.reclaimed += table.granted[slot];
+    return ladder_checks.reclaim_one(@This(), io, table, slot, report_out);
 }
 
 /// Hands one phase, and the reach it needs, to a dependent already standing --
@@ -5397,31 +5389,14 @@ pub fn fill_table(
 /// written after it rather than before -- otherwise the very act that closes
 /// the conferral would erase the only evidence of what it cost. The answer is
 /// read back from the wire before the report believes it.
-fn abandon_one(
+pub fn abandon_one(
     io: std.Io,
     table: *Table,
     slot: u32,
     came_home: bool,
     report_out: *Report,
 ) (RunError || NoteError)!void {
-    // invariant: an abandonment always names a row the table still holds
-    assert(slot < max_in_flight);
-    // invariant: an abandonment never records more than one line may name
-    assert(table.granted[slot] <= cycle.max_hops);
-    const domain = table.live[slot].domain;
-    if (abandon_refusal(table.granted[slot], false, came_home)) |why| return why;
-    const left = abandoned_reach(table.granted[slot], came_home, .answered);
-    // invariant: an abandonment that reaches this point always names lost work
-    assert(left >= 1);
-    try abandon_note(io, domain, left);
-    if (abandoned_by(io, domain) != left) return error.AbandonUncounted;
-    abandoning_of(report_out).abandoned += left;
-    // The phases this dependent took up and never served, gathered into the
-    // plan's own loss while the slot that held them is still standing. After
-    // the table closes over this row the mask moves with the shuffle, and once
-    // the reaping is done it is gone -- so the plan learns where it fell short
-    // at the one moment the answer is still in reach.
-    table.lost_mask |= table.absorbed_mask[slot];
+    return ladder_checks.abandon_one(@This(), io, table, slot, came_home, report_out);
 }
 
 /// Waits on the eldest dependent, takes back what it was conferred, answers for
@@ -5432,43 +5407,7 @@ pub fn reap_oldest(
     answer: Answer,
     report_out: *Report,
 ) (RunError || NoteError || cohort.RunError)!void {
-    // invariant: a reaping always has a dependent to wait on
-    assert(table.in_flight >= 1);
-    // invariant: a reaping never overruns the record it is kept in
-    assert(table.finished < max_queue_len);
-    const code = try cohort.reap_one(io, &table.live[0]);
-    const found = inherited_by(io, table.live[0].domain);
-    abandoning_of(report_out).inner.inherited_at_home += found;
-    if (found != 0) return error.ReclaimInherited;
-    const came_home = code == carry.Outcome.carried_ok;
-    if (table.granted[0] >= 1) try reclaim_one(io, table, 0, report_out);
-    if (answer == .answered and table.granted[0] >= 1 and !came_home) {
-        try abandon_one(io, table, 0, came_home, report_out);
-    }
-    table.done[table.finished] = .{
-        .domain = table.live[0].domain,
-        .verb = table.live[0].verb,
-        .count = table.live[0].count,
-        .expect = table.live[0].expect,
-        .code = code,
-    };
-    table.finished += 1;
-    table.in_flight -= 1;
-    run_of(report_out).reaped += 1;
-    run_of(report_out).turns += 1;
-
-    var s: u32 = 0;
-    while (s < table.in_flight) : (s += 1) {
-        table.live[s] = table.live[s + 1];
-        table.lines[s] = table.lines[s + 1];
-        table.reserves[s] = table.reserves[s + 1];
-        table.taken[s] = table.taken[s + 1];
-        table.served[s] = table.served[s + 1];
-        table.granted[s] = table.granted[s + 1];
-        table.absorbed_mask[s] = table.absorbed_mask[s + 1];
-    }
-    // invariant: the table closed over the reaped dependent, none lost
-    assert(s == table.in_flight);
+    return ladder_checks.reap_oldest(@This(), io, table, answer, report_out);
 }
 
 /// Seats everything a run stands on, and answers with the table it enforces.
