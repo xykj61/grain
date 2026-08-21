@@ -466,7 +466,7 @@ fn dwell_of(report_out: *Report) *dwelling_rung.Report {
 }
 
 /// The relent rung's tally, one tier further down.
-fn relent_of(report_out: *Report) *relent_rung.Report {
+pub fn relent_of(report_out: *Report) *relent_rung.Report {
     return &report_out.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner.inner;
 }
 
@@ -6686,75 +6686,7 @@ pub fn date_the_standing(io: std.Io, dwell: Dwell, report_out: *Report) (RunErro
 /// withdrawn quarrel that went on standing over the plan anyway is the number
 /// this rung moves.
 fn release_the_standing(io: std.Io, relent: Relent, report_out: *Report) (RunError || NoteError)!void {
-    const stood_plea = position_standing(io) orelse {
-        // invariant: a run with nothing standing lets no position go
-        assert(relent_of(report_out).withdrawn == 0);
-        // invariant: a run with nothing standing leaves none uncleared
-        assert(relent_of(report_out).uncleared == 0);
-        return;
-    };
-    const stood: u32 = 1;
-    if (!endures(stood_plea)) {
-        // A byte no endurance of this arc would ever have written is no
-        // position to take down, and the wire says so by leaving it exactly as
-        // it reads.
-        //
-        // invariant: a quarrel nobody pressed is never withdrawn on their behalf
-        assert(relent_of(report_out).withdrawn == 0);
-        relent_of(report_out).standing = stood;
-        return;
-    }
-    var address_buf: [max_address_len]u8 = undefined;
-    const address = address_published(io, &address_buf) orelse {
-        // A wire naming nobody's box has no hand to read, and a position whose
-        // holder cannot be reached stands rightly until they can be.
-        //
-        // invariant: a run that can reach nobody withdraws nothing
-        assert(relent_of(report_out).withdrawn == 0);
-        relent_of(report_out).standing = stood;
-        return;
-    };
-    const hand = pressed_by(io, address);
-
-    // The measurement this rung moves, weighed against the hand the reader's own
-    // box actually carries rather than against what any plan asked for, so a
-    // quarrel left standing past its own withdrawal is counted rather than
-    // refused.
-    relent_of(report_out).uncleared = withdrawn_still_standing(stood, hand, relent);
-    const cleared_count = withdrawn_in(stood, hand, relent);
-    const left_count = standing_in(stood, hand, relent);
-    if (relent == .held) {
-        // invariant: a holding run clears nothing, however plainly its holder moved on
-        assert(cleared_count == 0);
-        relent_of(report_out).standing = left_count;
-        return;
-    }
-    if (!withdraws(hand)) {
-        // A reader still pressing, or one who has written nothing at all, has
-        // withdrawn nothing -- and the wire says so by leaving the note standing.
-        //
-        // invariant: silence is never read as a withdrawal
-        assert(cleared_count == 0);
-        relent_of(report_out).standing = left_count;
-        return;
-    }
-    // The supply, refused by name while the hand it read is still in view: a run
-    // takes a position down only where its holder actually let it go.
-    if (unwithdrawn_clearing(if (withdraws(hand)) 1 else 0, cleared_count)) |why| return why;
-    if (relent_refusal(stood, cleared_count, left_count)) |why| return why;
-    // invariant: a releasing run lets go of the one position it inherited
-    assert(cleared_count == 1);
-    release_standing(io);
-    // The wire before the memory, once more: the note every run after this one
-    // opens is read back, and only then does the report believe it came down.
-    const after = position_standing(io);
-    // The record half of this rung: a note still reading a quarrel after its
-    // holder let it go hands every future run an objection nobody holds.
-    if (!note_cleared(after)) return error.RelentMisrecorded;
-    relent_of(report_out).withdrawn = cleared_count;
-    relent_of(report_out).standing = left_count;
-    // invariant: a releasing run leaves no withdrawn quarrel standing
-    assert(relent_of(report_out).uncleared == 0);
+    return ladder_checks.release_the_standing(@This(), io, relent, report_out);
 }
 
 /// Weighs the quarrel this run inherited into the word an operator will read.
