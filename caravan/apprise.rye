@@ -5314,59 +5314,7 @@ pub fn book_the_debt(io: std.Io, owe: Owe, report_out: *Report) (RunError || Not
 /// an ending this rung reaches by publishing nothing. The number it moves is the
 /// case carried out that nobody is ever heard back on.
 pub fn read_the_finding(io: std.Io, deem: Deem, report_out: *Report) (RunError || NoteError)!void {
-    const sent_count = refer_of(report_out).referred;
-    if (sent_count == 0) {
-        // invariant: a run that carried no case reads no finding
-        assert(deem_of(report_out).answered == 0);
-        // invariant: a run that carried no case leaves none unanswered
-        assert(deem_of(report_out).unanswered == 0);
-        return;
-    }
-
-    // The measurement this rung moves, weighed against the case actually carried
-    // rather than against anything the plan asked for, so a referral nobody
-    // answers is counted rather than refused.
-    deem_of(report_out).unanswered = unanswered_referrals(sent_count, deem);
-    const heard_count = answered_in(sent_count, deem);
-    const waiting_count = awaiting_in(sent_count, deem);
-    if (deem == .unread) {
-        // invariant: an unread run publishes no finding, however long one stood
-        assert(heard_count == 0);
-        deem_of(report_out).awaited_in = waiting_count;
-        return;
-    }
-
-    // The forum comes off the wire once more, since the desk a finding is read
-    // from is the desk the case went to and never one a run picked afterward.
-    var forum_buf: [max_address_len]u8 = @splat(0);
-    const named = forum_published(io, &forum_buf) orelse return error.DeemSilent;
-    const settled = settlement_published(io) orelse return error.DeemUnreferred;
-    const age = dwell_published(io) orelse 0;
-    // The case is rebuilt from the same three facts the referring copied, so a
-    // finding is weighed against the argument that actually travelled. A run
-    // that carried nothing out has no case to build, and says so with a null
-    // rather than by asserting its way into one.
-    const volume = stands_loud(age);
-    const case: ?[max_referral_bytes]u8 = if (sent_count >= 1 and volume == .loud)
-        referral_bytes(settled, volume, age)
-    else
-        null;
-    const seen = finding_written(io, named);
-    const spoken = seen != null;
-    const matched = if (case) |sent| finding_answers(seen, sent) else false;
-    if (deem_refusal(sent_count, heard_count, waiting_count, spoken, matched)) |why| return why;
-    const found = finding_in(seen) orelse return error.DeemSilent;
-
-    // invariant: a reading run publishes the one finding its own case earned
-    assert(heard_count == 1);
-    try deem_note(io, found);
-    // The wire before the memory, once more: the note an operator opens is read
-    // back, and only then does the report believe the finding arrived.
-    if (!deem_holds(deem_published(io), found)) return error.DeemMisrecorded;
-    deem_of(report_out).answered = heard_count;
-    deem_of(report_out).awaited_in = waiting_count;
-    // invariant: a reading run leaves no carried case unanswered
-    assert(deem_of(report_out).unanswered == 0);
+    return ladder_checks.read_the_finding(@This(), io, deem, report_out);
 }
 
 /// Says, on the record, what this plan makes of the finding against it.
