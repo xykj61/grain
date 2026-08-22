@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20260821.230319
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The room written for the long return was the one room every meter walked past
+prompt Take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, deep-read council-rota row N mod 5, send each finished increment.
+think Standfast opened the lap. Every living REDS row reads CLOSED -- %81, %83's booked prevention landed, %84, %98, %122, %123 -- so the line was clear and constructive work could begin.
+think The running thread was unambiguous. The three newest recommends all point at the Caravan lift arc, with main at 64 rungs by 17 lines promoted to crux twice over: it leads the ceiling pressure with five lines of headroom and sits third on the carry queue.
+think The rota came first, though, and that ordering is the whole finding. The prior lap read row 4, so this lap reads row 0 -- Jupiter and aether, why the work exists: follow-our-compass, the Lindy effect, the grain and the crossing.
+think Reading follow-our-compass end to end rather than skimming it, step 2 of the compass rose named active-designing/20260702-184312_the-grain-and-the-crossing.md -- and that file graduated to foundations/ yesterday afternoon in b4bc979294. The tree's own navigation hub pointed at a path that no longer existed.
+think Measurement before restrategizing. Six essays graduated; the six old paths are referenced by 116 files. Splitting living from dated by the tree's own rule found the trap: every foundations file is stamp-named, so the basename test reads the entire living why-room as testimony.
+think A full census of the room found the breakage was wider than the graduation. Yesterday's five-room fold to date/YYYYMMDD/ broke living foundation links too -- 38 broken Markdown links across 24 files, 15 distinct targets.
+think Checked the meters before claiming they missed it. dated_path_witness is GREEN with refs_broken=9889 and refs_lost=192 at its ceiling, because a stale reference the resolver recovers is RECOVERABLE by design. living_docs_lint prints a broken-link duty over a roster that never walks foundations/. Both are correct at their own jobs.
+think Each of the 15 targets resolved to exactly one home by find, once the seed/ projection is set aside as the census already sets it aside. Repointed by measurement, never by guess.
+think One repoint was a stale label rather than a stale path -- the compass rose's step 2 read active-designing/... as its visible text while pointing correctly at foundations/. A citation that names the wrong room teaches the wrong room even when the click lands.
+think Wrote the scan, then caught a real defect in my own first cut: the file-count bound printed its refusal from inside a loop whose stdout is redirected to a temp file, so the refusal would have landed in the temp file and never reached a reader. Moved the bound check ahead of the walk. An unfireable refusal is worse than an absent one, and an invisible one is worse still.
+think Proved the refusal twice. Once on a throwaway room whose answer is known by construction -- a sibling, an anchored sibling, a folded target, and one moved-away target, with an http link and a bare anchor that must never be counted. Once on the real room, by planting a link in foundations/README.md, watching the scan name that file and refuse, then restoring it byte-identical.
+obs The root is not carelessness in yesterday's fold; it is that a classification rule inherits the blind spot of the thing it classifies by. Basename-as-testimony is a good rule that silently exempts an entire living room, because a room's naming convention and its liveness are independent facts and only one of them is in the filename.
+obs The sharper half: the resolver's census answers an agent's question, never a reader's click. A reference an agent can recover is a reference a reader still cannot follow, so the two want two meters. dated_path_witness stays exactly as it is; this guard stands beside it.
+obs The rota earned its place this lap. A rota read as reading found what four green meters could not, and the document that found it was the one about why the work exists rather than the one about how to check it.
+obs Chose the red over the named crux deliberately. Standfast orders a red ahead of constructive work, and Lindy-first agrees independently -- foundations/ is the most Lindy-exposed room this tree owns after the front door, so decay there costs more than a carry lift gains. main stays crux and stays named.
+loom witness=foundations_link_witness files_read=73 links_read=332 links_broken=0 wall_s=1
+loom scan=foundations_link_control files_read=3 links_read=4 links_broken=1 refused=yes
+loom census=foundations_links_before broken=38 citing_files=24 distinct_targets=15
+file tools/fixtures/foundations_link_scan.sh the reader's click asked mechanically -- every relative Markdown link in the why-room resolves from its citing file's directory, anchor trimmed, bounded at 512 files and 8192 links
+file tools/fixtures/foundations_link_control.sh the guard proven both ways on a room whose answer is known by construction -- a moved target refused and named, a folded and an anchored target accepted, http and bare-anchor exemptions held
+file tools/foundations_link_witness.rish the witness, naming what is proven and what is not -- the clickable surface, never the anchor's heading nor an http link's answer
+file crux/REDS.md REDS %124 booked and closed with all three fields -- what went wrong, what caught it, what it taught
+file crux/REMEMBER.md Now replaced rather than accreted, the prior Now pointed at its log, and the guard roster reads as a floor carrying its own stamps rather than a tally repeated from memory
+file foundations/20260706-185112_follow-our-compass.md the compass rose's step 2 repointed and its label corrected -- the hub names the room it actually points at
+recommend keep-going the crux is measured and waiting: main at 64 rungs by 17 lines carries the Caravan lift arc's ceiling argument with five lines of headroom left, so lifting it pays the ladder and the ceiling in one move. Beside it the machine half of the address space stays owed and named -- page-table entry bytes, an ASID from seL4_ASIDPoolBits, the retype itself -- and the libsel4 generator gate (jinja2, ply) is still Keaton's word, still blocking rungs 3 and 4.

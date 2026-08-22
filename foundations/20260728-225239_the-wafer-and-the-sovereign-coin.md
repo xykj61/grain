@@ -42,7 +42,7 @@ The wafer is the shared compute beneath the open model; the weave routes this fa
 
 - **The front door** — the root [`../README.md`](../README.md) names RISC-V, the open hardware floor this horizon extends to wafer scale.
 - **The room** — indexed in [`foundations/README.md`](README.md), in the far-horizon stack.
-- **The hubs** — cut by the *bounded everything* and *held in common* strands in [The Grain and the Crossing](../active-designing/20260702-184312_the-grain-and-the-crossing.md); returned to by [Follow Our Compass](20260706-185112_follow-our-compass.md).
+- **The hubs** — cut by the *bounded everything* and *held in common* strands in [The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md); returned to by [Follow Our Compass](20260706-185112_follow-our-compass.md).
 - **Economic kin** — the coin it names settles through [money that stays close to home](20260629-014512_money-that-stays-close-to-home.md), custody-gated per [custody-first](20260724-200912_nothing-to-give-custody-first-principle.md).
 
 ---

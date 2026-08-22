@@ -6,7 +6,7 @@
 **Status:** **living** · house workflow law · Nest accuracy `20260729.125911`  
 **Kind:** foundations · why + going-forward template  
 **Study companion:** [`../external-research/20260729-130535_season-driven-development.md`](../external-research/20260729-130535_season-driven-development.md)  
-**Counsel seat:** [`../counsel/20260729-130535_nona-season-n1-season-driven-development.md`](../counsel/20260729-130535_nona-season-n1-season-driven-development.md)
+**Counsel seat:** [`../counsel/date/20260729/20260729-130535_nona-season-n1-season-driven-development.md`](../counsel/date/20260729/20260729-130535_nona-season-n1-season-driven-development.md)
 
 *Written together by Keaton and Quin.*
 
