@@ -1,0 +1,35 @@
+format session-log-v1
+stamp 20260821.222459
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The portable tier Caravan already grew
+prompt Take the next agent-doable lap Lindy-first crux-first on the Microkernel Target double-seat, Standfast on reds first, rota row per lap, send often.
+think Standfast first. Walked crux/REDS.md for rows with no CLOSED counterpart -- thirteen rows, and every one closed or landed. %83 carries a prevention-LANDED note rather than a closure line, which is the same fact wearing different clothes. No open agent-closable red, so the line was clear for constructive work.
+think Read the running thread from the top three rows of session-logs/README.md. The last lap lifted run_in_forbear and healed thirteen visibility splits; rota row 2, Fire and Mars. So this lap reads row 3, Water and Venus -- Gall's Law, the happy zone and the thin edge, growing a language.
+think The rota row shaped the lap rather than decorating it. Gall says grow the next working thing and let the shape arrive from underneath. The happy zone says put two small checks at every seam. Growing a language says stand on proven ground and wear a thin costume first. A small module beside a proven one, with a witness reading the ground it stands on, is all three at once.
+think Lindy-first crux-first pointed at the Microkernel Target double-seat, ordered ahead of Seasons A-H. Its own next-rungs list has rung 2 as an environment gate -- jinja2 and ply on the pier -- which is Keaton's word, and rungs 3 and 4 wait behind it. Measured the gate rather than assuming it: the deps scan still prints 2 missing. So the crux was a rung the list had not named: refusals.rye read the vocabulary the kernel REFUSES with, and nothing had read the vocabulary it OFFERS.
+think Read seL4's three riscv64 objecttype headers directly. The numbering is one sequence spread across three enums -- the mode enum begins at the portable enum's sentinel, the architecture enum at the mode enum's -- so the three compose with no overlap and no gap. That composition is the load-bearing fact, and it is readable from the headers themselves, so the witness reads it rather than trusting it.
+think Wrote the scan first, and it caught its own bug immediately: each tier is scanned by its own awk process, so the guarded-symbol list was being truncated rather than appended and reported 1 configuration-guarded symbol where three stand. Fixed to append; conditional=3 -- a scheduling context and a reply object under MCS, and a tera page above three page-table levels.
+think Then the accounting corrected me, which is the part of this lap worth keeping. The first draft of objects.rye claimed Caravan OWED untyped memory and the signal. Listing caravan/*.rye found untyped.rye and notify.rye already on disk, both built this month. The claim came from a memory of the tree rather than a reading of it, and it was caught before the module ever compiled.
+think Re-measured against what actually stands: untyped.rye carves memory with a real floor, channels.rye rosters the protection domains and concurrent.rye runs them as real processes, reply.rye reads an ask through four stages, notify.rye rings each declared channel as its own doorbell, capabilities.rye keeps the table. Five held. And the five are EXACTLY the portable tier -- so the four owed are exactly the mode and architecture tiers, every one to an address space nobody has built.
+think That alignment is asserted rather than admired: standing_of asserts (standing == held) == (tier_of(object) == portable), so a future rung that pays the address-space debt or drops a holding must move the assert too.
+obs The finding is Gall's Law with a receipt. Five modules grown one bounded rung at a time, each answering the question the rung before it opened, on hosted ground with no kernel beneath -- and they landed on the architecture-independent core of a formally verified kernel without either side consulting the other. The port stops being a translation and becomes a lowering.
+obs regions.rye is the honest half-answer for the mapping objects: it declares WHICH memory a dependent may touch and how far, which is policy. The mechanism that makes such a declaration true on a kernel -- page sizes chosen, page-table levels assembled -- is what no module has built. One subsystem, named, rather than a diffuse sense of distance.
+obs The carry meter caught the new module the moment it landed: carried lines rose 87,777 to 87,786, exactly nine, because objects.rye's main is byte-identical to refusals.rye's. The ceiling stayed at 87,800 and only ever comes down; the three pinned numbers moved to the measured truth. Three window meters and the spine each needed their module count moved 108 to 109, which is the roster guard doing its job rather than a fault.
+obs The choir sings 106 now. Registering the rung in caravan_suite_witness.rish was done in the same lap it was written, per REDS %81 -- nine crypto rungs once landed GREEN and unheard because none was registered.
+loom witness=caravan_objects_witness objects=9 held=5 owed=4 tiers=3 conditional_guarded=3 red_paths=3
+loom scan=caravan_ladder_carry modules=109 carried_lines=87786 ceiling=87800 families=707 delta_lines=9
+file caravan/objects.rye the nine riscv64 object types in their own numbering, the three tiers, and what stands for each
+file tools/caravan_objects_witness.rish binds symbols, order, both tier anchors, and the guarded count against seL4's own headers; three RED paths on metal
+file tools/fixtures/caravan_object_symbol_scan.sh reads the vocabulary out of three headers in composed order, separating configuration-guarded members
+file tools/fixtures/caravan_object_tier_control.sh plants a tier boundary moved by one in a copy and proves the self-test refuses it
+file tools/caravan_suite_witness.rish registers the new rung, so nothing in the arc goes unheard
+file tools/caravan_ladder_carry_witness.rish carry pins moved to the measured truth; ceiling untouched
+file tools/caravan_ladder_print_witness.rish module count moved 108 to 109
+file tools/caravan_ladder_spine_witness.rish module count moved 108 to 109
+file active-designing/20260821-222402_the-portable-tier-caravan-already-grew.md the finding, worth reading with the code deleted
+file external-research/20260821-043831_the-libsel4-reach-and-the-vocabulary-caravan-inherits.md the next-rungs list records what landed, in the same commit
+file crux/REMEMBER.md one live-edge row for this lap
+recommend keep-going the address-space debt is the next constructive door and the first rung of this arc whose hosted form is genuinely unobvious -- a page table is a machine fact and a hosted supervisor has no address space to build, so it wants a design round before code. The generator gate (jinja2, ply) stays Keaton's word and blocks rungs 3 and 4 behind it.

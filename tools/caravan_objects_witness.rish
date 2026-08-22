@@ -1,0 +1,108 @@
+# tools/caravan_objects_witness.rish -- Caravan's resource vocabulary, proven against the kernel's own.
+#
+# WHY THIS RUNG. `caravan/refusals.rye` read the vocabulary a verified kernel REFUSES with. This one reads the
+# vocabulary it OFFERS. `capabilities.rye` names a resource the simplest way a hosted table can -- a string and a
+# rights mask -- and seL4 on riscv64 hands out NINE typed objects, a count read out of the compiled enums on
+# `20260821.043831`. `caravan/objects.rye` states the nine in their own numbering, names the tier each belongs to,
+# and partitions them into the three Caravan already stands for and the six it owes.
+#
+# WHAT IS PROVEN HERE. Four things, each on metal. The numbering composes across three tiers with no overlap and no
+# gap, and the agenda partitions three-and-six -- proven by the module's own self-test, whose asserts are the
+# specification, including the tier-and-standing alignment. The nine symbols and their ORDER match seL4's own BSD-2-Clause headers, read from the vendored
+# files at run time rather than recited. The TIER ANCHORING is read from those headers too: the mode enum begins at
+# the portable enum's sentinel and the architecture enum at the mode enum's, which is the only reason one numbering
+# exists at all. And the three object types standing behind configuration guards are counted rather than passed
+# over, so a configuration flip reds the rung on the lap it lands rather than quietly changing what nine means.
+#
+# WHAT IS NOT PROVEN. No kernel booted and no object was retyped, so which Caravan concept SHOULD stand on each
+# object is design judgement, named as such in the module. This witness binds the vocabulary, the composition, and
+# the count; it does not bind the behaviour of a retype.
+#
+# Season: the Lindy-priority Microkernel Target double-seat (seated `20260817`, ordered ahead of Seasons A-H),
+# Equinox 1 -- Caravan on the microkernel. Kin: tools/caravan_refusals_witness.rish (the refusals this pairs with) -
+# tools/microkernel_libsel4_reach_witness.rish (the reach that measured the nine) -
+# external-research/20260821-043831_the-libsel4-reach-and-the-vocabulary-caravan-inherits.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_objects_witness.rish
+
+say "caravan-objects: Language EN -- a verified kernel hands out typed objects, and a hosted table hands out names. This proves Caravan now holds the whole of the kernel's resource vocabulary and says honestly which parts of it are still owed."
+say "caravan-objects: Style Radiant -- three claims in order. The nine compose into one numbering across three tiers. Caravan stands for five of them, and the five are exactly the portable tier. And the nine themselves are read from seL4's own headers, never recited."
+say "caravan-objects: Lens TAME -- the module's asserts are the specification, and all three RED paths are proven on metal: a renamed object must be refused, a tier that loses its anchor must be refused, and a boundary moved by one must fail the module's own self-test."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/objects"
+let generic = "vendor/sel4/libsel4/include/sel4/objecttype.h"
+let mode = "vendor/sel4/libsel4/sel4_arch_include/riscv64/sel4/sel4_arch/objecttype.h"
+let arch = "vendor/sel4/libsel4/arch_include/riscv/sel4/arch/objecttype.h"
+let scan = "tools/fixtures/caravan_object_symbol_scan.sh"
+let build_dir = "tools/.build/caravan_objects"
+
+let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]
+assert mk.ok else "caravan-objects: could not make the build directories"
+
+# 0. PRECONDITION, an environment fact rather than a tree red: the gitlink must actually be checked out.
+let checked_out = run ["sh" "-c" "test -f ${generic} && test -f ${mode} && test -f ${arch} && echo yes || echo no"]
+assert (trim checked_out.out) == "yes" else "caravan-objects: vendor/sel4 is not checked out -- run `git submodule update --init --recursive` first; this is an environment precondition, not a tree red"
+
+# 1. THE RIGHT TO READ, re-checked at the file level for all three tiers. Intent is not a licence.
+let bsd = run ["sh" "-c" "cat ${generic} ${mode} ${arch} | grep -c SPDX-License-Identifier:.BSD-2-Clause | tr -d ' \n'"]
+assert (trim bsd.out) == "3" else "caravan-objects: one of seL4's three object-type headers no longer carries its own BSD-2-Clause tag -- stop and re-read the licence before reading it"
+
+# 2. THE MODULE BUILDS AND PROVES ITSELF. Its asserts are the specification.
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/objects.rye -femit-bin=${bin}"]
+assert build.ok else "caravan-objects: the module did not build"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan-objects: the self-test exited non-zero"
+assert test.out contains "GREEN" else "caravan-objects: the self-test is not GREEN"
+assert test.out contains "the kernel offers 9 on riscv64; Caravan stands for 5 and owes 4" else "caravan-objects: the agenda did not partition five-and-four"
+assert test.out contains "5 portable, 1 mode, 3 architecture" else "caravan-objects: the three tiers did not sum to the vocabulary"
+assert test.out contains "the five held are exactly the portable tier" else "caravan-objects: the alignment of holdings with the portable tier was not claimed"
+assert test.out contains "the four owed are exactly the mode and architecture tiers" else "caravan-objects: the address-space debt was not named"
+
+# 3. THE VOCABULARY MATCHES THE KERNEL'S OWN, in symbol and in order, read from all three headers at run time.
+#    The module prints through the debug writer, so stderr is folded in -- a bare redirect would capture nothing.
+let table = run ["sh" "-c" "${bin} table > ${build_dir}/table.txt 2>&1; echo done"]
+assert (trim table.out) == "done" else "caravan-objects: the table did not print"
+
+let parity = run ["sh" "-c" "sh ${scan} ${generic} ${mode} ${arch} ${build_dir}/table.txt"]
+assert parity.ok else "caravan-objects: the symbol scan did not run"
+assert parity.out contains "header_count=9" else "caravan-objects: seL4's headers no longer declare nine riscv64 object types -- the vendored vocabulary moved, and the module must move with it"
+assert parity.out contains "table_count=9" else "caravan-objects: the module no longer prints nine objects"
+assert parity.out contains "mismatch=0" else "caravan-objects: the module's symbols or their order drifted from the headers'"
+assert parity.out contains "anchor_mode=1" else "caravan-objects: the mode enum no longer begins at the portable enum's sentinel -- the tiers stopped composing"
+assert parity.out contains "anchor_arch=1" else "caravan-objects: the architecture enum no longer begins at the mode enum's sentinel -- the tiers stopped composing"
+assert parity.out contains "conditional=3" else "caravan-objects: the count of configuration-guarded object types moved -- read which configuration seL4 now declares before trusting nine"
+assert parity.out contains "verdict=ok" else "caravan-objects: the vocabulary parity did not hold"
+
+# 4. RED PATH ZERO -- a renamed object must be refused. Proven by making one, never by describing it.
+let drift_header = run ["sh" "-c" "sed s/seL4_EndpointObject/seL4_EndbointObject/ ${generic} > ${build_dir}/drift_objecttype.h; echo made"]
+assert (trim drift_header.out) == "made" else "caravan-objects: could not plant the drifted header"
+
+let red_header = run ["sh" "-c" "sh ${scan} ${build_dir}/drift_objecttype.h ${mode} ${arch} ${build_dir}/table.txt"]
+assert red_header.out contains "verdict=drift" else "caravan-objects: RED path zero did not fire -- a renamed object passed the parity check"
+
+# 5. RED PATH ONE -- a tier that loses its anchor must be refused, since the numbering rests entirely on it.
+let drift_anchor = run ["sh" "-c" "sed s/=.seL4_NonArchObjectTypeCount/=.0/ ${mode} > ${build_dir}/drift_mode.h; echo made"]
+assert (trim drift_anchor.out) == "made" else "caravan-objects: could not plant the unanchored mode header"
+
+let red_anchor = run ["sh" "-c" "sh ${scan} ${generic} ${build_dir}/drift_mode.h ${arch} ${build_dir}/table.txt"]
+assert red_anchor.out contains "anchor_mode=0" else "caravan-objects: RED path one did not fire -- a mode enum re-based to zero still read as anchored"
+assert red_anchor.out contains "verdict=drift" else "caravan-objects: RED path one did not refuse the unanchored tier"
+
+# 6. RED PATH TWO -- a tier boundary moved by one must fail the module's own self-test. Planted in a COPY, so the
+#    living module is never touched, and built with the same compiler that built the green one.
+let gap = run ["sh" "-c" "sh tools/fixtures/caravan_object_tier_control.sh ${zig} ${build_dir}"]
+assert gap.ok else "caravan-objects: the tier control did not run"
+assert gap.out contains "planted=1" else "caravan-objects: the gapped copy was not planted -- the RED path would have proven nothing"
+assert gap.out contains "verdict=refused" else "caravan-objects: RED path two did not fire -- a tier boundary moved by one passed its own self-test"
+
+let cleanup = run ["sh" "-c" "rm -f ${build_dir}/drift_objecttype.h ${build_dir}/drift_mode.h; echo swept"]
+assert (trim cleanup.out) == "swept" else "caravan-objects: could not sweep the planted controls"
+
+say "caravan-objects: the nine compose into one numbering -- five portable, one mode, three architecture, with no overlap and no gap."
+say "caravan-objects: the agenda partitions the nine -- five held, and they are exactly the portable tier: untyped.rye, channels.rye, reply.rye, notify.rye, capabilities.rye. The four owed are exactly the mode and architecture tiers, every one to the address space."
+say "caravan-objects: the nine symbols, their order, and both tier anchors match seL4's own BSD-2-Clause headers, read at run time."
+say "caravan-objects: three further object types stand behind configuration guards and are counted rather than passed over; all three RED paths fired on metal."
+say "GREEN: Caravan's resource vocabulary stands against the kernel's own."

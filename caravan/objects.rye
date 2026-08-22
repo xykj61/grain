@@ -1,0 +1,366 @@
+//! Caravan objects -- the resource kinds a verified kernel offers, held beside
+//! the resource Caravan's own supervision names today.
+//!
+//! WHY THIS MODULE EXISTS. `capabilities.rye` names a resource the simplest way
+//! a hosted table can: a **string and a rights mask**. That was whole while the
+//! table answered only to itself. A root task on seL4 hands out **typed
+//! objects**, and on riscv64 there are **nine** of them -- a count read out of
+//! the compiled enums on `20260821.043831`, never recited.
+//!
+//! So this module does one thing, completely: it states the nine in their own
+//! numbering, names the tier each belongs to, says in plain words what each is
+//! for, and names which Caravan module stands for it today or which subsystem
+//! owes one. The reading is policy -- pure Rye, hosted, no kernel beneath it --
+//! and it is asserted rather than described, so the compiler and a witness both
+//! hold it.
+//!
+//! THE FINDING, WHICH THE ACCOUNTING FOUND RATHER THAN SOUGHT. Caravan already
+//! stands for **five** of the nine, and the five are **exactly the portable
+//! tier**: `untyped.rye` carves memory with a real floor, `channels.rye` rosters
+//! the protection domains a run schedules, `reply.rye` reads an ask through four
+//! stages and answers it, `notify.rye` rings a declared channel as its own
+//! doorbell, and `capabilities.rye` keeps the table of who may do what. The
+//! **four** it owes are exactly the mode and architecture tiers -- the mapping
+//! objects that build an address space. A hosted supervision tree, grown one
+//! bounded rung at a time and aimed at nothing in particular, arrived at the
+//! architecture-independent core of a formally verified kernel and stopped
+//! precisely where the architecture begins. That alignment is asserted below as
+//! a single invariant rather than admired in prose.
+//!
+//! THE THREE TIERS, AND WHY THEY COMPOSE. seL4 declares object types in three
+//! enums: a portable one, a mode one that **begins** at the portable one's
+//! sentinel, and an architecture one that begins at the mode one's sentinel.
+//! The three therefore compose into a single numbering with no overlap and no
+//! gap -- the compose-not-braid shape this tree reaches for, arrived at
+//! independently by a formally verified kernel. The composition is asserted
+//! below rather than admired, and the witness reads the anchoring out of the
+//! headers themselves.
+//!
+//! WHAT `regions.rye` DOES AND DOES NOT COVER. It declares **which** memory a
+//! dependent may touch and how far, which is the policy half. The four mapping
+//! objects are the mechanism that makes such a declaration true on a kernel --
+//! page sizes chosen and page-table levels built by the supervisor. Caravan has
+//! never had to build one, so the debt is real and named rather than waved at.
+//!
+//! WHICH CONFIGURATION. Nine is the count for the configuration this arc brings
+//! up first: **non-MCS**, three page-table levels. seL4 declares three further
+//! object types behind configuration guards -- a scheduling context and a reply
+//! object under `CONFIG_KERNEL_MCS`, and a tera page above three levels. They
+//! are real seL4 and absent here, so the witness counts them rather than
+//! passing over them, and a configuration flip reds this module on the lap it
+//! lands.
+//!
+//! TWO ROOMS. The nine names, their order, and the tier anchoring are
+//! checkable, and `tools/caravan_objects_witness.rish` binds them against
+//! seL4's own BSD-2-Clause headers on metal. Which Caravan concept *should*
+//! stand on each object remains a design judgement, named as one below, earning
+//! its proof the day an object is actually retyped.
+//!
+//! CLEAN ROOM. No seL4 line is reproduced here. The identifiers below are
+//! interface names, written so a later binding can be diffed against the
+//! headers we are licensed to include.
+//!
+//! Usage:
+//!   objects          Run the self-test (default)
+//!   objects selftest Same as default
+//!   objects table    Print the nine, their symbols, tiers, and who stands for each
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const caravan_objects_version = "20260821.220352";
+
+/// How many object types a riscv64 seL4 offers in the configuration this arc
+/// brings up first, seL4's `seL4_ObjectTypeCount`. Read from the compiled enum
+/// `20260821.043831`; the witness re-reads the symbols from the vendored
+/// headers on every run, so a vendored bump that moves the vocabulary reds this
+/// module on the lap it lands.
+pub const kernel_object_count: u32 = 9;
+
+/// Where the portable tier ends and the mode tier begins, seL4's
+/// `seL4_NonArchObjectTypeCount`.
+pub const non_arch_object_type_count: u32 = 5;
+
+/// Where the mode tier ends and the architecture tier begins, seL4's
+/// `seL4_ModeObjectTypeCount` on riscv64 with three page-table levels.
+pub const mode_object_type_count: u32 = 6;
+
+/// How many further object types stand behind a configuration guard: a
+/// scheduling context and a reply object under MCS, and a tera page above three
+/// page-table levels. Named so their absence is a measured fact rather than an
+/// oversight.
+pub const configuration_guarded_count: u32 = 3;
+
+// =========================================================================
+// The nine -- what a kernel hands out
+// =========================================================================
+
+/// One kind of object a capability may name. Value order matches the interface
+/// numbering across all three tiers, so a later binding may cast rather than
+/// translate.
+pub const KernelObject = enum(u8) {
+    untyped = 0,
+    tcb = 1,
+    endpoint = 2,
+    notification = 3,
+    cap_table = 4,
+    giga_page = 5,
+    four_k_page = 6,
+    mega_page = 7,
+    page_table = 8,
+};
+
+/// The interface symbol each object carries, so a witness can diff this module
+/// against the headers rather than against a memory of them.
+pub fn kernel_symbol(object: KernelObject) []const u8 {
+    // invariant: every arm returns a non-empty symbol -- the switch is total.
+    const symbol: []const u8 = switch (object) {
+        .untyped => "seL4_UntypedObject",
+        .tcb => "seL4_TCBObject",
+        .endpoint => "seL4_EndpointObject",
+        .notification => "seL4_NotificationObject",
+        .cap_table => "seL4_CapTableObject",
+        .giga_page => "seL4_RISCV_Giga_Page",
+        .four_k_page => "seL4_RISCV_4K_Page",
+        .mega_page => "seL4_RISCV_Mega_Page",
+        .page_table => "seL4_RISCV_PageTableObject",
+    };
+    assert(symbol.len > 0); // invariant: a named object always carries its name
+    return symbol;
+}
+
+/// Plain English for the object, in Caravan's own words.
+pub fn kernel_meaning(object: KernelObject) []const u8 {
+    const meaning: []const u8 = switch (object) {
+        .untyped => "a region of memory holding no type yet, from which every other object is carved",
+        .tcb => "one thread the kernel schedules, with its registers and its priority",
+        .endpoint => "a meeting point where one thread's call waits for another thread's answer",
+        .notification => "a signal one thread raises and another waits on, carrying no message",
+        .cap_table => "a table of slots, each holding one capability, forming a thread's authority",
+        .giga_page => "a gigabyte of memory mapped as one page",
+        .four_k_page => "four kilobytes of memory mapped as one page",
+        .mega_page => "two megabytes of memory mapped as one page",
+        .page_table => "one level of the tree that turns a virtual address into a real one",
+    };
+    assert(meaning.len > 0); // invariant: every object is legible
+    return meaning;
+}
+
+// =========================================================================
+// The three tiers, and the numbering they compose into
+// =========================================================================
+
+/// Which enum an object is declared in. The tiers are a fact about seL4's
+/// headers, and they matter here because the numbering only holds if each tier
+/// begins exactly where the last one ended.
+pub const Tier = enum(u8) {
+    portable = 0,
+    mode = 1,
+    architecture = 2,
+};
+
+/// The tier an object belongs to, derived from its own number rather than
+/// listed, so the tier and the numbering can never disagree.
+pub fn tier_of(object: KernelObject) Tier {
+    const value: u32 = @intFromEnum(object);
+    assert(value < kernel_object_count); // invariant: every object sits inside the vocabulary
+    if (value < non_arch_object_type_count) return .portable;
+    if (value < mode_object_type_count) return .mode;
+    return .architecture;
+}
+
+/// How many objects a tier holds.
+pub fn tier_width(tier: Tier) u32 {
+    const width: u32 = switch (tier) {
+        .portable => non_arch_object_type_count,
+        .mode => mode_object_type_count - non_arch_object_type_count,
+        .architecture => kernel_object_count - mode_object_type_count,
+    };
+    assert(width >= 1); // invariant: a declared tier holds at least one object
+    return width;
+}
+
+// =========================================================================
+// What Caravan stands for today, and what it owes
+// =========================================================================
+
+/// Whether a Caravan module stands for an object today, or which subsystem owes
+/// one. `held` marks the five already spoken for.
+pub const Standing = enum(u8) {
+    held = 0,
+    the_address_space = 1,
+};
+
+/// Which Caravan concept stands for each object, or which subsystem owes one.
+///
+/// DESIGN JUDGEMENT, named as one. Each of the five holdings below is a module
+/// on disk read this round, never a memory of one -- an earlier draft of this
+/// file claimed Caravan owed untyped memory and the signal, and both had
+/// already been built. The four mapping objects are one debt wearing four
+/// sizes, and it stands.
+pub fn standing_of(object: KernelObject) Standing {
+    // invariant: the switch is total over the nine.
+    const standing: Standing = switch (object) {
+        .untyped, .tcb, .endpoint, .notification, .cap_table => .held,
+        .giga_page, .four_k_page, .mega_page, .page_table => .the_address_space,
+    };
+    // invariant: the holdings are exactly the portable tier -- the finding, asserted.
+    assert((standing == .held) == (tier_of(object) == .portable));
+    return standing;
+}
+
+/// One line naming what stands for the object, or why the owing subsystem owes
+/// it, so the agenda reads as design rather than as a list.
+pub fn standing_reason(object: KernelObject) []const u8 {
+    const reason: []const u8 = switch (object) {
+        .untyped => "untyped.rye carves memory with a real floor, measured after alignment",
+        .tcb => "channels.rye rosters the protection domains, and concurrent.rye runs them as real processes",
+        .endpoint => "reply.rye reads one ask through four stages and answers it",
+        .notification => "notify.rye provisions each declared channel as its own doorbell",
+        .cap_table => "capabilities.rye keeps a bounded table of dependents and their rights",
+        .giga_page, .four_k_page, .mega_page, .page_table => "regions.rye declares which memory a dependent may touch; nothing yet builds the mapping",
+    };
+    assert(reason.len > 0); // invariant: every standing names its reason
+    return reason;
+}
+
+// =========================================================================
+// Counting the agenda
+// =========================================================================
+
+/// The nine, in interface order. One list, so no count is ever recited.
+pub const all_kernel_objects = [_]KernelObject{
+    .untyped,     .tcb,         .endpoint,
+    .notification, .cap_table,  .giga_page,
+    .four_k_page, .mega_page,   .page_table,
+};
+
+/// How many of the nine Caravan already stands for. Counted from the standing
+/// of each object rather than recited, so the number and the table agree.
+pub fn held_count() u32 {
+    var count: u32 = 0;
+    for (all_kernel_objects) |object| {
+        if (standing_of(object) == .held) count += 1;
+    }
+    assert(count <= kernel_object_count); // invariant: holdings never exceed the vocabulary
+    return count;
+}
+
+/// How many of the nine remain as design debt.
+pub fn owed_count() u32 {
+    const held = held_count();
+    assert(held <= kernel_object_count); // invariant: the subtraction stays in range
+    const remaining = kernel_object_count - held;
+    assert(held + remaining == kernel_object_count); // invariant: the two partition the vocabulary
+    return remaining;
+}
+
+// =========================================================================
+// The table, printed
+// =========================================================================
+
+fn print_table() u8 {
+    print("objects: version {s}\n", .{caravan_objects_version});
+    for (all_kernel_objects) |object| {
+        print("objects: {d:>2} {s} [{s}] -- {s} [{s}] {s}\n", .{
+            @intFromEnum(object),
+            kernel_symbol(object),
+            @tagName(tier_of(object)),
+            kernel_meaning(object),
+            @tagName(standing_of(object)),
+            standing_reason(object),
+        });
+    }
+    return 0;
+}
+
+// =========================================================================
+// Self-test -- assert the numbering composes, the tiers partition, and the
+// agenda is honestly counted
+// =========================================================================
+
+fn run_self_test() u8 {
+    // The list and the enum agree, so the count is read rather than recited.
+    assert(all_kernel_objects.len == kernel_object_count);
+    var seen: u32 = 0;
+    for (all_kernel_objects, 0..) |object, index| {
+        assert(@intFromEnum(object) == index);
+        seen += 1;
+    }
+    assert(seen == kernel_object_count);
+
+    // The three tiers compose into one numbering with no overlap and no gap.
+    assert(non_arch_object_type_count < mode_object_type_count);
+    assert(mode_object_type_count < kernel_object_count);
+    assert(tier_width(.portable) + tier_width(.mode) + tier_width(.architecture) == kernel_object_count);
+    assert(tier_width(.portable) == 5);
+    assert(tier_width(.mode) == 1);
+    assert(tier_width(.architecture) == 3);
+
+    // Every object lands in exactly the tier its number places it in.
+    var portable_seen: u32 = 0;
+    var mode_seen: u32 = 0;
+    var arch_seen: u32 = 0;
+    for (all_kernel_objects) |object| {
+        switch (tier_of(object)) {
+            .portable => portable_seen += 1,
+            .mode => mode_seen += 1,
+            .architecture => arch_seen += 1,
+        }
+    }
+    assert(portable_seen == tier_width(.portable));
+    assert(mode_seen == tier_width(.mode));
+    assert(arch_seen == tier_width(.architecture));
+
+    // The portable core is the five a supervised root task may count on
+    // anywhere, and the four that remain belong to riscv64.
+    assert(tier_of(.untyped) == .portable);
+    assert(tier_of(.cap_table) == .portable);
+    assert(tier_of(.giga_page) == .mode);
+    assert(tier_of(.page_table) == .architecture);
+
+    // The agenda partitions the vocabulary: five held, four owed.
+    const held = held_count();
+    const owed = owed_count();
+    assert(held == 5);
+    assert(owed == 4);
+    assert(held + owed == kernel_object_count);
+
+    // Every object names a real standing, and the holdings line up with the tier.
+    for (all_kernel_objects) |object| {
+        assert(kernel_symbol(object).len > 0);
+        assert(kernel_meaning(object).len > 0);
+        assert(standing_reason(object).len > 0);
+        const standing = standing_of(object);
+        assert((standing == .held) == (tier_of(object) == .portable));
+    }
+
+    // The finding, stated at both ends: the portable tier is held whole, and
+    // every object beyond it is owed to the address space.
+    assert(held == tier_width(.portable));
+    assert(owed == tier_width(.mode) + tier_width(.architecture));
+    assert(standing_of(.untyped) == .held);
+    assert(standing_of(.notification) == .held);
+    assert(standing_of(.giga_page) == .the_address_space);
+    assert(standing_of(.page_table) == .the_address_space);
+
+    print("objects: version {s}\n", .{caravan_objects_version});
+    print("objects: the kernel offers {d} on riscv64; Caravan stands for {d} and owes {d}.\n", .{ kernel_object_count, held, owed });
+    print("objects: three tiers compose with no overlap and no gap -- {d} portable, {d} mode, {d} architecture.\n", .{ tier_width(.portable), tier_width(.mode), tier_width(.architecture) });
+    print("objects: the five held are exactly the portable tier -- untyped, TCB, endpoint, notification, capability table.\n", .{});
+    print("objects: the four owed are exactly the mode and architecture tiers, and the address space owes every one of them.\n", .{});
+    print("objects: {d} further object types stand behind configuration guards and are absent here by choice.\n", .{configuration_guarded_count});
+    print("objects: numbering composed, tiers partitioned, agenda honest -- GREEN.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
+    if (args.len >= 2) return 1;
+    return run_self_test();
+}
