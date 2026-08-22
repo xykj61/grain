@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20260822.103226
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The column split, three rows freed, and a lantern written narrower than its own reasoning
+prompt Take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, read the council rota row, send the increment
+think The design read this lap follows named its own next step, so the lap was already scoped: split the widens column by kind in the scan, assert both halves in the witness, and let the queue re-sort.
+think tools/fixtures/ladder_reach_visibility_scan.sh already knew each declaration's visibility and threw its keyword away. The grep-sed-awk pipeline was replaced by one awk reading the whole declaration line, so it emits name, visibility, and kind -- fn, import, or const -- and the import case is decided by the line holding an import call rather than by guessing from the name.
+think REACH_OK now prints widens_fn, widens_import, and widens_const beside widens, and every REACH_PRIVATE line carries kind= so a reader scanning the detail sees what each opening is.
+think Four families asserted in tools/caravan_ladder_reach_visibility_witness.rish rather than three, because the closing GREEN line names four and a number a meter recites without asserting is a claim rather than a measurement (REDS %110).
+obs The split reopened the queue. Three rows the single column priced as expensive open no function at all -- load_one at five hundred and forty-nine, read_own_line at four hundred and ninety-two, door_admits at four hundred and sixty-two -- every one of their openings an import binding that publishes a module the rung already names in its own head. Fifteen hundred carried lines the old column had hidden behind a number.
+obs elder_waits is the one row that genuinely costs, and it now stands asserted as that shape: the symbol it reaches privately in all forty-three rungs is a function, so folding it opens what those rungs offer a caller.
+obs Sum against union held from the design read: the six rows' widens_fn sums to a hundred and seventy-seven while the union of fn pairs is ninety-one, since choose_pass reaches both waits and may_pass. The sum-versus-union gap the read measured for the whole column reproduces inside the fn half.
+obs REDS %135 booked and closed in the lap, and it is REDS %131 arriving a second time in a different shape. Citing the design read's dated filename in the carry meter's queue prose put two digit runs in a say line, and the prose-count guard refused both as recited counts -- reddening the whole choir of a hundred and eight.
+obs The deeper fault is that the first repair was written narrower than its own reasoning. REDS %131 exempted a percent-sigilled row name because the sigil marks a constant term that never varies; the sentence it was actually proving is that a digit run belonging to a name cannot drift, so it is not a count. Written as sigil-only, the rule covered one of the two immutable-name shapes this tree writes and left the other to fire. A lantern that fires twice becomes a loom, so the exemption is now stated at the level of the reasoning.
+obs The bound stays as tight as the sigil's, and the control proves it rather than the prose claiming it: a sentence citing a dated path and a body stamp is welcomed, and the same sentence with a bare eight-digit number beside the stamp draws exactly one refusal, on the bare number alone.
+obs The choir caught this and the touched witness did not. Running only the witness a change touches proves the change; running the choir proves the tree. The red lived in a file the split never opened.
+obs The REDS pin crossed its 24,576-byte bound as row %135 landed, so the closed 131-132 range folded to crux/archive/REDS-meter-prose-and-self-delegation-rows-131-132.md and the headline was re-derived from the spine rather than edited by hand -- rows 135, remainder 115. The monotone witness named all three disagreements before the edit and read ok after.
+loom scan=ladder_reach_visibility split=by_kind families_asserted=4 free_rows_revealed=3 carried_lines_reopened=1503
+loom witness=caravan_suite rungs=108 verdict=green era_suite=11 verdict=green
+file tools/fixtures/ladder_reach_visibility_scan.sh the widens column split into fn, import, and const, read from each declaration's own line
+file tools/caravan_ladder_reach_visibility_witness.rish four families asserted by kind, and every family the closing line names
+file tools/caravan_ladder_carry_witness.rish the queue prose refreshed, since the split changed what standing behind a widening means
+file tools/fixtures/caravan_ladder_prose_count_scan.sh a one-clock stamp read as a name, both shapes the naming law defines
+file tools/caravan_ladder_copy_witness.rish the stamp welcome and refusal proven on generated controls, beneath the sigil pair they extend
+file crux/REDS.md row %135 booked and closed, the 131-132 range folded, the headline re-derived from the spine
+file crux/REMEMBER.md Now refilled with the reopened queue and the next fold head
+recommend keep-going load_one is the head under the split -- sixty rungs by eleven lines returning five hundred and forty-nine, its whole widening a hundred and twenty import bindings and not one function, so the fold is free of the only cost that was ever real

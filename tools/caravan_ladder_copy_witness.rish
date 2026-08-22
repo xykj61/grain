@@ -239,6 +239,21 @@ let sigil_bare = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \
 assert (sigil_bare.ok == false) else "caravan-ladder-copy: a bare count standing beside a sigilled name must still refuse"
 assert sigil_bare.out contains "recites 47 with no assert holding it" else "caravan-ladder-copy: want the bare count named by its own value, the sigil beside it granting it nothing"
 
+# A one-clock stamp is a name on exactly the sigil's reasoning (REDS %135). A meter citing the design read
+# behind it put a dated filename in a `say` line, and both digit runs of the stamp were refused as recited
+# counts. A stamp is fixed when the file is named and can never drift, which is the only fault this scan
+# exists to catch. Both legs run on generated controls, so the bound is proven rather than described: the
+# two shapes the naming law defines are welcomed as names, and a bare eight-digit number standing beside a
+# stamp is still refused at its own value. The exemption is a name, never a doorway -- the same sentence the
+# sigil legs above earned, and the reason this pair sits directly beneath them.
+let stamp = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \042ok\042 else \042e\042\nsay \042the reading is active-designing/20260822-101058_what-a-widening-costs.md, seated 20260822.101058\042\n' > $d/caravan_ladder_stamp_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+assert stamp.ok else "caravan-ladder-copy: a meter citing a dated path by its one-clock stamp must read clean -- ${stamp.out}"
+assert stamp.out contains "LADDER_PROSE_COUNT_OK" else "caravan-ladder-copy: want both one-clock shapes welcomed as names rather than counted as measurements"
+
+let stamp_bare = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \042ok\042 else \042e\042\nsay \042the reading seated 20260822.101058 folded 20260822 rungs\042\n' > $d/caravan_ladder_stamp_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+assert (stamp_bare.ok == false) else "caravan-ladder-copy: a bare count standing beside a one-clock stamp must still refuse"
+assert stamp_bare.out contains "recites 20260822 with no assert holding it" else "caravan-ladder-copy: want the bare number named at its own value, the stamp beside it granting it nothing"
+
 # The counting proven by hand. The corpus holds two rungs: the lower carries two distinct checks, the
 # upper carries one of them forward byte for byte and adds one of its own. So four checks stand, three
 # bodies are distinct, exactly one is a copy, and that copy is six lines long -- countable by eye in the

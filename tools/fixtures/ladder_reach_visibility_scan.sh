@@ -155,27 +155,45 @@ sed 's|//.*$||; s/"[^"]*"//g; s/\.[a-zA-Z_][a-zA-Z0-9_]*//g' "$work/body.$hash" 
 # For each folding rung, which of its own top-level names the shared body reaches,
 # and whether that rung publishes each one.
 widens=0
+widens_fn=0
+widens_import=0
+widens_const=0
 : > "$work/private"
 : > "$work/reached_all"
 while read -r base; do
     [ -n "$base" ] || continue
-    grep -oE '^(pub )?(fn|const) [a-z_][a-zA-Z0-9_]*' "$DIR/$base" |
-        sed 's/^pub \(fn\|const\) /PUB /; s/^\(fn\|const\) /PRIV /' |
-        awk -v fam="$FAMILY" '
-            $2 == fam { next }
+    # Each top-level declaration read with its VISIBILITY and its KIND, because
+    # a widening of an import binding and a widening of a function are two
+    # unlike costs and a column that sums them says neither. Read from the whole
+    # line rather than from a name, since only the line shows the import.
+    awk -v fam="$FAMILY" '
+        /^(pub )?(fn|const) [a-z_]/ {
+            vis = ($0 ~ /^pub /) ? "PUB" : "PRIV"
+            n = $0
+            sub(/^pub /, "", n)
+            kind = (n ~ /^fn /) ? "fn" : (($0 ~ /@import\(/) ? "import" : "const")
+            sub(/^(fn|const) /, "", n)
+            sub(/[^a-zA-Z0-9_].*$/, "", n)
+            if (n == fam) next
             # The opening triad every hosted .rye file declares for itself. A
             # lifted body reaches std and assert through the harness'"'"'s own,
             # so they are never a rung API symbol and never a widening cost.
-            $2 == "std" || $2 == "assert" || $2 == "print" { next }
-            { print $2, $1 }
-        ' | sort -u > "$work/decls"
+            if (n == "std" || n == "assert" || n == "print") next
+            print n, vis, kind
+        }
+    ' "$DIR/$base" | sort -u > "$work/decls"
     join "$work/reached_words" "$work/decls" > "$work/hit" || true
-    while read -r name vis; do
+    while read -r name vis kind; do
         [ -n "$name" ] || continue
         echo "$name" >> "$work/reached_all"
         if [ "$vis" = "PRIV" ]; then
             widens=$((widens + 1))
-            printf '%s %s\n' "$name" "$base" >> "$work/private"
+            case "$kind" in
+                fn) widens_fn=$((widens_fn + 1)) ;;
+                import) widens_import=$((widens_import + 1)) ;;
+                *) widens_const=$((widens_const + 1)) ;;
+            esac
+            printf '%s %s %s\n' "$name" "$kind" "$base" >> "$work/private"
         fi
     done < "$work/hit"
 done < "$work/folding"
@@ -184,8 +202,8 @@ reached=$(sort -u "$work/reached_all" | wc -l | tr -d ' ')
 echo "REACH_SYMBOLS reached=$reached across=$folding rungs"
 
 if [ "$widens" -gt 0 ]; then
-    sort "$work/private" | uniq -c | sort -rn | while read -r n name rung; do
-        echo "REACH_PRIVATE symbol=$name rungs=$n first=$rung"
+    sort "$work/private" | uniq -c | sort -rn | while read -r n name kind rung; do
+        echo "REACH_PRIVATE symbol=$name kind=$kind rungs=$n first=$rung"
     done
 fi
 
@@ -201,4 +219,4 @@ stub=$((sig + 2))
 # below the fold line: it keeps its whole body and leaves the family, so the
 # carry it was contributing goes entirely rather than shrinking to a stub.
 fall=$(( (copies - 1) * lines - (folding - 1) * stub ))
-echo "REACH_OK family=$FAMILY folding=$folding widens=$widens stub=$stub fall=$fall"
+echo "REACH_OK family=$FAMILY folding=$folding widens=$widens widens_fn=$widens_fn widens_import=$widens_import widens_const=$widens_const stub=$stub fall=$fall"

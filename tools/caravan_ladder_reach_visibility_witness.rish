@@ -24,6 +24,17 @@
 # the fold line, reads the identifiers the shared body reaches unqualified, and
 # reports how many of those each folding rung keeps private.
 #
+# The column split (`20260822.101058`). One `widens` number counted two unlike
+# things. Reading the seven symbols behind the whole remaining queue against
+# their own declaration lines found five to be plain module import bindings and
+# two to be functions, so `widens` now carries `widens_fn`, `widens_import`, and
+# `widens_const` beside it. Publishing an import binding re-exports a module the
+# rung already names in its own head -- no behavior opened -- while publishing a
+# function opens what the rung offers a caller. A count that sums across kinds
+# has thrown away the mark at the moment it mattered, and the sum reads as
+# authoritative precisely because it is a number. The design read is
+# `active-designing/20260822-101058_what-a-widening-costs-a-rungs-door.md`.
+#
 # Both refusals are proven on metal by generated controls -- a name no rung
 # declares, and a name whose every body differs -- since a scan finding nothing
 # must never answer ok about its own blindness (REDS %97).
@@ -44,27 +55,53 @@ assert red.out contains "RED_no_identical_refused_rather_than_ok" else "reach-vi
 # body left to lift, so the widening column now describes the stubs.
 let folded = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "read_count"]
 say folded.out
-assert folded.out contains "REACH_OK family=read_count folding=44 widens=44 stub=3 fall=0" else "reach-visibility: want read_count standing folded, with nothing left to lift"
+assert folded.out contains "REACH_OK family=read_count folding=44 widens=44 widens_fn=0 widens_import=44 widens_const=0 stub=3 fall=0" else "reach-visibility: want read_count standing folded, with nothing left to lift"
 assert folded.ok else "reach-visibility: the lifted family must still read cleanly"
 
-# The head of the queue as it stands, and the reading that put it there. The
-# free rows are spent: with read_count folded, every remaining row opens a
-# declaration somewhere, and elder_waits returns the most for what it opens.
-# Both numbers are asserted, so a lap that folds this family must come back and
-# say so, and a lap that quietly widens further cannot pass.
+# The row that costs the most, now that the column says what it means. Every
+# symbol elder_waits reaches privately is a function -- `waits`, held private in
+# forty-three rungs -- so folding it opens what those rungs offer a caller. This
+# is the shape a design decision belongs to, and it is asserted here so the
+# queue can never quietly re-sort it back to the front on a fall alone.
 let head = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "elder_waits"]
 say head.out
 assert head.out contains "REACH_FAMILY family=elder_waits declared=53 identical=43 lines=15" else "reach-visibility: want elder_waits standing as fifty-three declarations holding forty-three identical bodies at fifteen lines"
-assert head.out contains "REACH_OK family=elder_waits folding=43 widens=43 stub=3 fall=504" else "reach-visibility: want the queue head returning five hundred and four for forty-three openings"
+assert head.out contains "REACH_OK family=elder_waits folding=43 widens=43 widens_fn=43 widens_import=0 widens_const=0 stub=3 fall=504" else "reach-visibility: want the queue head returning five hundred and four for forty-three openings"
 assert head.ok else "reach-visibility: the queue head must read cleanly"
 
-# The largest realized fall left on the board, and the widest widening beside
-# it: load_one returns more than elder_waits and opens nearly three times as
-# many declarations to do it. Asserting both keeps the trade measured rather
-# than inherited, now that no free row remains to take instead.
+# The true head of the queue under the split, and the reading that put it there.
+# load_one returns the largest fall left on the board and its whole widening is
+# import bindings -- a hundred and twenty of them, and not one function. It
+# publishes modules each rung already names in its own head, so it opens no
+# behavior at all. Read by the old single column it stood as the most expensive
+# row remaining; read by kind it is free of the only cost that was ever real.
 let sibling = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "load_one"]
 say sibling.out
-assert sibling.out contains "REACH_OK family=load_one folding=60 widens=120 stub=3 fall=549" else "reach-visibility: want load_one returning five hundred and forty-nine over a hundred and twenty widenings"
+assert sibling.out contains "REACH_OK family=load_one folding=60 widens=120 widens_fn=0 widens_import=120 widens_const=0 stub=3 fall=549" else "reach-visibility: want load_one returning five hundred and forty-nine over a hundred and twenty widenings"
 assert sibling.ok else "reach-visibility: the sibling family must read cleanly"
 
-say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, and the queue's head stands measured at what it opens beside the largest paid row behind it stands measured at its true cost"
+# The third row the split frees, so the claim is a measurement rather than a
+# reading of two examples. door_admits reaches `system` -- an import binding --
+# privately in all forty-three rungs it would fold, and reaches no private
+# function at all.
+let third = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "door_admits"]
+say third.out
+assert third.out contains "REACH_OK family=door_admits folding=43 widens=43 widens_fn=0 widens_import=43 widens_const=0 stub=3 fall=462" else "reach-visibility: want door_admits standing free of function widening at four hundred and sixty-two"
+assert third.ok else "reach-visibility: the third family must read cleanly"
+
+# The fourth, and the last one this meter names in its own closing line. A
+# number a meter recites and never asserts is a claim, not a measurement
+# (REDS %110), so every family the GREEN line names stands asserted above it.
+# read_own_line reaches three import bindings privately -- `capabilities`,
+# `carry`, and `cycle` -- across all forty-two rungs, and no private function.
+let fourth = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "read_own_line"]
+say fourth.out
+assert fourth.out contains "REACH_OK family=read_own_line folding=42 widens=126 widens_fn=0 widens_import=126 widens_const=0 stub=7 fall=492" else "reach-visibility: want read_own_line standing free of function widening at four hundred and ninety-two"
+assert fourth.ok else "reach-visibility: the fourth family must read cleanly"
+
+# The kind rides on every private symbol line too, so a reader scanning the
+# detail sees what each opening actually is rather than only that it is one.
+assert sibling.out contains "REACH_PRIVATE symbol=system kind=import" else "reach-visibility: want each private symbol naming its kind beside it"
+assert head.out contains "REACH_PRIVATE symbol=waits kind=fn" else "reach-visibility: want a private function named as a function"
+
+say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, and the cost is now counted by kind rather than summed across kinds. Three rows the single column priced as expensive open no function at all: load_one, read_own_line, and door_admits widen nothing but import bindings, each publishing a module its rungs already name in their own heads. elder_waits is asserted here as the shape that genuinely costs, since every symbol it reaches privately is a function. A count that sums across kinds throws the mark away at the moment it matters, and the sum reads as authoritative precisely because it is a number."
