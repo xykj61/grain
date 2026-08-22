@@ -47,6 +47,7 @@ let red = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "prove-red"
 say red.out
 assert red.out contains "RED_no_family_refused_rather_than_ok" else "reach-visibility: a name no rung declares answered ok -- a scan must never bless its own blindness"
 assert red.out contains "RED_no_identical_refused_rather_than_ok" else "reach-visibility: a name whose every body differs answered ok -- nothing folds there"
+assert red.out contains "RED_capitalized_type_priced_rather_than_unseen" else "reach-visibility: a private type the shared body names priced at zero -- a meter that reads only lowercase names cannot see a struct (REDS %140)"
 
 # The family this lap lifted. Sixty of its bodies are stubs now, and seven stay
 # home below the fold line, since ladder_checks.rye imports each of them and a
@@ -105,14 +106,28 @@ say next_head.out
 assert next_head.out contains "REACH_OK family=revoke_one folding=40 widens=40 widens_fn=0 widens_import=40 widens_const=0 stub=9 fall=0" else "reach-visibility: want revoke_one reading a fall of zero, its family already folded"
 assert next_head.ok else "reach-visibility: the folded head must read cleanly"
 
-# The new head by cost, and the row this lap's reading names next.
-# judge_outcome folds thirty-seven rungs of sixteen lines for thirty-seven
-# widenings, and every one of the thirty-seven binds `carry` -- a module
-# `ladder_checks` already imports itself, so a lifted body reaches it here.
+# The family this lap folded, kept here as the folded reading. case_path stood
+# priced at zero widenings of every kind before the lift -- the second row of
+# this arc to open no declaration at all -- and after it the twenty-two rungs
+# hold three-line stubs binding the harness, so the column reads twenty-two
+# import bindings of `ladder_checks` and the fall reads zero.
+let this_lap = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "case_path"]
+say this_lap.out
+assert this_lap.out contains "REACH_OK family=case_path folding=22 widens=22 widens_fn=0 widens_import=22 widens_const=0 stub=3 fall=0" else "reach-visibility: want case_path reading a fall of zero, its family already folded"
+assert this_lap.ok else "reach-visibility: this lap's folded family must read cleanly"
+
+# The row that led the queue this morning, and the row the corrected meter
+# reordered. judge_outcome folds thirty-seven rungs of sixteen lines. Half its
+# true cost stood invisible until this lap: thirty-seven of the seventy-four
+# openings publish a private `Finished` struct, and the meter read only
+# identifiers opening in lowercase, so every type a shared body named priced at
+# nothing (REDS %140). The thirty-seven import bindings all bind `carry`, which
+# the harness imports itself, so those stay free -- and the struct openings are
+# what moved this row behind door_admits.
 let free_next = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "judge_outcome"]
 say free_next.out
 assert free_next.out contains "REACH_FAMILY family=judge_outcome declared=63 identical=37 lines=16" else "reach-visibility: want judge_outcome standing as sixty-three declarations holding thirty-seven identical bodies at sixteen lines"
-assert free_next.out contains "REACH_OK family=judge_outcome folding=37 widens=37 widens_fn=0 widens_import=37 widens_const=0 stub=3 fall=468" else "reach-visibility: want judge_outcome returning four hundred and sixty-eight for import bindings alone"
+assert free_next.out contains "REACH_OK family=judge_outcome folding=37 widens=74 widens_fn=0 widens_import=37 widens_const=37 stub=3 fall=468" else "reach-visibility: want judge_outcome priced at seventy-four, half of them struct openings the meter could not see until this lap"
 assert free_next.ok else "reach-visibility: the next head must read cleanly"
 
 # The third row the split frees, so the claim is a measurement rather than a
@@ -133,7 +148,7 @@ assert third.ok else "reach-visibility: the third family must read cleanly"
 # family the GREEN line names stands asserted above it.
 let fourth = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "may_pass"]
 say fourth.out
-assert fourth.out contains "REACH_OK family=may_pass folding=48 widens=96 widens_fn=48 widens_import=48 widens_const=0 stub=8 fall=536" else "reach-visibility: want may_pass carrying the corrected fall, three rungs standing below its fold line"
+assert fourth.out contains "REACH_OK family=may_pass folding=48 widens=101 widens_fn=48 widens_import=48 widens_const=5 stub=8 fall=536" else "reach-visibility: want may_pass carrying the corrected fall, three rungs standing below its fold line"
 assert fourth.ok else "reach-visibility: the fourth family must read cleanly"
 
 # The fold line priced, rather than described (REDS %137). A rung the harness
@@ -151,10 +166,10 @@ assert fourth.ok else "reach-visibility: the fourth family must read cleanly"
 # "always import," and why the door is priced before it is opened.
 let sink = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "sink"]
 say sink.out
-assert sink.out contains "SINK_OK total=64939 below_fold_line=247 above_fold_line=64692" else "reach-visibility: want the fold line's whole foreclosure measured against the foldable corpus"
+assert sink.out contains "SINK_OK total=64455 below_fold_line=247 above_fold_line=64208" else "reach-visibility: want the fold line's whole foreclosure measured against the foldable corpus"
 assert sink.out contains "SINK_ABOVE rung=queue.rye holds=3" else "reach-visibility: want the queue store's holding read off disk rather than described"
 assert sink.out contains "SINK_ABOVE rung=serve.rye holds=3" else "reach-visibility: want the serve module's holding read off disk rather than described"
-assert sink.out contains "SINK_ABOVE rung=farewell.rye holds=3841" else "reach-visibility: want the widest holding above the line, so the spread is a measurement rather than a feeling"
+assert sink.out contains "SINK_ABOVE rung=farewell.rye holds=3819" else "reach-visibility: want the widest holding above the line, so the spread is a measurement rather than a feeling"
 assert sink.out contains "SINK_BELOW rung=cohort.rye holds=90" else "reach-visibility: want the largest holding already below the fold line named"
 assert sink.ok else "reach-visibility: the sink meter must read cleanly"
 
@@ -163,4 +178,4 @@ assert sink.ok else "reach-visibility: the sink meter must read cleanly"
 assert sibling.out contains "REACH_PRIVATE symbol=capabilities kind=import" else "reach-visibility: want each private symbol naming its kind beside it"
 assert head.out contains "REACH_PRIVATE symbol=waits kind=fn" else "reach-visibility: want a private function named as a function"
 
-say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, the cost is counted by kind rather than summed across kinds, and the fall counts every population left standing rather than two of the three. revoke_one folded this lap and paid none of the forty widenings it was priced, because all forty are one import binding apiece of cycle, a module the harness already imports itself, and the same scan run against it afterward reads a fall of zero. Four of its forty-four declarations stayed home on their merits, each reaching its own revocation counter at a different depth. judge_outcome stands as the new head by cost -- thirty-seven rungs of sixteen lines returning four hundred and sixty-eight, every widening binding carry -- with door_admits behind it at four hundred and sixty-two on the same shape, binding system. elder_waits is asserted as the shape that genuinely costs, since every symbol it reaches privately is a function, and may_pass carries the corrected fall that three rungs below its fold line had hidden. A count that sums across kinds throws the mark away at the moment it matters, and a formula that names two populations where three stand overprices every fold that has more than one rung standing home. And the fold line itself is priced rather than described: importing a rung into the harness sinks it below the line forever, forfeiting the 247 body lines the whole line already holds against a foldable corpus of 64,939 -- three each for the queue store and the serve module an earlier lap declined to sink, and 3,841 for the widest rung still above it. Three orders of magnitude between them is why the door is measured before it is opened (REDS %137)."
+say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, the cost is counted by kind rather than summed across kinds, and the fall counts every population left standing rather than two of the three. This lap the meter learned to read a capitalized name. It had counted only identifiers opening in lowercase since the arc opened, so every type a shared body reached priced at zero, and judge_outcome -- which led the queue at a fall of four hundred and sixty-eight -- was carrying thirty-seven unpriced openings of a private Finished struct (REDS %140). Pricing them moved case_path to the head, and case_path folded twenty-two rungs of twenty-five lines while opening no declaration of any kind, the same scan run against it afterward reading a fall of zero. All twenty-two declarations folded, none staying home. door_admits stands as the new head by cost -- forty-three rungs of fourteen lines returning four hundred and sixty-two, every widening an import binding of system, a module the harness already holds -- while judge_outcome returns six more lines for thirty-seven struct openings the meter could not see until this lap. elder_waits is asserted as the shape that genuinely costs, since every symbol it reaches privately is a function, and may_pass carries the corrected fall that three rungs below its fold line had hidden. A count that sums across kinds throws the mark away at the moment it matters, and a formula that names two populations where three stand overprices every fold that has more than one rung standing home. And the fold line itself is priced rather than described: importing a rung into the harness sinks it below the line forever, forfeiting the 247 body lines the whole line already holds against a foldable corpus of 64,455 -- three each for the queue store and the serve module an earlier lap declined to sink, and 3,819 for the widest rung still above it. Three orders of magnitude between them is why the door is measured before it is opened (REDS %137)."
