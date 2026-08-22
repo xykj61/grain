@@ -5111,7 +5111,7 @@ pub fn regard_published(io: std.Io) ?Regard {
 // =========================================================================
 
 /// One dependent already reaped, held until the whole record has drained.
-const Finished = struct {
+pub const Finished = struct {
     domain: []const u8,
     verb: cycle.Verb,
     count: u32,
@@ -5121,20 +5121,7 @@ const Finished = struct {
 
 /// Folds one reaped outcome into the report, or names the mismatch.
 pub fn judge_outcome(done: Finished, report_out: *Report) RunError!void {
-    // invariant: a judged dependent always names its domain
-    assert(done.domain.len >= 1);
-    // invariant: the report never counts more successes than dependents reaped
-    assert(run_of(report_out).succeeded <= run_of(report_out).reaped);
-    if (done.code != done.expect) {
-        print("    {s}: expected {s}, heard {s}\n", .{
-            done.domain, outcome_name(done.expect), outcome_name(done.code),
-        });
-        return error.OutcomeMismatch;
-    }
-    if (done.code == carry.Outcome.carried_ok) {
-        run_of(report_out).succeeded += 1;
-        if (done.verb == .home) run_of(report_out).homed += done.count;
-    }
+    return ladder_checks.judge_outcome(@This(), done, report_out);
 }
 
 /// The queue's own bookkeeping for one run, over dependents whose conferrals
