@@ -31,6 +31,19 @@
 # sentence. Thousands separators are stripped before comparing, since `137,176` and `137185` are the same
 # claim wearing different clothes, and that difference is precisely why the first drift went unseen.
 #
+# A `%`-SIGILLED ROW IS A NAME, NOT A COUNT (REDS %131). The rule above reads every digit run in a `say`
+# line, and a citation of this tree's own ledger -- `REDS %130` -- is a digit run wearing no measurement at
+# all. `%` is the sigil this tree assigns to a number it names itself, and `.claude/rules/git-signing.md`
+# says exactly why: in Glow, as in the Hoon it descends from, `%` marks a CONSTANT TERM, a value that is
+# exactly itself and never varies. A ledger row is immutable by the ledger's own first law, so it can never
+# drift, which is the one and only fault this whole scan exists to catch. Requiring an assert to hold it
+# would ask a meter to pin a number that measures nothing.
+#
+# So a `%<digits>` token is read as a name and comes off the line before any number is extracted. The bound
+# is deliberately tight: only a digit run wearing the sigil is exempt, and a bare `130` beside it is still
+# refused, so the exemption cannot be reached by a count that merely stands near a citation. Both directions
+# are proven on a generated control in `../caravan_ladder_copy_witness.rish` rather than reasoned here.
+#
 # THE RULE READS EVERY `say`, NOT ONLY THE CLOSING ONE. It was drawn at the closing line first, and the line
 # directly above one proved that boundary too narrow within the same lap: the carry meter's `three windows and
 # the room` line recited the same stale 137,176 the close did. A printed number is a printed number.
@@ -81,7 +94,9 @@ EOF
     done <<EOF
 $(grep -n '^say ' "$meter" | while IFS= read -r line; do
     ln=${line%%:*}
-    printf '%s\n' "${line#*:}" | tr -d ',' | grep -oE '[0-9]+' | sort -u | sed "s/^/${ln}:/"
+    # A `%`-sigilled row is this tree's own name for an immutable record, never a count, so it comes off
+    # the line before any number is read. Only the sigilled run is exempt; a bare number beside it stays.
+    printf '%s\n' "${line#*:}" | tr -d ',' | sed 's/%[0-9][0-9]*/ /g' | grep -oE '[0-9]+' | sort -u | sed "s/^/${ln}:/"
 done)
 EOF
 done
