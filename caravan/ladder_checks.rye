@@ -10352,3 +10352,42 @@ pub fn revoke_one(
     table.served[slot] = keep;
     rung.abandoning_of(report_out).inner.inner.revoked += returning;
 }
+
+/// Answers whether the door admits this phase over the lines remembered.
+///
+/// Forty-three rungs held this body byte for byte, at fourteen lines over a
+/// one-line signature -- the widest family the arc has folded, and free on
+/// every axis the meter reads. Its forty-three widenings are forty-three
+/// import bindings of one module, `system`, which this harness already imports
+/// at its own head, so the body reaches `system.System` here rather than
+/// through the rung handed in. Every other name it touches -- `Table`,
+/// `RunError`, `admissible_in`, `max_in_flight` -- already stands public on all
+/// forty-three.
+///
+/// The door reads one candidate against the whole of what the run is currently
+/// holding: the live domains, their lines, their reserves, and what each has
+/// taken, weighed against the task the record names at `at`. Each rung reaches
+/// its own table shape, its own ceiling, its own admission rule, and its own
+/// error set through the type it hands in.
+///
+/// Measured rather than read: `REACH_OK family=door_admits folding=43 widens=43
+/// widens_fn=0 widens_import=43 widens_const=0 stub=3 fall=462`.
+pub fn door_admits(
+    comptime rung: type,
+    sys: *const system.System,
+    table: *const rung.Table,
+    at: u32,
+) rung.RunError!bool {
+    // invariant: a candidate always stands inside the record
+    assert(at < table.held);
+    // invariant: a run never remembers more lines than it may hold
+    assert(table.in_flight <= rung.max_in_flight);
+    return rung.admissible_in(
+        sys,
+        table.live[0..table.in_flight],
+        table.lines[0..table.in_flight],
+        table.reserves[0..table.in_flight],
+        table.taken[0..table.in_flight],
+        table.record[at].task,
+    );
+}

@@ -693,18 +693,7 @@ pub fn sibling_waits(table: *const Table, pick: u32, sibling_mask: u32) bool {
 
 /// Answers whether the door admits this phase over the lines remembered.
 pub fn door_admits(sys: *const system.System, table: *const Table, at: u32) RunError!bool {
-    // invariant: a candidate always stands inside the record
-    assert(at < table.held);
-    // invariant: a run never remembers more lines than it may hold
-    assert(table.in_flight <= max_in_flight);
-    return admissible_in(
-        sys,
-        table.live[0..table.in_flight],
-        table.lines[0..table.in_flight],
-        table.reserves[0..table.in_flight],
-        table.taken[0..table.in_flight],
-        table.record[at].task,
-    );
+    return ladder_checks.door_admits(@This(), sys, table, at);
 }
 
 /// Answers whether a phase may be admitted ahead of the record's head.
