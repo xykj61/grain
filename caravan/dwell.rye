@@ -2799,19 +2799,7 @@ pub fn revoke_one(
     keep: u32,
     report_out: *Report,
 ) (RunError || NoteError)!void {
-    // invariant: a revocation always names a dependent the run is holding
-    assert(slot < table.in_flight);
-    // invariant: a revocation never leaves more than one line may name
-    assert(keep <= cycle.max_hops);
-    if (revoke_rung.revoke_refusal(table.taken[slot], table.served[slot], keep)) |why| return why;
-    const returning = table.taken[slot] - keep;
-    // invariant: a revocation that reaches this point always returns reach
-    assert(returning >= 1);
-    try revoke(io, table.live[slot].domain, keep);
-    if (!confirm_pruned(io, table.live[slot].domain, returning)) return error.RevokeUnpruned;
-    table.taken[slot] = keep;
-    table.served[slot] = keep;
-    abandoning_of(report_out).inner.inner.revoked += returning;
+    return ladder_checks.revoke_one(@This(), io, table, slot, keep, report_out);
 }
 
 /// Takes one departed dependent's conferral back whole, so a successor of its
