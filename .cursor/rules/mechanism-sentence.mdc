@@ -1,0 +1,39 @@
+---
+description: Every commit body and session log names the change in plain engineering words -- file, function, parameter, import, call -- before any metaphor.
+alwaysApply: true
+---
+
+# The Mechanism Sentence -- say what changed in plain engineering words
+
+**Seated:** `20260822.014628` on Keaton's word. Canonical twin: `.claude/rules/mechanism-sentence.md` (full form). Foundation: `foundations/20260822-014628_the-mechanism-and-the-metaphor.md`. Kin: `commit-messages.mdc`, `radiant-style.mdc`, `session-logs.mdc`.
+
+**Every commit body and every session log carries at least one plain sentence naming the change in ordinary engineering words -- file, function, parameter, type, import, call, field, signature -- and that sentence comes before any metaphor.**
+
+The test: someone who knows the language and has never read this tree reconstructs *what changed* from that sentence alone.
+
+## The shape
+
+Mechanism first, meaning after.
+
+```
+caravan: the note name written once, not forty-seven times
+
+`note_path` moved into `caravan/ladder_checks.rye` as one published
+function taking the rung as a comptime type parameter, and each of the
+forty-seven rungs now calls it through a three-line stub.
+
+A rule written forty-seven times is a rule forty-seven files may quietly
+come to disagree about.
+```
+
+The metaphor earns its place by standing on a mechanism the reader already holds. Radiant Style asks that a coined term be given its plain function on first use; this extends the same courtesy from **terms** to **changes**.
+
+## The wall
+
+`tools/hooks/commit-msg` enforces it at write time: a body of sixty words or more carries at least three distinct mechanism words, a short body carries one. The message stays untouched on disk, so a refusal is edited and committed again. Measured at seating: 21 of the last 40 commit bodies read below the floor.
+
+`tools/mechanism_sentence_witness.rish` holds the trailing-window count under a ceiling that only falls. The meter counts vocabulary, so it proves a floor rather than a comprehension -- **word presence is the check; a reader reconstructing the diff is the standard.**
+
+## What rests
+
+Subjects stay short and may stay poetic. Dated artifacts keep every word they wrote. Small commits say their one thing and stop.

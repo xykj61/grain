@@ -15,6 +15,11 @@
 # Both rules live in `.claude/rules/git-signing.md`. A rule a renderer can quietly break is
 # worth a wall, so this hook refuses the commit rather than trusting the author to remember.
 #
+# A third rule stands beside them, and it guards meaning rather than rendering: a commit body
+# names the change in plain engineering words before it reaches for an image
+# (`.claude/rules/mechanism-sentence.md`). Six commits of one refactoring arc described that
+# arc entirely in metaphor, and their reader could not tell what had changed.
+#
 # What it welcomes, because there the reference is true:
 #   - `PR #76`, `issue #12`, and Urbit's own `Resolves #N.` / `Fixes` / `Closes` / `Refs`
 #     forms, which `.claude/rules/commit-messages.md` explicitly endorses.
@@ -69,6 +74,64 @@ if printf '%s\n' "$body" | grep -qE '(^|[^A-Za-z0-9._%+-])@[A-Za-z][A-Za-z0-9_-]
   echo "            Name the builtin without its '@': \"the memcpy builtin\", \"import sites\"."
   echo "            In file content the '@' is correct and stays; only messages linkify."
   echo "            Rule: .claude/rules/git-signing.md"
+fi
+
+# --- 3. the mechanism sentence -----------------------------------------------------
+# A commit body says what changed in ordinary engineering words before it reaches for an
+# image. Keaton read six commits of one refactoring arc and still had to ask what it did:
+# the bodies described it entirely in metaphor, and the words `file`, `function`,
+# `parameter`, and `import` appeared in none of them. Rule:
+# `.claude/rules/mechanism-sentence.md`.
+#
+# The list below is the ONE source of truth for the vocabulary, and
+# `tools/fixtures/mechanism_sentence_scan.sh` carries the same line; the witness asserts
+# the two agree, so this wall and its meter can never drift apart.
+# MECHANISM-WORDS-BEGIN
+MECH_WORDS='function fn parameter argument import call struct field signature symbol declaration module file script directory constant type'
+# MECHANISM-WORDS-END
+#
+# Scaled by length, because a pin or a stamp refresh honestly has little mechanism to name
+# while a four-hundred-word body has no excuse. Sixty words or more wants three distinct
+# mechanism words; twenty-five to fifty-nine wants one; under twenty-five is too short to
+# hide anything in and passes free. Calibrated against the forty commits standing when this
+# wall was built, where 21 of 40 read below the floor and every honestly-short body cleared it.
+# ONE named exemption, and it is the same one `.claude/rules/git-signing.md` already carries:
+# the depersonalized public seed ships a SINGLE root commit whose body describes a repository
+# rather than a change, so there is no mechanism for it to name. It is recognised by the
+# `Grain OS -- ` subject that only `publish-seed.sh` writes; every commit in this tree wears a
+# lowercase `component: ` prefix instead and can never borrow it. Proven both ways by
+# `tools/fixtures/mechanism_wall_scan.sh`. This is a named exemption, never a bypass -- there
+# is no flag, no env var, and no comment that turns the wall off.
+subject=$(printf '%s\n' "$body" | sed -n '1p')
+prose=$(printf '%s\n' "$body" | sed -e '1d')
+case $subject in
+  "Grain OS -- "*) prose= ;;
+esac
+mech_report=$(printf '%s\n' "$prose" | awk -v words="$MECH_WORDS" '
+  { w += NF; text = text " " tolower($0) }
+  END {
+    n = split(words, v, " ")
+    for (i = 1; i <= n; i++)
+      if (text ~ ("(^|[^a-z])" v[i] "(s|es)?([^a-z]|$)")) { found++; hit = hit " " v[i] }
+    need = (w >= 60) ? 3 : (w >= 25) ? 1 : 0
+    printf "%d %d %d%s\n", w, found + 0, need, hit
+  }')
+set -- $mech_report
+mech_words=$1; mech_found=$2; mech_need=$3
+if test "$mech_found" -lt "$mech_need"; then
+  fail=1
+  echo "commit-msg: REFUSED -- the body names no mechanism a reader can rebuild the change from."
+  echo
+  echo "              body words: $mech_words   mechanism words found: $mech_found   wanted: $mech_need"
+  echo
+  echo "            Add one plain sentence saying what changed in ordinary engineering"
+  echo "            words -- which file, which function, which parameter, which import,"
+  echo "            which call -- and put it BEFORE the metaphor. A reader who knows the"
+  echo "            language and has never read this tree must be able to reconstruct the"
+  echo "            change from that sentence alone."
+  echo
+  echo "            Vocabulary counted: $MECH_WORDS"
+  echo "            Rule: .claude/rules/mechanism-sentence.md"
 fi
 
 if test "$fail" -ne 0; then
