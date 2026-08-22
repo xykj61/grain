@@ -219,7 +219,7 @@ pub fn standing_reason(object: KernelObject) []const u8 {
         .endpoint => "reply.rye reads one ask through four stages and answers it",
         .notification => "notify.rye provisions each declared channel as its own doorbell",
         .cap_table => "capabilities.rye keeps a bounded table of dependents and their rights",
-        .giga_page, .four_k_page, .mega_page, .page_table => "regions.rye declares which memory a dependent may touch; nothing yet builds the mapping",
+        .giga_page, .four_k_page, .mega_page, .page_table => "regions.rye declares the memory, mapping.rye plans the pages exactly; the retype itself wants a kernel",
     };
     assert(reason.len > 0); // invariant: every standing names its reason
     return reason;
