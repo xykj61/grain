@@ -1,0 +1,34 @@
+format session-log-v1
+stamp 20260822.084802
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Two rungs regain an invariant, and the baseline moves inside the lap
+prompt Take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, send the increment
+think The queue named seat_note the head at 504 over forty-three rungs, opening three declarations -- the first lift of the arc that would cost a widening. That price earned a read before a line moved.
+think Read what the three widenings actually were. sh tools/fixtures/ladder_reach_visibility_scan.sh seat_note named a private note_path in reclaim.rye, reckon.rye, and abandon.rye. Reading those three showed each is already a three-line stub delegating to ladder_checks.note_path, and forty-one sibling rungs publish exactly the same stub. So the widening was a uniformity gap rather than a surface expansion.
+think Read the four rungs whose seat_note body differs from the forty-three. Hashing split them two and two: entrust.rye and taper.rye take value: u8 and write one byte where the forty-three take a bytes slice -- a real difference of signature. confer.rye and revoke.rye write the identical body minus one line, the assert that a note carries a suffix.
+think Checked every seat_note call site in confer.rye and revoke.rye before touching the assert. All eighteen pass a real suffix -- .given, .held, .offered, .words, .pruning, .kept, .pruned -- and the one empty string in each is the bytes argument rather than the suffix. So restoring the invariant changes no behavior and refuses nothing that runs today.
+think Restored assert(suffix.len >= 1) in both, scoped to the seat_note function since the same two-line opening appears twice in each file. The family read 43 identical, then 45. confer.rye still stays home: ladder_checks imports it, so it stands below the fold line and folding it would have the harness reach back through a rung it already reaches for.
+think Published the four private note_path stubs, which brought REACH_OK from widens=4 to widens=0 at fall=531, and freed read_words at the same time -- it read widens=3 before the publishes and reads widens=0 after.
+think Lifted the body into caravan/ladder_checks.rye as pub fn seat_note(comptime rung: type, io: std.Io, domain: []const u8, suffix: []const u8, bytes: []const u8) rung.NoteError!void, prefixing three symbols. Dir is already declared in the harness, so Dir.cwd() stands unchanged. Stubbed forty-four rungs, excluding the harness, confer.rye, entrust.rye, and taper.rye by name.
+think The realized fall first read 514 against the carry measured at the head of the lap, disagreeing with the predicted 531. Rather than book a red or adjust the prose, rebuilt the pre-fold tree in a scratch copy -- the same forty-four bodies, the restored asserts, the published stubs -- and measured it: 71,393. The fold's true fall is 71,393 - 70,862 = 531 exactly.
+obs Prediction met measurement to the digit for the seventh lap running, read against the tree the fold actually ran on. Carry 71,393 -> 70,862, a fall of exactly 531; delegates 3,073 -> 3,117; bodies 18,170 -> 18,171; distinct 7,967 -> 7,968; families 705 -> 704 as the two-member confer/revoke family dissolved into the forty-five; ceiling down to 70,868.
+obs The 17-line rise from 71,376 to 71,393 is family accounting rather than four added lines: confer and revoke left a two-member family at thirteen lines and joined a forty-five-member family at fifteen, and carry counts copies beyond the first.
+obs First firing of a lantern. A lap that edits bodies before folding them must re-baseline the carry, and nothing enforces it -- only the prediction disagreeing with the measurement caught it. Six laps of predicting the fall before moving a line is what made the disagreement legible at all. A second firing earns a tool; one firing earns this line.
+obs The widening the queue priced was a uniformity gap the meter counts honestly as a widening. Four rungs kept private what forty-one published, and every one of the four was already a delegating stub. Reading what a number is made of turned a cost into a ratchet, and the lift came back free.
+obs The dropped invariant is the more useful find. Two rungs ran without the assert their forty-three siblings keep, and no witness noticed because the assert never fires on any call site that exists. It was found by asking why a body differed rather than by a guard, which is the arc's habit of reading outliers earning its keep in a place a meter could not reach.
+obs No red booked. Nothing wrong shipped and no claim was made on the stale baseline; the disagreement was caught and resolved by measurement before any prose was written.
+loom family=seat_note declared=47 identical=45 folding=44 below_the_line=1 lines=15 stub=3 widens=0 predicted_fall=531 realized_fall=531
+loom caravan_carry head_of_lap=71376 after_invariant_restore=71393 after_fold=70862 ceiling=70868 delegates_before=3073 delegates_after=3117 bodies=18171 distinct=7968 families=704
+loom caravan_choir witnesses=108 verdict=GREEN era_suite_rungs=10
+file caravan/ladder_checks.rye the note-writing body published once, reaching three symbols through the rung handed in
+file caravan/confer.rye the dropped assert(suffix.len >= 1) restored; stays home below the fold line
+file caravan/revoke.rye the same assert restored, and the rung folds with its siblings
+file caravan/abandon.rye its private note_path stub published, one of four brought into step with forty-one siblings
+file tools/fixtures/caravan_ladder_carry_scan.sh the carry ceiling lowered to 70868
+file tools/caravan_ladder_carry_witness.rish the measured asserts, the family count, and the fold-queue prose moved to this lap
+file tools/caravan_ladder_reach_visibility_witness.rish the folded, head, and sibling slots advanced one place each
+file crux/REMEMBER.md the Now block refilled, the uniformity gap named, and the baseline lantern recorded
+recommend keep-going read_words at forty-three identical bodies over forty-five declarations by fifteen lines -- 504 by realized fall, zero widening, free because publishing the four note_path stubs paid its cost too. Behind it read_count 462, also free. elder_waits returns the same 504 and door_admits 462 while each opens all forty-three, so both stay the cheapest-looking rows that cost the most. Watch the baseline: if a lap edits bodies before folding them a second time, the re-baseline becomes a tool rather than a habit.
