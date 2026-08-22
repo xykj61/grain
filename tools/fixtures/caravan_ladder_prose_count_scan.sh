@@ -39,6 +39,16 @@
 # drift, which is the one and only fault this whole scan exists to catch. Requiring an assert to hold it
 # would ask a meter to pin a number that measures nothing.
 #
+# A ONE-CLOCK STAMP IS A NAME TOO (REDS %135). The same lantern fired a second time, one shape over. A
+# meter citing the design read behind it -- `active-designing/20260822-101058_what-a-widening-costs...` --
+# put two digit runs in a `say` line, and both were refused as recited counts. Neither is a count. A
+# one-clock stamp is fixed by `context/specs/20260627-102012_one-clock-naming-law.md` at the moment a file
+# is named and can never drift, which is the only fault this scan exists to catch. So the two shapes the
+# naming law defines -- `YYYYMMDD-HHMMSS_` in a filename and `YYYYMMDD.HHMMSS` in a body field -- come off
+# the line before any number is read, on exactly the reasoning the sigil already carries. The bound stays
+# tight the same way: only a full stamp is exempt, and a bare eight-digit number beside it is still a count
+# named at its own value.
+#
 # So a `%<digits>` token is read as a name and comes off the line before any number is extracted. The bound
 # is deliberately tight: only a digit run wearing the sigil is exempt, and a bare `130` beside it is still
 # refused, so the exemption cannot be reached by a count that merely stands near a citation. Both directions
@@ -94,9 +104,12 @@ EOF
     done <<EOF
 $(grep -n '^say ' "$meter" | while IFS= read -r line; do
     ln=${line%%:*}
-    # A `%`-sigilled row is this tree's own name for an immutable record, never a count, so it comes off
-    # the line before any number is read. Only the sigilled run is exempt; a bare number beside it stays.
-    printf '%s\n' "${line#*:}" | tr -d ',' | sed 's/%[0-9][0-9]*/ /g' | grep -oE '[0-9]+' | sort -u | sed "s/^/${ln}:/"
+    # A `%`-sigilled row is this tree's own name for an immutable record, never a count, and a one-clock
+    # stamp is the same kind of name, fixed when the file was named. Both come off the line before any
+    # number is read. Only the full shapes are exempt; a bare number beside them stays a count.
+    printf '%s\n' "${line#*:}" | tr -d ',' |
+        sed 's/%[0-9][0-9]*/ /g; s/[0-9]\{8\}-[0-9]\{6\}_/ /g; s/[0-9]\{8\}\.[0-9]\{6\}/ /g' |
+        grep -oE '[0-9]+' | sort -u | sed "s/^/${ln}:/"
 done)
 EOF
 done
