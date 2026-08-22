@@ -50,39 +50,39 @@ assert red.out contains "RED_no_identical_refused_rather_than_ok" else "reach-vi
 assert red.out contains "RED_capitalized_type_priced_rather_than_unseen" else "reach-visibility: a private type the shared body names priced at zero -- a meter that reads only lowercase names cannot see a struct (REDS %140)"
 assert red.out contains "RED_one_rule_read_as_one_family_across_two_visibilities" else "reach-visibility: one rule written pub in one rung and private in another read as two families -- the visibility keyword belongs beside the key rather than inside it (REDS %144)"
 
-# The family this lap lifted. found_path folded this lap, and it settled the
-# arithmetic the arc had been reading by feel. A fall is the count of rungs past
-# the first multiplied by the lines a stub returns, so narrow and long trades
-# evenly against wide and short: sixteen rungs shedding twenty-five lines each
-# returns more than thirty-one rungs shedding twelve. It widened nothing of any
-# kind, since every symbol the body reaches already stood public in all sixteen
-# rungs. The scan reads the folded shape back -- no long body left to lift, so
-# the widening column now describes the stubs, which bind this harness into each
+# The family this lap lifted. bearing_note folded this lap, and it read the
+# product from the breadth end where found_path read it from the depth end --
+# thirty-nine rungs shedding nine lines each, against sixteen rungs shedding
+# twenty-five. Both factors trade freely, and the two rows landed within
+# thirty-three lines of one another. It widened nothing of any kind, since
+# every symbol the body reaches already stood public in all thirty-nine rungs.
+# The scan reads the folded shape back -- no long body left to lift, so the
+# widening column now describes the stubs, which bind this harness into each
 # rung that calls it.
-let folded = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "found_path"]
+let folded = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "bearing_note"]
 say folded.out
-assert folded.out contains "REACH_OK family=found_path folding=16 widens=16 widens_fn=0 widens_import=16 widens_const=0 stub=3 fall=0" else "reach-visibility: want found_path standing folded, with nothing left to lift"
+assert folded.out contains "REACH_OK family=bearing_note folding=39 widens=39 widens_fn=0 widens_import=39 widens_const=0 stub=3 fall=0" else "reach-visibility: want bearing_note standing folded, with nothing left to lift"
 assert folded.ok else "reach-visibility: the lifted family must still read cleanly"
 
-# The row that returns the most, now that found_path has folded and left the
+# The row that returns the most, now that bearing_note has folded and left the
 # queue. The two queues still disagree at their heads and both stand asserted
 # here rather than remarked on: the carry queue leads with mend_the_plan, which
-# returns seventy-two, while the fall queue leads with bearing_note, which
-# returns three hundred and forty-two. Carry is what a family costs today; fall
-# is what a lift actually returns, and a long signature can eat nearly all of a
-# large carry. So the head asserted here is the fall head, and the carry head
-# stands asserted below it, so a reader sees both numbers rather than one
+# returns seventy-two, while the fall queue leads with appraisal_note, which
+# returns three hundred and thirty-three. Carry is what a family costs today;
+# fall is what a lift actually returns, and a long signature can eat nearly all
+# of a large carry. So the head asserted here is the fall head, and the carry
+# head stands asserted below it, so a reader sees both numbers rather than one
 # ordering.
 #
-# bearing_note is the widest free head the queue has held -- thirty-nine rungs
-# at twelve lines, widening nothing of any kind. Its factors sit at the far end
-# of the trade found_path measured: many rungs, a short body. So the row asks
-# whether the product holds its promise from the other direction, where the fall
-# comes almost entirely from breadth rather than from depth.
-let head = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "bearing_note"]
+# appraisal_note is the plateau's own head -- thirty-eight rungs at twelve
+# lines, widening nothing of any kind, the head this lap folded one rung
+# narrower. Three rows now stand within nine lines of each other in that same
+# shape, so the queue chooses among near-identical products and the ordering
+# rests on a single rung of breadth.
+let head = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "appraisal_note"]
 say head.out
-assert head.out contains "REACH_FAMILY family=bearing_note declared=39 identical=39 lines=12" else "reach-visibility: want bearing_note standing as thirty-nine declarations holding thirty-nine identical bodies at twelve lines"
-assert head.out contains "REACH_OK family=bearing_note folding=39 widens=0 widens_fn=0 widens_import=0 widens_const=0 stub=3 fall=342" else "reach-visibility: want the fall head returning three hundred and forty-two over a body that widens nothing of any kind"
+assert head.out contains "REACH_FAMILY family=appraisal_note declared=38 identical=38 lines=12" else "reach-visibility: want appraisal_note standing as thirty-eight declarations holding thirty-eight identical bodies at twelve lines"
+assert head.out contains "REACH_OK family=appraisal_note folding=38 widens=0 widens_fn=0 widens_import=0 widens_const=0 stub=3 fall=333" else "reach-visibility: want the fall head returning three hundred and thirty-three over a body that widens nothing of any kind"
 assert head.ok else "reach-visibility: the queue head must read cleanly"
 
 # read_own_line folded this lap, so the same scan run against it now reads a
@@ -165,40 +165,36 @@ assert third.out contains "REACH_FAMILY family=mend_the_plan declared=40 identic
 assert third.out contains "REACH_OK family=mend_the_plan folding=37 widens=222 widens_fn=0 widens_import=222 widens_const=0 stub=17 fall=72" else "reach-visibility: want mend_the_plan returning seventy-two, a fall its carry alone would never predict"
 assert third.ok else "reach-visibility: the row behind the head must read cleanly"
 
-# The row standing second by fall, and the near neighbour of the head. It
-# spreads a twelve-line body across thirty-eight rungs and widens nothing of any
-# kind, which is the head's own shape one rung narrower -- three of the four
-# rows now at the top of the fall queue are twelve-line notes over thirty-seven
-# to thirty-nine rungs, so the queue has reached a plateau of near-identical
-# products rather than a single standout.
-let second = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "appraisal_note"]
-say second.out
-assert second.out contains "REACH_OK family=appraisal_note folding=38 widens=0 widens_fn=0 widens_import=0 widens_const=0 stub=3 fall=333" else "reach-visibility: want appraisal_note standing second by fall over a body that widens nothing of any kind"
-assert second.ok else "reach-visibility: the row second by fall must read cleanly"
-
-# The row standing third by fall, and the one that still prices a function
+# The row standing second by fall, and the one that still prices a function
 # column beside an equal column of constants, one opening of each kind per rung.
-# It is pinned so the next reader can check the arc's standing answer rather
-# than trust it: if a constant column keeps resolving from above, this row costs
-# nothing either.
+# It stands three lines behind the head over four fewer rungs, which is the
+# product trading breadth for depth inside the plateau itself. It is pinned so
+# the next reader can check the arc's standing answer rather than trust it: if
+# a constant column keeps resolving from above, this row costs nothing either.
 let paired = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "answered_by"]
 say paired.out
-assert paired.out contains "REACH_OK family=answered_by folding=34 widens=68 widens_fn=34 widens_import=0 widens_const=34 stub=3 fall=330" else "reach-visibility: want answered_by repeating the paired-column shape at thirty-four openings of each kind"
+assert paired.out contains "REACH_FAMILY family=answered_by declared=34 identical=34 lines=13" else "reach-visibility: want answered_by standing as thirty-four declarations holding thirty-four identical bodies at thirteen lines"
+assert paired.out contains "REACH_OK family=answered_by folding=34 widens=68 widens_fn=34 widens_import=0 widens_const=34 stub=3 fall=330" else "reach-visibility: want answered_by standing second by fall, repeating the paired-column shape at thirty-four openings of each kind"
 assert paired.ok else "reach-visibility: the paired-column row must read cleanly"
 
-# The row standing fourth by fall, and the third twelve-line note in the top
-# four. It is asserted so the plateau the GREEN line names is a measurement
+# The row standing third by fall, and the second twelve-line note left in the
+# top four. It is asserted so the plateau the GREEN line names is a measurement
 # rather than an impression (REDS %110).
 let plateau = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "recant_note"]
 say plateau.out
-assert plateau.out contains "REACH_OK family=recant_note folding=37 widens=0 widens_fn=0 widens_import=0 widens_const=0 stub=3 fall=324" else "reach-visibility: want recant_note standing fourth by fall, the third twelve-line note of the plateau"
+assert plateau.out contains "REACH_OK family=recant_note folding=37 widens=0 widens_fn=0 widens_import=0 widens_const=0 stub=3 fall=324" else "reach-visibility: want recant_note standing third by fall, the second twelve-line note of the plateau"
 assert plateau.ok else "reach-visibility: the plateau row must read cleanly"
 
-# The fourth row of the queue. A number a meter recites and never asserts is a
-# claim rather than a measurement (REDS %110), so every family the GREEN line
-# names stands asserted above it, this one included.
-let fourth = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "fill_table"]
+# The row standing fourth by fall, and the place the plateau ends. It spreads a
+# ten-line body across forty-three rungs and widens nothing, so it returns
+# thirty fewer lines than the row above it on a wider family -- the first drop
+# of any size the queue has shown since the top four levelled. A number a meter
+# recites and never asserts is a claim rather than a measurement (REDS %110), so
+# every family the GREEN line names stands asserted, this one included.
+let fourth = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "reclaim_notes"]
 say fourth.out
+assert fourth.out contains "REACH_FAMILY family=reclaim_notes declared=43 identical=43 lines=10" else "reach-visibility: want reclaim_notes standing as forty-three declarations holding forty-three identical bodies at ten lines"
+assert fourth.out contains "REACH_OK family=reclaim_notes folding=43 widens=0 widens_fn=0 widens_import=0 widens_const=0 stub=3 fall=294" else "reach-visibility: want reclaim_notes standing fourth by fall, where the plateau ends"
 assert fourth.ok else "reach-visibility: the fourth family must read cleanly"
 
 # The fold line priced, rather than described (REDS %137). A rung the harness
@@ -218,10 +214,10 @@ assert fourth.ok else "reach-visibility: the fourth family must read cleanly"
 # before it is opened.
 let sink = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "sink"]
 say sink.out
-assert sink.out contains "SINK_OK total=66513 below_fold_line=1140 above_fold_line=65373" else "reach-visibility: want the fold line's whole foreclosure measured against the foldable corpus, private bodies counted beside public ones"
+assert sink.out contains "SINK_OK total=66162 below_fold_line=1140 above_fold_line=65022" else "reach-visibility: want the fold line's whole foreclosure measured against the foldable corpus, private bodies counted beside public ones"
 assert sink.out contains "SINK_ABOVE rung=queue.rye holds=29" else "reach-visibility: want the queue store's holding read off disk rather than described"
 assert sink.out contains "SINK_ABOVE rung=serve.rye holds=38" else "reach-visibility: want the serve module's holding read off disk rather than described"
-assert sink.out contains "SINK_ABOVE rung=farewell.rye holds=3894" else "reach-visibility: want the widest holding above the line, so the spread is a measurement rather than a feeling"
+assert sink.out contains "SINK_ABOVE rung=farewell.rye holds=3885" else "reach-visibility: want the widest holding above the line, so the spread is a measurement rather than a feeling"
 assert sink.out contains "SINK_BELOW rung=entrust.rye holds=168" else "reach-visibility: want the largest holding already below the fold line named"
 assert sink.ok else "reach-visibility: the sink meter must read cleanly"
 
@@ -231,4 +227,4 @@ assert sibling.out contains "REACH_PRIVATE symbol=capabilities kind=import" else
 assert paired.out contains "REACH_PRIVATE symbol=hand_path kind=fn" else "reach-visibility: want a private function named as a function"
 assert paired.out contains "REACH_PRIVATE symbol=Dir kind=const" else "reach-visibility: want a private constant named as a constant, the column this lap answered from above"
 
-say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, the cost is counted by kind rather than summed across kinds, and the fall counts every population left standing rather than two of the three. The found_path family lifted this lap, and it settled the arithmetic of the return itself. A fall is the count of rungs past the first multiplied by the lines a stub returns, so the two factors trade freely and neither is privileged, and a family too narrow to look important returns as much as a wide one whose body runs short. The row widened nothing of any kind, since every symbol the body reaches already stood public in all sixteen rungs, and a comptime assert holding two suffixes to one length travelled with the body, which is the clearest case the arc has met of a rule sixteen files could quietly come to disagree about. Read after the fold the row prices the stubs own private imports of this harness, asserted above, which is what every folded family reads. The two queues still disagree at their heads and both stand asserted: the carry queue leads with mend_the_plan returning seventy-two, while the fall queue leads with bearing_note returning three hundred and forty-two. The queue has reached a plateau -- bearing_note, appraisal_note, and recant_note are each a twelve-line note over thirty-seven to thirty-nine rungs, all three widening nothing, so the next several laps choose among near-identical products rather than among distinct shapes. The sink window fell with the lift: the fold line forecloses the same body lines it did before against a foldable corpus that shrank, both asserted above, because a lifted body leaves the rungs rather than the harness. A rung the harness imports still holds nearly five times what the arc believed before the keyword left the key, so the one-way door stays worth measuring twice before it is opened (REDS %137, %144)."
+say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, the cost is counted by kind rather than summed across kinds, and the fall counts every population left standing rather than two of the three. The bearing_note family lifted this lap, and it read the product from the breadth end where the row before it read the same product from the depth end. A wide family shedding a short body returned within a rounding of what a narrow family shedding a long one returned, which is the arithmetic holding from both directions rather than only from the one that discovered it. The row widened nothing of any kind, since every symbol the body reaches already stood public in all thirty-nine rungs, and it is the writing half of a pair whose reading half already stood lifted -- so the spelling of a note now lives in one file where the writer and its only reader can never come to disagree about it. Read after the fold the row prices the stubs own private imports of this harness, asserted above, which is what every folded family reads. The two queues still disagree at their heads and both stand asserted: the carry queue leads with mend_the_plan returning seventy-two, while the fall queue leads with appraisal_note returning three hundred and thirty-three. The plateau holds and shows its first edge: appraisal_note at three hundred and thirty-three, answered_by at three hundred and thirty, and recant_note at three hundred and twenty-four stand within a hand of one another, and reclaim_notes sits at two hundred and ninety-four below them, so the next several laps still choose among near-identical products while the drop after them is now measured rather than guessed. The sink window fell with the lift: the fold line forecloses the same body lines it did before against a foldable corpus that shrank, both asserted above, because a lifted body leaves the rungs rather than the harness. A rung the harness imports still holds nearly five times what the arc believed before the keyword left the key, so the one-way door stays worth measuring twice before it is opened (REDS %137, %144)."
