@@ -8460,7 +8460,7 @@ pub const standing_forum = "bench";
 
 /// The word this lap's plan comes to every run, named so a third hand may
 /// honestly answer the case before the run that carries it exists.
-const standing_settlement: Settlement = .carried;
+pub const standing_settlement: Settlement = .carried;
 
 // =========================================================================
 // Self-test
@@ -8874,76 +8874,7 @@ fn seat_the_readers_words(io: std.Io, weighs: ?Worth, rests: ?Rest) bool {
 /// a position rather than words from a person. No run of this plan ever writes
 /// them; the harness stands in for the runs that met this quarrel before today.
 fn seat_the_history(io: std.Io, stands: ?Plea, stood: u32, answers: ?Finding, owes: ?[max_debt_bytes]u8) bool {
-    clear_standing(io);
-    // The age clears with the position the harness seats, so each measured run
-    // meets a quarrel of a known age rather than one carrying whatever the last
-    // lap left on the wire.
-    clear_dwell(io);
-    // The standing clears too, for the same reason: a herald this lap reads must
-    // be one this lap published.
-    clear_swell(io);
-    // The forum's own box clears with it, so a case this lap reads back is one
-    // this lap carried rather than one an earlier lap left standing on a desk.
-    clear_case(io, standing_forum);
-    // The forum itself is seated by the harness, standing in for the operator
-    // who named a third hand before any quarrel existed. No run writes it.
-    seat_forum(io, standing_forum) catch |err| {
-        print("  RED: a forum could not be seated on the wire: {s}\n", .{@errorName(err)});
-        return false;
-    };
-    // The plan's own published finding clears with everything else, so a verdict
-    // this lap reads is one this lap's own run published.
-    clear_deem(io);
-    // And the plan's own word on it clears too, for the same reason: an avowal
-    // this lap reads back must be one this lap's own run actually said.
-    clear_avow(io);
-    // And the debt that word may leave clears with it, so a concession a later
-    // run would find standing is one this lap's own run actually booked.
-    clear_owe(io);
-    // The receipt for a debt met clears too, so a meeting this lap reads back is
-    // one this lap's own run actually made.
-    clear_met(io);
-    // And the word about what that meeting found, for the same reason: a finding
-    // this lap reads back is one this lap's own run reached.
-    clear_redress(io);
-    // And then, where this lap wants one, the debt an earlier run booked is
-    // seated exactly as that run would have left it -- by the harness, standing
-    // in for the run before today. No supervisor writes its own inheritance.
-    if (owes) |owed| {
-        seat_note(io, plan_name, ".owe", &owed) catch |err| {
-            print("  RED: an earlier run's debt could not be seated: {s}\n", .{@errorName(err)});
-            return false;
-        };
-    }
-    // The third hand's own answer, written in their hand rather than by any run.
-    // A desk that has said nothing yet is seated as exactly that: an empty box.
-    clear_finding(io, standing_forum);
-    if (answers) |finding| {
-        // The case a third hand answers is the case this plan carries every run
-        // -- the same word, the same standing, the same age -- so the answer they
-        // wrote on a previous lap is honestly an answer to this one.
-        const case = referral_bytes(standing_settlement, .loud, stood + 1);
-        answer_as_forum(io, standing_forum, finding_bytes(case, finding)) catch |err| {
-            print("  RED: a third hand could not answer in their own hand: {s}\n", .{@errorName(err)});
-            return false;
-        };
-    }
-    if (stands) |plea| {
-        standing_note(io, plea) catch |err| {
-            print("  RED: an earlier run's position could not be seated: {s}\n", .{@errorName(err)});
-            return false;
-        };
-        // The runs this position already stood through, seated as the record
-        // they are. No run of this plan writes its own history; the harness
-        // stands in for the runs that met this quarrel before today.
-        if (stood >= 1) {
-            dwell_note(io, stood) catch |err| {
-                print("  RED: a quarrel's own history could not be seated: {s}\n", .{@errorName(err)});
-                return false;
-            };
-        }
-    }
-    return true;
+    return ladder_checks.seat_the_history(@This(), io, stands, stood, answers, owes);
 }
 
 /// Tells what the two marks did, side by side, in an operator's own words.
