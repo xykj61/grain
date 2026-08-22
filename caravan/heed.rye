@@ -2590,31 +2590,7 @@ pub fn clear_tidings(io: std.Io, address: []const u8) void {
 /// Writes the path of the reply one reader may leave to the answer they were
 /// given.
 pub fn press_path(buf: *[max_note_path_len]u8, address: []const u8) NoteError![]const u8 {
-    // invariant: a reply is only ever read for an address a run may carry to
-    assert(addressable(address));
-    const suffix = ".press";
-    // invariant: a reply is left in the same box the answer was left in
-    comptime assert(suffix.len == ".again".len);
-    const total = reader_dir.len + 1 + address.len + suffix.len;
-    if (total > max_note_path_len) return error.NotePathTooLong;
-    var at: u32 = 0;
-    for (reader_dir) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    buf[at] = '/';
-    at += 1;
-    for (address) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    for (suffix) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    // invariant: a reply path is written exactly as long as it was measured
-    assert(at == total);
-    return buf[0..at];
+    return ladder_checks.press_path(@This(), buf, address);
 }
 
 /// Reads what one reader says to the answer they were given, or nothing at all.

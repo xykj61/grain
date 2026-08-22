@@ -9509,3 +9509,31 @@ pub fn lost_published(comptime rung: type, io: std.Io, held: u32) u32 {
     assert(at <= held);
     return found;
 }
+
+pub fn press_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: []const u8) rung.NoteError![]const u8 {
+    // invariant: a reply is only ever read for an address a run may carry to
+    assert(rung.addressable(address));
+    const suffix = ".press";
+    // invariant: a reply is left in the same box the answer was left in
+    comptime assert(suffix.len == ".again".len);
+    const total = rung.reader_dir.len + 1 + address.len + suffix.len;
+    if (total > rung.max_note_path_len) return error.NotePathTooLong;
+    var at: u32 = 0;
+    for (rung.reader_dir) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    buf[at] = '/';
+    at += 1;
+    for (address) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    for (suffix) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    // invariant: a reply path is written exactly as long as it was measured
+    assert(at == total);
+    return buf[0..at];
+}
