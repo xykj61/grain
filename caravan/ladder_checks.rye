@@ -10740,3 +10740,54 @@ pub fn may_pass(
     assert(i == candidate);
     return true;
 }
+
+/// Chooses the phase that may pass a blocked head, or answers that none may.
+///
+/// Fifty-nine rungs declare this name and forty-three hold the body byte for
+/// byte at twenty-two lines. Every one of the forty-three folds: none of them
+/// stands below the fold line, and none of them keeps its `Table` private, so
+/// the set the meter calls identical and the set that folds are the same set.
+///
+/// The widening meter priced the lift at one hundred and twenty-nine openings,
+/// and the lift pays none of them. The function column is the widest of the arc
+/// -- two openings per rung rather than one -- because the body reaches two
+/// private helpers, `waits` and `may_pass`, and both already stand lifted in
+/// this file above it, so the body reaches the pair standing here rather than
+/// the pair inside each rung. The import openings would have bound `system`
+/// into each rung, and this harness imports `system` at its own head.
+///
+/// `door_admits` is the third helper the body calls and it was never priced,
+/// since it already stands public in every folding rung and lifted here beside
+/// the other two. `Table`, `Reading`, `RunError`, `max_queue_len`, and
+/// `max_lookahead` are reached through the rung and stand public in all
+/// forty-three already.
+///
+/// The lookahead bound is the rung's own: a run reads at most the lookahead
+/// ceiling the rung names, in waiting phases past its head, before it answers
+/// null -- so a long queue costs a bounded look rather than a whole walk.
+///
+/// Measured rather than read: `REACH_OK family=choose_pass folding=43
+/// widens=129 widens_fn=86 widens_import=43 widens_const=0 stub=7 fall=630`.
+pub fn choose_pass(
+    comptime rung: type,
+    sys: *const system.System,
+    table: *const rung.Table,
+    reading: rung.Reading,
+) rung.RunError!?u32 {
+    // invariant: a pass is only ever sought while the head stands blocked
+    assert(table.head < table.held);
+    // invariant: a pass never looks past the record it reads
+    assert(table.head < rung.max_queue_len);
+    var looked: u32 = 0;
+    var i: u32 = table.head + 1;
+    while (i < table.held and looked < rung.max_lookahead) : (i += 1) {
+        if (!waits(rung, table, i)) continue;
+        looked += 1;
+        if (!try door_admits(rung, sys, table, i)) continue;
+        if (!may_pass(rung, sys, table, i, reading)) continue;
+        return i;
+    }
+    // invariant: the look stayed inside the bound it was given
+    assert(looked <= rung.max_lookahead);
+    return null;
+}

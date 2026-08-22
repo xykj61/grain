@@ -2398,22 +2398,7 @@ pub fn choose_pass(
     table: *const Table,
     reading: Reading,
 ) RunError!?u32 {
-    // invariant: a pass is only ever sought while the head stands blocked
-    assert(table.head < table.held);
-    // invariant: a pass never looks past the record it reads
-    assert(table.head < max_queue_len);
-    var looked: u32 = 0;
-    var i: u32 = table.head + 1;
-    while (i < table.held and looked < max_lookahead) : (i += 1) {
-        if (!waits(table, i)) continue;
-        looked += 1;
-        if (!try door_admits(sys, table, i)) continue;
-        if (!may_pass(sys, table, i, reading)) continue;
-        return i;
-    }
-    // invariant: the look stayed inside the bound it was given
-    assert(looked <= max_lookahead);
-    return null;
+    return ladder_checks.choose_pass(@This(), sys, table, reading);
 }
 
 /// Answers which standing dependent could carry this phase, if any could.
