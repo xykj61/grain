@@ -431,15 +431,7 @@ const two_step_queue = [_]Phase{
 
 /// Loads one declaration, or names why it could not be read.
 fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
-    const parsed = read.load(io, path, buf) catch |err| {
-        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
-        return null;
-    };
-    if (parsed.verify() != .whole) {
-        print("  RED: {s} did not read whole\n", .{path});
-        return null;
-    }
-    return parsed;
+    return ladder_checks.load_one(io, path, buf);
 }
 
 /// The seating read straight, before any supervisor spends it.
