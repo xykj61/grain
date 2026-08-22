@@ -79,4 +79,34 @@ let empty = run ["sh" "-c" "d=$(mktemp -d); echo '# a ledger with nothing in it'
 assert (empty.ok == false) else "reds-monotone: a ledger holding no rows must refuse"
 assert empty.out contains "verdict=no_rows" else "reds-monotone: want the empty ledger refused by name"
 
-say "GREEN: reds-monotone -- the spine accretes 1..N with no gaps -- N read off disk and printed above rather than recited here (REDS %108) -- across every fold archive found on disk and the living pin, both row shapes read, a closure note welcomed as the row it speaks about, and every refusal named"
+# The headline agrees with the spine (REDS %127). Everything above measures the ledger;
+# this proves the ledger SAYS what was measured. The headline names this very witness as
+# its source and still read 125 while the scan above read 126 -- corrected by hand one lap
+# earlier and stale again within the same lap, because booking a row and republishing the
+# total are two acts and only one of them was ever guarded. REDS %110's answer was to derive
+# the number rather than recite it; the answer that holds is to let a machine refuse the
+# disagreement, since a number a human republishes is a number that will one day be
+# republished wrong. This is the happy zone's mirrored pair at the ledger's own seam: one
+# side counts, the other side publishes, and the contract check lives with the publisher.
+let measured = run ["sh" "-c" "sh tools/fixtures/reds_ledger_monotone_scan.sh crux/archive/REDS-*rows-*.md crux/REDS.md | sed -n 's/^rows=//p'"]
+assert measured.ok else "reds-monotone: could not measure the spine for the headline check"
+let headline = run ["sh" "-c" "sh tools/fixtures/reds_ledger_headline_scan.sh crux/REDS.md ${trim measured.out}"]
+say headline.out
+assert headline.ok else "reds-monotone: the ledger's headline disagrees with its own measured spine"
+assert headline.out contains "verdict=ok" else "reds-monotone: want the headline agreeing with the measurement by name"
+
+# RED path five -- a headline that drifts. Generated rather than tracked, so the control can
+# never drift from the shape the scan enforces, and the refusal is proven on metal rather
+# than argued from the source.
+let drift = run ["sh" "-c" "d=$(mktemp -d); { echo '**Rows: 41 - in the tree before the ledger: 6 - recovered by opening it: 14 - added under the reds-first law: 21**'; echo 'Every number from 1 to 41 is used.'; } > $d/L.md; sh tools/fixtures/reds_ledger_headline_scan.sh $d/L.md 42; s=$?; rm -rf $d; exit $s"]
+assert (drift.ok == false) else "reds-monotone: a headline disagreeing with the measurement must refuse"
+assert drift.out contains "verdict=headline_drift" else "reds-monotone: want the drift refused by name"
+assert drift.out contains "headline total 41 disagrees with the measured 42" else "reds-monotone: want the drift naming which number is wrong"
+
+# RED path six -- a ledger reciting no headline at all, the REDS %97 shape once more: a scan
+# reading a real file and finding nothing to check, where the nothing is its own blindness.
+let bare = run ["sh" "-c" "d=$(mktemp -d); echo '# a ledger that publishes no total' > $d/L.md; sh tools/fixtures/reds_ledger_headline_scan.sh $d/L.md 7; s=$?; rm -rf $d; exit $s"]
+assert (bare.ok == false) else "reds-monotone: a ledger publishing no total must refuse"
+assert bare.out contains "verdict=no_headline" else "reds-monotone: want the missing headline refused by name"
+
+say "GREEN: reds-monotone -- the spine accretes 1..N with no gaps -- N read off disk and printed above rather than recited here (REDS %108) -- across every fold archive found on disk and the living pin, both row shapes read, a closure note welcomed as the row it speaks about, the headline reciting the three numbers the spine measures, and every refusal named"
