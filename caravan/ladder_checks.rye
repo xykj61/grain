@@ -5103,10 +5103,10 @@ pub fn tell_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address:
 
 /// Writes the path of the second hand one reader may raise their objection with.
 ///
-/// Thirty-one rungs held this body byte for byte -- the third and last member of
-/// the reader-box path family, beside `hand_path` and `tell_path`. All three name
-/// an address under the readers' own directory and dress it in a five-byte
-/// suffix; what differs is which box the note lands in and which companion it
+/// Thirty-one rungs held this body byte for byte -- a member of the reader-box
+/// path family, beside `hand_path`, `tell_path`, and `ask_path`. All four name
+/// an address under the readers' own directory and dress it in a suffix; what
+/// differs is which box the note lands in and which companion it
 /// pairs with, and that pairing carries the meaning: a renewal is left in the
 /// same box a question is, so a reader who was asked once is asked again where
 /// they already look. Lifted here, one body serves all thirty-one, and each rung
@@ -5141,6 +5141,50 @@ pub fn renew_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address
         at += 1;
     }
     // invariant: a renewal path is written exactly as long as it was measured
+    assert(at == total);
+    return buf[0..at];
+}
+
+/// Writes the path of the question one reader is asked again.
+///
+/// Thirty-one rungs held this body byte for byte -- the fourth member of the
+/// reader-box path family, beside `hand_path`, `tell_path`, and `renew_path`.
+/// All four name an address under the readers' own directory and dress it in a
+/// short suffix -- `.said`, `.outof`, `.still`, `.again`; what differs is which
+/// box the note lands in and which
+/// companion it pairs with. This one is the question a plan writes, and its
+/// renewal is read back from the same box, so a reader who was asked once is
+/// asked again where they already look. Lifted here, one body serves all
+/// thirty-one, and each rung reaches its own ceiling, its own directory, and its
+/// own error set through the type it hands in -- so a rung that widens the
+/// ceiling widens the path it writes.
+///
+/// Every symbol this body reaches already stood public in all thirty-one rungs,
+/// so the lift widens nothing. Measured rather than read: `REACH_OK
+/// family=ask_path folding=31 widens=0 stub=3 fall=660` from
+/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+pub fn ask_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: []const u8) rung.NoteError![]const u8 {
+    // invariant: a question is only ever asked of an address a run may carry to
+    assert(rung.addressable(address));
+    const suffix = ".again";
+    const total = rung.reader_dir.len + 1 + address.len + suffix.len;
+    if (total > rung.max_note_path_len) return error.NotePathTooLong;
+    var at: u32 = 0;
+    for (rung.reader_dir) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    buf[at] = '/';
+    at += 1;
+    for (address) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    for (suffix) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    // invariant: a question path is written exactly as long as it was measured
     assert(at == total);
     return buf[0..at];
 }
