@@ -6822,54 +6822,7 @@ pub fn redress_the_meeting(io: std.Io, redress: Redress, upshot: Upshot, report_
 /// writing nothing at all, since only a standing admission can be answered. The
 /// number it moves is the debt a plan inherited that the run never met.
 pub fn meet_the_debt(io: std.Io, meet: Meet, report_out: *Report) (RunError || NoteError)!void {
-    const on_wire = debt_standing(io);
-    const inherited_count: u32 = if (on_wire != null) 1 else 0;
-    if (inherited_count == 0) {
-        // invariant: a run inheriting no debt meets none
-        assert(meet_of(report_out).met == 0);
-        // invariant: a run inheriting no debt leaves none unmet
-        assert(meet_of(report_out).unmet == 0);
-        return;
-    }
-
-    // The measurement this rung moves, weighed against the debt actually
-    // inherited rather than against anything the plan asked for, so an
-    // admission nobody looks at is counted rather than refused.
-    meet_of(report_out).unmet = unmet_debts(inherited_count, meet);
-    const met_count = met_in(inherited_count, meet);
-    const deferred_count = deferred_in(inherited_count, meet);
-    if (meet == .defers) {
-        // invariant: a deferring run meets no debt, however plainly one stood
-        assert(met_count == 0);
-        meet_of(report_out).deferred = deferred_count;
-        return;
-    }
-
-    // The debt comes off the wire, since the admission a meeting answers is the
-    // one standing published and never one a run remembered. The reads supply
-    // the ladder rather than short-circuiting it, so every refusal below is
-    // reached by argument and named in its own order.
-    const owed = on_wire orelse return error.MeetUnowed;
-    const stood = true;
-    const settled = settlement_published(io) != null;
-    const receipt = met_bytes(owed);
-    const matched = met_answers(receipt, owed);
-    if (meet_refusal(inherited_count, met_count, deferred_count, stood, settled, matched)) |why| return why;
-
-    // invariant: a meeting run meets the one debt it opened holding
-    assert(met_count == 1);
-    try met_note(io, owed);
-    // The receipt before the taking down, so a run that falls between the two
-    // acts leaves a question still open rather than an admission quietly gone.
-    if (!met_holds(meeting_written(io), receipt)) return error.MeetMisrecorded;
-    clear_owe(io);
-    // The wire before the memory, once more: the debt is read back down before
-    // the report believes the admission was actually answered.
-    if (!debt_settled(debt_standing(io))) return error.MeetMisrecorded;
-    meet_of(report_out).met = met_count;
-    meet_of(report_out).deferred = deferred_count;
-    // invariant: a meeting run leaves no inherited debt unmet
-    assert(meet_of(report_out).unmet == 0);
+    return ladder_checks.meet_the_debt(@This(), io, meet, report_out);
 }
 
 /// Looks again at a matter this run inherited as reopened.
