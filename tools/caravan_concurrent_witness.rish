@@ -61,29 +61,32 @@ let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/r
 assert build.ok else "caravan concurrent build failed"
 
 # The reader this witness runs is built here rather than borrowed (REDS %92).
-# Thirty-six rungs ran caravan/bin/read without building it, so the whole arc was
-# green only on a tree some earlier run had left warm. A witness owns what it runs.
-let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/read"]
+# Thirty-six rungs once ran a shared caravan/bin/read without building it, so the whole
+# arc was green only on a tree some earlier run had left warm. A witness owns what it
+# runs -- and, since REDS %133, the path it runs it from: eighty witnesses built that
+# one reader to one name, so two running at once contended for a single file and the
+# loser reddened a green tree. This one lands in caravan/bin/concurrent_read.
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/concurrent_read"]
 assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
 
 
 # Four documents: the ring of three that has no room, the ring of four that
 # has two pairs of it, and the two mirrors that separate the tests.
-let narrow = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle.bron 2>&1"]
+let narrow = run ["sh" "-c" "caravan/bin/concurrent_read caravan/systems/serial_cycle.bron 2>&1"]
 assert narrow.ok else "the ring of three could not be read"
 assert narrow.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the ring of three changed shape"
 
-let wide = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle_wide.bron 2>&1"]
+let wide = run ["sh" "-c" "caravan/bin/concurrent_read caravan/systems/serial_cycle_wide.bron 2>&1"]
 assert wide.ok else "the ring of four could not be read"
 assert wide.out contains "domains 4 -- channels 4 -- regions 5 -- grants 10" else "the ring of four changed shape"
 assert wide.out contains "verdict: whole" else "the ring of four did not read whole"
 
-let wired = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle_wide_wired.bron 2>&1"]
+let wired = run ["sh" "-c" "caravan/bin/concurrent_read caravan/systems/serial_cycle_wide_wired.bron 2>&1"]
 assert wired.ok else "the wired declaration could not be read"
 assert wired.out contains "domains 4 -- channels 5 -- regions 5 -- grants 10" else "the wired document changed other than its channels"
 assert wired.out contains "verdict: whole" else "the wired declaration did not read whole"
 
-let mute = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle_wide_mute.bron 2>&1"]
+let mute = run ["sh" "-c" "caravan/bin/concurrent_read caravan/systems/serial_cycle_wide_mute.bron 2>&1"]
 assert mute.ok else "the mute declaration could not be read"
 assert mute.out contains "domains 4 -- channels 4 -- regions 6 -- grants 12" else "the mute document changed other than its regions"
 assert mute.out contains "verdict: whole" else "the mute declaration did not read whole"

@@ -72,11 +72,11 @@ let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/r
 assert build.ok else "caravan dispute build failed -- ${build.err}"
 
 # The reader this witness runs is built here rather than borrowed (REDS %92).
-let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/read"]
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/dispute_read"]
 assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
 
 # The board declaration the rungs below opened, unchanged.
-let published = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_three_clients_board.bron 2>&1"]
+let published = run ["sh" "-c" "caravan/bin/dispute_read caravan/systems/serial_three_clients_board.bron 2>&1"]
 assert published.ok else "the board declaration could not be read"
 assert published.out contains "domains 4 -- channels 3 -- regions 11 -- grants 22" else "the board declaration changed shape"
 assert published.out contains "verdict: whole" else "the board declaration did not read whole"

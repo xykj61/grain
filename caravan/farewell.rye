@@ -7974,52 +7974,7 @@ pub fn weigh_the_answer(io: std.Io, suffice: Suffice, report_out: *Report) (RunE
 /// the concession, the meeting, the redress, the delivery, and the reader's own
 /// verdict each come out of a reopening run exactly as they went in.
 pub fn take_up_again(io: std.Io, reopen: Reopen, report_out: *Report) (RunError || NoteError)!void {
-    var address_buf: [max_address_len]u8 = undefined;
-    const address = address_published(io, &address_buf);
-    const carried = if (address) |box| apprised_of(io, box) else null;
-    const spoken_word = if (address) |box| worth_written(io, box) else null;
-    const matched = if (carried) |delivery| suits_answers(spoken_word, delivery) else false;
-    const weighed = suffice_of(report_out).weighed >= 1 and matched;
-    const worth = if (weighed) suits_worth(spoken_word) else null;
-    const wanting = worth == .wanting;
-    const short_count: u32 = if (weighed and wanting) 1 else 0;
-    if (short_count == 0) {
-        // invariant: a run nobody called short takes nothing up
-        assert(reopen_of(report_out).taken_up == 0);
-        // invariant: a run nobody called short leaves no word unheeded
-        assert(reopen_of(report_out).unheeded == 0);
-        return;
-    }
-
-    // The measurement this rung moves, weighed against the word actually
-    // standing rather than against anything the plan asked for, so a matter
-    // nobody ever reopened is counted rather than refused.
-    reopen_of(report_out).unheeded = unheeded_words(short_count, reopen);
-    const taken_count = taken_up_in(short_count, reopen);
-    const closed_count = left_closed_in(short_count, reopen);
-    if (reopen == .closes) {
-        // invariant: a closing run books nothing, however plainly its reader
-        // called the answer short
-        assert(taken_count == 0);
-        reopen_of(report_out).left_closed = closed_count;
-        return;
-    }
-
-    // The reads supply the ladder rather than short-circuiting it, so every
-    // refusal below is reached by argument and named in its own order.
-    const word = spoken_word orelse return error.ReopenUnweighed;
-    if (reopen_refusal(short_count, taken_count, closed_count, weighed, wanting, matched)) |why| return why;
-
-    // invariant: a reopening run books the one matter its reader's word earned
-    assert(taken_count == 1);
-    try reopen_note(io, word);
-    // The wire before the memory, once more: the note is read back out of the
-    // plan's own record before the report believes anything was taken up.
-    if (!reopen_holds(again_standing(io), word)) return error.ReopenMisrecorded;
-    reopen_of(report_out).taken_up = taken_count;
-    reopen_of(report_out).left_closed = closed_count;
-    // invariant: a reopening run leaves no word of its own unheeded
-    assert(reopen_of(report_out).unheeded == 0);
+    return ladder_checks.take_up_again(@This(), io, reopen, report_out);
 }
 
 /// Says what this run's look at the debt it met came to.

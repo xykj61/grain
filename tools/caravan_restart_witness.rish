@@ -30,15 +30,18 @@ let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/r
 assert build.ok else "caravan restart build failed"
 
 # The reader this witness runs is built here rather than borrowed (REDS %92).
-# Thirty-six rungs ran caravan/bin/read without building it, so the whole arc was
-# green only on a tree some earlier run had left warm. A witness owns what it runs.
-let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/read"]
+# Thirty-six rungs once ran a shared caravan/bin/read without building it, so the whole
+# arc was green only on a tree some earlier run had left warm. A witness owns what it
+# runs -- and, since REDS %133, the path it runs it from: eighty witnesses built that
+# one reader to one name, so two running at once contended for a single file and the
+# loser reddened a green tree. This one lands in caravan/bin/restart_read.
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/restart_read"]
 assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
 
 
 # The declaration a fall is worth watching in reads whole before anything
 # runs on it -- the same two-client system `serve.rye` already serves.
-let decl = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_two_clients.bron 2>&1"]
+let decl = run ["sh" "-c" "caravan/bin/restart_read caravan/systems/serial_two_clients.bron 2>&1"]
 assert decl.ok else "the two-client declaration could not be read"
 assert decl.out contains "domains 3 -- channels 2 -- regions 4 -- grants 8" else "the two-client declaration changed shape"
 assert decl.out contains "verdict: whole" else "the two-client declaration did not read whole"
