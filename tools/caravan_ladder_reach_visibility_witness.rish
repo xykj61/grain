@@ -37,29 +37,29 @@ say red.out
 assert red.out contains "RED_no_family_refused_rather_than_ok" else "reach-visibility: a name no rung declares answered ok -- a scan must never bless its own blindness"
 assert red.out contains "RED_no_identical_refused_rather_than_ok" else "reach-visibility: a name whose every body differs answered ok -- nothing folds there"
 
-# The family this lap lifted. All thirty-one of its identical bodies are stubs
-# now, none standing below the fold line, and the scan reads the folded shape
-# back: thirty-one rungs still declaring the name, no identical body left to
-# lift, so the widening column now describes the stubs themselves.
-let folded = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "ask_path"]
+# The family this lap lifted. Fifteen of its sixteen bodies are stubs now, the
+# sixteenth staying home because `apprise.rye` writes a different body, and the
+# scan reads the folded shape back: sixteen rungs still declaring the name, no
+# long body left to lift, so the widening column now describes the stubs.
+let folded = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "apprise_the_raiser"]
 say folded.out
-assert folded.out contains "REACH_OK family=ask_path folding=31 widens=31 stub=3 fall=0" else "reach-visibility: want ask_path standing folded, with nothing left to lift"
+assert folded.out contains "REACH_OK family=apprise_the_raiser folding=15 widens=15 stub=3 fall=0" else "reach-visibility: want apprise_the_raiser standing folded, with nothing left to lift"
 assert folded.ok else "reach-visibility: the lifted family must still read cleanly"
 
 # The head of the queue as it stands, and the reading that put it there. Both
 # numbers are asserted, so a lap that folds this family must come back and say
 # so, and a lap that quietly widens one of the symbols it reaches cannot pass.
-let head = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "apprise_the_raiser"]
+let head = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "redress_the_meeting"]
 say head.out
-assert head.out contains "REACH_FAMILY family=apprise_the_raiser declared=16 identical=15 lines=50" else "reach-visibility: want apprise_the_raiser standing as sixteen declarations holding fifteen identical bodies at fifty lines"
-assert head.out contains "REACH_OK family=apprise_the_raiser folding=15 widens=0 stub=3 fall=658" else "reach-visibility: want the queue head returning six hundred and fifty-eight at no widening cost"
+assert head.out contains "REACH_FAMILY family=redress_the_meeting declared=17 identical=16 lines=46" else "reach-visibility: want redress_the_meeting standing as seventeen declarations holding sixteen identical bodies at forty-six lines"
+assert head.out contains "REACH_OK family=redress_the_meeting folding=16 widens=0 stub=3 fall=645" else "reach-visibility: want the queue head returning six hundred and forty-five at no widening cost"
 assert head.ok else "reach-visibility: the queue head must read cleanly"
 
 # The sibling behind it, another short ladder carrying a long body, so the next
 # two laps are both measured rather than inherited.
-let sibling = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "redress_the_meeting"]
+let sibling = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "weigh_the_answer"]
 say sibling.out
-assert sibling.out contains "REACH_OK family=redress_the_meeting folding=16 widens=0 stub=3 fall=645" else "reach-visibility: want redress_the_meeting returning six hundred and forty-five at no widening cost"
+assert sibling.out contains "REACH_OK family=weigh_the_answer folding=14 widens=0 stub=3 fall=624" else "reach-visibility: want weigh_the_answer returning six hundred and twenty-four at no widening cost"
 assert sibling.ok else "reach-visibility: the sibling family must read cleanly"
 
 say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, and the queue's two heads stand measured at zero widening apiece"

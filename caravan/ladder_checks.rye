@@ -9577,6 +9577,77 @@ pub fn meet_the_debt(comptime rung: type, io: std.Io, meet: rung.Meet, report_ou
     assert(rung.meet_of(report_out).unmet == 0);
 }
 
+/// Tells the raiser of a finding that the finding was reached.
+///
+/// Fifteen rungs held this body byte for byte, and a sixteenth wrote its own:
+/// `apprise.rye` is the rung where the apprise report *is* the report, so it
+/// names `report_out.apprised` directly where the fifteen above it reach through
+/// `apprise_of(report_out)`. That one difference is the whole difference, and it
+/// keeps `apprise.rye` home rather than shrinking it to a stub.
+///
+/// The wire before the memory, exactly as the rungs beneath it: this run reads
+/// the finding actually standing rather than remembering one, reads the address
+/// out of the note that names it, writes the same three bytes into that reader's
+/// own box, and reads the box back before the report believes anybody was told.
+/// Lifted here, one body serves all fifteen, and each rung reaches its own
+/// helpers, its own report shape, and its own error set through the type it
+/// hands in.
+///
+/// Every symbol this body reaches already stood public in all fifteen, so the
+/// lift widens nothing. Measured rather than read: `REACH_OK
+/// family=apprise_the_raiser folding=15 widens=0 stub=3 fall=658` from
+/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+pub fn apprise_the_raiser(comptime rung: type, io: std.Io, apprise: rung.Apprise, report_out: *rung.Report) (rung.RunError || rung.NoteError)!void {
+    const finding = rung.redress_written(io);
+    const redressed_count: u32 = if (finding != null) 1 else 0;
+    if (redressed_count == 0) {
+        // invariant: a run that reached no finding carries none
+        assert(rung.apprise_of(report_out).apprised == 0);
+        // invariant: a run that reached no finding leaves no raiser unheard
+        assert(rung.apprise_of(report_out).unheard == 0);
+        return;
+    }
+
+    // The measurement this rung moves, weighed against the finding actually
+    // written rather than against anything the plan asked for, so a raiser left
+    // in the dark is counted rather than refused.
+    rung.apprise_of(report_out).unheard = rung.unheard_findings(redressed_count, apprise);
+    const apprised_count = rung.apprised_in(redressed_count, apprise);
+    const withheld_count = rung.unsent_in(redressed_count, apprise);
+    if (apprise == .withheld) {
+        // invariant: a withholding run tells nobody, however plainly it reached
+        // a finding of its own
+        assert(apprised_count == 0);
+        rung.apprise_of(report_out).withheld = withheld_count;
+        return;
+    }
+
+    // The finding comes off the wire, since what a reader is owed is the answer
+    // the plan actually reached and never one a run remembered. The reads supply
+    // the ladder rather than short-circuiting it, so every refusal below is
+    // reached by argument and named in its own order.
+    const carried = finding orelse return error.AppriseUnfound;
+    const found = true;
+    var address_buf: [rung.max_address_len]u8 = undefined;
+    const address = rung.address_published(io, &address_buf);
+    const addressed = address != null;
+    const delivery = rung.found_bytes(carried);
+    const matched = rung.found_answers(delivery, carried);
+    if (rung.apprise_refusal(redressed_count, apprised_count, withheld_count, found, addressed, matched)) |why| return why;
+
+    // invariant: an apprising run carries the one finding it reached
+    assert(apprised_count == 1);
+    const box = address orelse return error.AppriseUnaddressed;
+    try rung.apprise_note(io, box, delivery);
+    // The wire before the memory, once more: the finding is read back out of the
+    // reader's own box before the report believes anybody was ever told.
+    if (!rung.apprise_holds(rung.apprised_of(io, box), delivery)) return error.AppriseMisrecorded;
+    rung.apprise_of(report_out).apprised = apprised_count;
+    rung.apprise_of(report_out).withheld = withheld_count;
+    // invariant: an apprising run leaves no raiser of its own unheard
+    assert(rung.apprise_of(report_out).unheard == 0);
+}
+
 pub fn lost_published(comptime rung: type, io: std.Io, held: u32) u32 {
     // invariant: a reading never names more phases than one record may hold
     assert(held <= rung.max_queue_len);
