@@ -37,32 +37,34 @@ say red.out
 assert red.out contains "RED_no_family_refused_rather_than_ok" else "reach-visibility: a name no rung declares answered ok -- a scan must never bless its own blindness"
 assert red.out contains "RED_no_identical_refused_rather_than_ok" else "reach-visibility: a name whose every body differs answered ok -- nothing folds there"
 
-# The family this lap lifted. Thirteen of its bodies are stubs now, and the
-# fourteenth stays home structurally: reopen.rye is the rung the reopen report
-# belongs to, so it names its fields directly where the thirteen reach a tier
-# down. The scan reads the folded shape back -- no long body left to lift, so
-# the widening column now describes the stubs.
-let folded = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "take_up_again"]
+# The family this lap lifted. Forty-four of its bodies are stubs now, and the
+# forty-fifth stays home below the fold line: ladder_checks.rye imports
+# confer.rye, so lifting confer's body would have the harness reach back through
+# a rung it already reaches for. The scan reads the folded shape back -- no long
+# body left to lift, so the widening column now describes the stubs.
+let folded = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "read_count"]
 say folded.out
-assert folded.out contains "REACH_OK family=take_up_again folding=13 widens=13 stub=3 fall=0" else "reach-visibility: want take_up_again standing folded, with nothing left to lift"
+assert folded.out contains "REACH_OK family=read_count folding=44 widens=44 stub=3 fall=0" else "reach-visibility: want read_count standing folded, with nothing left to lift"
 assert folded.ok else "reach-visibility: the lifted family must still read cleanly"
 
-# The head of the queue as it stands, and the reading that put it there. Both
-# numbers are asserted, so a lap that folds this family must come back and say
-# so, and a lap that quietly widens one of the symbols it reaches cannot pass.
-let head = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "read_count"]
+# The head of the queue as it stands, and the reading that put it there. The
+# free rows are spent: with read_count folded, every remaining row opens a
+# declaration somewhere, and elder_waits returns the most for what it opens.
+# Both numbers are asserted, so a lap that folds this family must come back and
+# say so, and a lap that quietly widens further cannot pass.
+let head = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "elder_waits"]
 say head.out
-assert head.out contains "REACH_FAMILY family=read_count declared=45 identical=43 lines=14" else "reach-visibility: want read_count standing as forty-five declarations holding forty-three identical bodies at fourteen lines"
-assert head.out contains "REACH_OK family=read_count folding=43 widens=0 stub=3 fall=462" else "reach-visibility: want the queue head returning four hundred and sixty-two at no widening cost"
+assert head.out contains "REACH_FAMILY family=elder_waits declared=53 identical=43 lines=15" else "reach-visibility: want elder_waits standing as fifty-three declarations holding forty-three identical bodies at fifteen lines"
+assert head.out contains "REACH_OK family=elder_waits folding=43 widens=43 stub=3 fall=504" else "reach-visibility: want the queue head returning five hundred and four for forty-three openings"
 assert head.ok else "reach-visibility: the queue head must read cleanly"
 
-# The largest realized fall left on the board, and it is no longer free: with
-# read_count folded, every remaining row costs a widening, and this is the one
-# that returns most for what it opens. Asserting it here keeps the trade
-# measured rather than inherited when the free rows run out.
+# The largest realized fall left on the board, and the widest widening beside
+# it: load_one returns more than elder_waits and opens nearly three times as
+# many declarations to do it. Asserting both keeps the trade measured rather
+# than inherited, now that no free row remains to take instead.
 let sibling = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "load_one"]
 say sibling.out
 assert sibling.out contains "REACH_OK family=load_one folding=60 widens=120 stub=3 fall=549" else "reach-visibility: want load_one returning five hundred and forty-nine over a hundred and twenty widenings"
 assert sibling.ok else "reach-visibility: the sibling family must read cleanly"
 
-say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, and the queue's head stands measured at zero widening and the largest paid row behind it stands measured at its true cost"
+say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, and the queue's head stands measured at what it opens beside the largest paid row behind it stands measured at its true cost"
