@@ -113,7 +113,7 @@ say "caravan-ladder-print: whole bodies -- 93 of 214 printing bodies stand byte-
 # two findings. The tolerance the assert names stays at twenty-one percent, and the eleven percent measured this lap
 # sits well inside it -- the two readings are converging as the carry falls, which is what a real fold looks like.
 assert living.out contains "PRINT_NEIGHBOR carried=2355" else "caravan-ladder-print: want the neighbor walk agreeing within twenty-one percent"
-say "caravan-ladder-print: second reading -- the rung-by-rung walk counts 2,355 where the union counts 2,686, two questions landing within thirteen percent"
+say "caravan-ladder-print: second reading -- the rung-by-rung walk counts 2,355 where the union counts 2,686, two questions answered independently and printed side by side, so a reader compares the two readings rather than trusting a ratio nothing here holds"
 
 # TAME's seventy-line ratchet, reported rather than gated, exactly as TAME asks. Four printing bodies stand past the
 # bound today, the longest being the meet rung's half-telling at 93 lines. Five left this lap by construction rather
@@ -167,4 +167,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_p
 assert (ceiling.ok == false) else "caravan-ladder-print: a printing carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-print: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-print -- the ladder's printing stands counted at 2,686 carried lines of 4,600 across 42 rungs and the harness beside them, read two independent ways that agree within thirteen percent, down since the run-telling movement lifted into `caravan/ladder_checks.rye`, where eight rungs holding fifty lines apiece became one body and eight lines of call, held under the ceiling the scan printed above so the fold stays folded, proven by hand on a two-rung corpus holding both shapes, and all three RED paths refusing by name."
+say "GREEN: caravan-ladder-print -- the ladder's printing stands counted at 2,686 carried lines of 4,600 across 42 rungs and the harness beside them, read two independent ways whose answers the scan prints side by side, down since the run-telling movement lifted into `caravan/ladder_checks.rye`, where a movement of rungs each holding a long body became one body and a few lines of call, held under the ceiling the scan printed above so the fold stays folded, proven by hand on a two-rung corpus holding both shapes, and all three RED paths refusing by name."
