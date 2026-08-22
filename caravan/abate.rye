@@ -5208,19 +5208,7 @@ pub fn ask_again(io: std.Io, address: []const u8, held: [2]Settlement) NoteError
 /// remembering having written it. A supervisor that believed its own asking
 /// could publish a lapse over a question that never left the building.
 pub fn asked_of(io: std.Io, address: []const u8) ?[2]Settlement {
-    if (!addressable(address)) return null;
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = ask_path(&path_buf, address) catch return null;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
-    defer file.close(io);
-    var bytes: [2]u8 = @splat(0);
-    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
-    // invariant: a question never outgrows the two readings it names
-    assert(got <= 2);
-    if (got < 2) return null;
-    const ours = settlement_of_byte(bytes[0]) orelse return null;
-    const theirs = settlement_of_byte(bytes[1]) orelse return null;
-    return .{ ours, theirs };
+    return ladder_checks.asked_of(@This(), io, address);
 }
 
 /// Reads one reader's second hand as the objection they say they still hold.
