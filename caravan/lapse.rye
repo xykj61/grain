@@ -1895,36 +1895,8 @@ pub fn clear_hand(io: std.Io, address: []const u8) void {
 }
 
 /// Writes the path of the question one reader is asked again.
-///
-/// A reader's own box now holds four files, and they face two ways. `.told` and
-/// `.again` are what the plan wrote to them -- the correction, and the question
-/// of whether they still object. `.said` and `.still` are what they wrote back.
-/// A run writes the first pair and only ever reads the second, which is the
-/// whole difference between addressing a person and answering for them.
 fn ask_path(buf: *[max_note_path_len]u8, address: []const u8) NoteError![]const u8 {
-    // invariant: a question is only ever asked of an address a run may carry to
-    assert(addressable(address));
-    const suffix = ".again";
-    const total = reader_dir.len + 1 + address.len + suffix.len;
-    if (total > max_note_path_len) return error.NotePathTooLong;
-    var at: u32 = 0;
-    for (reader_dir) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    buf[at] = '/';
-    at += 1;
-    for (address) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    for (suffix) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    // invariant: a question path is written exactly as long as it was measured
-    assert(at == total);
-    return buf[0..at];
+    return ladder_checks.ask_path(@This(), buf, address);
 }
 
 /// Writes the path of the second hand one reader may raise their objection with.

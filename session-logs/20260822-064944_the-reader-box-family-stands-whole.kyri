@@ -1,0 +1,62 @@
+format session-log-v1
+stamp 20260822.064944
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The reader-box family stands whole, and a folded family reads zero
+prompt Take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, deep-read one council-rota row, sweep the prose Radiant, and send.
+think Standfast opened the lap. The Caravan choir ran at HEAD before a line moved and sang GREEN at 108, and the era suite ran GREEN at ten rungs, both run rather than trusted. crux/REDS.md reads closed through %131 with no agent-closable red standing.
+think The running thread pointed at ask_path plainly. Three consecutive logs named it, and the widening meter built two laps ago had already weighed it -- so the lap began by running the meter rather than by reading the sentence about it.
+think REACH_OK named ask_path folding thirty-one rungs, widening zero, stub three, fall six hundred and sixty before a line moved. The derivation is thirty rungs times twenty-two lines: one body survives in the harness, so folding minus one bodies vanish.
+think Verified the shape before touching it -- all thirty-one bodies hash identical, all thirty-one doc blocks are seven lines with an identical summary line, and every one of the thirty-one rungs already imports ladder_checks for its earlier stubs.
+think The harness gained pub fn ask_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: []const u8) rung.NoteError![]const u8, reaching max_note_path_len, NoteError, addressable, and reader_dir through the type handed in. Each rung keeps its one-line summary doc and a three-line stub returning ladder_checks.ask_path(@This(), buf, address).
+think Docs-implementation-sync caught a claim this lift falsifies. renew_path's own doc in the harness called itself the third and last member of the reader-box path family, beside hand_path and tell_path. It is not last any more, so the sentence was corrected in the same commit that made it false.
+think The first cut of the new doc said the four suffixes are six bytes each. Reading them off the harness found .said at five against .outof, .still, and .again at six, so the sentence names the four suffixes rather than a width they do not share. A doc claim is checked by reading, never by symmetry.
+think Three living claims moved with the code. The carry witness holds carried_lines and the ceiling by exact string, the ceiling in the scan came down from 74,485 to 73,825, and the reach-visibility witness advances one lap each round -- its folded slot took ask_path, its head slot apprise_the_raiser, its sibling slot redress_the_meeting.
+think The head slot's first claim was wrong on its first run: apprise_the_raiser reads declared=16 identical=15, so one of the sixteen rungs writes a different body. The scan named it and the assert now says sixteen declarations holding fifteen identical bodies, which is more information than the round number would have carried.
+obs Prediction met measurement to the digit for the second lap running under the meter. Carry 74,479 -> 73,819, a fall of exactly 660; delegates 2,953 -> 2,984, exactly the thirty-one stubs; bodies 18,165 -> 18,166; ceiling down to 73,825.
+obs Run against the folded family afterward, the same scan reads widens=31 fall=0 -- a stub reaches ladder_checks, which stands private in each rung. So the queue reports a door already through rather than offering it a second time, which is a question a hand-written column could only answer by being edited.
+obs REDS %131's lesson was applied rather than remembered. The carry meter's prose was rewritten for this lap BEFORE the choir's final run, and the full choir ran again after the last edit in the tree. A witness proves the tree it ran on.
+obs Council rota, row zero -- Aether and Jupiter, why the work exists. The compass named the read order and its own amendment to Lindy-first crux-first, which is the order this lap took. The Lindy effect priced the choice exactly: a fold that widens nothing keeps the seam narrow for the reader who arrives three years on, so 660 at zero widening outranks a larger fall that opens declarations. And the grain named the accounting -- sameness as compression counts the whole cost of a line saved, which is what the delegate count beside the carry count is for.
+obs No red booked this lap. The two claim corrections -- the ceiling and the reach-visibility slots -- are the arc's ordinary ratchet rather than defects; the stale third and last member sentence was caught by reading the code the lift touched, which is what docs-implementation-sync asks for.
+loom family=ask_path folding=31 lines=25 stub=3 widens=0 predicted_fall=660 realized_fall=660
+loom caravan_carry before=74479 after=73819 ceiling=73825 delegates_before=2953 delegates_after=2984 bodies=18166
+loom caravan_choir witnesses=108 verdict=GREEN era_suite_rungs=10
+file caravan/ladder_checks.rye ask_path lifted as one published body over a comptime rung parameter, and renew_path's third-and-last-member claim corrected in the same change
+file caravan/abate.rye ask_path becomes a three-line stub
+file caravan/allay.rye ask_path becomes a three-line stub
+file caravan/answer.rye ask_path becomes a three-line stub
+file caravan/appeal.rye ask_path becomes a three-line stub
+file caravan/apprise.rye ask_path becomes a three-line stub
+file caravan/avow.rye ask_path becomes a three-line stub
+file caravan/beckon.rye ask_path becomes a three-line stub
+file caravan/conclude.rye ask_path becomes a three-line stub
+file caravan/deem.rye ask_path becomes a three-line stub
+file caravan/desist.rye ask_path becomes a three-line stub
+file caravan/dwell.rye ask_path becomes a three-line stub
+file caravan/endure.rye ask_path becomes a three-line stub
+file caravan/farewell.rye ask_path becomes a three-line stub
+file caravan/forbear.rye ask_path becomes a three-line stub
+file caravan/heed.rye ask_path becomes a three-line stub
+file caravan/lapse.rye ask_path becomes a three-line stub
+file caravan/meet.rye ask_path becomes a three-line stub
+file caravan/mind.rye ask_path becomes a three-line stub
+file caravan/owe.rye ask_path becomes a three-line stub
+file caravan/recount.rye ask_path becomes a three-line stub
+file caravan/redress.rye ask_path becomes a three-line stub
+file caravan/refer.rye ask_path becomes a three-line stub
+file caravan/refrain.rye ask_path becomes a three-line stub
+file caravan/relent.rye ask_path becomes a three-line stub
+file caravan/reopen.rye ask_path becomes a three-line stub
+file caravan/repose.rye ask_path becomes a three-line stub
+file caravan/respect.rye ask_path becomes a three-line stub
+file caravan/reweigh.rye ask_path becomes a three-line stub
+file caravan/suffice.rye ask_path becomes a three-line stub
+file caravan/swell.rye ask_path becomes a three-line stub
+file caravan/tidings.rye ask_path becomes a three-line stub
+file tools/fixtures/caravan_ladder_carry_scan.sh ceiling lowered to 73825
+file tools/caravan_ladder_carry_witness.rish carry and bodies claims moved to the measured line, and the meter's prose rewritten for this lap before the choir's final run
+file tools/caravan_ladder_reach_visibility_witness.rish folded slot takes ask_path, head slot apprise_the_raiser, sibling slot redress_the_meeting
+file crux/REMEMBER.md Now refilled with the live work-front and the next crux
+recommend keep-going apprise_the_raiser at fifteen identical bodies over sixteen declarations by fifty lines -- 658 by realized fall, zero widening, the shape the queue now favors with the reader-box family closed: a short ladder carrying a long body. Behind it redress_the_meeting at 645 over sixteen and weigh_the_answer at 624 over fourteen, both zero. Then confirm_pruned 516 over forty-four, seat_note 504 opening three, revoke_one 468 opening forty. The ones that truly cost: choose_pass 630 opening 129, may_pass 574 opening 96, load_one 549 opening 120, read_own_line 492 opening 126. mend_the_plan is spent at 72. Note that apprise_the_raiser's sixteenth declaration holds a different body, so the lap opens by reading which rung differs and why before folding the fifteen.
