@@ -254,6 +254,31 @@ let stamp_bare = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \
 assert (stamp_bare.ok == false) else "caravan-ladder-copy: a bare count standing beside a one-clock stamp must still refuse"
 assert stamp_bare.out contains "recites 20260822 with no assert holding it" else "caravan-ladder-copy: want the bare number named at its own value, the stamp beside it granting it nothing"
 
+# A NUMBER SPELLED IN WORDS IS STILL A NUMBER (REDS %143). This arc's meters write their prose almost
+# entirely in spelled-out numbers, so the printed-number property above -- which reads digit runs -- was
+# reading nothing at all where the drift actually lives. A GREEN line shipped saying "each of the twenty-two
+# folding rungs keeps a three-line stub" for a lap that folded forty-four, and the scan read that file clean
+# at printed=0. REDS %142 had already written the lesson down, that a meter reading digits sees half of what
+# it looks for, and left it unbuilt; the second firing builds it.
+#
+# Three legs, so the bound is proven rather than described. A spelled count of ten or more with no assert
+# holding it refuses at the value it names. The same spelled count refuses no longer once an assert in the
+# same file holds it, which proves the leg reads the property rather than merely the vocabulary. And a
+# spelled number below ten passes free, because under ten a spelled word in English prose is a determiner --
+# "one published body", "two lines" -- and those are reported as `spelled_small` rather than read, so the
+# scan never narrows its own subject without saying so (REDS %102).
+let spelled_bare = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \042ok\042 else \042e\042\nsay \042each of the twenty-two folding rungs keeps a stub\042\n' > $d/caravan_ladder_spelled_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+assert (spelled_bare.ok == false) else "caravan-ladder-copy: a spelled count no assert holds must refuse"
+assert spelled_bare.out contains "recites 22 in words with no assert holding it" else "caravan-ladder-copy: want the spelled count named at the value it spells"
+
+let spelled_held = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \042folding=22\042 else \042e\042\nsay \042each of the twenty-two folding rungs keeps a stub\042\n' > $d/caravan_ladder_spelled_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+assert spelled_held.ok else "caravan-ladder-copy: a spelled count an assert holds must read clean -- ${spelled_held.out}"
+assert spelled_held.out contains "spelled=1" else "caravan-ladder-copy: want the spelled count read and held rather than merely unseen"
+
+let spelled_small = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \042ok\042 else \042e\042\nsay \042one published body and two lines of call, five names reached in all\042\n' > $d/caravan_ladder_spelled_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+assert spelled_small.ok else "caravan-ladder-copy: a determiner below ten must pass free -- ${spelled_small.out}"
+assert spelled_small.out contains "spelled_small=3" else "caravan-ladder-copy: want the words below ten counted and reported rather than silently dropped"
+
 # The counting proven by hand. The corpus holds two rungs: the lower carries two distinct checks, the
 # upper carries one of them forward byte for byte and adds one of its own. So four checks stand, three
 # bodies are distinct, exactly one is a copy, and that copy is six lines long -- countable by eye in the
@@ -315,4 +340,4 @@ let bare = run ["sh" "-c" "d=$(mktemp -d); CARAVAN_TOOLS_DIR=$d sh tools/fixture
 assert (bare.ok == false) else "caravan-ladder-copy: a directory holding no witnesses must refuse"
 assert bare.out contains "reason=no_witnesses" else "caravan-ladder-copy: want the empty witness directory refused by name"
 
-say "GREEN: caravan-ladder-copy -- the folded ladder stands counted under a named ceiling, all three folds are read out of the ladder rather than claimed, the counting is proven by hand on a two-rung corpus, the fold walks down one rung at a time in either form a rung may write it, the Caravan roster is asked here every lap so no witness is born unheard, and all eleven RED paths refuse by name, the two prose rules and both roster directions among them, welcomed on the elder harness and refused on the drifted line that actually shipped."
+say "GREEN: caravan-ladder-copy -- the folded ladder stands counted under a named ceiling, all three folds are read out of the ladder rather than claimed, the counting is proven by hand on a two-rung corpus, the fold walks down one rung at a time in either form a rung may write it, the Caravan roster is asked here every lap so no witness is born unheard, and every RED path refuses by name, the two prose rules and both roster directions among them, welcomed on the elder harness and refused on the drifted line that actually shipped."

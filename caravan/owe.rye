@@ -2520,27 +2520,8 @@ pub fn verdict_published(io: std.Io) ?Verdict {
 }
 
 /// Publishes which phases of the plan an arc was lost on.
-///
-/// The verdict says *that* a plan fell short; this says *where*. It is written
-/// as one glyph per phase of the record -- `x` for a phase whose absorbed arc
-/// nobody served, `.` for every other -- so an operator reads the shape of the
-/// loss straight off the wire, and a mend derives its second record from the
-/// record rather than from a supervisor's memory of it.
-///
-/// One glyph per phase rather than a packed mask, because the reader here is a
-/// person first. The bound is the record's own: a plan never holds more phases
-/// than `max_queue_len`, so this note never grows past it.
 pub fn lost_note(io: std.Io, held: u32, lost_mask: u32) NoteError!void {
-    // invariant: a loss note never names more phases than one record may hold
-    assert(held <= max_queue_len);
-    var glyphs: [max_queue_len]u8 = @splat('.');
-    var at: u32 = 0;
-    while (at < held) : (at += 1) {
-        if ((lost_mask & phase_bit(at)) != 0) glyphs[at] = 'x';
-    }
-    // invariant: every phase of the record was written, none skipped
-    assert(at == held);
-    try seat_note(io, plan_name, ".lost", glyphs[0..held]);
+    return ladder_checks.lost_note(@This(), io, held, lost_mask);
 }
 
 /// Reads the published loss back as the mask a mend seats from.

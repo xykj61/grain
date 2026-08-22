@@ -54,12 +54,35 @@
 # refused, so the exemption cannot be reached by a count that merely stands near a citation. Both directions
 # are proven on a generated control in `../caravan_ladder_copy_witness.rish` rather than reasoned here.
 #
+# THE THIRD RULE -- A NUMBER SPELLED IN WORDS IS STILL A NUMBER (REDS %143). The rule above reads digit runs,
+# and this arc's meters write their prose almost entirely in spelled-out numbers, so the property was reading
+# nothing at all where it mattered most. The carry meter's GREEN line closed a lap saying "each of the
+# twenty-two folding rungs keeps a three-line stub" for a lap that folded forty-four, and this scan read that
+# file as clean at printed=0, because not one number in the sentence wore a digit. REDS %142 had already
+# written the narrower lesson down -- a meter that reads digits sees half of what it is looking for -- and
+# left it unbuilt, so the lantern fired a second time and becomes a loom here.
+#
+# WHERE THE BOUND FALLS, AND WHY IT IS TEN. Below ten, a spelled number in English prose is usually a
+# determiner rather than a recited measurement -- "one published body", "two lines", "five names" -- and
+# holding those to an assert would push honest prose into worse shapes without catching a single drift. At
+# ten and above, a spelled number in a meter's own prose is a count of something the meter measures, and the
+# arc's whole drift history sits there: twenty-two, forty-four, three hundred and ninety-nine, sixty-five
+# thousand five hundred and seventy-nine. So the property applies from ten upward, and the words below ten
+# are COUNTED AND REPORTED as `spelled_small`, never silently dropped -- a scan that narrows its own subject
+# must say so out loud (REDS %102).
+#
+# THE GRAMMAR IT READS. Units, teens, tens, `hundred`, and `thousand`, joined by hyphens, spaces, or `and`,
+# which is the whole of the vocabulary these meters use. A phrase accumulates the ordinary way and the value
+# is compared against the file's own asserts exactly as a digit run is, so "sixty-five thousand one hundred
+# and eighty" and `carried=65180` are one claim wearing two clothes.
+#
 # THE RULE READS EVERY `say`, NOT ONLY THE CLOSING ONE. It was drawn at the closing line first, and the line
 # directly above one proved that boundary too narrow within the same lap: the carry meter's `three windows and
 # the room` line recited the same stale 137,176 the close did. A printed number is a printed number.
 #
 # Usage: sh tools/fixtures/caravan_ladder_prose_count_scan.sh [meter-glob-dir]
-# Prints: said=<n> comments=<n> printed=<n> verdict=ok|recited  (and one LADDER_PROSE_BAD line per offence)
+# Prints: said=<n> comments=<n> printed=<n> spelled=<n> spelled_small=<n> verdict=ok|recited
+#         (and one LADDER_PROSE_BAD line per offence)
 
 set -eu
 
@@ -68,7 +91,38 @@ dir="${1:-tools}"
 said=0
 comments=0
 printed=0
+spelled=0
+spelled_small=0
 status=0
+
+# The spelled-number reader (REDS %143). One awk program, written once and reused per meter, turning every
+# spelled phrase on a line into the number it names. It prints one `value` per phrase, so the caller holds
+# each to the same asserted-in-this-file property a digit run answers to.
+spell_reader=$(mktemp)
+trap 'rm -f "$spell_reader"' EXIT INT TERM
+cat > "$spell_reader" <<'SPELL'
+function val(w,   u) {
+  u["one"]=1;u["two"]=2;u["three"]=3;u["four"]=4;u["five"]=5;u["six"]=6;u["seven"]=7
+  u["eight"]=8;u["nine"]=9;u["ten"]=10;u["eleven"]=11;u["twelve"]=12;u["thirteen"]=13
+  u["fourteen"]=14;u["fifteen"]=15;u["sixteen"]=16;u["seventeen"]=17;u["eighteen"]=18
+  u["nineteen"]=19;u["twenty"]=20;u["thirty"]=30;u["forty"]=40;u["fifty"]=50
+  u["sixty"]=60;u["seventy"]=70;u["eighty"]=80;u["ninety"]=90
+  return (w in u) ? u[w] : -1
+}
+{
+  n = split(tolower($0), w, /[^a-z]+/)
+  total = 0; cur = 0; have = 0
+  for (i = 1; i <= n + 1; i++) {
+    word = (i <= n) ? w[i] : ""
+    v = val(word)
+    if (v >= 0) { cur += v; have = 1; continue }
+    if (word == "hundred") { if (cur == 0) cur = 1; cur *= 100; have = 1; continue }
+    if (word == "thousand") { if (cur == 0) cur = 1; total += cur * 1000; cur = 0; have = 1; continue }
+    if (word == "and" && have) continue
+    if (have) { total += cur; if (total > 0) print total; total = 0; cur = 0; have = 0 }
+  }
+}
+SPELL
 
 for meter in "$dir"/caravan_ladder_*_witness.rish; do
     [ -f "$meter" ] || continue
@@ -112,12 +166,34 @@ $(grep -n '^say ' "$meter" | while IFS= read -r line; do
         grep -oE '[0-9]+' | sort -u | sed "s/^/${ln}:/"
 done)
 EOF
+
+    # The third rule -- a spelled number of ten or more is held to the same property as a digit run, and the
+    # words below ten are reported rather than read (REDS %143).
+    while IFS= read -r hit; do
+        [ -n "$hit" ] || continue
+        lineno=${hit%%:*}
+        number=${hit#*:}
+        if [ "$number" -lt 10 ]; then
+            spelled_small=$((spelled_small + 1))
+            continue
+        fi
+        spelled=$((spelled + 1))
+        if ! printf '%s\n' "$pinned" | grep -qE "[^0-9]${number}[^0-9]"; then
+            status=1
+            echo "LADDER_PROSE_BAD spelled $meter:$lineno recites $number in words with no assert holding it"
+        fi
+    done <<EOF
+$(grep -n '^say ' "$meter" | while IFS= read -r line; do
+    ln=${line%%:*}
+    printf '%s\n' "${line#*:}" | awk -f "$spell_reader" | sort -un | sed "s/^/${ln}:/"
+done)
+EOF
 done
 
 if [ "$status" = "0" ]; then
-    echo "LADDER_PROSE_COUNT_OK said=$said comments=$comments printed=$printed verdict=ok"
+    echo "LADDER_PROSE_COUNT_OK said=$said comments=$comments printed=$printed spelled=$spelled spelled_small=$spelled_small verdict=ok"
     exit 0
 fi
 
-echo "said=$said comments=$comments printed=$printed verdict=recited"
+echo "said=$said comments=$comments printed=$printed spelled=$spelled spelled_small=$spelled_small verdict=recited"
 exit 1

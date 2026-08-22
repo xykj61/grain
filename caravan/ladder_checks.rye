@@ -10515,3 +10515,39 @@ pub fn word_at(comptime rung: type, words: *const rung.Words, index: u32) ?[]con
     }
     return null;
 }
+
+/// Publishes which phases of the plan an arc was lost on.
+///
+/// Forty rungs held this body byte for byte, at twelve lines over a one-line
+/// signature, and every one of them folds -- this harness imports none of the
+/// forty, so no rung of this family stands below the fold line.
+///
+/// It reaches five names through the type handed in, and every one of them is
+/// that rung's own: `max_queue_len` bounds the glyph buffer at comptime,
+/// `phase_bit` reads one phase out of the mask, `seat_note` writes the note,
+/// `plan_name` names the domain it is written under, and `NoteError` is the
+/// error set the signature returns. All five stood public in all forty rungs
+/// already, which is why the meter priced no widening of any kind.
+///
+/// The note is one glyph per phase of the record -- `x` for a phase whose
+/// absorbed arc nobody served, `.` for every other -- so an operator reads the
+/// shape of the loss straight off the wire, and a mend derives its second
+/// record from the record rather than from a supervisor's memory of it. One
+/// glyph per phase rather than a packed mask, because the reader here is a
+/// person first, and the bound is the record's own, so this note never grows
+/// past what one plan may hold.
+///
+/// Measured rather than read: `REACH_OK family=lost_note folding=40 widens=0
+/// widens_fn=0 widens_import=0 widens_const=0 stub=3 fall=351`.
+pub fn lost_note(comptime rung: type, io: std.Io, held: u32, lost_mask: u32) rung.NoteError!void {
+    // invariant: a loss note never names more phases than one record may hold
+    assert(held <= rung.max_queue_len);
+    var glyphs: [rung.max_queue_len]u8 = @splat('.');
+    var at: u32 = 0;
+    while (at < held) : (at += 1) {
+        if ((lost_mask & rung.phase_bit(at)) != 0) glyphs[at] = 'x';
+    }
+    // invariant: every phase of the record was written, none skipped
+    assert(at == held);
+    try rung.seat_note(io, rung.plan_name, ".lost", glyphs[0..held]);
+}
