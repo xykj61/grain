@@ -70,6 +70,7 @@ const queue = @import("queue.rye");
 const fanin = @import("fanin.rye");
 const relay = @import("relay.rye");
 const tally_parse_int = @import("parse_int.rye");
+const ladder_checks = @import("ladder_checks.rye");
 
 const caravan_cycle_version = "20260819.162747";
 
@@ -95,7 +96,7 @@ pub const max_peers: u32 = 2;
 pub const max_plan_len: u32 = 512;
 
 /// Fixed argv words every dependent receives, matching `serve.rye`.
-const fixed_argv_words: u32 = 5;
+pub const fixed_argv_words: u32 = 5;
 
 comptime {
     // invariant: a ring is at least three domains around
@@ -643,7 +644,7 @@ fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32
 
 /// Runs as one supervised dependent, holding exactly the capabilities, the
 /// neighbors, and the one arc on its own argv.
-fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+pub fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
     // invariant: a dependent always receives its marker, domain, plan, and count
     assert(args.len >= fixed_argv_words);
     const domain = args[2];
@@ -1040,7 +1041,7 @@ pub fn check_walls(allocator: std.mem.Allocator, io: std.Io, self_path: []const 
     return 0;
 }
 
-fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     print("Caravan cycle {s} -- self-test\n", .{caravan_cycle_version});
     const wire = check_wire();
     if (wire != 0) return wire;
@@ -1055,19 +1056,5 @@ fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
-    const args = try init.minimal.args.toSlice(allocator);
-    const io = init.io;
-    // invariant: a program always knows its own path
-    assert(args.len >= 1);
-    const self_path = args[0];
-
-    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
-        return run_dependent(io, args);
-    }
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
-        return run_self_test(allocator, io, self_path);
-    }
-    if (args.len >= 2) return 1;
-    return run_self_test(allocator, io, self_path);
+    return ladder_checks.run_main(@This(), init);
 }

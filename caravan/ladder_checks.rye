@@ -31,6 +31,13 @@
 //! bottoms out where every check in this arc does -- on a number read off a plan
 //! that actually ran.
 //!
+//! **The door came here too.** A rung's entry point is not a check, yet it is
+//! the same shape of carry: every rung of this arc answers three asks at its
+//! door, and seventy-nine wrote that answer out byte for byte. `run_main` holds
+//! it once, reaching `run_dependent`, `run_self_test`, and `fixed_argv_words`
+//! through whichever rung handed itself in -- so the two cohorts that once
+//! differed by a single qualifier now share one body.
+//!
 //! Brief: `../active-designing/date/20260820/20260820-131713_caravan-ladder-shared-harness.md`
 //! Meter: `../tools/caravan_ladder_copy_witness.rish`
 
@@ -8926,4 +8933,36 @@ pub fn run_in_forbear(
     // Every act a run owes the quarrel standing over it, in the order the
     // arc grew.
     try close_the_quarrel(rung, io, taken_up, quarrel, report_out);
+}
+
+/// The entry point every rung of this arc shares, lifted here once.
+///
+/// A supervised program on this ladder answers three asks at its door: run a
+/// dependent child when the parent names one, run the self-test when a reader
+/// says so, and run the self-test again when a reader says nothing at all. That
+/// door stood byte for byte in seventy-nine files, differing across the whole
+/// arc by a single qualifier -- whether the dependent body was written in the
+/// file or reached through `cohort`. Publishing that body under one name in
+/// every rung erases the difference, so one door serves the arc.
+///
+/// The contract is three symbols standing public on the caller: `run_dependent`
+/// for a child the parent named, `run_self_test` for the walk a reader asks
+/// for, and `fixed_argv_words` for how many words a dependent invocation
+/// carries. Nothing here holds state or knows any caller by name.
+pub fn run_main(comptime rung: type, init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+    const io = init.io;
+    // invariant: a program always knows its own path
+    assert(args.len >= 1);
+    const self_path = args[0];
+
+    if (args.len >= rung.fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
+        return rung.run_dependent(io, args);
+    }
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return rung.run_self_test(allocator, io, self_path);
+    }
+    if (args.len >= 2) return 1;
+    return rung.run_self_test(allocator, io, self_path);
 }

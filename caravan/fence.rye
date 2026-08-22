@@ -59,6 +59,7 @@ const cohort = @import("cohort.rye");
 const overtake = @import("overtake.rye");
 const intent = @import("intent.rye");
 const phases = @import("phases.rye");
+const ladder_checks = @import("ladder_checks.rye");
 
 const caravan_fence_version = "20260819.200000";
 
@@ -80,6 +81,10 @@ pub const max_lookahead: u32 = phases.max_lookahead;
 
 /// A dependent's fixed argv, unchanged from the rungs before it.
 pub const fixed_argv_words: u32 = phases.fixed_argv_words;
+/// The dependent body this rung runs, published so the lifted door can reach
+/// it by one name across the whole arc -- reached through `cohort` here,
+/// written in the file on the rungs that changed it.
+pub const run_dependent = cohort.run_dependent;
 
 /// How many turns one queue may cut its work into.
 pub const max_turns: u32 = phases.max_turns;
@@ -742,7 +747,7 @@ pub fn check_order(allocator: std.mem.Allocator, io: std.Io, self_path: []const 
     return 0;
 }
 
-fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     print("Caravan fence {s} -- self-test\n", .{caravan_fence_version});
     const straight = check_fence(io);
     if (straight != 0) return straight;
@@ -753,19 +758,5 @@ fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
-    const args = try init.minimal.args.toSlice(allocator);
-    const io = init.io;
-    // invariant: a program always knows its own path
-    assert(args.len >= 1);
-    const self_path = args[0];
-
-    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
-        return cohort.run_dependent(io, args);
-    }
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
-        return run_self_test(allocator, io, self_path);
-    }
-    if (args.len >= 2) return 1;
-    return run_self_test(allocator, io, self_path);
+    return ladder_checks.run_main(@This(), init);
 }

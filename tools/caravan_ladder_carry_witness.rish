@@ -59,18 +59,18 @@ say "caravan-ladder-carry: Lens TAME -- safety first: the ceiling is named, the 
 
 let living = run ["sh" "tools/fixtures/caravan_ladder_carry_scan.sh"]
 assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
-assert living.out contains "CARRY_OK carried=87795 ceiling=87800" else "caravan-ladder-carry: want the living carry under its named ceiling"
+assert living.out contains "CARRY_OK carried=86774 ceiling=86780" else "caravan-ladder-carry: want the living carry under its named ceiling"
 assert living.out contains "CARRY_MODULES 110" else "caravan-ladder-carry: want all 109 ladder modules read, the rungs and the harness alike"
-assert living.out contains "CARRY_BODIES 18148 distinct=7947 copies=10201 carried_lines=87795" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
+assert living.out contains "CARRY_BODIES 18149 distinct=7946 copies=10203 carried_lines=86774" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
 
 say "caravan-ladder-carry: living ladder -- ${living.out}"
 
 # The fold queue, asserted so it stays a measurement rather than a memory. The largest family is named here by number
 # so a lap that folds it must come back and say so, and a lap that grows a larger one cannot pass quietly.
-assert living.out contains "CARRY_FAMILIES 707" else "caravan-ladder-carry: want every carrying family counted"
+assert living.out contains "CARRY_FAMILIES 706" else "caravan-ladder-carry: want every carrying family counted"
 assert living.out contains "CARRY_TOP seat_the_history: 17 rungs x 72 lines = 1152 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
 assert living.out contains "CARRY_TOP seat_the_record: 37 rungs x 30 lines = 1080 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
-say "caravan-ladder-carry: the fold queue -- seat_the_history leads it now, run_in_forbear having lifted whole into the harness this lap: the largest single body the ladder ever measured, a hundred and thirty-seven lines held byte for byte by ten rungs, which is a whole supervised run from an empty table to a closed quarrel -- seat, ground, fill, reap, judge, reckon, mend, and the eight acts of the correspondence a quarrel is owed. Thirteen words it reaches were widened across their whole cohorts rather than only across the ten, so each family stands one shape again and the meter reads a fold rather than a split."
+say "caravan-ladder-carry: the fold queue -- seat_the_history keeps the lead, and the family that left it this lap was the arc's own front door. Every rung of this ladder answers three asks at its entry point, and seventy-nine of them wrote that answer out byte for byte across two cohorts that differed by exactly one qualifier -- whether the dependent body was written in the file or reached through the cohort beneath it. Publishing that body under one name in every rung erased the difference, so one lifted door now serves both cohorts where two families stood."
 
 # The three named meters, read here beside the wide one so no reader mistakes a window for the room. Every number below
 # is true inside its own window, and the point of printing them together is that their sum is not the ladder's carry.
@@ -117,4 +117,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_c
 assert (ceiling.ok == false) else "caravan-ladder-carry: a carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-carry: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-carry -- the Caravan ladder's whole carry stands counted under a ceiling this fold brought down, every number of it printed above as the scan's own output rather than recited here, with the fold queue standing largest-first and led now by a new family, this lap having lifted the largest single body the ladder ever measured -- a whole supervised run in a hundred and thirty-seven lines, held byte for byte by ten rungs -- and healed thirteen visibility splits the lift itself opened, so the fall it reports is a fold rather than an artifact."
+say "GREEN: caravan-ladder-carry -- the Caravan ladder's whole carry stands counted under a ceiling this fold brought down, every number of it printed above as the scan's own output rather than recited here, with the fold queue standing largest-first, this lap having lifted the arc's own front door out of seventy-nine rungs at once -- the widest single fold this ladder has taken -- so the two cohorts that once differed by one qualifier now share one body, and the delegate reading rises by exactly the seventy-nine stubs that replaced them, which is how a reader tells a fold from a cost merely moved somewhere cheaper to count."

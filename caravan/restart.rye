@@ -61,6 +61,7 @@ const notify = @import("notify.rye");
 const roundtrip = @import("roundtrip.rye");
 pub const serve = @import("serve.rye");
 const se = @import("supervisor_exit.rye");
+const ladder_checks = @import("ladder_checks.rye");
 
 const caravan_restart_version = "20260819.144641";
 
@@ -748,7 +749,7 @@ pub fn check_limit(allocator: std.mem.Allocator, io: std.Io, self_path: []const 
     return 0;
 }
 
-fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     print("Caravan restart {s} -- self-test\n", .{caravan_restart_version});
     const meanings = check_meanings();
     if (meanings != 0) return meanings;
@@ -767,19 +768,5 @@ fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
-    const args = try init.minimal.args.toSlice(allocator);
-    const io = init.io;
-    // invariant: a program always knows its own path
-    assert(args.len >= 1);
-    const self_path = args[0];
-
-    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
-        return run_dependent(io, args);
-    }
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
-        return run_self_test(allocator, io, self_path);
-    }
-    if (args.len >= 2) return 1;
-    return run_self_test(allocator, io, self_path);
+    return ladder_checks.run_main(@This(), init);
 }
