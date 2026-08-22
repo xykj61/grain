@@ -1,24 +1,59 @@
-# tools/nib_honesty_witness.rish — the advertised edge keeps its promise.
+# tools/nib_honesty_witness.rish -- every hash the living card advertises resolves.
 #
-# From the nib paper (r27): every advertised nib resolves, and where we are
-# is a named landed edge. For the one living family — the git nib pinned in
-# REMEMBER — the hard law asserts and the soft state narrates:
-#   HARD · the pin exists, resolves to a real commit, and is ancestor-or-
-#          equal of HEAD (a landed edge, never a floating claim)
-#   SOFT · AT-HEAD or BEHIND is reported, never failed — mid-paste the pin
-#          lawfully trails until the next pin ritual.
+# From the nib paper (r27): every advertised nib resolves, and where we are is a
+# named landed edge. This witness owns the FIRST half of that sentence, over every
+# hash the operator card advertises in any voice. The second half -- the Git nib's
+# own HEAD / sibling / parent law -- belongs to tools/remember_git_nib_witness.rish,
+# the loom booked after REDS %103 fired twice, and is cited here rather than copied.
+#
+# Rewritten at 20260821.204335 after this guard sat RED and unnoticed for two days
+# (REDS %122). Two faults, one root. It read "the first ten-hex run in the file"
+# and called that the git nib; condensing the card on 20260819 moved a CAIRN row
+# above the nib line, so the guard began grading a walk-back nib against the nib's
+# own law -- and a cairn is off main BY CONSTRUCTION after a deep debride, which is
+# the entire reason it was worth recording. It also read work-in-progress/REMEMBER.md,
+# an untracked hardlink of the living crux/REMEMBER.md that no fresh clone carries.
+# Nothing caught either, because this witness is on no roster and in no suite: it
+# went red the lap the card was condensed and no run ever asked it.
+#
+# The law it now owns, over every advertised hash alike:
+#   HARD -- every advertised hash RESOLVES. A hash resolving nowhere is a promise
+#           already broken, in any voice, and the RED path is shown on a planted
+#           control rather than described.
+#   SOFT -- reachability is NAMED per hash: on-main, on-remote, local-only. A
+#           local-only cairn is REPORTED, never failed, because its repair is
+#           pushing a pre-debride branch -- and re-publishing tissue a debride
+#           deliberately removed is Keaton's word, not a guard's.
+#
+# Read-only: no network, no key, no funds, and the card is never written.
+#
+# PIER-SIDE BY DESIGN, and deliberately NOT in tools/glow_tend_era_suite.rish. That
+# suite promises to be provable on ANY host, and this guard cannot keep that promise:
+# four of the card's cairns live only on this pier, so a fresh clone cannot resolve
+# them and would red on a fault a stranger has no way to repair. Its roster is the
+# operator card's standing-equipment row, which is the roster a cold start actually
+# reads. If the pre-debride branches are ever pushed on Keaton's word, this guard
+# becomes host-independent and the era suite is its right home.
+#
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/nib_honesty_witness.rish
 
-let pin = run ["sh" "-c" "grep -oE '[0-9a-f]{10}' work-in-progress/REMEMBER.md | head -1 | tr -d '\n'"]
-assert pin.ok else "REMEMBER pin scan failed"
-assert pin.out != "" else "no git-nib pin found in REMEMBER — the advertised edge is missing"
-say "nib-honesty — advertised git nib: ${pin.out}"
+say "nib-honesty: Language EN -- every hash the operator card advertises resolves to a real commit, and how far each one reaches is named rather than assumed."
+say "nib-honesty: Style Radiant -- two voices, two laws. The nib is the landed edge and answers to the loom; a cairn is a walk-back and is off main by construction, so this guard asks of both only what both can honestly promise."
+say "nib-honesty: Lens TAME -- measurement beats memory; reachability is computed against the object store and the remotes, the Git nib is read BY NAME rather than by first match, and a planted floating-nib control proves the refusal on metal."
 
-let resolves = run ["sh" "-c" "git cat-file -e ${pin.out} && echo yes || echo no"]
-assert resolves.out contains "yes" else "the advertised nib does not resolve — a floating claim, refused by name"
+let green = run ["sh" "tools/fixtures/nib_honesty_scan.sh"]
+assert green.ok else "nib-honesty: the living sweep must exit 0 -- ${green.out}"
+assert green.out contains "card=crux/REMEMBER.md" else "nib-honesty: want the tracked living card, not the untracked hardlink"
+assert green.out contains "gone=0" else "nib-honesty: an advertised hash resolves nowhere -- a floating claim, refused by name. On a fresh clone this is expected for local-only cairns; on the pier that wrote the card it is a broken walk-back"
+assert green.out contains "git_nib=" else "nib-honesty: want the Git nib read by name from its own field"
+assert green.out contains "git_nib_state_law=tools/remember_git_nib_witness.rish" else "nib-honesty: want the nib-state law cited, not re-implemented"
+assert green.out contains "local_only_cairns=" else "nib-honesty: want local-only walk-backs counted and named"
+assert green.out contains "verdict=ok" else "nib-honesty: want verdict ok"
 
-let anc = run ["sh" "-c" "git merge-base --is-ancestor ${pin.out} HEAD && echo landed || echo astray"]
-assert anc.out contains "landed" else "the advertised nib is not on this history — refused by name"
+let red = run ["sh" "tools/fixtures/nib_honesty_scan.sh" "prove-red"]
+assert (red.ok == false) else "nib-honesty: prove-red must refuse, not merely report"
+assert red.out contains "RED_floating_nib_caught=2" else "nib-honesty: prove-red want both planted floating hashes caught"
 
-let state = run ["sh" "-c" "test ${pin.out} = $(git rev-parse --short=10 HEAD) && echo AT-HEAD || echo BEHIND"]
-say "nib-honesty — pin stands: ${state.out}"
-say "GREEN: nib-honesty — the advertised edge resolves and is landed."
+say "GREEN: nib-honesty -- every hash the living card advertises resolves, the Git nib is read from its own field, cairn reach is named rather than graded against a law cairns cannot keep, and a planted floating nib is refused on metal."

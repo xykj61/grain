@@ -40,8 +40,8 @@ The lenses above load every lap. The **rota** is the supplement: deep-read **one
 8. `foundations/20260811-233509_the-singularity.md`
 9. `foundations/20260810-011514_pond-the-application-module.md`
 10. `foundations/20260703-182612_sameness-is-the-macro.md`
-11. `active-designing/20260618-182412_single-stranded.md`
-12. `active-designing/20260618-184912_growing-a-language.md`
+11. `active-designing/date/20260618/20260618-182412_single-stranded.md`
+12. `active-designing/date/20260618/20260618-184912_growing-a-language.md`
 13. `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` (the happy zone -- fast isolated tests, thin edge; gratitude J.B. Rainsberger)
 14. `context/RADIANT_STYLE.md` (with `context/TWILIGHT_STYLE.md`)
 15. `context/TAME_CORE.md` (with `context/TAME_GUIDANCE.md`)
@@ -53,9 +53,9 @@ The lenses above load every lap. The **rota** is the supplement: deep-read **one
 21. `ORGANIZING.md`
 22. `context/SILO_TECHNIQUE.md`
 23. `context/specs/20260627-102012_one-clock-naming-law.md`
-24. `active-designing/20260702-184312_the-grain-and-the-crossing.md`
-25. `active-designing/20260816-205859_double-seat-expansion-eight-seasons.md`
-26. `active-designing/20260812-171050_the-1024-round-itinerary.md`
+24. `active-designing/date/20260702/20260702-184312_the-grain-and-the-crossing.md`
+25. `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md`
+26. `active-designing/date/20260812/20260812-171050_the-1024-round-itinerary.md`
 27. `recursion-prompts/README.md`
 
 ## 2 -- The hard bounds, by tag (the custody gates -- never cross)
@@ -75,7 +75,7 @@ Everything else -- design, code, witnesses, docs, weaves, seed *projection* (not
 
 The itinerary is REMEMBER's season table and open doors. Each round: read the compass, pick the highest-Lindy crux among agent-doable work, land it, prove it, send it. Named route, never an open field.
 
-**Lindy-priority double-seat (seated `20260817`): the Microkernel Target** -- Caravan on seL4/Genode (clean-room study; both copyleft), Tally on s6/skalibs (ISC), a Rye compiler Tally/Caravan target, Aurora on RISC-V/QEMU, closed by the parity-witness happy-zone suite running GREEN on the new target. It is ordered ahead of Seasons A-H by Lindy-first crux-first, yet **most of its rungs are gates** (a fetch approval, a per-component license read, buying hardware). The loop advances only its **agent-doable** rungs -- external-research answers (can Zig target seL4/Genode today?), clean-room design briefs, the parity-suite scaffolding -- and **surfaces, never crosses**, every fetch/license/hardware gate. Direction and clean-room boundary: `active-designing/20260816-205859_double-seat-expansion-eight-seasons.md` and `external-research/20260817-185851_microkernel-target-and-the-os-parity-question.md`.
+**Lindy-priority double-seat (seated `20260817`): the Microkernel Target** -- Caravan on seL4/Genode (clean-room study; both copyleft), Tally on s6/skalibs (ISC), a Rye compiler Tally/Caravan target, Aurora on RISC-V/QEMU, closed by the parity-witness happy-zone suite running GREEN on the new target. It is ordered ahead of Seasons A-H by Lindy-first crux-first, yet **most of its rungs are gates** (a fetch approval, a per-component license read, buying hardware). The loop advances only its **agent-doable** rungs -- external-research answers (can Zig target seL4/Genode today?), clean-room design briefs, the parity-suite scaffolding -- and **surfaces, never crosses**, every fetch/license/hardware gate. Direction and clean-room boundary: `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md` and `external-research/20260817-185851_microkernel-target-and-the-os-parity-question.md`.
 
 - **Next lap:** {{the next agent-doable rung -- file - what it composes - what it proves}}
 - **Then:** {{the rung after, if pre-decidable}}
@@ -106,11 +106,11 @@ A tripwire is not a stop -- it is a design round you **approve for yourself** an
 
 A `.bron`/`.kyri` session log per round (`session-logs/`), a newest-first row in `session-logs/README.md`, and REMEMBER's Now refreshed. The round summary is the agent's account in Kyri's voice. The log's `recommend` line names the next concrete rung -- it is the baton the next lap reads first (section 1, *Running thread*), so write it as a clear handoff, not a closing flourish.
 
-**Single strand each.** The **logs are the record of what was done**; **REMEMBER is the live card of what is next**. Keep them single-stranded (`active-designing/20260618-182412_single-stranded.md`) -- never let REMEMBER swell into a second copy of the log index. A round refreshes REMEMBER's *Now* to point at live work; it does not re-list into REMEMBER the finished laps the logs already hold.
+**Single strand each.** The **logs are the record of what was done**; **REMEMBER is the live card of what is next**. Keep them single-stranded (`active-designing/date/20260618/20260618-182412_single-stranded.md`) -- never let REMEMBER swell into a second copy of the log index. A round refreshes REMEMBER's *Now* to point at live work; it does not re-list into REMEMBER the finished laps the logs already hold.
 
 **Boundary condense-and-reaim.** When a set completes -- a round-set, quest, journey, equinox, or season -- and the scope's crux to-do items are all hit, run one condense pass before opening the next set:
 
-- **Deep-read for the next crux**, past REMEMBER's top rows: the recent logs' `recommend` lines, the crux to-do ledgers (`crux/TASKS.md`, `crux/ROADMAP.md`, `crux/THREADS.md`, `crux/REDS.md`), and the itineraries (`active-designing/20260812-171050_the-1024-round-itinerary.md`, `active-designing/20260816-205859_double-seat-expansion-eight-seasons.md`).
+- **Deep-read for the next crux**, past REMEMBER's top rows: the recent logs' `recommend` lines, the crux to-do ledgers (`crux/TASKS.md`, `crux/ROADMAP.md`, `crux/THREADS.md`, `crux/REDS.md`), and the itineraries (`active-designing/date/20260812/20260812-171050_the-1024-round-itinerary.md`, `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md`).
 - **Condense the done work out of REMEMBER** -- strike the completed *Now*/arc lines the logs already record, so the card shrinks as work lands. Record a **cairn** (`crux/CAIRNS.md`, `.claude/rules/cairn.md` names REMEMBER by name) first when the condense rewrites more than a line or two of the living card. Accrete-never-break holds by tier: REMEMBER's *Now* is Tier 3 and may sweep, the logs are Tier 2 and are never rewritten, so nothing done is ever lost.
 - **Refill *Now* and *next*** with the crux the deep read surfaced, so REMEMBER always carries live love-tasks -- a living work-front that evolves as work completes, never a redundant session-log index.
 

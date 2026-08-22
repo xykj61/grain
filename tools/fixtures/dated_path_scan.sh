@@ -96,6 +96,17 @@ grep -rIoE '(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}_[A-Za-z0-9._-]+\.(md|br
   --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
   $DP_GREP_EXCLUDES \
   . 2>/dev/null | sed 's|^\./||' > "$work/pairs.txt"
+
+# The re-admit pass. grep prunes `seed` by NAME, which also prunes recursion-prompts/seed -- the
+# loop's own room, and nothing to do with the projection. Scanned here in its own pass and folded
+# back in, so the corpus holds the room rather than silently omitting it (REDS %122).
+for _rd in $(dp_readmit_dirs); do
+  [ -d "$_rd" ] || continue
+  grep -rIoE '(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}_[A-Za-z0-9._-]+\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
+    --include=*.md --include=*.bron --include=*.kyri --include=*.rish \
+    --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
+    "$_rd" 2>/dev/null | sed 's|^\./||' >> "$work/pairs.txt"
+done
 set +f
 
 # grep has no --exclude-path, so the path roster is applied here instead -- the same list, one step

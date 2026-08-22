@@ -52,9 +52,34 @@
 # instrument?" -- and the volatile half, the fixture names, grows with every tool that plants one.
 # The three-directory base below is stable and duplicating it elsewhere costs nothing.
 #
-# Directories that are not this field at all: object storage, a projection of this same tree, and
-# third-party source held unmodified.
-DP_EXCLUDE_DIRS=".git seed vendor"
+# Directories that are not this field at all: object storage and third-party source held
+# unmodified. Matched by NAME, so an entry here prunes that directory wherever it sits -- correct
+# only where the name is unambiguous in this tree, which was measured rather than assumed: `.git`
+# and `vendor` each occur exactly once, at the root.
+DP_EXCLUDE_DIRS=".git vendor"
+
+# ONE NAME, TWO MEANINGS -- and the two matchers can not both anchor it (REDS %122).
+#
+# `seed/` at the root is the gitignored projection of this same tree, and pruning it is what keeps
+# every reference from being counted twice. `recursion-prompts/seed/` is the loop's own seed room,
+# and a NAME match prunes it too. That collateral is how the council rota came to hold five dead
+# paths after the fold with neither tool noticing: both were blind to the room those paths live in.
+#
+# find anchors cleanly -- `-path ./seed` matches the whole path, so the projection is pruned and
+# the loop's room is kept. GREP CANNOT: --exclude-dir matches the directory NAME here, and a
+# leading ./ in the pattern simply never matches, which a first attempt at this fix read as
+# success because the check it was read from could not have matched either. So grep keeps the
+# name exclusion and the collateral room is RE-ADMITTED explicitly, scanned in its own pass.
+# Measured rather than assumed: `.git` and `vendor` each occur once, at the root, so their name
+# match carries no collateral; `seed` occurs twice, which is why only it needs this treatment.
+DP_EXCLUDE_ROOT_DIRS="./seed"
+
+# The directory name that root path reduces to -- what grep must be given, since it matches names.
+DP_EXCLUDE_ROOT_NAMES="seed"
+
+# Rooms pruned only as collateral of a name match above, to be scanned in their own pass and
+# folded back into the corpus. A consumer that skips this re-admit is blind to the room.
+DP_READMIT_DIRS="recursion-prompts/seed"
 
 # Files whose dated paths are the instrument's own fixtures rather than citations of the field.
 # Matched by NAME, so an entry here excludes that filename wherever it sits.
@@ -76,6 +101,7 @@ dp_grep_excludes() {
   set -f
   _dp=""
   for _d in $DP_EXCLUDE_DIRS; do _dp="$_dp --exclude-dir=$_d"; done
+  for _d in $DP_EXCLUDE_ROOT_NAMES; do _dp="$_dp --exclude-dir=$_d"; done
   for _n in $DP_EXCLUDE_NAMES; do _dp="$_dp --exclude=$_n"; done
   set -- $_dp
   set +f
@@ -116,7 +142,18 @@ dp_find_prune() {
   for _d in $DP_EXCLUDE_DIRS; do
     if [ "$_first" = 1 ]; then _dp="-name $_d"; _first=0; else _dp="$_dp -o -name $_d"; fi
   done
+  for _d in $DP_EXCLUDE_ROOT_DIRS; do
+    if [ "$_first" = 1 ]; then _dp="-path $_d"; _first=0; else _dp="$_dp -o -path $_d"; fi
+  done
   set -- $_dp
+  set +f
+  printf '%s\n' "$@"
+}
+
+# The collateral rooms, emitted as plain paths for a consumer to scan in a second pass.
+dp_readmit_dirs() {
+  set -f
+  set -- $DP_READMIT_DIRS
   set +f
   printf '%s\n' "$@"
 }

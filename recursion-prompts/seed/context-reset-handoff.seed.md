@@ -1,6 +1,6 @@
 # SEED — context reset · a fresh context waking atop a full handoff
 
-*A blank fillable recursion prompt for the moment a context window resets mid-season and a fresh agent must wake already knowing where it stands, restating nothing it can read. Copy into `../versions/` at a fresh live-clock stamp. Kin: the agent-cover and tiered-handoff batons ([`../../context/baton-museum/README.md`](../../context/baton-museum/README.md)); the handoff baton on disk ([`../../expanding-prompts/20260810-025942_the-handoff-baton-vision-checkpoint.md`](../../expanding-prompts/20260810-025942_the-handoff-baton-vision-checkpoint.md)).*
+*A blank fillable recursion prompt for the moment a context window resets mid-season and a fresh agent must wake already knowing where it stands, restating nothing it can read. Copy into `../versions/` at a fresh live-clock stamp. Kin: the agent-cover and tiered-handoff batons ([`../../context/baton-museum/README.md`](../../context/baton-museum/README.md)); the handoff baton on disk ([`../../expanding-prompts/date/20260810/20260810-025942_the-handoff-baton-vision-checkpoint.md`](../../expanding-prompts/date/20260810/20260810-025942_the-handoff-baton-vision-checkpoint.md)).*
 
 ---
 
