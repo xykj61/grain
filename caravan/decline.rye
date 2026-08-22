@@ -82,6 +82,7 @@ const cycle = @import("cycle.rye");
 const restart = @import("restart.rye");
 const gap = @import("gap.rye");
 const tally_parse_int = @import("parse_int.rye");
+const ladder_checks = @import("ladder_checks.rye");
 
 const caravan_decline_version = "20260819.165722";
 
@@ -254,7 +255,7 @@ fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32
 /// Runs as one supervised dependent, holding exactly the capabilities, the
 /// neighbors, the one arc, the place it may be dropped, the reading by
 /// which it wakes its successor, and the part it plays.
-fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+pub fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
     // invariant: a dependent always receives its marker, domain, plan, fall, wake, role, and count
     assert(args.len >= fixed_argv_words);
     const domain = args[2];
@@ -676,7 +677,7 @@ pub fn check_no_detour(allocator: std.mem.Allocator, io: std.Io, self_path: []co
     return 0;
 }
 
-fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     print("Caravan decline {s} -- self-test\n", .{caravan_decline_version});
     const wire = check_wire();
     if (wire != 0) return wire;
@@ -691,19 +692,5 @@ fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
-    const args = try init.minimal.args.toSlice(allocator);
-    const io = init.io;
-    // invariant: a program always knows its own path
-    assert(args.len >= 1);
-    const self_path = args[0];
-
-    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
-        return run_dependent(io, args);
-    }
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
-        return run_self_test(allocator, io, self_path);
-    }
-    if (args.len >= 2) return 1;
-    return run_self_test(allocator, io, self_path);
+    return ladder_checks.run_main(@This(), init);
 }

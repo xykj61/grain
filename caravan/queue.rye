@@ -62,6 +62,7 @@ const notify = @import("notify.rye");
 const roundtrip = @import("roundtrip.rye");
 pub const serve = @import("serve.rye");
 const tally_parse_int = @import("parse_int.rye");
+const ladder_checks = @import("ladder_checks.rye");
 
 const caravan_queue_version = "20260819.152915";
 
@@ -96,7 +97,7 @@ pub const slot_stride: u32 = 1 + serve.max_message_len;
 pub const max_plan_len: u32 = 192;
 
 /// Fixed argv words every dependent receives, matching `serve.rye`.
-const fixed_argv_words: u32 = 5;
+pub const fixed_argv_words: u32 = 5;
 
 /// The text every ask carries, addressed to its recipient and numbered.
 pub const ask_prefix = "queue: ask ";
@@ -549,7 +550,7 @@ fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count: u32
 
 /// Runs as one supervised dependent, holding exactly the capabilities, the
 /// peers, and the one step on its own argv.
-fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+pub fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
     // invariant: a dependent always receives its marker, domain, plan, and count
     assert(args.len >= fixed_argv_words);
     const domain = args[2];
@@ -906,7 +907,7 @@ pub fn check_batches(allocator: std.mem.Allocator, io: std.Io, self_path: []cons
     return 0;
 }
 
-fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     print("Caravan queue {s} -- self-test\n", .{caravan_queue_version});
     const wire = check_wire();
     if (wire != 0) return wire;
@@ -919,19 +920,5 @@ fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
-    const args = try init.minimal.args.toSlice(allocator);
-    const io = init.io;
-    // invariant: a program always knows its own path
-    assert(args.len >= 1);
-    const self_path = args[0];
-
-    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
-        return run_dependent(io, args);
-    }
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
-        return run_self_test(allocator, io, self_path);
-    }
-    if (args.len >= 2) return 1;
-    return run_self_test(allocator, io, self_path);
+    return ladder_checks.run_main(@This(), init);
 }

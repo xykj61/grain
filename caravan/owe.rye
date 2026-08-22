@@ -5100,7 +5100,7 @@ pub fn stand_taking_and_returning_reach(
 }
 
 /// Runs as one supervised dependent, reading the wire before it trusts it.
-fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
+pub fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
     return ladder_checks.run_dependent(@This(), io, args);
 }
 
@@ -6523,7 +6523,7 @@ pub fn check_owe_runs(
     return 0;
 }
 
-fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     print("Caravan owe {s} -- self-test\n", .{caravan_owe_version});
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
@@ -6591,19 +6591,5 @@ fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
-    const args = try init.minimal.args.toSlice(allocator);
-    const io = init.io;
-    // invariant: a program always knows its own path
-    assert(args.len >= 1);
-    const self_path = args[0];
-
-    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
-        return run_dependent(io, args);
-    }
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
-        return run_self_test(allocator, io, self_path);
-    }
-    if (args.len >= 2) return 1;
-    return run_self_test(allocator, io, self_path);
+    return ladder_checks.run_main(@This(), init);
 }
