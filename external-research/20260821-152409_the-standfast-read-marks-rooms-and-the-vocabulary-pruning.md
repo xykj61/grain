@@ -7,7 +7,7 @@
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
 **Voice:** Kyri
 **Lens:** [Standfast](../foundations/20260816-214652_standfast-the-stopped-line.md) -- stop, root, prove -- and [Lindy-first, crux-first](../.claude/rules/lindy-first-crux.md)
-**Status:** Research + recommendation. Nothing here is seated; every proposal waits on a word.
+**Status:** Mixed -- research + recommendation. Nothing here is seated; every proposal waits on a word.
 **Kin:** [`sameness-is-the-macro`](../foundations/20260703-182612_sameness-is-the-macro.md) - [`the-happy-zone-and-the-thin-edge`](../foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md) - [`reds-first`](../foundations/20260729-224828_reds-first-and-the-allocation.md) - [`comlink-tendency`](../.claude/rules/comlink-tendency.md)
 
 ---

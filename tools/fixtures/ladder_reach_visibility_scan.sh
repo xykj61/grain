@@ -75,8 +75,115 @@ if [ "$FAMILY" = "prove-red" ]; then
         *) echo "verdict=prove_red_failed_to_refuse_differing_bodies"; fails=1 ;;
     esac
 
+    # The sink meter must refuse a directory holding no public function rather
+    # than answer zero, since a zero and a blindness read identically (REDS %97).
+    rm -f "$ctl/two.rye" "$ctl/three.rye"
+    printf 'const std = @import("std");\n' > "$ctl/quiet.rye"
+    out=$(LADDER_DIR="$ctl" sh "$0" sink 2>&1) || true
+    printf '%s\n' "$out" | sed 's/^/control-sink-empty: /'
+    case "$out" in
+        *verdict=no_bodies*) echo "RED_sink_blindness_refused_rather_than_zero" ;;
+        *) echo "verdict=prove_red_sink_answered_where_it_saw_nothing"; fails=1 ;;
+    esac
+
+    # And it must count a rung's holding rather than its whole body: two rungs
+    # writing one identical three-line body hold three lines each, while a body
+    # nobody repeats holds nothing at all.
+    printf 'pub fn shared(a: u32) u32 {\n    return a;\n}\npub fn mine() void {\n    return;\n}\n' > "$ctl/left.rye"
+    printf 'pub fn shared(a: u32) u32 {\n    return a;\n}\n' > "$ctl/right.rye"
+    rm -f "$ctl/quiet.rye"
+    out=$(LADDER_DIR="$ctl" sh "$0" sink 2>&1) || true
+    printf '%s\n' "$out" | sed 's/^/control-sink-holding: /'
+    case "$out" in
+        *"SINK_OK total=6 below_fold_line=0 above_fold_line=6"*)
+            echo "RED_sink_counts_the_repeated_body_and_not_the_lone_one" ;;
+        *) echo "verdict=prove_red_sink_miscounted_a_hand_built_holding"; fails=1 ;;
+    esac
+
     [ "$fails" -eq 0 ] || exit 2
     exit 1
+fi
+
+# SINK mode -- what importing a rung into the harness would forfeit.
+#
+# A rung the harness imports stands BELOW the fold line from that moment on, and
+# a rung below the fold line can never fold a body again: a lift would have the
+# harness reach back through a rung it already reaches for. So a harness-level
+# import is a one-way door, and reaching for one to spare a lift its comptime
+# rung parameter spends something.
+#
+# On 20260822 that something was described rather than measured, in a witness's
+# own GREEN line, which is the exact crossing REDS %130 already booked once
+# (REDS %137). This mode prices the door instead: for each rung it prints the
+# body lines that rung currently holds in families of two or more identical
+# bodies -- the carry a lift would foreclose by sinking it.
+#
+# The answer is small, and the smallness is the finding. A rung the harness
+# imports tends to be a shared helper, and a shared helper writes few duplicated
+# bodies, so the fold line forecloses far less than its one-way shape suggests.
+if [ "$FAMILY" = "sink" ]; then
+    work=$(mktemp -d)
+    trap 'rm -rf "$work"' EXIT
+
+    if [ -f "$DIR/$HARNESS" ]; then
+        grep -oE '@import\("[a-z_]+\.rye"\)' "$DIR/$HARNESS" |
+            sed 's/@import("//; s/")//' | sort -u > "$work/below"
+    else
+        : > "$work/below"
+    fi
+
+    # One record per top-level pub fn: name, file, line count, and the body
+    # itself flattened onto the same line, so identical bodies sort together.
+    : > "$work/all"
+    for f in "$DIR"/*.rye; do
+        [ -f "$f" ] || continue
+        base=$(basename "$f")
+        [ "$base" = "$HARNESS" ] && continue
+        awk -v file="$base" '
+            /^pub fn [a-z_0-9]+\(/ && !p { p = 1; n = 0; body = ""; name = $3; sub(/\(.*/, "", name) }
+            p { n = n + 1; body = body "\001" $0 }
+            p && /^}$/ { printf "%s\t%s\t%d\t%s\n", name, file, n, body; p = 0 }
+        ' "$f" >> "$work/all"
+    done
+
+    if [ ! -s "$work/all" ]; then
+        echo "SINK_REFUSED verdict=no_bodies dir=$DIR reason=no_rung_declares_a_public_function"
+        exit 1
+    fi
+
+    # A family is a name plus a body. Two or more members make it foldable, and
+    # only a foldable family's lines are carry a sink could forfeit.
+    sort -t"$(printf '\t')" -k1,1 -k4,4 "$work/all" |
+        awk -F"\t" '
+            { key = $1 "\t" $4
+              if (key == prev) { count = count + 1 }
+              else { flush(); prev = key; count = 1; delete files; delete lines; m = 0 }
+              m = m + 1; files[m] = $2; lines[m] = $3 }
+            function flush(   i) {
+                if (count >= 2) for (i = 1; i <= m; i++) hold[files[i]] += lines[i]
+            }
+            END { flush(); for (f in hold) printf "%s %d\n", f, hold[f] }
+        ' | sort -k2,2nr -k1,1 > "$work/hold"
+
+    total=0
+    sunk=0
+    while read -r rung n; do
+        total=$((total + n))
+        if grep -qx "$rung" "$work/below" 2>/dev/null; then
+            sunk=$((sunk + n))
+            echo "SINK_BELOW rung=$rung holds=$n"
+        fi
+    done < "$work/hold"
+
+    # Every rung still above the line, largest holding first, so a lift eyeing a
+    # harness import reads what that import would forfeit before it reaches.
+    while read -r rung n; do
+        grep -qx "$rung" "$work/below" 2>/dev/null && continue
+        echo "SINK_ABOVE rung=$rung holds=$n"
+    done < "$work/hold"
+
+    echo "SINK_OK total=$total below_fold_line=$sunk above_fold_line=$((total - sunk)) dir=$DIR"
+    exit 0
 fi
 
 if [ -z "$FAMILY" ]; then
