@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20260822.105525
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The lift that needed no rung, and the formula that named two populations where three stand
+prompt Take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, read the council rota row, send the increment
+think The split named load_one the head, so the lap took it: sixty rungs writing one eleven-line body, seven standing below the fold line, and a priced widening of a hundred and twenty import bindings.
+think Reading the body before moving it changed the shape of the lift. It reaches exactly two names, system and read, and both are shared helper modules rather than anything a rung writes for itself -- one system.rye and one read.rye stand in the directory and every rung imports the same file, so the types are the same types.
+think ladder_checks.rye already imported system.rye. Importing read.rye beside it lets the lifted body reach both directly, and read.rye imports no harness and declares no ladder-check family, so nothing cycles and nothing moves below the fold line that matters.
+think That makes the lift take no comptime rung parameter at all -- there is nothing rung-specific left to reach through one, and Zig would refuse the unused parameter besides. First lift of the arc with that shape.
+obs The fold paid none of the hundred and twenty widenings the meter priced. An import widening is often avoidable outright, since a shared module the harness can import itself needs no re-export from any rung. That holds for capabilities.rye, carry.rye, and cycle.rye too, all three already imported in the harness, so read_own_line behind it is cheaper than it reads.
+obs REDS %136 booked and closed. The fall formula predicted 549 and the carry fell 483, and the gap of sixty-six is exactly six bodies of eleven lines. Three body populations stand after a fold and the formula saw two: the folding rungs shrink to stubs, and the rungs below the line keep whole bodies which leave the family only when fewer than two of them remain. Seven remained.
+obs The elder reasoning was written down honestly and read correctly for eleven folds, because every one of them had zero or one rung below the line. The error was never latent in the prose; it was latent in the corpus. A prediction tested on only one side of its own conditional has an untested branch.
+obs The correction was checked against every fold the arc has measured before it shipped -- load_one 549 to 483 matching the carry exactly, may_pass 574 to 536, and read_count and take_up_again unchanged at 487 and 540. Touching only the folds that were wrong is what proves the fix.
+obs harvest.rye folded without ever importing the harness, so the build refused with an undeclared identifier. Caught by the choir rather than by the rung witness the fold touched, which is the same lesson the lap before wrote: running only the witness a change touches proves the change, and running the choir proves the tree.
+obs One assertion of my own was written as a substring that skipped a field in the middle of the record, so it refused a record that was correct. Caught on the first run. A contains check over a fielded line must carry every field between its ends.
+loom fold=load_one rungs_folded=60 held_below=7 body_lines=11 stub_lines=3 widenings_paid=0
+loom carry=caravan_ladder carried_before=69334 carried_after=68851 fall=483 priced=549 correction=66
+loom witness=caravan_suite rungs=108 verdict=green era_suite=11 verdict=green
+file caravan/ladder_checks.rye load_one lifted as a plain published function, reaching two shared helper modules the harness imports itself
+file caravan/harvest.rye the harness import the fold required, absent before it
+file tools/fixtures/ladder_reach_visibility_scan.sh the fall formula counting all three populations left standing
+file tools/caravan_ladder_reach_visibility_witness.rish the queue re-sorted, may_pass asserted as the row carrying the correction
+file tools/caravan_ladder_carry_witness.rish ceiling down to 68,851, the queue prose refreshed
+file crux/REDS.md row %136 booked and closed, headline re-derived from the spine
+recommend keep-going read_own_line is the head at four hundred and ninety-two, and its three import widenings are capabilities, carry, and cycle -- all three already imported in the harness, so it folds for nothing the same way load_one did
