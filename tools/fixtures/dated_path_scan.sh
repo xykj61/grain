@@ -70,6 +70,17 @@ verb="${1:-census}"
 # never there and they were repaired. Lower it whenever a repair lands; never raise it.
 LOST_CEILING=192
 
+# What is not the field -- read from ONE list that this tool and the repointer both source, since
+# a list kept in two places is two lists that happen to match today (REDS %121).
+# Sourced from THIS script's own directory rather than from the working directory. The control
+# corpus runs this scan from a throwaway tree, and a tool that can only find its own parts
+# when someone is standing in the repository fails exactly where it is used.
+. "$(CDPATH= cd "$(dirname "$0")" && pwd)/dated_path_exclusions.sh"
+set -f
+DP_GREP_EXCLUDES="$(dp_grep_excludes | tr '\n' ' ')"
+DP_PATHS_ROSTER="$(dp_paths_roster)"
+set +f
+
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 
@@ -77,13 +88,26 @@ trap 'rm -rf "$work"' EXIT
 # disk afterward, so a path a reader can actually follow is never called broken.
 git ls-files > "$work/all.txt"
 
+# Globbing stays off across the whole invocation: the exclusion words carry patterns meant for
+# grep -- `dated_path_*` above all -- and the shell must hand them over rather than resolve them.
+set -f
 grep -rIoE '(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}_[A-Za-z0-9._-]+\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
   --include=*.md --include=*.bron --include=*.kyri --include=*.rish \
   --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
-  --exclude-dir=.git --exclude-dir=seed --exclude-dir=vendor \
-  --exclude=dated_path_* --exclude=room_bound_control.sh --exclude=session_logs_archive.rye \
-  --exclude=shipped_binary_claim_control.sh \
+  $DP_GREP_EXCLUDES \
   . 2>/dev/null | sed 's|^\./||' > "$work/pairs.txt"
+set +f
+
+# grep has no --exclude-path, so the path roster is applied here instead -- the same list, one step
+# later. A page that DEMONSTRATES recovery must quote a reference that no longer resolves, and
+# counting it would make the meter rise as the demonstration got better.
+if [ -n "${DP_PATHS_ROSTER:-}" ]; then
+  printf '%s\n' "$DP_PATHS_ROSTER" | while IFS= read -r _p; do
+    [ -n "$_p" ] || continue
+    grep -v "^${_p}:" "$work/pairs.txt" > "$work/pairs.filtered" 2>/dev/null || true
+    mv "$work/pairs.filtered" "$work/pairs.txt"
+  done
+fi
 
 # Six fields out, so no later step has to guess which path a column holds:
 #   verdict, citing file, reference as written, reading one, reading two, recovered home

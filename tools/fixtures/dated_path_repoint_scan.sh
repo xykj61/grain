@@ -42,12 +42,25 @@
 set -eu
 
 mode="${1:-dry}"
+# What is not the field -- read from ONE list that this tool and the census both source. The two
+# kept private copies for a day, diverged twice, and the second divergence let this tool rewrite
+# the witness fixture that proves it is needed (REDS %121).
+# Sourced from THIS script's own directory rather than from the working directory. The control
+# corpus runs this scan from a throwaway tree, and a tool that can only find its own parts
+# when someone is standing in the repository fails exactly where it is used.
+. "$(CDPATH= cd "$(dirname "$0")" && pwd)/dated_path_exclusions.sh"
+set -f
+DP_FIND_PRUNE="$(dp_find_prune | tr '\n' ' ')"
+DP_FIND_EXCLUDES="$(dp_find_excludes | tr '\n' ' ')"
+DP_FIND_PATHS="$(dp_find_paths | tr '\n' ' ')"
+set +f
+
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 
 # The map is built from the tree as it now stands: every file under a date fold names the flat
 # path it used to answer to. Measurement, not memory.
-find . -type d \( -name .git -o -name seed -o -name vendor \) -prune -o \
+find . -type d \( $DP_FIND_PRUNE \) -prune -o \
   -type f -path '*/date/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/*' -print 2>/dev/null \
   | sed 's|^\./||' \
   | awk -F/ '{
@@ -70,13 +83,17 @@ echo "folded_files_mapped=$(wc -l < "$work/map.tsv" | tr -d ' ')"
 # having one. An earlier apply run repointed it to the folded path, which left the assert checking
 # that an already-correct path resolves: true, and worthless. The census already excluded these by
 # name; the repointer did not, and a tool that edits its own test fixtures quietly disarms them.
-find . -type d \( -name .git -o -name seed -o -name vendor \) -prune -o -type f \
-  ! -name 'dated_path_*' ! -name 'room_bound_control.sh' ! -name 'session_logs_archive.rye' \
+# Globbing stays off: `dated_path_*` is a pattern for find, not one the shell should resolve
+# against whatever directory a caller happens to be standing in.
+set -f
+find . -type d \( $DP_FIND_PRUNE \) -prune -o -type f \
+  $DP_FIND_EXCLUDES $DP_FIND_PATHS \
   \( -name '*.md' -o -name '*.mdc' -o -name '*.rish' -o -name '*.rye' -o -name '*.sh' \
      -o -name '*.bron' -o -name '*.kyri' -o -name '*.brix' -o -name '*.txt' \) -print 2>/dev/null \
   | sed 's|^\./||' \
   | awk -F/ '$NF !~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]_/' \
   > "$work/living.txt"
+set +f
 
 echo "living_files_considered=$(wc -l < "$work/living.txt" | tr -d ' ')"
 
@@ -131,6 +148,7 @@ if [ -s "$work/candidates.txt" ]; then
     ' 2>> "$work/hits.tsv"
 fi
 
+if [ -s "$work/hits.tsv" ]; then sed 's/^/would_repoint: /' "$work/hits.tsv"; fi
 changed=$(wc -l < "$work/hits.tsv" | tr -d ' ')
 edits=$(awk -F'\t' '{n += $2} END {print n + 0}' "$work/hits.tsv")
 
