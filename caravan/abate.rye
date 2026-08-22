@@ -6778,18 +6778,7 @@ fn may_pass(
     candidate: u32,
     reading: Reading,
 ) bool {
-    // invariant: a pass always reaches forward, never at the head itself
-    assert(candidate > table.head);
-    // invariant: a candidate always stands inside the record
-    assert(candidate < table.held);
-    var i: u32 = table.head;
-    while (i < candidate) : (i += 1) {
-        if (!waits(table, i)) continue;
-        if (items_contend(sys, table.record[i], table.record[candidate], reading)) return false;
-    }
-    // invariant: the walk reached the candidate, weighing every phase before it
-    assert(i == candidate);
-    return true;
+    return ladder_checks.may_pass(@This(), sys, table, candidate, reading);
 }
 
 /// Chooses one phase from behind a blocked head, or answers that none may go.
