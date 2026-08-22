@@ -29,7 +29,7 @@ say "caravan-suite: Language EN -- the Caravan choir: one run that hears every p
 say "caravan-suite: Style Radiant -- a rung is proven when a witness says so, and an arc is proven when nothing in it is unheard. The roster is checked before it is sung, so the count this witness prints is measured rather than remembered."
 say "caravan-suite: Lens TAME -- every tools/caravan_*_witness.rish on disk is asserted registered here, every registration is asserted to exist on disk, and then each is asserted GREEN. RED names exactly which rung broke the bijection or the run. Purely local -- no key, no network, no funds, no device."
 
-# The choir sings from a cold tree, always (REDS %92). Thirty-six rungs ran
+# The choir sings from a cold tree, always (REDS %92). Thirty-six rungs ran a shared
 # caravan/bin/read without building it, so this suite had never once proven itself
 # on a clean checkout -- it passed on whatever an earlier run had left warm, and the
 # day the directory was cleared it named a rung RED that was perfectly sound. Clearing

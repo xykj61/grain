@@ -8,7 +8,7 @@
 #   rishi/bin/rishi run tools/caravan_read_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "caravan/bin/read"
+let bin = "caravan/bin/read_read"
 
 let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=${bin}"]
 
