@@ -6641,17 +6641,7 @@ pub fn slot_from_argv(args: []const [:0]const u8, domain: []const u8, cap_count:
 
 /// Answers whether this dependent already holds a capability over one region.
 pub fn already_holds(slot: *const capabilities.DependentSlot, region_name: []const u8) bool {
-    // invariant: a holding is always asked about a named region
-    assert(region_name.len >= 1);
-    // invariant: a holding never reads past what one dependent may hold
-    assert(slot.cap_count <= capabilities.max_caps_per_dependent);
-    var i: u32 = 0;
-    while (i < slot.cap_count) : (i += 1) {
-        if (std.mem.eql(u8, slot.caps[i].name_slice(), region_name)) return true;
-    }
-    // invariant: the walk read every capability the dependent holds, none skipped
-    assert(i == slot.cap_count);
-    return false;
+    return ladder_checks.already_holds(slot, region_name);
 }
 
 /// Names the word at one depth of a list, or answers that the list is shorter.
