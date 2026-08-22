@@ -318,6 +318,14 @@ pub fn read_count(io: std.Io, domain: []const u8, suffix: []const u8) NoteError!
 }
 
 /// Reads the word list a dependent has been handed so far.
+/// Reads a word list, deliberately admitting a list that already carries words.
+///
+/// Forty-three sibling rungs assert `out.len == 0` here, and this rung omits that
+/// assert on purpose: `stand` holds one `granted` list across every pass of its
+/// patience loop and reads it again after the loop closes, so the list is refilled
+/// rather than freshly declared. The read is safe under reuse because it writes
+/// from offset zero and resets `out.len` from what it actually read, so a shorter
+/// second read never leaves a longer first read's tail behind.
 pub fn read_words(io: std.Io, domain: []const u8, out: *Words) NoteError!void {
     // invariant: a word list always names the dependent that listens
     assert(domain.len >= 1);

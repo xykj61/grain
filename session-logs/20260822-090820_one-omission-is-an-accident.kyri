@@ -1,0 +1,34 @@
+format session-log-v1
+stamp 20260822.090820
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title One omission is an accident, the other is a contract
+prompt Take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, read the council rota row, send the increment
+think Standfast first. grep OPEN crux/REDS.md returned zero, and tools/glow_tend_era_suite.rish ran GREEN at ten rungs before a line moved. The line was clear to open new work.
+think Council rota, lap 165, row 165 mod 5 = 0 -- the Aether/Jupiter triad. follow-our-compass names the return habit and its read order; the Lindy effect names why the long-lived artifact deserves the hours; the grain and the crossing names the ten strands an idea must lean on to be cut to fit. The Lindy reading is what argued for spending this lap's extra time on a doc comment rather than only on the fold.
+think Priced the queue head with sh tools/fixtures/ladder_reach_visibility_scan.sh read_words -- declared=45 identical=43 folding=43 widens=0 stub=3 fall=504. Zero widening, so the lift was free.
+think Hashed all forty-five read_words bodies to find the two outliers. They are caravan/confer.rye and caravan/revoke.rye -- the same two files that diverged on seat_note last lap. Diffing against caravan/abandon.rye showed both omit the same two lines: the invariant comment and assert(out.len == 0).
+think Read every read_words call site in both before touching either. confer.rye declares var words: Words = .{} inside its patience loop, so out.len is zero on every pass and the omission is simply dropped. revoke.rye declares var granted: Words = .{} OUTSIDE the loop, calls read_words into it on every pass, and reads it again after the loop closes via reachable_between -- so the assert would fire on the second successful pass and refuse a call that runs today.
+think Considered hoisting granted into the loop to make revoke.rye foldable. Rejected it: granted is read after the loop, so the reuse is load-bearing rather than incidental. The honest answer is that revoke.rye's omission is a contract, and what it lacked was the sentence saying so.
+think Restored assert(out.len == 0) in confer.rye, which took the family from 43 identical to 44 and raised the pre-fold carry. Wrote a seven-line doc comment on revoke.rye's read_words naming the reuse, the loop that holds it, and why the read stays safe under reuse -- it writes from offset zero and resets out.len from what it actually read, so a shorter second read leaves no tail behind.
+think Re-priced after the restore: fall 504 -> 519, since confer.rye joins the identical family and then stays home below the fold line, losing a whole body's carry rather than shrinking it to a stub. Re-baselined the carry: 70,862 -> 70,864. Second firing of the re-baseline lantern.
+think Lifted the body into caravan/ladder_checks.rye as pub fn read_words(comptime rung: type, io: std.Io, domain: []const u8, out: *rung.Words) rung.NoteError!void, prefixing max_note_path_len, note_path, and max_words_bytes with the rung type. Stubbed forty-three rungs, excluding the harness, confer.rye, and revoke.rye by name.
+think Advanced the reach-visibility slots one place and found the queue's own ordering disagreeing with the meter: take_up_again carries 576 lines and ranks eighth in CARRY_TOP, yet prices at fall=540 with zero widening -- above read_count's 462, which the carried-lines column ranks higher. Thirteen rungs by forty-eight lines beats forty-three rungs by fourteen once the three-line stub is priced in. Followed the meter and seated take_up_again as the head.
+obs Prediction met measurement to the digit for the eighth lap running. Carry 70,864 -> 70,345, a fall of exactly 519; bodies 18,171 -> 18,172; distinct 7,968 -> 7,970; families 704 -> 703; ceiling down to 70,351.
+obs The find of the lap is that two identical-looking omissions had opposite causes. A guard demanding family uniformity would have been right about confer.rye and wrong about revoke.rye on the same pass, which is the argument against writing that guard and for reading each outlier instead. The tool this lap produced is a sentence in a doc comment rather than a scan.
+obs The carried-lines column and the realized-fall meter disagreed for the first time in this arc. Carried lines ranks by rungs times body length; realized fall subtracts the stub family's carry after, so a short family of long bodies outruns a long family of short ones. The meter is the one to follow, and the carry witness's queue prose now says so where a reader will meet it.
+obs Second firing of the re-baseline lantern, recorded in crux/REMEMBER.md rather than built into a tool. Two firings with the same cause and the same catch -- the prediction disagreeing with the measurement -- so the habit is written down; a third earns the tool.
+obs No red booked. Nothing wrong shipped, and the baseline shift was caught by prediction before any prose was written.
+loom family=read_words declared=45 identical_before=43 identical_after=44 folding=43 below_the_line=1 lines=15 stub=3 widens=0 predicted_fall=519 realized_fall=519
+loom caravan_carry head_of_lap=70862 after_invariant_restore=70864 after_fold=70345 ceiling=70351 bodies=18172 distinct=7970 families=703
+loom caravan_choir witnesses=108 verdict=GREEN era_suite_rungs=10
+file caravan/ladder_checks.rye the word-list read published once, reaching three symbols through the rung handed in
+file caravan/confer.rye the dropped assert(out.len == 0) restored; stays home below the fold line
+file caravan/revoke.rye a doc comment naming the deliberate omission, the reuse that requires it, and why the read stays safe
+file tools/fixtures/caravan_ladder_carry_scan.sh the carry ceiling lowered to 70351
+file tools/caravan_ladder_carry_witness.rish the pins advanced and the fold queue reseated on take_up_again, the meter over the column
+file tools/caravan_ladder_reach_visibility_witness.rish the folded, head, and sibling slots advanced one place each
+file crux/REMEMBER.md the Now block refilled and the second lantern firing recorded
+recommend keep-going take_up_again at thirteen identical bodies over fourteen declarations by forty-eight lines -- 540 by realized fall, zero widening, and the first head the meter chose against the carried-lines column's own ordering. Behind it read_count at 462, also free. Watch the baseline a third time: two laps running have edited bodies before folding them, and a third firing turns the re-baseline habit into a tool.
