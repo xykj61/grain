@@ -1433,30 +1433,7 @@ pub const NoteError = appeal_rung.NoteError;
 
 /// Writes the path of one dependent's note.
 pub fn note_path(buf: *[max_note_path_len]u8, domain: []const u8, suffix: []const u8) NoteError![]const u8 {
-    // invariant: a note always names the dependent it belongs to
-    assert(domain.len >= 1);
-    // invariant: a note always carries one of the suffixes
-    assert(suffix.len >= 1);
-    const total = note_dir.len + 1 + domain.len + suffix.len;
-    if (total > max_note_path_len) return error.NotePathTooLong;
-    var w: u32 = 0;
-    for (note_dir) |c| {
-        buf[w] = c;
-        w += 1;
-    }
-    buf[w] = '/';
-    w += 1;
-    for (domain) |c| {
-        buf[w] = c;
-        w += 1;
-    }
-    for (suffix) |c| {
-        buf[w] = c;
-        w += 1;
-    }
-    // invariant: the path written is exactly the length computed for it
-    assert(w == total);
-    return buf[0..w];
+    return ladder_checks.note_path(@This(), buf, domain, suffix);
 }
 
 /// Writes bytes into a note, creating it fresh.
