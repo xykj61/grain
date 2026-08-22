@@ -24,6 +24,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260822.192044` -- three lift laps condense into one live row
+
+**Walk-back nib:** `ba5295fb99` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card's **Now** block as it read after the `read_the_reply` lap stands whole at this nib, together with the two laps of prose that accreted beside it.
+
+**Swept:** `crux/REMEMBER.md` -- the **Now** block, roughly nine paragraphs, replaced by one live row naming the `bearing_note` lift and the queue it leaves. Three laps of departing detail leave the card: `read_the_reply` (the row free of every priced column), `asked_of` (the constant that answered from above), and `found_path` (the fall as a product).
+
+**What waits there, worth recalling:** the eleventh-rung reading of `allay.rye`, which declares the same name and writes `report_out.read_back` directly rather than through `allay_of(report_out)` -- a different body rather than a copy, and the cleanest example the arc has of what the meter means when declarations outnumber identical bodies. Also the `asked_of` reading that a private alias of a shared type is a false price: thirty-one rungs each wrote `const Dir = std.Io.Dir` privately, the meter honestly counted thirty-one openings, and a hand-read before the lift turned that price into zero. Every one of the three laps keeps its own dated log in `session-logs/`, so this row marks the card rather than the record.
+
+
 ### `20260822.054053` -- the ten glyph-note and note-path folds condense into one row
 
 **Walk-back nib:** `57c365fbc2` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read through the ten-fold arc stands whole at this nib: the per-fold live-edge rows for `press_path`, `bearing_published`, `appraisal_published`, `recant_published`, the roster round, and the laps between them, each in the words its own round wrote.

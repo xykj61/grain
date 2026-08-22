@@ -3418,16 +3418,7 @@ pub fn phase_bit(at: u32) u32 {
 /// and a repair seats from the record rather than from a supervisor's memory
 /// of what the plan wanted.
 pub fn bearing_note(io: std.Io, held: u32, borne_mask: u32) NoteError!void {
-    // invariant: a bearing note never names more phases than one record holds
-    assert(held <= max_queue_len);
-    var glyphs: [max_queue_len]u8 = @splat('.');
-    var at: u32 = 0;
-    while (at < held) : (at += 1) {
-        if ((borne_mask & phase_bit(at)) != 0) glyphs[at] = 'b';
-    }
-    // invariant: every phase of the record was written, none skipped
-    assert(at == held);
-    try seat_note(io, plan_name, ".bearing", glyphs[0..held]);
+    return ladder_checks.bearing_note(@This(), io, held, borne_mask);
 }
 
 /// Reads the published bearing back as the mask a repair spares.
