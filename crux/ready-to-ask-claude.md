@@ -525,7 +525,7 @@ Current tip: `2eb346b` (+ intake files uncommitted)
 |--------|------|
 | **Gate** | Checkpoint only — itinerary precondition; Kaeden's boxes |
 | **Witness** | Machine proof; forward prose *the trio*; program filenames frozen |
-| **Toll** | Price of shared order — [`what-needs-ordering`](../active-designing/date/20260703/20260703-200712_what-needs-ordering.md) |
+| **Toll** | Price of shared order — [`what-needs-ordering`](../foundations/20260703-200712_what-needs-ordering.md) |
 
 ## Bench pins (`20260703.235512`) — replaced
 
@@ -554,15 +554,15 @@ Zip 39 five commits early — cut next full-tree zip at `bad68b4`.
 | **Pottery** | Value-object tier (`.pott`) |
 | **Amphora** | Crossing-vessel vocabulary |
 
-Law: [`active-designing/date/20260703/20260703-202312_the-marked-value.md`](../active-designing/date/20260703/20260703-202312_the-marked-value.md) · [`context/LEXICON.md`](../context/LEXICON.md). Next: crossing seed witness.
+Law: [`foundations/20260703-202312_the-marked-value.md`](../foundations/20260703-202312_the-marked-value.md) · [`context/LEXICON.md`](../context/LEXICON.md). Next: crossing seed witness.
 
 ## Landed `20260703.202312` — marked value + crossing suite (Claude Fable 5 · Cursor seated)
 
 | Item | Path |
 |------|------|
-| Type-marks silo | [`active-designing/date/20260703/20260703-202312_the-marked-value.md`](../active-designing/date/20260703/20260703-202312_the-marked-value.md) |
-| Sealed crossing | [`active-designing/date/20260703/20260703-201612_the-sealed-crossing.md`](../active-designing/date/20260703/20260703-201612_the-sealed-crossing.md) |
-| What needs ordering | [`active-designing/date/20260703/20260703-200712_what-needs-ordering.md`](../active-designing/date/20260703/20260703-200712_what-needs-ordering.md) |
+| Type-marks silo | [`foundations/20260703-202312_the-marked-value.md`](../foundations/20260703-202312_the-marked-value.md) |
+| Sealed crossing | [`foundations/20260703-201612_the-sealed-crossing.md`](../foundations/20260703-201612_the-sealed-crossing.md) |
+| What needs ordering | [`foundations/20260703-200712_what-needs-ordering.md`](../foundations/20260703-200712_what-needs-ordering.md) |
 | Amphora (research) | [`external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) |
 | Pottery suite (4 research) | `200712` mysticeti · move-for-rye · compute-commerce · cloneable-repo |
 | Seed (witnessed) | [`work-in-progress/20260703-202312_crossing_manifest_seed.rye`](20260703-202312_crossing_manifest_seed.rye) · `tools/crossing_manifest_seed.rish` |

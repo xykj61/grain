@@ -12,7 +12,7 @@ assert f.ok else "foundations missing"
 assert f.out contains "FOUNDATIONS_OK" else "foundations check failed"
 
 say "compass rose: grain index…"
-let g = run ["sh" "-c" "test -f active-designing/date/20260702/20260702-184312_the-grain-and-the-crossing.md && echo GRAIN_OK"]
+let g = run ["sh" "-c" "test -f foundations/20260702-184312_the-grain-and-the-crossing.md && echo GRAIN_OK"]
 assert g.ok else "grain index missing"
 assert g.out contains "GRAIN_OK" else "grain check failed"
 
@@ -42,7 +42,7 @@ assert p.ok else "plain stories missing"
 assert p.out contains "STORIES_OK" else "stories check failed"
 
 say "compass rose: sealed crossing Landed + kitchen twins…"
-let sc = run ["sh" "-c" "test -f active-designing/date/20260703/20260703-201612_the-sealed-crossing.md && test -f external-research/20260710-002952_sealed-crossing-plainly.md && test -f external-research/20260710-145313_amphora-crossing-plainly.md && test -d amphora && grep -q 'Landed' active-designing/date/20260703/20260703-201612_the-sealed-crossing.md && grep -q 'Landed' external-research/20260710-002952_sealed-crossing-plainly.md && echo CROSS_OK"]
+let sc = run ["sh" "-c" "test -f foundations/20260703-201612_the-sealed-crossing.md && test -f external-research/20260710-002952_sealed-crossing-plainly.md && test -f external-research/20260710-145313_amphora-crossing-plainly.md && test -d amphora && grep -q 'Landed' foundations/20260703-201612_the-sealed-crossing.md && grep -q 'Landed' external-research/20260710-002952_sealed-crossing-plainly.md && echo CROSS_OK"]
 assert sc.ok else "sealed crossing pair missing"
 assert sc.out contains "CROSS_OK" else "sealed crossing status drift"
 

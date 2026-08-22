@@ -26,37 +26,56 @@ Load these named paths too, so the loop carries the disciplines an unattended ru
 - **Style sweep** -- the Radiant/Twilight pass named in section 6 rides before every send; `context/RADIANT_STYLE.md` and `context/TWILIGHT_STYLE.md` are its guides.
 - **Running thread** -- start each lap by reading the top few rows of `session-logs/README.md` and the newest log's `recommend` line. That row plus the recommend field are the lap-to-lap baton, so the run picks up the last lap's arc -- which family just closed, what was left undone -- rather than rediscovering it from REMEMBER alone. The record is not only a memory; it is the handoff.
 
-### The council rota -- one canon doc deep-read per lap (d27)
+### The council rota -- one element's triad deep-read per lap (5 x 3)
 
-The lenses above load every lap. The **rota** is the supplement: deep-read **one** doc from this list of 27 per lap, cycling by lap index (lap N reads item `N mod 27`), so the durable foundations and context stay in living awareness across a long run rather than fading. Twenty-seven for the council d27 -- the sky fractal's fullest ring (3-9-15-27); breadth beats frequency here, since the core lenses already reinforce each lap. The living pins (REMEMBER, REDS, CAIRNS) are not on the rota because they are read every lap already; the two style guides share one slot, and the TAME core and shelf share another; room was made this way for the system foundations Keaton named and for the SLC foundation (simple, lovable, complete).
+The lenses above load every lap. The **rota** is the supplement: deep-read **one row** of the grid
+below per lap -- three documents, cycling by lap index, so **lap N reads row `N mod 5`**. A full
+cycle takes five laps, so every document returns to living awareness roughly once a working day
+rather than once a fortnight.
 
-1. `foundations/README.md`
-2. `foundations/20260706-185112_follow-our-compass.md`
-3. `foundations/20260811-211431_the-lindy-effect-and-the-long-return.md`
-4. `foundations/20260729-224828_reds-first-and-the-allocation.md`
-5. `foundations/20260816-214652_standfast-the-stopped-line.md`
-6. `foundations/20260814-071700_hardware-and-right-to-repair.md`
-7. `foundations/20260813-142420_mycelium-the-consensus-protocol.md`
-8. `foundations/20260811-233509_the-singularity.md`
-9. `foundations/20260810-011514_pond-the-application-module.md`
-10. `foundations/20260703-182612_sameness-is-the-macro.md`
-11. `active-designing/date/20260618/20260618-182412_single-stranded.md`
-12. `active-designing/date/20260618/20260618-184912_growing-a-language.md`
-13. `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` (the happy zone -- fast isolated tests, thin edge; gratitude J.B. Rainsberger)
-14. `context/RADIANT_STYLE.md` (with `context/TWILIGHT_STYLE.md`)
-15. `context/TAME_CORE.md` (with `context/TAME_GUIDANCE.md`)
-16. `context/SIMPLE_LOVABLE_COMPLETE.md` (SLC -- simple, lovable, complete)
-17. `context/LEXICON.md`
-18. `context/TWO_ROOMS.md`
-19. `context/KYRI.md`
-20. `context/QUIN.md`
-21. `ORGANIZING.md`
-22. `context/SILO_TECHNIQUE.md`
-23. `context/specs/20260627-102012_one-clock-naming-law.md`
-24. `active-designing/date/20260702/20260702-184312_the-grain-and-the-crossing.md`
-25. `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md`
-26. `active-designing/date/20260812/20260812-171050_the-1024-round-itinerary.md`
-27. `recursion-prompts/README.md`
+**The shape, and why it is this one** (seated `20260821.211423` on Keaton's word, replacing the
+d27 rota). Five elements after the D5, luminaries set aside -- **Jupiter** aether, **Saturn** air,
+**Mars** fire, **Venus** water, **Mercury** earth -- crossed with the three modalities:
+**cardinal** opens, **fixed** holds, **dual** adapts. Each lap therefore reads one concern from
+three angles rather than one document in isolation, and the modality axis carries the Rahu-Ketu
+polarity the shape was drawn from: cardinal and fixed genuinely pull against each other -- begin
+the new thing, hold the line -- with dual as the mediator between them.
+
+| | **Cardinal** -- opens | **Fixed** -- holds | **Dual** -- adapts |
+|---|---|---|---|
+| **Aether - Jupiter** *why the work exists* | `foundations/20260706-185112_follow-our-compass.md` | `foundations/20260811-211431_the-lindy-effect-and-the-long-return.md` | `foundations/20260702-184312_the-grain-and-the-crossing.md` |
+| **Air - Saturn** *law and boundary* | `context/TAME_CORE.md` | `foundations/20260618-182412_single-stranded.md` | `foundations/20260821-211423_conways-law-and-the-organization-that-forgets.md` |
+| **Fire - Mars** *cut and stop* | `foundations/20260816-214652_standfast-the-stopped-line.md` | `foundations/20260729-224828_reds-first-and-the-allocation.md` | `foundations/20260818-081438_the-three-depths-of-removal.md` |
+| **Water - Venus** *care and flow* | `foundations/20260821-211423_galls-law-and-the-grown-system.md` | `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` | `foundations/20260618-184912_growing-a-language.md` |
+| **Earth - Mercury** *the concrete* | `context/specs/20260627-102012_one-clock-naming-law.md` | `context/TWO_ROOMS.md` | `foundations/20260703-202312_the-marked-value.md` |
+
+**What the grid retired, and why each was a real cut.** The d27 rota mixed a 4 KB essay with a
+164 KB dictionary and called both one lap's reading, which schedules a filename rather than
+attention. `context/LEXICON.md` and `context/TAME_GUIDANCE.md` are **references consulted on
+demand**, so they left the rota and kept their standing. `context/KYRI.md`,
+`context/RADIANT_STYLE.md`, and `context/TWILIGHT_STYLE.md` load **every** lap by this section's
+own first paragraph, so a rota slot was pure duplication. The two itineraries moved to **section 3,
+the route**, where the loop already reads them. Four domain visions -- hardware, Mycelium, the
+singularity, Pond -- and three indexes left the rota and stayed in the tree; a lap rarely writes
+different code for having re-read a vision, and the compass walks the indexes already.
+
+**The bench.** Five documents rotate in when a season's work calls for them, and each is already
+**cited by a rota document**, so a lap reading the principle is pointed at the practice:
+`context/SILO_TECHNIQUE.md` (cited by Conway), `context/SIMPLE_LOVABLE_COMPLETE.md` (cited by
+Gall), `foundations/20260703-200712_what-needs-ordering.md`,
+`foundations/20260703-201612_the-sealed-crossing.md`, and
+`foundations/20260703-182612_sameness-is-the-macro.md`. Holding the principle in rotation and
+letting its own text reach the practice is the factorization; the rota carries fifteen and reaches
+twenty.
+
+**Six of these graduated to `foundations/` on `20260821.211423`.** Three carried the phrase
+*foundations graduation on Keaton's word* in their own headers since `20260703` and had waited
+forty-nine days; three more were already on the rota **from** `active-designing/`, which was itself
+the evidence they lived in the wrong room. Today's design-rooms test settled all six: each is worth
+reading with the code deleted. `foundations/20260821-211423_galls-law-and-the-grown-system.md` and
+`foundations/20260821-211423_conways-law-and-the-organization-that-forgets.md` were **written** the
+same day to fill two measured blind spots -- Gall's Law was cited in six documents and argued in
+none, and Conway's Law had zero mentions anywhere in the tree.
 
 ## 2 -- The hard bounds, by tag (the custody gates -- never cross)
 
@@ -80,6 +99,37 @@ The itinerary is REMEMBER's season table and open doors. Each round: read the co
 - **Next lap:** {{the next agent-doable rung -- file - what it composes - what it proves}}
 - **Then:** {{the rung after, if pre-decidable}}
 
+### The two loops -- outer general, inner specific
+
+The run has two loops and they carry different kinds of instruction. Keeping them straight is what
+lets an unattended run stay both aimed and free (seated `20260821.211423` on Keaton's word).
+
+**The OUTER loop is the shell `while` in the launch recipe.** It fires for hours or days and its
+prompt is fixed for the whole run, so it stays **general**: load the voice, read `crux/REMEMBER.md`,
+read the route, take the next agent-doable lap Lindy-first crux-first, sweep the prose Radiant,
+send each finished increment, stop at the custody gates. A specific door written into the outer
+prompt goes stale within one lap and then instructs every lap after it -- so the outer loop names a
+**method**, and the card names the **door**.
+
+**The INNER loop is the laps inside one session.** It is **specific**, and it is where judgement
+lives. Within a session the run may, and should:
+
+- **Pick the crux** among the ungated work rather than taking the first item listed.
+- **Book a new idea** the moment it earns its place -- double-seat it (Lexicon plus a rule or
+  foundation) so the fixed itinerary stays undisturbed, and continue.
+- **Reschedule a booking** when the tree has moved past it, or when a cheaper door opens the same
+  gate. Say **why** in the round's log and in the card's *next doors*; a reordering with a recorded
+  reason is planning, while a silent one is drift.
+- **Split or narrow a rung** that turns out larger than its plan, and land the honest half.
+- **Widen the round** only when the round's own shape bounds it -- one keystone otherwise.
+
+**The card is the steering wheel between them.** `crux/REMEMBER.md` is the only place the outer
+loop's generality meets the inner loop's specificity: the outer prompt reads it first, every lap,
+and does what it says. So refreshing the card **is** steering the run, and a stale live edge is an
+instruction that will be followed. Conway's Law names why this works -- the channel between
+sessions is made of files, so editing the channel is architecture done in prose
+(`foundations/20260821-211423_conways-law-and-the-organization-that-forgets.md`).
+
 ## 4 -- Method: witness-first, red-then-green, in the same round
 
 Name the proof before the work: {{witness path}} asserts {{invariant}}; green looks like {{green line}}. See the red before trusting the cure. Definition of done rides inside every rung, never as a closing exhortation.
@@ -95,7 +145,9 @@ A tripwire is not a stop -- it is a design round you **approve for yourself** an
 ## 6 -- Clock, ledger, remotes, signing
 
 - **Clock:** `TZ=America/New_York date +%Y%m%d.%H%M%S`, never fabricated. One clock, not one hand.
-- **Style sweep before every send:** before each commit, run a Radiant pass over the round's prose -- code comments, Markdown, and prose generally -- and a Twilight pass on the rare night or devotional piece; lead with what is, active voice, `yet`/`however` over `but`, a benediction only where earned. A style pass holds numbers, paths, stamps, and modality counts exactly (`claim_preserve_witness`) -- it changes register, never a claim. Ordinary and technical prose still ends plainly.
+- **Style sweep before every send, and it is a real pass rather than a nod:** run a Radiant pass over the round's prose -- code comments, Markdown, and prose generally -- and a Twilight pass on the rare night or devotional piece; lead with what is, active voice, `yet`/`however` over `but`, `rather than` over a heavy `not`, a benediction only where earned. A style pass holds numbers, paths, stamps, and modality counts exactly (`claim_preserve_witness`) -- it changes register, never a claim. Ordinary and technical prose still ends plainly.
+- **The habit that answers the drift: STATE WHAT HOLDS, THEN NAME THE EXCEPTION ONCE.** Law-shaped prose drifts negative, because the easiest form a rule can take is a ban -- and the drift is measured rather than felt. On `20260821.211423` the rules written that day read **1.9 to 2.8** negations per hundred words against **0.40** for `foundations/20260706-185112_follow-our-compass.md`, roughly five times the register, in the rules that teach the register. Rewrite a ban as the positive it protects, and let the exception follow it in one clause.
+- **The meter, run before each send that touched prose:** `rishi/bin/rishi run tools/radiant_negation_witness.rish`. The living rules are a **ratchet** -- a file may fall freely and a rise above its own baseline row is a red -- while `foundations/` and the style guides are reported with a mean and a register to aim at, never failed. A new rule is admitted at its measured value, so the guard welcomes new law and begins ratcheting it on the second lap.
 - **Commits:** CONTRIBUTING style -- component-prefixed subject under 50 chars, Radiant body, `Related` section. The session log rides in the same commit.
 - **Remotes:** push both `origin` and `xykj61` every send (ls-remote guard first; `origin` may 403 from the cloud -- name it, the home pier closes the gap).
 - **Cadence -- send often:** push each *finished increment* as its own atomic signed round -- a new file, a passing witness, a landed doc -- rather than batching a whole rung, so progress is followable on GitHub in near-real-time. More granular than one-send-per-rung, yet still no pin-only commit: every send carries a green witness or an honest note, and each subject stays component-scoped.
@@ -106,7 +158,7 @@ A tripwire is not a stop -- it is a design round you **approve for yourself** an
 
 A `.bron`/`.kyri` session log per round (`session-logs/`), a newest-first row in `session-logs/README.md`, and REMEMBER's Now refreshed. The round summary is the agent's account in Kyri's voice. The log's `recommend` line names the next concrete rung -- it is the baton the next lap reads first (section 1, *Running thread*), so write it as a clear handoff, not a closing flourish.
 
-**Single strand each.** The **logs are the record of what was done**; **REMEMBER is the live card of what is next**. Keep them single-stranded (`active-designing/date/20260618/20260618-182412_single-stranded.md`) -- never let REMEMBER swell into a second copy of the log index. A round refreshes REMEMBER's *Now* to point at live work; it does not re-list into REMEMBER the finished laps the logs already hold.
+**Single strand each.** The **logs are the record of what was done**; **REMEMBER is the live card of what is next**. Keep them single-stranded (`foundations/20260618-182412_single-stranded.md`) -- never let REMEMBER swell into a second copy of the log index. A round refreshes REMEMBER's *Now* to point at live work; it does not re-list into REMEMBER the finished laps the logs already hold.
 
 **Boundary condense-and-reaim.** When a set completes -- a round-set, quest, journey, equinox, or season -- and the scope's crux to-do items are all hit, run one condense pass before opening the next set:
 
