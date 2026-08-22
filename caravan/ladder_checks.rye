@@ -10391,3 +10391,50 @@ pub fn door_admits(
         table.record[at].task,
     );
 }
+
+/// Writes the path of the box one forum leaves its finding in.
+///
+/// Twenty-one rungs held this body byte for byte, at twenty-five lines over a
+/// one-line signature, and it widens nothing of any kind -- no function, no
+/// import, no constant. Every name it reaches -- `max_note_path_len`,
+/// `NoteError`, `addressable`, and `reader_dir` -- already stands public on all
+/// twenty-one, and the rung's own declaration stays private, since no run of
+/// the plan calls a finding path from outside the rung that writes it.
+///
+/// A finding sits beside the case it answers, in the same box outside both
+/// parties, so a third hand keeps the argument and its own answer to it in one
+/// place. The address is bounded and checked before a byte of it reaches a path.
+///
+/// It stands one string literal away from `case_path` above -- `.deem` where
+/// that one writes `.case` -- which is a real observation and deliberately not
+/// acted on here. This arc folds bodies that are byte-identical across rungs;
+/// merging two distinct families behind a shared suffix parameter is a
+/// different move, wanting its own round and its own measurement.
+///
+/// Measured rather than read: `REACH_OK family=finding_path folding=21 widens=0
+/// widens_fn=0 widens_import=0 widens_const=0 stub=3 fall=440`.
+pub fn finding_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, forum: []const u8) rung.NoteError![]const u8 {
+    // invariant: a finding box is only ever built for an address a run may read
+    assert(rung.addressable(forum));
+    const suffix = ".deem";
+    const total = rung.reader_dir.len + 1 + forum.len + suffix.len;
+    if (total > rung.max_note_path_len) return error.NotePathTooLong;
+    var at: u32 = 0;
+    for (rung.reader_dir) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    buf[at] = '/';
+    at += 1;
+    for (forum) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    for (suffix) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    // invariant: a finding path is written exactly as long as it was measured
+    assert(at == total);
+    return buf[0..at];
+}

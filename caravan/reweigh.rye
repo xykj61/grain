@@ -4647,29 +4647,7 @@ pub fn clear_case(io: std.Io, forum: []const u8) void {
 /// hand keeps the argument and its own answer to it in one place. The address is
 /// bounded and checked before a byte of it reaches a path.
 fn finding_path(buf: *[max_note_path_len]u8, forum: []const u8) NoteError![]const u8 {
-    // invariant: a finding box is only ever built for an address a run may read
-    assert(addressable(forum));
-    const suffix = ".deem";
-    const total = reader_dir.len + 1 + forum.len + suffix.len;
-    if (total > max_note_path_len) return error.NotePathTooLong;
-    var at: u32 = 0;
-    for (reader_dir) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    buf[at] = '/';
-    at += 1;
-    for (forum) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    for (suffix) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    // invariant: a finding path is written exactly as long as it was measured
-    assert(at == total);
-    return buf[0..at];
+    return ladder_checks.finding_path(@This(), buf, forum);
 }
 
 /// The third hand's own answer, written in their box by their own hand.
