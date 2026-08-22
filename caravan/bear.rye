@@ -1543,16 +1543,7 @@ pub fn already_holds(slot: *const capabilities.DependentSlot, region_name: []con
 
 /// Names the word at one depth of a list, or answers that the list is shorter.
 pub fn word_at(words: *const Words, index: u32) ?[]const u8 {
-    // invariant: a word is only ever sought inside what one dependent may hold
-    assert(index < capabilities.max_caps_per_dependent);
-    var seen: u32 = 0;
-    var lines = std.mem.splitScalar(u8, words.slice(), '\n');
-    while (lines.next()) |one| {
-        if (one.len == 0) continue;
-        if (seen == index) return one;
-        seen += 1;
-    }
-    return null;
+    return ladder_checks.word_at(@This(), words, index);
 }
 
 /// Rebuilds a dependent's own hands as the line it was spawned with, plus the
