@@ -7,7 +7,7 @@
 
 ---
 
-Scribble turns human prose into block values — headings, paragraphs, and fenced code with `rye_fence` / `rish_fence` / plain kinds for corpus work. Heading extract feeds the outline Skate view. Depth filter selects h1, h2, or h3 folds. Paragraph extract gathers prose bodies in source order, fence-kinds count folds rye/rish/plain tallies, and plain-snippet extract gathers unmarked fence bodies.
+Scribble turns human prose into block values — headings, paragraphs, and fenced code with `rye_fence` / `rish_fence` / plain kinds for document work. Heading extract feeds the outline Skate view. Depth filter selects h1, h2, or h3 folds. Paragraph extract gathers prose bodies in source order, fence-kinds count folds rye/rish/plain tallies, and plain-snippet extract gathers unmarked fence bodies.
 
 | Lap | Claim | Witness |
 |-----|--------|---------|
