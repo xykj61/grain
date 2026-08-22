@@ -1,0 +1,621 @@
+//! Caravan mapping plans -- a declared region lowered to the exact pages and
+//! page tables a verified kernel would need to make the declaration true.
+//!
+//! WHY THIS MODULE EXISTS. `objects.rye` read seL4's whole riscv64 resource
+//! vocabulary and found Caravan standing for five of nine object types, the
+//! five being exactly the portable tier. The four owed are the three page
+//! sizes and the page table -- one debt wearing four names, and every one of
+//! them an address space. `regions.rye` holds the policy half: it declares
+//! WHICH memory a dependent may touch and how far. Nothing yet says what that
+//! declaration COSTS in kernel objects, and that is the half this module pays.
+//!
+//! THE FINDING THAT SHAPED IT. A mapping plan needs a place, and a declared
+//! region has none -- `regions.rye`'s `Region` carries a name and a size, so
+//! two domains may hold the same declaration while the machine puts it in two
+//! different places. That is correct policy and a genuine gap for planning, so
+//! placement arrives here as its own value rather than as a field grafted onto
+//! a declaration. One concern, one list.
+//!
+//! WHAT IS PURE HERE, AND WHAT IS GENUINELY MACHINE. Choosing page sizes and
+//! counting page-table levels is exact integer arithmetic over Sv39's geometry
+//! -- a total function from a placement to a plan, provable on hosted ground
+//! with no kernel beneath it. Writing page-table entries into real memory,
+//! assigning an address-space identifier, and invoking a retype are machine
+//! acts that want a booted kernel. This module is the first half, whole; the
+//! second half stays honestly owed.
+//!
+//! SV39, MEASURED RATHER THAN RECALLED. Every constant below was read from
+//! seL4's own `sel4_arch_include/riscv64/sel4/sel4_arch/constants.h` on
+//! `20260821.222916`, and the witness re-reads them from the vendored header
+//! on every run -- so a vendored bump that moves the geometry reds this module
+//! on the lap it lands rather than silently planning for a machine that no
+//! longer exists.
+//!
+//! THE COVER IS GREEDY, AND GREEDY IS OPTIMAL HERE. At each step the plan
+//! takes the largest page whose size divides the current address and whose
+//! bytes still fit the remaining length. Because the three page sizes form a
+//! divisibility chain -- each a whole multiple of the one below -- no smaller
+//! choice can ever lead to a cover using fewer pages, so the greedy walk is
+//! the minimum-page cover rather than merely a cover. The self-test asserts
+//! the property that makes this checkable: no run of pages remains that a
+//! single larger aligned page could have replaced.
+//!
+//! Hosted ground, pure arithmetic, no kernel underneath it yet.
+//!
+//! Usage:
+//!   mapping          Run the self-test (default)
+//!   mapping selftest Same as default
+//!   mapping table    Print the geometry and a worked plan
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const caravan_mapping_version = "20260821.222916";
+
+// =========================================================================
+// Sv39 geometry -- read from seL4's own riscv64 constants
+// =========================================================================
+
+/// Bits addressed by one four-kilobyte page, seL4's `seL4_PageBits`.
+pub const page_bits: u6 = 12;
+
+/// Bits addressed by one two-megabyte page, seL4's `seL4_LargePageBits`.
+pub const large_page_bits: u6 = 21;
+
+/// Bits addressed by one gigabyte page, seL4's `seL4_HugePageBits`.
+pub const huge_page_bits: u6 = 30;
+
+/// How many entries index one level of the tree, seL4's
+/// `seL4_PageTableIndexBits`. Nine bits is why each page size is exactly five
+/// hundred and twelve times the one below it.
+pub const page_table_index_bits: u6 = 9;
+
+/// Bytes in one page-table entry, as a power of two -- seL4's
+/// `seL4_PageTableEntryBits`. Eight bytes per entry, five hundred and twelve
+/// entries, one four-kilobyte table.
+pub const page_table_entry_bits: u6 = 3;
+
+/// Bits addressed by one page table's own storage, seL4's `seL4_PageTableBits`.
+pub const page_table_bits: u6 = 12;
+
+/// How many levels the tree holds in the configuration this arc brings up
+/// first. Three levels is what makes this Sv39 rather than Sv48, and it is the
+/// same configuration under which `objects.rye` reads nine object types.
+pub const page_table_levels: u32 = 3;
+
+/// How many bits of virtual address Sv39 offers. Three levels of nine index
+/// bits above twelve page bits, which is the arithmetic rather than a recital.
+pub const virtual_address_bits: u6 =
+    page_bits + (page_table_index_bits * @as(u6, @intCast(page_table_levels)));
+
+/// The first address Sv39 cannot express. A placement reaching it is refused.
+pub const virtual_address_limit: u64 = @as(u64, 1) << virtual_address_bits;
+
+/// How many entries one level of the tree holds -- five hundred and twelve,
+/// which is what nine index bits address.
+pub const entries_per_table: u32 = @as(u32, 1) << page_table_index_bits;
+
+/// Maximum pages one plan can hold, **derived from Sv39 itself rather than
+/// chosen**. This is the module's most useful claim, so it is worth the
+/// sentence: a contiguous placement takes small pages only in the fragment
+/// before its first two-megabyte boundary and the fragment after its last,
+/// and each such fragment is shorter than one megabyte-page, so it holds at
+/// most five hundred and eleven. The same argument bounds megabyte-pages by
+/// the gigabyte boundaries on either side. Gigabyte pages fill the whole
+/// middle, and Sv39 addresses five hundred and twelve of them altogether.
+/// The geometry therefore bounds the plan, and no bound-refusal is needed --
+/// which is why this module refuses four things rather than five.
+pub const max_plan_pages: u32 =
+    2 * (entries_per_table - 1) // small pages, one fragment at each end
++ 2 * (entries_per_table - 1) // megabyte pages, likewise
++ entries_per_table; // gigabyte pages, the whole address space
+
+/// Maximum bytes one plan may cover -- the whole of what Sv39 expresses.
+pub const max_plan_bytes: u64 = virtual_address_limit;
+
+/// Maximum page tables one plan may enumerate. A table exists only where a
+/// page beneath it does, and small pages live in at most two fragments, so a
+/// real plan holds a handful. The bound sits far above that on purpose: it is
+/// a structural ceiling for a witness to read, never a number a plan
+/// approaches.
+pub const max_plan_tables: u32 = 1024;
+
+// =========================================================================
+// Refusals -- what a plan declines, and why
+// =========================================================================
+
+/// Why a placement earns no plan. Each is a fact about the machine rather
+/// than a preference, so every arm names something Sv39 genuinely cannot do.
+pub const Refusal = enum(u8) {
+    /// The placement covers no bytes, so there is nothing to map.
+    empty_placement = 0,
+    /// The base address is not page-aligned, so no page can begin there.
+    unaligned_base = 1,
+    /// The length is not a whole number of pages.
+    unaligned_length = 2,
+    /// The placement reaches past what Sv39 can address.
+    beyond_address_space = 3,
+};
+
+/// Every refusal, so the count is read from a list rather than recited.
+pub const all_refusals = [_]Refusal{
+    .empty_placement,
+    .unaligned_base,
+    .unaligned_length,
+    .beyond_address_space,
+};
+
+/// Plain English for a refusal, so a caller reads a reason rather than a code.
+pub fn refusal_meaning(refusal: Refusal) []const u8 {
+    const meaning: []const u8 = switch (refusal) {
+        .empty_placement => "the placement covers no bytes, so there is nothing to map",
+        .unaligned_base => "the base address is not page-aligned, so no page can begin there",
+        .unaligned_length => "the length is not a whole number of pages",
+        .beyond_address_space => "the placement reaches past the last address Sv39 can express",
+    };
+    assert(meaning.len > 0); // invariant: every refusal is legible
+    return meaning;
+}
+
+// =========================================================================
+// Page sizes -- the three the kernel offers, in the order a cover takes them
+// =========================================================================
+
+/// One of the three page sizes a riscv64 seL4 hands out. The order is largest
+/// first, which is the order a minimum-page cover takes them in.
+pub const PageSize = enum(u8) {
+    giga = 0,
+    mega = 1,
+    four_k = 2,
+};
+
+/// Every page size, largest first. One list, so no count is ever recited.
+pub const all_page_sizes = [_]PageSize{ .giga, .mega, .four_k };
+
+/// How many bits of address one page of this size covers.
+pub fn size_bits(size: PageSize) u6 {
+    const bits: u6 = switch (size) {
+        .giga => huge_page_bits,
+        .mega => large_page_bits,
+        .four_k => page_bits,
+    };
+    assert(bits >= page_bits); // invariant: no page is smaller than the smallest page
+    return bits;
+}
+
+/// How many bytes one page of this size covers.
+pub fn size_bytes(size: PageSize) u64 {
+    const bytes = @as(u64, 1) << size_bits(size);
+    assert(bytes >= @as(u64, 1) << page_bits); // invariant: a page always covers at least a page
+    return bytes;
+}
+
+/// The interface symbol the kernel names this page size by, so a witness can
+/// diff this module against seL4's own headers rather than against a memory.
+pub fn kernel_symbol(size: PageSize) []const u8 {
+    const symbol: []const u8 = switch (size) {
+        .giga => "seL4_RISCV_Giga_Page",
+        .mega => "seL4_RISCV_Mega_Page",
+        .four_k => "seL4_RISCV_4K_Page",
+    };
+    assert(symbol.len > 0); // invariant: every page size carries its name
+    return symbol;
+}
+
+/// Which level of the tree a page of this size is entered at. The root is
+/// level zero, so a gigabyte page is entered at the root and a four-kilobyte
+/// page at the deepest level.
+pub fn entry_level(size: PageSize) u32 {
+    const level: u32 = switch (size) {
+        .giga => 0,
+        .mega => 1,
+        .four_k => 2,
+    };
+    assert(level < page_table_levels); // invariant: every page is entered inside the tree
+    return level;
+}
+
+// =========================================================================
+// Placement -- where the machine puts a declared region
+// =========================================================================
+
+/// A declared region given a place. `regions.rye` says what a domain may
+/// touch and how far; a placement says where, which is the fact a mapping
+/// plan needs and a policy declaration deliberately withholds.
+pub const Placement = struct {
+    base: u64,
+    length: u64,
+
+    pub fn init(base: u64, length: u64) Placement {
+        return .{ .base = base, .length = length };
+    }
+
+    /// The first address past the placement. Held as a function rather than a
+    /// field so the two can never disagree.
+    pub fn end(self: Placement) u64 {
+        assert(self.base <= virtual_address_limit); // invariant: the base is expressible
+        return self.base + self.length;
+    }
+
+    /// Why this placement earns no plan, or nothing when it earns one.
+    pub fn refusal(self: Placement) ?Refusal {
+        const page = @as(u64, 1) << page_bits;
+        if (self.length == 0) return .empty_placement;
+        if (self.base % page != 0) return .unaligned_base;
+        if (self.length % page != 0) return .unaligned_length;
+        if (self.base >= virtual_address_limit) return .beyond_address_space;
+        if (self.length > virtual_address_limit - self.base) return .beyond_address_space;
+        return null;
+    }
+};
+
+// =========================================================================
+// The plan -- what the placement costs in kernel objects
+// =========================================================================
+
+/// The exact kernel objects one placement needs. Counts rather than a list,
+/// since a plan for four thousand pages is a number a reader can hold and a
+/// list of four thousand entries is not.
+pub const Plan = struct {
+    /// Pages of each size, indexed by `PageSize`, largest first.
+    pages: [all_page_sizes.len]u32,
+    /// Page tables at each level, the root at index zero.
+    tables: [page_table_levels]u32,
+
+    /// How many pages the plan holds altogether.
+    pub fn page_count(self: *const Plan) u32 {
+        var total: u32 = 0;
+        for (self.pages) |count| total += count;
+        assert(total <= max_plan_pages); // invariant: the plan stays inside its bound
+        return total;
+    }
+
+    /// How many page tables the plan holds altogether.
+    pub fn table_count(self: *const Plan) u32 {
+        var total: u32 = 0;
+        for (self.tables) |count| total += count;
+        assert(total >= 1); // invariant: every address space holds at least a root
+        assert(total <= max_plan_tables); // invariant: the tables stay inside their bound
+        return total;
+    }
+
+    /// How many pages of one size the plan holds.
+    pub fn pages_of(self: *const Plan, size: PageSize) u32 {
+        return self.pages[@intFromEnum(size)];
+    }
+
+    /// How many bytes the plan covers, summed from the pages themselves so the
+    /// coverage and the counts can never disagree.
+    pub fn covered_bytes(self: *const Plan) u64 {
+        var total: u64 = 0;
+        for (all_page_sizes) |size| {
+            total += @as(u64, self.pages_of(size)) * size_bytes(size);
+        }
+        return total;
+    }
+
+    /// How many kernel objects the plan asks for altogether -- the number that
+    /// answers what a declared region actually costs.
+    pub fn object_count(self: *const Plan) u32 {
+        return self.page_count() + self.table_count();
+    }
+};
+
+/// A sentinel standing for "no span of this size has been entered yet". The
+/// walk climbs, so a span index can never legitimately be the largest u64.
+const no_span: u64 = std.math.maxInt(u64);
+
+/// Lower a placement to the pages and page tables it costs, or refuse it.
+///
+/// The walk takes the largest page whose size divides the current address and
+/// whose bytes still fit what remains. Because the page sizes form a
+/// divisibility chain, that choice is the minimum-page cover rather than
+/// merely a cover.
+pub fn plan(placement: Placement) error{
+    EmptyPlacement,
+    UnalignedBase,
+    UnalignedLength,
+    BeyondAddressSpace,
+}!Plan {
+    if (placement.refusal()) |reason| return switch (reason) {
+        .empty_placement => error.EmptyPlacement,
+        .unaligned_base => error.UnalignedBase,
+        .unaligned_length => error.UnalignedLength,
+        .beyond_address_space => error.BeyondAddressSpace,
+    };
+
+    var result = Plan{
+        .pages = [_]u32{0} ** all_page_sizes.len,
+        .tables = [_]u32{0} ** page_table_levels,
+    };
+
+    // The root always exists -- an address space is a root table before it is
+    // anything else. Deeper levels are counted from the pages that actually
+    // need them, never from the placement's extent: a plan holding one small
+    // page needs one table beneath it, however far the placement reaches.
+    result.tables[0] = 1;
+    var last_giga_span: u64 = no_span;
+    var last_mega_span: u64 = no_span;
+
+    var at = placement.base;
+    const stop = placement.end();
+    while (at < stop) {
+        const remaining = stop - at;
+        var chosen = PageSize.four_k;
+        for (all_page_sizes) |size| {
+            const bytes = size_bytes(size);
+            if (at % bytes == 0 and bytes <= remaining) {
+                chosen = size;
+                break;
+            }
+        }
+        // invariant: the chosen page always fits and always begins where it may
+        assert(at % size_bytes(chosen) == 0);
+        assert(size_bytes(chosen) <= remaining);
+
+        // A page entered below the root needs a table at every level above it,
+        // once per aligned span. The walk climbs, so a span differing from the
+        // last one seen is a span newly entered.
+        if (entry_level(chosen) >= 1) {
+            const giga_span = at / size_bytes(.giga);
+            if (giga_span != last_giga_span) {
+                result.tables[1] += 1;
+                last_giga_span = giga_span;
+            }
+        }
+        if (entry_level(chosen) >= 2) {
+            const mega_span = at / size_bytes(.mega);
+            if (mega_span != last_mega_span) {
+                result.tables[2] += 1;
+                last_mega_span = mega_span;
+            }
+        }
+
+        result.pages[@intFromEnum(chosen)] += 1;
+        at += size_bytes(chosen);
+    }
+    // invariant: the walk lands exactly on the end it was given
+    assert(at == stop);
+
+    // invariant: the plan covers exactly the bytes it was asked for
+    assert(result.covered_bytes() == placement.length);
+    // invariant: the geometry's own bound holds, so no bound-refusal is needed
+    assert(result.page_count() <= max_plan_pages);
+    assert(result.table_count() <= max_plan_tables);
+    return result;
+}
+
+// =========================================================================
+// Reading a plan
+// =========================================================================
+
+/// Print the geometry and one worked plan, so a reader meets the arithmetic
+/// before meeting the asserts.
+fn print_table() u8 {
+    print("caravan-mapping {s} -- Sv39 geometry and one worked plan\n\n", .{caravan_mapping_version});
+    print("  virtual address bits   {d}\n", .{virtual_address_bits});
+    print("  page table levels      {d}\n", .{page_table_levels});
+    print("  index bits per level   {d}\n", .{page_table_index_bits});
+    print("  entry bytes            {d}\n\n", .{@as(u64, 1) << page_table_entry_bits});
+
+    print("  {s:<8}  {s:<24}  {s:<12}  {s}\n", .{ "size", "symbol", "bytes", "entered at level" });
+    for (all_page_sizes) |size| {
+        print("  {s:<8}  {s:<24}  {d:<12}  {d}\n", .{
+            @tagName(size),
+            kernel_symbol(size),
+            size_bytes(size),
+            entry_level(size),
+        });
+    }
+
+    const worked = Placement.init(size_bytes(.giga), size_bytes(.giga) + size_bytes(.mega) + size_bytes(.four_k));
+    const lowered = plan(worked) catch return 1;
+    print("\n  a placement of {d} bytes at {d} costs {d} objects:\n", .{
+        worked.length,
+        worked.base,
+        lowered.object_count(),
+    });
+    for (all_page_sizes) |size| {
+        print("    {d:>5} x {s}\n", .{ lowered.pages_of(size), @tagName(size) });
+    }
+    var level: u32 = 0;
+    while (level < page_table_levels) : (level += 1) {
+        print("    {d:>5} x page table at level {d}\n", .{ lowered.tables[level], level });
+    }
+    return 0;
+}
+
+// =========================================================================
+// Self-test -- the asserts are the specification
+// =========================================================================
+
+/// The geometry composes: each page size is exactly the index width above the
+/// one below it, and the tree's levels reach the whole virtual address.
+fn check_geometry() void {
+    assert(large_page_bits == page_bits + page_table_index_bits);
+    assert(huge_page_bits == large_page_bits + page_table_index_bits);
+    assert(virtual_address_bits == huge_page_bits + page_table_index_bits);
+    assert(virtual_address_limit == @as(u64, 1) << virtual_address_bits);
+
+    // One table holds exactly the entries its index bits address.
+    const entries = @as(u64, 1) << page_table_index_bits;
+    const entry_bytes = @as(u64, 1) << page_table_entry_bits;
+    assert(entries * entry_bytes == @as(u64, 1) << page_table_bits);
+
+    // Every page size is entered at its own level, largest at the root. The
+    // level is derived from the size rather than listed beside it, so the two
+    // can never drift apart.
+    for (all_page_sizes) |size| {
+        const levels_below: u32 = (size_bits(size) - page_bits) / page_table_index_bits;
+        assert(entry_level(size) + levels_below + 1 == page_table_levels);
+    }
+}
+
+/// A single page of each size, placed on its own alignment, costs exactly one
+/// page and exactly the tables its level needs.
+fn check_single_pages() void {
+    const giga = plan(Placement.init(size_bytes(.giga), size_bytes(.giga))) catch unreachable;
+    assert(giga.pages_of(.giga) == 1);
+    assert(giga.pages_of(.mega) == 0);
+    assert(giga.pages_of(.four_k) == 0);
+    assert(giga.table_count() == 1); // only the root -- a gigabyte page is entered there
+
+    const mega = plan(Placement.init(size_bytes(.mega), size_bytes(.mega))) catch unreachable;
+    assert(mega.pages_of(.mega) == 1);
+    assert(mega.pages_of(.four_k) == 0);
+    assert(mega.table_count() == 2); // the root and one level below it
+
+    const small = plan(Placement.init(size_bytes(.four_k), size_bytes(.four_k))) catch unreachable;
+    assert(small.pages_of(.four_k) == 1);
+    assert(small.table_count() == 3); // the whole tree, for one small page
+}
+
+/// The cover is exact and minimal: it covers the requested bytes precisely,
+/// and no run of pages remains that a larger aligned page could have replaced.
+fn check_cover_is_minimal() void {
+    const page = size_bytes(.four_k);
+    const stride = @as(u64, 1) << page_table_index_bits;
+
+    // A placement of one gigabyte, one megabyte-page, and one small page,
+    // aligned to a gigabyte, takes exactly one of each.
+    const mixed = plan(Placement.init(
+        size_bytes(.giga) * 2,
+        size_bytes(.giga) + size_bytes(.mega) + page,
+    )) catch unreachable;
+    assert(mixed.pages_of(.giga) == 1);
+    assert(mixed.pages_of(.mega) == 1);
+    assert(mixed.pages_of(.four_k) == 1);
+    assert(mixed.covered_bytes() == size_bytes(.giga) + size_bytes(.mega) + page);
+
+    // Minimality, stated as the property a reader can check: a plan never
+    // holds a full aligned run of the smaller size where the larger would fit.
+    // Five hundred and twelve small pages on a megabyte boundary become one.
+    const folded = plan(Placement.init(size_bytes(.mega), page * stride)) catch unreachable;
+    assert(folded.pages_of(.mega) == 1);
+    assert(folded.pages_of(.four_k) == 0);
+    assert(folded.page_count() == 1);
+
+    // One page short of that run stays small, since no larger page fits.
+    const short = plan(Placement.init(size_bytes(.mega), page * (stride - 1))) catch unreachable;
+    assert(short.pages_of(.mega) == 0);
+    assert(short.pages_of(.four_k) == @as(u32, @intCast(stride - 1)));
+
+    // Offset by one page, the same length cannot begin on a megabyte boundary,
+    // so alignment rather than length is what forbids the larger page.
+    const offset = plan(Placement.init(size_bytes(.mega) + page, page * stride)) catch unreachable;
+    assert(offset.pages_of(.mega) == 0);
+    assert(offset.pages_of(.four_k) == @as(u32, @intCast(stride)));
+}
+
+/// Page tables appear exactly where a page beneath them does, and a level with
+/// nothing beneath it is never counted.
+fn check_tables_follow_pages() void {
+    const page = size_bytes(.four_k);
+
+    // Two gigabyte pages need only the root.
+    const two_giga = plan(Placement.init(0, size_bytes(.giga) * 2)) catch unreachable;
+    assert(two_giga.pages_of(.giga) == 2);
+    assert(two_giga.tables[0] == 1);
+    assert(two_giga.tables[1] == 0);
+    assert(two_giga.tables[2] == 0);
+
+    // A small page in each of two gigabyte spans needs a level-one table for
+    // each span, and a level-two table for each megabyte span.
+    const straddle = plan(Placement.init(size_bytes(.giga) - page, page * 2)) catch unreachable;
+    assert(straddle.pages_of(.four_k) == 2);
+    assert(straddle.tables[1] == 2); // two gigabyte spans touched
+    assert(straddle.tables[2] == 2); // two megabyte spans touched
+}
+
+/// Every refusal is a fact about the machine, and each is proven by a
+/// placement that earns it.
+fn check_refusals() void {
+    const page = size_bytes(.four_k);
+
+    assert(Placement.init(0, 0).refusal() == .empty_placement);
+    assert(Placement.init(1, page).refusal() == .unaligned_base);
+    assert(Placement.init(0, page + 1).refusal() == .unaligned_length);
+    assert(Placement.init(virtual_address_limit, page).refusal() == .beyond_address_space);
+    assert(Placement.init(virtual_address_limit - page, page * 2).refusal() == .beyond_address_space);
+
+    // A placement that ends exactly on the last expressible address stands.
+    assert(Placement.init(virtual_address_limit - page, page).refusal() == null);
+
+    // And the errors match the refusals, so a caller reading either sees one
+    // story. Each error is captured rather than compared at the call seam.
+    if (plan(Placement.init(0, 0))) |_| unreachable else |err| assert(err == error.EmptyPlacement);
+    if (plan(Placement.init(1, page))) |_| unreachable else |err| assert(err == error.UnalignedBase);
+    if (plan(Placement.init(0, page + 1))) |_| unreachable else |err| assert(err == error.UnalignedLength);
+    if (plan(Placement.init(virtual_address_limit, page))) |_| unreachable else |err| assert(err == error.BeyondAddressSpace);
+
+    // Every refusal is legible.
+    for (all_refusals) |refusal| {
+        assert(refusal_meaning(refusal).len > 0);
+    }
+}
+
+/// The geometry bounds the plan, so no bound-refusal is needed. Proven by
+/// building the worst-shaped placement Sv39 admits and reading its counts.
+///
+/// The shape that maximises pages begins one small page above a gigabyte
+/// boundary and ends one small page short of another: five hundred and eleven
+/// small pages climb to the first megabyte boundary, five hundred and eleven
+/// megabyte-pages climb to the first gigabyte boundary, gigabyte-pages fill
+/// the middle, and the far end descends the same stair.
+fn check_geometry_bounds_the_plan() void {
+    const page = size_bytes(.four_k);
+    const mega = size_bytes(.mega);
+    const giga = size_bytes(.giga);
+    const stride = @as(u64, entries_per_table - 1);
+
+    const head = stride * page + stride * mega;
+    const middle = giga * 2;
+    const tail = stride * mega + stride * page;
+
+    const worst = plan(Placement.init(page, head + middle + tail)) catch unreachable;
+    assert(worst.pages_of(.four_k) == @as(u32, @intCast(stride * 2)));
+    assert(worst.pages_of(.mega) == @as(u32, @intCast(stride * 2)));
+    assert(worst.pages_of(.giga) == 2);
+
+    // The worst shape this test can build sits below the derived ceiling by
+    // exactly the gigabyte pages it declines to name, which is the whole
+    // argument: only the middle grows, and Sv39 caps the middle.
+    assert(worst.page_count() + (entries_per_table - 2) == max_plan_pages);
+    assert(worst.page_count() <= max_plan_pages);
+
+    // Tables stay small however wide the placement, since a table exists only
+    // where a page beneath it does, and small pages live in two fragments.
+    assert(worst.table_count() <= max_plan_tables);
+    assert(worst.tables[0] == 1);
+}
+
+fn run_self_test() u8 {
+    check_geometry();
+    check_single_pages();
+    check_cover_is_minimal();
+    check_tables_follow_pages();
+    check_refusals();
+    check_geometry_bounds_the_plan();
+
+    print("caravan-mapping {s} GREEN\n", .{caravan_mapping_version});
+    print("  Sv39 addresses {d} bits over {d} levels, {d} page sizes\n", .{
+        virtual_address_bits,
+        page_table_levels,
+        all_page_sizes.len,
+    });
+    print("  a placement lowers to pages and page tables, exactly and minimally\n", .{});
+    print("  {d} refusals, each a fact about the machine\n", .{all_refusals.len});
+    print("  the plan is the design half; a retype and an address-space identifier stay owed\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const allocator = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(allocator);
+
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "table")) return print_table();
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_self_test();
+    if (args.len >= 2) return 1;
+    return run_self_test();
+}
