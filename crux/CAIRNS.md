@@ -24,6 +24,16 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260821.203501` -- the operator card condenses a day of folds and takes the Standfast edge
+
+**Walk-back nib:** `5f09ec4273` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read through the Caravan ladder arc stands whole at this nib: nineteen live-edge rows, `fold AI` at the front, and the full narration of every fold from D through AI in the words each round wrote for itself.
+
+**Swept:** nineteen live-edge rows fold into two -- one for the Standfast day that has become the edge, one condensing the Caravan ladder arc that produced them. The card is 58,608 bytes and carries a standing condensation debt named in its own INNER LOOP; this pays part of it. The INNER LOOP directives, the guard roster, and every seated law stay untouched.
+
+**What waits there, worth recalling:** the per-fold reasoning. Each row explains *why* that fold chose the family it chose -- the harness read before the meter, the visibility split kept rather than healed, the cohort measured at the head of the lap rather than re-queried. That reasoning is the Caravan arc's real teaching and it is not summarised well by a count. It also lives in the session logs of each fold, so the walk-back is a convenience rather than the only copy.
+
+**Why now:** the outer recursion loop reads this card first each lap and takes the door it names. Its live edge pointed at `fold AI` and would very likely have opened `fold AJ` -- a mark the mark law seated today explicitly retires. A card eight hours stale is not merely untidy; it is an instruction to contradict the tree.
+
 ### `20260821.165133` -- the four advisory rooms fold, and living code is repointed
 
 **Walk-back nib:** `30ad234a08` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. `counsel` (764 flat), `active-designing` (629), `expanding-prompts` (359), and `waymarks` (290) read at this nib exactly as they stood before the fold, and so does every living file before the repointer touched it.
