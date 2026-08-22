@@ -4111,24 +4111,7 @@ pub fn bearing_note(io: std.Io, held: u32, borne_mask: u32) NoteError!void {
 /// than by guessing -- which leaves the repair exactly where the rung below
 /// left it, running every arc the plan lost.
 pub fn bearing_published(io: std.Io, held: u32) u32 {
-    // invariant: a reading never names more phases than one record may hold
-    assert(held <= max_queue_len);
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = note_path(&path_buf, plan_name, ".bearing") catch return 0;
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return 0;
-    defer file.close(io);
-    var glyphs: [max_queue_len]u8 = @splat('.');
-    const got = file.readPositionalAll(io, &glyphs, 0) catch return 0;
-    // invariant: a bearing note never outgrows the record it describes
-    assert(got <= max_queue_len);
-    var found: u32 = 0;
-    var at: u32 = 0;
-    while (at < held and at < got) : (at += 1) {
-        if (glyphs[at] == 'b') found |= phase_bit(at);
-    }
-    // invariant: the walk never read a phase outside the record
-    assert(at <= held);
-    return found;
+    return ladder_checks.bearing_published(@This(), io, held);
 }
 
 /// Publishes which of a plan's unmarked losses this run weighed as spent.
