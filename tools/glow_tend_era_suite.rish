@@ -78,10 +78,10 @@ let conc = run ["rishi/bin/rishi" "run" "tools/glow_build_concurrency_witness.ri
 assert conc.ok else "era: build concurrency RED — ${conc.err}"
 say "era 6/9 GREEN — the lock and the atomic install hold under six lanes (REDS %88)."
 
-say "era 7/9: the commit-message wall -- both refusals refuse, and every welcome still welcomes..."
+say "era 7/9: the commit-message wall -- all three refusals refuse, and every welcome still welcomes..."
 let guard = run ["rishi/bin/rishi" "run" "tools/commit_message_guard_witness.rish"]
 assert guard.ok else "era: commit-message guard RED -- ${guard.err}"
-say "era 7/9 GREEN -- 18 planted cases answered right and the wall is armed on this clone."
+say "era 7/9 GREEN -- 20 planted cases answered right across three rules, and the wall is armed on this clone."
 
 say "era 8/9: the build bridge itself -- a cyclic import graph terminates, and a chain past the bound refuses by name..."
 let bridge = run ["rishi/bin/rishi" "run" "tools/rye_bridge_cycle_witness.rish"]
