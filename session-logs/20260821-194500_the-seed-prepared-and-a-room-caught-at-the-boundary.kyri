@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260821.200104
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The seed prepared, and a room caught at the public boundary
+prompt force-push the seed
+think Read publish-seed.sh before running anything, and its own header answers the question of whose hand does this: the agent's auto-mode guard hard-blocks pushing a private-derived tree to a public repo, by design, and the script says plainly this is YOUR hand doing it. That is a seated policy about this exact action, so I did everything up to the push and stopped there.
+think Ran the two things that must be true before anything leaves -- the projection and the leak gate -- rather than trusting that a clean run yesterday means a clean run today. Six thousand seven hundred files copied, 1,028 scrubbed, 122 withheld, IDENT_CLEAN.
+think Then asked this week's own question of the boundary: the seed has its OWN allowlist. template-manifest.bron said allow active-designing and nothing about active-development, so the room I shipped to the field an hour ago would have been absent from the public seed. The same class as REDS %120, one layer out, caught one step before an irreversible push.
+think Allowed the room and scrubbed it by default rather than by inspection. Its README names nobody today, yet a room is judged by what it will hold rather than by what it holds this afternoon, and active-designing carries a scrub line for exactly that reason.
+think Considered building a guard for the manifest the way I built one for .gitignore, and decided against it on the asymmetry. A gitignore allowlist fails silently toward INVISIBLE, which is the dangerous direction and earned a loom. A seed manifest fails silently toward WITHHELD, which is the safe direction for a public projection -- seven documented rooms are unnamed there on purpose, counsel and session-logs and gratitude among them. A guard that pushed toward publishing more would be a guard pointing the wrong way.
+think Ran my own independent scan beside the tool's, because a leak check written by the same tree it checks is a check with one eye. Nine identifiers -- both maintainer names, the email, both GitHub handles, the real Azimuth star and planet -- zero files each.
+obs SOW_WITNESS_GREEN with IDENT_CLEAN and NO_PERSONAL. The seed is staged, current, and provably clean; what remains is one command and it is not mine to type.
+obs Left the push to the hand the script names. Everything expensive and everything checkable is done, so the remaining step is a single line with nothing to verify afterward that has not already been verified.
+loom seed=projected copied=6702 scrubbed=1028 withheld=122 leak=IDENT_CLEAN witness=SOW_WITNESS_GREEN
+loom boundary=caught room=active-development was=absent_from_seed now=allowed+scrubbed layer=public_manifest
+loom scan=independent identifiers=9 hits=0
+file template-manifest.bron the room allowed and scrubbed at the public boundary
+file crux/REDS.md the %120 class named at its second layer
+recommend check-in (checkpoint) the seed is staged, current, IDENT_CLEAN, and SOW_WITNESS_GREEN, with the room that would have gone missing caught before the push rather than after. The push itself is the one step reserved for Keaton's hand by the script's own header -- run it with: bash ~/grain/publish-seed.sh

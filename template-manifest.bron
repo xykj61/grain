@@ -105,6 +105,7 @@ allow context/equinox_foundations.brix
 allow context/specs   # the project's own technical specs; identity/provenance sub_excluded
 allow external-research
 allow active-designing
+allow active-development   # the round-scoping sibling, opened 20260821; no personal reference by construction
 allow waymarks
 # -- root files (identity-bearing ones scrubbed) --
 allow README.md
@@ -220,6 +221,8 @@ scrub     settlement                      # settlement ledger — a comment name
 # ---- disciplines and design corpus (scrub: technical, yet name-bearing) ----
 scrub     context                         # disciplines + specs + identity (RIYO/QUIN) — scrub identity, keep law
 scrub     active-designing                # design corpus names the maintainer as decision authority
+scrub     active-development              # same corpus, same treatment -- scrub by default rather than by inspection,
+                                          # since a room is judged by what it will hold, not by what it holds today
 scrub     active-reviving                 # revival corpus, same
 scrub     expanded-prompts                # cold records (past); name-heavy like expanding-prompts; batons sub-excluded personal
 scrub     expanding-prompts               # runnable plans; name-heavy per the audit
