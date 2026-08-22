@@ -10648,3 +10648,47 @@ pub fn sibling_waits(comptime rung: type, table: *const rung.Table, pick: u32, s
     assert(i == pick);
     return false;
 }
+
+/// Answers whether a phase of a turn this pick's turn names still waits.
+///
+/// Fifty-one rungs held this body byte for byte at fifteen lines. Forty-three
+/// fold and eight stay home, each for a reason the meter can name: `confer.rye`,
+/// `entrust.rye`, and `unhand.rye` stand below the fold line, since this harness
+/// imports all three and a lifted body may never reach back through a rung it
+/// reaches for, while `replace.rye`, `revoke.rye`, `taper.rye`,
+/// `understudy.rye`, and `withdraw.rye` each keep their own `Table` private and
+/// are welcome to.
+///
+/// The widening meter priced the lift at fifty-three -- forty-eight function
+/// openings and five record openings -- and this lift pays neither, by taking
+/// the forty-eight at their word and leaving the five where they stand. The
+/// forty-eight function openings would have published each rung's private
+/// `waits`, and the body above already answers it: every one of the forty-three
+/// that fold delegates its own `waits` to this file, so the lifted body reaches
+/// the `waits` standing above it in this harness rather than the one inside each
+/// rung, and nothing is published. The five record openings would have published a record type five
+/// rungs chose to keep, so those five keep both the type and the body.
+///
+/// `turn_bit` is reached through the rung and stands public in all forty-three
+/// already, so the one name this body climbs outward for was open before it
+/// arrived.
+///
+/// Measured rather than read: `REACH_OK family=elder_waits folding=48
+/// widens=53 widens_fn=48 widens_import=0 widens_const=5 stub=3 fall=579`. The
+/// meter prices the lift as though all forty-eight above the fold line folded;
+/// this lift folds forty-three, so the realized fall is 519 rather than 579.
+pub fn elder_waits(comptime rung: type, table: *const rung.Table, pick: u32) bool {
+    // invariant: a pick always names a phase inside the record
+    assert(pick < table.held);
+    const wanted = table.record[pick].follows_turns;
+    if (wanted == 0) return false;
+    var i: u32 = 0;
+    while (i < table.held) : (i += 1) {
+        if (i == pick) continue;
+        if (!waits(rung, table, i)) continue;
+        if ((wanted & rung.turn_bit(table.record[i].turn)) != 0) return true;
+    }
+    // invariant: the walk read the whole record, weighing every phase in it
+    assert(i == table.held);
+    return false;
+}
