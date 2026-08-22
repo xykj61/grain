@@ -8,8 +8,8 @@
 //!   pond/bin/customs mark <tilak>
 //!   pond/bin/customs inspect <manifest.bron>
 //!
-//! Ground: marked value [`active-designing/date/20260703/20260703-202312_the-marked-value.md`](../active-designing/date/20260703/20260703-202312_the-marked-value.md)
-//! · sealed crossing [`active-designing/date/20260703/20260703-201612_the-sealed-crossing.md`](../active-designing/date/20260703/20260703-201612_the-sealed-crossing.md)
+//! Ground: marked value [`foundations/20260703-202312_the-marked-value.md`](../foundations/20260703-202312_the-marked-value.md)
+//! · sealed crossing [`foundations/20260703-201612_the-sealed-crossing.md`](../foundations/20260703-201612_the-sealed-crossing.md)
 //! · counsel [`counsel/date/20260707/20260707-025212_claude-counsel-weave-brix-pond-customs.md`](../counsel/date/20260707/20260707-025212_claude-counsel-weave-brix-pond-customs.md)
 
 const std = @import("std");

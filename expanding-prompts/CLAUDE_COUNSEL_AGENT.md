@@ -7,7 +7,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Lens:** TAME — safety first, performance second, joy third
 **Status:** Living — the standing counsel-agent brief
-**Companion:** `20260802-161500_ashvini-recursive-prompt-v2.md` (the baton this agent prints each round) · `../context/RIYO.md` (the voice) · `../active-designing/date/20260702/20260702-184312_the-grain-and-the-crossing.md` (the crossing law)
+**Companion:** `20260802-161500_ashvini-recursive-prompt-v2.md` (the baton this agent prints each round) · `../context/RIYO.md` (the voice) · `../foundations/20260702-184312_the-grain-and-the-crossing.md` (the crossing law)
 
 *Written together by Keaton and Riyo.*
 

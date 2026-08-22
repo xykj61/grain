@@ -26,7 +26,7 @@ These rest beneath the specifications. The specs say what to build and how; thes
 
 **The long return** — the [Lindy foundation](20260811-211431_the-lindy-effect-and-the-long-return.md) names why front doors and foundations are the highest-leverage prose we own, and it grounds the standing order [**Lindy-first, crux-first**](../.claude/rules/lindy-first-crux.md): do the longest-lived work first, and within a tier take the *crux* — the hardest solvable problem. The **AHOY** front-door season ([`../expanding-prompts/date/20260811/20260811-211431_ahoy-front-door-season.md`](../expanding-prompts/date/20260811/20260811-211431_ahoy-front-door-season.md)) runs this room's weave.
 
-**The grain** — ten standing strands and the crossing test live in [`../active-designing/date/20260702/20260702-184312_the-grain-and-the-crossing.md`](../active-designing/date/20260702/20260702-184312_the-grain-and-the-crossing.md); companion to [`../context/SILO_TECHNIQUE.md`](../context/SILO_TECHNIQUE.md). Strand briefs that silo here point back to that index; the index points to each brief.
+**The grain** — ten standing strands and the crossing test live in [`../foundations/20260702-184312_the-grain-and-the-crossing.md`](../foundations/20260702-184312_the-grain-and-the-crossing.md); companion to [`../context/SILO_TECHNIQUE.md`](../context/SILO_TECHNIQUE.md). Strand briefs that silo here point back to that index; the index points to each brief.
 
 **The compass** — the return habit (foundations → grain → active-designing → TASKS → witnesses) lives in [`20260706-185112_follow-our-compass.md`](20260706-185112_follow-our-compass.md) · **landed** `20260706.185512 UDT`. Say **follow our compass** for navigation; keep **grain strand** for structural fit.
 

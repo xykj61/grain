@@ -26,7 +26,7 @@ Three layers, one discipline — filenames follow TigerBeetle's `docs/TIGER_STYL
 | **Glow working pin** | [`../glow/README.md`](../glow/README.md) · alphabet · argv · token · G5 Nock · bartis · barket · nest/type | Fixture desks + asserts · G0–G5 · **bartis** STOA100–109 · **barket** tokenize→named-mold STOA111–118 · **nest/type** STOA106–110/119 |
 | **Glow supplement (horizon)** | [`../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) | Scoping for a future Glow supplement; root still binds Glow authors now |
 
-Read the voiced canon (`external-research/TAME_GUIDANCE.md`) for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `active-designing/date/20260618/20260618-184912_growing-a-language.md`.
+Read the voiced canon (`external-research/TAME_GUIDANCE.md`) for philosophy and expert Tiger discipline. Read **this file** at the keyboard for what to assert, name, and bound. Organization prose lives in `foundations/20260618-184912_growing-a-language.md`.
 
 ### Glow — assertion conditional runes (working pin, STOA88)
 

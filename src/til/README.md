@@ -4,7 +4,7 @@
 **Last updated:** 2026-07-28 (Surface p18 — second pedestal)  
 **Status:** Living — room open; first resident + second pedestal seated · `%tile` still held
 
-The tilak is the type-mark: the worn sign every value wears at a seam (seated in [`../../context/LEXICON.md`](../../context/LEXICON.md); design at `active-designing/date/20260703/20260703-202312_the-marked-value.md`). Pond customs already admits **per Tilak**; Weave content-addresses them; two roots stand hardcoded (**plain-bytes** · **manifest**). This room gathers tilak definitions written in Glow, one file per mark.
+The tilak is the type-mark: the worn sign every value wears at a seam (seated in [`../../context/LEXICON.md`](../../context/LEXICON.md); design at `foundations/20260703-202312_the-marked-value.md`). Pond customs already admits **per Tilak**; Weave content-addresses them; two roots stand hardcoded (**plain-bytes** · **manifest**). This room gathers tilak definitions written in Glow, one file per mark.
 
 A short atom form (`%tile`) is proposed and **held for Keaton's word**; until then the long word serves everywhere. Pedestals here do not seat `%tile` — they name living counts from the marked-value brief.
 
