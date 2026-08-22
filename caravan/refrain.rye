@@ -7756,55 +7756,7 @@ pub fn apprise_the_raiser(io: std.Io, apprise: Apprise, report_out: *Report) (Ru
 /// The number it moves is the answer a plan carried whose worth it never
 /// learned.
 pub fn weigh_the_answer(io: std.Io, suffice: Suffice, report_out: *Report) (RunError || NoteError)!void {
-    var address_buf: [max_address_len]u8 = undefined;
-    const address = address_published(io, &address_buf);
-    const carried = if (address) |box| apprised_of(io, box) else null;
-    const apprised_count: u32 = if (carried != null) 1 else 0;
-    if (apprised_count == 0) {
-        // invariant: a run that told nobody weighs nothing
-        assert(suffice_of(report_out).weighed == 0);
-        // invariant: a run that told nobody leaves no answer unmeasured
-        assert(suffice_of(report_out).unmeasured == 0);
-        return;
-    }
-
-    // The measurement this rung moves, weighed against the delivery actually
-    // standing rather than against anything the plan asked for, so an answer
-    // nobody was ever asked about is counted rather than refused.
-    suffice_of(report_out).unmeasured = unmeasured_answers(apprised_count, suffice);
-    const weighed_count = weighed_in(apprised_count, suffice);
-    const unweighed_count = unasked_in(apprised_count, suffice);
-    if (suffice == .unasked) {
-        // invariant: an unasking run reads nobody's word, however plainly it
-        // carried an answer of its own
-        assert(weighed_count == 0);
-        suffice_of(report_out).unweighed = unweighed_count;
-        return;
-    }
-
-    // The reader's own word comes off the wire, since what an operator is owed
-    // is the verdict that reader actually wrote and never one a run supposed.
-    // The reads supply the ladder rather than short-circuiting it, so every
-    // refusal below is reached by argument and named in its own order.
-    const delivery = carried orelse return error.SufficeUntold;
-    const told = true;
-    const box = address orelse return error.SufficeUntold;
-    const spoken_word = worth_written(io, box);
-    const spoken = spoken_word != null;
-    const matched = suits_answers(spoken_word, delivery);
-    if (suffice_refusal(apprised_count, weighed_count, unweighed_count, told, spoken, matched)) |why| return why;
-
-    // invariant: a weighing run reads the one word its own answer earned
-    assert(weighed_count == 1);
-    const worth = suits_worth(spoken_word) orelse return error.SufficeSilent;
-    try suffice_note(io, worth);
-    // The wire before the memory, once more: the word is read back out of the
-    // plan's own note before the report believes anybody was ever asked.
-    if (!suffice_holds(worth_published(io), worth)) return error.SufficeMisrecorded;
-    suffice_of(report_out).weighed = weighed_count;
-    suffice_of(report_out).unweighed = unweighed_count;
-    // invariant: a weighing run leaves no answer of its own unmeasured
-    assert(suffice_of(report_out).unmeasured == 0);
+    return ladder_checks.weigh_the_answer(@This(), io, suffice, report_out);
 }
 
 /// Takes the matter up again when this run's reader says the answer falls short.
