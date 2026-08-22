@@ -10132,3 +10132,52 @@ pub fn take_up_again(comptime rung: type, io: std.Io, reopen: rung.Reopen, repor
     // invariant: a reopening run leaves no word of its own unheeded
     assert(rung.reopen_of(report_out).unheeded == 0);
 }
+
+/// One dependent's own line, read arc by arc against the count it was handed.
+///
+/// Answers `null` when every arc stood as the plan said it would, and an
+/// outcome code naming the first arc that did not.
+///
+/// Forty-two rungs declare this name and all forty-two wrote the same body, so
+/// all forty-two fold: none of them stands below the fold line, since
+/// `ladder_checks.rye` imports none of the forty-two.
+///
+/// Measured rather than read: `REACH_OK family=read_own_line folding=42
+/// widens=126 widens_fn=0 widens_import=126 widens_const=0 stub=7 fall=492`.
+///
+/// **This lift pays none of the hundred and twenty-six widenings the meter
+/// priced.** All hundred and twenty-six are import bindings, three per rung --
+/// `capabilities`, `carry`, and `cycle` -- and the harness already imports each
+/// of the three shared modules itself, so the body reaches them here rather
+/// than through the rung and no rung's door opens by a single name. That is the
+/// shape `load_one` named one lap earlier: an import widening is often
+/// avoidable outright, since a shared module the harness can import needs no
+/// re-export from any rung.
+///
+/// The rung parameter stays, however, and `load_one`'s dropped: the remaining
+/// two names, `queue_store` and `serve`, already stand `pub` on every one of
+/// the forty-two, and reaching them through `rung` keeps `queue.rye` and
+/// `serve.rye` **above** the fold line. Importing either here would sink it
+/// below, and a rung below the fold line can never fold a body again -- a cost
+/// the widening meter does not price, paid by every family those two rungs
+/// might yet join.
+pub fn read_own_line(
+    comptime rung: type,
+    io: std.Io,
+    slot: *capabilities.DependentSlot,
+    task: cycle.Task,
+) ?u8 {
+    // invariant: a standing dependent always reads at least one arc
+    assert(task.hops.count >= 1);
+    // invariant: a line never names more arcs than one plan may carry
+    assert(task.hops.count <= cycle.max_hops);
+    var i: u32 = 0;
+    while (i < task.hops.count) : (i += 1) {
+        const stood = rung.queue_store.read_index(io, slot, task.hops.name_at(i)) catch |err|
+            return rung.serve.reach_code(err);
+        if (stood != task.count) return carry.Outcome.bytes_differed;
+    }
+    // invariant: every arc this dependent was handed was read, none skipped
+    assert(i == task.hops.count);
+    return null;
+}

@@ -3502,27 +3502,12 @@ pub fn inherited_at_first_breath(
 }
 
 /// One dependent's own line, read arc by arc against the count it was handed.
-///
-/// Answers `null` when every arc stood as the plan said it would, and an
-/// outcome code naming the first arc that did not.
 pub fn read_own_line(
     io: std.Io,
     slot: *capabilities.DependentSlot,
     task: cycle.Task,
 ) ?u8 {
-    // invariant: a standing dependent always reads at least one arc
-    assert(task.hops.count >= 1);
-    // invariant: a line never names more arcs than one plan may carry
-    assert(task.hops.count <= cycle.max_hops);
-    var i: u32 = 0;
-    while (i < task.hops.count) : (i += 1) {
-        const stood = queue_store.read_index(io, slot, task.hops.name_at(i)) catch |err|
-            return serve.reach_code(err);
-        if (stood != task.count) return carry.Outcome.bytes_differed;
-    }
-    // invariant: every arc this dependent was handed was read, none skipped
-    assert(i == task.hops.count);
-    return null;
+    return ladder_checks.read_own_line(@This(), io, slot, task);
 }
 
 /// Grafts every conferred word as it arrives, reads each arc, and answers for

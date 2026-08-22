@@ -1,6 +1,6 @@
 # The Microkernel License Read -- and the Premise It Overturns
 
-**Stamp:** `20260821.041056` - **Status:** Living (verification record) - **Voice:** Kyri - **Style:** Radiant
+**Stamp:** `20260821.041056` - **Status:** Checkable -- Living (verification record) - **Voice:** Kyri - **Style:** Radiant
 **Gate:** the per-component license read named in [`the microkernel target and the OS parity question`](20260817-185851_microkernel-target-and-the-os-parity-question.md), blind spot one -- **granted by Keaton `20260821`**
 **Kin:** [`.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md) - [`the study-weight recenter`](20260819-094721_microkernel-target-study-weight-recenter.md) - [`the toolchain question answered`](20260817-185851_microkernel-target-and-the-os-parity-question.md#addendum----the-toolchain-question-answered-on-metal-20260821040637)
 

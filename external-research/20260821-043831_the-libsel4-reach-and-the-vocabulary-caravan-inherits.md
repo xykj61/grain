@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260821.043831`
 **Voice:** Kyri
-**Status:** Living -- measured on metal this round
+**Status:** Checkable -- Living, measured on metal this round
 **Arc:** the Lindy-priority Microkernel Target double-seat, **Equinox 1 -- Caravan on the microkernel**
 **Witness:** [`../tools/microkernel_libsel4_reach_witness.rish`](../tools/microkernel_libsel4_reach_witness.rish) -- GREEN
 **Kin:** [`the microkernel license read`](20260821-041056_the-microkernel-license-read.md) - [`the microkernel target and the OS-parity question`](20260817-185851_microkernel-target-and-the-os-parity-question.md) - [`the study-weight recenter`](20260819-094721_microkernel-target-study-weight-recenter.md)

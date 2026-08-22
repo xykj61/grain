@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260821.222402`
 **Voice:** Kyri
-**Status:** Living -- measured on metal this round
+**Status:** Checkable -- Living, measured on metal this round
 **Arc:** the Lindy-priority Microkernel Target double-seat, **Equinox 1 -- Caravan on the microkernel**
 **Witness:** [`../tools/caravan_objects_witness.rish`](../tools/caravan_objects_witness.rish) -- GREEN
 **Kin:** [`the libsel4 reach`](../external-research/20260821-043831_the-libsel4-reach-and-the-vocabulary-caravan-inherits.md) - [`caravan/refusals.rye`](../caravan/refusals.rye) - [`caravan/objects.rye`](../caravan/objects.rye)

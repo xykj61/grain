@@ -2,7 +2,7 @@
 
 **Stamp:** `20260822.014628`
 **Language:** EN · **Voice:** Kyri · **Style:** Radiant
-**Status:** Living design essay
+**Status:** Mixed -- a living design essay: the pattern is reasoning, the counts beside it are measured
 **Room test:** worth reading if every line of the Caravan ladder were deleted -- the pattern and its two failure modes outlive the ladder that taught them
 **Kin:** [`../foundations/20260822-014628_the-mechanism-and-the-metaphor.md`](../foundations/20260822-014628_the-mechanism-and-the-metaphor.md) · [`../foundations/20260821-175723_the-words-a-round-uses.md`](../foundations/20260821-175723_the-words-a-round-uses.md) (lift, fold, carry, delegate) · [`../foundations/20260811-211431_the-lindy-effect-and-the-long-return.md`](../foundations/20260811-211431_the-lindy-effect-and-the-long-return.md)
 

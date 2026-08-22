@@ -1,6 +1,6 @@
 # Both Legs Kept -- Vendoring a Second SLH-DSA So the Hash-Based Leg Can Be Built
 
-**Stamp:** `20260821.022912` - **Status:** Living (design decision, Keaton's word) - **Voice:** Kyri - **Style:** Radiant
+**Stamp:** `20260821.022912` - **Status:** Mixed -- Living (design decision, Keaton's word) - **Voice:** Kyri - **Style:** Radiant
 **Season:** G -- Cryptography (the Six-Season double-seat)
 **Supersedes, by accretion:** [`the post-quantum pivot`](20260816-161537_post-quantum-mlkem-mldsa-pivot.md) -- its reasoning stands and its lattice legs stay; only its deferral of SLH-DSA is lifted.
 **Kin:** [`SHA-3 preference and post-quantum Kumara`](20260815-184832_sha3-preference-and-post-quantum-kumara.md) - [`tools/crypto_slhdsa_oracle_witness.rish`](../tools/crypto_slhdsa_oracle_witness.rish) - [`tools/crypto_vendored_parity_suite.rish`](../tools/crypto_vendored_parity_suite.rish) - [`gratitude/PQClean.md`](../gratitude/PQClean.md) - [`.claude/rules/reds-first.md`](../.claude/rules/reds-first.md)
