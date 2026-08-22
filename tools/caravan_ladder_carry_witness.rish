@@ -59,9 +59,9 @@ say "caravan-ladder-carry: Lens TAME -- safety first: the ceiling is named, the 
 
 let living = run ["sh" "tools/fixtures/caravan_ladder_carry_scan.sh"]
 assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
-assert living.out contains "CARRY_OK carried=87777 ceiling=87800" else "caravan-ladder-carry: want the living carry under its named ceiling"
-assert living.out contains "CARRY_MODULES 108" else "caravan-ladder-carry: want all 108 ladder modules read, the rungs and the harness alike"
-assert living.out contains "CARRY_BODIES 18122 distinct=7923 copies=10199 carried_lines=87777" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
+assert living.out contains "CARRY_OK carried=87786 ceiling=87800" else "caravan-ladder-carry: want the living carry under its named ceiling"
+assert living.out contains "CARRY_MODULES 109" else "caravan-ladder-carry: want all 109 ladder modules read, the rungs and the harness alike"
+assert living.out contains "CARRY_BODIES 18133 distinct=7933 copies=10200 carried_lines=87786" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
 
 say "caravan-ladder-carry: living ladder -- ${living.out}"
 
