@@ -4938,58 +4938,7 @@ pub fn meet_the_debt(io: std.Io, meet: Meet, report_out: *Report) (RunError || N
 /// all, since only an admission can be owed. The number it moves is the
 /// concession a plan made that reaches no run after it.
 pub fn book_the_debt(io: std.Io, owe: Owe, report_out: *Report) (RunError || NoteError)!void {
-    const spoken = avow_written(io);
-    const stance = stance_in(spoken);
-    const conceded_count: u32 = if (stance == .concedes) 1 else 0;
-    if (conceded_count == 0) {
-        // invariant: a run that conceded nothing books no debt against itself
-        assert(owe_of(report_out).booked == 0);
-        // invariant: a run that conceded nothing leaves no concession unbooked
-        assert(owe_of(report_out).unbooked == 0);
-        return;
-    }
-
-    // The measurement this rung moves, weighed against the concession actually
-    // made rather than against anything the plan asked for, so an admission
-    // nobody carries is counted rather than refused.
-    owe_of(report_out).unbooked = unbooked_concessions(conceded_count, owe);
-    const booked_count = booked_in(conceded_count, owe);
-    const unowed_count = unowed_in(conceded_count, owe);
-    if (owe == .free) {
-        // invariant: a free run books no debt, however plainly it conceded
-        assert(booked_count == 0);
-        owe_of(report_out).unowed = unowed_count;
-        return;
-    }
-
-    // The finding and the outcome both come off the wire, since the concession a
-    // debt carries is the one standing published and never one a run remembered.
-    // The reads supply the ladder rather than short-circuiting it, so every
-    // refusal below is reached by argument and named in its own order.
-    const found = deem_published(io);
-    const under = settlement_published(io);
-    const said = spoken != null;
-    const conceded = stance == .concedes;
-    const debt: ?[max_debt_bytes]u8 = if (found) |verdict| blk: {
-        const outcome = under orelse break :blk null;
-        break :blk debt_bytes(verdict, outcome);
-    } else null;
-    const matched = if (found) |verdict| debt_answers(debt, verdict) else false;
-    if (owe_refusal(conceded_count, booked_count, unowed_count, said, conceded, matched)) |why| return why;
-    const verdict = found orelse return error.OweMismatched;
-    const outcome = under orelse return error.OweMismatched;
-    const owed = debt orelse return error.OweMismatched;
-
-    // invariant: an owing run books the one debt its own concession earned
-    assert(booked_count == 1);
-    try owe_note(io, verdict, outcome);
-    // The wire before the memory, once more: the note a later run will open is
-    // read back, and only then does the report believe the debt actually stands.
-    if (!debt_holds(debt_standing(io), owed)) return error.OweMisrecorded;
-    owe_of(report_out).booked = booked_count;
-    owe_of(report_out).unowed = unowed_count;
-    // invariant: an owing run leaves no concession of its own unbooked
-    assert(owe_of(report_out).unbooked == 0);
+    return ladder_checks.book_the_debt(@This(), io, owe, report_out);
 }
 
 /// Reads back what the hand this run referred to made of the case.

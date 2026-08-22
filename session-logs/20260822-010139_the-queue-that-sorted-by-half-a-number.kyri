@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20260822.010139
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The queue that sorted by half a number
+prompt Take the next agent-doable lap Lindy-first crux-first on the Caravan lift arc, Standfast on reds first, rota row N mod 5.
+think Standfast came first. The REDS monotone guard reads 127 rows off disk with no gaps and the headline agreeing on all three numbers, and every living row carries a CLOSED note beside it. The line is not stopped, so the constructive queue is free.
+think The rota row is Fire and Mars -- cut and stop. Standfast, reds-first, and the three depths of removal. The third named this lap exactly: a lift is shallower than all three depths, since nothing leaves the tree that is not byte-identical to something that stays, so no cairn is owed.
+think The carry meter names may_pass at the head, fifty-one rungs by nineteen lines. Reading the harness before the meter, as the arc's own teaching asks, changed the answer. The queue ranks by carried lines and says nothing about what a fold returns, and what a fold returns is the family's carry less the stub that replaces it.
+think A stub costs one line per line of signature. may_pass carries a six-line signature, so its stub is eight lines and its realized fall is fifty times eleven. book_the_debt carries a one-line signature, so its stub is three lines and its realized fall is seventeen times fifty-one -- larger than the two families the queue ranked above it, and larger than the two below.
+think Nineteen contract symbols measured across the eighteen rungs before writing anything: four shapes, one bound, and fourteen readings. All nineteen already stood public in all eighteen. Zero widening, the third fold in a row to need none.
+obs The queue sorted by half a number, and half a number chooses the wrong crux. Carried lines is the gross figure; the stub is the cost of collection, and it varies by a factor of nearly three across the queue's own top five. A family with a six-line signature gives back barely more than half what its carried number promises. The meter is honest and incomplete, which is a different fault from wrong, and it is fixed by reading both numbers rather than by distrusting the one.
+obs book_the_debt is the ladder's own accounting, and the shape argues for the fold on its own terms. Nothing is booked that was never conceded, a free run books nothing however plainly it conceded, and every refusal below the concession is reached by argument rather than by an early return -- so the reads supply the ladder rather than short-circuiting it. An accounting rule written eighteen times is a rule eighteen files may quietly disagree about.
+obs One rung keeps its own body, and the reason is meaning rather than drift. owe.rye owns this measure, so its report is the owe report and it writes each field directly where every rung above it reaches through owe_of. That is the same finding the prior lap made about deem, and twice now the divergent rung has turned out to be the rung that owns the thing.
+obs Carry falls 83,710 to 82,843, a fall of 867, while delegates rise 2,518 to 2,536 -- exactly the eighteen stubs that replaced the bodies. The two readings move apart by better than forty-eight to one, which is how a reader tells a fold from a cost moved somewhere cheaper to count.
+obs The meter's headline and its own arithmetic differ by design. CARRY_TOP prints rungs times lines while carried_lines counts copies, which is rungs less the original. Predicting 918 and measuring 867 sent me back to read the scan rather than to doubt the fold, and the fifty-one-line gap is exactly one copy of the family. A prediction that misses teaches where a number is defined.
+obs No cairn is owed. A lift is shallower than the shallowest of the three depths of removal: molt readies, breach renames, debride removes, and a lift moves a body that stays byte-identical in the one place it now lives.
+loom witness=caravan_suite_witness rungs=107 verdict=green
+loom ladder=carry carried=82843 ceiling=82849 delegates=2536 fall=867
+file caravan/ladder_checks.rye the lifted body, taking the rung as a comptime parameter and reaching all nineteen contract symbols through it
+file caravan/abate.rye one of eighteen rungs whose fifty-four-line body became a three-line call
+file tools/caravan_ladder_carry_witness.rish the ceiling brought down to 82,849 and the queue prose naming the stub-cost reading
+file tools/fixtures/caravan_ladder_carry_scan.sh the ceiling default moved with the assert that reads it
+file crux/REMEMBER.md the Now refilled with this lap and the next crux named by realized fall
+recommend keep-going the queue's next head by realized fall is note_path at 36 rungs by 26 lines with a one-line signature, giving back 35 times 23, ahead of hand_path at 34 by 27 and well ahead of may_pass, whose six-line signature holds its return to 50 times 11. Beside them the machine half of the address space stays owed and named: page-table entry bytes, an ASID from seL4_ASIDPoolBits, the retype itself. The libsel4 generator gate (jinja2, ply) is still Keaton's word, still blocking rungs 3 and 4 of the Microkernel Target arc.
