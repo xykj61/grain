@@ -83,6 +83,7 @@ const intent = @import("intent.rye");
 const mask = @import("mask.rye");
 const precede = @import("precede.rye");
 const understudy_rung = @import("understudy.rye");
+const ladder_checks = @import("ladder_checks.rye");
 
 const caravan_unhand_version = "20260819.215134";
 
@@ -110,6 +111,10 @@ pub const max_lookahead: u32 = understudy_rung.max_lookahead;
 
 /// How many words a supervised dependent's own argv always carries, unchanged.
 pub const fixed_argv_words: u32 = understudy_rung.fixed_argv_words;
+/// The dependent body this rung runs, published so the lifted door can reach
+/// it by one name across the whole arc -- reached through `cohort` here,
+/// written in the file on the rungs that changed it.
+pub const run_dependent = cohort.run_dependent;
 
 /// How many turns one plan may ever name, unchanged.
 pub const max_turns: u32 = understudy_rung.max_turns;
@@ -1045,7 +1050,7 @@ pub fn check_room_runs(
     return 0;
 }
 
-fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
+pub fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) u8 {
     print("Caravan unhand {s} -- self-test\n", .{caravan_unhand_version});
     var buf: [read.read_buffer_bytes]u8 = undefined;
     const sys = load_one(io, declaration_path, &buf) orelse return 1;
@@ -1061,19 +1066,5 @@ fn run_self_test(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8
 }
 
 pub fn main(init: std.process.Init) !u8 {
-    const allocator = init.arena.allocator();
-    const args = try init.minimal.args.toSlice(allocator);
-    const io = init.io;
-    // invariant: a program always knows its own path
-    assert(args.len >= 1);
-    const self_path = args[0];
-
-    if (args.len >= fixed_argv_words and std.mem.eql(u8, args[1], "dependent")) {
-        return cohort.run_dependent(io, args);
-    }
-    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
-        return run_self_test(allocator, io, self_path);
-    }
-    if (args.len >= 2) return 1;
-    return run_self_test(allocator, io, self_path);
+    return ladder_checks.run_main(@This(), init);
 }
