@@ -46,6 +46,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const cohort = @import("cohort.rye");
 const system = @import("system.rye");
+const read = @import("read.rye");
 const unhand = @import("unhand.rye");
 const precede = @import("precede.rye");
 const capabilities = @import("capabilities.rye");
@@ -9979,6 +9980,44 @@ pub fn read_count(comptime rung: type, io: std.Io, domain: []const u8, suffix: [
     var seen = [_]u8{0};
     _ = file.readPositionalAll(io, &seen, 0) catch return error.NoteUnavailable;
     return seen[0];
+}
+
+/// Loads one system description off disk and answers null when it will not read whole.
+///
+/// Sixty-seven rungs declare this name and all sixty-seven wrote the same body,
+/// of which sixty fold: `cohort.rye`, `confer.rye`, `entrust.rye`, `intent.rye`,
+/// `mask.rye`, `precede.rye`, and `unhand.rye` stand below the fold line, since
+/// `ladder_checks.rye` imports each of them and a lift would have the harness
+/// reach back through a rung it already reaches for.
+///
+/// Measured rather than read: `REACH_OK family=load_one folding=60 widens=120
+/// widens_fn=0 widens_import=120 widens_const=0 stub=3 fall=549`.
+///
+/// **This lift pays none of the hundred and twenty widenings the meter priced,
+/// and it is the first of the arc to take no rung at all.** The body reaches
+/// exactly two names, `system` and `read`, and both are *shared helper modules*
+/// rather than anything a rung writes for itself -- one `system.rye` and one
+/// `read.rye` stand in the directory, and every rung imports the same file. So
+/// the harness imports them directly, which it already did for `system.rye`,
+/// and no rung's door opens by a single name. A `comptime rung: type` parameter
+/// would be ceremony here: there is nothing rung-specific left to reach through
+/// it, and Zig would refuse the unused parameter besides.
+///
+/// The general shape, which the widening meter does not yet see: **an import
+/// widening is often avoidable outright, since a shared module the harness can
+/// import itself needs no re-export from any rung.** That holds for
+/// `capabilities.rye`, `carry.rye`, and `cycle.rye` too, all three already
+/// imported here, so the rows behind this one are cheaper than they read.
+pub fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
+    const parsed = read.load(io, path, buf) catch |err| {
+        print("  RED: {s} refused: {s}\n", .{ path, @errorName(err) });
+        return null;
+    };
+    if (parsed.verify() != .whole) {
+        print("  RED: {s} did not read whole\n", .{path});
+        return null;
+    }
+    return parsed;
 }
 
 /// Writes one note for a dependent, under the directory that rung keeps notes in.

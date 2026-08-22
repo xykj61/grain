@@ -214,9 +214,18 @@ sig=$(awk '/\{[ ]*$/ { print NR; exit }' "$work/body.$hash")
 [ -n "$sig" ] || sig=1
 stub=$((sig + 2))
 
-# The realized fall counts the family's carry before against the stub family's
-# carry after, and those are two different populations whenever a rung stands
-# below the fold line: it keeps its whole body and leaves the family, so the
-# carry it was contributing goes entirely rather than shrinking to a stub.
-fall=$(( (copies - 1) * lines - (folding - 1) * stub ))
+# The realized fall counts the family's carry before against every carry left
+# standing after. Three populations remain, and the first cut of this formula saw
+# only two (REDS %136). The folding rungs shrink to stubs and carry
+# (folding - 1) * stub. The rungs BELOW the fold line keep their whole bodies --
+# and they leave the family only when fewer than two of them remain. Two or more
+# identical bodies are still a family, carrying (held - 1) * lines between
+# themselves, so a fold with seven rungs below the line was overpriced by six
+# bodies. The error is invisible at held of zero or one, which every fold of this
+# arc had until load_one, and it is exactly (held - 1) * lines when it appears.
+held_after=0
+if [ "$held" -ge 2 ]; then
+    held_after=$(( (held - 1) * lines ))
+fi
+fall=$(( (copies - 1) * lines - ((folding - 1) * stub + held_after) ))
 echo "REACH_OK family=$FAMILY folding=$folding widens=$widens widens_fn=$widens_fn widens_import=$widens_import widens_const=$widens_const stub=$stub fall=$fall"
