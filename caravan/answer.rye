@@ -7991,50 +7991,7 @@ pub fn read_the_finding(io: std.Io, deem: Deem, report_out: *Report) (RunError |
 /// ending this rung reaches by publishing nothing. The number it moves is the
 /// finding a plan published and never said one word about.
 pub fn say_the_word(io: std.Io, avow: Avow, report_out: *Report) (RunError || NoteError)!void {
-    const heard_count = deem_of(report_out).answered;
-    if (heard_count == 0) {
-        // invariant: a run that read no finding says no word about one
-        assert(avow_of(report_out).said == 0);
-        // invariant: a run that read no finding leaves none unanswered
-        assert(avow_of(report_out).unavowed == 0);
-        return;
-    }
-
-    // The measurement this rung moves, weighed against the finding actually
-    // read rather than against anything the plan asked for, so a verdict nobody
-    // answers is counted rather than refused.
-    avow_of(report_out).unavowed = unavowed_findings(heard_count, avow);
-    const said_count = said_in(heard_count, avow);
-    const withheld_count = withheld_in(heard_count, avow);
-    if (avow == .mute) {
-        // invariant: a mute run publishes no word, however plainly one stood
-        assert(said_count == 0);
-        avow_of(report_out).withheld = withheld_count;
-        return;
-    }
-
-    // The finding comes off the wire once more, since the verdict a plan
-    // answers is the verdict standing published and never one a run remembered.
-    // The read supplies the ladder rather than short-circuiting it, so every
-    // refusal below is reached by argument and named in its own order.
-    const found = deem_published(io);
-    const published = found != null;
-    const word: ?[max_avowal_bytes]u8 = if (found) |verdict| avowal_bytes(verdict, avow) else null;
-    const matched = if (found) |verdict| avowal_answers(word, verdict) else false;
-    if (avow_refusal(heard_count, said_count, withheld_count, published, matched)) |why| return why;
-    const verdict = found orelse return error.AvowUnfound;
-    const said = word orelse return error.AvowUnfound;
-
-    // invariant: an avowing run publishes the one word its own finding earned
-    assert(said_count == 1);
-    try avow_note(io, verdict, avow);
-    // The wire before the memory, once more: the note an operator opens is read
-    // back, and only then does the report believe the plan actually spoke.
-    if (!avow_holds(avow_written(io), said)) return error.AvowMisrecorded;
-    avow_of(report_out).said = said_count;
-    avow_of(report_out).withheld = withheld_count;
-    // invariant: an avowing run leaves no read finding unanswered
-    assert(avow_of(report_out).unavowed == 0);
+    return ladder_checks.say_the_word(@This(), io, avow, report_out);
 }
 
 /// Puts a long-standing quarrel before a hand that is neither party to it.
