@@ -7216,55 +7216,7 @@ pub fn meet_the_debt(io: std.Io, meet: Meet, report_out: *Report) (RunError || N
 /// delivery, and the reader's own verdict each come out of a reweighing run
 /// exactly as they went in.
 pub fn look_again(io: std.Io, reweigh: Reweigh, report_out: *Report) (RunError || NoteError)!void {
-    const on_wire = again_standing(io);
-    const inherited_count: u32 = if (on_wire != null) 1 else 0;
-    if (inherited_count == 0) {
-        // invariant: a run inheriting no reopened matter looks at none again
-        assert(reweigh_of(report_out).looked == 0);
-        // invariant: a run inheriting no reopened matter leaves none unlooked-at
-        assert(reweigh_of(report_out).unlooked == 0);
-        return;
-    }
-
-    // The measurement this rung moves, weighed against the matter actually
-    // inherited rather than against anything the plan asked for, so a reopening
-    // nobody looks at is counted rather than refused.
-    reweigh_of(report_out).unlooked = unlooked_matters(inherited_count, reweigh);
-    const looked_count = looked_in(inherited_count, reweigh);
-    const passed_count = passed_in(inherited_count, reweigh);
-    if (reweigh == .passes) {
-        // invariant: a passing run looks again at nothing, however plainly a
-        // matter stood
-        assert(looked_count == 0);
-        reweigh_of(report_out).passed = passed_count;
-        return;
-    }
-
-    // The matter comes off the wire, since the reopening a second look answers
-    // is the one standing published and never one a run remembered. The reads
-    // supply the ladder rather than short-circuiting it, so every refusal below
-    // is reached by argument and named in its own order.
-    const opened = on_wire orelse return error.ReweighUnopened;
-    const stood = true;
-    const settled = settlement_published(io) != null;
-    const receipt = anew_bytes(opened);
-    const matched = anew_answers(receipt, opened);
-    if (reweigh_refusal(inherited_count, looked_count, passed_count, stood, settled, matched)) |why| return why;
-
-    // invariant: a looking run answers the one matter it opened holding
-    assert(looked_count == 1);
-    try reweigh_note(io, opened);
-    // The receipt before the taking down, so a run that falls between the two
-    // acts leaves a matter still open rather than a reopening quietly gone.
-    if (!reweigh_holds(anew_standing(io), receipt)) return error.ReweighMisrecorded;
-    clear_reopen(io);
-    // The wire before the memory, once more: the matter is read back down before
-    // the report believes the reopening was actually answered.
-    if (!matter_closed(again_standing(io))) return error.ReweighMisrecorded;
-    reweigh_of(report_out).looked = looked_count;
-    reweigh_of(report_out).passed = passed_count;
-    // invariant: a looking run leaves no inherited matter unlooked-at
-    assert(reweigh_of(report_out).unlooked == 0);
+    return ladder_checks.look_again(@This(), io, reweigh, report_out);
 }
 
 /// Carries what the second look came to out to the reader who asked for it.
