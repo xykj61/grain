@@ -1,0 +1,106 @@
+# tools/caravan_mapping_witness.rish -- what a declared region costs, in the kernel's own objects.
+#
+# WHY THIS RUNG. `caravan/objects.rye` found Caravan standing for five of seL4's nine riscv64 object types,
+# and the five are exactly the portable tier. The four owed are the three page sizes and the page table --
+# one debt wearing four names, every one of them an address space. `caravan/regions.rye` already holds the
+# policy half: it declares WHICH memory a dependent may touch and how far. Nothing said what such a
+# declaration COSTS, and `caravan/mapping.rye` is that half: a placement lowered to the exact pages and page
+# tables a kernel would need to make the declaration true.
+#
+# WHAT IS PROVEN HERE. Four things, each on metal. The module's own self-test passes, and its asserts are
+# the specification -- the geometry composes as a divisibility chain, a cover is exact and minimal, a table
+# exists exactly where a page beneath it does, and every refusal is earned by a placement that earns it. The
+# five numbers the plan is built from are READ OUT OF seL4's own riscv64 constants header at run time and
+# diffed against what the module prints, so a vendored bump that moves the geometry reds this rung on the lap
+# it lands. The three page symbols are read from seL4's own object-type headers, both of them, since the
+# gigabyte page is the sole member of the mode tier and lives apart from its two siblings. And a planted
+# drift -- one page size moved a single bit -- is refused by the module's own asserts, proving the guard is a
+# check rather than a habit.
+#
+# WHAT IS NOT PROVEN. No kernel booted, no page-table entry was written, and no address-space identifier was
+# assigned. This rung binds the ARITHMETIC of a mapping, which is pure and exact; the machine half -- the
+# retype, the entry bytes, the identifier -- stays honestly owed and is named as owed in the module itself.
+#
+# Season: the Lindy-priority Microkernel Target double-seat (seated `20260817`, ordered ahead of Seasons A-H),
+# Equinox 1 -- Caravan on the microkernel. Kin: tools/caravan_objects_witness.rish (the vocabulary this pays
+# against) - tools/caravan_regions_witness.rish (the policy half) -
+# active-designing/20260821-222916_the-address-space-debt-and-the-mapping-plan.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/caravan_mapping_witness.rish
+
+say "caravan-mapping: Language EN -- a policy declaration says which memory a dependent may touch. This proves Caravan can now say exactly what such a declaration costs in the kernel's own objects, and says honestly which half of the address space is still owed."
+say "caravan-mapping: Style Radiant -- three claims in order. A placement lowers to pages and page tables, exactly and minimally. The geometry it plans with is read from seL4's own header rather than recited. And the geometry itself bounds the plan, which is why the module refuses four things rather than five."
+say "caravan-mapping: Lens TAME -- the module's asserts are the specification, and three RED paths are proven on metal: a page size moved by one bit must be refused, a drifted table must fail the scan, and an absent header must be named absent rather than read as agreement."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/mapping"
+let constants = "vendor/sel4/libsel4/sel4_arch_include/riscv64/sel4/sel4_arch/constants.h"
+let mode = "vendor/sel4/libsel4/sel4_arch_include/riscv64/sel4/sel4_arch/objecttype.h"
+let arch = "vendor/sel4/libsel4/arch_include/riscv/sel4/arch/objecttype.h"
+let scan = "tools/fixtures/caravan_mapping_geometry_scan.sh"
+let control = "tools/fixtures/caravan_mapping_geometry_control.sh"
+let build_dir = "tools/.build/caravan_mapping"
+
+let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]
+assert mk.ok else "caravan-mapping: could not make the build directories"
+
+# 0. PRECONDITION, an environment fact rather than a tree red: the gitlink must actually be checked out.
+let checked_out = run ["sh" "-c" "test -f ${constants} && test -f ${mode} && test -f ${arch} && echo yes || echo no"]
+assert (trim checked_out.out) == "yes" else "caravan-mapping: vendor/sel4 is not checked out -- run `git submodule update --init --recursive` first; this is an environment precondition, not a tree red"
+
+# 1. THE RIGHT TO READ, re-checked at the file level for every header this rung opens. Intent is not a licence.
+let bsd = run ["sh" "-c" "cat ${constants} ${mode} ${arch} | grep -c SPDX-License-Identifier:.BSD-2-Clause | tr -d ' \n'"]
+assert (trim bsd.out) == "3" else "caravan-mapping: one of seL4's three riscv64 headers no longer carries its own BSD-2-Clause tag -- stop and re-read the licence before reading it"
+
+# 2. THE MODULE BUILDS AND PROVES ITSELF. Its asserts are the specification.
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/mapping.rye -femit-bin=${bin}"]
+assert build.ok else "caravan-mapping: the module did not build"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan-mapping: the self-test exited non-zero"
+assert test.out contains "GREEN" else "caravan-mapping: the self-test is not GREEN"
+assert test.out contains "Sv39 addresses 39 bits over 3 levels, 3 page sizes" else "caravan-mapping: the geometry the module plans with is not the Sv39 this arc brings up"
+assert test.out contains "4 refusals, each a fact about the machine" else "caravan-mapping: the refusals no longer number four -- the geometry's own bound is what makes a fifth unnecessary"
+assert test.out contains "a retype and an address-space identifier stay owed" else "caravan-mapping: the module must keep naming the machine half it does not pay"
+
+# 3. THE WORKED PLAN READS AS DESIGN. A gigabyte, a megabyte-page, and a small page cost six objects:
+#    three pages and the three levels of tree that reach them. The number is small on purpose -- an
+#    earlier cut of this module counted tables from the placement's extent rather than from the pages
+#    that need them, and printed five hundred and fourteen level-two tables for a plan holding one small
+#    page. The print caught it before any witness did, so the print is bound here.
+let table = run ["sh" "-c" "${bin} table > ${build_dir}/table.txt 2>&1 && cat ${build_dir}/table.txt"]
+assert table.ok else "caravan-mapping: the module could not print its table"
+assert table.out contains "costs 6 objects" else "caravan-mapping: the worked plan no longer costs six objects -- three pages and the three levels that reach them"
+assert table.out contains "1 x page table at level 2" else "caravan-mapping: a plan holding one small page must need exactly one table beneath it, however far the placement reaches"
+
+# 4. THE GEOMETRY IS READ FROM SEL4'S OWN HEADER, never recited. Five numbers and three symbols.
+let geometry = run ["sh" "-c" "sh ${scan} ${constants} ${build_dir}/table.txt"]
+assert geometry.ok else "caravan-mapping: the geometry scan did not run"
+assert geometry.out contains "verdict=ok" else "caravan-mapping: the geometry the module plans with drifted from seL4's own constants header"
+assert geometry.out contains "header_values=5 matched=5 mismatch=0" else "caravan-mapping: want all five geometry numbers read from the header and matched"
+assert geometry.out contains "symbols=3 symbol_mismatch=0" else "caravan-mapping: want all three page symbols found in seL4's own object-type headers"
+
+# 5. RED PATH ONE -- a page size moved by a single bit must be refused by the module's own asserts.
+#    The chain breaks above and below the moved size at once, which is exactly what a recited constant
+#    would have let through.
+let drift = run ["sh" "-c" "sh ${control} ${zig} ${build_dir} 2>/dev/null"]
+assert drift.ok else "caravan-mapping: the drift control did not run"
+assert drift.out contains "planted=1" else "caravan-mapping: the drift control did not plant its moved page size"
+assert drift.out contains "verdict=refused" else "caravan-mapping: a page size moved by one bit was ACCEPTED -- the geometry asserts are not holding"
+
+# 6. RED PATH TWO -- a table whose numbers drifted must fail the scan rather than pass it quietly.
+let bad = run ["sh" "-c" "sed 's/2097152/2097153/' ${build_dir}/table.txt > ${build_dir}/bad_table.txt && sh ${scan} ${constants} ${build_dir}/bad_table.txt"]
+assert bad.ok else "caravan-mapping: the drifted-table control did not run"
+assert bad.out contains "verdict=drift" else "caravan-mapping: a table whose megabyte page moved by one byte passed the scan -- the scan is not comparing"
+
+# 7. RED PATH THREE -- a missing header is reported as missing rather than silently passing.
+let absent = run ["sh" "-c" "sh ${scan} ${build_dir}/no-such-header.h ${build_dir}/table.txt"]
+assert absent.ok else "caravan-mapping: the missing-header control did not run"
+assert absent.out contains "verdict=missing-header" else "caravan-mapping: an absent header must be named as absent, never read as agreement"
+
+let cleanup = run ["sh" "-c" "rm -f ${build_dir}/bad_table.txt"]
+assert cleanup.ok else "caravan-mapping: could not clean up the control table"
+
+say "CARAVAN_MAPPING_GREEN -- a placement lowers to pages and page tables, exactly and minimally; the geometry is read from seL4's own constants; the geometry's own bound is why four refusals suffice; three RED paths proven on metal."
+say "caravan-mapping: OWED, and named as owed -- writing page-table entries, assigning an address-space identifier, and invoking a retype are machine acts that want a booted kernel. This rung pays the arithmetic half whole."
