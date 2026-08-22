@@ -10438,3 +10438,46 @@ pub fn finding_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, forum
     assert(at == total);
     return buf[0..at];
 }
+
+/// Answers whether this dependent already holds a capability over one region.
+///
+/// Forty-three rungs held this body byte for byte, at thirteen lines over a
+/// one-line signature, and it takes **no rung parameter at all** -- the second
+/// row of this arc to need none. Every name the body reaches lives in a module
+/// this harness already imports at its own head: `capabilities.DependentSlot`,
+/// `capabilities.max_caps_per_dependent`, and `std.mem.eql`. Nothing is reached
+/// through the rung, so nothing is handed in, and the forty-three widenings the
+/// meter priced are forty-three import bindings of `capabilities` that were
+/// answered by reading the harness's own import list rather than by opening anything.
+///
+/// A holding is a linear walk of what one dependent was granted, comparing each
+/// capability's name against the region asked about. The ceiling is asserted as
+/// a precondition, before a single capability is read.
+///
+/// **Two rungs stay home, and the split is drift rather than meaning.**
+/// `confer.rye` and `revoke.rye` write the same walk with the bound asserted
+/// *inside* the loop -- `assert(i < capabilities.max_caps_per_dependent)` on
+/// every iteration -- where these forty-three assert `slot.cap_count <=
+/// capabilities.max_caps_per_dependent` once, up front. Both refuse the same
+/// malformed slot; the precondition form refuses it before reading `caps[0]`,
+/// which is the stronger of the two and the one TAME asks for. That is a real
+/// difference in when the check fires rather than a structural difference in
+/// what the rung means, so it is named here rather than folded over: a later
+/// lap that moves those two asserts to the precondition form makes all
+/// forty-five one family.
+///
+/// Measured rather than read: `REACH_OK family=already_holds folding=43
+/// widens=43 widens_fn=0 widens_import=43 widens_const=0 stub=3 fall=420`.
+pub fn already_holds(slot: *const capabilities.DependentSlot, region_name: []const u8) bool {
+    // invariant: a holding is always asked about a named region
+    assert(region_name.len >= 1);
+    // invariant: a holding never reads past what one dependent may hold
+    assert(slot.cap_count <= capabilities.max_caps_per_dependent);
+    var i: u32 = 0;
+    while (i < slot.cap_count) : (i += 1) {
+        if (std.mem.eql(u8, slot.caps[i].name_slice(), region_name)) return true;
+    }
+    // invariant: the walk read every capability the dependent holds, none skipped
+    assert(i == slot.cap_count);
+    return false;
+}
