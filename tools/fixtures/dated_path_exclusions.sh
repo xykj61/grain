@@ -1,0 +1,101 @@
+#!/bin/sh
+# tools/fixtures/dated_path_exclusions.sh -- what the dated-path tools do not look at. One list.
+#
+# WHY THIS FILE EXISTS. Two tools act on the same corpus of dated references: the census counts
+# them and the repointer rewrites them. They must agree on what is NOT the field, and for one day
+# they did not.
+#
+# The census learned first, reddening on its own demonstration paths, and excluded `dated_path_*`
+# by name. The repointer -- written the same day, for the same corpus -- never received that
+# lesson, and its apply run rewrote the witness's deliberately stale fixture, leaving the rung that
+# proves the fold rule works proving nothing (REDS %121). Within the hour of booking that red, the
+# two lists had diverged AGAIN: the census gained `shipped_binary_claim_control.sh` and the
+# repointer did not.
+#
+# Twice is not carelessness, it is structure. A list kept in two places is two lists that happen to
+# match today. So there is one list, here, and both tools read it.
+#
+# WHAT BELONGS ON IT, and the test is the same for every entry: **is this the field, or the
+# instrument?** A tool that demonstrates recovery must cite a path that no longer resolves; a
+# control that proves a guard refuses must plant the thing it refuses. Those paths are fixtures,
+# not defects and not references -- counting them makes a meter rise as its proof gets stronger,
+# and rewriting them disarms the proof entirely.
+#
+# HOW TO ADD ONE. Add the name below, once. Both tools pick it up, and
+# `tools/dated_path_witness.rish` proves neither has drifted back to a private copy.
+#
+#   . tools/fixtures/dated_path_exclusions.sh
+#   dp_grep_excludes   # sets "$@" to grep flags:  --exclude-dir=X ... --exclude=Y ...
+#   dp_find_excludes   # sets "$@" to find tests:  ! -name Y ...
+#   dp_find_paths      # sets "$@" to find tests:  ! -path ./Z ...
+#   dp_paths_roster    # one excluded path per line, for consumers that filter afterward
+#   dp_find_prune      # sets "$@" to find tests:  -name X -o -name Y ...   (for -prune)
+
+# Directories that are not this field at all: object storage, a projection of this same tree, and
+# third-party source held unmodified.
+DP_EXCLUDE_DIRS=".git seed vendor"
+
+# Files whose dated paths are the instrument's own fixtures rather than citations of the field.
+# Matched by NAME, so an entry here excludes that filename wherever it sits.
+DP_EXCLUDE_NAMES="dated_path_* room_bound_control.sh session_logs_archive.rye shipped_binary_claim_control.sh"
+
+# The same test, applied to a file whose NAME cannot carry the exemption. `docs-geode/demos/`
+# demonstrates the resolver recovering a stale reference, which requires quoting one -- and the
+# page prints the answer it gets, so repointing the reference would make its own quoted output
+# wrong. Its basename is README.md, which no name-match could exempt without exempting every
+# README in the tree, so exact paths get their own list. Written relative to the repository root,
+# without a leading ./ -- each consumer adds what its own matcher needs.
+DP_EXCLUDE_PATHS="docs-geode/demos/README.md"
+
+# Each helper REPLACES the positional parameters, so a caller captures its own arguments first.
+# Globbing is disabled while the list is expanded, because `dated_path_*` is a pattern meant for
+# grep and find rather than one the shell should resolve against the working directory.
+
+dp_grep_excludes() {
+  set -f
+  _dp=""
+  for _d in $DP_EXCLUDE_DIRS; do _dp="$_dp --exclude-dir=$_d"; done
+  for _n in $DP_EXCLUDE_NAMES; do _dp="$_dp --exclude=$_n"; done
+  set -- $_dp
+  set +f
+  printf '%s\n' "$@"
+}
+
+dp_find_excludes() {
+  set -f
+  _dp=""
+  for _n in $DP_EXCLUDE_NAMES; do _dp="$_dp ! -name $_n"; done
+  set -- $_dp
+  set +f
+  printf '%s\n' "$@"
+}
+
+dp_find_paths() {
+  set -f
+  _dp=""
+  for _p in $DP_EXCLUDE_PATHS; do _dp="$_dp ! -path ./$_p"; done
+  set -- $_dp
+  set +f
+  printf '%s\n' "$@"
+}
+
+# For consumers that cannot exclude by path at match time -- grep has no --exclude-path -- the same
+# list is emitted as a plain roster to filter against afterward.
+dp_paths_roster() {
+  set -f
+  set -- $DP_EXCLUDE_PATHS
+  set +f
+  printf '%s\n' "$@"
+}
+
+dp_find_prune() {
+  set -f
+  _dp=""
+  _first=1
+  for _d in $DP_EXCLUDE_DIRS; do
+    if [ "$_first" = 1 ]; then _dp="-name $_d"; _first=0; else _dp="$_dp -o -name $_d"; fi
+  done
+  set -- $_dp
+  set +f
+  printf '%s\n' "$@"
+}
