@@ -171,7 +171,7 @@ fn bridge_to_zig(
     defer {
         for (staged_rye.items) |p| garden.free(p);
     }
-    const bridge_path = try bridge_rye_tree(io, dir, rye_path, true, &staged_rye, &bridge_zigs, garden, label);
+    const bridge_path = try bridge_rye_tree(io, dir, rye_path, true, &staged_rye, &bridge_zigs, garden, label, 0);
 
     // Resolve the toolchain explicitly: an absolute RYE_ZIG, else `zig` on PATH.
     const zig = init.environ_map.get("RYE_ZIG") orelse "zig";
@@ -247,7 +247,12 @@ fn resolve_rye_lib(init: std.process.Init, garden: std.mem.Allocator) ![]const u
 /// Ephemeral bridge path for a `.rye` source. The root file keeps the historical
 /// `{path}.rye.zig` shape; local imports bridge to `{basename}.zig` beside the source.
 fn bridge_zig_path(rye_path: []const u8, is_root: bool, garden: std.mem.Allocator) ![]const u8 {
-    if (is_root) return std.fmt.allocPrint(garden, "{s}.zig", .{rye_path});
+    // One file, one bridged name. The root once kept `foo.rye.zig` while every
+    // dependency kept `foo.zig`, so a module that imported the root by name asked
+    // for a file the bridge had never written -- which is what a cycle back to the
+    // root does (REDS %125). A single rule for every file closes that, and the
+    // root keeps no privilege the others lack.
+    _ = is_root;
     if (!std.mem.endsWith(u8, rye_path, ".rye")) return error.NotRyeFile;
     return std.fmt.allocPrint(garden, "{s}.zig", .{rye_path[0 .. rye_path.len - ".rye".len]});
 }
@@ -284,7 +289,15 @@ fn rewrite_rye_imports(source: []const u8, garden: std.mem.Allocator) ![]u8 {
     return try out.toOwnedSlice(garden);
 }
 
-fn bridge_already_staged(staged_rye: *const std.ArrayListUnmanaged([]const u8), rye_path: []const u8) bool {
+/// How deep the bridge may descend through `@import` before it names a fault
+/// rather than exhausting the stack. The Caravan ladder is the deepest import
+/// chain this tree holds -- each rung imports the rung beneath it -- so the
+/// bound sits well above any chain we have measured, and it exists so that a
+/// pathological graph meets a named error instead of a segfault (TAME root
+/// rule 1: no unbounded recursion).
+const max_bridge_depth: u32 = 1024;
+
+fn bridge_already_seen(staged_rye: *const std.ArrayListUnmanaged([]const u8), rye_path: []const u8) bool {
     for (staged_rye.items) |path| {
         if (std.mem.eql(u8, path, rye_path)) return true;
     }
@@ -301,10 +314,29 @@ fn bridge_rye_tree(
     bridge_zigs: *std.ArrayListUnmanaged([]const u8),
     garden: std.mem.Allocator,
     label: []const u8,
+    depth: u32,
 ) ![]const u8 {
-    if (bridge_already_staged(staged_rye, rye_path)) {
+    // invariant: the descent stays inside the bound named above, so a cyclic or
+    // pathological import graph meets a named error rather than the stack's end.
+    if (depth > max_bridge_depth) {
+        std.debug.print("rye {s}: import graph deeper than {d} at '{s}'\n", .{ label, max_bridge_depth, rye_path });
+        return error.BridgeTooDeep;
+    }
+    // invariant: the root of the walk always begins at depth zero.
+    assert(depth > 0 or is_root);
+
+    if (bridge_already_seen(staged_rye, rye_path)) {
         return bridge_zig_path(rye_path, is_root, garden);
     }
+
+    // A file is marked seen BEFORE its imports are walked, never after. The
+    // visited set is what makes this walk terminate, and a set that records a
+    // node only once its whole subtree has finished records nothing at all while
+    // a cycle is being traversed -- so two files importing each other recursed
+    // until the stack died (REDS %125). Marking on entry closes that, and it also
+    // makes a mutual import legal, which is what Zig's own file-as-struct model
+    // already allows.
+    try staged_rye.append(garden, try garden.dupe(u8, rye_path));
 
     const source = dir.readFileAlloc(io, rye_path, garden, .unlimited) catch |err| {
         std.debug.print("rye {s}: could not read '{s}': {s}\n", .{ label, rye_path, @errorName(err) });
@@ -341,7 +373,7 @@ fn bridge_rye_tree(
     }
 
     for (import_paths.items) |dep_rye| {
-        _ = try bridge_rye_tree(io, dir, dep_rye, false, staged_rye, bridge_zigs, garden, label);
+        _ = try bridge_rye_tree(io, dir, dep_rye, false, staged_rye, bridge_zigs, garden, label, depth + 1);
     }
 
     const bridged_source = try rewrite_rye_imports(source, garden);
@@ -351,8 +383,11 @@ fn bridge_rye_tree(
         return err;
     };
 
-    try staged_rye.append(garden, try garden.dupe(u8, rye_path));
     try bridge_zigs.append(garden, try garden.dupe(u8, zig_path));
+
+    // invariant: every file this walk reaches leaves a staged .zig behind for the
+    // toolchain to read and for the caller's defer to clear away.
+    assert(bridge_zigs.items.len > 0);
 
     return zig_path;
 }

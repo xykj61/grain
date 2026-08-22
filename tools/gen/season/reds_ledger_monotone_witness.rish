@@ -40,7 +40,17 @@ assert scan.ok else "reds-monotone: the verdict reads ok while the status fails 
 
 # The spine says how far it reaches, so a shrinking set of rows is a red rather than a
 # quieter GREEN. It read 73 of 101 on the lap before this one and said ok about it.
-assert scan.out contains "rows=121" else "reds-monotone: want the spine reaching every row the ledger holds"
+#
+# That guard is a FLOOR rather than an equality, and the difference is what REDS %125 found it
+# wearing. Written as `rows=121` it went red the moment row 122 landed -- not because anything was
+# wrong, but because a ledger that only ever grows had its current length recited inside an assert.
+# A witness that reds on correct work teaches the bench to route around it (REDS %100), and this one
+# had been red since %122 with nobody running it. The floor keeps the whole shrink-guard -- a spine
+# that stops reaching every row still refuses -- and welcomes the growth the ledger is for. Raise it
+# when a fold lands; it only ever goes up. The exact count is printed above by the scan, measured
+# rather than recited (REDS %110).
+let floor = run ["sh" "-c" "sh tools/fixtures/reds_ledger_monotone_scan.sh crux/archive/REDS-*rows-*.md crux/REDS.md | sed -n 's/^rows=//p' | { read n; test $n -ge 121; }"]
+assert floor.ok else "reds-monotone: the spine reaches fewer rows than the floor it once reached -- a shrinking ledger is a red"
 
 # RED path one -- a gap. The control is generated rather than tracked, so it can never
 # drift from the shape this scan enforces.
