@@ -246,7 +246,7 @@ assert sigil_bare.out contains "recites 47 with no assert holding it" else "cara
 # two shapes the naming law defines are welcomed as names, and a bare eight-digit number standing beside a
 # stamp is still refused at its own value. The exemption is a name, never a doorway -- the same sentence the
 # sigil legs above earned, and the reason this pair sits directly beneath them.
-let stamp = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \042ok\042 else \042e\042\nsay \042the reading is active-designing/20260822-101058_what-a-widening-costs.md, seated 20260822.101058\042\n' > $d/caravan_ladder_stamp_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+let stamp = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \042ok\042 else \042e\042\nsay \042the reading is active-designing/20260822-101058_what-a-widening-costs-a-rungs-door.md, seated 20260822.101058\042\n' > $d/caravan_ladder_stamp_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
 assert stamp.ok else "caravan-ladder-copy: a meter citing a dated path by its one-clock stamp must read clean -- ${stamp.out}"
 assert stamp.out contains "LADDER_PROSE_COUNT_OK" else "caravan-ladder-copy: want both one-clock shapes welcomed as names rather than counted as measurements"
 

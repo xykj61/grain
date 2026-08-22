@@ -120,6 +120,27 @@ if [ -n "${DP_PATHS_ROSTER:-}" ]; then
   done
 fi
 
+# A PATH ASSERTED ABSENT IS NOT A REFERENCE (REDS %139). A guard that proves a fossil was shed
+# writes `test ! -f foundations/<stamp>_<slug>.md`, and that path names a file which MUST NOT
+# exist. Counting it as a lost reference applies the exclusion list's own test backwards -- it is
+# the instrument, not the field -- and makes the meter rise exactly as the proof of a clean shed
+# gets stronger. Five such paths across two season witnesses were being counted as breakage.
+#
+# The match is anchored on the negation so it can never swallow an ordinary citation: only a path
+# standing immediately after `! -f` or `! -e`, with or without the leading `test`, is subtracted,
+# and it is subtracted for the citing file that wrote it rather than everywhere it appears.
+set -f
+grep -rIoE '! -[fe] +(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}_[A-Za-z0-9._-]+\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
+  --include=*.md --include=*.bron --include=*.kyri --include=*.rish \
+  --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
+  $DP_GREP_EXCLUDES \
+  . 2>/dev/null | sed 's|^\./||; s|:! -[fe] *|:|' | sort -u > "$work/absent.txt"
+set +f
+if [ -s "$work/absent.txt" ]; then
+  grep -vxF -f "$work/absent.txt" "$work/pairs.txt" > "$work/pairs.kept" 2>/dev/null || : > "$work/pairs.kept"
+  mv "$work/pairs.kept" "$work/pairs.txt"
+fi
+
 # Six fields out, so no later step has to guess which path a column holds:
 #   verdict, citing file, reference as written, reading one, reading two, recovered home
 awk -F: '
