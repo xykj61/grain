@@ -13,7 +13,7 @@
 
 **The desk, four lines.** The same bartis shape, one new body word: `%-  say  sample`. In Glow, `say` is now a closed call gate; the lowerer answers it with a **speaking main** — the sample is parsed, the gate runs, and the answer streams to stdout through the exact idiom the shell's own `do_say` uses: `std.Io.File.stdout()` with the two-argument `writeStreamingAll(io, line)`. `say` is argv-only by design; the fixture road refuses it honestly.
 
-**What accreted to the kitchen, three touches, all additive.** The bartis parser's closed-gate roster learned `say` (and its barket twin learned it too, for symmetry's day); the lowerer gained `emit_argv_speaking_main` beside — never inside — the existing mains, so recipe 1.1 and the whole 530-strong corpus regress green untouched; and the runner's stem roster admitted `gate-say-u32`.
+**What accreted to the kitchen, three touches, all additive.** The bartis parser's closed-gate roster learned `say` (and its barket twin learned it too, for symmetry's day); the lowerer gained `emit_argv_speaking_main` beside — never inside — the existing mains, so recipe 1.1 and the whole 530-strong collection regress green untouched; and the runner's stem roster admitted `gate-say-u32`.
 
 **Run it.**
 

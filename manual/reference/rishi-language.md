@@ -3,7 +3,7 @@
 **Language:** EN
 **Last updated:** 2026-07-02
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
-**Version:** `20260702.184312` -- derived from the living witness corpus at parity **142** and the interpreter at `rishi/src/main.rye`
+**Version:** `20260702.184312` -- derived from the living witness collection at parity **142** and the interpreter at `rishi/src/main.rye`
 **Versions, all enduring:** `20260702.180812` first page (parity 140) - same-arc revision to parity 142 (`if`, stderr seam) - `20260702.184312` the page's own versioning brought under the chronological law (`../../context/specs/rye-versioning-style.md`)
 **Conformance:** *must* and *should* carry their plain conformance weight
 **Pledge:** this reference documents only what runs; every example below is drawn from, or shaped exactly like, a witness that passes today
@@ -147,7 +147,7 @@ Conditions may compare with `==`, `!=`, and `starts-with`. The `then` branch run
 
 ## 12. Output -- `say`
 
-`say "..."` prints a line with interpolation; lists render inline. The convention across the corpus: a witness's final line begins `GREEN:` on success, and gates upstream test for it with `contains "GREEN"`.
+`say "..."` prints a line with interpolation; lists render inline. The convention across the collection: a witness's final line begins `GREEN:` on success, and gates upstream test for it with `contains "GREEN"`.
 
 ## 13. Script Arguments -- `args` and `flag`
 

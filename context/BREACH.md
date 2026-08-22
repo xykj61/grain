@@ -36,7 +36,7 @@ Design is cheapest before the hands move. This pier has running witnesses and no
 
 ## What a breach is not
 
-A breach never becomes a **restyling campaign**. Sweeps across an already-clean corpus cost more than they earn; passes go on-touch. A breach moves addresses that have stopped serving. A breach that starts editing what it was only meant to move has become the campaign we swore off.
+A breach never becomes a **restyling campaign**. Sweeps across an already-clean collection cost more than they earn; passes go on-touch. A breach moves addresses that have stopped serving. A breach that starts editing what it was only meant to move has become the campaign we swore off.
 
 **Counsel may design a breach and may never begin one.** Propose-never-seat holds; a breach is a seating word.
 

@@ -98,6 +98,21 @@ are reported with a mean, never failed.
 - **Send often** -- each finished increment as its own signed round to `origin` and `xykj61`.
 - **Live clock only:** `TZ=America/New_York date +%Y%m%d.%H%M%S`.
 
+## 5b -- The word on the front doors
+
+**`corpus` retired from reader-facing prose on `20260821.213540`**, per sense rather than by a
+single swap: the flw draw's 5,526-word source is a **word list**, the hosted `.rye` files are the
+**hosted sources**, a test or control set is a **control set**, and Grain's own living documents
+are a **collection**. Write those words on any page a newcomer meets.
+
+**Code identifiers, module names, and file paths keep `corpus` untouched** -- 1,344 bare
+identifiers and 169 paths, and renaming them is the churn the Comlink tendency forbids. The record
+keeps every word it wrote: dated testimony, `crux/REDS.md`, `crux/CAIRNS.md`, `*/archive/`,
+`*/yonder/`, and the Lexicon row that seats the word.
+
+Guard: `rishi/bin/rishi run tools/vocabulary_collection_witness.rish` -- 337 reader-facing files at
+zero, 361 record files reported and kept.
+
 ## 6 -- Three things to leave alone
 
 - **Dated testimony is resolved, never repointed.** Living things are repointed; a file whose

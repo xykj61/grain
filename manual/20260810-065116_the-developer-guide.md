@@ -401,7 +401,7 @@ Grounds every example in a file that already runs green in this tree.
   reference.
 - **`tutorials/first-witness.md`** -- run, read, and write your very first witness,
   by the hand.
-- **`../tools/`** -- the living corpus of witnesses. Every one of them is a worked
+- **`../tools/`** -- the living collection of witnesses. Every one of them is a worked
   example of green-before-claim; read a few near the module you mean to touch.
 
 ---

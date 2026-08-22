@@ -13,7 +13,7 @@ The manual teaches what already runs, and it has four rooms, each answering a di
 
 Two front doors share this house. The **language path** teaches what you can type and witness today (Rishi; Glow runes as design + small prototypes). The **device path** teaches GrapheneOS on Pixel hardware and the HAWM/TUBE ladders. They meet at packaging — see [`../docs/TUBE.md`](../docs/TUBE.md).
 
-The lane grows by the same law as the code: reference specifications open only when a surface stops moving, and every example in every room is drawn from the witnessed corpus. The manual promises only what parity already shows.
+The lane grows by the same law as the code: reference specifications open only when a surface stops moving, and every example in every room is drawn from the witnessed collection. The manual promises only what parity already shows.
 
 ---
 
