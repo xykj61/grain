@@ -4578,31 +4578,7 @@ pub fn empty_box(io: std.Io, address: []const u8) void {
 /// writes the first and only ever reads the second, which is the whole
 /// difference between a delivery and an acknowledgement.
 fn hand_path(buf: *[max_note_path_len]u8, address: []const u8) NoteError![]const u8 {
-    // invariant: a hand is only ever read for an address a run may carry to
-    assert(addressable(address));
-    const suffix = ".said";
-    // invariant: an answer is read from the same box a correction is left in
-    comptime assert(suffix.len == ".told".len);
-    const total = reader_dir.len + 1 + address.len + suffix.len;
-    if (total > max_note_path_len) return error.NotePathTooLong;
-    var at: u32 = 0;
-    for (reader_dir) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    buf[at] = '/';
-    at += 1;
-    for (address) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    for (suffix) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    // invariant: a hand path is written exactly as long as it was measured
-    assert(at == total);
-    return buf[0..at];
+    return ladder_checks.hand_path(@This(), buf, address);
 }
 
 /// Reads one reader's own hand as the reading they say they now hold.
