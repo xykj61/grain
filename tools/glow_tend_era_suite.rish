@@ -103,6 +103,6 @@ say "era 9/10 GREEN -- 1..N with no gaps across every fold archive and the livin
 say "era 10/10: the delegating stub itself -- measured off disk, and the live card held to the measurement..."
 let stub = run ["rishi/bin/rishi" "run" "tools/ladder_stub_length_witness.rish"]
 assert stub.ok else "era: the stub length or the card's claim about it RED -- ${stub.err}"
-say "era 10/10 GREEN -- 2,141 pure delegating stubs measure three lines, the card agrees, and both refusals fire on metal (REDS %128)."
+say "era 10/10 GREEN -- every pure delegating stub on disk measures three lines, the count named by the scan's own output rather than recited here, the card agrees, a harness delegating to itself is refused by name, and all three refusals fire on metal (REDS %128, %132)."
 
 say "GREEN: era pure lap -- a1 - Rishi walls - R1 socketless legs - the build floor - the build bridge - the commit wall - the reds ledger whole - the delegating stub, provable on any host."

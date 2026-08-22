@@ -66,12 +66,42 @@ if [ "${1:-}" = "prove-red" ]; then
     *) echo "verdict=prove_red_failed_to_refuse_blindness"; fails=1 ;;
   esac
 
+  # A harness swept in with its own rungs, planted on a throwaway ladder so the
+  # living one is never touched.
+  eaten=$(mktemp -d)
+  trap 'rm -f "$ctl"; rm -rf "$empty"; rm -rf "$eaten"' EXIT
+  cat >"$eaten/ladder_checks.rye" <<'EOF'
+pub fn weigh_the_answer(io: std.Io, report_out: *Report) !void {
+    return ladder_checks.weigh_the_answer(@This(), io, report_out);
+}
+EOF
+  out=$(SRC_DIR="$eaten" sh "$0" "$ctl" 2>&1) || true
+  printf '%s\n' "$out" | sed 's/^/control-eaten: /'
+  case "$out" in
+    *verdict=harness_delegates_to_itself*) echo "RED_harness_self_delegation_caught" ;;
+    *) echo "verdict=prove_red_failed_to_refuse_eaten_harness"; fails=1 ;;
+  esac
+
   [ "$fails" -eq 0 ] || exit 2
   exit 1
 fi
 
 src_dir="${SRC_DIR:-$src_dir}"
 [ -d "$src_dir" ] || { echo "verdict=missing_source"; exit 2; }
+
+# The harness never delegates to itself. A lift rewrites every rung that wrote a
+# family's body into a stub calling caravan/ladder_checks.rye, and the harness
+# lives in that same directory -- so a glob over caravan/*.rye sweeps the harness
+# in with the rungs and replaces the body it just received with a stub calling
+# itself. That has happened three times in this arc, caught by hand each time and
+# recorded twice in a log without ever becoming a check (REDS %132). It is
+# unambiguous on disk and free to read, so it is a check now.
+harness="$src_dir/ladder_checks.rye"
+if [ -f "$harness" ] && grep -q '^[[:space:]]*return ladder_checks\.' "$harness"; then
+  echo "detail: $harness delegates to itself -- a lift's stub loop swept the harness in with its rungs"
+  echo "verdict=harness_delegates_to_itself"
+  exit 1
+fi
 
 # Measure every delegating stub, and report the minimum span and the pure count.
 measured=$(
