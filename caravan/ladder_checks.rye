@@ -10259,3 +10259,48 @@ pub fn look_again(comptime rung: type, io: std.Io, reweigh: rung.Reweigh, report
     // invariant: a looking run leaves no inherited matter unlooked-at
     assert(rung.reweigh_of(report_out).unlooked == 0);
 }
+
+/// One dependent's reach revoked down to a named keep, proven pruned on the
+/// wire before the report believes it.
+///
+/// Forty-four rungs declare this name and forty wrote the same body, so forty
+/// fold. The four that stay home differ in the one place that matters -- the
+/// depth at which each reaches its own revocation counter, from
+/// `report_out.revoked` at the originating rung out through
+/// `report_out.inner.revoked`, `below_of(report_out).inner.revoked`, and
+/// `below_of(report_out).inner.inner.revoked`. The originating rung also names
+/// `revoke_refusal` unqualified, since it is the rung that publishes it. Four
+/// structural differences rather than four drifts, so each keeps its body.
+///
+/// Measured rather than read: `REACH_OK family=revoke_one folding=40 widens=40
+/// widens_fn=0 widens_import=40 widens_const=0 stub=9 fall=468` from
+/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+///
+/// **The lift pays none of the forty widenings the meter priced.** All forty
+/// are one import binding apiece, and all forty bind `cycle` -- a shared module
+/// `ladder_checks.rye` already imports itself, so the body reaches
+/// `cycle.max_hops` here rather than through the rung and no rung's door opens
+/// by a single name. The remaining four symbols already stand `pub` on all
+/// forty.
+pub fn revoke_one(
+    comptime rung: type,
+    io: std.Io,
+    table: *rung.Table,
+    slot: u32,
+    keep: u32,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    // invariant: a revocation always names a dependent the run is holding
+    assert(slot < table.in_flight);
+    // invariant: a revocation never leaves more than one line may name
+    assert(keep <= cycle.max_hops);
+    if (rung.revoke_rung.revoke_refusal(table.taken[slot], table.served[slot], keep)) |why| return why;
+    const returning = table.taken[slot] - keep;
+    // invariant: a revocation that reaches this point always returns reach
+    assert(returning >= 1);
+    try rung.revoke(io, table.live[slot].domain, keep);
+    if (!rung.confirm_pruned(io, table.live[slot].domain, returning)) return error.RevokeUnpruned;
+    table.taken[slot] = keep;
+    table.served[slot] = keep;
+    rung.abandoning_of(report_out).inner.inner.revoked += returning;
+}
