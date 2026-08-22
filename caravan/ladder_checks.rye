@@ -10870,3 +10870,43 @@ pub fn read_the_reply(
     // invariant: a reading run leaves no telling of its own unheard
     assert(rung.allay_of(report_out).unheard == 0);
 }
+
+/// Reads back the question this reader was asked, or nothing at all.
+///
+/// The wire before the memory, one tier further out again: a run learns that it
+/// asked by reading the question out of the reader's own box, never by
+/// remembering having written it. A supervisor that believed its own asking
+/// could publish a lapse over a question that never left the building.
+///
+/// Thirty-one rungs declare this name and all thirty-one hold the body byte for
+/// byte. This is the first row of the arc to price a private constant beside a
+/// private function, and both columns answer with answers the arc already
+/// holds. The function column answers from underneath: `ask_path` stands
+/// lifted in this same harness, so the lifted body calls it here rather than
+/// climbing back out to a rung's three-line stub. The constant column answers
+/// from above: each rung's private `Dir` aliases `std.Io.Dir`, and this harness
+/// binds that same alias at its own head, so a name a rung kept to itself was
+/// never a name this body had to open.
+///
+/// So a widening price is a fact about where a name stands in the rung rather
+/// than about the kind of name it is. A constant looked like a new column and
+/// answered like an old one.
+///
+/// Measured rather than read: `REACH_OK family=asked_of folding=31 widens=62
+/// widens_fn=31 widens_import=0 widens_const=31 stub=3 fall=360` from
+/// `../tools/fixtures/ladder_reach_visibility_scan.sh`, read before the lift.
+pub fn asked_of(comptime rung: type, io: std.Io, address: []const u8) ?[2]rung.Settlement {
+    if (!rung.addressable(address)) return null;
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = ask_path(rung, &path_buf, address) catch return null;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return null;
+    defer file.close(io);
+    var bytes: [2]u8 = @splat(0);
+    const got = file.readPositionalAll(io, &bytes, 0) catch return null;
+    // invariant: a question never outgrows the two readings it names
+    assert(got <= 2);
+    if (got < 2) return null;
+    const ours = rung.settlement_of_byte(bytes[0]) orelse return null;
+    const theirs = rung.settlement_of_byte(bytes[1]) orelse return null;
+    return .{ ours, theirs };
+}
