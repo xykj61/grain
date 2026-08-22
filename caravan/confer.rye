@@ -418,6 +418,8 @@ pub fn seat_note(io: std.Io, domain: []const u8, suffix: []const u8, bytes: []co
 pub fn read_count(io: std.Io, domain: []const u8, suffix: []const u8) NoteError!u8 {
     // invariant: a note always names the dependent it belongs to
     assert(domain.len >= 1);
+    // invariant: a note always carries one of the suffixes
+    assert(suffix.len >= 1);
     var path_buf: [max_note_path_len]u8 = undefined;
     const path = try note_path(&path_buf, domain, suffix);
     const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch

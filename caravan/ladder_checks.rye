@@ -9946,6 +9946,41 @@ pub fn read_words(comptime rung: type, io: std.Io, domain: []const u8, out: *run
     out.len = @intCast(got);
 }
 
+/// Reads back the one count a dependent's note carries, off the wire rather
+/// than out of memory.
+///
+/// Forty-five rungs declare this name and all forty-five now write the same
+/// fourteen lines, of which forty-four fold. `confer.rye` stands below the fold
+/// line, since `ladder_checks.rye` imports it and a lift would have the harness
+/// reach back through a rung it already reaches for.
+///
+/// Two of the forty-five arrived here on this lap rather than by chance.
+/// `confer.rye` and `revoke.rye` each dropped one invariant -- the assert that
+/// a note always carries a suffix -- while writing every other line the same.
+/// Every call site in both already passes a real suffix, so the omission was an
+/// accident rather than a contract, and restoring the line changed no behavior
+/// while giving both rungs back an invariant they had lost. That is what let
+/// forty-four fold where forty-three would have.
+///
+/// The body reaches two symbols, `max_note_path_len` and `note_path`, both
+/// already public in all forty-four, so the lift widens nothing. Measured
+/// rather than read: `REACH_OK family=read_count folding=44 widens=0 stub=3
+/// fall=487` from `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+pub fn read_count(comptime rung: type, io: std.Io, domain: []const u8, suffix: []const u8) rung.NoteError!u8 {
+    // invariant: a note always names the dependent it belongs to
+    assert(domain.len >= 1);
+    // invariant: a note always carries one of the suffixes
+    assert(suffix.len >= 1);
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = try rung.note_path(&path_buf, domain, suffix);
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch
+        return error.NoteUnavailable;
+    defer file.close(io);
+    var seen = [_]u8{0};
+    _ = file.readPositionalAll(io, &seen, 0) catch return error.NoteUnavailable;
+    return seen[0];
+}
+
 /// Writes one note for a dependent, under the directory that rung keeps notes in.
 ///
 /// Forty-seven rungs declare this name and forty-five wrote the same body, of
