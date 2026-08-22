@@ -1809,7 +1809,7 @@ pub fn reap_oldest(
 /// one set of notes per declared domain, and the capability table derived from
 /// the document itself -- all before a single dependent is spawned, so no
 /// dependent ever finds a conferral, a bell, or a store left by an earlier run.
-fn seat_the_ground(
+pub fn seat_the_ground(
     io: std.Io,
     sys: *const system.System,
     report_out: *Report,
@@ -1976,7 +1976,7 @@ pub fn run_in_courier(
 /// contradicts is answered -- and under `.silent` even that one is left standing,
 /// which is where the rung below leaves every reader and precisely the number
 /// this rung moves.
-fn post_the_amendment(io: std.Io, notice: Notice, report_out: *Report) (RunError || NoteError)!void {
+pub fn post_the_amendment(io: std.Io, notice: Notice, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.post_the_amendment(@This(), io, notice, report_out);
 }
 
@@ -1994,7 +1994,7 @@ fn post_the_amendment(io: std.Io, notice: Notice, report_out: *Report) (RunError
 /// travels -- and under `.waiting` even that one stays where it was written,
 /// which is where the rung below leaves every reader who does not come back,
 /// and precisely the number this rung moves.
-fn carry_the_amendment(io: std.Io, dispatch: Dispatch, report_out: *Report) (RunError || NoteError)!void {
+pub fn carry_the_amendment(io: std.Io, dispatch: Dispatch, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.carry_the_amendment(@This(), io, dispatch, report_out);
 }
 
@@ -2015,7 +2015,7 @@ fn carry_the_amendment(io: std.Io, dispatch: Dispatch, report_out: *Report) (Run
 /// exactly as the rung below does. Under `.revisit` the recanted ones come back
 /// into the repair, and the settlement moves with them -- from `borne`, which
 /// tells an operator there is nothing left to do, to `carried`, which is true.
-fn mend_the_plan(
+pub fn mend_the_plan(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,
@@ -2065,7 +2065,7 @@ pub fn settle_the_plan(
 /// run's own record supports. Whichever way the plan asks its history to be
 /// read, that reading is published while the run still holds the evidence for
 /// it, and read back before the repair spares or seats a single phase.
-fn reckon_the_plan(
+pub fn reckon_the_plan(
     io: std.Io,
     table: *const Table,
     ledger: Ledger,

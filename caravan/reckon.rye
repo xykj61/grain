@@ -1149,7 +1149,7 @@ fn reap_oldest(
 /// one set of notes per declared domain, and the capability table derived from
 /// the document itself -- all before a single dependent is spawned, so no
 /// dependent ever finds a conferral, a bell, or a store left by an earlier run.
-fn seat_the_ground(
+pub fn seat_the_ground(
     io: std.Io,
     sys: *const system.System,
     report_out: *Report,
@@ -1277,7 +1277,7 @@ pub fn run_in_ledger(
 /// judge work that may yet be carried. A plan that absorbed no phase into a
 /// standing dependent is carried by the shape of its own record, and this rung
 /// leaves it exactly there rather than inventing a judgment it cannot make.
-fn reckon_the_plan(
+pub fn reckon_the_plan(
     io: std.Io,
     table: *const Table,
     ledger: Ledger,

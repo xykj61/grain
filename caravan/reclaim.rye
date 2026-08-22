@@ -959,7 +959,7 @@ fn reap_oldest(
 /// one set of notes per declared domain, and the capability table derived from
 /// the document itself -- all before a single dependent is spawned, so no
 /// dependent ever finds a conferral, a bell, or a store left by an earlier run.
-fn seat_the_ground(
+pub fn seat_the_ground(
     io: std.Io,
     sys: *const system.System,
     report_out: *Report,
