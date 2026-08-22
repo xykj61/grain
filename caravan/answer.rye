@@ -6902,53 +6902,7 @@ pub fn tell_the_reopener(io: std.Io, recount: Recount, report_out: *Report) (Run
 /// rewrites nothing -- the telling stands, the receipt stands, the reader's
 /// first verdict stands, and the settlement each run reaches is its own.
 pub fn read_the_reply(io: std.Io, allay: Allay, report_out: *Report) (RunError || NoteError)!void {
-    var address_buf: [max_address_len]u8 = @splat(0);
-    const where = address_published(io, &address_buf) orelse "";
-    const on_wire = if (addressable(where)) recounted_to(io, where) else null;
-    const told_count: u32 = if (on_wire != null) 1 else 0;
-    if (told_count == 0) {
-        // invariant: a run that told nobody reads no reply
-        assert(allay_of(report_out).read_back == 0);
-        // invariant: a run that told nobody leaves no reply unheard
-        assert(allay_of(report_out).unheard == 0);
-        return;
-    }
-
-    // The measurement this rung moves, weighed against the telling actually
-    // made rather than against anything the plan asked for, so a reply nobody
-    // opens is counted rather than refused.
-    allay_of(report_out).unheard = unheard_replies(told_count, allay);
-    const replies_read = read_back_in(told_count, allay);
-    const unread_count = unread_in(told_count, allay);
-    if (allay == .unread) {
-        // invariant: an unreading run opens nothing, however plainly it told
-        assert(replies_read == 0);
-        allay_of(report_out).unread = unread_count;
-        return;
-    }
-
-    // The reader's own box before the plan's memory, and the telling before the
-    // reply: both reads supply the ladder rather than short-circuiting it, so
-    // every refusal below is reached by argument and named in its own order.
-    const told = on_wire orelse return error.AllayUntold;
-    const carried = true;
-    const reply = rest_written(io, where);
-    const spoken = rests_rest(reply) != null;
-    const matched = rests_answers(reply, told);
-    if (allay_refusal(told_count, replies_read, unread_count, carried, spoken, matched)) |why| return why;
-
-    // invariant: a reading run has a word of its reader's to publish
-    const word = rests_rest(reply) orelse return error.AllaySilent;
-    // invariant: a reading run reads the one reply its telling earned
-    assert(replies_read == 1);
-    try allay_note(io, word);
-    // The wire before the memory: the plan's own notes are read again before
-    // the report believes it published anything at all.
-    if (!allay_holds(rest_published(io), word)) return error.AllayMisrecorded;
-    allay_of(report_out).read_back = replies_read;
-    allay_of(report_out).unread = unread_count;
-    // invariant: a reading run leaves no telling of its own unheard
-    assert(allay_of(report_out).unheard == 0);
+    return ladder_checks.read_the_reply(@This(), io, allay, report_out);
 }
 
 /// Hands the matter its reader left standing to the run that comes after.
