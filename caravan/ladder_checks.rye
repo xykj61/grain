@@ -9173,3 +9173,79 @@ pub fn read_the_finding(comptime rung: type, io: std.Io, deem: rung.Deem, report
     // invariant: a reading run leaves no carried case unanswered
     assert(rung.deem_of(report_out).unanswered == 0);
 }
+
+/// Books the debt a run's own concession earned, and records it where a later
+/// run will read it -- the step where an admission stops being a word and
+/// becomes a number somebody is answerable for.
+///
+/// This body stood byte for byte in eighteen rungs at fifty-four lines apiece.
+/// Its shape is the ladder's own accounting: nothing is booked that was never
+/// conceded, a free run books nothing however plainly it conceded, and every
+/// refusal below the concession is reached by argument rather than by an early
+/// return -- so the reads supply the ladder rather than short-circuiting it.
+/// The wire before the memory holds here too: the note a later run will open is
+/// read back before this report believes the debt stands.
+///
+/// The contract is the vocabulary every rung already publishes -- `Owe`,
+/// `Report`, `RunError`, and `NoteError` for the shapes, the bound
+/// `max_debt_bytes`, and the readings from `avow_written` through
+/// `debt_standing`. All nineteen already stood public in all eighteen rungs, so
+/// this fold widened no declaration anywhere on the ladder.
+///
+/// `owe.rye`, the rung that owns this measure, keeps its own body: its report
+/// *is* the owe report, so it writes each field directly where every rung above
+/// it reaches through `owe_of`. That is meaning rather than drift, and it stays.
+pub fn book_the_debt(comptime rung: type, io: std.Io, owe: rung.Owe, report_out: *rung.Report) (rung.RunError || rung.NoteError)!void {
+    const spoken = rung.avow_written(io);
+    const stance = rung.stance_in(spoken);
+    const conceded_count: u32 = if (stance == .concedes) 1 else 0;
+    if (conceded_count == 0) {
+        // invariant: a run that conceded nothing books no debt against itself
+        assert(rung.owe_of(report_out).booked == 0);
+        // invariant: a run that conceded nothing leaves no concession unbooked
+        assert(rung.owe_of(report_out).unbooked == 0);
+        return;
+    }
+
+    // The measurement this rung moves, weighed against the concession actually
+    // made rather than against anything the plan asked for, so an admission
+    // nobody carries is counted rather than refused.
+    rung.owe_of(report_out).unbooked = rung.unbooked_concessions(conceded_count, owe);
+    const booked_count = rung.booked_in(conceded_count, owe);
+    const unowed_count = rung.unowed_in(conceded_count, owe);
+    if (owe == .free) {
+        // invariant: a free run books no debt, however plainly it conceded
+        assert(booked_count == 0);
+        rung.owe_of(report_out).unowed = unowed_count;
+        return;
+    }
+
+    // The finding and the outcome both come off the wire, since the concession a
+    // debt carries is the one standing published and never one a run remembered.
+    // The reads supply the ladder rather than short-circuiting it, so every
+    // refusal below is reached by argument and named in its own order.
+    const found = rung.deem_published(io);
+    const under = rung.settlement_published(io);
+    const said = spoken != null;
+    const conceded = stance == .concedes;
+    const debt: ?[rung.max_debt_bytes]u8 = if (found) |verdict| blk: {
+        const outcome = under orelse break :blk null;
+        break :blk rung.debt_bytes(verdict, outcome);
+    } else null;
+    const matched = if (found) |verdict| rung.debt_answers(debt, verdict) else false;
+    if (rung.owe_refusal(conceded_count, booked_count, unowed_count, said, conceded, matched)) |why| return why;
+    const verdict = found orelse return error.OweMismatched;
+    const outcome = under orelse return error.OweMismatched;
+    const owed = debt orelse return error.OweMismatched;
+
+    // invariant: an owing run books the one debt its own concession earned
+    assert(booked_count == 1);
+    try rung.owe_note(io, verdict, outcome);
+    // The wire before the memory, once more: the note a later run will open is
+    // read back, and only then does the report believe the debt actually stands.
+    if (!rung.debt_holds(rung.debt_standing(io), owed)) return error.OweMisrecorded;
+    rung.owe_of(report_out).booked = booked_count;
+    rung.owe_of(report_out).unowed = unowed_count;
+    // invariant: an owing run leaves no concession of its own unbooked
+    assert(rung.owe_of(report_out).unbooked == 0);
+}
