@@ -31,6 +31,12 @@
 #   The first fold proved the design. `session-logs/` folded on `20260821.161758` -- 1,443 files
 #   moved -- and a sample of stale references afterward resolved 23 of 24 by the fold rule alone.
 #
+#   ONE exclusion list, read by both tools. The census and the repointer act on one corpus and
+#   must agree on what is not the field. They kept private copies for a day and diverged
+#   twice; the second divergence let the repointer rewrite the deliberately stale fixture this
+#   very rung tests, leaving it proving nothing (REDS %121). Both now source one file, and a
+#   hand-rolled exclusion coming back is refused.
+#
 #   The census, under a ratchet on the right number. `tools/fixtures/dated_path_scan.sh` walks
 #   every dated reference in the field, and its numbers are printed verbatim rather than recited
 #   here (REDS %108). The gate is on the LOST references -- a basename that exists nowhere, and
@@ -195,5 +201,18 @@ assert control.out contains "refs_home=1" else "dated-path: the control's real r
 assert control.out contains "broken_gone=1" else "dated-path: the control's ghost reference must be reported broken and gone"
 assert control.out contains "verdict=ok" else "dated-path: the control census must balance"
 say "census control GREEN -- a corpus whose answer is known by construction is walked correctly, one home and one ghost"
+
+# ONE LIST, read by both tools. They kept private copies for a day, diverged twice, and the second
+# divergence let the repointer rewrite the stale fixture three asserts above -- leaving the rung
+# that proves the fold rule works proving nothing (REDS %121). A rule like that is only worth
+# writing down if something notices when it lapses, so this checks both tools source
+# tools/fixtures/dated_path_exclusions.sh and neither has grown a hand-rolled exclusion back.
+let one_list = run ["sh" "tools/fixtures/dated_path_exclusions_control.sh"]
+assert one_list.ok else "dated-path: the single-exclusion-list control must complete"
+say one_list.out
+assert one_list.out contains "real_tools_accepted=yes" else "dated-path: a hand-rolled exclusion has come back into the census or the repointer -- both must read tools/fixtures/dated_path_exclusions.sh and nothing else"
+assert one_list.out contains "private_copy_refused=yes" else "dated-path: the detector must refuse a tool carrying its own private copy, or the rule guards nothing"
+assert one_list.out contains "control_verdict=ok" else "dated-path: the single-list control must agree with itself"
+say "one list GREEN -- census and repointer read the same exclusions, and a private copy is refused"
 
 say "GREEN: dated-path -- six verdicts on real cases, the fold rule proven on a room that never folded, three RED paths refused, and the lost-reference census standing under a ceiling with no slack. A room may now fold without the tree losing its way back."
