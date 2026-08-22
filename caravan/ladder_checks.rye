@@ -58,6 +58,10 @@ const intent = @import("intent.rye");
 const boot = @import("boot.rye");
 const tally_parse_int = @import("parse_int.rye");
 const entrust = @import("entrust.rye");
+const roster = @import("roster.rye");
+const exercise = @import("exercise.rye");
+const notify = @import("notify.rye");
+const roundtrip = @import("roundtrip.rye");
 const Dir = std.Io.Dir;
 
 const harness = @This();
@@ -9148,6 +9152,48 @@ pub fn seat_the_history(comptime rung: type, io: std.Io, stands: ?rung.Plea, sto
         }
     }
     return true;
+}
+
+/// Seats everything a run stands on, and answers with the table it enforces.
+///
+/// One region store per declared region, one doorbell per declared channel,
+/// one set of notes per declared domain, and the capability table derived from
+/// the document itself -- all before a single dependent is spawned, so no
+/// dependent ever finds a conferral, a bell, or a store left by an earlier run.
+///
+/// This body stood byte for byte in forty-three rungs at twenty-one lines
+/// apiece. Every rung seats its ground the same way because the seating is the
+/// ladder's own contract rather than any rung's own idea: the order is what is
+/// being promised -- stores, then bells, then notes, then the derived table --
+/// and a rung that reordered it would be a different ladder.
+///
+/// The contract is four symbols every rung already publishes: `Report` and
+/// `NoteError` for the shapes, `run_of` for the reading, and `provision_notes`
+/// for the one step a rung performs over its own directory. The harness reaches
+/// `exercise`, `roundtrip`, `roster`, `notify`, and `capabilities` through its
+/// own imports, since all five are the ladder's shared modules rather than
+/// anything a rung owns.
+pub fn seat_the_ground(
+    comptime rung: type,
+    io: std.Io,
+    sys: *const system.System,
+    report_out: *rung.Report,
+) (roster.RosterError || exercise.ProvisionError || notify.BellError || rung.NoteError)!capabilities.CapabilityTable {
+    // invariant: a run always seats a declaration that names regions
+    assert(sys.map.region_count >= 1);
+    // invariant: a run always seats a declaration that names domains
+    assert(sys.graph.domain_count >= 1);
+    const provisioned = try exercise.provision(io, sys);
+    // invariant: every declared region has a backing store before any dependent runs
+    assert(provisioned == sys.map.region_count);
+    rung.run_of(report_out).bells = try roundtrip.provision_directed(io, sys);
+    const noted = try rung.provision_notes(io, sys);
+    // invariant: every declared domain has its notes before any conferral
+    assert(noted == sys.graph.domain_count);
+    const caps = try roster.from_system(sys);
+    // invariant: the derived table enforces exactly what the document permits
+    assert(roster.agrees(sys, &caps));
+    return caps;
 }
 
 /// Seats a plan's phases into the table a run reads from -- the record's own
