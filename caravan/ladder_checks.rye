@@ -10692,3 +10692,51 @@ pub fn elder_waits(comptime rung: type, table: *const rung.Table, pick: u32) boo
     assert(i == table.held);
     return false;
 }
+
+/// Answers whether a candidate phase may pass a blocked head.
+///
+/// Fifty-one rungs held this body byte for byte at nineteen lines. Forty-three
+/// fold and eight stay home, and they are the same eight the `elder_waits` lift
+/// left standing: `confer.rye`, `entrust.rye`, and `unhand.rye` stand below the
+/// fold line, since this harness imports all three, while `replace.rye`,
+/// `revoke.rye`, `taper.rye`, `understudy.rye`, and `withdraw.rye` each keep
+/// their own `Table` private and are welcome to.
+///
+/// The widening meter priced this family at one hundred and one openings, and
+/// the lift pays none of them. The function openings would have published each
+/// rung's private `waits`, which the body above already answers: every folding
+/// rung delegates its own `waits` to this file, so the lifted body reaches the
+/// `waits` standing above it here. The import openings would have bound
+/// `system` into each rung, and this harness imports `system` at its own head.
+/// The record openings would have published a record type five rungs chose to
+/// keep, so those five keep both the type and the body.
+///
+/// `items_contend` and `Reading` are reached through the rung and stand public
+/// in all fifty-one already, so both names this body climbs outward for were
+/// open before it arrived.
+///
+/// Measured rather than read: `REACH_OK family=may_pass folding=48 widens=101
+/// widens_fn=48 widens_import=48 widens_const=5 stub=8 fall=536`. The meter
+/// prices the lift as though all forty-eight above the fold line folded; this
+/// lift folds forty-three and leaves eight standing, which the scan's own
+/// formula returns 481 for.
+pub fn may_pass(
+    comptime rung: type,
+    sys: *const system.System,
+    table: *const rung.Table,
+    candidate: u32,
+    reading: rung.Reading,
+) bool {
+    // invariant: a pass always reaches forward, never at the head itself
+    assert(candidate > table.head);
+    // invariant: a candidate always stands inside the record
+    assert(candidate < table.held);
+    var i: u32 = table.head;
+    while (i < candidate) : (i += 1) {
+        if (!waits(rung, table, i)) continue;
+        if (rung.items_contend(sys, table.record[i], table.record[candidate], reading)) return false;
+    }
+    // invariant: the walk reached the candidate, weighing every phase before it
+    assert(i == candidate);
+    return true;
+}
