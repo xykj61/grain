@@ -9928,3 +9928,43 @@ pub fn confirm_pruned(comptime rung: type, io: std.Io, domain: []const u8, count
     assert(looks == rung.max_confirm_looks);
     return false;
 }
+
+/// Writes one note for a dependent, under the directory that rung keeps notes in.
+///
+/// Forty-seven rungs declare this name and forty-five wrote the same body, of
+/// which forty-four fold: `confer.rye` stands below the fold line, since
+/// `ladder_checks.rye` imports it and a lift would have the harness reach back
+/// through a rung it already reaches for.
+///
+/// Two of the forty-five arrived here on this lap rather than by chance.
+/// `confer.rye` and `revoke.rye` wrote the same fourteen lines as their
+/// forty-three siblings while dropping one invariant -- the assert that a note
+/// always carries a suffix. Every call site in both already passes a real
+/// suffix, so restoring the line changed no behavior and made both bodies
+/// byte-identical to the rest, which is what let them fold at all.
+///
+/// The two rungs that stay home differ in signature rather than in a line:
+/// `entrust.rye` and `taper.rye` take a single `value: u8` and write one byte,
+/// where these forty-four take a `bytes` slice.
+///
+/// The body reaches three symbols. Four rungs kept their own `note_path` stub
+/// private where forty-one siblings published theirs, so those four were
+/// published first as a uniformity ratchet -- each is already a three-line stub
+/// delegating here -- and the lift then widens nothing. Measured rather than
+/// read: `REACH_OK family=seat_note folding=44 widens=0 stub=3 fall=531` from
+/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+pub fn seat_note(comptime rung: type, io: std.Io, domain: []const u8, suffix: []const u8, bytes: []const u8) rung.NoteError!void {
+    // invariant: a note always names the dependent it belongs to
+    assert(domain.len >= 1);
+    // invariant: a note always carries one of the suffixes
+    assert(suffix.len >= 1);
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = try rung.note_path(&path_buf, domain, suffix);
+    // invariant: a written path always carries the directory it lives in
+    assert(path.len > rung.note_dir.len);
+    const file = Dir.cwd().createFile(io, path, .{ .truncate = true }) catch
+        return error.NoteUnavailable;
+    defer file.close(io);
+    if (bytes.len == 0) return;
+    file.writePositionalAll(io, bytes, 0) catch return error.NoteUnavailable;
+}
