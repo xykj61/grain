@@ -4964,6 +4964,53 @@ pub fn close_the_quarrel(
     }
 }
 
+/// Writes the path of the note a run leaves about one dependent.
+
+///
+/// Forty-seven rungs held this body, in three families that differed by a
+/// keyword and a single comment word rather than by a line of work: a run names
+/// its notes the same way everywhere, because the name *is* the contract -- the
+/// run's own directory, the dependent the note belongs to, and the suffix that
+/// says which note this is. Lifted here, one body serves all forty-seven, and
+/// each rung reaches its own directory, its own ceiling, and its own error set
+/// through the type it hands in, so a rung that moves its notes elsewhere moves
+/// the paths it writes with them.
+
+///
+/// Visibility stays exactly as each rung wrote it. Thirty-six publish, because
+/// the harness reaches their notes through the type handed in; eleven keep the
+/// name private, because only their own body ever asks for it. That split is
+/// meaning rather than drift, and a lift preserves what it finds.
+
+///
+/// Measured by `../tools/fixtures/caravan_ladder_carry_scan.sh`.
+pub fn note_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, domain: []const u8, suffix: []const u8) rung.NoteError![]const u8 {
+    // invariant: a note always names the dependent it belongs to
+    assert(domain.len >= 1);
+    // invariant: a note always carries one of the suffixes
+    assert(suffix.len >= 1);
+    const total = rung.note_dir.len + 1 + domain.len + suffix.len;
+    if (total > rung.max_note_path_len) return error.NotePathTooLong;
+    var w: u32 = 0;
+    for (rung.note_dir) |c| {
+        buf[w] = c;
+        w += 1;
+    }
+    buf[w] = '/';
+    w += 1;
+    for (domain) |c| {
+        buf[w] = c;
+        w += 1;
+    }
+    for (suffix) |c| {
+        buf[w] = c;
+        w += 1;
+    }
+    // invariant: the path written is exactly the length computed for it
+    assert(w == total);
+    return buf[0..w];
+}
+
 /// Writes the path of the answer one reader is owed about their own quarrel.
 ///
 /// Twenty-nine rungs held this body byte for byte, because the address a reader
