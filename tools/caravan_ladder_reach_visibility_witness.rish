@@ -48,6 +48,7 @@ say red.out
 assert red.out contains "RED_no_family_refused_rather_than_ok" else "reach-visibility: a name no rung declares answered ok -- a scan must never bless its own blindness"
 assert red.out contains "RED_no_identical_refused_rather_than_ok" else "reach-visibility: a name whose every body differs answered ok -- nothing folds there"
 assert red.out contains "RED_capitalized_type_priced_rather_than_unseen" else "reach-visibility: a private type the shared body names priced at zero -- a meter that reads only lowercase names cannot see a struct (REDS %140)"
+assert red.out contains "RED_one_rule_read_as_one_family_across_two_visibilities" else "reach-visibility: one rule written pub in one rung and private in another read as two families -- the visibility keyword belongs beside the key rather than inside it (REDS %144)"
 
 # The family this lap lifted. Sixty of its bodies are stubs now, and seven stay
 # home below the fold line, since ladder_checks.rye imports each of them and a
@@ -62,16 +63,21 @@ say folded.out
 assert folded.out contains "REACH_OK family=load_one folding=60 widens=120 widens_fn=0 widens_import=120 widens_const=0 stub=3 fall=0" else "reach-visibility: want load_one standing folded, with nothing left to lift"
 assert folded.ok else "reach-visibility: the lifted family must still read cleanly"
 
-# The row that costs the most, now that the column says what it means. Every
-# symbol elder_waits reaches privately is a function -- `waits`, held private in
-# forty-three rungs -- so folding it opens what those rungs offer a caller. This
-# is the shape a design decision belongs to, and it is asserted here so the
-# queue can never quietly re-sort it back to the front on a fall alone. It is the
-# only one of the five asserted here whose openings are functions.
+# The row that costs the most, now that the meter reads a whole family. This
+# scan hashed each body with its signature intact, so `pub fn elder_waits` in
+# forty-three rungs and `fn elder_waits` in eight read as two families and the
+# queue was ordered on the larger half alone (REDS %144). With the keyword out
+# of the key the family stands at fifty-one identical bodies, forty-eight of them
+# above the fold line, and the correction found real cost rather than a larger
+# fold: the five extra rungs that could fold each keep their own `Table` private,
+# so lifting them would publish a record type five rungs chose to keep. That is
+# why the row now prices five constant openings beside its forty-eight function
+# openings, and why the honest lift still leaves those five at home. It is
+# asserted here so the queue can never quietly re-sort on a fall alone.
 let head = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "elder_waits"]
 say head.out
-assert head.out contains "REACH_FAMILY family=elder_waits declared=53 identical=43 lines=15" else "reach-visibility: want elder_waits standing as fifty-three declarations holding forty-three identical bodies at fifteen lines"
-assert head.out contains "REACH_OK family=elder_waits folding=43 widens=43 widens_fn=43 widens_import=0 widens_const=0 stub=3 fall=504" else "reach-visibility: want the queue head returning five hundred and four for forty-three openings"
+assert head.out contains "REACH_FAMILY family=elder_waits declared=53 identical=51 lines=15" else "reach-visibility: want elder_waits standing as fifty-three declarations holding fifty-one identical bodies at fifteen lines"
+assert head.out contains "REACH_OK family=elder_waits folding=48 widens=53 widens_fn=48 widens_import=0 widens_const=5 stub=3 fall=579" else "reach-visibility: want the queue head returning five hundred and seventy-nine for forty-eight function openings and five record openings"
 assert head.ok else "reach-visibility: the queue head must read cleanly"
 
 # read_own_line folded this lap, so the same scan run against it now reads a
@@ -136,8 +142,8 @@ assert this_lap.ok else "reach-visibility: this lap's folded family must read cl
 # whether the helper lifts first rather than a cost already settled.
 let free_next = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "elder_waits"]
 say free_next.out
-assert free_next.out contains "REACH_FAMILY family=elder_waits declared=53 identical=43 lines=15" else "reach-visibility: want elder_waits standing as fifty-three declarations holding forty-three identical bodies at fifteen lines"
-assert free_next.out contains "REACH_OK family=elder_waits folding=43 widens=43 widens_fn=43 widens_import=0 widens_const=0 stub=3 fall=504" else "reach-visibility: want elder_waits priced entirely in function openings, the shape this lap answered from underneath"
+assert free_next.out contains "REACH_FAMILY family=elder_waits declared=53 identical=51 lines=15" else "reach-visibility: want elder_waits standing as fifty-three declarations holding fifty-one identical bodies at fifteen lines"
+assert free_next.out contains "REACH_OK family=elder_waits folding=48 widens=53 widens_fn=48 widens_import=0 widens_const=5 stub=3 fall=579" else "reach-visibility: want elder_waits priced in forty-eight function openings and the five record openings that keep those five rungs at home"
 assert free_next.ok else "reach-visibility: the next head must read cleanly"
 
 # The row standing behind it, and the row that proves the corrected fall formula
@@ -166,21 +172,21 @@ assert fourth.ok else "reach-visibility: the fourth family must read cleanly"
 # body again, so a harness-level import is a one-way door -- and this lap's
 # first cut called that door expensive in a GREEN line without ever measuring
 # it, which is REDS %130's lantern firing a second time. Measured, the whole
-# fold line forecloses 235 body lines out of 61,873, and the two rungs this lap
+# fold line forecloses 1,140 body lines out of 69,379, and the two rungs this lap
 # declined to sink hold three lines each. The cost was real and small.
 #
 # The finding is the spread rather than the total. A rung the harness imports
 # tends to be a shared helper, and a shared helper writes few duplicated bodies
-# -- while an ordinary rung like farewell.rye holds 3,757. Three orders of
+# -- while an ordinary rung like farewell.rye holds 4,015. Three orders of
 # magnitude between them is why "always keep the rung parameter" is as wrong as
 # "always import," and why the door is priced before it is opened.
 let sink = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "sink"]
 say sink.out
-assert sink.out contains "SINK_OK total=61873 below_fold_line=235 above_fold_line=61638" else "reach-visibility: want the fold line's whole foreclosure measured against the foldable corpus"
-assert sink.out contains "SINK_ABOVE rung=queue.rye holds=3" else "reach-visibility: want the queue store's holding read off disk rather than described"
+assert sink.out contains "SINK_OK total=69379 below_fold_line=1140 above_fold_line=68239" else "reach-visibility: want the fold line's whole foreclosure measured against the foldable corpus, private bodies counted beside public ones"
+assert sink.out contains "SINK_ABOVE rung=queue.rye holds=29" else "reach-visibility: want the queue store's holding read off disk rather than described"
 assert sink.out contains "SINK_ABOVE rung=serve.rye holds=3" else "reach-visibility: want the serve module's holding read off disk rather than described"
-assert sink.out contains "SINK_ABOVE rung=farewell.rye holds=3757" else "reach-visibility: want the widest holding above the line, so the spread is a measurement rather than a feeling"
-assert sink.out contains "SINK_BELOW rung=cohort.rye holds=90" else "reach-visibility: want the largest holding already below the fold line named"
+assert sink.out contains "SINK_ABOVE rung=farewell.rye holds=4015" else "reach-visibility: want the widest holding above the line, so the spread is a measurement rather than a feeling"
+assert sink.out contains "SINK_BELOW rung=entrust.rye holds=168" else "reach-visibility: want the largest holding already below the fold line named"
 assert sink.ok else "reach-visibility: the sink meter must read cleanly"
 
 # The kind rides on every private symbol line too, so a reader scanning the
@@ -188,4 +194,4 @@ assert sink.ok else "reach-visibility: the sink meter must read cleanly"
 assert sibling.out contains "REACH_PRIVATE symbol=capabilities kind=import" else "reach-visibility: want each private symbol naming its kind beside it"
 assert head.out contains "REACH_PRIVATE symbol=waits kind=fn" else "reach-visibility: want a private function named as a function"
 
-say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, the cost is counted by kind rather than summed across kinds, and the fall counts every population left standing rather than two of the three. This lap sibling_waits folded, and the lift answered a priced widening by lifting underneath it rather than by paying it. The meter priced the family in import bindings of the step-mask module, which this harness imports at its own head, and in openings of each rung's private waits -- and both came to nothing, because waits lifted first and the body above serves this one. Three rungs of the waits family stayed home, and the three name themselves: this harness imports two of them, so both stand below the fold line, and the third keeps its own record type private and is welcome to. The fold line and the private type name exactly the same three rungs. elder_waits leads the queue now wearing the same shape this lap answered, every one of its priced openings a function opening rather than an import binding; may_pass stands behind it carrying the corrected fall that three rungs below its fold line had hidden; and choose_pass holds the largest fall of any row standing and asks the widest price for it. A count that sums across kinds throws the mark away at the moment it matters, and a formula that names two populations where three stand overprices every fold that has more than one rung standing home. The readings above are the most recent lifts and next heads, slid forward one family per lap: the arc has folded far more than these and this witness pins the newest window, letting the carry ceiling hold the rest, since a body that came back would raise the carry and the ceiling only ever comes down. And the fold line itself is priced rather than described: importing a rung into the harness sinks it below the line forever, forfeiting the 235 body lines the whole line already holds against a foldable corpus of 61,873 -- and 3,757 for the widest rung still above it. Three orders of magnitude between them is why the door is measured before it is opened (REDS %137)."
+say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, the cost is counted by kind rather than summed across kinds, and the fall counts every population left standing rather than two of the three. No body was lifted this lap. This scan itself was repaired: it hashed a body with its signature's visibility keyword inside the key, so one rule written pub in some rungs and private in others read as two families rather than one, and both the fold queue and the sink window were answering on a partial reading. The keyword now leaves the key in every window this scan opens, and a generated pair proves the merge above. The correction found real cost rather than a larger fold, which is the evidence it is a correction. elder_waits reads fifty-one identical bodies where it read forty-three, and the five extra rungs it could reach each keep their own record type private, so lifting them would publish a type five rungs chose to keep and the honest lift still leaves those five at home. may_pass, choose_pass, sibling_waits, door_admits, finding_path, load_one, and read_own_line all stand exactly where they stood, unmoved by the repair. The sink window moved furthest, because it had been reading public bodies alone: the fold line forecloses 1,140 body lines against a foldable corpus of 69,379, both asserted above, where the reading it replaces was smaller on both counts while private bodies stayed invisible to it. A rung the harness imports holds nearly five times what the arc believed it did, so the one-way door is dearer than it looked and is worth measuring twice before it is opened (REDS %137, %144)."
