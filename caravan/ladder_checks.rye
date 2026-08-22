@@ -10791,3 +10791,82 @@ pub fn choose_pass(
     assert(looked <= rung.max_lookahead);
     return null;
 }
+
+/// Reads the one reply a run's own telling earned, and publishes its word.
+///
+/// Eleven rungs declare this name and ten hold the body byte for byte at
+/// forty-nine lines -- the longest single body the arc has lifted. All ten
+/// fold: none stands below the fold line, and none keeps a private name this
+/// body reaches. `allay.rye` is the eleventh and stays home, because it writes
+/// its report field directly where the other ten reach it through a helper, so
+/// its body is a different body rather than a copy of this one.
+///
+/// The widening meter priced the lift at zero openings of every kind, and the
+/// hand-read agrees: all nineteen names this body climbs outward for --
+/// `max_address_len`, `address_published`, `addressable`, `recounted_to`,
+/// `allay_of`, `unheard_replies`, `read_back_in`, `unread_in`, `rest_written`,
+/// `rests_rest`, `rests_answers`, `allay_refusal`, `allay_note`, `allay_holds`,
+/// `rest_published`, `Allay`, `Report`, `RunError`, and `NoteError` -- already
+/// stand public in all ten. This is the first row of the arc to reach its
+/// freedom without an answer of any kind, from underneath or from above.
+///
+/// The reading is bounded by the telling: a run tells at most one reader, so it
+/// opens at most one reply, and a run that told nobody returns having read
+/// nothing at all.
+///
+/// Measured rather than read: `REACH_OK family=read_the_reply folding=10
+/// widens=0 widens_fn=0 widens_import=0 widens_const=0 stub=3 fall=414`.
+pub fn read_the_reply(
+    comptime rung: type,
+    io: std.Io,
+    allay: rung.Allay,
+    report_out: *rung.Report,
+) (rung.RunError || rung.NoteError)!void {
+    var address_buf: [rung.max_address_len]u8 = @splat(0);
+    const where = rung.address_published(io, &address_buf) orelse "";
+    const on_wire = if (rung.addressable(where)) rung.recounted_to(io, where) else null;
+    const told_count: u32 = if (on_wire != null) 1 else 0;
+    if (told_count == 0) {
+        // invariant: a run that told nobody reads no reply
+        assert(rung.allay_of(report_out).read_back == 0);
+        // invariant: a run that told nobody leaves no reply unheard
+        assert(rung.allay_of(report_out).unheard == 0);
+        return;
+    }
+
+    // The measurement this rung moves, weighed against the telling actually
+    // made rather than against anything the plan asked for, so a reply nobody
+    // opens is counted rather than refused.
+    rung.allay_of(report_out).unheard = rung.unheard_replies(told_count, allay);
+    const replies_read = rung.read_back_in(told_count, allay);
+    const unread_count = rung.unread_in(told_count, allay);
+    if (allay == .unread) {
+        // invariant: an unreading run opens nothing, however plainly it told
+        assert(replies_read == 0);
+        rung.allay_of(report_out).unread = unread_count;
+        return;
+    }
+
+    // The reader's own box before the plan's memory, and the telling before the
+    // reply: both reads supply the ladder rather than short-circuiting it, so
+    // every refusal below is reached by argument and named in its own order.
+    const told = on_wire orelse return error.AllayUntold;
+    const carried = true;
+    const reply = rung.rest_written(io, where);
+    const spoken = rung.rests_rest(reply) != null;
+    const matched = rung.rests_answers(reply, told);
+    if (rung.allay_refusal(told_count, replies_read, unread_count, carried, spoken, matched)) |why| return why;
+
+    // invariant: a reading run has a word of its reader's to publish
+    const word = rung.rests_rest(reply) orelse return error.AllaySilent;
+    // invariant: a reading run reads the one reply its telling earned
+    assert(replies_read == 1);
+    try rung.allay_note(io, word);
+    // The wire before the memory: the plan's own notes are read again before
+    // the report believes it published anything at all.
+    if (!rung.allay_holds(rung.rest_published(io), word)) return error.AllayMisrecorded;
+    rung.allay_of(report_out).read_back = replies_read;
+    rung.allay_of(report_out).unread = unread_count;
+    // invariant: a reading run leaves no telling of its own unheard
+    assert(rung.allay_of(report_out).unheard == 0);
+}
