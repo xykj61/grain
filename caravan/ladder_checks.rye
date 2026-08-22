@@ -9390,3 +9390,50 @@ pub fn book_the_debt(comptime rung: type, io: std.Io, owe: rung.Owe, report_out:
     // invariant: an owing run leaves no concession of its own unbooked
     assert(rung.owe_of(report_out).unbooked == 0);
 }
+
+pub fn say_the_word(comptime rung: type, io: std.Io, avow: rung.Avow, report_out: *rung.Report) (rung.RunError || rung.NoteError)!void {
+    const heard_count = rung.deem_of(report_out).answered;
+    if (heard_count == 0) {
+        // invariant: a run that read no finding says no word about one
+        assert(rung.avow_of(report_out).said == 0);
+        // invariant: a run that read no finding leaves none unanswered
+        assert(rung.avow_of(report_out).unavowed == 0);
+        return;
+    }
+
+    // The measurement this rung moves, weighed against the finding actually
+    // read rather than against anything the plan asked for, so a verdict nobody
+    // answers is counted rather than refused.
+    rung.avow_of(report_out).unavowed = rung.unavowed_findings(heard_count, avow);
+    const said_count = rung.said_in(heard_count, avow);
+    const withheld_count = rung.withheld_in(heard_count, avow);
+    if (avow == .mute) {
+        // invariant: a mute run publishes no word, however plainly one stood
+        assert(said_count == 0);
+        rung.avow_of(report_out).withheld = withheld_count;
+        return;
+    }
+
+    // The finding comes off the wire once more, since the verdict a plan
+    // answers is the verdict standing published and never one a run remembered.
+    // The read supplies the ladder rather than short-circuiting it, so every
+    // refusal below is reached by argument and named in its own order.
+    const found = rung.deem_published(io);
+    const published = found != null;
+    const word: ?[rung.max_avowal_bytes]u8 = if (found) |verdict| rung.avowal_bytes(verdict, avow) else null;
+    const matched = if (found) |verdict| rung.avowal_answers(word, verdict) else false;
+    if (rung.avow_refusal(heard_count, said_count, withheld_count, published, matched)) |why| return why;
+    const verdict = found orelse return error.AvowUnfound;
+    const said = word orelse return error.AvowUnfound;
+
+    // invariant: an avowing run publishes the one word its own finding earned
+    assert(said_count == 1);
+    try rung.avow_note(io, verdict, avow);
+    // The wire before the memory, once more: the note an operator opens is read
+    // back, and only then does the report believe the plan actually spoke.
+    if (!rung.avow_holds(rung.avow_written(io), said)) return error.AvowMisrecorded;
+    rung.avow_of(report_out).said = said_count;
+    rung.avow_of(report_out).withheld = withheld_count;
+    // invariant: an avowing run leaves no read finding unanswered
+    assert(rung.avow_of(report_out).unavowed == 0);
+}
