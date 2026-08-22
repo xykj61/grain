@@ -9895,3 +9895,36 @@ pub fn weigh_the_answer(comptime rung: type, io: std.Io, suffice: rung.Suffice, 
     // invariant: a weighing run leaves no answer of its own unmeasured
     assert(rung.suffice_of(report_out).unmeasured == 0);
 }
+
+/// Waits, bounded, until this dependent's prune has been counted.
+///
+/// All forty-four rungs that declare this wrote the same body byte for byte,
+/// so this is the first family of the arc with no rung staying home. Six
+/// families before it split on a single qualifier and each split turned out to
+/// carry meaning; this one simply says the same thing forty-four times.
+///
+/// The shape is the bounded wait the ladder uses everywhere: look at most
+/// `max_confirm_looks` times, rest `note_rest_ms` between looks, and answer
+/// false rather than waiting forever. Lifted here, one body serves all
+/// forty-four, and each rung reaches its own bound, its own reader, and its own
+/// rest through the type it hands in.
+///
+/// The body reaches three symbols and every one already stood public in all
+/// forty-four, so the lift widens nothing. Measured rather than read: `REACH_OK
+/// family=confirm_pruned folding=44 widens=0 stub=3 fall=516` from
+/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+pub fn confirm_pruned(comptime rung: type, io: std.Io, domain: []const u8, count: u32) bool {
+    // invariant: a confirmation always names the dependent it waits on
+    assert(domain.len >= 1);
+    // invariant: a confirmation always waits on reach actually taken back
+    assert(count >= 1);
+    var looks: u32 = 0;
+    while (looks < rung.max_confirm_looks) : (looks += 1) {
+        const answered = rung.read_count(io, domain, ".pruned") catch return false;
+        if (answered >= count) return true;
+        std.Io.sleep(io, std.Io.Duration.fromMilliseconds(rung.note_rest_ms), .awake) catch {};
+    }
+    // invariant: the confirmation stayed inside the bound it was given
+    assert(looks == rung.max_confirm_looks);
+    return false;
+}

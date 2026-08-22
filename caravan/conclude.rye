@@ -4930,19 +4930,7 @@ pub fn pruned(io: std.Io, domain: []const u8, count: u32) NoteError!void {
 
 /// Waits, bounded, until this revocation has been pruned.
 pub fn confirm_pruned(io: std.Io, domain: []const u8, count: u32) bool {
-    // invariant: a confirmation always names the dependent it waits on
-    assert(domain.len >= 1);
-    // invariant: a confirmation always waits on reach actually taken back
-    assert(count >= 1);
-    var looks: u32 = 0;
-    while (looks < max_confirm_looks) : (looks += 1) {
-        const answered = read_count(io, domain, ".pruned") catch return false;
-        if (answered >= count) return true;
-        std.Io.sleep(io, std.Io.Duration.fromMilliseconds(note_rest_ms), .awake) catch {};
-    }
-    // invariant: the confirmation stayed inside the bound it was given
-    assert(looks == max_confirm_looks);
-    return false;
+    return ladder_checks.confirm_pruned(@This(), io, domain, count);
 }
 
 /// Tells the run how much reach this dependent found standing at its first breath.
