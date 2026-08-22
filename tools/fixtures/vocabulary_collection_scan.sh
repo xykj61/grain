@@ -45,7 +45,19 @@ enforce_roster() {
   ls edu/*.md edu/*/*.md edu/*/*/*.md 2>/dev/null || true
   ls ./*.md 2>/dev/null | sed 's|^\./||' || true
   ls crux/*.md 2>/dev/null | grep -vE '^crux/(REDS|CAIRNS)\.md$' || true
+  # Module front doors that SHIP in the public seed. A newcomer browsing the repository meets
+  # these, so they are held to the same plainness as the manual.
+  ls caravan/README.md scribble/README.md 2>/dev/null || true
 }
+
+# TERM-OF-ART ROOMS, deliberately absent from the roster above and named here so the exemption is
+# a decision rather than an oversight:
+#   ember/    -- an inference module, where `training corpus` is the clearest word its readers
+#                know. Swapping it for `collection` would make the page LESS precise, which is the
+#                abstract-for-abstract mistake this whole sweep was shaped to avoid.
+#   image/    -- `font5x7 corpora` are glyph sets, and most occurrences sit inside identifiers.
+#   tools/gen/ember/, scribble/fixtures/, tools/fixtures/ -- tool names and FIXTURE DATA. A fixture
+#                is an input with an expected output; rewording one changes what a witness proves.
 
 count_prose() { grep -cE "$PROSE" "$1" 2>/dev/null || true; }
 
