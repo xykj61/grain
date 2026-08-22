@@ -4414,19 +4414,7 @@ pub fn note_path(buf: *[max_note_path_len]u8, domain: []const u8, suffix: []cons
 
 /// Writes bytes into a note, creating it fresh.
 pub fn seat_note(io: std.Io, domain: []const u8, suffix: []const u8, bytes: []const u8) NoteError!void {
-    // invariant: a note always names the dependent it belongs to
-    assert(domain.len >= 1);
-    // invariant: a note always carries one of the suffixes
-    assert(suffix.len >= 1);
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = try note_path(&path_buf, domain, suffix);
-    // invariant: a written path always carries the directory it lives in
-    assert(path.len > note_dir.len);
-    const file = Dir.cwd().createFile(io, path, .{ .truncate = true }) catch
-        return error.NoteUnavailable;
-    defer file.close(io);
-    if (bytes.len == 0) return;
-    file.writePositionalAll(io, bytes, 0) catch return error.NoteUnavailable;
+    return ladder_checks.seat_note(@This(), io, domain, suffix, bytes);
 }
 
 /// Reads the one byte a counting note carries.
