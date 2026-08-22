@@ -2147,19 +2147,7 @@ pub fn advance_head(table: *Table) void {
 
 /// Answers whether a phase of a turn this pick's turn names still waits.
 pub fn elder_waits(table: *const Table, pick: u32) bool {
-    // invariant: a pick always names a phase inside the record
-    assert(pick < table.held);
-    const wanted = table.record[pick].follows_turns;
-    if (wanted == 0) return false;
-    var i: u32 = 0;
-    while (i < table.held) : (i += 1) {
-        if (i == pick) continue;
-        if (!waits(table, i)) continue;
-        if ((wanted & turn_bit(table.record[i].turn)) != 0) return true;
-    }
-    // invariant: the walk read the whole record, weighing every phase in it
-    assert(i == table.held);
-    return false;
+    return ladder_checks.elder_waits(@This(), table, pick);
 }
 
 /// Answers whether a sibling of this pick's own turn still waits behind it.
