@@ -3946,32 +3946,7 @@ pub fn told_of(io: std.Io, address: []const u8) ?Result {
 /// Writes the path of the finding one reader is owed about the admission they
 /// won.
 fn found_path(buf: *[max_note_path_len]u8, address: []const u8) NoteError![]const u8 {
-    // invariant: a finding is only ever written to an address a run may carry to
-    assert(addressable(address));
-    const suffix = ".found";
-    // invariant: a finding is left in the same box every other word to this
-    // reader was left in
-    comptime assert(suffix.len == ".outof".len);
-    const total = reader_dir.len + 1 + address.len + suffix.len;
-    if (total > max_note_path_len) return error.NotePathTooLong;
-    var at: u32 = 0;
-    for (reader_dir) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    buf[at] = '/';
-    at += 1;
-    for (address) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    for (suffix) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    // invariant: a finding path is written exactly as long as it was measured
-    assert(at == total);
-    return buf[0..at];
+    return ladder_checks.found_path(@This(), buf, address);
 }
 
 /// Carries the finding to the reader who won the admission it answers.

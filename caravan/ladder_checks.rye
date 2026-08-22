@@ -5238,6 +5238,59 @@ pub fn ask_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: 
     return buf[0..at];
 }
 
+/// Writes the path of the finding one reader is owed about the admission they
+/// won.
+///
+/// Sixteen rungs held this body byte for byte -- the fifth member of the
+/// reader-box path family, beside `hand_path`, `tell_path`, `renew_path`, and
+/// `ask_path`. All five name an address under the readers' own directory and
+/// dress it in a short suffix -- `.said`, `.outof`, `.still`, `.again`,
+/// `.found`; what differs is which box the note lands in and which companion it
+/// pairs with. This one is the finding a look wrote, carried to the reader who
+/// won the admission it answers. Lifted here, one body serves all sixteen, and
+/// each rung reaches its own ceiling, its own directory, and its own error set
+/// through the type it hands in -- so a rung that widens the ceiling widens the
+/// path it writes.
+///
+/// The comptime assert travels with the body, and it is the reason this family
+/// reads as a family: a finding lands in the same box, at the same width, as
+/// the word about how that reader's quarrel came out. Two suffixes that must
+/// stay the same length are a rule, and a rule written sixteen times is a rule
+/// sixteen files may quietly come to disagree about.
+///
+/// Every symbol this body reaches already stood public in all sixteen rungs, so
+/// the lift widens nothing of any kind. Measured rather than read: `REACH_OK
+/// family=found_path folding=16 widens=0 stub=3 fall=375` from
+/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+pub fn found_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: []const u8) rung.NoteError![]const u8 {
+    // invariant: a finding is only ever written to an address a run may carry to
+    assert(rung.addressable(address));
+    const suffix = ".found";
+    // invariant: a finding is left in the same box every other word to this
+    // reader was left in
+    comptime assert(suffix.len == ".outof".len);
+    const total = rung.reader_dir.len + 1 + address.len + suffix.len;
+    if (total > rung.max_note_path_len) return error.NotePathTooLong;
+    var at: u32 = 0;
+    for (rung.reader_dir) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    buf[at] = '/';
+    at += 1;
+    for (address) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    for (suffix) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    // invariant: a finding path is written exactly as long as it was measured
+    assert(at == total);
+    return buf[0..at];
+}
+
 /// Tells the reader who raised a quarrel how it came out.
 ///
 /// One byte, written where that reader is rather than where the record is kept:
