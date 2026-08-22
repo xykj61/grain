@@ -29,7 +29,7 @@ Read the sections below whenever you wonder where a new file belongs. When a sea
 
 **`classical-vedic-astrology/`** -- the reading craft: a siloed study library in topic folders (`studies/nakshatras/`, `planets-in-signs/`, `planet-in-house/`, ...), composable templates in `templates/`, demonstration readings in `readings/`, and the dual-zodiac caster. Names stay siloed to the placeholder **Alice** by consent and by design; the fuller originals rest in the private lane, and gratitude to teachers lives inside each study.
 
-**`manual/`** -- the four rooms that teach the system: tutorials by the hand, guides for the task, living reference specifications for stable surfaces, and pointers to the understanding essays. Every page teaches only what runs; the first reference open is the Rishi language, derived from the witness corpus.
+**`manual/`** -- the four rooms that teach the system: tutorials by the hand, guides for the task, living reference specifications for stable surfaces, and pointers to the understanding essays. Every page teaches only what runs; the first reference open is the Rishi language, derived from the witness collection.
 
 **`linengrow/`** -- the civic-application track: Linengrow's README, business model, and venture pitch, sharing the one spine with the operating system. It graduates to its own repository once its first lap runs.
 

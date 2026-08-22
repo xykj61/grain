@@ -140,7 +140,7 @@ Point it at these when it drifts:
   place. This is the single best file to hand an agent as context before a task.
 - **[`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md)** — the full
   discipline, every rule with its reasoning.
-- **[`../tools/`](../tools/)** — the living corpus of witnesses. Every file there
+- **[`../tools/`](../tools/)** — the living collection of witnesses. Every file there
   is a worked example of green-before-claim; an agent reading two or three near
   the module it means to touch will match the house style closely.
 
@@ -307,7 +307,7 @@ It never changes what proves the work true.
   agent working on this tree.
 - **[`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md)** — the voice
   this tree writes in, so an agent's prose and commits sound like the rest of it.
-- **[`../tools/`](../tools/)** — the living corpus of witnesses. Every one is a
+- **[`../tools/`](../tools/)** — the living collection of witnesses. Every one is a
   worked example of green-before-claim; the fastest way to teach an agent the
   house style is to point it at a few near the module it means to touch.
 

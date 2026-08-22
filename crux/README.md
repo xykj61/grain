@@ -10,7 +10,7 @@
 **Habit:** full fusion baton each round → `expanding-prompts/`.
 **Ontology:** accrete-never-break along with accrete-sometimes-breach.
 
-**Health (this sitting):** `ROADMAP`/`TASKS` current. `REMEMBER.md` ~56 KiB **over** `living_pin_max_bytes` (24576) — fold debt. `ready-to-ask-claude.md` ~57 KiB Claude-era — archive on word. Corpus-twin `.tsv` + dated baselines cold → `yonder/` on word. Hammock index below is **July-stale** — truth is REMEMBER + ROADMAP + TASKS + need queue.
+**Health (this sitting):** `ROADMAP`/`TASKS` current. `REMEMBER.md` ~56 KiB **over** `living_pin_max_bytes` (24576) — fold debt. `ready-to-ask-claude.md` ~57 KiB Claude-era — archive on word. Collection-twin `.tsv` + dated baselines cold → `yonder/` on word. Hammock index below is **July-stale** — truth is REMEMBER + ROADMAP + TASKS + need queue.
 
 ---
 

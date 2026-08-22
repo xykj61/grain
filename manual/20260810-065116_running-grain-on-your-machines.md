@@ -207,7 +207,7 @@ The pattern is plain: **x86-64 machines run and build Grain today; ARM devices a
 - [`guides/pixel-10a-grapheneos-setup.md`](guides/pixel-10a-grapheneos-setup.md) -- installing GrapheneOS on a Pixel, step by step, from the project's own instructions.
 - [`../nixos-guide/`](../nixos-guide/) -- standing and keeping a declared machine, from a bare instance to a working, hardened home for the networked craft to come.
 - [`../rye/README.md`](../rye/README.md) -- how `rye` builds, and the verified toolchain fetch that grounds the build path above.
-- [`../tools/`](../tools/) -- the living corpus of witnesses. Run a few near the module you mean to work with; each one proves a fact green the way `scribe` does.
+- [`../tools/`](../tools/) -- the living collection of witnesses. Run a few near the module you mean to work with; each one proves a fact green the way `scribe` does.
 
 ---
 

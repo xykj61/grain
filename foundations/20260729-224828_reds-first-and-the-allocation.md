@@ -49,7 +49,7 @@ The cascade is real and it is deliberate: a fault does not get to outlive the in
 
 ## Four bounds on the cascade, so it stays a law and not a stampede
 
-**A red is not a ratchet.** A **red** is something wrong: a claim that failed, a bound that did not hold, a path reported that does not exist, a guard that could not run. A **ratchet** is something not yet uniform: eighteen elder scans that predate a convention, one real file among fourteen symlinks. Reds book the allocation. **Ratchets turn on touch and never book anything** — because booking them would be a sweep, and sweeps across an already-clean corpus cost more than they earn.
+**A red is not a ratchet.** A **red** is something wrong: a claim that failed, a bound that did not hold, a path reported that does not exist, a guard that could not run. A **ratchet** is something not yet uniform: eighteen elder scans that predate a convention, one real file among fourteen symlinks. Reds book the allocation. **Ratchets turn on touch and never book anything** — because booking them would be a sweep, and sweeps across an already-clean collection cost more than they earn.
 
 **Every boundary crossing is announced, never silent.** When reds carry past the end of a journey, an equinox, or a season, that crossing is stated in the waymark with the count of reds still open. The cascade may run for a long time; it may never run quietly.
 
