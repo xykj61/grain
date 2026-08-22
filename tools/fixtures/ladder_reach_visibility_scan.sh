@@ -91,6 +91,23 @@ if [ "$FAMILY" = "prove-red" ]; then
         *) echo "verdict=prove_red_missed_a_private_type_the_body_names"; fails=1 ;;
     esac
     rm -f "$ctl/left_t.rye" "$ctl/right_t.rye"
+
+    # One rule may be written `pub fn` in one rung and `fn` in another, and the
+    # difference is a single word about who may call it rather than anything
+    # about what it says. Keying on the raw text put that word inside the hash,
+    # so a family of fifty-one read as forty-three and eight (REDS %144). A
+    # control whose two rungs hold one body under two visibilities must read a
+    # family of two.
+    printf 'pub fn shared_rule(a: u32) u32 {\n    return a + 1;\n}\n' > "$ctl/left_v.rye"
+    printf 'fn shared_rule(a: u32) u32 {\n    return a + 1;\n}\n' > "$ctl/right_v.rye"
+    out=$(LADDER_DIR="$ctl" sh "$0" shared_rule 2>&1) || true
+    printf '%s\n' "$out" | sed 's/^/control-visibility: /'
+    case "$out" in
+        *"identical=2"*) echo "RED_one_rule_read_as_one_family_across_two_visibilities" ;;
+        *) echo "verdict=prove_red_split_a_family_on_the_pub_keyword"; fails=1 ;;
+    esac
+    rm -f "$ctl/left_v.rye" "$ctl/right_v.rye"
+
     printf 'pub fn lone(a: u32) u32 {\n    return a;\n}\n' > "$ctl/two.rye"
     printf 'pub fn lone(a: u32) u32 {\n    return a + 1;\n}\n' > "$ctl/three.rye"
 
@@ -151,22 +168,25 @@ if [ "$FAMILY" = "sink" ]; then
         : > "$work/below"
     fi
 
-    # One record per top-level pub fn: name, file, line count, and the body
+    # One record per top-level function: name, file, line count, and the body
     # itself flattened onto the same line, so identical bodies sort together.
+    # The signature's `pub ` leaves the flattened body before it becomes a key,
+    # and a private declaration is read beside a public one, because a body a
+    # rung holds is carry whoever may call it (REDS %144).
     : > "$work/all"
     for f in "$DIR"/*.rye; do
         [ -f "$f" ] || continue
         base=$(basename "$f")
         [ "$base" = "$HARNESS" ] && continue
         awk -v file="$base" '
-            /^pub fn [a-z_0-9]+\(/ && !p { p = 1; n = 0; body = ""; name = $3; sub(/\(.*/, "", name) }
-            p { n = n + 1; body = body "\001" $0 }
+            /^(pub )?fn [a-z_0-9]+\(/ && !p { p = 1; n = 0; body = ""; name = ($1 == "pub") ? $3 : $2; sub(/\(.*/, "", name) }
+            p { n = n + 1; keyed = $0; sub(/^pub /, "", keyed); body = body "\001" keyed }
             p && /^}$/ { printf "%s\t%s\t%d\t%s\n", name, file, n, body; p = 0 }
         ' "$f" >> "$work/all"
     done
 
     if [ ! -s "$work/all" ]; then
-        echo "SINK_REFUSED verdict=no_bodies dir=$DIR reason=no_rung_declares_a_public_function"
+        echo "SINK_REFUSED verdict=no_bodies dir=$DIR reason=no_rung_declares_a_function"
         exit 1
     fi
 
@@ -227,9 +247,14 @@ for f in "$DIR"/*.rye; do
     [ -f "$f" ] || continue
     base=$(basename "$f")
     [ "$base" = "$HARNESS" ] && continue
+    # The signature's `pub ` leaves the text before it is hashed, so a rule
+    # written `pub fn` in one rung and `fn` in another reads as one family
+    # rather than two (REDS %144). Visibility decides who may call a body; it
+    # says nothing about what the body says, so it belongs beside the key
+    # rather than inside it.
     awk -v fam="$FAMILY" '
         $0 ~ "^(pub )?fn " fam "\\(" { p = 1 }
-        p { print }
+        p { keyed = $0; sub(/^pub /, "", keyed); print keyed }
         p && /^}$/ { exit }
     ' "$f" > "$work/body"
     [ -s "$work/body" ] || continue

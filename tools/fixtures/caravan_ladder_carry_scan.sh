@@ -105,11 +105,16 @@
 # single accessor brings home, and one that stays home because of where it
 # stands in the import order.
 #
-# A FOLD QUEUE IS A LEAD, NEVER A VERDICT. This scan names families by exact
-# text, so `fill_table` printed here as thirty-seven rungs carrying 2,484 lines
-# while forty-three rungs actually held it -- the six it left out differ by the
-# word `pub` and nothing else, one line of a sixty-nine-line body. Reading past
-# the queue's own answer is what found the largest family the arc has folded.
+# A FOLD QUEUE IS A LEAD, NEVER A VERDICT -- and one reason it was a weaker lead
+# than it needed to be is now a check rather than a caution (REDS %144). This
+# block used to warn that `fill_table` printed as thirty-seven rungs while
+# forty-three actually held it, the six left out differing by the word `pub` and
+# nothing else, and it asked the reader to read past the queue's own answer. A
+# caution a reader must remember is a blindness with a note attached, so the
+# keyword left the key: the body is hashed with its signature's `pub ` removed,
+# and visibility stays a separate fact about who may call a body rather than
+# part of what the body says. The queue now names whole families, and the reader
+# is still welcome to read past it.
 #
 # CARAVAN_CARRY_TOP (default 12): how many carrying families to name.
 #
@@ -117,7 +122,7 @@
 # PASS and FAIL fixtures prove both paths without touching the tree.
 set -eu
 
-CEILING=${CARAVAN_CARRY_CEILING:-63852}
+CEILING=${CARAVAN_CARRY_CEILING:-63964}
 TOP=${CARAVAN_CARRY_TOP:-12}
 DIR=${CARAVAN_LADDER_DIR:-caravan}
 
@@ -136,16 +141,25 @@ fi
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT INT TERM
 
-# One pass over every module. A body is keyed by its own exact text, so the
-# count is a count rather than an estimate, and the family's name is kept from
-# the first rung that wrote it so the report reads in words.
+# One pass over every module. A body is keyed by its own text with the
+# signature's `pub ` removed, so the count is a count rather than an estimate,
+# and the family's name is kept from the first rung that wrote it so the report
+# reads in words.
+#
+# WHY THE KEYWORD LEAVES THE KEY (REDS %144). Keying on the raw text put the
+# visibility keyword inside the hash, so one rule written `pub fn elder_waits`
+# in forty-three rungs and `fn elder_waits` in eight read as two families rather
+# than one, and the eight-line difference between them was a single word. A body
+# duplicated is a rule a reader must change in every copy, and the copy's own
+# visibility changes nothing about that. So the keyword leaves the key and stays
+# a separate fact: `pub` decides who may call a body, never what the body says.
 awk '
   FNR == 1 { inb = 0 }
   $0 ~ /^(pub )?fn [a-z_][a-z0-9_]*\(/ {
     name = ($1 == "pub") ? $3 : $2
     sub(/\(.*/, "", name); inb = 1; body = ""; n = 0
   }
-  inb { body = body $0 "\n"; n++ }
+  inb { keyed = $0; sub(/^pub /, "", keyed); body = body keyed "\n"; n++ }
   inb && /^}$/ {
     seen[body]++
     lines[body] = n
