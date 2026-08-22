@@ -13,7 +13,7 @@
 Every calendar identifier — season, equinox, journey, quest, round — and every ladder rung is labeled by **one of two meaningful schemes**, never by a bare count-up-from-zero integer that means nothing on its own:
 
 1. **Chronological** — a one-clock stamp (`YYYYMMDD.HHMMSS`), read from the canonical clock when the thing happens. Later is always larger; the label *is* the moment. This is the one-clock naming law, extended to calendar members.
-2. **Semantic** — a drawn **waymark** (a four-letter name from the flw corpus, `.claude/rules/waymark-ladders.md`) or a plain warm word (the Comlink tendency). A season is *the Compass Season*, an equinox is *SOON*, not "season 1, equinox 0."
+2. **Semantic** — a drawn **waymark** (a four-letter name from the flw word list, `.claude/rules/waymark-ladders.md`) or a plain warm word (the Comlink tendency). A season is *the Compass Season*, an equinox is *SOON*, not "season 1, equinox 0."
 
 **What is retired:** bare ordinals as *identity* — `e0`, `e125`, `r137`, `journey8`, `quest34`. An ordinal may still appear as a **computed coordinate** (the itinerary formula needs `r/64`), but the thing a reader *names and cites* is its chronological stamp and its waymark, never the raw count. A number with no semantic meaning is not a name; it is an index leaked into the identity slot.
 
@@ -27,7 +27,7 @@ Every calendar identifier — season, equinox, journey, quest, round — and eve
 - **debride** — where an ordinal label is genuinely dead tissue (a superseded `eNN` ladder no living work cites), remove it on Keaton's circled word, a cairn dropped first (`.claude/rules/debride.md` · `.claude/rules/cairn.md`). Never a blind sweep; every cut named.
 - **sweep** — the systematic pass across `context/`, `foundations/`, `active-designing/`, `work-in-progress/`, and the itinerary, relabeling living *now*-lines while dated testimony keeps the ordinals it correctly recorded (accrete-never-break).
 
-CION runs its own four equinoxes under the calendar like any season, and it obeys the very law it installs — its own equinoxes are waymarks, not `e0..e3`. The four are drawn (`20260810.225345`, canonical against the corpus pin):
+CION runs its own four equinoxes under the calendar like any season, and it obeys the very law it installs — its own equinoxes are waymarks, not `e0..e3`. The four are drawn (`20260810.225345`, canonical against the word-list pin):
 
 | Equinox | Waymark | Work |
 |---|---|---|
@@ -36,7 +36,7 @@ CION runs its own four equinoxes under the calendar like any season, and it obey
 | 3 | **OFFY** | Debride — word-gated cuts of dead count-up tissue, a cairn first |
 | 4 | **GRAD** | Seal — witness the conversion · seat the labeling-law guard |
 
-The opening lap already ran under **VOLS** (survey) and did the first of **LOWE** (the living pins + the elder seat map swept to semantic / rested-history), and **GRAD is sealed** — `tools/gen/season/grad_seal_witness.rish` is GREEN, proving the living operator pins carry no bare count-up-from-0 identity and that the guard bites a planted one (`tools/fixtures/labeling_law_scan.sh` · `labeling_law_negative.md`). The wider LOWE relabel across the rest of the living corpus and any OFFY cut (word-gated, cairn first) are CION's remaining rounds; the GRAD guard now stands watch so no bare ordinal identity returns to the pins.
+The opening lap already ran under **VOLS** (survey) and did the first of **LOWE** (the living pins + the elder seat map swept to semantic / rested-history), and **GRAD is sealed** — `tools/gen/season/grad_seal_witness.rish` is GREEN, proving the living operator pins carry no bare count-up-from-0 identity and that the guard bites a planted one (`tools/fixtures/labeling_law_scan.sh` · `labeling_law_negative.md`). The wider LOWE relabel across the rest of the living collection and any OFFY cut (word-gated, cairn first) are CION's remaining rounds; the GRAD guard now stands watch so no bare ordinal identity returns to the pins.
 
 ## Discipline this keeps
 

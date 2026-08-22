@@ -263,7 +263,7 @@ A name once given is a promise. Add beside it; do not replace it silently. When 
 
 | Tier | Seal | What it covers | How it moves |
 |------|------|----------------|--------------|
-| **1 — Sealed by proof** | Absolute | Any byte a digest, signature, or root covers: HAWM root `99b3ae96…`, the flw corpus pin and its count, seated waymark draws, digest-pinned fixtures, signed commit content | **Never edited.** Editing invalidates a proof, rather than a caller. |
+| **1 — Sealed by proof** | Absolute | Any byte a digest, signature, or root covers: HAWM root `99b3ae96…`, the flw word list pin and its count, seated waymark draws, digest-pinned fixtures, signed commit content | **Never edited.** Editing invalidates a proof, rather than a caller. |
 | **2 — Sealed by testimony** | Recorded history | Counsel memos and replies, session logs, claim briefs | A **recorded Radiant pass** is permitted — precedent: `Radiant pass 182821` on archived RIO3. The pass adds a `Radiant pass <stamp>` line to the header; it changes **style only** and no claim. Factual errors take **errata**, so a wrong belief stays visible as a wrong belief. |
 | **3 — Open to revision** | Living present | Living docs, current-state specs, code, comments, names until a consumer exists | Freely revisable and sweepable. Names still take a collision lap; nothing else gates. |
 
@@ -337,7 +337,7 @@ Two seam moves cover nearly everything:
 
 **Worked example:** Mantra's SLC-1 path (`mantra/src/diff.rye`, `main.rye`) — seven in-memory indices migrated to `u32` with seam casts at slice indices; `store.rye` and `weave.rye` were already clean. Comlink wire formats lean on **`u64`** at persistence boundaries; Rishi REPL buffers follow the same **`u32` + seam cast** pattern as Mantra in TH-5.
 
-**Freestanding width (Aurora).** On bare metal, `usize` is the machine word, and it is the correct, honest type for addresses, for control-and-status register values, for register-width hardware bit masks, and for local indices at the slice-access site. These are not debt; they are the kernel naming the hardware in the hardware's own width. What stays disciplined even here: a long-lived stored *count* still earns a named `u32` bound, so its ceiling is documented rather than left to the word size. The hosted authored-`usize` witness, `width-check`, governs the hosted corpus; `aurora/*` is freestanding and keeps this policy instead.
+**Freestanding width (Aurora).** On bare metal, `usize` is the machine word, and it is the correct, honest type for addresses, for control-and-status register values, for register-width hardware bit masks, and for local indices at the slice-access site. These are not debt; they are the kernel naming the hardware in the hardware's own width. What stays disciplined even here: a long-lived stored *count* still earns a named `u32` bound, so its ceiling is documented rather than left to the word size. The hosted authored-`usize` witness, `width-check`, governs the hosted sources; `aurora/*` is freestanding and keeps this policy instead.
 
 Name the bound when you pick `u32`:
 
@@ -346,7 +346,7 @@ const max_frame_bytes: u32 = 4096;
 pos: u32, // invariant: pos <= max_frame_bytes
 ```
 
-Width audit: [`work-in-progress/20260620-212126_usize-width-baseline.md`](../work-in-progress/20260620-212126_usize-width-baseline.md). **Mantra**, **Rishi**, and **Comlink** are green under the hosted policy (TH-3 through TH-6). **`width-check.rish`** is a blocking parity witness for the hosted corpus; **`aurora/*`** is scoped out and governed by the freestanding policy above.
+Width audit: [`work-in-progress/20260620-212126_usize-width-baseline.md`](../work-in-progress/20260620-212126_usize-width-baseline.md). **Mantra**, **Rishi**, and **Comlink** are green under the hosted policy (TH-3 through TH-6). **`width-check.rish`** is a blocking parity witness for the hosted sources; **`aurora/*`** is scoped out and governed by the freestanding policy above.
 
 **Seam pattern at inherited `std` (correct, not debt):**
 
@@ -430,7 +430,7 @@ In tests, reach for `std.testing.expect` and `std.testing.expectEqual` rather th
 
 ### Diagnostic output (`print`)
 
-For hosted seeds and modules, mirror the assert import: bind once per file — `const print = std.debug.print;` — and call bare `print(...)`. TigerBeetle's `tidy.zig` bans qualified `debug.assert(` and expects unqualified `assert`; it does **not** ban qualified `debug.print(`, yet the same once-per-file binding keeps diagnostic lines short and consistent across the hosted corpus.
+For hosted seeds and modules, mirror the assert import: bind once per file — `const print = std.debug.print;` — and call bare `print(...)`. TigerBeetle's `tidy.zig` bans qualified `debug.assert(` and expects unqualified `assert`; it does **not** ban qualified `debug.print(`, yet the same once-per-file binding keeps diagnostic lines short and consistent across the hosted sources.
 
 - **As-you-touch.** Migrate when a file is already open for other work — the same discipline as assertion-density hygiene, rather than a tree-wide sweep.
 - **No witness yet.** `tools/tame-check.rish` does not flag `std.debug.print(`; add that rule only if the need is proven, the way we defer AST-tier lints.
@@ -617,7 +617,7 @@ These are the machine-checkable rules — the lint surface. The discipline is th
 | **Radiant surface advisory** (bare but-word · emoji · benediction · co-author · header) | `tools/radiant_lint.rish` (ratchet advisory; never fails) |
 | **Radiant pass claim preserve** (tokens · modality · structure · pinned digests) | `tools/claim_preserve_witness.rish` · includes `markdown_structure_witness` (blocking for any pass) |
 | **Unqualified assert** | `tools/tame-check.rish` (live witness, TH-2c) |
-| **Opening lines** (`const assert` + `const print`, no qualified debug calls) | `tools/opening_lines_witness.rish` (live witness, parity **140** — hosted corpus + `pond/apps/drawn_terminal.rye`) |
+| **Opening lines** (`const assert` + `const print`, no qualified debug calls) | `tools/opening_lines_witness.rish` (live witness, parity **140** — hosted sources + `pond/apps/drawn_terminal.rye`) |
 | **At most one designed-not-built functional spec** (`context/specs/*.md` Status) | `tools/designed_not_built_witness.rish` (live witness, parity **143**, Edit 5 ruling `20260703.032812`) |
 | **Amber first lap** (export / verify / restore on fixture tree) | `tools/cellar_first_ring.rish` (live witness, parity **144**, `20260703.051812`) |
 | **No `Self = @This()`** | `tools/tame-check.rish` (witness) |

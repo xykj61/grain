@@ -41,7 +41,7 @@ A reader meeting unreadable ciphertext learns *why*, and can tell honest erasure
 
 | Outside erasure | Why |
 |-----------------|-----|
-| **Bytes sealed by proof** | Tier 1 — digests, corpus pins, waymark draws, signed commit content |
+| **Bytes sealed by proof** | Tier 1 — digests, collection pins, waymark draws, signed commit content |
 | **The shape of the record** | That an event occurred, when, and under whose signature |
 | **The removal facts themselves** | A record of erasure that could itself be erased offers nothing |
 

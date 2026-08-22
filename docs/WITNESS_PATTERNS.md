@@ -11,7 +11,7 @@
 
 ## How to use this page
 
-These are **named habits** in our witness corpus — pointers and examples only. Philosophy and checkable rules live in TAME:
+These are **named habits** in our witness collection — pointers and examples only. Philosophy and checkable rules live in TAME:
 
 | Canon | Path |
 |-------|------|

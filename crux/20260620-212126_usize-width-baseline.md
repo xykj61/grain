@@ -25,7 +25,7 @@
 
 ---
 
-## Current Corpus (inventory)
+## Current Collection (inventory)
 
 | File | `usize` hits | Status |
 |------|-------------|--------|
@@ -54,7 +54,7 @@ Re-run inventory: `tools/tame_usize_audit.rye` / `width-check.rish` after each m
 | Gate | Role | Status |
 |------|------|--------|
 | `tools/width-check.rish` | Seam-aware scan for authored `usize` in published `.rye` | Live — **refined** (TH-1; blesses `@intCast` / `@as(usize` seam casts) |
-| `tools/tame-check.rish` | Assert style, whitespace, `Self = @This()` | Live — **gate** (TH-2c; hosted corpus clean) |
+| `tools/tame-check.rish` | Assert style, whitespace, `Self = @This()` | Live — **gate** (TH-2c; hosted sources clean) |
 | `tools/width-check.rish` | No authored `usize` (seam casts blessed) | Live gate (TH-1); **RED** until Comlink/Aurora migrate; **outside parity** until global zero |
 
 Ruling #1 (approved): seam-aware `width-check` so sanctioned `@intCast` / `@as(usize` pass while authored `usize` still fails.

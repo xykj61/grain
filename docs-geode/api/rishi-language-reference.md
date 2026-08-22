@@ -118,7 +118,7 @@ let block = "first${nl}second"
 
 ## The other reference
 
-[`../../manual/reference/rishi-language.md`](../../manual/reference/rishi-language.md) is the **conformance** reference: fifteen numbered sections, *must* and *should* carrying their plain weight, pinned to the witness corpus at parity 142. It answers *what is the language obliged to do*. This page answers *what do I reach for, and where will it surprise me* -- and the two were read against each other on `20260821.191504`, which is how `.len` and `flag` arrived here. Neither supersedes the other; a language wants both a contract and a field guide.
+[`../../manual/reference/rishi-language.md`](../../manual/reference/rishi-language.md) is the **conformance** reference: fifteen numbered sections, *must* and *should* carrying their plain weight, pinned to the witness collection at parity 142. It answers *what is the language obliged to do*. This page answers *what do I reach for, and where will it surprise me* -- and the two were read against each other on `20260821.191504`, which is how `.len` and `flag` arrived here. Neither supersedes the other; a language wants both a contract and a field guide.
 
 ## Where this is proven
 

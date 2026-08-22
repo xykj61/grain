@@ -41,7 +41,7 @@ Every witness checks `.ok` or `.code` before trusting output. RW-3 pins both a s
 
 ## Step 3 — The opening lines (for `.rye`, not `.rish`)
 
-Hosted Rye modules carry a three-line head — `const assert` and `const print` bindings, no qualified `std.debug.*` calls. The opening-lines witness scans the corpus:
+Hosted Rye modules carry a three-line head — `const assert` and `const print` bindings, no qualified `std.debug.*` calls. The opening-lines witness scans the collection:
 
 ```bash
 rishi/bin/rishi run tools/opening_lines_witness.rish
