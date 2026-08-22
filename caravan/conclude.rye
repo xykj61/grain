@@ -7476,21 +7476,7 @@ pub fn seat_the_ground(
     sys: *const system.System,
     report_out: *Report,
 ) (roster.RosterError || exercise.ProvisionError || notify.BellError || NoteError)!capabilities.CapabilityTable {
-    // invariant: a run always seats a declaration that names regions
-    assert(sys.map.region_count >= 1);
-    // invariant: a run always seats a declaration that names domains
-    assert(sys.graph.domain_count >= 1);
-    const provisioned = try exercise.provision(io, sys);
-    // invariant: every declared region has a backing store before any dependent runs
-    assert(provisioned == sys.map.region_count);
-    run_of(report_out).bells = try roundtrip.provision_directed(io, sys);
-    const noted = try provision_notes(io, sys);
-    // invariant: every declared domain has its notes before any conferral
-    assert(noted == sys.graph.domain_count);
-    const caps = try roster.from_system(sys);
-    // invariant: the derived table enforces exactly what the document permits
-    assert(roster.agrees(sys, &caps));
-    return caps;
+    return ladder_checks.seat_the_ground(@This(), io, sys, report_out);
 }
 
 /// Reads a written plan into the table's own record, closed and seated.
