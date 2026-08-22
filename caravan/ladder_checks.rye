@@ -10593,3 +10593,58 @@ pub fn judge_outcome(comptime rung: type, done: rung.Finished, report_out: *rung
         if (done.verb == .home) rung.run_of(report_out).homed += done.count;
     }
 }
+
+/// Answers whether one phase of the record is still work waiting to run.
+///
+/// Forty-six rungs held this body byte for byte at five lines, and forty-three
+/// of them fold. Three stay home and each for its own reason: this harness
+/// imports `confer.rye` and `entrust.rye`, so both stand below the fold line and
+/// a lifted body may never reach back through a rung it reaches for, while
+/// `revoke.rye` keeps its `Table` private and is welcome to.
+///
+/// It reaches one name through the type handed in -- `Table`, the queue's own
+/// bookkeeping for a run -- and reads two of its fields. The fold line and the
+/// private-`Table` rung name exactly the same three rungs, which is why the
+/// forty-three that fold pay nothing.
+///
+/// A rung keeps its stub PRIVATE. Nothing here asks a rung to publish a helper
+/// it chose to keep to itself; the stub answers its own module's callers exactly
+/// as the body did.
+pub fn waits(comptime rung: type, table: *const rung.Table, at: u32) bool {
+    // invariant: a reading always names a phase inside the record
+    assert(at < table.held);
+    return !table.started[at];
+}
+
+/// Answers whether any earlier phase of the same turn is still waiting.
+///
+/// Forty-three rungs held this body byte for byte at thirteen lines, and every
+/// one of them folds. The widening meter priced it at eighty-six -- forty-three
+/// import bindings and forty-three function openings -- and this lift pays
+/// neither, by lifting the helper before the caller.
+///
+/// The import bindings bind `mask.rye`, which this harness imports at its own
+/// head and reaches directly. The function openings would have published each
+/// rung's private `waits`, and the answer was to lift `waits` too: the body
+/// above it in this file serves this one, so no rung publishes anything.
+///
+/// That is the shape worth keeping. A caller reaching a private helper prices as
+/// a widening only while the helper stays in the rung. Lift the helper first and
+/// the price is zero -- grow the harness from underneath rather than open a door
+/// in every rung above it.
+///
+/// Measured rather than read: `REACH_OK family=sibling_waits folding=43
+/// widens=86 widens_fn=43 widens_import=43 widens_const=0 stub=3 fall=420`.
+pub fn sibling_waits(comptime rung: type, table: *const rung.Table, pick: u32, sibling_mask: u32) bool {
+    // invariant: a pick always names a phase inside the record
+    assert(pick < table.held);
+    var i: u32 = 0;
+    while (i < pick) : (i += 1) {
+        if (!waits(rung, table, i)) continue;
+        if (table.record[i].turn != table.record[pick].turn) continue;
+        if ((sibling_mask & mask.step_bit(table.record[i].step)) != 0) return true;
+    }
+    // invariant: the walk reached the pick, weighing every phase before it
+    assert(i == pick);
+    return false;
+}
