@@ -47,6 +47,7 @@ const print = std.debug.print;
 const cohort = @import("cohort.rye");
 const system = @import("system.rye");
 const unhand = @import("unhand.rye");
+const precede = @import("precede.rye");
 const capabilities = @import("capabilities.rye");
 const cycle = @import("cycle.rye");
 const carry = @import("carry.rye");
@@ -9052,4 +9053,50 @@ pub fn seat_the_history(comptime rung: type, io: std.Io, stands: ?rung.Plea, sto
         }
     }
     return true;
+}
+
+/// Seats a plan's phases into the table a run reads from -- the record's own
+/// door, and the one place a plan becomes a run's ordered ground.
+///
+/// This body stood byte for byte in thirty-seven rungs at thirty lines apiece,
+/// the widest family the carry meter named after the front door left it. Every
+/// rung seats its record the same way because the seating is the ladder's own
+/// contract rather than any rung's own idea: read each phase plainly, refuse a
+/// plan whose order stalls or whose seats are unfilled, close the record, and
+/// carry each phase's reserve and bearing into the table exactly once.
+///
+/// The contract is the vocabulary a rung already publishes: `Phase`, `Table`,
+/// and `RunError` for the shapes, `max_queue_len` for the bound, and `plain`,
+/// `plan_is_seated`, `phase_bit`, and `standing` for the four readings. The
+/// harness reaches `precede` and `unhand` through its own imports, since both
+/// are the ladder's shared modules rather than anything a rung owns.
+pub fn seat_the_record(comptime rung: type, base: []const rung.Phase, table: *rung.Table) rung.RunError!void {
+    // invariant: a record always seats a plan that names phases
+    assert(base.len >= 1);
+    // invariant: a record is always seated into a table that holds nothing yet
+    assert(table.held == 0);
+    var plainly: [rung.max_queue_len]unhand.Phase = undefined;
+    var p: u32 = 0;
+    while (p < base.len) : (p += 1) plainly[p] = rung.plain(base[p]);
+    // invariant: every phase was read plainly, none skipped
+    assert(p == base.len);
+    const flat = plainly[0..base.len];
+    if (!precede.plan_is_ordered(flat)) return error.OrderStalled;
+    if (!rung.plan_is_seated(flat)) return error.PlanUnseated;
+
+    precede.close(flat, table.record[0..base.len]);
+    table.held = @intCast(base.len);
+    table.left = table.held;
+    var r: u32 = 0;
+    while (r < base.len) : (r += 1) {
+        table.reserve_of[r] = base[r].reserve;
+        // The bearing is read once, here, from the record its author wrote --
+        // so every later question about which losses to carry is answered from
+        // the plan rather than from anything the run learns along the way.
+        if (base[r].bear) table.bear_mask |= rung.phase_bit(r);
+    }
+    // invariant: every phase carried its reserve into the record, none lost
+    assert(r == base.len);
+    // invariant: a closed record closes to itself, so the door's work is done
+    assert(precede.plan_is_closed(rung.standing(table)));
 }

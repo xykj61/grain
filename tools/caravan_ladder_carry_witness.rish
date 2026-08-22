@@ -59,18 +59,18 @@ say "caravan-ladder-carry: Lens TAME -- safety first: the ceiling is named, the 
 
 let living = run ["sh" "tools/fixtures/caravan_ladder_carry_scan.sh"]
 assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
-assert living.out contains "CARRY_OK carried=85670 ceiling=85676" else "caravan-ladder-carry: want the living carry under its named ceiling"
+assert living.out contains "CARRY_OK carried=84698 ceiling=84704" else "caravan-ladder-carry: want the living carry under its named ceiling"
 assert living.out contains "CARRY_MODULES 110" else "caravan-ladder-carry: want all 109 ladder modules read, the rungs and the harness alike"
-assert living.out contains "CARRY_BODIES 18150 distinct=7947 copies=10203 carried_lines=85670" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
+assert living.out contains "CARRY_BODIES 18151 distinct=7948 copies=10203 carried_lines=84698" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
 
 say "caravan-ladder-carry: living ladder -- ${living.out}"
 
 # The fold queue, asserted so it stays a measurement rather than a memory. The largest family is named here by number
 # so a lap that folds it must come back and say so, and a lap that grows a larger one cannot pass quietly.
 assert living.out contains "CARRY_FAMILIES 706" else "caravan-ladder-carry: want every carrying family counted"
-assert living.out contains "CARRY_TOP seat_the_record: 37 rungs x 30 lines = 1080 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
-assert living.out contains "CARRY_TOP read_the_finding: 20 rungs x 55 lines = 1045 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
-say "caravan-ladder-carry: the fold queue -- seat_the_record takes the lead, and the family that left it this lap was the deepest the meter still named: seat_the_history, seventeen rungs holding seventy-two lines apiece. Every line of it was the harness standing in for the runs that met a quarrel before today -- the position, its age, the third hand's answer, the debt an earlier run left -- so no run of any plan was ever writing its own history there. Publishing that writing once, under the rung's own published vocabulary, took the family's whole carry off the ladder and gave back seventeen three-line calls, which is what a fold looks like when the body is deep and the door is short."
+assert living.out contains "CARRY_TOP read_the_finding: 20 rungs x 55 lines = 1045 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
+assert living.out contains "CARRY_TOP may_pass: 51 rungs x 19 lines = 950 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
+say "caravan-ladder-carry: the fold queue -- read_the_finding takes the lead, and the family that left it this lap was the widest the meter named after the front door went: seat_the_record, thirty-seven rungs holding thirty lines apiece. Every rung seated its record the same way because the seating is the ladder's own contract rather than any rung's own idea -- read each phase plainly, refuse a plan whose order stalls or whose seats stand unfilled, close the record, and carry each phase's reserve and bearing across exactly once. The harness reaches precede and unhand through its own imports, since both are the ladder's shared modules rather than anything a rung owns, so no rung widened a symbol to make this fold possible."
 
 # The three named meters, read here beside the wide one so no reader mistakes a window for the room. Every number below
 # is true inside its own window, and the point of printing them together is that their sum is not the ladder's carry.
@@ -117,4 +117,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_c
 assert (ceiling.ok == false) else "caravan-ladder-carry: a carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-carry: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-carry -- the Caravan ladder's whole carry stands counted under a ceiling this fold brought down, every number of it printed above as the scan's own output rather than recited here, with the fold queue standing largest-first, this lap having lifted the deepest family the meter still named -- seat_the_history, seventeen rungs by seventy-two lines -- into one published body, so the carry falls by that family's own carry less its call while the delegate reading rises by exactly the seventeen stubs that replaced it, which is how a reader tells a fold from a cost merely moved somewhere cheaper to count."
+say "GREEN: caravan-ladder-carry -- the Caravan ladder's whole carry stands counted under a ceiling this fold brought down, every number of it printed above as the scan's own output rather than recited here, with the fold queue standing largest-first, this lap having lifted the widest family the meter named -- seat_the_record, thirty-seven rungs by thirty lines -- into one published body, so the carry falls by that family's own carry less its call while the delegate reading rises by exactly the thirty-seven stubs that replaced it, which is how a reader tells a fold from a cost merely moved somewhere cheaper to count."
