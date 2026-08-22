@@ -9100,3 +9100,76 @@ pub fn seat_the_record(comptime rung: type, base: []const rung.Phase, table: *ru
     // invariant: a closed record closes to itself, so the door's work is done
     assert(precede.plan_is_closed(rung.standing(table)));
 }
+
+/// Reads the finding a third hand wrote back, and publishes it as the run's own
+/// answer -- the last step of a referral, where a case that travelled comes home
+/// weighed or comes home unanswered.
+///
+/// This body stood byte for byte in twenty rungs at fifty-five lines apiece.
+/// Its whole shape is a boundary: the wire before the memory. The forum comes
+/// off the wire rather than out of anything the run remembered, the case is
+/// rebuilt from the same three facts the referring copied, and the note an
+/// operator opens is read back before the report believes the finding arrived.
+/// A boundary written twenty times is a boundary twenty files may drift across;
+/// written once, it holds for every rung that calls it.
+///
+/// The contract is the vocabulary every rung already publishes -- `Deem`,
+/// `Report`, `RunError`, and `NoteError` for the shapes, the two bounds
+/// `max_address_len` and `max_referral_bytes`, and the readings from
+/// `refer_of` through `deem_published`. Nothing here holds state, and no rung
+/// widened a declaration to make this fold possible.
+pub fn read_the_finding(comptime rung: type, io: std.Io, deem: rung.Deem, report_out: *rung.Report) (rung.RunError || rung.NoteError)!void {
+    const sent_count = rung.refer_of(report_out).referred;
+    if (sent_count == 0) {
+        // invariant: a run that carried no case reads no finding
+        assert(rung.deem_of(report_out).answered == 0);
+        // invariant: a run that carried no case leaves none unanswered
+        assert(rung.deem_of(report_out).unanswered == 0);
+        return;
+    }
+
+    // The measurement this rung moves, weighed against the case actually carried
+    // rather than against anything the plan asked for, so a referral nobody
+    // answers is counted rather than refused.
+    rung.deem_of(report_out).unanswered = rung.unanswered_referrals(sent_count, deem);
+    const heard_count = rung.answered_in(sent_count, deem);
+    const waiting_count = rung.awaiting_in(sent_count, deem);
+    if (deem == .unread) {
+        // invariant: an unread run publishes no finding, however long one stood
+        assert(heard_count == 0);
+        rung.deem_of(report_out).awaited_in = waiting_count;
+        return;
+    }
+
+    // The forum comes off the wire once more, since the desk a finding is read
+    // from is the desk the case went to and never one a run picked afterward.
+    var forum_buf: [rung.max_address_len]u8 = @splat(0);
+    const named = rung.forum_published(io, &forum_buf) orelse return error.DeemSilent;
+    const settled = rung.settlement_published(io) orelse return error.DeemUnreferred;
+    const age = rung.dwell_published(io) orelse 0;
+    // The case is rebuilt from the same three facts the referring copied, so a
+    // finding is weighed against the argument that actually travelled. A run
+    // that carried nothing out has no case to build, and says so with a null
+    // rather than by asserting its way into one.
+    const volume = rung.stands_loud(age);
+    const case: ?[rung.max_referral_bytes]u8 = if (sent_count >= 1 and volume == .loud)
+        rung.referral_bytes(settled, volume, age)
+    else
+        null;
+    const seen = rung.finding_written(io, named);
+    const spoken = seen != null;
+    const matched = if (case) |sent| rung.finding_answers(seen, sent) else false;
+    if (rung.deem_refusal(sent_count, heard_count, waiting_count, spoken, matched)) |why| return why;
+    const found = rung.finding_in(seen) orelse return error.DeemSilent;
+
+    // invariant: a reading run publishes the one finding its own case earned
+    assert(heard_count == 1);
+    try rung.deem_note(io, found);
+    // The wire before the memory, once more: the note an operator opens is read
+    // back, and only then does the report believe the finding arrived.
+    if (!rung.deem_holds(rung.deem_published(io), found)) return error.DeemMisrecorded;
+    rung.deem_of(report_out).answered = heard_count;
+    rung.deem_of(report_out).awaited_in = waiting_count;
+    // invariant: a reading run leaves no carried case unanswered
+    assert(rung.deem_of(report_out).unanswered == 0);
+}
