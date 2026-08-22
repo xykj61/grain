@@ -6200,54 +6200,7 @@ pub fn seat_the_record(base: []const Phase, table: *Table) RunError!void {
 /// does. The number it moves is the finding a plan reached whose raiser was
 /// never told.
 pub fn apprise_the_raiser(io: std.Io, apprise: Apprise, report_out: *Report) (RunError || NoteError)!void {
-    const finding = redress_written(io);
-    const redressed_count: u32 = if (finding != null) 1 else 0;
-    if (redressed_count == 0) {
-        // invariant: a run that reached no finding carries none
-        assert(apprise_of(report_out).apprised == 0);
-        // invariant: a run that reached no finding leaves no raiser unheard
-        assert(apprise_of(report_out).unheard == 0);
-        return;
-    }
-
-    // The measurement this rung moves, weighed against the finding actually
-    // written rather than against anything the plan asked for, so a raiser left
-    // in the dark is counted rather than refused.
-    apprise_of(report_out).unheard = unheard_findings(redressed_count, apprise);
-    const apprised_count = apprised_in(redressed_count, apprise);
-    const withheld_count = unsent_in(redressed_count, apprise);
-    if (apprise == .withheld) {
-        // invariant: a withholding run tells nobody, however plainly it reached
-        // a finding of its own
-        assert(apprised_count == 0);
-        apprise_of(report_out).withheld = withheld_count;
-        return;
-    }
-
-    // The finding comes off the wire, since what a reader is owed is the answer
-    // the plan actually reached and never one a run remembered. The reads supply
-    // the ladder rather than short-circuiting it, so every refusal below is
-    // reached by argument and named in its own order.
-    const carried = finding orelse return error.AppriseUnfound;
-    const found = true;
-    var address_buf: [max_address_len]u8 = undefined;
-    const address = address_published(io, &address_buf);
-    const addressed = address != null;
-    const delivery = found_bytes(carried);
-    const matched = found_answers(delivery, carried);
-    if (apprise_refusal(redressed_count, apprised_count, withheld_count, found, addressed, matched)) |why| return why;
-
-    // invariant: an apprising run carries the one finding it reached
-    assert(apprised_count == 1);
-    const box = address orelse return error.AppriseUnaddressed;
-    try apprise_note(io, box, delivery);
-    // The wire before the memory, once more: the finding is read back out of the
-    // reader's own box before the report believes anybody was ever told.
-    if (!apprise_holds(apprised_of(io, box), delivery)) return error.AppriseMisrecorded;
-    apprise_of(report_out).apprised = apprised_count;
-    apprise_of(report_out).withheld = withheld_count;
-    // invariant: an apprising run leaves no raiser of its own unheard
-    assert(apprise_of(report_out).unheard == 0);
+    return ladder_checks.apprise_the_raiser(@This(), io, apprise, report_out);
 }
 
 /// Reads what the reader carried this run's answer makes of it.
