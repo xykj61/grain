@@ -5,8 +5,8 @@
 **Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md)), with earned Twilight at the close
 **Voice:** Kyri
 **Status:** Living foundation — the *why* beneath the tree's own consensus season, and the map through its parts.
-**Season:** D — Kresfa & Mycelium (the language and the consensus). Double-seat vision: [`../active-designing/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/20260813-020035_double-seat-expansion-six-seasons.md).
-**First design read:** [`../active-designing/20260813-032851_mycelium-consensus-cord-exploration.md`](../active-designing/20260813-032851_mycelium-consensus-cord-exploration.md).
+**Season:** D — Kresfa & Mycelium (the language and the consensus). Double-seat vision: [`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md).
+**First design read:** [`../active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md`](../active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md).
 
 ---
 
@@ -100,7 +100,7 @@ This is the honest shape of the season: a consensus protocol whole and witnessed
 
 ## Kin
 
-- The road that opened it: the double-seat expansion ([`../active-designing/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/20260813-020035_double-seat-expansion-six-seasons.md)) names Season D as *the language and the consensus*.
+- The road that opened it: the double-seat expansion ([`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md)) names Season D as *the language and the consensus*.
 - The discipline it keeps: [`../.claude/rules/tame-guidance.md`](../.claude/rules/tame-guidance.md) · [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md).
 - The gratitude it holds: [`../.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md) · [`../.claude/rules/urbit-reframe.md`](../.claude/rules/urbit-reframe.md) — TigerBeetle and Mysticeti thanked, studied clean-room, never copied.
 - The order it climbs by: [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md) · the return habit [`20260706-185112_follow-our-compass.md`](20260706-185112_follow-our-compass.md).

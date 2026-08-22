@@ -30,7 +30,7 @@ We do **not** need to rename the ten **grain strands** to "compass points." The 
 When refreshing before a lap or a roadmap edit, walk this rose **oldest conviction to newest lap**:
 
 1. **Foundations** — [`foundations/README.md`](README.md): why beneath the work; happy zone; sameness; wire serves the fold.
-2. **Grain index** — [`active-designing/20260702-184312_the-grain-and-the-crossing.md`](../active-designing/20260702-184312_the-grain-and-the-crossing.md): ten strands + crossing test.
+2. **Grain index** — [`foundations/20260702-184312_the-grain-and-the-crossing.md`](20260702-184312_the-grain-and-the-crossing.md): ten strands + crossing test.
 3. **Two rooms** — [`context/TWO_ROOMS.md`](../context/TWO_ROOMS.md): external-research vs active-designing; doorway witness.
 4. **Active-designing ladder** — [`active-designing/README.md`](../active-designing/README.md): newest briefs first; only our names.
 5. **Now** — [`work-in-progress/TASKS.md`](../work-in-progress/TASKS.md): checked when landed; horizon explicit.
@@ -42,7 +42,7 @@ If TASKS and ROADMAP disagree with a seated brief, **the brief and green witness
 
 - **Logic before carriage** — sync in-process before wire; escrow logic before escrow wire.
 - **Witness before narrative** — parity green on metal before "landed" in prose.
-- **One lap, one witness bolt** — see [`../active-designing/20260706-185112_the-witness-bolt.md`](../active-designing/20260706-185112_the-witness-bolt.md).
+- **One lap, one witness bolt** — see [`../active-designing/date/20260706/20260706-185112_the-witness-bolt.md`](../active-designing/date/20260706/20260706-185112_the-witness-bolt.md).
 - **Check in before module seams** — graduation rule, Rishi/value model, new domain: collaboration rhythm says pause for Claude when no written policy answers.
 
 ## Vocabulary hygiene
@@ -59,7 +59,7 @@ The compass is one of two canonical hubs every leaf foundation routes through; n
 
 - **The front door** — the root [`../README.md`](../README.md) opens onto the whole tree and points here for the return habit.
 - **The room** — the [`foundations/README.md`](README.md) indexes the *why*; this brief is its navigation habit.
-- **The sibling hub** — [The Grain and the Crossing](../active-designing/20260702-184312_the-grain-and-the-crossing.md) defines the ten strands the compass returns you *to*; the compass says *where to look*, the grain says *does this cut clean*.
+- **The sibling hub** — [The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md) defines the ten strands the compass returns you *to*; the compass says *where to look*, the grain says *does this cut clean*.
 - **The order of the read** — the newest-first walk now follows [**Lindy-first, crux-first**](../.claude/rules/lindy-first-crux.md): among what direction offers, take the longest-lived work first, and within a tier the *crux* — the hardest solvable problem. Grounded in [the Lindy effect](20260811-211431_the-lindy-effect-and-the-long-return.md).
 
 ---

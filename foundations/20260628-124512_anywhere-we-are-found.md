@@ -54,7 +54,7 @@ This is the widest horizon the foundations serve — the civic vision the daily 
 
 - **The front door** — the root [`../README.md`](../README.md) names Grain *a civic application* built in the open.
 - **The room** — indexed in [`foundations/README.md`](README.md), where the vision documents name the larger horizon.
-- **The hubs** — the strands this vision must be cut to fit live in [The Grain and the Crossing](../active-designing/20260702-184312_the-grain-and-the-crossing.md); [Follow Our Compass](20260706-185112_follow-our-compass.md) returns you here when direction frays.
+- **The hubs** — the strands this vision must be cut to fit live in [The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md); [Follow Our Compass](20260706-185112_follow-our-compass.md) returns you here when direction frays.
 - **Kin visions** — [money that stays close to home](20260629-014512_money-that-stays-close-to-home.md) is this horizon's economic strand.
 
 ---

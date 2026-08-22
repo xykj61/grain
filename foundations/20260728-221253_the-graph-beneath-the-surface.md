@@ -47,8 +47,8 @@ The graph is the model beneath the surface; the weave routes it up to the hubs t
 
 - **The front door** — the root [`../README.md`](../README.md) names the kernel spine this generalizes: *state as a pure fold over an append-only log of signed facts*.
 - **The room** — indexed in [`foundations/README.md`](README.md).
-- **The hubs** — that spine is the first grain strand in [The Grain and the Crossing](../active-designing/20260702-184312_the-grain-and-the-crossing.md); [Follow Our Compass](20260706-185112_follow-our-compass.md) returns you to it.
-- **In build** — the surface this graph feeds (Skate · Realidream) is the [WADE plan](../expanding-prompts/20260811-220402_wade-bit-design-system-and-dimeroll-entities.md)'s domain.
+- **The hubs** — that spine is the first grain strand in [The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md); [Follow Our Compass](20260706-185112_follow-our-compass.md) returns you to it.
+- **In build** — the surface this graph feeds (Skate · Realidream) is the [WADE plan](../expanding-prompts/date/20260811/20260811-220402_wade-bit-design-system-and-dimeroll-entities.md)'s domain.
 
 ---
 

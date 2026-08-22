@@ -8,7 +8,7 @@
 **Voice:** **Trya variant** (nested under Quin) — earth-steady craft · grow the rename in waves  
 **Status:** Foundations — MUR Season prep  
 **Gratitude:** [`../gratitude/kyler-murray.md`](../../gratitude/kyler-murray.md) · [`../gratitude/mur-movement-aesthetics.md`](../../gratitude/mur-movement-aesthetics.md)  
-**Charter:** [`../counsel/20260728-025220_the-mur-season-innermost-charter.md`](../../counsel/20260728-025220_the-mur-season-innermost-charter.md)
+**Charter:** [`../counsel/20260728-025220_the-mur-season-innermost-charter.md`](../../counsel/date/20260728/20260728-025220_the-mur-season-innermost-charter.md)
 
 *Written together by Keaton and Quin; the body speaks in Trya's warmth.*
 

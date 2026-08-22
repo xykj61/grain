@@ -6,7 +6,7 @@
 **Voice:** Kyri, with **Keaton Livermore** as coauthor
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Living — Season A front door; the software surfaces below are proven on metal, the hardware itself is a named custody gate
-**Kin:** [`20260801-005853_mantrapod-venture-pitch.md`](20260801-005853_mantrapod-venture-pitch.md) · [`20260628-133212_the-device-that-forgets.md`](20260628-133212_the-device-that-forgets.md) · [`../active-designing/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/20260813-020035_double-seat-expansion-six-seasons.md) · [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
+**Kin:** [`20260801-005853_mantrapod-venture-pitch.md`](20260801-005853_mantrapod-venture-pitch.md) · [`20260628-133212_the-device-that-forgets.md`](20260628-133212_the-device-that-forgets.md) · [`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md) · [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
 
 > *What forgets, protects. What opens, endures.*
 
@@ -57,7 +57,7 @@ Software proves; hardware waits for the keeper's hand. This season keeps its gat
 
 - **Real hardware is custody gate #2.** Ordering, provisioning, and flashing a physical board is Keaton's own act, never an autonomous one — the code proves the behavior a board will carry, and stops at the metal.
 - **The refurbished-parts rail is custody gate #3.** Sourcing certified-refurbished Bluetooth, speakers, and cameras through MCP-friendly marketplaces is real-world procurement, counsel- and keeper-gated.
-- **The Grainphone hybrid stays a research horizon.** A color e-ink touchscreen, a single front-and-back camera, and the refurb-parts sourcing each want a web-search research round before code — named ([`../active-designing/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/20260813-020035_double-seat-expansion-six-seasons.md)), not yet run, so no part here is fabricated.
+- **The Grainphone hybrid stays a research horizon.** A color e-ink touchscreen, a single front-and-back camera, and the refurb-parts sourcing each want a web-search research round before code — named ([`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md)), not yet run, so no part here is fabricated.
 
 ## Gratitude, siloed
 
