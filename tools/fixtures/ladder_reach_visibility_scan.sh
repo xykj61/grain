@@ -75,6 +75,25 @@ if [ "$FAMILY" = "prove-red" ]; then
         *) echo "verdict=prove_red_failed_to_refuse_differing_bodies"; fails=1 ;;
     esac
 
+    # A shared body names its types as often as its helpers, and a type name is
+    # capitalized. The first cut of this scan read only names opening lowercase,
+    # so a private struct reached in a signature priced at zero and the meter
+    # answered widens=0 where a fold would not compile (REDS %140). A control
+    # whose two rungs each hold a private `Ledger` must report both.
+    rm -f "$ctl/two.rye" "$ctl/three.rye"
+    printf 'const Ledger = struct { n: u32 };\npub fn tally_up(x: Ledger) u32 {\n    return x.n;\n}\n' > "$ctl/left_t.rye"
+    printf 'const Ledger = struct { n: u32 };\npub fn tally_up(x: Ledger) u32 {\n    return x.n;\n}\n' > "$ctl/right_t.rye"
+    out=$(LADDER_DIR="$ctl" sh "$0" tally_up 2>&1) || true
+    printf '%s\n' "$out" | sed 's/^/control-capital-type: /'
+    case "$out" in
+        *"widens=2 widens_fn=0 widens_import=0 widens_const=2"*)
+            echo "RED_capitalized_type_priced_rather_than_unseen" ;;
+        *) echo "verdict=prove_red_missed_a_private_type_the_body_names"; fails=1 ;;
+    esac
+    rm -f "$ctl/left_t.rye" "$ctl/right_t.rye"
+    printf 'pub fn lone(a: u32) u32 {\n    return a;\n}\n' > "$ctl/two.rye"
+    printf 'pub fn lone(a: u32) u32 {\n    return a + 1;\n}\n' > "$ctl/three.rye"
+
     # The sink meter must refuse a directory holding no public function rather
     # than answer zero, since a zero and a blindness read identically (REDS %97).
     rm -f "$ctl/two.rye" "$ctl/three.rye"
@@ -257,7 +276,7 @@ echo "REACH_FOLD folding=$folding below_the_line=$held"
 # declaring a private `waits` would otherwise be reported as a widening cost the
 # body never asks for.
 sed 's|//.*$||; s/"[^"]*"//g; s/\.[a-zA-Z_][a-zA-Z0-9_]*//g' "$work/body.$hash" |
-    grep -oE '[a-z_][a-zA-Z0-9_]*' | sort -u > "$work/reached_words"
+    grep -oE '[A-Za-z_][A-Za-z0-9_]*' | sort -u > "$work/reached_words"
 
 # For each folding rung, which of its own top-level names the shared body reaches,
 # and whether that rung publishes each one.
@@ -274,7 +293,7 @@ while read -r base; do
     # unlike costs and a column that sums them says neither. Read from the whole
     # line rather than from a name, since only the line shows the import.
     awk -v fam="$FAMILY" '
-        /^(pub )?(fn|const) [a-z_]/ {
+        /^(pub )?(fn|const) [A-Za-z_]/ {
             vis = ($0 ~ /^pub /) ? "PUB" : "PRIV"
             n = $0
             sub(/^pub /, "", n)

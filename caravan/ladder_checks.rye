@@ -5016,6 +5016,54 @@ pub fn note_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, domain: 
     return buf[0..w];
 }
 
+/// Writes the path of the case file a run opens about one forum it reads.
+///
+/// Twenty-two rungs held this body byte for byte, at twenty-five lines over a
+/// one-line signature -- the longest single body the arc has lifted and, by the
+/// corrected meter, the cheapest: it widens nothing of any kind. Every name the
+/// body reaches -- `max_note_path_len`, `NoteError`, `addressable`, and
+/// `reader_dir` -- already stands public on all twenty-two, so the lift opens
+/// no declaration that was closed. A case path is the run's own reader
+/// directory, the forum it read, and the `.case` suffix that says which note
+/// this is; each rung reaches its own directory, its own ceiling, and its own
+/// error set through the type it hands in.
+///
+/// Measured rather than read: `REACH_OK family=case_path folding=22 widens=0
+/// widens_fn=0 widens_import=0 widens_const=0 stub=3 fall=462`.
+///
+/// That zero is a corrected zero. The meter read only identifiers opening in
+/// lowercase until `20260822`, so every type a shared body named priced at
+/// nothing, and `judge_outcome` -- which led this queue at a fall of 468 --
+/// was carrying thirty-seven unpriced widenings of a private `Finished` struct
+/// (REDS %140). Pricing them moved `case_path` to the head by six lines and by
+/// the whole difference between opening nothing and publishing a struct shape
+/// as rung API.
+pub fn case_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, forum: []const u8) rung.NoteError![]const u8 {
+    // invariant: a case is only ever built for an address a run may carry to
+    assert(rung.addressable(forum));
+    const suffix = ".case";
+    const total = rung.reader_dir.len + 1 + forum.len + suffix.len;
+    if (total > rung.max_note_path_len) return error.NotePathTooLong;
+    var at: u32 = 0;
+    for (rung.reader_dir) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    buf[at] = '/';
+    at += 1;
+    for (forum) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    for (suffix) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    // invariant: a case path is written exactly as long as it was measured
+    assert(at == total);
+    return buf[0..at];
+}
+
 /// Writes the path of one reader's own hand -- the reading they say they hold.
 ///
 /// Thirty-four rungs held this body byte for byte, at twenty-seven lines over a
