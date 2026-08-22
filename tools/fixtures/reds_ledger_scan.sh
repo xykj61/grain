@@ -88,8 +88,15 @@ while IFS= read -r line; do
     fi
   fi
 
+  # The caught-column must name an instrument rather than a feeling, so the
+  # first-person claim of having simply seen it is refused. The pronoun is the
+  # check, never the bare verb: the arc's own measured quantity is the REALIZED
+  # FALL of a fold -- a number a meter prints -- and a guard that reds on it
+  # teaches the bench to route around the guard (`20260822.054053`).
   case "$line" in
-    *'I noticed'*|*'i noticed'*|*'realized'*)
+    *'I noticed'*|*'i noticed'*|*'we noticed'*|\
+    *'I realized'*|*'i realized'*|*'we realized'*|\
+    *'I realised'*|*'we realised'*)
       echo "detail: caught-column names no instrument -> $(printf '%s' "$line" | cut -c1-58)"
       vague=$((vague + 1)) ;;
   esac

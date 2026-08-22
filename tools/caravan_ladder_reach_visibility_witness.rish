@@ -1,0 +1,65 @@
+# tools/caravan_ladder_reach_visibility_witness.rish -- the widening cost of a
+# fold is measured, never described.
+#
+#   rishi/bin/rishi run tools/caravan_ladder_reach_visibility_witness.rish
+#
+# The lift arc weighs every family by two numbers: the fall it returns, and the
+# declarations it would have to widen. The first has always come off a meter.
+# The second came off a hand reading a diff, and on 20260822 it was measured for
+# the first time and disagreed with the record on both families it named.
+#
+# `confirm` was written as widening exactly one declaration, because `read_count`
+# stood private in one of the forty-six rungs. `read_count` is absent from that
+# rung entirely -- it is `entrust.rye`, whose `confirm` waits on a different note
+# through a different reader, so it was never a fold candidate and never a cost.
+#
+# `renew_path` and `ask_path` were each written as widening thirty-one, because
+# the family stands private in all thirty-one rungs. A family's own visibility is
+# not its widening cost. The cost is what its BODY reaches, and both bodies reach
+# only symbols already public in every rung -- so the largest fall on the board
+# carried a price of zero and was passed over four laps running (REDS %130).
+#
+# So the queue's second column is a measurement now. The scan hashes every body
+# under a name, takes the largest identical set, drops the rungs standing below
+# the fold line, reads the identifiers the shared body reaches unqualified, and
+# reports how many of those each folding rung keeps private.
+#
+# Both refusals are proven on metal by generated controls -- a name no rung
+# declares, and a name whose every body differs -- since a scan finding nothing
+# must never answer ok about its own blindness (REDS %97).
+
+say "reach-visibility: Language EN -- what a fold must widen is read off the body, never off the family's own door."
+say "reach-visibility: Style Radiant -- the measurement leads, and the queue answers to it."
+say "reach-visibility: Lens TAME -- the shape is measured, the fold line is honored, and both blindnesses refuse by name."
+
+let red = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "prove-red"]
+say red.out
+assert red.out contains "RED_no_family_refused_rather_than_ok" else "reach-visibility: a name no rung declares answered ok -- a scan must never bless its own blindness"
+assert red.out contains "RED_no_identical_refused_rather_than_ok" else "reach-visibility: a name whose every body differs answered ok -- nothing folds there"
+
+# The family this lap lifted. Its forty-five identical bodies are forty-four
+# stubs now, and `confer.rye` keeps its own because the harness imports it --
+# folding a rung the harness reaches for would invert the ladder rather than
+# lift it.
+let folded = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "confirm"]
+say folded.out
+assert folded.out contains "REACH_FOLD folding=44" else "reach-visibility: want the forty-four stubs this lap left behind"
+assert folded.ok else "reach-visibility: the lifted family must still read cleanly"
+
+# The head of the queue as it stands, and the reading that put it there. Both
+# numbers are asserted, so a lap that folds this family must come back and say
+# so, and a lap that quietly widens one of the symbols it reaches cannot pass.
+let head = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "renew_path"]
+say head.out
+assert head.out contains "REACH_FAMILY family=renew_path declared=31 identical=31 lines=27" else "reach-visibility: want renew_path standing as thirty-one identical bodies at twenty-seven lines"
+assert head.out contains "REACH_OK family=renew_path folding=31 widens=0 stub=3 fall=720" else "reach-visibility: want the queue head returning seven hundred and twenty at no widening cost"
+assert head.ok else "reach-visibility: the queue head must read cleanly"
+
+# The sibling the fold this lap uncovered, standing at the same shape one number
+# lower, so the next two laps are both measured rather than inherited.
+let sibling = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "ask_path"]
+say sibling.out
+assert sibling.out contains "REACH_OK family=ask_path folding=31 widens=0 stub=3 fall=660" else "reach-visibility: want ask_path returning six hundred and sixty at no widening cost"
+assert sibling.ok else "reach-visibility: the sibling family must read cleanly"
+
+say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, and the queue's two heads stand measured at zero widening apiece"
