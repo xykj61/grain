@@ -217,6 +217,28 @@ assert recited_close.out contains "LADDER_PROSE_BAD printed" else "caravan-ladde
 assert recited_close.out contains "recites 137176 with no assert holding it" else "caravan-ladder-copy: want the carried-line drift named by the number that actually shipped"
 assert recited_elder.out contains "LADDER_PROSE_BAD printed" else "caravan-ladder-copy: want the printed-number rule refusing the elder spine line as well, on the number rather than the noun"
 
+# The sigil, both directions (REDS %131). A `%`-sigilled row is this tree's own name for an immutable ledger
+# record, so it comes off a `say` line before any number is read -- `.claude/rules/git-signing.md` names `%`
+# a CONSTANT TERM, and a REDS row can never drift, which is the only fault this scan exists to catch. The
+# guard reddened on `REDS %130` in the carry meter's own prose and stood red through a shipped commit, which
+# is exactly how a gate that refuses valid input teaches a bench to route around it.
+#
+# Both directions run on one generated control rather than on the living tree, so neither can drift with a
+# later lap: a meter whose only numbers wear the sigil reads clean, and the same meter with one bare count
+# beside those citations is still refused by that count. The exemption is a name, never a doorway.
+#
+# The sigil is written `%%` inside these controls because `printf` reads a bare `%` as a format conversion and
+# truncated the whole generated line the first time, so BOTH legs passed while testing an empty sentence --
+# the welcome for having nothing to refuse, the refusal leg for having no count left to find. A fixture that
+# passes for the wrong reason is a fixture that proves nothing, and it was caught by the refusal leg failing.
+let sigil = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \042ok\042 else \042e\042\nsay \042the row REDS %%131 follows REDS %%130 and cites gate %%1\042\n' > $d/caravan_ladder_sigil_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+assert sigil.ok else "caravan-ladder-copy: a meter reciting only sigilled row names must read clean -- ${sigil.out}"
+assert sigil.out contains "LADDER_PROSE_COUNT_OK" else "caravan-ladder-copy: want the sigilled citation welcomed as a name rather than counted as a measurement"
+
+let sigil_bare = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \042ok\042 else \042e\042\nsay \042the row REDS %%131 folded 47 rungs\042\n' > $d/caravan_ladder_sigil_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+assert (sigil_bare.ok == false) else "caravan-ladder-copy: a bare count standing beside a sigilled name must still refuse"
+assert sigil_bare.out contains "recites 47 with no assert holding it" else "caravan-ladder-copy: want the bare count named by its own value, the sigil beside it granting it nothing"
+
 # The counting proven by hand. The corpus holds two rungs: the lower carries two distinct checks, the
 # upper carries one of them forward byte for byte and adds one of its own. So four checks stand, three
 # bodies are distinct, exactly one is a copy, and that copy is six lines long -- countable by eye in the

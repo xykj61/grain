@@ -3361,31 +3361,7 @@ fn ask_path(buf: *[max_note_path_len]u8, address: []const u8) NoteError![]const 
 
 /// Writes the path of the second hand one reader may raise their objection with.
 fn renew_path(buf: *[max_note_path_len]u8, address: []const u8) NoteError![]const u8 {
-    // invariant: a renewal is only ever read for an address a run may carry to
-    assert(addressable(address));
-    const suffix = ".still";
-    // invariant: a renewal is read from the same box a question is left in
-    comptime assert(suffix.len == ".again".len);
-    const total = reader_dir.len + 1 + address.len + suffix.len;
-    if (total > max_note_path_len) return error.NotePathTooLong;
-    var at: u32 = 0;
-    for (reader_dir) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    buf[at] = '/';
-    at += 1;
-    for (address) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    for (suffix) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    // invariant: a renewal path is written exactly as long as it was measured
-    assert(at == total);
-    return buf[0..at];
+    return ladder_checks.renew_path(@This(), buf, address);
 }
 
 /// Puts the standing objection back to the reader who raised it.
