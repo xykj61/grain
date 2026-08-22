@@ -1,0 +1,39 @@
+# tools/ladder_doc_attachment_witness.rish -- a doc block belongs to the
+# declaration it describes.
+#
+#   rishi/bin/rishi run tools/ladder_doc_attachment_witness.rish
+#
+# REDS %134. The `seat_note` lift inserted its declaration below an existing one
+# while placing its doc block above it, so twenty-four lines describing
+# `seat_note` bound to `read_words` and `seat_note` stood undocumented. Zig
+# attaches a doc comment to the next declaration, and no witness on the ladder
+# reads prose for the declaration it lands on, so both wrong claims shipped
+# inside a signed commit that ran green.
+#
+# The check is a name against a name rather than a reading of prose: a fold's
+# doc block carries the widening meter's own `family=X` citation, which is the
+# block's own statement of what it documents, so it must sit above `pub fn X`.
+#
+# Three legs prove on metal. A block citing one family while binding to another
+# is refused in the exact shape the red wore. A harness carrying no citation
+# refuses rather than answering ok about its own blindness. And a correctly
+# attached block is welcomed, since a gate that reds on valid input teaches a
+# bench to route around it.
+
+say "doc-attachment: Language EN -- a doc block says which declaration it documents, so the binding is checkable."
+say "doc-attachment: Style Radiant -- the citation leads, and the declaration beneath it answers to the name."
+say "doc-attachment: Lens TAME -- the binding is measured, the blindness refuses, and the correct block is welcomed."
+
+let red = run ["sh" "tools/fixtures/ladder_doc_attachment_scan.sh" "prove-red"]
+say red.out
+assert red.out contains "RED_misattached_doc_caught" else "doc-attachment: a block documenting one family while binding to another passed -- the misattachment leg proves nothing"
+assert red.out contains "RED_blind_scan_refused_rather_than_ok" else "doc-attachment: a harness with no citation answered ok -- a scan must never bless its own blindness"
+assert red.out contains "PASS_attached_doc_welcomed" else "doc-attachment: a correctly attached block was refused -- a gate that reds on valid input teaches a bench to route around it"
+
+let scan = run ["sh" "tools/fixtures/ladder_doc_attachment_scan.sh"]
+say scan.out
+assert scan.out contains "docs_adrift=0" else "doc-attachment: a doc block in the harness documents a family other than the declaration it binds to"
+assert scan.out contains "verdict=ok" else "doc-attachment: the harness carries a doc block bound to the wrong declaration"
+assert scan.ok else "doc-attachment: the verdict reads ok while the status fails -- they must agree"
+
+say "GREEN: doc-attachment -- every fold's doc block in the Caravan harness sits above the declaration its own citation names, the misattachment and blindness legs both refuse on metal, and a correct block is welcomed as hard as a wrong one is refused"
