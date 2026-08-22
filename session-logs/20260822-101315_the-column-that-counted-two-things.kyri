@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20260822.101315
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The column that counted two things under one name
+prompt Take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, read the council rota row, send the increment
+think Standfast first. The era suite sang GREEN at eleven and the Caravan choir GREEN at 108 before anything moved, and the REDS ledger read closed through %134 -- so the line was clear.
+think The tree held the previous lap's whole round uncommitted -- forty-five caravan rungs, the harness, three tools, the card, and a written session log that had never shipped. Same opening condition the 094730 lap met. Proven green on the tree it actually ran on, then sent as its own signed round at 078b2e3386 before new work opened.
+think Council rota, lap 169, row 169 mod 5 = 4 -- the Earth/Mercury triad, the concrete. The one-clock law governs the stamp, Two Rooms says name the register at the door, and the marked value says every value crossing a seam wears a mark naming its kind. The third one priced the whole lap.
+think The running thread's recommend named the door plainly: the free rows are spent, so the arc owes a design read on what a widening costs a rung's door before another lap of arithmetic. That is a design round an agent may approve for itself, and it is the crux -- every remaining fold waits behind it.
+think Read the six remaining queue rows through tools/fixtures/ladder_reach_visibility_scan.sh rather than through the queue prose, and took the union of their (rung, symbol) pairs instead of the sum.
+think Then read the seven symbol names behind that union against their own declaration lines in caravan/*.rye, which is where the lap turned: five of the seven are import bindings and two are functions.
+obs The widening column overcounts the remaining queue by thirty-nine percent. Six rows name 557 widenings; the union of their pairs is 337, because a symbol widened for one fold stands already widened for the next. A per-family number reads as a per-family price, so the order rows are taken in changes what each appears to cost while the total stays put.
+obs Five of the seven symbols carrying the whole remaining cost are plain module import bindings -- system in 86 rungs, read in 84, capabilities in 84, carry in 81, cycle in 68 -- and together they carry 246 of the 337 pairs. Publishing one re-exports a module the rung already names in its own head. It opens no behavior, and it gives the harness the rung's own dependency rather than a second import under another name.
+obs Two are functions, waits and may_pass, carrying 91 pairs. That is the only part of the queue wanting a design decision rather than an arithmetic one, and it is roughly a quarter of what the column reports.
+obs A caravan rung declares 187 public top-level names on average against 41 private, of which 23 are imports, 10 are functions, and 7 are other constants. The door is already 82 percent open, and the private remainder was never chosen -- there is no rung whose private set was decided to hide something. A privacy boundary nobody designed is a boundary nobody is defending.
+obs The meter is a function of the tree alone, which is the hard part and it was already right. Where it fell short is narrower: it named two unlike things with one word, and the word was a cost. Nine folds reading widens=0 and a tenth reading widens=120 taught the arc that the free rows were spent -- true about the number, wrong about the tree.
+obs The marked value's rule generalizes it past this ladder. A count that sums across kinds has thrown the mark away at the moment it mattered most, and the sum reads as authoritative precisely because it is a number. Count by kind, or the total is a claim about a thing that does not exist.
+obs The commit wall earned its keep. The first message wrote a bare at-sigil import builtin inside backticks, which GitHub would have rendered as a link to whoever owns that account name; tools/hooks/commit-msg refused and left the message on disk to edit.
+loom scan=ladder_reach_visibility families=6 union_pairs=337 column_sum=557 distinct_symbols=7 rungs_touched=60
+loom ladder=caravan rungs=109 mean_pub_decls=187 mean_private_decls=41 private_imports_per_rung=23 private_fn_per_rung=10
+file active-designing/20260822-101058_what-a-widening-costs-a-rungs-door.md the design read, filed by the design-rooms test and naming the checkable room at its door
+file crux/REMEMBER.md Now refilled with the design read and the meter split it asks for; git nib repointed
+file session-logs/README.md newest-first row prepended
+recommend keep-going split the widens column into widens_import and widens_fn in tools/fixtures/ladder_reach_visibility_scan.sh and assert both halves in the reach-visibility witness -- the scan already reads each symbol's declaration line, so both readings are measurements it can take off disk today
