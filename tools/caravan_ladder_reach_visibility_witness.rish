@@ -37,29 +37,29 @@ say red.out
 assert red.out contains "RED_no_family_refused_rather_than_ok" else "reach-visibility: a name no rung declares answered ok -- a scan must never bless its own blindness"
 assert red.out contains "RED_no_identical_refused_rather_than_ok" else "reach-visibility: a name whose every body differs answered ok -- nothing folds there"
 
-# The family this lap lifted. Sixteen of its seventeen bodies are stubs now, the
-# seventeenth staying home because `redress.rye` writes a different body, and the
-# scan reads the folded shape back: seventeen rungs still declaring the name, no
+# The family this lap lifted. Fourteen of its fifteen bodies are stubs now, the
+# fifteenth staying home because `suffice.rye` writes a different body, and the
+# scan reads the folded shape back: fifteen rungs still declaring the name, no
 # long body left to lift, so the widening column now describes the stubs.
-let folded = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "redress_the_meeting"]
+let folded = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "weigh_the_answer"]
 say folded.out
-assert folded.out contains "REACH_OK family=redress_the_meeting folding=16 widens=16 stub=3 fall=0" else "reach-visibility: want redress_the_meeting standing folded, with nothing left to lift"
+assert folded.out contains "REACH_OK family=weigh_the_answer folding=14 widens=14 stub=3 fall=0" else "reach-visibility: want weigh_the_answer standing folded, with nothing left to lift"
 assert folded.ok else "reach-visibility: the lifted family must still read cleanly"
 
 # The head of the queue as it stands, and the reading that put it there. Both
 # numbers are asserted, so a lap that folds this family must come back and say
 # so, and a lap that quietly widens one of the symbols it reaches cannot pass.
-let head = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "weigh_the_answer"]
+let head = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "confirm_pruned"]
 say head.out
-assert head.out contains "REACH_FAMILY family=weigh_the_answer declared=15 identical=14 lines=51" else "reach-visibility: want weigh_the_answer standing as fifteen declarations holding fourteen identical bodies at fifty-one lines"
-assert head.out contains "REACH_OK family=weigh_the_answer folding=14 widens=0 stub=3 fall=624" else "reach-visibility: want the queue head returning six hundred and twenty-four at no widening cost"
+assert head.out contains "REACH_FAMILY family=confirm_pruned declared=44 identical=44 lines=15" else "reach-visibility: want confirm_pruned standing as forty-four declarations holding forty-four identical bodies at fifteen lines"
+assert head.out contains "REACH_OK family=confirm_pruned folding=44 widens=0 stub=3 fall=516" else "reach-visibility: want the queue head returning five hundred and sixteen at no widening cost"
 assert head.ok else "reach-visibility: the queue head must read cleanly"
 
-# The sibling behind it, a long ladder carrying a short body, so the next
-# two laps are both measured rather than inherited.
-let sibling = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "confirm_pruned"]
+# The sibling behind it, a long ladder carrying a short body and opening three
+# declarations, so the next two laps are both measured rather than inherited.
+let sibling = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "seat_note"]
 say sibling.out
-assert sibling.out contains "REACH_OK family=confirm_pruned folding=44 widens=0 stub=3 fall=516" else "reach-visibility: want confirm_pruned returning five hundred and sixteen at no widening cost"
+assert sibling.out contains "REACH_OK family=seat_note folding=43 widens=3 stub=3 fall=504" else "reach-visibility: want seat_note returning five hundred and four over three widened declarations"
 assert sibling.ok else "reach-visibility: the sibling family must read cleanly"
 
-say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, and the queue's two heads stand measured at zero widening apiece"
+say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, and the queue's head stands measured at zero widening with the sibling behind it priced at three"
