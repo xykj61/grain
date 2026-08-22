@@ -4610,29 +4610,7 @@ pub fn clear_forum(io: std.Io) void {
 /// than where either party keeps its records. The address is bounded and
 /// checked before a byte of it reaches a path.
 pub fn case_path(buf: *[max_note_path_len]u8, forum: []const u8) NoteError![]const u8 {
-    // invariant: a case is only ever built for an address a run may carry to
-    assert(addressable(forum));
-    const suffix = ".case";
-    const total = reader_dir.len + 1 + forum.len + suffix.len;
-    if (total > max_note_path_len) return error.NotePathTooLong;
-    var at: u32 = 0;
-    for (reader_dir) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    buf[at] = '/';
-    at += 1;
-    for (forum) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    for (suffix) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    // invariant: a case path is written exactly as long as it was measured
-    assert(at == total);
-    return buf[0..at];
+    return ladder_checks.case_path(@This(), buf, forum);
 }
 
 /// Carries the case to the forum's own box, outside both parties entirely.
