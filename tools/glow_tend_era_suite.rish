@@ -23,12 +23,12 @@ let face = "src/lib/gate-comlink-addr-width-u32.glow"
 let policy = "src/lib/gate-comlink-dual-stack-bind-u32.glow"
 let desk = "src/sur/shape-comlink-ipv6-dual-stack.glow"
 
-say "era 1/7: the a1 suite — seven deciding gates, both sides each..."
+say "era 1/8: the a1 suite — seven deciding gates, both sides each..."
 let a1 = run ["rishi/bin/rishi" "run" "tools/glow_tend_a1_suite.rish"]
 assert a1.ok else "era: the a1 suite RED — read its own line for the failing gate"
-say "era 1/7 GREEN — a1 whole."
+say "era 1/8 GREEN — a1 whole."
 
-say "era 2/7: R1's pedestal — placard, and its walls in the shape's own words..."
+say "era 2/8: R1's pedestal — placard, and its walls in the shape's own words..."
 let placard = run ["sh" "-c" "head -n 7 src/sur/shape-comlink-ipv6-dual-stack.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
 assert placard.ok else "era: R1 placard scan failed"
 let pcount = trim placard.out
@@ -42,9 +42,9 @@ assert wall_sibling.ok else "era: the sibling-records wall left the pedestal's o
 let shape = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" desk]
 assert shape.ok else "era: R1 shape lower/build/run failed"
 assert shape.out contains "EXIT:0" else "era: R1 shape did not exit 0"
-say "era 2/7 GREEN — R1's policy stands and carries all three walls."
+say "era 2/8 GREEN — R1's policy stands and carries all three walls."
 
-say "era 3/7: R1's width face — both lawful lengths pass, a wider one refuses..."
+say "era 3/8: R1's width face — both lawful lengths pass, a wider one refuses..."
 let four = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" face "4"]
 assert four.ok else "era: four-byte width failed to run"
 assert four.out contains "1" else "era: four bytes did not speak 1"
@@ -56,9 +56,9 @@ assert wide.ok else "era: over-wide run failed"
 assert wide.out contains "0" else "era: twenty bytes did not speak 0"
 let tracks = run ["sh" "-c" "grep -q 'lens 4 and 16' src/sur/shape-comlink-ipv6-dual-stack.glow"]
 assert tracks.ok else "era: the pedestal's sibling lengths moved — recheck the width face"
-say "era 3/7 GREEN — the sibling lengths decide, and the face still tracks the shape."
+say "era 3/8 GREEN — the sibling lengths decide, and the face still tracks the shape."
 
-say "era 4/7: R1's bind policy face — the policy itself decides, socketless..."
+say "era 4/8: R1's bind policy face — the policy itself decides, socketless..."
 let policy_on = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" policy "1"]
 assert policy_on.ok else "era: policy-on failed to run"
 assert policy_on.out contains "EXIT:0" else "era: policy-on did not exit 0"
@@ -66,21 +66,26 @@ assert policy_on.out contains "1" else "era: policy on did not speak 1"
 let policy_off = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" policy "0"]
 assert policy_off.ok else "era: policy-off failed to run"
 assert policy_off.out contains "0" else "era: policy off did not speak 0"
-say "era 4/7 GREEN — the policy face decides on both sides; only its probe was ever metal."
+say "era 4/8 GREEN — the policy face decides on both sides; only its probe was ever metal."
 
-say "era 5/7: Rishi's own walls — env 512 and history 50, elder-citing..."
+say "era 5/8: Rishi's own walls — env 512 and history 50, elder-citing..."
 let rishi = run ["rishi/bin/rishi" "run" "tools/rishi_a1_gate_walls_witness.rish"]
 assert rishi.ok else "era: rishi walls RED — read tools/rishi_a1_gate_walls_witness.rish"
-say "era 5/7 GREEN — the shell's ceilings decide, and the elders still match."
+say "era 5/8 GREEN — the shell's ceilings decide, and the elders still match."
 
-say "era 6/7: the build floor itself — two witnesses at once, and neither ruins the other..."
+say "era 6/8: the build floor itself — two witnesses at once, and neither ruins the other..."
 let conc = run ["rishi/bin/rishi" "run" "tools/glow_build_concurrency_witness.rish"]
 assert conc.ok else "era: build concurrency RED — ${conc.err}"
-say "era 6/7 GREEN — the lock and the atomic install hold under six lanes (REDS %88)."
+say "era 6/8 GREEN — the lock and the atomic install hold under six lanes (REDS %88)."
 
-say "era 7/7: the commit-message wall -- both refusals refuse, and every welcome still welcomes..."
+say "era 7/8: the commit-message wall -- both refusals refuse, and every welcome still welcomes..."
 let guard = run ["rishi/bin/rishi" "run" "tools/commit_message_guard_witness.rish"]
 assert guard.ok else "era: commit-message guard RED -- ${guard.err}"
-say "era 7/7 GREEN -- 18 planted cases answered right and the wall is armed on this clone."
+say "era 7/8 GREEN -- 18 planted cases answered right and the wall is armed on this clone."
 
-say "GREEN: era pure lap — a1 · Rishi walls · R1 socketless legs · the build floor · the commit wall, provable on any host."
+say "era 8/8: the build bridge itself -- a cyclic import graph terminates, and a chain past the bound refuses by name..."
+let bridge = run ["rishi/bin/rishi" "run" "tools/rye_bridge_cycle_witness.rish"]
+assert bridge.ok else "era: the Rye build bridge RED -- ${bridge.err}"
+say "era 8/8 GREEN -- two files importing each other bridge and run, the root answers to one name, and a chain past max_bridge_depth is refused rather than crashed (REDS %125)."
+
+say "GREEN: era pure lap — a1 · Rishi walls · R1 socketless legs · the build floor · the build bridge · the commit wall, provable on any host."
