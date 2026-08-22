@@ -2022,9 +2022,7 @@ pub fn standing(table: *const Table) []const unhand.Phase {
 
 /// Answers whether one phase of the record is still work waiting to run.
 fn waits(table: *const Table, at: u32) bool {
-    // invariant: a reading always names a phase inside the record
-    assert(at < table.held);
-    return !table.started[at];
+    return ladder_checks.waits(@This(), table, at);
 }
 
 /// Moves the head past every item already started.
@@ -2053,17 +2051,7 @@ pub fn elder_waits(table: *const Table, pick: u32) bool {
 
 /// Answers whether a sibling of this pick's own turn still waits behind it.
 pub fn sibling_waits(table: *const Table, pick: u32, sibling_mask: u32) bool {
-    // invariant: a pick always names a phase inside the record
-    assert(pick < table.held);
-    var i: u32 = 0;
-    while (i < pick) : (i += 1) {
-        if (!waits(table, i)) continue;
-        if (table.record[i].turn != table.record[pick].turn) continue;
-        if ((sibling_mask & mask.step_bit(table.record[i].step)) != 0) return true;
-    }
-    // invariant: the walk reached the pick, weighing every phase before it
-    assert(i == pick);
-    return false;
+    return ladder_checks.sibling_waits(@This(), table, pick, sibling_mask);
 }
 
 /// Answers whether the door admits this phase over the lines remembered.
