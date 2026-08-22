@@ -9579,3 +9579,24 @@ pub fn appraisal_published(comptime rung: type, io: std.Io, held: u32) u32 {
     assert(at <= held);
     return found;
 }
+
+pub fn recant_published(comptime rung: type, io: std.Io, held: u32) u32 {
+    // invariant: a reading never names more phases than one record may hold
+    assert(held <= rung.max_queue_len);
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = rung.note_path(&path_buf, rung.plan_name, ".recant") catch return 0;
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch return 0;
+    defer file.close(io);
+    var glyphs: [rung.max_queue_len]u8 = @splat('.');
+    const got = file.readPositionalAll(io, &glyphs, 0) catch return 0;
+    // invariant: a recant note never outgrows the record it describes
+    assert(got <= rung.max_queue_len);
+    var found: u32 = 0;
+    var at: u32 = 0;
+    while (at < held and at < got) : (at += 1) {
+        if (glyphs[at] == 'r') found |= rung.phase_bit(at);
+    }
+    // invariant: the walk never read a phase outside the record
+    assert(at <= held);
+    return found;
+}
