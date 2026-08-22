@@ -5864,50 +5864,7 @@ pub fn take_up_again(io: std.Io, reopen: Reopen, report_out: *Report) (RunError 
 /// the admission was looked at, the other saying what the look found. The number
 /// it moves is the debt a plan met whose meeting never said what it found.
 pub fn redress_the_meeting(io: std.Io, redress: Redress, upshot: Upshot, report_out: *Report) (RunError || NoteError)!void {
-    const receipt = meeting_written(io);
-    const met_count: u32 = if (receipt != null) 1 else 0;
-    if (met_count == 0) {
-        // invariant: a run that met no debt redresses none
-        assert(redress_of(report_out).redressed == 0);
-        // invariant: a run that met no debt leaves no meeting hollow
-        assert(redress_of(report_out).hollow == 0);
-        return;
-    }
-
-    // The measurement this rung moves, weighed against the meeting actually
-    // made rather than against anything the plan asked for, so a look nobody
-    // reports on is counted rather than refused.
-    redress_of(report_out).hollow = hollow_meetings(met_count, redress);
-    const redressed_count = redressed_in(met_count, redress);
-    const bare_count = closed_bare_in(met_count, redress);
-    if (redress == .hollow) {
-        // invariant: a hollow run says nothing, however plainly it met a debt
-        assert(redressed_count == 0);
-        redress_of(report_out).bare = bare_count;
-        return;
-    }
-
-    // The meeting comes off the wire, since the look a redress reports on is the
-    // one standing receipted and never one a run remembered. The reads supply
-    // the ladder rather than short-circuiting it, so every refusal below is
-    // reached by argument and named in its own order.
-    const met = receipt orelse return error.RedressUnmet;
-    const receipted = true;
-    const earned = upshot_earned(upshot, settlement_published(io));
-    const expected = redress_bytes(met, upshot);
-    const matched = redress_answers(expected, met);
-    if (redress_refusal(met_count, redressed_count, bare_count, receipted, earned, matched)) |why| return why;
-
-    // invariant: a redressing run speaks about the one meeting it made
-    assert(redressed_count == 1);
-    try redress_note(io, met, upshot);
-    // The wire before the memory, once more: the finding is read back out of the
-    // plan's own notes before the report believes the look was ever reported on.
-    if (!redress_holds(redress_written(io), expected)) return error.RedressMisrecorded;
-    redress_of(report_out).redressed = redressed_count;
-    redress_of(report_out).bare = bare_count;
-    // invariant: a redressing run leaves no meeting of its own hollow
-    assert(redress_of(report_out).hollow == 0);
+    return ladder_checks.redress_the_meeting(@This(), io, redress, upshot, report_out);
 }
 
 /// Meets the debt this run opened holding, before it books one of its own.
