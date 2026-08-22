@@ -9846,6 +9846,38 @@ pub fn press_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address
     return buf[0..at];
 }
 
+/// Publishes which of a plan's losses its author asked it to bear.
+///
+/// The loss note says where a plan fell short; this says which of those places
+/// its author would rather leave standing. It is written in the same shape and
+/// read the same way -- one glyph per phase, `b` where an arc was lost and its
+/// author marked it borne -- so an operator reads the two notes side by side
+/// and a repair seats from the record rather than from a supervisor's memory
+/// of what the plan wanted.
+///
+/// Thirty-nine rungs held this body byte for byte, and it is the writing half
+/// of a pair whose reading half already stands lifted directly below: this
+/// seats the bearing glyphs, `bearing_published` reads them back. A rule about
+/// how a note is spelled belongs in one place when two bodies must agree on
+/// the spelling, since the reader here is the writer's only audience.
+///
+/// Every symbol this body reaches already stood public in all thirty-nine
+/// rungs, so the lift widens nothing of any kind. Measured rather than read:
+/// `REACH_OK family=bearing_note folding=39 widens=0 stub=3 fall=342` from
+/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+pub fn bearing_note(comptime rung: type, io: std.Io, held: u32, borne_mask: u32) rung.NoteError!void {
+    // invariant: a bearing note never names more phases than one record holds
+    assert(held <= rung.max_queue_len);
+    var glyphs: [rung.max_queue_len]u8 = @splat('.');
+    var at: u32 = 0;
+    while (at < held) : (at += 1) {
+        if ((borne_mask & rung.phase_bit(at)) != 0) glyphs[at] = 'b';
+    }
+    // invariant: every phase of the record was written, none skipped
+    assert(at == held);
+    try rung.seat_note(io, rung.plan_name, ".bearing", glyphs[0..held]);
+}
+
 pub fn bearing_published(comptime rung: type, io: std.Io, held: u32) u32 {
     // invariant: a reading never names more phases than one record may hold
     assert(held <= rung.max_queue_len);
