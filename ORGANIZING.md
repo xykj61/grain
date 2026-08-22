@@ -146,8 +146,8 @@ A re-stamp that bubbles a file to the bottom suits an *ordinary, lightly-cited* 
 
 | File | Why kept |
 |------|----------|
-| `active-designing/date/20260618/20260618-182412_single-stranded.md` | Foundational one-value-model brief; widely cited |
-| `active-designing/date/20260618/20260618-184912_growing-a-language.md` | Canonical TAME Guidance organization brief |
+| `foundations/20260618-182412_single-stranded.md` | Foundational one-value-model brief; widely cited |
+| `foundations/20260618-184912_growing-a-language.md` | Canonical TAME Guidance organization brief |
 | `active-designing/yonder/20260618-184912_recommended-architecture.md` | Foundational clean-room architecture brief; third of the trio |
 | `work-in-progress/20260620-212126_usize-width-baseline.md` | Canonical width inventory; cited from `TAME_GUIDANCE` |
 | `expanding-prompts/date/20260620/20260620-210812_explicit-width-audit.md` | Width charter; heavily cited across strengthening docs |
