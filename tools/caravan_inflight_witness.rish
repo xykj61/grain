@@ -66,24 +66,27 @@ let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/r
 assert build.ok else "caravan inflight build failed"
 
 # The reader this witness runs is built here rather than borrowed (REDS %92).
-# Thirty-six rungs ran caravan/bin/read without building it, so the whole arc was
-# green only on a tree some earlier run had left warm. A witness owns what it runs.
-let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/read"]
+# Thirty-six rungs once ran a shared caravan/bin/read without building it, so the whole
+# arc was green only on a tree some earlier run had left warm. A witness owns what it
+# runs -- and, since REDS %133, the path it runs it from: eighty witnesses built that
+# one reader to one name, so two running at once contended for a single file and the
+# loser reddened a green tree. This one lands in caravan/bin/inflight_read.
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/inflight_read"]
 assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
 
 
 # Three documents for one ring: the shape the lap opens on, the successor
 # derived mid-flight, and the successor a supervisor must refuse.
-let ring = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle.bron 2>&1"]
+let ring = run ["sh" "-c" "caravan/bin/inflight_read caravan/systems/serial_cycle.bron 2>&1"]
 assert ring.ok else "the ring declaration could not be read"
 assert ring.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the ring declaration changed shape"
 
-let next = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle_succession.bron 2>&1"]
+let next = run ["sh" "-c" "caravan/bin/inflight_read caravan/systems/serial_cycle_succession.bron 2>&1"]
 assert next.ok else "the succession declaration could not be read"
 assert next.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the succession did not keep the ring's own shape"
 assert next.out contains "verdict: whole" else "the succession declaration did not read whole"
 
-let moved = run ["sh" "-c" "caravan/bin/read caravan/systems/serial_cycle_moved.bron 2>&1"]
+let moved = run ["sh" "-c" "caravan/bin/inflight_read caravan/systems/serial_cycle_moved.bron 2>&1"]
 assert moved.ok else "the moved declaration could not be read"
 assert moved.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the moved declaration changed shape"
 assert moved.out contains "verdict: whole" else "the moved declaration did not read whole"

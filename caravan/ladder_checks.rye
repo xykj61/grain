@@ -9985,3 +9985,76 @@ pub fn seat_note(comptime rung: type, io: std.Io, domain: []const u8, suffix: []
     if (bytes.len == 0) return;
     file.writePositionalAll(io, bytes, 0) catch return error.NoteUnavailable;
 }
+
+/// Takes the matter up again when this run's reader says the answer falls short.
+///
+/// Fourteen rungs declare this name and thirteen wrote the same body byte for
+/// byte. The fourteenth is `reopen.rye`, the rung where the reopen report *is*
+/// the report: it names `report_out.taken_up` directly where the thirteen above
+/// it reach through `reopen_of(report_out)`. That single qualifier is the whole
+/// difference, and it is a structural one rather than an omission -- an
+/// identity accessor on the owning rung would say something different from what
+/// `reopen_of` says everywhere else, which is one tier down. So `reopen.rye`
+/// stays home, exactly as `suffice.rye` stays home under `weigh_the_answer`.
+///
+/// The wire before the memory, as everywhere on this ladder: the run reads the
+/// address actually published, reads the answer carried to that box and the
+/// reader's own word beside it, books what the shortfall earned, writes the
+/// note, and reads that note back out of the plan's own record before the
+/// report believes anything was taken up. Lifted here, one body serves all
+/// thirteen, and each rung reaches its own bound, its own report shape, its own
+/// helpers, and its own error set through the type it hands in.
+///
+/// The body reaches fifteen symbols -- the widest reach any family of this arc
+/// has folded -- and every one already stood public in all thirteen, so the
+/// lift widens nothing. Measured rather than read: `REACH_OK
+/// family=take_up_again folding=13 widens=0 stub=3 fall=540` from
+/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+pub fn take_up_again(comptime rung: type, io: std.Io, reopen: rung.Reopen, report_out: *rung.Report) (rung.RunError || rung.NoteError)!void {
+    var address_buf: [rung.max_address_len]u8 = undefined;
+    const address = rung.address_published(io, &address_buf);
+    const carried = if (address) |box| rung.apprised_of(io, box) else null;
+    const spoken_word = if (address) |box| rung.worth_written(io, box) else null;
+    const matched = if (carried) |delivery| rung.suits_answers(spoken_word, delivery) else false;
+    const weighed = rung.suffice_of(report_out).weighed >= 1 and matched;
+    const worth = if (weighed) rung.suits_worth(spoken_word) else null;
+    const wanting = worth == .wanting;
+    const short_count: u32 = if (weighed and wanting) 1 else 0;
+    if (short_count == 0) {
+        // invariant: a run nobody called short takes nothing up
+        assert(rung.reopen_of(report_out).taken_up == 0);
+        // invariant: a run nobody called short leaves no word unheeded
+        assert(rung.reopen_of(report_out).unheeded == 0);
+        return;
+    }
+
+    // The measurement this rung moves, weighed against the word actually
+    // standing rather than against anything the plan asked for, so a matter
+    // nobody ever reopened is counted rather than refused.
+    rung.reopen_of(report_out).unheeded = rung.unheeded_words(short_count, reopen);
+    const taken_count = rung.taken_up_in(short_count, reopen);
+    const closed_count = rung.left_closed_in(short_count, reopen);
+    if (reopen == .closes) {
+        // invariant: a closing run books nothing, however plainly its reader
+        // called the answer short
+        assert(taken_count == 0);
+        rung.reopen_of(report_out).left_closed = closed_count;
+        return;
+    }
+
+    // The reads supply the ladder rather than short-circuiting it, so every
+    // refusal below is reached by argument and named in its own order.
+    const word = spoken_word orelse return error.ReopenUnweighed;
+    if (rung.reopen_refusal(short_count, taken_count, closed_count, weighed, wanting, matched)) |why| return why;
+
+    // invariant: a reopening run books the one matter its reader's word earned
+    assert(taken_count == 1);
+    try rung.reopen_note(io, word);
+    // The wire before the memory, once more: the note is read back out of the
+    // plan's own record before the report believes anything was taken up.
+    if (!rung.reopen_holds(rung.again_standing(io), word)) return error.ReopenMisrecorded;
+    rung.reopen_of(report_out).taken_up = taken_count;
+    rung.reopen_of(report_out).left_closed = closed_count;
+    // invariant: a reopening run leaves no word of its own unheeded
+    assert(rung.reopen_of(report_out).unheeded == 0);
+}
