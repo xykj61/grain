@@ -39,7 +39,7 @@ Every line below was run; the output is what it printed.
 |---|---|---|
 | `trim` | `let a = trim "  Grain  "` | `Grain` |
 | `length` | `let b = length "hello"` | `5` |
-| `slice` | `let c = slice "20260821-185411_x.kyri" 0 8` | `20260821` |
+| `slice` | `let c = slice "YYYYMMDD-HHMMSS_slug.kyri" 0 8` | the first eight characters -- a day |
 | `index-of` | `let d = "a/b/c" index-of "/"` | `1` (`-1` when absent) |
 | `split` | `let p = split "a/b/c" "/"` | a list of `3` |
 | `join` | `let f = join p "-"` | `a-b-c` |

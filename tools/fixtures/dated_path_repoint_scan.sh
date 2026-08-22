@@ -64,7 +64,14 @@ echo "folded_files_mapped=$(wc -l < "$work/map.tsv" | tr -d ' ')"
 # Living files only -- a dated basename is testimony and is never opened for writing here. The
 # candidate list is narrowed by one grep first, so awk is spawned only for files that could
 # possibly hold a dated reference.
+# THE INSTRUMENT'S OWN FIXTURES ARE NOT THE FIELD, and this cost a real red to learn (%121).
+# tools/dated_path_witness.rish holds a deliberately STALE reference -- the flat path a file
+# answered to before its room folded -- because proving the resolver recovers such a path requires
+# having one. An earlier apply run repointed it to the folded path, which left the assert checking
+# that an already-correct path resolves: true, and worthless. The census already excluded these by
+# name; the repointer did not, and a tool that edits its own test fixtures quietly disarms them.
 find . -type d \( -name .git -o -name seed -o -name vendor \) -prune -o -type f \
+  ! -name 'dated_path_*' ! -name 'room_bound_control.sh' ! -name 'session_logs_archive.rye' \
   \( -name '*.md' -o -name '*.mdc' -o -name '*.rish' -o -name '*.rye' -o -name '*.sh' \
      -o -name '*.bron' -o -name '*.kyri' -o -name '*.brix' -o -name '*.txt' \) -print 2>/dev/null \
   | sed 's|^\./||' \

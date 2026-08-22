@@ -39,6 +39,7 @@
 #                                         stand, and its witness proves verdicts on exactly such
 #                                         paths
 #                room_bound_control.sh    builds a throwaway room under a mktemp root
+#                shipped_binary_claim_control.sh  plants a dated page to prove the guard allows it
 #                session_logs_archive.rye its selftest asserts on links inside a sandbox index
 #
 # USAGE
@@ -64,10 +65,10 @@ verb="${1:-census}"
 # (`gone`), and a basename at more than one path where no single answer is safe (`ambiguous`).
 # Together those are the LOST references, and they are the honest defect count. Moving a file
 # changes its path and never its basename, so a correct fold leaves this number exactly where it
-# stood. Set with no slack to the measured count: 199 when the resolver landed, lowered to 193
+# stood. Set with no slack to the measured count: 199 when the resolver landed, lowered to 193, then 192
 # on `20260821` when the session-log fold surfaced six index rows pointing at files that were
 # never there and they were repaired. Lower it whenever a repair lands; never raise it.
-LOST_CEILING=193
+LOST_CEILING=192
 
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
@@ -81,6 +82,7 @@ grep -rIoE '(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}_[A-Za-z0-9._-]+\.(md|br
   --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
   --exclude-dir=.git --exclude-dir=seed --exclude-dir=vendor \
   --exclude=dated_path_* --exclude=room_bound_control.sh --exclude=session_logs_archive.rye \
+  --exclude=shipped_binary_claim_control.sh \
   . 2>/dev/null | sed 's|^\./||' > "$work/pairs.txt"
 
 # Six fields out, so no later step has to guess which path a column holds:

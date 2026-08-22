@@ -84,7 +84,12 @@ say "verdict two GREEN -- a relative reference resolves from its citing file's d
 # The fold rule on a real folded log: computed from the basename, no index consulted. This
 # expectation named archive/ until the session-log fold of `20260821.161758` moved the room, and
 # this assert is what noticed -- which is the whole reason it names a path rather than a shape.
-let folded_ref = "session-logs/date/20260710/20260710-000045_one-clock-resins-plainly.md"
+# This reference is DELIBERATELY STALE -- it is the flat path the file answered to before the
+# room folded, and the whole point is that the resolver recovers it by computation. It was
+# silently rewritten to the folded path by the repointer's own apply run (commit 0d31946c59),
+# which left this assert testing that an already-correct path resolves -- true, and worthless.
+# The repointer now excludes the instrument's own fixtures, as the census already did (REDS %121).
+let folded_ref = "session-logs/20260710-000045_one-clock-resins-plainly.md"
 let folded = run [bin "run" tool folded_ref]
 assert folded.ok else "dated-path: a folded session log must still resolve"
 assert folded.out contains "verdict=recovered-by-fold-rule" else "dated-path: a folded log must be recovered by computation, not by search"
