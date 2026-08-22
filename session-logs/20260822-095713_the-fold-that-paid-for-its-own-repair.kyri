@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20260822.095713
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The fold that paid for its own repair, and the last free row spent
+prompt Take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, read the council rota row, condense REMEMBER, send the increment
+think The lap opened on the red closed in the round before it, so the line was clear and the running thread's own recommend named the head: read_count at 462 over forty-three rungs, the last zero-widening row on the board.
+think Hashed all forty-five read_count bodies before touching one. Forty-three matched; caravan/confer.rye and caravan/revoke.rye differed by exactly two lines -- the assert that a note always carries a suffix, and its invariant comment.
+think Read every read_count call site in both rungs rather than judging the omission from the diff. All five pass string literals -- ".offered", ".given", ".held" -- so the assert holds at every one and the omission was an accident, unlike revoke.rye's deliberate difference under read_words last lap, where a list held across a loop genuinely changed what the postcondition could say.
+think Restored the two lines in both rungs and re-priced. The meter moved from folding=43 below_the_line=0 fall=462 to folding=44 below_the_line=1 fall=487 -- confer.rye entering the identical set and immediately standing below the fold line, since ladder_checks.rye imports it and a lift would have the harness reach back through a rung it already reaches for.
+think Lifted the body into caravan/ladder_checks.rye as pub fn read_count(comptime rung: type, io: std.Io, domain: []const u8, suffix: []const u8) rung.NoteError!u8, reaching max_note_path_len and note_path through the type handed in, and stubbed forty-four rungs to three lines each. The stub loop skips ladder_checks.rye (REDS %132) and confer.rye by name.
+think The doc-attachment guard built one round earlier read the new block on its first run: cited=8 docs_adrift=0. A guard that pays for itself on the very next lift is the argument for building it at the moment the red is found rather than booking it for later.
+think Measured after the fold rather than assuming. Carry 69,805 -> 69,334, a fall of 471 where the meter had priced 487 -- the first disagreement in ten laps, so the lap stopped and accounted for it before writing a word about it.
+think Found the whole sixteen. The meter prices from the tree in front of it, which was the REPAIRED tree; the ceiling recorded the tree before the repair. Family carry ran 600 before the repair (forty-two copies at fourteen lines plus one copy at twelve), 616 after it, and 129 after the fold. 616 - 129 = 487, the meter's number. 600 - 129 = 471, the realized number. The difference of 16 is exactly the two asserts restored, and both numbers are right.
+obs A fold that first repairs a rung pays for the repair out of its own fall. The prediction still met measurement to the digit; what moved was the baseline, and naming the baseline is what makes the two numbers agree rather than contradict. Recorded in the meter's own prose so the next lap that repairs before folding reads it there rather than rediscovering it.
+obs Two rungs regained an invariant by folding. That is the first lift of this arc whose value is not only lines removed -- confer.rye and revoke.rye had each been asserting less than their forty-three siblings, silently, and one home means one contract for all forty-five.
+obs The free rows are spent. Every remaining head opens a declaration: elder_waits returns 504 for forty-three openings, door_admits 462 for the same forty-three, load_one 549 for a hundred and twenty. The queue's head slot in the reach-visibility witness now pins elder_waits, and the arc's next question stops being mechanical -- a widening is a real cost to a rung's door and wants a design read rather than another lap of arithmetic.
+obs Caught one stale claim of my own while advancing the witness: elder_waits reads declared=53 rather than the forty-five I had written from read_count's shape. The scan said so on its first run, which is the whole reason the slot asserts the family line and not only the fall.
+loom family=read_count declared=45 identical=45 folding=44 below_the_line=1 lines=14 stub=3 reached_symbols=2 widens=0 predicted_fall=487 realized_fall=471 repair_lines=16
+loom caravan_carry before=69805 after=69334 ceiling=69334 bodies=18174 distinct=7972 copies=10202 families=702 modules=110
+loom fold_queue_heads elder_waits=504/43 door_admits=462/43 load_one=549/120 start_one=0/294
+file caravan/ladder_checks.rye the note count published once, reaching two symbols through the rung handed in
+file caravan/confer.rye the suffix invariant restored; stays home below the fold line, since the harness imports it
+file caravan/revoke.rye the suffix invariant restored, and folds with the other forty-three
+file caravan/abate.rye one of forty-four rungs whose fourteen-line body became a three-line stub
+file tools/fixtures/caravan_ladder_carry_scan.sh the carry ceiling lowered to 69334
+file tools/caravan_ladder_carry_witness.rish carry asserts re-pinned and the queue prose rewritten to name why two falls differ
+file tools/caravan_ladder_reach_visibility_witness.rish folded slot advanced to read_count, head to elder_waits, sibling kept on load_one
+recommend check-in (Claude) the free rows are spent -- every remaining fold widens a rung's public surface, so the arc owes a design read on what a widening costs a door before another lap of arithmetic
