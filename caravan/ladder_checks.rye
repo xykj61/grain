@@ -9953,6 +9953,23 @@ pub fn confirm_pruned(comptime rung: type, io: std.Io, domain: []const u8, count
 /// delegating here -- and the lift then widens nothing. Measured rather than
 /// read: `REACH_OK family=seat_note folding=44 widens=0 stub=3 fall=531` from
 /// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// Reads the word list a dependent's domain has been handed so far.
+pub fn read_words(comptime rung: type, io: std.Io, domain: []const u8, out: *rung.Words) rung.NoteError!void {
+    // invariant: a word list always names the dependent that listens
+    assert(domain.len >= 1);
+    // invariant: a word list is always read into a list that starts empty
+    assert(out.len == 0);
+    var path_buf: [rung.max_note_path_len]u8 = undefined;
+    const path = try rung.note_path(&path_buf, domain, ".words");
+    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch
+        return error.NoteUnavailable;
+    defer file.close(io);
+    const got = file.readPositionalAll(io, &out.bytes, 0) catch return error.NoteUnavailable;
+    // invariant: a word list read never outgrows the wire that carries it
+    assert(got <= rung.max_words_bytes);
+    out.len = @intCast(got);
+}
+
 pub fn seat_note(comptime rung: type, io: std.Io, domain: []const u8, suffix: []const u8, bytes: []const u8) rung.NoteError!void {
     // invariant: a note always names the dependent it belongs to
     assert(domain.len >= 1);

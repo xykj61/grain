@@ -2326,19 +2326,7 @@ pub fn read_count(io: std.Io, domain: []const u8, suffix: []const u8) NoteError!
 
 /// Reads the word list a dependent's domain has been handed so far.
 pub fn read_words(io: std.Io, domain: []const u8, out: *Words) NoteError!void {
-    // invariant: a word list always names the dependent that listens
-    assert(domain.len >= 1);
-    // invariant: a word list is always read into a list that starts empty
-    assert(out.len == 0);
-    var path_buf: [max_note_path_len]u8 = undefined;
-    const path = try note_path(&path_buf, domain, ".words");
-    const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch
-        return error.NoteUnavailable;
-    defer file.close(io);
-    const got = file.readPositionalAll(io, &out.bytes, 0) catch return error.NoteUnavailable;
-    // invariant: a word list read never outgrows the wire that carries it
-    assert(got <= max_words_bytes);
-    out.len = @intCast(got);
+    return ladder_checks.read_words(@This(), io, domain, out);
 }
 
 /// Provisions one set of notes per declared domain, all standing at nothing.

@@ -42,18 +42,18 @@ assert red.out contains "RED_no_identical_refused_rather_than_ok" else "reach-vi
 # stay home on a signature that takes one byte where these take a slice. The
 # scan reads the folded shape back -- no long body left to lift, so the widening
 # column now describes the stubs.
-let folded = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "seat_note"]
+let folded = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "read_words"]
 say folded.out
-assert folded.out contains "REACH_OK family=seat_note folding=44 widens=44 stub=3 fall=0" else "reach-visibility: want seat_note standing folded, with nothing left to lift"
+assert folded.out contains "REACH_OK family=read_words folding=43 widens=43 stub=3 fall=0" else "reach-visibility: want read_words standing folded, with nothing left to lift"
 assert folded.ok else "reach-visibility: the lifted family must still read cleanly"
 
 # The head of the queue as it stands, and the reading that put it there. Both
 # numbers are asserted, so a lap that folds this family must come back and say
 # so, and a lap that quietly widens one of the symbols it reaches cannot pass.
-let head = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "read_words"]
+let head = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "take_up_again"]
 say head.out
-assert head.out contains "REACH_FAMILY family=read_words declared=45 identical=43 lines=15" else "reach-visibility: want read_words standing as forty-five declarations holding forty-three identical bodies at fifteen lines"
-assert head.out contains "REACH_OK family=read_words folding=43 widens=0 stub=3 fall=504" else "reach-visibility: want the queue head returning five hundred and four at no widening cost"
+assert head.out contains "REACH_FAMILY family=take_up_again declared=14 identical=13 lines=48" else "reach-visibility: want take_up_again standing as fourteen declarations holding thirteen identical bodies at forty-eight lines"
+assert head.out contains "REACH_OK family=take_up_again folding=13 widens=0 stub=3 fall=540" else "reach-visibility: want the queue head returning five hundred and forty at no widening cost"
 assert head.ok else "reach-visibility: the queue head must read cleanly"
 
 # The sibling behind it, a shorter body over the same forty-three rungs and also

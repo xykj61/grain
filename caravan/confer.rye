@@ -432,6 +432,8 @@ pub fn read_count(io: std.Io, domain: []const u8, suffix: []const u8) NoteError!
 pub fn read_words(io: std.Io, domain: []const u8, out: *Words) NoteError!void {
     // invariant: a word list always names the dependent that listens
     assert(domain.len >= 1);
+    // invariant: a word list is always read into a list that starts empty
+    assert(out.len == 0);
     var path_buf: [max_note_path_len]u8 = undefined;
     const path = try note_path(&path_buf, domain, ".words");
     const file = Dir.cwd().openFile(io, path, .{ .mode = .read_only }) catch
