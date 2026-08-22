@@ -7547,34 +7547,7 @@ pub fn seat_the_ground(
 /// carried across -- all before a single dependent is spawned, so the record a
 /// run enforces is the record its author wrote.
 pub fn seat_the_record(base: []const Phase, table: *Table) RunError!void {
-    // invariant: a record always seats a plan that names phases
-    assert(base.len >= 1);
-    // invariant: a record is always seated into a table that holds nothing yet
-    assert(table.held == 0);
-    var plainly: [max_queue_len]unhand.Phase = undefined;
-    var p: u32 = 0;
-    while (p < base.len) : (p += 1) plainly[p] = plain(base[p]);
-    // invariant: every phase was read plainly, none skipped
-    assert(p == base.len);
-    const flat = plainly[0..base.len];
-    if (!precede.plan_is_ordered(flat)) return error.OrderStalled;
-    if (!plan_is_seated(flat)) return error.PlanUnseated;
-
-    precede.close(flat, table.record[0..base.len]);
-    table.held = @intCast(base.len);
-    table.left = table.held;
-    var r: u32 = 0;
-    while (r < base.len) : (r += 1) {
-        table.reserve_of[r] = base[r].reserve;
-        // The bearing is read once, here, from the record its author wrote --
-        // so every later question about which losses to carry is answered from
-        // the plan rather than from anything the run learns along the way.
-        if (base[r].bear) table.bear_mask |= phase_bit(r);
-    }
-    // invariant: every phase carried its reserve into the record, none lost
-    assert(r == base.len);
-    // invariant: a closed record closes to itself, so the door's work is done
-    assert(precede.plan_is_closed(standing(table)));
+    return ladder_checks.seat_the_record(@This(), base, table);
 }
 
 
