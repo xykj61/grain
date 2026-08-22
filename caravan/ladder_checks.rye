@@ -10551,3 +10551,45 @@ pub fn lost_note(comptime rung: type, io: std.Io, held: u32, lost_mask: u32) run
     assert(at == held);
     try rung.seat_note(io, rung.plan_name, ".lost", glyphs[0..held]);
 }
+
+/// Folds one reaped outcome into the report, or names the mismatch.
+///
+/// Thirty-seven rungs held this body byte for byte, at sixteen lines over a
+/// one-line signature, and every one of them folds -- this harness imports none
+/// of the thirty-seven, so no rung of this family stands below the fold line.
+///
+/// The meter priced seventy-four widenings and the lift paid half of them. The
+/// thirty-seven import bindings of the outcome module are free, since this
+/// harness imports that module at its own head and reaches it directly rather
+/// than through the rung. The thirty-seven struct openings are real and are
+/// paid: `Finished` names one reaped dependent held until the record drains,
+/// and a type standing in a published signature must stand public beside it.
+/// That opening costs a rung nothing it was hiding -- every one of the
+/// thirty-seven already published a `judge_outcome` taking one.
+///
+/// The other four names the body reaches -- `run_of`, `outcome_name`,
+/// `Report`, and the `RunError` error set -- stood public in all thirty-seven
+/// already.
+///
+/// A mismatch is told before it is returned, because an operator reading a
+/// failed run wants the domain and both outcome names on the line where the
+/// judgement was made rather than in a report assembled afterward.
+///
+/// Measured rather than read: `REACH_OK family=judge_outcome folding=37
+/// widens=74 widens_fn=0 widens_import=37 widens_const=37 stub=3 fall=468`.
+pub fn judge_outcome(comptime rung: type, done: rung.Finished, report_out: *rung.Report) rung.RunError!void {
+    // invariant: a judged dependent always names its domain
+    assert(done.domain.len >= 1);
+    // invariant: the report never counts more successes than dependents reaped
+    assert(rung.run_of(report_out).succeeded <= rung.run_of(report_out).reaped);
+    if (done.code != done.expect) {
+        print("    {s}: expected {s}, heard {s}\n", .{
+            done.domain, rung.outcome_name(done.expect), rung.outcome_name(done.code),
+        });
+        return error.OutcomeMismatch;
+    }
+    if (done.code == carry.Outcome.carried_ok) {
+        rung.run_of(report_out).succeeded += 1;
+        if (done.verb == .home) rung.run_of(report_out).homed += done.count;
+    }
+}
