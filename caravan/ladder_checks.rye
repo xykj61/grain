@@ -9600,3 +9600,20 @@ pub fn recant_published(comptime rung: type, io: std.Io, held: u32) u32 {
     assert(at <= held);
     return found;
 }
+
+/// Waits, bounded, until this conferral has been grafted.
+pub fn confirm(comptime rung: type, io: std.Io, domain: []const u8, depth: u32) bool {
+    // invariant: a confirmation always names the dependent it waits on
+    assert(domain.len >= 1);
+    // invariant: a confirmation always waits on reach actually handed over
+    assert(depth >= 1);
+    var looks: u32 = 0;
+    while (looks < rung.max_confirm_looks) : (looks += 1) {
+        const answered = rung.read_count(io, domain, ".held") catch return false;
+        if (answered >= depth) return true;
+        std.Io.sleep(io, std.Io.Duration.fromMilliseconds(rung.note_rest_ms), .awake) catch {};
+    }
+    // invariant: the confirmation stayed inside the bound it was given
+    assert(looks == rung.max_confirm_looks);
+    return false;
+}

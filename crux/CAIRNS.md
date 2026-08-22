@@ -24,6 +24,16 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260822.054053` -- the ten glyph-note and note-path folds condense into one row
+
+**Walk-back nib:** `57c365fbc2` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read through the ten-fold arc stands whole at this nib: the per-fold live-edge rows for `press_path`, `bearing_published`, `appraisal_published`, `recant_published`, the roster round, and the laps between them, each in the words its own round wrote.
+
+**Swept:** six live-edge rows fold into one. The INNER LOOP directives, the guard roster, every seated law, and the season table stay untouched.
+
+**What waits there, worth recalling:** the arithmetic each fold published as it landed -- the predicted fall, the realized fall, the delegate count, and the widening cost it believed it was paying. That last number is the one worth walking back for, because this lap proved it was measured against the wrong thing for four laps running (REDS %130), and the departing rows are the record of exactly what was believed and when.
+
+**Why now:** the outer loop reads this card first each lap and takes the door it names. Ten rows of finished folds push the live work-front below a reader's first screen, and a card that has to be scrolled to find *what is next* has stopped being the live card.
+
 ### `20260821.203501` -- the operator card condenses a day of folds and takes the Standfast edge
 
 **Walk-back nib:** `5f09ec4273` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read through the Caravan ladder arc stands whole at this nib: nineteen live-edge rows, `fold AI` at the front, and the full narration of every fold from D through AI in the words each round wrote for itself.
