@@ -8766,3 +8766,164 @@ pub fn herald_the_standing(
     // invariant: a heralding run leaves no long-standing quarrel unheralded
     assert(rung.swell_of(report_out).unheralded == 0);
 }
+
+/// Runs a whole supervised plan the way the forbearing arc means it, from an
+/// empty table to a closed quarrel.
+///
+/// Ten rungs held this body byte for byte -- the largest single carry the
+/// ladder ever measured, at a hundred and thirty-seven lines apiece. What it
+/// is, plainly: a run seats its record, takes the ground, reads the position an
+/// earlier run left standing, fills and reaps its table until nothing is left in
+/// flight, judges every dependent it reaped, reckons and mends the plan, and
+/// then walks the whole correspondence a quarrel is owed -- amendment, hearing,
+/// dispute, escort, term, mark, tidings, appeal -- before closing the quarrel
+/// itself.
+///
+/// **The order is the arc, and the order is why it lifts whole.** Each step here
+/// was added by the rung that first proved it, and every rung after it inherited
+/// the sequence unchanged. So the body varies in nothing: ten rungs, one hash.
+/// Handed in through `rung`, one body runs against whichever rung called it --
+/// that rung's own report, its own ceilings, its own wire.
+///
+/// **What a rung still owns.** Every named step remains the rung's own body, so
+/// a rung that wants a different reckoning writes a different `reckon_the_plan`
+/// and this spine reaches it. Lifted here is the sequence, never the substance.
+///
+/// Measured by `../tools/caravan_ladder_carry_witness.rish`.
+pub fn run_in_forbear(
+    comptime rung: type,
+    allocator: std.mem.Allocator,
+    io: std.Io,
+    self_path: []const u8,
+    sys: *const system.System,
+    base: []const rung.Phase,
+    wake: gap.Wake,
+    reading: anytype,
+    keeping: anytype,
+    bearing: anytype,
+    standard: anytype,
+    review: anytype,
+    notice: anytype,
+    dispatch: anytype,
+    receipt: anytype,
+    record: anytype,
+    escort: anytype,
+    term: anytype,
+    mark: anytype,
+    tidings: anytype,
+    appeal: anytype,
+    quarrel: anytype,
+    report_out: *rung.Report,
+) !void {
+    // invariant: a run always knows what program to spawn
+    assert(self_path.len >= 1);
+    // invariant: a run always reports into a fresh report
+    assert(rung.run_of(report_out).admitted == 0);
+    if (base.len == 0) return error.EmptyQueue;
+    if (base.len > rung.max_queue_len) return error.QueueFull;
+
+    var table: rung.Table = .{};
+    try rung.seat_the_record(base, &table);
+
+    const caps = try rung.seat_the_ground(io, sys, report_out);
+
+    // The relenting: the note it may take down is the one every step here reads.
+    try rung.release_the_standing(io, quarrel.relent, report_out);
+
+    // The quarrel this run inherits, read here and nowhere later: read before a
+    // single phase is taken up, it can only be a position an earlier run
+    // carried. The rungs below write that same note at the very end of a run, so
+    // a plan reading it afterward would be reading its own handwriting back as
+    // somebody else's judgment.
+    const taken_up = rung.position_standing(io);
+    rung.run_of(report_out).queued = table.held;
+
+    while (table.left > 0 or table.in_flight > 0) {
+        const took_up = try rung.fill_table(
+            allocator, io, self_path, sys, &caps, wake, reading, keeping, &table, report_out,
+        );
+        if (table.in_flight > rung.run_of(report_out).peak_in_flight) {
+            rung.run_of(report_out).peak_in_flight = table.in_flight;
+        }
+
+        if (table.left > 0) {
+            const free = rung.max_in_flight - table.in_flight;
+            rung.run_of(report_out).slots_unspent += free;
+            if (took_up == 0 and free > 0) rung.run_of(report_out).idle_turns += 1;
+        }
+
+        // With an empty table nothing conflicts, so a stall here would mean
+        // the record named a domain the document does not.
+        if (table.in_flight == 0) return error.OrderStalled;
+
+        try rung.reap_oldest(io, &table, .answered, report_out);
+    }
+    // invariant: the whole record was taken up, and every dependent reaped
+    assert(table.left == 0);
+    assert(table.in_flight == 0);
+    assert(rung.run_of(report_out).reaped == rung.run_of(report_out).admitted);
+    // invariant: every phase either started a dependent or was conferred to one
+    assert(table.finished + rung.abandoning_of(report_out).inner.inner.inner.inner.absorbed == table.held);
+
+    var j: u32 = 0;
+    while (j < table.finished) : (j += 1) try rung.judge_outcome(table.done[j], report_out);
+    // invariant: every reaped dependent was judged, none skipped
+    assert(j == table.finished);
+
+    // The reckoning stands exactly as the rung below wrote it, and always on
+    // the reckoning ledger: a mend that repaired a plan under the assuming
+    // reading would be repairing a loss it had already declared did not count.
+    // What this rung adds to it is the recantation, weighed against the
+    // judgment already standing on the wire before this run touches it.
+    try rung.reckon_the_plan(io, &table, .reckoned, review, report_out);
+
+    // Every run here mends, since the question this rung asks opens inside the
+    // repair rather than before it: what separates the two readings is which
+    // of the plan's losses the repair is allowed to touch.
+    try rung.mend_the_plan(
+        allocator, io, self_path, sys, &caps, base, wake, keeping, bearing, standard, review, &table, report_out,
+    );
+
+    // The correction the rung below writes, unchanged and still last of the
+    // record's own work: a reader is owed the word the run actually ended on
+    // rather than the word it held halfway through.
+    try rung.post_the_amendment(io, notice, report_out);
+
+    // The journey the rung below makes, unchanged: a correction with somewhere
+    // to go is carried to the place its reader was actually reached.
+    try rung.carry_the_amendment(io, dispatch, report_out);
+
+    // The hearing the rung below makes, with one word changed: an answer counts
+    // as heard only where the hand actually agrees, since an answer a plan
+    // cannot accept is not an answer it heard.
+    try rung.hear_the_reader(io, receipt, report_out);
+
+    // The record the rung below keeps, unchanged: a reader who answered in a
+    // word this plan cannot accept is written down in both voices.
+    try rung.record_the_dispute(io, receipt, record, report_out);
+
+    // The escort the rung below writes, unchanged: an operator reading this
+    // plan's word reads the objection standing against it in the same reach.
+    try rung.escort_the_word(io, escort, report_out);
+
+    // The term the rung below weighs, unchanged: the objection standing beside
+    // this plan's word is put back to the reader who raised it, and answered or
+    // let go.
+    try rung.weigh_the_term(io, term, report_out);
+
+    // The standing the rung below carries into the mark, unchanged: an operator
+    // opening the objection reads whether anybody is still behind it.
+    try rung.stand_the_mark(io, mark, report_out);
+
+    // The tidings the rung below writes, unchanged: the reader who raised the
+    // quarrel is told how it came out, in the box they already know.
+    try rung.tell_the_reader(io, tidings, report_out);
+
+    // The appeal the rung below reads, unchanged: the reader who was answered
+    // may answer that answering, and the record says where they stand.
+    try rung.read_the_appeal(io, appeal, report_out);
+
+    // Every act a run owes the quarrel standing over it, in the order the
+    // arc grew.
+    try close_the_quarrel(rung, io, taken_up, quarrel, report_out);
+}

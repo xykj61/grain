@@ -1320,7 +1320,7 @@ pub fn reap_oldest(
 /// one set of notes per declared domain, and the capability table derived from
 /// the document itself -- all before a single dependent is spawned, so no
 /// dependent ever finds a conferral, a bell, or a store left by an earlier run.
-fn seat_the_ground(
+pub fn seat_the_ground(
     io: std.Io,
     sys: *const system.System,
     report_out: *Report,
@@ -1473,7 +1473,7 @@ pub fn run_in_bearing(
 /// seats every lost phase, exactly as the rung below does. Under `.borne` it
 /// seats the lost phases the bearing spares, carries the rest as loss, and the
 /// settlement says so in a word an operator can act on.
-fn mend_the_plan(
+pub fn mend_the_plan(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,
@@ -1638,7 +1638,7 @@ fn settle_the_plan(
 /// The verdict says that a plan fell short; a supervisor that means to repair
 /// it needs to know where, and the answer lives in a table that is gone the
 /// moment the run returns. So the run writes it down while it still holds it.
-fn reckon_the_plan(
+pub fn reckon_the_plan(
     io: std.Io,
     table: *const Table,
     ledger: Ledger,

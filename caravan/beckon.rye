@@ -6772,7 +6772,7 @@ pub fn reap_oldest(
 /// one set of notes per declared domain, and the capability table derived from
 /// the document itself -- all before a single dependent is spawned, so no
 /// dependent ever finds a conferral, a bell, or a store left by an earlier run.
-fn seat_the_ground(
+pub fn seat_the_ground(
     io: std.Io,
     sys: *const system.System,
     report_out: *Report,
@@ -6831,153 +6831,6 @@ pub fn seat_the_record(base: []const Phase, table: *Table) RunError!void {
     assert(precede.plan_is_closed(standing(table)));
 }
 
-/// Runs a record on the chosen mark, answering for abandoned work as the chosen
-/// answer says.
-///
-/// The supervisor every rung of this arc keeps -- fill the table, reap the
-/// eldest, judge at the end -- with each later act folded in behind the one
-/// below it, so a plan repairs what it lost, settles, corrects the reader that
-/// settlement replaced, carries the correction to them, reads what that reader
-/// answered back, records the disagreement, stands its own published word up
-/// beside it, asks the reader who raised that objection whether they still hold
-/// it, and finally carries that answer into the mark an operator opens.
-pub fn run_in_forbear(
-    allocator: std.mem.Allocator,
-    io: std.Io,
-    self_path: []const u8,
-    sys: *const system.System,
-    base: []const Phase,
-    wake: gap.Wake,
-    reading: Reading,
-    keeping: Keep,
-    bearing: Bearing,
-    standard: Standard,
-    review: Review,
-    notice: Notice,
-    dispatch: Dispatch,
-    receipt: Receipt,
-    record: Standing,
-    escort: Escort,
-    term: Term,
-    mark: Mark,
-    tidings: Tidings,
-    appeal: Appeal,
-    quarrel: Quarrel,
-    report_out: *Report,
-) (roster.RosterError || exercise.ProvisionError || notify.BellError || NoteError || RunError || cohort.RunError || boot.BootError)!void {
-    // invariant: a run always knows what program to spawn
-    assert(self_path.len >= 1);
-    // invariant: a run always reports into a fresh report
-    assert(run_of(report_out).admitted == 0);
-    if (base.len == 0) return error.EmptyQueue;
-    if (base.len > max_queue_len) return error.QueueFull;
-
-    var table: Table = .{};
-    try seat_the_record(base, &table);
-
-    const caps = try seat_the_ground(io, sys, report_out);
-
-    // The relenting: the note it may take down is the one every step here reads.
-    try release_the_standing(io, quarrel.relent, report_out);
-
-    // The quarrel this run inherits, read here and nowhere later: read before a
-    // single phase is taken up, it can only be a position an earlier run
-    // carried. The rungs below write that same note at the very end of a run, so
-    // a plan reading it afterward would be reading its own handwriting back as
-    // somebody else's judgment.
-    const taken_up = position_standing(io);
-    run_of(report_out).queued = table.held;
-
-    while (table.left > 0 or table.in_flight > 0) {
-        const took_up = try fill_table(
-            allocator, io, self_path, sys, &caps, wake, reading, keeping, &table, report_out,
-        );
-        if (table.in_flight > run_of(report_out).peak_in_flight) {
-            run_of(report_out).peak_in_flight = table.in_flight;
-        }
-
-        if (table.left > 0) {
-            const free = max_in_flight - table.in_flight;
-            run_of(report_out).slots_unspent += free;
-            if (took_up == 0 and free > 0) run_of(report_out).idle_turns += 1;
-        }
-
-        // With an empty table nothing conflicts, so a stall here would mean
-        // the record named a domain the document does not.
-        if (table.in_flight == 0) return error.OrderStalled;
-
-        try reap_oldest(io, &table, .answered, report_out);
-    }
-    // invariant: the whole record was taken up, and every dependent reaped
-    assert(table.left == 0);
-    assert(table.in_flight == 0);
-    assert(run_of(report_out).reaped == run_of(report_out).admitted);
-    // invariant: every phase either started a dependent or was conferred to one
-    assert(table.finished + abandoning_of(report_out).inner.inner.inner.inner.absorbed == table.held);
-
-    var j: u32 = 0;
-    while (j < table.finished) : (j += 1) try judge_outcome(table.done[j], report_out);
-    // invariant: every reaped dependent was judged, none skipped
-    assert(j == table.finished);
-
-    // The reckoning stands exactly as the rung below wrote it, and always on
-    // the reckoning ledger: a mend that repaired a plan under the assuming
-    // reading would be repairing a loss it had already declared did not count.
-    // What this rung adds to it is the recantation, weighed against the
-    // judgment already standing on the wire before this run touches it.
-    try reckon_the_plan(io, &table, .reckoned, review, report_out);
-
-    // Every run here mends, since the question this rung asks opens inside the
-    // repair rather than before it: what separates the two readings is which
-    // of the plan's losses the repair is allowed to touch.
-    try mend_the_plan(
-        allocator, io, self_path, sys, &caps, base, wake, keeping, bearing, standard, review, &table, report_out,
-    );
-
-    // The correction the rung below writes, unchanged and still last of the
-    // record's own work: a reader is owed the word the run actually ended on
-    // rather than the word it held halfway through.
-    try post_the_amendment(io, notice, report_out);
-
-    // The journey the rung below makes, unchanged: a correction with somewhere
-    // to go is carried to the place its reader was actually reached.
-    try carry_the_amendment(io, dispatch, report_out);
-
-    // The hearing the rung below makes, with one word changed: an answer counts
-    // as heard only where the hand actually agrees, since an answer a plan
-    // cannot accept is not an answer it heard.
-    try hear_the_reader(io, receipt, report_out);
-
-    // The record the rung below keeps, unchanged: a reader who answered in a
-    // word this plan cannot accept is written down in both voices.
-    try record_the_dispute(io, receipt, record, report_out);
-
-    // The escort the rung below writes, unchanged: an operator reading this
-    // plan's word reads the objection standing against it in the same reach.
-    try escort_the_word(io, escort, report_out);
-
-    // The term the rung below weighs, unchanged: the objection standing beside
-    // this plan's word is put back to the reader who raised it, and answered or
-    // let go.
-    try weigh_the_term(io, term, report_out);
-
-    // The standing the rung below carries into the mark, unchanged: an operator
-    // opening the objection reads whether anybody is still behind it.
-    try stand_the_mark(io, mark, report_out);
-
-    // The tidings the rung below writes, unchanged: the reader who raised the
-    // quarrel is told how it came out, in the box they already know.
-    try tell_the_reader(io, tidings, report_out);
-
-    // The appeal the rung below reads, unchanged: the reader who was answered
-    // may answer that answering, and the record says where they stand.
-    try read_the_appeal(io, appeal, report_out);
-
-    // Every act a run owes the quarrel standing over it, in the order the
-    // arc grew. The spine lives in the harness now, so this rung runs the
-    // steps it declares and copies none of the order: `ladder_checks.rye`.
-    try ladder_checks.close_the_quarrel(@This(), io, taken_up, quarrel, report_out);
-}
 
 /// Carries the finding this run reached to the reader who won the admission.
 ///
@@ -8073,7 +7926,7 @@ pub fn date_the_standing(io: std.Io, dwell: Dwell, report_out: *Report) (RunErro
 /// clearing nothing rather than by closing a quarrel on its holder's behalf. A
 /// withdrawn quarrel that went on standing over the plan anyway is the number
 /// this rung moves.
-fn release_the_standing(io: std.Io, relent: Relent, report_out: *Report) (RunError || NoteError)!void {
+pub fn release_the_standing(io: std.Io, relent: Relent, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.release_the_standing(@This(), io, relent, report_out);
 }
 
@@ -8130,7 +7983,7 @@ pub fn carry_the_position(io: std.Io, endurance: Endurance, report_out: *Report)
 /// by weighing nothing rather than by composing a plea. A reader who answered
 /// how their quarrel came out and whom no run ever read is the number this rung
 /// moves.
-fn read_the_appeal(io: std.Io, appeal: Appeal, report_out: *Report) (RunError || NoteError)!void {
+pub fn read_the_appeal(io: std.Io, appeal: Appeal, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.read_the_appeal(@This(), io, appeal, report_out);
 }
 
@@ -8150,7 +8003,7 @@ fn read_the_appeal(io: std.Io, appeal: Appeal, report_out: *Report) (RunError ||
 /// all; each is a silence no tiding can fill, and each says so by weighing
 /// nothing rather than by inventing a correspondent. A quarrel weighed whose
 /// raiser was never told how it came out is the number this rung moves.
-fn tell_the_reader(io: std.Io, tidings: Tidings, report_out: *Report) (RunError || NoteError)!void {
+pub fn tell_the_reader(io: std.Io, tidings: Tidings, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.tell_the_reader(@This(), io, tidings, report_out);
 }
 
@@ -8169,7 +8022,7 @@ fn tell_the_reader(io: std.Io, tidings: Tidings, report_out: *Report) (RunError 
 /// mark that names an objection and never says whether anybody still holds it --
 /// read live by every operator, however long ago the quarrel was let go -- is the
 /// number this rung moves.
-fn stand_the_mark(io: std.Io, mark: Mark, report_out: *Report) (RunError || NoteError)!void {
+pub fn stand_the_mark(io: std.Io, mark: Mark, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.stand_the_mark(@This(), io, mark, report_out);
 }
 
@@ -8189,7 +8042,7 @@ fn stand_the_mark(io: std.Io, mark: Mark, report_out: *Report) (RunError || Note
 /// says so by weighing nothing rather than by inventing a correspondent. An
 /// objection published beside a word with no term on it at all -- standing on
 /// every future reader, unasked -- is the number this rung moves.
-fn weigh_the_term(io: std.Io, term: Term, report_out: *Report) (RunError || NoteError)!void {
+pub fn weigh_the_term(io: std.Io, term: Term, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.weigh_the_term(@This(), io, term, report_out);
 }
 
@@ -8207,7 +8060,7 @@ fn weigh_the_term(io: std.Io, term: Term, report_out: *Report) (RunError || Note
 /// where the plan never listened is the number this rung moves; a reader who
 /// never wrote at all is a silence no run can close, counted nowhere and
 /// refused only where a run claims to have heard it.
-fn hear_the_reader(io: std.Io, receipt: Receipt, report_out: *Report) (RunError || NoteError)!void {
+pub fn hear_the_reader(io: std.Io, receipt: Receipt, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.hear_the_reader(@This(), io, receipt, report_out);
 }
 
@@ -8226,7 +8079,7 @@ fn hear_the_reader(io: std.Io, receipt: Receipt, report_out: *Report) (RunError 
 /// reader who answered in a word this plan cannot accept is written down -- and
 /// under `.settled` even that one is set aside, which is where the rung below
 /// leaves every reader and precisely the number this rung moves.
-fn record_the_dispute(
+pub fn record_the_dispute(
     io: std.Io,
     receipt: Receipt,
     record: Standing,
@@ -8249,7 +8102,7 @@ fn record_the_dispute(
 /// weighing nothing rather than by inventing an objector. A word published over
 /// a disagreement that stands recorded, read by an operator who finds no sign of
 /// it, is the number this rung moves.
-fn escort_the_word(io: std.Io, escort: Escort, report_out: *Report) (RunError || NoteError)!void {
+pub fn escort_the_word(io: std.Io, escort: Escort, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.escort_the_word(@This(), io, escort, report_out);
 }
 
@@ -8267,7 +8120,7 @@ fn escort_the_word(io: std.Io, escort: Escort, report_out: *Report) (RunError ||
 /// contradicts is answered -- and under `.silent` even that one is left standing,
 /// which is where the rung below leaves every reader and precisely the number
 /// this rung moves.
-fn post_the_amendment(io: std.Io, notice: Notice, report_out: *Report) (RunError || NoteError)!void {
+pub fn post_the_amendment(io: std.Io, notice: Notice, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.post_the_amendment(@This(), io, notice, report_out);
 }
 
@@ -8285,7 +8138,7 @@ fn post_the_amendment(io: std.Io, notice: Notice, report_out: *Report) (RunError
 /// travels -- and under `.waiting` even that one stays where it was written,
 /// which is where the rung below leaves every reader who does not come back,
 /// and precisely the number this rung moves.
-fn carry_the_amendment(io: std.Io, dispatch: Dispatch, report_out: *Report) (RunError || NoteError)!void {
+pub fn carry_the_amendment(io: std.Io, dispatch: Dispatch, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.carry_the_amendment(@This(), io, dispatch, report_out);
 }
 
@@ -8306,7 +8159,7 @@ fn carry_the_amendment(io: std.Io, dispatch: Dispatch, report_out: *Report) (Run
 /// exactly as the rung below does. Under `.revisit` the recanted ones come back
 /// into the repair, and the settlement moves with them -- from `borne`, which
 /// tells an operator there is nothing left to do, to `carried`, which is true.
-fn mend_the_plan(
+pub fn mend_the_plan(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,
@@ -8356,7 +8209,7 @@ pub fn settle_the_plan(
 /// run's own record supports. Whichever way the plan asks its history to be
 /// read, that reading is published while the run still holds the evidence for
 /// it, and read back before the repair spares or seats a single phase.
-fn reckon_the_plan(
+pub fn reckon_the_plan(
     io: std.Io,
     table: *const Table,
     ledger: Ledger,
@@ -8871,7 +8724,8 @@ fn run_one(
     report_out: *Report,
 ) bool {
     if (!seat_the_wire(io, @intCast(plan.len), stands, stood, replies, answers, owes, weighs, opens, rests, handed_on, named_before)) return false;
-    run_in_forbear(
+    ladder_checks.run_in_forbear(
+        @This(),
         allocator, io, self_path, sys, plan, .when_moved, .preceded, .held_on, .borne, .weighed, .revisit, .posted, .carried, .asked, .open, .escorted, .bounded, .standing, .returned, .open, .{ .endurance = .kept, .heed = heed, .relent = relent, .dwell = dwell, .swell = swell, .refer = refer, .deem = deem, .avow = avow, .owe = owe, .meet = meet, .redress = redress, .upshot = upshot, .apprise = apprise, .suffice = suffice, .reopen = reopen, .reweigh = reweigh, .recount = recount, .allay = allay, .forbear = forbear, .mind = mind, .desist = desist, .beckon = beckon }, report_out,
     ) catch |err| {
         print("  RED: a queue did not survive its run: {s}\n", .{@errorName(err)});

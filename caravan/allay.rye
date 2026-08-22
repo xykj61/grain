@@ -6010,7 +6010,7 @@ pub fn reap_oldest(
 /// one set of notes per declared domain, and the capability table derived from
 /// the document itself -- all before a single dependent is spawned, so no
 /// dependent ever finds a conferral, a bell, or a store left by an earlier run.
-fn seat_the_ground(
+pub fn seat_the_ground(
     io: std.Io,
     sys: *const system.System,
     report_out: *Report,
@@ -7025,7 +7025,7 @@ pub fn date_the_standing(io: std.Io, dwell: Dwell, report_out: *Report) (RunErro
 /// clearing nothing rather than by closing a quarrel on its holder's behalf. A
 /// withdrawn quarrel that went on standing over the plan anyway is the number
 /// this rung moves.
-fn release_the_standing(io: std.Io, relent: Relent, report_out: *Report) (RunError || NoteError)!void {
+pub fn release_the_standing(io: std.Io, relent: Relent, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.release_the_standing(@This(), io, relent, report_out);
 }
 
@@ -7082,7 +7082,7 @@ pub fn carry_the_position(io: std.Io, endurance: Endurance, report_out: *Report)
 /// by weighing nothing rather than by composing a plea. A reader who answered
 /// how their quarrel came out and whom no run ever read is the number this rung
 /// moves.
-fn read_the_appeal(io: std.Io, appeal: Appeal, report_out: *Report) (RunError || NoteError)!void {
+pub fn read_the_appeal(io: std.Io, appeal: Appeal, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.read_the_appeal(@This(), io, appeal, report_out);
 }
 
@@ -7102,7 +7102,7 @@ fn read_the_appeal(io: std.Io, appeal: Appeal, report_out: *Report) (RunError ||
 /// all; each is a silence no tiding can fill, and each says so by weighing
 /// nothing rather than by inventing a correspondent. A quarrel weighed whose
 /// raiser was never told how it came out is the number this rung moves.
-fn tell_the_reader(io: std.Io, tidings: Tidings, report_out: *Report) (RunError || NoteError)!void {
+pub fn tell_the_reader(io: std.Io, tidings: Tidings, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.tell_the_reader(@This(), io, tidings, report_out);
 }
 
@@ -7121,7 +7121,7 @@ fn tell_the_reader(io: std.Io, tidings: Tidings, report_out: *Report) (RunError 
 /// mark that names an objection and never says whether anybody still holds it --
 /// read live by every operator, however long ago the quarrel was let go -- is the
 /// number this rung moves.
-fn stand_the_mark(io: std.Io, mark: Mark, report_out: *Report) (RunError || NoteError)!void {
+pub fn stand_the_mark(io: std.Io, mark: Mark, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.stand_the_mark(@This(), io, mark, report_out);
 }
 
@@ -7141,7 +7141,7 @@ fn stand_the_mark(io: std.Io, mark: Mark, report_out: *Report) (RunError || Note
 /// says so by weighing nothing rather than by inventing a correspondent. An
 /// objection published beside a word with no term on it at all -- standing on
 /// every future reader, unasked -- is the number this rung moves.
-fn weigh_the_term(io: std.Io, term: Term, report_out: *Report) (RunError || NoteError)!void {
+pub fn weigh_the_term(io: std.Io, term: Term, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.weigh_the_term(@This(), io, term, report_out);
 }
 
@@ -7159,7 +7159,7 @@ fn weigh_the_term(io: std.Io, term: Term, report_out: *Report) (RunError || Note
 /// where the plan never listened is the number this rung moves; a reader who
 /// never wrote at all is a silence no run can close, counted nowhere and
 /// refused only where a run claims to have heard it.
-fn hear_the_reader(io: std.Io, receipt: Receipt, report_out: *Report) (RunError || NoteError)!void {
+pub fn hear_the_reader(io: std.Io, receipt: Receipt, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.hear_the_reader(@This(), io, receipt, report_out);
 }
 
@@ -7178,7 +7178,7 @@ fn hear_the_reader(io: std.Io, receipt: Receipt, report_out: *Report) (RunError 
 /// reader who answered in a word this plan cannot accept is written down -- and
 /// under `.settled` even that one is set aside, which is where the rung below
 /// leaves every reader and precisely the number this rung moves.
-fn record_the_dispute(
+pub fn record_the_dispute(
     io: std.Io,
     receipt: Receipt,
     record: Standing,
@@ -7201,7 +7201,7 @@ fn record_the_dispute(
 /// weighing nothing rather than by inventing an objector. A word published over
 /// a disagreement that stands recorded, read by an operator who finds no sign of
 /// it, is the number this rung moves.
-fn escort_the_word(io: std.Io, escort: Escort, report_out: *Report) (RunError || NoteError)!void {
+pub fn escort_the_word(io: std.Io, escort: Escort, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.escort_the_word(@This(), io, escort, report_out);
 }
 
@@ -7219,7 +7219,7 @@ fn escort_the_word(io: std.Io, escort: Escort, report_out: *Report) (RunError ||
 /// contradicts is answered -- and under `.silent` even that one is left standing,
 /// which is where the rung below leaves every reader and precisely the number
 /// this rung moves.
-fn post_the_amendment(io: std.Io, notice: Notice, report_out: *Report) (RunError || NoteError)!void {
+pub fn post_the_amendment(io: std.Io, notice: Notice, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.post_the_amendment(@This(), io, notice, report_out);
 }
 
@@ -7237,7 +7237,7 @@ fn post_the_amendment(io: std.Io, notice: Notice, report_out: *Report) (RunError
 /// travels -- and under `.waiting` even that one stays where it was written,
 /// which is where the rung below leaves every reader who does not come back,
 /// and precisely the number this rung moves.
-fn carry_the_amendment(io: std.Io, dispatch: Dispatch, report_out: *Report) (RunError || NoteError)!void {
+pub fn carry_the_amendment(io: std.Io, dispatch: Dispatch, report_out: *Report) (RunError || NoteError)!void {
     return ladder_checks.carry_the_amendment(@This(), io, dispatch, report_out);
 }
 
@@ -7258,7 +7258,7 @@ fn carry_the_amendment(io: std.Io, dispatch: Dispatch, report_out: *Report) (Run
 /// exactly as the rung below does. Under `.revisit` the recanted ones come back
 /// into the repair, and the settlement moves with them -- from `borne`, which
 /// tells an operator there is nothing left to do, to `carried`, which is true.
-fn mend_the_plan(
+pub fn mend_the_plan(
     allocator: std.mem.Allocator,
     io: std.Io,
     self_path: []const u8,
@@ -7308,7 +7308,7 @@ pub fn settle_the_plan(
 /// run's own record supports. Whichever way the plan asks its history to be
 /// read, that reading is published while the run still holds the evidence for
 /// it, and read back before the repair spares or seats a single phase.
-fn reckon_the_plan(
+pub fn reckon_the_plan(
     io: std.Io,
     table: *const Table,
     ledger: Ledger,
