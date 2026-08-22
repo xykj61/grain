@@ -5011,6 +5011,54 @@ pub fn note_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, domain: 
     return buf[0..w];
 }
 
+/// Writes the path of one reader's own hand -- the reading they say they hold.
+///
+/// Thirty-four rungs held this body byte for byte, at twenty-seven lines over a
+/// one-line signature, which is why it led the queue by realized fall while two
+/// wider families ranked above it by carried lines. The address a reader's hand
+/// is read at never varies across the arc: a name under the readers' own
+/// directory, wearing the suffix that says the reader spoke. Lifted here, one
+/// body serves them all, and each rung reaches its own ceiling, its own
+/// directory, its own address test, and its own error set through the type it
+/// hands in.
+///
+/// Sibling of `tell_path` above, and deliberately NOT merged with it. The two
+/// differ in their suffix and in the companion each pairs with, and that pairing
+/// is the meaning rather than the accident: an answer is left in the same box a
+/// question is asked in, and a hand is left in the same box a correction is. A
+/// merged body taking both as comptime parameters would keep both asserts and is
+/// worth its own lap; folding it in here would widen this one across a second
+/// family of twenty-nine.
+///
+/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+pub fn hand_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: []const u8) rung.NoteError![]const u8 {
+    // invariant: a hand is only ever read for an address a run may carry to
+    assert(rung.addressable(address));
+    const suffix = ".said";
+    // invariant: an answer is read from the same box a correction is left in
+    comptime assert(suffix.len == ".told".len);
+    const total = rung.reader_dir.len + 1 + address.len + suffix.len;
+    if (total > rung.max_note_path_len) return error.NotePathTooLong;
+    var at: u32 = 0;
+    for (rung.reader_dir) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    buf[at] = '/';
+    at += 1;
+    for (address) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    for (suffix) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    // invariant: a hand path is written exactly as long as it was measured
+    assert(at == total);
+    return buf[0..at];
+}
+
 /// Writes the path of the answer one reader is owed about their own quarrel.
 ///
 /// Twenty-nine rungs held this body byte for byte, because the address a reader
