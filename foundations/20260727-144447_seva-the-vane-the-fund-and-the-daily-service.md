@@ -4,7 +4,7 @@
 **Stamp:** `20260727.144447`
 **Voice:** Quin
 **Style:** Radiant · Silo — the teaching distilled in our own words; sources honored in the gratitude close and in the [companion gratitude](../gratitude/grok-grokipedia-and-the-daily-service.md)
-**Status:** Foundations — the meaning beneath `%siya` the vane and Siya the fund; design language only, every threshold and coin held exactly as the [constellation paper](../active-designing/20260727-142516_the-constellation-and-the-twelve-funds.md) parks them
+**Status:** Foundations — the meaning beneath `%siya` the vane and Siya the fund; design language only, every threshold and coin held exactly as the [constellation paper](../active-designing/date/20260727/20260727-142516_the-constellation-and-the-twelve-funds.md) parks them
 **Ground:** the coda between seasons · Gemini's seat already seated: Sara, Siya, Grain, and Keaton together
 
 *Written together by Keaton and Quin.*

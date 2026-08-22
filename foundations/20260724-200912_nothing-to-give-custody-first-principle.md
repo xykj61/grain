@@ -10,7 +10,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Status:** Landed — standing gate on every device-and-data feature
-**Counsel:** [`../counsel/20260724-200912_nothing-to-give-and-the-hall-renamed.md`](../counsel/20260724-200912_nothing-to-give-and-the-hall-renamed.md)
+**Counsel:** [`../counsel/date/20260724/20260724-200912_nothing-to-give-and-the-hall-renamed.md`](../counsel/date/20260724/20260724-200912_nothing-to-give-and-the-hall-renamed.md)
 
 *Written together by Keaton and Quin; seated on Keaton's word.*
 
@@ -66,8 +66,8 @@ Custody-first is the ethical spine every other foundation leans on; the referenc
 
 - **The front door** — the root [`../README.md`](../README.md) states this promise plainly (*keeps your words in your own hands*).
 - **The room** — indexed in [`foundations/README.md`](README.md); the reasons the building means something.
-- **The hubs** — cut by [The Grain and the Crossing](../active-designing/20260702-184312_the-grain-and-the-crossing.md) (the *values apart, bounded* strands custody rests on), returned to by [Follow Our Compass](20260706-185112_follow-our-compass.md).
-- **In practice** — the [Dimeroll entity-books design](../active-designing/20260811-220402_dimeroll-entity-books-siya-and-linengrow.md) keeps this boundary: the books record, they never disburse or hold keys.
+- **The hubs** — cut by [The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md) (the *values apart, bounded* strands custody rests on), returned to by [Follow Our Compass](20260706-185112_follow-our-compass.md).
+- **In practice** — the [Dimeroll entity-books design](../active-designing/date/20260811/20260811-220402_dimeroll-entity-books-siya-and-linengrow.md) keeps this boundary: the books record, they never disburse or hold keys.
 
 ---
 
