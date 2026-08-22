@@ -31,6 +31,27 @@
 #   dp_paths_roster    # one excluded path per line, for consumers that filter afterward
 #   dp_find_prune      # sets "$@" to find tests:  -name X -o -name Y ...   (for -prune)
 
+# SURVEYED `20260821.203103`, AND THE OTHER LISTS DELIBERATELY STAY SEPARATE. Three more scan
+# scripts in tools/fixtures carry exclusions, and the instinct after unifying these two was to
+# gather those as well. Measurement said no, and the reasoning is recorded here so a later round
+# does not re-open it and "helpfully" merge them:
+#
+#   shipped_binary_claim_scan.sh -- shares `.git seed vendor` and adds `gratitude`, because
+#     third-party study notes make no claims about OUR tools. Folding it in would either scan that
+#     text for claims it cannot make, or -- if `gratitude` joined the list below -- drop 113 dated
+#     references from the census including SIX genuinely broken ones. A merge that hides real
+#     breakage is not a merge.
+#
+#   vols_survey_truth.sh and vols_survey_crosscount.sh -- a survey scope rather than a field
+#     boundary, and the two differ from each other on purpose: `truth` walks the real tree while
+#     `crosscount` walks a fixture tree, so a narrower list fits a smaller corpus. Both witnesses
+#     stand GREEN.
+#
+# THE TEST FOR WHETHER TWO LISTS SHOULD MERGE is whether they answer the same QUESTION, not
+# whether they share entries. These two did -- both ask "what is not the field, and what is the
+# instrument?" -- and the volatile half, the fixture names, grows with every tool that plants one.
+# The three-directory base below is stable and duplicating it elsewhere costs nothing.
+#
 # Directories that are not this field at all: object storage, a projection of this same tree, and
 # third-party source held unmodified.
 DP_EXCLUDE_DIRS=".git seed vendor"
