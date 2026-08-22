@@ -1,0 +1,35 @@
+format session-log-v1
+stamp 20260822.094730
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The doc that described its neighbor, and the citation that can prove it
+prompt Take the next agent-doable lap Lindy-first crux-first, Standfast on reds first, read the council rota row, condense REMEMBER, send the increment
+think Standfast opened the lap. grep for OPEN in crux/REDS.md found nothing live -- every row through %133 carries a CLOSED twin -- so the ledger was clear.
+think Found the real opening condition in the tree rather than the card: 103 files stood STAGED and uncommitted from the previous lap, with their session log written and never shipped. A lap that ends without a send leaves the next lap holding two rounds, so the first job was proving that increment green and sending it as its own signed round.
+think Council rota, lap 167, row 167 mod 5 = 2 -- the Fire/Mars triad, cut and stop. Standfast names the stop itself, reds-first names where the hours go once the cord is pulled, and the three depths of removal name how deep a cut goes. The row fit the lap exactly: a fold is the gentlest depth, since a body lifted into one home destroys nothing.
+think Ran tools/caravan_ladder_carry_witness.rish GREEN at carry 69,805 against a ceiling of 69,805, then the choir and the era suite, so the staged increment was proven on the tree it actually ran on before any of it shipped.
+think Priced the next fold head with sh tools/fixtures/ladder_reach_visibility_scan.sh read_count -- declared=45 identical=43 folding=43 lines=14 reached=2 widens=0 stub=3 fall=462, the last zero-widening row on the board.
+think Hashed all forty-five read_count bodies. Forty-three matched; caravan/confer.rye and caravan/revoke.rye differed by exactly two lines -- the omitted assert(suffix.len >= 1) and its invariant comment. The same pair diverged the same way under read_words last lap, so the shape was familiar rather than new.
+think Read every read_count call site in both rungs before judging the omission. All five pass string literals -- ".offered", ".given", ".held" -- so the assert holds at every one and the omission is an accident rather than a contract, unlike revoke.rye's deliberate difference under read_words.
+think Then read the harness itself around the insertion point, which is the part twelve previous lifts had skipped, and found the red: a twenty-four-line doc block beginning "Writes one note for a dependent" sat directly above pub fn read_words, and pub fn seat_note twenty lines below it carried no doc at all.
+think Confirmed the mechanism rather than assuming it. The seat_note lift inserted its declaration BELOW read_words while placing its doc block ABOVE it. Zig binds a doc comment to the next declaration, so read_words -- which reads a word list into a bounded buffer -- was documented as writing a note, complete with the fold arithmetic of a family it has nothing to do with.
+think Audited all one hundred and forty declarations in the harness for the same shape before repairing one, since a defect found once is a sample rather than a census. This misattachment is isolated; the other undocumented functions are private check delegators, a different and pre-existing pattern.
+think Chose the guard by asking what the file already states about itself. Every fold's doc block carries the widening meter's own REACH_OK family=X citation, which is the block's own statement of what it documents -- so the check is a name against a name rather than a reading of prose, which is the only kind of prose check worth building.
+think First draft of the scan read one citation of seven. The citation wraps where the prose wraps, so REACH_OK can close one line while family=X opens the next. Widened the match to take family= wherever it stands inside the block, and it read all seven.
+obs REDS %134 booked and closed in the same lap. The block moved down to sit above pub fn seat_note, read_words kept its own one-line summary, and tools/fixtures/ladder_doc_attachment_scan.sh now refuses any block whose cited family differs from the pub fn beneath it.
+obs Three legs prove on metal, and the third is the one that matters most. A misattached block is refused in the exact shape the red wore; a harness carrying no citation refuses rather than blessing its own blindness; and a correctly attached block is WELCOMED, because a gate that reds on valid input teaches a bench to route around it -- the Radiant pass playbook's own rule for blocking witnesses, applied to a scan.
+obs The class this closes is one no witness on the ladder could ever have caught. Every Caravan witness proves behavior, and a doc comment has none -- so both wrong claims rode a signed commit through a hundred and eight green witnesses without a murmur. Prose about code is checkable only where the prose names something the code also names, and the family citation was already there.
+obs The era roster grew from ten rungs to eleven, and every rung's own count claim moved with it. A first pass replaced them too coarsely and left the stub rung reading 11/11 beside the new one; caught by reading the roster back rather than by trusting the edit.
+obs The residue is named rather than papered over: the guard binds only blocks carrying a family= citation, so a fold that stops writing the citation stops being seen. Every fold of this arc writes it, which is what makes the check worth its weight.
+loom reds_134 harness_declarations=140 cited_blocks=7 docs_adrift_before=1 docs_adrift_after=0
+loom caravan_choir witnesses=108 verdict=GREEN era_suite_rungs=11
+loom caravan_carry carried=69805 ceiling=69805 bodies=18173 distinct=7971 families=703 modules=110
+loom read_count_queue declared=45 identical=43 lines=14 reached=2 widens=0 stub=3 predicted_fall=462
+file caravan/ladder_checks.rye the seat_note doc block moved down to the declaration it describes
+file tools/fixtures/ladder_doc_attachment_scan.sh the new guard -- a fold's family citation checked against the pub fn beneath it
+file tools/ladder_doc_attachment_witness.rish three legs on generated controls, both refusals and the welcome
+file tools/glow_tend_era_suite.rish the roster grown to eleven rungs, every denominator moved with it
+file crux/REDS.md row %134 booked and closed, headline and span re-derived by the monotone witness
+recommend keep-going read_count at 462 over forty-three rungs is priced and clear -- confer.rye and revoke.rye regain the suffix invariant by folding, so the family lifts forty-five rather than forty-three
