@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20260822.122148
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The four that stayed home on their merits, and a sweep that rewrote the lift it had just written
+prompt Autonomous loop, second lap of the round -- take the next agent-doable lap Lindy-first crux-first, the queue head named by the lap before it.
+think revoke_one was the head at four hundred and sixty-eight, and the lap before named the reading to apply: an import binding is free when the harness already holds the module. Read the private symbols first -- all forty widenings bind cycle, and caravan/ladder_checks.rye imports cycle in its own head. Free before a line was written.
+think Read the four that differ before trusting the identity count, since the lap before had just proved a differing body can be structural. All four are: abandon.rye, reckon.rye, reclaim.rye, and revoke.rye each reach their own revocation counter at a different depth -- report_out.revoked, report_out.inner.revoked, below_of(report_out).inner.revoked, below_of(report_out).inner.inner.revoked -- and revoke.rye also names revoke_refusal unqualified, since it is the rung that publishes it. Four structural differences, four bodies left whole.
+think The lift: pub fn revoke_one(comptime rung: type, io: std.Io, table: *rung.Table, slot: u32, keep: u32, report_out: *rung.Report) (rung.RunError || rung.NoteError)!void, reaching revoke_rung, revoke, confirm_pruned, and abandoning_of through the rung and cycle.max_hops in the harness.
+think Every meter moved in the same lap as the fold: the carry ceiling to 67,363, the sink corpus to 64,939, farewell.rye's holding to 3,841, and the reach witness repointed from revoke_one to judge_outcome so the queue head stays asserted rather than recited.
+obs The corrected fall formula predicted 468 and the carry fell exactly 468: 67,831 to 67,363. Three exact hits in a row now -- 492, 528, 468 -- across families of forty-two, twelve, and forty rungs.
+obs A sweep of my own rewrote the body it had just written. The stub loop grepped for the string "pub fn revoke_one" and caravan/ladder_checks.rye had, one command earlier, become a file containing exactly that string -- so the harness stubbed itself into calling itself. The build refused with an undeclared identifier on the first run and the body was restored. The transferable rule: a sweep keyed on the signature a lift publishes will match the lift, so a sweep must exclude the file it is folding into, by name.
+obs Checked before booking a row, and the row was already booked: tools/ladder_stub_length_scan.sh names this exact shape -- "a lift's stub loop swept the harness in with its rungs" -- and refuses it as harness_delegates_to_itself, standing since REDS %128 and %132 and riding the era suite as rung ten. The loom exists; I reached for a build rather than for the guard that was built for this. Recording the recurrence honestly rather than booking a fourth row that would teach nothing new, and naming the faster instrument: run the stub-length guard immediately after a sweep, before the build.
+obs Two folds in one round, both free of the only cost that was ever real, and neither one free by accident: each was priced by reading its private symbols against the harness's own imports before a line moved. The reading the split widening column opened is holding across four consecutive families.
+obs The next head is judge_outcome at four hundred and sixty-eight, thirty-seven rungs whose thirty-seven widenings all bind carry, with door_admits at four hundred and sixty-two binding system. The harness imports both, so both are free on the same reading; twenty-six of judge_outcome's sixty-three declarations differ, which is the largest divergent cohort the arc has yet met and wants reading before lifting.
+loom witness=caravan_ladder_carry carry_before=67831 carry_after=67363 fall=468 predicted=468 bodies=18178 delegates=3371
+loom witness=ladder_reach_visibility family=revoke_one folding=40 lines=21 widens=40 widens_import=40 stub=9 fall=468
+loom witness=ladder_reach_visibility_sink total_before=65419 total_after=64939 below_fold_line=247 widest_above=3841
+loom suite=caravan_suite rungs=108 verdict=GREEN
+loom suite=glow_tend_era rungs=12 verdict=GREEN
+file caravan/ladder_checks.rye the lifted revoke_one body and its measured doc block
+file caravan/amend.rye one of forty rungs whose twenty-one-line body became a nine-line stub
+file tools/fixtures/caravan_ladder_carry_scan.sh the carry ceiling brought down to 67,363
+file tools/caravan_ladder_carry_witness.rish new ceiling and bodies asserts, the fold queue prose and GREEN line rewritten for this lap
+file tools/caravan_ladder_reach_visibility_witness.rish revoke_one repointed to its folded reading, judge_outcome asserted as the new head, sink totals moved with the fold
+file crux/REMEMBER.md the Now refilled with both folds of this round, the prior lap condensed into the prior-edges line
+recommend keep-going judge_outcome is the head at four hundred and sixty-eight and its thirty-seven widenings all bind carry, a module the harness already imports; read the twenty-six declarations that differ from the thirty-seven before lifting, since two consecutive laps have now found a differing body to be structural rather than drift, and this is the largest divergent cohort the arc has met
