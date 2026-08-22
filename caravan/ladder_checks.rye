@@ -8966,3 +8966,90 @@ pub fn run_main(comptime rung: type, init: std.process.Init) !u8 {
     if (args.len >= 2) return 1;
     return rung.run_self_test(allocator, io, self_path);
 }
+
+/// Seats the quarrel's own history on the wire -- the position, its age, the
+/// third hand's answer, and any debt an earlier run left standing.
+///
+/// This body stood byte for byte in seventeen rungs at seventy-two lines
+/// apiece, the deepest family the carry meter still named. Every line of it is
+/// the harness standing in for the runs that met a quarrel before today: no run
+/// of any plan writes its own history, so the writing belongs here, once, rather
+/// than in each rung that needs a history seated before it runs.
+///
+/// The contract is the vocabulary a rung already publishes for its own wire --
+/// the eight `clear_` erasures, `seat_forum` and `seat_note`, the referral and
+/// finding shapes, `standing_note` and `dwell_note`, and the three names
+/// `plan_name`, `standing_forum`, and `standing_settlement`. Nothing here holds
+/// state, and the harness never learns a caller by name.
+pub fn seat_the_history(comptime rung: type, io: std.Io, stands: ?rung.Plea, stood: u32, answers: ?rung.Finding, owes: ?[rung.max_debt_bytes]u8) bool {
+    rung.clear_standing(io);
+    // The age clears with the position the harness seats, so each measured run
+    // meets a quarrel of a known age rather than one carrying whatever the last
+    // lap left on the wire.
+    rung.clear_dwell(io);
+    // The standing clears too, for the same reason: a herald this lap reads must
+    // be one this lap published.
+    rung.clear_swell(io);
+    // The forum's own box clears with it, so a case this lap reads back is one
+    // this lap carried rather than one an earlier lap left standing on a desk.
+    rung.clear_case(io, rung.standing_forum);
+    // The forum itself is seated by the harness, standing in for the operator
+    // who named a third hand before any quarrel existed. No run writes it.
+    rung.seat_forum(io, rung.standing_forum) catch |err| {
+        print("  RED: a forum could not be seated on the wire: {s}\n", .{@errorName(err)});
+        return false;
+    };
+    // The plan's own published finding clears with everything else, so a verdict
+    // this lap reads is one this lap's own run published.
+    rung.clear_deem(io);
+    // And the plan's own word on it clears too, for the same reason: an avowal
+    // this lap reads back must be one this lap's own run actually said.
+    rung.clear_avow(io);
+    // And the debt that word may leave clears with it, so a concession a later
+    // run would find standing is one this lap's own run actually booked.
+    rung.clear_owe(io);
+    // The receipt for a debt met clears too, so a meeting this lap reads back is
+    // one this lap's own run actually made.
+    rung.clear_met(io);
+    // And the word about what that meeting found, for the same reason: a finding
+    // this lap reads back is one this lap's own run reached.
+    rung.clear_redress(io);
+    // And then, where this lap wants one, the debt an earlier run booked is
+    // seated exactly as that run would have left it -- by the harness, standing
+    // in for the run before today. No supervisor writes its own inheritance.
+    if (owes) |owed| {
+        rung.seat_note(io, rung.plan_name, ".owe", &owed) catch |err| {
+            print("  RED: an earlier run's debt could not be seated: {s}\n", .{@errorName(err)});
+            return false;
+        };
+    }
+    // The third hand's own answer, written in their hand rather than by any run.
+    // A desk that has said nothing yet is seated as exactly that: an empty box.
+    rung.clear_finding(io, rung.standing_forum);
+    if (answers) |finding| {
+        // The case a third hand answers is the case this plan carries every run
+        // -- the same word, the same standing, the same age -- so the answer they
+        // wrote on a previous lap is honestly an answer to this one.
+        const case = rung.referral_bytes(rung.standing_settlement, .loud, stood + 1);
+        rung.answer_as_forum(io, rung.standing_forum, rung.finding_bytes(case, finding)) catch |err| {
+            print("  RED: a third hand could not answer in their own hand: {s}\n", .{@errorName(err)});
+            return false;
+        };
+    }
+    if (stands) |plea| {
+        rung.standing_note(io, plea) catch |err| {
+            print("  RED: an earlier run's position could not be seated: {s}\n", .{@errorName(err)});
+            return false;
+        };
+        // The runs this position already stood through, seated as the record
+        // they are. No run of this plan writes its own history; the harness
+        // stands in for the runs that met this quarrel before today.
+        if (stood >= 1) {
+            rung.dwell_note(io, stood) catch |err| {
+                print("  RED: a quarrel's own history could not be seated: {s}\n", .{@errorName(err)});
+                return false;
+            };
+        }
+    }
+    return true;
+}
