@@ -4,6 +4,7 @@
 **Style:** Radiant - **Lens:** TAME - SLC - Lindy-first
 **Gratitude:** John Gall, *Systemantics* (1975)
 
+> **Fused `20260823.105651` into [`20260823-105651_the-shape-you-grew-and-the-shape-you-are.md`](20260823-105651_the-shape-you-grew-and-the-shape-you-are.md), which carries this law beside Conway's.** This page stays whole as a writing fossil (accrete-never-break), because the tree cites Gall's Law by name in six places and a reader following one of those deserves the argument in full. The rota reads the fusion.
 *A complex system that works is invariably found to have evolved from a simple system that worked.*
 
 That sentence is fifty-one years old and this tree has been obeying it since its first commit, in six places, without ever writing it down. Six citations point at Gall's Law across the repository. Every one of them borrows the name. This page argues it.
