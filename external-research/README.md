@@ -41,7 +41,7 @@ When an exploration **lands** (mission complete) or **moves** to active-designin
 
 ## One clock, one order
 
-Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`README.md`, `TAME_GUIDANCE.md`) carry no stamp. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+Dated explorations carry `YYYYMMDD-HHMMSS_short-sprig.md`; living documents (`README.md`, `TAME_GUIDANCE.md`) carry no stamp. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
 ## Explorations (newest first)
 
@@ -167,8 +167,8 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-slug.md`; living documents (`REA
 
 Adding research is a small, glad ritual:
 
-- **Name the file with its stamp** in `YYYYMMDD-HHMMSS_short-slug.md` form, or as a living document when the work revises in place.
-- **Name the slug for its subject.** A short, descriptive slug tells the reader where they are.
+- **Name the file with its stamp** in `YYYYMMDD-HHMMSS_short-sprig.md` form, or as a living document when the work revises in place.
+- **Name the sprig for its subject.** A short, descriptive sprig tells the reader where they are.
 - **Write it in Radiant Style.** Lead with what you found. Favor active voice and affirmative framing. Weave the method together with its meaning, so the reader arrives at the insight through the description itself.
 - **Say why.** Open with the question that prompted the exploration, so a future reader understands the motive as readily as the result.
 - **Close when it is whole.** A finished exploration can end with a benediction or a plain summary of what we now know and what it opens next.

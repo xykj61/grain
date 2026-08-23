@@ -106,7 +106,7 @@ List the folder and infer the pattern:
 ls -1 session-logs/
 ```
 
-Each filename carries a countdown prefix ahead of its real stamp, shaped like `<countdown>_<YYYYMMDD-HHMMSS>_<slug>.md`. Dropping the leading `<countdown>_` leaves `<YYYYMMDD-HHMMSS>_<slug>.md`, which sorts honestly by time alone.
+Each filename carries a countdown prefix ahead of its real stamp, shaped like `<countdown>_<YYYYMMDD-HHMMSS>_<sprig>.md`. Dropping the leading `<countdown>_` leaves `<YYYYMMDD-HHMMSS>_<sprig>.md`, which sorts honestly by time alone.
 
 **Print the full proposed old→new mapping, one line per file, for Kaeden to scan.** If every filename matches the expected shape, apply with history-preserving renames:
 

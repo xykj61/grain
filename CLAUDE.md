@@ -38,7 +38,7 @@ Write in **Radiant Style** — see `context/RADIANT_STYLE.md` and `.claude/rules
 
 ## Session logs
 
-At the end of **every** response, write a session log per `.claude/rules/session-logs.md`: one-clock filename (`YYYYMMDD-HHMMSS_short-slug.bron`, **no countdown prefix**), Bron fields (`stamp` · `editor` · `model` · `voice` · `think` · `obs` · `file` · `recommend`), prepend a row to `session-logs/README.md`, and **commit the log in the same commit as the work** whenever possible. Markdown logs are archive-only. Batch hygiene for archived Markdown: `rye run tools/align_session_logs.rye`.
+At the end of **every** response, write a session log per `.claude/rules/session-logs.md`: one-clock filename (`YYYYMMDD-HHMMSS_short-sprig.bron`, **no countdown prefix**), Bron fields (`stamp` · `editor` · `model` · `voice` · `think` · `obs` · `file` · `recommend`), prepend a row to `session-logs/README.md`, and **commit the log in the same commit as the work** whenever possible. Markdown logs are archive-only. Batch hygiene for archived Markdown: `rye run tools/align_session_logs.rye`.
 
 ## Enclosure
 

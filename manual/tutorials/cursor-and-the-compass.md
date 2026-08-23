@@ -60,7 +60,7 @@ When it prints GREEN, you stand inside the witness habitat.
 
 ## 6. Log, Then Send
 
-Every turn closes with a Bron session log (`session-logs/YYYYMMDD-HHMMSS_slug.bron`) and a newest-first row in `session-logs/README.md`. Once work is ready for the pier, **send** (commit · push · merge) — Cursor’s one word for shipping to your own history.
+Every turn closes with a Bron session log (`session-logs/YYYYMMDD-HHMMSS_sprig.bron`) and a newest-first row in `session-logs/README.md`. Once work is ready for the pier, **send** (commit · push · merge) — Cursor’s one word for shipping to your own history.
 
 ## 7. Markup Pipeline (orientation only)
 

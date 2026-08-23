@@ -21,4 +21,4 @@ Design how **{{GLOW_MODULE}}** fuses with **{{OTHER_CONCEPT}}** for Glow OS, bec
 5. **Write no code.** This is a design doc in `external-research/` with a Pacific stamp; the first witness is named as a future step, not built.
 6. **Address the generic Acme Corporation employee**, cite the silo not the held-whole original, and end with a Galaxy Pitch block if the fusion could matter past this fork.
 
-**Produces:** one `external-research/<stamp>_<slug>.md` design doc; new rows on the names checklist; a bron session log; commits in CONTRIBUTING + Radiant style pushed to both remotes.
+**Produces:** one `external-research/<stamp>_<sprig>.md` design doc; new rows on the names checklist; a bron session log; commits in CONTRIBUTING + Radiant style pushed to both remotes.

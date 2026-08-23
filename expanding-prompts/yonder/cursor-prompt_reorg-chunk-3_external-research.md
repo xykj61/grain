@@ -63,11 +63,11 @@ Apply Kaeden's ruling for these three only after the word is given.
 
 ### Dated explorations (the 30 with header stamps, minus the three above)
 
-For each remaining file carrying `**Version:** YYYYMMDD.HHMMSS`, propose `YYYYMMDD-HHMMSS_<existing-slug>.md`, keeping the slug it already holds. The `968` number pair resolves automatically: `968_prompt_caching_zon_brix.md` → `20260621-063112_prompt-caching-zon-brix.md` and `968_usize_boundary_not_design.md` → `20260621-050312_usize-boundary-not-design.md` — distinct header stamps, no disambiguation needed.
+For each remaining file carrying `**Version:** YYYYMMDD.HHMMSS`, propose `YYYYMMDD-HHMMSS_<existing-sprig>.md`, keeping the sprig it already holds. The `968` number pair resolves automatically: `968_prompt_caching_zon_brix.md` → `20260621-063112_prompt-caching-zon-brix.md` and `968_usize_boundary_not_design.md` → `20260621-050312_usize-boundary-not-design.md` — distinct header stamps, no disambiguation needed.
 
 ### Redirect stubs — rename only, create nothing
 
-`988`, `990`, and `992` are already deprecation redirects; each carries `**Status:** Deprecated (051612)` and already points at its surviving file. Do **not** create new stubs — `992` already redirects to `active-designing/yonder/20260618-184912_recommended-architecture.md`. Rename each into one-clock form using the moment they became stubs, which `999_RESEARCH.md` records as `2026-06-21` at `051612`. They share that second, so give each a distinct `-redirect` slug:
+`988`, `990`, and `992` are already deprecation redirects; each carries `**Status:** Deprecated (051612)` and already points at its surviving file. Do **not** create new stubs — `992` already redirects to `active-designing/yonder/20260618-184912_recommended-architecture.md`. Rename each into one-clock form using the moment they became stubs, which `999_RESEARCH.md` records as `2026-06-21` at `051612`. They share that second, so give each a distinct `-redirect` sprig:
 
 ```
 988_rishi_shell.md            → 20260621-051612_rishi-shell-redirect.md

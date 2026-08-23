@@ -171,7 +171,7 @@ s/\bconstruction3x39\b/acme-construction/g
 # Convergence audit (20260810 · wgn0745jf) — a 5th pass found a family-history
 # layer, a third key fingerprint, and name-in-path leaks. Collapse the broken
 # double-scrub FIRST, then the bare surname; scrub the family enterprise, the org,
-# the third fingerprint, the leaked path slugs, and the region codes.
+# the third fingerprint, the leaked path sprigs, and the region codes.
 # ============================================================
 s/the maintainer Sealy the maintainer/the maintainer/g
 s/Bob the maintainer/the maintainer/g
@@ -188,7 +188,7 @@ s/\bCC8BA671\b/[redacted-fingerprint]/g
 s/gpg_signing_06462132/gpg_signing_redacted/g
 s/\b06462132\b/[redacted-keyid]/g
 
-# -- names surviving in link/fixture PATH slugs (prose already scrubbed) --
+# -- names surviving in link/fixture PATH sprigs (prose already scrubbed) --
 s/wayne-hsiung/a-public-figure/g
 s/helen-atthowe/a-public-figure/g
 s/sarah-guo/a-public-figure/g
@@ -202,7 +202,7 @@ s/-avanti\b/-a-public-figure/g
 s/SEA only/one region only/g
 s/never EWR/never a second region/g
 
-# -- lowercase name forms in slugs / waymark input-names / link paths. The leak scan
+# -- lowercase name forms in sprigs / waymark input-names / link paths. The leak scan
 #    is case-insensitive while these rules are case-sensitive, so a doc with a
 #    lowercase name in a path was withheld though its prose scrubbed clean. Close it. --
 s/keaton/the-maintainer/g

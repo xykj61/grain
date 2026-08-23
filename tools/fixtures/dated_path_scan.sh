@@ -5,7 +5,7 @@
 # hold. This walks every dated reference in the field, resolves each the way a reader would,
 # and reports how many still land. Driven by tools/dated_path_witness.rish.
 #
-# WHAT A DATED REFERENCE IS. Any string shaped YYYYMMDD-HHMMSS_slug.ext, with an optional
+# WHAT A DATED REFERENCE IS. Any string shaped YYYYMMDD-HHMMSS_sprig.ext, with an optional
 # directory prefix and any number of leading ../ segments.
 #
 # HOW EACH ONE IS RESOLVED, first hit winning:
@@ -121,7 +121,7 @@ if [ -n "${DP_PATHS_ROSTER:-}" ]; then
 fi
 
 # A PATH ASSERTED ABSENT IS NOT A REFERENCE (REDS %139). A guard that proves a fossil was shed
-# writes `test ! -f foundations/<stamp>_<slug>.md`, and that path names a file which MUST NOT
+# writes `test ! -f foundations/<stamp>_<sprig>.md`, and that path names a file which MUST NOT
 # exist. Counting it as a lost reference applies the exclusion list's own test backwards -- it is
 # the instrument, not the field -- and makes the meter rise exactly as the proof of a clean shed
 # gets stronger. Five such paths across two season witnesses were being counted as breakage.
