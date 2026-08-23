@@ -9,7 +9,7 @@
 <p align="center">
   <a href="LICENSE"><img alt="Code license: Apache-2.0 OR MIT" src="https://img.shields.io/badge/code-Apache--2.0%20OR%20MIT-c8992f"></a>
   <a href="LICENSE-CC-BY"><img alt="Docs license: CC-BY-4.0" src="https://img.shields.io/badge/docs-CC--BY--4.0-9a6f22"></a>
-  <a href="context/GAUGE_STYLE.md"><img alt="Prose: Gauge Style" src="https://img.shields.io/badge/prose-Gauge-d9b45a"></a>
+  <a href="context/GAUGE_STYLE.md"><img alt="Prose: New Gauge Style" src="https://img.shields.io/badge/prose-New%20Gauge-d9b45a"></a>
   <a href="context/TAME_GUIDANCE.md"><img alt="Code: TAME discipline" src="https://img.shields.io/badge/code-TAME-9a6f22"></a>
   <a href="tools/"><img alt="Proof: witnesses on metal" src="https://img.shields.io/badge/proof-witnesses%20on%20metal-2f7d4f"></a>
   <a href="context/TWO_ROOMS.md"><img alt="Status: primordial, honest register" src="https://img.shields.io/badge/status-primordial-b9954a"></a>
@@ -237,8 +237,9 @@ identity that signs the work. Both stay local to you.
 - **[`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md)** -- how the code stays safe.
   Invariants stated before the code that leans on them, a bound on everything, docs and code kept
   in step. Safety first, performance second, joy third.
-- **[`context/GAUGE_STYLE.md`](context/GAUGE_STYLE.md)** -- how the prose reads, and the style
-  this repository is written in. A gauge reports a reading exactly, and this style keeps that
+- **[`context/GAUGE_STYLE.md`](context/GAUGE_STYLE.md)** -- **New Gauge Style**, how the prose
+  reads and the style this repository is written in (**Gauge Style** in short form, **Gauge
+  Guidance** where it instructs an agent). A gauge reports a reading exactly, and this style keeps that
   exactness while adding what a gauge alone has never had: warmth, plain words, and a clear sense
   of who is reading. Its first rule comes before all the others -- **don't be too smart about
   it** -- and it inherits its warmth from [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md),

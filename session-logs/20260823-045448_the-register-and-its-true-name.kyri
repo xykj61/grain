@@ -33,6 +33,13 @@ obs Re-ran all four demo commands rather than trusting the page, and two outputs
 obs Promoted both pages onto the enforced Door roster and lowered the teaching ceiling 16 to 14. A ratchet that falls when work lands is the whole point of a ratchet.
 file docs-geode/tutorials/the-first-hour.md swept 51 to 0%, every command held exactly
 file docs-geode/demos/README.md swept 62 to 15%, two stale outputs re-run and repaired
+think Keaton set the model to Fable 5 in the rules, then corrected mid-turn to keep Opus 5 and add max mode instead. Reverted the three model fields and took the correction rather than leaving the first edit standing.
+obs `claude --help` names the flag rather than my guessing it: `--effort low|medium|high|xhigh|max`, with `effortLevel` as the settings key. The host copy at `~/.claude/settings.json` reads medium and leaves when ai-jail exits, so max is seated in the TRACKED `.claude/settings.json` inside ~/grain, in both profiles as an `effort` field, and passed explicitly as `--effort max` on all five claude invocations in the season recipe. Three homes, so a drifted settings file cannot quietly lower it.
+obs Seated three names for one style: New Gauge Style in full, Gauge Style in short form, and Gauge Guidance where it addresses an agent -- the loop seed and the season recipe now say Gauge Guidance, which is to prose what TAME Guidance is to code. Status bar reads New Gauge.
+file .claude/settings.json max effort seated where a fresh clone inherits it
+file GLOW_PROFILE.template.bron the effort field and why an unattended lap takes the top of the scale
+file tools/launch-claude-season.rish --effort max on every invocation; the recipe prompt follows Gauge Guidance
+file recursion-prompts/seed/autonomous-loop.seed.md section 0 describes max mode and where it is set
 loom witness=prose_register door_docs=5 door_max_pct=20 readme_before=46 readme_after=13 foundation_before=54 foundation_after=11 radiant_baseline=29 teaching_over=14 ceiling=14 control_behaviors=9
 loom grade readme_before=8.3 readme_after=7.9 foundation_before=8.8 foundation_after=8.2 gauge_guide=7.3
 file context/GAUGE_STYLE.md the style, full spectrum, first rule don't be too smart about it

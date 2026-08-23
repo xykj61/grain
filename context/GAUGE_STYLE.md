@@ -1,4 +1,18 @@
-# Gauge Style -- writing that measures, and stays worth reading
+# New Gauge Style -- writing that measures, and stays worth reading
+
+*Also called **Gauge Style** in short form, and **Gauge Guidance** where it addresses an agent
+rather than a writer -- one style, three names, seated together `20260823.064454`.*
+
+| Name | Reach for it when |
+|---|---|
+| **New Gauge Style** | the full name, for a heading, a first mention, or a status bar |
+| **Gauge Style** | ordinary prose, once the reader has met the full name |
+| **Gauge Guidance** | the agent-facing, operational form -- recursion-loop prompts, autopilot instructions, and rules an unattended lap reads. Sibling to **TAME Guidance**, which governs code the same way |
+
+The three carry one meaning. **Gauge Guidance** names the same style pointed at a machine that will
+write unattended for hours, so it leans on the checkable parts -- the three settings, their
+ceilings, and the meter -- while **New Gauge Style** speaks to a person choosing words.
+
 
 **Language:** EN
 **Seated:** `20260823.045448` on Keaton's word

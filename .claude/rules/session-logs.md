@@ -32,7 +32,7 @@ Minimum shape (`format session-log-v1`):
 format session-log-v1
 stamp YYYYMMDD.HHMMSS
 editor Claude Code
-model claude-opus-4-8
+model claude-opus-5
 voice Kyri
 host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
 title short title
@@ -45,7 +45,7 @@ file path why-one-line
 recommend keep-going|check-in what and why
 ```
 
-- **editor** / **model** / **voice** -- which editor and model produced this log. The standing writing voice is **Kyri** (molted from Riyo `20260810` -- Keaton's word; Riyo had been seated `20260729.205200`; full identity `context/KYRI.md`); record `voice Kyri` on new logs, and never rewrite the voice on earlier dated logs (including logs that correctly recorded `voice Riyo` or `voice Quin` while each held the writing seat). **Quin** keeps the fifth OS variant and the inference Q-vane (`context/QUIN.md`). **Per host:** the macOS clone's recent arc was Fable 5 1M Max -> Opus 4.8 1M Max -> Sonnet 5 1M Medium; **this pier host, from `20260815.191048` on Keaton's word, is Claude Code (`claude-opus-4-8`) on the Vultr SEA NixOS VPS ai-jail, with the Daylight DC-1 as the hand device** (the earlier Framework 16 / Cursor Grok 4.5 note is retired for this clone). Record the model that actually produced each log, verbatim. Do not rewrite correctly attributed dated logs. When a `model` field was recorded wrong, Keaton may ask to correct those specific lines to the truth -- that is a factual fix, not a style rewrite. The single source of truth for "current model on this clone" is `GLOW_PROFILE.bron`'s `model` field.
+- **editor** / **model** / **voice** -- which editor and model produced this log. The standing writing voice is **Kyri** (molted from Riyo `20260810` -- Keaton's word; Riyo had been seated `20260729.205200`; full identity `context/KYRI.md`); record `voice Kyri` on new logs, and never rewrite the voice on earlier dated logs (including logs that correctly recorded `voice Riyo` or `voice Quin` while each held the writing seat). **Quin** keeps the fifth OS variant and the inference Q-vane (`context/QUIN.md`). **Per host:** the macOS clone's recent arc was Fable 5 1M Max -> Opus 4.8 1M Max -> Sonnet 5 1M Medium; **this pier host, from `20260823.064454` on Keaton's word, is Claude Code (`claude-opus-5`) at **max** effort on the Vultr SEA NixOS VPS ai-jail, with the Daylight DC-1 as the hand device** (it ran `claude-opus-4-8` from `20260815.191048` until that word) (the earlier Framework 16 / Cursor Grok 4.5 note is retired for this clone). Record the model that actually produced each log, verbatim. Do not rewrite correctly attributed dated logs. When a `model` field was recorded wrong, Keaton may ask to correct those specific lines to the truth -- that is a factual fix, not a style rewrite. The single source of truth for "current model on this clone" is `GLOW_PROFILE.bron`'s `model` field.
 - **host** -- optional; names the editor/OS/chip combination for this specific machine, anonymized (no serial, hardware UUID, hostname, or username -- see `context/specs/20260713-211800_local-host-system-hardware-anonymized.md` for what stays out and why). Omit on hosts where this has never mattered; add it wherever a log's meaning depends on knowing which machine produced it (a sandbox-adaptation session, a hardware-specific witness).
 - **think** -- repeatable; step-by-step reasoning.
 - **obs** -- decisions and trade-offs.

@@ -58,7 +58,13 @@ timezone_label Eastern (EDT in summer · EST in winter)
 # variant + Q-vane. Reya 2 · Rio 3 · Riyo seasons rest in context/archive/.
 # Dated Voice headers stay testimony, never rewritten.
 editor Cursor
-model Cursor Grok 4.5 300k High Fast
+model claude-opus-5              # the model producing work on this clone; session logs record it verbatim
+effort max   # low | medium | high | xhigh | max -- this tree runs max.
+             # An unattended lap has nobody watching to catch a shortcut, so it
+             # buys back with thinking what it gives up in supervision. Also set
+             # in .claude/settings.json (tracked, inside ~/grain -- the host
+             # ~/.claude copy leaves when ai-jail exits) and passed explicitly as
+             # --effort max by tools/launch-claude-season.rish.
 voice Kyri
 
 # --- Placeholder identities for examples ------------------------------------

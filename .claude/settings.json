@@ -1,4 +1,6 @@
 {
+  "model": "claude-opus-5",
+  "effortLevel": "max",
   "hooks": {
     "PostToolUse": [
       {
