@@ -147,9 +147,9 @@ if [ "$FAMILY" = "prove-red" ]; then
     out=$(LADDER_DIR="$ctl" QUEUE_DEPTH=2 sh "$0" queue 2>&1) || true
     printf '%s\n' "$out" | sed 's/^/control-queue-rank: /'
     case "$out" in
-        *"QUEUE_ROW family=deep fall=36 folding=3 lines=21 stub=3 widens=0 carry=42"*)
+        *"QUEUE_ROW family=deep fall=36 folding=3 lines=21 stub=3 widens=0 widens_fn=0 widens_const=0 carry=42"*)
             case "$out" in
-                *"QUEUE_ROW family=broad fall=19 folding=20 lines=4 stub=3 widens=0 carry=76"*)
+                *"QUEUE_ROW family=broad fall=19 folding=20 lines=4 stub=3 widens=0 widens_fn=0 widens_const=0 carry=76"*)
                     case "$out" in
                         *"QUEUE_OK head=deep fall=36"*)
                             echo "RED_queue_ranked_by_fall_where_carry_ordered_the_other_way" ;;
@@ -163,6 +163,49 @@ if [ "$FAMILY" = "prove-red" ]; then
     while [ "$i" -le 20 ]; do rm -f "$ctl/wide_$i.rye"; i=$((i + 1)); done
     i=1
     while [ "$i" -le 3 ]; do rm -f "$ctl/tall_$i.rye"; i=$((i + 1)); done
+
+    # And the queue must name a FREE head beside the best one, because the two
+    # answer different questions. Ranking by return alone says what would fall
+    # the furthest; a reader choosing the next lift asks what would fall the
+    # furthest for nothing. The two controls are built so those answers differ:
+    # `costly` is three rungs of twenty-one lines returning 36, and each rung
+    # keeps the `helper` its body reaches private, so folding it publishes three
+    # functions three rungs chose to keep. `frugal` is three rungs of eighteen
+    # lines returning 30 and reaching nothing private. A meter printing one head
+    # names costly and stops; this one must name costly AND frugal, since the
+    # living queue's own head stood priced at sixty-eight openings for two laps
+    # while a hand quietly took the free row beneath it (REDS %146).
+    i=1
+    while [ "$i" -le 3 ]; do
+        {
+            printf 'fn helper(a: u32) u32 {\n    return a;\n}\n\n'
+            printf 'pub fn costly(a: u32) u32 {\n'
+            printf '    _ = helper(a);\n'
+            j=1
+            while [ "$j" -le 17 ]; do printf '    _ = a;\n'; j=$((j + 1)); done
+            printf '    return a;\n}\n'
+        } > "$ctl/priced_$i.rye"
+        {
+            printf 'pub fn frugal(a: u32) u32 {\n'
+            j=1
+            while [ "$j" -le 15 ]; do printf '    _ = a;\n'; j=$((j + 1)); done
+            printf '    return a;\n}\n'
+        } > "$ctl/plain_$i.rye"
+        i=$((i + 1))
+    done
+    out=$(LADDER_DIR="$ctl" QUEUE_DEPTH=2 sh "$0" queue 2>&1) || true
+    printf '%s\n' "$out" | sed 's/^/control-queue-price: /'
+    case "$out" in
+        *"QUEUE_ROW family=costly fall=36 folding=3 lines=21 stub=3 widens=3 widens_fn=3 widens_const=0 carry=42"*)
+            case "$out" in
+                *"QUEUE_OK head=costly fall=36 free_head=frugal free_fall=30"*)
+                    echo "RED_queue_named_the_free_head_beside_the_best_one" ;;
+                *) echo "verdict=prove_red_queue_priced_no_head"; fails=1 ;;
+            esac ;;
+        *) echo "verdict=prove_red_queue_lost_the_priced_family"; fails=1 ;;
+    esac
+    i=1
+    while [ "$i" -le 3 ]; do rm -f "$ctl/priced_$i.rye" "$ctl/plain_$i.rye"; i=$((i + 1)); done
 
     # The sink meter must refuse a directory holding no public function rather
     # than answer zero, since a zero and a blindness read identically (REDS %97).
@@ -359,9 +402,12 @@ if [ "$FAMILY" = "queue" ]; then
         [ -n "$row" ] || continue
         fall=$(printf '%s\n' "$row" | sed 's/.* fall=//')
         widens=$(printf '%s\n' "$row" | sed 's/.* widens=\([0-9]*\) .*/\1/')
+        widens_fn=$(printf '%s\n' "$row" | sed 's/.* widens_fn=\([0-9]*\) .*/\1/')
+        widens_import=$(printf '%s\n' "$row" | sed 's/.* widens_import=\([0-9]*\) .*/\1/')
+        widens_const=$(printf '%s\n' "$row" | sed 's/.* widens_const=\([0-9]*\) .*/\1/')
         folding=$(printf '%s\n' "$row" | sed 's/.* folding=\([0-9]*\) .*/\1/')
         stub=$(printf '%s\n' "$row" | sed 's/.* stub=\([0-9]*\) .*/\1/')
-        printf '%s %s %s %s %s %s %s\n' "$fall" "$name" "$folding" "$lines" "$stub" "$widens" "$carry" >> "$work/ranked"
+        printf '%s %s %s %s %s %s %s %s %s\n' "$fall" "$name" "$folding" "$lines" "$stub" "$widens" "$carry" "$widens_fn" "$widens_const" >> "$work/ranked"
         floor=$(sort -k1,1nr "$work/ranked" | awk -v d="$depth" 'NR == d { print $1; found = 1 } END { if (!found) print 0 }')
     done < "$work/bycarry"
 
@@ -371,15 +417,34 @@ if [ "$FAMILY" = "queue" ]; then
     fi
 
     sort -k1,1nr -k2,2 "$work/ranked" | head -n "$depth" |
-        while read -r fall name folding lines stub widens carry; do
-            echo "QUEUE_ROW family=$name fall=$fall folding=$folding lines=$lines stub=$stub widens=$widens carry=$carry"
+        while read -r fall name folding lines stub widens carry wfn wconst; do
+            echo "QUEUE_ROW family=$name fall=$fall folding=$folding lines=$lines stub=$stub widens=$widens widens_fn=$wfn widens_const=$wconst carry=$carry"
         done
 
     head=$(sort -k1,1nr -k2,2 "$work/ranked" | head -1)
     hname=$(printf '%s\n' "$head" | awk '{print $2}')
     hfall=$(printf '%s\n' "$head" | awk '{print $1}')
     families=$(wc -l < "$work/bycarry" | tr -d ' ')
-    echo "QUEUE_OK head=$hname fall=$hfall examined=$examined families=$families dir=$DIR"
+
+    # The free head: the best fall among families that publish no function and
+    # no constant a rung chose to keep private. An import binding re-exported is
+    # the widening this arc has always accepted; a private function or record
+    # type forced public is the price it has always declined. Ranking by return
+    # alone named a head the discipline stepped past by hand for two laps
+    # running, which is REDS %145's shape one level deeper -- an ordering that
+    # answers "what returns the most" where the reader asked "what should I take
+    # next" (REDS %146). Both numbers print, so the trade stays visible rather
+    # than decided here.
+    free=$(awk '$8 == 0 && $9 == 0' "$work/ranked" | sort -k1,1nr -k2,2 | head -1)
+    if [ -n "$free" ]; then
+        fname=$(printf '%s\n' "$free" | awk '{print $2}')
+        ffall=$(printf '%s\n' "$free" | awk '{print $1}')
+    else
+        fname=none
+        ffall=0
+    fi
+
+    echo "QUEUE_OK head=$hname fall=$hfall free_head=$fname free_fall=$ffall examined=$examined families=$families dir=$DIR"
     exit 0
 fi
 
