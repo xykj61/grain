@@ -1,0 +1,5 @@
+# tools/an/anvil_corpus_lap5.rish — accrete shim → tools/gen/ember/ember_corpus_lap5.rish (Kiln Season o1)
+if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/ember/ember_corpus_lap5.rish"]
+if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/ember/ember_corpus_lap5.rish" args[0]]
+if r.out != "" then say r.out
+exit r.code

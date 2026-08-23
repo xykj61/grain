@@ -22,7 +22,7 @@
 # and rewriting them disarms the proof entirely.
 #
 # HOW TO ADD ONE. Add the name below, once. Both tools pick it up, and
-# `tools/dated_path_witness.rish` proves neither has drifted back to a private copy.
+# `tools/d/dated_path_witness.rish` proves neither has drifted back to a private copy.
 #
 #   . tools/fixtures/dated_path_exclusions.sh
 #   dp_grep_excludes   # sets "$@" to grep flags:  --exclude-dir=X ... --exclude=Y ...

@@ -3,7 +3,7 @@
 //! Two lanes exchange descriptors across a shared wire directory, converge
 //! tables at peers=2, introduce through kumara, and refuse stranger +
 //! malformed gossip loudly. Orchestration (spawn/wait-for · outer timeout)
-//! lives in tools/discovery_round_trip_wire.rish — this file is one lane.
+//! lives in tools/d/discovery_round_trip_wire.rish — this file is one lane.
 //!
 //! Bounds from tools/gen/season/recursion_block.brix (door 15 seat):
 //!   discovery_wire_peers 2

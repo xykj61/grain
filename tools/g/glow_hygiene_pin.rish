@@ -1,0 +1,5 @@
+# tools/g/glow_hygiene_pin.rish — accrete shim → tools/gen/season/glow_hygiene_pin.rish (Surface p2)
+if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/glow_hygiene_pin.rish"]
+if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/glow_hygiene_pin.rish" args[0]]
+if r.out != "" then say r.out
+exit r.code

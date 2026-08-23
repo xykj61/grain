@@ -1,0 +1,46 @@
+# tools/cr/crypto_eip155_tx_witness.rish — the EIP-155 legacy Ethereum transaction digest, authored in pure Rye as a composition over four
+# already-GREEN stones: the Recursive Length Prefix serialization (encoding/rlp.rye), the Keccak-256 (crypto/keccak256.rye), the ECDSA
+# public-key recovery (crypto/secp256k1_ecrecover.rye), and the address derivation (crypto/eth_address.rye). It is the digest a key signs
+# before every Ethereum send: lay the transaction's fields out as an RLP list, hash the list with Keccak-256, and you hold the exact bytes a
+# wallet signs; recover the signature back and you hold the sender (crypto · Season G · Cryptography).
+#
+# Season: crypto — Season G (the Six-Season double-seat). This rung authors NO new cryptography and NO new serialization: every byte is the
+# GREEN RLP, every hash the GREEN Keccak-256, every recovery the GREEN ecrecover, every address the GREEN eth_address — it contributes only the
+# EIP-155 assembly (the nine-field signing list [nonce, gasPrice, gas, to, value, data, chainId, 0, 0], the sighash over it, and v =
+# recovery_id + 2*chainId + 35, the chain id folded into the preimage as replay protection). Where eip712 hashes a TREE of typed fields for an
+# off-chain "sign this typed data," eip155_tx hashes the FLAT nine-field list of an on-chain transaction — the two shapes a key is ever asked to
+# sign, both over the same GREEN tower. Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G
+# · the crypto parity wave). Clean-room: EIP-155 and the Yellow Paper are Ethereum's own public standards; the encoding is ours, standing on our
+# own parity-GREEN rungs, never a copied line (.claude/rules/gratitude-licenses.md).
+#
+# Parity is proven at selftest three ways anyone can replay: (1) a PUBLISHED known-answer bound to the world — the EIP-155 spec's own canonical
+# example transaction (nonce 9, 20 gwei, 21000 gas, to 0x3535...35, 1 ETH, chain id 1) hashes byte-for-byte to the spec's stated sighash
+# 0xdaf5a779...4c8e53; (2) an INDEPENDENT construction — the identical RLP preimage hashed by Zig's own std.crypto Keccak-256 gives the same
+# digest, a second independent path; and (3) a RECOVERY against that same example — the spec's published (v=37, r, s) recovers through our GREEN
+# ecrecover to exactly the example's published sender 0x9d8a62f6...855a4f, the address of the spec's test key 0x4646...46, so a one-bit encoding
+# error anywhere would break the recovery. The signed nine-field transaction assembles and round-trips through the RLP decoder to its own bytes;
+# edge refusals BadFieldCount, BadV, BadScalarLength each fire. Purely local — no key, no network, no funds, no real device: this module builds
+# the public preimage and recovers from a published signature, never signing. Signing with a real identity key stays the custody gate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_eip155_tx_witness.rish
+
+say "crypto-eip155-tx: Language EN — the EIP-155 legacy Ethereum transaction digest: the exact bytes a wallet signs before every send. Lay the nine transaction fields out as an RLP list, hash that list with Keccak-256, and you hold the sighash; recover the signature back through ecrecover and you hold the sender. Composed entirely over GREEN rungs — RLP, Keccak-256, ecrecover, eth_address — authoring no new cryptography and no new serialization."
+say "crypto-eip155-tx: Style Radiant — EIP-155 folds the chain id into the very bytes that are hashed: the signing list is [nonce, gasPrice, gas, to, value, data, chainId, 0, 0], and the final v = recovery_id + 2*chainId + 35 carries the chain id back out — so a signature valid on one chain can never replay on another. The signed transaction on the wire replaces the last three fields with the real [v, r, s]. This module builds the signing sighash and recovers the sender: who signed this transaction, and for which chain."
+say "crypto-eip155-tx: Lens TAME — every buffer bound (max_tx_bytes), every field walk width-bounded (tx_fields), contract asserts on each function; it calls no std codec of its own, only the GREEN RLP and Keccak-256 beneath it. Parity holds three ways: the EIP-155 spec's own canonical example hashes byte-for-byte to the spec's stated sighash 0xdaf5a779...4c8e53; the same preimage hashed by Zig's own std.crypto Keccak-256 gives the identical digest; and the spec's published (v=37, r, s) recovers to exactly the example's published sender 0x9d8a62f6...855a4f — a one-bit error anywhere would break it. Edge refusals BadFieldCount, BadV, BadScalarLength each fire. Purely local — no key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/eip155_tx"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/eip155_tx.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-eip155-tx: build failed — ${build.err}"
+
+let outfile = "crypto/bin/eip155_tx.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-eip155-tx: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-eip155-tx: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-eip155-tx' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-eip155-tx: selftest did not print the GREEN crypto-eip155-tx line"

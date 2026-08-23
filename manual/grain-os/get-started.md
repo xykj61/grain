@@ -22,7 +22,7 @@ Grain documentation opens two front doors that share one house. Pick the door th
 |------|------------|------------|
 | **Language** — what you can type and witness | [`../tutorials/first-witness.md`](../tutorials/first-witness.md) (Rishi) | Glow: [`../../glow/README.md`](../../glow/README.md) (eight heads) · Acme first code [`../../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) |
 | **Device** — GrapheneOS on Pixel hardware | [`../guides/pixel-10a-grapheneos-setup.md`](../guides/pixel-10a-grapheneos-setup.md) | [`../../docs/HAWM.md`](../../docs/HAWM.md) · waymarks [`../../docs/JABS.md`](../../docs/JABS.md) |
-| **Meeting point** — installable APK envelope | `rishi/bin/rishi run tools/tube05_apk_pack_witness.rish` | [`../../docs/TUBE.md`](../../docs/TUBE.md) |
+| **Meeting point** — installable APK envelope | `rishi/bin/rishi run tools/t/tube05_apk_pack_witness.rish` | [`../../docs/TUBE.md`](../../docs/TUBE.md) |
 
 Manual index with both hubs: [`../README.md`](../README.md).
 
@@ -35,7 +35,7 @@ Manual index with both hubs: [`../README.md`](../README.md).
 1. **Walk the compass once** — compressor [`../../docs/COMPASS.md`](../../docs/COMPASS.md) · card [`../../docs/compass_card.bron`](../../docs/compass_card.bron) · tutorial [`../tutorials/cursor-and-the-compass.md`](../tutorials/cursor-and-the-compass.md). Stitches foundations, **witness habitat** (Acme face for the happy zone), Cursor rules, Bron logging, and send.
 2. **Run your first Rishi witness** — [`../tutorials/first-witness.md`](../tutorials/first-witness.md). This is the teachable language surface today.
 3. **Read the Rishi reference** — [`../reference/rishi-language.md`](../reference/rishi-language.md) (parity **142**).
-4. **Peek at Glow runes** — eight heads lower today; desk hop `rishi/bin/rishi run tools/glow_run_desk_witness.rish`. Start with Acme first code [`../../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) (`glow/gen/face-mix.glow`). Pin [`../../glow/README.md`](../../glow/README.md). Grammar design: [`../../active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../../active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md). Law: [`../../context/TAME_GUIDANCE.md`](../../context/TAME_GUIDANCE.md) (Glow supplement still horizon — scoping ER linked from the Glow pin).
+4. **Peek at Glow runes** — eight heads lower today; desk hop `rishi/bin/rishi run tools/g/glow_run_desk_witness.rish`. Start with Acme first code [`../../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) (`glow/gen/face-mix.glow`). Pin [`../../glow/README.md`](../../glow/README.md). Grammar design: [`../../active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../../active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md). Law: [`../../context/TAME_GUIDANCE.md`](../../context/TAME_GUIDANCE.md) (Glow supplement still horizon — scoping ER linked from the Glow pin).
 
 ### Device path (checkable)
 
@@ -44,22 +44,22 @@ Manual index with both hubs: [`../README.md`](../README.md).
 3. **Pack a Glow NativeActivity APK (TUBE0.5)** — host-side, no phone required for the pack itself:
 
 ```bash
-rishi/bin/rishi run tools/tube05_apk_pack_witness.rish
+rishi/bin/rishi run tools/t/tube05_apk_pack_witness.rish
 # → tools/.cache/tube05/seva-broadcaster.apk
 ```
 
 4. **Install and prove the fold (host terminal)** — HAWM0 GREEN `20260717.122010` · Pixel 10a GREEN `20260717.123226`; same commands:
 
 ```bash
-rishi/bin/rishi run tools/hawm0_boot_onpath_host.rish   # if no device yet
-rishi/bin/rishi run tools/tube05_install_proof_onpath_host.rish
+rishi/bin/rishi run tools/h/hawm0_boot_onpath_host.rish   # if no device yet
+rishi/bin/rishi run tools/t/tube05_install_proof_onpath_host.rish
 ```
 
 The APK uses Android's own `NativeActivity` and a Glow-built `libglowapp.so`, rather than a Kotlin transpile. `ANativeActivity_onCreate` runs the JABS0 Seva fold demo (module `seva_b0_fold`) and writes `files/seva_root.txt`; the witness checks that root via `run-as`. Ai-jail carries neither KVM nor USB.
 
 ### Enclosure (checkable)
 
-- On macOS: `./tools/cursor-jail-macos.sh` — [`../guides/macos-ai-jail-setup.md`](../guides/macos-ai-jail-setup.md).
+- On macOS: `./tools/cu/cursor-jail-macos.sh` — [`../guides/macos-ai-jail-setup.md`](../guides/macos-ai-jail-setup.md).
 - On this Linux Framework host: the ai-jail under `tools/` (HAWM0/HAWM1 run from a plain host terminal for KVM).
 
 ---

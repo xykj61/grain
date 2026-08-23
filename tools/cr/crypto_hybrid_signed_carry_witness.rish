@@ -1,0 +1,43 @@
+# tools/cr/crypto_hybrid_signed_carry_witness.rish — the hybrid signed carry, the OPEN corner of the hybrid surface: the exact shape of the classical
+# signed carry (a self-describing, content-addressed, signed frame whose payload stays PUBLIC on purpose) with the single Ed25519 signature replaced
+# by a HYBRID signature (Ed25519 beside ML-DSA, genuine only when BOTH verify), so a published record's authorship survives a break in EITHER family
+# (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, audit-ready).
+# Design read: active-designing/date/20260816/20260816-201310_the-hybrid-signed-carry-provenance-on-both-worlds.md (the OPEN corner of the hybrid surface, the
+# post-quantum successor of the classical signed carry, the Lotus "who made this record" unblock hardened for the quantum day).
+# Kin: crypto/signed_carry.rye (the classical single-family sibling) · crypto/hybrid_identity.rye (the hybrid signature, GREEN) · crypto/blake2b.rye
+# (the content address, GREEN) · crypto/hybrid_signed_sealed.rye (the sealed sibling this mirrors). This composes GREEN rungs, authoring no new
+# cryptography — studied clean-room, our own Rye wiring over our own proven stones (.claude/rules/gratitude-licenses.md).
+#
+# crypto/hybrid_signed_carry.rye builds a carry frame magic GHC1 ‖ signer Ed25519 public ‖ signer ML-DSA public ‖ paylen (u64 big-endian) ‖ payload ‖
+# BLAKE2b-512 digest ‖ Ed25519 signature ‖ ML-DSA signature — the content address is BLAKE2b-512, the signature is the hybrid identity's own hybrid
+# signature (both families). open() verifies BEFORE trust: magic, then declared length, then a recomputed content address (a byte moved anywhere
+# upstream — payload, either signer key, or length — is refused here, before the signature is consulted), then the hybrid signature; only then does one
+# zero-copy payload byte leave the door, alongside both verified signer keys. This round also closes a reds-first find the carry surfaced: the ML-DSA
+# decompose primitive's postcondition admitted only r0 ∈ (−γ₂, γ₂], yet FIPS 204's top-step borrow reaches r0 = −γ₂ exactly at r = q − γ₂ — a residue
+# the random selftest spread missed and this carry's digest found (REDS ledger). Purely local over TEST hybrid identities — no real key, no network, no
+# funds, no real device; signing a record with the maintainer's own hybrid identity stays the custody gate, constant-time timing-safety the named horizon.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_hybrid_signed_carry_witness.rish
+
+say "crypto-hybrid-signed-carry: Language EN — the OPEN corner of the hybrid surface: where crypto/hybrid_sealed hides a message on both families and crypto/hybrid_signed_sealed both hides and proves one, this door proves a message everyone is meant to read. crypto/hybrid_signed_carry.rye is the exact shape of the classical signed carry with the single Ed25519 signature replaced by a hybrid signature (Ed25519 beside ML-DSA, genuine only when both verify), so a published record's authorship survives a break in either family — the post-quantum successor of signed_carry, the Lotus 'who made this record' unblock hardened for the quantum day, authoring no new cryptography."
+say "crypto-hybrid-signed-carry: Style Radiant — a frame is magic GHC1, signer Ed25519 public, signer ML-DSA public, paylen (u64 big-endian), payload, BLAKE2b-512 digest, Ed25519 signature, ML-DSA signature — the two signer keys sit inside the content address, so a swapped key breaks the very address the real signature commits to. open verifies before trust — magic, then declared length, then a recomputed content address, then the hybrid signature — and only then does one zero-copy payload byte leave the door, alongside both verified signer keys."
+say "crypto-hybrid-signed-carry: Lens TAME — the composition authors no new cryptography; it binds two proven stones (the hybrid signature and the BLAKE2b content address) into one open seal, bounds the payload at a named ceiling, and asserts its contracts on every function. GREEN at every tier (small ML-DSA-44/ML-KEM-512, default ML-DSA-65/ML-KEM-768, large ML-DSA-87/ML-KEM-1024): a content-addressed round-trip across six payload lengths (empty through 64 KiB) recovering both signer keys and the payload, byte-identical determinism, and refusals each caught by its own named error — a tampered payload, a swapped signer key, and a tampered digest all fail DigestMismatch, a flipped Ed25519 signature byte and a flipped ML-DSA signature byte each fail BadSignature (a forger who breaks only one family is caught), plus bad magic, two truncations, and an undersized buffer. Purely local over TEST hybrid identities — no real key, no network, no funds, no device; signing with the maintainer's own hybrid identity stays the custody gate, constant-time timing-safety the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/hybrid_signed_carry"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/hybrid_signed_carry.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-hybrid-signed-carry: build failed — ${build.err}"
+
+let outfile = "crypto/bin/hybrid_signed_carry.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-hybrid-signed-carry: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-hybrid-signed-carry: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-hybrid-signed-carry' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-hybrid-signed-carry: selftest did not print the GREEN crypto-hybrid-signed-carry line"

@@ -1,0 +1,44 @@
+# tools/b/buhr_quin_host_graph_witness.rish — BUHR Journey 6, Rung 3: the surface voice, gathered.
+#
+# The Q-vane host learns a fourth voice — the one whose corpus is the living Mantra
+# graph. One bounded request routes across four voices: arithmetic still to Lattice,
+# reading still to Scribble, corpus still to Ember, and a graph prompt to the surface
+# voice (lane_count -> 3, head of a.txt -> r2, a summary metered by the same contract).
+# Gathering the graph voice never displaces the three that came before; a disallowed
+# model surfaces at once (no fall-through); a prompt no voice knows is refused rather
+# than answered. The three-voice host and the graph query stay their own green
+# binaries — Surface and Intelligence now answer under one entry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/buhr_quin_host_graph_witness.rish
+
+say "buhr6: Language EN — the Q-vane host gathers the surface voice beside the three."
+say "buhr6: Lens TAME — one request across four voices; the three still route, the graph joins, faults surface."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/quin-host-graph"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/quin_host_graph.rye -femit-bin=${bin}"]
+assert build.ok else "buhr6: quin_host_graph build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr6: quin_host_graph selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr6: selftest did not speak GREEN"
+assert selftest.out contains "matmul still routes to Lattice — text '19 22 43 50'" else "buhr6: Lattice displaced"
+assert selftest.out contains "outline still routes to Scribble — text 'Grain Voices Detail'" else "buhr6: Scribble displaced"
+assert selftest.out contains "sum_lines still routes to Ember — text '160'" else "buhr6: Ember displaced"
+assert selftest.out contains "lane_count dispatched to the graph voice — text '3'" else "buhr6: graph voice route missing"
+assert selftest.out contains "head dispatched to the graph voice — a.txt at r2" else "buhr6: graph head route missing"
+assert selftest.out contains "length stop carried through from the graph voice — tokens 1" else "buhr6: graph metering carry-through missing"
+assert selftest.out contains "disallowed model refused at once" else "buhr6: fault-surfaces-first missing"
+assert selftest.out contains "no voice recognized the prompt — refused" else "buhr6: no-voice refusal missing (would be a fake answer)"
+
+# The three-voice host the graph rung wraps stays its own green binary.
+let host_bin = "pond/bin/quin-host"
+let host_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/quin_host.rye -femit-bin=${host_bin}"]
+assert host_build.ok else "buhr6: quin_host re-build failed"
+let host_selftest = run ["sh" "-c" "${host_bin} selftest 2>&1"]
+assert host_selftest.ok else "buhr6: quin_host selftest regressed"
+assert host_selftest.out contains "GREEN" else "buhr6: quin_host did not speak GREEN"
+
+say "GREEN: BUHR6r3 — the Q-vane host gathers the surface voice; Surface and Intelligence answer under one entry."

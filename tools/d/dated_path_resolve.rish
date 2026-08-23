@@ -1,0 +1,165 @@
+# tools/d/dated_path_resolve.rish -- find a dated file's home from a reference that may be stale.
+#
+# WHY THIS TOOL EXISTS. When a room folds its flat files into date/YYYYMMDD/, every reference
+# already written at the flat path stops landing. The tree learned this the expensive way: the
+# earlier session-log fold left 455 of 584 cited session-log paths pointing nowhere, and a
+# census on `20260821` found 4,138 broken dated references across the whole field. Repointing
+# them by hand would mean editing thousands of dated logs, which accrete-never-break forbids at
+# that scale. So the reference is not rewritten -- it is RESOLVED.
+#
+# PROVEN BY THE FIRST FOLD. When `session-logs/` folded on `20260821.161758`, 1,443 files moved
+# and every reference already written at their flat paths stopped landing. Sampled afterward, 23
+# of 24 stale session-log references resolved **by the fold rule alone** -- computed from the
+# basename, no index consulted, nothing repointed. That is the whole design working.
+#
+# WHY IT CAN WORK AT ALL. The mark law keeps the whole stamp in every filename, so a dated
+# basename is very nearly unique across the tree. That uniqueness is what turns a stale path
+# into a solvable lookup rather than a lost one, and it is the concrete reason the day is
+# repeated in `date/20260821/20260821-152409_sprig` rather than shortened away. Measured
+# `20260821.160050`, before the first fold: 3,939 of 4,138 broken references resolved to exactly
+# one home, 16 to more than one, and 183 to none. The recoverable count rises whenever a room
+# folds -- that is folding working, not damage -- so the living gate is on the other two.
+#
+# THE FIVE READINGS, first hit winning. The order is deliberate -- the two that cost nothing
+# come first, the pure computation before the index, and the index before giving up.
+#   1. as written, from the citing file's own directory -- the shell resolves it, so no path
+#      normalization is written here and none can be written wrongly
+#   2. as written, root-relative, with leading ../ dropped
+#   3. THE FOLD RULE, pure: <room>/date/<YYYYMMDD>/<basename>, then the elder <room>/archive/
+#      <YYYYMMDD>/<basename> -- computed from the basename alone, needing no index, so it keeps
+#      working for rooms not yet folded and folds not yet run. For a BARE basename the room is
+#      read off the CITING file instead, since a bare reference was a sibling and a day fold is
+#      precisely what separates siblings.
+#   4. by basename across every tracked file -- recovers a move the fold rule cannot predict
+#   5. missing -- reported plainly, never invented
+#
+# WHAT IT NEVER DOES. It does not move a file, edit a reference, or guess. A basename living at
+# two paths is reported as ambiguous with both named, since choosing one silently is how a
+# resolver starts lying.
+#
+# USAGE
+#   rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference> [<citing-file>]
+#
+#   $ rishi/bin/rishi run tools/d/dated_path_resolve.rish session-logs/date/20260710/20260710-000045_one-clock-resins-plainly.md
+#   verdict=recovered-by-fold-rule
+#   home=session-logs/archive/20260710/20260710-000045_one-clock-resins-plainly.md
+#
+# Exit is permanent-failure when the reference resolves nowhere, so a caller can gate on it.
+#
+# Proven by tools/d/dated_path_witness.rish. Kin: tools/fixtures/dated_path_scan.sh (the census)
+# and .claude/rules/stamp-and-name.md (the mark law this rests on).
+#
+# Run from the repository root.
+
+assert length args != 0 else "dated-path-resolve: name a reference -- rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference> [<citing-file>]"
+
+let reference = args[0]
+let argc = length args
+let citer = ""
+if argc != 1 then let citer = args[1]
+
+assert length reference != 0 else "dated-path-resolve: the reference must not be empty"
+
+# The basename is the key the whole tool turns on, so the reference is taken apart first.
+let segments = split reference "/"
+let segment_count = length segments
+let last_index = segment_count - 1
+let basename = segments[last_index]
+assert length basename != 0 else "dated-path-resolve: the reference must end in a filename, not a slash"
+
+let reference_length = length reference
+let basename_length = length basename
+let room_length = reference_length - basename_length - 1
+let room = ""
+if segment_count != 1 then let room = slice reference 0 room_length
+
+# READING ONE -- as written, from the citing file's own directory. The shell already knows how
+# to resolve `../`, so that resolution is borrowed rather than reimplemented; a normalizer
+# written here would be one more thing that could be wrong.
+let citer_segments = split citer "/"
+let citer_count = length citer_segments
+let citer_last_index = citer_count - 1
+let citer_last = citer_segments[citer_last_index]
+let citer_dir_length = (length citer) - (length citer_last) - 1
+let citer_dir = ""
+if citer_count != 1 then let citer_dir = slice citer 0 citer_dir_length
+
+let from_citer = ""
+if length citer != 0 then let from_citer = reference
+if length citer_dir != 0 then let from_citer = "${citer_dir}/${reference}"
+
+let citer_hit = false
+if length from_citer != 0 then let citer_hit = (run ["test" "-e" from_citer]).ok
+
+# READING TWO -- root-relative, with any leading ../ dropped. This tree's prose cites paths this
+# way throughout, so it is a first-class reading rather than a fallback.
+let up_pieces = split reference "../"
+let up_count = length up_pieces
+let up_last_index = up_count - 1
+let rooted = reference
+if up_count != 1 then let rooted = up_pieces[up_last_index]
+let rooted_hit = (run ["test" "-e" rooted]).ok
+
+# READING THREE -- the fold rule, computed from the basename alone. A dated basename opens with
+# a fifteen-character stamp before its first underscore; that length is the whole shape test, so
+# nothing is sliced before its bound is known.
+let stamp_pieces = split basename "_"
+let stamp_head = stamp_pieces[0]
+let stamp_head_length = length stamp_head
+let stamped = (stamp_head_length == 15)
+
+let day = ""
+if stamped then let day = slice stamp_head 0 8
+
+# A BARE basename was a sibling reference -- two files sitting flat in one room, one naming the
+# other with no directory at all. A day fold puts siblings in different day folders and breaks
+# exactly those. The citing file still names the room, so the room is read off it: context the
+# reference already carries, rather than a guess between namesakes.
+let fold_room = room
+let citer_room = citer_dir
+let date_at = citer_dir index-of "/date/"
+let archive_at = citer_dir index-of "/archive/"
+if date_at != -1 then let citer_room = slice citer_dir 0 date_at
+if archive_at != -1 then let citer_room = slice citer_dir 0 archive_at
+if length room == 0 then let fold_room = citer_room
+
+let fold_date = ""
+let fold_archive = ""
+if stamped then let fold_date = "${fold_room}/date/${day}/${basename}"
+if stamped then let fold_archive = "${fold_room}/archive/${day}/${basename}"
+
+let fold_date_hit = false
+let fold_archive_hit = false
+if stamped then let fold_date_hit = (run ["test" "-e" fold_date]).ok
+if stamped then let fold_archive_hit = (run ["test" "-e" fold_archive]).ok
+
+# READING FOUR -- by basename across every tracked file. Reached only when the three cheaper
+# readings miss, and reported as ambiguous rather than guessed when the basename is shared.
+let tracked = run ["git" "ls-files"]
+assert tracked.ok else "dated-path-resolve: git ls-files must succeed -- run this from the repository root of a git tree"
+let all_paths = lines tracked.out
+let by_basename = where all_paths as p: p ends-with "/${basename}"
+let match_count = length by_basename
+
+# The verdict, written weakest first so each stronger reading simply overwrites it. Rishi holds
+# no ordering operator, so "more than one" is the standing case that zero and one correct.
+let verdict = "ambiguous"
+let home = join by_basename " "
+if match_count == 0 then let verdict = "missing"
+if match_count == 0 then let home = "-"
+if match_count == 1 then let verdict = "recovered-by-index"
+if match_count == 1 then let home = by_basename[0]
+if fold_archive_hit then let verdict = "recovered-by-fold-rule"
+if fold_archive_hit then let home = fold_archive
+if fold_date_hit then let verdict = "recovered-by-fold-rule"
+if fold_date_hit then let home = fold_date
+if rooted_hit then let verdict = "home"
+if rooted_hit then let home = rooted
+if citer_hit then let verdict = "home"
+if citer_hit then let home = from_citer
+
+say "verdict=${verdict}"
+say "home=${home}"
+say "basename=${basename}"
+
+if verdict == "missing" then exit exit-permanent

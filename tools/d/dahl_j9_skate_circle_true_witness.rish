@@ -1,0 +1,55 @@
+# tools/d/dahl_j9_skate_circle_true_witness.rish — Season 3 Journey 9 (Skate), Rung 4 (Journey 9 closes).
+#
+# Rungs one through three fixed the consent rule, signed each act, and let a signed circle travel — all
+# over circles seated in code. This closing rung carries the reader onto a real Skate circle record a
+# keeper can open and count. pond/apps/skate_circle_true.rye @embedFile-binds surf/fixtures/circle.bron
+# (a genuine format skate-circle-v1 record with real Ed25519 signatures — three members, one mutual
+# link, one one-sided hold) through a corpora symlink, parses it through rung three, and reports the
+# member count, link count, and mutual-link count. The crux is the cross-check: tools/fixtures/
+# skate_circle_truth.awk measures the same bytes independently and this witness asserts the app's
+# reading equals the awk reading — two tools, one answer. And still_consented re-verifies every carried
+# signature against the demo keyring, so the fixture is a real signed circle, not a hollow shape. A
+# tampered header refuses BadFormat. Additive — composes rungs one, two, three over public API (all
+# re-run GREEN); reads no network (serve reaches the custody gate); demo keeper seeds only.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/dahl_j9_skate_circle_true_witness.rish
+
+say "dahl-j9r4: Language EN — the reading of a real circle record is true to the bytes, and the record is genuinely consented."
+say "dahl-j9r4: Lens TAME — the app's reading equals an independent awk count; a tampered record refuses."
+
+let zig = "vendor/zig-toolchain/zig"
+
+# Rungs one, two, three stay GREEN beneath the true layer — additive.
+let binr1 = "pond/bin/skate-circle"
+let buildr1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_circle.rye -femit-bin=${binr1}"]
+assert buildr1.ok else "dahl-j9r4: skate_circle (r1) build failed"
+let selfr1 = run ["sh" "-c" "${binr1} selftest 2>&1"]
+assert selfr1.ok else "dahl-j9r4: skate_circle (r1) selftest exited non-zero"
+
+let binr3 = "pond/bin/skate-circle-bron"
+let buildr3 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_circle_bron.rye -femit-bin=${binr3}"]
+assert buildr3.ok else "dahl-j9r4: skate_circle_bron (r3) build failed"
+let selfr3 = run ["sh" "-c" "${binr3} selftest 2>&1"]
+assert selfr3.ok else "dahl-j9r4: skate_circle_bron (r3) selftest exited non-zero"
+assert selfr3.out contains "GREEN" else "dahl-j9r4: r3 did not speak GREEN"
+
+let bin = "pond/bin/skate-circle-true"
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_circle_true.rye -femit-bin=${bin}"]
+assert build.ok else "dahl-j9r4: skate_circle_true build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "dahl-j9r4: skate_circle_true selftest exited non-zero"
+assert selftest.out contains "GREEN" else "dahl-j9r4: selftest did not speak GREEN"
+assert selftest.out contains "matches an independent count" else "dahl-j9r4: reading-true crux missing"
+assert selftest.out contains "re-verified every signature offline" else "dahl-j9r4: consent-honest crux missing"
+assert selftest.out contains "refused BadFormat" else "dahl-j9r4: tamper refusal missing"
+
+# The crux cross-check: the app's reading matches an independent awk reading of the same real bytes.
+let measure = run ["sh" "-c" "${bin} measure 2>&1"]
+assert measure.ok else "dahl-j9r4: measure exited non-zero"
+let awk = run ["sh" "-c" "awk -f tools/fixtures/skate_circle_truth.awk surf/fixtures/circle.bron"]
+assert awk.ok else "dahl-j9r4: awk reading of the fixture failed"
+assert measure.out == awk.out else "dahl-j9r4: the app reading disagrees with the independent awk count of the same bytes"
+
+say "dahl-j9r4: GREEN — app reading == awk reading; the real circle is true to the bytes and genuinely consented. Journey 9's agent-doable arc is complete."

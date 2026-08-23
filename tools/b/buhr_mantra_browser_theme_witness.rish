@@ -1,0 +1,40 @@
+# tools/b/buhr_mantra_browser_theme_witness.rish — BUHR Journey 2, Rung 4.
+#
+# A .brush theme recolors the living edge: rung three lit each lane's head revision
+# in the design system's own `head` token; this rung closes the authoring loop the
+# token was named for. A real `.brush` file's `style:` block overrides the `head`
+# key, the WADE1 cascade infuses that override over the base sheet, and the same
+# paint_heads lowering paints each lane's head in the *authored* color. The proof is
+# that the living edge is genuinely themeable — a person editing a `.brush` file, not
+# Skate or Rye, recolors every lane's newest node by writing one token line — and
+# that the recolor is real: the base sheet's default head leaves zero pixels on the
+# themed canvas.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/buhr_mantra_browser_theme_witness.rish
+
+say "buhr-j2r4: Language EN — a .brush theme's head override recolors each lane's living edge on the Skate surface."
+say "buhr-j2r4: Lens TAME — the theme read through the real authoring loop, infused per-key, painted; recolor proven by zero default-head pixels."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/mantra-browser-theme"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mantra_browser_theme.rye -femit-bin=${bin}"]
+assert build.ok else "buhr-j2r4: mantra_browser_theme build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr-j2r4: mantra_browser_theme selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr-j2r4: selftest did not speak GREEN"
+assert selftest.out contains "themed-head pixels on the canvas" else "buhr-j2r4: themed head color did not reach the canvas"
+assert selftest.out contains "default-head pixels (recolored)" else "buhr-j2r4: recolor proof (zero default-head pixels) missing"
+assert selftest.out contains "the palette law holds through the theme" else "buhr-j2r4: warm/low-blue proof through the theme missing"
+assert selftest.out contains "text unchanged by the theme" else "buhr-j2r4: additive-glyphs proof missing"
+assert selftest.out contains "the override is what recolors" else "buhr-j2r4: default-base baseline proof missing"
+assert selftest.out contains "refuses to theme — ThemeMissingHead" else "buhr-j2r4: style-less refuse proof missing"
+
+# Rung three stays its own green binary — the theme is strictly additive over it.
+let rung3 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mantra_browser_heads_witness.rish 2>&1"]
+assert rung3.ok else "buhr-j2r4: rung three witness regressed"
+assert rung3.out contains "GREEN: BUHR-J2r3" else "buhr-j2r4: rung three lost its green"
+
+say "GREEN: BUHR-J2r4 — a .brush theme's head override recolors the living edge; the design-system token is themeable end to end."

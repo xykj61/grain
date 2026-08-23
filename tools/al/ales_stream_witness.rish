@@ -1,0 +1,37 @@
+# tools/al/ales_stream_witness.rish — a bounded byte stream carries many audio frames one at a time, reassembled gapless (ALES1).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES1.
+# Design read: active-designing/20260814-fill-ales1-lotus-audio-stream.md
+# Idiom kin: constel/channel.rye (FORA5) — the byte-stream delimiter, now carrying audio and reassembling a sample timeline.
+# Stands on: lotus/wire.rye (ALES0) — the frame the stream delimits and the audio border it keeps per frame.
+#
+# lotus/stream.rye delimits many LOTS frames out of one continuous byte queue and reassembles their samples into one gapless,
+# in-order timeline. The selftest proves: three frames back to back reassemble into b0 ++ b1 ++ b2 with no gap or reorder; a
+# split frame refuses NeedMoreBytes without moving the cursor and completes on its last byte with no torn sample; a wild
+# length refuses BadFrame; an overfull stream refuses StreamFull; and a torn-sample frame read cleanly by the delimiter still
+# refuses PartialSample at the audio border during reassembly. Purely local — no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stream_witness.rish
+
+say "ales-stream: Language EN — ALES1 carries ALES0's audio frames as a continuous byte stream, delimiting one whole frame at a time and reassembling their samples into one gapless timeline, exactly as FORA5 proved the byte-stream discipline for the handshake."
+say "ales-stream: Style Radiant — one delimiter, one ordered reassembly; a split frame waits without tearing a sample, and every whole frame replays in exact arrival order."
+say "ales-stream: Lens TAME — the stream only delimits and orders; it never re-checks a frame, so ALES0's two gates (the Sha256 and the audio border) stay the only trust boundary and run per frame during reassembly; siloed to lotus/, no network, no keys, no funds, no real device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stream"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stream.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stream: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stream.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stream: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stream: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stream' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stream: selftest did not print the GREEN ales-stream line"
+
+say "ales-stream: GREEN — many audio frames cross one byte stream and reassemble into a gapless timeline; the next Lotus rung can open the timeline that edits these samples, or clock them to a real rate."

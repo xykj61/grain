@@ -36,7 +36,7 @@ Both payoffs reuse rungs already proven — `fade_ms` is ALES4 through the clock
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_clock_witness.rish`: a validated clock converts `500 ms` at `48 kHz` to `24000` samples and back; a zero rate refuses `BadRate`; a duration past the clip bound refuses `DurationTooLong`; `ms_for` is honestly lossy on a fractional-millisecond sample count; a `fade_ms` fade named in milliseconds lands the exact same samples as ALES4's index-named fade over the converted span (so the clock changes only the units, never the audio); and `place_at` aligns a second clip two hundred milliseconds in, the offset region summing and saturating while the lead-in carries the base alone. GREEN on the first build. Purely local — no socket, no network, no keys, no funds, no real device (the rate is a number of samples per second, not a claim about any hardware clock).
+`tools/al/ales_clock_witness.rish`: a validated clock converts `500 ms` at `48 kHz` to `24000` samples and back; a zero rate refuses `BadRate`; a duration past the clip bound refuses `DurationTooLong`; `ms_for` is honestly lossy on a fractional-millisecond sample count; a `fade_ms` fade named in milliseconds lands the exact same samples as ALES4's index-named fade over the converted span (so the clock changes only the units, never the audio); and `place_at` aligns a second clip two hundred milliseconds in, the offset region summing and saturating while the lead-in carries the base alone. GREEN on the first build. Purely local — no socket, no network, no keys, no funds, no real device (the rate is a number of samples per second, not a claim about any hardware clock).
 
 ## The road on
 

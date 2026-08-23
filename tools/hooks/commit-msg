@@ -30,8 +30,8 @@
 # a door beside it is a habit again. If a genuine new form needs welcoming, widen ALLOW_WORDS
 # here and say why in the same commit.
 #
-# Installed by `tools/install_hooks.rish` (which sets `core.hooksPath` to this directory).
-# Proven by `tools/commit_message_guard_witness.rish` over
+# Installed by `tools/i/install_hooks.rish` (which sets `core.hooksPath` to this directory).
+# Proven by `tools/co/commit_message_guard_witness.rish` over
 # `tools/fixtures/commit_message_guard_scan.sh`.
 set -eu
 

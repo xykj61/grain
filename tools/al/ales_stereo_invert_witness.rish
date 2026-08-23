@@ -1,0 +1,38 @@
+# tools/al/ales_stereo_invert_witness.rish — stereo_invert: the phase flip of a master, both channels in lockstep, total (no refusal) (ALES127).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES127.
+# Design read: active-designing/date/20260815/20260815-024705_fill-ales127-lotus-stereo-invert.md
+# Stands on: lotus/invert.rye (ALES105 — the mono sign flip run once per channel, itself reusing ALES2's one true saturate), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and
+# its balance invariant), lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is
+# that left and right hold the same length so the channels stay aligned in time; a phase flip that brings two mics on one source into agreement or cancels a difference signal lands in both
+# speakers at once. This rung carries ALES105's invert into stereo the way ALES126 carried rotate: run the proven mono invert on each channel. It lifts the value-mirror of the pure rearrangement
+# class (reverse and rotate trade seats and touch no value; invert flips every value and touches no seat), leaving only the parity flip to complete the class; like reverse and rotate it is total.
+#
+# lotus/stereo_invert.rye flips both channels about zero, reusing ALES105's mono invert per channel; because mono invert is total and holds each channel's length, the balance invariant is
+# preserved trivially and there is no EditError to forward. The crux is four laws. THE STEREO VALUE-MIRROR LAW: each channel equals ALES105's mono invert on that channel byte for byte, sample i
+# holding saturate(-x). THE BALANCE / LENGTH LAW: left.len == right.len after, both holding their starting length. THE INVOLUTION LAW WITH AN HONEST RAIL: twice the identity off the floor, an
+# sample_min (-32768) seat pinning to -32767 on both channels, the two's-complement asymmetry saturated by design. THE MAGNITUDE / FIXPOINT LAW: each channel's peak unchanged off the rail, an
+# all-zero pair and an empty pair their own invert.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stereo_invert_witness.rish
+
+say "ales-stereo-invert: Language EN — stereo_invert flips both channels of a StereoClip about the zero line, so the Invert / Invert Phase gesture ALES105 named for a mono clip now lands on a real stereo master. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time; a phase flip that brings two mics on one source into agreement, cancels a difference signal, or folds a stereo side lands in both speakers at once. It lifts the value-mirror of the stereo suite's pure rearrangement class — where reverse and rotate trade every seat and touch no value, invert flips every value and touches no seat, the exact complement — leaving only the parity flip (nyquist_flip) to complete the class. It carries ALES105's proven mono invert into stereo — the same flip on each channel — so the inversion lands identically in both and the stereo image stays balanced; like reverse and rotate it is total and needs no validation."
+say "ales-stereo-invert: Style Radiant — the rule is stated positively: run the mono invert per channel over its public API, itself reusing ALES2's one true saturate so the two's-complement floor is clamped in exactly one place; because mono invert is total (it names no span, so it raises no fault) and holds each channel's length, the balance invariant is preserved trivially — both channels enter equal-length, both flip in place, both hold their length, so they leave equal-length, and there is no fault to forward. The crux stands out as four laws: the stereo value-mirror law (each channel equals ALES105's mono invert on that channel byte for byte against a hand-inverted vector, sample i holding saturate(-x), every value flipped and no seat moved), the balance / length law (left.len == right.len after the edit and both hold their starting length, the stereo image staying aligned), the involution law with an honest rail (stereo_invert twice returns both channels to the byte except the floor — an sample_min seat negates to +32768, saturates to +32767, round-trips to -32767 per channel, the fixed asymmetry saturated by design), and the magnitude / fixpoint law (off the rail each channel's peak re-measured through ALES13 is unchanged, the flip moving the sign not the loudness, and an all-zero pair and an empty pair each their own invert)."
+say "ales-stereo-invert: Lens TAME — two bounded i16 Clips (left, right) flipped about zero in lockstep; the balance invariant is asserted on entry and exit, and because mono invert is total (void, no EditError) and holds the length, the assertion can never fail and no refusal can land between the two channel edits; invert walks each channel's seats once, replacing each sample with saturate(-x) computed in i64 so the negation never overflows before the clamp, reading no byte past len, so the length holds exactly; it reuses ALES105's invert per channel over its public API and ALES2's single saturate for the rail, inventing no new primitive; the stereo value-mirror law is proven against ALES105's own invert run per channel, the honest-rail case is proven in place (the floor pinning to -32767), and the magnitude law reads each channel's peak through ALES13 so a sign flip off the rail is shown to move no loudness; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_invert"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_invert.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-invert: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_invert.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-invert: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-invert: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-invert' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-invert: selftest did not print the GREEN ales-stereo-invert line"

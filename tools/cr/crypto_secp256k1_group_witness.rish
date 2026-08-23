@@ -1,0 +1,44 @@
+# tools/cr/crypto_secp256k1_group_witness.rish — the secp256k1 group law authored in pure Rye, composed entirely over the GREEN base field
+# (crypto/fe_secp256k1.rye): the composition that turns the proven curve field into a proven group, the last step before ECDSA verification
+# and public-key recovery — the reach the Bitcoin/Ethereum address arc (Base58Check, Bech32, Keccak-256, RIPEMD-160, EIP-55) was climbing
+# toward. Proven against algebraic known-answers and byte-for-byte against an independent implementation (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+# Design read: active-designing/date/20260816/20260816-022000_secp256k1-group-law-the-proven-curve.md (this round) and
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
+# Kin: crypto/fe_secp256k1.rye (the base field this composes over, GREEN) · crypto/ed25519_group.rye (the sibling group law). secp256k1 is
+# not in Monocypher, so its source parity is not a rung here; the reference known-answers plus Zig's independent std.crypto are the two
+# witnesses (.claude/rules/gratitude-licenses.md).
+#
+# crypto/secp256k1_group.rye carries a point in standard homogeneous projective coordinates (X, Y, Z) with x = X/Z, y = Y/Z, so the complete
+# short-Weierstrass addition and doubling of Renes–Costello–Batina (eprint 2015/1060, a = 0) are exception-free — one formula adds every pair,
+# including a point to itself and to its own negation, with no branch and no inversion; the single inversion lives at the affine read. The
+# curve constant b3 = 3·b = 21 is built in our own field arithmetic. The primitive calls no std.crypto. Parity is proven at selftest against
+# two references runnable now: algebraic known-answers (the base point reads to its published affine coordinates, B + B = 2B, B + (−B) is the
+# point at infinity with Z = 0, and −(−B) = B), and Zig's own std.crypto.ecc.Secp256k1 as an independent implementation, byte-for-byte on the
+# affine coordinates of dbl, add, sub, and neg across the base point and several of its multiples. Purely local — a curve point is arithmetic,
+# not a secret and not a signature: no real key, no signing (ECDSA signing stays its own gated round), no network, no funds, no real device;
+# constant-time timing-safety stays a separate named horizon.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_secp256k1_group_witness.rish
+
+say "crypto-secp256k1_group: Language EN — the secp256k1 group law authored in pure Rye, composed entirely over the GREEN base field (crypto/fe_secp256k1.rye). The recent Season G arc built the secp256k1 base field, the durable stone the whole curve tower stands on; this is the first composition over it — point addition and point doubling — the two operations a scalar-multiplication ladder repeats, and the last step before ECDSA verification and public-key recovery, the reach the Bitcoin/Ethereum address arc was always climbing toward."
+say "crypto-secp256k1_group: Style Radiant — the law is stated positively: a point rides in standard homogeneous projective coordinates (X, Y, Z) with x = X/Z and y = Y/Z, chosen so the complete short-Weierstrass formulas of Renes–Costello–Batina (a = 0, b = 7) are exception-free — one formula adds every pair of points, including a point to itself and to its own negation, with no branch and no inversion inside the group law; the single inversion lives only at the affine read at the boundary. The curve constant b3 = 3·b = 21 is built in our own field arithmetic, never a copied literal; negation flips the sign of Y, and the point at infinity is any point with Z = 0."
+say "crypto-secp256k1_group: Lens TAME — the primitive calls no std.crypto; it composes only the GREEN field operations beneath it and asserts its coordinate-shape contracts on every function. Parity holds against algebraic known-answers AND Zig's independent std.crypto.ecc.Secp256k1 byte-for-byte on the affine coordinates of dbl, add, sub, and neg across the base point and several of its multiples. secp256k1 is not in Monocypher, so the two witnesses are the reference known-answers and Zig's std.crypto. Purely local — a curve point is not a secret and not a signature, so no real key, no signing, no network, no funds, no device; ECDSA's signing with an identity key stays its own separate, gated round, and constant-time timing-safety stays a separate named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/secp256k1_group"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/secp256k1_group.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-secp256k1_group: build failed — ${build.err}"
+
+let outfile = "crypto/bin/secp256k1_group.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-secp256k1_group: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-secp256k1_group: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-secp256k1-group' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-secp256k1_group: selftest did not print the GREEN crypto-secp256k1-group line"

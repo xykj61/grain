@@ -1,0 +1,41 @@
+# tools/m/min_width_witness.rish -- the MINIMUM-WIDTH SLOT (narrowest edge-first gap) of a point set, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/min_enclosing_circle.rye reads the round bound a shape clears FACE-FIRST: the smallest
+# disk covering the whole silhouette. This rung reads the complementary EDGE-FIRST bound: the narrowest parallel-sided slot the
+# shape slips through sideways, the minimum over image/convex_hull.rye's edges of the perpendicular extent, chosen by an EXACT i128
+# comparison and NO tolerance; only the reported width and angle are read in f64, as image/min_area_rect.rye reports its dimensions.
+#
+# The crux this witness proves on metal: a right triangle's narrowest slot is DIAGONAL (flush with the hypotenuse, exact squared
+# width 18/5, strictly below the axis base thickness 2 -- the turned slot an axis-aligned reading misses); EDGE-FIRST is NOT
+# FACE-FIRST -- a 2x8 bar passes a gap-2 slot edge-first (minimum width exactly 2) yet its minimum enclosing circle has diameter
+# sqrt(68) ~ 8.25, a round hole over four times wider face-first, proven against the real image/min_enclosing_circle.rye sibling; a
+# 6x2 bar's slot is its thickness 2 (not its length); an integrated raster block reads width exactly 4; passes_slot both ways;
+# refusals by name and determinism. No network, no key, no funds -- the edge-first slot a surface names the day it asks how thin a
+# shape truly is.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/min_width_witness.rish
+
+say "min_width: Language EN -- Season G minimum-width slot over image/convex_hull.rye's hull; the narrowest parallel-sided gap a shape passes edge-first, the minimum over the hull's edges of the perpendicular cross-product extent, chosen by an EXACT i128 comparison and no tolerance; only the reported width and angle are read in f64, as image/min_area_rect.rye reports its dimensions."
+say "min_width: Style Radiant -- compose not braid: this rung owns only the caliper sweep for the minimum width and the reads over it (the exact squared-width rational, the i128 comparison, passes_slot); convex_hull owns the hull, contour the Point type, min_enclosing_circle the round bound this one mirrors edge-first. No gather, no blend, no codec, no color, no pixel-writing loop -- a reading, not a render."
+say "min_width: Lens TAME -- the hull is swept under convex_hull_max_points; two in-image coordinates give a cross product under 2^30 in i64 and its square under 2^60 in i128, so no accumulator wraps; a single point or a segment hull refuses DegenerateHull, an empty input EmptySource, an over-long input HullTooLong; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/min_width"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/min_width.rye -femit-bin=${bin}"]
+assert build.ok else "min_width: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "min_width: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "min_width: ${out}"
+
+assert selftest.out contains "GREEN image-min-width" else "min_width: selftest did not print the GREEN line"
+assert selftest.out contains "narrowest slot is DIAGONAL" else "min_width: the diagonal-slot crux did not print"
+assert selftest.out contains "EDGE-FIRST is NOT FACE-FIRST" else "min_width: the edge-first vs face-first crux did not print"
+assert selftest.out contains "a round hole over four times wider face-first" else "min_width: the round-hole divergence did not print"
+assert selftest.out contains "refuse DegenerateHull" else "min_width: the degenerate refusal did not print"
+
+say "min_width: GREEN -- the minimum-width slot on metal, the edge-first companion of image/min_enclosing_circle.rye's face-first round hole. No network, no key, no funds."

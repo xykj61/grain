@@ -1,0 +1,38 @@
+# tools/al/ales_album_merge_sheet_witness.rish — the record merge verdict as a readable page: render_sheet(merge, out) draws a
+# `format lotus-album-merge-sheet-v1` page from an ALES235 Merge (ALES237).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES237.
+# Design read: active-designing/date/20260815/20260815-151215_fill-ales237-lotus-album-merge-sheet.md
+# Idiom kin: lotus/album_merge.rye (ALES235, the Merge this reads) · lotus/library_merge_sheet.rye (ALES236, the catalog page this
+# mirrors one level down) · lotus/album_manifest.rye (ALES224, the records the merge reconciled). A projection, not a round-trip — no
+# new frame, no new hash.
+#
+# lotus/album_merge_sheet.rye renders a Merge as a readable page. The selftest proves: the page opens with the format line and a
+# summary line carrying the three tallies (the summary law); every resolved track appears with its source word and digest (the
+# resolved law); every dropped track appears with the source that removed it (the dropped law); every conflict appears with its name
+# and three digest fields, an absent side printed `-` (the conflict law); a too-small buffer refuses Overflow (the atomic law). A pure
+# text render only — no real file, no DAC, no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_album_merge_sheet_witness.rish
+
+say "ales-album-merge-sheet: Language EN — ALES237 draws the ALES235 record merge verdict as a readable page: a summary line then one resolved / dropped / conflict line per track, so a keeper sees at a glance which tracks the merge takes and from whose hand, which it drops, and exactly where the two sides disagree — completing the merge tier's readable-page parity at both levels."
+say "ales-album-merge-sheet: Style Radiant — the mirror of library_merge_sheet one level down; a projection, not a round-trip; an absent side in a conflict prints `-`, a token a 64-hex digest can never be; the summary, resolved, dropped, conflict, and atomic laws each proven on metal."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/album_merge_sheet"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/album_merge_sheet.rye -femit-bin=${bin}"]
+assert build.ok else "ales-album-merge-sheet: build failed — ${build.err}"
+
+let outfile = "lotus/bin/album_merge_sheet.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-album-merge-sheet: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-album-merge-sheet: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-album-merge-sheet' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-album-merge-sheet: selftest did not print the GREEN ales-album-merge-sheet line"
+
+say "ales-album-merge-sheet: GREEN — the record merge verdict reads as a page a keeper can accept at a glance or take to the ear a conflict wants; the merge tier now carries its readable page at BOTH levels, the merge family whole (merge + merge_sheet, record and catalog). The next Lotus crux still names who made it — a signed carry (crypto seam) on Keaton's word."

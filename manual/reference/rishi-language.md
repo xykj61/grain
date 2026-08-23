@@ -55,9 +55,9 @@ let smoke = run ["sh" "-c" "${bin} metalsmoke 2>&1"]
 assert smoke.ok else "metalsmoke exited non-zero"
 ```
 
-A pipeline *must* check `.ok` (or `.code`) before trusting `.out` or `.err`. External programs keep stdout and stderr separate in the run record. When a witness drives **`rishi repl`** or **`rishi run`** as a subprocess, Rishi's own diagnostics land on **stderr** -- merge with `2>&1` in the host seam when the witness needs to read them from `.out`, as in `tools/rw4_slc_failure_paths.rish`.
+A pipeline *must* check `.ok` (or `.code`) before trusting `.out` or `.err`. External programs keep stdout and stderr separate in the run record. When a witness drives **`rishi repl`** or **`rishi run`** as a subprocess, Rishi's own diagnostics land on **stderr** -- merge with `2>&1` in the host seam when the witness needs to read them from `.out`, as in `tools/r/rw4_slc_failure_paths.rish`.
 
-The `["sh" "-c" "..."]` form remains the **host seam** for setting variables, redirection, and globbing; scripts *should* keep each seam to one honest line. For **reading** the process environment, `env "NAME"` returns the value as a string, or the empty string when unset -- witness: `tools/rish_env_witness.rish` (run with `RISHI_ENV_WITNESS_TEST=pinned`).
+The `["sh" "-c" "..."]` form remains the **host seam** for setting variables, redirection, and globbing; scripts *should* keep each seam to one honest line. For **reading** the process environment, `env "NAME"` returns the value as a string, or the empty string when unset -- witness: `tools/r/rish_env_witness.rish` (run with `RISHI_ENV_WITNESS_TEST=pinned`).
 
 ```
 let home = env "HOME"
@@ -81,7 +81,7 @@ assert entries contains "roundtrip.txt" else "list-dir missed the file we wrote"
 | `write-file PATH VALUE` | none (statement) | renders `VALUE` to text and writes |
 | `list-dir PATH` | list of entry names | bounded at 256 entries |
 
-Paths evaluate to strings; integers and other values render through the same `write-file` path as `say`. A missing file stops the script with `ReadFileFailed`; a missing directory stops with `ListDirFailed`. Witness: `tools/rish_file_io_witness.rish`.
+Paths evaluate to strings; integers and other values render through the same `write-file` path as `say`. A missing file stops the script with `ReadFileFailed`; a missing directory stops with `ListDirFailed`. Witness: `tools/r/rish_file_io_witness.rish`.
 
 ## 6. Exit Vocabulary -- pre-bound names and `exit`
 
@@ -100,7 +100,7 @@ let code = exit-permanent
 assert temp.code == exit-temporary else "child must speak temporary failure"
 ```
 
-`exit EXPR` ends the script immediately with the integer code (0-255). Witness: `tools/rish_exit_codes_witness.rish`.
+`exit EXPR` ends the script immediately with the integer code (0-255). Witness: `tools/r/rish_exit_codes_witness.rish`.
 
 ## 7. Gates -- `assert ... else`
 
@@ -143,7 +143,7 @@ if path starts-with "/home" then let is_home = true else let is_home = false
 for-each items as i do if i == 3 then say "found three"
 ```
 
-Conditions may compare with `==`, `!=`, and `starts-with`. The `then` branch runs when the condition is true; `else` is optional. **`for-each`** runs a statement for each list element -- effects included. Witness: `tools/rish_conditional_witness.rish`.
+Conditions may compare with `==`, `!=`, and `starts-with`. The `then` branch runs when the condition is true; `else` is optional. **`for-each`** runs a statement for each list element -- effects included. Witness: `tools/r/rish_conditional_witness.rish`.
 
 ## 12. Output -- `say`
 
@@ -163,11 +163,11 @@ let path = flag args "--appimage"
 
 ## 14. The Interactive Shell
 
-`rishi repl` reads lines, runs them, and keeps the last **50** inputs. Meta-commands begin with a colon: `:history` lists recent inputs; `:recall <n>` replays one; `:version` prints the version; `:quit` and `:q` leave. Everything else on a line is dispatched as a command. Unknown meta-commands and bad `:recall` arguments answer with a friendly line and the session continues -- pinned in `tools/rw4_slc_failure_paths.rish`. The drawn terminal mirrors exactly this session through `sessionLines`, so the shell's contract and the window's content are one value.
+`rishi repl` reads lines, runs them, and keeps the last **50** inputs. Meta-commands begin with a colon: `:history` lists recent inputs; `:recall <n>` replays one; `:version` prints the version; `:quit` and `:q` leave. Everything else on a line is dispatched as a command. Unknown meta-commands and bad `:recall` arguments answer with a friendly line and the session continues -- pinned in `tools/r/rw4_slc_failure_paths.rish`. The drawn terminal mirrors exactly this session through `sessionLines`, so the shell's contract and the window's content are one value.
 
 ## 15. Named Gaps -- the Growing Edge
 
-Held openly, so the reference and the roadmap agree: **`if` / `for-each`** in `tools/rish_conditional_witness.rish`; **`env`** in `tools/rish_env_witness.rish`; **file I/O** in `tools/rish_file_io_witness.rish`; **exit vocabulary** in `tools/rish_exit_codes_witness.rish`. The framework-growth witness track for this season is complete at parity **142**; new surface enters only on the day its witness runs green.
+Held openly, so the reference and the roadmap agree: **`if` / `for-each`** in `tools/r/rish_conditional_witness.rish`; **`env`** in `tools/r/rish_env_witness.rish`; **file I/O** in `tools/r/rish_file_io_witness.rish`; **exit vocabulary** in `tools/r/rish_exit_codes_witness.rish`. The framework-growth witness track for this season is complete at parity **142**; new surface enters only on the day its witness runs green.
 
 ---
 

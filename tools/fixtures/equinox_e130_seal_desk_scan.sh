@@ -21,7 +21,7 @@ MAP=construction/EQUINOX_SEAT_MAP.md
 ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
-WORKER=tools/glow_run_worker.sh
+WORKER=tools/g/glow_run_worker.sh
 ZIG="${RYE_ZIG:-vendor/zig-toolchain/zig}"
 
 if test "$MODE" = "prove-red"; then

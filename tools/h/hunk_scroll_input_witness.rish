@@ -1,0 +1,49 @@
+# tools/h/hunk_scroll_input_witness.rish — the input seam: a keeper's raw gesture drives the cursor (HUNK43).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK43.
+# Design read: active-designing/date/20260813/20260813-195500_hunk-scroll-input-exploration.md.
+# Teacher, thanked clean-room: the input layer of any scroll surface — a wheel notch, a drag delta, a Page-Down key
+# become one move over a list (concept only, siloed).
+#
+# HUNK40 gave a pure ScrollCursor whose gestures each clamp at both ends; HUNK42 painted its page beside a live scroll
+# bar. This rung is the boundary above the cursor: `pond/apps/preset_scroll_input.rye` `apply(cursor, input)` maps one
+# raw event — a signed scroll delta, a page key, a home/end key — into exactly one HUNK40 gesture, so a fling of ten
+# thousand lines past the end still lands on the bottom-pinned page and a delta at the i32 extremes never
+# under/overflows before the clamp. The selftest drives a two-row viewport over a real five-book library by raw input
+# and proves the reversible walk, the extreme-delta clamp without wrap, the page/edge kinds matching the cursor, and a
+# fitting library that never moves. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_scroll_input_witness.rish
+
+say "hunk-scroll-input: Language EN — HUNK43 turns a keeper's raw gesture (a signed scroll delta, a page or edge key) into exactly one cursor move, so a real hand drives the viewport with the cursor's full safety — no network, no key, no funds."
+say "hunk-scroll-input: Style Radiant — every real gesture source speaks in signed deltas and named keys; this seam translates them into the cursor's own verbs, and a fling never falls off the end."
+say "hunk-scroll-input: Lens TAME — a pure routing over HUNK40's gestures, positive invariants per fn, the delta magnitude taken in i64 so i32 min negates without overflow before the clamp; no new refusal, no new storage."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/apps/bin/preset_scroll_input"
+
+let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/preset_scroll_input.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-scroll-input: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-scroll-input: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-scroll-input: ${out}"
+
+assert out contains "GREEN preset-scroll-input" else "hunk-scroll-input: selftest did not print the GREEN preset-scroll-input line"
+
+assert out contains "a signed scroll delta walks the offset reversibly" else "hunk-scroll-input: the reversible signed-delta walk was not proven"
+
+assert out contains "clamps to the bottom-pinned offset and a huge negative one to the top without wrap" else "hunk-scroll-input: the extreme-delta clamp without wrap was not proven"
+
+assert out contains "the i32 min and max deltas both clamp cleanly" else "hunk-scroll-input: the i32-extremes clamp was not proven"
+
+assert out contains "the page and edge kinds match the cursor gestures" else "hunk-scroll-input: the page/edge kinds matching the cursor were not proven"
+
+assert out contains "a library that fits never moves whatever the input" else "hunk-scroll-input: the fitting-library-never-moves guarantee was not proven"
+
+assert out contains "a long mixed stream of wheel deltas and page keys never leaves the library" else "hunk-scroll-input: the mixed-stream safety was not proven"
+
+say "hunk-scroll-input: GREEN — a keeper's raw gesture drives the cursor with its full safety; a signed delta walks reversibly, an extreme delta clamps without wrap, the page and edge keys match the cursor's gestures, and a fitting library never moves. HUNK40 cursor GREEN beneath."

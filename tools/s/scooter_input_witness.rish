@@ -1,0 +1,42 @@
+# tools/s/scooter_input_witness.rish -- Scooter, the typed keeper, on metal.
+#
+# pond/apps/scooter_input.rye closes the terminal family's write loop: a keeper's raw keyboard BYTES drive a
+# composing session all the way to the journal. Two proven halves stood a step apart -- dexter_key.rye decodes
+# bytes into bounded Key events and drives an editable line, and scooter_compose.rye commits that line as a
+# post -- and this rung joins them into one act, held pure, owning no line of its own. It reads a byte SLICE a
+# caller already has, never a raw TTY and never the network. The raw TTY read and the Comlink wire between two
+# Constel piers are Dexter's later rungs -- they reach the serve gate, the maintainer's hand. This is the floor.
+# This witness builds the module and asserts its selftest speaks GREEN over the six cruxes:
+#   - Two typed lines in one raw run become two posts in order, the prompt cleared.
+#   - A partial line waits in the prompt; a later run completes and posts it whole.
+#   - An arrow key splices the line mid-word before Enter commits the edited post.
+#   - A blank Enter posts nothing; a real line after the blanks still lands.
+#   - A full journal stops the feed by name, reporting the bytes consumed, dropping no post silently.
+#   - The same raw run drives two sessions to the same journal every time (deterministic).
+#
+# Facts only, custody-first: it edits a line and appends posts to a channel a member holds -- no network, no
+# key signs, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/scooter_input_witness.rish
+
+say "scooter-input: Language EN -- a keeper's raw keystroke bytes drive a composing session all the way to the journal."
+say "scooter-input: Lens TAME -- the write loop closed pure; blank Enter posts nothing, a full journal stops by name, no TTY, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+
+let bin = "pond/bin/scooter-input"
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/scooter_input.rye -femit-bin=${bin}"]
+assert build.ok else "scooter-input: scooter_input build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "scooter-input: scooter_input selftest exited non-zero"
+assert selftest.out contains "GREEN" else "scooter-input: selftest did not speak GREEN"
+assert selftest.out contains "become two posts in order" else "scooter-input: typed-lines crux missing"
+assert selftest.out contains "a partial line waits in the prompt" else "scooter-input: partial-line crux missing"
+assert selftest.out contains "an arrow key splices the line mid-word" else "scooter-input: arrow-edit crux missing"
+assert selftest.out contains "a blank Enter posts nothing" else "scooter-input: blank-enter crux missing"
+assert selftest.out contains "a full journal stops the feed by name" else "scooter-input: journal-full crux missing"
+assert selftest.out contains "the same raw run drives two sessions to the same journal" else "scooter-input: determinism crux missing"
+
+say "GREEN: scooter-input -- the terminal family's write loop closes from raw keystroke bytes to the journal, bounded, pure, and deterministic."

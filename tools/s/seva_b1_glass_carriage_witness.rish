@@ -1,0 +1,17 @@
+# seva_b1_glass_carriage_witness.rish — JABS1 welcome path on glass.
+#
+#   rishi/bin/rishi run tools/s/seva_b1_glass_carriage_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/seva_b1_glass_carriage_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/seva_b1_glass_carriage_witness.rye -femit-bin=${bin}"]
+assert build.ok else "JABS1 glass carriage witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "JABS1 glass carriage witness exited non-zero"
+assert selftest.out contains "GREEN" else "JABS1 glass carriage not GREEN"
+assert selftest.out contains "welcome carriage roots match" else "JABS1 glass missing carriage claim"
+assert selftest.out contains "JABS1 carriage" else "JABS1 glass missing Skate line claim"
+
+say "GREEN: JABS1 glass carriage witness passed — welcome path paints."

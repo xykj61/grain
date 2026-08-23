@@ -1,0 +1,43 @@
+# tools/al/ales_reverb_mix_witness.rish — the wet/dry mix: the first reverb knob that is not a bank choice (ALES192).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES192.
+# Design read: active-designing/date/20260815/20260815-100815_fill-ales192-lotus-reverb-wet-dry-mix.md
+# Stands on: lotus/reverb_preset.rye (ALES190 — the named-room wet, run over the span unchanged); lotus/clock.rye (ALES5 — the sample clock);
+# lotus/timeline.rye (ALES2 — the Clip, its max_clip bounding the dry snapshot and its saturate clamping the blend).
+#
+# lotus/reverb_mix.rye gives the reverb its most-reached-for knob — HOW MUCH reverb, the wet/dry balance. It snapshots the dry span, reverberates
+# it wet in place through ALES190's reverb_preset UNCHANGED, then blends: out[i] = saturate((den-num)·dry[i]/den + num·wet[i]/den), a linear
+# balance at the named fraction num/den, saturated once so a loud blend pins never wraps. The selftest proves: at mix = 0 the span is restored to
+# the exact dry (the identity); at mix = den it equals reverb_preset over the span byte for byte; a half mix differs from both and each sample is
+# the honest weighted average of the two, byte for byte; silence stays silence; and the faults forward (a bad fraction BadMix, a span past the
+# clip DurationTooLong, an out-of-range span BadRange), the clip untouched. Purely local — one clip, a bounded stack snapshot; no network, no
+# keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_reverb_mix_witness.rish
+
+say "ales-reverb-mix: Language EN — ALES190 and ALES191 gave the reverb a face reached for by name (room · hall · plate), mono and stereo; every knob so far chose WHICH room. Yet a mixing keeper reaches for one more control before any other: HOW MUCH reverb — the wet/dry balance that sits a voice in a room without drowning it. This rung is that knob, the first preset control that is not a bank choice."
+say "ales-reverb-mix: Style Radiant — the two edges are stated positively and proven exact: at mix = 0 the span is restored to the exact dry (the identity, the reverb fully closed changing nothing), and at mix = den it equals reverb_preset over the span byte for byte (fully open, exactly the preset); between, each sample is the honest weighted average of the dry and the wet. The mix is a named fraction, not a decibel."
+say "ales-reverb-mix: Lens TAME — one clip of i16 PCM, a validated clock, ALES190's fixed banks, and a bounded stack snapshot (max_clip = 4096 samples); the one new arithmetic is the linear blend, a weighted average of two i16 spans summed in i64 and saturated once so it can never wrap; ReverbMixError = reverb_preset.ReverbPresetError || BadMix, DurationTooLong / BadRange / BadMix by name before any write, the dry snapshot a read only so a refusal leaves the clip untouched; siloed to lotus/, no network, no keys, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/reverb_mix"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_mix.rye -femit-bin=${bin}"]
+assert build.ok else "ales-reverb-mix: build failed — ${build.err}"
+
+let outfile = "lotus/bin/reverb_mix.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-reverb-mix: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-reverb-mix: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-mix' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-reverb-mix: selftest did not print the GREEN ales-reverb-mix line"
+
+# This rung runs ALES190's reverb_preset over its public API for the wet — re-prove the named-room preset still stands green beside it.
+let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
+assert (trim preset.out) == "yes" else "ales-reverb-mix: the ALES190 named-room preset regressed under its wet/dry mix"
+
+say "ales-reverb-mix: GREEN — the wet/dry mix: the first reverb knob that is not a bank choice (HOW MUCH reverb). Snapshot the dry span, reverberate it wet in place through ALES190's reverb_preset unchanged, then blend out[i] = saturate((den-num)·dry[i]/den + num·wet[i]/den), a linear balance at the named fraction num/den, saturated once so a loud blend pins never wraps. Proven: at mix = 0 the exact dry (the identity); at mix = den exactly the preset byte for byte; a half mix neither edge, each sample the honest weighted average; silence stays silence; a bad fraction refuses BadMix, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the clip untouched; the ALES190 preset stays GREEN beside it. A stereo wet/dry mix (the same blend over both channels, image held) is the thin twin next."

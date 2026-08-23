@@ -1,0 +1,37 @@
+# tools/f/fora_roster_witness.rish — a Constel roster holds only plainly-fake piers, membership an invariant (FORA1).
+#
+# Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA1.
+# Design read: active-designing/date/20260814/20260814-041928_fora1-constel-roster-fake-pier-registry.md
+# Law kin: .claude/rules/placeholder-ship-names.md — a Constel name is guaranteed never a real @p by the missing vowel;
+# FORA1 carries that guarantee up to a whole constellation: every roster member enters only through generate + never_a_ship,
+# and the rendered whole always passes check_constellation.
+#
+# constel/roster.rye seats the registry: init / join / stand_up / find / contains / member / render over constel/name.rye's
+# public API. The selftest proves: an empty roster reads and renders by name, stand_up draws a deterministic constellation,
+# a duplicate index refuses DuplicatePier, a ninth pier refuses RosterFull, lookup finds the present and refuses the absent
+# NotFound, and the full roster renders a lawful check_constellation whole with no vowel end to end.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/fora_roster_witness.rish
+
+say "fora-roster: Language EN — FORA1 holds the roster every Comlink handshake leans on; a constellation is a bounded set of distinct fake piers, every member provably never a real @p."
+say "fora-roster: Style Radiant — membership is an invariant, not a hope: a pier enters only through generate + never_a_ship, a duplicate refuses by name, a ninth pier refuses by name, and the whole always passes check_constellation."
+say "fora-roster: Lens TAME — a bounded in-memory registry over name.rye's public API, refusing each fault by name (RosterFull, DuplicatePier, NotFound, SlotOutOfRange, ConstellationTooLong); siloed to constel/, run from inside the jailed pier; no network, no handshake, no keys, no funds, no real address ever formed."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/roster"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/roster.rye -femit-bin=${bin}"]
+assert build.ok else "fora-roster: build failed — ${build.err}"
+
+let outfile = "constel/bin/roster.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-roster: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-roster: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-roster' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-roster: selftest did not print the GREEN fora-roster line"
+
+say "fora-roster: GREEN — the Constel roster stands, membership held as an invariant; the later Comlink-handshake round now has a constellation already proven safe to greet across."

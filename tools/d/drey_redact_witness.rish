@@ -1,0 +1,36 @@
+# tools/d/drey_redact_witness.rish — redact a span before the keep: the memory forgets on purpose (DREY10).
+#
+# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY10.
+# Design read: active-designing/date/20260814/20260814-070309_drey10-redact-a-span-before-the-keep-exploration.md
+# Stands on: mikrophone/session.rye (DREY0) — the memory that forgets; redaction shapes its working buffer before commit.
+#
+# mikrophone/redact.rye strikes a span from the forgetful working buffer and proves it leaves no residue — the struck
+# bytes zeroed, the tail closed over the gap, the vacated region zeroed, provable by a full scan. The selftest proves: a
+# struck middle span is removed exactly with no residue, redaction is deliberate and bounded (NothingToRedact,
+# SpanOutOfRange, NotPowered), head and tail and whole edges each leave the exact remainder, and only the trimmed capture
+# can commit and carry — the redacted span never reaches the payload that could cross the wire.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/drey_redact_witness.rish
+
+say "drey-redact: Language EN — DREY10 lets a keeper strike a span from the Mikrophone's working buffer before the deliberate keep; the founding promise 'What forgets, protects' becomes the keeper's own hand."
+say "drey-redact: Style Radiant — a keeper forgets one part on purpose while the rest stands, and the struck span is as gone as a powered-down buffer — nothing a later read could recover, nothing the committed payload ever carried."
+say "drey-redact: Lens TAME — redact refuses NotPowered, NothingToRedact, and SpanOutOfRange before a byte moves, shifts the tail with a plain bounded loop (never a bare memcpy), zeroes the vacated region, and asserts no residue out to max_samples; the committed payload is untouched; no disk, no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mikrophone/bin/redact"
+
+let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} rye/bin/rye build mikrophone/redact.rye -femit-bin=${bin}"]
+assert build.ok else "drey-redact: build failed — ${build.err}"
+
+let outfile = "mikrophone/bin/redact.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "drey-redact: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "drey-redact: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN drey-redact' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "drey-redact: selftest did not print the GREEN drey-redact line"
+
+say "drey-redact: GREEN — the Mikrophone forgets on purpose. A struck span leaves no residue, only the trimmed capture carries, and the whole discipline is proven pure before metal."

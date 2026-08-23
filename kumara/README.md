@@ -29,7 +29,7 @@ A **template** is this shape; an **instance** is one filled quintet of tilaks fo
 rye build kumara/tilak.rye -femit-bin=kumara/bin/tilak
 kumara/bin/tilak selftest      # a bind verifies both ways; a tampered bind refuses (diagnostics on stderr)
 kumara/bin/tilak emit          # print an example instance as Bron facts (data on stdout)
-rishi/bin/rishi run tools/kumara_tilak_witness.rish
+rishi/bin/rishi run tools/k/kumara_tilak_witness.rish
 ```
 
 The example instance lives at [`example-instance.bron`](example-instance.bron) — a point fact and a bind fact, both signatures present at full Ed25519 length, the point kept by the keeper the bind names.

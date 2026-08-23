@@ -23,7 +23,7 @@ REDS=construction/REDS.md
 SHRED=construction/SHRED_PREP.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
-CELLAR_WITNESS=tools/cellar_first_ring.rish
+CELLAR_WITNESS=tools/ce/cellar_first_ring.rish
 RISHI=rishi/bin/rishi
 
 if test "$MODE" = "prove-red"; then

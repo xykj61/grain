@@ -1,0 +1,130 @@
+# caravan_reclaim_witness.rish -- Caravan reclaim witness.
+#
+# `confer.rye` closed the gap at the front of a dependent's life: reach arrives
+# when the door grants it, never one instant sooner. `revoke.rye` closed the
+# gap at the back of a *standing* dependent's life: reach returns the moment
+# the work it served is carried. Both weigh what one dependent may touch while
+# it stands, and neither asks what becomes of the conferral once that dependent
+# is gone.
+#
+#   A CONFERRAL LEAVES WITH THE DEPENDENT IT WAS MADE TO, AND A SUCCESSOR OPENS
+#   ITS EYES ON A BARE WIRE.
+#
+# A conferral is published per domain, and a domain outlives every dependent
+# that ever stands in it. So the next dependent of that domain finds a word
+# already on the wire, grafts it, and reads an arc no door ever weighed for it.
+# Revoking does not help: revocation prunes the holder's hands, while the word
+# on the wire stands exactly as it was written.
+#
+# WHAT THIS RUNG PROVES, MEASURED:
+#
+#   * THE NUMBER THE TWO ROOMS DISAGREE ON IS INHERITED REACH -- what a
+#     dependent can touch at its first breath because somebody else was
+#     granted it. It completes the family: dark reach was what a dependent
+#     could touch before the door weighed it, stale reach what it could touch
+#     after its work came home. Leaving each conferral standing holds it at 1;
+#     reclaiming drives it to 0, with the same 3 dependents carrying the same
+#     work home either way.
+#   * THE SUCCESSOR'S OWN HANDS MEASURE IT, AND ITS REAL ONES ARE NEVER
+#     TOUCHED. The words standing for its domain are grafted into a *copy* of
+#     the hands it was spawned with, and each arc is asked for, so what it
+#     reports is reach proven live rather than merely present.
+#   * A CONFERRAL NAMES THE GENERATION IT WAS MADE TO, and that is what makes
+#     the count exact. A supervisor may publish a word for this very dependent
+#     between the spawn and its first breath, so *something standing here* is
+#     no evidence at all -- a word addressed to an earlier generation of this
+#     domain is. The generation is a measurement, never a guard: a careless
+#     successor grafts a foreign word all the same, which is exactly why the
+#     conferral is reclaimed rather than merely labelled.
+#   * THE CONTROL RUN SHOWS THE HAZARD PLAINLY. Under `left_behind` the
+#     successor is conferred nothing by any phase, and comes home having
+#     grafted 1 word anyway -- the one its predecessor was granted.
+#   * A RECLAMATION TAKES THE CONFERRAL WHOLE -- the words, the count that
+#     makes them live, the generation it was addressed to, and every answer
+#     given about it. A count left standing lets a successor graft a word; an
+#     answer of *held* left standing lets a supervisor believe a successor
+#     grafted a word it never saw.
+#   * FOUR REFUSALS THIS RUNG EARNS, EACH ABOUT A CONFERRAL OUTLIVING ITS
+#     HOLDER. `ReclaimStanding` is the moment: reach from a dependent still in
+#     flight returns by revocation, since a standing dependent can answer for
+#     its own hands. `ReclaimUngiven` is the supply: a dependent conferred
+#     nothing leaves nothing behind. `ReclaimTwice` is the count: a conferral
+#     already reclaimed may not be reclaimed again, or a run reports reach it
+#     never took back. `ReclaimInherited` is the answer -- the hard half --
+#     since a run that reclaimed a conferral a successor could still graft
+#     would believe an isolation it does not have.
+#   * A RUN THAT RECLAIMS NOTHING READS AS THE RUNG BELOW, all 9 pairs --
+#     this arc's standing generalization test.
+#
+# All five RED paths were proven on metal before this witness claimed GREEN.
+# Let the fold forget the moment and a conferral is reclaimed from a dependent
+# still standing. Let it forget the supply and a run takes back a conferral
+# that was never made. Let it forget the count and a conferral already taken
+# back is taken back again. Let the first breath forget the generation and the
+# elder reports its own conferral as inherited, so the run refuses the whole
+# record with `ReclaimInherited`. Reclaim nothing at all under the reclaiming
+# take and the successor inherits, so the run refuses again -- which is the
+# guard proving it is a check rather than decoration.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS %76 / %85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_reclaim_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/reclaim"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/reclaim.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan reclaim build failed -- ${build.err}"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/reclaim_read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+# The board declaration the rungs below opened, unchanged.
+let published = run ["sh" "-c" "caravan/bin/reclaim_read caravan/systems/serial_three_clients_board.bron 2>&1"]
+assert published.ok else "the board declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 11 -- grants 22" else "the board declaration changed shape"
+assert published.out contains "verdict: whole" else "the board declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero, every bell
+# starts silent, and no dependent finds a conferral left by an earlier run.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels caravan/.reclaims"]
+assert clean.ok else "the region stores, doorbells, and reclaiming notes could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan reclaim selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan reclaim selftest not GREEN"
+assert test.out contains "a conferral leaves with the dependent it was made to, and a successor opens its eyes on a bare wire" else "the reclaim finding did not close"
+
+# The reclamation and its three standing refusals, read straight, before any
+# dependent runs. The fourth, `ReclaimInherited`, belongs to the run rather
+# than the fold, since only a successor can answer for what it found.
+assert test.out contains "a conferral belongs to its holder, and never to whoever stands next" else "the reclamation fold was not weighed"
+assert test.out contains "three refusals stand by name: standing, ungiven, twice" else "the three standing refusals did not stand"
+assert test.out contains "the take this rung reads: a conferral leaves with the dependent it was made to" else "the reclaiming take was not named"
+
+# The generalization test: a run that reclaims nothing reads as the rung below.
+assert test.out contains "a run that reclaims nothing reads as the line handed, all 9 pairs" else "an unreclaimed run did not read as the line handed"
+
+# The reclaim lap: one plan run twice, once leaving each conferral standing on
+# the wire and once taking it back the moment its holder is gone.
+assert test.out contains "phases: 4 leaving the conferral, 4 reclaiming it" else "the two takes ran different records"
+assert test.out contains "dependents: 3 leaving the conferral, 3 reclaiming it" else "the two takes spent different dependents"
+assert test.out contains "carried home as handed: 2 leaving the conferral, 2 reclaiming it" else "a dependent did not come home as it was handed"
+assert test.out contains "reach conferred: 1 leaving the conferral, 1 reclaiming it" else "the two takes conferred different reach"
+assert test.out contains "reach revoked: 1 leaving the conferral, 1 reclaiming it" else "the two takes revoked different reach"
+assert test.out contains "conferrals reclaimed: 0 against 1" else "the run did not reclaim what it reported"
+assert test.out contains "inherited reach at a first breath: 1 against 0" else "reclaiming closed no inherited reach at all"
+assert test.out contains "breaks a named turn: 0 leaving the conferral, 0 reclaiming it" else "the reclaiming take broke an order its author named"
+
+# The dependents measure the finding in their own hands. The elder finds
+# nothing standing before it; the successor finds its predecessor's word under
+# the leaving take, and a bare wire under the reclaiming one.
+assert test.out contains "read 3 arcs of its own, 1 inherited at its first breath, 1 conferred, 1 returned, 0 still reachable at home" else "a successor inherited nothing under the leaving take"
+assert test.out contains "read 3 arcs of its own, 0 inherited at its first breath, 0 conferred, 0 returned, 0 still reachable at home" else "a successor under the reclaiming take still found a conferral waiting"
+assert test.out contains "read 3 arcs of its own, 0 inherited at its first breath, 1 conferred, 1 returned, 0 still reachable at home" else "the dependent a conferral was actually made to did not read it as its own"
+
+say "GREEN: Caravan reclaim witness passed."

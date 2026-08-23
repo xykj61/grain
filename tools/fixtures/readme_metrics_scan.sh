@@ -18,7 +18,7 @@
 #
 # THE DISCIPLINE THIS CARRIES, and the wall that now runs it. Add a witness or a module and this
 # block goes stale, so it is regenerated in the same commit -- the same habit the ITINERARY git nib
-# already keeps. One command: `rishi/bin/rishi run tools/readme_metrics.rish write`. That sentence
+# already keeps. One command: `rishi/bin/rishi run tools/r/readme_metrics.rish write`. That sentence
 # stood here as a comment for a while and no program ran it, so the block went stale inside the very
 # commit that made it stale, twice in two days (REDS %151, %152). `tools/hooks/pre-commit` is the
 # same sentence made executable: a commit that adds or removes a witness or a Rye module renders the
@@ -28,7 +28,7 @@
 # USAGE
 #   sh tools/fixtures/readme_metrics_scan.sh
 #
-# Driven by tools/readme_metrics.rish; proven by tools/readme_metrics_witness.rish.
+# Driven by tools/r/readme_metrics.rish; proven by tools/r/readme_metrics_witness.rish.
 # Run from the repository root.
 
 set -eu

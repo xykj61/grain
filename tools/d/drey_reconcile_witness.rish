@@ -1,0 +1,36 @@
+# tools/d/drey_reconcile_witness.rish — the desk reconcile: two hands meet on the union, pull then push composed (DREY15).
+#
+# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY15.
+# Design read: active-designing/date/20260814/20260814-072800_drey15-desk-reconcile-two-hands-meet-on-the-union-exploration.md
+# Stands on: mikrophone/sync.rye (DREY12, pull), mikrophone/push.rye (DREY14, push).
+#
+# mikrophone/reconcile.rye composes the pull and the push into one bounded operation: reconcile(a, b) first pulls b's lack
+# into a (a now holds a ∪ b), then pushes a's now-complete holdings out to b, so both desks end holding the UNION of what
+# either began with. The selftest proves: disjoint desks converge whole, overlapping desks cross only their difference, a
+# second reconcile is idempotent, order does not matter (a-first and b-first reach the same union), and a union past a
+# desk's entry bound refuses CatalogFull by name.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/drey_reconcile_witness.rish
+
+say "drey-reconcile: Language EN — DREY15 composes pull and push into the git sync in full; reconcile leaves two desks holding the union of what either began with."
+say "drey-reconcile: Style Radiant — the two hands that learned to take and to give now meet on the same whole, each desk ending with every recording either began with and nothing crossing that a side already held."
+say "drey-reconcile: Lens TAME — reconcile composes the two proven loops over their public APIs, asserts both desks hold the same union (convergence both ways) and propagates CatalogFull by name at either bound; reconciling over a real transport stays the Comlink-served gate; no disk, no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mikrophone/bin/reconcile"
+
+let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} rye/bin/rye build mikrophone/reconcile.rye -femit-bin=${bin}"]
+assert build.ok else "drey-reconcile: build failed — ${build.err}"
+
+let outfile = "mikrophone/bin/reconcile.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "drey-reconcile: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "drey-reconcile: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN drey-reconcile' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "drey-reconcile: selftest did not print the GREEN drey-reconcile line"
+
+say "drey-reconcile: GREEN — the Mikrophone desks meet on the union in one bounded operation, pull then push composed. DREY15 completes the git sync; reconciling over a real transport waits for the Comlink-served gate."

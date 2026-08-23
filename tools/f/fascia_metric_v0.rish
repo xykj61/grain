@@ -1,0 +1,5 @@
+# tools/f/fascia_metric_v0.rish — accrete shim → tools/gen/season/fascia_metric_v0.rish (Generator Season s4)
+if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/fascia_metric_v0.rish"]
+if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/fascia_metric_v0.rish" args[0]]
+if r.out != "" then say r.out
+exit r.code

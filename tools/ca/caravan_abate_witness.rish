@@ -1,0 +1,213 @@
+# caravan_abate_witness.rish -- Caravan abate witness.
+#
+# `answer.rye` opened the last door: the word a reader hands back about the wall
+# they were called to leaves their own box and lands where an operator reads the
+# outcome, so a correspondence that reached a person finally hears what that
+# person said.
+#
+#   A PLAN TAKES ITS OWN WALL DOWN ON THE WORD OF THE READER WHO RELEASED IT,
+#   RATHER THAN HEARING A PERSON AND HOLDING THE BOUNDARY AGAINST THEM ANYWAY.
+#
+# The rung proves:
+#
+#   * THE NUMBER THE TWO PLANS DISAGREE ON IS WALLS A PLAN KEPT STANDING AFTER
+#     THEIR READER TOOK THE MATTER UP. Both runs stand the same wall, call the
+#     same person to it, and open the same release. What parts them is whether
+#     the plan does anything about it. It falls 1 to 0.
+#   * A WALL COMES DOWN ONLY ON THE WORD OF THE READER WHO WAS CALLED TO IT. The
+#     release is read out of the record, and the record is copied whole from the
+#     reader's own hand -- so a plan able to author the release it obeys would be
+#     releasing itself. `AbateUnreleased` refuses by name.
+#   * EVERY BYTE OF THE ABATEMENT SAVE ONE CAME FROM OUTSIDE THE PLAN. The record
+#     is copied whole into `caravan/.minds/plan.abate` and this run's own byte
+#     written last; the record copied the answer, the answer copied the call, the
+#     call copied the wall, the wall copied the mark, and the mark copied the
+#     reader's own first refusal -- six tiers in eleven bytes.
+#   * A RUN ABATES ONLY A WALL WHOSE ANSWER IT ACTUALLY OPENED. `AbateUnopened`
+#     refuses by name on metal.
+#   * THE ABATEMENT NAMES THE WALL IT TAKES DOWN. `AbateMismatched` is the rung
+#     itself, refused by name on metal.
+#   * THE RECORD LANDS BEFORE THE WALL FALLS. A run stopping between the two
+#     leaves a wall standing beside a record of why it should not, rather than a
+#     boundary gone with nothing naming who released it.
+#   * ABATING IS NOT SETTLING. Every record beneath -- the settlement, the
+#     quarrel, its age, its standing, the finding, the plan's own word, the
+#     concession, the meeting, the redress, the delivery, the second look, the
+#     telling, the reader's reply, the mark, the call, and the reader's own
+#     answer -- comes out of an abating run exactly as it went in. Both runs
+#     settle `carried out whole`.
+#   * AN ABATEMENT SURVIVES A PROVISIONING, AND THE WALL IT TOOK DOWN STAYS DOWN.
+#     Proven as its own fold, outside any run.
+#
+# Run: rishi/bin/rishi run tools/ca/caravan_abate_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/abate"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/abate.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan abate build failed -- ${build.err}"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/abate_read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+# The board declaration the rungs below opened, unchanged.
+let published = run ["sh" "-c" "caravan/bin/abate_read caravan/systems/serial_three_clients_board.bron 2>&1"]
+assert published.ok else "the board declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 11 -- grants 22" else "the board declaration changed shape"
+assert published.out contains "verdict: whole" else "the board declaration did not read whole"
+
+# A fresh start for the stores, the doorbells, this plan's notes, and the boxes
+# outside it. Every quarrel, every finding, every debt, every mark, and every
+# word this witness reads was seated by the lap itself, standing in for the runs
+# and the correspondents that met this argument before today.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels caravan/.minds caravan/.readers"]
+assert clean.ok else "the region stores, doorbells, notes, and outside boxes could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan abate selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan abate selftest not GREEN"
+assert test.out contains "a plan takes its own wall down on the word of the reader who released it" else "the abate finding did not close"
+
+# The abating and its five refusals, read straight, before any dependent runs.
+assert test.out contains "five refusals stand by name: unopened, unreleased, mismatched, miscounted, misrecorded" else "the five abate refusals did not stand"
+assert test.out contains "the abating this rung keeps: the plan takes the wall down on the word of the reader who released it" else "an abating plan did not read as one"
+assert test.out contains "what a holding plan tells an operator: the plan reads its reader's release and holds the wall standing all the same" else "a holding plan did not read as one"
+assert test.out contains "an abatement carries eleven bytes: the record it acts on, echoed whole" else "an abatement did not name what it carries"
+assert test.out contains "an abatement survives a provisioning, and the wall it took down stays down across another" else "an abatement was never proven past a provisioning"
+
+# The opening below it, unchanged and still weighed.
+assert test.out contains "five refusals stand by name: uncalled, silent, mismatched, miscounted, misrecorded" else "the five answer refusals did not stand"
+assert test.out contains "an answer carries nine bytes: the call it replies to, echoed whole" else "an answer did not name what it carries"
+assert test.out contains "a record survives a provisioning, and leaves the reader's own word standing where they wrote it" else "a record was never proven past a provisioning"
+
+# The beckoning below that, unchanged and still weighed.
+assert test.out contains "five refusals stand by name: unwalled, unaddressed, mismatched, miscounted, misrecorded" else "the five beckon refusals did not stand"
+assert test.out contains "a call survives a provisioning, and outlives the drawer the wall it names was kept in" else "a call was never proven past a provisioning"
+
+# The bounding, the minding, and the forbearing below that, each still weighed.
+assert test.out contains "five refusals stand by name: unnamed, fresh, mismatched, miscounted, misrecorded" else "the five desist refusals did not stand"
+assert test.out contains "five refusals stand by name: uninherited, rested, mismatched, miscounted, misrecorded" else "the five mind refusals did not stand"
+assert test.out contains "five refusals stand by name: unread, allayed, mismatched, miscounted, misrecorded" else "the five forbear refusals did not stand"
+
+# The generalization test the whole arc keeps.
+assert test.out contains "a plan that loses nothing reads as the line handed, all 16 pairs" else "an unlost plan did not read as the line handed"
+
+# The abating lap: one plan run twice over an impasse a run before today handed
+# forward, with the forbearance, the mark naming it, and the reader's own
+# releasing answer all already on the wire each time. Every number stands still
+# and only the abating moves.
+assert test.out contains "phases: 6 holding, 6 abating" else "the two plans ran different records"
+assert test.out contains "dependents: 6 holding, 6 abating" else "abating a wall cost work it should not have"
+assert test.out contains "phases absorbed into a standing dependent: 3 holding, 3 abating" else "the two plans absorbed different phases"
+assert test.out contains "abandoned reach, conferred and never served: 3 holding, 3 abating" else "the two plans lost different work"
+assert test.out contains "phases re-seated to carry what was lost: 3 holding, 3 abating" else "the two plans repaired different work"
+assert test.out contains "raisers told how their own quarrel came out: 1 holding, 1 abating" else "the tidings below stopped moving under both plans"
+assert test.out contains "inherited debts this run met and took down: 1 holding, 1 abating" else "the meeting below stopped moving under both plans"
+assert test.out contains "second looks this run carried home to the reader who asked: 1 holding, 1 abating" else "the telling below stopped moving under both plans"
+
+# The bounding and the beckoning below, unchanged and still weighed.
+assert test.out contains "twice-carried impasses this run stood a wall around: 1 holding, 1 abating" else "a measured run left the twice-carried matter unbounded"
+assert test.out contains "stood walls this run carried out to the person who can act on it: 1 holding, 1 abating" else "a measured run left the person it stood a wall for uncalled"
+assert test.out contains "walls a plan stood and told nobody about: 0 against 0" else "a measured run kept its wall in a drawer after all"
+
+# The opening below now stands still under both plans: both open the same
+# reader's release, and only what the plan does about it parts them.
+assert test.out contains "carried calls this run opened its reader's own answer to: 1 holding, 1 abating" else "a measured run left its reader's answer unopened"
+assert test.out contains "answers a reader wrote back that the plan never opened: 0 against 0" else "a measured run left a reply shut after all"
+
+# The three numbers this rung moves. Both readers release the plan; only whether
+# the plan acts on the release parts them.
+assert test.out contains "opened releases this run took its own wall down on: 0 holding, 1 abating" else "the abating did not part the two plans"
+assert test.out contains "opened releases this run held its own wall standing against: 1 holding, 0 abating" else "the other half of the count did not close"
+assert test.out contains "walls a plan kept standing after their reader took the matter up: 1 against 0" else "the two plans obeyed their reader the same much"
+assert test.out contains "work still standing when the supervisor exits: 0 holding, 0 abating" else "the two plans left different work standing"
+assert test.out contains "the plan, as an operator finally reads it: carried out whole holding, carried out whole abating" else "an abated wall decided what the work came to"
+assert test.out contains "breaks a named turn: 0 holding, 0 abating" else "the abating run broke an order its author named"
+
+# What an operator reads is what the wire carries. Every note is read here,
+# outside the run that wrote it, exactly as each would be read by the person it
+# was written for.
+let settled = run ["sh" "-c" "cat caravan/.minds/plan.settled"]
+assert settled.ok else "the plan published no settlement an operator could read"
+assert settled.out contains "c" else "the wire did not carry the carried settlement the repair earned"
+
+# The act this rung is the whole point of, read where an operator reads the
+# outcome: eleven bytes, the record echoed whole and this run's own byte last.
+let abated = run ["sh" "-c" "cat caravan/.minds/plan.abate"]
+assert abated.ok else "an abating run recorded nothing an operator could read"
+assert abated.out contains "osrwsmwbuob" else "the abatement did not carry the release this reader granted"
+
+# And the wall it took down is gone, read straight off the wire -- the whole
+# difference between a release honored and a release merely filed.
+let wall = run ["sh" "-c" "test -e caravan/.minds/plan.wall && echo standing || echo abated"]
+assert wall.ok else "the wall note could not be weighed"
+assert wall.out contains "abated" else "an abating run left the wall its reader released standing"
+
+# The record below it, still standing exactly where the rung below wrote it: an
+# abating acts on a reading rather than spending it.
+let recorded = run ["sh" "-c" "cat caravan/.minds/plan.answer"]
+assert recorded.ok else "an abating run took down the record it was only acting on"
+assert recorded.out contains "osrwsmwbuo" else "the record did not carry the answer this reader gave"
+
+# And the reader's own hand, in their own box, outside this plan's wire entirely
+# -- the nine bytes the plan obeys and may never write.
+let handed = run ["sh" "-c" "cat caravan/.readers/desk.hands"]
+assert handed.ok else "the reader kept no answer of their own about the call"
+assert handed.out contains "osrwsmwbu" else "the reader's own word did not release the plan from the wall it named"
+
+# The call below that, still standing in the reader's own box: a call reports on
+# a wall rather than owning one, so it outlives the boundary it named.
+let called = run ["sh" "-c" "cat caravan/.readers/desk.walls"]
+assert called.ok else "an abating run took down the call along with the wall it named"
+assert called.out contains "osrwsmwb" else "the call did not name the wall this run stood"
+
+# The mark below that, untouched.
+let marked = run ["sh" "-c" "cat caravan/.minds/plan.mind"]
+assert marked.ok else "an abating run took down the mark it was only reading past"
+assert marked.out contains "osrwsm" else "the mark did not name the impasse this run opened holding"
+
+# And the relay is stayed, read straight off the wire: taking a wall down on a
+# reader's word hands the matter to nobody, exactly as the bounding left it.
+let relay = run ["sh" "-c" "test -e caravan/.minds/plan.hold && echo standing || echo stayed"]
+assert relay.ok else "the forbearance note could not be weighed"
+assert relay.out contains "stayed" else "an abating run handed the walled matter on after all"
+
+# The word, the finding, the standing, the age, and the quarrel itself, each untouched.
+let avowal = run ["sh" "-c" "cat caravan/.minds/plan.avow"]
+assert avowal.ok else "the plan published no word of its own an operator could read"
+assert avowal.out contains "ua" else "an abating run rewrote the word it was only asked to leave alone"
+
+let standing = run ["sh" "-c" "cat caravan/.minds/plan.swell"]
+assert standing.ok else "the standing note could not be read at all"
+assert standing.out contains "l" else "a quarrel four runs old did not read as long-standing"
+
+let quarrel_note = run ["sh" "-c" "cat caravan/.minds/plan.standing"]
+assert quarrel_note.ok else "an abating run took down the position it never weighed"
+assert quarrel_note.out contains "p" else "the position standing over the plan changed under an abating run"
+
+# The planted control. A witness that only reads the run's own words would print
+# GREEN over an abatement that was never written, so the note is taken down and
+# the very read that closed the claim is made again -- it must fail, on metal,
+# with the note gone. Then the wire is restored to exactly what the run left.
+let plant = run ["sh" "-c" "cp caravan/.minds/plan.abate caravan/.minds/plan.abate.kept && rm caravan/.minds/plan.abate"]
+assert plant.ok else "the planted control could not take the abatement down"
+
+let control = run ["sh" "-c" "cat caravan/.minds/plan.abate 2>/dev/null"]
+assert control.ok == false else "an abatement that does not exist was read all the same"
+
+let restore = run ["sh" "-c" "mv caravan/.minds/plan.abate.kept caravan/.minds/plan.abate"]
+assert restore.ok else "the wire could not be restored after the planted control"
+
+let restored = run ["sh" "-c" "cat caravan/.minds/plan.abate"]
+assert restored.ok else "the abatement did not come back after the planted control"
+assert restored.out contains "osrwsmwbuob" else "the restored abatement did not carry the release this reader granted"
+
+# The dependents measure the loss in their own hands, exactly as the rungs below
+# left them, and the follower that once spoke for the judgment falls with it.
+assert test.out contains "falls as its author declared, holding 1 conferred arcs it never served" else "a falling dependent did not fall holding its conferral"
+assert test.out contains "client_b: read 3 arcs of its own, 0 inherited at its first breath, 1 conferred, 0 returned, 1 still reachable at home" else "the dependent a conferral was made to did not read it as its own"
+assert test.out contains "client_c: bytes differed" else "the follower that once spoke for the judgment came home after all"
+
+say "GREEN: Caravan abate witness passed."

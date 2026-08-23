@@ -9,7 +9,7 @@
 # USAGE
 #   sh tools/fixtures/empty_document_control.sh
 #
-# Driven by tools/empty_document_witness.rish. Run from the repository root.
+# Driven by tools/e/empty_document_witness.rish. Run from the repository root.
 
 set -u
 

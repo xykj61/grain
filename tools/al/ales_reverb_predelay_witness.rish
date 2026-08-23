@@ -1,0 +1,43 @@
+# tools/al/ales_reverb_predelay_witness.rish — the pre-delay: the reverb's WHEN knob, the silent gap before the reverberant tail (ALES194).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES194.
+# Design read: active-designing/date/20260815/20260815-102052_fill-ales194-lotus-reverb-predelay.md
+# Stands on: lotus/reverb_preset.rye (ALES190 — the named-room wet, run over the span unchanged); lotus/clock.rye (ALES5 — the sample clock,
+# converting both the span and the pre-delay); lotus/timeline.rye (ALES2 — the Clip, its max_clip bounding the wet snapshot).
+#
+# lotus/reverb_predelay.rye gives the reverb its WHEN knob — the short silent gap before the reverberant tail begins, what separates a voice from
+# its own reverb. It reverberates the span wet in place through ALES190's reverb_preset UNCHANGED, snapshots the wet, then rewrites the span
+# shifted right by predelay samples: out[i] = 0 for i < predelay, else wet[i - predelay] — inventing no new audio arithmetic, only a bounded
+# reindex of the proven wet with a true-zero gap. The selftest proves: at predelay = 0 the span equals reverb_preset byte for byte; at predelay =
+# count the span is all zeros; a mid pre-delay puts zeros in front and the wet shifted by exactly predelay after, byte for byte; silence stays
+# silence; and the faults forward (a pre-delay past the span BadPredelay, a span past the clip DurationTooLong, an out-of-range span BadRange), the
+# clip untouched. Purely local — one clip, a bounded stack snapshot; no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_reverb_predelay_witness.rish
+
+say "ales-reverb-predelay: Language EN — ALES192 and ALES193 gave the reverb HOW MUCH (the wet/dry balance, mono and stereo) and the presets gave it WHICH room. The one axis left is WHEN: on a real console the pre-delay is the single knob that sits the room a hair behind the dry rather than smearing over its onset — what separates a voice from its own reverb and keeps a busy mix legible. This rung is that knob."
+say "ales-reverb-predelay: Style Radiant — the two edges are stated positively and proven exact: at predelay = 0 the span equals reverb_preset byte for byte (no gap is exactly the un-delayed reverb), and at predelay = count the whole wet is shifted off the end and the span is all zeros; between, the reverberant tail stands exactly predelay samples later. The pre-delay is a named duration in milliseconds, so it means the same gap at any rate."
+say "ales-reverb-predelay: Lens TAME — one clip of i16 PCM, a validated clock, ALES190's fixed banks, and a bounded stack snapshot (max_clip = 4096 samples); NO new audio arithmetic — the pre-delay is a bounded reindex of the proven wet, so no value is recomputed or can wrap and the gap is filled with true zeros; ReverbPredelayError = reverb_preset.ReverbPresetError || BadPredelay, DurationTooLong / BadRange / BadPredelay by name before any write, the wet snapshot within the span so a refusal leaves the clip untouched; siloed to lotus/, no network, no keys, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/reverb_predelay"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_predelay.rye -femit-bin=${bin}"]
+assert build.ok else "ales-reverb-predelay: build failed — ${build.err}"
+
+let outfile = "lotus/bin/reverb_predelay.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-reverb-predelay: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-reverb-predelay: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-predelay' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-reverb-predelay: selftest did not print the GREEN ales-reverb-predelay line"
+
+# This rung runs ALES190's reverb_preset over its public API for the wet — re-prove the named-room preset still stands green beside it.
+let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
+assert (trim preset.out) == "yes" else "ales-reverb-predelay: the ALES190 named-room preset regressed under its pre-delay"
+
+say "ales-reverb-predelay: GREEN — the pre-delay: the reverb's WHEN knob, the silent gap before the reverberant tail begins. Reverberate the span wet in place through ALES190's reverb_preset unchanged, snapshot the wet, then rewrite the span shifted right by predelay samples out[i] = 0 for i < predelay, else wet[i - predelay] — no new audio arithmetic, a bounded reindex of the proven wet with a true-zero gap. Proven: at predelay = 0 exactly reverb_preset byte for byte; at predelay = count all zeros; a mid pre-delay zeros in front and the wet shifted by exactly predelay after, byte for byte; silence stays silence; a pre-delay past the span refuses BadPredelay, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the clip untouched; the ALES190 preset stays GREEN beside it. A stereo pre-delay (the same shift over both channels, one shared gap, the image held) is the thin twin next."

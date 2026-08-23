@@ -1,0 +1,72 @@
+# tools/s/seed_link_witness.rish -- a link in a shipped document lands in the shipped tree.
+#
+# WHY THIS RUNG. This tree publishes two ways from one set of files. The maintainer's field
+# carries every room; the public seed is an ALLOWLIST projection named path by path in
+# template-manifest.bron. One README serves both. So a link that resolves perfectly in the field
+# -- `gratitude/Rust.md`, `construction/ITINERARY.md` -- resolves NOWHERE for a reader who arrives at the
+# seed, because the seed never carried that room.
+#
+# tools/t/tracked_link_witness.rish asks "is this in the repository." That is the right question
+# for the field and the wrong one for the seed, which is a different repository with fewer rooms.
+# Measured 20260823, before this rung: the front door alone shipped nineteen links into rooms the
+# seed does not carry, and 867 stood across every living shipped document. No guard read it.
+#
+# THE REPAIR THIS ASKS FOR. A withheld room is NAMED IN PROSE rather than linked. The front door
+# now describes the session logs, the operator card, the reading library, and the personal study
+# room in plain sentences with nothing to click -- so the page is legible in both repositories
+# and honest in each, rather than correct in one and broken in the other.
+#
+# WHAT IS PROVEN, on metal.
+#   Every relative link in a front-door document lands on a path the seed also ships. Four
+#   documents stand in that set, named rather than discovered, so a new root file cannot join it
+#   by accident and red on work it never agreed to cover.
+#   Sixteen behaviors on throwaway repositories, each with its own small manifest: the agreeing
+#   tree free and reading zero, the regression refused, counted, and named, an unshipped document
+#   free, a shipped non-front-door document counted as a ratchet rather than gated, dated
+#   testimony free and uncounted, external and anchor links free and uncounted, and the ceiling
+#   proven from both sides by planting 849 against 848 -- no flag, no override.
+#
+# WHAT IS REPORTED RATHER THAN GATED. The same reading across every other living shipped
+# document, under a ceiling that only ever falls. The repair is a rewrite per document rather
+# than a repoint, so it falls on touch instead of in one sweep that would bury the enforced zero.
+#
+# WHAT IS NOT PROVEN. That a link points at the RIGHT file -- tracked_link and living_docs_lint
+# own resolution in the field. This rung asks only whether a link survives the projection.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/seed_link_witness.rish
+
+say "seed-link: Language EN -- one page serves two repositories, and a promise kept in only one of them is half a promise."
+say "seed-link: Style Radiant -- the tree names a withheld room in prose rather than pointing at a door that is not there."
+say "seed-link: Lens TAME -- safety first: the seed is the face a stranger meets, and a broken front door is what they meet first."
+
+let scan = run ["sh" "tools/fixtures/seed_link_scan.sh"]
+assert scan.ok else "seed-link: a shipped document links into a room the seed does not carry -- read the scan's own lines"
+say scan.out
+assert scan.out contains "front_door_links_outside_seed=0" else "seed-link: every front-door link must land on a path the seed ships"
+assert scan.out contains "verdict=ok" else "seed-link: the scan must balance before it is believed"
+say "field GREEN -- the front door reads whole in the field and in the seed alike"
+
+let control = run ["sh" "tools/fixtures/seed_link_control.sh"]
+assert control.ok else "seed-link: the control must complete"
+say control.out
+assert control.out contains "agreeing_free=yes" else "seed-link: a front door linking only into shipped rooms must pass free"
+assert control.out contains "clean_reads_zero=yes" else "seed-link: a clean tree must read zero rather than merely pass"
+assert control.out contains "front_dead_refused=yes" else "seed-link: a front-door link into a withheld room must be refused"
+assert control.out contains "front_dead_counted=yes" else "seed-link: the refusal must name a count, never only a verdict"
+assert control.out contains "front_dead_named=yes" else "seed-link: the refusal must name the document and the link"
+assert control.out contains "unshipped_doc_free=yes" else "seed-link: a document the seed never ships cannot break a seed reader's link"
+assert control.out contains "ratchet_counted=yes" else "seed-link: a shipped non-front-door link must be counted"
+assert control.out contains "ratchet_not_gated=yes" else "seed-link: a ratchet must never be counted against the enforced zero"
+assert control.out contains "ratchet_under_ceiling_free=yes" else "seed-link: a ratchet under its ceiling must pass free"
+assert control.out contains "dated_testimony_free=yes" else "seed-link: dated testimony keeps every reference it ever wrote"
+assert control.out contains "external_link_free=yes" else "seed-link: an external or anchor link names no path in this tree"
+assert control.out contains "external_not_counted=yes" else "seed-link: an external link must not even be counted as a relative one"
+assert control.out contains "ceiling_edge_counted=yes" else "seed-link: the count at the ceiling must be exact"
+assert control.out contains "ceiling_edge_free=yes" else "seed-link: a ratchet exactly at its ceiling must pass free"
+assert control.out contains "ceiling_over_counted=yes" else "seed-link: the ratchet must count past its ceiling rather than saturate"
+assert control.out contains "ceiling_over_refused=yes" else "seed-link: a ratchet over its ceiling must refuse"
+assert control.out contains "control_verdict=ok" else "seed-link: the control must agree with itself"
+say "RED and GREEN paths proven -- three refusals bitten, thirteen honest readings left free"
+
+say "GREEN: seed-link -- a link in a shipped document lands in the shipped tree."

@@ -1,0 +1,46 @@
+# tools/cl/cluster_graph_witness.rish -- the whole cluster-neighbor graph above the cluster pair, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/object_relation.rye reads how a PAIR of objects sit; image/scene_graph.rye joins that over every
+# pair and reads each object's nearest NEIGHBOR; image/overlap_clusters.rye gathers objects into connected CLUSTERS; image/cluster_facts.rye
+# reads each cluster's union FRAME; image/cluster_adjacency.rye reads how a PAIR of whole clusters sit relative to each other. This rung is to
+# cluster_adjacency what scene_graph is to object_relation: it joins the cluster-pair read over every cluster pair into one matrix, then reads
+# the whole-graph questions no pair holds -- clusters_within the thresholded neighbors, cluster_degree_within the thresholded degree,
+# within_edges and frame_overlap_edges the two graphs' edge counts. Exact integers, NO float, NO tolerance.
+#
+# The crux this witness proves on metal, two shapes: THE FRAME-OVERLAP GRAPH AND THE TRUE-DISTANCE GRAPH ARE DIFFERENT GRAPHS, NEITHER A
+# SUBSET OF THE OTHER -- the frame graph holds an edge the tight-threshold graph refuses (over-claim) and the loose-threshold graph holds an
+# edge the frame graph misses (under-claim), so a box comparison over frames only bounds the true adjacency graph; THRESHOLD ADJACENCY IS A
+# STAR, NEVER A CLIQUE, NOT TRANSITIVE -- one cluster within threshold of two others while those two stand far apart, the hub of degree 2 while
+# each leaf is degree 1. Refusals by name, determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cl/cluster_graph_witness.rish
+
+say "cluster_graph: Language EN -- Season G whole cluster-neighbor graph; clusters_within the thresholded neighbors, cluster_degree_within the thresholded degree, within_edges and frame_overlap_edges the two graphs' edge counts; NO float, NO tolerance."
+say "cluster_graph: Style Radiant -- compose not braid: this rung owns only the whole-cluster-graph reads (the matrix join, the threshold membership, the thresholded degree, the two edge counts); overlap_clusters owns the connectivity and labeling, cluster_adjacency owns each cluster pair's true gap and frame-overlap test, scene_graph owns the precomputed pair matrix. A reading over a reading over a reading over a reading over a reading."
+say "cluster_graph: Lens TAME -- every cluster-pair join is bounded by the cluster count within the scene graph's ceiling, every threshold walk by the cluster count; a zero or past-the-count cluster id refuses BadClusterId, an empty clustering refuses NoClusters, a cluster count past the ceiling refuses TooManyClusters; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/cluster_graph"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/cluster_graph.rye -femit-bin=${bin}"]
+assert build.ok else "cluster_graph: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "cluster_graph: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "cluster_graph: ${out}"
+
+assert selftest.out contains "GREEN image-cluster-graph" else "cluster_graph: selftest did not print the GREEN line"
+assert selftest.out contains "THE FRAME-OVERLAP GRAPH AND THE TRUE-DISTANCE GRAPH ARE DIFFERENT GRAPHS, NEITHER A SUBSET OF THE OTHER" else "cluster_graph: the two-different-graphs case did not print"
+assert selftest.out contains "frame overlap over-claims a contact past the threshold" else "cluster_graph: the over-claim fact did not print"
+assert selftest.out contains "frame overlap under-claims a real nearness" else "cluster_graph: the under-claim fact did not print"
+assert selftest.out contains "a box comparison over frames never determining the true adjacency graph, only bounding it" else "cluster_graph: the box-bounds fact did not print"
+assert selftest.out contains "THRESHOLD ADJACENCY IS A STAR, NEVER A CLIQUE, NOT TRANSITIVE" else "cluster_graph: the star-not-clique case did not print"
+assert selftest.out contains "cluster 1 is a hub of degree 2 while each other is degree 1" else "cluster_graph: the hub-degree fact did not print"
+assert selftest.out contains "refuses BadClusterId across every read" else "cluster_graph: the bad-cluster-id refusal did not print"
+assert selftest.out contains "a lone-cluster graph has zero edges and an empty neighbor set" else "cluster_graph: the lone-cluster case did not print"
+assert selftest.out contains "the same graph reads the same counts twice" else "cluster_graph: the determinism statement did not print"
+
+say "cluster_graph: GREEN -- the whole cluster-neighbor graph stands on metal; the frame-overlap graph and the true-distance graph are different graphs neither a subset of the other, and threshold adjacency is a star never a clique. No network, no key, no funds."

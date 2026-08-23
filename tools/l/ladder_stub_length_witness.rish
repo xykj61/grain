@@ -1,0 +1,36 @@
+# tools/l/ladder_stub_length_witness.rish -- the stub is measured, never described.
+#
+#   rishi/bin/rishi run tools/l/ladder_stub_length_witness.rish
+#
+# REDS %128 taught that a number a meter prints survives a wrong sentence beside
+# it, and a number a hand describes does not. The stub length was the one
+# quantity of the whole lift arc that a hand ever typed from a glance at a diff,
+# and it is the one quantity that came out wrong. The row booked this guard and
+# closed on a prose edit, so the guard is built here and the closure earns its
+# proof.
+#
+# Both halves stand: the scan measures the stub off disk, and it holds the live
+# card to that measurement. Three refusals are proven on metal by generated
+# controls -- a card claiming a wrong length, a source tree holding no stub at
+# all, which must refuse rather than answer ok about its own blindness, and a
+# harness that delegates to itself, which is what a lift's own stub loop does to
+# caravan/ladder_checks.rye whenever a glob over caravan/*.rye sweeps the harness
+# in with the rungs it is rewriting (REDS %132).
+
+say "stub-length: Language EN -- a quantity a sentence asserts belongs beside the command that reads it back."
+say "stub-length: Style Radiant -- the measurement leads, and the sentence answers to it."
+say "stub-length: Lens TAME -- the shape is measured, the claim is bounded, the blindness refuses."
+
+let red = run ["sh" "tools/fixtures/ladder_stub_length_scan.sh" "prove-red"]
+say red.out
+assert red.out contains "RED_stub_claim_drift_caught" else "stub-length: a card claiming a wrong stub length passed -- the drift leg proves nothing"
+assert red.out contains "RED_no_stubs_refused_rather_than_ok" else "stub-length: an empty source tree answered ok -- a scan must never bless its own blindness"
+assert red.out contains "RED_harness_self_delegation_caught" else "stub-length: a harness delegating to itself passed -- the eaten-harness leg proves nothing"
+
+let scan = run ["sh" "tools/fixtures/ladder_stub_length_scan.sh"]
+say scan.out
+assert scan.out contains "stub_lines=3" else "stub-length: the delegating stub on disk is no longer three lines -- read the card's arithmetic before the next lift"
+assert scan.out contains "verdict=ok" else "stub-length: the live card names a stub length the tree does not measure, or the harness delegates to itself"
+assert scan.ok else "stub-length: the verdict reads ok while the status fails -- they must agree"
+
+say "GREEN: stub-length -- the delegating stub measures three lines across the ladder, the harness carries bodies rather than stubs of its own, and the live card says what disk says"

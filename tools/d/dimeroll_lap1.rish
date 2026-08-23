@@ -1,0 +1,20 @@
+# dimeroll_lap1.rish — Dimeroll lap 1 books fold witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/dimeroll_lap1.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "dimeroll/bin/dimeroll"
+
+let build = run ["sh" "-c" "mkdir -p dimeroll/bin && env RYE_ZIG=${zig} rye/bin/rye build dimeroll/dimeroll.rye -femit-bin=${bin}"]
+assert build.ok else "Dimeroll lap 1 build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Dimeroll selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Dimeroll selftest not GREEN"
+assert selftest.out contains "unknown account refused" else "Dimeroll missing unknown-account unwelcome"
+assert selftest.out contains "zero amount refused" else "Dimeroll missing zero-amount unwelcome"
+assert selftest.out contains "same-account entry refused" else "Dimeroll missing same-account unwelcome"
+assert selftest.out contains "conservation 0" else "Dimeroll missing conservation"
+
+say "GREEN: Dimeroll lap 1 — chart, journal fold, unwelcome paths."

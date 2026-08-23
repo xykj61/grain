@@ -1,7 +1,7 @@
 #!/bin/sh
 # caravan_ladder_prose_count_scan.sh -- a ladder meter recites no module count in the prose it prints.
 #
-# WHY THIS SCAN EXISTS. `tools/caravan_ladder_spine_witness.rish` closed every run by saying its spine stood
+# WHY THIS SCAN EXISTS. `tools/ca/caravan_ladder_spine_witness.rish` closed every run by saying its spine stood
 # "across 102 modules" while the scan it had just asserted printed 104, and then 105. The assert bound the
 # SCAN OUTPUT and left the closing sentence entirely unguarded, so the sentence drifted twice without a single
 # RED -- the exact shape REDS %105 named in the crypto suite, one family over. A reader who trusts a GREEN

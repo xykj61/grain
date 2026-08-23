@@ -1,0 +1,37 @@
+# tools/al/ales_normalize_witness.rish — peak normalization: measure the loudest sample, then scale the whole clip so it lands on a chosen target (ALES103).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES103.
+# Design read: active-designing/date/20260815/20260815-001849_fill-ales103-lotus-peak-normalize.md
+# Stands on: lotus/meter.rye (ALES13 — the peak/RMS meter, `measure` and `peak` read the loudest sample read-only), lotus/timeline.rye (ALES2 — the Clip and the
+# saturating `gain` that scales it), lotus/power.rye (ALES11 — the isqrt the meter is built on, reached only through ALES13). Peak normalization is the single most-
+# reached-for gesture in every editor and DAW: a take recorded quiet and a take recorded hot both leave the same peak after normalize, so a keeper mixes without
+# fighting the input level. It amplifies a quiet clip and attenuates a hot one with the SAME fraction, target/peak.
+#
+# lotus/normalize.rye measures the clip's peak through ALES13, then (unless the clip is silent) scales the whole clip by target/peak through ALES2's gain. The crux is
+# four laws. THE SCALE LAW: normalize is measure-then-gain and invents no arithmetic (a peak of 8000 to 16000 is a clean ×2, a peak of 30000 to 15000 a clean ×0.5). THE
+# PEAK LAW: after normalize the re-measured peak equals the target EXACTLY, across many clips and targets, including the i16 minimum at the domain ceiling. THE SILENCE
+# LAW: an all-zero clip and an empty clip are unchanged whatever the target. THE IDEMPOTENCE LAW: normalize twice to one target equals once. The selftest proves all
+# four, plus amplify-vs-attenuate direction and the two BadTarget refusals (a zero target and a target past sample_max) leaving the clip untouched.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_normalize_witness.rish
+
+say "ales-normalize: Language EN — peak normalization is the Normalize button every editor and DAW ships. A take recorded quiet and a take recorded hot both leave the same peak after normalize, so a keeper mixes without fighting the input level. Measure the loudest sample through ALES13's meter, then scale the whole clip through ALES2's gain so that sample lands exactly on a chosen target. It amplifies a quiet clip (peak below target) and attenuates a hot one (peak above target) with the SAME fraction, target over peak."
+say "ales-normalize: Style Radiant — the rule is stated positively: measure the peak; a silent clip is left exactly as it is (no divide by zero); else scale the whole clip by target/peak. The crux stands out as four laws: the scale law (normalize is measure-then-gain, inventing no arithmetic), the peak law (after normalize the re-measured peak equals the target exactly, at any target, for any non-silent clip), the silence law (an all-zero clip and an empty clip are unchanged), and the idempotence law (normalize twice to one target equals once)."
+say "ales-normalize: Lens TAME — one mono clip of i16 PCM metered read-only through ALES13 (all its bounds run before any write), then scaled through ALES2's saturating gain; it changes sample VALUES only, never a length, never a byte fabricated; the target is a plain magnitude in [1, sample_max], NOT a decibel or a loudness model; the error vocabulary is the meter's MeterError and the editor's EditError reused by name (both honestly unreachable here — a bounded Clip, a measured non-zero denominator, a whole-clip span) plus BadTarget for a zero or over-ceiling target; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/normalize"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/normalize.rye -femit-bin=${bin}"]
+assert build.ok else "ales-normalize: build failed — ${build.err}"
+
+let outfile = "lotus/bin/normalize.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-normalize: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-normalize: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-normalize' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-normalize: selftest did not print the GREEN ales-normalize line"

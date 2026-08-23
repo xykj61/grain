@@ -1,0 +1,51 @@
+# tools/t/text_layout_witness.rish -- the open text-layout rung proves itself on metal (Season G, composition).
+#
+# Season G (Open Media Primitives) - the measure half that makes the nine hand-drawn corpora usable. The glyph atlas
+# (image/glyph.rye, gfa1) and the full-ASCII font (image/font5x7_ascii.rye) hand a surface the glyphs; image/text_layout.rye
+# hands it their geometry -- where each glyph of a string sits along a line, and how wide the whole line runs. It is
+# pure measurement, the twin of the color module's arithmetic: no pixel is touched, so it is floor code that does not
+# wait on the paused Brushstroke rendering.
+#
+# The crux this witness proves: a real line ('Hi!') lays out at the expected pen origins (0, advance, 2*advance) and
+# total width; measure_width agrees with the laid line; the empty line is a clean zero; the whole printable band 32..126
+# lays out covered; word-wrap breaks a paragraph at space boundaries so each line stays within a max width, and every
+# wrapped span's stated width equals a fresh measure of that span; a word wider than the max takes its own line whole;
+# the break-wrap companion (wrap_lines_break) instead SPLITS an over-wide word at a glyph boundary so no line runs past
+# the max and no glyph is lost; justify (justify_line) flushes a laid line to a wider target by spreading the slack
+# across its interior word gaps, the remainder to the first gaps, a single-word line left untouched; and an uncovered
+# byte (a tab control char) refuses BY NAME (UncoveredCodepoint), a zero max by name (MaxWidthTooSmall), a too-tight
+# justify target by name (JustifyTargetTooSmall), rather than painting a silent hole or looping forever. No network,
+# no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/text_layout_witness.rish
+
+say "text-layout: Language EN -- Season G's composition rung; the measure half that places a string's glyphs along a line and sums their advances, so the nine open corpora become usable geometry."
+say "text-layout: Style Radiant -- pure measurement, the twin of the color module's arithmetic; no pixel touched, so it is floor code independent of the paused Brushstroke rendering."
+say "text-layout: Lens TAME -- u32 in-memory counts and pen widths, u8 codepoint bytes; every buffer and loop names a maximum (line_glyph_max - line_width_max); each function states its invariants positively; a missing glyph is a named refusal, never a silent hole; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/text_layout"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/text_layout.rye -femit-bin=${bin}"]
+assert build.ok else "text-layout: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "text-layout: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "text-layout: ${out}"
+
+assert selftest.out contains "GREEN image-text-layout" else "text-layout: selftest did not print the GREEN layout line"
+
+assert selftest.out contains "refused by name" else "text-layout: the named refusals were not proven"
+
+assert selftest.out contains "full printable band 32..126" else "text-layout: the full printable band did not lay out clean"
+
+assert selftest.out contains "wrap breaks" else "text-layout: word-wrap did not break a line at a space boundary"
+
+assert selftest.out contains "break-wrap splits" else "text-layout: break-wrap did not split an over-wide word within the max"
+
+assert selftest.out contains "justify flushes" else "text-layout: justify did not flush a line's interior gaps to the target width"
+
+say "text-layout: GREEN -- the fonts become usable geometry; a line lays out at proven pen origins and width, a paragraph word-wraps to a max width with honest per-line widths, an over-wide word splits at a glyph boundary within the max with no glyph lost, justify flushes a line's interior gaps to a wider target with a single word left untouched, the printable band lays clean, and an uncovered byte, a zero max, or a too-tight justify target refuses by name."

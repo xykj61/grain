@@ -14,7 +14,7 @@
 
 This room served a workflow that no longer exists: counsel drafted in a web chat, exported as text and archives, and carried into the bench by hand. The bench and the counsel are one hand now, so a question and its answer land in the same round rather than crossing a boundary between two tools.
 
-**Nothing here is retired, shredded, or superseded.** 764 dated pieces stand exactly as filed, 1,977 references across the tree point into them, and every one still resolves -- [`../tools/dated_path_resolve.rish`](../tools/dated_path_resolve.rish) finds a piece from any path it was ever cited by. Closed means *no longer growing*, never *no longer true*.
+**Nothing here is retired, shredded, or superseded.** 764 dated pieces stand exactly as filed, 1,977 references across the tree point into them, and every one still resolves -- [`../tools/d/dated_path_resolve.rish`](../tools/d/dated_path_resolve.rish) finds a piece from any path it was ever cited by. Closed means *no longer growing*, never *no longer true*.
 
 **Where its work continues:** a ruling that needs seating goes to [`../context/specs/`](../context/specs/) or its module home; a shape still being reasoned about goes to [`../active-designing/`](../active-designing/); a round scoping its own lap goes to [`../active-development/`](../active-development/README.md); the record of what happened goes to [`../session-logs/`](../session-logs/README.md).
 

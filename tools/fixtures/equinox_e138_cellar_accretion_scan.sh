@@ -23,7 +23,7 @@ ROADMAP=construction/ROADMAP.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 CELLAR_README=cellar/README.md
-CELLAR_WITNESS=tools/cellar_first_ring.rish
+CELLAR_WITNESS=tools/ce/cellar_first_ring.rish
 RISHI=rishi/bin/rishi
 
 if test "$MODE" = "prove-red"; then

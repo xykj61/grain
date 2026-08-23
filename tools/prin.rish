@@ -1,6 +1,0 @@
-# tools/prin.rish — accrete shim → tools/gen/season/prin.rish (Generator Season s4)
-# Forward at most one argv; never default-run matrix (hangs on live TTY).
-if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/prin.rish"]
-if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/prin.rish" args[0]]
-if r.out != "" then say r.out
-exit r.code

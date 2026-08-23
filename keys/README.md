@@ -12,7 +12,7 @@ This is the root `keys/` folder for **this fork's current identity** (`xykj61` /
 
 | File | Fingerprint (short) | Role |
 |------|---------------------|------|
-| `jail_signing_linux_CC8BA6.pub.asc` | `CC8B A671 … D30B` | **Jail-local signing, Linux ai-jail (Framework 16 AMD, Ubuntu)** — a dedicated, revocable, passphrase-free key `tools/generate_jail_local_keys_linux.rish` generated from a plain host terminal, outside any jail, on `20260716`. Day-to-day commit **Verified** badges from this specific jailed session use this fingerprint. Never the master identity. |
+| `jail_signing_linux_CC8BA6.pub.asc` | `CC8B A671 … D30B` | **Jail-local signing, Linux ai-jail (Framework 16 AMD, Ubuntu)** — a dedicated, revocable, passphrase-free key `tools/g/generate_jail_local_keys_linux.rish` generated from a plain host terminal, outside any jail, on `20260716`. Day-to-day commit **Verified** badges from this specific jailed session use this fingerprint. Never the master identity. |
 
 **Why keep this here:** anyone cloning the project can verify commits signed from this jailed session without hunting an external paste, the same reasoning `../context/keys/README.md` already names for the retired identity's own sandbox key.
 

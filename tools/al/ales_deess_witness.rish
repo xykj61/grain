@@ -1,0 +1,48 @@
+# tools/al/ales_deess_witness.rish — the de-esser: the first sidechain composition (ALES64).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES64.
+# Design read: active-designing/date/20260814/20260814-185604_fill-ales64-lotus-de-esser.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, samples(), splice, the range law shape); lotus/band.rye (ALES46 — the Bandpass that
+# isolates the sibilant band, re-proven below); lotus/sidechain.rye (ALES63 — the keyed compressor this drives, re-proven below).
+#
+# lotus/deess.rye builds the first tool the sidechain's freedom unlocks: band-pass a copy of the target to isolate the sibilant band,
+# then key ALES63's attack/hold/release compressor on that copy over the target — a de-esser, which tames a vocal's harsh "ess" by
+# ducking the whole voice only when the high band gets loud. The selftest proves: silence stays silence; the de-esser IS the
+# composition {band-pass a copy; sidechain-compress} byte-for-byte (the grounding law, run by hand — no arithmetic added on the audio
+# path); the KEY's band-passed level sets the threshold crossing (a threshold just above the band-passed peak is the identity however
+# loud the broadband level, a threshold below it ducks — proven by measuring the copy's peak, so the sibilant band, not the raw level,
+# drives the gain); a loud in-band signal ducks with the sign held and never expanding; and an illegal band cutoff refuses BadCoeff, a
+# zero threshold BadThreshold, a sub-unity ratio BadRatio, an illegal attack coefficient BadCoeff, a hold past max_clip BadHold, an
+# out-of-range span BadRange. Purely local — no lookahead, no network, no keys, no funds, no real device, no sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_deess_witness.rish
+
+say "ales-deess: Language EN — ALES64 proves the sidechain earns its keep: ALES63 gave the detector its freedom (a compressor keyed by a separate signal) and named the first tool that freedom unlocks — the de-esser, whose key is a band-passed copy of the signal itself. A de-esser tames the harsh ess of a vocal without dulling the take: it listens only to the sibilant band (the high frequencies where the ess lives) and, when that band gets loud, ducks the whole voice for that instant, so the ess softens while the body stays bright. That is exactly a band-pass of a copy (ALES46) keyed into the sidechain compressor (ALES63)."
+say "ales-deess: Style Radiant — the law is stated positively: the de-esser IS the composition {band-pass a copy; sidechain-compress} byte-for-byte (the grounding law, run by hand — it adds no arithmetic on the audio path, it is two proven tools composed), the KEY's band-passed level sets the threshold crossing (a threshold just above the band-passed peak is the identity however loud the broadband level, below it ducks — proven by measuring the copy's peak), and a loud in-band signal ducks with the sign held and never expanding. So the de-esser reacts to the band, not the volume."
+say "ales-deess: Lens TAME — a mutable target beside a caller-owned empty scratch key (nothing allocates on the path); the band-pass runs first over the scratch copy so an illegal cutoff or span refuses before a single target sample changes, and the keyed compressor checks every threshold, ratio, coefficient, hold, and range edge before any write, so the target is atomic on any refusal; the fault set is tone.ToneError || sidechain.SidechainError, every name already the family's (BadKey cannot fire — the scratch key is a full copy of the target); siloed to lotus/, no lookahead, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/deess"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/deess.rye -femit-bin=${bin}"]
+assert build.ok else "ales-deess: build failed — ${build.err}"
+
+let outfile = "lotus/bin/deess.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-deess: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-deess: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-deess' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-deess: selftest did not print the GREEN ales-deess line"
+
+# This rung composes ALES46's band-pass and ALES63's keyed compressor over their public APIs — re-prove both still stand green under it.
+let b = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/band.rye -femit-bin=lotus/bin/band && lotus/bin/band selftest 2>&1 | grep -q 'GREEN ales-band' && echo yes"]
+assert (trim b.out) == "yes" else "ales-deess: the ALES46 band-pass regressed under the de-esser"
+
+let s = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/sidechain.rye -femit-bin=lotus/bin/sidechain && lotus/bin/sidechain selftest 2>&1 | grep -q 'GREEN ales-sidechain' && echo yes"]
+assert (trim s.out) == "yes" else "ales-deess: the ALES63 sidechain compressor regressed under the de-esser"
+
+say "ales-deess: GREEN — the de-esser band-passes a copy of the target to isolate the sibilant band and keys ALES63's attack/hold/release compressor on that copy over the target; it IS the composition {band-pass a copy; sidechain-compress} byte-for-byte (no arithmetic added on the audio path), the key's band-passed level sets the threshold crossing (a threshold above the band-passed peak is the identity however loud the broadband level, below it ducks — proven by measuring the copy's peak), a loud in-band signal ducks with the sign held and never expanding; an illegal band cutoff refuses BadCoeff, a zero threshold BadThreshold, a sub-unity ratio BadRatio, an illegal attack coefficient BadCoeff, a hold past max_clip BadHold, an out-of-range span BadRange, each before the target is touched; the ALES46 band-pass and ALES63 sidechain compressor selftests stay GREEN. The first sidechain composition stands — the ducker (a voice key) and the keyed gate follow as compositions of proven parts; external key routing, a carried/spanning form, and the lookahead delay stay taken only on Keaton's word."

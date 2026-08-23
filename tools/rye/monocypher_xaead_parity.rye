@@ -1,0 +1,81 @@
+//! tools/rye/monocypher_xaead_parity.rye — our authored crypto/xchacha20.rye asked for its OWN XChaCha20-Poly1305 ciphertext and tag over a
+//! published known-answer (key 0x45×32, nonce 0x2a×24, associated data "Additional data", the RFC's 114-byte plaintext), printed one hex
+//! value per line, so tools/cr/crypto_monocypher_xaead_parity_witness.rish can diff our bytes against the vendored Monocypher's C
+//! (tools/fixtures/monocypher_xaead_harness.c) byte-for-byte — Monocypher's FLAGSHIP AEAD, crypto_aead_lock, the 24-byte-nonce authenticated
+//! encryption Lotus's signed carry, Vault, and Comlink will actually reach for. Season G (Cryptography · Rye-native, Monocypher-parity,
+//! audit-ready) — the SIXTH Monocypher-source parity rung, closing the extended-nonce path the IETF-nonce AEAD rung did not exercise.
+//!
+//! The two printed lines are, in order: the ciphertext (114 bytes → 228 hex characters) and the 16-byte Poly1305 tag (32 hex characters) — the
+//! same two lines the Monocypher C harness prints, so the parity witness compares like against like over identical inputs. crypto_aead_lock is
+//! XChaCha20-Poly1305 (draft-irtf-cfrg-xchacha §2.3): subkey = HChaCha20(key, nonce[0..16]); subnonce = 0x00000000 ‖ nonce[16..24]; then the
+//! RFC 8439 AEAD runs under (subkey, subnonce) — exactly what crypto/xchacha20.rye's seal composes.
+//!
+//! This authors NO cryptography — it is a printing harness over the GREEN crypto/xchacha20.rye (reached through the tools/rye/xchacha20.rye,
+//! tools/rye/aead.rye, tools/rye/chacha20.rye, and tools/rye/poly1305.rye symlinks, since Rye resolves imports beside the importing file). Purely local —
+//! the key and nonce are a published test vector, no key of ours, no signature, no network, no funds, no device.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/rye/monocypher_xaead_parity.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const xchacha20 = @import("xchacha20.rye");
+
+/// The published XChaCha20-Poly1305 known-answer key (0x45 repeated).
+const kat_key = [xchacha20.key_bytes]u8{
+    0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45,
+    0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x45,
+};
+
+/// The published 24-byte extended nonce (0x2a repeated).
+const kat_nonce = [xchacha20.xnonce_bytes]u8{
+    0x2a, 0x2a, 0x2a, 0x2a, 0x2a, 0x2a, 0x2a, 0x2a, 0x2a, 0x2a, 0x2a, 0x2a,
+    0x2a, 0x2a, 0x2a, 0x2a, 0x2a, 0x2a, 0x2a, 0x2a, 0x2a, 0x2a, 0x2a, 0x2a,
+};
+
+/// The published associated data.
+const kat_aad = "Additional data";
+
+/// The RFC's 114-byte plaintext — the sunscreen line (a fixed published test vector string, byte-exact).
+const kat_plaintext = "Ladies and Gentlemen of the class of '99: If I could offer you only one tip for the future, sunscreen would be it.";
+
+const hex_alphabet = "0123456789abcdef";
+
+/// print_hex — render a byte slice as a line of lowercase hex, two characters per byte. Bounded by a named ceiling on the slice length.
+const max_hex_bytes: u32 = 128;
+fn print_hex(bytes: []const u8) void {
+    // invariant: the slice fits the hex ceiling, so each byte renders to exactly two characters within a bounded line.
+    assert(bytes.len <= max_hex_bytes);
+    var out: [max_hex_bytes * 2]u8 = undefined;
+    var i: u32 = 0;
+    while (i < bytes.len) : (i += 1) {
+        out[i * 2] = hex_alphabet[bytes[i] >> 4];
+        out[i * 2 + 1] = hex_alphabet[bytes[i] & 0x0f];
+    }
+    // invariant (postcondition): exactly two hex characters were written per byte — a full rendering, never a truncation.
+    const n: u32 = @as(u32, @intCast(bytes.len)) * 2;
+    print("{s}\n", .{out[0..n]});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+
+    // invariant (construction): the plaintext is the 114-byte vector, within the AEAD's message ceiling.
+    assert(kat_plaintext.len == 114 and kat_plaintext.len <= xchacha20.max_message_bytes);
+    // invariant (construction): the key and nonce are XChaCha20's fixed widths — 32-byte key, 24-byte extended nonce.
+    assert(kat_key.len == xchacha20.key_bytes and kat_nonce.len == xchacha20.xnonce_bytes);
+
+    var cipher: [kat_plaintext.len]u8 = undefined;
+    var tag: [xchacha20.tag_bytes]u8 = undefined;
+    try xchacha20.seal(&cipher, &tag, kat_plaintext, kat_aad, &kat_key, &kat_nonce);
+
+    // 1. The ciphertext (114 bytes → 228 hex characters).
+    print_hex(&cipher);
+
+    // 2. The 16-byte Poly1305 tag (32 hex characters).
+    print_hex(&tag);
+
+    return 0;
+}

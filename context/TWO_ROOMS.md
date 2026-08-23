@@ -4,7 +4,7 @@
 **Last updated:** `20260717` (Quin voice · doorway vocabulary named · living discipline refreshed)
 **Style:** Radiant (see `RADIANT_STYLE.md` · standing voice `QUIN.md`)
 **Voice:** Quin
-**Status:** Seated — checkable-room canon; reviewed and kept `20260705.203144 UDT`; doorway witness from that stamp forward (`tools/two_rooms_doorway.rish`)
+**Status:** Seated — checkable-room canon; reviewed and kept `20260705.203144 UDT`; doorway witness from that stamp forward (`tools/t/two_rooms_doorway.rish`)
 **Ground:** drafted from the second harvest
 ([`external-research/20260703-071712_the-second-harvest.md`](../external-research/20260703-071712_the-second-harvest.md));
 vocabulary companions:
@@ -79,7 +79,7 @@ name the room in words the witness can bind. Accepted room tokens (case-insensit
 | `mixed` | Both registers named on purpose |
 | `research for understanding` | Vision-leaning study — orients; seats no fact |
 
-The witness is [`../tools/two_rooms_doorway.rish`](../tools/two_rooms_doorway.rish). A Status that
+The witness is [`../tools/t/two_rooms_doorway.rish`](../tools/t/two_rooms_doorway.rish). A Status that
 says "design" or "study" alone, without one of those tokens, does not yet name the room.
 
 ## How a Session Holds Visionary Material

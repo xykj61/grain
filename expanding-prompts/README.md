@@ -36,11 +36,11 @@ Dated prompts carry `YYYYMMDD-HHMMSS_short-sprig.md`; this README is the living 
 
 | Role | Path |
 |------|------|
-| Parity gate | `tools/parity.rish` |
-| Additive gate | `tools/additive-gate.rish` |
-| Strengthening enricher | `tools/enrich_strengthening_docs.rye` |
-| Session log aligner | `tools/align_session_logs.rye` |
-| Width audit (hosted gate) | `tools/width-check.rish` in `tools/parity.rish`; charter [`20260620-210812_explicit-width-audit.md`](date/20260620/20260620-210812_explicit-width-audit.md) |
+| Parity gate | `tools/p/parity.rish` |
+| Additive gate | `tools/ad/additive-gate.rish` |
+| Strengthening enricher | `tools/rye/enrich_strengthening_docs.rye` |
+| Session log aligner | `tools/rye/align_session_logs.rye` |
+| Width audit (hosted gate) | `tools/w/width-check.rish` in `tools/p/parity.rish`; charter [`20260620-210812_explicit-width-audit.md`](date/20260620/20260620-210812_explicit-width-audit.md) |
 
 
 ### Topic routing (from retired `10010_reserved`)
@@ -49,7 +49,7 @@ Dated prompts carry `YYYYMMDD-HHMMSS_short-sprig.md`; this README is the living 
 |-------|----------|
 | Tablecloth + Brix compose | [`20260620-043812_tablecloth-brix-split.md`](yonder/20260620-043812_tablecloth-brix-split.md) through [`20260620-044112_tablecloth-v1-seed.md`](yonder/20260620-044112_tablecloth-v1-seed.md) |
 | Main track (Rye · Rishi · strengthening · width fork) | [`yonder/20260621-051612_main-track-rye-rishi-strengthening.md`](yonder/20260621-051612_main-track-rye-rishi-strengthening.md) (consumed), [`20260620-210812_explicit-width-audit.md`](date/20260620/20260620-210812_explicit-width-audit.md), [`../construction/ROADMAP.md`](../construction/ROADMAP.md), [`../construction/TASKS.md`](../construction/TASKS.md) |
-| Strengthening doc + width enricher | [`yonder/20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md`](yonder/20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md) → [`../tools/enrich_strengthening_docs.rye`](../tools/enrich_strengthening_docs.rye) |
+| Strengthening doc + width enricher | [`yonder/20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md`](yonder/20260621-051612_strengthening-stdlib-doc-width-pass-redirect.md) → [`../tools/rye/enrich_strengthening_docs.rye`](../tools/rye/enrich_strengthening_docs.rye) |
 | Literal `usize` ban / language fork | [`../external-research/20260621-051312_literal-usize-ban-language-fork.md`](../external-research/20260621-051312_literal-usize-ban-language-fork.md), [`../active-designing/yonder/20260621-051312_explicit-width-in-rye.md`](../active-designing/yonder/20260621-051312_explicit-width-in-rye.md), [`../external-research/20260621-050312_usize-boundary-not-design.md`](../external-research/20260621-050312_usize-boundary-not-design.md) |
 
 **Retired in new prompts:** `tools/parity.sh`, `enrich_strengthening_docs.py`, `align_session_logs.py`, `parity.rye` as gate target, `init.arena`, authored `ArenaAllocator`, “`usize` only at seam” as **permanent** policy (interim only — see width fork links above).
@@ -83,7 +83,7 @@ What does *not* belong here is the work itself — that lands in the research, d
 | `20260724.132812` | [Workshop and Warehouse — context economy](yonder/20260724-132812_workshop-and-warehouse-context-economy.md) | **yonder** · Files Fable 5 counsel · seats pin-and-ledger `24576` · untracks `tools/bin/` · rolls living pins · watcher excludes · sixth lint duty · workshop/warehouse doctrine · P3 rules partial · P6–P7 skeletons |
 | `20260718.122145` | [Glow Glass display, short home, Dexter send, Wired Glass](yonder/20260718-122145_glow-glass-display-short-home-and-dexter-send.md) | **yonder** · Expands ret=newline · ↑ send · Hearth short home `kd` · LULU display presets (Pixel 10a 1080×2424 → same-ratio lower → Mantrapod Skate floor) · Wired Glass SLC (used Pixel, no cellular, USB to Desk) · draws waymark **LULU** · seats silo + ER + align |
 | `20260716.142818` | [The Glow application framework and publishing mechanism, held against GrapheneOS](yonder/20260716-142818_glow-application-framework-and-publishing.md) | **yonder** · Grounds GrapheneOS's own app model (signed repository tied to verified boot, sandboxed Play as an unprivileged app, A/B verified-boot update rail, capability-gated permissions — checkable, dated) · maps each service onto the closest Glow module/vane (Pool+Caravan the strongest match; Granary/Amber/Comlink the repository; MUR/Neth/Sigma/Mandi an *improvement* on Play payments; was MALA) · connects the framework to the rune design (an app is a Pool agent, its manifest a bounded mold, its capabilities an exhaustive `?-` checked at admission, its loops the bounded `\|-`) · names the publishing mechanism as a fold over signed offers, not a central store · lays the **TUBE** ladder (waymark-derived, TUBE0–TUBE7) and recommends TUBE0 (the app-manifest mold) as the reachable, device-free next step |
-| `20260715.163900` | [A separate ai-jail identity for urbit on the Framework/Ubuntu host](yonder/20260715-163900_linux_framework_jail_identity_separation.md) | **yonder** · Settles that ai-jail's own --private-home already isolates veganreyklah2's real keys by default on Linux (kernel namespaces, no macOS-style enumeration needed) · scopes tools/generate_jail_local_keys_linux.rish as the one remaining piece, not yet written |
+| `20260715.163900` | [A separate ai-jail identity for urbit on the Framework/Ubuntu host](yonder/20260715-163900_linux_framework_jail_identity_separation.md) | **yonder** · Settles that ai-jail's own --private-home already isolates veganreyklah2's real keys by default on Linux (kernel namespaces, no macOS-style enumeration needed) · scopes tools/g/generate_jail_local_keys_linux.rish as the one remaining piece, not yet written |
 | `20260715.181500` | [Sala as a broadcast surface, and the Glowphone](yonder/20260715-181500_sala-broadcast-and-glowphone.md) | **yonder** · Ran two intertwined visions into grounded studies: Sala-broadcast (a livestream is a fold over a signed ordered log) and the Glowphone (a two-body firmware-free-client + open-AI-home-forge strategy, hardware forks dated and cited) |
 | `20260715.164500` | [Glow's non-vane strata, the Urbit fleet reconciliation, and mold nesting](yonder/20260715-164500_glow-vane-strata-fleet-and-molds.md) | **yonder** · Ran a round of Glow design questions into three citable studies: the three non-vane strata + Pond's narrowing, the Glow/Neth/fleet reconciliation, and bounded mold nesting as the sixth Glow-supplement surface |
 | `20260715.160500` | [A student's "mixed" on college, AI, and the vows that fit](yonder/20260715-160500_college-education-mixed-exploitation-ai-and-vows.md) | **yonder** · Siloed a student's honest word on education-as-exploitation and the age of AI; ran it into study #58 on Kali Yuga, the Brahmana in grihastha, artha, and how Grain balances the extraction underneath |

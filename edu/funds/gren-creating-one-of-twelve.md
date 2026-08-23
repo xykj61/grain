@@ -5,7 +5,7 @@
 **Voice:** Quin · nested frame Trey  
 **Fund seat:** **Gren** — Taurus · earth · seat 2 · `%gren` · domain prep **gren.fund**  
 **Status:** Steps **1–6 taught and witnessed** · fund-prep arc **m5–m8 CLOSED** (`20260728.015058`) · rename-forward **Gren** (`20260728.025634`; was Djin · was Twah)  
-**Generator:** [`../../tools/gen_gren_fund_prep.rish`](../../tools/gen_gren_fund_prep.rish)
+**Generator:** [`../../tools/g/gen_gren_fund_prep.rish`](../../tools/g/gen_gren_fund_prep.rish)
 
 *Gren's gift under the fund seat (was Gren · was Twah): the edu-series tutorial for creating one of the twelve.*
 Radiant pass `20260728.025634` — Gren → Gren overwrite · core Gren Season · revert Gren name
@@ -135,7 +135,7 @@ A tutorial teaches, and a deploy stays with the hand that owns it. Step six hold
 **Prove the refuse (part of GREEN):**
 
 ```bash
-rishi/bin/rishi run tools/gen_gren_fund_prep.rish deploy   # must exit non-zero
+rishi/bin/rishi run tools/g/gen_gren_fund_prep.rish deploy   # must exit non-zero
 ```
 
 gen-gren's own GREEN path re-runs this refuse as a post-fold so the page cannot stay GREEN if the door softens.
@@ -154,8 +154,8 @@ gen-gren's own GREEN path re-runs this refuse as a post-fold so the page cannot 
 ## Prove the whole page (steps 1–6)
 
 ```bash
-rishi/bin/rishi run tools/gen_gren_fund_prep.rish          # GREEN — includes refuse post-fold
-rishi/bin/rishi run tools/gen_gren_fund_prep.rish deploy   # RED by name
+rishi/bin/rishi run tools/g/gen_gren_fund_prep.rish          # GREEN — includes refuse post-fold
+rishi/bin/rishi run tools/g/gen_gren_fund_prep.rish deploy   # RED by name
 ```
 
 ---

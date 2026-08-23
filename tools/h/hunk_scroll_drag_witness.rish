@@ -1,0 +1,51 @@
+# tools/h/hunk_scroll_drag_witness.rish — the drag seam: a touch drag in pixels becomes line deltas (HUNK44).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · marketplace / Photos-app surface · rung HUNK44.
+# Design read: active-designing/date/20260813/20260813-195829_hunk-scroll-drag-exploration.md.
+# Teacher, thanked clean-room: the pixel-quantizing layer of any touch scroll surface — a finger drag in pixels becomes
+# whole line moves over a row's pixel height, the sub-cell remainder carried between events (concept only, siloed).
+#
+# HUNK43 turns a raw event into one cursor move, yet assumes the delta arrives counted in lines. A real touch surface
+# reports a drag in pixels. This rung is the seam above HUNK43: `pond/apps/preset_scroll_drag.rye` `feed(pixels)`
+# quantizes a pixel drag into a whole-line delta over the cell height, carrying the sub-cell remainder so a slow drag
+# accumulates instead of flooring to nothing every event; `drag` composes that delta with HUNK43's `apply`. The selftest
+# drives a two-row viewport over a real five-book library by touch drags and proves the reversible full-cell drag, the
+# accumulating carry, the bounded residual, the i32-min quantize without wrap, and the inherited HUNK43 clamps. No
+# network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_scroll_drag_witness.rish
+
+say "hunk-scroll-drag: Language EN — HUNK44 turns a touch drag in pixels into whole line moves over a row's pixel height, carrying the sub-cell remainder so a slow honest hand still moves the page — no network, no key, no funds."
+say "hunk-scroll-drag: Style Radiant — a drag is only pixels until a cell height gives it meaning; this seam quantizes it and hands the whole-line delta down to the cursor with every clamp inherited."
+say "hunk-scroll-drag: Lens TAME — a pure quantizer over a bounded carry, positive invariants per fn, the running total taken in i64 so an i32-min delta never wraps before the divide; the one new refusal only BadCellHeight."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/apps/bin/preset_scroll_drag"
+
+let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/preset_scroll_drag.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-scroll-drag: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-scroll-drag: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-scroll-drag: ${out}"
+
+assert out contains "GREEN preset-scroll-drag" else "hunk-scroll-drag: selftest did not print the GREEN preset-scroll-drag line"
+
+assert out contains "a full-cell drag scrolls exactly one line reversibly" else "hunk-scroll-drag: the reversible full-cell drag was not proven"
+
+assert out contains "accumulate the carry and emit 0,0,0,1" else "hunk-scroll-drag: the accumulating carry was not proven"
+
+assert out contains "the residual stays strictly within one cell after every feed" else "hunk-scroll-drag: the bounded carry was not proven"
+
+assert out contains "an i32-min delta onto a negative carry quantizes without wrap" else "hunk-scroll-drag: the i32-min quantize without wrap was not proven"
+
+assert out contains "the composed drag inherits HUNK43 clamps" else "hunk-scroll-drag: the inherited HUNK43 clamps were not proven"
+
+assert out contains "a fitting library counts the lines yet never moves" else "hunk-scroll-drag: the fitting-library no-op was not proven"
+
+assert out contains "a zero or over-ceiling cell refuses BadCellHeight" else "hunk-scroll-drag: the BadCellHeight refusal was not proven"
+
+say "hunk-scroll-drag: GREEN — a touch drag in pixels drives the cursor over the cell height with a carried remainder; a full-cell drag walks reversibly, sub-cell drags accumulate to a whole line, the carry stays bounded, an i32-min delta never wraps, and the composed drag inherits every HUNK43 clamp. HUNK43 input and HUNK40 cursor GREEN beneath."

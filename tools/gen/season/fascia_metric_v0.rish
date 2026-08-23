@@ -9,7 +9,7 @@
 # Measure only — shred / breach / deploy refuse by name.
 #
 #   rishi/bin/rishi run tools/gen/season/fascia_metric_v0.rish
-#   rishi/bin/rishi run tools/fascia_metric_v0.rish          # accrete shim
+#   rishi/bin/rishi run tools/f/fascia_metric_v0.rish          # accrete shim
 
 
 say "fascia-metric-v0: Language EN — fascia grade from measurable clutter."

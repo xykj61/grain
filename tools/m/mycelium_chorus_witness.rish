@@ -1,0 +1,60 @@
+# tools/m/mycelium_chorus_witness.rish — the Chorus: a quorum of independent Vouchers (r1).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the Chorus · rung r1 — the crux.
+# The Voucher made a holder's position PROVABLE under one node's signature; yet a verifier who does not
+# hold the blocks must simply TRUST that the single signing node read the ledger true. The Chorus fills
+# that blind spot: PROOF OF POSITION BY QUORUM. A bounded set of independent Vouchers for the SAME account
+# position at the SAME order-head is believed only when a threshold of DISTINCT nodes agree.
+#
+# The crux this witness proves is A POSITION IS BELIEVED WHEN A THRESHOLD OF DISTINCT NODES AGREE:
+# verify_chorus(threshold) passes exactly when every member's signature holds offline (else BadSignature),
+# every member names the one claimed order-head · account · position (else Disagreement), the signers are
+# distinct — a repeated node refuses DuplicateNode, so one voice cannot manufacture a quorum — and the
+# distinct count meets the threshold (else BelowThreshold). check_against(dag), for a verifier who DOES
+# hold the blocks, re-derives the order-head and re-reads the Statement once and confirms the one claim is
+# true. Arrival-independence is inherited from the Voucher: a chorus gathered against one permutation of
+# the round-2 facts verifies and checks against the other, because cord.commit yields one agreed order per
+# arrival. Composes voucher + cord + lapse + statement + kumara public API only, editing none; the quorum
+# law is the Chorus's own bounded fold over its member set; demo node and keeper seeds — no key, no funds,
+# no network, no custody.
+#
+# Scope: active-designing/date/20260813/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_chorus_witness.rish
+
+say "mycelium-chorus: Language EN — a quorum of nodes vouches together: a position a stranger believes not because one node signed it, but because a threshold of distinct nodes each read the same standing against the same agreed order."
+say "mycelium-chorus: Style Radiant — the Voucher made a position provable under one node's word; the Chorus makes it believable to a stranger who trusts no single node, gathering many independent voices into one attested reading."
+say "mycelium-chorus: Lens TAME — the quorum law composes voucher + cord + lapse + statement + kumara public API; the member set is bounded at chorus_max_members; every member verifies offline, all agree on one claim, the signers are distinct, and the distinct count meets the threshold; refuses tamper; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/chorus"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/chorus.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-chorus: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-chorus: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-chorus: selftest did not speak GREEN"
+assert selftest.out contains "believed only when a threshold of distinct nodes agree" else "mycelium-chorus: quorum-belief claim missing"
+assert selftest.out contains "checks against the ledger it vouches" else "mycelium-chorus: check-against claim missing"
+assert selftest.out contains "inherits arrival-independence" else "mycelium-chorus: arrival-independence claim missing"
+assert selftest.out contains "refuses tamper (thin quorum · repeated signer · disagreement · forged voice)" else "mycelium-chorus: tamper-refusal claim missing"
+assert selftest.out contains "Proof of position by quorum stands" else "mycelium-chorus: closing claim missing"
+
+# The rendered chorus a keeper reads — a plain open-pledge quorum of three voices naming the order-head,
+# the account, and the vouched position (balance 0, reserved 100, received 100).
+assert selftest.out contains "chorus head=" else "mycelium-chorus: rendered chorus missing"
+assert selftest.out contains "balance=0 reserved=100 received=100 voices=3" else "mycelium-chorus: rendered open quorum missing"
+
+# The Voucher each member is, and the Statement it signs, stand at the door — their own selftests prove
+# the single-node machinery the quorum rests on.
+let voucher = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/voucher.rye -femit-bin=mycelium/bin/voucher && mycelium/bin/voucher 2>&1"]
+assert voucher.ok else "mycelium-chorus: the Voucher each member is is not GREEN"
+assert voucher.out contains "GREEN" else "mycelium-chorus: the Voucher did not speak its GREEN"
+
+let statement = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement.rye -femit-bin=mycelium/bin/statement && mycelium/bin/statement 2>&1"]
+assert statement.ok else "mycelium-chorus: the Statement the quorum vouches is not GREEN"
+assert statement.out contains "GREEN" else "mycelium-chorus: the Statement did not speak its GREEN"
+
+say "mycelium-chorus: GREEN — a quorum of distinct nodes binds an account's position: it is believed only when a threshold of them agree, checks against the ledger it vouches and only that ledger, inherits arrival-independence, and refuses tamper (thin quorum · repeated signer · disagreement · forged voice); the Voucher and the Statement stand at the door. Proof of position by quorum stands."

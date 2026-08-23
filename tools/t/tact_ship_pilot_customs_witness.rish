@@ -1,0 +1,37 @@
+# tools/t/tact_ship_pilot_customs_witness.rish — TACT Journey 1, Rung 3: the customs step, wired.
+#
+# Rung two wired the identity step to a real Kumara genesis. This rung wires the customs step to
+# Pond's own first policy (pond/customs.rye): the keeper's first mark reaches the pilot, customs
+# reads it, and only a `place` verdict advances the pilot. An `await-word` mark holds and
+# surfaces for a human word (a wait, never auto-crossed); an unknown mark refuses whole. A keeper
+# whose first cargo is not admitted cannot be walked past receipt.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/tact_ship_pilot_customs_witness.rish
+
+say "tact1: Language EN — the customs step advances only on a placed mark."
+say "tact1: Lens TAME — a hold surfaces (a wait), a refuse rejects; both leave the pilot standing at customs."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/ship-pilot-customs"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ship_pilot_customs.rye -femit-bin=${bin}"]
+assert build.ok else "tact1: ship_pilot_customs build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "tact1: ship_pilot_customs selftest exited non-zero"
+assert selftest.out contains "GREEN" else "tact1: selftest did not speak GREEN"
+assert selftest.out contains "a placed mark (plain-bytes) advanced the pilot past customs" else "tact1: placed-mark claim missing"
+assert selftest.out contains "an await-word mark held at customs and surfaced (a wait, not a rejection)" else "tact1: await-word hold missing"
+assert selftest.out contains "an unknown mark refused whole; the pilot held at customs" else "tact1: unknown-mark refusal missing"
+assert selftest.out contains "the customs step advances only on a placed mark, holding a wait or a refusal" else "tact1: crux claim missing"
+
+# The identity step (r2) and the spine (r1) this rung composes over stay their own green binaries.
+let id_bin = "pond/bin/ship-pilot-identity"
+let id_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ship_pilot_identity.rye -femit-bin=${id_bin}"]
+assert id_build.ok else "tact1: ship_pilot_identity re-build failed"
+let id_selftest = run ["sh" "-c" "${id_bin} selftest 2>&1"]
+assert id_selftest.ok else "tact1: ship_pilot_identity selftest exited non-zero"
+assert id_selftest.out contains "GREEN" else "tact1: identity selftest did not speak GREEN"
+
+say "tact1: GREEN — the customs step is wired to Pond's policy; place advances, hold and refuse each hold."

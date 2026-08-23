@@ -34,12 +34,23 @@
 #   sh tools/fixtures/room_bound_scan.sh          # the roster, at the seated bound
 #   sh tools/fixtures/room_bound_scan.sh 2        # a smaller bound, for proving the RED path
 #
-# Driven by tools/room_bound_witness.rish. Run from the repository root.
+# Driven by tools/r/room_bound_witness.rish. Run from the repository root.
 
 set -eu
 
 BOUND="${1:-256}"
 ENFORCE="session-logs counsel active-designing active-development expanding-prompts waymarks"
+
+# TWO KINDS OF ROOM, AND THEY ARE COUNTED DIFFERENTLY. Every room above folds by DAY, so a file
+# that matters to its bound is a file carrying a one-clock stamp, and `count_flat` counts exactly
+# those. `tools/` folds by FIRST SPRIG LETTER instead -- a tool is found by what it does rather
+# than by when it was written -- and not one of its 1,917 entries carried a stamp. So the dated
+# count read ZERO for that room for its whole life, which is precisely why it reached 7.4x the
+# bound with every guard green: the meter could not see it.
+#
+# A room joins this list the same way a room joins the one above, by folding. `tools/` folded on
+# `20260823.144100`.
+ENFORCE_ALL="tools"
 
 echo "bound=$BOUND"
 
@@ -51,6 +62,12 @@ seen=""
 # moves and what the resolver can recover. A day-only name is neither, so it is not counted here.
 count_flat() {
   find "$1" -maxdepth 1 -type f -name '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]_*' 2>/dev/null | wc -l | tr -d ' '
+}
+
+# Every flat entry, files and symlinks alike, for a room that folds by letter rather than by day.
+# Symlinks count because the fold moves them and a browser lists them.
+count_flat_all() {
+  find "$1" -maxdepth 1 -mindepth 1 \( -type f -o -type l \) 2>/dev/null | wc -l | tr -d ' '
 }
 
 for dir in */; do
@@ -91,6 +108,25 @@ for e in $ENFORCE; do
     echo "room=$e flat=$(count_flat "$e") verdict=under roster=enforce"
   else
     echo "room=$e flat=absent verdict=missing roster=enforce"
+    enforced_over=$((enforced_over + 1))
+  fi
+done
+
+# The letter-folded rooms, counted by every flat entry rather than by dated basenames. Always
+# reported, for the same reason as above: a room that vanishes from a meter is not a room that
+# passed it.
+for e in $ENFORCE_ALL; do
+  if [ -d "$e" ]; then
+    flat=$(count_flat_all "$e")
+    if [ "$flat" -le "$BOUND" ]; then
+      verdict=under
+    else
+      verdict=over
+      enforced_over=$((enforced_over + 1))
+    fi
+    echo "room=$e flat=$flat verdict=$verdict roster=enforce counts=all"
+  else
+    echo "room=$e flat=absent verdict=missing roster=enforce counts=all"
     enforced_over=$((enforced_over + 1))
   fi
 done

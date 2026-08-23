@@ -44,7 +44,7 @@ Tiger Style discipline: **`usize` is a boundary type, not a design type.** Read 
 - **`u64`** -- wire-persistent sizes, timestamps, cross-target quantities.
 - **`usize`** -- **only** at the inherited-std seam. Assert the bound, keep arithmetic in `u32`, `@intCast` at the Zig API edge. Seam casts are correct Tiger code, not debt awaiting a fork.
 - **Never** `usize` in struct fields, function parameters, return types, or locals we publish as authored API.
-- Live lint: `tools/width-check.rish`. Growing: `tools/tame-check.rish`.
+- Live lint: `tools/w/width-check.rish`. Growing: `tools/t/tame-check.rish`.
 - Charter: `expanding-prompts/date/20260620/20260620-210812_explicit-width-audit.md`; baseline: `work-in-progress/20260620-212126_usize-width-baseline.md`.
 
 **Compiler fork (F1-F5):** deferred **horizon** -- not the active primary track. See `active-designing/date/20260628/20260628-043542_thin-frontend-slc-direction.md`.
@@ -72,7 +72,7 @@ When these pull against each other, safety wins. When safety and performance are
 
 ## Tidy rules (`tame_style_check`)
 
-**Witness:** `tools/tame_style_check.rish` - **Scan:** `tools/fixtures/tame_style_scan.sh` - **Brief:** `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md` - **Study:** `external-research/20260707-053212_tigerbeetle-alignment-study.md`
+**Witness:** `tools/t/tame_style_check.rish` - **Scan:** `tools/fixtures/tame_style_scan.sh` - **Brief:** `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md` - **Study:** `external-research/20260707-053212_tigerbeetle-alignment-study.md`
 
 **Bans fail parity** -- fix before commit:
 
@@ -89,7 +89,7 @@ When these pull against each other, safety wins. When safety and performance are
 - functions past 70 lines -> split at natural seams; run module witnesses
 - zero `assert(` in core modules -> import assert; contract postconditions; see honest exempt list in scan script
 
-Run when touching authored `.rye`: `rishi/bin/rishi run tools/tame_style_check.rish`
+Run when touching authored `.rye`: `rishi/bin/rishi run tools/t/tame_style_check.rish`
 
 ## SLC Rye Definition of Done (hosted - linengrow - glass)
 

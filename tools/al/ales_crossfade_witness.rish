@@ -1,0 +1,40 @@
+# tools/al/ales_crossfade_witness.rish — the equal-power crossfade: ALES11's pan law swept over time (ALES12).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES12.
+# Design read: active-designing/20260814-fill-ales12-lotus-equal-power-crossfade.md
+# Stands on: lotus/power.rye (ALES11) — the equal-power `split` read at each sample of the overlap, so the crossfade reuses
+# the proven law rather than re-deriving it; lotus/timeline.rye (ALES2) — the Clip it crosses and the one true saturation
+# (timeline.saturate) reused whole, exactly as ALES3's mix.
+#
+# lotus/crossfade.rye carries equal power from the stereo FIELD (pan) into TIME: a crossfade IS the pan swept across an
+# overlap, its outgoing and incoming weights power.split read at each sample. So the overlap holds constant power for free —
+# it begins as pure outgoing and ends as pure incoming (a seamless splice), its center holds 0.707·den (−3 dB) where a linear
+# crossfade dips to 0.5·den (−6 dB), and crossing a flat clip with itself lifts the middle above the endpoints rather than
+# below. The selftest proves: pure-out head / pure-in tail; the −3 dB center vs linear; no mid-overlap dip; saturation on a
+# loud overlap; the weights match the pan split across a sweep; a length mismatch and a too-short overlap refuse BadRange.
+# Purely local — no network, no keys, no funds, no real device, no real speaker.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_crossfade_witness.rish
+
+say "ales-crossfade: Language EN — ALES12 carries equal power from the stereo field into time: a crossfade is ALES11's pan swept across the overlap, so two clips cross without the −6 dB dip a linear crossfade leaves in the middle."
+say "ales-crossfade: Style Radiant — the law is stated positively: the overlap begins as pure outgoing and ends as pure incoming, and its center holds power (0.707·den) rather than sum (0.5·den) — the same equal-power curve, read over time."
+say "ales-crossfade: Lens TAME — the weights are power.split read at each overlap sample (the proven ALES11 law reused, not re-derived); the sum saturates once in i64 exactly as ALES3's mix; refuses BadRange by name on a length mismatch or a too-short overlap; siloed to lotus/, no network, no keys, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/crossfade"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/crossfade.rye -femit-bin=${bin}"]
+assert build.ok else "ales-crossfade: build failed — ${build.err}"
+
+let outfile = "lotus/bin/crossfade.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-crossfade: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-crossfade: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-crossfade' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-crossfade: selftest did not print the GREEN ales-crossfade line"
+
+say "ales-crossfade: GREEN — the equal-power law is proven in both axes now, field (pan) and time (crossfade), one isqrt at the root. The next Lotus rung can name stereo metering (an RMS is a square root of a mean square), a peak/RMS meter over the transport's read blocks, or offer the keeper the choice of law on either axis."

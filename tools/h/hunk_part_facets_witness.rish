@@ -1,0 +1,52 @@
+# tools/h/hunk_part_facets_witness.rish — the faceted query: OR within a facet, AND across facets (HUNK85).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK85.
+# Design read: active-designing/date/20260814/20260814-005410_hunk-part-facets-and-of-ors-exploration.md
+# Teacher, thanked clean-room: McMaster-Carr's faceted sidebar — checking two values of one facet widens (OR), checking
+# different facets narrows (AND) (concept only, siloed).
+#
+# HUNK78 gave the marketplace an AND of clauses, HUNK83 an OR. This rung joins them into the canonical faceted query, a
+# conjunction of disjunctions: image/part_facets.rye reads a line of space-separated groups, each group a |-separated
+# disjunction, and keeps the parts satisfying EVERY group (each by ANY clause). The selftest proves OR within a facet
+# (stainless|brass keeps the union), AND across facets ((stainless|brass) max:100 narrows to the two under a dollar), a
+# |-free line equals HUNK78's conjunction part for part (a strict superset), an empty line is a match-all (the AND
+# identity), distribution ((a|b) AND c == (a AND c) union (b AND c)), and a malformed clause / over-many groups refuse
+# by name. A price is a fact compared, never moved.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_part_facets_witness.rish
+
+say "hunk-part-facets: Language EN — HUNK85 joins HUNK78's AND and HUNK83's OR into the canonical faceted query: OR within a facet, AND across facets."
+say "hunk-part-facets: Style Radiant — the sidebar's true grammar; each group a union, the line their intersection, and a |-free line is exactly HUNK78's conjunction, a strict superset that disturbs nothing."
+say "hunk-part-facets: Lens TAME — pure composition over HUNK83 matches_any and HUNK78 AND; the join invents no matching rule; a price clause compares, never moves; positive invariants per fn; a malformed clause and over-many groups each refuse by name; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/part_facets"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_facets.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-part-facets: build failed — ${build.err}"
+
+# Read the GREEN line from a file — it carries an apostrophe ("HUNK78's") that breaks a shell single-quote round-trip.
+let outfile = "image/bin/part_facets.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "hunk-part-facets: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "hunk-part-facets: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN part-facets' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "hunk-part-facets: selftest did not print the GREEN part-facets line"
+
+# HUNK83 stays GREEN — the disjunction each group is.
+let o = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build image/part_or.rye -femit-bin=image/bin/part_or && image/bin/part_or selftest > image/bin/part_or.out 2>&1"]
+assert o.ok else "hunk-part-facets: HUNK83 part_or re-run failed — see image/bin/part_or.out"
+let o_green = run ["sh" "-c" "grep -q 'GREEN part-or' image/bin/part_or.out && echo yes"]
+assert (trim o_green.out) == "yes" else "hunk-part-facets: HUNK83 part_or did not stay GREEN"
+
+# HUNK78 stays GREEN — the conjunction across groups, and the compatibility target.
+let a = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build image/part_and.rye -femit-bin=image/bin/part_and && image/bin/part_and selftest > image/bin/part_and.out 2>&1"]
+assert a.ok else "hunk-part-facets: HUNK78 part_and re-run failed — see image/bin/part_and.out"
+let a_green = run ["sh" "-c" "grep -q 'GREEN part-and' image/bin/part_and.out && echo yes"]
+assert (trim a_green.out) == "yes" else "hunk-part-facets: HUNK78 part_and did not stay GREEN"
+
+say "hunk-part-facets: GREEN — a keeper widens within a facet and narrows across them in one honest line; HUNK83 disjunction and HUNK78 conjunction beneath stay GREEN. HUNK85 lands."

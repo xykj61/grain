@@ -1,0 +1,57 @@
+# tools/m/mycelium_till_true_witness.rish — the Till reads a real double-spend fixture true (r4).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the double-spend verdict · rung r4 — the arc closes.
+# r1 fixed the verdict, r2 let it travel, r3 read it across a Knot — all over Dags seated in code. This
+# closing rung carries the reader onto a REAL on-disk Cord record carrying a genuine double-spend a keeper
+# can open and walk (tools/fixtures/till_dag.bron, produced reproducibly by mycelium/till_fixture_gen).
+#
+# The crux this witness proves — two tools, one answer: the app (mycelium/till_true) parses the record,
+# rebuilds the Dag under cord.add (re-verifying every signature), resolves it through the Till, and reports
+# the signer of the spent-out draw of the contested treasury, the draw count, and the short count; an
+# independent awk reading of the same bytes (tools/fixtures/till_dag_truth.awk), applying the simplest honest
+# slice of the agreed order — supply accounting in round order — names the SAME spent-out signer and the
+# same counts. So the loser of a contested treasury can never drift from an order a keeper can walk by hand.
+# The fixture is reproducible (the generator re-emits byte-identical bytes), and a tampered record refuses
+# BadFormat. Composes cord_bron + cord + till public API only; demo keeper seeds — no key/funds/network/custody.
+#
+# Scope: active-designing/date/20260813/20260813-064129_mycelium-till-double-spend-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_till_true_witness.rish
+
+say "mycelium-till-true: Language EN — the spent-out draw of a real contested treasury is true to the bytes; app and awk name one loser."
+say "mycelium-till-true: Style Radiant — the Cord wove one order through the dark; a keeper can walk the block lines and name the same spent-out draw the Till does."
+say "mycelium-till-true: Lens TAME — the loser cross-checks against an independent awk; the Dag rebuilt under the Cord's own add; a tampered record never read as true; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/till_true"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/till_true.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-till-true: build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "mycelium-till-true: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-till-true: selftest did not speak GREEN"
+assert selftest.out contains "the spent-out draw holds no coins" else "mycelium-till-true: spent-out-holds-nothing claim missing"
+assert selftest.out contains "a tampered header refused BadFormat" else "mycelium-till-true: tamper-refusal claim missing"
+
+# The crux — two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
+let app = run ["sh" "-c" "${bin} measure 2>&1"]
+assert app.ok else "mycelium-till-true: app measure exited non-zero"
+let awk = run ["sh" "-c" "awk -f tools/fixtures/till_dag_truth.awk tools/fixtures/till_dag.bron"]
+assert awk.ok else "mycelium-till-true: awk truth read failed"
+assert awk.out contains "a09aa5f47a6759802ff955f8dc2d2a14a5c99d23be97f864127ff9383455a4f0 2 1" else "mycelium-till-true: awk triple not the round-2 spent-out draw · drew 2 · short 1"
+assert app.out == awk.out else "mycelium-till-true: app and awk disagree — the spent-out draw drifted from the bytes"
+
+# The fixture is genuinely what the Cord emits, not a hand-mock — the generator re-emits byte-identical bytes.
+let regen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run mycelium/till_fixture_gen.rye 2>/tmp/till_regen.bron >/dev/null && diff -q tools/fixtures/till_dag.bron /tmp/till_regen.bron && echo REPRODUCIBLE"]
+assert regen.ok else "mycelium-till-true: fixture is not reproducible — the generator drifted"
+assert regen.out contains "REPRODUCIBLE" else "mycelium-till-true: fixture regeneration did not match"
+
+# The Till whose verdict this rung reads from real bytes, and the cord_bron reader that rebuilds the real
+# Dag, both stand at the door — their own selftests prove the machinery r4 rests on.
+let till = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/till.rye -femit-bin=mycelium/bin/till && mycelium/bin/till 2>&1"]
+assert till.ok else "mycelium-till-true: the Till r1 the reading resolves is not GREEN"
+assert till.out contains "GREEN" else "mycelium-till-true: the Till r1 did not speak its GREEN"
+
+say "mycelium-till-true: GREEN — a real double-spend record reads true (app==awk, the round-2 spent-out draw · drew 2 · short 1); the loser resolved under the Cord's own add and the agreed order, the fixture reproducible, a tampered record refused; the Till stands at the door. The Mycelium Till's agent-doable arc closes."

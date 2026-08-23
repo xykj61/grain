@@ -1,0 +1,44 @@
+# tools/f/font5x7_accented_witness.rish -- the unifying accented-Latin font proves itself on metal (Season G, font content).
+#
+# Season G (Open Media Primitives) - the finishing rung of the accented-letter family, the parallel of
+# tools/f/font5x7_ascii_witness.rish for the marks ASCII cannot spell. It merges the four accent corpora --
+# the acute/cedilla set (tools/f/font5x7_latin1_witness.rish, 8), the grave vowels (tools/f/font5x7_grave_witness.rish, 5),
+# the circumflex vowels (tools/f/font5x7_circumflex_witness.rish, 5), and the German letters
+# (tools/f/font5x7_german_witness.rish, 3) -- into one gfa1 atlas.
+#
+# The crux this witness proves, beyond the round-trip each corpus already proves: the twenty-one accented lowercase
+# Latin letters (U+00DF..U+00FC, non-contiguous) merge into one table whose codepoints run STRICTLY ASCENDING WITH NO
+# DUPLICATE, and whose count equals the SUM of the four corpora (8+5+5+3=21). Those two facts together prove the corpora
+# are DISJOINT -- no two claim the same codepoint, so the four sets compose into one font with no collision and no letter
+# lost. A full round-trip recovers the whole font byte-for-byte; every one of the twenty-one letters looks up present and
+# carries the shared advance; a plain ASCII 'a' misses (this is the accented set, not the base letters) and an accented
+# codepoint no corpus drew (a tilde, U+00E3) misses too (no phantom glyph); every glyph carries ink (no blank in an
+# accented set). Compression is reported as a fact, never asserted -- the round-trip is the proof. No network, no key,
+# no funds -- one lookup a surface reads the day it prints a name that ASCII cannot spell, on our own open font.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/font5x7_accented_witness.rish
+
+say "font5x7-accented: Language EN -- Season G font content; the unifying accented-Latin font, the four accent corpora (acute/cedilla, grave, circumflex, German) merged into one gfa1 atlas of twenty-one accented lowercase letters -- one lookup a civic surface reads to spell a Romance, French, Italian, Portuguese, or German keeper's own name."
+say "font5x7-accented: Style Radiant -- the finishing rung the ASCII font already modelled; the four proven corpora compose into one ordered table, disjoint by construction, our own hand end to end, no external font to license and no web-search gate."
+say "font5x7-accented: Lens TAME -- u32 in-memory counts, u8 coverage bytes; the merged count is the SUM of the four corpora's own counts (a corpus that grows without the sum growing fails the fill assert); each function states its invariants positively; codepoints strictly ascending and unique; the source stays plain ASCII with numeric codepoints though the glyphs cover a non-ASCII range; compression a reported fact never a false invariant; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/font5x7_accented"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/font5x7_accented.rye -femit-bin=${bin}"]
+assert build.ok else "font5x7-accented: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "font5x7-accented: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "font5x7-accented: ${out}"
+
+assert selftest.out contains "GREEN image-font5x7-accented" else "font5x7-accented: selftest did not print the GREEN corpus line"
+
+assert selftest.out contains "round-trip byte-identical" else "font5x7-accented: round-trip was not byte-identical"
+
+assert selftest.out contains "strictly ascending and unique (the four corpora disjoint: 8+5+5+3)" else "font5x7-accented: the four corpora were not proven disjoint"
+
+say "font5x7-accented: GREEN -- the unifying accented-Latin font whole; twenty-one accented letters round-trip byte-identical, codepoints strictly ascending and unique, the four corpora proven disjoint (no collision, no letter lost); one open table a civic surface reads to spell a name that ASCII cannot."

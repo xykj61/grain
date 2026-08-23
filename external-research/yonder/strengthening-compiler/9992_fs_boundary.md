@@ -104,7 +104,7 @@ Twelve programs, all green. The write-then-read round-trip produced identical ou
 | `rye/lib/std/Io/Dir.zig` | Four functions strengthened: `openFile`, `createFile`, `readFile`, `writeFile` |
 | `rye/tests/fs_boundary_test.rye` | Write–read–open round-trip exercising all four functions |
 | `tools/parity.sh` | Corpus extended to 12 programs |
-| `tools/parity.rish` | Same witness extension |
+| `tools/p/parity.rish` | Same witness extension |
 | `external-research/yonder/strengthening-compiler/9992_fs_boundary.md` | This record |
 
 ---
@@ -172,7 +172,7 @@ Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
 |------|-------|--------|
 | `misc` | `fs` — Phase 4 `usize` seam policy applied | pending |
 | `rye/tests/fs_boundary_test.rye` | witness program | pending |
-| `tools/parity.rish` | witness registered | pending |
+| `tools/p/parity.rish` | witness registered | pending |
 | `external-research/yonder/strengthening-compiler/9992_fs_boundary.md` | pass record + audited surfaces | pending |
 | `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | pending |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9992 | pending |

@@ -1,0 +1,42 @@
+# tools/cr/crypto_hybrid_sealed_witness.rish — the HYBRID sealed-to-identity door: a message sealed TO a hybrid identity so its confidentiality survives a
+# break in EITHER family — the classical X25519 agreement Comlink uses today AND the post-quantum ML-KEM agreement a lattice identity carries, authored in
+# pure Rye. The confidentiality sibling of crypto/hybrid_identity.rye: where that makes a signature genuine only when BOTH the Ed25519 and ML-DSA halves
+# verify (a forger must break both families), this seals a message readable only when BOTH the classical and the post-quantum agreements open (an
+# eavesdropper must break both families). It composes only GREEN rungs (crypto/kumara_sealed.rye the classical inner box, crypto/mlkem_sealed.rye the
+# post-quantum outer box), authoring no new cryptography (Season G).
+#
+# Season: crypto — confidentiality is an ONION of two GREEN doors: seal wraps the plaintext in the classical X25519 box, then wraps that whole frame in
+# the post-quantum ML-KEM box; open peels the post-quantum layer, then the classical one. To read the plaintext an adversary must break BOTH: the outer
+# ML-KEM box to reach the inner frame, AND the inner X25519 box to reach the plaintext.
+# Design read: active-designing/date/20260816/20260816-195850_the-hybrid-sealed-door-both-agreements.md · active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md
+# ("hybrid, not either-or, is the safe default … a break in either family still leaves the identity standing on the other"). Clean-room: FIPS 203,
+# RFC 7748/8032 are public standards; the onion is our own Rye wiring over our own GREEN rungs, no line copied (.claude/rules/gratitude-licenses.md).
+#
+# crypto/hybrid_sealed.rye is proven at every tier (small ML-KEM-512, default ML-KEM-768, large ML-KEM-1024): a confidential round-trip across six
+# plaintext lengths (empty → 4 KiB), the sealed frame body not the plaintext, and the load-bearing break-one-is-not-enough guarantee — a holder of only
+# the classical seed fails at the outer post-quantum layer, a holder of only the ML-KEM secret peels the outer layer yet fails the inner classical one,
+# while the true keeper holding both halves opens it — plus tamper, determinism, and a stranger refused. Each layer is proven one rung down. Purely local
+# — no key held, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_hybrid_sealed_witness.rish
+
+say "crypto-hybrid-sealed: Language EN — the hybrid sealed-to-identity door: a message sealed to a hybrid identity so its confidentiality survives a break in either family, the classical X25519 agreement beside the post-quantum ML-KEM agreement. The confidentiality sibling of the hybrid identity: where that signature is genuine only when both families verify, this message is readable only when both agreements open. It composes crypto/kumara_sealed and crypto/mlkem_sealed as an onion — the classical box inside the post-quantum box — authoring no new cryptography."
+say "crypto-hybrid-sealed: Style Radiant — the law is stated positively as a message that stands on both worlds at once: the eavesdropper held off by two families, the phrase remembered still only one. To read the plaintext an adversary must break both boxes; break one family alone and the message stays sealed, exactly the both-must-fall guarantee the hybrid signature gives a signature, now given a sealed message."
+say "crypto-hybrid-sealed: Lens TAME — contract asserts (the plaintext bound honoured so the inner frame always fits the outer box, the whole frame within the caller's buffer), bounded scratch sized to a named ceiling, named-error composition distinguishing which layer refused. Proven at all three tiers with no fabricated constant: a confidential round-trip recovers the message byte-for-byte through both layers; the frame body is not the plaintext; break-one-is-not-enough (a classical-only holder fails OuterOpenFailed, an ML-KEM-only holder fails InnerOpenFailed, the true keeper opens it); a flipped byte refuses; a stranger is refused and sealing is deterministic. The module's own functions call no std.crypto — each layer is proven one rung down. Every identity is a TEST hybrid identity from a published-vector mnemonic — no key held, no network, no funds, no device; a real hybrid identity from the maintainer's own phrase stays the custody gate, constant-time timing-safety the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/hybrid_sealed"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/hybrid_sealed.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-hybrid-sealed: build failed — ${build.err}"
+
+let outfile = "crypto/bin/hybrid_sealed.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-hybrid-sealed: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-hybrid-sealed: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-hybrid-sealed' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-hybrid-sealed: selftest did not print the GREEN crypto-hybrid-sealed line"

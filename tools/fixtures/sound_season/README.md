@@ -9,7 +9,7 @@
 
 ## Instrument
 
-**`tools/link_witness.rish`** — fixtures toothful · tree baseline allow · ROUND MODE self-check (equal GREEN · deliberate break RED · `ALLOW_BASELINE` ignored in compare).
+**`tools/l/link_witness.rish`** — fixtures toothful · tree baseline allow · ROUND MODE self-check (equal GREEN · deliberate break RED · `ALLOW_BASELINE` ignored in compare).
 
 Per-motion protocol (six promises · promise 4):
 

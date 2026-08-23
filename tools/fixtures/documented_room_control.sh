@@ -7,7 +7,7 @@
 #
 # EXPECTED: invisible_refused=yes, departed_allowed=yes.
 #
-# Driven by tools/documented_room_witness.rish. Run from the repository root.
+# Driven by tools/d/documented_room_witness.rish. Run from the repository root.
 
 set -eu
 

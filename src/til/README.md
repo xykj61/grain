@@ -16,7 +16,7 @@ A short atom form (`%tile`) is proposed and **held for Keaton's word**; until th
 | [`shape-manifest-field-count.glow`](shape-manifest-field-count.glow) | Three-field manifest line | same |
 
 ```
-rishi/bin/rishi run tools/glow_run.rish src/til/tilak-root-count.glow
-rishi/bin/rishi run tools/glow_run.rish src/til/shape-manifest-field-count.glow
+rishi/bin/rishi run tools/g/glow_run.rish src/til/tilak-root-count.glow
+rishi/bin/rishi run tools/g/glow_run.rish src/til/shape-manifest-field-count.glow
 rishi/bin/rishi run tools/gen/season/src_first_resident_witness.rish
 ```

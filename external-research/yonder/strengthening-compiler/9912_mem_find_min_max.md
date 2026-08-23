@@ -150,7 +150,7 @@ Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
 |------|-------|--------|
 | `rye/lib/std/mem.zig` | `min`/`max`/`minMax`/`findMin`/`findMax`/`findMinMax` — named `u32` bounds | done |
 | `rye/tests/mem_find_min_max_test.rye` | witness program | done |
-| `tools/parity.rish` | witness registered | done |
+| `tools/p/parity.rish` | witness registered | done |
 | `external-research/yonder/strengthening-compiler/9912_mem_find_min_max.md` | pass record + audited surfaces | done |
 
 ## Postconditions

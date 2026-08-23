@@ -1,0 +1,38 @@
+# tools/f/fora_name_witness.rish — a Constel fake-pier name is provably never a real ship (FORA0).
+#
+# Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA0.
+# Design read: active-designing/20260814-fill-constel-naming-law.md
+# Law kin: .claude/rules/placeholder-ship-names.md — Constel names are the runnable fake piers, guaranteed by the missing
+# vowel: every real syllable carries a vowel, so a vowel-free (Hebrew-style abjad) name can never parse as a real @p.
+#
+# constel/name.rye seats the naming law and the name primitive: check_ship / is_valid_ship prove a single fake ship
+# lawful (bounded, consonant-and-digit alphabet, vowel-free), never_a_ship states the safety invariant positively,
+# check_constellation proves a hyphen-joined run of fake piers, and generate draws a deterministic vowel-free name per
+# index. The selftest proves: lawful names accepted, every real @p example refused VowelPresent by name, the bound and
+# alphabet refusing each fault by name, a lawful constellation accepted, and 512 generated names deterministic,
+# collision-free, and every one provably never a ship.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/fora_name_witness.rish
+
+say "fora-name: Language EN — FORA0 opens Constel, the tree's own fake-galaxy dev networks; a Constel name is structurally incapable of being a real @p, proven by the missing vowel."
+say "fora-name: Style Radiant — the safety is a single clean property a reader checks at a glance: every real syllable carries a vowel, so a vowel-free name can never be assembled into a real ship."
+say "fora-name: Lens TAME — a pure string predicate on the bench, bounded and refusing by name (VowelPresent, NameTooLong, BadCharacter, BadSegment, IndexOutOfRange); siloed to constel/, run from inside the jailed pier; no network, no keys, no funds, no real address ever formed."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/name"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/name.rye -femit-bin=${bin}"]
+assert build.ok else "fora-name: build failed — ${build.err}"
+
+let outfile = "constel/bin/name.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-name: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-name: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-name' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-name: selftest did not print the GREEN fora-name line"
+
+say "fora-name: GREEN — a Constel fake-pier name is provably never a real ship, the reserved naming round seated under the placeholder-ship-names law. The fake-pier harness (local piers meeting over Comlink) crosses the Comlink seam and stays its own later FORA round."

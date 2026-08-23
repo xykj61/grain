@@ -1,0 +1,49 @@
+# tools/m/mycelium_cord_batch_witness.rish — the batched Cord: one block seals many facts (r1).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · fact batching · rung r1 — the crux.
+# The single-fact Cord bought one fact for one author signature, one node in the agreed order, one
+# round of admission. From TigerBeetle comes the batching insight: amortize that fixed per-block cost
+# across many facts by sealing a bounded batch under one author signature. Clean-room: studied, never
+# copied. Grown BESIDE the elder — mycelium/cord.rye and its whole arc stay a green binary.
+#
+# The crux this witness proves: a batched history and a single-fact history over the identical facts
+# fold to the byte-identical supply (issued 1000 · taxed 300 · supply 700 · one star) — batching is a
+# throughput transform, never a semantic one; the supply never notices how the facts were packed. Every
+# refusal holds: an over-full batch (BatchFull), an empty batch (EmptyBatch), and a tampered fact each
+# refuse the block before the Dag grows. Demo keeper seeds only — no real key, no funds, no network, no
+# custody.
+#
+# Scope: active-designing/date/20260813/20260813-043303_mycelium-fact-batching-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_cord_batch_witness.rish
+
+say "mycelium-cord-batch: Language EN — one block seals many facts, and the supply never notices."
+say "mycelium-cord-batch: Style Radiant — one cord gathers many threads and carries them into the same agreed past, cheaper by the many, truer by not one grain."
+say "mycelium-cord-batch: Lens TAME — a batched block seals its facts under one signature; every buffer bounded; a bad batch refuses whole; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/cord_batch"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_batch.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-cord-batch: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-cord-batch: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-cord-batch: selftest did not speak GREEN"
+assert selftest.out contains "a batched history and a single-fact history over the identical facts fold to one supply" else "mycelium-cord-batch: packing-equivalence claim missing"
+assert selftest.out contains "batching amortizes the per-block cost — supply 700, one star, unchanged by packing" else "mycelium-cord-batch: amortization claim missing"
+assert selftest.out contains "an over-full batch, an empty batch, and a tampered fact each refuse whole" else "mycelium-cord-batch: refusal claim missing"
+
+# The elder single-fact Cord the batch grows beside stays a green binary — accrete-never-break, proven
+# by re-running its own selftest at this door.
+let elder = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=mycelium/bin/cord && mycelium/bin/cord 2>&1"]
+assert elder.ok else "mycelium-cord-batch: the elder single-fact Cord is not GREEN"
+assert elder.out contains "GREEN" else "mycelium-cord-batch: the elder Cord did not speak its GREEN"
+
+# The Mycelium supply fold both histories fold facts through stands at its door.
+let myc = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/fold.rye -femit-bin=mycelium/bin/fold && mycelium/bin/fold 2>&1"]
+assert myc.ok else "mycelium-cord-batch: the Mycelium fold both histories fold through is not GREEN"
+assert myc.out contains "GREEN" else "mycelium-cord-batch: the Mycelium fold did not speak its GREEN"
+
+say "mycelium-cord-batch: GREEN — a batched history and a single-fact history fold to one identical supply, every bad batch refuses whole, and the elder Cord and the fold both stand green at their doors."

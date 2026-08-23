@@ -1,0 +1,38 @@
+# tools/al/ales_tone_witness.rish — a tone control: a one-pole filter that shapes a clip's brightness (ALES40).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES40.
+# Design read: active-designing/date/20260814/20260814-160501_fill-ales40-lotus-tone-control.md
+# Stands on: lotus/timeline.rye (ALES2) — the Clip it filters and the saturation it reuses (timeline.saturate).
+#
+# lotus/tone.rye opens the first frequency-shaping gesture: a one-pole low-pass that softens a harsh take (rolls off treble)
+# and its exact high-pass complement that thins a boomy one (cuts bass). The selftest proves: silence stays silence; the
+# identity coefficient (num = den) passes the low-pass through and high-passes to silence; a constant input low-passes
+# MONOTONICALLY toward the input, never exceeding it, and settles to it EXACTLY (the crux — direct current reached, not merely
+# approached); the high-pass reconstructs (low_pass + high_pass = x) and removes direct current; a transient SATURATES rather
+# than wraps; a zero/negative/oversize coefficient refuses BadCoeff; an out-of-range span refuses BadRange leaving the clip
+# untouched. Purely local — no network, no keys, no funds, no real device, no real sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_tone_witness.rish
+
+say "ales-tone: Language EN — ALES40 opens the first filter: a one-pole low-pass that softens a harsh take and a high-pass that thins a boomy one — tone, the shaping gain and fade cannot do."
+say "ales-tone: Style Radiant — the law is stated positively: a recursive filter reaches a constant input EXACTLY and never overshoots (monotone convergence — the low-pass character), and the high-pass is the exact complement (low_pass + high_pass = x) that removes direct current."
+say "ales-tone: Lens TAME — bounded Clip, u32 span, i16 samples, full i64 filter state so no fractional information is lost; a forced unit step guarantees exact direct current; the high-pass difference saturates (timeline.saturate) rather than wraps; an illegal coefficient refuses BadCoeff and an out-of-range span BadRange, each before a write; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/tone"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/tone.rye -femit-bin=${bin}"]
+assert build.ok else "ales-tone: build failed — ${build.err}"
+
+let outfile = "lotus/bin/tone.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-tone: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-tone: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-tone' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-tone: selftest did not print the GREEN ales-tone line"
+
+say "ales-tone: GREEN — a one-pole tone control shapes a clip's brightness on integer PCM, reaching direct current exactly and saturating rather than wrapping. The next Lotus rung can sum a low-pass and a high-pass into a two-band shelf, or carry the filter state across a re-berthed span."

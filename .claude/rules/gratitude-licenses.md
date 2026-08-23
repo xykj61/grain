@@ -41,7 +41,7 @@ Read from each project's own authoritative text, not from memory. Full verdict a
 
 **FETCHED `20260821.042612` on Keaton's word** (*I grant the fetch, vendor sel4 userlevel and microkit*). Both are **gitlink submodules**, so no vendored source enters our git history: `vendor/sel4` (the whole seL4 repo -- the BSD userlevel is what we may link, the GPL kernel rides along on disk and is neither linked nor in our history) and `vendor/microkit`.
 
-**The per-file sweep is now a standing check, not a one-time read:** [`../../tools/sel4_userlevel_license_witness.rish`](../../tools/sel4_userlevel_license_witness.rish) over [`../../tools/fixtures/vendored_license_scan.sh`](../../tools/fixtures/vendored_license_scan.sh), GREEN on metal with both RED legs proven.
+**The per-file sweep is now a standing check, not a one-time read:** [`../../tools/s/sel4_userlevel_license_witness.rish`](../../tools/s/sel4_userlevel_license_witness.rish) over [`../../tools/fixtures/vendored_license_scan.sh`](../../tools/fixtures/vendored_license_scan.sh), GREEN on metal with both RED legs proven.
 
 | Measured `20260821.042612` | Count |
 |---|---|

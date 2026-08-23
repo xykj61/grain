@@ -1,7 +1,7 @@
 #!/bin/sh
 # waymark_registry_verify.sh -- prove the sealed waymark registry.
 # Prints SEAL_OK, DERIVE_OK <n>, and finally REGISTRY_GREEN; exits non-zero on any
-# failure. Invoked by tools/waymark_registry_witness.rish. Self-contained: resolves
+# failure. Invoked by tools/w/waymark_registry_witness.rish. Self-contained: resolves
 # openssl, regenerates the pinned corpus, checks the corpus digest, verifies the
 # SHA3-512 seal over the sealed body, and re-derives every corpus-drawn row.
 set -eu

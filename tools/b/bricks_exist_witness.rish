@@ -1,0 +1,19 @@
+# bricks_exist_witness.rish — every .brix file brick names a path that exists.
+#
+# Arc I Brix seed (Tensegral). Run from the repository root:
+#   rishi/bin/rishi run tools/b/bricks_exist_witness.rish
+
+let raw = read-file ".brix"
+let all = lines raw
+let file_lines = where all as l: l starts-with "file "
+let total = length file_lines
+assert total > 0 else "no file entries found in .brix"
+
+let check = run ["sh" "-c" "awk '$1 == \"file\" { print $2 }' .brix | while read -r p; do [ -f $p ] || echo $p; done"]
+assert check.ok else "existence scan failed"
+let missing = trim check.out
+if missing != "" then say "MISSING bricks:"
+if missing != "" then say missing
+assert missing == "" else "a brick names a file that does not exist"
+
+say "GREEN: bricks-exist — all ${total} file entries resolve."

@@ -19,7 +19,7 @@
 //! RFC 4231 Test Case 2 known-answer (key "Jefe", "what do ya want for nothing?") AND Zig's own std.crypto HMAC-SHA-512 as an
 //! independent implementation, byte-for-byte across a short key, a block-length key, a key longer than the block (the hash-the-key
 //! path), the empty message, and a multi-block message. Monocypher-source parity is LANDED too:
-//! tools/crypto_monocypher_hmac_sha512_parity_witness.rish diffs this module byte-for-byte against the vendored Monocypher's optional
+//! tools/cr/crypto_monocypher_hmac_sha512_parity_witness.rish diffs this module byte-for-byte against the vendored Monocypher's optional
 //! crypto_sha512_hmac over RFC 4231 Test Cases 1 and 2 and the key-path edges (the eleventh real Monocypher-source parity rung).
 //! Constant-time timing-safety of a tag comparison stays the Season's named
 //! horizon — verifying a MAC wants a constant-time compare, which the composer that uses this primitive supplies; this module returns
@@ -202,7 +202,7 @@ fn run_selftest() !u8 {
         "RFC 4231 Test Case 2 known-answer (key \"Jefe\", \"what do ya want for nothing?\") matches hex for hex, and our authored Rye " ++
         "equals Zig's independent std.crypto HMAC-SHA-512 byte-for-byte across a short key, a block-length key, a key longer than the " ++
         "block (the hash-the-key path), the empty message, and a multi-block message. Monocypher-source parity is landed too — the " ++
-        "vendored Monocypher's optional crypto_sha512_hmac agrees byte-for-byte (tools/crypto_monocypher_hmac_sha512_parity_witness.rish, " ++
+        "vendored Monocypher's optional crypto_sha512_hmac agrees byte-for-byte (tools/cr/crypto_monocypher_hmac_sha512_parity_witness.rish, " ++
         "the eleventh parity rung). An over-long message refuses MessageTooLong and " ++
         "an over-long key refuses KeyTooLong before a byte is mixed. Purely local — TEST keys and the RFC's public vectors, no real " ++
         "identity key, no network, no funds, no real device; constant-time tag comparison stays the Season's named horizon, supplied " ++

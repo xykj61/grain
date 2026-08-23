@@ -1,0 +1,31 @@
+# tools/f/font5x7_diaeresis_comp_witness.rish -- the diaeresis vowel GROWN by composition, and the accent economy's
+# boundary, prove themselves on metal (Season G).
+#
+# Season G (Open Media Primitives) - the fifth and last accent mark to meet the overlay tool, after the grave
+# (glyph_accent), the acute (font5x7_acute), the circumflex (font5x7_circumflex_comp), and the tilde
+# (font5x7_tilde_comp). image/font5x7_diaeresis_comp.rye grows the e diaeresis (U+00EB) by overlaying the two dots onto
+# the one clear lowercase base, and proves on metal why the family stops at one composed vowel: overlaying the mark onto
+# lowercase 'i' and 'y' does NOT reproduce the hand-drawn diaeresis i/y (the i's tittle survives; the y's body reaches
+# the mark row), so image/font5x7_diaeresis.rye is proven right to keep them hand-drawn. The composed e equals the
+# hand-drawn coverage byte-for-byte and round-trips through gfa1 byte-identical. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/font5x7_diaeresis_comp_witness.rish
+
+say "font5x7-diaeresis-comp: Language EN -- Season G open-media primitive; the fifth accent lean grown by composition -- the one diaeresis vowel the economy reaches (e), the two it cannot (i, y) proven uncomposable on metal, closing the accent-composition family with a demonstrated boundary."
+say "font5x7-diaeresis-comp: Style Radiant -- the hand-drawn diaeresis corpus is the specification; the composed e equals its coverage byte-for-byte and round-trips through gfa1 byte-identical, and the mark is the German umlaut's own two dots, so a corpus grown by composition is the corpus drawn by hand, our own open font."
+say "font5x7-diaeresis-comp: Lens TAME -- u32 in-memory counts; the tables bounded; the composed codepoint ascending; invariants positive (parity, the two-dot placement, the boundary refuted for i and y, the shared mark); refusals named; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/font5x7_diaeresis_comp"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/font5x7_diaeresis_comp.rye -femit-bin=${bin}"]
+assert build.ok else "font5x7-diaeresis-comp: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "font5x7-diaeresis-comp: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "font5x7-diaeresis-comp: ${out}"
+
+assert selftest.out contains "GREEN image-font5x7-diaeresis-comp" else "font5x7-diaeresis-comp: selftest did not print the GREEN corpus line"

@@ -1,0 +1,50 @@
+# tools/d/dahl_j12_data_dignity_bron_witness.rish — Season 3 Journey 12 (Data-dignity), Rung 3.
+#
+# Rungs one and two fixed the succession rule and bound each of its two proofs to a settled identity. A
+# succession is only useful past a keeper's lifetime if it can be carried — handed to an executor, a kin,
+# or a court, and checked with no live estate in hand. pond/apps/data_dignity_bron.rye renders a signed
+# estate to a format data-dignity-v1 Bron record and parses it back byte-for-byte, still dignity-honest
+# offline. still_dignity_honest re-verifies both carried proofs; rebuild replays the succession, the rested
+# set still extinguished. A directive signature flipped or a hold mark tampered after the crossing refuses
+# BadConsent (the marks travel under the keeper's signature). Unknown field, bad header, missing estate,
+# missing proof, bad disposition, and bad hex each refuse. Additive — composes rungs one and two over
+# public API (both re-run GREEN); demo keeper and heir seeds only, no network (serve reaches the custody
+# gate).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/dahl_j12_data_dignity_bron_witness.rish
+
+say "dahl-j12r3: Language EN — a signed succession travels as Bron, byte-for-byte, and stays dignity-honest offline; the rested set extinguishes on rebuild."
+say "dahl-j12r3: Lens TAME — a flipped directive and a tampered mark each refuse BadConsent offline; unknown/bad-header/missing/bad-disposition/bad-hex each refuse."
+
+let zig = "vendor/zig-toolchain/zig"
+
+# Rungs one and two re-run GREEN — Bron travel is additive over the signed rule.
+let bin1 = "pond/bin/data-dignity"
+let build1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/data_dignity.rye -femit-bin=${bin1}"]
+assert build1.ok else "dahl-j12r3: rung-one build failed"
+let self1 = run ["sh" "-c" "${bin1} selftest 2>&1"]
+assert self1.ok else "dahl-j12r3: rung-one selftest exited non-zero"
+assert self1.out contains "GREEN" else "dahl-j12r3: rung-one did not speak GREEN"
+
+let bin2 = "pond/bin/data-dignity-signed"
+let build2 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/data_dignity_signed.rye -femit-bin=${bin2}"]
+assert build2.ok else "dahl-j12r3: rung-two build failed"
+let self2 = run ["sh" "-c" "${bin2} selftest 2>&1"]
+assert self2.ok else "dahl-j12r3: rung-two selftest exited non-zero"
+assert self2.out contains "GREEN" else "dahl-j12r3: rung-two did not speak GREEN"
+
+let bin = "pond/bin/data-dignity-bron"
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/data_dignity_bron.rye -femit-bin=${bin}"]
+assert build.ok else "dahl-j12r3: data_dignity_bron build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "dahl-j12r3: data_dignity_bron selftest exited non-zero"
+assert selftest.out contains "GREEN" else "dahl-j12r3: selftest did not speak GREEN"
+assert selftest.out contains "the rested set still resting" else "dahl-j12r3: round-trip crux missing"
+assert selftest.out contains "the sealed will cannot be forged in transit" else "dahl-j12r3: flipped-directive refusal missing"
+assert selftest.out contains "the will's marks travel under the keeper's signature" else "dahl-j12r3: tampered-mark refusal missing"
+assert selftest.out contains "refused MissingDirective" else "dahl-j12r3: missing-proof refusal missing"
+assert selftest.out contains "neither 0 nor 1 refused BadInt" else "dahl-j12r3: bad-disposition refusal missing"
+
+say "GREEN: dahl-j12r3 — data_dignity_bron travels a signed succession byte-for-byte, stays dignity-honest offline, and refuses a flipped proof, a tampered mark, and every malformed field."

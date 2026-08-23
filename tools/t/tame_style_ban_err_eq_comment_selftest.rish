@@ -1,0 +1,30 @@
+# tame_style_ban_err_eq_comment_selftest.rish — planted pair for comment-skip bans.
+#
+# Positive: a real `) == error.` in code MUST fire.
+# Negative: a /// comment naming it MUST NOT fire.
+# Census-control shape — gate the instrument fix before believing it.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/tame_style_ban_err_eq_comment_selftest.rish
+
+let helper = "tools/fixtures/tame_style_ban_noncomment_files.sh"
+let code = "tools/fixtures/tame_style_ban_err_eq_code.rye"
+let comment = "tools/fixtures/tame_style_ban_err_eq_comment.rye"
+
+assert (read-file code) contains ") == error." else "code plant missing ) == error."
+assert (read-file comment) contains ") == error." else "comment plant missing ) == error."
+
+let pos = run ["sh" helper ") == error." code]
+assert pos.ok else "noncomment grep failed on code plant"
+assert pos.out contains "tame_style_ban_err_eq_code.rye" else "POSITIVE: code plant must fire"
+
+let neg = run ["sh" helper ") == error." comment]
+assert neg.ok else "noncomment grep failed on comment plant"
+assert neg.out == "" else "NEGATIVE: comment plant must not fire"
+
+# Living brushstroke teaching line still names the ban in /// — must stay silent.
+let brush = run ["sh" helper ") == error." "brushstroke/brush_parse.rye"]
+assert brush.ok else "noncomment grep failed on brush_parse"
+assert brush.out == "" else "brush_parse /// teaching line must not fire"
+
+say "GREEN: ban err_eq planted pair — code fires · comment silent · brush_parse teaching kept."

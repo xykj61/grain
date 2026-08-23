@@ -1,0 +1,58 @@
+# tools/m/mycelium_pledge_true_witness.rish — the Pledge reads a real two-phase-transfer fixture true (r4).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the two-phase transfer · rung r4 — the arc closes.
+# r1 fixed the two-phase verdict, r2 let it travel, r3 read it across a Knot — all over Dags seated in code.
+# This closing rung carries the reader onto a REAL on-disk Cord record carrying a genuine two-phase transfer a
+# keeper can open and walk (tools/fixtures/pledge_dag.bron, produced reproducibly by mycelium/pledge_fixture_gen).
+#
+# The crux this witness proves — two tools, one answer: the app (mycelium/pledge_true) parses the record,
+# rebuilds the Dag under cord.add (re-verifying every signature), resolves it through the Pledge, and reports
+# the honored recipient of the two-phase transfer, the posted count, and the open count; an independent awk
+# reading of the same bytes (tools/fixtures/pledge_dag_truth.awk), applying the simplest honest slice of the
+# agreed order — pledge-state accounting in file order — names the SAME honored recipient and the same counts.
+# So the honored recipient of a two-phase transfer can never drift from an order a keeper can walk by hand. The
+# fixture is reproducible (the generator re-emits byte-identical bytes), and a tampered record refuses
+# BadFormat. Composes cord_bron + cord + pledge public API only; demo keeper seeds — no key/funds/network/custody.
+#
+# Scope: active-designing/date/20260813/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_pledge_true_witness.rish
+
+say "mycelium-pledge-true: Language EN — the honored recipient of a real two-phase transfer is true to the bytes; app and awk name one honored hand."
+say "mycelium-pledge-true: Style Radiant — the Cord wove one order through the dark; a keeper can walk the block lines and name the same kept promise the ledger does."
+say "mycelium-pledge-true: Lens TAME — the honored recipient cross-checks against an independent awk; the Dag rebuilt under the Cord's own add; a tampered record never read as true; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/pledge_true"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/pledge_true.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-pledge-true: build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "mycelium-pledge-true: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-pledge-true: selftest did not speak GREEN"
+assert selftest.out contains "the honored pledge's coins reached its recipient" else "mycelium-pledge-true: honored-coins-moved claim missing"
+assert selftest.out contains "conservation holds over the real bytes" else "mycelium-pledge-true: conservation claim missing"
+assert selftest.out contains "a tampered header refused BadFormat" else "mycelium-pledge-true: tamper-refusal claim missing"
+
+# The crux — two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
+let app = run ["sh" "-c" "${bin} measure 2>&1"]
+assert app.ok else "mycelium-pledge-true: app measure exited non-zero"
+let awk = run ["sh" "-c" "awk -f tools/fixtures/pledge_dag_truth.awk tools/fixtures/pledge_dag.bron"]
+assert awk.ok else "mycelium-pledge-true: awk truth read failed"
+assert awk.out contains "55154f42065ea5a1bea05463826be2684eb92df92c100027aabaae57ca554207 1 1" else "mycelium-pledge-true: awk triple not Bob's honored pledge · posted 1 · open 1"
+assert app.out == awk.out else "mycelium-pledge-true: app and awk disagree — the honored recipient drifted from the bytes"
+
+# The fixture is genuinely what the Cord emits, not a hand-mock — the generator re-emits byte-identical bytes.
+let regen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run mycelium/pledge_fixture_gen.rye 2>/tmp/pledge_regen.bron >/dev/null && diff -q tools/fixtures/pledge_dag.bron /tmp/pledge_regen.bron && echo REPRODUCIBLE"]
+assert regen.ok else "mycelium-pledge-true: fixture is not reproducible — the generator drifted"
+assert regen.out contains "REPRODUCIBLE" else "mycelium-pledge-true: fixture regeneration did not match"
+
+# The Pledge whose verdict this rung reads from real bytes, and the cord_bron reader that rebuilds the real
+# Dag, both stand at the door — their own selftests prove the machinery r4 rests on.
+let pledge = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/pledge.rye -femit-bin=mycelium/bin/pledge && mycelium/bin/pledge 2>&1"]
+assert pledge.ok else "mycelium-pledge-true: the Pledge r1 the reading resolves is not GREEN"
+assert pledge.out contains "GREEN" else "mycelium-pledge-true: the Pledge r1 did not speak its GREEN"
+
+say "mycelium-pledge-true: GREEN — a real two-phase transfer record reads true (app==awk, Bob's honored pledge · posted 1 · open 1); the honored recipient resolved under the Cord's own add and the agreed order, conservation of balance + reserved whole, the fixture reproducible, a tampered record refused; the Pledge stands at the door. The Mycelium Pledge's agent-doable arc closes."

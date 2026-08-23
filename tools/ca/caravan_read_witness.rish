@@ -1,0 +1,37 @@
+# caravan_read_witness.rish -- Caravan system-reader witness.
+#
+# Proves the architecture reads from its own file on disk: the worked example
+# whole, a shortfall named above the line, and the grammar refusing rwx in
+# the document itself.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_read_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/read_read"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan read build failed"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan read selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan read selftest not GREEN"
+assert test.out contains "the architecture reads from disk" else "caravan read selftest did not read from disk"
+assert test.out contains "never truncated" else "caravan read selftest did not prove the truncation guard"
+
+# The reader answers 0 only for a declaration that reads whole.
+let whole = run ["sh" "-c" "${bin} caravan/systems/serial_stack.bron 2>&1"]
+assert whole.ok else "the worked example did not read whole from disk"
+assert whole.out contains "declared bytes 73728" else "the worked example did not declare 73728 bytes"
+assert whole.out contains "verdict: whole" else "the worked example did not answer whole"
+
+# A document whose every line is legal still answers for the whole.
+let short = run ["sh" "-c" "${bin} caravan/systems/unheld_region.bron 2>&1"]
+assert short.out contains "a region no domain holds" else "the unheld region was not named"
+
+# The grammar refuses rwx in the file itself, before any check runs.
+let refused = run ["sh" "-c" "${bin} caravan/systems/write_execute.bron 2>&1"]
+assert refused.out contains "BadPermission" else "the rwx document was not refused by name"
+
+say "GREEN: Caravan system-reader witness passed."

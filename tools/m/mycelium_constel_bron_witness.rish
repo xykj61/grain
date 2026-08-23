@@ -1,0 +1,47 @@
+# tools/m/mycelium_constel_bron_witness.rish — a named constellation travels as a record, self-certifying
+# (r3, the Constel travel rung).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · Constel · rung r3 — travel.
+# r1 booted a named constellation and reached quorum; r2 proved its fault tolerance. Both held the roster in
+# memory. A dev-net a keeper cannot hand to another is only a local fixture, so r3 lets the whole
+# constellation cross as `format constel-v1` bytes — one `ship <name> <pk-hex>` line per ship in roster
+# order. Because a ship's identity is a PURE FUNCTION of its name (r1: seed = SHA-256(name)), the record is
+# SELF-CERTIFYING: parse re-derives each ship's keypair from its name and refuses PkMismatch unless the
+# carried key is exactly the one that name yields — a tampered key cannot ride a real name.
+#
+# The crux this witness proves is THE CONSTELLATION SURVIVES THE WIRE — a constellation parsed from a record
+# reaches the byte-identical quorum head as the one in memory (a keeper boots the identical constellation
+# from the record alone), render/parse is a fixed point, and the record self-certifies (a tampered key
+# refuses PkMismatch); a bad header and an unknown field each refuse. Composes constel + chorus + muster +
+# voucher public API only, editing none; siloed dev fixtures — no key, no funds, no network, no real value.
+#
+# Scope: active-designing/date/20260813/20260813-132009_mycelium-constel-named-dev-net-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_constel_bron_witness.rish
+
+say "mycelium-constel-bron: Language EN — a dev-net a keeper cannot hand to another is only a local fixture; a Constel travels as a readable record, and because a ship's identity is a pure function of its name, the record self-certifies — a carried key its name does not yield is refused."
+say "mycelium-constel-bron: Style Radiant — the whole constellation crosses as text and boots the identical constellation on the far side: the recovered roster reaches the byte-identical quorum head as the one in memory, and render then parse is a fixed point."
+say "mycelium-constel-bron: Lens TAME — the travel law composes constel + chorus + muster + voucher public API only, editing none; a purpose-built bounded reader re-derives each key from its name and refuses PkMismatch, BadFormat, UnknownField, BadLine, BadHex; every field is a name or fixed-width hex; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/constel_bron"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/constel_bron.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-constel-bron: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-constel-bron: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-constel-bron: selftest did not speak GREEN"
+assert selftest.out contains "travels as a format constel-v1 record" else "mycelium-constel-bron: the travel claim missing"
+assert selftest.out contains "boots the identical constellation from the record alone" else "mycelium-constel-bron: the boot-from-record crux claim missing"
+assert selftest.out contains "fixed point" else "mycelium-constel-bron: the fixed-point claim missing"
+assert selftest.out contains "PkMismatch" else "mycelium-constel-bron: the self-certification refusal claim missing"
+
+# The Constel r1 crux stands at the door — a travel rung means nothing unless the constellation the record
+# rebuilds reaches the same named quorum r1 proves.
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/constel.rye -femit-bin=mycelium/bin/constel && mycelium/bin/constel 2>&1"]
+assert r1.ok else "mycelium-constel-bron: the Constel r1 crux is not GREEN"
+assert r1.out contains "GREEN" else "mycelium-constel-bron: the Constel r1 did not speak its GREEN"
+
+say "mycelium-constel-bron: GREEN — a named constellation travels as a format constel-v1 record and boots the identical constellation from the record alone (same quorum head as in memory, the Dag's true order-head); render/parse is a fixed point, the record self-certifies (a tampered key refuses PkMismatch), and a bad header and unknown field refuse; the Constel r1 crux stands at the door. The dev-net a keeper hands another keeper."

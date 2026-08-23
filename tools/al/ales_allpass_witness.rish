@@ -1,0 +1,41 @@
+# tools/al/ales_allpass_witness.rish — the allpass filter: Schroeder's diffusion stage, the delayed dry read against the delayed output (ALES184).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES184.
+# Design read: active-designing/date/20260815/20260815-091646_fill-ales184-lotus-allpass.md
+# Stands on: lotus/echo.rye (ALES66 — the delayed-OUTPUT in-place read reused); lotus/taps.rye (ALES68 — the delayed-INPUT dry-snapshot
+# read reused); lotus/timeline.rye (ALES2 — the Clip, sample_max, max_clip, and the one true saturate); lotus/mix.rye (ALES3 — the same
+# saturate, re-proven green through the constructive sum).
+#
+# lotus/allpass.rye is the one primitive the reverb stands on that the tree did not yet hold. The comb (echo.rye) and the early-reflection
+# cluster (taps.rye) already stand; the allpass is Schroeder's DIFFUSION stage — y[n] = saturate(-g·x[n] + x[n-delay] + g·y[n-delay]) —
+# and it is the clean FUSION of the two idioms already proven: it reads a delayed DRY input x[n-delay] (the multi-tap's frozen snapshot)
+# AND a delayed OUTPUT y[n-delay] (the echo's in-place read) in one difference equation. The selftest proves: the impulse response is
+# EXACT (an inverted spike -g·V at 0, then V(1-g²) at the first delay, then a diffuse tail halving each delay, computed by hand
+# byte-for-byte); g = 0 is a PURE DELAY of the dry (not the identity — an allpass with no diffusion is a delay line); silence stays
+# silence; the diffuse tail decays to silence within the clip and never grows; a loud constructive sum saturates to the i16 rail rather
+# than wrapping (ALES3's one true saturation, reused, once over the whole sum); and a zero or too-wide delay refuses BadDelay, a gain at
+# unity or a zero denominator BadGain, an out-of-range span BadRange, each leaving the clip untouched. Purely local — the delay counted in
+# sample indices not milliseconds, no lookahead beyond the snapshot read, no network, no keys, no funds, no real device, no sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_allpass_witness.rish
+
+say "ales-allpass: Language EN — the stereo time-based wing holds both its read-a-delay-line-differently primitives (the feedback echo ALES181 and the snapshot multi-tap ALES183), and above the wing stands the reverb — named since ALES66 as its large composition. A reverb is a NETWORK of two kinds of stage: parallel COMB stages (the feedback echo is the comb) and series ALLPASS stages that diffuse the comb train into a smooth dense tail. The tree held the comb and the early-reflection cluster; it did not hold the allpass. This rung is that one missing primitive — the diffusion stage the whole composition stands on."
+say "ales-allpass: Style Radiant — the law is stated positively: the allpass is the FUSION of the two idioms already proven, reading a delayed DRY input x[n-delay] (the multi-tap's frozen snapshot, always the original audio) against a delayed OUTPUT y[n-delay] (the echo's in-place read, the output written this pass) in one difference equation y[n] = -g·x[n] + x[n-delay] + g·y[n-delay]; the signature is an inverted spike then a smoothly decaying diffuse tail; g = 0 is a pure delay of the dry, and a gain strictly below unity keeps the pole inside the unit circle so the tail always settles."
+say "ales-allpass: Lens TAME — one clip of i16 PCM, a u32 span, a u32 delay and a plain u32/u32 gain; the dry prefix is snapshotted into one bounded [max_clip]i16 scratch (graft's width and stack cost) for the delayed INPUT while the delayed OUTPUT reads the clip buffer in place, the whole sum runs in i64 and saturates once so nothing on the path can overflow; a zero or too-wide delay refuses BadDelay, a gain at or above unity or a zero denominator BadGain, a span outside the samples BadRange, all before any write, the clip untouched on refusal; siloed to lotus/, the delay counted in sample indices not milliseconds, no lookahead, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/allpass"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/allpass.rye -femit-bin=${bin}"]
+assert build.ok else "ales-allpass: build failed — ${build.err}"
+
+let outfile = "lotus/bin/allpass.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-allpass: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-allpass: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-allpass' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-allpass: selftest did not print the GREEN ales-allpass line"

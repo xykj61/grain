@@ -1,0 +1,41 @@
+# tools/cl/cluster_mst_leaves_witness.rish -- the tips and joints of a cluster skeleton, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/cluster_minimum_spanning_tree.rye grows the skeleton; image/cluster_tree_diameter.rye reads its two
+# POLES, image/cluster_tree_radius.rye its CENTER, image/cluster_tree_centroid.rye its BALANCE point. This rung reads the plainest structural fact
+# underneath all of them: the LEAF/INTERNAL partition. tree_degree counts the bridges a cluster meets, is_leaf names a tip (one bridge, or the lone
+# cluster with none), is_internal names a joint (two or more bridges), leaf_count and internal_count read the whole partition. Exact integers, NO
+# float, NO tolerance.
+#
+# The crux this witness proves on metal: the tip/joint partition is COARSER than pole/center/centroid, and bounds every one. THE POLES ARE ALWAYS
+# LEAVES, YET NOT EVERY LEAF IS A POLE -- over a sprout (a main path 1-2-3-4 with a fifth cluster off the interior joint 2) the poles are the path
+# ends 1 and 4, both tips, while leaf 5's reach falls short of the diameter, so is_diameter_endpoint(5) is FALSE though is_leaf(5) is TRUE, the pole
+# set a strict subset of the tips; on a path the two coincide. THE CENTER AND THE CENTROID ARE ALWAYS JOINTS -- both land on the interior joint 2,
+# never a tip, cross-checked against cluster_tree_radius and cluster_tree_centroid. A single-edge tree is two tips and no joint; a lone cluster is
+# one tip. Determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cl/cluster_mst_leaves_witness.rish
+
+say "cluster_mst_leaves: Language EN -- Season G the tips and joints of a cluster skeleton; tree_degree counts the bridges a cluster meets, is_leaf names a tip (one bridge or the lone cluster), is_internal names a joint (two or more bridges), leaf_count and internal_count read the whole partition; NO float, NO tolerance."
+say "cluster_mst_leaves: Style Radiant -- compose not braid: this rung owns only the degree read and the tip/joint partition over the tree's edges; cluster_minimum_spanning_tree owns build_mst and the edges, cluster_tree_diameter owns the poles, cluster_tree_radius the center, cluster_tree_centroid the centroid, each cross-checked here to prove the bound never re-derived. A reading over a reading over a reading over a reading over a reading over a reading over a reading."
+say "cluster_mst_leaves: Lens TAME -- the cluster count can never exceed the object ceiling, so the degree scan visits the n-1 edges once per cluster; a zero or past-the-count cluster id refuses BadClusterId, a lone-cluster layout is one tip and no joints; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/cluster_mst_leaves"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/cluster_mst_leaves.rye -femit-bin=${bin}"]
+assert build.ok else "cluster_mst_leaves: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "cluster_mst_leaves: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "cluster_mst_leaves: ${out}"
+
+assert selftest.out contains "GREEN image-cluster-mst-leaves" else "cluster_mst_leaves: selftest did not print the GREEN line"
+assert selftest.out contains "THE POLES ARE ALWAYS LEAVES, YET NOT EVERY LEAF IS A POLE" else "cluster_mst_leaves: the poles-are-leaves case did not print"
+assert selftest.out contains "is_diameter_endpoint(5) reads FALSE though is_leaf(5) reads TRUE" else "cluster_mst_leaves: the leaf-that-is-not-a-pole fact did not print"
+assert selftest.out contains "THE CENTER AND THE CENTROID ARE ALWAYS JOINTS" else "cluster_mst_leaves: the center-and-centroid-are-joints case did not print"
+assert selftest.out contains "the special clusters live among the joints while the tips hold the handles" else "cluster_mst_leaves: the joints-hold-the-special-clusters fact did not print"
+
+say "cluster_mst_leaves: GREEN on metal -- the tips and joints a surface draws differently, the leaf/internal partition of the minimum spanning tree that bounds every pole, center, and centroid, exact integers with NO float and NO tolerance."

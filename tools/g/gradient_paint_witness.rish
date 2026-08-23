@@ -1,0 +1,45 @@
+# tools/g/gradient_paint_witness.rish -- a positioned gradient SEEN on a real image proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the first rung where the color-ramp family meets the pixel grid, the twin of what
+# image/text_paint.rish did for the font family. Stands on the positioned ramp (image/color_ramp_stops.rye), the open
+# color algebra (image/color.rye), and the open QOI codec (image/qoi.rye).
+# Design read: active-designing/date/20260816/20260816-210735_season-g-color-algebra-crux.md (the color floor this stands on).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + sRGB -- public standards only).
+#
+# The crux this witness proves is that a positioned gradient becomes a real image: paint_gradient_h fills a rectangle
+# where each column is the color the positioned ramp samples at that column's global position. The leftmost column is the
+# first control exactly and the rightmost the last, byte-for-byte down the whole height; a mid column carries both
+# channels (a true blend) constant vertically; uneven positions bend the painted strip where even spacing cannot; the
+# strip round-trips through the open QOI codec byte-for-byte; a sub-rectangle paints only its own columns (the gutters
+# stay ground); a one-column strip, a zero height, an out-of-bounds box, and a non-ascending ramp refuse by name having
+# painted nothing. Compose not braid -- color_ramp_stops decides the color, qoi owns the target, color composites; this
+# rung only routes each column to its position. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/g/gradient_paint_witness.rish
+
+say "gradient-paint: Language EN -- Season G's positioned gradient painted onto an image; a keeper names a stop list and reads back a gradient strip a surface can show, on our own color model and open codec."
+say "gradient-paint: Style Radiant -- compose not braid; color_ramp_stops DECIDES each column's color, qoi owns the RGBA target, color composites src-over, and this rung only ROUTES each column to its global position so a translucent gradient tints the picture beneath."
+say "gradient-paint: Lens TAME -- the whole rectangle bound-checked ONCE up front in u64 so a far edge can never wrap; the ramp validated ONCE before any pixel so a malformed strip refuses having painted nothing; the column-to-position lerp in u32 so it never wraps; integer fixed-point so a strip is deterministic; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/gradient_paint"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/gradient_paint.rye -femit-bin=${bin}"]
+assert build.ok else "gradient-paint: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "gradient-paint: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "gradient-paint: ${out}"
+
+assert selftest.out contains "GREEN image-gradient-paint" else "gradient-paint: selftest did not print the GREEN gradient-paint line"
+
+assert selftest.out contains "round-trips through the open QOI codec byte-for-byte" else "gradient-paint: the painted strip did not prove its QOI round trip"
+
+assert selftest.out contains "bend the painted strip where even spacing cannot" else "gradient-paint: the painted strip did not prove it bends with position"
+
+assert selftest.out contains "the diagonal pair paint_gradient_diag and paint_gradient_adiag finish the linear-gradient family" else "gradient-paint: the diagonal pair did not prove it finishes the linear-gradient family"
+
+say "gradient-paint: GREEN -- a positioned gradient painted onto a real image along all four directions (horizontal, vertical, and the diagonal pair), its edges and blend exact, its bend measured, its round trip byte-for-byte, proven on metal."

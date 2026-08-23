@@ -1,0 +1,45 @@
+# tools/h/hunk_edit_touch_input_witness.rish — the Photos app finger surface on metal (HUNK50).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK50.
+# Design read: active-designing/date/20260813/20260813-204548_hunk-edit-touch-input-exploration.md.
+# Teacher, thanked clean-room: the finger layer of a photo editor (iCloud Photos / Google Photos) — a tap on a tool
+# commits it, a swipe walks the undo/redo history — reduced to a classifier over raw touch coordinates (concept only,
+# siloed).
+#
+# HUNK48 gave the edit arc its input seam (a raw gesture becomes one EditCursor move); HUNK49 bound that seam and the
+# preview to one cursor. Both speak gestures — this rung turns a *finger* into one, the exact parallel of HUNK46's
+# touch-scroll session: a tap on a bounded gesture strip commits that cell's verb, a swipe left is undo, a swipe right
+# is redo, classified from raw down/up coordinates. The selftest drives an EditCursor by finger events and proves a tap
+# commits exactly its strip verb byte-for-byte, a left swipe undoes and a right swipe redoes byte-for-byte, a tap off
+# the strip fires nothing, a swipe wins over the tap, and a zero cell or zero swipe refuses at open. No network, no key,
+# no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_edit_touch_input_witness.rish
+
+say "hunk-edit-touch-input: Language EN — HUNK50 turns a finger into an edit gesture: a tap on the strip commits that cell's verb, a swipe left undoes, a swipe right redoes, above HUNK48's seam."
+say "hunk-edit-touch-input: Style Radiant — a touchscreen speaks pixels, not verbs; this surface reads a landing point and a lift point and decides, and every clamp the cursor holds survives whatever the finger sends."
+say "hunk-edit-touch-input: Lens TAME — the strip is a bounded verb palette; a swipe is a clamped delta, a tap a cell index; the classifier is pure and moves no cursor, leaving HUNK48 to apply; no new error beyond the strip's own bounds; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/edit_touch_input"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/edit_touch_input.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-edit-touch-input: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-edit-touch-input: selftest exited non-zero — ${selftest.out}"
+
+# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# single-quoted string, so an apostrophe in the GREEN line can never break a check (the loom for REDS %76).
+let out = trim selftest.out
+say "hunk-edit-touch-input: ${out}"
+
+assert out contains "GREEN edit-touch-input" else "hunk-edit-touch-input: selftest did not print the GREEN edit-touch-input line"
+assert out contains "a tap on cell 0 commits flip_h and the viewed image is exactly that verb byte-for-byte" else "hunk-edit-touch-input: a tap did not commit exactly its strip verb"
+assert out contains "a left swipe undoes to the one-verb image recovered byte-for-byte and a right swipe redoes forward unchanged" else "hunk-edit-touch-input: swipes did not walk the history byte-for-byte"
+assert out contains "a tap past the last cell and a negative-x tap each fire nothing" else "hunk-edit-touch-input: a tap off the strip did not fire nothing"
+assert out contains "the swipe winning over the tap" else "hunk-edit-touch-input: a swipe from a verb cell did not win over the tap"
+assert out contains "refuse at open by name, and the strip ceiling refuses StripFull" else "hunk-edit-touch-input: a bad open or a full strip did not refuse by name"
+
+say "hunk-edit-touch-input: GREEN — the Photos app takes a finger: a tap on the strip commits exactly its verb, a left swipe undoes and a right swipe redoes byte-for-byte, a tap off the strip fires nothing, a swipe wins over the tap, and a zero cell or zero swipe refuses at open; no network, no key, no funds."

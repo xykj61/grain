@@ -1,0 +1,48 @@
+# tools/t/tally_a2_fold_prodto_witness.rish — Ashvini a2: the fold verb is a name (STOA334).
+#
+#   rishi/bin/rishi run tools/t/tally_a2_fold_prodto_witness.rish
+#
+# STOA332 gave the bartis one fold, hardcoded. STOA334 makes the verb a name:
+# sumto folds by addition, prodto by multiplication, and each reduction keeps its
+# own identity — 0 for a sum, 1 for a product. The bound is refused above twelve
+# by name, because 13! leaves u32; a wrap would be a silent lie.
+# (Pier STOA333 is the pair-shape list fold; counsel numbered this lap STOA333 —
+# the tree keeps both names honest by seating the verb lap as STOA334.)
+
+say "a2-prodto: Language EN — the second fold verb (product 1..n)."
+say "a2-prodto: Lens TAME — identities kept apart; the bound refuses by name."
+
+let zig = "vendor/zig-toolchain/zig"
+let face = "src/lib/gate-tally-fold-prodto-u32.glow"
+
+say "a2-prodto: the empty fold answers the product identity, 1..."
+let empty = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" face "0"]
+assert empty.ok else "a2-prodto: empty case failed to run"
+assert empty.out contains "EXIT:0" else "a2-prodto: empty case did not exit 0"
+assert empty.out contains "1" else "a2-prodto: empty case did not speak the identity 1"
+
+say "a2-prodto: three folds to six..."
+let three = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" face "3"]
+assert three.ok else "a2-prodto: n=3 failed to run"
+assert three.out contains "6" else "a2-prodto: 3 did not fold to 6"
+
+say "a2-prodto: eight folds to forty thousand three hundred twenty..."
+let eight = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" face "8"]
+assert eight.ok else "a2-prodto: n=8 failed to run"
+assert eight.out contains "40320" else "a2-prodto: 8 did not fold to 40320"
+
+say "a2-prodto: past the wall answers 0..."
+let over = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" face "9"]
+assert over.ok else "a2-prodto: past-wall failed to run"
+assert over.out contains "0" else "a2-prodto: 9 did not speak 0"
+
+say "a2-prodto: a bound past twelve is refused BY NAME, never wrapped..."
+let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools/fixtures/gate-fold-prodto-bound-13.glow" "3"]
+assert plant.err contains "FoldBoundTooLarge" else "a2-prodto: a 13 bound was accepted — the product would leave u32"
+
+say "a2-prodto: the first fold verb still stands..."
+let sumto = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/lib/gate-tally-fold-sumto-u32.glow" "3"]
+assert sumto.ok else "a2-prodto: sumto regression failed"
+assert sumto.out contains "6" else "a2-prodto: sumto 3 no longer folds to 6"
+
+say "GREEN: a2 prodto — the fold verb is a name; identities kept; the bound refuses by name."

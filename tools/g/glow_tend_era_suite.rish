@@ -1,0 +1,132 @@
+# tools/g/glow_tend_era_suite.rish — the pure era lap: everything any host can prove (e223).
+#
+#   rishi/bin/rishi run tools/g/glow_tend_era_suite.rish
+#
+# Two laps exist, honestly separated:
+#   THIS lap is PURE — the a1 suite plus R1's socketless legs. It runs on any
+#   host, including a bench with no IPv6 stack at all, so a red here is always a
+#   real red rather than a missing network family.
+#   The METAL lap is tools/co/comlink_r1_dual_stack_witness.rish, whose bind leg
+#   answers only on a host that offers both families.
+# e227: the bind POLICY face joins this lap. The face is a lowered Glow gate and
+# was always socketless; only the bind PROBE needs a dual-stack host. Until now the
+# face was exercised solely by the metal lap, so it had no cover in the house net.
+# Neither replaces the other: the pure lap proves the work, the metal lap proves
+# the host. Names read from the tree at e223 — the seated pedestal is the pier's
+# policy shape, and the width face carries the addr-width name.
+
+say "era: Language EN — the pure lap (a1 deciding gates + Rishi walls + R1 socketless)."
+say "era: Lens TAME — no socket in this lap; the metal lap owns the bind probe."
+
+let zig = "vendor/zig-toolchain/zig"
+let face = "src/lib/gate-comlink-addr-width-u32.glow"
+let policy = "src/lib/gate-comlink-dual-stack-bind-u32.glow"
+let desk = "src/sur/shape-comlink-ipv6-dual-stack.glow"
+
+say "era 1/12: the a1 suite — seven deciding gates, both sides each..."
+let a1 = run ["rishi/bin/rishi" "run" "tools/g/glow_tend_a1_suite.rish"]
+assert a1.ok else "era: the a1 suite RED — read its own line for the failing gate"
+say "era 1/12 GREEN — a1 whole."
+
+say "era 2/12: R1's pedestal — placard, and its walls in the shape's own words..."
+let placard = run ["sh" "-c" "head -n 7 src/sur/shape-comlink-ipv6-dual-stack.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "era: R1 placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "era: R1 placard missing six lines"
+let wall_bind = run ["sh" "-c" "grep -q 'binds never dials' src/sur/shape-comlink-ipv6-dual-stack.glow"]
+assert wall_bind.ok else "era: the bind-never-dial wall left the pedestal's own words"
+let wall_wait = run ["sh" "-c" "grep -q 'family_wait_ms=250' src/sur/shape-comlink-ipv6-dual-stack.glow"]
+assert wall_wait.ok else "era: the bounded family-wait wall left the pedestal's own words"
+let wall_sibling = run ["sh" "-c" "grep -q 'never a union' src/sur/shape-comlink-ipv6-dual-stack.glow"]
+assert wall_sibling.ok else "era: the sibling-records wall left the pedestal's own words"
+let shape = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk]
+assert shape.ok else "era: R1 shape lower/build/run failed"
+assert shape.out contains "EXIT:0" else "era: R1 shape did not exit 0"
+say "era 2/12 GREEN — R1's policy stands and carries all three walls."
+
+say "era 3/12: R1's width face — both lawful lengths pass, a wider one refuses..."
+let four = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" face "4"]
+assert four.ok else "era: four-byte width failed to run"
+assert four.out contains "1" else "era: four bytes did not speak 1"
+let sixteen = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" face "16"]
+assert sixteen.ok else "era: sixteen-byte width failed to run"
+assert sixteen.out contains "1" else "era: sixteen bytes did not speak 1"
+let wide = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" face "20"]
+assert wide.ok else "era: over-wide run failed"
+assert wide.out contains "0" else "era: twenty bytes did not speak 0"
+let tracks = run ["sh" "-c" "grep -q 'lens 4 and 16' src/sur/shape-comlink-ipv6-dual-stack.glow"]
+assert tracks.ok else "era: the pedestal's sibling lengths moved — recheck the width face"
+say "era 3/12 GREEN — the sibling lengths decide, and the face still tracks the shape."
+
+say "era 4/12: R1's bind policy face — the policy itself decides, socketless..."
+let policy_on = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" policy "1"]
+assert policy_on.ok else "era: policy-on failed to run"
+assert policy_on.out contains "EXIT:0" else "era: policy-on did not exit 0"
+assert policy_on.out contains "1" else "era: policy on did not speak 1"
+let policy_off = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" policy "0"]
+assert policy_off.ok else "era: policy-off failed to run"
+assert policy_off.out contains "0" else "era: policy off did not speak 0"
+say "era 4/12 GREEN — the policy face decides on both sides; only its probe was ever metal."
+
+say "era 5/12: Rishi's own walls — env 512 and history 50, elder-citing..."
+let rishi = run ["rishi/bin/rishi" "run" "tools/r/rishi_a1_gate_walls_witness.rish"]
+assert rishi.ok else "era: rishi walls RED — read tools/r/rishi_a1_gate_walls_witness.rish"
+say "era 5/12 GREEN — the shell's ceilings decide, and the elders still match."
+
+say "era 6/12: the build floor itself — two witnesses at once, and neither ruins the other..."
+let conc = run ["rishi/bin/rishi" "run" "tools/g/glow_build_concurrency_witness.rish"]
+assert conc.ok else "era: build concurrency RED — ${conc.err}"
+say "era 6/12 GREEN — the lock and the atomic install hold under six lanes (REDS %88)."
+
+say "era 7/12: the commit-message wall -- all three refusals refuse, and every welcome still welcomes..."
+let guard = run ["rishi/bin/rishi" "run" "tools/co/commit_message_guard_witness.rish"]
+assert guard.ok else "era: commit-message guard RED -- ${guard.err}"
+say "era 7/12 GREEN -- 20 planted cases answered right across three rules, and the wall is armed on this clone."
+
+say "era 8/12: the build bridge itself -- a cyclic import graph terminates, and a chain past the bound refuses by name..."
+let bridge = run ["rishi/bin/rishi" "run" "tools/r/rye_bridge_cycle_witness.rish"]
+assert bridge.ok else "era: the Rye build bridge RED -- ${bridge.err}"
+say "era 8/12 GREEN -- two files importing each other bridge and run, the root answers to one name, and a chain past max_bridge_depth is refused rather than crashed (REDS %125)."
+
+say "era 9/12: the reds ledger itself -- the spine accretes with no gaps, the headline recites what the spine measures, and every row carries its three fields..."
+let reds = run ["rishi/bin/rishi" "run" "tools/gen/season/reds_ledger_monotone_witness.rish"]
+assert reds.ok else "era: the reds ledger spine or its headline RED -- ${reds.err}"
+# The rung once named the whole ledger and proved only its numbering, so a
+# closure note that named no proof stood RED for four signed commits while this
+# roster read GREEN (REDS %129). Both halves run here now: one guard counts the
+# spine, the other reads every row for what went wrong, what caught it, and what
+# it taught.
+let rows = run ["rishi/bin/rishi" "run" "tools/gen/season/reds_ledger_witness.rish"]
+assert rows.ok else "era: a reds row is incomplete or the pin is past bound -- ${rows.err}"
+say "era 9/12 GREEN -- 1..N with no gaps across every fold archive and the living pin, the headline agreeing with the count read off disk, and every row complete (REDS %126, %127, %129)."
+
+say "era 10/12: the delegating stub itself -- measured off disk, and the live card held to the measurement..."
+let stub = run ["rishi/bin/rishi" "run" "tools/l/ladder_stub_length_witness.rish"]
+assert stub.ok else "era: the stub length or the card's claim about it RED -- ${stub.err}"
+say "era 10/12 GREEN -- every pure delegating stub on disk measures three lines, the count named by the scan's own output rather than recited here, the card agrees, a harness delegating to itself is refused by name, and all three refusals fire on metal (REDS %128, %132)."
+
+say "era 11/12: the fold's doc block bound to the declaration its own citation names..."
+let docs = run ["rishi/bin/rishi" "run" "tools/l/ladder_doc_attachment_witness.rish"]
+assert docs.ok else "era: a doc block in the Caravan harness documents a family other than the declaration beneath it -- ${docs.err}"
+say "era 11/12 GREEN -- every fold's doc block sits above the pub fn its own family citation names, the count read off the scan rather than recited here, a misattached block and a scan proving nothing are both refused on metal, and a correct block is welcomed as hard as a wrong one is refused (REDS %134)."
+
+# The three guards that ran from nowhere (REDS %138, %139). On 20260822 a lap found the
+# two-rooms doorway guard and the dated-path census both RED -- and RED with every one of that
+# lap's own changes stashed, so each had been red before the lap began. Neither ran from a
+# standing suite. Nine pages had forgotten to name their room and seven dated references had
+# drifted, and a full day of green rounds had climbed beside both without hearing a thing.
+#
+# A guard nobody's suite runs is a guard that reds in the dark, which is the same sentence the
+# ledger's own founding wrote about reds living in a chat window that closes. So the three ride
+# here, where every lap already listens: the doorway, the census, and the repointer that must
+# leave dated testimony alone while it repairs living code.
+say "era 12/12: the guards that ran from no standing suite -- the doorway, the dated-path census, and the repointer..."
+let doorway = run ["rishi/bin/rishi" "run" "tools/t/two_rooms_doorway.rish"]
+assert doorway.ok else "era: a forward-facing page names no room at its door -- ${doorway.err}"
+let dated = run ["rishi/bin/rishi" "run" "tools/d/dated_path_witness.rish"]
+assert dated.ok else "era: the dated-path resolver or its lost-reference census went RED -- ${dated.err}"
+let repoint = run ["rishi/bin/rishi" "run" "tools/d/dated_path_repoint_witness.rish"]
+assert repoint.ok else "era: the dated-path repointer moved dated testimony or missed living code -- ${repoint.err}"
+say "era 12/12 GREEN -- every forward page names its room, the resolver holds its six verdicts and its lost-reference ceiling with no slack, and the repointer repairs living code while leaving dated testimony byte-identical (REDS %138, %139)."
+
+say "GREEN: era pure lap -- a1 - Rishi walls - R1 socketless legs - the build floor - the build bridge - the commit wall - the reds ledger whole - the delegating stub - the doc block bound where it belongs - the three guards that ran from nowhere, provable on any host."

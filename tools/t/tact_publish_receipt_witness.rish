@@ -1,0 +1,38 @@
+# tools/t/tact_publish_receipt_witness.rish — TACT Journey 2, Rung 1: the offline-verifiable receipt.
+#
+# Journey 1 piloted a keeper to a running Pond; this journey lets that keeper publish. BUHR-J7r4
+# bound a stored artifact to a Kumara identity; this rung carries the same signed word out of the
+# store into a portable receipt a recipient verifies on their own. A Publication carries only the
+# facts the signature binds (point, name, length, digest, signature). The signature verifies
+# offline by the publisher's keeper key with no content at all; a recipient holding the content
+# confirms its SHA-256 matches the bound digest. A forged signature, a wrong keeper key, and
+# tampered content each refuse; no store and no network are touched.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/tact_publish_receipt_witness.rish
+
+say "tact2: Language EN — an owner-signed publication is a portable receipt verified entirely offline."
+say "tact2: Lens TAME — forgery, wrong key, and tamper each refuse; two honest halves of trust, no store, no network."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/publish-receipt"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/publish_receipt.rye -femit-bin=${bin}"]
+assert build.ok else "tact2: publish_receipt build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "tact2: publish_receipt selftest exited non-zero"
+assert selftest.out contains "GREEN" else "tact2: selftest did not speak GREEN"
+assert selftest.out contains "a receipt verified offline against the publisher's key; content matched the digest" else "tact2: offline-verify claim missing"
+assert selftest.out contains "a forged signature refused offline verification" else "tact2: forged-signature refusal missing"
+assert selftest.out contains "a wrong keeper key refused; the receipt names exactly who published" else "tact2: wrong-keeper refusal missing"
+assert selftest.out contains "an authentic receipt still refused swapped content (the digest is bound in)" else "tact2: tampered-content refusal missing"
+assert selftest.out contains "an overlong name refused NameTooLong rather than truncate the signed word" else "tact2: overlong-name refusal missing"
+assert selftest.out contains "an owner-signed publication verifies offline, forgery and tamper refused" else "tact2: crux claim missing"
+
+# The owner-signed store this receipt shares its signed word with stays its own green binary.
+let keyed = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth_keyed.rye -femit-bin=pond/bin/tablecloth-keyed && pond/bin/tablecloth-keyed selftest 2>&1"]
+assert keyed.ok else "tact2: tablecloth_keyed re-run failed"
+assert keyed.out contains "GREEN" else "tact2: tablecloth_keyed selftest did not speak GREEN"
+
+say "tact2: GREEN — the publication receipt verifies offline; forgery, wrong key, and tamper each refuse."

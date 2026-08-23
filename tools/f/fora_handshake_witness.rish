@@ -1,0 +1,37 @@
+# tools/f/fora_handshake_witness.rish — two fake piers greet only across the same sky, agreement before exchange (FORA2).
+#
+# Season: the Six-Season double-seat, Season D/F thread · waymark FORA · Constel test-network naming · rung FORA2.
+# Design read: active-designing/date/20260814/20260814-042804_fora2-constel-local-handshake.md
+# Law kin: .claude/rules/placeholder-ship-names.md — the naming law's safety reaches into the handshake: a vowel-bearing
+# (real-@p-shaped) party can never greet, refused VowelPresent at open and at accept.
+#
+# constel/handshake.rye seats the pure protocol: open (the initiator offers name + constellation), accept (the responder
+# confirms same-net membership and answers), finish (the initiator confirms the ack — a Session COMPLETE only when both are
+# distinct never-a-ship members of the one constellation), plus is_member (an exact segment scan). The selftest proves: a
+# clean handshake completes; cross-constellation refuses ConstellationMismatch; a non-member refuses NotAMember; a self-greet
+# refuses SameParty; a vowel-bearing party refuses VowelPresent; and membership names a whole segment, not a substring.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/fora_handshake_witness.rish
+
+say "fora-handshake: Language EN — FORA2 proves the one thing every real multi-pier sync leans on: agreement before exchange. Two piers confirm they are distinct members of the same constellation before a payload byte moves."
+say "fora-handshake: Style Radiant — three pure steps, each an immutable value the next validates: open · accept · finish; a Session is COMPLETE only when both parties are distinct never-a-ship members of the one sky."
+say "fora-handshake: Lens TAME — a pure protocol over name.rye's public API, refusing each fault by name (ConstellationMismatch, NotAMember, SameParty, VowelPresent); siloed to constel/, run from inside the jailed pier; no network, no transport, no keys, no funds, no real address ever formed."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/handshake"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/handshake.rye -femit-bin=${bin}"]
+assert build.ok else "fora-handshake: build failed — ${build.err}"
+
+let outfile = "constel/bin/handshake.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-handshake: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-handshake: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-handshake' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-handshake: selftest did not print the GREEN fora-handshake line"
+
+say "fora-handshake: GREEN — two piers greet only across the same sky; the later Comlink-transport round need only carry the three proven values across a wire."

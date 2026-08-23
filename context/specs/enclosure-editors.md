@@ -6,7 +6,7 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)  
 **Voice:** Kyri  
 **Status:** Living guide  
-**Builds on:** `../../SOURCE.md`, `../../gratitude/ai-jail/README.md`, `../../tools/enclosure.conf.example`  
+**Builds on:** `../../SOURCE.md`, `../../gratitude/ai-jail/README.md`, `../../tools/e/enclosure.conf.example`  
 **Sibling:** [`macos-ai-jail-setup.md`](../../manual/guides/macos-ai-jail-setup.md)
 
 ---
@@ -87,17 +87,17 @@ Documented in `SOURCE.md` Step 6–9. From the repo root on **Ubuntu 26.04 LTS �
 ```bash
 chmod +x ./Cursor-3.13.10-x86_64.AppImage
 # Rishi door (preferred) — --cursor takes the AppImage path; --gpu for Wayland:
-rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
+rishi/bin/rishi run tools/l/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
 # Later launches (already extracted):
-rishi/bin/rishi run tools/launch-cursor.rish --gpu
+rishi/bin/rishi run tools/l/launch-cursor.rish --gpu
 # Bash elder:
-./tools/cursor-jail.sh --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
+./tools/cu/cursor-jail.sh --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
 ```
 
 **macOS** (Seatbelt; no AppImage):
 
 ```bash
-rishi/bin/rishi run tools/cursor_jail_macos.rish --cursor /Applications/Cursor.app
+rishi/bin/rishi run tools/cu/cursor_jail_macos.rish --cursor /Applications/Cursor.app
 ```
 
 ---
@@ -107,36 +107,36 @@ rishi/bin/rishi run tools/cursor_jail_macos.rish --cursor /Applications/Cursor.a
 ```bash
 cd ~/grain
 
-cp tools/enclosure.conf.example tools/enclosure.conf
+cp tools/e/enclosure.conf.example tools/e/enclosure.conf
 # Edit: HANDLE, REPO, paths to zed and Cursor AppRun
 
-cp tools/launch-zed.sh.example      tools/launch-zed.sh
-chmod +x tools/cursor-jail.sh tools/launch-zed.sh
-# Cursor: ./tools/cursor-jail.sh  (tracked; no personal copy required)
-# Optional: cp tools/launch-cursor.sh.example tools/launch-cursor.sh
+cp tools/l/launch-zed.sh.example      tools/l/launch-zed.sh
+chmod +x tools/cu/cursor-jail.sh tools/l/launch-zed.sh
+# Cursor: ./tools/cu/cursor-jail.sh  (tracked; no personal copy required)
+# Optional: cp tools/l/launch-cursor.sh.example tools/l/launch-cursor.sh
 ```
 
-`tools/enclosure.conf` is gitignored. Only the `.example` files are tracked.
+`tools/e/enclosure.conf` is gitignored. Only the `.example` files are tracked.
 
 ### `LANE_KVM` (A-narrow · counsel `20260712.090512`)
 
-`LANE_KVM=false` by default. When true, our gate (`tools/lane_kvm.sh`) authorizes **`/dev/kvm` only** — no D-Bus, no systemd host units, no session buses. Teacher **ai-jail stays unmodified** (no `--kvm` flag — confirmed through release **v1.12.0**). Daily editor sessions keep the lane off; proven-seat one-shots use `tools/run_with_lane_kvm.sh` on a host that already has `/dev/kvm`. Refuse witness: `rishi/bin/rishi run tools/lane_kvm_refuse.rish`. On-path: `tools/proven_seat_g0_complete_jailed.rish`. Retirement of the D-Bus escape: `active-designing/date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md`. Pond customs graduate the same fact at supersede.
+`LANE_KVM=false` by default. When true, our gate (`tools/l/lane_kvm.sh`) authorizes **`/dev/kvm` only** — no D-Bus, no systemd host units, no session buses. Teacher **ai-jail stays unmodified** (no `--kvm` flag — confirmed through release **v1.12.0**). Daily editor sessions keep the lane off; proven-seat one-shots use `tools/r/run_with_lane_kvm.sh` on a host that already has `/dev/kvm`. Refuse witness: `rishi/bin/rishi run tools/l/lane_kvm_refuse.rish`. On-path: `tools/p/proven_seat_g0_complete_jailed.rish`. Retirement of the D-Bus escape: `active-designing/date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md`. Pond customs graduate the same fact at supersede.
 
 ### `ENCLOSURE` (retreat flag · Claude `20260712.212412` · master-seal `213600`)
 
-`ENCLOSURE=ai-jail` by default in `tools/enclosure.conf.example`. Wrappers (`cursor-jail.sh` · `launch-zed.sh`) honor it. `ENCLOSURE=pond` **refuses** unless `bron-resins/pond-supersede-exit.bron` is present-with-content **and** detached `pond-supersede-exit.bron.asc` verifies against master `0646 2132…` alone (`tools/pond_exit_bron_master_seal.sh` · keyring holds only `context/keys/gpg_signing_06462132.pub.asc`). Season-closed is measured by bron and `.asc` absent. Both `ENCLOSURE` values stay live one full season past the flip.
+`ENCLOSURE=ai-jail` by default in `tools/e/enclosure.conf.example`. Wrappers (`cursor-jail.sh` · `launch-zed.sh`) honor it. `ENCLOSURE=pond` **refuses** unless `bron-resins/pond-supersede-exit.bron` is present-with-content **and** detached `pond-supersede-exit.bron.asc` verifies against master `0646 2132…` alone (`tools/p/pond_exit_bron_master_seal.sh` · keyring holds only `context/keys/gpg_signing_06462132.pub.asc`). Season-closed is measured by bron and `.asc` absent. Both `ENCLOSURE` values stay live one full season past the flip.
 
-**Pinned teacher binary (`20260712.131200`):** release **v1.12.0** under gitignored `tools/.cache/bin/ai-jail` (tarball sha256 `91458f153c7b0a87d79aae9014b558a0cfc4b160b7e390008a00c1adfc3edc21`). Set `AIJAIL_BIN="$REPO/tools/.cache/bin/ai-jail"` in personal `enclosure.conf`. Takes effect on the next `./tools/cursor-jail.sh` launch. Study submodule `gratitude/ai-jail` tracks tag `v1.12.0`. Route one stays closed; Route two nest still on word.
+**Pinned teacher binary (`20260712.131200`):** release **v1.12.0** under gitignored `tools/.cache/bin/ai-jail` (tarball sha256 `91458f153c7b0a87d79aae9014b558a0cfc4b160b7e390008a00c1adfc3edc21`). Set `AIJAIL_BIN="$REPO/tools/.cache/bin/ai-jail"` in personal `enclosure.conf`. Takes effect on the next `./tools/cu/cursor-jail.sh` launch. Study submodule `gratitude/ai-jail` tracks tag `v1.12.0`. Route one stays closed; Route two nest still on word.
 
 ### Claude API key for Zed (gitignored secrets file)
 
 **Recommended:** persist the key on disk in a gitignored file the launch script reads:
 
 ```bash
-cp tools/secrets.env.example tools/secrets.env
+cp tools/s/secrets.env.example tools/secrets.env
 chmod 600 tools/secrets.env
 # edit: ANTHROPIC_API_KEY="sk-ant-..."
-./tools/launch-zed.sh
+./tools/l/launch-zed.sh
 ```
 
 Create a key at [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys) → **Create Key** → copy the `sk-ant-...` value once.
@@ -199,10 +199,10 @@ Expanded prompt: `expanding-prompts/yonder/20260619-090512_zed-claude-rules-and-
 
 ## Launch — Zed in ai-jail (Wayland)
 
-From the repo root, with `tools/enclosure.conf` filled in:
+From the repo root, with `tools/e/enclosure.conf` filled in:
 
 ```bash
-./tools/launch-zed.sh
+./tools/l/launch-zed.sh
 ```
 
 What the script does (equivalent manual command):
@@ -235,25 +235,25 @@ ai-jail --dry-run --private-home --no-docker -- zed --version
 
 ## Launch — CLI agents in ai-jail (keeper pier / Linux)
 
-Headless CLIs use the same `--private-home` law without an AppImage. Tracked elder: [`tools/agent-jail.sh`](../../tools/agent-jail.sh). Rish entries: [`tools/launch-claude.rish`](../../tools/launch-claude.rish) · [`tools/launch-cursor-agent.rish`](../../tools/launch-cursor-agent.rish). Witness: [`tools/agent_jail_witness.rish`](../../tools/agent_jail_witness.rish). Auth persists under gitignored `.claude-state/` · `.cursor-agent-state/` (including `xdg-config/` → `~/.config/cursor` for OAuth `auth.json`) · `.gh/`. On NixOS, install ai-jail via `nix profile install github:akitaonrails/ai-jail` (release tarballs hit stub-ld). Full pier walk: [`nixos-guide/20260808-041912_3-cli-agents-in-ai-jail.md`](../../nixos-guide/20260808-041912_3-cli-agents-in-ai-jail.md).
+Headless CLIs use the same `--private-home` law without an AppImage. Tracked elder: [`tools/ag/agent-jail.sh`](../../tools/ag/agent-jail.sh). Rish entries: [`tools/l/launch-claude.rish`](../../tools/l/launch-claude.rish) · [`tools/l/launch-cursor-agent.rish`](../../tools/l/launch-cursor-agent.rish). Witness: [`tools/ag/agent_jail_witness.rish`](../../tools/ag/agent_jail_witness.rish). Auth persists under gitignored `.claude-state/` · `.cursor-agent-state/` (including `xdg-config/` → `~/.config/cursor` for OAuth `auth.json`) · `.gh/`. On NixOS, install ai-jail via `nix profile install github:akitaonrails/ai-jail` (release tarballs hit stub-ld). Full pier walk: [`nixos-guide/20260808-041912_3-cli-agents-in-ai-jail.md`](../../nixos-guide/20260808-041912_3-cli-agents-in-ai-jail.md).
 
 ```bash
-./tools/agent-jail.sh claude
-./tools/agent-jail.sh cursor-agent
-./tools/agent_jail_witness.sh
+./tools/ag/agent-jail.sh claude
+./tools/ag/agent-jail.sh cursor-agent
+./tools/ag/agent_jail_witness.sh
 ```
 
 ## Launch — Cursor in ai-jail (same project, different state)
 
 ```bash
-./tools/cursor-jail.sh
+./tools/cu/cursor-jail.sh
 ```
 
 With a custom AppRun or a fresh extract:
 
 ```bash
-./tools/cursor-jail.sh --appimage squashfs-root/AppRun
-./tools/cursor-jail.sh --extract ./Cursor-3.9.16-x86_64.AppImage
+./tools/cu/cursor-jail.sh --appimage squashfs-root/AppRun
+./tools/cu/cursor-jail.sh --extract ./Cursor-3.9.16-x86_64.AppImage
 ```
 
 Equivalent manual command:
@@ -275,13 +275,13 @@ ai-jail --private-home --no-docker -- \
 **Recommended first try (Setup A):**
 
 1. Keep **Cursor** open on the host (or start it normally).
-2. In a terminal: `export ANTHROPIC_API_KEY=...` then `./tools/launch-zed.sh`.
+2. In a terminal: `export ANTHROPIC_API_KEY=...` then `./tools/l/launch-zed.sh`.
 3. Open the same folder in both editors. Work in Zed's Claude Agent panel; keep Cursor for its agent when you prefer.
 
 **Both enclosed (Setup B):**
 
-1. Terminal 1: `./tools/launch-cursor.sh`
-2. Terminal 2: `export ANTHROPIC_API_KEY=...` && `./tools/launch-zed.sh`
+1. Terminal 1: `./tools/l/launch-cursor.sh`
+2. Terminal 2: `export ANTHROPIC_API_KEY=...` && `./tools/l/launch-zed.sh`
 
 Each process has its own ai-jail tmpfs `$HOME`; only `.cursor-state/`, `.zed-state/`, and the rest of the repo persist.
 
@@ -322,9 +322,9 @@ Binfmt registration applies to `.AppImage` files. The **extracted `AppRun`** is 
 
 ```bash
 ./Cursor-3.9.16-x86_64.AppImage --appimage-extract    # once → squashfs-root/
-./tools/cursor-jail.sh                               # tested on Framework NixOS
+./tools/cu/cursor-jail.sh                               # tested on Framework NixOS
 # if AppRun fails with loader errors:
-steam-run ./tools/cursor-jail.sh
+steam-run ./tools/cu/cursor-jail.sh
 ```
 
 `--appimage` on `cursor-jail.sh` expects the extracted **`AppRun`**, not a `.AppImage` path — use **`--extract`** for a fresh download.
@@ -337,12 +337,12 @@ steam-run ./tools/cursor-jail.sh
 |---------|----------------|-------------|
 | `bwrap: uid map: Permission denied` | Ubuntu AppArmor userns | `gratitude/ai-jail/README.md` Option A or B |
 | Zed window does not appear | Display not passed | Confirm `echo $WAYLAND_DISPLAY`; run from a graphical terminal |
-| Landlock enforced, then instant return to shell (no window) | GPU off — Zed cannot init Vulkan/WebGPU | Set `USE_GPU=true` in `tools/enclosure.conf` (default for Zed); confirm `~/.local/zed.app` is `--map`ped (launch script does this automatically) |
+| Landlock enforced, then instant return to shell (no window) | GPU off — Zed cannot init Vulkan/WebGPU | Set `USE_GPU=true` in `tools/e/enclosure.conf` (default for Zed); confirm `~/.local/zed.app` is `--map`ped (launch script does this automatically) |
 | Claude Agent: auth loop | Stale credentials | Clear `.zed-state/data` Claude paths; use `ANTHROPIC_API_KEY` or `/login` again |
 | `unknown option: --ro-map` | Wrong flag name | ai-jail uses `--map` for read-only mounts, `--rw-map` for read-write |
-| `env: 'zed': No such file or directory` | Zed not installed, or not visible in jail | `curl -f https://zed.dev/install.sh \| sh`; re-run `./tools/launch-zed.sh` (script resolves absolute path + `--map` for `zed.app`) |
+| `env: 'zed': No such file or directory` | Zed not installed, or not visible in jail | `curl -f https://zed.dev/install.sh \| sh`; re-run `./tools/l/launch-zed.sh` (script resolves absolute path + `--map` for `zed.app`) |
 | `Landlock: rw map .../py-out not found` | Stale `.ai-jail` rw_map | Remove the path from `.ai-jail` rw_maps (dropped in favor of project-only writes) |
-| `exec: ai-jail: cannot execute: Is a directory` | `./ai-jail` source tree shadows the binary | Set `AIJAIL_BIN` in `tools/enclosure.conf` to the real binary path |
+| `exec: ai-jail: cannot execute: Is a directory` | `./ai-jail` source tree shadows the binary | Set `AIJAIL_BIN` in `tools/e/enclosure.conf` to the real binary path |
 | Git lock errors | Two agents committing | Serialize commits; one editor owns git push |
 
 ---
@@ -351,7 +351,7 @@ steam-run ./tools/cursor-jail.sh
 
 - **`SOURCE.md`** — SSH, GPG, signing inside the sandbox, full Cursor launch.
 - **`external-research/20260618-180812_pond-foundation.md`** — Pond re-grows ai-jail in Rye.
-- **`tools/enclosure.conf.example`** — fill-in template for this spec.
+- **`tools/e/enclosure.conf.example`** — fill-in template for this spec.
 
 ---
 

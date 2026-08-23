@@ -1,0 +1,37 @@
+# tools/al/ales_library_diff_sheet_witness.rish — what changed, as a readable page: a `format lotus-library-diff-sheet-v1` page
+# rendered from an ALES229 Diff (ALES230).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES230.
+# Design read: active-designing/date/20260815/20260815-143513_fill-ales230-lotus-library-diff-sheet.md
+# Idiom kin: lotus/library_sheet.rye (ALES227, the readable-projection idiom) · lotus/library_diff.rye (ALES229, the classified Diff
+# this draws). A projection — no new frame, no new hash.
+#
+# lotus/library_diff_sheet.rye renders a classified Diff as a human-readable change page. The selftest proves: the page opens with the
+# format line and a `summary <added> <removed> <changed> <same>` line (the summary law); every added / removed / changed album appears
+# in order with its name and full digest(s), a changed line carrying both old and new (the moved law); an unchanged album appears in no
+# album line (the quiet law); a too-small buffer refuses Overflow (the atomic law). A text render only — no real file, no DAC, no
+# network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_library_diff_sheet_witness.rish
+
+say "ales-library-diff-sheet: Language EN — ALES230 draws what changed as a readable page: a `format lotus-library-diff-sheet-v1` page with a four-tally summary line then one added / removed / changed line per moved album — the eye's version of the ALES229 diff, so a keeper sees which records arrived, retired, or were remastered at a glance."
+say "ales-library-diff-sheet: Style Radiant — a projection, not a round-trip, the same shape the library sheet took over a manifest; every catalog primitive earns its readable page; the summary law, the moved law, the quiet law, and the atomic law each named and proven on metal."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/library_diff_sheet"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/library_diff_sheet.rye -femit-bin=${bin}"]
+assert build.ok else "ales-library-diff-sheet: build failed — ${build.err}"
+
+let outfile = "lotus/bin/library_diff_sheet.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-library-diff-sheet: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-library-diff-sheet: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-library-diff-sheet' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-library-diff-sheet: selftest did not print the GREEN ales-library-diff-sheet line"
+
+say "ales-library-diff-sheet: GREEN — a keeper reads what moved between two versions of their body of work as a page, and the diff earns its readable projection just as every catalog primitive before it. The next Lotus crux still names who made it — a signed carry (crypto seam) on Keaton's word."

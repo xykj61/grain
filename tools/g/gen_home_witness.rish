@@ -1,0 +1,22 @@
+# tools/g/gen_home_witness.rish — the O2 instrument: the desks' one true address.
+#
+# Breach law (context/BREACH.md): witnessed on both sides of the line, before
+# and after. This witness takes the canonical home as its argument, asserts the
+# desks stand there and the tools speak that address, and refuses by name
+# anywhere else. Proven red against src/gen and green against glow/gen before
+# any move; O3 flips the argument in the same declared motion that moves them.
+
+let home = args[0]
+assert home != "" else "usage: gen_home_witness.rish <canonical-home e.g. glow/gen>"
+
+let desks = run ["sh" "-c" "ls ${home}/*.glow 2>/dev/null | wc -l"]
+assert desks.ok else "desk listing failed"
+say "gen-home witness — desks at ${home}: ${desks.out}"
+assert desks.out contains "317" else "expected 317 desks at the canonical home ${home}"
+
+let refs = run ["sh" "-c" "grep -rl '${home}/' tools/ 2>/dev/null | wc -l"]
+assert refs.ok else "reference scan failed"
+say "tool files speaking ${home}/: ${refs.out}"
+assert refs.out contains "12" else "expected 12 tool files speaking the canonical address ${home}/"
+
+say "GREEN: gen-home — 317 desks stand at ${home} and twelve tools speak one address."

@@ -38,10 +38,10 @@ The fold crosses USB as files, then as a sealed ping, then as an NCM-shaped fram
 
 ```bash
 cd ~/urbit
-rishi/bin/rishi run tools/setu6_device_lab_witness.rish
-rishi/bin/rishi run tools/setu65_lab_tx_witness.rish
-rishi/bin/rishi run tools/setu6_lab_probe_onpath_host.rish
-rishi/bin/rishi run tools/setu65_lab_tx_onpath_host.rish
+rishi/bin/rishi run tools/s/setu6_device_lab_witness.rish
+rishi/bin/rishi run tools/s/setu65_lab_tx_witness.rish
+rishi/bin/rishi run tools/s/setu6_lab_probe_onpath_host.rish
+rishi/bin/rishi run tools/s/setu65_lab_tx_onpath_host.rish
 # eyes: linengrow/bin/setu_desk_hold_wayland_look
 ```
 

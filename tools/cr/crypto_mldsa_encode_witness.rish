@@ -1,0 +1,41 @@
+# tools/cr/crypto_mldsa_encode_witness.rish — the ML-DSA serialization and rounding rung: FIPS 204's bit-packing (SimpleBitPack/BitPack §7.1 and their
+# inverses) and coefficient rounding (Power2Round, Decompose, HighBits/LowBits, MakeHint/UseHint §7.4), authored in pure Rye as Season G's second
+# post-quantum SIGNATURE rung, standing on the GREEN base ring crypto/mldsa_ring.rye. This is the signature-side counterpart to
+# crypto/mlkem_encode.rye: where ML-KEM's second rung bundled ByteEncode/ByteDecode with the lossy Compress/Decompress, ML-DSA's bundles the
+# bit-packing with the lossy Power2Round/Decompose/hint arithmetic — the same rung shape, a different lossy map (a signature hides its low bits
+# behind a one-bit hint rather than truncating a ciphertext).
+#
+# Season: crypto — Season G's ML-DSA ladder, rung 2. Authors the encoding layer only; it holds no key and runs no protocol.
+# Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (the ML-DSA ladder, same rung shapes as ML-KEM). Rye-first
+# spine: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Clean-room: the FIPS 204 algorithms and constants (q = 8380417, d = 13, gamma2 = (q-1)/88 and (q-1)/32) are the public NIST standard's own; the
+# arithmetic is our own Rye, never a copied line (.claude/rules/gratitude-licenses.md).
+#
+# crypto/mldsa_encode.rye proves itself by SELF-CONSISTENCY with no external dependency — every operation carries its own inverse or reconstruction:
+# a fixed LSB-first known-answer (pack [0xABC, 0xDEF] at 12 bits gives BC FA DE), the SimpleBitPack round-trip over widths 1..20, the BitPack
+# round-trip over ML-DSA's signed ranges (eta 2/4, t0, z at both gamma1), the Power2Round exact reconstruction r1*2^13 + r0 = r over 64 spreads,
+# the Decompose reconstruction mod q at both gamma2, and the decisive one, the hint round-trip use_hint(make_hint(z, r), r) = high_bits(r + z) for
+# every |z| <= gamma2 at both gamma2 — the fact ML-DSA's verify rests on. Purely local — no key, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_mldsa_encode_witness.rish
+
+say "crypto-mldsa-encode: Language EN — the ML-DSA serialization and rounding rung: FIPS 204's bit-packing (SimpleBitPack/BitPack) and coefficient rounding (Power2Round, Decompose, HighBits/LowBits, MakeHint/UseHint), the layer every ML-DSA key and signature crosses. The signature-side counterpart to crypto/mlkem_encode.rye, standing on the GREEN base ring."
+say "crypto-mldsa-encode: Style Radiant — the law is stated positively: pack coefficients LSB-first, ride signed fields on (b - w), split each value into a published high part and a hidden low part, and carry the difference across a single hint bit. Where ML-KEM's second rung compressed a ciphertext, ML-DSA's hides a signature's low bits behind a hint — the same shape, a gentler loss."
+say "crypto-mldsa-encode: Lens TAME — bounded loops (every pack/unpack cites n = 256 and a width in 1..20), contract asserts on every function, signed low parts kept centered in their FIPS 204 ranges, i64 used only where reconstruction crosses the modulus. Correctness proven by self-consistency: the LSB-first known-answer, the pack/unpack round-trips over every width and range, the Power2Round exact reconstruction, the Decompose reconstruction mod q at both gamma2, and the decisive hint round-trip use_hint(make_hint(z, r), r) = high_bits(r + z) for every |z| <= gamma2. Data-independent by construction; constant-time timing-safety the named horizon. Purely local — no key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/mldsa_encode"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/mldsa_encode.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-mldsa-encode: build failed — ${build.err}"
+
+let outfile = "crypto/bin/mldsa_encode.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-mldsa-encode: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-mldsa-encode: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-mldsa-encode' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-mldsa-encode: selftest did not print the GREEN crypto-mldsa-encode line"

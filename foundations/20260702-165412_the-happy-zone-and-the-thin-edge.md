@@ -11,7 +11,7 @@
 **Gratitude:** [`../gratitude/IntegratedTestsAreAScam.md`](../gratitude/IntegratedTestsAreAScam.md) — **J.B. Rainsberger**'s talk *"Integrated Tests Are A Scam"*, whose collaboration-and-contract mirror and fast-proven "happy zone" this house studied clean-room; the ideas stand here in our own voice, the teacher thanked by name there.
 
 *Written together by Kaeden and Rio 3.*
-Radiant pass `20260728.004954` — Tensegral Arc IV habitat fold `tools/tensegral_arc_iv_witness.rish` (path cite only; claims unchanged)
+Radiant pass `20260728.004954` — Tensegral Arc IV habitat fold `tools/t/tensegral_arc_iv_witness.rish` (path cite only; claims unchanged)
 Radiant pass `20260725.035453`
 
 ---

@@ -1,0 +1,44 @@
+# tools/ca/caravan_glow_tend_limb1_witness.rish — first Caravan Glow Tend limb (e194).
+#
+# Proves max_dependents=4 pedestal locks to caravan/capabilities.rye, lowers
+# cleanly, Tally T1–T3 still sit, and Aurora Glow Tend is still absent.
+#
+#   rishi/bin/rishi run tools/ca/caravan_glow_tend_limb1_witness.rish
+
+say "caravan-tend-1: Language EN — first Caravan Glow Tend limb."
+say "caravan-tend-1: Style Radiant — pedestal beside Rye; no supervisor rewrite."
+say "caravan-tend-1: Lens TAME — Equinox e194 · Ashvini nest-only · Equinox B."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/lib/shape-caravan-max-dependents.glow"
+
+say "caravan-tend-1: placard..."
+let placard = run ["sh" "-c" "head -n 7 src/lib/shape-caravan-max-dependents.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "caravan-tend-1: placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "caravan-tend-1: placard missing six lines"
+
+say "caravan-tend-1: example locks to rye max_dependents..."
+let ex = run ["sh" "-c" "grep -q 'example    4' src/lib/shape-caravan-max-dependents.glow"]
+assert ex.ok else "caravan-tend-1: example 4 missing on pedestal"
+let name = run ["sh" "-c" "grep -q 'max_dependents' src/lib/shape-caravan-max-dependents.glow"]
+assert name.ok else "caravan-tend-1: max_dependents name missing on pedestal"
+let elder = run ["sh" "-c" "grep -q 'caravan/capabilities.rye' src/lib/shape-caravan-max-dependents.glow"]
+assert elder.ok else "caravan-tend-1: capabilities.rye citation missing"
+let rye = run ["sh" "-c" "grep -E '^pub const max_dependents: u32 = 4;$' caravan/capabilities.rye"]
+assert rye.ok else "caravan-tend-1: rye max_dependents must remain 4"
+
+say "caravan-tend-1: lower and run..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk]
+assert gate.ok else "caravan-tend-1: shape lower/build/run failed"
+assert gate.out contains "EXIT:0" else "caravan-tend-1: shape did not exit 0"
+
+say "caravan-tend-1: Tally Tend T1–T3 still present..."
+let tally = run ["sh" "-c" "test -f src/lib/shape-tally-max-gardens.glow -a -f src/lib/shape-tally-max-name-len.glow -a -f src/lib/shape-tally-copy-preconditions.glow"]
+assert tally.ok else "caravan-tend-1: Tally pedestals missing"
+
+say "tend-ladder: Aurora A1 may be present..."
+let aurora = run ["sh" "-c" "test -f src/sur/shape-aurora-wire-capacity.glow"]
+assert aurora.ok else "tend-ladder: Aurora A1 pedestal missing after e197"
+
+say "GREEN: caravan Glow Tend limb 1 — max_dependents=4 pedestal; Tend ladder continues."

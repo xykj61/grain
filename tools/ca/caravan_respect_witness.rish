@@ -1,0 +1,172 @@
+# caravan_respect_witness.rish -- Caravan respect witness.
+#
+# `conclude.rye` opened the last door: a reader who lets the wall stand has
+# ended the matter where they sit, and the plan writes eleven bytes into its own
+# notes so the run after it inherits an ending rather than a silence.
+#
+#   A RUN THAT OPENS HOLDING A CLOSED CORRESPONDENCE NAMES THAT ENDING WHERE
+#   THE OUTCOME IS READ, RATHER THAN BEGINNING THE WHOLE MATTER AGAIN FROM
+#   NOTHING OVER A PERSON WHO ALREADY SAID THEY WERE DONE.
+#
+# The rung proves:
+#
+#   * THE NUMBER THE TWO PLANS DISAGREE ON IS ENDINGS A RUN OPENED HOLDING AND
+#     NEVER NAMED. Both runs open holding the same closure an earlier run
+#     addressed forward. What parts them is whether the run reads it. It falls
+#     1 to 0.
+#   * A NOTE ADDRESSED FORWARD IS WORTH WHAT THE RUN RECEIVING IT DOES WITH IT.
+#     The rung below writes the ending down; this one is the first rung in the
+#     arc that opens one and answers for it.
+#   * A RUN RESPECTS ONLY AN ENDING IT ACTUALLY INHERITED. `RespectUninherited`
+#     refuses by name.
+#   * AN INHERITANCE IS RESPECTED ONLY WHERE ITS READER ENDED THE MATTER.
+#     `RespectUnended` refuses by name -- the consent guard of this tier,
+#     mirror to `ConcludeUnended` below it.
+#   * THE MARK NAMES THE ENDING IT IS ABOUT, weighed against the word standing
+#     in the reader's own box where that reader left it. `RespectMismatched` is
+#     the rung itself, refused by name.
+#   * EVERY BYTE OF THE MARK SAVE ONE CAME FROM OUTSIDE THIS RUN. The closure
+#     is copied whole into `caravan/.minds/plan.respect` and this run's own byte
+#     written last; the closure copied the record, the record copied the answer,
+#     the answer copied the call, the call copied the wall, the wall copied the
+#     mark, and that mark copied the reader's own first refusal -- seven tiers
+#     in twelve bytes.
+#   * THE NAMING IS THE ACT, AND THE TAKING DOWN IS ONLY ITS CLOSE. The mark
+#     lands first and the inheritance comes down after, so a run falling between
+#     the two leaves an ending standing for the next hand rather than one
+#     quietly gone.
+#   * RESPECTING IS NOT SETTLING. Every record beneath -- the settlement, the
+#     quarrel, its age, its standing, the finding, the plan's own word, the
+#     concession, the meeting, the redress, the delivery, the second look, the
+#     telling, the reader's reply, the mark, the wall, the call, the reader's
+#     own answer, and the abatement -- comes out of a respecting run exactly as
+#     it went in. Both runs settle `carried out whole`.
+#   * A MARK SURVIVES A PROVISIONING, AND OUTLIVES THE CLOSURE IT NAMES.
+#     Proven as its own fold, outside any run.
+#
+# Run: rishi/bin/rishi run tools/ca/caravan_respect_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/respect"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/respect.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan respect build failed -- ${build.err}"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/respect_read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+# The board declaration the rungs below opened, unchanged.
+let published = run ["sh" "-c" "caravan/bin/respect_read caravan/systems/serial_three_clients_board.bron 2>&1"]
+assert published.ok else "the board declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 11 -- grants 22" else "the board declaration changed shape"
+assert published.out contains "verdict: whole" else "the board declaration did not read whole"
+
+# A fresh start for the stores, the doorbells, this plan's notes, and the boxes
+# outside it. Every quarrel, every finding, every debt, every mark, every ending
+# and every word this witness reads was seated by the lap itself, standing in
+# for the runs and the correspondents that met this argument before today.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels caravan/.minds caravan/.readers"]
+assert clean.ok else "the region stores, doorbells, notes, and outside boxes could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan respect selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan respect selftest not GREEN"
+assert test.out contains "a run that opens holding a closed correspondence names that ending where the outcome is read" else "the respect finding did not close"
+
+# The respecting and its five refusals, read straight, before any dependent runs.
+assert test.out contains "five refusals stand by name: uninherited, unended, mismatched, miscounted, misrecorded" else "the five respect refusals did not stand"
+assert test.out contains "the respecting this rung keeps: the plan opens holding a closed correspondence, names it where the outcome is read, and takes it down" else "a respecting plan did not read as one"
+assert test.out contains "what a reopening plan tells an operator: the plan opens holding a closed correspondence and begins the matter again from nothing" else "a reopening plan did not read as one"
+assert test.out contains "a mark carries twelve bytes: the closure it was handed, echoed whole" else "a mark did not name what it carries"
+assert test.out contains "a mark survives a provisioning, and outlives the closure it names" else "a mark was never proven past a provisioning"
+
+# The concluding below it, unchanged and still proven on its own fold.
+assert test.out contains "a closure survives a provisioning, and outlives the record it quotes" else "the concluding below stopped being proven"
+
+# THE MEASUREMENT. The two plans open holding the same ending, and only one of
+# them says so anywhere an operator reads.
+assert test.out contains "endings a run opened holding and never named: 1 against 0" else "the number this rung moves did not fall 1 to 0"
+assert test.out contains "inherited endings this run named where the outcome is read: 0 reopening, 1 respecting" else "the respecting run did not name the one ending it inherited"
+assert test.out contains "inherited endings this run began the matter again from: 1 reopening, 0 respecting" else "the other half of the count did not close"
+
+# The concluding below reads honestly on this pair: both plans are asked to
+# write nothing, so what stands on the wire at the end of the lap is this rung's
+# own work rather than a fresh closure written over it.
+assert test.out contains "opened answers this run wrote a closure for: 0 reopening, 0 respecting" else "a plan closed a correspondence neither was asked to close"
+assert test.out contains "correspondences a reader ended that no later run could tell from one merely stopped: 1 against 1" else "the concluding below stopped counting a leaving plan"
+
+# Every rung beneath, standing exactly still. Respecting publishes one mark and
+# rewrites nothing else.
+assert test.out contains "the plan, as an operator finally reads it: carried out whole reopening, carried out whole respecting" else "a respecting run rewrote what the work came to"
+assert test.out contains "work still standing when the supervisor exits: 0 reopening, 0 respecting" else "a respecting run left work standing"
+assert test.out contains "breaks a named turn: 0 reopening, 0 respecting" else "a respecting run broke a named turn"
+assert test.out contains "carried calls this run opened its reader's own answer to: 1 reopening, 1 respecting" else "the opening below moved under a respecting run"
+assert test.out contains "opened releases this run took its own wall down on: 0 reopening, 0 respecting" else "a run abated a wall on a word that released nothing"
+
+# THE MARK ITSELF, read off the wire rather than out of the run's own words.
+# Twelve bytes: the closure echoed whole, and this run's own byte last.
+let mark = run ["sh" "-c" "cat caravan/.minds/plan.respect"]
+assert mark.ok else "a respecting run published no mark at all"
+assert mark.out contains "osrwsmwbyocr" else "the mark did not carry the closure this run inherited, with its own byte last"
+
+# And the inheritance came down. This is what makes the naming an act rather
+# than a courtesy: the closure the run opened holding is gone, and the mark that
+# names it stands.
+let inheritance = run ["sh" "-c" "test -e caravan/.minds/plan.close && echo standing || echo gone"]
+assert inheritance.ok else "the inheritance could not be read"
+assert inheritance.out contains "gone" else "a respecting run left the ending it had already named standing"
+
+# The record the closure quoted, standing exactly where the opening below left
+# it. A mark ends a correspondence rather than erasing the words that made it.
+let recorded = run ["sh" "-c" "cat caravan/.minds/plan.answer"]
+assert recorded.ok else "a respecting run took down the record beneath the ending it named"
+assert recorded.out contains "osrwsmwbyo" else "the record changed under a respecting run"
+
+# The reader's own answer, still in the reader's own box. A plan reads a
+# person's word rather than taking it.
+let handed = run ["sh" "-c" "cat caravan/.readers/desk.hands"]
+assert handed.ok else "the reader this lap runs stopped holding their own answer"
+assert handed.out contains "osrwsmwby" else "a respecting run rewrote the answer it was only asked to read"
+
+# The wall, still standing. A reader who lets the boundary stand released
+# nothing, so nothing came down -- and the ending they made is named all the same.
+let wall = run ["sh" "-c" "test -e caravan/.minds/plan.wall && echo standing || echo gone"]
+assert wall.ok else "the wall could not be read"
+assert wall.out contains "standing" else "a respecting run took down a wall its reader never released"
+
+# The call, still in the reader's box.
+let called = run ["sh" "-c" "cat caravan/.readers/desk.walls"]
+assert called.ok else "a respecting run took down the call its reader answered"
+assert called.out contains "osrwsmwb" else "the call changed under a respecting run"
+
+# The settlement beneath everything, untouched.
+let settled = run ["sh" "-c" "cat caravan/.minds/plan.settled"]
+assert settled.ok else "a respecting run left no settlement at all"
+assert settled.out contains "c" else "a respecting run rewrote what the work came to"
+
+# The planted control. A witness that only reads the run's own words would print
+# GREEN over a mark that was never published, so the note is taken down and the
+# very read that closed the claim is made again -- it must fail, on metal, with
+# the note gone. Then the wire is restored to exactly what the run left.
+let plant = run ["sh" "-c" "cp caravan/.minds/plan.respect caravan/.minds/plan.respect.kept && rm caravan/.minds/plan.respect"]
+assert plant.ok else "the planted control could not take the mark down"
+
+let control = run ["sh" "-c" "cat caravan/.minds/plan.respect 2>/dev/null"]
+assert control.ok == false else "a mark that does not exist was read all the same"
+
+let restore = run ["sh" "-c" "mv caravan/.minds/plan.respect.kept caravan/.minds/plan.respect"]
+assert restore.ok else "the wire could not be restored after the planted control"
+
+let restored = run ["sh" "-c" "cat caravan/.minds/plan.respect"]
+assert restored.ok else "the mark did not come back after the planted control"
+assert restored.out contains "osrwsmwbyocr" else "the restored mark did not name the ending this reader made"
+
+# The dependents measure the loss in their own hands, exactly as the rungs below
+# left them, and the follower that once spoke for the judgment falls with it.
+assert test.out contains "falls as its author declared, holding 1 conferred arcs it never served" else "a falling dependent did not fall holding its conferral"
+assert test.out contains "client_b: read 3 arcs of its own, 0 inherited at its first breath, 1 conferred, 0 returned, 1 still reachable at home" else "the dependent a conferral was made to did not read it as its own"
+assert test.out contains "client_c: bytes differed" else "the follower that once spoke for the judgment came home after all"
+
+say "GREEN: Caravan respect witness passed."

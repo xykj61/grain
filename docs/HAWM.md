@@ -22,12 +22,12 @@ HAWM0/HAWM1 exercise real AOSP/Android userland (useful for Glow code). Graphene
 
 | Rung | Claim | Primary witness / guide | State |
 |------|-------|-------------------------|-------|
-| **HAWM0** | Stock AOSP AVD boots, KVM-accelerated | `tools/hawm0_boot_onpath_host.rish` | GREEN |
-| **HAWM1** | **JABS0** Seva fold runs inside that AVD (module `seva_b0_fold`); session root matches native | `tools/hawm1_seva_witness.rish` | GREEN |
+| **HAWM0** | Stock AOSP AVD boots, KVM-accelerated | `tools/h/hawm0_boot_onpath_host.rish` | GREEN |
+| **HAWM1** | **JABS0** Seva fold runs inside that AVD (module `seva_b0_fold`); session root matches native | `tools/h/hawm1_seva_witness.rish` | GREEN |
 | **HAWM2** | Real GrapheneOS build / image | — | horizon (Linux/KVM + full AOSP) |
 | **HAWM3** | Physical Pixel, GrapheneOS flashed, boot-key hash matched | [`pixel-10a-grapheneos-setup.md`](../manual/guides/pixel-10a-grapheneos-setup.md) · hash `d8f879d1…` | **closed** `20260717.013700` |
 
-On-device Seva via `tools/hawm3_seva_device_witness.rish` (aarch64) needs USB debugging on the phone — host-terminal, same boundary as HAWM0.
+On-device Seva via `tools/h/hawm3_seva_device_witness.rish` (aarch64) needs USB debugging on the phone — host-terminal, same boundary as HAWM0.
 
 ---
 
@@ -42,7 +42,7 @@ On-device Seva via `tools/hawm3_seva_device_witness.rish` (aarch64) needs USB de
 | GrapheneOS Storage · Contact Scopes → Glow | [`../linengrow/glow_storage_scope.rye`](../linengrow/glow_storage_scope.rye) — **GREEN** `20260717.155846` · glass cover `20260717.161220` (scopes cover declared photos + contacts) |
 | GrapheneOS Network permission toggle → Glow | [`../linengrow/glow_network_grant.rye`](../linengrow/glow_network_grant.rye) — **GREEN** `20260717.160607` · TUBE1 wire `20260717.160828` (binary grant; appears down; glass door live) |
 | GrapheneOS Sensors permission toggle → Glow | [`../linengrow/glow_sensors_grant.rye`](../linengrow/glow_sensors_grant.rye) — **GREEN** `20260717.161013` · emit `20260717.161448` (appears zeroed; `OTHER_SENSORS` table row) |
-| Install APK + prove Seva root | Host terminal: `tools/tube05_install_proof_onpath_host.rish` — **HAWM0** · **Pixel** · glass through TUBE4 + **JABS1** carriage + Dexter D1 line (`20260717.173133`; D2 Pixel look open) |
+| Install APK + prove Seva root | Host terminal: `tools/t/tube05_install_proof_onpath_host.rish` — **HAWM0** · **Pixel** · glass through TUBE4 + **JABS1** carriage + Dexter D1 line (`20260717.173133`; D2 Pixel look open) |
 
 ---
 

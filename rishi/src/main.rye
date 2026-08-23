@@ -24,8 +24,8 @@
 //! with `rishi run`, a pre-bound `args` list (`.list` of `.string`) holds the words
 //! after the script path, readable with `.len` and `[n]` — no new value kind.
 //! It is the shell that runs
-//! the gate trio (`tools/parity.rish`, `tools/parity-selftest.rish`,
-//! `tools/additive-gate.rish`) and grows toward `examples/pond.rish`
+//! the gate trio (`tools/p/parity.rish`, `tools/p/parity-selftest.rish`,
+//! `tools/ad/additive-gate.rish`) and grows toward `examples/pond.rish`
 //! (see `active-designing/20260622-235012_what-we-mean-by-seed.md`).
 //!
 //! Rishi is implemented in Rye and built against Rye's own standard library, so
@@ -367,7 +367,7 @@ fn glow_run_line(garden: std.mem.Allocator, io: std.Io, init: std.process.Init, 
     try glow_write_repl_desk(garden, io, line);
     const zig = init.environ_map.get("RYE_ZIG") orelse "vendor/zig-toolchain/zig";
     const rye_zig_eq = try std.fmt.allocPrint(garden, "RYE_ZIG={s}", .{zig});
-    const real_argv = [_][]const u8{ "env", rye_zig_eq, "sh", "tools/glow_run_worker.sh", glow_repl_desk_path };
+    const real_argv = [_][]const u8{ "env", rye_zig_eq, "sh", "tools/g/glow_run_worker.sh", glow_repl_desk_path };
     return std.process.run(garden, io, .{ .argv = &real_argv });
 }
 

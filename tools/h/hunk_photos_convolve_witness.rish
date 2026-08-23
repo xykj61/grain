@@ -1,0 +1,54 @@
+# tools/h/hunk_photos_convolve_witness.rish — the Photos app convolves: blur and sharpen on metal (HUNK25).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Open Image · rung HUNK25.
+# Design read: active-designing/date/20260812/20260812-171050_the-1024-round-itinerary.md (Season A · the open image quest).
+# Teacher, thanked clean-room: the 3x3 convolution kernel every photo app carries for blur and sharpen (concept only, siloed).
+#
+# HUNK9/22/24 gave the module its resamplers; HUNK21/23 its color turns. This rung lands the FILTER primitive the
+# whole family stands on: `image/photos.rye` `convolve` is a pure bounded 3x3 kernel over the decoded RGBA grid —
+# each output color channel the kernel-weighted sum of the pixel's 3x3 neighborhood over a divisor plus a bias,
+# clamped into 0..255, edges extended by clamping so no read wraps. `blur` (nine ones over nine) and `sharpen`
+# (a five-neighborhood high-pass) are each one kernel over it. The selftest proves the identity kernel is the
+# source byte-identical, a solid color a fixed point of both filters, a 3x1 red row [0,90,0] box-blurring to the
+# exact clamped mean [30,30,30], alpha passing through untouched, the source pure, the blurred image still
+# re-encoding and round-tripping as an open image, and an empty image, a zero divisor, and an over-ceiling weight
+# each refusing by name. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_photos_convolve_witness.rish
+
+say "hunk-photos-convolve: Language EN — HUNK25 gives the Photos app the filter primitive: a pure bounded 3x3 convolution over the decoded grid that returns a fresh open image, the source untouched."
+say "hunk-photos-convolve: Style Radiant — blur and sharpen are each one kernel over the primitive, and a filtered image is still an open image: it re-encodes and round-trips byte-for-byte, never a proprietary one."
+say "hunk-photos-convolve: Lens TAME — every weight and the divisor are bounded under kernel_weight_max; each 3x3 term accumulates in i64 (255*2^16*9 far inside i64), edges clamp so no read wraps; positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/photos"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/photos.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-photos-convolve: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-photos-convolve: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+
+assert selftest.out contains "GREEN image-photos-convolve" else "hunk-photos-convolve: selftest did not print the GREEN convolve line"
+
+assert selftest.out contains "the identity kernel is the source byte-identical" else "hunk-photos-convolve: the identity kernel was not proven byte-identical"
+
+assert selftest.out contains "a solid color is a fixed point of both the box blur and the sharpen" else "hunk-photos-convolve: the solid-color fixed point was not proven for blur and sharpen"
+
+assert selftest.out contains "the exact clamped mean at every pixel" else "hunk-photos-convolve: the exact box-blur mean was not proven"
+
+assert selftest.out contains "alpha passes through" else "hunk-photos-convolve: alpha passing through untouched was not proven"
+
+assert selftest.out contains "blurred image re-encodes and round-trips" else "hunk-photos-convolve: a blurred image did not round-trip as an open image"
+
+assert selftest.out contains "an empty image, a zero divisor, and an over-ceiling weight refused by name" else "hunk-photos-convolve: the EmptyImage and BadKernel refusals were not proven"
+
+# The earlier Photos rungs share the binary — GREEN holds beneath.
+assert selftest.out contains "GREEN image-photos:" else "hunk-photos-convolve: HUNK3 crop selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-bilinear:" else "hunk-photos-convolve: HUNK24 bilinear selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-hue-turn:" else "hunk-photos-convolve: HUNK23 hue-turn selftest no longer GREEN beneath"
+
+say "hunk-photos-convolve: GREEN — HUNK25 convolution primitive proven on metal; blur and sharpen stand on it; crop, scale, area, bilinear, adjust, saturate, and hue-turn still GREEN beneath."

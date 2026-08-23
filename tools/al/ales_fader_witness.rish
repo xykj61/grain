@@ -1,0 +1,39 @@
+# tools/al/ales_fader_witness.rish — the per-track fader column: each track's level scales its contribution before the sum (ALES8).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES8.
+# Design read: active-designing/20260814-fill-ales8-lotus-fader-column.md
+# Stands on: lotus/track.rye (ALES6) — the Session table this rung renders, its bound and offset alignment reused whole;
+# lotus/timeline.rye (ALES2) — the one true saturation the master reuses and the num/den gain arithmetic the fader repeats;
+# lotus/clock.rye (ALES5) — each track's real offset converts through samples_for.
+#
+# lotus/fader.rye seats the mixing-desk channel strip's one essential control — a per-track fader applied to each track BEFORE
+# it joins the sum, the fader multiply inside the wide accumulator so the master saturates ONCE over the true faded sum. The
+# selftest proves: a unity column reproduces ALES6's master exactly (the mixer generalizes the table); a 1/2 fader halves a
+# track; a 0/1 fader mutes one; two loud boosted tracks saturate once over the true faded sum; a -1/1 fader nulls a track
+# against its copy to exact silence (the wide-domain phase-cancel); a zero denominator refuses BadGain; a track past the
+# master bound forwards ClipFull. Purely local — no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_fader_witness.rish
+
+say "ales-fader: Language EN — ALES8 opens the per-track fader column: each track carries a level, scaling its contribution before it joins the mix, so the master balances before it renders."
+say "ales-fader: Style Radiant — the fader column generalizes the track table (a unity column is exactly ALES6) and adds the one correctness a mixer owes: scale in the wide domain, clamp once over the true faded sum, never per-track."
+say "ales-fader: Lens TAME — a fader is a validated num/den (BadGain at a zero denominator), the multiply runs in i64 inside the accumulator clamped once by the one true saturate; refuses BadGain, forwards ClipFull / DurationTooLong by name; siloed to lotus/, no network, no keys, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/fader"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/fader.rye -femit-bin=${bin}"]
+assert build.ok else "ales-fader: build failed — ${build.err}"
+
+let outfile = "lotus/bin/fader.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-fader: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-fader: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-fader' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-fader: selftest did not print the GREEN ales-fader line"
+
+say "ales-fader: GREEN — the per-track fader column balances the mix before it renders, the fader scaling in the wide domain and the master saturating once over the true faded sum; a -1/1 fader nulls a track to exact silence. The next Lotus rung can name pan, mute/solo as session state, a transport loop, or the equal-power crossfade curve."

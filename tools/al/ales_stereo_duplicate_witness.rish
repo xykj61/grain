@@ -1,0 +1,38 @@
+# tools/al/ales_stereo_duplicate_witness.rish — stereo_duplicate: the growth gesture carried into stereo, both channels in lockstep, validate-both-before-either (ALES120).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES120.
+# Design read: active-designing/date/20260815/20260815-020930_fill-ales120-lotus-stereo-duplicate.md
+# Stands on: lotus/duplicate.rye (ALES112 — the mono growth gesture run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant),
+# lotus/stereo_cut.rye (ALES117 — the stereo span-remove used to prove the inverse law), lotus/timeline.rye (ALES2 — the Clip, its max_clip bound, and the EditError reused whole),
+# lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length so the channels stay aligned in time;
+# repeating a bar carries it in both speakers at once. This rung carries ALES112's duplicate into stereo the way ALES117 carried cut, ALES118 crop, and ALES119 move: run the proven mono
+# duplicate on each channel with the same start and count. Where stereo_cut removes a span and stereo_crop keeps only a span, stereo_duplicate repeats one span — the growth side of the family.
+#
+# lotus/stereo_duplicate.rye inserts a second copy of [start, start+count) immediately after the span in both channels, validating BOTH channels before either is mutated (because mono
+# duplicate can fault only with BadRange or ClipFull and the channels enter equal-length over the same fixed buffer, the three checks are made once against the shared length up front) so
+# a refusal never desynchronises the channels. The crux is four laws. THE STEREO DUPLICATE LAW: each channel equals ALES112's mono duplicate on that channel byte for byte, both grown by
+# count. THE BALANCE / INVARIANT LAW: left.len == right.len after, both grown by count. THE INVERSE LAW: duplicate then ALES117's stereo_cut(end, count) returns both channels. THE
+# ATOMICITY / DEGENERATE LAW: a refusal leaves both channels untouched and balanced, count 0 the identity, a grow past the buffer ClipFull.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stereo_duplicate_witness.rish
+
+say "ales-stereo-duplicate: Language EN — stereo_duplicate inserts a second copy of the count samples starting at start immediately after the span in both channels of a StereoClip, so the growth gesture ALES112 named for a mono clip now lands on a real stereo master. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time; repeating a bar carries it in both speakers at once. Where stereo_cut (ALES117) removes a span and stereo_crop (ALES118) keeps only a span, stereo_duplicate repeats one span — the growth side of the stereo edit family. It carries ALES112's proven mono duplicate into stereo — the same start and count on each channel — so the repeat lands identically in both and the stereo image stays balanced, each channel growing by exactly count."
+say "ales-stereo-duplicate: Style Radiant — the rule is stated positively: run the mono duplicate per channel over its public API, validating both channels before either is mutated (because mono duplicate can fault only with BadRange or ClipFull and the channels enter equal-length over the same fixed buffer, the three checks are made once against the shared length up front), so a refusal never leaves one channel grown and the other not. The crux stands out as four laws: the stereo duplicate law (each channel equals ALES112's mono duplicate on that channel byte for byte, both grown by count), the balance / invariant law (left.len == right.len after the edit, both grown by count, the stereo image staying aligned), the inverse law (duplicate(start, count) then ALES117's stereo_cut(end, count) returns both channels to the original), and the atomicity / degenerate law (any refusal leaves both channels byte for byte untouched and still balanced, count 0 the identity on both, a grow past the buffer ClipFull)."
+say "ales-stereo-duplicate: Lens TAME — two bounded i16 Clips (left, right) whose named span is repeated in lockstep; the three checks are made without underflow against the common channel length once up front (start against len, count against the remainder, count against the free seats that remain to max_clip), so every refusal comes by name before any write and the channels can never desynchronise; duplicate opens a count-sample gap through ALES109's insert_silence and fills it with a forward copy of an existing span, no temporary buffer; it reuses ALES2's EditError whole and ALES112's duplicate per channel over its public API, inventing no new primitive; the stereo duplicate law is proven against ALES112's own duplicate run per channel, and the inverse law closes the round trip through ALES117's stereo_cut; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_duplicate"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_duplicate.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-duplicate: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_duplicate.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-duplicate: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-duplicate: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-duplicate' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-duplicate: selftest did not print the GREEN ales-stereo-duplicate line"

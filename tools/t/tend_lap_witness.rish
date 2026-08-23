@@ -1,0 +1,36 @@
+# tools/t/tend_lap_witness.rish — Q54's instrument, proven on a fixture.
+# The quest itself seats only when Keaton's class-and-rooms word runs the
+# real lap; this witness banks the proof-machine: delta named · zero
+# deletions · header-accreted bodies sealed (old bytes remain a suffix).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/tend_lap_witness.rish
+
+let build = run ["sh" "-c" "rm -rf /tmp/tlw; mkdir -p /tmp/tlw/room; printf 'stamp 1\ntitle alpha\n' > /tmp/tlw/room/a.bron; printf 'stamp 2\ntitle beta\n' > /tmp/tlw/room/b.md; printf 'old recursion body\n' > /tmp/tlw/room/c.md; printf '# Index\n' > /tmp/tlw/INDEX.md"]
+assert build.ok else "tend_lap: fixture builds"
+
+let before = run ["sh" "tools/t/tend_lap_check.sh" "/tmp/tlw"]
+assert before.ok else "tend_lap: before census answers"
+assert before.out contains "orphans=4" else "tend_lap: before counts four orphans"
+
+let snap = run ["sh" "-c" "find /tmp/tlw -type f | sort > /tmp/tlw_list_before.txt; cp /tmp/tlw/room/c.md /tmp/tlw_c_before.txt"]
+assert snap.ok else "tend_lap: snapshot taken"
+
+let weave = run ["sh" "-c" "printf -- '- a.bron alpha\n- b.md beta\n' >> /tmp/tlw/INDEX.md; printf 'current-as-of: 00000000.000000 superseded-by later.md\n' > /tmp/tlw/c.new; cat /tmp/tlw/room/c.md >> /tmp/tlw/c.new; mv /tmp/tlw/c.new /tmp/tlw/room/c.md"]
+assert weave.ok else "tend_lap: weave runs"
+
+let after = run ["sh" "tools/t/tend_lap_check.sh" "/tmp/tlw"]
+assert after.ok else "tend_lap: after census answers"
+assert after.out contains "orphans=2" else "tend_lap: delta of two — a and b reached"
+
+let nothing = run ["sh" "-c" "find /tmp/tlw -type f | sort > /tmp/tlw_list_after.txt; diff /tmp/tlw_list_before.txt /tmp/tlw_list_after.txt"]
+assert nothing.ok else "tend_lap: zero deletions"
+
+let sealed = run ["sh" "-c" "n=$(wc -c < /tmp/tlw_c_before.txt); m=$(wc -c < /tmp/tlw/room/c.md); s=$((m - n)); tail -c $n /tmp/tlw/room/c.md > /tmp/tlw_c_tail.txt; cmp -s /tmp/tlw_c_tail.txt /tmp/tlw_c_before.txt"]
+assert sealed.ok else "tend_lap: accreted body keeps old bytes as suffix"
+
+let plant = run ["sh" "-c" "rm /tmp/tlw/room/b.md; find /tmp/tlw -type f | sort > /tmp/tlw_list_bad.txt; diff /tmp/tlw_list_before.txt /tmp/tlw_list_bad.txt"]
+assert (plant.ok == false) else "tend_lap: a deleting lap must be caught"
+
+say "delta=2 deletions=0 body=sealed plant_delete=caught"
+say "GREEN: tend_lap — the proof-machine stands banked; the lap seats on the word."

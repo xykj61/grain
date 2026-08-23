@@ -2463,7 +2463,7 @@ fn run_corpus_tools_prefix_view_witness(garden: std.mem.Allocator, io: std.Io) !
         "ember corpus tools prefix view",
         "filter path_prefix tools/",
         "hits 1",
-        "hit tools/parity.rish",
+        "hit tools/p/parity.rish",
         "tools prefix fold green",
     };
     assert(lines_equal(&golden, frame));
@@ -2723,7 +2723,7 @@ fn run_corpus_rish_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
         "ember corpus rish view",
         "filter kind rish",
         "hits 1",
-        "hit tools/parity.rish",
+        "hit tools/p/parity.rish",
         "rish fold green",
     };
     assert(lines_equal(&golden, frame));
@@ -3155,7 +3155,7 @@ fn run_corpus_rish_tools_prefix_view_witness(garden: std.mem.Allocator, io: std.
         "ember corpus rish tools prefix view",
         "filter kind rish path_prefix tools/",
         "hits 1",
-        "hit tools/parity.rish",
+        "hit tools/p/parity.rish",
         "rish tools prefix fold green",
     };
     assert(lines_equal(&golden, frame));
@@ -3427,7 +3427,7 @@ fn run_corpus_path_suffix_view_witness(garden: std.mem.Allocator, io: std.Io) !u
         "ember corpus path suffix view",
         "filter path_suffix .rish",
         "hits 1",
-        "hit tools/parity.rish",
+        "hit tools/p/parity.rish",
         "path suffix fold green",
     };
     assert(lines_equal(&golden, frame));

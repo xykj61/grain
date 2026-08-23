@@ -377,7 +377,7 @@ fn run_selftest() !u8 {
 
     // 3. Independent-implementation parity: our authored Rye equals Zig's std.crypto BLAKE2b byte-for-byte over the empty message,
     //    "abc", an exact-128-byte boundary block, and a multi-block input. The vendored Monocypher is now a SECOND independent target:
-    //    tools/crypto_monocypher_parity_witness.rish compiles vendor/monocypher and proves our Rye equals its C byte-for-byte over these
+    //    tools/cr/crypto_monocypher_parity_witness.rish compiles vendor/monocypher and proves our Rye equals its C byte-for-byte over these
     //    same four messages — the audit's parity target, closed on metal.
     {
         const empty = try hash512("");
@@ -403,7 +403,7 @@ fn run_selftest() !u8 {
 
     // 3b. Keyed parity: our authored hash_keyed equals Zig's independent std.crypto keyed BLAKE2b-512 byte-for-byte across a spread of
     //     (key, message) pairs — a full 64-byte key, a short key, the empty message, and a multi-block message. The standalone Monocypher
-    //     rung (tools/crypto_monocypher_blake2b_keyed_parity_witness.rish) proves the same against the vendored C at every output length.
+    //     rung (tools/cr/crypto_monocypher_blake2b_keyed_parity_witness.rish) proves the same against the vendored C at every output length.
     {
         // A full 64-byte key (byte i = i) over "abc".
         var full_key: [64]u8 = undefined;
@@ -447,7 +447,7 @@ fn run_selftest() !u8 {
         "against two references runnable now: the RFC 7693 Appendix A known-answer for \"abc\" AND the empty message match hex for hex, " ++
         "and our authored Rye equals Zig's independent std.crypto BLAKE2b byte-for-byte over the empty message, \"abc\", an exact-128-byte " ++
         "boundary block, and a 200-byte multi-block input. The vendored Monocypher is now a SECOND independent target: " ++
-        "tools/crypto_monocypher_parity_witness.rish compiles vendor/monocypher and proves our Rye equals its C byte-for-byte over the same " ++
+        "tools/cr/crypto_monocypher_parity_witness.rish compiles vendor/monocypher and proves our Rye equals its C byte-for-byte over the same " ++
         "four messages — the audit's parity target, closed on metal. Keyed BLAKE2b (hash_keyed, the MAC mode) matches Zig's independent " ++
         "std.crypto keyed BLAKE2b-512 byte-for-byte across a full 64-byte key, a short key over the empty message, and a 32-byte key over " ++
         "a 200-byte multi-block input, and reproduces the unkeyed digest when the key is empty. An over-long message refuses " ++

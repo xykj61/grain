@@ -1,0 +1,52 @@
+# tools/r/repeat_conic_paint_witness.rish -- a REPEATING CONIC positioned gradient SEEN on a real image (Season G).
+#
+# Season G (Open Media Primitives) -- the conic twin of tools/r/repeat_paint_witness.rish (the LINEAR repeating gradient) and
+# the repeating sibling of tools/co/conic_paint_witness.rish (the single conic sweep), closing the six-member CSS gradient
+# family. This rung proves the REPEATING CONIC gradient: the ramp runs clockwise from the top and TILES `reps` times around
+# the turn, so the picture reads as `reps` identical pie wedges with a hard seam at each tile boundary (the CSS
+# repeating-conic-gradient shape). Stands on the positioned ramp (image/color_ramp_stops.rye), the open color algebra
+# (image/color.rye), and the open QOI codec (image/qoi.rye).
+# Design read: active-designing/date/20260816/20260816-210735_season-g-color-algebra-crux.md (the color floor this stands on).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color / Images specs -- public standards only).
+#
+# The crux this witness proves is that a repeating conic positioned gradient becomes a real image: paint_gradient_repeat_conic
+# fills a box where each pixel is the color the positioned ramp samples at its bearing WITHIN its angular tile, wound `reps`
+# times around. A black-to-white ramp over reps 2 makes each pixel's red channel equal its tiled bearing, so the top reads 0,
+# east 127, south 0, west 127 (the ramp cycles twice around the turn), top and south sharing the first control where the
+# single conic never could; each tile ascends clockwise then seams hard; each ray from the center is one constant wedge
+# color; a red-green-blue sweep round-trips through the open QOI codec byte-for-byte; more tiles pack more wedges; a
+# sub-rectangle paints only its own box; a single-pixel box, a zero dimension, a reps under two, a reps past the dimension
+# ceiling, an out-of-bounds box, and a non-ascending ramp refuse by name having painted nothing. Compose not braid --
+# color_ramp_stops decides the color, qoi owns the target, color composites; this rung only routes each pixel to its position
+# within its tile. The routing is integer fixed-point (no trigonometry) so a sweep is deterministic. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/repeat_conic_paint_witness.rish
+
+say "repeat-conic-paint: Language EN -- Season G's repeating conic positioned gradient painted onto an image; a keeper names a stop list and a winding count and reads back tiled pie wedges a surface can show, on our own color model and open codec."
+say "repeat-conic-paint: Style Radiant -- compose not braid; color_ramp_stops DECIDES each pixel's color, qoi owns the RGBA target, color composites src-over, and this rung only ROUTES each pixel to its position within its angular tile so translucent wedges tint the picture beneath."
+say "repeat-conic-paint: Lens TAME -- the whole box bound-checked ONCE up front in u64 so a far edge can never wrap; the winding count checked against a named dimension ceiling; the ramp validated ONCE before any pixel so a malformed sweep refuses having painted nothing; the bearing held at full precision as a turn fraction then wound and reduced with only add, multiply, and one divide (no float) so a sweep is deterministic; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/repeat_conic_paint"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/repeat_conic_paint.rye -femit-bin=${bin}"]
+assert build.ok else "repeat-conic-paint: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "repeat-conic-paint: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "repeat-conic-paint: ${out}"
+
+assert selftest.out contains "GREEN image-repeat-conic-paint" else "repeat-conic-paint: selftest did not print the GREEN repeat-conic-paint line"
+
+assert selftest.out contains "round-trips through the open QOI codec byte-for-byte" else "repeat-conic-paint: the painted sweep did not prove its QOI round trip"
+
+assert selftest.out contains "the ramp cycles twice around the turn" else "repeat-conic-paint: the sweep did not prove the ramp tiles around the turn"
+
+assert selftest.out contains "seams hard" else "repeat-conic-paint: the sweep did not prove its hard tile seam"
+
+assert selftest.out contains "one constant wedge color" else "repeat-conic-paint: the sweep did not prove its constant wedges"
+
+say "repeat-conic-paint: GREEN -- a repeating conic positioned gradient painted onto a real image, its tiling exact, its seam hard, its wedges constant, its round trip byte-for-byte, proven on metal."

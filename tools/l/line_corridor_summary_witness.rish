@@ -1,0 +1,53 @@
+# tools/l/line_corridor_summary_witness.rish -- read a DIRECTED line named by TWO anchor taps (from A toward B) as a DISTRIBUTION over
+# half-widths, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- this rung is the line_band twin of cluster_graph_profile. line_distance ranks every object by the
+# MAGNITUDE of its distance off a directed line; line_band reads a THRESHOLD on that magnitude as a corridor and band_count reads how many a
+# half-width holds; line_summary folds each object's area and holes by SIDE. This rung folds the SAME per-object facts by DISTANCE BAND -- one
+# bin per distinct distance key, carrying that key's object count, whole area, and holed-object count. line_summary reads the scene by a
+# line's HANDEDNESS; this rung reads it by its RADIUS. A reading over readings, no plane of its own.
+#
+# The crux this witness proves on metal: cumulating the histogram reproduces line_band.band_count by two INDEPENDENT paths. Over
+# line_distance's own six-object scene (keys A=0, B=0, P=168, Q=168, D=224, U=280) the histogram holds a MULTIPLICITY bin of count 2 at key
+# 168 (P above the line, Q below, at equal remove) a sorted distance list could never show, and cumulative(...).count equals band_count at
+# every half-width, the band-count curve a STEP function whose jumps are the bin multiplicities. Over a second scene with a holed ring and a
+# wide block at distinct distances, the per-band area and holed folds are non-uniform and match a manifest scan over line_band's own members.
+# The fold loses nothing; refusals by name; determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/l/line_corridor_summary_witness.rish
+
+say "line_corridor_summary: Language EN -- Season G line-to-distribution; the distance HISTOGRAM off a directed line (one bin per distinct key, folding object count, whole area, and holed-object count) and the cumulative BAND PROFILE it generates; NO float, NO tolerance."
+say "line_corridor_summary: Style Radiant -- compose not braid: this rung owns only the distribution reads; line_distance owns the distance key each object is binned by, line_band owns the corridor bound the cumulative threshold reads and the band_count the crux cross-checks, scene_manifest owns the per-object area and holes the bins fold. No plane of its own, no pixel written -- a reading over readings."
+say "line_corridor_summary: Lens TAME -- the fold walks components objects under label_max_pixels so the histogram holds at most one bin per object; each bin's area sums whole object areas each under the pixel ceiling so a u32 total never overflows; the distance key and its square stay in i64, the width line_band ranks in; two anchors sharing a group refuse SameGroup, a background tap refuses EmptyClick, a point off the map refuses PointOutOfBounds, each having read nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/line_corridor_summary"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/line_corridor_summary.rye -femit-bin=${bin}"]
+assert build.ok else "line_corridor_summary: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "line_corridor_summary: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "line_corridor_summary: ${out}"
+
+assert selftest.out contains "GREEN image-line-corridor-summary" else "line_corridor_summary: selftest did not print the GREEN line"
+assert selftest.out contains "read a DIRECTED line named by TWO anchor taps (from A toward B) as a DISTRIBUTION over half-widths" else "line_corridor_summary: the distribution claim did not print"
+assert selftest.out contains "the line_band twin of cluster_graph_profile" else "line_corridor_summary: the twin claim did not print"
+assert selftest.out contains "folding image/line_summary's per-object area and holes by RADIUS where line_summary folds them by HANDEDNESS" else "line_corridor_summary: the radius-vs-handedness contrast did not print"
+assert selftest.out contains "cumulating the histogram reproduces line_band.band_count by two INDEPENDENT paths" else "line_corridor_summary: the two-path crux did not print"
+assert selftest.out contains "a MULTIPLICITY bin of count 2 at key 168 (P above the line, Q below, at equal remove), which a sorted distance list could never show" else "line_corridor_summary: the multiplicity crux did not print"
+assert selftest.out contains "a count-2 JUMP to four at width 3 (both P and Q cross at once)" else "line_corridor_summary: the count-2 jump did not print"
+assert selftest.out contains "The band-count curve is a STEP function whose jumps are the bin multiplicities: band_count(3) - band_count(2) = 2" else "line_corridor_summary: the derivative claim did not print"
+assert selftest.out contains "THE NON-UNIFORM AREA AND HOLED FOLD" else "line_corridor_summary: the area-and-holed fold crux did not print"
+assert selftest.out contains "the cumulative area and holed count equal a manifest scan over line_band's own corridor members, a second independent path" else "line_corridor_summary: the second-path area claim did not print"
+assert selftest.out contains "22 with the ring's hole entering at width 4" else "line_corridor_summary: the ring-enters-at-four claim did not print"
+assert selftest.out contains "bin counts sum to the object count, bin areas to the whole foreground, holed counts to the whole holed-object tally" else "line_corridor_summary: the fold-loses-nothing claim did not print"
+assert selftest.out contains "refuse SameGroup" else "line_corridor_summary: the SameGroup refusal did not print"
+assert selftest.out contains "a background tap refuses EmptyClick" else "line_corridor_summary: the EmptyClick refusal did not print"
+assert selftest.out contains "a point off the map refuses PointOutOfBounds" else "line_corridor_summary: the PointOutOfBounds refusal did not print"
+assert selftest.out contains "the same line reads the same histogram twice" else "line_corridor_summary: determinism did not print"
+
+say "line_corridor_summary: GREEN on metal -- a directed line read as a distribution over half-widths, line_summary's per-object facts folded by RADIUS where line_summary folds them by handedness; cumulating the histogram reproduces line_band.band_count by two independent paths, the curve a step function whose jumps are the bin multiplicities; the area and holed folds non-uniform and matched by a second manifest scan; the fold loses nothing; refusals by name, determinism. Season G open-media."

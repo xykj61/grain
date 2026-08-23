@@ -1,0 +1,44 @@
+# tools/t/text_panel_witness.rish -- the framed text panel proves itself on metal (Season G, open media primitives).
+#
+# Season G (Open Media Primitives) - the first rung that JOINS the two halves built beneath it: image/shape.rye owns
+# the plain area (fill_rect, stroke_rect -- a filled box and a frame), image/text_paint.rye owns the glyph (a whole
+# wrapped, aligned paragraph placed within a box). A framed text panel is the shape a surface actually draws when it
+# wants a bordered card of readable text -- a dialog, a label chip, a callout, a captioned table cell. image/text_panel.rye
+# composes the two, braiding neither: shape paints the fill and the border ring, text_paint places the paragraph inside
+# the inner content box, and text_layout measures the wrapped block up front so the panel is all-or-nothing.
+#
+# The crux this witness proves is CONTAINMENT: the text lives strictly inside the frame and never touches the border.
+# The inner content box is the panel inset on every side by the border thickness PLUS a padding gap, so the border ring
+# and the inked cells are DISJOINT by construction -- every ring pixel reads the border color exactly (no ink bled onto
+# the frame), and every ink pixel lies strictly inside the inner box (the text is sealed within the card). A borderless
+# panel (thickness 0) paints fill and text with no ring; determinism holds; and a panel that cannot hold its text refuses
+# BY NAME having painted nothing (BadPanelDims - PanelOutOfBounds - PanelTooSmall - PanelContentTooTall). Pure composition
+# over three proven verbs; invents no storage, codec, palette, glyph, or font. No network, no key, no funds -- the card a
+# surface frames the day it wants bordered text, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/text_panel_witness.rish
+
+say "text_panel: Language EN -- Season G's first join rung; a framed text panel composes the geometry floor (fill_rect, stroke_rect) with the text family (paint_paragraph_in_box) into one bordered card of readable text."
+say "text_panel: Style Radiant -- pure composition over three proven verbs, braiding none; the inner content box is the panel inset by border thickness plus padding, so the frame and the text are disjoint by construction and the text is sealed inside the border."
+say "text_panel: Lens TAME -- u32 in-memory counts, u64 only for the wrap-safe box sums; the whole panel is bound-checked once up front and the wrapped block is proven to fit BEFORE any pixel is committed, so a panel that cannot hold its text refuses by name (BadPanelDims - PanelOutOfBounds - PanelTooSmall - PanelContentTooTall) having painted nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/text_panel"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/text_panel.rye -femit-bin=${bin}"]
+assert build.ok else "text_panel: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "text_panel: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "text_panel: ${out}"
+
+assert selftest.out contains "GREEN image-text-panel" else "text_panel: selftest did not print the GREEN panel line"
+
+assert selftest.out contains "SEALED inside the frame" else "text_panel: the containment crux (text sealed inside the frame) did not prove"
+
+assert selftest.out contains "auto-ink picks a legible caption" else "text_panel: the readable-ink caption consumer did not prove"
+
+say "text_panel: GREEN -- the framed text panel whole; fill, frame, and text compose into one card with the text sealed inside the border, a borderless panel skips the ring, and every malformed panel refuses by name having painted nothing."

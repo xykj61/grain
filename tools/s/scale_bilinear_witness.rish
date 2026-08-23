@@ -1,0 +1,40 @@
+# tools/s/scale_bilinear_witness.rish -- the bilinear resample proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the SMOOTH-scaling sibling of the nearest-neighbor resize (tools/s/scale_witness.rish).
+# Where nearest copies the one nearest source pixel whole (clean blocks, no between-color), bilinear reads the FOUR source
+# pixels around each destination sample and blends them by how near the sample falls to each, so an upscale grows a
+# gradient between the source colors rather than doubling hard blocks -- the smooth resize a photo wants where a sprite
+# wanted the hard one.
+#
+# The crux this witness proves is that bilinear is separable composition, not new color math: ONE per-axis map yields a
+# lower source index, an upper neighbor, and a blend weight, and ONE existing blend -- image/color.rye's mix -- carries
+# every color, so decode(encode(scaled)) recovers every byte. On metal: an identity resize reproduces the source
+# byte-for-byte; a black-to-white row eased to four pixels grows a strictly ascending gradient carrying true between-colors
+# the source never held (the verb nearest refuses); a solid image eases to the same solid color with no ringing; a
+# two-alpha row blends its alpha through the middle (the honest difference from nearest's whole-byte carry); the resized
+# image round-trips through the open QOI codec byte-for-byte; a zero dimension, an empty source, and an over-max target
+# refuse by name having allocated nothing; and the same resize is deterministic. No network, no key, no funds -- the
+# smooth resize a surface runs the day it wants a photo eased to another size, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/scale_bilinear_witness.rish
+
+say "scale-bilinear: Language EN -- Season G geometry; an RGBA image resampled to a new size by bilinear interpolation, the smooth-scaling sibling of the nearest-neighbor resize, the verb a photo reaches for where a sprite wanted the hard blocks."
+say "scale-bilinear: Style Radiant -- separable composition, not braided: one per-axis map (a lower source index, an upper neighbor, a blend weight) seen twice, and one existing blend (color.mix) carrying every color, so no new color math enters and decode(encode(scaled)) recovers every byte."
+say "scale-bilinear: Lens TAME -- u32 in-memory counts, u64 for the position numerator so it cannot wrap, u8 subpixel weight in color.mix's own 0..255 range; every buffer names a maximum (qoi_max_dim - qoi_max_pixels); each function states its invariants positively; the whole target bound-checked once up front so a refusal allocates nothing; integer only so a resize is deterministic; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/scale_bilinear"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/scale_bilinear.rye -femit-bin=${bin}"]
+assert build.ok else "scale-bilinear: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "scale-bilinear: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "scale-bilinear: ${out}"
+
+assert selftest.out contains "GREEN image-scale-bilinear" else "scale-bilinear: selftest did not print the GREEN line"
+
+say "scale-bilinear: GREEN -- the smooth resize eases a picture to a new size, proven on metal beside the nearest one."

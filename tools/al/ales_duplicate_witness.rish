@@ -1,0 +1,38 @@
+# tools/al/ales_duplicate_witness.rish — duplicate: repeat a span in place, growing the clip, the growth-twin of ALES111's crop (ALES112).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES112.
+# Design read: active-designing/date/20260815/20260815-011901_fill-ales112-lotus-duplicate.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the inverse law),
+# lotus/insert_silence.rye (ALES109 — opens the count-sample gap at the span's end without a caller slice), lotus/meter.rye (ALES13 — the peak/RMS meter, used only to prove that
+# copying existing samples never moves the peak). ALES111's crop KEEPS a span and drops the rest (the clip SHRINKS to the selection); duplicate REPEATS one span in place (the
+# clip grows by the span) — the Duplicate button every editor ships (circle a bar and a second copy lands immediately after the first: the doubled loop, the repeated chorus).
+# Naming it beside crop completes the shrink/grow pair on a selection: keep only it, or repeat it.
+#
+# lotus/duplicate.rye opens count silent seats at the span's end through insert_silence, then copies the original span forward into the disjoint gap — no temporary buffer,
+# refusing BadRange when the span falls outside the samples and ClipFull past the fixed buffer before any write. The crux is four laws. THE DUPLICATE LAW: the clip becomes
+# original[0..end] ++ original[start..end] ++ original[end..len), the length grown by count. THE INVERSE LAW: duplicate then ALES2's cut(end, count) returns the original byte
+# for byte. THE COPY / PEAK LAW: duplicate copies existing samples and invents none, so the peak (re-measured through ALES13) is unchanged. THE DEGENERATE / REFUSAL LAW: count 0
+# the identity, a span past the samples BadRange, a grow past the buffer ClipFull.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_duplicate_witness.rish
+
+say "ales-duplicate: Language EN — duplicate inserts a second copy of the count samples starting at start immediately after the span, so the span appears twice back to back and the clip grows by count. It is the growth-twin of ALES111's crop: crop keeps a span and drops the rest (the clip shrinks to the selection), duplicate repeats one span in place (the clip grows by the span). This is the Duplicate button every editor ships — circle a bar and a second copy lands immediately after the first: the doubled loop, the repeated chorus, the stutter edit. It copies existing samples, inventing none."
+say "ales-duplicate: Style Radiant — the rule is stated positively: open count silent seats at the span's end through ALES109's insert_silence, then copy the original span forward into the disjoint gap, no temporary buffer, refusing BadRange when the span falls outside the samples and ClipFull past the fixed buffer before any write. It names the shrink-vs-grow pair beside crop. The crux stands out as four laws: the duplicate law (the clip becomes original[0..end] ++ original[start..end] ++ original[end..len), the length grown by count), the inverse law (duplicate then cut(end, count) returns the original byte for byte), the copy / peak law (duplicate copies existing samples, so the peak is unchanged), and the degenerate / refusal law (count 0 the identity, a span past the samples BadRange, a grow past the buffer ClipFull)."
+say "ales-duplicate: Lens TAME — one mono clip of i16 PCM grown in place by repeating a bounded span, no allocation and no second buffer; the gap is opened through the proven insert_silence (bounded, ClipFull-guarded) and filled by a forward copy whose destination index end + i is always ahead of its source start + i, so no live sample is overwritten before it is read; the span is refused by name before any write (BadRange when start or count falls outside the samples, checked without underflow — count against the remainder), reusing ALES2's EditError whole and inventing none of its own; the inverse is proven against ALES2's own cut and the unchanged peak against ALES13's read-only meter; it invents no sample, changes no value, and reads no byte past len; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/duplicate"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/duplicate.rye -femit-bin=${bin}"]
+assert build.ok else "ales-duplicate: build failed — ${build.err}"
+
+let outfile = "lotus/bin/duplicate.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-duplicate: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-duplicate: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-duplicate' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-duplicate: selftest did not print the GREEN ales-duplicate line"

@@ -1,0 +1,43 @@
+# tools/n/nesting_depth_witness.rish -- the nesting depth of every object in a scene's box-containment forest, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/scene_graph.rye joins object_relation over every pair into one matrix and reads box_parent,
+# the IMMEDIATE parent, one step up the box-nesting forest. This rung reads the TRANSITIVE fact that one step hides: nesting_depth walks
+# box_parent to a root and counts it, forest_height names the deepest chain, is_leaf names a forest tip. Exact integers, NO float, NO
+# tolerance.
+#
+# The crux this witness proves on metal, two shapes past box_parent alone: THE DEPTH IS THE BOX-ANCESTOR CHAIN -- a dot two frames deep
+# reads depth 2 though box_parent named only the tightest frame; THE FOREST BRANCHES -- two objects share depth 1 under one root while
+# object_relation proves them disjoint and box-unnested, so same depth is neither nearness nor nesting. Each step is 2 pixels apart, a
+# depth of frames never of substance. Refusals by name, determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/n/nesting_depth_witness.rish
+
+say "nesting_depth: Language EN -- Season G box-nesting-forest depth read; nesting_depth walks scene_graph's box_parent to a root and counts the frames, forest_height names the deepest chain, is_leaf names a tip; NO float, NO tolerance."
+say "nesting_depth: Style Radiant -- compose not braid: this rung owns only the depth walk, the forest height, and the leaf read; scene_graph owns box_parent and the pairwise matrix, scene_manifest owns the per-object boxes, object_relation owns each pair's exact distance. A reading over a reading over a reading over a reading."
+say "nesting_depth: Lens TAME -- a box-parent chain visits each object at most once, so the walk is capped at the object count; a longer walk means a box-parent cycle and refuses NestingCycle; a background or past-the-count label refuses BadObjectLabel; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/nesting_depth"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/nesting_depth.rye -femit-bin=${bin}"]
+assert build.ok else "nesting_depth: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "nesting_depth: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "nesting_depth: ${out}"
+
+assert selftest.out contains "GREEN image-nesting-depth" else "nesting_depth: selftest did not print the GREEN line"
+assert selftest.out contains "THE DEPTH IS THE BOX-ANCESTOR CHAIN, WHICH THE IMMEDIATE PARENT HIDES" else "nesting_depth: the box-ancestor-chain case did not print"
+assert selftest.out contains "the TWO frames stacked above it" else "nesting_depth: the two-frames fact did not print"
+assert selftest.out contains "THE FOREST BRANCHES, SO SAME DEPTH IS NEITHER NEARNESS NOR NESTING" else "nesting_depth: the branching case did not print"
+assert selftest.out contains "depth counts frames above you, never who stands beside you" else "nesting_depth: the same-depth statement did not print"
+assert selftest.out contains "THE DEPTH IS A DEPTH OF FRAMES, NEVER OF SUBSTANCE" else "nesting_depth: the frames-not-substance case did not print"
+assert selftest.out contains "each child sits 2 pixels APART from its box parent" else "nesting_depth: the frame-apart fact did not print"
+assert selftest.out contains "refuses BadObjectLabel" else "nesting_depth: the bad-label refusal did not print"
+assert selftest.out contains "refuses NestingCycle" else "nesting_depth: the cycle refusal did not print"
+assert selftest.out contains "the same scene reads the same depth twice" else "nesting_depth: the determinism statement did not print"
+
+say "nesting_depth: GREEN on metal -- the nesting depth of every object in the box-containment forest; the depth a box-ancestor chain the immediate parent hides; same depth neither nearness nor nesting; refusals by name, determinism. Season G open-media."

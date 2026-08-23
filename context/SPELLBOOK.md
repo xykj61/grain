@@ -26,7 +26,7 @@ A spell is a single word that names a whole, repeatable gesture. Where ordinary 
 | **checkpoint** | mark the way back before a debride rewrites a living card | `.claude/rules/checkpoint.md` |
 | **baton** | write a handoff to disk so the vision survives a context reset | handoff batons in `expanding-prompts/` |
 | **recur** | pass the baton onward — cite the parent whole, fold in only the delta | this page · the baton chain |
-| **prin** | print the live loop view — scope, nib, sundial, matrix frame | `context/LEXICON.md` · `tools/prin.rish` |
+| **prin** | print the live loop view — scope, nib, sundial, matrix frame | `context/LEXICON.md` · `tools/p/prin.rish` |
 | **tend** | a light keeping round — freshen, ratchet-on-touch, add no new weight | tend rounds |
 | **survey** | the looking pass that names sites and gaps before the first GREEN | `.claude/rules/vocabulary-survey.md` |
 | **expand** | grow an intent into a runnable plan in `expanding-prompts/` | `expanding-prompts/` |

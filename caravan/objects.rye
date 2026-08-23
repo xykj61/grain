@@ -51,7 +51,7 @@
 //! lands.
 //!
 //! TWO ROOMS. The nine names, their order, and the tier anchoring are
-//! checkable, and `tools/caravan_objects_witness.rish` binds them against
+//! checkable, and `tools/ca/caravan_objects_witness.rish` binds them against
 //! seL4's own BSD-2-Clause headers on metal. Which Caravan concept *should*
 //! stand on each object remains a design judgement, named as one below, earning
 //! its proof the day an object is actually retyped.

@@ -29,7 +29,7 @@ Counsel memos and replies, design briefs, session logs, claim briefs, expanding 
 
 Two named forms remain first-class:
 
-1. **Recorded Radiant pass** — add a header line `Radiant pass <stamp>` (dot form `YYYYMMDD.HHMMSS`). Style only; no claim change. Honesty gate: `tools/claim_preserve_witness.rish`.
+1. **Recorded Radiant pass** — add a header line `Radiant pass <stamp>` (dot form `YYYYMMDD.HHMMSS`). Style only; no claim change. Honesty gate: `tools/cl/claim_preserve_witness.rish`.
 2. **Erratum line** — factual error stays visible; the correction is named beside it, rather than silently overwritten.
 
 Freeze-pointer stubs (`Living twin:` + `immutable after merge`) remain blessed. Aging counts inside a dated seat are written **of-the-hour** (e235), or they live outside the seat.
@@ -63,16 +63,16 @@ Plain spoken names (`README.md`, `ROADMAP.md`, `ready-to-ask-claude.md`, `seam-s
 
 **Shared classifier (e116 · ported to Rishi `20260809`):** `tools/fixtures/dated_classify.rish` — one definition of dated/live for every roof, Rishi owning the interface over a POSIX-sh `rg` seam (elder `dated_classify.py` kept as a fossil until the last consumer migrates). Dated name is a path-anchored stamp segment `YYYYMMDD-HHMMSS_`, matched as `(^|/)\d{8}-\d{6}_`; living header is `**Stamp:** living ledger` or `living ledger (born`. Shed census and fascia-health both source this definition. Divergence witness `tools/fixtures/dated_roof_divergence_scan.sh` goes RED while `dated_testimony` differs across roofs. Law: when two roofs carry one name, either they agree or the name is doing two jobs.
 
-`tools/dated_guard.rish` — **a doorway, not an auditor** (e236). It inspects *staged* MODIFIED paths only.
+`tools/d/dated_guard.rish` — **a doorway, not an auditor** (e236). It inspects *staged* MODIFIED paths only.
 
 - **Tier 1** roster paths — always red when staged as modifications.
 - **Freeze-class dated paths** (witness · golden · receipt · `keys/`) already on `main` — red unless living ledger, freeze pointer, or Radiant pass.
 - **Amendable-roof dated paths** (`counsel/` · `active-designing/` · `expanding-prompts/` · `session-logs/` · `foundations/` · `waymarks/` · `active-reviving/` · `external-research/` · `edu/` · `press/` · `saga/` · `classical-vedic-astrology/` · `construction/` · `rye-learning-process/` · dated `context/specs/`) — OK; amendable until superseded.
 - Vacuous green when the index has no staged freeze/Tier-1 mods.
 
-`tools/claim_preserve_witness.rish` — before/after token sets on every file a Radiant pass touches; STOP on mismatch.
+`tools/cl/claim_preserve_witness.rish` — before/after token sets on every file a Radiant pass touches; STOP on mismatch.
 
-`tools/radiant_lint.rish` — advisory Radiant surface (bare but-word, emoji, benediction and header duties).
+`tools/r/radiant_lint.rish` — advisory Radiant surface (bare but-word, emoji, benediction and header duties).
 
 ## Seam-season example
 

@@ -1,7 +1,7 @@
 # dated_guard_scan.rish — staged dated MODIFIED paths on main must declare living.
 #
 # Native migration of dated_guard_scan.py. Body in sibling .sh (git · head · grep
-# through the run seam). Outer wrapper: tools/dated_guard.rish
+# through the run seam). Outer wrapper: tools/d/dated_guard.rish
 #
 #   rishi/bin/rishi run tools/fixtures/dated_guard_scan.rish
 

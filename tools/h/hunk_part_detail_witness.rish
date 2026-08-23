@@ -1,0 +1,52 @@
+# tools/h/hunk_part_detail_witness.rish — the part detail page from a tapped ref (HUNK81).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK81.
+# Design read: active-designing/date/20260814/20260814-002316_hunk-part-detail-page-from-a-tapped-ref-exploration.md
+# Teacher, thanked clean-room: McMaster-Carr's product page — a tapped result opens onto the part's picture and full
+# facts, larger than the catalog row (concept only, siloed).
+#
+# HUNK80 closed the loop up to the tap (a PartRef). This rung paints the page that tap opens: brushstroke/part_detail.rye
+# `detail_page` renders the part's own window down-mapped as a solid-color picture band above its four fact rows (name,
+# part number, material, exact price), each read straight from the ref. The selftest proves NO DRIFT — a red part paints
+# a red picture (slot 3) above its own facts, a blue part a blue picture (slot 5) above different facts; the page
+# rasterizes to a lit canvas; EmptyPage, PageTooLarge, EmptyPicture, PageTooShort each refuse by name; and the capstone
+# — a stainless-only search's second row taps through to hexnut (orig index 3) and its detail page paints hexnut's
+# picture and facts ($0.55), search to tap to detail end to end. A price is a fact formatted for reading, never moved.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_part_detail_witness.rish
+
+say "hunk-part-detail: Language EN — HUNK81 paints the page the tap opens: a tapped part's picture above its full facts, each fact on its own line."
+say "hunk-part-detail: Style Radiant — no drift between page and part; the picture is the part's own window and each fact line equals the stored fact; the whole search gesture arrives somewhere at last."
+say "hunk-part-detail: Lens TAME — pure painting over HUNK80 PartRef, HUNK73 format_price, and the down-map seam; positive invariants per fn; four named page refusals; a price is formatted, never moved; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/part_detail"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_detail.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-part-detail: build failed — ${build.err}"
+
+# Read the GREEN line from a file — it carries an apostrophe ("keeper's") that breaks a shell single-quote round-trip.
+let outfile = "brushstroke/bin/part_detail.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "hunk-part-detail: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "hunk-part-detail: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN part-detail' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "hunk-part-detail: selftest did not print the GREEN part-detail line"
+
+# HUNK80 stays GREEN — the tap this rung paints the detail for.
+let t = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_tap.rye -femit-bin=brushstroke/bin/part_tap && brushstroke/bin/part_tap selftest > brushstroke/bin/part_tap.out 2>&1"]
+assert t.ok else "hunk-part-detail: HUNK80 part_tap re-run failed — see brushstroke/bin/part_tap.out"
+let t_green = run ["sh" "-c" "grep -q 'GREEN part-tap' brushstroke/bin/part_tap.out && echo yes"]
+assert (trim t_green.out) == "yes" else "hunk-part-detail: HUNK80 part_tap did not stay GREEN"
+
+# HUNK73/74 stay GREEN — the fact-line and price helpers this rung reuses.
+let r = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_row.rye -femit-bin=brushstroke/bin/part_row && brushstroke/bin/part_row selftest > brushstroke/bin/part_row.out 2>&1"]
+assert r.ok else "hunk-part-detail: HUNK73/74 part_row re-run failed — see brushstroke/bin/part_row.out"
+let r_green = run ["sh" "-c" "grep -q 'GREEN part-row' brushstroke/bin/part_row.out && echo yes"]
+assert (trim r_green.out) == "yes" else "hunk-part-detail: HUNK73/74 part_row did not stay GREEN"
+
+say "hunk-part-detail: GREEN — a keeper taps a searched result and the part's own page rises to meet it, picture whole and facts true; HUNK80 tap and HUNK73/74 row helpers underneath stay GREEN. HUNK81 lands."

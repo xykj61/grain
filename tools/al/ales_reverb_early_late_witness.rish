@@ -1,0 +1,52 @@
+# tools/al/ales_reverb_early_late_witness.rish — the early/late balance: the first reflections against the diffuse wash (ALES206).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES206.
+# Design read: active-designing/date/20260815/20260815-113645_fill-ales206-lotus-reverb-early-late.md
+# Stands on: lotus/multitap_time.rye (ALES69 — the timed multi-tap voicing the early reflections, run over a copy of the dry); lotus/reverb_preset.rye
+# (ALES190 — the named-room late wash, run over the span unchanged); lotus/taps.rye (ALES68 — the multi-tap this dials against the wash, its max_taps
+# bounding each early bank); lotus/reverb_mix.rye (ALES192 — the same linear blend, now between early and late); lotus/clock.rye (ALES5 — the sample
+# clock, converting the span); lotus/timeline.rye (ALES2 — the Clip, its max_clip bounding the early copy and its saturate the blend's single rail).
+#
+# lotus/reverb_early_late.rye opens a FRESH reverb axis after the tone axis closed — the ratio of a room's EARLY reflections (the few discrete echoes
+# off the near walls) to its LATE diffuse wash. It invents NO new audio arithmetic: the early reflections are ALES68's multi-tap (its own "discrete
+# early-reflection pattern"), the late wash is ALES190's named-room preset, and this rung CROSSFADES the two at the same linear balance ALES192 proved
+# for wet/dry — out[i] = saturate((den-num)·early[i]/den + num·late[i]/den), summed in i64 and saturated once so a loud blend pins never wraps. The early
+# signal is computed on a full COPY of the original clip and the late preset prechecks before any write, so a refusal never half-writes the clip (atomic).
+# The selftest proves: at balance = 0 the span equals the multi-tap over the room's published early bank byte for byte (fully early is the first
+# reflections); at balance = den it equals reverb_preset over the span byte for byte (fully late is the diffuse wash); a half balance differs from both
+# and each sample is the honest weighted average, byte for byte; the rooms differ (room, hall, and plate early edges are three real reflection patterns);
+# silence stays silence; and the faults forward atomic (a bad fraction BadBalance, a span past the clip DurationTooLong, an out-of-range span BadRange),
+# the clip untouched. Purely local — one clip, a validated clock, a bounded early copy; no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_reverb_early_late_witness.rish
+
+say "ales-reverb-early-late: Language EN — ALES205 closed the tone axis whole (mono and stereo, plain darkness and full two-band shelf). The tone axis rests; the reverb opens a FRESH axis: the EARLY/LATE balance — the ratio of a room's first reflections (the few discrete echoes off the near walls that tell the ear how big and how close the room is) to its LATE diffuse wash (the dense tail that tells it how live the room is). A reverb carrying only the wash sounds distant and washed; carrying both, balanced, is how a plate sits bright and immediate while a hall breathes around it."
+say "ales-reverb-early-late: Style Radiant — the two edges are stated positively and proven exact: at balance = 0 the span equals ALES69's multi-tap over the room's published early bank byte for byte (fully toward early is exactly the discrete first reflections), and at balance = den it equals ALES190's reverb_preset over the span byte for byte (fully toward late is exactly the diffuse wash); between, each sample is the honest weighted average of the early and the late. One named room chooses both its reflections and its wash, so they can never name two different rooms; the balance is a named fraction, not a decibel."
+say "ales-reverb-early-late: Lens TAME — one clip of i16 PCM, a validated clock, ALES190's fixed reverb banks and this rung's fixed early-tap banks, and one bounded full-clip copy for the early signal; NO new audio arithmetic — the one blend is a weighted average of two i16 spans summed in i64 and saturated ONCE so it can never wrap (the exact blend ALES192 proved, now between early and late); ReverbEarlyLateError = multitap_time.MultitapTimeError || reverb_preset.ReverbPresetError || BadBalance, the early multi-tap run on a COPY and the late preset PRECHECKED so a refusal never half-writes the clip (atomic), BadBalance / DurationTooLong / BadRange by name before any write; siloed to lotus/, no network, no keys, no funds, no device. The early banks are named in MILLISECONDS, so one room sounds the same at any sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/reverb_early_late"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_early_late.rye -femit-bin=${bin}"]
+assert build.ok else "ales-reverb-early-late: build failed — ${build.err}"
+
+let outfile = "lotus/bin/reverb_early_late.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-reverb-early-late: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-reverb-early-late: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-early-late' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-reverb-early-late: selftest did not print the GREEN ales-reverb-early-late line"
+
+# This rung runs ALES69's multitap_ms over its public API for the early reflections — re-prove the timed multi-tap still stands green beside it.
+let mt = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/multitap_time.rye -femit-bin=lotus/bin/multitap_time && lotus/bin/multitap_time selftest 2>&1 | grep -q 'GREEN ales-multitap-time' && echo yes"]
+assert (trim mt.out) == "yes" else "ales-reverb-early-late: the ALES69 timed multi-tap regressed under its early/late balance"
+
+# And ALES190's reverb_preset over its public API for the late wash — re-prove the named-room preset still stands green beside it.
+let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
+assert (trim preset.out) == "yes" else "ales-reverb-early-late: the ALES190 named-room preset regressed under its early/late balance"
+
+say "ales-reverb-early-late: GREEN — the early/late balance: the first reflections against the diffuse wash, the reverb's fresh axis after the tone axis closed. Compute the early reflections with ALES69's multi-tap over the room's fixed early bank (on a copy of the dry), the late wash with ALES190's reverb_preset in place, then blend out[i] = saturate((den-num)·early[i]/den + num·late[i]/den), a linear crossfade at the named fraction num/den, saturated once so a loud blend pins never wraps — no new audio arithmetic. Proven: at balance = 0 exactly the multi-tap over the room's early bank byte for byte (fully early); at balance = den exactly reverb_preset byte for byte (fully late); a half balance neither edge, each sample the honest weighted average; the rooms differ (room, hall, and plate early edges three real patterns); silence stays silence; a bad fraction refuses BadBalance, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the clip untouched (the early multi-tap on a copy, the late preset prechecked, so atomic); the ALES69 multi-tap and the ALES190 preset stay GREEN beside it. The stereo early/late balance (the same crossfade over both channels, image held) is the thin twin next."

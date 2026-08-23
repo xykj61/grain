@@ -1,0 +1,53 @@
+# tools/h/hunk_part_facets_search_witness.rish — the faceted grammar on glass (HUNK86).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK86.
+# Design read: active-designing/date/20260814/20260814-005836_hunk-part-facets-search-shelf-on-glass-exploration.md
+# Teacher, thanked clean-room: McMaster-Carr's faceted sidebar — OR within a facet, AND across facets (concept only,
+# siloed).
+#
+# HUNK85 joined the AND and the OR into the canonical faceted query (parse_facets -> filter_facets), yet in the image
+# layer, unseen. HUNK79 drew the pure AND on glass, HUNK84 the pure OR. This rung draws the whole grammar:
+# brushstroke/part_facets_search.rye `facets_search_shelf` reads a catalog, a faceted typed line, and a page offset, and
+# draws exactly the parts satisfying every group (parse_facets -> filter_facets -> part_window). The selftest proves
+# what a keeper types is what a keeper sees: (stainless|brass) max:100 draws the material union narrowed by price (nut,
+# hexnut; bolt dropped), the faceted page equal to the hand-filtered window, a |-free line is exactly HUNK79's AND page
+# (a strict superset), an empty line is a match-all, a bad offset refuses BadOffset, and a malformed clause surfaces the
+# parser's named refusal rather than a wrong shelf. A price is a fact compared, never moved.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_part_facets_search_witness.rish
+
+say "hunk-part-facets-search: Language EN — HUNK86 draws HUNK85's faceted grammar on glass: a line of OR-within-facet, AND-across-facet groups paints exactly the narrowed-and-widened, paged marketplace."
+say "hunk-part-facets-search: Style Radiant — what a keeper types is what a keeper sees; the faceted search view invents nothing, and a |-free line draws exactly HUNK79's AND page, a strict superset that disturbs nothing."
+say "hunk-part-facets-search: Lens TAME — pure composition over HUNK85 parse_facets/filter_facets and HUNK73/74 shelf; a price clause compares, never moves; positive invariants per fn; a malformed clause and a bad offset each refuse by name; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/part_facets_search"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_search.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-part-facets-search: build failed — ${build.err}"
+
+# Read the GREEN line from a file — it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
+let outfile = "brushstroke/bin/part_facets_search.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "hunk-part-facets-search: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "hunk-part-facets-search: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN part-facets-search' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "hunk-part-facets-search: selftest did not print the GREEN part-facets-search line"
+
+# HUNK85 stays GREEN — the faceted query the search view draws.
+let f = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_facets.rye -femit-bin=image/bin/part_facets && image/bin/part_facets selftest > image/bin/part_facets.out 2>&1"]
+assert f.ok else "hunk-part-facets-search: HUNK85 part_facets re-run failed — see image/bin/part_facets.out"
+let f_green = run ["sh" "-c" "grep -q 'GREEN part-facets' image/bin/part_facets.out && echo yes"]
+assert (trim f_green.out) == "yes" else "hunk-part-facets-search: HUNK85 part_facets did not stay GREEN"
+
+# HUNK84 stays GREEN — the pure OR on glass this rung generalizes.
+let o = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_or_search.rye -femit-bin=brushstroke/bin/part_or_search && brushstroke/bin/part_or_search selftest > brushstroke/bin/part_or_search.out 2>&1"]
+assert o.ok else "hunk-part-facets-search: HUNK84 part_or_search re-run failed — see brushstroke/bin/part_or_search.out"
+let o_green = run ["sh" "-c" "grep -q 'GREEN part-or-search' brushstroke/bin/part_or_search.out && echo yes"]
+assert (trim o_green.out) == "yes" else "hunk-part-facets-search: HUNK84 part_or_search did not stay GREEN"
+
+say "hunk-part-facets-search: GREEN — a keeper widens within a facet and narrows across them on glass in one honest paged shelf; the query algebra a keeper can SEE stands whole (AND HUNK79, OR HUNK84, faceted HUNK86), and HUNK85 faceted query and HUNK84 OR-on-glass beneath stay GREEN. HUNK86 lands."

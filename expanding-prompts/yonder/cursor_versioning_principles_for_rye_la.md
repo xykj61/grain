@@ -4368,8 +4368,8 @@ All set. Here's where things landed:
 **On the re-signing question:** no rewrite was needed. Every commit from the root (`34d2df6`) to the tip is already signed with your current key `DBF853…` and shows **Verified** on both forges. A rebase would have only re-signed with the same key while changing every SHA — so skipping the force-push is the cleaner, safer outcome.
 
 **What I committed and pushed** (`9079767`, signed `D949807AC26B2B99`, fast-forwarded to Codeberg and GitHub):
-- `tools/make-key-card.sh` — a reusable, config-driven renderer. It reads your details from `tools/key-card.conf`, builds `qrencode` from the vendored source on first run, and writes both cards. Anyone who clones can `cp tools/key-card.conf.example tools/key-card.conf`, fill in their values, and run it.
-- `tools/key-card.conf.example` — the committed template; the real `tools/key-card.conf` (your details) and `tools/.build/` stay gitignored.
+- `tools/m/make-key-card.sh` — a reusable, config-driven renderer. It reads your details from `tools/key-card.conf`, builds `qrencode` from the vendored source on first run, and writes both cards. Anyone who clones can `cp tools/k/key-card.conf.example tools/key-card.conf`, fill in their values, and run it.
+- `tools/k/key-card.conf.example` — the committed template; the real `tools/key-card.conf` (your details) and `tools/.build/` stay gitignored.
 - `gratitude/libqrencode` — now a pinned submodule (`v4.1.1`), kept pristine; the build lands in the ignored `tools/.build/`.
 - Regenerated cards in the orange `#FF7F00` on `#444400` palette, carrying the rotated master fingerprint `0646 2132 …`.
 - `SOURCE.md` rewritten to teach the script-driven flow (with the apt one-liner for dependencies), and `.gitignore` extended to ship the template while withholding the personal fill-in.
@@ -7377,7 +7377,7 @@ Now the README — add string interpolation, the new test, and reframe "How It G
 
 Both proven. Let me commit this milestone — string interpolation and the gate in our own shell.
 
-`tools/parity.rish` is tracked, committed, and pushed. Now the roadmap — `parity.rish` was a Horizon 2 milestone, and it runs. Let me read the current roadmap to update it precisely.
+`tools/p/parity.rish` is tracked, committed, and pushed. Now the roadmap — `parity.rish` was a Horizon 2 milestone, and it runs. Let me read the current roadmap to update it precisely.
 
 Let me update the roadmap — version, the Horizon 0 Rishi line plus a new "parity gate in Rishi" entry, and mark the two `parity.rish` milestones done.
 
@@ -7400,9 +7400,9 @@ let path = "${dir}/${name}.zig"   # builds a path
 `say` is now unified onto this — interpolation lives at the operand level, available everywhere. `tests/strings.rish` proves it; all seven Rishi scripts stay green.
 
 ## `parity.rish` — the gate, in our own shell
-`tools/parity.rish` is `parity.sh` reborn in Rishi. The whole differential gate, as a flow of values:
+`tools/p/parity.rish` is `parity.sh` reborn in Rishi. The whole differential gate, as a flow of values:
 
-```17:33:tools/parity.rish
+```17:33:tools/p/parity.rish
 let bases = map witnesses as s: run [zig "run" "${work}/${s}.zig" "--zig-lib-dir" baseline]
 let ryes = map witnesses as s: run [zig "run" "${work}/${s}.zig" "--zig-lib-dir" ryelib]
 

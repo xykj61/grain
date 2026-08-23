@@ -1,0 +1,39 @@
+# tools/f/fora_elect_witness.rish — from a quorum, elect one leader (FORA10).
+#
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# FORA10. Design read: active-designing/date/20260814/20260814-053151_fora10-constel-leader-election.md
+# Law kin: .claude/rules/placeholder-ship-names.md — the border guards every vote: a member replying with a vowel-bearing
+# greeting is refused at the caller's hear (wire.deframe). A real address can never enter an election even as a present token.
+#
+# constel/elect.rye spends FORA9's quorum-intersection property on the first real decision every consensus makes: one leader,
+# chosen once. A Ballot records one vote per pier; elect returns the candidate a strict majority named, else NoLeader; and the
+# seal asserts the whole safety — at most ONE candidate can ever reach a majority, because any two majorities intersect and a
+# pier votes once. The selftest proves: a clear majority elects; a split refuses NoLeader; uniqueness holds across EVERY
+# arrangement of single votes in a sky of four; a unanimous sky elects and a lone vote never does; DoubleVote refuses a second
+# cast; a stranger cannot open an election; the border guards every vote; and a full constellation of eight elects bounded.
+# Purely local — no socket, no network, no keys, no funds, no real address ever formed.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/fora_elect_witness.rish
+
+say "fora-elect: Language EN — FORA10 spends FORA9's intersection property: because any two strict-majority quorums of a constellation must share a pier and a pier votes exactly once, at most one candidate can ever reach a majority, so a leader — once elected — is unique."
+say "fora-elect: Style Radiant — a decision that names a leader, or honestly names no one; a split elects no one, a minority never leads, and a lone pier never mistakes itself for the sky."
+say "fora-elect: Lens TAME — elect asserts no second candidate also reaches the majority (the safety made checkable per ballot); the round interleaves respond+hear so the caller's mailbox holds one reply at a time (never ChannelFull); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/elect"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/elect.rye -femit-bin=${bin}"]
+assert build.ok else "fora-elect: build failed — ${build.err}"
+
+let outfile = "constel/bin/elect.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-elect: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-elect: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-elect' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-elect: selftest did not print the GREEN fora-elect line"
+
+say "fora-elect: GREEN — the quorum becomes a decision that names one leader; the constel consensus track can now elect, proven pure on the bench."

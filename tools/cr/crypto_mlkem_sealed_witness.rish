@@ -1,0 +1,42 @@
+# tools/cr/crypto_mlkem_sealed_witness.rish — the POST-QUANTUM sealed session: the ML-KEM sibling of crypto/sealed_session.rye, authored in pure Rye and
+# proven end to end with a doubled oracle against Zig's independent std.crypto ml_kem. It composes the GREEN ML-KEM keygen/encaps/decaps
+# (crypto/mlkem_keygen.rye, crypto/mlkem_encaps.rye, crypto/mlkem_decaps.rye), SHA3-256 (crypto/sha3.rye), BLAKE2b-512 (crypto/blake2b.rye), and
+# ChaCha20-Poly1305 (crypto/aead.rye) so one keeper sends another a confidential message over an open channel, hardened against the quantum day (Season G).
+#
+# Season: crypto — the ML-KEM sibling of crypto/sealed_session.rye and the confidentiality counterpart of crypto/mldsa_identity.rye. Where the classical
+# sealed session agrees its one-message secret with X25519, this agrees it with ML-KEM — a KEM, not a Diffie-Hellman — so an adversary who records the
+# frame today and builds a quantum computer tomorrow still cannot read it. The door holds no key: every seed, message, and frame is a public test vector.
+# Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md ("ML-KEM is the post-quantum successor to X25519 … the post-quantum
+# sealed-session sibling of kumara_sealed.rye becomes buildable"). Rye-first spine: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Clean-room: ML-KEM is the public NIST FIPS 203 standard; the composition is our own Rye wiring over our own GREEN rungs, with Zig's std.crypto read only
+# as the reference to diff against — never a copied line (.claude/rules/gratitude-licenses.md).
+#
+# crypto/mlkem_sealed.rye is proven at all three parameter sets (ML-KEM-512/768/1024): a round-trip across seven plaintext lengths (empty through 64 KiB),
+# the ciphertext provably not the plaintext, the sealed-box freshness property (two KEM messages yield different frames that both open to the same
+# message), byte-identical determinism given a fixed KEM message, and five refusals — a wrong recipient, a tampered KEM ciphertext, a tampered ciphertext
+# body, and a tampered tag all fail OpenFailed with no plaintext revealed, plus bad magic and two truncations — and the DOUBLED ORACLE: Zig's independent
+# std.crypto decapsulates the very KEM ciphertext our seal embeds back to the same shared secret, so the frame interoperates with the NIST standard.
+# Purely local — no key held, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_mlkem_sealed_witness.rish
+
+say "crypto-mlkem-sealed: Language EN — the post-quantum sealed session: the ML-KEM sibling of crypto/sealed_session.rye. The recipient holds a long-term ML-KEM keypair (ek, dk); for each message the sender draws a fresh 32-byte KEM message m, encapsulates (K, kem_ct) = ML-KEM.Encaps(ek, m), and derives both a session key and a nonce from one BLAKE2b-512 over (K then H(ek)); it seals the plaintext with ChaCha20-Poly1305, binding H(ek) as authenticated data. The frame is magic GPQ1 then the KEM ciphertext then the AEAD-ciphertext length then the ciphertext then the Poly1305 tag; open recovers K from dk and returns plaintext only when the tag verifies. It composes only GREEN rungs, authoring no new cryptography — Comlink's confidential session, made quantum-resistant."
+say "crypto-mlkem-sealed: Style Radiant — the law is stated positively as a confidential message that only the named recipient can read, and that a future quantum adversary still cannot. Freshness comes from the KEM: a fresh message m yields a fresh shared secret K, so both the AEAD key and its nonce are fresh every message — the one rule ChaCha20-Poly1305 must keep. The recipient's key digest binds the frame to exactly one keeper. Proven at all three parameter sets, the frame decapsulating to the same secret under Zig's independent std.crypto — two strangers confirming one channel."
+say "crypto-mlkem-sealed: Lens TAME — contract asserts on every function (a real non-zero key written, the widths matching the parameter set, the whole frame written and nothing past it), bounded loops (exactly the KEM-ciphertext, tag, and plaintext lengths per copy), named errors for every refusal (OutTooSmall, PayloadTooLong, FrameTooShort, LengthMismatch, BadMagic, OpenFailed, ComposedFailed). Correctness proven end to end at ML-KEM-512, ML-KEM-768, and ML-KEM-1024: round-trip across seven plaintext lengths, confidentiality, sealed-box freshness, determinism, and five refusals — a wrong recipient, a tampered KEM ciphertext, a tampered ciphertext body, a tampered tag, plus bad magic and truncation. The DOUBLED ORACLE ties the composition to the standard: Zig's std.crypto ml_kem decapsulates the very KEM ciphertext our seal embeds back to the same shared secret. The module's own functions call no std.crypto; only the selftest invokes Zig as the parity oracle. Every seal is over a TEST keypair — no key held, no network, no funds, no device; the KEM message must be fresh randomness in real use, constant-time timing-safety the named horizon, and agreeing a session with the maintainer's own identity key the custody gate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/mlkem_sealed"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/mlkem_sealed.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-mlkem-sealed: build failed — ${build.err}"
+
+let outfile = "crypto/bin/mlkem_sealed.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-mlkem-sealed: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-mlkem-sealed: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-mlkem-sealed' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-mlkem-sealed: selftest did not print the GREEN crypto-mlkem-sealed line"

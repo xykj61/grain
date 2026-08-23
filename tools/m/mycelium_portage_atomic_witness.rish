@@ -1,0 +1,55 @@
+# tools/m/mycelium_portage_atomic_witness.rish — a crossing lands on BOTH worlds or NEITHER (r2, atomic
+# all-or-nothing).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · Portage · rung r2.
+# r1 proved value crosses two worlds and the pair conserves, yet its out was a one-shot burn — the coins left
+# World A the instant the out folded, with no way back if the in never landed on World B. A real crossing
+# must be ATOMIC: it lands on both ledgers or on neither, with no window where the coins are gone from A and
+# absent on B (a loss) or present on both (a double). So the out becomes TWO-PHASE — the Pledge's atomicity
+# widened from two phases to two shards: Alice STAGES a crossing (balance→reserved, held in transit), then
+# COMMITS once the in lands on B (the reserve leaves circulation — Bob's now) or REVERTS if it never lands
+# (the reserve returns to Alice, whole).
+#
+# The crux this witness proves is the TWO-OUTCOME LAW read against World B: a committed source pairs with a
+# landed in (both moved, the amount that left A equals the amount that reached B); a reverted source pairs
+# with no in (neither moved, the two-world sum exactly as if the crossing never began); never a loss, never a
+# double. And, as the Pledge proved for two phases, equivocation is decided once identically across arrival
+# order, and a staged-but-undecided crossing holds its coins reserved in transit, never lost. Composes
+# portage + cord + fold + kumara public API only, editing none; demo world/keeper seeds — no key, no funds,
+# no network, no value crossed.
+#
+# Scope: active-designing/date/20260813/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_portage_atomic_witness.rish
+
+say "mycelium-portage-atomic: Language EN — r1's one-shot burn could not reverse if the in never landed; a real crossing must land on both ledgers or neither, so the out becomes two-phase — reserve, then commit-once-landed or revert."
+say "mycelium-portage-atomic: Style Radiant — a committed source pairs with a landed in and both worlds move; a reverted source leaves the sender whole and the recipient unpaid and neither moves; no window admits a loss or a double, and equivocation is decided once."
+say "mycelium-portage-atomic: Lens TAME — the two-phase source law composes portage + cord + fold + kumara public API only, editing none; every claim is an integer comparison of a balance or a reserve; the settlement is derived from the agreed order, never re-declared; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/portage_atomic"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/portage_atomic.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-portage-atomic: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-portage-atomic: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-portage-atomic: selftest did not speak GREEN"
+assert selftest.out contains "lands on BOTH worlds or NEITHER" else "mycelium-portage-atomic: the atomicity claim missing"
+assert selftest.out contains "left A == 40 reached B" else "mycelium-portage-atomic: the committed-both-move claim missing"
+assert selftest.out contains "neither moved" else "mycelium-portage-atomic: the reverted-neither-move claim missing"
+assert selftest.out contains "decided once identically across arrival order" else "mycelium-portage-atomic: the equivocation claim missing"
+assert selftest.out contains "reserved in transit, never lost" else "mycelium-portage-atomic: the in-transit claim missing"
+
+# The Portage r1 crux this rung widens stands at the door — the one-shot crossing and its conservation.
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/portage.rye -femit-bin=mycelium/bin/portage && mycelium/bin/portage 2>&1"]
+assert r1.ok else "mycelium-portage-atomic: the Portage r1 crux is not GREEN"
+assert r1.out contains "GREEN" else "mycelium-portage-atomic: the Portage r1 did not speak its GREEN"
+
+# The Pledge — the two-phase transfer WITHIN one ledger whose atomicity this rung widens to two shards.
+let pledge = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/pledge.rye -femit-bin=mycelium/bin/pledge && mycelium/bin/pledge 2>&1"]
+assert pledge.ok else "mycelium-portage-atomic: the Pledge two-phase transfer is not GREEN"
+assert pledge.out contains "GREEN" else "mycelium-portage-atomic: the Pledge did not speak its GREEN"
+
+say "mycelium-portage-atomic: GREEN — a crossing lands on both worlds or neither: a committed source pairs with a landed in (the amount that left A equals the amount that reached B), a reverted source leaves the sender whole and the recipient unpaid (neither moved), equivocation is decided once identically across arrival order, and a staged-but-undecided crossing holds its coins reserved in transit; the Portage r1 crux and the Pledge two-phase transfer both stand at the door. The crossing is atomic across two shards."

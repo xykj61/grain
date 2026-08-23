@@ -1,0 +1,5 @@
+# tools/g/glow_connector_seam_witness.rish — accrete shim → tools/gen/season/glow_connector_seam_witness.rish (Surface p5)
+if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/glow_connector_seam_witness.rish"]
+if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/glow_connector_seam_witness.rish" args[0]]
+if r.out != "" then say r.out
+exit r.code

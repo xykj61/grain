@@ -1,0 +1,48 @@
+# tools/al/ales_reverb_console_predelay_witness.rish — the console pre-delay: the dry-composed pre-delay, end to end (ALES196).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES196.
+# Design read: active-designing/date/20260815/20260815-103104_fill-ales196-lotus-console-predelay.md
+# Stands on: lotus/reverb_predelay.rye (ALES194 — the wet-domain pre-delay whose faults this forwards and whose full-wet edge this equals);
+# lotus/reverb_mix.rye (ALES192 — the linear wet/dry blend this reuses and whose no-gap edge this equals); lotus/reverb_preset.rye (ALES190 — the
+# named-room wet); lotus/clock.rye (ALES5 — the sample clock); lotus/timeline.rye (ALES2 — the Clip, its max_clip bounding each snapshot).
+#
+# lotus/reverb_console_predelay.rye gives the reverb its classic console pre-delay, heard against the dry: the voice sounds first, then the delayed
+# room blooms behind it. It snapshots the DRY span, reverberates it wet in place through ALES190's reverb_preset UNCHANGED, forms the pre-delayed
+# wet (pw[i] = 0 for i < predelay, else wet[i - predelay]), then blends out[i] = saturate((den-num)·dry[i]/den + num·pw[i]/den) — ALES192's proven
+# linear balance over ALES194's bounded reindex, saturated once, inventing no new audio arithmetic. The selftest proves: at predelay = 0 the span
+# equals reverb_mix byte for byte; at mix = 0 the exact dry at any pre-delay; at mix = den it equals reverb_predelay byte for byte; a mid pre-delay
+# and mid mix is the weighted average of the dry and the pre-delayed wet, differing from both the plain mix and the plain pre-delay; silence stays
+# silence; and the faults forward (a bad fraction BadMix, a pre-delay past the span BadPredelay, a span past the clip DurationTooLong, an
+# out-of-range span BadRange), the clip untouched. Purely local — one clip, two bounded stack snapshots; no network, no keys, no funds, no device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_reverb_console_predelay_witness.rish
+
+say "ales-reverb-console-predelay: Language EN — ALES194 and ALES195 gave the reverb its WHEN, yet both are wet-domain: they delay the reverberant tail within the span and leave nothing of the original dry behind. On a real console the pre-delay is heard against the dry — the voice sounds first, then the delayed room blooms behind it. This rung is that composition: the pre-delay axis finished end to end, ALES194's own scope named it."
+say "ales-reverb-console-predelay: Style Radiant — the three edges are stated positively and proven exact: at predelay = 0 the span equals reverb_mix byte for byte (no gap is exactly the wet/dry mix), at mix = 0 the exact dry at any pre-delay (the room fully closed is the identity), and at mix = den it equals reverb_predelay byte for byte (fully open is exactly the wet-domain pre-delay). The pre-delay is a named duration in milliseconds and the mix a named fraction, so both mean the same at any rate."
+say "ales-reverb-console-predelay: Lens TAME — one clip of i16 PCM, a validated clock, ALES190's fixed banks, and two bounded stack snapshots (max_clip = 4096 samples each); NO new audio arithmetic — the blend is ALES192's proven weighted average summed in i64 and saturated once so it can never wrap, over ALES194's bounded reindex with a true-zero gap; ReverbConsolePredelayError = reverb_predelay.ReverbPredelayError || BadMix, DurationTooLong / BadRange / BadPredelay / BadMix by name before any write, the dry snapshot a read only so a refusal leaves the clip untouched; siloed to lotus/, no network, no keys, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/reverb_console_predelay"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_console_predelay.rye -femit-bin=${bin}"]
+assert build.ok else "ales-reverb-console-predelay: build failed — ${build.err}"
+
+let outfile = "lotus/bin/reverb_console_predelay.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-reverb-console-predelay: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-reverb-console-predelay: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-console-predelay' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-reverb-console-predelay: selftest did not print the GREEN ales-reverb-console-predelay line"
+
+# This rung composes ALES194's pre-delay and ALES192's mix over their public APIs — re-prove both still stand green beside it.
+let predelay = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_predelay.rye -femit-bin=lotus/bin/reverb_predelay && lotus/bin/reverb_predelay selftest 2>&1 | grep -q 'GREEN ales-reverb-predelay' && echo yes"]
+assert (trim predelay.out) == "yes" else "ales-reverb-console-predelay: the ALES194 wet-domain pre-delay regressed under its console composition"
+
+let mix = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_mix.rye -femit-bin=lotus/bin/reverb_mix && lotus/bin/reverb_mix selftest 2>&1 | grep -q 'GREEN ales-reverb-mix' && echo yes"]
+assert (trim mix.out) == "yes" else "ales-reverb-console-predelay: the ALES192 wet/dry mix regressed under its console composition"
+
+say "ales-reverb-console-predelay: GREEN — the console pre-delay: the dry-composed pre-delay, end to end. Snapshot the dry span, reverberate it wet in place through ALES190's reverb_preset unchanged, form the pre-delayed wet (pw[i] = 0 for i < predelay, else wet[i - predelay]), then blend out[i] = saturate((den-num)·dry[i]/den + num·pw[i]/den) — ALES192's proven linear balance over ALES194's bounded reindex, saturated once, no new audio arithmetic. Proven: at predelay = 0 exactly reverb_mix byte for byte; at mix = 0 the exact dry at any pre-delay; at mix = den exactly reverb_predelay byte for byte; a mid pre-delay and mid mix the honest weighted average of the dry and the pre-delayed wet, differing from both the plain mix and the plain pre-delay; silence stays silence; a bad fraction refuses BadMix, a pre-delay past the span BadPredelay, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the clip untouched; the ALES194 pre-delay and ALES192 mix stay GREEN beside it. The stereo console pre-delay (the same dry-composed blend over both channels, one shared gap, the image held) is the thin twin next; after it the reverb's which/how-much/when are complete for mono and stereo."

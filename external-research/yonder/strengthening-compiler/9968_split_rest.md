@@ -61,7 +61,7 @@ Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
 |------|-------|--------|
 | `rye/lib/std/mem.zig` | `split` — Phase 4 `usize` seam policy applied | pending |
 | `rye/tests/split_rest_test.rye` | witness program | pending |
-| `tools/parity.rish` | witness registered | pending |
+| `tools/p/parity.rish` | witness registered | pending |
 | `external-research/yonder/strengthening-compiler/9968_split_rest.md` | pass record + audited surfaces | pending |
 | `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | pending |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9968 | pending |

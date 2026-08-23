@@ -30,7 +30,7 @@ Grain compiles through a pinned **Zig 0.16.0**, kept at `vendor/zig-toolchain/` 
 left out of git -- a 172 MB binary belongs on disk rather than in a history everyone clones.
 
 ```sh
-sh tools/fetch-toolchain.sh
+sh tools/f/fetch-toolchain.sh
 ```
 
 That is plain `sh` on purpose. This is the second thing you run, and the tree's own shell arrives a
@@ -109,7 +109,7 @@ typed, for the same reason this sentence keeps it vague.
 Run one:
 
 ```sh
-rishi/bin/rishi run tools/rish_exit_codes_witness.rish
+rishi/bin/rishi run tools/r/rish_exit_codes_witness.rish
 ```
 
 ```

@@ -1,0 +1,42 @@
+# tools/al/ales_mid_side_witness.rish — mid/side: the stereo master read as its sum and its difference, the reversible primitive the width family spends (ALES210).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES210.
+# Design read: active-designing/date/20260815/20260815-120505_fill-ales210-lotus-mid-side.md
+# Stands on: lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip and its
+# buf/len/samples, and `saturate`, the one true clamp). Every stereo edit so far has spoken in LEFT and RIGHT — the two speakers; the deepest stereo tools
+# speak a second language, MID (what the channels share, the mono centre) and SIDE (what they differ by, the stereo width). Mid/side is the change of basis
+# between them, and it is the handle a keeper reaches for to widen or narrow an image, to EQ the centre without the sides, to check mono compatibility — the
+# reverb WIDTH knob ALES209 named next is exactly "scale the side, recombine". This rung opens no width control yet; it lays the reversible primitive proven
+# whole first.
+#
+# lotus/mid_side.rye folds LEFT/RIGHT into MID = (l+r)/2 and SIDE = (l-r)/2 with encode, and back with decode (l = saturate(mid+side), r = saturate(mid-side)).
+# Both provably sit on the i16 rail — encode never clips (asserted in place, still routed through ALES2's one true saturate so the rail lives in one place),
+# decode's sum pinned once where it overflows. Both are total, hold each channel's length, and keep the balance invariant, so neither raises a fault (void, no
+# EditError), exactly as ALES127's stereo_invert. The crux is five laws. THE ENCODE LAW: left holds (l+r)/2 and right holds (l-r)/2 per seat, byte for byte.
+# THE MONO-COMPATIBILITY LAW: a centred master (l == r) encodes to an all-zero side and a mid equal to the shared channel. THE RECONSTRUCTION LAW:
+# decode(encode) is EXACT where l+r is even and off by at most one LSB otherwise (the halved side cannot carry the last bit — the honest cost of a 16-bit
+# mid/side), and always exact for a centred master. THE BALANCE / LENGTH LAW: both ops hold left.len == right.len and each channel's length. THE EMPTY /
+# DECODE-SHAPE LAW: an empty pair is unchanged and decode is the honest inverse fold with the rail pinned once.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_mid_side_witness.rish
+
+say "ales-mid-side: Language EN — mid_side reads a stereo master in a second language: MID (what the two channels share, the mono centre, the sum) and SIDE (what they differ by, the stereo width, the difference). encode folds LEFT/RIGHT into MID = (l+r)/2 and SIDE = (l-r)/2 in place; decode folds them back into LEFT/RIGHT. This is the change of basis every deep stereo tool stands on — widening or narrowing an image, EQ-ing the centre without the sides, checking mono compatibility — and it is exactly the handle the reverb WIDTH knob (ALES209 named it next) will spend: scale the side, recombine. This rung opens no width control; it lays the reversible primitive, proven whole first, so every rung that spends it stands on proven ground."
+say "ales-mid-side: Style Radiant — the law is stated positively and the honest cost named plainly. encode never clips: |l+r|/2 ≤ 32768 and |l-r|/2 ≤ 32767, so mid and side sit on the i16 rail with no saturation, asserted in place yet still routed through ALES2's one true saturate so the rail lives in one place even where it is never reached. decode's sum CAN exceed the rail, so saturate pins it once. Both ops are total — they name no span, hold each channel's length, and keep the balance invariant (left.len == right.len) trivially, so neither raises a fault: void, no EditError, no try, exactly as ALES127's stereo_invert. Because the side is HALVED to stay on the i16 rail, one bit of the difference cannot be stored, so decode(encode) is exact where l+r is even and off by at most one LSB otherwise — the well-known cost of a 16-bit mid/side over a 17-bit-side lossless store, named rather than hidden; a centred master (l == r) encodes to an all-zero side and always round-trips exact."
+say "ales-mid-side: Lens TAME — two bounded i16 Clips (left, right) change basis in place; the balance invariant is asserted on entry and exit of both ops, and because each is total (void, no EditError) and holds the length, no refusal can land between the two channel writes; encode computes mid = @divTrunc(l+r, 2) and side = @divTrunc(l-r, 2) in i64 so the sum never overflows before the halving, asserts both land in [sample_min, sample_max] (proving encode never clips), then routes each through timeline.saturate so the one true clamp is the only path to a sample; decode computes mid+side and mid-side in i64 and pins each through the same saturate; neither reads a byte past len, so each channel's length holds exactly; the encode law is proven byte for byte against a hand vector (the i16 extremes riding along so the range claim is proven in place), the reconstruction law proven exact on same-parity pairs and bounded to ≤ 1 LSB per sample on odd pairs, and the decode-shape law proven directly with a clean case and a saturating case; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/mid_side"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/mid_side.rye -femit-bin=${bin}"]
+assert build.ok else "ales-mid-side: build failed — ${build.err}"
+
+let outfile = "lotus/bin/mid_side.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-mid-side: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-mid-side: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-mid-side' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-mid-side: selftest did not print the GREEN ales-mid-side line"

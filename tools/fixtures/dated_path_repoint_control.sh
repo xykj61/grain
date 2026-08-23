@@ -14,7 +14,7 @@
 #
 # EXPECTED: repointed_living=1 untouched_testimony=1 untouched_already=1 untouched_elsewhere=1
 #
-# Driven by tools/dated_path_repoint_witness.rish. Run from the repository root.
+# Driven by tools/d/dated_path_repoint_witness.rish. Run from the repository root.
 
 set -eu
 

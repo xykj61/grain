@@ -4,7 +4,7 @@
 **Version:** `20260702.205630`
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
-**Witness:** `rye/tests/tally_gardens_test.rye` (via parity) · `tools/foundation_seeds.rish` · parity **142**
+**Witness:** `rye/tests/tally_gardens_test.rye` (via parity) · `tools/f/foundation_seeds.rish` · parity **142**
 
 ---
 
@@ -17,7 +17,7 @@ This page documents only what the gardens witness and foundation-seed gate prove
 **Foundation seeds:**
 
 ```bash
-rishi/bin/rishi run tools/foundation_seeds.rish
+rishi/bin/rishi run tools/f/foundation_seeds.rish
 ```
 
 Expect `tally gardens: all facts held` in output when `tally/bin/tally-gardens` runs green.

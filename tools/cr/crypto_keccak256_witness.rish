@@ -1,0 +1,40 @@
+# tools/cr/crypto_keccak256_witness.rish — Keccak-256 authored in pure Rye as a composition over the GREEN Keccak-f[1600] sponge in
+# crypto/sha3.rye: the Ethereum-family hash (account addresses, EVM selectors, EIP-191/712 digests), proven against the canonical
+# Keccak-256 known-answers, Zig's independent std.crypto Keccak256, and the real-world ERC-20 transfer selector (Season G · Cryptography).
+#
+# Season: crypto — Season G's Ethereum-family hash, beside crypto/sha3.rye. This rung authors NO new cryptography: it composes one
+# already-GREEN stone — the Keccak-f[1600] permutation and sponge proven in crypto/sha3.rye against FIPS 202 and std.crypto — and passes
+# it the original Keccak 0x01 delimiter rather than FIPS 202's 0x06. Keccak-256 is NOT SHA3-256; the two share the exact permutation and
+# pad10*1 rule and differ in that single marker byte, because Ethereum standardized before FIPS 202 changed it.
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the wave that seats the Rye-first spine).
+# Clean-room: the 0x01 delimiter and the sponge law are the public Keccak/FIPS 202 standard's own; the arithmetic is our GREEN sha3.rye,
+# never a copied line (.claude/rules/gratitude-licenses.md).
+#
+# crypto/keccak256.rye calls the proven sponge with rate 136 and the 0x01 delimiter. Parity is proven at selftest against the canonical
+# Keccak-256 known-answers for the empty message and "abc" (distinct from SHA3-256 of the same inputs — proof the 0x01 marker is carried),
+# Zig's own std.crypto Keccak256 byte-for-byte across the padding edges (135 the rate-1 collide byte, 136 the exact-rate extra block, 137,
+# and 400 multi-block), and the real-world ERC-20 selector Keccak-256("transfer(address,uint256)")[0..4] == 0xa9059cbb. An over-long
+# message refuses MessageTooLong before a byte is absorbed. Purely local — no key, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_keccak256_witness.rish
+
+say "crypto-keccak256: Language EN — Keccak-256 is the hash the Ethereum world runs on: an account address is the low twenty bytes of the Keccak-256 of a public key, an EVM function is dispatched by the first four bytes of the Keccak-256 of its signature, and every EIP-191/712 message digest is a Keccak-256. It is NOT SHA3-256 — the two share the exact same permutation and differ in one byte, the domain-separation delimiter, because Ethereum standardized before FIPS 202 changed 0x01 to 0x06."
+say "crypto-keccak256: Style Radiant — the law is stated positively: call the sponge crypto/sha3.rye already proved on metal with rate 136 and the original Keccak 0x01 delimiter, and the same bytes always fold to the same digest anyone with an EVM can replay. This rung authors no permutation of its own; it composes a GREEN stone and passes it one marker byte."
+say "crypto-keccak256: Lens TAME — no new cryptography: the permutation, absorb, and squeeze are the GREEN crypto/sha3.rye, proven byte-for-byte against FIPS 202 and std.crypto. Bounded input (max_message_bytes), contract asserts on every function. Parity holds against the canonical Keccak-256 known-answers AND Zig's independent std.crypto Keccak256 across the padding edges — the rate-1 collide byte, the exact-rate extra block, and multi-block inputs — AND the real-world ERC-20 selector 0xa9059cbb; an over-long message refuses MessageTooLong before a byte is absorbed. Purely local — no key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/keccak256"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/keccak256.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-keccak256: build failed — ${build.err}"
+
+let outfile = "crypto/bin/keccak256.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-keccak256: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-keccak256: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-keccak256' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-keccak256: selftest did not print the GREEN crypto-keccak256 line"

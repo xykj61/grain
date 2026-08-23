@@ -1,0 +1,53 @@
+# tools/l/lasso_partition_witness.rish -- given a query POLYGON (a free-form LASSO), PARTITION the scene's objects into CONTAINED, CLIPPED,
+# OUTSIDE, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/region_partition.rye splits a RECTANGLE's crossing set by CONTAINMENT; this rung is its
+# free-form companion. contained_in_poly names the objects a lasso holds WHOLE, clipped_in_poly the objects it holds only in PART (the
+# crop cut), partition_counts the three class sizes at once. It is the WINDOW-versus-CROSSING selection one shape freer than a rectangle
+# -- a window select keeps only what the loop wholly holds, a crossing select keeps everything it touches, the difference the CLIPPED
+# set. Exact integers, NO float, NO tolerance.
+#
+# The crux this witness proves on metal, the EXACT INVERSION of region_partition's lesson: region_partition proved the tight bounding box
+# is the EXACT arbiter of RECTANGLE containment, yet for a CONCAVE LASSO that lesson BREAKS -- an object's whole box, and even both box
+# corners, can lie inside the loop while a notch carves its middle out, so box containment is necessary but NOT sufficient and the pixel
+# scan comes back as the only arbiter. Two independent containment scans (one pass, and a plain per-label re-scan) agree for every object;
+# a notched square contains one object, clips one, leaves one outside; a convex whole-scene lasso contains all; an off-map lasso is a
+# valid all-OUTSIDE partition; a degenerate polygon refuses DegeneratePoly; determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/l/lasso_partition_witness.rish
+
+say "lasso_partition: Language EN -- Season G polygon-to-partition; the bounding box is the EXACT arbiter for a rectangle yet only a prefilter for a concave lasso, where the pixel scan is the arbiter; NO float, NO tolerance."
+say "lasso_partition: Style Radiant -- compose not braid: this rung owns only the containment split; lasso_select owns the crossing decision, the point-in-polygon arbiter, and the LassoPoly, scene_manifest owns the per-object rows. No plane of its own, no pixel written -- a reading over a reading."
+say "lasso_partition: Lens TAME -- the containment scan reads the map once under qoi's pixel ceiling, each pixel testing at most max_poly_vertices edges; the clip scan runs over the crossing set, no longer than the component count; every result slice sized to the component count; a degenerate polygon refuses DegeneratePoly, an off-map loop is all-OUTSIDE; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/lasso_partition"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/lasso_partition.rye -femit-bin=${bin}"]
+assert build.ok else "lasso_partition: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "lasso_partition: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "lasso_partition: ${out}"
+
+assert selftest.out contains "GREEN image-lasso-partition" else "lasso_partition: selftest did not print the GREEN line"
+assert selftest.out contains "the window-versus-crossing selection one shape freer than region_partition's rectangle" else "lasso_partition: the window-versus-crossing claim did not print"
+assert selftest.out contains "the DECISIVE EXACT INVERSION of region_partition's own lesson" else "lasso_partition: the decisive inversion crux did not print"
+assert selftest.out contains "for a CONCAVE LASSO that lesson BREAKS" else "lasso_partition: the lesson-breaks claim did not print"
+assert selftest.out contains "box containment is necessary but NOT sufficient" else "lasso_partition: the not-sufficient claim did not print"
+assert selftest.out contains "THE CONCAVITY DEFEATS THE BOX" else "lasso_partition: the concavity-defeats-the-box crux did not print"
+assert selftest.out contains "whose WHOLE box lies inside the polygon's box" else "lasso_partition: the whole-box-inside claim did not print"
+assert selftest.out contains "whose BOTH box corners" else "lasso_partition: the both-corners-inside claim did not print"
+assert selftest.out contains "so Q is CLIPPED -- only the even-odd arbiter run over every pixel decides the truth" else "lasso_partition: the clipped-truth claim did not print"
+assert selftest.out contains "TWO INDEPENDENT SCANS AGREE" else "lasso_partition: the two-scans-agree cross-check did not print"
+assert selftest.out contains "the partition CONTAINS {P}, CLIPS {Q}, leaves {R} OUTSIDE, one object in each class" else "lasso_partition: the one-in-each-class case did not print"
+assert selftest.out contains "a convex whole-scene lasso contains all three none clipped" else "lasso_partition: the contains-all case did not print"
+assert selftest.out contains "an off-map lasso is a valid all-OUTSIDE partition" else "lasso_partition: the off-map case did not print"
+assert selftest.out contains "CONTAINED + CLIPPED + OUTSIDE always sums to the component count" else "lasso_partition: the partition sum did not print"
+assert selftest.out contains "a two-vertex degenerate polygon refuses DegeneratePoly having read nothing" else "lasso_partition: the DegeneratePoly refusal did not print"
+assert selftest.out contains "the same lasso reads the same partition twice" else "lasso_partition: determinism did not print"
+
+say "lasso_partition: GREEN on metal -- given a lasso, the partition names what it holds WHOLE, what it CLIPS, and what it leaves OUTSIDE, the window-versus-crossing modes one shape freer than a rectangle; the bounding box the exact arbiter for a rectangle yet only a prefilter for a concave lasso, where the pixel scan arbitrates; refusals by name, determinism. Season G open-media."

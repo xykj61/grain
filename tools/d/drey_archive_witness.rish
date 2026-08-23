@@ -1,0 +1,35 @@
+# tools/d/drey_archive_witness.rish — the desk archive: a bounded log of proven recordings in order (DREY6).
+#
+# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY6.
+# Design read: active-designing/date/20260814/20260814-064021_drey6-desk-archive-bounded-log-of-proven-recordings-exploration.md
+# Stands on: mikrophone/wire.rye (DREY1) — deframe proves a payload whole before a byte is yielded.
+#
+# mikrophone/archive.rye grows the receiving hand from DREY4's single inbox slot to a bounded log that keeps a sequence
+# of proven-whole recordings in arrival order. The selftest proves: the archive keeps a sequence in order (each byte-for-
+# byte), only proven-whole recordings land (a tampered frame refuses DigestMismatch and the archive is unchanged), both
+# bounds refuse ArchiveFull before a write (the entry count and the byte budget), and clear forgets whole.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/drey_archive_witness.rish
+
+say "drey-archive: Language EN — DREY6 grows the Mikrophone receiving hand from one inbox slot to a bounded archive that keeps a sequence of proven recordings in arrival order."
+say "drey-archive: Style Radiant — a desk that keeps many recordings owes each one the same proof it owed the first: kept only once whole, bounded so it can never overrun, forgotten whole when the keeper is done."
+say "drey-archive: Lens TAME — deposit deframes verify-before-trust FIRST and appends only on a clean deframe within both bounds; every refusal is by name (DigestMismatch, ArchiveFull); the byte sum is checked in u64 so it cannot wrap; the copy is a plain bounded loop; no disk, no network, no key, no funds (custody gate %2 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mikrophone/bin/archive"
+
+let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} rye/bin/rye build mikrophone/archive.rye -femit-bin=${bin}"]
+assert build.ok else "drey-archive: build failed — ${build.err}"
+
+let outfile = "mikrophone/bin/archive.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "drey-archive: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "drey-archive: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN drey-archive' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "drey-archive: selftest did not print the GREEN drey-archive line"
+
+say "drey-archive: GREEN — the Mikrophone desk keeps a bounded log of proven recordings in order. DREY6 grows the receiving hand from one slot to an archive, the verify-before-keep promise held across many."

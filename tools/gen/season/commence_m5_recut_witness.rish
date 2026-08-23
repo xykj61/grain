@@ -15,7 +15,7 @@ say control.out
 assert control.ok else "commence-m5: census control must GREEN before totals"
 assert control.out contains "GREEN: census-control" else "commence-m5: want control GREEN"
 
-let glow = run ["rishi/bin/rishi" "run" "tools/glow_run.rish" "glow/gen/cast-u32.glow"]
+let glow = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-u32.glow"]
 say glow.out
 assert glow.ok else "commence-m5: glow desk RED"
 assert glow.out contains "GREEN: glow_run" else "commence-m5: want glow GREEN"
@@ -26,7 +26,7 @@ assert museum.ok else "commence-m5: baton museum RED"
 assert museum.out contains "census_breach_count=0" else "commence-m5: want breach 0"
 assert museum.out contains "GREEN: baton-census" else "commence-m5: want museum GREEN"
 
-let alphabet = run ["rishi/bin/rishi" "run" "tools/glow_rune_alphabet_witness.rish"]
+let alphabet = run ["rishi/bin/rishi" "run" "tools/g/glow_rune_alphabet_witness.rish"]
 say alphabet.out
 assert alphabet.ok else "commence-m5: rune alphabet RED"
 assert alphabet.out contains "GREEN: Glow rune alphabet" else "commence-m5: want alphabet GREEN"

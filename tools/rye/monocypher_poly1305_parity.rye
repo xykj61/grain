@@ -1,0 +1,76 @@
+//! tools/rye/monocypher_poly1305_parity.rye — our authored crypto/poly1305.rye asked for its OWN Poly1305 one-time authenticator tags over the same
+//! eight inputs the Monocypher C harness (tools/fixtures/monocypher_poly1305_harness.c) prints, so tools/cr/crypto_monocypher_poly1305_parity_witness.rish
+//! can diff our bytes against the vendored Monocypher's C byte-for-byte — the MAC that authenticates every sealed message, proven against the audit's
+//! parity target. Season G (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//!
+//! crypto/poly1305.rye's own selftest named Monocypher-source parity as an honest held horizon; this harness lets the witness close it. The first
+//! seven tags are over deterministic messages of sizes {0, 1, 15, 16, 17, 34, 256} — the block edges Poly1305's polynomial must cross — each byte i
+//! generated as (i*7 + 1) mod 256, the same generation the selftest uses. The eighth is the RFC 8439 §2.5.2 canonical message "Cryptographic Forum
+//! Research Group", whose published tag anchors the witness to the world. Every tag is under the RFC 8439 §2.5.2 one-time key.
+//!
+//! This authors NO cryptography — it is a printing harness over the GREEN crypto/poly1305.rye (reached through the tools/rye/poly1305.rye symlink, since
+//! Rye resolves imports beside the importing file). Purely local — no key of ours, no network, no funds, no device.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/rye/monocypher_poly1305_parity.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const p = @import("poly1305.rye");
+
+/// RFC 8439 §2.5.2 one-time key (first 16 bytes clamp into r; second 16 are the pad s) — a public test vector, never a real secret.
+const rfc_key = [p.key_bytes]u8{
+    0x85, 0xd6, 0xbe, 0x78, 0x57, 0x55, 0x6d, 0x33, 0x7f, 0x44, 0x52, 0xfe, 0x42, 0xd5, 0x06, 0xa8,
+    0x01, 0x03, 0x80, 0x8a, 0xfb, 0x0d, 0xb2, 0xfd, 0x4a, 0xbf, 0xf6, 0xaf, 0x41, 0x49, 0xf5, 0x1b,
+};
+
+/// RFC 8439 §2.5.2 canonical message — the standard's own published test string, reproduced byte-for-byte as the neutral reference.
+const rfc_message = "Cryptographic Forum Research Group";
+
+const hex_alphabet = "0123456789abcdef";
+
+/// print_tag — render a 16-byte Poly1305 authenticator as a line of 32 lowercase hex characters.
+fn print_tag(tag: *const [p.tag_bytes]u8) void {
+    var out: [32]u8 = undefined;
+    var i: u32 = 0;
+    // invariant: each of the 16 tag bytes renders to exactly two hex characters, filling the 32-character line exactly.
+    while (i < p.tag_bytes) : (i += 1) {
+        out[i * 2] = hex_alphabet[tag[i] >> 4];
+        out[i * 2 + 1] = hex_alphabet[tag[i] & 0x0f];
+    }
+    // invariant (postcondition): the rendered line is the fixed 32-character width — a full 16-byte tag, never a truncation.
+    assert(out.len == 32);
+    print("{s}\n", .{out});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+
+    // invariant (construction): the one-time key is the fixed 32-byte Poly1305 width.
+    assert(rfc_key.len == p.key_bytes);
+
+    // The block-edge sizes crypto/poly1305.rye's selftest crosses.
+    const sizes = [_]u32{ 0, 1, 15, 16, 17, 34, 256 };
+
+    // 1..7. Deterministic messages over the block edges — byte i = (i*7 + 1) mod 256.
+    for (sizes) |sz| {
+        // invariant: every printed size fits the fixed message buffer, so the block loop is bounded.
+        assert(sz <= 256);
+        var msg: [256]u8 = undefined;
+        var i: u32 = 0;
+        while (i < sz) : (i += 1) msg[i] = @as(u8, @truncate(i *% 7 +% 1));
+
+        var tag: [p.tag_bytes]u8 = undefined;
+        try p.mac(&tag, msg[0..sz], &rfc_key);
+        print_tag(&tag);
+    }
+
+    // 8. RFC 8439 §2.5.2 canonical message — anchored to the published tag by the witness.
+    var tag: [p.tag_bytes]u8 = undefined;
+    try p.mac(&tag, rfc_message, &rfc_key);
+    print_tag(&tag);
+
+    return 0;
+}

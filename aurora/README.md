@@ -73,7 +73,7 @@ RYE_SMP=2 aurora/run.sh wire   # the fifth stage: two harts pass a value across 
 RYE_SMP=2 aurora/run.sh posted # the sixth stage: a sealed datagram posted across the wire between two harts
 ```
 
-`aurora/run.sh` is a thin delegate to `tools/aurora_run.rish` — the interface above is unchanged. Direct invocation: `rishi/bin/rishi run tools/aurora_run.rish [stage]`.
+`aurora/run.sh` is a thin delegate to `tools/au/aurora_run.rish` — the interface above is unchanged. Direct invocation: `rishi/bin/rishi run tools/au/aurora_run.rish [stage]`.
 
 `RYE_SMP` chooses how many harts the machine wakes with (it defaults to one); the
 two-hart stages need `RYE_SMP=2`.

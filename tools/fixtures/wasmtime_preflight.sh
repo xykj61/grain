@@ -14,7 +14,7 @@ cat <<'EOF'
 preflight ABSENT: wasmtime
   seat 1: wasmtime-cli on PATH
   seat 2: tools/.cache/wasmtime/wasmtime  (pin 31.0.0)
-  restore: sh tools/bootstrap_wasmtime.sh
+  restore: sh tools/b/bootstrap_wasmtime.sh
   effect:  receipt_verify_wasm reports ABSENT; suite is PARTIAL, never GREEN
 EOF
 exit 0

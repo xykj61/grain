@@ -1,0 +1,46 @@
+# tools/cl/click_relation_witness.rish -- the TWO-CLICK RELATION read on metal: turn TWO points into TWO whole-group selections, then read how the
+# two groups sit relative to each other (same-group, true gap, frame overlap), lifting image/cluster_adjacency.rye's cluster-pair reads from two
+# cluster IDS to two POINTS through image/hit_test.rye and image/overlap_clusters.rye's cluster_of (Season G).
+#
+# Season G (Open Media Primitives) -- the single-click family reads what ONE tap grabs (image/click_facts.rye its facts, image/click_bounds.rye
+# its frame). This rung reads what a PAIR of taps means together: image/hit_test.rye names the ONE object under a point, image/overlap_clusters.rye's
+# cluster_of names the connected group that object belongs to, and image/cluster_adjacency.rye reads how two whole groups stand (the true
+# nearest-pixel Chebyshev gap, the frame overlap). A reading over readings -- no plane of its own, no pixel written.
+#
+# The crux this witness proves on metal: the relation two clicks read is a GROUP fact, not a PIXEL fact -- INVARIANT to where within each group a
+# keeper taps. Over a 3-object chain (A corner-L, B corner-L, C ring, boxes overlapping 1-2 and 2-3 yet never 1-3) plus a far singleton D: two taps
+# on A and C read the SAME group and gap 0 though the objects are 8-disconnected (connectivity the transitive closure of box overlap); a tap on A
+# then D and a tap on C then D read the IDENTICAL group gap 3 though the clicked pixels' own Chebyshev distances differ (8 versus 7); the chain and D
+# land on distinct groups whose frames OVERLAP while the true gap stays 3 (the frame-over-claim lifted to a pair of taps); a frame overlap of a group
+# against itself refuses SameGroup; a background tap refuses EmptyClick; a point off the map refuses PointOutOfBounds; determinism. No network, no key,
+# no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cl/click_relation_witness.rish
+
+say "click_relation: Language EN -- Season G two-click relation; the relation two taps read is a GROUP fact not a PIXEL fact, invariant to where within each group a keeper taps, and two disconnected objects can read one group; NO float, NO tolerance."
+say "click_relation: Style Radiant -- compose not braid: this rung owns only the click-to-group resolution and the two-group pairing; hit_test owns the point-to-object arbiter, overlap_clusters owns cluster_of (the object-to-group map), cluster_adjacency owns the true cluster_distance and cluster_frames_overlap. No plane of its own, no pixel written -- a reading over readings."
+say "click_relation: Lens TAME -- each click resolves to at most one label through the hit test, the cluster-pair reads scan the object count bounded by label_max_pixels; a background tap refuses EmptyClick, a point off the map refuses PointOutOfBounds having read nothing, a group weighed against itself refuses SameGroup; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/click_relation"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/click_relation.rye -femit-bin=${bin}"]
+assert build.ok else "click_relation: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "click_relation: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "click_relation: ${out}"
+
+assert selftest.out contains "GREEN image-click-relation" else "click_relation: selftest did not print the GREEN line"
+assert selftest.out contains "the TWO-CLICK RELATION read" else "click_relation: the two-click-relation claim did not print"
+assert selftest.out contains "the relation two clicks read is a GROUP fact, not a PIXEL fact" else "click_relation: the decisive crux did not print"
+assert selftest.out contains "TWO TAPS ON ONE GROUP READ THE SAME GROUP, THOUGH THE OBJECTS ARE DISCONNECTED" else "click_relation: the same-group claim did not print"
+assert selftest.out contains "THE GAP IS THE GROUP'S, NOT THE PIXELS'" else "click_relation: the invariance claim did not print"
+assert selftest.out contains "THE GROUP FRAME OVER-CLAIMS AT THE TWO-CLICK LEVEL" else "click_relation: the frame-over-claim did not print"
+assert selftest.out contains "refuses SameGroup by name" else "click_relation: the SameGroup refusal did not print"
+assert selftest.out contains "the same pair reads the same relation twice" else "click_relation: determinism did not print"
+
+say "click_relation: GREEN on metal -- the two-click relation read, two taps resolving to two whole groups then weighed by their true gap and frame overlap, invariant to where within each group a keeper taps, two disconnected objects reading one group, the frame over-claiming a contact the members never make, refusals by name, determinism. Season G open-media."

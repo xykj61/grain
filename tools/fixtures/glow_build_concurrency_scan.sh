@@ -25,7 +25,7 @@ set -eu
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
 cd "$ROOT"
 
-WORKER=tools/glow_run_worker.sh
+WORKER=tools/g/glow_run_worker.sh
 # Bounded on purpose: six lanes reproduced the race every time it was measured, and the scan
 # should cost one build's wall time rather than a sweep's.
 LANES=6

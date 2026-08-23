@@ -1,0 +1,40 @@
+# tools/t/text_grid_witness.rish -- the terminal grid meets the pixel family, proven on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the bridge rung. The tree grew two families side by side and never let them meet
+# on metal. One is the terminal grid: scooter_view.rye folds a channel into a fixed 24x80 grid of character CELLS
+# (bytes), dexter_line.rye edits a bounded line, scooter_compose.rye joins them into a composed frame -- all held as
+# BYTES a keeper reads. The other is the open-media paint family: image/font5x7_ascii.rye draws every printable ASCII
+# glyph, image/text_paint.rye composites a laid line's coverage into an RGBA grid, image/qoi.rye owns the pixel target.
+# image/text_grid.rye is the join -- it paints a monospace grid of character bytes into a real image, so a terminal
+# face is not only bytes a reader parses but PIXELS a surface (Grainphone, Realidream, Skate) shows.
+#
+# The crux this witness proves: the bridge is FAITHFUL BY MEASURE, not by claim. The painted ink equals the summed
+# glyph coverage of every non-space cell exactly -- no stray pixel, none missed; a blank row is background byte-for-byte;
+# a chosen cell's pixel block equals a standalone paint of that one glyph at its grid origin (each cell paints its own
+# glyph at c*pitch, r*cell_h); the render is deterministic; the terminal image round-trips through the open QOI codec
+# byte-for-byte; and every mis-shape -- a mis-sized cells buffer, a zero dimension, a target too small -- refuses BY
+# NAME before a pixel moves. Correctly layered: image/ composes only the image family, so no pond dependency inverts
+# the stack; a pond rung feeds a live scooter_view.Frame's cells in one line later. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/text_grid_witness.rish
+
+say "text-grid: Language EN -- Season G bridge rung; a monospace grid of character bytes (the shape scooter_view.Frame.cells carries) painted into a real RGBA image through the open font-and-paint family -- the terminal grid and the pixel family meeting on metal for the first time."
+say "text-grid: Style Radiant -- lead with what is: a terminal face is now pixels a surface can show, not only bytes a reader parses; the paint is faithful by a measured ink count, the blank row is ground, a cell block equals its standalone glyph, each cell can carry its OWN foreground and its OWN background (a real colored header, an ink over its own ground), and every face round-trips through our own open QOI codec byte-for-byte."
+say "text-grid: Lens TAME -- u32 in-memory counts, u8 coverage and color bytes; every buffer names a maximum (grid_cols_max, grid_rows_max, qoi's pixel ceiling); the box is checked all-or-nothing ONCE up front so an overflow refuses GridOutOfBounds before a pixel moves; each mis-shape refuses by its own named error; pure composition over image family public APIs, no new storage or codec; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/text_grid"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/text_grid.rye -femit-bin=${bin}"]
+assert build.ok else "text-grid: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "text-grid: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "text-grid: ${out}"
+
+assert selftest.out contains "GREEN image-text-grid" else "text-grid: selftest did not print the GREEN bridge line"
+
+assert selftest.out contains "auto-ink picks a legible ink per cell" else "text-grid: selftest did not prove the auto-ink readable-ink consumer"

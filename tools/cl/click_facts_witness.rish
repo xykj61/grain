@@ -1,0 +1,46 @@
+# tools/cl/click_facts_witness.rish -- the CLICK-THEN-FACTS read on metal: turn ONE point into a whole-group selection, then read that group's
+# FACTS (area, largest, holed count), joining image/click_expand.rye (the click-to-group expand) with image/selection_summary.rye (the reads
+# over a selection), over image/scene_manifest.rye's per-object rows (Season G).
+#
+# Season G (Open Media Primitives) -- image/click_expand.rye bridges the first selector (image/hit_test.rye, a POINT names the ONE object under
+# it) to the newest morphology (image/selection_neighbors.rye, grow a selection to its fixed point), so a click becomes a whole-group selection.
+# image/selection_summary.rye reads a selection's facts. This rung JOINS the two ends -- a click through the expand into a whole-group selection,
+# then that selection's summary -- so one tap answers "what did I just grab, all of it." A reading over readings -- no plane of its own.
+#
+# The crux this witness proves on metal, the EXACT COMPLEMENT of selection_summary's own: a selection is a SUBSET so its summary is strictly
+# SHARPER than the whole scene, yet a click's expansion is a SUPERSET of the clicked object so its facts are strictly BROADER than the one thing
+# under the cursor. A click on a small corner-L reads the whole group's area 34, its largest the RING never clicked, its holed count 1; clicking
+# any object of the group reads the SAME facts (selection_summary over the cluster's membership, cross-checked); a click in a corner-L's interior
+# is background inside its own box, so the group is empty, the area reads zero and the largest refuses EmptyClick (hit_test's box-is-a-prefilter
+# crux carried to the facts); a singleton's group is itself; a point off the map refuses; determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cl/click_facts_witness.rish
+
+say "click_facts: Language EN -- Season G click-then-facts; a click reads the whole group's facts, broader than the one object under the cursor, and a miss reads zero facts; NO float, NO tolerance."
+say "click_facts: Style Radiant -- compose not braid: this rung owns only the join of the two ends (click-to-group-to-facts); click_expand owns the seed-and-expand, selection_summary owns the reads over a selection, scene_manifest owns the per-object rows, overlap_clusters owns the whole-closure clustering the selftest cross-checks. No plane of its own, no pixel written -- a reading over readings."
+say "click_facts: Lens TAME -- a click expands to at most the whole scene (click_expand's bound under label_max_pixels), each summary read runs the group length times, each a single manifest lookup; a point off the map refuses PointOutOfBounds having read nothing, while a background point is a valid MISS reading zero facts; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/click_facts"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/click_facts.rye -femit-bin=${bin}"]
+assert build.ok else "click_facts: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "click_facts: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "click_facts: ${out}"
+
+assert selftest.out contains "GREEN image-click-facts" else "click_facts: selftest did not print the GREEN line"
+assert selftest.out contains "the CLICK-THEN-FACTS read" else "click_facts: the click-then-facts claim did not print"
+assert selftest.out contains "a click's expansion is a SUPERSET of the clicked object so its facts are strictly BROADER" else "click_facts: the decisive crux did not print"
+assert selftest.out contains "THE CLICK'S FACTS ARE THE GROUP'S, NOT THE CLICKED OBJECT'S" else "click_facts: the group-facts claim did not print"
+assert selftest.out contains "ANY OBJECT OF A GROUP READS THE SAME FACTS" else "click_facts: the same-facts claim did not print"
+assert selftest.out contains "A MISS READS ZERO FACTS" else "click_facts: the miss claim did not print"
+assert selftest.out contains "a phantom click reads no phantom group" else "click_facts: the phantom-click claim did not print"
+assert selftest.out contains "A singleton's group is itself" else "click_facts: the singleton claim did not print"
+assert selftest.out contains "the same click reads the same facts twice" else "click_facts: determinism did not print"
+
+say "click_facts: GREEN on metal -- the click-then-facts read, a click reading the whole group's facts broader than the one object under the cursor, a miss reading zero facts, a singleton's group itself, refusals by name, determinism. Season G open-media."

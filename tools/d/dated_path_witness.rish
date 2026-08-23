@@ -1,0 +1,218 @@
+# tools/d/dated_path_witness.rish -- the dated-path resolver and its census, proven on metal.
+#
+# WHY THIS RUNG. The mark law (`.claude/rules/stamp-and-name.md`) seats a chronological mark and
+# a `date/YYYYMMDD/` fold for every room that outgrows a browser. A fold is safe only if the
+# references already written at the flat path keep landing, and this tree has already paid for
+# learning that: the earlier session-log fold left 455 of 584 cited session-log paths pointing
+# nowhere. Repointing by hand would mean editing thousands of dated logs, which accrete-never-
+# break forbids at that scale. So the reference is resolved rather than rewritten, and this rung
+# is the proof that the resolving works before any room is folded on the strength of it.
+#
+# WHAT IS PROVEN HERE, all of it on metal.
+#
+#   The five verdicts, each on a real case in this tree. A path that still stands reads `home`.
+#   A path written relative to its citing file reads `home` when given that citer, and falls to
+#   the index without it -- the same reference, two honest answers, and the difference is
+#   exactly the context a reader has. A folded session log is recovered BY COMPUTATION from its
+#   basename. A file moved somewhere the fold rule cannot predict is recovered by the index. A
+#   basename living at two paths reads `ambiguous` and names both.
+#
+#   The fold rule works on a room that has never folded. A room is planted, one file placed at
+#   `date/YYYYMMDD/`, and the FLAT reference resolves to it with no index consulted and no prior
+#   knowledge of that room. This is the future-facing claim, and it is the reason the whole
+#   stamp stays in the filename: the transform from old path to new is a pure function of the
+#   basename, so it keeps working for rooms not yet folded and folds not yet run.
+#
+#   Three RED paths. A reference that resolves nowhere exits non-zero and names no home rather
+#   than inventing one. A shared basename is never quietly collapsed to a single answer. And
+#   every home the resolver names is checked to actually exist -- a resolver that returns a path
+#   which is not there would be worse than one that returns nothing.
+#
+#   The first fold proved the design. `session-logs/` folded on `20260821.161758` -- 1,443 files
+#   moved -- and a sample of stale references afterward resolved 23 of 24 by the fold rule alone.
+#
+#   ONE exclusion list, read by both tools. The census and the repointer act on one corpus and
+#   must agree on what is not the field. They kept private copies for a day and diverged
+#   twice; the second divergence let the repointer rewrite the deliberately stale fixture this
+#   very rung tests, leaving it proving nothing (REDS %121). Both now source one file, and a
+#   hand-rolled exclusion coming back is refused.
+#
+#   The census, under a ratchet on the right number. `tools/fixtures/dated_path_scan.sh` walks
+#   every dated reference in the field, and its numbers are printed verbatim rather than recited
+#   here (REDS %108). The gate is on the LOST references -- a basename that exists nowhere, and
+#   a basename at two paths where no single answer is safe -- rather than on the whole broken
+#   count. Under the mark law a stale reference is resolved rather than repointed, so recovered
+#   references RISE when a room folds and that is the fold working; what must never rise is what
+#   the resolver cannot recover. The lost ceiling has no slack.
+#
+# WHAT IS NOT PROVEN. Nothing here moves a file or repairs a reference; the resolver reads and
+# reports, and the repairing is a later round's work. The 183 references whose basename exists
+# nowhere are counted rather than explained -- some are renames, some are files that never
+# landed, and telling those apart needs a history walk this rung does not take.
+#
+# Season: the Standfast restrategizing of `20260821`, arc one -- the mark and the path.
+# Kin: tools/d/dated_path_resolve.rish - tools/fixtures/dated_path_scan.sh -
+# .claude/rules/stamp-and-name.md -
+# external-research/20260821-152409_the-standfast-read-marks-rooms-and-the-vocabulary-pruning.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/dated_path_witness.rish
+
+say "dated-path: Language EN -- a fold that breaks its own references costs more connective tissue than the clutter it cleared. This proves a stale reference can be resolved rather than rewritten, so a room may fold without the tree losing its way back."
+say "dated-path: Style Radiant -- four claims in order. The six verdicts each land on a real case. The fold rule recovers a room that has never folded. Three RED paths refuse. And the lost-reference census stands under a ratchet with no slack."
+say "dated-path: Lens TAME -- every number below comes from the scan's own output rather than from this file's memory, the ceiling is asserted rather than hoped, and each named home is checked to exist before it is believed."
+
+let bin = "rishi/bin/rishi"
+let tool = "tools/d/dated_path_resolve.rish"
+let scan = "tools/fixtures/dated_path_scan.sh"
+
+# ---------------------------------------------------------------------------------------------
+# PART ONE -- the five verdicts, each on a real case standing in this tree today.
+# ---------------------------------------------------------------------------------------------
+
+let standing_ref = "foundations/20260816-214652_standfast-the-stopped-line.md"
+let standing = run [bin "run" tool standing_ref]
+assert standing.ok else "dated-path: a reference that still stands must resolve and exit clean"
+assert standing.out contains "verdict=home" else "dated-path: a reference that still stands must read home"
+assert standing.out contains "home=${standing_ref}" else "dated-path: a standing reference must resolve to itself, unchanged"
+say "verdict one GREEN -- a path that still stands reads home"
+
+# The same reference, twice: with its citing file it resolves as written, without it the index
+# answers. Both are honest, and the difference is exactly the context a reader has.
+let relative_ref = "archive/20260618-155212_open-threads.md"
+let citer = "construction/THREADS.md"
+let with_citer = run [bin "run" tool relative_ref citer]
+assert with_citer.ok else "dated-path: a reference relative to its citer must resolve"
+assert with_citer.out contains "verdict=home" else "dated-path: given its citing file, a relative reference must read home"
+assert with_citer.out contains "home=construction/archive/20260618-155212_open-threads.md" else "dated-path: the relative reading must resolve against the citer's own directory"
+say "verdict two GREEN -- a relative reference resolves from its citing file's directory"
+
+# The fold rule on a real folded log: computed from the basename, no index consulted. This
+# expectation named archive/ until the session-log fold of `20260821.161758` moved the room, and
+# this assert is what noticed -- which is the whole reason it names a path rather than a shape.
+# This reference is DELIBERATELY STALE -- it is the flat path the file answered to before the
+# room folded, and the whole point is that the resolver recovers it by computation. It was
+# silently rewritten to the folded path by the repointer's own apply run (commit 0d31946c59),
+# which left this assert testing that an already-correct path resolves -- true, and worthless.
+# The repointer now excludes the instrument's own fixtures, as the census already did (REDS %121).
+let folded_ref = "session-logs/20260710-000045_one-clock-resins-plainly.md"
+let folded = run [bin "run" tool folded_ref]
+assert folded.ok else "dated-path: a folded session log must still resolve"
+assert folded.out contains "verdict=recovered-by-fold-rule" else "dated-path: a folded log must be recovered by computation, not by search"
+assert folded.out contains "home=session-logs/date/20260710/20260710-000045_one-clock-resins-plainly.md" else "dated-path: the fold rule must name the day directory the file actually lives in"
+say "verdict three GREEN -- a folded log is recovered by the fold rule alone"
+
+# A move the fold rule cannot predict -- yonder is a judgement, not a date -- so the index answers.
+let moved_ref = "active-designing/20260710-230433_dimeroll-lap4-filters.md"
+let moved = run [bin "run" tool moved_ref]
+assert moved.ok else "dated-path: a file moved to yonder must still resolve"
+assert moved.out contains "verdict=recovered-by-index" else "dated-path: a move the fold rule cannot predict must be recovered by the index"
+assert moved.out contains "home=active-designing/yonder/20260710-230433_dimeroll-lap4-filters.md" else "dated-path: the index must name where the moved file actually stands"
+say "verdict four GREEN -- a move the fold rule cannot predict is recovered by the index"
+
+# A basename that genuinely lives at two paths -- the sameness brief and its research twin.
+let shared_ref = "nowhere/20260703-182612_sameness-is-the-macro.md"
+let shared = run [bin "run" tool shared_ref]
+assert shared.ok else "dated-path: an ambiguous basename must report rather than fail"
+assert shared.out contains "verdict=ambiguous" else "dated-path: a basename at two paths must read ambiguous"
+assert shared.out contains "foundations/20260703-182612_sameness-is-the-macro.md" else "dated-path: an ambiguous verdict must name the foundation twin"
+assert shared.out contains "external-research/20260703-182612_sameness-is-the-macro.md" else "dated-path: an ambiguous verdict must name the research twin"
+say "verdict five GREEN -- a shared basename reads ambiguous and names every home"
+
+# A BARE basename was a sibling reference, and a day fold is exactly what separates siblings. Given
+# its citing file the room is read off that, and the same reference without a citer must stay
+# ambiguous -- the resolver uses context when it has it and refuses to guess when it does not.
+let sibling_ref = "20260711-033228_hold-at-tip-430.md"
+let sibling_citer = "counsel/date/20260712/20260712-052806_claude-counsel-three-doors-and-teacher.md"
+let sibling = run [bin "run" tool sibling_ref sibling_citer]
+assert sibling.ok else "dated-path: a sibling reference must resolve when its citing file is given"
+assert sibling.out contains "verdict=recovered-by-fold-rule" else "dated-path: a bare sibling basename must be recovered inside its citing file own room"
+assert sibling.out contains "home=counsel/date/20260711/20260711-033228_hold-at-tip-430.md" else "dated-path: the sibling must resolve inside counsel rather than to another room namesake"
+
+let orphan = run [bin "run" tool sibling_ref]
+assert orphan.ok else "dated-path: the same reference without a citer must still report"
+assert orphan.out contains "verdict=ambiguous" else "dated-path: with no citing file and a shared basename, the resolver must refuse to choose"
+say "verdict six GREEN -- a bare sibling resolves inside its citer own room, and refuses to guess without one"
+
+# ---------------------------------------------------------------------------------------------
+# PART TWO -- the fold rule proven on a room that has NEVER folded. This is the claim that makes
+# the whole stamp worth repeating in the filename: the transform is a pure function of the
+# basename, so it works for rooms this tree has not created yet.
+# ---------------------------------------------------------------------------------------------
+
+let proof_room = ".dated-path-proof"
+let proof_base = "20260101-000000_a-room-that-never-folded.md"
+let proof_flat = "${proof_room}/${proof_base}"
+let proof_home = "${proof_room}/date/20260101/${proof_base}"
+
+let planted = run ["sh" "-c" "rm -rf .dated-path-proof && mkdir -p .dated-path-proof/date/20260101 && echo planted > .dated-path-proof/date/20260101/20260101-000000_a-room-that-never-folded.md"]
+assert planted.ok else "dated-path: the planted room must be created before it can be resolved"
+
+let recovered = run [bin "run" tool proof_flat]
+let swept = run ["rm" "-rf" proof_room]
+
+assert swept.ok else "dated-path: the planted room must be swept whether the proof passed or failed"
+assert recovered.ok else "dated-path: a flat reference into a folded room must resolve"
+assert recovered.out contains "verdict=recovered-by-fold-rule" else "dated-path: a room the resolver has never seen must still be recovered by computation"
+assert recovered.out contains "home=${proof_home}" else "dated-path: the fold rule must compute the day directory from the basename alone"
+say "fold rule GREEN -- a flat reference into a never-before-seen folded room resolves by computation"
+
+# ---------------------------------------------------------------------------------------------
+# PART THREE -- the RED paths. A resolver is trustworthy only where it refuses.
+# ---------------------------------------------------------------------------------------------
+
+let absent = run [bin "run" tool "session-logs/20260101-000000_no-such-log-was-ever-written.md"]
+assert (absent.ok == false) else "dated-path: a reference that resolves nowhere must exit non-zero"
+assert absent.out contains "verdict=missing" else "dated-path: a reference that resolves nowhere must say so by name"
+assert absent.out contains "home=-" else "dated-path: a missing reference must name no home rather than invent one"
+say "RED one GREEN -- a reference that resolves nowhere refuses, and invents nothing"
+
+# Ambiguity must never be collapsed. The shared basename above must not have answered with a
+# single home, which is the failure a helpful resolver would drift into first.
+assert (shared.out contains "verdict=recovered-by-index" == false) else "dated-path: a shared basename must never be quietly answered as though it were unique"
+assert (shared.out contains "verdict=home" == false) else "dated-path: a shared basename must never be answered as though the reference still stood"
+say "RED two GREEN -- a shared basename is never collapsed to one answer"
+
+# Every home named above must actually exist. A resolver that returns a path which is not there
+# would be worse than one that returns nothing, because it would be believed.
+let homes = [standing_ref "construction/archive/20260618-155212_open-threads.md" "session-logs/date/20260710/20260710-000045_one-clock-resins-plainly.md" "active-designing/yonder/20260710-230433_dimeroll-lap4-filters.md" "foundations/20260703-182612_sameness-is-the-macro.md" "external-research/20260703-182612_sameness-is-the-macro.md"]
+let present = where homes as h: (run ["test" "-e" h]).ok
+assert (length present) == (length homes) else "dated-path: every home the resolver named must exist on disk"
+say "RED three GREEN -- every home the resolver named exists on disk"
+
+# ---------------------------------------------------------------------------------------------
+# PART FOUR -- the census, under a ratchet with no slack.
+# ---------------------------------------------------------------------------------------------
+
+let census = run ["sh" scan]
+assert census.ok else "dated-path: the census must complete -- see stderr"
+say census.out
+assert census.out contains "verdict=ok" else "dated-path: the census is trustworthy only when every reference landed in exactly one bucket"
+assert census.out contains "under_ceiling=yes" else "dated-path: LOST references have risen above the ceiling -- a reference now resolves nowhere, or resolves to two places at once, and neither is something the resolver can repair"
+
+# The scan's own RED path, proven by construction rather than by trust. A throwaway corpus is
+# built whose right answer is known before the walker runs: two dated references cited from one
+# file, one of which names a file that is there and one of which names a file that is not. A
+# walker that cannot tell those two apart on a two-line corpus cannot be believed on a tree.
+let control = run ["sh" "tools/fixtures/dated_path_control.sh"]
+assert control.ok else "dated-path: the throwaway control corpus must build and be walked"
+assert control.out contains "refs_total=2" else "dated-path: the control corpus carries exactly the two references it was built with"
+assert control.out contains "refs_home=1" else "dated-path: the control's real reference must be found at home"
+assert control.out contains "broken_gone=1" else "dated-path: the control's ghost reference must be reported broken and gone"
+assert control.out contains "verdict=ok" else "dated-path: the control census must balance"
+say "census control GREEN -- a corpus whose answer is known by construction is walked correctly, one home and one ghost"
+
+# ONE LIST, read by both tools. They kept private copies for a day, diverged twice, and the second
+# divergence let the repointer rewrite the stale fixture three asserts above -- leaving the rung
+# that proves the fold rule works proving nothing (REDS %121). A rule like that is only worth
+# writing down if something notices when it lapses, so this checks both tools source
+# tools/fixtures/dated_path_exclusions.sh and neither has grown a hand-rolled exclusion back.
+let one_list = run ["sh" "tools/fixtures/dated_path_exclusions_control.sh"]
+assert one_list.ok else "dated-path: the single-exclusion-list control must complete"
+say one_list.out
+assert one_list.out contains "real_tools_accepted=yes" else "dated-path: a hand-rolled exclusion has come back into the census or the repointer -- both must read tools/fixtures/dated_path_exclusions.sh and nothing else"
+assert one_list.out contains "private_copy_refused=yes" else "dated-path: the detector must refuse a tool carrying its own private copy, or the rule guards nothing"
+assert one_list.out contains "control_verdict=ok" else "dated-path: the single-list control must agree with itself"
+say "one list GREEN -- census and repointer read the same exclusions, and a private copy is refused"
+
+say "GREEN: dated-path -- six verdicts on real cases, the fold rule proven on a room that never folded, three RED paths refused, and the lost-reference census standing under a ceiling with no slack. A room may now fold without the tree losing its way back."

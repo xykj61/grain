@@ -97,7 +97,7 @@ Every module builds with `rye` and proves through its witness. To read one primi
 ```
 rye build mycelium/cord.rye -femit-bin=mycelium/bin/cord
 mycelium/bin/cord selftest
-rishi/bin/rishi run tools/mycelium_cord_witness.rish
+rishi/bin/rishi run tools/m/mycelium_cord_witness.rish
 ```
 
 The witness names its Language · Style · Lens, then prints one `GREEN` line stating what it proved. Every other family runs the same shape — swap `cord` for `purse`, `pledge`, `muster`, `puddle`, `portage`, `constel`, `testament`, and the rest.

@@ -1,0 +1,43 @@
+# tools/d/dahl_j9_skate_circle_signed_witness.rish — Season 3 Journey 9 (Skate), Rung 2.
+#
+# Rung one fixed the consent rule as a pure state machine; a bare state machine trusts whoever calls
+# it. pond/apps/skate_circle_signed.rye binds each consent act to the keeper's settled Kumara identity
+# — a join is signed by the joining point, a link-request by the requesting point, over the exact
+# facts (a tag so a join can never be replayed as a request, the circle id so it cannot cross circles,
+# the points). join_signed / request_signed verify the acting keeper's own signature against a caller
+# Keyring before touching rung one's circle. The honesty crux mirrors commerce's price-tamper: relabel
+# a request's target after signing and reuse the signature, and it falls (BadConsent). A join signed by
+# the wrong keeper (BadConsent), an unenrolled keeper (UnknownKeeper), and a signature presented to
+# another circle (BadConsent) each refuse. Additive — composes skate_circle (r1) + kumara over public
+# API (r1 re-runs GREEN); demo keeper seeds only, no real key, no network (serve is the gate).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/dahl_j9_skate_circle_signed_witness.rish
+
+say "dahl-j9r2: Language EN — each consent act carries its keeper's signature, and consent cannot be fabricated."
+say "dahl-j9r2: Lens TAME — a relabelled request, a forged join, an unenrolled keeper, and a cross-circle signature each refuse."
+
+let zig = "vendor/zig-toolchain/zig"
+
+# Rung one stays GREEN beneath the signed layer — additive.
+let binr1 = "pond/bin/skate-circle"
+let buildr1 = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_circle.rye -femit-bin=${binr1}"]
+assert buildr1.ok else "dahl-j9r2: skate_circle (r1) build failed"
+let selfr1 = run ["sh" "-c" "${binr1} selftest 2>&1"]
+assert selfr1.ok else "dahl-j9r2: skate_circle (r1) selftest exited non-zero"
+assert selfr1.out contains "GREEN" else "dahl-j9r2: r1 did not speak GREEN"
+
+let bin = "pond/bin/skate-circle-signed"
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_circle_signed.rye -femit-bin=${bin}"]
+assert build.ok else "dahl-j9r2: skate_circle_signed build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "dahl-j9r2: skate_circle_signed selftest exited non-zero"
+assert selftest.out contains "GREEN" else "dahl-j9r2: selftest did not speak GREEN"
+assert selftest.out contains "built a real connection" else "dahl-j9r2: signed-consent crux missing"
+assert selftest.out contains "relabelled after signing refused BadConsent" else "dahl-j9r2: relabel refusal missing"
+assert selftest.out contains "signed by the wrong keeper refused BadConsent" else "dahl-j9r2: forged-join refusal missing"
+assert selftest.out contains "refused UnknownKeeper" else "dahl-j9r2: unknown-keeper refusal missing"
+assert selftest.out contains "consent names its circle" else "dahl-j9r2: cross-circle refusal missing"
+
+say "dahl-j9r2: GREEN — consent is signed; a steward cannot fabricate a keeper's join or link, and r1 stays GREEN."

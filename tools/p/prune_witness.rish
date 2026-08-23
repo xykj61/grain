@@ -1,0 +1,40 @@
+# tools/p/prune_witness.rish -- the skeleton spur-pruner proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the cleanup pass the endpoint detector opens, the crux-first sibling
+# image/endpoints.rye was built as the floor for. A skeleton read from a noisy mask carries SPURS: tiny one-or-two-pixel
+# barbs a thinning leaves at every rough edge, each a false branch a shape-analysis would read as real. Pruning removes them
+# by the classic two-phase morphological prune -- strip endpoints `length` times to peel every free end, then conditionally
+# dilate the surviving ends `length` times back along the original figure, so a spur of length <= length VANISHES while a
+# real branch is restored whole.
+#
+# The crux this witness proves on metal: a long diagonal line with a short diagonal spur off its center junction keeps its
+# whole length while the spur vanishes entirely (the spur is a clean degree-two chain the strip peels, the junction six
+# pixels from each end so the reconstruction never reaches the spur base); the same diagonal with no spur comes back
+# byte-for-byte itself (a clean skeleton is a fixed point of pruning); an isolated segment no longer than the prune length is
+# wholly parasitic and vanishes; the output is opaque white-on-black even from a translucent source; the pruned figure
+# round-trips through the open QOI codec byte-for-byte; a zero length, an over-max length, and an empty source refuse by
+# name; the same prune is deterministic. No network, no key, no funds -- the clean skeleton a surface reaches for the day a
+# mask's barbs would lie to it, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/p/prune_witness.rish
+
+say "prune: Language EN -- Season G spur-pruner; shed every parasitic branch no longer than a chosen length, then restore the surviving branches whole."
+say "prune: Style Radiant -- compose not braid: this rung owns only the binary set algebra (union, intersect, difference), the 3x3 restore element, and the two-phase control flow; endpoints owns the endpoint set, structure the dilation gather, qoi the buffers."
+say "prune: Lens TAME -- the binary meaning of a pixel is read from hitmiss (one source of truth); the source and length are guarded and refused by name up front so a refusal allocates nothing; both phases run exactly length passes, length capped at prune_max_length; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/prune"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/prune.rye -femit-bin=${bin}"]
+assert build.ok else "prune: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "prune: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "prune: ${out}"
+
+assert selftest.out contains "GREEN image-prune" else "prune: selftest did not print the GREEN line"
+
+say "prune: GREEN -- a diagonal line keeps its whole length while a short spur off its center vanishes, a clean skeleton is a fixed point, a lone short segment is wholly parasitic and vanishes, the classic two-phase morphological prune composed over endpoints, structure, and qoi, on metal."

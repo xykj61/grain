@@ -25,7 +25,7 @@
 # USAGE
 #   sh tools/fixtures/foundations_link_scan.sh [room]      # room defaults to foundations
 #
-# Driven by tools/foundations_link_witness.rish. Run from the repository root.
+# Driven by tools/f/foundations_link_witness.rish. Run from the repository root.
 
 set -eu
 

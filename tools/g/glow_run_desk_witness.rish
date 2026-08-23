@@ -1,0 +1,1133 @@
+# glow_run_desk_witness.rish — Rishi hand runs the desk generators.
+#
+# Proves glow_run lowers, builds, and exits 0 for each desk file under glow/gen/.
+#
+#   rishi/bin/rishi run tools/g/glow_run_desk_witness.rish
+
+let bound = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/bound-tick.glow"]
+assert bound.ok else "glow_run bound-tick.glow failed"
+assert bound.out contains "GREEN" else "glow_run bound-tick.glow not GREEN"
+assert bound.out contains "bound-tick.glow" else "glow_run bound-tick claim missing path"
+
+let lent = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/lent-tick.glow"]
+assert lent.ok else "glow_run lent-tick.glow failed"
+assert lent.out contains "GREEN" else "glow_run lent-tick.glow not GREEN"
+assert lent.out contains "lent-tick.glow" else "glow_run lent-tick claim missing path"
+
+let cast = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-u32.glow"]
+assert cast.ok else "glow_run cast-u32.glow failed"
+assert cast.out contains "GREEN" else "glow_run cast-u32.glow not GREEN"
+assert cast.out contains "cast-u32.glow" else "glow_run cast-u32 claim missing path"
+
+let cast8 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-u8.glow"]
+assert cast8.ok else "glow_run cast-u8.glow failed"
+assert cast8.out contains "GREEN" else "glow_run cast-u8.glow not GREEN"
+assert cast8.out contains "cast-u8.glow" else "glow_run cast-u8 claim missing path"
+
+let cast64 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-u64.glow"]
+assert cast64.ok else "glow_run cast-u64.glow failed"
+assert cast64.out contains "GREEN" else "glow_run cast-u64.glow not GREEN"
+assert cast64.out contains "cast-u64.glow" else "glow_run cast-u64 claim missing path"
+
+let iff = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/if-gth.glow"]
+assert iff.ok else "glow_run if-gth.glow failed"
+assert iff.out contains "GREEN" else "glow_run if-gth.glow not GREEN"
+assert iff.out contains "if-gth.glow" else "glow_run if-gth claim missing path"
+
+let sw = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/switch-kind.glow"]
+assert sw.ok else "glow_run switch-kind.glow failed"
+assert sw.out contains "GREEN" else "glow_run switch-kind.glow not GREEN"
+assert sw.out contains "switch-kind.glow" else "glow_run switch-kind claim missing path"
+
+let face = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/face-root.glow"]
+assert face.ok else "glow_run face-root.glow failed"
+assert face.out contains "GREEN" else "glow_run face-root.glow not GREEN"
+assert face.out contains "face-root.glow" else "glow_run face-root claim missing path"
+
+let face64 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/face-u64.glow"]
+assert face64.ok else "glow_run face-u64.glow failed"
+assert face64.out contains "GREEN" else "glow_run face-u64.glow not GREEN"
+assert face64.out contains "face-u64.glow" else "glow_run face-u64 claim missing path"
+
+let facelent = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/face-lent.glow"]
+assert facelent.ok else "glow_run face-lent.glow failed"
+assert facelent.out contains "GREEN" else "glow_run face-lent.glow not GREEN"
+assert facelent.out contains "face-lent.glow" else "glow_run face-lent claim missing path"
+
+let facemix = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/face-mix.glow"]
+assert facemix.ok else "glow_run face-mix.glow failed"
+assert facemix.out contains "GREEN" else "glow_run face-mix.glow not GREEN"
+assert facemix.out contains "face-mix.glow" else "glow_run face-mix claim missing path"
+
+let facejam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/face-jam.glow"]
+assert facejam.ok else "glow_run face-jam.glow failed"
+assert facejam.out contains "GREEN" else "glow_run face-jam.glow not GREEN"
+assert facejam.out contains "face-jam.glow" else "glow_run face-jam claim missing path"
+
+let facecue = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/face-cue.glow"]
+assert facecue.ok else "glow_run face-cue.glow failed"
+assert facecue.out contains "GREEN" else "glow_run face-cue.glow not GREEN"
+assert facecue.out contains "face-cue.glow" else "glow_run face-cue claim missing path"
+
+let facecuejam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/face-cue-jam.glow"]
+assert facecuejam.ok else "glow_run face-cue-jam.glow failed"
+assert facecuejam.out contains "GREEN" else "glow_run face-cue-jam.glow not GREEN"
+assert facecuejam.out contains "face-cue-jam.glow" else "glow_run face-cue-jam claim missing path"
+
+let facecuejamnest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/face-cue-jam-nest.glow"]
+assert facecuejamnest.ok else "glow_run face-cue-jam-nest.glow failed"
+assert facecuejamnest.out contains "GREEN" else "glow_run face-cue-jam-nest.glow not GREEN"
+assert facecuejamnest.out contains "face-cue-jam-nest.glow" else "glow_run face-cue-jam-nest claim missing path"
+
+let facecuejamrn = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/face-cue-jam-right-nest.glow"]
+assert facecuejamrn.ok else "glow_run face-cue-jam-right-nest.glow failed"
+assert facecuejamrn.out contains "GREEN" else "glow_run face-cue-jam-right-nest.glow not GREEN"
+assert facecuejamrn.out contains "face-cue-jam-right-nest.glow" else "glow_run face-cue-jam-right-nest claim missing path"
+
+let facecuejamboth = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/face-cue-jam-both-nest.glow"]
+assert facecuejamboth.ok else "glow_run face-cue-jam-both-nest.glow failed"
+assert facecuejamboth.out contains "GREEN" else "glow_run face-cue-jam-both-nest.glow not GREEN"
+assert facecuejamboth.out contains "face-cue-jam-both-nest.glow" else "glow_run face-cue-jam-both-nest claim missing path"
+
+let facejamnest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/face-jam-nest.glow"]
+assert facejamnest.ok else "glow_run face-jam-nest.glow failed"
+assert facejamnest.out contains "GREEN" else "glow_run face-jam-nest.glow not GREEN"
+assert facejamnest.out contains "face-jam-nest.glow" else "glow_run face-jam-nest claim missing path"
+
+let facejamrn = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/face-jam-right-nest.glow"]
+assert facejamrn.ok else "glow_run face-jam-right-nest.glow failed"
+assert facejamrn.out contains "GREEN" else "glow_run face-jam-right-nest.glow not GREEN"
+assert facejamrn.out contains "face-jam-right-nest.glow" else "glow_run face-jam-right-nest claim missing path"
+
+let facejamboth = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/face-jam-both-nest.glow"]
+assert facejamboth.ok else "glow_run face-jam-both-nest.glow failed"
+assert facejamboth.out contains "GREEN" else "glow_run face-jam-both-nest.glow not GREEN"
+assert facejamboth.out contains "face-jam-both-nest.glow" else "glow_run face-jam-both-nest claim missing path"
+
+let iflent = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/if-lent.glow"]
+assert iflent.ok else "glow_run if-lent.glow failed"
+assert iflent.out contains "GREEN" else "glow_run if-lent.glow not GREEN"
+assert iflent.out contains "if-lent.glow" else "glow_run if-lent claim missing path"
+
+let ifmix = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/if-mix.glow"]
+assert ifmix.ok else "glow_run if-mix.glow failed"
+assert ifmix.out contains "GREEN" else "glow_run if-mix.glow not GREEN"
+assert ifmix.out contains "if-mix.glow" else "glow_run if-mix claim missing path"
+
+let ifjam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/if-jam.glow"]
+assert ifjam.ok else "glow_run if-jam.glow failed"
+assert ifjam.out contains "GREEN" else "glow_run if-jam.glow not GREEN"
+assert ifjam.out contains "if-jam.glow" else "glow_run if-jam claim missing path"
+
+let ifcue = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/if-cue.glow"]
+assert ifcue.ok else "glow_run if-cue.glow failed"
+assert ifcue.out contains "GREEN" else "glow_run if-cue.glow not GREEN"
+assert ifcue.out contains "if-cue.glow" else "glow_run if-cue claim missing path"
+
+let ifcuejam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/if-cue-jam.glow"]
+assert ifcuejam.ok else "glow_run if-cue-jam.glow failed"
+assert ifcuejam.out contains "GREEN" else "glow_run if-cue-jam.glow not GREEN"
+assert ifcuejam.out contains "if-cue-jam.glow" else "glow_run if-cue-jam claim missing path"
+
+let ifcuejamnest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/if-cue-jam-nest.glow"]
+assert ifcuejamnest.ok else "glow_run if-cue-jam-nest.glow failed"
+assert ifcuejamnest.out contains "GREEN" else "glow_run if-cue-jam-nest.glow not GREEN"
+assert ifcuejamnest.out contains "if-cue-jam-nest.glow" else "glow_run if-cue-jam-nest claim missing path"
+
+let ifcuejamrn = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/if-cue-jam-right-nest.glow"]
+assert ifcuejamrn.ok else "glow_run if-cue-jam-right-nest.glow failed"
+assert ifcuejamrn.out contains "GREEN" else "glow_run if-cue-jam-right-nest.glow not GREEN"
+assert ifcuejamrn.out contains "if-cue-jam-right-nest.glow" else "glow_run if-cue-jam-right-nest claim missing path"
+
+let ifcuejamboth = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/if-cue-jam-both-nest.glow"]
+assert ifcuejamboth.ok else "glow_run if-cue-jam-both-nest.glow failed"
+assert ifcuejamboth.out contains "GREEN" else "glow_run if-cue-jam-both-nest.glow not GREEN"
+assert ifcuejamboth.out contains "if-cue-jam-both-nest.glow" else "glow_run if-cue-jam-both-nest claim missing path"
+
+let ifjamnest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/if-jam-nest.glow"]
+assert ifjamnest.ok else "glow_run if-jam-nest.glow failed"
+assert ifjamnest.out contains "GREEN" else "glow_run if-jam-nest.glow not GREEN"
+assert ifjamnest.out contains "if-jam-nest.glow" else "glow_run if-jam-nest claim missing path"
+
+let ifjamrn = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/if-jam-right-nest.glow"]
+assert ifjamrn.ok else "glow_run if-jam-right-nest.glow failed"
+assert ifjamrn.out contains "GREEN" else "glow_run if-jam-right-nest.glow not GREEN"
+assert ifjamrn.out contains "if-jam-right-nest.glow" else "glow_run if-jam-right-nest claim missing path"
+
+let ifjamboth = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/if-jam-both-nest.glow"]
+assert ifjamboth.ok else "glow_run if-jam-both-nest.glow failed"
+assert ifjamboth.out contains "GREEN" else "glow_run if-jam-both-nest.glow not GREEN"
+assert ifjamboth.out contains "if-jam-both-nest.glow" else "glow_run if-jam-both-nest claim missing path"
+
+let swlent = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/switch-lent.glow"]
+assert swlent.ok else "glow_run switch-lent.glow failed"
+assert swlent.out contains "GREEN" else "glow_run switch-lent.glow not GREEN"
+assert swlent.out contains "switch-lent.glow" else "glow_run switch-lent claim missing path"
+
+let swmix = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/switch-mix.glow"]
+assert swmix.ok else "glow_run switch-mix.glow failed"
+assert swmix.out contains "GREEN" else "glow_run switch-mix.glow not GREEN"
+assert swmix.out contains "switch-mix.glow" else "glow_run switch-mix claim missing path"
+
+let swjam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/switch-jam.glow"]
+assert swjam.ok else "glow_run switch-jam.glow failed"
+assert swjam.out contains "GREEN" else "glow_run switch-jam.glow not GREEN"
+assert swjam.out contains "switch-jam.glow" else "glow_run switch-jam claim missing path"
+
+let swcue = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/switch-cue.glow"]
+assert swcue.ok else "glow_run switch-cue.glow failed"
+assert swcue.out contains "GREEN" else "glow_run switch-cue.glow not GREEN"
+assert swcue.out contains "switch-cue.glow" else "glow_run switch-cue claim missing path"
+
+let swcuejam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/switch-cue-jam.glow"]
+assert swcuejam.ok else "glow_run switch-cue-jam.glow failed"
+assert swcuejam.out contains "GREEN" else "glow_run switch-cue-jam.glow not GREEN"
+assert swcuejam.out contains "switch-cue-jam.glow" else "glow_run switch-cue-jam claim missing path"
+
+let swcuejamnest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/switch-cue-jam-nest.glow"]
+assert swcuejamnest.ok else "glow_run switch-cue-jam-nest.glow failed"
+assert swcuejamnest.out contains "GREEN" else "glow_run switch-cue-jam-nest.glow not GREEN"
+assert swcuejamnest.out contains "switch-cue-jam-nest.glow" else "glow_run switch-cue-jam-nest claim missing path"
+
+let swcuejamrn = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/switch-cue-jam-right-nest.glow"]
+assert swcuejamrn.ok else "glow_run switch-cue-jam-right-nest.glow failed"
+assert swcuejamrn.out contains "GREEN" else "glow_run switch-cue-jam-right-nest.glow not GREEN"
+assert swcuejamrn.out contains "switch-cue-jam-right-nest.glow" else "glow_run switch-cue-jam-right-nest claim missing path"
+
+let swcuejamboth = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/switch-cue-jam-both-nest.glow"]
+assert swcuejamboth.ok else "glow_run switch-cue-jam-both-nest.glow failed"
+assert swcuejamboth.out contains "GREEN" else "glow_run switch-cue-jam-both-nest.glow not GREEN"
+assert swcuejamboth.out contains "switch-cue-jam-both-nest.glow" else "glow_run switch-cue-jam-both-nest claim missing path"
+
+let swjamnest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/switch-jam-nest.glow"]
+assert swjamnest.ok else "glow_run switch-jam-nest.glow failed"
+assert swjamnest.out contains "GREEN" else "glow_run switch-jam-nest.glow not GREEN"
+assert swjamnest.out contains "switch-jam-nest.glow" else "glow_run switch-jam-nest claim missing path"
+
+let swjamrn = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/switch-jam-right-nest.glow"]
+assert swjamrn.ok else "glow_run switch-jam-right-nest.glow failed"
+assert swjamrn.out contains "GREEN" else "glow_run switch-jam-right-nest.glow not GREEN"
+assert swjamrn.out contains "switch-jam-right-nest.glow" else "glow_run switch-jam-right-nest claim missing path"
+
+let swjamboth = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/switch-jam-both-nest.glow"]
+assert swjamboth.ok else "glow_run switch-jam-both-nest.glow failed"
+assert swjamboth.out contains "GREEN" else "glow_run switch-jam-both-nest.glow not GREEN"
+assert swjamboth.out contains "switch-jam-both-nest.glow" else "glow_run switch-jam-both-nest claim missing path"
+
+let nulllent = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/null-lent.glow"]
+assert nulllent.ok else "glow_run null-lent.glow failed"
+assert nulllent.out contains "GREEN" else "glow_run null-lent.glow not GREEN"
+assert nulllent.out contains "null-lent.glow" else "glow_run null-lent claim missing path"
+
+let nullmix = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/null-mix.glow"]
+assert nullmix.ok else "glow_run null-mix.glow failed"
+assert nullmix.out contains "GREEN" else "glow_run null-mix.glow not GREEN"
+assert nullmix.out contains "null-mix.glow" else "glow_run null-mix claim missing path"
+
+let nulljam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/null-jam.glow"]
+assert nulljam.ok else "glow_run null-jam.glow failed"
+assert nulljam.out contains "GREEN" else "glow_run null-jam.glow not GREEN"
+assert nulljam.out contains "null-jam.glow" else "glow_run null-jam claim missing path"
+
+let nullcue = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/null-cue.glow"]
+assert nullcue.ok else "glow_run null-cue.glow failed"
+assert nullcue.out contains "GREEN" else "glow_run null-cue.glow not GREEN"
+assert nullcue.out contains "null-cue.glow" else "glow_run null-cue claim missing path"
+
+let nullcuejam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/null-cue-jam.glow"]
+assert nullcuejam.ok else "glow_run null-cue-jam.glow failed"
+assert nullcuejam.out contains "GREEN" else "glow_run null-cue-jam.glow not GREEN"
+assert nullcuejam.out contains "null-cue-jam.glow" else "glow_run null-cue-jam claim missing path"
+
+let nullcuejamnest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/null-cue-jam-nest.glow"]
+assert nullcuejamnest.ok else "glow_run null-cue-jam-nest.glow failed"
+assert nullcuejamnest.out contains "GREEN" else "glow_run null-cue-jam-nest.glow not GREEN"
+assert nullcuejamnest.out contains "null-cue-jam-nest.glow" else "glow_run null-cue-jam-nest claim missing path"
+
+let nullcuejamrn = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/null-cue-jam-right-nest.glow"]
+assert nullcuejamrn.ok else "glow_run null-cue-jam-right-nest.glow failed"
+assert nullcuejamrn.out contains "GREEN" else "glow_run null-cue-jam-right-nest.glow not GREEN"
+assert nullcuejamrn.out contains "null-cue-jam-right-nest.glow" else "glow_run null-cue-jam-right-nest claim missing path"
+
+let nullcuejamboth = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/null-cue-jam-both-nest.glow"]
+assert nullcuejamboth.ok else "glow_run null-cue-jam-both-nest.glow failed"
+assert nullcuejamboth.out contains "GREEN" else "glow_run null-cue-jam-both-nest.glow not GREEN"
+assert nullcuejamboth.out contains "null-cue-jam-both-nest.glow" else "glow_run null-cue-jam-both-nest claim missing path"
+
+let nulljamnest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/null-jam-nest.glow"]
+assert nulljamnest.ok else "glow_run null-jam-nest.glow failed"
+assert nulljamnest.out contains "GREEN" else "glow_run null-jam-nest.glow not GREEN"
+assert nulljamnest.out contains "null-jam-nest.glow" else "glow_run null-jam-nest claim missing path"
+
+let nulljamrn = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/null-jam-right-nest.glow"]
+assert nulljamrn.ok else "glow_run null-jam-right-nest.glow failed"
+assert nulljamrn.out contains "GREEN" else "glow_run null-jam-right-nest.glow not GREEN"
+assert nulljamrn.out contains "null-jam-right-nest.glow" else "glow_run null-jam-right-nest claim missing path"
+
+let nulljamboth = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/null-jam-both-nest.glow"]
+assert nulljamboth.ok else "glow_run null-jam-both-nest.glow failed"
+assert nulljamboth.out contains "GREEN" else "glow_run null-jam-both-nest.glow not GREEN"
+assert nulljamboth.out contains "null-jam-both-nest.glow" else "glow_run null-jam-both-nest claim missing path"
+
+let nullt = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/null-records.glow"]
+assert nullt.ok else "glow_run null-records.glow failed"
+assert nullt.out contains "GREEN" else "glow_run null-records.glow not GREEN"
+assert nullt.out contains "null-records.glow" else "glow_run null-records claim missing path"
+
+let mut = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/mutate-root.glow"]
+assert mut.ok else "glow_run mutate-root.glow failed"
+assert mut.out contains "GREEN" else "glow_run mutate-root.glow not GREEN"
+assert mut.out contains "mutate-root.glow" else "glow_run mutate-root claim missing path"
+
+let alias = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/alias-records.glow"]
+assert alias.ok else "glow_run alias-records.glow failed"
+assert alias.out contains "GREEN" else "glow_run alias-records.glow not GREEN"
+assert alias.out contains "alias-records.glow" else "glow_run alias-records claim missing path"
+
+let cell = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cell-pair.glow"]
+assert cell.ok else "glow_run cell-pair.glow failed"
+assert cell.out contains "GREEN" else "glow_run cell-pair.glow not GREEN"
+assert cell.out contains "cell-pair.glow" else "glow_run cell-pair claim missing path"
+
+let triple = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cell-triple.glow"]
+assert triple.ok else "glow_run cell-triple.glow failed"
+assert triple.out contains "GREEN" else "glow_run cell-triple.glow not GREEN"
+assert triple.out contains "cell-triple.glow" else "glow_run cell-triple claim missing path"
+
+let quad = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cell-quad.glow"]
+assert quad.ok else "glow_run cell-quad.glow failed"
+assert quad.out contains "GREEN" else "glow_run cell-quad.glow not GREEN"
+assert quad.out contains "cell-quad.glow" else "glow_run cell-quad claim missing path"
+
+let list = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cell-list.glow"]
+assert list.ok else "glow_run cell-list.glow failed"
+assert list.out contains "GREEN" else "glow_run cell-list.glow not GREEN"
+assert list.out contains "cell-list.glow" else "glow_run cell-list claim missing path"
+
+let call = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/call-one.glow"]
+assert call.ok else "glow_run call-one.glow failed"
+assert call.out contains "GREEN" else "glow_run call-one.glow not GREEN"
+assert call.out contains "call-one.glow" else "glow_run call-one claim missing path"
+
+let call2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/call-two.glow"]
+assert call2.ok else "glow_run call-two.glow failed"
+assert call2.out contains "GREEN" else "glow_run call-two.glow not GREEN"
+assert call2.out contains "call-two.glow" else "glow_run call-two claim missing path"
+
+let call3 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/call-three.glow"]
+assert call3.ok else "glow_run call-three.glow failed"
+assert call3.out contains "GREEN" else "glow_run call-three.glow not GREEN"
+assert call3.out contains "call-three.glow" else "glow_run call-three claim missing path"
+
+let calln = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/call-named.glow"]
+assert calln.ok else "glow_run call-named.glow failed"
+assert calln.out contains "GREEN" else "glow_run call-named.glow not GREEN"
+assert calln.out contains "call-named.glow" else "glow_run call-named claim missing path"
+
+let multi = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/multi-face.glow"]
+assert multi.ok else "glow_run multi-face.glow failed"
+assert multi.out contains "GREEN" else "glow_run multi-face.glow not GREEN"
+assert multi.out contains "multi-face.glow" else "glow_run multi-face claim missing path"
+
+let compose = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-call.glow"]
+assert compose.ok else "glow_run compose-call.glow failed"
+assert compose.out contains "GREEN" else "glow_run compose-call.glow not GREEN"
+assert compose.out contains "compose-call.glow" else "glow_run compose-call claim missing path"
+
+let composejamcue = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-jam-cue.glow"]
+assert composejamcue.ok else "glow_run compose-jam-cue.glow failed"
+assert composejamcue.out contains "GREEN" else "glow_run compose-jam-cue.glow not GREEN"
+assert composejamcue.out contains "compose-jam-cue.glow" else "glow_run compose-jam-cue claim missing path"
+
+let composebindjamcue = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-bind-jam-cue.glow"]
+assert composebindjamcue.ok else "glow_run compose-bind-jam-cue.glow failed"
+assert composebindjamcue.out contains "GREEN" else "glow_run compose-bind-jam-cue.glow not GREEN"
+assert composebindjamcue.out contains "compose-bind-jam-cue.glow" else "glow_run compose-bind-jam-cue claim missing path"
+
+let composebindnestjamcue = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-bind-nest-jam-cue.glow"]
+assert composebindnestjamcue.ok else "glow_run compose-bind-nest-jam-cue.glow failed"
+assert composebindnestjamcue.out contains "GREEN" else "glow_run compose-bind-nest-jam-cue.glow not GREEN"
+assert composebindnestjamcue.out contains "compose-bind-nest-jam-cue.glow" else "glow_run compose-bind-nest-jam-cue claim missing path"
+
+let composebindnestrightjamcue = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-bind-nest-right-jam-cue.glow"]
+assert composebindnestrightjamcue.ok else "glow_run compose-bind-nest-right-jam-cue.glow failed"
+assert composebindnestrightjamcue.out contains "GREEN" else "glow_run compose-bind-nest-right-jam-cue.glow not GREEN"
+assert composebindnestrightjamcue.out contains "compose-bind-nest-right-jam-cue.glow" else "glow_run compose-bind-nest-right-jam-cue claim missing path"
+
+let composebindnestbothjamcue = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-bind-nest-both-jam-cue.glow"]
+assert composebindnestbothjamcue.ok else "glow_run compose-bind-nest-both-jam-cue.glow failed"
+assert composebindnestbothjamcue.out contains "GREEN" else "glow_run compose-bind-nest-both-jam-cue.glow not GREEN"
+assert composebindnestbothjamcue.out contains "compose-bind-nest-both-jam-cue.glow" else "glow_run compose-bind-nest-both-jam-cue claim missing path"
+
+let composebindnestthreejamcue = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-bind-nest-three-jam-cue.glow"]
+assert composebindnestthreejamcue.ok else "glow_run compose-bind-nest-three-jam-cue.glow failed"
+assert composebindnestthreejamcue.out contains "GREEN" else "glow_run compose-bind-nest-three-jam-cue.glow not GREEN"
+assert composebindnestthreejamcue.out contains "compose-bind-nest-three-jam-cue.glow" else "glow_run compose-bind-nest-three-jam-cue claim missing path"
+
+let composebindnestfourjamcue = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-bind-nest-four-jam-cue.glow"]
+assert composebindnestfourjamcue.ok else "glow_run compose-bind-nest-four-jam-cue.glow failed"
+assert composebindnestfourjamcue.out contains "GREEN" else "glow_run compose-bind-nest-four-jam-cue.glow not GREEN"
+assert composebindnestfourjamcue.out contains "compose-bind-nest-four-jam-cue.glow" else "glow_run compose-bind-nest-four-jam-cue claim missing path"
+
+let composebindnestsealjamcue = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-bind-nest-seal-jam-cue.glow"]
+assert composebindnestsealjamcue.ok else "glow_run compose-bind-nest-seal-jam-cue.glow failed"
+assert composebindnestsealjamcue.out contains "GREEN" else "glow_run compose-bind-nest-seal-jam-cue.glow not GREEN"
+assert composebindnestsealjamcue.out contains "compose-bind-nest-seal-jam-cue.glow" else "glow_run compose-bind-nest-seal-jam-cue claim missing path"
+
+let composebindinlinecuejam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-bind-inline-cue-jam.glow"]
+assert composebindinlinecuejam.ok else "glow_run compose-bind-inline-cue-jam.glow failed"
+assert composebindinlinecuejam.out contains "GREEN" else "glow_run compose-bind-inline-cue-jam.glow not GREEN"
+assert composebindinlinecuejam.out contains "compose-bind-inline-cue-jam.glow" else "glow_run compose-bind-inline-cue-jam claim missing path"
+
+let composebindinlinenestcuejam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-bind-inline-nest-cue-jam.glow"]
+assert composebindinlinenestcuejam.ok else "glow_run compose-bind-inline-nest-cue-jam.glow failed"
+assert composebindinlinenestcuejam.out contains "GREEN" else "glow_run compose-bind-inline-nest-cue-jam.glow not GREEN"
+assert composebindinlinenestcuejam.out contains "compose-bind-inline-nest-cue-jam.glow" else "glow_run compose-bind-inline-nest-cue-jam claim missing path"
+
+let composebindinlinenestrightcuejam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-bind-inline-nest-right-cue-jam.glow"]
+assert composebindinlinenestrightcuejam.ok else "glow_run compose-bind-inline-nest-right-cue-jam.glow failed"
+assert composebindinlinenestrightcuejam.out contains "GREEN" else "glow_run compose-bind-inline-nest-right-cue-jam.glow not GREEN"
+assert composebindinlinenestrightcuejam.out contains "compose-bind-inline-nest-right-cue-jam.glow" else "glow_run compose-bind-inline-nest-right-cue-jam claim missing path"
+
+let composebindinlinenestbothcuejam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-bind-inline-nest-both-cue-jam.glow"]
+assert composebindinlinenestbothcuejam.ok else "glow_run compose-bind-inline-nest-both-cue-jam.glow failed"
+assert composebindinlinenestbothcuejam.out contains "GREEN" else "glow_run compose-bind-inline-nest-both-cue-jam.glow not GREEN"
+assert composebindinlinenestbothcuejam.out contains "compose-bind-inline-nest-both-cue-jam.glow" else "glow_run compose-bind-inline-nest-both-cue-jam claim missing path"
+
+let compose2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-add.glow"]
+assert compose2.ok else "glow_run compose-add.glow failed"
+assert compose2.out contains "GREEN" else "glow_run compose-add.glow not GREEN"
+assert compose2.out contains "compose-add.glow" else "glow_run compose-add claim missing path"
+
+let typed = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/multi-typed.glow"]
+assert typed.ok else "glow_run multi-typed.glow failed"
+assert typed.out contains "GREEN" else "glow_run multi-typed.glow not GREEN"
+assert typed.out contains "multi-typed.glow" else "glow_run multi-typed claim missing path"
+
+let core = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/core-double.glow"]
+assert core.ok else "glow_run core-double.glow failed"
+assert core.out contains "GREEN" else "glow_run core-double.glow not GREEN"
+assert core.out contains "core-double.glow" else "glow_run core-double claim missing path"
+
+let core2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/core-two.glow"]
+assert core2.ok else "glow_run core-two.glow failed"
+assert core2.out contains "GREEN" else "glow_run core-two.glow not GREEN"
+assert core2.out contains "core-two.glow" else "glow_run core-two claim missing path"
+
+let corepay = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/core-payload.glow"]
+assert corepay.ok else "glow_run core-payload.glow failed"
+assert corepay.out contains "GREEN" else "glow_run core-payload.glow not GREEN"
+assert corepay.out contains "core-payload.glow" else "glow_run core-payload claim missing path"
+
+let composecore = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-core.glow"]
+assert composecore.ok else "glow_run compose-core.glow failed"
+assert composecore.out contains "GREEN" else "glow_run compose-core.glow not GREEN"
+assert composecore.out contains "compose-core.glow" else "glow_run compose-core claim missing path"
+
+let composecore2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-core-two.glow"]
+assert composecore2.ok else "glow_run compose-core-two.glow failed"
+assert composecore2.out contains "GREEN" else "glow_run compose-core-two.glow not GREEN"
+assert composecore2.out contains "compose-core-two.glow" else "glow_run compose-core-two claim missing path"
+
+let composecore3 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-core-three.glow"]
+assert composecore3.ok else "glow_run compose-core-three.glow failed"
+assert composecore3.out contains "GREEN" else "glow_run compose-core-three.glow not GREEN"
+assert composecore3.out contains "compose-core-three.glow" else "glow_run compose-core-three claim missing path"
+
+let composecoreadd = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-core-add.glow"]
+assert composecoreadd.ok else "glow_run compose-core-add.glow failed"
+assert composecoreadd.out contains "GREEN" else "glow_run compose-core-add.glow not GREEN"
+assert composecoreadd.out contains "compose-core-add.glow" else "glow_run compose-core-add claim missing path"
+
+let composecorepay = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-core-payload.glow"]
+assert composecorepay.ok else "glow_run compose-core-payload.glow failed"
+assert composecorepay.out contains "GREEN" else "glow_run compose-core-payload.glow not GREEN"
+assert composecorepay.out contains "compose-core-payload.glow" else "glow_run compose-core-payload claim missing path"
+
+let composecorepaynest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-core-payload-nest.glow"]
+assert composecorepaynest.ok else "glow_run compose-core-payload-nest.glow failed"
+assert composecorepaynest.out contains "GREEN" else "glow_run compose-core-payload-nest.glow not GREEN"
+assert composecorepaynest.out contains "compose-core-payload-nest.glow" else "glow_run compose-core-payload-nest claim missing path"
+
+let composecorepaycuejam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-core-payload-cue-jam.glow"]
+assert composecorepaycuejam.ok else "glow_run compose-core-payload-cue-jam.glow failed"
+assert composecorepaycuejam.out contains "GREEN" else "glow_run compose-core-payload-cue-jam.glow not GREEN"
+assert composecorepaycuejam.out contains "compose-core-payload-cue-jam.glow" else "glow_run compose-core-payload-cue-jam claim missing path"
+
+let composecorepaycuejamnest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-core-payload-cue-jam-nest.glow"]
+assert composecorepaycuejamnest.ok else "glow_run compose-core-payload-cue-jam-nest.glow failed"
+assert composecorepaycuejamnest.out contains "GREEN" else "glow_run compose-core-payload-cue-jam-nest.glow not GREEN"
+assert composecorepaycuejamnest.out contains "compose-core-payload-cue-jam-nest.glow" else "glow_run compose-core-payload-cue-jam-nest claim missing path"
+
+let composecorepaycuejamright = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-core-payload-cue-jam-right-nest.glow"]
+assert composecorepaycuejamright.ok else "glow_run compose-core-payload-cue-jam-right-nest.glow failed"
+assert composecorepaycuejamright.out contains "GREEN" else "glow_run compose-core-payload-cue-jam-right-nest.glow not GREEN"
+assert composecorepaycuejamright.out contains "compose-core-payload-cue-jam-right-nest.glow" else "glow_run compose-core-payload-cue-jam-right-nest claim missing path"
+
+let composecorepaycuejamboth = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-core-payload-cue-jam-both-nest.glow"]
+assert composecorepaycuejamboth.ok else "glow_run compose-core-payload-cue-jam-both-nest.glow failed"
+assert composecorepaycuejamboth.out contains "GREEN" else "glow_run compose-core-payload-cue-jam-both-nest.glow not GREEN"
+assert composecorepaycuejamboth.out contains "compose-core-payload-cue-jam-both-nest.glow" else "glow_run compose-core-payload-cue-jam-both-nest claim missing path"
+
+let core3 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/core-three.glow"]
+
+
+
+assert core3.ok else "glow_run core-three.glow failed"
+assert core3.out contains "GREEN" else "glow_run core-three.glow not GREEN"
+assert core3.out contains "core-three.glow" else "glow_run core-three claim missing path"
+
+let coretyped = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/core-payload-typed.glow"]
+assert coretyped.ok else "glow_run core-payload-typed.glow failed"
+assert coretyped.out contains "GREEN" else "glow_run core-payload-typed.glow not GREEN"
+assert coretyped.out contains "core-payload-typed.glow" else "glow_run core-payload-typed claim missing path"
+
+let coreopen = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/core-open.glow"]
+assert coreopen.ok else "glow_run core-open.glow failed"
+assert coreopen.out contains "GREEN" else "glow_run core-open.glow not GREEN"
+assert coreopen.out contains "core-open.glow" else "glow_run core-open claim missing path"
+
+let uselib = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/use-lib-open.glow"]
+assert uselib.ok else "glow_run use-lib-open.glow failed"
+assert uselib.out contains "GREEN" else "glow_run use-lib-open.glow not GREEN"
+assert uselib.out contains "use-lib-open.glow" else "glow_run use-lib-open claim missing path"
+
+let uselibnest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/use-lib-nest.glow"]
+assert uselibnest.ok else "glow_run use-lib-nest.glow failed"
+assert uselibnest.out contains "GREEN" else "glow_run use-lib-nest.glow not GREEN"
+assert uselibnest.out contains "use-lib-nest.glow" else "glow_run use-lib-nest claim missing path"
+
+let uselibpay = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/use-lib-payload-nest.glow"]
+assert uselibpay.ok else "glow_run use-lib-payload-nest.glow failed"
+assert uselibpay.out contains "GREEN" else "glow_run use-lib-payload-nest.glow not GREEN"
+assert uselibpay.out contains "use-lib-payload-nest.glow" else "glow_run use-lib-payload-nest claim missing path"
+
+let uselibcuejam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/use-lib-cue-jam.glow"]
+assert uselibcuejam.ok else "glow_run use-lib-cue-jam.glow failed"
+assert uselibcuejam.out contains "GREEN" else "glow_run use-lib-cue-jam.glow not GREEN"
+assert uselibcuejam.out contains "use-lib-cue-jam.glow" else "glow_run use-lib-cue-jam claim missing path"
+
+let uselibcuejamnest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/use-lib-cue-jam-nest.glow"]
+assert uselibcuejamnest.ok else "glow_run use-lib-cue-jam-nest.glow failed"
+assert uselibcuejamnest.out contains "GREEN" else "glow_run use-lib-cue-jam-nest.glow not GREEN"
+assert uselibcuejamnest.out contains "use-lib-cue-jam-nest.glow" else "glow_run use-lib-cue-jam-nest claim missing path"
+
+let uselibcuejamright = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/use-lib-cue-jam-right-nest.glow"]
+assert uselibcuejamright.ok else "glow_run use-lib-cue-jam-right-nest.glow failed"
+assert uselibcuejamright.out contains "GREEN" else "glow_run use-lib-cue-jam-right-nest.glow not GREEN"
+assert uselibcuejamright.out contains "use-lib-cue-jam-right-nest.glow" else "glow_run use-lib-cue-jam-right-nest claim missing path"
+
+let uselibcuejamboth = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/use-lib-cue-jam-both-nest.glow"]
+assert uselibcuejamboth.ok else "glow_run use-lib-cue-jam-both-nest.glow failed"
+assert uselibcuejamboth.out contains "GREEN" else "glow_run use-lib-cue-jam-both-nest.glow not GREEN"
+assert uselibcuejamboth.out contains "use-lib-cue-jam-both-nest.glow" else "glow_run use-lib-cue-jam-both-nest claim missing path"
+
+let uselibpaycuejam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/use-lib-payload-cue-jam.glow"]
+assert uselibpaycuejam.ok else "glow_run use-lib-payload-cue-jam.glow failed"
+assert uselibpaycuejam.out contains "GREEN" else "glow_run use-lib-payload-cue-jam.glow not GREEN"
+assert uselibpaycuejam.out contains "use-lib-payload-cue-jam.glow" else "glow_run use-lib-payload-cue-jam claim missing path"
+
+let uselibpaycuejamnest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/use-lib-payload-cue-jam-nest.glow"]
+assert uselibpaycuejamnest.ok else "glow_run use-lib-payload-cue-jam-nest.glow failed"
+assert uselibpaycuejamnest.out contains "GREEN" else "glow_run use-lib-payload-cue-jam-nest.glow not GREEN"
+assert uselibpaycuejamnest.out contains "use-lib-payload-cue-jam-nest.glow" else "glow_run use-lib-payload-cue-jam-nest claim missing path"
+
+let uselibpaycuejamright = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/use-lib-payload-cue-jam-right-nest.glow"]
+assert uselibpaycuejamright.ok else "glow_run use-lib-payload-cue-jam-right-nest.glow failed"
+assert uselibpaycuejamright.out contains "GREEN" else "glow_run use-lib-payload-cue-jam-right-nest.glow not GREEN"
+assert uselibpaycuejamright.out contains "use-lib-payload-cue-jam-right-nest.glow" else "glow_run use-lib-payload-cue-jam-right-nest claim missing path"
+
+let uselibpaycuejamboth = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/use-lib-payload-cue-jam-both-nest.glow"]
+assert uselibpaycuejamboth.ok else "glow_run use-lib-payload-cue-jam-both-nest.glow failed"
+assert uselibpaycuejamboth.out contains "GREEN" else "glow_run use-lib-payload-cue-jam-both-nest.glow not GREEN"
+assert uselibpaycuejamboth.out contains "use-lib-payload-cue-jam-both-nest.glow" else "glow_run use-lib-payload-cue-jam-both-nest claim missing path"
+
+let uselibnextroot = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/use-lib-next-root-cue-jam.glow"]
+assert uselibnextroot.ok else "glow_run use-lib-next-root-cue-jam.glow failed"
+assert uselibnextroot.out contains "GREEN" else "glow_run use-lib-next-root-cue-jam.glow not GREEN"
+assert uselibnextroot.out contains "use-lib-next-root-cue-jam.glow" else "glow_run use-lib-next-root-cue-jam claim missing path"
+
+let uselibsessionroot = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/use-lib-session-root-nest-cue-jam.glow"]
+assert uselibsessionroot.ok else "glow_run use-lib-session-root-nest-cue-jam.glow failed"
+assert uselibsessionroot.out contains "GREEN" else "glow_run use-lib-session-root-nest-cue-jam.glow not GREEN"
+assert uselibsessionroot.out contains "use-lib-session-root-nest-cue-jam.glow" else "glow_run use-lib-session-root-nest-cue-jam claim missing path"
+
+let corenest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/core-nest.glow"]
+assert corenest.ok else "glow_run core-nest.glow failed"
+assert corenest.out contains "GREEN" else "glow_run core-nest.glow not GREEN"
+assert corenest.out contains "core-nest.glow" else "glow_run core-nest claim missing path"
+
+let corejamnest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/core-jam-nest.glow"]
+assert corejamnest.ok else "glow_run core-jam-nest.glow failed"
+assert corejamnest.out contains "GREEN" else "glow_run core-jam-nest.glow not GREEN"
+assert corejamnest.out contains "core-jam-nest.glow" else "glow_run core-jam-nest claim missing path"
+
+let corejamrn = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/core-jam-right-nest.glow"]
+assert corejamrn.ok else "glow_run core-jam-right-nest.glow failed"
+assert corejamrn.out contains "GREEN" else "glow_run core-jam-right-nest.glow not GREEN"
+assert corejamrn.out contains "core-jam-right-nest.glow" else "glow_run core-jam-right-nest claim missing path"
+
+let corejamboth = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/core-jam-both-nest.glow"]
+assert corejamboth.ok else "glow_run core-jam-both-nest.glow failed"
+assert corejamboth.out contains "GREEN" else "glow_run core-jam-both-nest.glow not GREEN"
+assert corejamboth.out contains "core-jam-both-nest.glow" else "glow_run core-jam-both-nest claim missing path"
+
+let corecuejam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/core-cue-jam.glow"]
+assert corecuejam.ok else "glow_run core-cue-jam.glow failed"
+assert corecuejam.out contains "GREEN" else "glow_run core-cue-jam.glow not GREEN"
+assert corecuejam.out contains "core-cue-jam.glow" else "glow_run core-cue-jam claim missing path"
+
+let corecuejamnest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/core-cue-jam-nest.glow"]
+assert corecuejamnest.ok else "glow_run core-cue-jam-nest.glow failed"
+assert corecuejamnest.out contains "GREEN" else "glow_run core-cue-jam-nest.glow not GREEN"
+assert corecuejamnest.out contains "core-cue-jam-nest.glow" else "glow_run core-cue-jam-nest claim missing path"
+
+let corecuejamrn = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/core-cue-jam-right-nest.glow"]
+assert corecuejamrn.ok else "glow_run core-cue-jam-right-nest.glow failed"
+assert corecuejamrn.out contains "GREEN" else "glow_run core-cue-jam-right-nest.glow not GREEN"
+assert corecuejamrn.out contains "core-cue-jam-right-nest.glow" else "glow_run core-cue-jam-right-nest claim missing path"
+
+let corecuejamboth = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/core-cue-jam-both-nest.glow"]
+assert corecuejamboth.ok else "glow_run core-cue-jam-both-nest.glow failed"
+assert corecuejamboth.out contains "GREEN" else "glow_run core-cue-jam-both-nest.glow not GREEN"
+assert corecuejamboth.out contains "core-cue-jam-both-nest.glow" else "glow_run core-cue-jam-both-nest claim missing path"
+
+let composecorenest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-core-nest.glow"]
+assert composecorenest.ok else "glow_run compose-core-nest.glow failed"
+assert composecorenest.out contains "GREEN" else "glow_run compose-core-nest.glow not GREEN"
+assert composecorenest.out contains "compose-core-nest.glow" else "glow_run compose-core-nest claim missing path"
+
+let composecorecuejam = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-core-cue-jam.glow"]
+assert composecorecuejam.ok else "glow_run compose-core-cue-jam.glow failed"
+assert composecorecuejam.out contains "GREEN" else "glow_run compose-core-cue-jam.glow not GREEN"
+assert composecorecuejam.out contains "compose-core-cue-jam.glow" else "glow_run compose-core-cue-jam claim missing path"
+
+let composecorecuejamnest = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-core-cue-jam-nest.glow"]
+assert composecorecuejamnest.ok else "glow_run compose-core-cue-jam-nest.glow failed"
+assert composecorecuejamnest.out contains "GREEN" else "glow_run compose-core-cue-jam-nest.glow not GREEN"
+assert composecorecuejamnest.out contains "compose-core-cue-jam-nest.glow" else "glow_run compose-core-cue-jam-nest claim missing path"
+
+let composecorecuejamright = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-core-cue-jam-right-nest.glow"]
+assert composecorecuejamright.ok else "glow_run compose-core-cue-jam-right-nest.glow failed"
+assert composecorecuejamright.out contains "GREEN" else "glow_run compose-core-cue-jam-right-nest.glow not GREEN"
+assert composecorecuejamright.out contains "compose-core-cue-jam-right-nest.glow" else "glow_run compose-core-cue-jam-right-nest claim missing path"
+
+let composecorecuejamboth = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/compose-core-cue-jam-both-nest.glow"]
+assert composecorecuejamboth.ok else "glow_run compose-core-cue-jam-both-nest.glow failed"
+assert composecorecuejamboth.out contains "GREEN" else "glow_run compose-core-cue-jam-both-nest.glow not GREEN"
+assert composecorecuejamboth.out contains "compose-core-cue-jam-both-nest.glow" else "glow_run compose-core-cue-jam-both-nest claim missing path"
+
+let moldamount = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/hoon-study/mold-amount.glow"]
+assert moldamount.ok else "glow_run mold-amount.glow failed"
+assert moldamount.out contains "GREEN" else "glow_run mold-amount.glow not GREEN"
+assert moldamount.out contains "mold-amount.glow" else "glow_run mold-amount claim missing path"
+
+# STOA161: Grain primary dual — shape-amount beside mold-amount.
+let shapeamount = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-amount.glow"]
+assert shapeamount.ok else "glow_run shape-amount.glow failed"
+assert shapeamount.out contains "GREEN" else "glow_run shape-amount.glow not GREEN"
+assert shapeamount.out contains "shape-amount.glow" else "glow_run shape-amount claim missing path"
+
+# STOA162: Grain primary dual — shape-count beside mold-count.
+let shapecount = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-count.glow"]
+assert shapecount.ok else "glow_run shape-count.glow failed"
+assert shapecount.out contains "GREEN" else "glow_run shape-count.glow not GREEN"
+assert shapecount.out contains "shape-count.glow" else "glow_run shape-count claim missing path"
+
+let moldpair = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/hoon-study/mold-pair.glow"]
+assert moldpair.ok else "glow_run mold-pair.glow failed"
+assert moldpair.out contains "GREEN" else "glow_run mold-pair.glow not GREEN"
+assert moldpair.out contains "mold-pair.glow" else "glow_run mold-pair claim missing path"
+
+# STOA163: Grain primary dual — shape-pair beside mold-pair.
+let shapepair = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-pair.glow"]
+assert shapepair.ok else "glow_run shape-pair.glow failed"
+assert shapepair.out contains "GREEN" else "glow_run shape-pair.glow not GREEN"
+assert shapepair.out contains "shape-pair.glow" else "glow_run shape-pair claim missing path"
+
+# STOA175: multi-field named-cast cast twins for pair-shape.
+let castnamedpairshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-pair-shape.glow"]
+assert castnamedpairshape.ok else "glow_run cast-named-pair-shape.glow failed"
+assert castnamedpairshape.out contains "GREEN" else "glow_run cast-named-pair-shape.glow not GREEN"
+assert castnamedpairshape.out contains "cast-named-pair-shape.glow" else "glow_run cast-named-pair-shape claim missing path"
+
+let castimportpairshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-pair-shape.glow"]
+assert castimportpairshape.ok else "glow_run cast-import-pair-shape.glow failed"
+assert castimportpairshape.out contains "GREEN" else "glow_run cast-import-pair-shape.glow not GREEN"
+assert castimportpairshape.out contains "cast-import-pair-shape.glow" else "glow_run cast-import-pair-shape claim missing path"
+
+let moldkind = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/hoon-study/mold-kind.glow"]
+assert moldkind.ok else "glow_run mold-kind.glow failed"
+assert moldkind.out contains "GREEN" else "glow_run mold-kind.glow not GREEN"
+assert moldkind.out contains "mold-kind.glow" else "glow_run mold-kind claim missing path"
+
+# STOA164: Grain primary dual — shape-kind beside mold-kind.
+let shapekind = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-kind.glow"]
+assert shapekind.ok else "glow_run shape-kind.glow failed"
+assert shapekind.out contains "GREEN" else "glow_run shape-kind.glow not GREEN"
+assert shapekind.out contains "shape-kind.glow" else "glow_run shape-kind claim missing path"
+
+let moldxact = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/hoon-study/mold-xact.glow"]
+assert moldxact.ok else "glow_run mold-xact.glow failed"
+assert moldxact.out contains "GREEN" else "glow_run mold-xact.glow not GREEN"
+assert moldxact.out contains "mold-xact.glow" else "glow_run mold-xact claim missing path"
+
+# STOA165: Grain primary dual — shape-xact beside mold-xact.
+let shapexact = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-xact.glow"]
+assert shapexact.ok else "glow_run shape-xact.glow failed"
+assert shapexact.out contains "GREEN" else "glow_run shape-xact.glow not GREEN"
+assert shapexact.out contains "shape-xact.glow" else "glow_run shape-xact claim missing path"
+
+let moldxfer = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/hoon-study/mold-xfer.glow"]
+assert moldxfer.ok else "glow_run mold-xfer.glow failed"
+assert moldxfer.out contains "GREEN" else "glow_run mold-xfer.glow not GREEN"
+assert moldxfer.out contains "mold-xfer.glow" else "glow_run mold-xfer claim missing path"
+
+# STOA166: Grain primary dual — shape-xfer beside mold-xfer.
+let shapexfer = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-xfer.glow"]
+assert shapexfer.ok else "glow_run shape-xfer.glow failed"
+assert shapexfer.out contains "GREEN" else "glow_run shape-xfer.glow not GREEN"
+assert shapexfer.out contains "shape-xfer.glow" else "glow_run shape-xfer claim missing path"
+
+# STOA167: Grain primary dual — shape-triple beside mold-triple.
+let shapetriple = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-triple.glow"]
+assert shapetriple.ok else "glow_run shape-triple.glow failed"
+assert shapetriple.out contains "GREEN" else "glow_run shape-triple.glow not GREEN"
+assert shapetriple.out contains "shape-triple.glow" else "glow_run shape-triple claim missing path"
+
+# STOA176: multi-field named-cast cast twins for triple…nona (peek budget 4–12).
+let castnamedtripleshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-triple-shape.glow"]
+assert castnamedtripleshape.ok else "glow_run cast-named-triple-shape.glow failed"
+assert castnamedtripleshape.out contains "GREEN" else "glow_run cast-named-triple-shape.glow not GREEN"
+assert castnamedtripleshape.out contains "cast-named-triple-shape.glow" else "glow_run cast-named-triple-shape claim missing path"
+
+let castimporttripleshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-triple-shape.glow"]
+assert castimporttripleshape.ok else "glow_run cast-import-triple-shape.glow failed"
+assert castimporttripleshape.out contains "GREEN" else "glow_run cast-import-triple-shape.glow not GREEN"
+assert castimporttripleshape.out contains "cast-import-triple-shape.glow" else "glow_run cast-import-triple-shape claim missing path"
+
+# STOA168: Grain primary dual — shape-quad beside mold-quad.
+let shapequad = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-quad.glow"]
+assert shapequad.ok else "glow_run shape-quad.glow failed"
+assert shapequad.out contains "GREEN" else "glow_run shape-quad.glow not GREEN"
+assert shapequad.out contains "shape-quad.glow" else "glow_run shape-quad claim missing path"
+
+let castnamedquadshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-quad-shape.glow"]
+assert castnamedquadshape.ok else "glow_run cast-named-quad-shape.glow failed"
+assert castnamedquadshape.out contains "GREEN" else "glow_run cast-named-quad-shape.glow not GREEN"
+assert castnamedquadshape.out contains "cast-named-quad-shape.glow" else "glow_run cast-named-quad-shape claim missing path"
+
+let castimportquadshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-quad-shape.glow"]
+assert castimportquadshape.ok else "glow_run cast-import-quad-shape.glow failed"
+assert castimportquadshape.out contains "GREEN" else "glow_run cast-import-quad-shape.glow not GREEN"
+assert castimportquadshape.out contains "cast-import-quad-shape.glow" else "glow_run cast-import-quad-shape claim missing path"
+
+# STOA169: Grain primary dual — shape-penta beside mold-penta.
+let shapepenta = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-penta.glow"]
+assert shapepenta.ok else "glow_run shape-penta.glow failed"
+assert shapepenta.out contains "GREEN" else "glow_run shape-penta.glow not GREEN"
+assert shapepenta.out contains "shape-penta.glow" else "glow_run shape-penta claim missing path"
+
+let castnamedpentashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-penta-shape.glow"]
+assert castnamedpentashape.ok else "glow_run cast-named-penta-shape.glow failed"
+assert castnamedpentashape.out contains "GREEN" else "glow_run cast-named-penta-shape.glow not GREEN"
+assert castnamedpentashape.out contains "cast-named-penta-shape.glow" else "glow_run cast-named-penta-shape claim missing path"
+
+let castimportpentashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-penta-shape.glow"]
+assert castimportpentashape.ok else "glow_run cast-import-penta-shape.glow failed"
+assert castimportpentashape.out contains "GREEN" else "glow_run cast-import-penta-shape.glow not GREEN"
+assert castimportpentashape.out contains "cast-import-penta-shape.glow" else "glow_run cast-import-penta-shape claim missing path"
+
+# STOA170: Grain primary dual — shape-hexa beside mold-hexa.
+let shapehexa = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-hexa.glow"]
+assert shapehexa.ok else "glow_run shape-hexa.glow failed"
+assert shapehexa.out contains "GREEN" else "glow_run shape-hexa.glow not GREEN"
+assert shapehexa.out contains "shape-hexa.glow" else "glow_run shape-hexa claim missing path"
+
+let castnamedhexashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-hexa-shape.glow"]
+assert castnamedhexashape.ok else "glow_run cast-named-hexa-shape.glow failed"
+assert castnamedhexashape.out contains "GREEN" else "glow_run cast-named-hexa-shape.glow not GREEN"
+assert castnamedhexashape.out contains "cast-named-hexa-shape.glow" else "glow_run cast-named-hexa-shape claim missing path"
+
+let castimporthexashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-hexa-shape.glow"]
+assert castimporthexashape.ok else "glow_run cast-import-hexa-shape.glow failed"
+assert castimporthexashape.out contains "GREEN" else "glow_run cast-import-hexa-shape.glow not GREEN"
+assert castimporthexashape.out contains "cast-import-hexa-shape.glow" else "glow_run cast-import-hexa-shape claim missing path"
+
+# STOA171: Grain primary dual — shape-hepta beside mold-hepta.
+let shapehepta = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-hepta.glow"]
+assert shapehepta.ok else "glow_run shape-hepta.glow failed"
+assert shapehepta.out contains "GREEN" else "glow_run shape-hepta.glow not GREEN"
+assert shapehepta.out contains "shape-hepta.glow" else "glow_run shape-hepta claim missing path"
+
+let castnamedheptashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-hepta-shape.glow"]
+assert castnamedheptashape.ok else "glow_run cast-named-hepta-shape.glow failed"
+assert castnamedheptashape.out contains "GREEN" else "glow_run cast-named-hepta-shape.glow not GREEN"
+assert castnamedheptashape.out contains "cast-named-hepta-shape.glow" else "glow_run cast-named-hepta-shape claim missing path"
+
+let castimportheptashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-hepta-shape.glow"]
+assert castimportheptashape.ok else "glow_run cast-import-hepta-shape.glow failed"
+assert castimportheptashape.out contains "GREEN" else "glow_run cast-import-hepta-shape.glow not GREEN"
+assert castimportheptashape.out contains "cast-import-hepta-shape.glow" else "glow_run cast-import-hepta-shape claim missing path"
+
+# STOA172: Grain primary dual — shape-octa beside mold-octa.
+let shapeocta = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-octa.glow"]
+assert shapeocta.ok else "glow_run shape-octa.glow failed"
+assert shapeocta.out contains "GREEN" else "glow_run shape-octa.glow not GREEN"
+assert shapeocta.out contains "shape-octa.glow" else "glow_run shape-octa claim missing path"
+
+let castnamedoctashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-octa-shape.glow"]
+assert castnamedoctashape.ok else "glow_run cast-named-octa-shape.glow failed"
+assert castnamedoctashape.out contains "GREEN" else "glow_run cast-named-octa-shape.glow not GREEN"
+assert castnamedoctashape.out contains "cast-named-octa-shape.glow" else "glow_run cast-named-octa-shape claim missing path"
+
+let castimportoctashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-octa-shape.glow"]
+assert castimportoctashape.ok else "glow_run cast-import-octa-shape.glow failed"
+assert castimportoctashape.out contains "GREEN" else "glow_run cast-import-octa-shape.glow not GREEN"
+assert castimportoctashape.out contains "cast-import-octa-shape.glow" else "glow_run cast-import-octa-shape claim missing path"
+
+# STOA173: Grain primary dual — shape-nona beside mold-nona (closes multi-field dual ladder).
+let shapenona = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-nona.glow"]
+assert shapenona.ok else "glow_run shape-nona.glow failed"
+assert shapenona.out contains "GREEN" else "glow_run shape-nona.glow not GREEN"
+assert shapenona.out contains "shape-nona.glow" else "glow_run shape-nona claim missing path"
+
+let castnamednonashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-nona-shape.glow"]
+assert castnamednonashape.ok else "glow_run cast-named-nona-shape.glow failed"
+assert castnamednonashape.out contains "GREEN" else "glow_run cast-named-nona-shape.glow not GREEN"
+assert castnamednonashape.out contains "cast-named-nona-shape.glow" else "glow_run cast-named-nona-shape claim missing path"
+
+let castimportnonashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-nona-shape.glow"]
+assert castimportnonashape.ok else "glow_run cast-import-nona-shape.glow failed"
+assert castimportnonashape.out contains "GREEN" else "glow_run cast-import-nona-shape.glow not GREEN"
+assert castimportnonashape.out contains "cast-import-nona-shape.glow" else "glow_run cast-import-nona-shape claim missing path"
+
+# STOA179 / STOA184: Seva B0 Glow — seva-event-shape (from/to @ux · memo/stamp @t).
+let shapesalaevent = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-seva-event.glow"]
+assert shapesalaevent.ok else "glow_run shape-seva-event.glow failed"
+assert shapesalaevent.out contains "GREEN" else "glow_run shape-seva-event.glow not GREEN"
+assert shapesalaevent.out contains "shape-seva-event.glow" else "glow_run shape-seva-event claim missing path"
+
+# STOA186: seva-event named-cast twin (mixed @ux / @u32 / @t).
+let castnamedsalaevent = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-seva-event.glow"]
+assert castnamedsalaevent.ok else "glow_run cast-named-seva-event.glow failed"
+assert castnamedsalaevent.out contains "GREEN" else "glow_run cast-named-seva-event.glow not GREEN"
+assert castnamedsalaevent.out contains "cast-named-seva-event.glow" else "glow_run cast-named-seva-event claim missing path"
+
+# STOA192: Seva B0 demo fixture constants shape (three stamps · three memos · root @ux).
+let shapedemofixture = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-demo-fixture-constants.glow"]
+assert shapedemofixture.ok else "glow_run shape-demo-fixture-constants.glow failed"
+assert shapedemofixture.out contains "GREEN" else "glow_run shape-demo-fixture-constants.glow not GREEN"
+assert shapedemofixture.out contains "shape-demo-fixture-constants.glow" else "glow_run shape-demo-fixture-constants claim missing path"
+
+# STOA213 / C3: demo-fixture-constants named-cast + import cast.
+let castnameddemofixture = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-demo-fixture-constants.glow"]
+assert castnameddemofixture.ok else "glow_run cast-named-demo-fixture-constants.glow failed"
+assert castnameddemofixture.out contains "GREEN" else "glow_run cast-named-demo-fixture-constants.glow not GREEN"
+assert castnameddemofixture.out contains "cast-named-demo-fixture-constants.glow" else "glow_run cast-named-demo-fixture-constants claim missing path"
+
+let castimportdemofixture = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-demo-fixture-constants.glow"]
+assert castimportdemofixture.ok else "glow_run cast-import-demo-fixture-constants.glow failed"
+assert castimportdemofixture.out contains "GREEN" else "glow_run cast-import-demo-fixture-constants.glow not GREEN"
+assert castimportdemofixture.out contains "cast-import-demo-fixture-constants.glow" else "glow_run cast-import-demo-fixture-constants claim missing path"
+
+# STOA206 / B3: Seva B0 fact-line shape (sig @t · fact @t).
+let shapefactline = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-fact-line.glow"]
+assert shapefactline.ok else "glow_run shape-fact-line.glow failed"
+assert shapefactline.out contains "GREEN" else "glow_run shape-fact-line.glow not GREEN"
+assert shapefactline.out contains "shape-fact-line.glow" else "glow_run shape-fact-line claim missing path"
+
+# STOA207: fact-line named-cast twin (both @t).
+let castnamedfactline = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-fact-line.glow"]
+assert castnamedfactline.ok else "glow_run cast-named-fact-line.glow failed"
+assert castnamedfactline.out contains "GREEN" else "glow_run cast-named-fact-line.glow not GREEN"
+assert castnamedfactline.out contains "cast-named-fact-line.glow" else "glow_run cast-named-fact-line claim missing path"
+
+# STOA208: fact-line cross-desk import cast.
+let castimportfactline = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-fact-line.glow"]
+assert castimportfactline.ok else "glow_run cast-import-fact-line.glow failed"
+assert castimportfactline.out contains "GREEN" else "glow_run cast-import-fact-line.glow not GREEN"
+assert castimportfactline.out contains "cast-import-fact-line.glow" else "glow_run cast-import-fact-line claim missing path"
+
+let castnamed = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-amount.glow"]
+assert castnamed.ok else "glow_run cast-named-amount.glow failed"
+assert castnamed.out contains "GREEN" else "glow_run cast-named-amount.glow not GREEN"
+assert castnamed.out contains "cast-named-amount.glow" else "glow_run cast-named-amount claim missing path"
+
+let castimport = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-amount.glow"]
+assert castimport.ok else "glow_run cast-import-amount.glow failed"
+assert castimport.out contains "GREEN" else "glow_run cast-import-amount.glow not GREEN"
+assert castimport.out contains "cast-import-amount.glow" else "glow_run cast-import-amount claim missing path"
+
+# STOA161: Grain primary cast twins for amount-shape.
+let castnamedamountshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-amount-shape.glow"]
+assert castnamedamountshape.ok else "glow_run cast-named-amount-shape.glow failed"
+assert castnamedamountshape.out contains "GREEN" else "glow_run cast-named-amount-shape.glow not GREEN"
+assert castnamedamountshape.out contains "cast-named-amount-shape.glow" else "glow_run cast-named-amount-shape claim missing path"
+
+let castimportamountshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-amount-shape.glow"]
+assert castimportamountshape.ok else "glow_run cast-import-amount-shape.glow failed"
+assert castimportamountshape.out contains "GREEN" else "glow_run cast-import-amount-shape.glow not GREEN"
+assert castimportamountshape.out contains "cast-import-amount-shape.glow" else "glow_run cast-import-amount-shape claim missing path"
+
+# STOA162: Grain primary cast twins for count-shape.
+let castnamedcountshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-count-shape.glow"]
+assert castnamedcountshape.ok else "glow_run cast-named-count-shape.glow failed"
+assert castnamedcountshape.out contains "GREEN" else "glow_run cast-named-count-shape.glow not GREEN"
+assert castnamedcountshape.out contains "cast-named-count-shape.glow" else "glow_run cast-named-count-shape claim missing path"
+
+let castimportcountshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-count-shape.glow"]
+assert castimportcountshape.ok else "glow_run cast-import-count-shape.glow failed"
+assert castimportcountshape.out contains "GREEN" else "glow_run cast-import-count-shape.glow not GREEN"
+assert castimportcountshape.out contains "cast-import-count-shape.glow" else "glow_run cast-import-count-shape claim missing path"
+
+let castnamedkind = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-kind.glow"]
+assert castnamedkind.ok else "glow_run cast-named-kind.glow failed"
+assert castnamedkind.out contains "GREEN" else "glow_run cast-named-kind.glow not GREEN"
+assert castnamedkind.out contains "cast-named-kind.glow" else "glow_run cast-named-kind claim missing path"
+
+let castimportkind = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-kind.glow"]
+assert castimportkind.ok else "glow_run cast-import-kind.glow failed"
+assert castimportkind.out contains "GREEN" else "glow_run cast-import-kind.glow not GREEN"
+assert castimportkind.out contains "cast-import-kind.glow" else "glow_run cast-import-kind claim missing path"
+
+# STOA164: Grain primary cast twins for kind-shape.
+let castnamedkindshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-kind-shape.glow"]
+assert castnamedkindshape.ok else "glow_run cast-named-kind-shape.glow failed"
+assert castnamedkindshape.out contains "GREEN" else "glow_run cast-named-kind-shape.glow not GREEN"
+assert castnamedkindshape.out contains "cast-named-kind-shape.glow" else "glow_run cast-named-kind-shape claim missing path"
+
+let castimportkindshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-kind-shape.glow"]
+assert castimportkindshape.ok else "glow_run cast-import-kind-shape.glow failed"
+assert castimportkindshape.out contains "GREEN" else "glow_run cast-import-kind-shape.glow not GREEN"
+assert castimportkindshape.out contains "cast-import-kind-shape.glow" else "glow_run cast-import-kind-shape claim missing path"
+
+let castnamedxact = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-xact.glow"]
+assert castnamedxact.ok else "glow_run cast-named-xact.glow failed"
+assert castnamedxact.out contains "GREEN" else "glow_run cast-named-xact.glow not GREEN"
+assert castnamedxact.out contains "cast-named-xact.glow" else "glow_run cast-named-xact claim missing path"
+
+let castimportxact = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-xact.glow"]
+assert castimportxact.ok else "glow_run cast-import-xact.glow failed"
+assert castimportxact.out contains "GREEN" else "glow_run cast-import-xact.glow not GREEN"
+assert castimportxact.out contains "cast-import-xact.glow" else "glow_run cast-import-xact claim missing path"
+
+# STOA165: Grain primary cast twins for xact-shape.
+let castnamedxactshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-xact-shape.glow"]
+assert castnamedxactshape.ok else "glow_run cast-named-xact-shape.glow failed"
+assert castnamedxactshape.out contains "GREEN" else "glow_run cast-named-xact-shape.glow not GREEN"
+assert castnamedxactshape.out contains "cast-named-xact-shape.glow" else "glow_run cast-named-xact-shape claim missing path"
+
+let castimportxactshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-xact-shape.glow"]
+assert castimportxactshape.ok else "glow_run cast-import-xact-shape.glow failed"
+assert castimportxactshape.out contains "GREEN" else "glow_run cast-import-xact-shape.glow not GREEN"
+assert castimportxactshape.out contains "cast-import-xact-shape.glow" else "glow_run cast-import-xact-shape claim missing path"
+
+# STOA166: Grain primary cast twins for xfer-shape (no mold cast-xfer twin).
+let castnamedxfershape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-xfer-shape.glow"]
+assert castnamedxfershape.ok else "glow_run cast-named-xfer-shape.glow failed"
+assert castnamedxfershape.out contains "GREEN" else "glow_run cast-named-xfer-shape.glow not GREEN"
+assert castnamedxfershape.out contains "cast-named-xfer-shape.glow" else "glow_run cast-named-xfer-shape claim missing path"
+
+let castimportxfershape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-import-xfer-shape.glow"]
+assert castimportxfershape.ok else "glow_run cast-import-xfer-shape.glow failed"
+assert castimportxfershape.out contains "GREEN" else "glow_run cast-import-xfer-shape.glow not GREEN"
+assert castimportxfershape.out contains "cast-import-xfer-shape.glow" else "glow_run cast-import-xfer-shape claim missing path"
+
+let asserttrue = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/assert-true.glow"]
+assert asserttrue.ok else "glow_run assert-true.glow failed"
+assert asserttrue.out contains "GREEN" else "glow_run assert-true.glow not GREEN"
+assert asserttrue.out contains "assert-true.glow" else "glow_run assert-true claim missing path"
+
+let assertfalse = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/assert-false.glow"]
+assert assertfalse.ok else "glow_run assert-false.glow failed"
+assert assertfalse.out contains "GREEN" else "glow_run assert-false.glow not GREEN"
+assert assertfalse.out contains "assert-false.glow" else "glow_run assert-false claim missing path"
+
+let gatesample = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-sample.glow"]
+assert gatesample.ok else "glow_run gate-sample.glow failed"
+assert gatesample.out contains "GREEN" else "glow_run gate-sample.glow not GREEN"
+assert gatesample.out contains "gate-sample.glow" else "glow_run gate-sample claim missing path"
+
+let gatebarket = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-sample.glow"]
+assert gatebarket.ok else "glow_run gate-barket-sample.glow failed"
+assert gatebarket.out contains "GREEN" else "glow_run gate-barket-sample.glow not GREEN"
+assert gatebarket.out contains "gate-barket-sample.glow" else "glow_run gate-barket-sample claim missing path"
+
+let gatebarketdouble = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-double.glow"]
+assert gatebarketdouble.ok else "glow_run gate-barket-double.glow failed"
+assert gatebarketdouble.out contains "GREEN" else "glow_run gate-barket-double.glow not GREEN"
+assert gatebarketdouble.out contains "gate-barket-double.glow" else "glow_run gate-barket-double claim missing path"
+
+let gatebarketinc = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-inc.glow"]
+assert gatebarketinc.ok else "glow_run gate-barket-inc.glow failed"
+assert gatebarketinc.out contains "GREEN" else "glow_run gate-barket-inc.glow not GREEN"
+assert gatebarketinc.out contains "gate-barket-inc.glow" else "glow_run gate-barket-inc claim missing path"
+
+let gatebarketdec = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-dec.glow"]
+assert gatebarketdec.ok else "glow_run gate-barket-dec.glow failed"
+assert gatebarketdec.out contains "GREEN" else "glow_run gate-barket-dec.glow not GREEN"
+assert gatebarketdec.out contains "gate-barket-dec.glow" else "glow_run gate-barket-dec claim missing path"
+
+let gatebarketamount = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-amount.glow"]
+assert gatebarketamount.ok else "glow_run gate-barket-amount.glow failed"
+assert gatebarketamount.out contains "GREEN" else "glow_run gate-barket-amount.glow not GREEN"
+assert gatebarketamount.out contains "gate-barket-amount.glow" else "glow_run gate-barket-amount claim missing path"
+
+let gatebarketamountshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-amount-shape.glow"]
+assert gatebarketamountshape.ok else "glow_run gate-barket-amount-shape.glow failed"
+assert gatebarketamountshape.out contains "GREEN" else "glow_run gate-barket-amount-shape.glow not GREEN"
+assert gatebarketamountshape.out contains "gate-barket-amount-shape.glow" else "glow_run gate-barket-amount-shape claim missing path"
+
+let gatebarketcountshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-count-shape.glow"]
+assert gatebarketcountshape.ok else "glow_run gate-barket-count-shape.glow failed"
+assert gatebarketcountshape.out contains "GREEN" else "glow_run gate-barket-count-shape.glow not GREEN"
+assert gatebarketcountshape.out contains "gate-barket-count-shape.glow" else "glow_run gate-barket-count-shape claim missing path"
+
+let gatebarketpairshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-pair-shape.glow"]
+assert gatebarketpairshape.ok else "glow_run gate-barket-pair-shape.glow failed"
+assert gatebarketpairshape.out contains "GREEN" else "glow_run gate-barket-pair-shape.glow not GREEN"
+assert gatebarketpairshape.out contains "gate-barket-pair-shape.glow" else "glow_run gate-barket-pair-shape claim missing path"
+
+let gatebarketkindshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-kind-shape.glow"]
+assert gatebarketkindshape.ok else "glow_run gate-barket-kind-shape.glow failed"
+assert gatebarketkindshape.out contains "GREEN" else "glow_run gate-barket-kind-shape.glow not GREEN"
+assert gatebarketkindshape.out contains "gate-barket-kind-shape.glow" else "glow_run gate-barket-kind-shape claim missing path"
+
+let gatebarketxactshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-xact-shape.glow"]
+assert gatebarketxactshape.ok else "glow_run gate-barket-xact-shape.glow failed"
+assert gatebarketxactshape.out contains "GREEN" else "glow_run gate-barket-xact-shape.glow not GREEN"
+assert gatebarketxactshape.out contains "gate-barket-xact-shape.glow" else "glow_run gate-barket-xact-shape claim missing path"
+
+let gatebarketxfershape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-xfer-shape.glow"]
+assert gatebarketxfershape.ok else "glow_run gate-barket-xfer-shape.glow failed"
+assert gatebarketxfershape.out contains "GREEN" else "glow_run gate-barket-xfer-shape.glow not GREEN"
+assert gatebarketxfershape.out contains "gate-barket-xfer-shape.glow" else "glow_run gate-barket-xfer-shape claim missing path"
+
+let gatebarkettripleshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-triple-shape.glow"]
+assert gatebarkettripleshape.ok else "glow_run gate-barket-triple-shape.glow failed"
+assert gatebarkettripleshape.out contains "GREEN" else "glow_run gate-barket-triple-shape.glow not GREEN"
+assert gatebarkettripleshape.out contains "gate-barket-triple-shape.glow" else "glow_run gate-barket-triple-shape claim missing path"
+
+let gatebarketquadshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-quad-shape.glow"]
+assert gatebarketquadshape.ok else "glow_run gate-barket-quad-shape.glow failed"
+assert gatebarketquadshape.out contains "GREEN" else "glow_run gate-barket-quad-shape.glow not GREEN"
+assert gatebarketquadshape.out contains "gate-barket-quad-shape.glow" else "glow_run gate-barket-quad-shape claim missing path"
+
+let gatebarketpentashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-penta-shape.glow"]
+assert gatebarketpentashape.ok else "glow_run gate-barket-penta-shape.glow failed"
+assert gatebarketpentashape.out contains "GREEN" else "glow_run gate-barket-penta-shape.glow not GREEN"
+assert gatebarketpentashape.out contains "gate-barket-penta-shape.glow" else "glow_run gate-barket-penta-shape claim missing path"
+
+let gatebarkethexashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-hexa-shape.glow"]
+assert gatebarkethexashape.ok else "glow_run gate-barket-hexa-shape.glow failed"
+assert gatebarkethexashape.out contains "GREEN" else "glow_run gate-barket-hexa-shape.glow not GREEN"
+assert gatebarkethexashape.out contains "gate-barket-hexa-shape.glow" else "glow_run gate-barket-hexa-shape claim missing path"
+
+let gatebarketheptashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-hepta-shape.glow"]
+assert gatebarketheptashape.ok else "glow_run gate-barket-hepta-shape.glow failed"
+assert gatebarketheptashape.out contains "GREEN" else "glow_run gate-barket-hepta-shape.glow not GREEN"
+assert gatebarketheptashape.out contains "gate-barket-hepta-shape.glow" else "glow_run gate-barket-hepta-shape claim missing path"
+
+let gatebarketoctashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-octa-shape.glow"]
+assert gatebarketoctashape.ok else "glow_run gate-barket-octa-shape.glow failed"
+assert gatebarketoctashape.out contains "GREEN" else "glow_run gate-barket-octa-shape.glow not GREEN"
+assert gatebarketoctashape.out contains "gate-barket-octa-shape.glow" else "glow_run gate-barket-octa-shape claim missing path"
+
+let gatebarketnonashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-barket-nona-shape.glow"]
+assert gatebarketnonashape.ok else "glow_run gate-barket-nona-shape.glow failed"
+assert gatebarketnonashape.out contains "GREEN" else "glow_run gate-barket-nona-shape.glow not GREEN"
+assert gatebarketnonashape.out contains "gate-barket-nona-shape.glow" else "glow_run gate-barket-nona-shape claim missing path"
+
+let gatedouble = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-double.glow"]
+assert gatedouble.ok else "glow_run gate-double.glow failed"
+assert gatedouble.out contains "GREEN" else "glow_run gate-double.glow not GREEN"
+assert gatedouble.out contains "gate-double.glow" else "glow_run gate-double claim missing path"
+
+let gateinc = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-inc.glow"]
+assert gateinc.ok else "glow_run gate-inc.glow failed"
+assert gateinc.out contains "GREEN" else "glow_run gate-inc.glow not GREEN"
+assert gateinc.out contains "gate-inc.glow" else "glow_run gate-inc claim missing path"
+
+let gatedec = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-dec.glow"]
+assert gatedec.ok else "glow_run gate-dec.glow failed"
+assert gatedec.out contains "GREEN" else "glow_run gate-dec.glow not GREEN"
+assert gatedec.out contains "gate-dec.glow" else "glow_run gate-dec claim missing path"
+
+let gateamount = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-amount.glow"]
+assert gateamount.ok else "glow_run gate-amount.glow failed"
+assert gateamount.out contains "GREEN" else "glow_run gate-amount.glow not GREEN"
+assert gateamount.out contains "gate-amount.glow" else "glow_run gate-amount claim missing path"
+
+let gateamountshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-amount-shape.glow"]
+assert gateamountshape.ok else "glow_run gate-amount-shape.glow failed"
+assert gateamountshape.out contains "GREEN" else "glow_run gate-amount-shape.glow not GREEN"
+assert gateamountshape.out contains "gate-amount-shape.glow" else "glow_run gate-amount-shape claim missing path"
+
+let gatecountshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-count-shape.glow"]
+assert gatecountshape.ok else "glow_run gate-count-shape.glow failed"
+assert gatecountshape.out contains "GREEN" else "glow_run gate-count-shape.glow not GREEN"
+assert gatecountshape.out contains "gate-count-shape.glow" else "glow_run gate-count-shape claim missing path"
+
+let gatepairshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-pair-shape.glow"]
+assert gatepairshape.ok else "glow_run gate-pair-shape.glow failed"
+assert gatepairshape.out contains "GREEN" else "glow_run gate-pair-shape.glow not GREEN"
+assert gatepairshape.out contains "gate-pair-shape.glow" else "glow_run gate-pair-shape claim missing path"
+
+let gatekindshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-kind-shape.glow"]
+assert gatekindshape.ok else "glow_run gate-kind-shape.glow failed"
+assert gatekindshape.out contains "GREEN" else "glow_run gate-kind-shape.glow not GREEN"
+assert gatekindshape.out contains "gate-kind-shape.glow" else "glow_run gate-kind-shape claim missing path"
+
+let gatexactshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-xact-shape.glow"]
+assert gatexactshape.ok else "glow_run gate-xact-shape.glow failed"
+assert gatexactshape.out contains "GREEN" else "glow_run gate-xact-shape.glow not GREEN"
+assert gatexactshape.out contains "gate-xact-shape.glow" else "glow_run gate-xact-shape claim missing path"
+
+let gatexfershape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-xfer-shape.glow"]
+assert gatexfershape.ok else "glow_run gate-xfer-shape.glow failed"
+assert gatexfershape.out contains "GREEN" else "glow_run gate-xfer-shape.glow not GREEN"
+assert gatexfershape.out contains "gate-xfer-shape.glow" else "glow_run gate-xfer-shape claim missing path"
+
+let gatetripleshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-triple-shape.glow"]
+assert gatetripleshape.ok else "glow_run gate-triple-shape.glow failed"
+assert gatetripleshape.out contains "GREEN" else "glow_run gate-triple-shape.glow not GREEN"
+assert gatetripleshape.out contains "gate-triple-shape.glow" else "glow_run gate-triple-shape claim missing path"
+
+let gatequadshape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-quad-shape.glow"]
+assert gatequadshape.ok else "glow_run gate-quad-shape.glow failed"
+assert gatequadshape.out contains "GREEN" else "glow_run gate-quad-shape.glow not GREEN"
+assert gatequadshape.out contains "gate-quad-shape.glow" else "glow_run gate-quad-shape claim missing path"
+
+let gatepentashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-penta-shape.glow"]
+assert gatepentashape.ok else "glow_run gate-penta-shape.glow failed"
+assert gatepentashape.out contains "GREEN" else "glow_run gate-penta-shape.glow not GREEN"
+assert gatepentashape.out contains "gate-penta-shape.glow" else "glow_run gate-penta-shape claim missing path"
+
+let gatehexashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-hexa-shape.glow"]
+assert gatehexashape.ok else "glow_run gate-hexa-shape.glow failed"
+assert gatehexashape.out contains "GREEN" else "glow_run gate-hexa-shape.glow not GREEN"
+assert gatehexashape.out contains "gate-hexa-shape.glow" else "glow_run gate-hexa-shape claim missing path"
+
+let gateheptashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-hepta-shape.glow"]
+assert gateheptashape.ok else "glow_run gate-hepta-shape.glow failed"
+assert gateheptashape.out contains "GREEN" else "glow_run gate-hepta-shape.glow not GREEN"
+assert gateheptashape.out contains "gate-hepta-shape.glow" else "glow_run gate-hepta-shape claim missing path"
+
+let gateoctashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-octa-shape.glow"]
+assert gateoctashape.ok else "glow_run gate-octa-shape.glow failed"
+assert gateoctashape.out contains "GREEN" else "glow_run gate-octa-shape.glow not GREEN"
+assert gateoctashape.out contains "gate-octa-shape.glow" else "glow_run gate-octa-shape claim missing path"
+
+let gatenonashape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-nona-shape.glow"]
+assert gatenonashape.ok else "glow_run gate-nona-shape.glow failed"
+assert gatenonashape.out contains "GREEN" else "glow_run gate-nona-shape.glow not GREEN"
+assert gatenonashape.out contains "gate-nona-shape.glow" else "glow_run gate-nona-shape claim missing path"
+
+say "GREEN: glow_run desk — all desk generators lowered, built, exit 0."
+
+
+
+
+
+

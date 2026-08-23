@@ -1,0 +1,43 @@
+# tools/g/gism_ayre_j8_entity_books_witness.rish — Season 2 Journey 8 (Cash-first), Rung 1.
+#
+# Season 2, Yield — the accounting spine for Linengrow PBC / Siya Fund. Dimeroll keeps one
+# steward's centralized books; the entity-books design extends that model's scope to two
+# organizations and names the strand this journey turns on: entity separation, never braided.
+# pond/apps/entity_books.rye fixes the crux — two named entities, each folding its own journal to a
+# trial balance that conserves and a balance sheet that balances; an inter-entity transfer booked as
+# one fact on both (grantor debits expense / credits cash, grantee debits cash / credits revenue);
+# the pair conserving across the cash line (grantor cash falls by the amount, grantee's rises by it,
+# summing to zero); and segregation — an entry added to one entity's journal never changes the
+# other's fold. A self-transfer (SameEntity), a non-positive amount (BadAmount, no journal touched),
+# and a full journal (JournalFull) each refuse. Composes dimeroll_core over public API. Facts only;
+# no funds move, no key is held (custody gate %3 untouched); demo entities only.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/g/gism_ayre_j8_entity_books_witness.rish
+
+say "gism-ayre-j8r1: Language EN — two entities' books each balance, an inter-entity transfer conserves across cash, and the books are never braided."
+say "gism-ayre-j8r1: Lens TAME — a self-transfer, a zero amount, and a full journal each refuse; segregation is proven byte-identical."
+
+let zig = "vendor/zig-toolchain/zig"
+
+# dimeroll_core stays GREEN beneath the entity layer — additive.
+let binc = "dimeroll/bin/dimeroll"
+let buildc = run ["sh" "-c" "mkdir -p dimeroll/bin && env RYE_ZIG=${zig} rye/bin/rye build dimeroll/dimeroll.rye -femit-bin=${binc}"]
+assert buildc.ok else "gism-ayre-j8r1: dimeroll build failed"
+let selfc = run ["sh" "-c" "${binc} selftest 2>&1"]
+assert selfc.ok else "gism-ayre-j8r1: dimeroll selftest exited non-zero"
+
+let bin = "pond/bin/entity-books"
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/entity_books.rye -femit-bin=${bin}"]
+assert build.ok else "gism-ayre-j8r1: entity_books build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "gism-ayre-j8r1: entity_books selftest exited non-zero"
+assert selftest.out contains "GREEN" else "gism-ayre-j8r1: selftest did not speak GREEN"
+assert selftest.out contains "each book balances, the pair conserves across cash" else "gism-ayre-j8r1: conservation missing"
+assert selftest.out contains "left Siya's fold byte-identical — the books are never braided" else "gism-ayre-j8r1: segregation missing"
+assert selftest.out contains "refused SameEntity" else "gism-ayre-j8r1: self-transfer refusal missing"
+assert selftest.out contains "refused BadAmount and touched no journal" else "gism-ayre-j8r1: zero-amount refusal missing"
+assert selftest.out contains "refused JournalFull" else "gism-ayre-j8r1: full-journal refusal missing"
+
+say "GREEN: GISM-AYRE-J8r1 entity_books — two entities' books each balance, an inter-entity transfer conserves across cash, and the books are never braided; Season 2 Journey 8 (Cash-first) opens."

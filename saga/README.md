@@ -41,7 +41,7 @@ Tally calls **Rye/`std` only**. It does not import caravan, mala, or wov.
 
 ### Who calls Tally
 
-**Canon caller map:** [`../tally/README.md`](../tally/README.md) § Who calls Tally · witness [`../tools/tally_caller_map_witness.rish`](../tools/tally_caller_map_witness.rish). This shelf does not keep a second table (unified Tensegral r11).
+**Canon caller map:** [`../tally/README.md`](../tally/README.md) § Who calls Tally · witness [`../tools/t/tally_caller_map_witness.rish`](../tools/t/tally_caller_map_witness.rish). This shelf does not keep a second table (unified Tensegral r11).
 
 Living law: [`../tally/README.md`](../tally/README.md) · TAME copy/garden rows in [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md).
 

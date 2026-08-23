@@ -1,0 +1,57 @@
+# tube05_apk_pack_witness.rish — TUBE0.5 packaging witness: a validated
+# TUBE0 manifest becomes a signed Android APK that names Android's own
+# NativeActivity, carries libglowapp.so (aarch64), and declares exactly
+# the closed-table permissions the manifest's capabilities emit.
+#
+# Per active-designing/20260717-014522_native-activity-shim-and-slc-
+# packaging.md. Host-side only (needs the HAWM0-staged Android SDK
+# build-tools and JDK under tools/.cache/hawm0/); no device required
+# for this witness — on-device install is the next slice.
+#
+#   rishi/bin/rishi run tools/t/tube05_apk_pack_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+
+say "tube05: proving the NativeActivity envelope emission first…"
+let env_build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/tube_android_manifest_witness.rye -femit-bin=linengrow/bin/tube_android_manifest_witness"]
+assert env_build.ok else "NativeActivity envelope witness failed to build"
+let env_run = run ["sh" "-c" "linengrow/bin/tube_android_manifest_witness 2>&1"]
+assert env_run.ok else "NativeActivity envelope witness exited non-zero"
+assert env_run.out contains "GREEN" else "NativeActivity envelope witness not GREEN"
+say "tube05: NativeActivity envelope emission GREEN"
+
+say "tube05: proving permission emission still GREEN…"
+let perm = run ["rishi/bin/rishi" "run" "tools/t/tube0_5_android_permission_witness.rish"]
+assert perm.ok else "permission-emission witness failed"
+say "tube05: permission emission GREEN"
+
+say "tube05: proving the Seva B0 fold unit matches the HAWM1 demo root…"
+let fold_build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/seva_b0_fold_witness.rye -femit-bin=linengrow/bin/seva_b0_fold_witness"]
+assert fold_build.ok else "seva_b0_fold witness failed to build"
+let fold_run = run ["sh" "-c" "linengrow/bin/seva_b0_fold_witness 2>&1"]
+assert fold_run.ok else "seva_b0_fold witness exited non-zero"
+assert fold_run.out contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe" else "seva_b0_fold root mismatch"
+say "tube05: Seva B0 fold unit GREEN"
+
+# STOA72: seat Glow-lowered session-root so NativeActivity @import resolves.
+say "tube05: seating Glow-lowered session-root import for NativeActivity…"
+let desk = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/use-lib-session-root-nest-cue-jam.glow"]
+assert desk.ok else "glow_run use-lib-session-root-nest-cue-jam.glow failed"
+assert desk.out contains "GREEN" else "glow_run use-lib-session-root-nest-cue-jam.glow not GREEN"
+let link = run ["sh" "-c" "ln -sfn ../glow/.cache/lib_session_root_nest_cue_jam.rye linengrow/lib_session_root_nest_cue_jam.rye"]
+assert link.ok else "failed to seat linengrow → glow/.cache import symlink"
+say "tube05: Glow session-root import seated"
+
+say "tube05: packing the Glow NativeActivity APK (Seva fold inside libglowapp.so)…"
+let pack = run ["bash" "-c" "./tools/t/tube05_apk_pack_worker.sh"]
+say "${pack.out}"
+if (pack.ok == false) then say "tube05: pack stderr — ${pack.err}"
+assert pack.ok else "APK pack worker failed — real reason printed just above"
+assert pack.out contains "GREEN" else "APK pack worker missing GREEN"
+assert pack.out contains "fold=seva-b0" else "APK pack missing seva-b0 fold marker"
+
+let apk = "tools/.cache/tube05/seva-broadcaster.apk"
+let apk_ok = run ["sh" "-c" "test -f ${apk}"]
+assert apk_ok.ok else "signed APK missing at tools/.cache/tube05/seva-broadcaster.apk"
+
+say "GREEN: TUBE0.5 — installable Glow APK with Seva B0 fold inside NativeActivity (arm64+x86_64). Next (host terminal): rishi/bin/rishi run tools/t/tube05_install_proof_onpath_host.rish"

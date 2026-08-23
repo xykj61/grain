@@ -1,0 +1,37 @@
+# tools/al/ales_stereo_crop_witness.rish — stereo_crop: Trim to Selection carried into stereo, both channels in lockstep, validate-both-before-either (ALES118).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES118.
+# Design read: active-designing/date/20260815/20260815-015904_fill-ales118-lotus-stereo-crop.md
+# Stands on: lotus/crop.rye (ALES111 — the mono Trim to Selection run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant),
+# lotus/timeline.rye (ALES2 — the Clip, its cut/splice proving the complement law, and the EditError reused whole), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a
+# StereoClip whose defining invariant is that left and right hold the same length so the channels stay aligned in time; circling the one phrase worth keeping trims both speakers to it
+# at once. This rung carries ALES111's crop into stereo the way ALES117 carried cut: run the proven mono crop on each channel with the same start and count.
+#
+# lotus/stereo_crop.rye keeps [start, start+count) in both channels and drops the rest, validating BOTH channels before either is mutated (because mono crop can fault only with BadRange
+# and the channels enter equal-length, the shared span is checked once against the common length up front) so a refusal never desynchronises the channels. The crux is four laws. THE
+# STEREO CROP LAW: each channel equals ALES111's mono crop on that channel byte for byte. THE BALANCE / INVARIANT LAW: left.len == right.len == count after. THE COMPLEMENT LAW:
+# stereo_crop keeps what stereo_cut removes per channel, the crop spliced back into the cut reconstructing the source. THE ATOMICITY / DEGENERATE LAW: a refusal leaves both channels
+# untouched and balanced, crop(0, len) the identity on both, crop(start, 0) the empty pair, a span past the samples BadRange.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stereo_crop_witness.rish
+
+say "ales-stereo-crop: Language EN — stereo_crop keeps the count samples starting at start in both channels of a StereoClip and drops every sample before and after, so the Trim to Selection ALES111 named for a mono clip now lands on a real stereo master. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time; circling the one phrase worth keeping trims both speakers to it at once. Where ALES117's stereo_cut removes the named span and keeps everything around it, stereo_crop keeps only the span — the exact stereo complement. It carries ALES111's proven mono crop into stereo the way ALES117 carried cut — the same start and count on each channel — so the trim lands identically in both and the stereo image stays balanced."
+say "ales-stereo-crop: Style Radiant — the rule is stated positively: run the mono crop per channel over its public API, validating both channels before either is mutated (because mono crop can fault only with BadRange and the channels enter equal-length, the shared span is checked once against the common length up front), so a refusal never leaves one channel cropped and the other not. The crux stands out as four laws: the stereo crop law (each channel equals ALES111's mono crop on that channel byte for byte), the balance / invariant law (left.len == right.len == count after the edit, the stereo image staying aligned), the complement law (stereo_crop keeps exactly what stereo_cut removes per channel, the crop spliced back into the cut reconstructing the source), and the atomicity / degenerate law (any refusal leaves both channels byte for byte untouched and still balanced, crop(0, len) the identity on both, crop(start, 0) the empty pair)."
+say "ales-stereo-crop: Lens TAME — two bounded i16 Clips (left, right) whose kept span is reseated to the front in lockstep; the shared span is checked without underflow against the common channel length once up front (start against len, count against the remainder), so every refusal comes by name before any write and the channels can never desynchronise; crop is the exact complement of cut — cut removes the span and crop keeps only it, the two partitioning the timeline — so this stereo twin closes the keep/remove pair on a master; it reuses ALES2's EditError whole and ALES111's crop per channel over its public API, inventing no new primitive; the stereo crop law is proven against ALES111's own crop run per channel, and the complement law against ALES2's own cut/splice per channel; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_crop"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_crop.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-crop: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_crop.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-crop: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-crop: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-crop' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-crop: selftest did not print the GREEN ales-stereo-crop line"

@@ -11,7 +11,7 @@ Write in **Radiant Style** — see `context/RADIANT_STYLE.md` and `.claude/rules
 
 ## Code discipline
 
-**TAME Guidance** governs `.rye`, `.rish`, `.brix`, and `.bron` — operational supplement at `context/TAME_GUIDANCE.md`, voiced canon at `external-research/TAME_GUIDANCE.md`. Agent rule: `.claude/rules/tame-guidance.md`. Lint surface: supplement section **What We Check, and When** (`tools/width-check.rish`, `tools/tame_style_check.rish`, growing `tools/tame-check.rish`). Tidy brief for counsel: `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md`.
+**TAME Guidance** governs `.rye`, `.rish`, `.brix`, and `.bron` — operational supplement at `context/TAME_GUIDANCE.md`, voiced canon at `external-research/TAME_GUIDANCE.md`. Agent rule: `.claude/rules/tame-guidance.md`. Lint surface: supplement section **What We Check, and When** (`tools/w/width-check.rish`, `tools/t/tame_style_check.rish`, growing `tools/t/tame-check.rish`). Tidy brief for counsel: `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md`.
 
 ## Context home
 
@@ -19,7 +19,7 @@ Write in **Radiant Style** — see `context/RADIANT_STYLE.md` and `.claude/rules
 - `active-designing/` — design in motion: **essays**, design that outlives the code.
 - `active-development/` — where a **round** thinks out loud: lap plans, scoping, survey ledgers. One question files a piece — *would this still be worth reading if the code it describes were deleted?* Yes → designing, no → development (`.claude/rules/design-rooms.md`).
 - `expanding-prompts/` — intent expanded into runnable plans.
-- `session-logs/` — reasoning traces as **Bron** (`.bron`); one-clock filenames per `context/specs/20260627-102012_one-clock-naming-law.md` and `.claude/rules/session-logs.md` (newest-first index in `session-logs/README.md`). Dated logs fold under `date/YYYYMMDD/` (molted from `archive/` `20260821.161758`); rooms are bounded at 256 flat files (`tools/room_bound_witness.rish`), and a stale reference is resolved rather than rewritten (`tools/dated_path_resolve.rish`).
+- `session-logs/` — reasoning traces as **Bron** (`.bron`); one-clock filenames per `context/specs/20260627-102012_one-clock-naming-law.md` and `.claude/rules/session-logs.md` (newest-first index in `session-logs/README.md`). Dated logs fold under `date/YYYYMMDD/` (molted from `archive/` `20260821.161758`); rooms are bounded at 256 flat files (`tools/r/room_bound_witness.rish`), and a stale reference is resolved rather than rewritten (`tools/d/dated_path_resolve.rish`).
 
 ## Working conventions
 
@@ -38,7 +38,7 @@ Write in **Radiant Style** — see `context/RADIANT_STYLE.md` and `.claude/rules
 
 ## Session logs
 
-At the end of **every** response, write a session log per `.claude/rules/session-logs.md`: one-clock filename (`YYYYMMDD-HHMMSS_short-sprig.bron`, **no countdown prefix**), Bron fields (`stamp` · `editor` · `model` · `voice` · `think` · `obs` · `file` · `recommend`), prepend a row to `session-logs/README.md`, and **commit the log in the same commit as the work** whenever possible. Markdown logs are archive-only. Batch hygiene for archived Markdown: `rye run tools/align_session_logs.rye`.
+At the end of **every** response, write a session log per `.claude/rules/session-logs.md`: one-clock filename (`YYYYMMDD-HHMMSS_short-sprig.bron`, **no countdown prefix**), Bron fields (`stamp` · `editor` · `model` · `voice` · `think` · `obs` · `file` · `recommend`), prepend a row to `session-logs/README.md`, and **commit the log in the same commit as the work** whenever possible. Markdown logs are archive-only. Batch hygiene for archived Markdown: `rye run tools/rye/align_session_logs.rye`.
 
 ## Enclosure
 

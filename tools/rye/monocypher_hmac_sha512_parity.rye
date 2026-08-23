@@ -1,0 +1,74 @@
+//! tools/rye/monocypher_hmac_sha512_parity.rye — our authored crypto/hmac_sha512.rye asked for its OWN HMAC-SHA-512 tags over the same five inputs the
+//! Monocypher C harness (tools/fixtures/monocypher_hmac_sha512_harness.c) prints, so tools/cr/crypto_monocypher_hmac_sha512_parity_witness.rish can diff our
+//! bytes against the vendored Monocypher's C byte-for-byte — the keyed MAC HKDF-SHA512 and BIP32 key derivation are built on (RFC 2104 / RFC 4231),
+//! proven against the audit's parity target. Season G (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//!
+//! crypto/hmac_sha512.rye's own selftest named Monocypher-source parity as an honest held horizon; this harness lets the witness close it. Five lines
+//! print, in order: RFC 4231 Test Case 1 (key 0x0b*20, "Hi There"), Test Case 2 (key "Jefe", "what do ya want for nothing?"), an exact-block-length key
+//! (128 bytes, byte i = i) over "abc" (the K0-fits-block path), a longer-than-block key (200 bytes, byte i = (i*3 + 1) mod 256) over a 300-byte
+//! multi-block message (byte i = (i*7 + 1) mod 256, the hash-the-key path), and the empty message under the short RFC key — the same coverage the
+//! selftest uses.
+//!
+//! This authors NO cryptography — it is a printing harness over the GREEN crypto/hmac_sha512.rye (reached through the tools/rye/hmac_sha512.rye symlink,
+//! which itself imports sha512.rye beside it). Purely local — no key of ours, no network, no funds, no device.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/rye/monocypher_hmac_sha512_parity.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const h = @import("hmac_sha512.rye");
+
+const hex_alphabet = "0123456789abcdef";
+
+/// print_tag — MAC a message under a key through crypto/hmac_sha512.rye and print its 128-hex-character tag on one line.
+fn print_tag(msg: []const u8, key: []const u8) !void {
+    const tag = try h.mac(msg, key);
+    // invariant: the tag is exactly SHA-512's 64-byte width, rendering to hex_len characters.
+    assert(tag.len == h.tag_len and h.hex_len == h.tag_len * 2);
+    var out: [h.hex_len]u8 = undefined;
+    var i: u32 = 0;
+    while (i < h.tag_len) : (i += 1) {
+        out[i * 2] = hex_alphabet[tag[i] >> 4];
+        out[i * 2 + 1] = hex_alphabet[tag[i] & 0x0f];
+    }
+    print("{s}\n", .{out});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+
+    // invariant (construction): the module reports HMAC-SHA-512's fixed shapes — a 64-byte tag over the 128-byte block.
+    assert(h.tag_len == 64 and h.block_bytes == 128);
+
+    // 1. RFC 4231 Test Case 1 — key 0x0b*20, message "Hi There".
+    var key1: [20]u8 = undefined;
+    var i: u32 = 0;
+    while (i < 20) : (i += 1) key1[i] = 0x0b;
+    try print_tag("Hi There", &key1);
+
+    // 2. RFC 4231 Test Case 2 — key "Jefe", message "what do ya want for nothing?".
+    try print_tag("what do ya want for nothing?", "Jefe");
+
+    // 3. An exact-block-length key (128 bytes, byte i = i) over "abc" — the K0-fits-block path.
+    var keyb: [128]u8 = undefined;
+    i = 0;
+    while (i < 128) : (i += 1) keyb[i] = @as(u8, @truncate(i));
+    try print_tag("abc", &keyb);
+
+    // 4. A longer-than-block key (200 bytes) over a 300-byte multi-block message — the hash-the-key path.
+    var keyl: [200]u8 = undefined;
+    i = 0;
+    while (i < 200) : (i += 1) keyl[i] = @as(u8, @truncate(i *% 3 +% 1));
+    var multi: [300]u8 = undefined;
+    i = 0;
+    while (i < 300) : (i += 1) multi[i] = @as(u8, @truncate(i *% 7 +% 1));
+    try print_tag(&multi, &keyl);
+
+    // 5. The empty message under the short RFC key 0x0b*20.
+    try print_tag("", &key1);
+
+    return 0;
+}

@@ -180,7 +180,7 @@ Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
 | `misc` | `collapseRepeats` — Phase 4 `usize` seam policy applied | done |
 | `rye/lib/std/mem.zig` | `collapseRepeatsLen` — named `u32` bounds; public `usize` unchanged | done |
 | `rye/tests/mem_collapse_repeats_test.rye` | witness program | done |
-| `tools/parity.rish` | witness registered | done |
+| `tools/p/parity.rish` | witness registered | done |
 | `external-research/yonder/strengthening-compiler/9913_mem_collapse_repeats.md` | pass record + audited surfaces | done |
 | `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9913 | done |

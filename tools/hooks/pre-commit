@@ -2,8 +2,8 @@
 # pre-commit -- a generated page is refreshed by the commit that moves the numbers it shows.
 #
 # WHY THIS WALL. Two pages in this tree are GENERATED and compared against a fresh render by a
-# standing guard: README.md's four front-door numbers (tools/readme_metrics.rish) and the crushed
-# library index docs-geode/libraries/README.md (tools/geode_libraries.rish). Both count witnesses
+# standing guard: README.md's four front-door numbers (tools/r/readme_metrics.rish) and the crushed
+# library index docs-geode/libraries/README.md (tools/g/geode_libraries.rish). Both count witnesses
 # and Rye modules, which is precisely what most laps here add. So a page goes stale inside the very
 # commit that made it stale, and the guard reds on the NEXT cold start rather than on the lap that
 # earned it. That happened three times across two days: REDS %151 found the front door reading a
@@ -33,9 +33,9 @@
 # a commit that adds no witness and no module, and this hook is silent about both. The rostered
 # guards still catch them at a cold start. This closes the fast, frequent half.
 #
-# Proven both ways by tools/generated_page_freshness_witness.rish over
+# Proven both ways by tools/g/generated_page_freshness_witness.rish over
 # tools/fixtures/generated_page_freshness_control.sh, on a throwaway repository.
-# Armed by rishi/bin/rishi run tools/install_hooks.rish.
+# Armed by rishi/bin/rishi run tools/i/install_hooks.rish.
 
 set -eu
 
@@ -46,8 +46,8 @@ moved=$(git diff --cached --name-only --diff-filter=AD -- 'tools/*_witness.rish'
 [ -n "$moved" ] || exit 0
 
 # One line per generated page: the generator, then the page it writes.
-pages="tools/readme_metrics.rish:README.md
-tools/geode_libraries.rish:docs-geode/libraries/README.md"
+pages="tools/r/readme_metrics.rish:README.md
+tools/g/geode_libraries.rish:docs-geode/libraries/README.md"
 
 refused=no
 staged=""

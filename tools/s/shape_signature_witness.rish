@@ -1,0 +1,44 @@
+# tools/s/shape_signature_witness.rish -- the SHAPE SIGNATURE of a segmented region, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/width_profile.rye reads how a shape's thickness turns (ISOTROPIC or ANISOTROPIC), and
+# image/convex_hull.rye reads how full a shape is (SOLID or DENTED). Each descriptor is one axis of shape, and each axis alone MERGES
+# pairs of shapes the other keeps apart. This rung reads BOTH and joins them into one 2x2 taxonomy, so a solid block, a solid bar, a
+# dented plus, and a dented L fall into four distinct classes. Every VERDICT is an exact integer decision (i128 for isotropy, u32
+# equality for solidity); only the reported anisotropy and solidity ratios are read in f64, as the two parent modules report their own.
+#
+# The crux this witness proves on metal: the FUSION sees what neither axis alone sees -- solidity alone cannot separate the block
+# from the bar (both SOLID) nor the plus from the L (both DENTED), and anisotropy alone cannot separate the block from the plus (both
+# ISOTROPIC) nor the bar from the L (both ANISOTROPIC), yet same_class reads all six pairs distinct; class_code names each quadrant
+# 0..3; refusals by name and determinism. No network, no key, no funds -- the shape taxonomy a surface names the day it wants to sort
+# marks into round blobs, straight bars, stars, and bent limbs.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/shape_signature_witness.rish
+
+say "shape_signature: Language EN -- Season G shape signature; the exact-integer FUSION of image/width_profile.rye's isotropy verdict and image/convex_hull.rye's solidity verdict, joined into one 2x2 taxonomy that separates shapes neither axis alone can tell apart; every verdict an integer decision, only the reported anisotropy and solidity read in f64."
+say "shape_signature: Style Radiant -- compose not braid: this rung owns only the JOINING of the two verdicts and the reads over the join (is_solid, is_isotropic, class_code, same_class); width_profile owns the anisotropy, convex_hull owns the solidity, contour owns the boundary ring, label owns the component map. No hull built here, no width measured, no pixel counted it did not delegate -- a reading, not a render."
+say "shape_signature: Lens TAME -- the signature reads one bounded ring, one hull under convex_hull_max_points, and two pixel counts under the image pixel ceiling; isotropy is decided by an i128 cross-multiplication and solidity by u32 equality, never a float compare; a lone dot refuses DegenerateHull, an empty source EmptySource, an absent label BadLabel; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/shape_signature"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/shape_signature.rye -femit-bin=${bin}"]
+assert build.ok else "shape_signature: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "shape_signature: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "shape_signature: ${out}"
+
+assert selftest.out contains "GREEN image-shape-signature" else "shape_signature: selftest did not print the GREEN line"
+assert selftest.out contains "fall into FOUR distinct classes" else "shape_signature: the four-quadrant taxonomy did not print"
+assert selftest.out contains "solidity alone cannot tell the block from the bar" else "shape_signature: the solidity-merges-a-pair crux did not print"
+assert selftest.out contains "anisotropy alone cannot tell the block from the plus" else "shape_signature: the anisotropy-merges-a-pair crux did not print"
+assert selftest.out contains "same_class reads all six pairs distinct" else "shape_signature: the join-is-sharper crux did not print"
+assert selftest.out contains "EXACT pixel-count equality" else "shape_signature: the exact solidity decision did not print"
+assert selftest.out contains "EXACT rational equality" else "shape_signature: the exact isotropy decision did not print"
+assert selftest.out contains "refuses DegenerateHull and an absent label BadLabel" else "shape_signature: the refusals did not print"
+assert selftest.out contains "reads deterministically" else "shape_signature: determinism did not print"
+
+say "shape_signature: GREEN on metal -- the shape signature fuses image/width_profile.rye's isotropy and image/convex_hull.rye's solidity into a 2x2 taxonomy, and the join separates four archetypes each lone axis merges in pairs; exact integer verdicts, refusals by name, determinism. Season G open-media."

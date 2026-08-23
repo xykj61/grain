@@ -1,0 +1,35 @@
+# tools/r/regions_witness.rish -- region size and bounding box, and the despeckle, prove themselves on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the natural consumer of image/label.rye. The labeler answers HOW MANY marks a mask holds
+# and WHICH pixels share one; this rung answers the next question a surface asks -- HOW BIG each piece is and WHERE it sits --
+# then despeckles the mask by an area threshold and renders the survivors back to a plain binary mask the family consumes.
+#
+# The crux this witness proves on metal: an L of three pixels reads area three inside a two-by-two bounding box (four cells, so
+# a box is a different fact from a count); a lone speck reads area one in a single-cell box; the regions are raster-ordered so
+# region one is the earliest-appearing component; filter_min_area at min area two drops the one-pixel speck and keeps the L,
+# recompacted to label one; render_mask paints the survivors opaque white on opaque black, read through the same branch.is_on
+# door, round-tripping through the open QOI codec byte-for-byte; an all-background mask measures to zero regions; an empty
+# source refuses by name. No network, no key, no funds -- the sizes a surface names the day it filters the noise out of a mask.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/regions_witness.rish
+
+say "regions: Language EN -- Season G region size and bounding box; measure every labeled component of a LabelMap, then despeckle a mask by an area threshold."
+say "regions: Style Radiant -- compose not braid: this rung owns only the per-label accumulation, the survivor remap, and the binary render; label owns the LabelMap, branch.is_on decides the binary meaning of a rendered pixel, qoi owns the buffer."
+say "regions: Lens TAME -- the region slice is bounded by the label count and the remap by count + 1; an empty source refuses by name up front so a refusal allocates nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/regions"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/regions.rye -femit-bin=${bin}"]
+assert build.ok else "regions: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "regions: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "regions: ${out}"
+
+assert selftest.out contains "GREEN image-regions" else "regions: selftest did not print the GREEN line"
+
+say "regions: GREEN -- an L reads area three inside a two-by-two box, a speck area one, filter_min_area drops the speck and recompacts the survivor, render_mask round-trips through the open QOI codec, on metal."

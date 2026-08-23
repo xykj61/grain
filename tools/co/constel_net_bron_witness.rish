@@ -1,0 +1,44 @@
+# tools/co/constel_net_bron_witness.rish — Constel dev-net harness, Rung 3: the net travels as text.
+#
+# Rungs one and two named a fake dev-net's galaxy from a law-safe name and settled a whole d12·d60
+# fractal branch beneath it. This rung renders a spun-up constel to a format constel-net-v1 Bron record
+# (the safe name, then one point line per settled member) and parses it back byte-for-byte, so a dev-net's
+# roster crosses as text a person can read. The safe name rides with the record and the quarantine rides
+# with it: parse re-checks the naming law, so a record whose net name carries no digit refuses UnsafeName —
+# a roster can never travel under a name that could parse as a real @p. Unknown field · bad header ·
+# missing net · bad integer each refuse. Demo seeds only — no key, no network, no custody (gate %4 untouched).
+#
+# Law:   active-designing/date/20260813/20260813-022222_constel-test-network-naming-law.md
+# Scope: active-designing/date/20260813/20260813-022908_constel-devnet-harness-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/constel_net_bron_witness.rish
+
+say "constel-net-bron: Language EN — a fake dev-net travels as a readable record, its safe name riding with it."
+say "constel-net-bron: Style Radiant — the quarantine is carried in the bytes, not held only by the live harness."
+say "constel-net-bron: Lens TAME — the reader is bounded and purpose-built; an unsafe name bites on parse; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/constel-net-bron"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_net_bron.rye -femit-bin=${bin}"]
+assert build.ok else "constel-net-bron: constel_net_bron build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "constel-net-bron: constel_net_bron selftest exited non-zero"
+assert selftest.out contains "GREEN" else "constel-net-bron: selftest did not speak GREEN"
+assert selftest.out contains "rendered to Bron, parsed back byte-for-byte, and recovered its safe name and galaxy·star·planet roster" else "constel-net-bron: round-trip claim missing"
+assert selftest.out contains "refused UnsafeName — the quarantine travels with the bytes" else "constel-net-bron: unsafe-name-travels claim missing"
+assert selftest.out contains "refused UnknownField rather than be dropped" else "constel-net-bron: unknown-field refusal missing"
+assert selftest.out contains "a wrong header refused BadFormat" else "constel-net-bron: bad-header refusal missing"
+assert selftest.out contains "a record with no net line refused MissingNet" else "constel-net-bron: missing-net refusal missing"
+assert selftest.out contains "a non-numeric point refused BadInt" else "constel-net-bron: bad-int refusal missing"
+assert selftest.out contains "the quarantine carried in the bytes" else "constel-net-bron: crux claim missing"
+
+# Rung two stays its own GREEN binary — this rung renders the branch it settles, never replaces it, so
+# the whole-fractal crux stands at r3's door.
+let r2 = run ["sh" "-c" "rishi/bin/rishi run tools/co/constel_net_topology_witness.rish 2>&1"]
+assert r2.ok else "constel-net-bron: rung two (the fractal settles) is not GREEN under the composing rung"
+assert r2.out contains "constel-net-topology: GREEN" else "constel-net-bron: rung two did not speak its GREEN"
+
+say "constel-net-bron: GREEN — a fake dev-net travels as a format constel-net-v1 record byte-for-byte, its roster readable and its safe name riding with it; rung two stands at its door."

@@ -1,0 +1,34 @@
+# tools/co/constel_naming_witness.rish — the Constel test-network naming law, proven safe.
+#
+#   rishi/bin/rishi run tools/co/constel_naming_witness.rish
+#
+# Constel names are fake, self-invented constellations for sandbox / testnet / localhost
+# Comlink p2p networks run inside the jailed pier (the double-seat expansion, Season D/F).
+# Their one load-bearing promise: each carries a digit, and so can NEVER parse as a real @p
+# (letters + hyphens only) — a fake dev name can never reach the live network in someone's
+# real custody. This witness proves the seated first draws keep that promise, and that the
+# scan bites a planted @p-shaped name (no digit).
+#
+# Law: active-designing/date/20260813/20260813-022222_constel-test-network-naming-law.md
+# Output convention: context/specs/20260729-215600_scan-seam-convention.md.
+
+say "constel: Language EN — fake dev constellations that can never reach the real network."
+say "constel: Style Radiant — name freely in the jail; the digit keeps the name home."
+say "constel: Lens TAME — the safety promise is structural and asserted; a planted @p must bite."
+
+# The seated first draws — every one carries a digit, so every one is provably non-@p.
+let seated = run ["sh" "tools/fixtures/constel_naming_scan.sh" "tools/fixtures/constel_names.txt"]
+say seated.out
+assert seated.out contains "verdict=ok" else "constel: a seated constel name lacks a digit — it could parse as a real @p"
+assert seated.ok else "constel: the seated verdict and status disagree"
+assert seated.out contains "names=5" else "constel: the seated first-draw count changed unexpectedly"
+assert (seated.out contains "digit=no") == false else "constel: a seated name was flagged as possibly-real"
+
+# The scan bites — an @p-shaped name (letters only, no digit) among the draws is unsafe.
+let planted = run ["sh" "tools/fixtures/constel_naming_scan.sh" "tools/fixtures/constel_names_unsafe.txt"]
+say planted.out
+assert planted.out contains "verdict=unsafe" else "constel: the scan failed to flag an @p-shaped name"
+assert planted.out contains "first=sarlev" else "constel: the scan did not name the offending @p-shaped draw"
+assert (planted.ok == false) else "constel: the unsafe verdict and status disagree"
+
+say "GREEN: constel — every seated constel name carries a digit and so can never parse as a real @p; the scan bites a planted @p-shaped name, so no fake dev constellation can ever reach the live network"

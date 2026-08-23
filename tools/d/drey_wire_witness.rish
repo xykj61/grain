@@ -1,0 +1,38 @@
+# tools/d/drey_wire_witness.rish — the wire frame that carries only what was committed (DREY1).
+#
+# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY1.
+# Design read: active-designing/date/20260814/20260814-021218_drey1-wire-frame-carry-only-committed-exploration.md
+# Stands on: mikrophone/session.rye (DREY0) — the memory that forgets.
+#
+# mikrophone/wire.rye frames a session's committed payload into a self-describing wire frame (magic · version · length ·
+# Sha256 digest · payload) and deframes it verify-before-trust: every check runs BEFORE the payload is yielded. The
+# Mantrapod's forgetting promise reaches the wire — `frame` reads `carry()`, so a session that committed nothing refuses
+# NothingToCarry and the forgotten working buffer never leaves the device. The selftest proves: a committed payload
+# round-trips byte-for-byte, an uncommitted tail is never carried, and every corruption (FrameTooShort, BadMagic,
+# BadVersion, LengthOverflow, FrameTruncated, DigestMismatch) refuses by name before a byte is handed onward — the frame
+# bounded by the session's own ceiling.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/drey_wire_witness.rish
+
+say "drey-wire: Language EN — DREY1 carries DREY0's committed payload across the single wire: a self-describing frame proven whole before the far side yields a byte."
+say "drey-wire: Style Radiant — the forgetting promise reaches the wire; frame reads carry(), so what a keeper never committed never crosses, and what crosses is proven whole first."
+say "drey-wire: Lens TAME — one bounded fixed frame buffer (header + max_samples), no heap; the payload copy is a plain bounded loop, never a bare memcpy; deframe checks magic, version, declared length against the bound, truncation, and a Sha256 digest all before returning the payload; no disk, no network, no key, no funds (custody gate %2 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mikrophone/bin/wire"
+
+let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} rye/bin/rye build mikrophone/wire.rye -femit-bin=${bin}"]
+assert build.ok else "drey-wire: build failed — ${build.err}"
+
+let outfile = "mikrophone/bin/wire.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "drey-wire: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "drey-wire: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN drey-wire' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "drey-wire: selftest did not print the GREEN drey-wire line"
+
+say "drey-wire: GREEN — the Mikrophone wire frame carries only what was committed and proves it whole before it trusts it. DREY1 lands on a session already known correct."

@@ -5,7 +5,7 @@
 # three bytes "abc". They are public, stable, and checkable by anyone against the standard -- which
 # is the whole point: a tree cannot grade its own hash function.
 #
-# Driven by tools/sha3_file_witness.rish. Run from the repository root.
+# Driven by tools/s/sha3_file_witness.rish. Run from the repository root.
 
 set -eu
 

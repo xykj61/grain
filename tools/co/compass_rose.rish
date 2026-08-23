@@ -1,0 +1,124 @@
+# compass_rose.rish — walk the navigation habit; assert the rose is seated.
+#
+# Creative, jail-safe hygiene: no network, no TigerBeetle, no protocol width.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/compass_rose.rish
+#
+# Ground: foundations/20260706-185112_follow-our-compass.md
+
+say "compass rose: foundations…"
+let f = run ["sh" "-c" "test -f foundations/20260706-185112_follow-our-compass.md && test -f foundations/README.md && echo FOUNDATIONS_OK"]
+assert f.ok else "foundations missing"
+assert f.out contains "FOUNDATIONS_OK" else "foundations check failed"
+
+say "compass rose: grain index…"
+let g = run ["sh" "-c" "test -f foundations/20260702-184312_the-grain-and-the-crossing.md && echo GRAIN_OK"]
+assert g.ok else "grain index missing"
+assert g.out contains "GRAIN_OK" else "grain check failed"
+
+say "compass rose: two rooms…"
+let r = run ["sh" "-c" "test -f context/TWO_ROOMS.md && echo ROOMS_OK"]
+assert r.ok else "TWO_ROOMS missing"
+assert r.out contains "ROOMS_OK" else "two-rooms check failed"
+
+say "compass rose: kitchen twin seated in LEXICON…"
+let kt = run ["sh" "-c" "grep -q 'Kitchen twin' context/LEXICON.md && echo KITCHEN_OK"]
+assert kt.ok else "Kitchen twin LEXICON row missing"
+assert kt.out contains "KITCHEN_OK" else "kitchen twin check failed"
+
+say "compass rose: active-designing ladder…"
+let a = run ["sh" "-c" "test -f active-designing/README.md && echo LADDER_OK"]
+assert a.ok else "active-designing README missing"
+assert a.out contains "LADDER_OK" else "ladder check failed"
+
+say "compass rose: now (TASKS) and order (ROADMAP)…"
+let n = run ["sh" "-c" "test -f construction/TASKS.md && test -f construction/ROADMAP.md && echo NOW_OK"]
+assert n.ok else "TASKS or ROADMAP missing"
+assert n.out contains "NOW_OK" else "now/order check failed"
+
+say "compass rose: plain stories seated…"
+let p = run ["sh" "-c" "test -f external-research/20260709-200022_pedersen-and-sigma-plainly.md && test -f external-research/20260709-230414_twin-keys-and-the-exit-bundle.md && test -f external-research/20260709-231011_graduation-rule-plainly.md && test -f external-research/20260709-235921_one-clock-plainly.md && test -f external-research/20260709-235931_resins-cellar-vessel-plainly.md && test -f external-research/20260710-000725_learning-chapter-plainly.md && test -f external-research/20260710-001249_settlement-seat-plainly.md && test -f external-research/20260710-002017_metalsmoke-plainly.md && test -f external-research/20260710-002422_cellar-seasons-plainly.md && test -f external-research/20260710-002544_first-lap-goes-green-plainly.md && test -f external-research/20260710-002952_sealed-crossing-plainly.md && test -f external-research/20260710-171707_granary-mandi-commerce-plainly.md && echo STORIES_OK"]
+assert p.ok else "plain stories missing"
+assert p.out contains "STORIES_OK" else "stories check failed"
+
+say "compass rose: sealed crossing Landed + kitchen twins…"
+let sc = run ["sh" "-c" "test -f foundations/20260703-201612_the-sealed-crossing.md && test -f external-research/20260710-002952_sealed-crossing-plainly.md && test -f external-research/20260710-145313_amphora-crossing-plainly.md && test -d amphora && grep -q 'Landed' foundations/20260703-201612_the-sealed-crossing.md && grep -q 'Landed' external-research/20260710-002952_sealed-crossing-plainly.md && echo CROSS_OK"]
+assert sc.ok else "sealed crossing pair missing"
+assert sc.out contains "CROSS_OK" else "sealed crossing status drift"
+
+say "compass rose: cellar seasons silo + kitchen twin…"
+let as = run ["sh" "-c" "test -f active-designing/date/20260703/20260703-071212_cellar-seasons.md && test -f external-research/20260710-002422_cellar-seasons-plainly.md && grep -q 'Reviewed and kept' active-designing/date/20260703/20260703-071212_cellar-seasons.md && ! grep -q 'parks the candidate' active-designing/date/20260703/20260703-071212_cellar-seasons.md && echo SEASON_OK"]
+assert as.ok else "cellar seasons pair missing"
+assert as.out contains "SEASON_OK" else "cellar seasons affirm drift"
+
+say "compass rose: first-lap essay + kitchen twin…"
+let fl = run ["sh" "-c" "test -f external-research/20260703-033602_first-lap-goes-green.md && test -f external-research/20260710-002544_first-lap-goes-green-plainly.md && grep -q 'Reviewed and kept' external-research/20260703-033602_first-lap-goes-green.md && echo LAP_OK"]
+assert fl.ok else "first-lap pair missing"
+assert fl.out contains "LAP_OK" else "first-lap pair check failed"
+
+say "compass rose: metalsmoke silo + kitchen twin…"
+let ms = run ["sh" "-c" "test -f active-designing/date/20260703/20260703-013412_metalsmoke.md && test -f external-research/20260710-002017_metalsmoke-plainly.md && grep -q 'Reviewed and kept' active-designing/date/20260703/20260703-013412_metalsmoke.md && ! grep -q 'awaiting ratification' active-designing/date/20260703/20260703-013412_metalsmoke.md && echo METAL_OK"]
+assert ms.ok else "metalsmoke pair missing"
+assert ms.out contains "METAL_OK" else "metalsmoke affirm drift"
+
+say "compass rose: settlement seat pair (dated + kitchen twin)…"
+let ss = run ["sh" "-c" "test -f external-research/20260706-005512_settlement-seat-verification-and-verdict.md && test -f external-research/20260710-001249_settlement-seat-plainly.md && grep -qE 'supersed|replaced' external-research/20260706-005512_settlement-seat-verification-and-verdict.md && echo SEAT_OK"]
+assert ss.ok else "settlement seat pair missing"
+assert ss.out contains "SEAT_OK" else "settlement supersession note missing"
+
+say "compass rose: learning chapter candidate + kitchen twin…"
+let lc = run ["sh" "-c" "test -f foundations/20260703-140212_the-learning-chapter.md && test -f external-research/20260710-000725_learning-chapter-plainly.md && echo LEARN_OK"]
+assert lc.ok else "learning chapter pair missing"
+assert lc.out contains "LEARN_OK" else "learning pair check failed"
+
+say "compass rose: universal civic horizons affirmed…"
+let uv = run ["sh" "-c" "grep -q 'Reviewed and kept' foundations/the-aspiring-radiance-universal.md && grep -q 'Reviewed and kept' foundations/the-regenerative-experiment-universal.md && echo UNIV_OK"]
+assert uv.ok else "universal affirm missing"
+assert uv.out contains "UNIV_OK" else "universal affirm check failed"
+
+say "compass rose: one-clock canon + kitchen twin…"
+let oc = run ["sh" "-c" "test -f context/specs/20260627-102012_one-clock-naming-law.md && test -f external-research/20260709-235921_one-clock-plainly.md && echo CLOCK_OK"]
+assert oc.ok else "one-clock pair missing"
+assert oc.out contains "CLOCK_OK" else "one-clock pair check failed"
+
+say "compass rose: resins canon + kitchen twin…"
+let rs = run ["sh" "-c" "test -f context/specs/20260703-191112_resins-and-hash-tiers.md && test -f external-research/20260709-235931_resins-cellar-vessel-plainly.md && echo RESIN_OK"]
+assert rs.ok else "resins pair missing"
+assert rs.out contains "RESIN_OK" else "resins pair check failed"
+
+say "compass rose: thin-edge path (not thin-ring)…"
+let e = run ["sh" "-c" "test -f foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md && ! grep -q 'the-happy-zone-and-the-thin-ring' gratitude/README.md gratitude/IntegratedTestsAreAScam.md && echo EDGE_OK"]
+assert e.ok else "thin-edge path check failed"
+assert e.out contains "EDGE_OK" else "thin-ring stale pointer still present"
+
+say "compass rose: one-word-one-gate canon path…"
+let o = run ["sh" "-c" "test -f context/specs/20260704-020800_one-word-one-gate.md && ! test -e external-research/20260704-020800_one-word-one-gate.md && grep -q 'context/specs/20260704-020800_one-word-one-gate' external-research/README.md && echo OWOG_OK"]
+assert o.ok else "one-word-one-gate path check failed"
+assert o.out contains "OWOG_OK" else "one-word-one-gate index drift"
+
+say "compass rose: graduation canon + kitchen twin…"
+let gr = run ["sh" "-c" "test -f context/specs/20260702-035018_graduation-rule.md && test -f external-research/20260709-231011_graduation-rule-plainly.md && echo GRAD_OK"]
+assert gr.ok else "graduation rule pair missing"
+assert gr.out contains "GRAD_OK" else "graduation pair check failed"
+
+say "compass rose: Dimeroll books-view packet…"
+let gc = run ["sh" "-c" "test -f active-designing/date/20260710/20260710-125953_dimeroll-hammock.md && test -f external-research/20260710-125953_dimeroll-kick-digits-clean-room.md && test -f expanding-prompts/yonder/20260710-125953_dimeroll-lap1-books-view.md && test -f dimeroll/dimeroll_core.rye && test -f dimeroll/fixtures/journal.bron && test -f dimeroll/README.md && echo DIMEROLL_OK"]
+assert gc.ok else "Dimeroll books-view packet missing"
+assert gc.out contains "DIMEROLL_OK" else "Dimeroll packet check failed"
+
+say "compass rose: Dimeroll sight-view packet…"
+let gv = run ["sh" "-c" "test -f active-designing/date/20260710/20260710-132548_dimeroll-lap3-sight-view.md && test -f tools/d/dimeroll_sight_view.rish && echo SIGHT_OK"]
+assert gv.ok else "Dimeroll sight-view packet missing"
+assert gv.out contains "SIGHT_OK" else "sight packet check failed"
+
+say "compass rose: inference stack packet…"
+let inf = run ["sh" "-c" "test -f active-designing/date/20260710/20260710-133500_inference-stack-lap0-hammock.md && test -f external-research/20260710-133500_local-forge-minisforum-inference.md && test -f lattice/lattice_core.rye && test -f scribble/scribble_core.rye && test -f lantern/lantern_core.rye && test -f ember/ember_core.rye && test -f tools/i/inference_assist_view.rish && echo INFERENCE_OK"]
+assert inf.ok else "inference stack packet missing"
+assert inf.out contains "INFERENCE_OK" else "inference packet check failed"
+
+say "compass rose: Granary and Mandi commerce packet…"
+let cm = run ["sh" "-c" "test -d granary && test -d mandi && test -f context/specs/20260710-163043_granary-name-seated.md && test -f context/specs/20260710-165634_mandi-name-seated.md && test -f context/specs/20260710-171202_mandi-listing-settle-seated.md && test -f context/specs/20260710-172625_granary-weave-settle-seated.md && test -f external-research/20260710-171707_granary-mandi-commerce-plainly.md && test -f tools/g/granary_exchange_view.rish && test -f tools/g/granary_settle_view.rish && test -f tools/m/mandi_listing_settle.rish && test -f tools/m/mandi_settle_view.rish && test -f tools/g/granary_weave_settle.rish && test -f mandi/listing_settle_core.rye && test -f granary/exchange_listing.rye && test -f granary/weave_settle_core.rye && echo COMMERCE_OK"]
+assert cm.ok else "Granary/Mandi commerce packet missing"
+assert cm.out contains "COMMERCE_OK" else "commerce packet check failed"
+
+say "GREEN: compass rose — foundations, grain, two rooms, kitchen twin, ladder, now, order; plain stories; pointer hygiene; Dimeroll; sight; inference stack; Granary/Mandi commerce."

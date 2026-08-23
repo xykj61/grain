@@ -35,7 +35,7 @@ The transport **reads only** — it never mutates the master, so a session can b
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_transport_witness.rish`: reading fixed blocks from the start concatenates back to the exact master (no sample skipped or repeated); the last block is honestly short and the read past the end is empty; `at_end` is exact at `pos == len`; `seek_ms` places the head at a real moment and `elapsed_ms` reports it back; a seek past the master refuses `PastEnd`; the transport never mutates the master (a replay reads the same bytes). GREEN on the first build. Purely local — no socket, no network, no keys, no funds, no real device (no audio leaves the process; a block is copied samples, not a sound card write).
+`tools/al/ales_transport_witness.rish`: reading fixed blocks from the start concatenates back to the exact master (no sample skipped or repeated); the last block is honestly short and the read past the end is empty; `at_end` is exact at `pos == len`; `seek_ms` places the head at a real moment and `elapsed_ms` reports it back; a seek past the master refuses `PastEnd`; the transport never mutates the master (a replay reads the same bytes). GREEN on the first build. Purely local — no socket, no network, no keys, no funds, no real device (no audio leaves the process; a block is copied samples, not a sound card write).
 
 ## The road on
 

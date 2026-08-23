@@ -1,0 +1,43 @@
+# tools/co/constel_net_witness.rish — Constel dev-net harness, Rung 1: a named fake dev-net, quarantined by its name.
+#
+# A constel is a fake, self-invented constellation for a sandbox / testnet / localhost Comlink p2p
+# network run inside the jailed pier. This rung fixes the crux: a fake dev-net can only be born from
+# a provably-non-@p name (a digit anywhere, the one promise the Constel naming law guards), and under
+# that name it runs the real settlement protocol from a genuine genesis. The name carries the safety,
+# not a flag — an @p-shaped name refuses UnsafeName before any genesis opens, so no fake net is ever
+# born un-quarantined. A forged bind and a non-galaxy number each refuse, so the fake net is the
+# genuine protocol. Demo keeper seeds only — no real key, no network, no custody (gate %4 untouched).
+#
+# Law:   active-designing/date/20260813/20260813-022222_constel-test-network-naming-law.md
+# Scope: active-designing/date/20260813/20260813-022908_constel-devnet-harness-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/constel_net_witness.rish
+
+say "constel-net: Language EN — a fake dev-net is born only from a law-safe name, and under it runs the real protocol."
+say "constel-net: Style Radiant — the name is the wall that keeps the fake network home."
+say "constel-net: Lens TAME — the quarantine is structural and asserted; an @p-shaped name bites before genesis; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/constel-net"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_net.rye -femit-bin=${bin}"]
+assert build.ok else "constel-net: constel_net build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "constel-net: constel_net selftest exited non-zero"
+assert selftest.out contains "GREEN" else "constel-net: selftest did not speak GREEN"
+assert selftest.out contains "a law-safe name spun up a real demo genesis" else "constel-net: safe-name genesis claim missing"
+assert selftest.out contains "every seated draw of the naming law is law-safe" else "constel-net: draws-from-the-law claim missing"
+assert selftest.out contains "an @p-shaped name refused UnsafeName; no fake net was born under it" else "constel-net: unsafe-name quarantine missing"
+assert selftest.out contains "a non-galaxy number refused NotGenesis behind a safe name" else "constel-net: protocol-behind-name claim missing"
+assert selftest.out contains "an empty name and an overlong name each refuse" else "constel-net: bounded-handle claim missing"
+assert selftest.out contains "a fake dev-net is born only from a law-safe name" else "constel-net: crux claim missing"
+
+# The Constel naming law this harness draws from stands at its door — the same scan the harness
+# mirrors in Rye stays GREEN, so the harness and the law agree on the one safety promise.
+let law = run ["sh" "-c" "rishi/bin/rishi run tools/co/constel_naming_witness.rish 2>&1"]
+assert law.ok else "constel-net: the Constel naming law witness the harness draws from is not GREEN"
+assert law.out contains "GREEN: constel" else "constel-net: the naming law did not speak its GREEN"
+
+say "constel-net: GREEN — a fake dev-net is quarantined by its own name and runs the real settlement protocol from genesis; the naming law stands at its door."

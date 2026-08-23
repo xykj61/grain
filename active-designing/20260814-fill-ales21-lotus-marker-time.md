@@ -32,7 +32,7 @@ The sorted track and the clock conversions are reused whole; only the two time-f
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_marker_time_witness.rish`: at a legible clock (1 sample per ms) a place set at `ms` lands at sample `ms` and reads back `ms` exactly; places set in seconds out of order stay sorted and unique (ALES20's invariant carried through the time face); `pos_ms` round-trips each marker; a place past the master refuses `PastEnd` and a duration past the clip refuses `DurationTooLong`; two places set at the same time refuse `Duplicate`; and a marker set in seconds drives a real ALES20 `region_between` and scrub `snap`. Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker.
+`tools/al/ales_marker_time_witness.rish`: at a legible clock (1 sample per ms) a place set at `ms` lands at sample `ms` and reads back `ms` exactly; places set in seconds out of order stay sorted and unique (ALES20's invariant carried through the time face); `pos_ms` round-trips each marker; a place past the master refuses `PastEnd` and a duration past the clip refuses `DurationTooLong`; two places set at the same time refuse `Duplicate`; and a marker set in seconds drives a real ALES20 `region_between` and scrub `snap`. Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker.
 
 ## The road on
 

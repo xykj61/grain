@@ -1,0 +1,37 @@
+# tools/al/ales_pad_tail_witness.rish — the padded top-and-tail: trim the leading and trailing silence like ALES98, yet keep a chosen margin of silence at each end (ALES99).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES99.
+# Design read: active-designing/date/20260814/20260814-234744_fill-ales99-lotus-padded-top-tail.md
+# Stands on: lotus/top_tail.rye (ALES98 — the flush top-and-tail, the pad-zero twin), lotus/segment.rye (ALES95 — the voice-activity segmenter), lotus/timeline.rye
+# (ALES2 — the Clip and cut), lotus/voiced.rye (ALES94 — the .silent verdict). ALES98 cuts the dead air flush against the first and last sound; that clips the attack of
+# a spoken take. Every recorder and DAW that trims silence also lets a keeper KEEP A MARGIN — trim the ends, but leave a quarter-second of air so the take breathes.
+#
+# lotus/pad_tail.rye segments [0, clip.len) into frames of frame_len samples through ALES95, finds the FIRST and LAST non-silent runs, keeps min(pad, available) of the
+# silence at each end, and cuts only the EXCESS (trailing first, so the leading index stays valid). The crux is two laws. THE PAD-ZERO LAW: top_and_tail_pad(pad=0)
+# equals ALES98's flush top_and_tail byte for byte. THE MARGIN LAW: the result equals the original over [first.start - min(pad, lead_silence), last.end + min(pad,
+# tail_silence)) byte for byte — the kept margin at each end is exactly min(pad, available), a pad past both ends leaves the clip unchanged, monotone in pad. The
+# selftest proves both, plus: a known pad keeps exactly the named samples; an all-silent clip trims to empty whatever the pad; a no-silent clip is unchanged; an empty
+# clip, a ragged frame length, an inverted band, and an illegal floor each refuse by name, the clip untouched.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_pad_tail_witness.rish
+
+say "ales-pad-tail: Language EN — ALES98 cuts the dead air at both ends flush against the first and last sound; that is right for a sample library and wrong for a spoken take, where a cut landing exactly on the first consonant clips the attack. Every recorder, DAW, and voice-memo app that trims silence also lets a keeper KEEP A MARGIN — trim the ends, but leave a quarter-second of air so the take breathes. This rung adds that one honest parameter: a pad count of silence samples to keep adjacent to the content at each end. The flush trim is exactly pad = 0."
+say "ales-pad-tail: Style Radiant — the rule is stated positively: segment [0, clip.len) into frames, find the FIRST and LAST non-silent runs, keep min(pad, available) of the silence at each end, and cut only the EXCESS (trailing first, so the leading index stays valid). The crux stands out as two laws: the pad-zero law (pad=0 equals ALES98's flush trim byte for byte) and the margin law (the kept margin at each end is exactly min(pad, available), the result equal to the original over the padded span)."
+say "ales-pad-tail: Lens TAME — one mono clip of i16 PCM segmented through ALES95 (all its validation runs before any cut); it edits only by removing whole excess-silent frames at the two ends through ALES2's own cut, fabricating no sample and reordering nothing, never touching a sample between the first and last non-silent runs or within the kept margin; pad is a plain u32 count with no illegal value; the error vocabulary is ALES98's TopTailError (the segmenter's SegmentError and the editor's EditError) reused by name; siloed to lotus/, not a transcript or a real adaptive VAD, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/pad_tail"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/pad_tail.rye -femit-bin=${bin}"]
+assert build.ok else "ales-pad-tail: build failed — ${build.err}"
+
+let outfile = "lotus/bin/pad_tail.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-pad-tail: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-pad-tail: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-pad-tail' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-pad-tail: selftest did not print the GREEN ales-pad-tail line"

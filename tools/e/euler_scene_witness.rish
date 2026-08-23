@@ -1,0 +1,44 @@
+# tools/e/euler_scene_witness.rish -- the EULER NUMBER of a WHOLE LABELING, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/euler_number.rye reads ONE labeled region (its components always 1, its Euler at most 1).
+# A real segmented photo holds MANY objects. This rung drops the single-region assumption and reads the topology of the whole scene:
+# how many components, how many holes total, and how many holes EACH object carries -- exact integers, NO float, NO tolerance.
+#
+# The crux this witness proves on metal: a scene of a solid block (Euler 1, no hole), a hollow ring (Euler 0, one hole), and a
+# twice-pierced block (Euler -1, two holes) reads a total Euler of 0 = 1 + 0 + (-1), three components, three holes -- and the single
+# whole-foreground bit-quad sweep lands on the SAME total the per-object sum does (topological additivity, exact because no 2x2 window
+# ever straddles two 8-connected components); the per-component read distinguishes what the total blurs (block 0, ring 1, pierced 2),
+# most_holed names the pierced block; a filled scene reads all-simply-connected; an empty scene reads a valid zero topology and
+# most_holed refuses by name; determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/e/euler_scene_witness.rish
+
+say "euler_scene: Language EN -- Season G whole-labeling Euler number; the exact-integer TOPOLOGY of a scene of many objects at once (components, total holes, and per-object holes), dropping image/euler_number.rye's single-region assumption; NO float, NO tolerance."
+say "euler_scene: Style Radiant -- compose not braid: this rung owns only the whole-foreground sweep, the per-component aggregation, and the reads over the result; label owns the component map and its 8-connectivity, euler_number owns the single-region bit-quad theorem this rung sums. No hull, no distance field, no pixel written -- a reading, not a render."
+say "euler_scene: Lens TAME -- the whole-foreground sweep obeys euler_number's own euler_max_windows ceiling; the per-component loop runs count times under label_max_pixels; the per-object hole slice is sized to count; an empty scene reads a valid zero topology and most_holed refuses NoComponents; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/euler_scene"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/euler_scene.rye -femit-bin=${bin}"]
+assert build.ok else "euler_scene: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "euler_scene: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "euler_scene: ${out}"
+
+assert selftest.out contains "GREEN image-euler-scene" else "euler_scene: selftest did not print the GREEN line"
+assert selftest.out contains "the WHOLE-EQUALS-SUM crux" else "euler_scene: the whole-equals-sum crux did not print"
+assert selftest.out contains "a total Euler of 0 = 1 + 0 + (-1)" else "euler_scene: the additivity sum did not print"
+assert selftest.out contains "topological additivity proven both ways" else "euler_scene: the additivity claim did not print"
+assert selftest.out contains "no 2x2 window ever straddles two 8-connected components" else "euler_scene: the exactness reason did not print"
+assert selftest.out contains "the PER-OBJECT-DISTINGUISHES crux" else "euler_scene: the per-object crux did not print"
+assert selftest.out contains "block 0, ring 1, pierced block 2" else "euler_scene: the per-object hole counts did not print"
+assert selftest.out contains "most_holed names the pierced block" else "euler_scene: the most-holed read did not print"
+assert selftest.out contains "an empty scene reads a valid zero topology and most_holed refuses NoComponents" else "euler_scene: the empty-scene refusal did not print"
+assert selftest.out contains "reads deterministically" else "euler_scene: determinism did not print"
+
+say "euler_scene: GREEN on metal -- the whole-labeling Euler number reads a scene's exact-integer topology, the single sweep agreeing with the per-object sum (topological additivity), and the per-component holes distinguishing which object is holed where the total blurs them; refusals by name, determinism. Season G open-media."

@@ -1,0 +1,36 @@
+# tools/co/contour_witness.rish -- a labeled component's OUTER BOUNDARY traced as an ordered clockwise ring, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- every reader over a labeling so far returns an UNORDERED reduction: regions reads a
+# component's area and box, centroid its center, moments its lean, hu_moments its invariant fingerprint. None hands back the
+# ORDERED sequence of boundary pixels a perimeter, a chain code, a corner finder, and a polygon simplifier descend from. This
+# rung traces the outer boundary by Moore-neighbor tracing, walking the ring clockwise from the topmost-then-leftmost pixel.
+#
+# The crux this witness proves on metal: a solid 5x5 block traces to its 16-pixel outer ring (the 9 interior pixels never on
+# it), consecutive points 8-adjacent and the last closing to the first -- a walkable closed loop no earlier reader gives; the
+# OUTLINE crux -- a solid 3x3 block (area 9) and the same block carved to a hollow ring (area 8) share the IDENTICAL outer
+# contour point-for-point, so the outer boundary is blind to an interior hole, a different fact from the fill; two components
+# of equal area 16 carry different outlines (a compact 4x4 block 12, a spread 2x8 block 16); refusals by name. No network, no
+# key, no funds -- the outline a surface names the day it draws a shape's edge, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/contour_witness.rish
+
+say "contour: Language EN -- Season G outer-boundary tracer over a LabelMap; trace_contour walks a component's ring clockwise by Moore-neighbor tracing, perimeter counts the ring, paint_contour renders it white on black."
+say "contour: Style Radiant -- compose not braid: this rung owns only the boundary walk (the clockwise neighbor sweep, the backtrack, the stop) and the perimeter it counts; label owns the LabelMap and its dense raster-ordered labels. No gather, no blend, no codec, no color in the trace itself."
+say "contour: Lens TAME -- a boundary walk visits at most one distinct point per pixel so the point slice is sized to the pixel ceiling; a hard step count guards the walk BoundaryTooLong by name; an empty source refuses EmptySource and a label outside 1..count refuses BadLabel up front so a refusal allocates nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/contour"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/contour.rye -femit-bin=${bin}"]
+assert build.ok else "contour: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "contour: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "contour: ${out}"
+
+assert selftest.out contains "GREEN image-contour" else "contour: selftest did not print the GREEN line"
+
+say "contour: GREEN -- the 5x5 block traces to its 16-pixel ordered ring with the interior excluded, the solid and hollow 3x3 share the identical outer contour (blind to the hole), equal-area shapes carry different outlines, the ring round-trips through QOI, the refusals fire by name, on metal."

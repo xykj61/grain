@@ -18,7 +18,7 @@ Shared gates and utility pedestals in Glow — the sameness many desks call and 
 | `gate-mantra-fold-triple-fields` | Mantra Weave desk — triple sum; pair path delegated | 3 5 7→15 · 0 0 0→0 |
 | `gate-tally-fold-triple-prod` | triple-shape product (STOA336 — reducer chosen) | 3 5 7→105 · 1 1 1→1 · 0 4 9→0 |
 
-Suite: `rishi/bin/rishi run tools/glow_tend_a2_suite.rish`
+Suite: `rishi/bin/rishi run tools/g/glow_tend_a2_suite.rish`
 
 ## The a1 Rishi Walls (elder-citing)
 
@@ -27,7 +27,7 @@ Suite: `rishi/bin/rishi run tools/glow_tend_a2_suite.rish`
 | `gate-rishi-env-bindings-bound-u32` | env bindings = 512 | 300→1 · 900→0 |
 | `gate-rishi-history-bound-u32` | history = 50 | 12→1 · 80→0 |
 
-Witness: `rishi/bin/rishi run tools/rishi_a1_gate_walls_witness.rish` (also era 5/5)
+Witness: `rishi/bin/rishi run tools/r/rishi_a1_gate_walls_witness.rish` (also era 5/5)
 
 ## The Equality Gates (STOA337)
 
@@ -42,16 +42,16 @@ Witness: `rishi/bin/rishi run tools/rishi_a1_gate_walls_witness.rish` (also era 
 | `gate-mantra-diff-fields-eq-u32` | diff fields = 2 | 2→1 · 1→0 · 3→0 |
 | `gate-mantra-store-dirs-eq-u32` | store dirs = 3 | 3→1 · 2→0 · 4→0 |
 
-Witnesses: `tools/aurora_a1_seed_length_eq_witness.rish` · `tools/aurora_a1_signature_length_eq_witness.rish` · `tools/aurora_a1_living_stages_eq_witness.rish` · `tools/caravan_c4_exit_meanings_eq_witness.rish` · `tools/mantra_a1_line_fields_eq_witness.rye` · `tools/mantra_a1_weave_fields_eq_witness.rye` · `tools/mantra_a1_diff_fields_eq_witness.rye` · `tools/mantra_a1_store_dirs_eq_witness.rye` · the equality arc stands closed (8/8).
+Witnesses: `tools/au/aurora_a1_seed_length_eq_witness.rish` · `tools/au/aurora_a1_signature_length_eq_witness.rish` · `tools/au/aurora_a1_living_stages_eq_witness.rish` · `tools/ca/caravan_c4_exit_meanings_eq_witness.rish` · `tools/rye/mantra_a1_line_fields_eq_witness.rye` · `tools/rye/mantra_a1_weave_fields_eq_witness.rye` · `tools/rye/mantra_a1_diff_fields_eq_witness.rye` · `tools/rye/mantra_a1_store_dirs_eq_witness.rye` · the equality arc stands closed (8/8).
 
 ## The a1 Deciding Gates (STOA331)
 
-Seven gates, four families, both sides each — proven whole in one lap by `tools/glow_tend_a1_suite.rish`. The era also has two honestly separated laps:
+Seven gates, four families, both sides each — proven whole in one lap by `tools/g/glow_tend_a1_suite.rish`. The era also has two honestly separated laps:
 
 ```
-rishi/bin/rishi run tools/glow_tend_era_suite.rish   # pure lap (v20): a1 + R1 socketless; walls by seated wording; any host
-rishi/bin/rishi run tools/comlink_r1_dual_stack_witness.rish  # metal lap: binds both families
-rishi/bin/rishi run tools/glow_tend_a1_suite.rish    # a1 alone
+rishi/bin/rishi run tools/g/glow_tend_era_suite.rish   # pure lap (v20): a1 + R1 socketless; walls by seated wording; any host
+rishi/bin/rishi run tools/co/comlink_r1_dual_stack_witness.rish  # metal lap: binds both families
+rishi/bin/rishi run tools/g/glow_tend_a1_suite.rish    # a1 alone
 ```
 
 
@@ -72,7 +72,7 @@ rishi/bin/rishi run tools/glow_tend_a1_suite.rish    # a1 alone
 | `gate-comlink-dual-stack-bind-u32` | dual-stack policy on | 1→1 · 0→0 |
 | `gate-comlink-addr-width-u32` | addr width ≤ 16 (tracks pedestal `ipv6_addr_len=16`) | 4→1 · 16→1 · 20→0 |
 
-Witness: `rishi/bin/rishi run tools/comlink_r1_dual_stack_witness.rish` — **leg A** pure · **leg B** metal (Framework GREEN; counsel RED without IPv6) · no wire-semantics change. Rival `families=2` pedestal withdrawn e222.
+Witness: `rishi/bin/rishi run tools/co/comlink_r1_dual_stack_witness.rish` — **leg A** pure · **leg B** metal (Framework GREEN; counsel RED without IPv6) · no wire-semantics change. Rival `families=2` pedestal withdrawn e222.
 
 Structure museum pieces for Tend live under [`../sur/`](../sur/README.md).
 
@@ -87,23 +87,23 @@ Structure museum pieces for Tend live under [`../sur/`](../sur/README.md).
 
 | Desk | Role | Witness |
 | --- | --- | --- |
-| [`shape-tally-max-gardens.glow`](shape-tally-max-gardens.glow) | Names `max_gardens=8` beside `tally/gardens.rye` | `tools/tally_glow_tend_limb1_witness.rish` |
-| [`shape-tally-max-name-len.glow`](shape-tally-max-name-len.glow) | Names `max_name_len=32` beside `tally/gardens.rye` | `tools/tally_glow_tend_limb2_witness.rish` |
-| [`shape-tally-copy-preconditions.glow`](shape-tally-copy-preconditions.glow) | Names `copy_disjoint` two preconditions beside `tally/copy.rye` | `tools/tally_glow_tend_limb3_witness.rish` |
-| [`shape-tally-maybe-poles.glow`](shape-tally-maybe-poles.glow) | Names `maybe` two poles beside `tally/maybe.rye` | `tools/tally_glow_tend_limb5_witness.rish` |
+| [`shape-tally-max-gardens.glow`](shape-tally-max-gardens.glow) | Names `max_gardens=8` beside `tally/gardens.rye` | `tools/t/tally_glow_tend_limb1_witness.rish` |
+| [`shape-tally-max-name-len.glow`](shape-tally-max-name-len.glow) | Names `max_name_len=32` beside `tally/gardens.rye` | `tools/t/tally_glow_tend_limb2_witness.rish` |
+| [`shape-tally-copy-preconditions.glow`](shape-tally-copy-preconditions.glow) | Names `copy_disjoint` two preconditions beside `tally/copy.rye` | `tools/t/tally_glow_tend_limb3_witness.rish` |
+| [`shape-tally-maybe-poles.glow`](shape-tally-maybe-poles.glow) | Names `maybe` two poles beside `tally/maybe.rye` | `tools/t/tally_glow_tend_limb5_witness.rish` |
 
 ## Caravan Glow Tend (bound pedestals; structures also in sur/)
 
 | Desk | Role | Witness |
 | --- | --- | --- |
-| [`shape-caravan-max-dependents.glow`](shape-caravan-max-dependents.glow) | Names `max_dependents=4` beside `caravan/capabilities.rye` | `tools/caravan_glow_tend_limb1_witness.rish` |
-| [`shape-caravan-max-caps-per-dependent.glow`](shape-caravan-max-caps-per-dependent.glow) | Names `max_caps_per_dependent=8` beside `caravan/capabilities.rye` | `tools/caravan_glow_tend_limb2_witness.rish` |
+| [`shape-caravan-max-dependents.glow`](shape-caravan-max-dependents.glow) | Names `max_dependents=4` beside `caravan/capabilities.rye` | `tools/ca/caravan_glow_tend_limb1_witness.rish` |
+| [`shape-caravan-max-caps-per-dependent.glow`](shape-caravan-max-caps-per-dependent.glow) | Names `max_caps_per_dependent=8` beside `caravan/capabilities.rye` | `tools/ca/caravan_glow_tend_limb2_witness.rish` |
 
 ```
-rishi/bin/rishi run tools/tally_glow_tend_limb5_witness.rish
-rishi/bin/rishi run tools/tally_glow_tend_limb3_witness.rish
-rishi/bin/rishi run tools/caravan_glow_tend_limb4_witness.rish
-rishi/bin/rishi run tools/aurora_glow_tend_limb1_witness.rish
+rishi/bin/rishi run tools/t/tally_glow_tend_limb5_witness.rish
+rishi/bin/rishi run tools/t/tally_glow_tend_limb3_witness.rish
+rishi/bin/rishi run tools/ca/caravan_glow_tend_limb4_witness.rish
+rishi/bin/rishi run tools/au/aurora_glow_tend_limb1_witness.rish
 ```
 
 Further candidates: Tally stack · more bartis gates. Sur holds C3–C4 · T4 · A1.

@@ -12,7 +12,7 @@
 # USAGE
 #   sh tools/fixtures/phantom_path_control.sh
 #
-# Driven by tools/phantom_path_witness.rish. Run from the repository root.
+# Driven by tools/p/phantom_path_witness.rish. Run from the repository root.
 
 set -eu
 
@@ -106,6 +106,28 @@ ln -s construction work-in-progress
 printf 'name pen\nfile work-in-progress/ITINERARY.md\n' > .brix
 git add .brix; git commit -qm 'pen: a descriptor listing the elder room'
 check descriptor_refused phantom_paths "$(verdict_of)"
+
+# 9 -- a GITIGNORED artifact stays free, because the repository declares its absence. Earned by
+#      %169: two witnesses create `linengrow/lib_session_root_nest_cue_jam.rye` while they run,
+#      and `.gitignore` names it, so running the roster reddened this guard on a sound tree.
+build ignored
+mkdir -p linengrow glow/.cache
+printf 'x\n' > glow/.cache/lowered.rye
+ln -s ../glow/.cache/lowered.rye linengrow/lowered.rye
+printf '/linengrow/lowered.rye\n' > .gitignore
+printf '#!/bin/sh\ncat linengrow/lowered.rye\n' > tools/lower.sh
+git add -A; git commit -qm 'pen: a tool reading an artifact git is told to ignore'
+check ignored_free ok "$(verdict_of)"
+
+# 10 -- the SAME shape with the ignore rule removed is refused, so the exemption is the ignore
+#       rule itself rather than the path's name or its shape. Both sides of one door.
+build unignored
+mkdir -p linengrow glow/.cache
+printf 'x\n' > glow/.cache/lowered.rye
+ln -s ../glow/.cache/lowered.rye linengrow/lowered.rye
+printf '#!/bin/sh\ncat linengrow/lowered.rye\n' > tools/lower.sh
+git add tools/lower.sh; git commit -qm 'pen: the same artifact with no ignore rule naming it'
+check unignored_refused phantom_paths "$(verdict_of)"
 
 if [ "$faults" -eq 0 ]; then
   echo "control=ok"

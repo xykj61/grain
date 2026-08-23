@@ -1,0 +1,63 @@
+//! tools/rye/monocypher_sha512_parity.rye — our authored crypto/sha512.rye asked for its OWN SHA-512 digests over the same five inputs the Monocypher C
+//! harness (tools/fixtures/monocypher_sha512_harness.c) prints, so tools/cr/crypto_monocypher_sha512_parity_witness.rish can diff our bytes against the
+//! vendored Monocypher's C byte-for-byte — the hash Ed25519 signs with (RFC 8032 / FIPS 180-4), proven against the audit's parity target. Season G
+//! (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//!
+//! crypto/sha512.rye's own selftest named Monocypher-source parity as an honest held horizon; this harness lets the witness close it. Five lines print,
+//! in order: the SHA-512 of the empty message, of "abc" (the FIPS 180-4 known-answer), of a 111-byte input (the padding edge where the length still fits
+//! the first block), of a 112-byte input (the edge that forces a second all-padding block), and of a 300-byte multi-block input — the same coverage the
+//! selftest uses (buf111[i] = i, buf112[i] = i, multi[i] = (i*7 + 1) mod 256).
+//!
+//! This authors NO cryptography — it is a printing harness over the GREEN crypto/sha512.rye (reached through the tools/rye/sha512.rye symlink, since Rye
+//! resolves imports beside the importing file). Purely local — no key of ours, no network, no funds, no device.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/rye/monocypher_sha512_parity.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const s = @import("sha512.rye");
+
+/// print_digest — hash a message through crypto/sha512.rye and print its 128-hex-character digest on one line.
+fn print_digest(msg: []const u8) !void {
+    const d = try s.hash(msg);
+    const hex = s.to_hex(d);
+    // invariant: the rendered digest is exactly the standard's 128 hex characters — two per digest byte.
+    assert(hex.len == s.hex_len and s.hex_len == s.digest_len * 2);
+    print("{s}\n", .{hex});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+
+    // invariant (construction): the module reports SHA-512's fixed shapes — a 64-byte digest over 128-byte blocks.
+    assert(s.digest_len == 64 and s.block_bytes == 128);
+
+    // 1. The empty message.
+    try print_digest("");
+
+    // 2. The FIPS 180-4 canonical "abc".
+    try print_digest("abc");
+
+    // 3. A 111-byte input — byte i = i mod 256.
+    var buf111: [111]u8 = undefined;
+    var i: u32 = 0;
+    while (i < 111) : (i += 1) buf111[i] = @as(u8, @truncate(i));
+    try print_digest(&buf111);
+
+    // 4. A 112-byte input — the edge that forces a second all-padding block.
+    var buf112: [112]u8 = undefined;
+    i = 0;
+    while (i < 112) : (i += 1) buf112[i] = @as(u8, @truncate(i));
+    try print_digest(&buf112);
+
+    // 5. A 300-byte multi-block input — byte i = (i*7 + 1) mod 256.
+    var multi: [300]u8 = undefined;
+    i = 0;
+    while (i < 300) : (i += 1) multi[i] = @as(u8, @truncate(i *% 7 +% 1));
+    try print_digest(&multi);
+
+    return 0;
+}

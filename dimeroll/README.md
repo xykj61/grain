@@ -15,18 +15,18 @@ Radiant pass `20260728.050004` — living L1 rename-forward: **MUR** (was MALA)
 | **1** | Chart · journal · trial-balance fold · unwelcome paths · Skate books view | parity **207** / **208** |
 | **2** | Income statement · balance sheet · exception queue | parity **209** |
 | **3** | Sight view — books P&L/BS on Skate + unified carriage+books frame | parity **210** |
-| **4** | Account filter · memo prefix · cash flow · sum amounts + Skate views | parity **387**–**394** · `tools/dimeroll_lap4.rish`–`lap7.rish` |
-| **exception view** | Refused drafts → five-line Skate frame | parity **267** · `tools/dimeroll_exception_view.rish` |
-| **P&L view** | Income statement alone → five-line Skate frame | parity **271** · `tools/dimeroll_pnl_view.rish` |
-| **BS view** | Balance sheet alone → five-line Skate frame | parity **274** · `tools/dimeroll_bs_view.rish` |
-| **TB view** | Trial balance alone → six-line Skate frame | parity **277** · `tools/dimeroll_tb_view.rish` |
-| **journal view** | Entry memos alone → five-line Skate frame | parity **285** · `tools/dimeroll_journal_view.rish` (`191112`) |
-| **chart view** | Account names alone → six-line Skate frame | parity **292** · `tools/dimeroll_chart_view.rish` (`192749`) |
-| **cash account view** | Entries involving cash → five-line Skate frame | parity **391** · `tools/dimeroll_cash_account_view.rish` (`230433`) |
-| **memo prefix view** | Memo prefix stipend → five-line Skate frame | parity **392** · `tools/dimeroll_memo_prefix_view.rish` (`230433`) |
-| **cash flow view** | Inflow/outflow/net → five-line Skate frame | parity **393** · `tools/dimeroll_cash_flow_view.rish` (`230433`) |
-| **sum amounts view** | Journal amount total → five-line Skate frame | parity **394** · `tools/dimeroll_sum_amounts_view.rish` (`230433`) |
-| **sight** | Chart of accounts on steward glass | parity **301** · `tools/dimeroll_sight_view_lap3.rish` (`200203`) |
+| **4** | Account filter · memo prefix · cash flow · sum amounts + Skate views | parity **387**–**394** · `tools/d/dimeroll_lap4.rish`–`lap7.rish` |
+| **exception view** | Refused drafts → five-line Skate frame | parity **267** · `tools/d/dimeroll_exception_view.rish` |
+| **P&L view** | Income statement alone → five-line Skate frame | parity **271** · `tools/d/dimeroll_pnl_view.rish` |
+| **BS view** | Balance sheet alone → five-line Skate frame | parity **274** · `tools/d/dimeroll_bs_view.rish` |
+| **TB view** | Trial balance alone → six-line Skate frame | parity **277** · `tools/d/dimeroll_tb_view.rish` |
+| **journal view** | Entry memos alone → five-line Skate frame | parity **285** · `tools/d/dimeroll_journal_view.rish` (`191112`) |
+| **chart view** | Account names alone → six-line Skate frame | parity **292** · `tools/d/dimeroll_chart_view.rish` (`192749`) |
+| **cash account view** | Entries involving cash → five-line Skate frame | parity **391** · `tools/d/dimeroll_cash_account_view.rish` (`230433`) |
+| **memo prefix view** | Memo prefix stipend → five-line Skate frame | parity **392** · `tools/d/dimeroll_memo_prefix_view.rish` (`230433`) |
+| **cash flow view** | Inflow/outflow/net → five-line Skate frame | parity **393** · `tools/d/dimeroll_cash_flow_view.rish` (`230433`) |
+| **sum amounts view** | Journal amount total → five-line Skate frame | parity **394** · `tools/d/dimeroll_sum_amounts_view.rish` (`230433`) |
+| **sight** | Chart of accounts on steward glass | parity **301** · `tools/d/dimeroll_sight_view_lap3.rish` (`200203`) |
 
 ## Layout
 
@@ -39,22 +39,22 @@ Radiant pass `20260728.050004` — living L1 rename-forward: **MUR** (was MALA)
 | `pond/apps/dimeroll/` | Symlinks for drawn-terminal import |
 
 ```bash
-rishi/bin/rishi run tools/dimeroll_lap1.rish
-rishi/bin/rishi run tools/dimeroll_lap2.rish
-rishi/bin/rishi run tools/dimeroll_lap4.rish
-rishi/bin/rishi run tools/dimeroll_books_view.rish
-rishi/bin/rishi run tools/dimeroll_sight_view.rish
-rishi/bin/rishi run tools/dimeroll_exception_view.rish
-rishi/bin/rishi run tools/dimeroll_pnl_view.rish
-rishi/bin/rishi run tools/dimeroll_bs_view.rish
-rishi/bin/rishi run tools/dimeroll_tb_view.rish
-rishi/bin/rishi run tools/dimeroll_journal_view.rish
-rishi/bin/rishi run tools/dimeroll_chart_view.rish
-rishi/bin/rishi run tools/dimeroll_cash_account_view.rish
-rishi/bin/rishi run tools/dimeroll_memo_prefix_view.rish
-rishi/bin/rishi run tools/dimeroll_cash_flow_view.rish
-rishi/bin/rishi run tools/dimeroll_sum_amounts_view.rish
-rishi/bin/rishi run tools/dimeroll_sight_view_lap3.rish
+rishi/bin/rishi run tools/d/dimeroll_lap1.rish
+rishi/bin/rishi run tools/d/dimeroll_lap2.rish
+rishi/bin/rishi run tools/d/dimeroll_lap4.rish
+rishi/bin/rishi run tools/d/dimeroll_books_view.rish
+rishi/bin/rishi run tools/d/dimeroll_sight_view.rish
+rishi/bin/rishi run tools/d/dimeroll_exception_view.rish
+rishi/bin/rishi run tools/d/dimeroll_pnl_view.rish
+rishi/bin/rishi run tools/d/dimeroll_bs_view.rish
+rishi/bin/rishi run tools/d/dimeroll_tb_view.rish
+rishi/bin/rishi run tools/d/dimeroll_journal_view.rish
+rishi/bin/rishi run tools/d/dimeroll_chart_view.rish
+rishi/bin/rishi run tools/d/dimeroll_cash_account_view.rish
+rishi/bin/rishi run tools/d/dimeroll_memo_prefix_view.rish
+rishi/bin/rishi run tools/d/dimeroll_cash_flow_view.rish
+rishi/bin/rishi run tools/d/dimeroll_sum_amounts_view.rish
+rishi/bin/rishi run tools/d/dimeroll_sight_view_lap3.rish
 ```
 
 **Design:** hammock [`../active-designing/date/20260710/20260710-125953_dimeroll-hammock.md`](../active-designing/date/20260710/20260710-125953_dimeroll-hammock.md) · reports [`../active-designing/date/20260710/20260710-131212_dimeroll-lap2-reports.md`](../active-designing/date/20260710/20260710-131212_dimeroll-lap2-reports.md) · sight [`../active-designing/date/20260710/20260710-132548_dimeroll-lap3-sight-view.md`](../active-designing/date/20260710/20260710-132548_dimeroll-lap3-sight-view.md) · filters [`../active-designing/20260710-230433_dimeroll-lap4-filters.md`](../active-designing/yonder/20260710-230433_dimeroll-lap4-filters.md) · horizon [`../external-research/20260710-131956_seen-books-living-desktop-horizon.md`](../external-research/20260710-131956_seen-books-living-desktop-horizon.md)

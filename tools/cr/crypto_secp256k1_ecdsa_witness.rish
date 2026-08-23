@@ -1,0 +1,44 @@
+# tools/cr/crypto_secp256k1_ecdsa_witness.rish — ECDSA signature VERIFICATION on secp256k1 authored in pure Rye: the assembly the whole secp256k1
+# tower was climbing toward, the signature scheme Bitcoin and Ethereum sign with. Given a public key, a message hash, and a signature (r, s),
+# it decides validity by the SEC 1 verification equation, composing only the GREEN scalar field, point ladder, group law, and base field.
+# Proven against algebraic known-answers and byte-for-byte against an independent implementation (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+# Design read: active-designing/date/20260816/20260816-025516_secp256k1-ecdsa-verify.md (this rung's claim) and
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
+# Kin: crypto/secp256k1_scalar.rye (the order field ECDSA runs in, GREEN) · crypto/secp256k1_scalarmul.rye (the point ladder, GREEN) ·
+# crypto/ed25519_verify.rye (the sibling verifier over the twisted Edwards group). secp256k1 is not in Monocypher, so its source parity is not
+# a rung here; the algebraic known-answers plus Zig's independent std.crypto.sign.ecdsa are the two witnesses (.claude/rules/gratitude-licenses.md).
+#
+# crypto/secp256k1_ecdsa.rye refuses unless r and s lie in [1, n−1], folds the hash to a scalar mod n, computes w = s⁻¹ mod n and the two
+# scalars u1 = z·w and u2 = r·w, forms R = u1·G + u2·Q, refuses the point at infinity, and accepts exactly when the affine x of R reduced mod n
+# equals r. G is the SEC 2 generator parsed through the proven base field, never raw limbs. One honest strengthening beyond the reference: an
+# on-curve check (y² = x³ + 7) refuses an off-curve public key. The primitive calls no std.crypto. Parity is proven at selftest against
+# algebraic known-answers (a valid signature verifies; a one-bit tamper of r, s, the hash, or a coordinate is refused; an all-zero r or s is
+# refused; an off-curve key is refused; (r, n−s) verifies exactly when (r, s) does) and against Zig's own
+# std.crypto.sign.ecdsa.EcdsaSecp256k1Sha256 true-for-true and false-for-false across a spread of deterministic key pairs and messages.
+# Purely local — in ECDSA VERIFICATION r, s, z, Q, and the inverse are all PUBLIC, so no real key, no signing (ECDSA signing stays the custody
+# gate), no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_secp256k1_ecdsa_witness.rish
+
+say "crypto-secp256k1_ecdsa: Language EN — ECDSA signature VERIFICATION on secp256k1 authored in pure Rye, the assembly the whole secp256k1 tower was climbing toward. Given a public key Q = (Qx, Qy), a message hash z, and a signature (r, s), it decides validity by the SEC 1 verification equation — refuse unless r, s in [1, n−1]; z = hash mod n; w = s⁻¹ mod n; u1 = z·w, u2 = r·w; R = u1·G + u2·Q; refuse infinity; accept iff affine x of R reduced mod n equals r — composing only the GREEN scalar field, point ladder, group law, and base field, no new cryptography."
+say "crypto-secp256k1_ecdsa: Style Radiant — the base point G is the SEC 2 generator, entered as its published big-endian coordinate bytes and parsed through the proven base field, never raw limbs, lifted to Z = 1. One honest strengthening beyond the reference's verify path: an on-curve check (y² = x³ + 7) refuses an off-curve public key rather than trusting it. Byte order is the only product with the outside world — the ecosystem is big-endian, the scalar field and ladder walk little-endian, reversed at the file's boundary."
+say "crypto-secp256k1_ecdsa: Lens TAME — the primitive calls no std.crypto; every function names a bound and asserts its contracts; every value verification touches (r, s, z, Q, the inverse) is PUBLIC, so the variable-time arithmetic leaks no secret, and ECDSA signing with a real private key stays the custody gate (#3/#4) with a constant-time signing arithmetic as a named horizon. Parity holds against algebraic known-answers AND Zig's independent std.crypto.sign.ecdsa.EcdsaSecp256k1Sha256 true-for-true and false-for-false across a spread of deterministic key pairs and messages. secp256k1 is not in Monocypher, so the two witnesses are the reference known-answers and Zig's std.crypto. Purely local — no real key, no signing, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/secp256k1_ecdsa"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/secp256k1_ecdsa.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-secp256k1_ecdsa: build failed — ${build.err}"
+
+let outfile = "crypto/bin/secp256k1_ecdsa.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-secp256k1_ecdsa: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-secp256k1_ecdsa: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-secp256k1-ecdsa' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-secp256k1_ecdsa: selftest did not print the GREEN crypto-secp256k1-ecdsa line"

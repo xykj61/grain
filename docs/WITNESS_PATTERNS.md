@@ -27,9 +27,9 @@ These are **named habits** in our witness collection — pointers and examples o
 
 | Example | Witness |
 |---------|---------|
-| Pond col2 before build word | `tools/pond_enclosure_col2_probes.rish` |
-| G1 crossing spike | `tools/proven_seat_g1_crossing_probe.rish` |
-| Season closed (exit bron absent) | `tools/pond_exit_bron_master_seal.sh --season-closed` |
+| Pond col2 before build word | `tools/p/pond_enclosure_col2_probes.rish` |
+| G1 crossing spike | `tools/p/proven_seat_g1_crossing_probe.rish` |
+| Season closed (exit bron absent) | `tools/p/pond_exit_bron_master_seal.sh --season-closed` |
 
 **Law:** landing probes opens no season. Season opens only on a named word against a card signed whole. Raw: [`212412`](../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md).
 
@@ -41,13 +41,13 @@ These are **named habits** in our witness collection — pointers and examples o
 
 | Stage | Example lap |
 |-------|-------------|
-| Pin assert | `tools/proven_seat_signed_kumara_fetch.rish` assert 1 |
+| Pin assert | `tools/p/proven_seat_signed_kumara_fetch.rish` assert 1 |
 | Red-avoid scan | same witness assert 2 |
 | Fixture freshness | same witness assert 3 |
 
 Pre-open pin note: [`214900`](../active-designing/date/20260712/20260712-214900_signed-kumara-monocypher-pin.md) (guest/fixture started HOLD; GREEN after open).
 
-**Customs HOLD** (different sense — policy verdict, not witness staging): `tools/pond_customs.rish` expects `HOLD ok` beside ADMIT and REFUSE — Tilak mark at receipt.
+**Customs HOLD** (different sense — policy verdict, not witness staging): `tools/p/pond_customs.rish` expects `HOLD ok` beside ADMIT and REFUSE — Tilak mark at receipt.
 
 ---
 
@@ -59,8 +59,8 @@ Pre-open pin note: [`214900`](../active-designing/date/20260712/20260712-214900_
 |-------|-------|
 | Golden rule | [`external-research/TAME_GUIDANCE.md`](../external-research/TAME_GUIDANCE.md) — assert positive space **and** reject negative space |
 | Rishi `assert` at boundaries | [`context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) → Rishi Supplement |
-| Gap row honest | `tools/pond_enclosure_scorecard.rish` — `gap_bus == "open"` on incumbent |
-| Red-avoid | `tools/proven_seat_signed_kumara_fetch.rish` — `crypto_eddsa_` absent |
+| Gap row honest | `tools/p/pond_enclosure_scorecard.rish` — `gap_bus == "open"` on incumbent |
+| Red-avoid | `tools/p/proven_seat_signed_kumara_fetch.rish` — `crypto_eddsa_` absent |
 
 ---
 
@@ -70,8 +70,8 @@ Pre-open pin note: [`214900`](../active-designing/date/20260712/20260712-214900_
 
 | Pair | Witnesses |
 |------|-----------|
-| KVM lane off / on | `tools/lane_kvm_refuse.rish` · `tools/lane_kvm_onpath_host.rish` |
-| signed-Kumara verify + refuse | `tools/proven_seat_signed_kumara.rish` (≥2 `crypto_ed25519_check` in guest) |
+| KVM lane off / on | `tools/l/lane_kvm_refuse.rish` · `tools/l/lane_kvm_onpath_host.rish` |
+| signed-Kumara verify + refuse | `tools/p/proven_seat_signed_kumara.rish` (≥2 `crypto_ed25519_check` in guest) |
 | Enclosure refuse / permit | [`ENCLOSURE.md`](ENCLOSURE.md) · [`PROVEN_SEAT.md`](PROVEN_SEAT.md) |
 
 **Law:** one green without its pair is an incomplete lap.
@@ -84,10 +84,10 @@ Pre-open pin note: [`214900`](../active-designing/date/20260712/20260712-214900_
 
 | META file | Written by |
 |-----------|------------|
-| `g1-sources-meta.txt` | `tools/proven_seat_g1_fetch_sources.rish` |
-| `signed-kumara-monocypher-meta.txt` | `tools/proven_seat_signed_kumara_fetch.rish` |
-| `scorecard-meta.txt` | `tools/pond_enclosure_scorecard.rish` |
-| `col2-probes-meta.txt` | `tools/pond_enclosure_col2_probes.rish` |
+| `g1-sources-meta.txt` | `tools/p/proven_seat_g1_fetch_sources.rish` |
+| `signed-kumara-monocypher-meta.txt` | `tools/p/proven_seat_signed_kumara_fetch.rish` |
+| `scorecard-meta.txt` | `tools/p/pond_enclosure_scorecard.rish` |
+| `col2-probes-meta.txt` | `tools/p/pond_enclosure_col2_probes.rish` |
 
 Two banks must agree: witness assert + META shelf — [`VENDORING.md`](VENDORING.md).
 

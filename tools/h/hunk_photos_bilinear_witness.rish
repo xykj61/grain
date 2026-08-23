@@ -1,0 +1,55 @@
+# tools/h/hunk_photos_bilinear_witness.rish — the Photos app resamples smoothly on metal (HUNK24).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Open Image · rung HUNK24.
+# Design read: active-designing/date/20260813/20260813-173146_hunk-photos-bilinear-exploration.md (the bilinear round).
+# Teacher, thanked clean-room: the bilinear filter every photo app and thumbnailer carries (concept only, siloed).
+#
+# HUNK9 gave the open module a nearest-neighbor `scale` (blocky up), HUNK22 an area-average `scale_area` (down only).
+# This rung lands the smooth resampler between them: `image/photos.rye` `scale_bilinear` is a pure bounded function
+# over the decoded RGBA grid where each output pixel is the weighted blend of the four source pixels around the real
+# coordinate it lands on, per channel and alpha. The half-pixel-center map is computed in fixed point so an identity
+# resize is byte-identical, and the four blend weights sum to exactly 256*256 so a solid color stays exact with no
+# drift. The selftest proves identity byte-identical, a solid color exact at any size (up or down), a 2x1 [A,B]
+# upscaled blending to [A, (A+B)/2, B] with the exact average at the center, alpha blending alongside the colors,
+# the source pure, the resized image still re-encoding and round-tripping as an open image, and a zero target and an
+# over-ceiling target each refusing by name. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_photos_bilinear_witness.rish
+
+say "hunk-photos-bilinear: Language EN — HUNK24 gives the Photos app the smooth resampler: a pure bounded bilinear function over the decoded grid that returns a fresh open image, the source untouched."
+say "hunk-photos-bilinear: Style Radiant — a resized image is still an open image: it re-encodes and round-trips byte-for-byte, so smooth resampling stands on the open module the quest built, never a proprietary one."
+say "hunk-photos-bilinear: Lens TAME — the four corner weights sum to exactly 256^2; each channel sum stays in u32 (255*256^2 < 2^32) and divides with round-to-nearest, no float; positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/photos"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/photos.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-photos-bilinear: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-photos-bilinear: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+
+assert selftest.out contains "GREEN image-photos-bilinear" else "hunk-photos-bilinear: selftest did not print the GREEN bilinear line"
+
+assert selftest.out contains "identity size byte-identical" else "hunk-photos-bilinear: the identity size was not proven byte-identical"
+
+assert selftest.out contains "stays that exact color at any size" else "hunk-photos-bilinear: the constant-stays-constant no-drift invariant was not proven"
+
+assert selftest.out contains "exact average at the center" else "hunk-photos-bilinear: the clean midpoint blend was not proven"
+
+assert selftest.out contains "alpha blends alongside the colors" else "hunk-photos-bilinear: alpha blending alongside the colors was not proven"
+
+assert selftest.out contains "resized image re-encodes and round-trips" else "hunk-photos-bilinear: a resized image did not round-trip as an open image"
+
+assert selftest.out contains "a zero target and an over-ceiling target refused by name" else "hunk-photos-bilinear: the EmptyImage and OutOfBounds refusals were not proven"
+
+# HUNK3 crop, HUNK8 orient, HUNK9 scale, HUNK22 area, HUNK21 saturate, and HUNK23 hue-turn share the binary — GREEN holds.
+assert selftest.out contains "GREEN image-photos:" else "hunk-photos-bilinear: HUNK3 crop selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-scale:" else "hunk-photos-bilinear: HUNK9 scale selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-scale-area" else "hunk-photos-bilinear: HUNK22 area selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-hue-turn" else "hunk-photos-bilinear: HUNK23 hue-turn selftest no longer GREEN beneath"
+
+say "hunk-photos-bilinear: GREEN — HUNK24 bilinear resampler proven on metal; crop, scale, area, and hue-turn still GREEN beneath."

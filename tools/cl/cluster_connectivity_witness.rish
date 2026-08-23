@@ -1,0 +1,41 @@
+# tools/cl/cluster_connectivity_witness.rish -- when the whole cluster layout becomes one connected region as reach grows, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/cluster_graph.rye joins the cluster-pair read over every cluster pair into one matrix and reads
+# the thresholded neighbors, degree, and edge counts; image/cluster_graph_profile.rye reads the whole edge-count curve as a distribution over
+# thresholds. This rung reads the one question the edge count can never answer -- not how many edges a reach holds, but whether they CONNECT
+# the whole layout: the connectivity THRESHOLD (the smallest reach spanning every cluster, the MST bottleneck) and the component COUNT at any
+# reach. Exact integers, NO float, NO tolerance.
+#
+# The crux this witness proves on metal, two shapes: THE CONNECTIVITY THRESHOLD IS THE MST BOTTLENECK, BELOW THE DIAMETER WHEN A HUB BRIDGES --
+# over the three-cluster scene (distances 2, 3, 10) the layout connects at reach 3, the median edge, not the diameter 10, because one cluster
+# is the hub the far pair reaches through; MORE EDGES IS NOT MORE CONNECTED -- over a four-cluster scene (a tight triangle plus a far outlier)
+# the edge count at reach 3 is already three yet the layout is still two components, so connectivity waits on the single bridge to the outlier.
+# A lone-cluster layout is already one whole. Determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cl/cluster_connectivity_witness.rish
+
+say "cluster_connectivity: Language EN -- Season G when the cluster layout becomes one connected region; connectivity_threshold the MST bottleneck, component_count_at the pieces at a reach, is_connected_at whether the whole is one; NO float, NO tolerance."
+say "cluster_connectivity: Style Radiant -- compose not braid: this rung owns only the connectivity reads (the union-find over thresholded edges, the component count, the bottleneck sweep); cluster_graph owns the precomputed matrix, cluster_graph_profile the ascending distinct distances, overlap_clusters the object connectivity a level below. A reading over a reading over a reading over a reading over a reading over a reading over a reading."
+say "cluster_connectivity: Lens TAME -- the union-find forest is bounded by the cluster ceiling, every find walks a chain no longer than the cluster count, the bottleneck sweep runs at most one round per distinct distance; every threshold is a valid input and every cluster matrix is valid, so these reads never refuse; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/cluster_connectivity"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/cluster_connectivity.rye -femit-bin=${bin}"]
+assert build.ok else "cluster_connectivity: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "cluster_connectivity: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "cluster_connectivity: ${out}"
+
+assert selftest.out contains "GREEN image-cluster-connectivity" else "cluster_connectivity: selftest did not print the GREEN line"
+assert selftest.out contains "THE CONNECTIVITY THRESHOLD IS THE MST BOTTLENECK, BELOW THE DIAMETER WHEN A HUB BRIDGES" else "cluster_connectivity: the bottleneck case did not print"
+assert selftest.out contains "the MEDIAN edge, not the diameter 10" else "cluster_connectivity: the median-not-diameter fact did not print"
+assert selftest.out contains "MORE EDGES IS NOT MORE CONNECTED" else "cluster_connectivity: the more-edges case did not print"
+assert selftest.out contains "within_edges reads three while component_count_at reads two" else "cluster_connectivity: the three-edges-two-components fact did not print"
+assert selftest.out contains "only the union of the real edges does" else "cluster_connectivity: the structure-decides fact did not print"
+
+say "cluster_connectivity: GREEN on metal -- the reach at which a scattered layout reads as one, the MST bottleneck read by a bounded union-find over the true-distance edges, exact integers with NO float and NO tolerance; connectivity is the graph's structure, never its edge count."

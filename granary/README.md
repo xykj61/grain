@@ -23,6 +23,6 @@
 
 **Sister room:** Mandi holds the vessel market floor (seated `20260710.165634`). Live TigerBeetle rests until its brief.
 
-**Witnesses:** **232**–**237**, **239**, **241**, **243**, **245** (`tools/granary_lap1.rish` · `granary_weave_view.rish` · `granary_lap2.rish` · `granary_lap3.rish` · `granary_resin_wire.rish` · `granary_exchange.rish` · `granary_device_wire.rish` · `granary_exchange_view.rish` · `granary_weave_settle.rish` · `granary_settle_view.rish`)
+**Witnesses:** **232**–**237**, **239**, **241**, **243**, **245** (`tools/g/granary_lap1.rish` · `granary_weave_view.rish` · `granary_lap2.rish` · `granary_lap3.rish` · `granary_resin_wire.rish` · `granary_exchange.rish` · `granary_device_wire.rish` · `granary_exchange_view.rish` · `granary_weave_settle.rish` · `granary_settle_view.rish`)
 
 *May the namespace remember every name. May every mirror be equal. May every receipt stay quiet about who paid.*

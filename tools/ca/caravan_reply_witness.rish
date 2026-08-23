@@ -1,0 +1,168 @@
+# tools/ca/caravan_reply_witness.rish -- the policy table learns to speak through its neighbours, and the refusal
+# agenda closes by measurement rather than by proximity.
+#
+# WHY THIS RUNG. `caravan/refusals.rye` states the eleven answers a capability invocation may earn, maps Caravan's
+# four onto them, and names for each of the seven remaining the subsystem that owes it. Four rungs then paid every
+# one of those debts -- `edge.rye` for argument, range, and alignment; `ipc_buffer.rye` for truncation;
+# `derivation.rye` for delete-first and revoke-first; `untyped.rye` for not-enough-memory. And still `refusals.rye`
+# counted four answered and seven owed, RIGHTLY, because its count is what the POLICY TABLE can reach, and the table
+# had never learned to speak through a neighbour. A debt closes when the table itself can answer, never when a
+# neighbour can. `caravan/reply.rye` is the speaking, and this witness is where the closure is measured.
+#
+# WHAT IS PROVEN HERE, each on metal.
+#
+#   ONE ASK, FOUR STAGES, THE EARLIEST WINS. The edge reads the request alone, the message reads whether enough
+#   words arrived to name a subject, the table reads whether this dependent may do this thing, and the deed attempts
+#   what a permitted ask asked for. Exactly one answer comes back, proven on asks that fail two, three, and all four
+#   stages at once, and then swept across thousands with both arms exercised.
+#
+#   THE ORDER IS CARAVAN'S OWN AND THE MODULE SAYS SO. Each stage depends only on facts the stages before it
+#   established, and each names its own reason in code rather than in a header comment. The sweep proves the answer
+#   is genuinely the earliest by finding the first refusing stage INDEPENDENTLY and holding the two together, then
+#   asserting every stage before it truly passes.
+#
+#   THE REACH IS RUN, NEVER CREDITED. Eleven named asks run against eleven fresh benches, and the reach is counted
+#   from what they earn. Proximity would have credited the table five rungs ago; this counts. The self-test holds
+#   both truths side by side -- the table alone answers four, and the table speaking through its neighbours answers
+#   all eleven -- and neither number is recited, since `answered_count` and `reach_count` each count.
+#
+#   THE OVERLAP IS NAMED RATHER THAN HIDDEN. The deed may answer seL4_FailedLookup or seL4_IllegalOperation, which
+#   the table owns, because a derivation tree looks a capability up in a slot and narrows rights along a lineage
+#   exactly as the table looks a dependent up by label and narrows rights by mask. Two different lookups about two
+#   different things, giving one sentence. `stage_echoes` publishes the overlap and the self-test earns it.
+#
+#   A REFUSED ASK SPENDS NOTHING, ONE FLOOR UP. Each neighbour already keeps that promise alone; the reply keeps it
+#   across all four stages, proven by asks refused at the edge and at the table leaving the tree exactly as found,
+#   and by a two-page carve leaving a one-page region whole.
+#
+#   THE TWO LINES STAY APART, ONE FLOOR UP. The kernel creates at most 256 objects in one invocation and Caravan's
+#   region carves at most 64. A carve of sixty-five is welcomed by the edge and refused by the region, and the reply
+#   carries the region's own named Rye error out rather than dressing it as a kernel word.
+#
+# WHAT IS NOT PROVEN. No kernel booted and no invocation crossed a real boundary. This is policy on hosted ground:
+# the stages are ours, written to the shape of the answers seL4 publishes, and every kernel word here comes from a
+# neighbour that binds its own reading against the vendored BSD-2-Clause headers on every run. The reply earns its
+# behavioural proof the day a root task actually invokes.
+#
+# Season: the Lindy-priority Microkernel Target double-seat (seated `20260817`, ordered ahead of Seasons A-H),
+# Equinox 1 -- Caravan on the microkernel. Kin: tools/ca/caravan_refusals_witness.rish (the agenda this closes) -
+# tools/ca/caravan_edge_witness.rish - tools/ca/caravan_ipc_buffer_witness.rish - tools/ca/caravan_derivation_witness.rish -
+# tools/ca/caravan_untyped_witness.rish - external-research/20260821-043831_the-libsel4-reach-and-the-vocabulary-caravan-inherits.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_reply_witness.rish
+
+say "caravan-reply: Language EN -- a table that could name four refusals learns to answer eleven, by asking the neighbours that already knew the other seven."
+say "caravan-reply: Style Radiant -- four claims in order. One ask reads through four stages and the earliest wins. The order is Caravan's own and says so. The reach is run rather than credited. And the overlap between stages is named rather than hidden."
+say "caravan-reply: Lens TAME -- the module's asserts are the specification, and all three RED paths are proven by planting them: a reversed reading order, two table outcomes collapsed into one answer, and a table muted so the measured reach silently shrinks."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/reply"
+let control = "tools/fixtures/caravan_reply_control.sh"
+let build_dir = "tools/.build/caravan_reply"
+
+let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]
+assert mk.ok else "caravan-reply: could not make the build directories"
+
+# 1. THE MODULE BUILDS AND PROVES ITSELF. Its asserts are the specification -- the order, the reach, the echo, the
+#    promise that a refused ask spends nothing, and the sweep that holds all of it together.
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/reply.rye -femit-bin=${bin}"]
+assert build.ok else "caravan-reply: the module did not build"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan-reply: the self-test exited non-zero"
+assert test.out contains "GREEN" else "caravan-reply: the self-test is not GREEN"
+assert test.out contains "four stages read one ask -- edge, message, table, deed -- and the earliest wins" else "caravan-reply: the four stages and the earliest-answer rule were not claimed"
+assert test.out contains "the order is Caravan's own" else "caravan-reply: the order is no longer named as our own design judgement"
+assert test.out contains "each stage depending only on facts the ones before it established" else "caravan-reply: the reason the order is this one was dropped"
+assert test.out contains "speaking through its neighbours it answers 11" else "caravan-reply: the table no longer reaches the whole vocabulary through its neighbours"
+assert test.out contains "the table alone answers 4 of 11" else "caravan-reply: the table's own reach moved without the agenda moving with it"
+assert test.out contains "never credited by proximity" else "caravan-reply: the reach is no longer claimed as measured"
+assert test.out contains "named rather than hidden" else "caravan-reply: the echo between the deed and the table is no longer published"
+assert test.out contains "the refusal agenda closes by measurement" else "caravan-reply: the closing claim was dropped"
+
+# 2. THE SWEEP GENUINELY EXERCISED BOTH ARMS. A sweep that only ever refuses proves nothing about welcoming, and a
+#    printed count is worth having only when the witness reads it back.
+let sweep_line = run ["sh" "-c" "${bin} selftest 2>&1 | grep 'welcomed and'"]
+assert sweep_line.ok else "caravan-reply: the sweep no longer reports both arms"
+say "caravan-reply: the sweep -- ${trim sweep_line.out}"
+
+# 3. THE STAGES PRINT WITH THEIR ORDER REASONS, so a reader meets the design judgement rather than a bare sequence.
+let table = run ["sh" "-c" "${bin} table > ${build_dir}/table.txt 2>&1; echo done"]
+assert (trim table.out) == "done" else "caravan-reply: the stage table did not print"
+
+let printed = run ["sh" "-c" "cat ${build_dir}/table.txt"]
+assert printed.out contains "stage 1 edge" else "caravan-reply: the edge no longer stands first in the reading order"
+assert printed.out contains "stage 2 message" else "caravan-reply: the message no longer stands second in the reading order"
+assert printed.out contains "stage 3 table" else "caravan-reply: the table no longer stands third in the reading order"
+assert printed.out contains "stage 4 deed" else "caravan-reply: the deed no longer stands last in the reading order"
+assert printed.out contains "gives every later question nothing to be about" else "caravan-reply: the reason the edge goes first was dropped"
+assert printed.out contains "cannot be read out of it" else "caravan-reply: the reason the message goes second was dropped"
+assert printed.out contains "permission is settled before anything is acted upon" else "caravan-reply: the reason the table goes third was dropped"
+assert printed.out contains "acting is the one stage that spends something" else "caravan-reply: the reason the deed goes last was dropped"
+
+# 4. EVERY ONE OF THE ELEVEN IS EARNED BY A NAMED ASK THAT RAN. This is the measurement the whole rung turns on, so
+#    the witness reads back each answer beside the ask that earned it rather than trusting a count.
+assert printed.out contains "a well-formed, permitted ask that does nothing answers seL4_NoError" else "caravan-reply: a clean ask was not welcomed"
+assert printed.out contains "a slot asked for at a width no slot can be answers seL4_InvalidArgument" else "caravan-reply: the argument refusal is no longer earned"
+assert printed.out contains "a request for no objects at all answers seL4_RangeError" else "caravan-reply: the range refusal is no longer earned"
+assert printed.out contains "a page asked to land off its own boundary answers seL4_AlignmentError" else "caravan-reply: the alignment refusal is no longer earned"
+assert printed.out contains "a message one word long where the method reads three answers seL4_TruncatedMessage" else "caravan-reply: the truncation refusal is no longer earned"
+assert printed.out contains "an ask from a dependent the table has never heard of answers seL4_FailedLookup" else "caravan-reply: the failed-lookup refusal is no longer earned"
+assert printed.out contains "an ask for a resource the dependent was never granted answers seL4_InvalidCapability" else "caravan-reply: the invalid-capability refusal is no longer earned"
+assert printed.out contains "an ask to write what the dependent may only read answers seL4_IllegalOperation" else "caravan-reply: the illegal-operation refusal is no longer earned"
+assert printed.out contains "a capability seated into a slot already held answers seL4_DeleteFirst" else "caravan-reply: the delete-first refusal is no longer earned"
+assert printed.out contains "a capability released while others stand derived from it answers seL4_RevokeFirst" else "caravan-reply: the revoke-first refusal is no longer earned"
+assert printed.out contains "two pages carved from a region one page wide answers seL4_NotEnoughMemory" else "caravan-reply: the not-enough-memory refusal is no longer earned"
+assert printed.out contains "speaking through its neighbours it answers 11 of 11" else "caravan-reply: the measured reach is no longer the whole vocabulary"
+
+# 5. THE FOUR OWNED SETS PARTITION THE REFUSALS, and the one overlap is published rather than left for a reader to
+#    discover. Ten refusals owned across four stages, plus success owned by none, is the eleven.
+let owns = run ["sh" "-c" "grep -c '  owns ' ${build_dir}/table.txt"]
+assert (trim owns.out) == "10" else "caravan-reply: the stages no longer own exactly the ten refusals between them"
+
+let echoes = run ["sh" "-c" "grep -c '  echoes ' ${build_dir}/table.txt"]
+assert (trim echoes.out) == "2" else "caravan-reply: the deed's two echoes of the table's answers are no longer published"
+
+assert printed.out contains "echoes seL4_FailedLookup, which the table owns" else "caravan-reply: the deed's failed-lookup echo is no longer named"
+assert printed.out contains "echoes seL4_IllegalOperation, which the table owns" else "caravan-reply: the deed's illegal-operation echo is no longer named"
+
+# 6. THE AGENDA `refusals.rye` KEEPS IS UNMOVED, and that is the point. Its four-and-seven is a statement about the
+#    POLICY TABLE ALONE, which is still exactly true; what changed is that the table now has a way to ask. A rung
+#    that closed the agenda by editing the count would have closed nothing.
+let agenda_bin = "caravan/bin/refusals"
+let agenda_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/refusals.rye -femit-bin=${agenda_bin}"]
+assert agenda_build.ok else "caravan-reply: the refusal agenda did not build"
+
+let agenda = run ["sh" "-c" "${agenda_bin} selftest 2>&1"]
+assert agenda.ok else "caravan-reply: the refusal agenda's self-test exited non-zero"
+assert agenda.out contains "Caravan answers 4 and owes 7" else "caravan-reply: the policy table's own reach moved -- read it before trusting either count"
+
+# 7. RED PATH ONE -- the reading order lives in exactly one list, because it is a design judgement rather than
+#    something seL4 publishes. Reversed, an ask that is bad at every stage is answered by the last fault rather than
+#    the first, and a caller is told to fix the wrong thing.
+let order = run ["sh" "-c" "sh ${control} ${zig} ${build_dir} order 2>/dev/null"]
+assert order.ok else "caravan-reply: the order control did not run"
+assert order.out contains "planted=1" else "caravan-reply: the reversed-order copy was not planted -- the RED path would have proven nothing"
+assert order.out contains "verdict=refused" else "caravan-reply: RED path one did not fire -- a reversed reading order passed the self-test"
+
+# 8. RED PATH TWO -- the seam where the table's own outcomes become kernel words maps each to its own. Collapsed, a
+#    resource never granted and a dependent never heard of give one sentence, and the system stops being auditable.
+let collapse = run ["sh" "-c" "sh ${control} ${zig} ${build_dir} collapse 2>/dev/null"]
+assert collapse.ok else "caravan-reply: the collapse control did not run"
+assert collapse.out contains "planted=1" else "caravan-reply: the collapsed-seam copy was not planted -- the RED path would have proven nothing"
+assert collapse.out contains "verdict=refused" else "caravan-reply: RED path two did not fire -- two table outcomes answering as one passed the self-test"
+
+# 9. RED PATH THREE -- the fault this rung exists to fix, planted in reverse. With the table stage muted every ask
+#    walks through to the deed, and the MEASURED reach falls from eleven to eight because three corpus asks stop
+#    earning what they were written to earn. A reach credited by proximity would not have noticed a thing.
+let mute = run ["sh" "-c" "sh ${control} ${zig} ${build_dir} mute 2>/dev/null"]
+assert mute.ok else "caravan-reply: the mute control did not run"
+assert mute.out contains "planted=1" else "caravan-reply: the muted-table copy was not planted -- the RED path would have proven nothing"
+assert mute.out contains "verdict=refused" else "caravan-reply: RED path three did not fire -- a table answering nothing passed the self-test"
+
+say "caravan-reply: one ask reads through four stages -- the request alone, the words that arrived, the permission, the deed -- and exactly one answer comes back, the earliest."
+say "caravan-reply: the table alone answers four of the eleven, and speaking through its neighbours it answers all eleven, each earned by a named ask that ran on this machine."
+say "caravan-reply: the deed's two echoes of the table's own answers are published rather than hidden, because two different lookups may honestly give one sentence."
+say "caravan-reply: the agenda in refusals.rye stands unmoved at four and seven, which is the point -- the count was always about the table, and the table now has a way to ask."
+say "GREEN: the policy table speaks through its neighbours, and the refusal agenda closes by measurement."

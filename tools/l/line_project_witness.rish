@@ -1,0 +1,55 @@
+# tools/l/line_project_witness.rish -- read a DIRECTED line named by TWO anchor taps (from A toward B) as an EXACT NEAREST POINT: for every
+# object, WHERE on the finite stroke A..B its group center's nearest point lands, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- this rung returns the POINT the whole line family measured TO but never named. line_distance reads how far
+# OFF a center sits, line_segment_distance the true gap to the finite stroke, line_span which side of the ends the foot falls; line_project
+# returns the FOOT itself, so a surface can draw it. The DECISIVE crux it faces is the one the family deferred: THE EXACT FOOT IS RATIONAL. The
+# perpendicular foot A + (proj/len2)(B - A) is a lattice point in doubled coordinates only when len2 divides proj*(B - A) on both axes, so
+# line_project holds the foot TIMES len2 as an exact i128 pair -- the same clear-the-divide move line_segment_distance made. NO float, NO
+# tolerance, NO square root. A reading over readings, no plane of its own.
+#
+# The crux this witness proves on metal: over a DIAGONAL segment A -> B (len2 = 720), M sits OFF the line yet its exact foot is the lattice
+# point (17,13), while F on the span has a genuinely FRACTIONAL foot 720 divides neither, so foot_doubled refuses FootNotWhole rather than
+# rounding a lie. The scaled foot satisfies the exact distance identity foot_gap_scaled == segment_key_of * len2 (no divide). The segment foot
+# differs from the infinite-line foot exactly off the ends (foot_at_end == not on_span). Two objects (X and Z, both before the A end) share one
+# foot. Reversal leaves every foot still; refusals by name; determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/l/line_project_witness.rish
+
+say "line_project: Language EN -- Season G line-to-point projection; a keeper's stroke is FINITE, so line_project returns the exact NEAREST POINT on the stroke A..B for every object; the exact foot is RATIONAL, so it is held times len2 as an exact i128 pair; NO float, NO tolerance, NO square root."
+say "line_project: Style Radiant -- compose not braid: this rung owns only the foot point and the lattice test on it; line_order owns the projection the foot is placed along, line_span owns the along-segment class naming when the clamp fires, line_segment_distance owns the fused gap key the distance identity cross-checks, click_collinear owns click_group_center_doubled whose squared delta is len2. No plane of its own, no pixel written -- a reading over readings."
+say "line_project: Lens TAME -- the foot walk runs components times under label_max_pixels; the projection and the squared length run in i64 so the doubled-coordinate products stay whole, the scaled foot and its squared gap in i128 so a doubled coordinate times len2 and its square never overflow; two anchors sharing a group refuse SameGroup, a background tap refuses EmptyClick, a point off the map refuses PointOutOfBounds, a label past the object count refuses BadTarget, a fractional foot asked as a lattice point refuses FootNotWhole, each having read nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/line_project"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/line_project.rye -femit-bin=${bin}"]
+assert build.ok else "line_project: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "line_project: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "line_project: ${out}"
+
+assert selftest.out contains "GREEN image-line-project" else "line_project: selftest did not print the GREEN line"
+assert selftest.out contains "an EXACT NEAREST POINT" else "line_project: the exact-nearest-point claim did not print"
+assert selftest.out contains "the POINT the whole line family measured TO but never named" else "line_project: the point-never-named claim did not print"
+assert selftest.out contains "THE EXACT FOOT IS RATIONAL" else "line_project: the decisive crux did not print"
+assert selftest.out contains "line_project holds the foot TIMES len2 as an exact i128 pair" else "line_project: the scaled-foot representation did not print"
+assert selftest.out contains "M sits OFF the line yet its exact foot is the lattice point (17,13)" else "line_project: the off-line-lattice-foot fact did not print"
+assert selftest.out contains "foot_doubled refuses FootNotWhole rather than rounding a lie" else "line_project: the fractional-refusal fact did not print"
+assert selftest.out contains "THE SCALED FOOT SATISFIES THE EXACT DISTANCE IDENTITY" else "line_project: the distance-identity crux did not print"
+assert selftest.out contains "foot_gap_scaled equals segment_key_of times len2" else "line_project: the identity formula did not print"
+assert selftest.out contains "THE SEGMENT FOOT DIFFERS FROM THE INFINITE-LINE FOOT EXACTLY OFF THE ENDS" else "line_project: the segment-vs-line-foot crux did not print"
+assert selftest.out contains "TWO OBJECTS CAN SHARE ONE FOOT" else "line_project: the shared-foot crux did not print"
+assert selftest.out contains "the drawn stroke folds a whole half-plane of centers onto one point" else "line_project: the half-plane-fold claim did not print"
+assert selftest.out contains "refuse SameGroup" else "line_project: the SameGroup refusal did not print"
+assert selftest.out contains "a background tap refuses EmptyClick" else "line_project: the EmptyClick refusal did not print"
+assert selftest.out contains "a point off the map refuses PointOutOfBounds" else "line_project: the PointOutOfBounds refusal did not print"
+assert selftest.out contains "a label past the object count refuses BadTarget" else "line_project: the BadTarget refusal did not print"
+assert selftest.out contains "a fractional foot asked as a lattice point refuses FootNotWhole" else "line_project: the FootNotWhole refusal did not print"
+assert selftest.out contains "the same segment reads the same foot twice" else "line_project: determinism did not print"
+
+say "line_project: GREEN on metal -- a directed line read as the exact NEAREST POINT on a FINITE stroke, the foot the whole line family measured to but never named; the exact foot is rational so it is held scaled by len2, whole only at lattice points, fractional feet refusing rather than rounding; the scaled foot satisfies the exact distance identity, the segment foot differs from the infinite-line foot exactly off the ends, two objects can share one foot; reversal leaves every foot still, refusals by name, determinism. Season G open-media."

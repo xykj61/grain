@@ -1,0 +1,5 @@
+# tools/am/amphora_purchase_delivery.rish — accrete shim → tools/gen/amphora/amphora_purchase_delivery.rish (Generator Season s7)
+if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/amphora/amphora_purchase_delivery.rish"]
+if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/amphora/amphora_purchase_delivery.rish" args[0]]
+if r.out != "" then say r.out
+exit r.code

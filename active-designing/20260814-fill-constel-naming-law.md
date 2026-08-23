@@ -43,7 +43,7 @@ The vowel-bearing self-invented strings `queyqwinqkri` and `maicmalammurr` are *
 
 - **This round seats the law and the name primitive only** — validate, prove-never-a-ship, generate. The fake-pier harness (spinning up local piers, Comlink handshake between them) crosses the Comlink seam and is its own later FORA round.
 - **No network, no keys, no funds, no real address** — everything is a pure string predicate on the bench, siloed to `constel/`, run from inside the jailed pier.
-- Witness: `tools/fora_name_witness.rish` proves valid names accepted, every real `@p` example (`zod`, `sarlev`, `sampel`, `palnet`, `sampel-palnet`) rejected for its vowel, generation deterministic and collision-free across a bounded sweep, and every generated name provably never a ship.
+- Witness: `tools/f/fora_name_witness.rish` proves valid names accepted, every real `@p` example (`zod`, `sarlev`, `sampel`, `palnet`, `sampel-palnet`) rejected for its vowel, generation deterministic and collision-free across a bounded sweep, and every generated name provably never a ship.
 
 ---
 

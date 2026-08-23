@@ -11,7 +11,7 @@
 #
 # EXPECTED: private_copy_refused=yes, real_tools_accepted=yes.
 #
-# Driven by tools/dated_path_witness.rish. Run from the repository root.
+# Driven by tools/d/dated_path_witness.rish. Run from the repository root.
 
 set -eu
 

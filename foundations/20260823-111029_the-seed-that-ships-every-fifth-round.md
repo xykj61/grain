@@ -7,7 +7,7 @@ behind the tree that made it.*
 **Stamp:** `20260823.111029`
 **Language:** EN - **Status:** Living - **Style:** Gauge, Field setting
 **Kin:** [`../context/SILO_TECHNIQUE.md`](../context/SILO_TECHNIQUE.md) - [`../context/CIVIC_STYLE.md`](../context/CIVIC_STYLE.md) - [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) - [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md)
-**Machinery:** `publish-seed.sh` - `tools/fixtures/sow_project.sh` - `tools/sow_witness.rish` - `tools/seed_link_witness.rish`
+**Machinery:** `publish-seed.sh` - `tools/fixtures/sow_project.sh` - `tools/s/sow_witness.rish` - `tools/s/seed_link_witness.rish`
 
 ---
 
@@ -23,7 +23,7 @@ itself -- and all of it read fine from inside the field, because the field holds
 published rarely drifts from the thing it projects, and that drift stays hidden in the one place
 anyone looks.
 
-Two fixes landed the same day. `tools/seed_link_witness.rish` now reads the manifest and gates the
+Two fixes landed the same day. `tools/s/seed_link_witness.rish` now reads the manifest and gates the
 front door at zero, so a link that would land nowhere in the seed reds in the field. This page seats the
 other half: **cadence**.
 

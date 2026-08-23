@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # rebuild-outer.sh -- switch the pier to this repo's NixOS config.
 #
-# RUN FROM A HOST tmux, OUTSIDE ./tools/agent-jail.sh.
+# RUN FROM A HOST tmux, OUTSIDE ./tools/ag/agent-jail.sh.
 # ai-jail sets "no new privileges", so sudo / nixos-rebuild escalates only from
 # the outer host shell, never from inside the agent sandbox.
 #

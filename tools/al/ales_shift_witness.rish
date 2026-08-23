@@ -1,0 +1,37 @@
+# tools/al/ales_shift_witness.rish — shift: slide the whole clip by `by` samples and drop what falls off the edge, the honest twin of rotate (ALES108).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES108.
+# Design read: active-designing/date/20260815/20260815-005300_fill-ales108-lotus-shift.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples), lotus/rotate.rye (ALES106 — the cyclic shift, to prove the wrap-vs-drop contrast), lotus/meter.rye
+# (ALES13 — the peak/RMS meter, used only to prove dropping samples never raises the peak). Where ALES106's rotate WRAPS the samples that fall off the front back onto the
+# tail (a permutation, exact and invertible), shift lets them GO and writes silence where they stood — the grid nudge every editor and DAW ships (move a clip earlier or
+# later so it lands on the beat, so a stereo pair aligns). Naming it beside rotate teaches the one distinction about translating a bounded signal: wrap or drop.
+#
+# lotus/shift.rye takes a signed shift (negative = left/earlier, positive = right/later), clamps the magnitude to len, moves the survivors in place in the safe direction
+# (right copies back to front, left front to back), then writes silence into the vacated span — no second buffer. The crux is four laws. THE SHIFT LAW: shift lands a
+# hand-shifted vector both directions, the vacated end silent. THE ROTATE-CONTRAST LAW: shift(-k) and rotate_left(k) agree on the in-frame samples and differ only at the
+# vacated tail (silence vs wrap). THE COMPOSITION-LOSS LAW: shift is not invertible — shift(k) then shift(-k) zeros the leading k, only a pre-silent region round-tripping.
+# THE MAGNITUDE / SILENCE LAW: the peak (re-measured through ALES13) is non-increasing, shift by 0 is the identity, |by|>=len is all silence, the empty clip its own shift.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_shift_witness.rish
+
+say "ales-shift: Language EN — shift slides the whole clip by `by` samples and drops the samples that fall off the edge, filling the vacated end with silence. It is the honest twin of rotate: where rotate wraps the fallen samples back onto the far end, shift lets them go. This is the grid nudge every editor ships — move a clip a few samples earlier or later so it lands on the beat. It reseats existing samples and fills the vacated end with silence, inventing no non-zero sample."
+say "ales-shift: Style Radiant — the rule is stated positively: negative `by` shifts left and positive shifts right; clamp the magnitude to the length, move the survivors in place in the safe direction (a right shift copies back to front, a left shift front to back, so no live sample is overwritten before it is read), then write silence into the vacated span, no second buffer. It names the wrap-vs-drop distinction beside rotate. The crux stands out as four laws: the shift law (shift lands the hand-shifted vector both directions, the vacated end silent), the rotate-contrast law (shift(-k) and rotate_left(k) agree on the in-frame samples and differ only at the vacated tail), the composition-loss law (shift is not invertible, only a pre-silent region round-trips), and the magnitude / silence law (the peak is non-increasing, shift by 0 the identity, a shift past the length all silence)."
+say "ales-shift: Lens TAME — one mono clip of i16 PCM slid in place, the survivors copied in the safe direction and the vacated end zero-filled, no allocation and no second buffer; the shift magnitude is clamped to the length so it names no out-of-range span and forwards no EditError — total on any legal Clip; the wrap-vs-drop contrast is proven against ALES106's rotate and the non-increasing peak against ALES13's read-only meter; it invents no non-zero sample, changes no length, and reads no byte past len; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/shift"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/shift.rye -femit-bin=${bin}"]
+assert build.ok else "ales-shift: build failed — ${build.err}"
+
+let outfile = "lotus/bin/shift.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-shift: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-shift: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-shift' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-shift: selftest did not print the GREEN ales-shift line"

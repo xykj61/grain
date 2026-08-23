@@ -1,0 +1,35 @@
+# tools/t/tophat_disk_witness.rish -- the ISOTROPIC top-hat by a true disk, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/morphology_tophat.rye recovers small features with a SQUARE element; this rung
+# recovers them with a true DISK (image/disk.rye's round offset set), so the residue has no directional bias. The white
+# top-hat src - open_disk(src) lights bright features smaller than the disk; the black top-hat close_disk(src) - src lights
+# dark ones. Both non-negative by opening being anti-extensive and closing extensive.
+#
+# The crux this witness proves on metal: the ISOTROPY crux -- a solid 5x5 bright block's square corners read as small
+# features the round disk cannot hold, so the white disk top-hat lights the far corner (2,2) while a 5x5 SQUARE top-hat
+# opens the block whole and stays blank; the two elements genuinely differ. Plus the DEFINITION crux (white == src -
+# open_disk, black == close_disk - src byte-for-byte), speck recovery, the DUALITY law, a flat field blank, alpha measured
+# like any channel, a QOI round-trip, refusals by name. No network, no key, no funds -- the round-brush small-feature work.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/tophat_disk_witness.rish
+
+say "tophat_disk: Language EN -- Season G isotropic top-hat by a true disk; src - open_disk(src) recovers bright features, close_disk(src) - src the dark ones, with a round footprint the square top-hat cannot match."
+say "tophat_disk: Style Radiant -- compose not braid: this rung owns only the per-channel subtraction; disk owns open_disk/close_disk (routed through structure's general gather), qoi the pixel grid. The isotropy crux contrasts directly against morphology_tophat's square white top-hat."
+say "tophat_disk: Lens TAME -- the radius is bounded by disk_max_radius; the two ordering laws (opening anti-extensive, closing extensive) keep every difference a real byte so the subtract never underflows; an over-max radius and an empty source refuse by name up front so a refusal allocates nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/tophat_disk"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/tophat_disk.rye -femit-bin=${bin}"]
+assert build.ok else "tophat_disk: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "tophat_disk: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "tophat_disk: ${out}"
+
+assert selftest.out contains "GREEN image-tophat-disk" else "tophat_disk: selftest did not print the GREEN line"
+
+say "tophat_disk: GREEN -- the white top-hat recovers a bright speck and the black a dark one, the isotropy crux lights a square block's corner where a square top-hat stays blank, the duality law holds, a flat field is blank, alpha is measured, on metal."

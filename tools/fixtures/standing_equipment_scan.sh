@@ -22,7 +22,7 @@
 # USAGE
 #   sh tools/fixtures/standing_equipment_scan.sh
 #
-# Driven by tools/standing_equipment_witness.rish. Run from the repository root.
+# Driven by tools/s/standing_equipment_witness.rish. Run from the repository root.
 
 set -eu
 

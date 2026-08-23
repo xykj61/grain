@@ -1,0 +1,44 @@
+# tools/cr/crypto_kumara_sealed_witness.rish — the Kumara sealed message, Season G's TWENTY-FIRST composition: a message sealed TO a named Kumara
+# identity, and opened AS that identity. Where crypto/kumara_carry.rye answers "did THIS keeper make this record" (provenance), this rung answers
+# the other half of a conversation — "only THIS keeper can read this message" (confidentiality): the Comlink private-message door (Season G ·
+# Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md; crypto/kumara_attestation.rye named "a Comlink/Vault
+# composition reaching identity through this door" as the rung to come. The 1,024-round itinerary, Season 1 Journey 2 (Publishing) and the Comlink
+# private-message surface: a sender who knows only a keeper's published Kumara identity seals a message only that keeper can open.
+# Kin: crypto/sealed_session.rye (the sealed-box frame this addresses, GREEN) · crypto/ed25519_to_x25519.rye (the birational map turning the
+# identity's ONE Ed25519 key into the X25519 key agreement wants, both halves GREEN) · crypto/kumara_identity.rye (the phrase→identity front door,
+# GREEN) · crypto/kumara_carry.rye (the provenance sibling — who MADE it, to this rung's who can READ it). Monocypher (vendor/monocypher,
+# CC0/BSD-dual) is the parity TARGET of the primitives beneath, never a copied line — our own composition, studied clean-room
+# (.claude/rules/gratitude-licenses.md).
+#
+# crypto/kumara_sealed.rye authors NO new cryptography and adds NO new frame — a Kumara sealed message IS a Grain Sealed Session v1 frame addressed
+# through the identity's X25519 keypair. The crux: a Kumara identity signs with Ed25519 yet a sealed box agrees with X25519, so seal_to converts the
+# recipient's Ed25519 PUBLIC key to the X25519 public it seals to (eddsa_to_x25519) and open_as converts the recipient's Ed25519 SEED to the X25519
+# secret it opens with (eddsa_secret_to_x25519) — two halves of ONE identity key, agreeing because x25519_base(secret) = eddsa_to_x25519(public).
+# Purely local over TEST identities from published vectors — no real identity key, no network, no funds, no real device; sealing to or opening as the
+# maintainer's own Kumara identity, grown from a real seed, stays the custody gate, and constant-time timing-safety stays the named horizon.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_kumara_sealed_witness.rish
+
+say "crypto-kumara-sealed: Language EN — Season G's TWENTY-FIRST composition: a message sealed TO a named Kumara identity, and opened AS that identity. Where crypto/kumara_carry.rye answers 'did THIS keeper make this record' (provenance, a signature the world can read), this rung answers the other half of a conversation — 'only THIS keeper can read this message' (confidentiality, a sealed box only the identity's holder opens): the Comlink private-message door. A sender who knows only a keeper's published Kumara identity (its 32-byte Ed25519 public key) seals a message only the holder of that identity's seed can open."
+say "crypto-kumara-sealed: Style Radiant — one identity, one seed, and it BOTH signs (kumara_carry) and now receives (this rung). The crux: a Kumara identity signs with Ed25519 yet a sealed box agrees with X25519, so seal_to converts the recipient's Ed25519 PUBLIC key to the X25519 public it seals to and open_as converts the recipient's Ed25519 SEED to the X25519 secret it opens with — two halves of ONE identity key, agreeing because x25519_base(secret) = eddsa_to_x25519(public), the property ed25519_to_x25519 proves GREEN and this rung re-anchors on a REAL Kumara identity."
+say "crypto-kumara-sealed: Lens TAME — the composition authors no new cryptography and enlarges no frame; it addresses the proven sealed-session frame through a proven key map, inherits the frame's bounds, and asserts its contracts (a sealed frame carries at least the fixed overhead and no more than overhead plus the plaintext bound; a recovered plaintext honours that bound; the ephemeral transcript is a full 32-byte public). GREEN on the first metal pass with no fabricated constant: the crux re-anchored on a real identity (base·secret equals the forward map of its public); a round-trip across seven plaintext lengths (empty → 64 KiB) sealed to the keeper and opened as the keeper; the ciphertext is enciphered, not clear; a DIFFERENT identity is refused OpenFailed while the true keeper still opens it; two ephemerals seal fresh frames that both open; sealing is deterministic given a fixed ephemeral; and the inherited guards (a flipped ciphertext byte, a flipped ephemeral-key byte, a broken magic, an undersized out buffer) each refuse with the sealed session's own named error. Purely local — TEST identities only, no real identity key, no network, no funds, no device; sealing to or opening as the maintainer's own identity stays the custody gate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/kumara_sealed"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/kumara_sealed.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-kumara-sealed: build failed — ${build.err}"
+
+let outfile = "crypto/bin/kumara_sealed.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-kumara-sealed: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-kumara-sealed: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-kumara-sealed' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-kumara-sealed: selftest did not print the GREEN crypto-kumara-sealed line"

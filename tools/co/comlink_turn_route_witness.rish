@@ -1,0 +1,20 @@
+# comlink_turn_route_witness.rish — routing reads the turn tilak.
+#
+# Proves Comlink can read a peer's rotation record (the turn tilak from
+# kumara/tilak.rye) and decide which networking key to seal the wire with:
+# an authentic turn is trusted, the freshest supersedes, a replay is kept out,
+# and a forgery is refused. The seam where identity's rotation meets the wire.
+#
+# Build first:  rye build comlink/turn_route.rye -femit-bin=comlink/bin/turn-route
+#   rishi/bin/rishi run tools/co/comlink_turn_route_witness.rish
+
+let st = run ["comlink/bin/turn-route" "selftest"]
+assert st.ok else "comlink turn-route selftest must exit 0"
+assert (st.err contains "GREEN") else "turn-route must report GREEN"
+assert (st.err contains "first turn taken") else "a first authentic turn is taken"
+assert (st.err contains "fresher supersedes") else "a newer turn rotates the route key"
+assert (st.err contains "reset outranks") else "a reset outranks any key rotation"
+assert (st.err contains "replay kept out") else "a replayed old turn cannot roll the key back"
+assert (st.err contains "forged refused") else "a forged turn is refused, keeping the last trusted key"
+
+say "GREEN: comlink turn-route — routing reads a verified turn, rotates to the freshest networking key, and never rolls back or follows a forgery."

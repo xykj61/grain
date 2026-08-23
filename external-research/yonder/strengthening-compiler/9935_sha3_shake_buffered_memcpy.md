@@ -61,7 +61,7 @@ Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
 |------|-------|--------|
 | `rye/lib/std/crypto/sha3.zig` | `sha3` — Phase 4 `usize` seam policy applied | pending |
 | `rye/tests/sha3_shake_buffered_memcpy_test.rye` | witness program | pending |
-| `tools/parity.rish` | witness registered | pending |
+| `tools/p/parity.rish` | witness registered | pending |
 | `external-research/yonder/strengthening-compiler/9935_sha3_shake_buffered_memcpy.md` | pass record + audited surfaces | pending |
 | `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | pending |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9935 | pending |

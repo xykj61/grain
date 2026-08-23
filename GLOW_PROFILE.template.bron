@@ -64,7 +64,7 @@ effort max   # low | medium | high | xhigh | max -- this tree runs max.
              # buys back with thinking what it gives up in supervision. Also set
              # in .claude/settings.json (tracked, inside ~/grain -- the host
              # ~/.claude copy leaves when ai-jail exits) and passed explicitly as
-             # --effort max by tools/launch-claude-season.rish.
+             # --effort max by tools/l/launch-claude-season.rish.
 voice Kyri
 
 # --- Placeholder identities for examples ------------------------------------

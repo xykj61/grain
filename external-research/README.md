@@ -30,7 +30,7 @@ When an exploration **lands** (mission complete) or **moves** to active-designin
 | Stub | Canonical home |
 |------|----------------|
 | `20260621-051612_rishi-shell-redirect.md` | `active-designing/yonder/20260619-051312_the-faithful-hand.md`, `rishi/README.md` |
-| `20260621-051612_shell-scripting-tame-redirect.md` | `tools/parity.rish`, gate trio |
+| `20260621-051612_shell-scripting-tame-redirect.md` | `tools/p/parity.rish`, gate trio |
 | `20260621-051612_recommended-architecture-redirect.md` | `active-designing/yonder/20260618-184912_recommended-architecture.md` |
 
 **Width policy:** interim seam manual [`968`](20260621-050312_usize-boundary-not-design.md); fork north star [`967`](20260621-051312_literal-usize-ban-language-fork.md) + [`../active-designing/yonder/20260621-051312_explicit-width-in-rye.md`](../active-designing/yonder/20260621-051312_explicit-width-in-rye.md).

@@ -1,0 +1,42 @@
+# tools/f/font5x7_upper_witness.rish -- the unifying accented-capitals font proves itself on metal (Season G, font content).
+#
+# Season G (Open Media Primitives) - the finishing rung of the uppercase accented family, the capital parallel of
+# tools/f/font5x7_accented_witness.rish (the lowercase unifier) and tools/f/font5x7_ascii_witness.rish (the ASCII unifier).
+# It merges the two hand-drawn uppercase corpora -- the acute-and-tilde eight (font5x7_upper_accented, 8) and the
+# grave/circumflex/tilde/diaeresis thirteen that completed the set (font5x7_upper_latin1, 13) -- into ONE gfa1 atlas of
+# twenty-one accented capitals covering U+00C0..U+00DC (non-contiguous), our own hand end to end.
+#
+# The crux this witness proves, beyond the round-trip each corpus proves: the merged codepoints run STRICTLY ASCENDING
+# WITH NO DUPLICATE and the merged count equals the SUM of the two corpora (8 + 13 = 21, named from the corpora's own
+# count constants), which together prove the corpora DISJOINT -- no two claim one codepoint (the acute corpus drew
+# U+00C1, the completion corpus never redraws it), so the sets compose with no collision and no capital lost. Built and
+# proven on metal: decode(encode(atlas)) recovers the whole font byte-for-byte, every one of the twenty-one capitals
+# looks up present and carries the shared advance, a plain ASCII 'A' misses (the accented set, not the base letters) and
+# an accented capital no corpus drew (U+00C5, A ring) misses too (no phantom glyph), every glyph carries ink (no blank in
+# an accented set). This font is the exact capital twin of font5x7_accented -- twenty-one lowercase accents, twenty-one
+# accented capitals, every lowercase mark's capital present. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/font5x7_upper_witness.rish
+
+say "font5x7-upper: Language EN -- Season G font content; the unifying accented-capitals font, the two uppercase corpora (the acute-and-tilde eight and the completion thirteen) merged into one gfa1 atlas of twenty-one accented capitals U+00C0..U+00DC, the table a surface reaches for to print a full name in all-caps that ASCII folds."
+say "font5x7-upper: Style Radiant -- the merged codepoints run strictly ascending and unique, so decode(encode(atlas)) recovers the whole font byte for byte; our own hand end to end, the exact capital twin of the lowercase accented font, no external font to license."
+say "font5x7-upper: Lens TAME -- u32 in-memory counts, u8 coverage bytes; the merged count named from the two corpora's own count constants (8+13=21); every buffer names a maximum; each function states its invariants positively; disjointness proven by ascending-and-unique over the summed count; compression a reported fact never a false invariant; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/font5x7_upper"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/font5x7_upper.rye -femit-bin=${bin}"]
+assert build.ok else "font5x7-upper: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "font5x7-upper: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "font5x7-upper: ${out}"
+
+assert selftest.out contains "GREEN image-font5x7-upper:" else "font5x7-upper: selftest did not print the GREEN font line"
+
+assert selftest.out contains "round-trip byte-identical" else "font5x7-upper: round-trip was not byte-identical"
+
+say "font5x7-upper: GREEN -- the accented-capitals font whole; twenty-one capitals round-trip byte-identical, codepoints strictly ascending and unique (the two corpora disjoint), every glyph inked; a surface reads one lookup for any accented capital in a name set in all-caps, the exact capital twin of the lowercase accented font."

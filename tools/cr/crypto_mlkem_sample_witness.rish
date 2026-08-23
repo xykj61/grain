@@ -1,0 +1,42 @@
+# tools/cr/crypto_mlkem_sample_witness.rish — the ML-KEM sampling rung: FIPS 203 SampleNTT (the uniform rejection-sampler that draws a key's public
+# matrix A from a SHAKE128 stream) and SamplePolyCBD (the centered-binomial sampler that draws the secret and error noise). This is the post-quantum
+# arc's third rung, standing on the GREEN base ring (crypto/mlkem_ring.rye) and the GREEN extendable-output function (crypto/shake.rye) — the step
+# that turns a short seed into ring elements, authored in pure Rye (Season G · Cryptography).
+#
+# Season: crypto — Season G's third post-quantum stone, rung 3 of the ML-KEM ladder the pivot doc seats. This rung authors sampling only; it holds
+# no key and runs no protocol. Every ML-KEM key's matrix and every ciphertext's noise flow through exactly these two draws, and this witness proves
+# that flow correct and deterministic.
+# Design read: active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md (rung 3 — SampleNTT and SamplePolyCBD driven by the GREEN
+# shake.rye; the byte parity against Zig std.crypto arrives at the keygen rung that composes these draws).
+# Rye-first spine: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md.
+# Clean-room: the 12-bit rejection rule, the centered-binomial sums, and the eta parameters are the public NIST standard's own; the arithmetic is our
+# own Rye over our own GREEN SHAKE, never a copied line (.claude/rules/gratitude-licenses.md).
+#
+# crypto/mlkem_sample.rye proves itself by SELF-CONSISTENCY with no external dependency — the pattern crypto/mlkem_ring.rye and crypto/mlkem_encode.rye
+# stood on: SampleNTT matches a structurally independent 12-bit bit-reader over the same GREEN SHAKE128 stream byte-for-byte, each draw canonical and
+# spanning a wide slice of [0, q); SamplePolyCBD carries the all-zeros and all-ones known-answers (both the zero polynomial), the decisive
+# bit-complement identity SampleCBD(~B) = -SampleCBD(B) over eta 2 and 3, and the centered range [-eta, eta] on every coefficient. Purely local — no
+# key, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_mlkem_sample_witness.rish
+
+say "crypto-mlkem-sample: Language EN — the ML-KEM sampling rung: FIPS 203 SampleNTT rejection-samples a SHAKE128 stream into a uniform NTT-domain polynomial (a key's public matrix A), and SamplePolyCBD draws centered-binomial secret and error noise from a SHAKE-derived byte block. This is the post-quantum arc's third rung, standing on the GREEN base ring and the GREEN SHAKE — the step that turns a short seed into ring elements."
+say "crypto-mlkem-sample: Style Radiant — sampling is a deterministic function of a proven stream, so the law is stated positively as self-consistency. SampleNTT reads 12-bit little-endian values and keeps those below q; a structurally independent bit-reader over the same GREEN SHAKE stream must agree byte-for-byte. SamplePolyCBD is symmetric: complementing every input bit negates every coefficient, because (eta - x) - (eta - y) = -(x - y). The byte-for-byte parity against Zig std.crypto is taken at the keygen rung that composes these draws; here the sampling proves itself."
+say "crypto-mlkem-sample: Lens TAME — bounded loops (256 coefficients, at most eta bits per half, a squeezed SHAKE prefix that raises SampleExhausted rather than read past its end), contract asserts on every function, canonical residues in [0, q) and centered noise in [-eta, eta] throughout. Correctness proven by self-consistency: SampleNTT against an independent 12-bit bit-reader over 24 seeds (each draw canonical and wide-spanning), and SamplePolyCBD by the all-zeros / all-ones known-answers, the bit-complement negation identity over eta 2 and 3, and the centered range on every coefficient. SampleNTT reads only the public seed's stream; SamplePolyCBD's bounds depend only on the public eta; constant-time timing-safety the named horizon. Purely local — no key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/mlkem_sample"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/mlkem_sample.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-mlkem-sample: build failed — ${build.err}"
+
+let outfile = "crypto/bin/mlkem_sample.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-mlkem-sample: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-mlkem-sample: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-mlkem-sample' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-mlkem-sample: selftest did not print the GREEN crypto-mlkem-sample line"

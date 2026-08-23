@@ -1,0 +1,48 @@
+# tools/al/ales_stereo_reverb_preset_witness.rish — stereo named rooms: the reverb a keeper reaches for by name, across a stereo master (ALES191).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES191.
+# Design read: active-designing/date/20260815/20260815-100148_fill-ales191-lotus-stereo-named-room-reverb-presets.md
+# Stands on: lotus/reverb_preset.rye (ALES190 — the named rooms Room / bank_for / three published banks reused whole, the single source of
+# truth for a room's tuning); lotus/stereo_reverb_time.rye (ALES189 — the timed stereo reverb this delegates to unchanged); lotus/reverb.rye
+# (ALES186 — the max_stages bound).
+#
+# lotus/stereo_reverb_preset.rye gives the STEREO reverb the same face ALES190 gave the mono reverb — room · hall · plate — each ALES190's OWN
+# curated bank run through ALES189's proven stereo_reverb_ms. stereo_reverb_preset imports reverb_preset.Room and bank_for and delegates to
+# stereo_reverb_ms UNCHANGED, so a preset invents no new arithmetic and no new fault: a stereo preset IS exactly its named bank, and the bank is
+# ALES190's own. The selftest proves: a stereo preset equals stereo_reverb_ms over that room's published bank byte for byte on BOTH channels, for
+# all three rooms; the rooms genuinely differ; a centred master stays identical channel-to-channel (one shared bank) while a stereo master keeps
+# its channels distinct (no crossing); the channels leave balanced and silence stays silence; and the underlying faults forward (a span past the
+# clip DurationTooLong, an out-of-range span BadRange), both channels untouched. Purely local — one bank definition, two faces; no network, no
+# keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stereo_reverb_preset_witness.rish
+
+say "ales-stereo-reverb-preset: Language EN — ALES190 gave the MONO timed reverb a musician's face: three named rooms, each a curated bank, run through reverb_ms. Yet a keeper mixing a stereo master still had to hand ALES189's stereo_reverb_ms a whole bank by hand — the named-room comfort stopped at mono. This rung is the thin twin ALES190 named next: the same three published banks, now run through stereo_reverb_ms, so a stereo master reverberates by name."
+say "ales-stereo-reverb-preset: Style Radiant — the law is stated positively: A STEREO PRESET IS EXACTLY ITS NAMED BANK, and the bank is ALES190's own. stereo_reverb_preset imports reverb_preset.Room and bank_for and delegates to stereo_reverb_ms unchanged, inventing no new arithmetic and no new fault; one bank definition, two faces, so the mono and stereo presets are provably the same rooms and a future tuning moves both at once; the banks are named in milliseconds, so one preset sounds the same room at any sample rate."
+say "ales-stereo-reverb-preset: Lens TAME — one StereoClip of i16 PCM, a validated clock, and ALES190's three fixed compile-time banks each within reverb.max_stages, delays in u32 milliseconds and feedbacks and gains named u32/u32 fractions strictly below unity; the preset picks the constant bank and runs the proven timed stereo reverb, changing sample VALUES only, never a length, the two channels leaving balanced; StereoReverbPresetError = stereo_reverb_time.StereoReverbTimeError forwarded whole, DurationTooLong / NoCombs / TooManyStages / BadDelay / BadGain / BadRange by name before any write, both channels untouched on refusal; siloed to lotus/, no cross-channel read, no network, no keys, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_reverb_preset"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_preset.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-reverb-preset: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_reverb_preset.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-reverb-preset: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-reverb-preset: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverb-preset' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-reverb-preset: selftest did not print the GREEN ales-stereo-reverb-preset line"
+
+# This rung reuses ALES190's banks and delegates to ALES189's stereo_reverb_ms over their public APIs — re-prove both still stand green beside it.
+let mono = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
+assert (trim mono.out) == "yes" else "ales-stereo-reverb-preset: the ALES190 mono named-room preset regressed under its stereo twin"
+
+let stereo_timed = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_time.rye -femit-bin=lotus/bin/stereo_reverb_time && lotus/bin/stereo_reverb_time selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb-time' && echo yes"]
+assert (trim stereo_timed.out) == "yes" else "ales-stereo-reverb-preset: the ALES189 timed stereo reverb regressed under its preset face"
+
+say "ales-stereo-reverb-preset: GREEN — stereo named rooms: the reverb a keeper reaches for by name (room · hall · plate), now across a stereo master, each ALES190's own curated bank run through ALES189's proven stereo_reverb_ms. A stereo preset IS exactly its named bank, and the bank is ALES190's own: stereo_reverb_preset imports reverb_preset.Room and bank_for and delegates to stereo_reverb_ms unchanged, inventing no new arithmetic and no new fault, proven literally — a stereo preset equals stereo_reverb_ms over that room's published bank byte for byte on both channels, for all three rooms; the rooms genuinely differ; a centred master stays identical channel-to-channel while a stereo master keeps its channels distinct; the channels leave balanced and silence stays silence; a span past the clip refuses DurationTooLong and an out-of-range span BadRange, both channels untouched; the ALES190 mono preset and ALES189 timed stereo reverb stay GREEN beside it. A wet/dry mix (blending the reverberated span with a snapshot of the dry) is the next genuinely new expressive knob."

@@ -1,0 +1,47 @@
+# tools/al/ales_compress_env_witness.rish — an attack/release compressor: the softened ceiling given a patient sense of time (ALES53).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES53.
+# Design read: active-designing/date/20260814/20260814-174500_fill-ales53-lotus-attack-release-compressor.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/sample_max, the range law shape); lotus/compress.rye (ALES50 — the
+# softened ceiling this drives over time, re-proven below); lotus/envelope.rye (ALES52 — the proven time base, re-proven below).
+#
+# lotus/compress_env.rye drives ALES50's compressor from ALES52's envelope: each sample advances the proven follower one step (the
+# attack fraction rising, the release falling), and when the smoothed envelope crosses the threshold its excess is divided by the
+# ratio and that gain applied to the raw sample. The selftest proves: silence stays silence; unit attack and release reduce it to
+# the plain ALES50 compressor byte-for-byte (proven by running both tools on one signal); unit ratio is the identity everywhere; a
+# loud signal has its magnitude reduced with the sign held and never expanding; a slower attack lets the transient through (the
+# gain reduction lags, the knob monotone); the state carries so a span in two pieces equals the whole once; a bad threshold refuses
+# BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, an out-of-range span BadRange. Purely local — no
+# network, no keys, no funds, no real device, no sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_compress_env_witness.rish
+
+say "ales-compress-env: Language EN — ALES53 marries the two dynamics proofs: the compressor (ALES50) proved a softened ceiling, the envelope follower (ALES52) proved a patient sense of time, and this rung drives the first from the second so the gain leans in over an attack and eases off over a release — the compressor that breathes, rather than clamping every peak the instant it arrives."
+say "ales-compress-env: Style Radiant — the law is stated positively: with instant attack and release the smoothed compressor IS the plain compressor byte-for-byte (the zero-smoothing limit, proven by running both tools on one signal), unit ratio is the identity everywhere, a slower attack lets the transient through (the gain reduction lags, the knob monotone), and the state carries so a span in two pieces equals the whole once — the seam invisible, ALES43's lesson."
+say "ales-compress-env: Lens TAME — bounded Clip, u32 span, i16 samples, i64 envelope; threshold checked in [1, sample_max], ratio at least unity with a nonzero denominator, both coefficients in (0, 1] by the follower's one proven rule, all before any write; the compressed envelope kept within [threshold, envelope] so the gain sits in (0, 1] and every written magnitude is at most the input's, fitting i16; a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, an out-of-range span BadRange; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/compress_env"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/compress_env.rye -femit-bin=${bin}"]
+assert build.ok else "ales-compress-env: build failed — ${build.err}"
+
+let outfile = "lotus/bin/compress_env.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-compress-env: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-compress-env: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-compress-env' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-compress-env: selftest did not print the GREEN ales-compress-env line"
+
+# This rung composes both parents over their public APIs — re-prove ALES52's follower and ALES50's compressor still stand green.
+let env = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/envelope.rye -femit-bin=lotus/bin/envelope && lotus/bin/envelope selftest 2>&1 | grep -q 'GREEN ales-envelope' && echo yes"]
+assert (trim env.out) == "yes" else "ales-compress-env: the ALES52 envelope follower regressed under the attack/release compressor"
+
+let comp = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/compress.rye -femit-bin=lotus/bin/compress && lotus/bin/compress selftest 2>&1 | grep -q 'GREEN ales-compress' && echo yes"]
+assert (trim comp.out) == "yes" else "ales-compress-env: the ALES50 compressor regressed under the attack/release compressor"
+
+say "ales-compress-env: GREEN — an attack/release compressor drives ALES50's softened ceiling from ALES52's proven envelope, each sample advancing the follower one step and, when the smoothed envelope crosses the threshold, dividing its excess by the ratio and applying that gain to the raw sample; with instant attack and release it is the plain compressor byte-for-byte, unit ratio is the identity everywhere, a loud signal's magnitude only reduces with the sign held, a slower attack lets the transient through (the knob monotone), the state carries so a span in two pieces equals the whole once; a bad threshold refuses BadThreshold, a sub-unity ratio BadRatio, an illegal coefficient BadCoeff, an out-of-range span BadRange, each leaving the clip untouched; the ALES52 follower and ALES50 compressor selftests stay GREEN. The compressor now breathes — the dynamics family's next rung can give the limiter and the gate the same attack and release."

@@ -1,0 +1,52 @@
+# tools/r/recursion_prompts_census_witness.rish — the recursion-prompts cellar, proven present.
+#
+# The root-level cellar seated `20260812` on Keaton's word holds seed templates
+# (blank fillable recursion prompts) and dated filled versions (the hardened
+# resin of a real run). This witness proves the cellar's shape on metal: the
+# charter present, the three seeds present, at least one dated version present,
+# and — the load-bearing invariant — that every seed carries the custody stop
+# clause verbatim, so no minted prompt can forget where the fence is.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/recursion_prompts_census_witness.rish
+
+say "recursion-prompts: Language EN — the cellar of prompts that wake a bench, proven present."
+say "recursion-prompts: Lens CIVIC/TAME — every seed must carry the GATES-ONLY stop clause."
+
+# invariant: run from the repo root, where the cellar lives.
+let root = run ["test" "-f" "construction/ITINERARY.md"]
+assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
+
+# invariant: the charter is present.
+let readme = run ["test" "-f" "recursion-prompts/README.md"]
+assert readme.ok else "recursion-prompts/README.md (the charter) is missing"
+
+# invariant: the three seed templates are present.
+let seed_loop = run ["test" "-f" "recursion-prompts/seed/autonomous-loop.seed.md"]
+assert seed_loop.ok else "seed/autonomous-loop.seed.md is missing"
+let seed_counsel = run ["test" "-f" "recursion-prompts/seed/counsel-to-bench.seed.md"]
+assert seed_counsel.ok else "seed/counsel-to-bench.seed.md is missing"
+let seed_reset = run ["test" "-f" "recursion-prompts/seed/context-reset-handoff.seed.md"]
+assert seed_reset.ok else "seed/context-reset-handoff.seed.md is missing"
+
+# invariant: at least one dated filled version is present (the cellar is not empty).
+# Test presence, not a count: the cellar grows one version per run, so a count
+# check (contains "1") false-fails the moment a second version lands. This prints
+# "yes" iff the glob matches at least one file, and stays green as the cellar grows.
+let versions = run ["sh" "-c" "ls recursion-prompts/versions/*.md >/dev/null 2>&1 && echo yes || echo no"]
+assert versions.ok else "recursion-prompts/versions listing failed"
+assert versions.out contains "yes" else "recursion-prompts/versions holds no dated version yet"
+
+# invariant: the two autonomous seeds carry the GATES-ONLY stop clause — the fence
+# an unattended run prints when only custody work remains. The interactive
+# counsel seed stops-and-parks at the gates instead, so it is not counted here.
+let gate_count = run ["sh" "-c" "grep -l 'GATES-ONLY' recursion-prompts/seed/*.seed.md | wc -l"]
+assert gate_count.ok else "seed GATES-ONLY grep failed"
+assert gate_count.out contains "2" else "the two autonomous seeds must carry the GATES-ONLY stop clause"
+
+# invariant: every seed names the custody gates it must not cross.
+let custody = run ["sh" "-c" "grep -l -i 'custody' recursion-prompts/seed/*.seed.md | wc -l"]
+assert custody.ok else "seed custody grep failed"
+assert custody.out contains "3" else "not all three seeds name the custody gates"
+
+say "GREEN: recursion-prompts — charter, three seeds, a dated version, and the gate clause in every seed."

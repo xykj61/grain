@@ -1,0 +1,45 @@
+# tools/s/selection_bounds_witness.rish -- the tight bounding box enclosing a whole selection (the group-handle frame), on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the selection ladder (image/hit_test.rye a POINT, image/region_select.rye a RECTANGLE,
+# image/lasso_select.rye a POLYGON) returns an ASCENDING SET of dense labels; image/selection_summary.rye reads that set's FACTS and
+# image/selection_bounds.rye reads its EXTENT: selection_bbox returns the smallest axis-aligned box containing every selected object's
+# box -- the union, the frame a surface draws to zoom to, drag, or handle a set of chosen objects at once. Exact integers, NO float,
+# NO tolerance.
+#
+# The crux this witness proves on metal: a union box CONTAINS more than it SELECTS. Over three blocks at the corner, the middle, and
+# the far corner, the selection of the two corners frames a box that wholly holds the UNSELECTED middle block, so box_contains_object
+# is TRUE for an object the selection never named -- containment of a box is not membership of the set. The union exceeds either
+# member and its area covers the background between them; a single-object selection frames just that object; an empty selection
+# refuses EmptySelection; refusals by name, determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/selection_bounds_witness.rish
+
+say "selection_bounds: Language EN -- Season G group-bounds read; selection_bbox returns the union of every selected object's bounding box, the frame a surface draws to zoom to or handle a set of chosen objects; NO float, NO tolerance."
+say "selection_bounds: Style Radiant -- compose not braid: this rung owns only the box union and the reads over it; scene_manifest owns the per-object boxes (ObjectEntry, object_of), the selection ladder owns the label set. No plane of its own, no pixel written -- a reading over a reading."
+say "selection_bounds: Lens TAME -- a valid selection names at most one label per component under label_max_pixels; the union runs the selection length times, each a single manifest lookup and four min/max updates; a malformed selection refuses BadSelection at the edge and an empty selection refuses EmptySelection having read nothing; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/selection_bounds"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/selection_bounds.rye -femit-bin=${bin}"]
+assert build.ok else "selection_bounds: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "selection_bounds: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "selection_bounds: ${out}"
+
+assert selftest.out contains "GREEN image-selection-bounds" else "selection_bounds: selftest did not print the GREEN line"
+assert selftest.out contains "the union of every selected object's box" else "selection_bounds: the union rule did not print"
+assert selftest.out contains "the DECISIVE over-claim crux, the box-is-a-prefilter lesson lifted to the selection" else "selection_bounds: the decisive over-claim crux did not print"
+assert selftest.out contains "box_contains_object reads TRUE for the UNSELECTED middle block" else "selection_bounds: the over-claim did not print"
+assert selftest.out contains "containment of a box is never membership of the set" else "selection_bounds: the containment-is-not-membership claim did not print"
+assert selftest.out contains "the union exceeds either selected object's own box on both axes" else "selection_bounds: the union-exceeds-member claim did not print"
+assert selftest.out contains "a single-object selection frames exactly that object's box" else "selection_bounds: the single-object case did not print"
+assert selftest.out contains "an empty selection has no extent and refuses EmptySelection" else "selection_bounds: the empty refusal did not print"
+assert selftest.out contains "refuse BadSelection having read nothing" else "selection_bounds: the malformed refusals did not print"
+assert selftest.out contains "the same selection frames the same box twice" else "selection_bounds: determinism did not print"
+
+say "selection_bounds: GREEN on metal -- the group frame that holds an object the selection never named, so the frame is never the membership test; the union exceeds either member; refusals by name, determinism. Season G open-media."

@@ -1,0 +1,40 @@
+# tools/p/pond_ring_linengrow_witness.rish — the fifth Pond ring: customs
+# gates the Linengrow cargo — the census closes at one gate, five cargos.
+#
+#   rishi/bin/rishi run tools/p/pond_ring_linengrow_witness.rish
+#
+# One gate, many cargos — the last of five. Linengrow's manifest crosses
+# customs at receipt; place admits it and the sight view runs on the shared
+# glass; refuse blocks whole, and the lap stays unrun.
+
+say "ring5: Language EN — the fifth Pond ring, Linengrow under customs."
+say "ring5: Lens TAME — one gate, many cargos; refuse still blocks whole."
+
+let zig = "vendor/zig-toolchain/zig"
+
+say "ring5: customs stands (build)..."
+let bc = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "pond/customs.rye" "-femit-bin=pond/bin/customs"]
+assert bc.ok else "ring5: customs failed to build"
+
+say "ring5: the app stands (seated build fixture)..."
+let ba = run ["rishi/bin/rishi" "run" "tools/fixtures/pond_build_drawn_terminal.rish"]
+assert ba.ok else "ring5: drawn terminal failed to build"
+
+say "ring5: manifest crosses customs — place admits..."
+let ins = run ["pond/bin/customs" "inspect" "tools/fixtures/pond_ring_linengrow_good.manifest"]
+assert ins.ok else "ring5: place manifest did not admit"
+assert ins.err contains "verdict=place" else "ring5: verdict was not place"
+assert ins.err contains "admitted for placement" else "ring5: admission line missing"
+
+say "ring5: admitted — the Linengrow sight view runs headless..."
+let app = run ["pond/bin/drawn-terminal" "sightviewtest"]
+assert app.ok else "ring5: admitted Linengrow failed its lap"
+assert app.out contains "GREEN" else "ring5: the lap did not speak GREEN"
+
+say "ring5: a stranger mark crosses — refuse blocks whole..."
+let ref = run ["sh" "-c" "pond/bin/customs inspect tools/fixtures/pond_ring_linengrow_refuse.manifest 2>&1; test $? -eq 2"]
+assert ref.ok else "ring5: refuse did not exit 2"
+assert ref.out contains "REFUSE" else "ring5: refuse line missing"
+assert ref.out contains "verdict=refuse" else "ring5: verdict was not refuse"
+
+say "GREEN: the fifth Pond ring — Linengrow admitted and run, stranger refused whole; one gate, five cargos, one glass."

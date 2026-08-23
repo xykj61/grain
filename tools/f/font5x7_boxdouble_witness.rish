@@ -1,0 +1,43 @@
+# tools/f/font5x7_boxdouble_witness.rish -- the open double-line box corpus proves itself on metal (Season G, font content).
+#
+# Season G (Open Media Primitives) - the second content BEYOND printable ASCII for the open glyph atlas
+# image/glyph.rye (gfa1), the double-line sibling of tools/f/font5x7_box_witness.rish (the light single-line set), set
+# beside the five ASCII corpora (tools/f/font5x7_witness.rish the numerals, tools/f/font5x7_alpha_witness.rish the
+# uppercase, tools/f/font5x7_lower_witness.rish the lowercase, tools/f/font5x7_punct_witness.rish the punctuation,
+# tools/f/font5x7_symbol_witness.rish the symbols).
+#
+# The crux this witness proves is a REAL, OPEN, hand-drawn double-line box-drawing corpus: the eleven double marks --
+# horizontal, vertical, the four corners, the four tees, and the cross -- at their real Unicode codepoints
+# U+2550..U+256C, each a 5x7 coverage grid drawn in the open as ASCII line art in image/font5x7_boxdouble.rye (two
+# parallel rails per line), built into a gfa1 atlas and proven on metal. These are exactly the marks a terminal
+# surface (the Dexter/Scooter family) reaches for to frame a heavier panel, rule a bold divider, or box a titled
+# table. A full round-trip recovers every codepoint, advance, and coverage byte byte-for-byte; all eleven marks look
+# up present and carry the shared advance while an ASCII letter misses; no two marks share coverage (a real double-box
+# set's glyphs differ); and each mark reads within an honest legibility band (a plain double rule is ten cells, the
+# double cross twenty). Compression is reported as a fact, never asserted -- the round-trip is the proof. No network,
+# no key, no funds -- the marks a surface reads the day it wants to draw a heavier frame, on our own open font.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/font5x7_boxdouble_witness.rish
+
+say "font5x7-boxdouble: Language EN -- Season G's double-line font content beyond ASCII; the eleven double box-drawing marks drawn in the open as ASCII line art with two parallel rails, built into the gfa1 atlas, the heavier marks a terminal surface uses to frame and rule."
+say "font5x7-boxdouble: Style Radiant -- the drawings are the specification and the bytes are derived from them, so decode(encode(atlas)) recovers every mark byte for byte; our own hand, permissively ours, no external font to license and no web-search gate."
+say "font5x7-boxdouble: Lens TAME -- u32 in-memory counts, u8 coverage bytes; every buffer names a maximum (cell_area - box_count - the atlas ceilings it rests on); each function states its invariants positively; codepoints explicit and strictly ascending; the source stays plain ASCII with numeric codepoints though the glyphs cover a non-ASCII range; compression a reported fact never a false invariant; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/font5x7_boxdouble"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/font5x7_boxdouble.rye -femit-bin=${bin}"]
+assert build.ok else "font5x7-boxdouble: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "font5x7-boxdouble: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "font5x7-boxdouble: ${out}"
+
+assert selftest.out contains "GREEN image-font5x7-boxdouble" else "font5x7-boxdouble: selftest did not print the GREEN corpus line"
+
+assert selftest.out contains "round-trip byte-identical" else "font5x7-boxdouble: round-trip was not byte-identical"
+
+say "font5x7-boxdouble: GREEN -- the open double-line box corpus whole; eleven double marks round-trip byte-identical, all present, distinct, and legible; the box family gains its heavier rails."

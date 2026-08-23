@@ -51,9 +51,9 @@ Loop words (LEXICON): gate · itinerary · lap · nib · Rest-until.
 ## 5. First Checkable Act
 
 ```bash
-rishi/bin/rishi run tools/glow_expr_witness.rish
+rishi/bin/rishi run tools/g/glow_expr_witness.rish
 # or, for product glass:
-rishi/bin/rishi run tools/dexter_glass_witness.rish
+rishi/bin/rishi run tools/d/dexter_glass_witness.rish
 ```
 
 When it prints GREEN, you stand inside the witness habitat.

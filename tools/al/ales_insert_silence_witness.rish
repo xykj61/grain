@@ -1,0 +1,39 @@
+# tools/al/ales_insert_silence_witness.rish — insert_silence: open `count` samples of silence at position `at`, growing the clip, the lossless twin of shift (ALES109).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES109.
+# Design read: active-designing/date/20260815/20260815-010035_fill-ales109-lotus-insert-silence.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, the EditError reused whole, and the cut imported by the selftest to prove the exact-inverse law),
+# lotus/meter.rye (ALES13 — the peak/RMS meter, used only to prove opening a silent gap never changes the peak). Where ALES108's shift slides the whole clip within a fixed
+# frame and DROPS what falls off the edge (a lossy translation), insert_silence makes room without translating and KEEPS every sample — the length grows by exactly count.
+# This is the Insert → Silence gesture every editor and DAW ships: open a gap of quiet so a downbeat lands where it should, so a countdown has room, so two takes align
+# without overwriting either. Naming it beside shift teaches the one distinction that matters about making room in a bounded signal: drop, or grow.
+#
+# lotus/insert_silence.rye opens `count` silent seats at `at`, shifting the tail right (exactly ALES2's splice gesture with zero for the payload), refusing BadRange when `at`
+# falls past the samples and ClipFull when the growth would overrun the fixed buffer, each before any write — no second buffer. The crux is four laws. THE INSERT LAW: the
+# result is original[0..at] ++ zeros(count) ++ original[at..], the length grown by count. THE INVERSE LAW: insert_silence(at,count) then cut(at,count) returns the original
+# byte for byte — the exact inverse the lossy shift could not make. THE PEAK / SILENCE LAW: the inserted span is all zero, so the peak (re-measured through ALES13) is
+# unchanged. THE DEGENERATE / REFUSAL LAW: count 0 the identity, at 0 the head, at = len the tail, an empty clip grown to pure silence, at > len BadRange, count past the
+# buffer ClipFull.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_insert_silence_witness.rish
+
+say "ales-insert-silence: Language EN — insert_silence opens `count` samples of silence at a position and shifts the tail right to make room, growing the clip. It is the lossless twin of shift: where shift slides the clip within a fixed frame and drops what falls off the edge, insert_silence makes room without translating and keeps every sample. This is the Insert → Silence gesture every editor ships — open a gap of quiet so a downbeat lands where it should. It fills the opened gap with silence, inventing no non-zero sample and dropping nothing."
+say "ales-insert-silence: Style Radiant — the rule is stated positively: open `count` silent seats at `at`, shifting the tail right (exactly ALES2's splice gesture with zero for the payload), refusing BadRange when `at` falls past the samples and ClipFull when the growth would overrun the fixed buffer, each before any write, no second buffer. It names the drop-vs-grow distinction beside shift. The crux stands out as four laws: the insert law (the result is original[0..at] ++ zeros(count) ++ original[at..], the length grown by count), the inverse law (insert_silence(at,count) then cut(at,count) returns the original byte for byte — the exact inverse the lossy shift could not make), the peak / silence law (the inserted span is all zero, so the peak is unchanged), and the degenerate / refusal law (count 0 the identity, an empty clip grown to pure silence, at past the samples BadRange, a count past the buffer ClipFull)."
+say "ales-insert-silence: Lens TAME — one mono clip of i16 PCM grown in place, the tail shifted right in the safe direction and the opened gap zero-filled, no allocation and no second buffer; the growth is refused by name before any write (BadRange past the samples, ClipFull past the fixed buffer), reusing ALES2's EditError whole and inventing none of its own; the exact-inverse-of-cut law is proven against ALES2's own cut and the unchanged peak against ALES13's read-only meter; it invents no non-zero sample, drops nothing, and reads no byte past len; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/insert_silence"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/insert_silence.rye -femit-bin=${bin}"]
+assert build.ok else "ales-insert-silence: build failed — ${build.err}"
+
+let outfile = "lotus/bin/insert_silence.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-insert-silence: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-insert-silence: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-insert-silence' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-insert-silence: selftest did not print the GREEN ales-insert-silence line"

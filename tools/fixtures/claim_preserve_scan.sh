@@ -8,7 +8,7 @@
 #   CLAIM_PRESERVE_BASE  — git ref for BEFORE (default: HEAD)
 #
 # Also asserts pinned digests in known homes are unchanged vs BASE:
-#   tools/waymark_derive.rish corpus_digest / corpus_count_pin
+#   tools/w/waymark_derive.rish corpus_digest / corpus_count_pin
 #   linengrow/seva_b0_fold.rye expected_demo_root_hex
 #
 # Exit 1 on any mismatch — STOP the wave; do not resolve.
@@ -113,8 +113,8 @@ pin_check() {
   fi
 }
 
-pin_check "tools/waymark_derive.rish" 'corpus_digest[[:space:]]*=' "flw corpus"
-pin_check "tools/waymark_derive.rish" 'corpus_count_pin[[:space:]]*=' "flw count"
+pin_check "tools/w/waymark_derive.rish" 'corpus_digest[[:space:]]*=' "flw corpus"
+pin_check "tools/w/waymark_derive.rish" 'corpus_count_pin[[:space:]]*=' "flw count"
 pin_check "linengrow/seva_b0_fold.rye" 'expected_demo_root_hex[[:space:]]*=' "HAWM root"
 
 if [ "$reds" -gt 0 ]; then

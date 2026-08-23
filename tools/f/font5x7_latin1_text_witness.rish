@@ -1,0 +1,37 @@
+# tools/f/font5x7_latin1_text_witness.rish -- the Western European text font (printable ASCII + the whole Latin-1 letter block) proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) - font content for the open glyph atlas image/glyph.rye (gfa1). This is the capstone of
+# the 5x7 font family's coverage, one level above BOTH unifying fonts already landed: image/font5x7_ascii.rye (the
+# ninety-five printable ASCII codepoints, contiguous 0x20..0x7E) and image/font5x7_latin1_block.rye (the whole Latin-1
+# Supplement letter block, sixty-two letters U+00C0..U+00FF but the two math signs). image/font5x7_latin1_text.rye merges
+# those two proven atlases into ONE gfa1 atlas of a hundred fifty-seven glyphs -- the single font a Western European
+# surface loads for a document, a caption, or a name.
+#
+# The crux this witness proves, beyond the round-trip and the ascending-and-unique disjointness the sub-fonts prove, is
+# that the two halves compose with a CLEAN GAP: the ASCII font ends at '~' (0x7E) and the Latin-1 block opens at A grave
+# (0xC0), so 0x7F..0xBF carries no glyph. The selftest proves the ASCII half contiguous, the Latin-1 half block-complete
+# (present everywhere but the multiplication U+00D7 and division U+00F7 signs), the gap between empty (DEL 0x7F, copyright
+# 0xA9, inverted question 0xBF all miss), and the space the one blank glyph. Compression is reported as a fact, never
+# asserted -- the round-trip is the proof. No network, no key, no funds -- the whole Western European text a surface reads
+# in one lookup on our own open font.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/font5x7_latin1_text_witness.rish
+
+say "font5x7-latin1-text: Language EN -- Season G font content; the Western European text font, printable ASCII and the whole Latin-1 letter block merged into one gfa1 atlas of a hundred fifty-seven glyphs -- the single font a surface loads to set any Western European text."
+say "font5x7-latin1-text: Style Radiant -- the two sub-fonts each already prove their own glyphs on metal; this font merges their green atlases and proves the ASCII half contiguous, the Latin-1 half block-complete, and the gap between them empty, so decode(encode(atlas)) recovers every glyph byte for byte; our own hand end to end, permissively ours, no external font to license and no web-search gate."
+say "font5x7-latin1-text: Lens TAME -- u32 in-memory counts, u8 coverage bytes; every buffer names a maximum (cell_area - text_count - the atlas ceilings it rests on); the unifying count is the sum of the two sub-fonts' own count constants; each function states its invariants positively; codepoints explicit and strictly ascending; the source stays plain ASCII; compression a reported fact never a false invariant; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/font5x7_latin1_text"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/font5x7_latin1_text.rye -femit-bin=${bin}"]
+assert build.ok else "font5x7-latin1-text: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "font5x7-latin1-text: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "font5x7-latin1-text: ${out}"
+
+assert selftest.out contains "GREEN image-font5x7-latin1-text" else "font5x7-latin1-text: selftest did not print the GREEN corpus line"

@@ -24,7 +24,7 @@
 # USAGE
 #   sh tools/fixtures/banner_room_scan.sh
 #
-# Driven by tools/banner_room_witness.rish. Run from the repository root.
+# Driven by tools/b/banner_room_witness.rish. Run from the repository root.
 
 set -eu
 

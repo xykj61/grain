@@ -1,0 +1,51 @@
+# tools/m/mycelium_muster_bron_witness.rish — a validator set travels as a readable record (r2).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the Muster · rung r2 — travel.
+# r1 bound a Chorus to a known validator set (a Muster) and proved a quorum is believed only when its
+# enrolled voices meet the Byzantine threshold read from the roll's size. A roll a holder cannot hand to
+# another is only a local standard, so r2 lets the whole Muster cross as `format muster-v1` bytes — one
+# validator line per enrolled node, the threshold DERIVED by the reader from the count, never carried, so
+# a roll cannot smuggle a lowered bar across the wire.
+#
+# The crux this witness proves is THE ROLL'S VERDICT SURVIVES THE WIRE: a Chorus judged against a Muster
+# parsed from bytes reaches the identical verdict as against the roll in memory — an enrolled quorum
+# passes, three fresh keys refuse NotMember. Render writes it, parse reads it back byte-for-byte (fixed
+# point). A purpose-built bounded reader refuses a wrong header (BadFormat), an empty roll (BadFormat), an
+# unknown field (UnknownField), a bad hex key (BadHex), a repeated validator (Duplicate). Composes
+# muster + chorus public API only; demo seeds — no key, no funds, no network, no custody.
+#
+# Scope: active-designing/date/20260813/20260813-110039_mycelium-muster-known-validator-set-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_muster_bron_witness.rish
+
+say "mycelium-muster-bron: Language EN — a validator set crosses a wire as readable text, and a stranger who receives it judges a quorum by the identical standard: an enrolled quorum passes, an outsider one refuses."
+say "mycelium-muster-bron: Style Radiant — r1 made the roll a standard a quorum must pass; r2 lets the whole roll travel, byte-for-byte, so the standard reaches whoever holds the bytes without a roll of their own."
+say "mycelium-muster-bron: Lens TAME — render/parse compose muster + chorus public API; the record is bounded at max_record; the threshold is derived from the count, never written; each validator is enrolled through the roll's own law; refuses tamper; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/muster_bron"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/muster_bron.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-muster-bron: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-muster-bron: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-muster-bron: selftest did not speak GREEN"
+assert selftest.out contains "parses back byte-for-byte (fixed point)" else "mycelium-muster-bron: fixed-point claim missing"
+assert selftest.out contains "the threshold is derived from the count, never carried" else "mycelium-muster-bron: derived-threshold claim missing"
+assert selftest.out contains "reaches the identical verdict" else "mycelium-muster-bron: verdict-survives-the-wire claim missing"
+assert selftest.out contains "three fresh keys refuse NotMember" else "mycelium-muster-bron: outsider-refusal claim missing"
+assert selftest.out contains "a repeated validator each refuse" else "mycelium-muster-bron: refusal-ledger claim missing"
+assert selftest.out contains "judges a quorum the same offline" else "mycelium-muster-bron: closing claim missing"
+
+# The Muster r1 the record carries, and the Chorus it judges, stand at the door.
+let muster = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/muster.rye -femit-bin=mycelium/bin/muster && mycelium/bin/muster 2>&1"]
+assert muster.ok else "mycelium-muster-bron: the Muster r1 the record carries is not GREEN"
+assert muster.out contains "GREEN" else "mycelium-muster-bron: the Muster did not speak its GREEN"
+
+let chorus = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/chorus.rye -femit-bin=mycelium/bin/chorus && mycelium/bin/chorus 2>&1"]
+assert chorus.ok else "mycelium-muster-bron: the Chorus the roll judges is not GREEN"
+assert chorus.out contains "GREEN" else "mycelium-muster-bron: the Chorus did not speak its GREEN"
+
+say "mycelium-muster-bron: GREEN — a known validator set travels as a format muster-v1 record and parses back byte-for-byte; the recovered roll judges a quorum the same offline (an enrolled quorum passes, three fresh keys refuse NotMember), the threshold derived from the count never carried; refuses a bad header, an empty roll, an unknown field, a bad hex key, a repeated validator; the Muster and the Chorus stand at the door."

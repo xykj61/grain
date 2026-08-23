@@ -20,7 +20,7 @@ Lotus learns REAPER's *discipline* (hot loop, extensibility, item model) in the 
 
 ## Local documentation copies
 
-Parsed from public HTML on 2026-06-30. Refresh with `tools/fetch_gratitude_web.sh reaper`.
+Parsed from public HTML on 2026-06-30. Refresh with `tools/f/fetch_gratitude_web.sh reaper`.
 
 | File | Source URL |
 |------|------------|

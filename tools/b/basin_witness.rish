@@ -1,0 +1,29 @@
+# basin_witness.rish — the bounded activity basin (the Scribe×Tally monitor's pool).
+#
+# Proves the circular buffer fills and overflows correctly on synthetic samples: an
+# empty basin gives no sample; pushing past capacity saturates `filled`, wraps the
+# head, keeps the sequence monotonic across the wrap, and overflows the oldest off
+# the tail — the self-stopping line, at fixed cost, before the basin is ever pointed
+# at a live /proc. (Word discipline: a circular buffer, never a *ring* — that word is
+# reserved for the algebraic structure, as in Vault's GF(256) field.)
+#
+# Build first (the vendored toolchain):
+#   mkdir -p basin/bin
+#   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build basin/basin.rye -femit-bin=basin/bin/basin
+#   rishi/bin/rishi run tools/b/basin_witness.rish
+
+# The module's own selftest — empty, fill, saturate, wrap, overflow.
+let st = run ["basin/bin/basin" "selftest"]
+assert st.ok else "basin selftest must exit 0"
+assert (st.err contains "GREEN") else "selftest must report GREEN"
+assert (st.err contains "overflow the oldest") else "a full basin must overflow the oldest sample"
+assert (st.err contains "wrap the head") else "the head must wrap past capacity"
+
+# The emitted facts show a saturated basin whose oldest fell off the tail.
+let em = run ["basin/bin/basin" "emit"]
+assert em.ok else "basin emit must exit 0"
+assert (em.out contains "format basin-v1") else "emit must print the basin-v1 format tag"
+assert (em.out contains "filled 256") else "a saturated basin holds exactly its capacity"
+assert (em.out contains "oldest_seq 44") else "after 300 pushes into a 256 basin, the oldest held is seq 44"
+
+say "GREEN: basin witness — fill, saturate, wrap, overflow, emit."

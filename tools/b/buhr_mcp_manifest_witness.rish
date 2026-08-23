@@ -1,0 +1,41 @@
+# tools/b/buhr_mcp_manifest_witness.rish — BUHR Journey 3, Rung 3.
+#
+# The manifest tile, proven on metal: a JSON MCP host can discover a Grain tool.
+# A Bron `format mcp-tool-v1` manifest renders to the JSON tool descriptor a
+# `tools/list` response carries -- a name, a description, an inputSchema of typed
+# properties with a required list, and an outputSchema -- and reads back into an
+# equal manifest. The value model is mapped honestly across the border (int/str/bool
+# <-> integer/string/boolean) and an unmappable type is refused at the JSON border;
+# an unknown descriptor field is refused rather than dropped. Call (rung two) and
+# discovery (this rung) together complete the interop story.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/buhr_mcp_manifest_witness.rish
+
+say "buhr-j3r3: Language EN — a Grain tool's manifest tiled to JSON tools/list and back."
+say "buhr-j3r3: Lens TAME — bounded, value-model-honest, unknown fields and types refused."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/mcp-manifest"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_manifest.rye -femit-bin=${bin}"]
+assert build.ok else "buhr-j3r3: mcp_manifest build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr-j3r3: mcp_manifest selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr-j3r3: selftest did not speak GREEN"
+assert selftest.out contains "int manifest — Bron mcp-tool-v1 -> JSON tools/list schema -> Bron, equal" else "buhr-j3r3: int manifest round-trip missing"
+assert selftest.out contains "str manifest — join's string schema round-trips" else "buhr-j3r3: str manifest round-trip missing"
+assert selftest.out contains "an unmappable value type is refused at the JSON border" else "buhr-j3r3: bad-type refusal missing"
+assert selftest.out contains "an unknown descriptor field is refused" else "buhr-j3r3: unknown-field refusal missing"
+
+# The tile is additive: rungs one and two stay their own GREEN binaries.
+let rung1 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mcp_bron_witness.rish 2>&1"]
+assert rung1.ok else "buhr-j3r3: rung one witness regressed"
+assert rung1.out contains "GREEN: BUHR-J3r1" else "buhr-j3r3: rung one green line missing"
+
+let rung2 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mcp_json_witness.rish 2>&1"]
+assert rung2.ok else "buhr-j3r3: rung two witness regressed"
+assert rung2.out contains "GREEN: BUHR-J3r2" else "buhr-j3r3: rung two green line missing"
+
+say "GREEN: BUHR-J3r3 — the manifest tile lets a JSON host discover a Grain tool; call + discovery complete."

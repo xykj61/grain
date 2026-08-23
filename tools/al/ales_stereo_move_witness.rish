@@ -1,0 +1,36 @@
+# tools/al/ales_stereo_move_witness.rish — stereo_move: the drag gesture carried into stereo, both channels in lockstep, validate-both-before-either (ALES119).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES119.
+# Design read: active-designing/date/20260815/20260815-020325_fill-ales119-lotus-stereo-move.md
+# Stands on: lotus/move.rye (ALES113 — the mono drag gesture run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant),
+# lotus/timeline.rye (ALES2 — the Clip and the EditError reused whole), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that
+# left and right hold the same length so the channels stay aligned in time; dragging a bar carries it in both speakers at once. This rung carries ALES113's move into stereo the way
+# ALES117 carried cut and ALES118 carried crop: run the proven mono move on each channel with the same start, count, and dest. With cut, crop, and move the stereo edit family stands whole.
+#
+# lotus/stereo_move.rye relocates [start, start+count) to dest in both channels, validating BOTH channels before either is mutated (because mono move can fault only with BadRange and the
+# channels enter equal-length, the three range checks are made once against the shared length up front) so a refusal never desynchronises the channels. The crux is four laws. THE STEREO
+# MOVE LAW: each channel equals ALES113's mono move on that channel byte for byte. THE BALANCE / INVARIANT LAW: left.len == right.len after, the length held. THE INVERSE LAW: move then
+# move(dest, count, start) returns both channels. THE ATOMICITY / DEGENERATE LAW: a refusal leaves both channels untouched and balanced, count 0 the identity, dest = start the identity.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stereo_move_witness.rish
+
+say "ales-stereo-move: Language EN — stereo_move lifts the count samples starting at start out of both channels of a StereoClip and reinserts them at dest, so the drag gesture ALES113 named for a mono clip now lands on a real stereo master. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time; dragging a bar carries it in both speakers at once. With cut (ALES117), crop (ALES118), and now move, the stereo edit family stands whole — remove a span, keep only a span, or carry a span somewhere new. It carries ALES113's proven mono move into stereo — the same start, count, and dest on each channel — so the relocation lands identically in both and the stereo image stays balanced."
+say "ales-stereo-move: Style Radiant — the rule is stated positively: run the mono move per channel over its public API, validating both channels before either is mutated (because mono move can fault only with BadRange and the channels enter equal-length, the three range checks are made once against the shared length up front), so a refusal never leaves one channel moved and the other not. The crux stands out as four laws: the stereo move law (each channel equals ALES113's mono move on that channel byte for byte), the balance / invariant law (left.len == right.len after the edit, the length held, the stereo image staying aligned), the inverse law (move(start, count, dest) then move(dest, count, start) returns both channels to the original), and the atomicity / degenerate law (any refusal leaves both channels byte for byte untouched and still balanced, count 0 the identity on both, dest = start the identity)."
+say "ales-stereo-move: Lens TAME — two bounded i16 Clips (left, right) whose named span is relocated in lockstep; the three range checks are made without underflow against the common channel length once up front (start against len, count against the remainder, dest against len minus count), so every refusal comes by name before any write and the channels can never desynchronise; move is ALES2's cut then splice composed with one bounded scratch buffer per channel, its net length unchanged so splice can never refuse ClipFull; it reuses ALES2's EditError whole and ALES113's move per channel over its public API, inventing no new primitive; the stereo move law is proven against ALES113's own move run per channel, and the inverse law closes the round trip; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_move"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_move.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-move: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_move.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-move: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-move: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-move' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-move: selftest did not print the GREEN ales-stereo-move line"

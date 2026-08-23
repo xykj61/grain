@@ -14,8 +14,8 @@ Applications are **Pool agents** — Pool is confirmed as Glow's Gall-role host 
 | [`shape-tube0-manifest-field-count.glow`](shape-tube0-manifest-field-count.glow) | TUBE0 mold · four fields named | same |
 
 ```
-rishi/bin/rishi run tools/glow_run.rish src/app/shape-pool-agent-slot.glow
-rishi/bin/rishi run tools/glow_run.rish src/app/shape-tube0-manifest-field-count.glow
+rishi/bin/rishi run tools/g/glow_run.rish src/app/shape-pool-agent-slot.glow
+rishi/bin/rishi run tools/g/glow_run.rish src/app/shape-tube0-manifest-field-count.glow
 rishi/bin/rishi run tools/gen/season/src_first_resident_witness.rish
 ```
 

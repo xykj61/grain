@@ -1,0 +1,51 @@
+# tools/al/ales_reverb_gate_witness.rish — the gate: the reverb's GATED TAIL, the classic gated-reverb sound (ALES200).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES200.
+# Design read: active-designing/date/20260815/20260815-105453_fill-ales200-lotus-reverb-gate.md
+# Stands on: lotus/reverb_preset.rye (ALES190 — the named-room wet, run over the span unchanged); lotus/gate.rye (ALES49 — the downward gate and its
+# guards, the gating applied to the wet span); lotus/clock.rye (ALES5 — the sample clock, converting the span); lotus/timeline.rye (ALES2 — the Clip,
+# its max_clip bounding the span and its sample_max the gate's rail).
+#
+# lotus/reverb_gate.rye gives the reverb its GATED TAIL — the classic gated-reverb sound: reverberate a source into a big room, then slam a noise
+# gate across the reverberant tail so the quiet decay below a chosen threshold is pushed toward silence, leaving only the loud early wash (the
+# eighties drum snare). It reverberates the span wet in place through ALES190's reverb_preset UNCHANGED, then gates the wet with ALES49's proven
+# downward gate: ratio_num == ratio_den is the identity (a unit-ratio gate), a larger ratio cuts the quiet tail harder. It invents no new audio
+# arithmetic — every gated sample is written by a proven stage — and it prechecks the gate's threshold and ratio (the SAME guards ALES49 raises)
+# BEFORE the wet is written, so a bad gate leaves the clip DRY (atomic). The selftest proves: at ratio_num == ratio_den the span equals reverb_preset
+# byte for byte; for a firm ratio reverb_gate equals reverb_preset then gate byte for byte and the gated tail differs from the un-gated wet; the
+# gated tail's total energy is strictly less than the wet's; silence stays silence; and the faults forward atomic (a bad threshold BadThreshold and
+# a bad ratio BadRatio with the clip still dry, a span past the clip DurationTooLong, an out-of-range span BadRange). Purely local — one clip, a
+# validated clock; no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_reverb_gate_witness.rish
+
+say "ales-reverb-gate: Language EN — the reverb now carries WHICH room (ALES190), HOW MUCH (ALES192/193 wet/dry), WHEN (ALES194–197 pre-delay), and HOW BRIGHT (ALES198/199 tone). The axis this rung adds is HOW LONG the tail is HEARD: a real gated reverb reverberates a source into a big room, then slams a noise gate across the reverberant tail so the quiet decay below a chosen threshold is pushed toward silence, leaving only the loud early wash — the abrupt, dramatic drum sound every console has named since the eighties. This rung is that gate."
+say "ales-reverb-gate: Style Radiant — the identity edge is stated positively and proven exact: at ratio_num == ratio_den the span equals reverb_preset byte for byte (a unit-ratio gate is exactly the un-gated reverb); a larger ratio pushes the below-threshold tail harder toward silence, and the gated tail's total energy is strictly less than the wet's — the tail is cut the way a gated reverb cuts it. The threshold is a magnitude and the ratio a plain fraction, so the gate means the same at any sample rate."
+say "ales-reverb-gate: Lens TAME — one clip of i16 PCM, a validated clock, and ALES190's fixed banks; NO new audio arithmetic — the gate is ALES49's proven downward gate over the proven wet, so no value is recomputed or can wrap; ReverbGateError = reverb_preset.ReverbPresetError || BadThreshold || BadRatio, the gate's threshold and ratio PRECHECKED before the wet is written (the same guards ALES49 raises) so a bad gate leaves the clip dry (atomic), DurationTooLong / BadRange / BadThreshold / BadRatio by name before any write; siloed to lotus/, no network, no keys, no funds, no device. A wet-tail gate; a true time-following envelope gate (an attack/hold/release shaping the cut) is named as a separate horizon, not claimed."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/reverb_gate"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_gate.rye -femit-bin=${bin}"]
+assert build.ok else "ales-reverb-gate: build failed — ${build.err}"
+
+let outfile = "lotus/bin/reverb_gate.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-reverb-gate: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-reverb-gate: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-gate' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-reverb-gate: selftest did not print the GREEN ales-reverb-gate line"
+
+# This rung runs ALES190's reverb_preset over its public API for the wet — re-prove the named-room preset still stands green beside it.
+let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
+assert (trim preset.out) == "yes" else "ales-reverb-gate: the ALES190 named-room preset regressed under its gate"
+
+# And re-prove ALES49's downward gate still stands green — the gating it applies to the wet.
+let gateg = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/gate.rye -femit-bin=lotus/bin/gate && lotus/bin/gate selftest 2>&1 | grep -q 'GREEN ales-gate' && echo yes"]
+assert (trim gateg.out) == "yes" else "ales-reverb-gate: the ALES49 downward gate regressed under its reverb gate"
+
+say "ales-reverb-gate: GREEN — the gate: the reverb's GATED TAIL, the classic gated-reverb sound. Reverberate the span wet in place through ALES190's reverb_preset unchanged, then gate the wet with ALES49's proven downward gate — ratio_num == ratio_den the identity, a larger ratio cutting the quiet tail harder — no new audio arithmetic, every gated sample written by a proven stage. Proven: at ratio_num == ratio_den exactly reverb_preset byte for byte; for a firm ratio reverb_gate equals reverb_preset then gate byte for byte and the gated tail differs from the un-gated wet; the gated tail's total energy is strictly less than the wet's; silence stays silence; a bad threshold refuses BadThreshold and a bad ratio BadRatio with the clip still dry (prechecked before the wet is written), a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the clip untouched; the ALES190 preset and the ALES49 gate stay GREEN beside it. A stereo gate (the same gate over both channels, one shared threshold and ratio, the image held) is the thin twin next."

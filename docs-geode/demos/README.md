@@ -16,7 +16,7 @@ every reference already written at the old path keeps working, because a stale r
 **resolved** rather than rewritten.
 
 ```sh
-rishi/bin/rishi run tools/dated_path_resolve.rish session-logs/20260710-000045_one-clock-resins-plainly.md
+rishi/bin/rishi run tools/d/dated_path_resolve.rish session-logs/20260710-000045_one-clock-resins-plainly.md
 ```
 
 ```
@@ -45,7 +45,7 @@ FIPS 202, standing on its own with the system's crypto libraries left out of it 
 against the published standard yourself:
 
 ```sh
-rishi/bin/rishi run tools/sha3_file_witness.rish
+rishi/bin/rishi run tools/s/sha3_file_witness.rish
 ```
 
 It hashes the empty string and `abc` at both widths and compares against the FIPS 202 known

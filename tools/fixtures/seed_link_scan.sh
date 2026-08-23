@@ -7,7 +7,7 @@
 # resolves perfectly in the field -- `gratitude/Rust.md`, `construction/ITINERARY.md` -- resolves NOWHERE
 # for the reader who arrives at the seed, because the seed never carried that room.
 #
-# tools/tracked_link_witness.rish asks "is this in the repository." That is the right question
+# tools/t/tracked_link_witness.rish asks "is this in the repository." That is the right question
 # for the field and the wrong question for the seed, which is a different repository with fewer
 # rooms. Measured on 20260823, the front door alone shipped nineteen links into rooms the seed
 # does not carry, and 867 stood across every living shipped document. No guard read this at all.
@@ -27,14 +27,14 @@
 #   Absolute links, anchors, `http`, and `mailto:`, none of which name a path in this tree.
 #   Any document the seed does not ship. It cannot break a link for a reader who never sees it.
 #
-# WHAT IS NOT PROVEN. That a link points at the RIGHT file -- tools/tracked_link_witness.rish and
-# tools/living_docs_lint.rish own resolution in the field. This scan asks only the narrower and
+# WHAT IS NOT PROVEN. That a link points at the RIGHT file -- tools/t/tracked_link_witness.rish and
+# tools/l/living_docs_lint.rish own resolution in the field. This scan asks only the narrower and
 # more surprising question: does it survive the projection.
 #
 # USAGE
 #   sh tools/fixtures/seed_link_scan.sh
 #
-# Driven by tools/seed_link_witness.rish. Run from the repository root.
+# Driven by tools/s/seed_link_witness.rish. Run from the repository root.
 
 set -u
 

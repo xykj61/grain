@@ -1,0 +1,37 @@
+# tools/d/drey_forget_witness.rish — the desk forgets one recording on purpose (DREY13).
+#
+# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · rung DREY13.
+# Design read: active-designing/date/20260814/20260814-071720_drey13-desk-forgets-one-recording-exploration.md
+# Stands on: mikrophone/catalog.rye (DREY7) — the content-addressed store this forgetting shapes.
+#
+# mikrophone/forget.rye strikes one recording from the desk by its content address and proves it leaves no residue — the
+# store closed over the gap, the vacated region zeroed, the distinctive bytes provably nowhere in the store. The selftest
+# proves: forgetting the middle of three leaves the survivors fetchable byte-for-byte with no residue, a miss refuses
+# NotHeld leaving the catalog unchanged, forget releases both the entry bound and the byte budget (a re-deposit lands
+# fresh, a full store admits a new recording once one is forgotten), and the last forget empties the desk to an all-zero
+# store — the device's redact (DREY10), one level up on the content-addressed desk.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/drey_forget_witness.rish
+
+say "drey-forget: Language EN — DREY13 lets the desk forget ONE recording by its content address; the founding promise 'What forgets, protects' becomes symmetric — forget-whole and forget-one, on both the device and the desk."
+say "drey-forget: Style Radiant — a keeper strikes one recording from the desk while the rest of the day's work stands, and the struck recording is as gone as a powered-down buffer — nothing a later read could recover, nothing a surviving fetch disturbs."
+say "drey-forget: Lens TAME — forget refuses NotHeld before a byte moves, closes the packed store over the gap with a plain bounded loop (never a bare memcpy), zeroes the vacated region, and asserts no residue by a full scan; only the catalog's own store and index change; no disk, no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mikrophone/bin/forget"
+
+let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} rye/bin/rye build mikrophone/forget.rye -femit-bin=${bin}"]
+assert build.ok else "drey-forget: build failed — ${build.err}"
+
+let outfile = "mikrophone/bin/forget.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "drey-forget: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "drey-forget: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN drey-forget' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "drey-forget: selftest did not print the GREEN drey-forget line"
+
+say "drey-forget: GREEN — the Mikrophone desk forgets one recording on purpose. A struck recording leaves no residue, the survivors stand, and the whole discipline is proven pure before metal."

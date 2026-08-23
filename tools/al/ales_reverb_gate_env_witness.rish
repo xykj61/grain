@@ -1,0 +1,59 @@
+# tools/al/ales_reverb_gate_env_witness.rish — the envelope gate: the reverb's GATED TAIL given a shaped edge, the time-following gated reverb (ALES202).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES202.
+# Design read: active-designing/date/20260815/20260815-110731_fill-ales202-lotus-reverb-gate-env.md
+# Stands on: lotus/reverb_preset.rye (ALES190 — the named-room wet, run over the span unchanged); lotus/gate_env.rye (ALES54 — the attack/release
+# envelope gate and its guards, the gating applied to the wet span); lotus/reverb_gate.rye (ALES200 — the static gate this contains as its
+# instantaneous limit); lotus/clock.rye (ALES5 — the sample clock, converting the span); lotus/timeline.rye (ALES2 — the Clip, its max_clip bounding
+# the span and its sample_max the gate's rail).
+#
+# lotus/reverb_gate_env.rye gives the reverb's GATED TAIL a SHAPED EDGE — a true time-following envelope gate that opens on the transient and closes
+# over the decay, so the release holds the gate open through the tail rather than chopping it (a musical, breathing gated reverb beyond the hard
+# eighties slam). Both ALES200 and ALES201 named this rung as their next horizon. It reverberates the span wet in place through ALES190's reverb_preset
+# UNCHANGED, then gates the wet with ALES54's proven envelope-following gate: ratio_num == ratio_den is the identity, a larger ratio cuts the quiet
+# tail harder, and a slower release holds the gate open longer. It invents no new audio arithmetic — every gated sample is written by a proven stage —
+# and it prechecks the gate's threshold, ratio, and both attack/release coefficients (the SAME guards ALES54 raises) BEFORE the wet is written, so a
+# bad setting leaves the clip DRY (atomic). The selftest proves: at ratio_num == ratio_den the span equals reverb_preset byte for byte; for a firm
+# ratio reverb_gate_env equals reverb_preset then gate_follow byte for byte and the shaped-gated tail differs from the un-gated wet; with unit attack
+# and unit release it equals ALES200's static reverb_gate byte for byte (the static gate is its zero-smoothing limit); the gated tail's total energy is
+# strictly less than the wet's; a slower release carries at least as much tail energy as a faster one (the release shapes the edge, monotone); silence
+# stays silence; and the faults forward atomic (a bad threshold BadThreshold, a bad ratio BadRatio, an illegal coefficient BadCoeff with the clip still
+# dry, a span past the clip DurationTooLong, an out-of-range span BadRange). Purely local — one clip, a validated clock; no network, no keys, no funds,
+# no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_reverb_gate_env_witness.rish
+
+say "ales-reverb-gate-env: Language EN — ALES200/201 gave the reverb its STATIC gated tail (slam a downward gate across the quiet decay so only the loud early wash is heard — the eighties drum snare), and both named the SAME next horizon: a true time-following envelope gate that opens on the transient and closes over the decay, so the cut has a SHAPED edge rather than a hard, instantaneous one. This rung is that gate — and it invents no new primitive, since ALES54's gate_follow (the attack/release envelope gate over ALES52's proven time base) already stands, so the shaped-edge gated reverb is a clean composition of two proven stages."
+say "ales-reverb-gate-env: Style Radiant — the identity edge is stated positively and proven exact: at ratio_num == ratio_den the span equals reverb_preset byte for byte (a unit-ratio follow-gate is the un-gated reverb); a larger ratio pushes the below-threshold tail harder toward silence, and a SLOWER release holds the gate open longer over the decay so the shaped tail carries at least as much energy as a faster release's — the release knob is the shaped edge the static gate cannot express, and it is monotone. The static gate (ALES200) lives on as this rung's zero-smoothing limit: unit attack and unit release make the envelope the bare magnitude, so reverb_gate_env then equals reverb_gate byte for byte."
+say "ales-reverb-gate-env: Lens TAME — one clip of i16 PCM, a validated clock, and ALES190's fixed banks; NO new audio arithmetic — the gate is ALES54's proven envelope-following gate over the proven wet, its time base the one ALES52 proved; ReverbGateEnvError = reverb_preset.ReverbPresetError || BadThreshold || BadRatio || BadCoeff, the gate's threshold, ratio, and both coefficients PRECHECKED before the wet is written (the same guards ALES54 raises) so a bad gate leaves the clip dry (atomic), DurationTooLong / BadRange / BadThreshold / BadRatio / BadCoeff by name before any write; siloed to lotus/, no network, no keys, no funds, no device. A wet-tail envelope gate; the attack/release are fractions per sample index (a clock-timed face is a later rung, as reverb_ms followed the index-named reverb)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/reverb_gate_env"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_gate_env.rye -femit-bin=${bin}"]
+assert build.ok else "ales-reverb-gate-env: build failed — ${build.err}"
+
+let outfile = "lotus/bin/reverb_gate_env.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-reverb-gate-env: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-reverb-gate-env: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb-gate-env' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-reverb-gate-env: selftest did not print the GREEN ales-reverb-gate-env line"
+
+# This rung runs ALES190's reverb_preset over its public API for the wet — re-prove the named-room preset still stands green beside it.
+let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_preset.rye -femit-bin=lotus/bin/reverb_preset && lotus/bin/reverb_preset selftest 2>&1 | grep -q 'GREEN ales-reverb-preset' && echo yes"]
+assert (trim preset.out) == "yes" else "ales-reverb-gate-env: the ALES190 named-room preset regressed under its envelope gate"
+
+# And re-prove ALES54's attack/release envelope gate still stands green — the gating it applies to the wet.
+let gateenv = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/gate_env.rye -femit-bin=lotus/bin/gate_env && lotus/bin/gate_env selftest 2>&1 | grep -q 'GREEN ales-gate-env' && echo yes"]
+assert (trim gateenv.out) == "yes" else "ales-reverb-gate-env: the ALES54 envelope gate regressed under its reverb gate"
+
+# And re-prove ALES200's static reverb gate still stands green — the instantaneous limit this rung equals.
+let staticgate = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_gate.rye -femit-bin=lotus/bin/reverb_gate && lotus/bin/reverb_gate selftest 2>&1 | grep -q 'GREEN ales-reverb-gate' && echo yes"]
+assert (trim staticgate.out) == "yes" else "ales-reverb-gate-env: the ALES200 static reverb gate regressed beside its envelope gate"
+
+say "ales-reverb-gate-env: GREEN — the envelope gate: the reverb's GATED TAIL given a shaped edge, the time-following gated reverb. Reverberate the span wet in place through ALES190's reverb_preset unchanged, then gate the wet with ALES54's proven envelope-following gate — ratio_num == ratio_den the identity, a larger ratio cutting the quiet tail harder, a slower release holding the gate open longer — no new audio arithmetic, every gated sample written by a proven stage. Proven: at ratio_num == ratio_den exactly reverb_preset byte for byte; for a firm ratio reverb_gate_env equals reverb_preset then gate_follow byte for byte and the shaped-gated tail differs from the un-gated wet; with unit attack and unit release it equals ALES200's static reverb_gate byte for byte; the gated tail's total energy is strictly less than the wet's; a slower release carries at least as much tail energy as a faster one; silence stays silence; a bad threshold refuses BadThreshold, a bad ratio BadRatio, an illegal coefficient BadCoeff with the clip still dry (prechecked before the wet is written), a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving the clip untouched; the ALES190 preset, the ALES54 envelope gate, and the ALES200 static gate stay GREEN beside it. A stereo envelope gate (the same follow-gate over both channels, one shared threshold, ratio, and attack/release, the image held) is the thin twin next."

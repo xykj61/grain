@@ -32,7 +32,7 @@ test -f counsel/date/20260728/20260728-034317_linn-capricorn-seat.md
 test -f counsel/date/20260728/20260728-035025_linn-helen-atthowe-dedication.md
 test -f gratitude/helen-atthowe.md
 test -f foundations/yonder/20260728-035025_linn-and-helen-atthowe.md
-test -f tools/sundial.rish
+test -f tools/s/sundial.rish
 
 name=Linn
 len=$(printf '%s' "$name" | wc -c)

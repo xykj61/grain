@@ -1,0 +1,40 @@
+# tools/cl/cluster_diameter_path_witness.rish -- the actual edge list the diameter walks across a cluster skeleton, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/cluster_tree_diameter.rye reads the DIAMETER of the skeleton, the greatest path weight between any
+# two clusters, and names the two poles it runs between; yet it stops at the value and the endpoints. This rung reads the PATH between those
+# poles: the ordered sequence of bridge edges the longest walk actually crosses, so a surface can DRAW the chain of links, not only weigh it.
+# Exact integers, NO float, NO tolerance.
+#
+# The crux this witness proves on metal, two shapes: EVERY TREE EDGE IS ON THE PATH WHEN THE TREE IS A SINGLE PATH -- over the three-cluster star
+# (edges 1-2 gap 2, 1-3 gap 3) the walk 2 -> 1 -> 3 crosses BOTH bridges, the path is the whole tree, its weights summing to 5, the diameter;
+# THE PATH DROPS THE BRANCHING ARM -- over the four-cluster star (edges 1-2, 1-3 gap 3, 1-4 gap 9) the walk 2 -> 1 -> 4 crosses two of three
+# bridges, the third arm 1-3 branching off, so is_on_diameter_path(1,3) is FALSE for an edge is_bridge(1,3) is TRUE, the path a strict subset. A
+# lone-cluster layout is already one whole. Determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cl/cluster_diameter_path_witness.rish
+
+say "cluster_diameter_path: Language EN -- Season G the actual edge list the diameter walks; diameter_path reconstructs the ordered walk pole to pole, diameter_path_hops reads how many edges it spends, is_on_diameter_path asks whether a cluster pair is one of the crossed edges; NO float, NO tolerance."
+say "cluster_diameter_path: Style Radiant -- compose not braid: this rung owns only the path reconstruction (the parent-recording breadth-first walk pole to pole, the ordered node and edge sequence, the on-path test); cluster_tree_diameter owns diameter_endpoints and tree_diameter cross-checked here never re-derived, cluster_minimum_spanning_tree owns build_mst is_bridge edge_count, cluster_graph owns the matrix a level below. A reading over a reading over a reading over a reading over a reading over a reading over a reading over a reading over a reading."
+say "cluster_diameter_path: Lens TAME -- the tree holds at most the cluster ceiling minus one edges, the parent-recording walk visits every cluster at most once, the path holds at most one node per cluster; a zero or past-the-count cluster id refuses BadClusterId, a self pair refuses SameCluster, a lone-cluster layout refuses EmptyTree; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/cluster_diameter_path"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/cluster_diameter_path.rye -femit-bin=${bin}"]
+assert build.ok else "cluster_diameter_path: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "cluster_diameter_path: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "cluster_diameter_path: ${out}"
+
+assert selftest.out contains "GREEN image-cluster-diameter-path" else "cluster_diameter_path: selftest did not print the GREEN line"
+assert selftest.out contains "EVERY TREE EDGE IS ON THE PATH WHEN THE TREE IS A SINGLE PATH" else "cluster_diameter_path: the whole-tree case did not print"
+assert selftest.out contains "a star of two edges also a path so the path IS the tree" else "cluster_diameter_path: the star-is-a-path fact did not print"
+assert selftest.out contains "THE PATH DROPS THE BRANCHING ARM" else "cluster_diameter_path: the branching-arm case did not print"
+assert selftest.out contains "is_on_diameter_path(1,3) reads FALSE for an edge is_bridge(1,3) reads TRUE" else "cluster_diameter_path: the decisive contrast did not print"
+assert selftest.out contains "the path a STRICT SUBSET of the tree's bridges" else "cluster_diameter_path: the strict-subset fact did not print"
+
+say "cluster_diameter_path: GREEN on metal -- the chain of links a surface highlights across a connected group, the ordered bridge edges the longest walk crosses between the two poles of the minimum spanning tree, exact integers with NO float and NO tolerance; the walk names WHICH bridges the diameter spends, a strictly sharper reading than its single number."

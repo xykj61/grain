@@ -1,0 +1,36 @@
+# tools/t/tact_publish_receipt_bron_witness.rish — TACT Journey 2, Rung 3: the receipt made portable.
+#
+# Rungs one and two proved a receipt verifies offline and binds to a settled, current keeper. A
+# receipt is only useful if it can travel. This rung renders a Publication to a
+# `format publication-v1` Bron record and parses it back byte-for-byte: parse(render(receipt))
+# recovers an equal receipt, and the recovered receipt still verifies offline against the
+# publisher's key. The reader is bounded and purpose-built — an unknown field, a missing field, a
+# wrong header, and malformed hex each refuse.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/tact_publish_receipt_bron_witness.rish
+
+say "tact2: Language EN — a receipt travels as Bron and returns whole, or names its refusal."
+say "tact2: Lens TAME — round-trip preserves the signed word; unknown/missing field, bad header, bad hex each refuse."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/publish-receipt-bron"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/publish_receipt_bron.rye -femit-bin=${bin}"]
+assert build.ok else "tact2: publish_receipt_bron build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "tact2: publish_receipt_bron selftest exited non-zero"
+assert selftest.out contains "GREEN" else "tact2: selftest did not speak GREEN"
+assert selftest.out contains "a receipt round-tripped through Bron byte-for-byte and still verified offline" else "tact2: round-trip claim missing"
+assert selftest.out contains "an unknown field refused UnknownField (never dropped)" else "tact2: unknown-field refusal missing"
+assert selftest.out contains "a missing field refused MissingField" else "tact2: missing-field refusal missing"
+assert selftest.out contains "a wrong header and short hex each refused" else "tact2: header/hex refusal missing"
+assert selftest.out contains "a receipt travels as Bron and returns whole, or names its refusal" else "tact2: crux claim missing"
+
+# The offline receipt (r1) whose shape this renders stays its own green binary.
+let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/publish_receipt.rye -femit-bin=pond/bin/publish-receipt && pond/bin/publish-receipt selftest 2>&1"]
+assert r1.ok else "tact2: publish_receipt r1 re-run failed"
+assert r1.out contains "GREEN" else "tact2: r1 selftest did not speak GREEN"
+
+say "tact2: GREEN — the publication receipt travels as Bron and returns whole; every malformed record refuses."

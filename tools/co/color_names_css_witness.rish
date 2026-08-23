@@ -1,0 +1,46 @@
+# tools/co/color_names_css_witness.rish -- the full 148-name CSS color table read over the open color algebra proves itself (Season G).
+#
+# Season G (Open Media Primitives) -- the extended named-color table beside the HTML4 sixteen (image/color_names.rye), the
+# nearest-named reader (image/color_nearest.rye), the coarse family reader (image/color_name_group.rye), and the open
+# color algebra (image/color.rye).
+# Design read: active-designing/date/20260816/20260816-210735_season-g-color-algebra-crux.md (the color floor this stands on).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec named-color table -- public standards only).
+#
+# The crux this witness proves is the whole modern named set: the 148 CSS color keywords, aliceblue through yellowgreen,
+# each bound to its canonical hex. Written as a single-stranded consumer -- this module NAMES each color and color DECIDES
+# the bytes through its own parse_hex, so no private parser and no channel byte stored here. Every named color round-trips
+# through color.parse_hex; a name resolves case-insensitively; an unknown name refuses UnknownColorName by name; name_of
+# reads a color back to its earliest matching synonym; the set is strictly ascending, block-complete at 148, and a strict
+# superset of the HTML4 sixteen (so color_names.rye's own witness guards the overlap). No new storage, codec, or maths.
+# No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/color_names_css_witness.rish
+
+say "color-names-css: Language EN -- Season G's full named-color table; a keeper reads any CSS keyword ('rebeccapurple', 'dodgerblue', 'aliceblue') to a color and a color back to its name, over the open algebra."
+say "color-names-css: Style Radiant -- compose not braid; this module NAMES each color and color DECIDES the bytes through its own parse_hex, so color's proofs carry through and no private parser is added."
+say "color-names-css: Lens TAME -- 148 names bounded by css_named_color_count; every name bounded by name_max before the u32 seam-cast; an unknown name refused by name; name_of honest about synonyms and translucent colors; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/color_names_css"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color_names_css.rye -femit-bin=${bin}"]
+assert build.ok else "color-names-css: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "color-names-css: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "color-names-css: ${out}"
+
+# Honour the loom REDS %76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
+# output, so punctuation in the selftest prose can never break a check.
+assert out contains "GREEN image-color-names-css" else "color-names-css: selftest did not print the GREEN color-names-css line"
+assert out contains "every named color's canonical hex parses through color.parse_hex" else "color-names-css: a name did not compose over color's own parser"
+assert out contains "resolves case-insensitively" else "color-names-css: a name did not resolve case-insensitively"
+assert out contains "refuses UnknownColorName by name" else "color-names-css: an unknown name was not refused by name"
+assert out contains "name_of reads a color back to its earliest matching name" else "color-names-css: name_of did not read a color back to its earliest name"
+assert out contains "block-complete at 148" else "color-names-css: the table was not the whole CSS set of 148"
+assert out contains "strict superset of the HTML4 sixteen" else "color-names-css: the set was not proven a superset of the HTML4 sixteen"
+
+say "color-names-css: GREEN -- the 148 CSS color names whole over the open color algebra; every name round-trips through parse_hex, resolves case-insensitively, refuses the unknown, reads back by name_of, the set sorted, block-complete, and a strict superset of the HTML4 sixteen."

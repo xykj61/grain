@@ -1,0 +1,46 @@
+# tools/h/hunk_preset_detail_witness.rish — a keeper reads what is inside each installed book, on metal (HUNK35).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK35.
+# Design read: active-designing/date/20260813/20260813-184630_hunk-preset-detail-listing-exploration.md.
+# Teacher, thanked clean-room: the installed filter-pack shelf of Instagram / VSCO (concept only, siloed).
+#
+# HUNK34 indexed a keeper's installed books by name and count; this rung reads one step deeper. `pond/apps/
+# preset_detail.rye` `detail_books` walks the catalog, selects every `.presets` artifact, and open_books each
+# verified (every bead proven against its digest and the whole against its recorded address BEFORE parse),
+# recording the book's name plus the name of every preset it holds. The selftest proves the detailing names each
+# book's presets by name in defined order (the non-book skipped, never opened), travels both ways as a format
+# preset-detail-v1 record (render(parse(render)) a fixed point), refuses a declared count that does not match its
+# listed names by BadDetail both directions, refuses a bad header / unknown tag / malformed count / over-ceiling
+# count by BadDetail, and refuses the WHOLE detailing DigestMismatch when a held book is tampered. No network, no
+# key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_preset_detail_witness.rish
+
+say "hunk-preset-detail: Language EN — HUNK35 reads inside the index: a keeper sees which filters each installed book holds, not only how many — no network, no key, no funds."
+say "hunk-preset-detail: Style Radiant — an honest detailing: each preset name read from a verified reopen, the declared count never drifting from the names it counts, the whole detailing refusing rather than advertising a phantom."
+say "hunk-preset-detail: Lens TAME — pure composition over preset_store's verified open, positive invariants per fn, the book's own ceiling and a count/name self-check re-enforced at the text edge; refusals named."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/apps/bin/preset_detail"
+
+let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/preset_detail.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-preset-detail: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-preset-detail: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-preset-detail: ${out}"
+
+assert out contains "GREEN preset-detail" else "hunk-preset-detail: selftest did not print the GREEN preset-detail line"
+
+assert out contains "vivid pop mono noir bright auto soft sharp sketch" else "hunk-preset-detail: the stock book did not read to its nine preset names in defined order"
+
+assert out contains "travels BOTH ways" else "hunk-preset-detail: the detailing was not proven to travel both ways as a fixed point"
+
+assert out contains "does not match its listed names refuses BadDetail both directions" else "hunk-preset-detail: the count/name self-consistency invariant was not proven"
+
+assert out contains "refuse DigestMismatch rather than advertise a phantom" else "hunk-preset-detail: the whole-detailing honesty guarantee was not proven"
+
+say "hunk-preset-detail: GREEN — a keeper reads which filters each installed book holds; the detailing travels both ways; the count never drifts from the names; refusals named."

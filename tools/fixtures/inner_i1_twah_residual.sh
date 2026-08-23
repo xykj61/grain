@@ -8,7 +8,7 @@ cd "$ROOT"
 test ! -e tools/gen_twah_fund_prep.rish
 test ! -e tools/fixtures/gen_twah_fund_prep.sh
 test ! -e edu/funds/twah-creating-one-of-twelve.md
-test -f tools/gen_gren_fund_prep.rish
+test -f tools/g/gen_gren_fund_prep.rish
 test -f tools/fixtures/gen_gren_fund_prep.sh
 test -f edu/funds/gren-creating-one-of-twelve.md
 grep -q 'Gren (fund)' context/LEXICON.md
@@ -37,7 +37,7 @@ fi
 
 # Operational generator must still GREEN
 export RYE_ZIG="${RYE_ZIG:-$ROOT/vendor/zig-toolchain/zig}"
-out="$(rishi/bin/rishi run tools/gen_gren_fund_prep.rish 2>&1)" || {
+out="$(rishi/bin/rishi run tools/g/gen_gren_fund_prep.rish 2>&1)" || {
   echo "inner-i1 REFUSE: gen_gren left GREEN" >&2
   exit 1
 }

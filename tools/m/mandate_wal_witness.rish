@@ -1,0 +1,23 @@
+# mandate_wal_witness.rish — Mandate's write-ahead log.
+#
+# Proves durability between snapshots: a WAL records every mutation (upsert · remove)
+# since the last snapshot; recovery restores the snapshot then replays the log in
+# order, yielding a store identical to the one lost in a crash. The log is bounded and
+# serializes to bytes; a full log or corrupt bytes are refused. Proven on metal — base
+# snapshot and log written to real files and replayed back.
+#
+# Build first:  rye build mandate/wal.rye -femit-bin=mandate/bin/wal
+#   rishi/bin/rishi run tools/m/mandate_wal_witness.rish
+
+let st = run ["mandate/bin/wal" "selftest"]
+assert st.ok else "mandate wal selftest must exit 0"
+assert (st.err contains "GREEN") else "mandate wal must report GREEN"
+assert (st.err contains "write-ahead log records every mutation") else "the log records every mutation since the snapshot"
+assert (st.err contains "loses nothing") else "a crash between snapshots loses nothing"
+assert (st.err contains "replays the log in order") else "recovery replays the log in order"
+assert (st.err contains "identical to the one that was lost") else "a recovered store is identical, not an approximation"
+assert (st.err contains "bounded (max_entries)") else "the log is bounded"
+assert (st.err contains "is refused") else "a full log or corrupt bytes are refused"
+assert (st.err contains "durability on metal") else "recovery proven on real files"
+
+say "GREEN: mandate wal — a bounded write-ahead log over Mandate stores: record mutations, encode/decode, replay for crash recovery, witnessed on metal."

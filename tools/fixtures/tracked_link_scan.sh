@@ -4,7 +4,7 @@
 # WHY. `work-in-progress` was breached to `crux` on 20260815 and 902 references were repointed.
 # Twenty-six survived the sweep, and every guard stayed green, because an untracked compatibility
 # symlink `work-in-progress -> crux` sat at the repository root of THIS pier. The broken-link duty
-# of tools/living_docs_lint.rish tests a target with `[ -e ]`, which the symlink satisfied, so a
+# of tools/l/living_docs_lint.rish tests a target with `[ -e ]`, which the symlink satisfied, so a
 # link that breaks in every fresh clone read as a link that works. The lint's own roster named
 # `work-in-progress/TASKS.md`, so the guard was reaching through the artifact that blinded it.
 #
@@ -25,18 +25,18 @@
 # because a sweep across a deferred shelf costs more than it earns.
 #
 # WHAT IS OUT OF SCOPE, on purpose.
-#   A link resolving NOWHERE is a plain broken link and belongs to tools/living_docs_lint.rish.
+#   A link resolving NOWHERE is a plain broken link and belongs to tools/l/living_docs_lint.rish.
 #   This scan reads only the narrower and more surprising case: resolves here, breaks there.
 #   Dated testimony keeps every reference it ever wrote (accrete-never-break), so a document whose
 #   own basename carries a one-clock stamp is read past. A stale reference in testimony is
-#   resolved rather than rewritten -- `rishi/bin/rishi run tools/dated_path_resolve.rish <ref>`.
+#   resolved rather than rewritten -- `rishi/bin/rishi run tools/d/dated_path_resolve.rish <ref>`.
 #   `vendor/` is provisioned rather than tracked: the submodules want `git submodule update`, and
 #   `vendor/zig-toolchain` wants tools/fetch_toolchain. A symlink into it is honest.
 #
 # USAGE
 #   sh tools/fixtures/tracked_link_scan.sh
 #
-# Driven by tools/tracked_link_witness.rish. Run from the repository root.
+# Driven by tools/t/tracked_link_witness.rish. Run from the repository root.
 
 set -eu
 

@@ -1,0 +1,19 @@
+# dimeroll_exception_view.rish — Dimeroll exception queue → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/dimeroll_exception_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Dimeroll exception view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for exception view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let view = run ["sh" "-c" "${bin} exceptionviewtest 2>&1"]
+assert view.ok else "drawn terminal exceptionviewtest exited non-zero"
+assert view.out contains "exception view" else "exception view missing expected output"
+assert view.out contains "GREEN" else "Dimeroll exception view not GREEN"
+assert view.out contains "lines=5" else "exception view missing five-line frame"
+
+say "GREEN: Dimeroll exception view — refused drafts compose a Skate frame."

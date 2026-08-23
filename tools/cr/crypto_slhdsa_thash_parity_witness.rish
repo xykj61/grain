@@ -1,0 +1,69 @@
+# tools/cr/crypto_slhdsa_thash_parity_witness.rish -- rung DISC0's parity: our authored crypto/slhdsa_thash.rye and the vendored PQClean's OWN
+# prf_addr and thash, each compiled fresh and asked for the same five digests over identical inputs, diffed byte for byte. This is the rung the
+# whole vendoring was for (Season G -- Cryptography). Ladder: DISC.
+#
+# WHY FUNCTION-LEVEL PARITY, RATHER THAN A SIGNATURE VECTOR. A top-level known-answer test would eventually catch a broken address -- as a
+# signature that does not verify -- yet it would not say WHICH field moved, and a hash-based scheme has a dozen fields that all look alike from
+# the top. Diffing prf_addr and thash directly names the fault at the rung that owns it.
+#
+# This is not hypothetical. Writing DISC0, the key-pair address field was implemented as two big-endian bytes at offsets 22 and 23, which is what
+# FIPS 205 describes in general. All five digests disagreed. The cause: for THIS parameter set a Merkle tree has height 8 and therefore holds 256
+# one-time key pairs, so the index fits ONE byte and the standard writes only offset 23, leaving 22 zero. The two-byte form belongs to parameter
+# sets with taller trees. One byte in one field, invisible from the top of the scheme, named immediately from here.
+#
+# THE FIVE LINES, in order on both sides: PRF at a fully-populated address; T_1 (the standard's F) over one block; T_2 (its H) over two;
+# T_22, the width FORS compresses its tree roots at; and T_67, the width a WOTS+ public key compresses at. The address carries every field set,
+# so a single wrong offset moves every line.
+#
+# Season: the Six-Season double-seat, Season G thread. Design read:
+# active-designing/20260821-022912_slhdsa-vendored-oracle-and-both-legs-kept.md
+# Kin: tools/cr/crypto_slhdsa_thash_witness.rish (the structural proofs, suite-registered, no vendor dependency) -
+# tools/cr/crypto_slhdsa_oracle_witness.rish (the oracle itself, proven against PQClean's published NIST digest) -
+# tools/cr/crypto_vendored_parity_suite.rish (the roster this rung joins). PQClean stays the parity TARGET, vendored and unmodified, never a copied
+# line (.claude/rules/gratitude-licenses.md).
+#
+# HONEST SCOPE -- purely local. Test constants only; no real key, no signature at this rung, no network, no funds, no device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_slhdsa_thash_parity_witness.rish
+
+say "crypto-slhdsa-thash-parity: Language EN -- the rung the vendoring was for. Our authored address structure and tweakable hash family, against PQClean's own prf_addr and thash, at the level of the functions themselves rather than at the top of a signature."
+say "crypto-slhdsa-thash-parity: Style Radiant -- like against like. Two implementations, one fully-populated address, one set of test constants, five digests each; the parity is that the two outputs agree hex for hex. Both sides build their address through their OWN setters, so the addressing is compared too, not merely the hashing."
+say "crypto-slhdsa-thash-parity: Lens TAME -- the oracle is a second real implementation, never a recited constant. This rung earned its keep on the lap it was written: the key-pair field, implemented as the standard's general two-byte form, made all five digests disagree until it was corrected to the one-byte form this parameter set fixes. Purely local -- no real key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let scheme = "vendor/pqclean/crypto_sign/sphincs-shake-256s-simple"
+let cbin = "crypto/bin/pqclean_slhdsa_thash"
+let cout = "crypto/bin/pqclean_slhdsa_thash.out"
+let rbin = "crypto/bin/slhdsa_thash"
+let rout = "crypto/bin/slhdsa_thash.parity.out"
+
+# 1. Build the PQClean harness against the unmodified vendored source.
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I ${scheme}/clean -I vendor/pqclean/common tools/fixtures/pqclean_slhdsa_thash_harness.c ${scheme}/clean/address.c ${scheme}/clean/context_shake.c ${scheme}/clean/hash_shake.c ${scheme}/clean/thash_shake_simple.c ${scheme}/clean/utils.c vendor/pqclean/common/fips202.c -o ${cbin}"]
+assert cbuild.ok else "crypto-slhdsa-thash-parity: PQClean thash harness build failed -- ${cbuild.err}"
+
+let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
+assert crun.ok else "crypto-slhdsa-thash-parity: PQClean thash harness exited non-zero -- see ${cout}"
+
+# 2. Build and run ours, keeping only the five digest lines its selftest prints.
+let rbuild = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build crypto/slhdsa_thash.rye -femit-bin=${rbin}"]
+assert rbuild.ok else "crypto-slhdsa-thash-parity: Rye build failed -- ${rbuild.err}"
+
+let rrun = run ["sh" "-c" "${rbin} 2>&1 | grep -E '^[0-9a-f]{64}$' > ${rout}"]
+assert rrun.ok else "crypto-slhdsa-thash-parity: the Rye selftest printed no digest lines -- see ${rout}"
+
+# 3. Five lines on each side, and no fewer -- a truncated file must never diff as agreement.
+let ccount = run ["sh" "-c" "wc -l < ${cout} | tr -d ' '"]
+assert (trim ccount.out) == "5" else "crypto-slhdsa-thash-parity: PQClean printed something other than five digest lines"
+let rcount = run ["sh" "-c" "wc -l < ${rout} | tr -d ' '"]
+assert (trim rcount.out) == "5" else "crypto-slhdsa-thash-parity: our Rye printed something other than five digest lines"
+
+# 4. Byte-for-byte parity.
+let diff = run ["sh" "-c" "diff ${cout} ${rout} > /dev/null && echo same"]
+assert (trim diff.out) == "same" else "crypto-slhdsa-thash-parity: our Rye and PQClean disagree -- an address field or the hash framing has drifted; compare ${cout} against ${rout} line by line, since each line is one named function"
+
+let shown = run ["sh" "-c" "cat ${cout}"]
+say "crypto-slhdsa-thash-parity: the five digests, agreed by both implementations -- PRF, T_1, T_2, T_22, T_67:"
+say "${shown.out}"
+
+say "GREEN crypto-slhdsa-thash-parity: our authored crypto/slhdsa_thash.rye and the vendored PQClean's own prf_addr and thash, each compiled fresh, produce byte-for-byte identical output over one fully-populated address at every width the scheme uses -- one block, two, the FORS width of 22, and the WOTS+ width of 67 -- with the secret-deriving PRF agreeing too. The address structure is proven correct field by field against a second implementation, which is exactly what rung DISC0 exists to establish before a signature is ever attempted. PQClean stays vendored and unmodified, linked never copied. Purely local -- no real key, no signature yet, no network, no funds, no device."

@@ -1,0 +1,31 @@
+# tools/cr/crypto_vendored_parity_suite.rish -- the roster for every VENDORED-SOURCE parity rung, so none of them can fire unheard.
+#
+# WHY THIS ROSTER EXISTS. tools/cr/crypto_suite_witness.rish is the choir for our AUTHORED primitives, and tools/cr/crypto_count_guard_witness.rish
+# holds it to a bijection: every witness the suite registers must carry its own crypto/<name>.rye, and every crypto/<name>.rye must be
+# registered. That bijection is exactly right for authored code, and it is why the vendored-source parity rungs cannot join that suite --
+# they prove our Rye against a THIRD-PARTY library rather than proving a file of ours, so registering one would break the bijection and go RED.
+#
+# The consequence went unnoticed until now: the four Monocypher parity rungs were in no roster at all. Each names the others in its own
+# comments, and nothing ran them together. That is precisely the shape REDS %81 booked -- nine crypto rungs on disk, none registered, a loom
+# firing unheard -- and adding a fifth vendored rung (SLH-DSA) without a roster would have repeated it a sixth time. So the roster is born
+# with the rung that needed it.
+#
+# WHAT THIS PROVES. Nothing of its own. It runs each vendored-parity rung and asserts each exits clean, so a break anywhere in the
+# vendored shelf names itself here rather than waiting for someone to remember the file exists.
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography -- Rye-native, audit-ready).
+# Kin: tools/cr/crypto_suite_witness.rish (the authored choir) - tools/cr/crypto_count_guard_witness.rish (the bijection that keeps this roster
+# separate on purpose). The vendored libraries stay unmodified parity TARGETS, never copied lines (.claude/rules/gratitude-licenses.md).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_vendored_parity_suite.rish
+
+say "crypto-vendored-parity: Language EN -- the roster for every rung that proves our work against a real third-party implementation rather than against a constant we typed. Monocypher (CC0/BSD-dual) carries the classical shelf; PQClean (CC0-1.0) carries the post-quantum hash-based leg."
+say "crypto-vendored-parity: Style Radiant -- one place where the whole vendored shelf answers at once, so a rung can never again sit on disk with no choir to miss it."
+say "crypto-vendored-parity: Lens TAME -- each rung is run and each must exit clean; a rung that goes RED names itself here, and its own witness prints why. This suite authors no cryptography and proves nothing of its own. Purely local -- no real key, no network, no funds, no device."
+
+let rungs = [ "tools/cr/crypto_monocypher_parity_witness.rish" "tools/cr/crypto_monocypher_blake2b_var_parity_witness.rish" "tools/cr/crypto_monocypher_x25519_parity_witness.rish" "tools/cr/crypto_monocypher_ed25519_parity_witness.rish" "tools/cr/crypto_slhdsa_oracle_witness.rish" "tools/cr/crypto_slhdsa_thash_parity_witness.rish" ]
+
+for-each rungs as rung do assert (run ["rishi/bin/rishi" "run" rung]).ok else "crypto-vendored-parity: a vendored-source parity rung went RED -- ${rung}"
+
+say "GREEN crypto-vendored-parity: all six vendored-source parity rungs run clean -- four proving our authored Rye byte-for-byte against the unmodified vendored Monocypher (BLAKE2b-512, variable-length BLAKE2b, X25519, Ed25519), one proving the vendored PQClean SLH-DSA-SHAKE-256s oracle reproduces PQClean own published NIST known-answer digest, and one proving our authored SLH-DSA address structure and tweakable hash family byte-for-byte against PQClean own prf_addr and thash. The vendored shelf now has a roster, so no rung on it can fire unheard the way REDS %81 named. Purely local -- no real key, no network, no funds, no device."

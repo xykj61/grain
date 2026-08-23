@@ -1,6 +1,6 @@
 #!/bin/sh
 # tools/fixtures/rune_assert_sweep_scan.sh — audit assert coverage across authored Rye.
-# Orchestrated by tools/rune_assert_sweep.rish.
+# Orchestrated by tools/r/rune_assert_sweep.rish.
 #
 # For each .rye path given, count its functions, its bare `assert(` calls, and its
 # `// invariant:` comment lines, and emit per-file counts plus a verdict. The floor

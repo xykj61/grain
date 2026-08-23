@@ -1,0 +1,39 @@
+# tools/al/ales_stereo_crush_witness.rish — stereo_crush: the bit-crusher carried into stereo with ONE SHARED GRID, both channels in lockstep, the resolution corner of the stereo NONLINEAR class (ALES136).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES136.
+# Design read: active-designing/date/20260815/20260815-034830_fill-ales136-lotus-stereo-crush.md
+# Stands on: lotus/crush.rye (ALES81 — the mono bit-crusher run once per channel, a floor toward −∞ onto the grid of step 2^(16−bits)), lotus/stereo_tube.rye (ALES135 — the not-odd sibling whose
+# antisymmetry-break lesson this shares), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/
+# max). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES81's grid into stereo — dropping the low 16−bits bits of every sample in both
+# channels, the coarse quantized voice of an early sampler landing on both speakers together. The crush shapes RESOLUTION where the four DRIVE corners shape amplitude, and like the tube it is not odd, so the
+# same grid holds neither the inter-channel ratio nor the inter-channel antisymmetry — an out-of-phase master comes back not out of phase. What the shared map keeps, per channel, is that every output is a grid
+# point at or below its input, the map is idempotent, an identical-channel master stays identical, and bits = 16 is the identity.
+#
+# lotus/stereo_crush.rye validates both channels once against the shared bits and length before either is mutated (BadBits on a resolution outside [1, 16], BadRange on a span outside the samples), then crushes
+# both channels through ALES81's crush; CrushError reused whole. The crux is four laws. THE STEREO CRUSH LAW: each channel equals ALES81's mono crush with the same bits byte for byte. THE BALANCE / LENGTH LAW:
+# left.len == right.len after, both holding their starting length. THE PER-CHANNEL NOT-ODD LAW: every output a grid point at or below its input, the map idempotent, the antisymmetry breaking under the shared
+# grid, an identical-channel master staying identical, bits = 16 the identity. THE ATOMICITY / DEGENERATE LAW: a refusal leaves both channels untouched and balanced, bits = 16 the identity, count 0 the
+# identity.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stereo_crush_witness.rish
+
+say "ales-stereo-crush: Language EN — stereo_crush crushes a span in both channels of a stereo master to the same bits of resolution, dropping the low 16 minus bits bits of every sample onto the grid of step two to the sixteen minus bits, the same grid on each, so one bit-crush lands on both speakers together. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time. This rung carries the resolution corner of the stereo nonlinear class on ALES81's bit-crusher, running the proven mono crush on each channel with the same bit count, validated once against the shared bits and length before either channel is mutated so a refusal never crushes one channel and leaves the other at full resolution."
+say "ales-stereo-crush: Style Radiant — the four DRIVE corners already carried into stereo (hard clip, soft drive, wavefold, tube) all shape amplitude; the bit-crush shapes the other axis, resolution, dropping the low bits so a sixteen-bit signal leaves at eight or four or one, the coarse gritty voice of an early sampler. Like ALES135's tube the crush is not odd, because a floor toward negative infinity is not symmetric about zero: crush of minus one hundred is minus two hundred fifty-six while crush of one hundred is zero at eight bits, the faint downward DC offset that is bit reduction's honest fingerprint. So the same grid holds neither the inter-channel ratio nor the inter-channel antisymmetry — an out-of-phase master, right the negation of left, comes back not out of phase, the downward fingerprint landing on both channels; that is what a stereo bit-crush is, not a bug to design around. The rule is stated positively: the mono crush carries no pre-gain and no ceiling, the purest DRIVE member, so the lift is the plainest of the class — refuse BadBits and BadRange before either channel is mutated (each fault depends only on the shared bits or the shared length, so each is made once up front), else crush both channels over the span to the same bits via ALES81's crush. It reuses ALES81's CrushError by name and ALES81's crush for the arithmetic, inventing no new fault and no new primitive. The crux stands out as four laws: the stereo crush law (each channel equals ALES81's mono crush with the same bits byte for byte, every written sample a multiple of the grid step), the balance / length law (left.len == right.len after the edit and both hold their starting length, a crush writing values only), the per-channel not-odd law (every output a grid point at or below its input, the map idempotent so twice equals once, the antisymmetry breaking under the shared grid where the odd class held it, an identical-channel master staying identical, bits equal to sixteen the identity), and the atomicity / degenerate law (any refusal leaves both channels byte for byte untouched and still balanced, bits equal to sixteen the identity on both, count zero the identity on both)."
+say "ales-stereo-crush: Lens TAME — two bounded i16 Clips (left, right) crushed in lockstep by one shared quantizer; the balance invariant is asserted on entry and exit, the resolution and span are bound-checked once before any write, and because those checks hold identically for both channels each mono crush is pre-validated to succeed so no refusal can land between the two channel edits; crush walks the span once per channel, flooring each sample onto the grid of step two to the sixteen minus bits in i64 (the step at most two to the fifteen so sample_min is one of its multiples and the floor never drops a legal sample past the rail), the output landing in the i16 rail by construction so the saturate that follows is a documented no-op, never touching a byte past len so the length holds exactly; it reuses ALES81's crush per channel over its public API and ALES81's CrushError whole, inventing no new primitive; the stereo crush law is proven against ALES81's own crush run per channel, the per-channel not-odd law proves every output is a grid multiple at or below its input on both channels, that the map is idempotent, and that an out-of-phase field's antisymmetry breaks under the shared grid, the two refusals leave both channels byte-for-byte untouched, and bits equal to sixteen is the identity; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_crush"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_crush.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-crush: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_crush.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-crush: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-crush: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-crush' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-crush: selftest did not print the GREEN ales-stereo-crush line"

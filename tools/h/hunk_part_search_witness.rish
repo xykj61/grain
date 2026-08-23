@@ -1,0 +1,51 @@
+# tools/h/hunk_part_search_witness.rish — the search box on glass: a typed line draws a narrowed, paged shelf (HUNK77).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK77.
+# Design read: active-designing/date/20260813/20260813-235517_hunk-part-search-narrowed-shelf-on-glass-exploration.md
+# Teacher, thanked clean-room: McMaster-Carr's search-then-see — a typed line shrinks the wall (concept only, siloed).
+#
+# HUNK73/74 paint and page a catalog, HUNK75 filters it, HUNK76 parses the query from a keeper's typed line. This rung
+# joins them on glass: brushstroke/part_search.rye `search_shelf` reads a catalog, a typed line, and a page offset, and
+# draws exactly the narrowed page (parse_query -> filter_catalog -> part_window). The selftest proves what a keeper
+# types is what a keeper sees: material:stainless-304 draws the two stainless parts (equal to the hand-filtered window),
+# max:60 draws the two cheap parts, a match-none line draws a real empty page, an offset past the result refuses
+# BadOffset, and a malformed line surfaces the parser's named refusal rather than a wrong shelf. A price is a fact
+# drawn and compared, never moved.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_part_search_witness.rish
+
+say "hunk-part-search: Language EN — HUNK77 joins the filter, the parser, and the shelf on glass: a typed key:value line draws exactly the narrowed, paged marketplace."
+say "hunk-part-search: Style Radiant — what a keeper types is what a keeper sees; the search view invents nothing, and a line that reads as nonsense draws nothing rather than the wrong parts."
+say "hunk-part-search: Lens TAME — pure composition over public APIs; a price is a fact drawn and compared, never moved; positive invariants per fn; a malformed line and a bad offset each refuse by name; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/part_search"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_search.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-part-search: build failed — ${build.err}"
+
+# Read the GREEN line from a file — it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
+let outfile = "brushstroke/bin/part_search.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "hunk-part-search: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "hunk-part-search: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN part-search' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "hunk-part-search: selftest did not print the GREEN part-search line"
+
+# HUNK76 stays GREEN — the parser the search view drives is the one part_query proved.
+let q = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_query.rye -femit-bin=image/bin/part_query && image/bin/part_query selftest > image/bin/part_query.out 2>&1"]
+assert q.ok else "hunk-part-search: HUNK76 part_query re-run failed — see image/bin/part_query.out"
+let q_green = run ["sh" "-c" "grep -q 'GREEN part-query' image/bin/part_query.out && echo yes"]
+assert (trim q_green.out) == "yes" else "hunk-part-search: HUNK76 part_query did not stay GREEN"
+
+# HUNK73/74 stay GREEN — the shelf and paging the search view draws through are the ones part_row proved.
+let row = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_row.rye -femit-bin=brushstroke/bin/part_row && brushstroke/bin/part_row selftest > brushstroke/bin/part_row.out 2>&1"]
+assert row.ok else "hunk-part-search: HUNK73/74 part_row re-run failed — see brushstroke/bin/part_row.out"
+let row_green = run ["sh" "-c" "grep -q 'GREEN part-row' brushstroke/bin/part_row.out && echo yes"]
+assert (trim row_green.out) == "yes" else "hunk-part-search: HUNK73/74 part_row did not stay GREEN"
+
+say "hunk-part-search: GREEN — a keeper types a line and the marketplace draws the narrowed page they meant; HUNK76 parser and HUNK73/74 shelf underneath stay GREEN. HUNK77 lands."

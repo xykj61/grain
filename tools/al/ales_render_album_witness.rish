@@ -1,0 +1,39 @@
+# tools/al/ales_render_album_witness.rish — a whole record as one saveable artifact: a `LOTUSALB` frame packs an ordered, named
+# catalog of ALES222 bundles and unpacks it verify-before-trust, needing no new seal (ALES223).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES223.
+# Design read: active-designing/date/20260815/20260815-135313_fill-ales223-lotus-render-album.md
+# Idiom kin: lotus/render_bundle.rye (ALES222, pack/unpack — the verify-before-trust the album inherits per track) · through it
+# lotus/render_manifest.rye (ALES221, the seal each bundle carries). No new hash, no new grammar — only a catalog frame over frames.
+#
+# lotus/render_album.rye packs many named bundles into one framed catalog and unpacks it verify-before-trust. The selftest proves:
+# pack then unpack recovers every track name, manifest field, and exact .wav in order (the round-trip law); a single flipped byte in
+# any track's .wav refuses WavDigestMismatch and in any manifest DigestMismatch, so the album needs no new seal — each track binds
+# its own whole (the self-binding law); a wrong magic and a bad tile refuse BadAlbum, a count past the bound AlbumFull (the frame
+# law); a too-small buffer refuses Overflow (the atomic law); a zero-track album round-trips to an empty catalog (the empty law). A
+# byte frame only — no real file, no DAC, no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_render_album_witness.rish
+
+say "ales-render-album: Language EN — ALES223 gathers many ALES222 bundles into ONE saveable artifact: a `LOTUSALB` catalog frame packed and unpacked verify-before-trust, the durable unit a whole record — an album, a podcast season, a reel — actually saves."
+say "ales-render-album: Style Radiant — the crux is the same quiet one, one level up: the album needs no new seal, since each bundle already binds its own whole; the round-trip law, the self-binding law, the frame law, the atomic law, and the empty law each named and proven on metal."
+say "ales-render-album: Lens TAME — it proves a collection arrived whole, not who made it; every bound named, every fault refused by name, siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/render_album"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/render_album.rye -femit-bin=${bin}"]
+assert build.ok else "ales-render-album: build failed — ${build.err}"
+
+let outfile = "lotus/bin/render_album.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-render-album: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-render-album: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-render-album' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-render-album: selftest did not print the GREEN ales-render-album line"
+
+say "ales-render-album: GREEN — many renders now save and open as one verify-before-trust catalog, the render→manifest→bundle→album loop whole. The next Lotus crux can carry the album to a keeper's session save/load, or name who made it — a signed carry, on Keaton's word."

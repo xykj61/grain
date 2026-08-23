@@ -1,0 +1,36 @@
+# tools/al/ales_stereo_reverse_witness.rish — stereo_reverse: turning a master end for end, both channels in lockstep, total (no refusal) (ALES125).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES125.
+# Design read: active-designing/date/20260815/20260815-023515_fill-ales125-lotus-stereo-reverse.md
+# Stands on: lotus/reverse.rye (ALES104 — the mono end-for-end turn run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant),
+# lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold
+# the same length so the channels stay aligned in time; the reversed cymbal swell and the backwards reverb arrive in both speakers at once. This rung carries ALES104's reverse into stereo the way
+# ALES124 carried shift: run the proven mono reverse on each channel. It opens the stereo suite's pure rearrangement class (every position changing, no value); like shift it is total and needs no validation.
+#
+# lotus/stereo_reverse.rye turns both channels end for end, reusing ALES104's mono reverse per channel; because mono reverse is total and holds each channel's length, the balance invariant is
+# preserved trivially and there is no EditError to forward. The crux is four laws. THE STEREO REVERSE LAW: each channel equals ALES104's mono reverse on that channel byte for byte, sample i holding
+# what len-1-i held. THE BALANCE / LENGTH LAW: left.len == right.len after, both holding their starting length. THE INVOLUTION LAW: stereo_reverse twice is the identity on both channels. THE
+# PERMUTATION / FIXPOINT LAW: each channel's peak unchanged, an empty pair, a single-sample pair, and a per-channel palindrome each their own reverse.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stereo_reverse_witness.rish
+
+say "ales-stereo-reverse: Language EN — stereo_reverse turns both channels of a StereoClip end for end, so the Reverse gesture ALES104 named for a mono clip now lands on a real stereo master. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time; the reversed cymbal swell, the backwards reverb, the pre-echo lifted before a downbeat all arrive in both speakers at once. It opens the stereo suite's pure rearrangement class — where every position changes and no value does — beside the value-mirror (invert), the cyclic shift (rotate), and the parity flip (nyquist_flip) still to lift. It carries ALES104's proven mono reverse into stereo — the same turn on each channel — so the reversal lands identically in both and the stereo image stays balanced; like shift it is total and needs no validation."
+say "ales-stereo-reverse: Style Radiant — the rule is stated positively: run the mono reverse per channel over its public API; because mono reverse is total (it names no span, so it raises no fault) and holds each channel's length, the balance invariant is preserved trivially — both channels enter equal-length, both reverse in place, both hold their length, so they leave equal-length, and there is no fault to forward. The crux stands out as four laws: the stereo reverse law (each channel equals ALES104's mono reverse on that channel byte for byte against a hand-reversed vector, sample i holding what len-1-i held), the balance / length law (left.len == right.len after the edit and both hold their starting length, the stereo image staying aligned), the involution law (stereo_reverse twice is the identity on both channels for any clip, so a mistaken reverse reverses back to the byte), and the permutation / fixpoint law (reverse is a pure rearrangement, so each channel's peak re-measured through ALES13 is unchanged, an empty pair, a single-sample pair, and a per-channel palindrome each their own reverse)."
+say "ales-stereo-reverse: Lens TAME — two bounded i16 Clips (left, right) turned end for end in lockstep; the balance invariant is asserted on entry and exit, and because mono reverse is total (void, no EditError) and holds the length, the assertion can never fail and no refusal can land between the two channel edits; reverse walks the clip from both ends inward with len/2 swaps, no second buffer, reading no byte past len, so the length holds exactly; it reuses ALES104's reverse per channel over its public API, inventing no new primitive; the stereo reverse law is proven against ALES104's own reverse run per channel, and the permutation law reads each channel's peak through ALES13 so a pure rearrangement is shown to move no loudness; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_reverse"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverse.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-reverse: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_reverse.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-reverse: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-reverse: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverse' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-reverse: selftest did not print the GREEN ales-stereo-reverse line"

@@ -1,0 +1,43 @@
+# tools/h/hunk_photo_library_witness.rish — the Photos library, the app's home screen over the store, on metal (HUNK68).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK68.
+# Design read: active-designing/date/20260813/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
+# Teacher, thanked clean-room: the photo-library grid of iCloud Photos / Google Photos — a wall of thumbnails you
+# scroll and tap to open (concept only, siloed).
+#
+# HUNK1 gave an image a content-addressed identity; HUNK67 let the editor save an edit as a first-class artifact.
+# Every rung since has stored images the store could not yet SHOW as a set. This rung builds the home screen: it
+# enumerates the catalog and, in held order, fetches each image and down-maps it to a small Skate thumbnail. Because
+# a fetch proves every bead against its digest FIRST, the library shows only images that verified — a tampered image
+# refuses at build time and is never painted as garbage onto the wall. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_photo_library_witness.rish
+
+say "hunk-photo-library: Language EN — HUNK68 builds the Photos library over the content-addressed store; build_library enumerates the Tablecloth catalog and down-maps each fetched image to a Skate thumbnail in held order."
+say "hunk-photo-library: Style Radiant — a keeper meets a wall of pictures rather than a bare list of names; the catalog's own order is the library's order, and every tile is the down-map of the image its name pins."
+say "hunk-photo-library: Lens TAME — building the library FETCHES each image, and a fetch proves every bead before it returns a byte, so a tampered image refuses DigestMismatch at build time and never reaches the wall; the wall is bounded by max_artifacts; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/photo_library"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/photo_library.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-photo-library: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-photo-library: selftest exited non-zero — ${selftest.out}"
+
+# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS %76).
+let out = trim selftest.out
+say "hunk-photo-library: ${out}"
+
+assert out contains "GREEN photo-library" else "hunk-photo-library: selftest did not print the GREEN photo-library line"
+assert out contains "an empty store shows an empty home screen" else "hunk-photo-library: an empty store did not yield an empty library"
+assert out contains "three distinct images build a three-tile library in the catalog's own order" else "hunk-photo-library: the library did not carry three tiles in catalog order"
+assert out contains "a 2x2 thumbnail that agrees cell-for-cell with the down-map of the verified image its name pins" else "hunk-photo-library: a tile thumbnail was not the faithful down-map of its image"
+assert out contains "the pictures genuinely differ" else "hunk-photo-library: the three thumbnails were not distinct"
+assert out contains "a tampered image refused DigestMismatch at build time and never reached the wall" else "hunk-photo-library: the tamper refusal did not fire at build time"
+assert out contains "an over-ceiling thumbnail refused ThumbTooLarge" else "hunk-photo-library: the thumbnail-ceiling refusal did not fire"
+
+say "hunk-photo-library: GREEN — the Photos library builds the home screen over the store: an empty store shows an empty wall; three distinct images become three tiles in the catalog's own order, each a faithful thumbnail of the verified image its name pins; a tampered image refuses DigestMismatch at build time and never reaches the wall; an over-ceiling thumbnail refuses ThumbTooLarge; no network, no key, no funds."

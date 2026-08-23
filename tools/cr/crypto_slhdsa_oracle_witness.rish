@@ -1,0 +1,100 @@
+# tools/cr/crypto_slhdsa_oracle_witness.rish -- the SECOND SLH-DSA implementation, vendored and proven on metal, so the hash-based leg
+# of Kumara's post-quantum identity can be built under the same doubled-oracle discipline every other rung on this shelf stands on
+# (Season G -- Cryptography -- Rye-native, audit-ready).
+#
+# WHY THIS RUNG EXISTS. Two good arguments pulled opposite ways and this witness is how both are kept.
+#   The seated argument (construction/ITINERARY.md, `20260815.185922`): Kumara v1 signs PURE HASH-BASED -- SLH-DSA-SHAKE-256s -- because
+#   hashes carry no algebraic structure for the rising attacks to exploit, quantum is only a Grover quadratic dent a 256-bit output
+#   already covers, and it adds NO new assumption, since Grain already rests on the hash everywhere. Lattice is the family under
+#   active erosion, so the century-root does not anchor there.
+#   The pivot's argument (active-designing/date/20260816/20260816-161537_post-quantum-mlkem-mldsa-pivot.md): the vendored Zig toolchain ships
+#   independent ML-KEM and ML-DSA and NO SLH-DSA, so a hash-based rung would have had ONE external oracle -- the NIST KAT alone --
+#   and broken the doubled-oracle discipline that lets an auditor trust this library without re-deriving it.
+#
+# Keaton's word (`20260821`) resolves the trade rather than picking a side: vendor a second SLH-DSA implementation and keep BOTH
+# legs. This witness is the vendoring made real. PQClean (vendor/pqclean, CC0-1.0) is the second implementation; with it on hand,
+# SLH-DSA gains exactly the doubled oracle the pivot found missing, and the erosion argument keeps its hash-based leg.
+#
+# WHAT IS PROVEN HERE, and what is honestly not. This rung proves the ORACLE, not our own arithmetic -- no Rye SLH-DSA exists yet,
+# and this witness claims none. It proves the vendored copy is genuine, unmodified, and reproduces the world's published answer, so
+# the Rye rungs that follow have something real to be diffed against. Parity of our own SLH-DSA against this oracle is the next
+# rung, and it is named here rather than implied.
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography -- Rye-native, audit-ready).
+# Kin: tools/cr/crypto_monocypher_parity_witness.rish (the same shape for the classical shelf) - crypto/shake.rye (our own SHAKE-256,
+# GREEN, the sponge an authored SLH-DSA will stand on) - crypto/mldsa_identity.rye and crypto/mlkem_sealed.rye (the lattice legs
+# that stay exactly as they are). PQClean stays vendored and unmodified, the parity TARGET, never a copied line
+# (.claude/rules/gratitude-licenses.md).
+#
+# HONEST SCOPE -- purely local. Every key here grows from a published-style test seed; no real key, no network, no funds, no
+# device. Growing a REAL post-quantum identity from the maintainer's own phrase stays the custody gate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_slhdsa_oracle_witness.rish
+
+say "crypto-slhdsa-oracle: Language EN -- SLH-DSA (SPHINCS+) on SHAKE-256 is the parameter set Kumara v1 seats, chosen because a hash-based signature adds no assumption Grain does not already carry. It stood unbuilt for one honest reason: no second implementation was on hand to diff it against, and a rung proven only against its own selftest is weaker than one two strangers confirm. This rung vendors the stranger."
+say "crypto-slhdsa-oracle: Style Radiant -- like against like, and the world as referee. PQClean's own NIST known-answer generator is compiled fresh from the vendored source and run, and the SHA-256 of everything it prints must equal the digest PQClean publishes for this scheme in its own META.yml -- a number written down by someone else, before we arrived, that our metal has to reproduce exactly."
+say "crypto-slhdsa-oracle: Lens TAME -- no fabricated constant is trusted anywhere: the published digest and all four declared lengths are READ from vendor/pqclean's META.yml at run time rather than recited here, so a vendored copy that drifts cannot quietly agree with a number we typed. Determinism is proven by doing -- the harness pins optrand and runs twice, and the two runs must agree byte for byte. Every genuine signature verifies and every one-bit-flipped signature refuses. Purely local -- no real key, no network, no funds, no device; constant-time timing-safety stays the Season's named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let scheme = "vendor/pqclean/crypto_sign/sphincs-shake-256s-simple"
+let meta = "vendor/pqclean/crypto_sign/sphincs-shake-256s-simple/META.yml"
+
+# 0. The vendored scheme is present and carries the CC0 licence it is held under.
+let licensed = run ["sh" "-c" "head -1 vendor/pqclean/crypto_sign/sphincs-shake-256s-simple/clean/LICENSE"]
+assert licensed.ok else "crypto-slhdsa-oracle: the vendored scheme's LICENSE is unreadable -- is the vendor/pqclean submodule checked out?"
+assert (trim licensed.out) == "CC0 1.0 Universal" else "crypto-slhdsa-oracle: the vendored scheme's LICENSE is not the CC0 1.0 Universal this tree holds it under"
+
+# 1. Build PQClean's OWN NIST known-answer generator from the unmodified vendored source.
+let katbin = "crypto/bin/pqclean_slhdsa_nistkat"
+let katbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -DPQCLEAN_NAMESPACE=PQCLEAN_SPHINCSSHAKE256SSIMPLE_CLEAN -I ${scheme}/clean -I vendor/pqclean/common vendor/pqclean/test/crypto_sign/nistkat.c vendor/pqclean/test/common/nistkatrng.c ${scheme}/clean/*.c vendor/pqclean/common/fips202.c vendor/pqclean/common/aes.c vendor/pqclean/common/sha2.c -o ${katbin}"]
+assert katbuild.ok else "crypto-slhdsa-oracle: PQClean NIST-KAT build failed -- ${katbuild.err}"
+
+# 2. Run it, and digest everything it prints.
+let katout = "crypto/bin/pqclean_slhdsa_nistkat.out"
+let katrun = run ["sh" "-c" "${katbin} > ${katout} 2>&1"]
+assert katrun.ok else "crypto-slhdsa-oracle: PQClean NIST-KAT generator exited non-zero -- see ${katout}"
+
+let katsum = run ["sh" "-c" "sha256sum ${katout} | cut -d' ' -f1"]
+assert katsum.ok else "crypto-slhdsa-oracle: could not digest the NIST-KAT output"
+
+# 3. The anchor: PQClean's OWN published digest for this scheme, read from its META.yml rather than recited here.
+let published = run ["sh" "-c" "grep '^nistkat-sha256:' ${meta} | cut -d' ' -f2"]
+assert published.ok else "crypto-slhdsa-oracle: META.yml carries no nistkat-sha256 line"
+assert (trim katsum.out) == (trim published.out) else "crypto-slhdsa-oracle: the vendored SLH-DSA does NOT reproduce PQClean's published NIST known-answer digest -- the vendored copy has drifted or been modified"
+
+# 4. Build our deterministic harness against the same unmodified source.
+let bin = "crypto/bin/pqclean_slhdsa"
+let build = run ["sh" "-c" "${zig} cc -O2 -I ${scheme}/clean -I vendor/pqclean/common tools/fixtures/pqclean_slhdsa_harness.c ${scheme}/clean/*.c vendor/pqclean/common/fips202.c -o ${bin}"]
+assert build.ok else "crypto-slhdsa-oracle: SLH-DSA harness build failed -- ${build.err}"
+
+# 5. Run it TWICE. PQClean signs hedged, so determinism is a property of the pinned optrand and is proven by doing, never assumed.
+let out_a = "crypto/bin/pqclean_slhdsa.a.out"
+let out_b = "crypto/bin/pqclean_slhdsa.b.out"
+let run_a = run ["sh" "-c" "${bin} > ${out_a} 2>&1"]
+assert run_a.ok else "crypto-slhdsa-oracle: the SLH-DSA harness exited non-zero -- see ${out_a}"
+let run_b = run ["sh" "-c" "${bin} > ${out_b} 2>&1"]
+assert run_b.ok else "crypto-slhdsa-oracle: the SLH-DSA harness exited non-zero on its second run -- see ${out_b}"
+
+let stable = run ["sh" "-c" "diff ${out_a} ${out_b} > /dev/null && echo same"]
+assert (trim stable.out) == "same" else "crypto-slhdsa-oracle: two runs of the harness disagree -- the oracle is not reproducible, so it cannot be diffed against"
+
+# 6. The declared lengths, checked against META.yml rather than against a number typed here.
+let lengths = run ["sh" "-c" "sed -n '1p' ${out_a}"]
+let want_pk = run ["sh" "-c" "grep '^length-public-key:' ${meta} | cut -d' ' -f2"]
+let want_sk = run ["sh" "-c" "grep '^length-secret-key:' ${meta} | cut -d' ' -f2"]
+let want_sig = run ["sh" "-c" "grep '^length-signature:' ${meta} | cut -d' ' -f2"]
+let want_all = "${trim want_pk.out} ${trim want_sk.out} ${trim want_sig.out} 96"
+assert (trim lengths.out) == want_all else "crypto-slhdsa-oracle: the harness's public-key, secret-key, and signature lengths disagree with META.yml"
+
+# 7. Both signatures verify, and both one-bit-flipped signatures refuse.
+let verdict_empty = run ["sh" "-c" "sed -n '5p' ${out_a}"]
+assert (trim verdict_empty.out) == "accept refuse" else "crypto-slhdsa-oracle: the empty message's genuine signature did not verify, or its tampered signature did"
+let verdict_abc = run ["sh" "-c" "sed -n '7p' ${out_a}"]
+assert (trim verdict_abc.out) == "accept refuse" else "crypto-slhdsa-oracle: the \"abc\" signature did not verify, or its tampered signature did"
+
+let shown = run ["sh" "-c" "cat ${out_a}"]
+say "crypto-slhdsa-oracle: the vendored oracle's own report -- lengths, public key, secret-key digest, and one signature digest and verdict per message:"
+say "${shown.out}"
+
+say "GREEN crypto-slhdsa-oracle: PQClean's SLH-DSA-SHAKE-256s (SPHINCS+-shake-256s-simple, NIST level 5, CC0-1.0) is vendored unmodified at vendor/pqclean and proven on metal -- its own NIST known-answer generator, compiled fresh from that source, reproduces the SHA-256 digest PQClean publishes in its META.yml exactly, and the deterministic harness runs byte-identical twice with every genuine signature accepted and every one-bit-flipped signature refused. All four lengths are read from META.yml, never recited. The doubled oracle the pivot found missing now stands, so the hash-based leg can be authored in Rye beside the lattice legs rather than instead of them -- and BOTH are kept, on Keaton's word. This rung proves the ORACLE only; parity of our own authored SLH-DSA against it is the next rung, not a claim made here. Purely local -- no real key, no network, no funds, no device."

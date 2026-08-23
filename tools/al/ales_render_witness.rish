@@ -1,0 +1,41 @@
+# tools/al/ales_render_witness.rish — an ordered chain of real effects over one Clip renders to a canonical RIFF/WAVE .wav,
+# atomically, verify-before-trust (ALES217).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES217.
+# Design read: active-designing/date/20260815/20260815-131432_fill-ales217-lotus-render.md
+# Idiom kin: lotus/timeline.rye (ALES2, the Clip and gain) · lotus/fade.rye · lotus/invert.rye (ALES105) · lotus/wav.rye
+# (ALES215, the container). This rung joins the edit half and the container half into one pipeline endpoint: bytes → an
+# ordered chain of the tree's own proven effects → the open .wav another program plays.
+#
+# lotus/render.rye runs a bounded, ordered chain (gain · fade · invert) over a Clip and encodes the result into the canonical
+# mono RIFF/WAVE layout. The selftest proves: the render decodes byte-for-byte to the same chain applied by hand (the render
+# law); the same steps reordered render to a different file (the order law); a bare chain renders the clip unchanged; a faulty
+# step — a span past the clip, a zero denominator, an output buffer too small, a chain past max_steps, a wild rate — refuses BY
+# NAME before a sample moves, leaving the clip byte-for-byte unchanged (the atomic promise); an empty clip renders a valid
+# 44-byte header. A byte container only — no real file opened, no DAC, no acoustic or electrical fact, no network, no keys, no
+# funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_render_witness.rish
+
+say "ales-render: Language EN — ALES217 joins two proven halves, the editable Clip and the RIFF/WAVE container, into one call: an ordered chain of the tree's own effects becomes a real .wav another program plays."
+say "ales-render: Style Radiant — the render law (byte-for-byte to a hand-applied chain), the order law (a sequence not a set), and the atomic promise (a faulty chain is a no-op) each named and proven, every fault refusing by name before a sample moves."
+say "ales-render: Lens TAME — the clip's length is invariant under gain, fade, and invert, which is what makes the whole request checkable before it runs; a faulty step leaves the clip byte-for-byte unchanged and nothing written; the sample rate is a carried field not a real clock; siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/render"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/render.rye -femit-bin=${bin}"]
+assert build.ok else "ales-render: build failed — ${build.err}"
+
+let outfile = "lotus/bin/render.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-render: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-render: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-render' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-render: selftest did not print the GREEN ales-render line"
+
+say "ales-render: GREEN — an ordered chain of proven effects over one Clip renders to a canonical .wav byte-for-byte and atomically; the next Lotus rung can carry a stereo render (the chain over two channels into stereo_wav) or a named preset chain a keeper loads by name."

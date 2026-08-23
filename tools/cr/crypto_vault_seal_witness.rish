@@ -1,0 +1,45 @@
+# tools/cr/crypto_vault_seal_witness.rish — the vault seal, Season G's THIRD composition over the GREEN Monocypher-parity primitives:
+# a password-sealed box that locks a blob behind a remembered password so the key that opens it need never live on the device, composing
+# Argon2id (the memory-hard password KDF) and XChaCha20-Poly1305 (the extended-nonce authenticated encryption), authoring no new
+# cryptography (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Argon2 is the stone Vault stands on so a
+# key need never live on the device; XChaCha20's 24-byte nonce is the AEAD safe with random nonces — this composition is exactly the Vault
+# sealed-storage shape both were built toward).
+# Kin: crypto/argon2.rye · crypto/xchacha20.rye (the GREEN primitives this composes) · crypto/signed_carry.rye (provenance) and
+# crypto/sealed_session.rye (recipient-confidentiality — the sibling compositions). Monocypher (vendor/monocypher, CC0/BSD-dual) is the
+# parity TARGET of the primitives beneath, never a copied line — our own composition, studied clean-room (.claude/rules/gratitude-licenses.md).
+#
+# crypto/vault_seal.rye composes two already-parity-GREEN primitives — Argon2id (the memory-hard password KDF) and XChaCha20-Poly1305 (the
+# extended-nonce authenticated encryption) — into a password-sealed box, authoring no new cryptography. The caller supplies a fresh random
+# salt and a fresh random 24-byte nonce per seal (the library invents no entropy); Argon2id stretches the password against the salt at the
+# caller's chosen cost (t passes, m KiB, p lanes) into a 32-byte key, and XChaCha20-Poly1305 seals the plaintext under it with the whole
+# public header — magic, cost, salt, nonce — bound as authenticated data, so a tampered salt or cost cannot trick open into a silent
+# mis-derive. A frame is magic GVS1, mode, t, m, p, salt-len, salt, nonce, cipher-len (u64 big-endian), ciphertext, and the Poly1305 tag;
+# open() rederives the key from the password and the recorded salt/cost and returns plaintext only when the tag verifies. Purely local over
+# TEST passwords — no real secret, no network, no funds, no real device; the salt and nonce must be fresh randomness in real use, and sealing
+# a real secret behind a real password stays the custody gate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_vault_seal_witness.rish
+
+say "crypto-vault-seal: Language EN — Season G's THIRD composition over the GREEN Monocypher-parity primitives, the password twin of the two confidentiality answers: where the signed carry answers 'who made this record' and the sealed session answers 'only you can read this' to a public key, the vault seal answers 'only your password can open this.' crypto/vault_seal.rye composes Argon2id (the memory-hard password KDF) and XChaCha20-Poly1305 (the extended-nonce authenticated encryption) into a password-sealed box — Vault's sealed storage, standing as a library on primitives already parity-GREEN, authoring no new cryptography, so the key that opens a box need never live on the device."
+say "crypto-vault-seal: Style Radiant — the law is stated positively: the caller supplies a fresh random salt and a fresh random 24-byte nonce per seal (the library invents no entropy), Argon2id stretches the password against the salt at the caller's chosen cost into a 32-byte key, and XChaCha20-Poly1305 seals the plaintext under it with the whole public header (magic, cost, salt, nonce) bound as authenticated data — so a tampered salt or cost cannot trick open into a silent mis-derive. A frame is magic GVS1, mode, t, m, p, salt-len, salt, nonce, cipher-len (u64 big-endian), ciphertext, and the Poly1305 tag; open rederives the key from the password and the recorded salt/cost and returns plaintext only when the tag verifies."
+say "crypto-vault-seal: Lens TAME — the composition authors no new cryptography; it turns two proven stones into one password box, bounds the message at the AEAD's own 64 KiB ceiling and the salt at a modest 64-byte cap, and asserts its contracts on every function. GREEN on the first metal pass: round-trip across seven plaintext lengths (empty through 64 KiB), the ciphertext provably not the plaintext, byte-identical determinism given fixed inputs, the fresh-salt property (a different salt yields a different frame that still opens under the same password), and seven refusals — a wrong password, a tampered ciphertext, a tampered tag, a tampered salt, and a tampered cost all fail OpenFailed revealing no plaintext, plus bad magic, a bad mode byte, two truncations, an undersized buffer, and a too-short and too-long salt. The derived key is wiped from the stack after use as best-effort hygiene, not a timing claim. Purely local over TEST passwords — no real secret, no network, no funds, no device; the salt and nonce must be fresh randomness in real use, constant-time timing-safety stays the named horizon, and sealing a real secret behind a real password stays the custody gate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/vault_seal"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/vault_seal.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-vault-seal: build failed — ${build.err}"
+
+let outfile = "crypto/bin/vault_seal.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-vault-seal: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-vault-seal: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-vault-seal' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-vault-seal: selftest did not print the GREEN crypto-vault-seal line"

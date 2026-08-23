@@ -1,0 +1,46 @@
+# tools/h/hunk_edit_store_witness.rish — a non-destructive edit-list is content-addressed on metal (HUNK12).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK12.
+# Design read: active-designing/date/20260813/20260813-155719_hunk-photo-edits-non-destructive-exploration.md (names HUNK12).
+# Teacher, thanked clean-room: the non-destructive edit history of iCloud Photos / Google Photos (concept only, siloed).
+#
+# HUNK11 recorded the Photos verbs as data and proved replay is deterministic; this rung banks that determinism.
+# `pond/apps/edit_store.rye` `store_edits` beads an edit-list's `format photo-edits-v1` text content-addressed
+# (HUNK1's Tablecloth store), and `reproduce` fetches it back — proving every bead against its digest and the whole
+# against its recorded address BEFORE the text is parsed or a verb replayed — then parses and applies it over a source
+# image. So an edited image reproduces from cold out of the pair (source, edit-list address): its pixels never need
+# storing, only the small recipe that makes them. The selftest proves the reproduced image equals a direct apply
+# byte-for-byte, the dedup dividend for recipes (same list, two names, stored once), and a tampered recipe refusing
+# DigestMismatch and an unknown name refusing UnknownArtifact, each before a verb is replayed. No network, no key,
+# no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_edit_store_witness.rish
+
+say "hunk-edit-store: Language EN — HUNK12 banks a non-destructive edit-list content-addressed: an edited image reproduces from cold out of (source, edit-list address), the edited pixels never stored."
+say "hunk-edit-store: Style Radiant — determinism becomes an integrity guarantee for free: a recipe the store hands back either is the one its name pins, or it is a named refusal, before a single verb runs."
+say "hunk-edit-store: Lens TAME — the recipe text is bounded to a resin or refuses, the fetch verifies every bead against its digest before parse, positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/apps/bin/edit_store"
+
+let build = run ["sh" "-c" "mkdir -p pond/apps/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/edit_store.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-edit-store: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-edit-store: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-edit-store: ${out}"
+
+assert out contains "GREEN edit-store" else "hunk-edit-store: selftest did not print the GREEN edit-store line"
+
+assert out contains "reproduces from cold out of (source, name) byte-for-byte" else "hunk-edit-store: the cold reproduction was not proven byte-for-byte"
+
+assert out contains "the same recipe under two names is stored once" else "hunk-edit-store: the recipe dedup dividend was not proven"
+
+assert out contains "a tampered recipe refuses DigestMismatch" else "hunk-edit-store: a tampered recipe did not refuse before a verb ran"
+
+assert out contains "each before a verb is replayed" else "hunk-edit-store: the refusals were not proven to land before replay"
+
+say "hunk-edit-store: GREEN — a non-destructive edit-list is content-addressed; an edited image reproduces from cold, verified bead by bead, before a verb runs; refusals named."

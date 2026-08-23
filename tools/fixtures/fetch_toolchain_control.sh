@@ -14,7 +14,7 @@
 #   corrupted -- the same bytes with one flipped                 -> verdict=REFUSED,  exit non-zero
 #   absent    -- a file that is not there at all                 -> verdict=missing,  exit non-zero
 #
-# Driven by tools/fetch_toolchain_witness.rish. Run from the repository root.
+# Driven by tools/f/fetch_toolchain_witness.rish. Run from the repository root.
 
 set -eu
 

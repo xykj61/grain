@@ -1,0 +1,41 @@
+# tools/cl/cluster_tree_diameter_witness.rish -- the longest reach across a cluster skeleton, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/cluster_minimum_spanning_tree.rye grows the SKELETON that holds a scattered layout together and
+# reads two whole-tree numbers off it: mst_weight (the SUM of every bridge edge) and mst_bottleneck (its LARGEST single edge, the connectivity
+# threshold). This rung reads a THIRD number neither answers: the tree's DIAMETER, the greatest path weight between any two clusters through the
+# bridge edges -- the longest walk along the skeleton, and the eccentricity of each cluster (its farthest reach). Exact integers, NO float, NO
+# tolerance.
+#
+# The crux this witness proves on metal, two shapes: THE DIAMETER EQUALS THE WEIGHT YET EXCEEDS THE BOTTLENECK -- over the three-cluster star
+# (edges 1-2 gap 2, 1-3 gap 3) the longest path 2 -> 1 -> 3 spends both edges, weight 5, equal to the whole weight yet above the bottleneck 3,
+# the endpoints the leaves and the hub the center; THE DIAMETER SITS STRICTLY BETWEEN THE BOTTLENECK AND THE WEIGHT -- over the four-cluster star
+# (edges 1-2, 1-3 gap 3, 1-4 gap 9) the longest path 2 -> 1 -> 4 spends the 9-arm and one 3-arm, weight 12, while the third arm branches off, so
+# 9 < 12 < 15. A lone-cluster layout is already one whole. Determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cl/cluster_tree_diameter_witness.rish
+
+say "cluster_tree_diameter: Language EN -- Season G the longest reach across a cluster skeleton; tree_diameter reads the whole-tree longest path, diameter_endpoints names the two poles, tree_eccentricity a cluster's farthest reach, is_diameter_endpoint the pole test; NO float, NO tolerance."
+say "cluster_tree_diameter: Style Radiant -- compose not braid: this rung owns only the diameter and eccentricity reads (the breadth-first walk over the tree's edges, the longest-path search, the endpoint test); cluster_minimum_spanning_tree owns build_mst and the tree's weight and bottleneck cross-checked here never re-derived, cluster_graph owns the matrix a level below. A reading over a reading over a reading over a reading over a reading over a reading over a reading over a reading."
+say "cluster_tree_diameter: Lens TAME -- the tree holds at most the cluster ceiling minus one edges, each breadth-first walk visits every cluster at most once, the all-pairs longest-path search runs one walk per cluster; a zero or past-the-count cluster id refuses BadClusterId, a lone-cluster layout refuses EmptyTree for its endpoints; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/cluster_tree_diameter"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/cluster_tree_diameter.rye -femit-bin=${bin}"]
+assert build.ok else "cluster_tree_diameter: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "cluster_tree_diameter: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "cluster_tree_diameter: ${out}"
+
+assert selftest.out contains "GREEN image-cluster-tree-diameter" else "cluster_tree_diameter: selftest did not print the GREEN line"
+assert selftest.out contains "THE DIAMETER EQUALS THE WEIGHT YET EXCEEDS THE BOTTLENECK" else "cluster_tree_diameter: the equal-weight case did not print"
+assert selftest.out contains "a two-edge tree is a single path" else "cluster_tree_diameter: the star-is-a-path fact did not print"
+assert selftest.out contains "THE DIAMETER SITS STRICTLY BETWEEN THE BOTTLENECK AND THE WEIGHT" else "cluster_tree_diameter: the between case did not print"
+assert selftest.out contains "three distinct numbers 9 < 12 < 15" else "cluster_tree_diameter: the three-distinct-numbers fact did not print"
+assert selftest.out contains "the hub cluster 1 still the center of least eccentricity" else "cluster_tree_diameter: the center fact did not print"
+
+say "cluster_tree_diameter: GREEN on metal -- the span a surface draws across a connected group, the longest walk between two clusters along the minimum spanning tree's bridge edges, a third tree invariant distinct from the bottleneck and the weight, exact integers with NO float and NO tolerance; the diameter names the two farthest-apart clusters, not only the reach at which the layout closes."

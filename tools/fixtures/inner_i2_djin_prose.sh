@@ -24,11 +24,11 @@ if [ -n "$hits2" ]; then
   exit 1
 fi
 
-test -f tools/gen_gren_fund_prep.rish
+test -f tools/g/gen_gren_fund_prep.rish
 test ! -e tools/gen_twah_fund_prep.rish
 
 export RYE_ZIG="${RYE_ZIG:-$ROOT/vendor/zig-toolchain/zig}"
-out="$(rishi/bin/rishi run tools/gen_gren_fund_prep.rish 2>&1)" || {
+out="$(rishi/bin/rishi run tools/g/gen_gren_fund_prep.rish 2>&1)" || {
   echo "inner-i2 REFUSE: gen_gren left GREEN" >&2
   exit 1
 }
@@ -38,7 +38,7 @@ echo "$out" | grep -q 'GREEN: gen-gren' || {
 }
 
 # Fold prior residual sweep so i1 stays honest under i2 polish.
-rishi/bin/rishi run tools/inner_i1_twah_residual.rish >/dev/null
+rishi/bin/rishi run tools/i/inner_i1_twah_residual.rish >/dev/null
 
 echo "polish: replies free of deleted Twah door ads"
 echo "polish: check-ins free of gen-twah / twah-edu path ads"

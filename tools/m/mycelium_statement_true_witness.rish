@@ -1,0 +1,63 @@
+# tools/m/mycelium_statement_true_witness.rish — the Statement reads a real ledger record true (r4, closes).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the Statement · rung r4.
+# r1 fixed the reconciliation crux (reserved == open made sum), r2 let a statement travel, r3 read a position
+# continuous across a Knot — all over Dags seated in code. This closing rung carries the reader onto a REAL
+# on-disk Cord record a keeper can open and walk, and proves the property the whole Statement rests on: an
+# account's own line — WHERE DO I STAND? — is true to the bytes.
+#
+# The crux is TWO TOOLS, ONE ANSWER: mycelium/statement_true parses tools/fixtures/lapse_dag.bron (the
+# Lapse's own fixture, reused since a statement is a projection of exactly the resolved ledger the Lapse
+# produces) through cord_bron, rebuilds the Dag under cord.add (re-verifying every signature), resolves it
+# through lapse, projects the genesis-funded account's Statement through statement, and reports the account
+# key with its balance · reserved · received; this witness cross-checks that against
+# tools/fixtures/statement_dag_truth.awk's independent per-account deadline-clock reading of the same bytes.
+# The awk ticks the same clock in file order (reserving on a pledge, coins home on a lapse or void, paying a
+# recipient on a post) that the app's fold applies, so the app's full resolve and the awk's file-order
+# accounting name one position — an account's own line can never drift from an order a keeper walks by hand.
+# Both tools choose the read account the same way (the genesis-funded one), the statement reconciles over the
+# real bytes, and a tampered record refuses. Composes cord_bron + cord + lapse + statement public API only;
+# demo keeper seeds — no key, no funds, no network, no custody.
+#
+# Scope: active-designing/date/20260813/20260813-091851_mycelium-statement-account-voice-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_statement_true_witness.rish
+
+say "mycelium-statement-true: Language EN — an account's own line, read true from bytes a keeper can open and walk."
+say "mycelium-statement-true: Style Radiant — r1 fixed the reconciliation, r2 let it travel, r3 crossed a Knot; r4 reads a real record and the app and an awk name one position."
+say "mycelium-statement-true: Lens TAME — the reading composes cord_bron + cord + lapse + statement public API; the Dag is rebuilt under the Cord's own add; the awk ticks the same deadline clock in file order; the statement reconciles and conservation holds over the real bytes; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/statement_true"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement_true.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-statement-true: build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "mycelium-statement-true: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-statement-true: selftest did not speak GREEN"
+assert selftest.out contains "the statement reconciles over the real bytes" else "mycelium-statement-true: reconciliation claim missing"
+assert selftest.out contains "conservation holds over the real bytes" else "mycelium-statement-true: conservation claim missing"
+assert selftest.out contains "a tampered header refused BadFormat" else "mycelium-statement-true: tamper-refusal claim missing"
+
+# The crux — two tools, one answer. The app's measure tuple must equal awk's reading of the same bytes.
+let app = run ["sh" "-c" "${bin} measure 2>&1"]
+assert app.ok else "mycelium-statement-true: app measure exited non-zero"
+let awk = run ["sh" "-c" "awk -f tools/fixtures/statement_dag_truth.awk tools/fixtures/lapse_dag.bron"]
+assert awk.ok else "mycelium-statement-true: awk truth read failed"
+assert awk.out contains "bc7cbcb5636375fa1d82434d466724d92377f53b980695dd49d26d0ce12205a5 100 100 200" else "mycelium-statement-true: awk tuple not the funded account · balance 100 · reserved 100 · received 200"
+assert app.out == awk.out else "mycelium-statement-true: app and awk disagree — the account's line drifted from the bytes"
+
+# The fixture is genuinely what the Cord emits, not a hand-mock — the generator re-emits byte-identical bytes.
+let regen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run mycelium/lapse_fixture_gen.rye 2>/tmp/statement_regen.bron >/dev/null && diff -q tools/fixtures/lapse_dag.bron /tmp/statement_regen.bron && echo REPRODUCIBLE"]
+assert regen.ok else "mycelium-statement-true: fixture is not reproducible — the generator drifted"
+assert regen.out contains "REPRODUCIBLE" else "mycelium-statement-true: fixture regeneration did not match"
+
+# The Statement whose projection this rung reads from real bytes stands at the door — its own selftest proves
+# the reconciliation crux the r4 reading rests on.
+let statement = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement.rye -femit-bin=mycelium/bin/statement && mycelium/bin/statement 2>&1"]
+assert statement.ok else "mycelium-statement-true: the Statement r1 the reading projects is not GREEN"
+assert statement.out contains "GREEN" else "mycelium-statement-true: the Statement r1 did not speak its GREEN"
+
+say "mycelium-statement-true: GREEN — a real ledger record reads true (app==awk, the funded account bc7cbcb5… · balance 100 · reserved 100 · received 200); the account's own line resolved under the Cord's own add and the agreed order, the statement reconciling, conservation of balance + reserved whole, the fixture reproducible, a tampered record refused; the Statement r1 stands at the door. The Mycelium Statement's agent-doable arc closes."

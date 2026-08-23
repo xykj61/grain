@@ -29,7 +29,7 @@ Level and mix stay **separate gestures**: to set a track's fader before summing,
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_mix_witness.rish`: two equal-length clips sum sample-for-sample; a sum past the i16 range saturates (`30000 + 10000 → +32767`, its mirror to `-32768`); a shorter track is silent past its end so the mix runs the longer length with the tail unchanged; mixing with an empty clip is identity; mix is commutative; and mix composes with ALES2's gain (set each track's level, then sum). GREEN on the first build. The ALES2 timeline witness stays GREEN with `saturate` made public. Purely local — no socket, no network, no keys, no funds, no real device.
+`tools/al/ales_mix_witness.rish`: two equal-length clips sum sample-for-sample; a sum past the i16 range saturates (`30000 + 10000 → +32767`, its mirror to `-32768`); a shorter track is silent past its end so the mix runs the longer length with the tail unchanged; mixing with an empty clip is identity; mix is commutative; and mix composes with ALES2's gain (set each track's level, then sum). GREEN on the first build. The ALES2 timeline witness stays GREEN with `saturate` made public. Purely local — no socket, no network, no keys, no funds, no real device.
 
 ## The road on
 

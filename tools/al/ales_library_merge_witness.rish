@@ -1,0 +1,39 @@
+# tools/al/ales_library_merge_witness.rish — two independent sets of catalog changes reconciled: merge(base, ours, theirs) sorts every
+# album into resolved, dropped, or a named conflict (ALES234).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES234.
+# Design read: active-designing/date/20260815/20260815-145638_fill-ales234-lotus-library-merge.md
+# Idiom kin: lotus/library_find.rye (ALES228, the find / digest_of resolve this composes on) · lotus/library_diff.rye (ALES229, the
+# sibling second-order primitive this stands beside) · lotus/library_manifest.rye (ALES226, the three opened catalogs this reconciles).
+# A merge is two diffs reconciled against one base — no new hash, no new frame.
+#
+# lotus/library_merge.rye reconciles three opened library manifests by the canonical three-way rule. The selftest proves: a one-sided
+# change is taken and names its hand, a one-sided removal drops cleanly, with zero conflicts (the clean law); both sides making the
+# same change reads agreed (the agreement law); both sides changing an album differently — or change-vs-remove — is named a conflict
+# carrying base, our, and their digests (the conflict law); an album neither side touched resolves unchanged with its base digest (the
+# untouched law); a catalog merged with itself on both sides resolves every album unchanged with zero drops and zero conflicts (the
+# identity law). A pure classification only — no real file, no DAC, no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_library_merge_witness.rish
+
+say "ales-library-merge: Language EN — ALES234 reconciles two independent sets of catalog changes: merge(base, ours, theirs) sorts every album into resolved (its chosen digest and source), dropped, or a named conflict — the honest answer when more than one hand touches a body of work, the whole reason a diff exists."
+say "ales-library-merge: Style Radiant — a merge is a decision procedure, not a guess; it composes ON the ALES228 resolve the diff uses, the content-address digest is the whole comparison (no byte compare, no new hash); the clean law, the agreement law, the conflict law, the untouched law, and the identity law each named and proven on metal."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/library_merge"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/library_merge.rye -femit-bin=${bin}"]
+assert build.ok else "ales-library-merge: build failed — ${build.err}"
+
+let outfile = "lotus/bin/library_merge.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-library-merge: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-library-merge: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-library-merge' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-library-merge: selftest did not print the GREEN ales-library-merge line"
+
+say "ales-library-merge: GREEN — two keepers' independent changes become one catalog, every clean verdict taken and every conflict named, never guessed; the library level grows its first primitive that composes three catalogs at once, the shape collaboration grows in. The next Lotus crux still names who made it — a signed carry (crypto seam) on Keaton's word."

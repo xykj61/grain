@@ -1,0 +1,51 @@
+# tools/s/scooter_paint_witness.rish -- Scooter, the painted face on metal.
+#
+# pond/apps/scooter_paint.rye is the pond bridge rung of Season G's open-media family: it feeds a LIVE Scooter
+# conversation through image/text_grid.rye, the abstract terminal-grid painter. scooter_view.rye folds an
+# append-only channel into a fixed 24x80 Frame of character cells; this module takes that Frame and paints it
+# into a real image, so a keeper's conversation becomes pixels a surface can show, not only bytes a terminal
+# parses. This witness builds the module to a binary and asserts its selftest speaks GREEN over the cruxes:
+#   - A real conversation folds -- a 2-post channel's header reads "scooter: 2 posts", so the face is a true
+#     journal, not a crafted grid.
+#   - Sized exactly -- the image is frame_cols column pitches wide by frame_rows cell heights tall.
+#   - Faithful by measure -- the bridge adds nothing but its guard: a paintable frame renders BYTE-FOR-BYTE the
+#     same image text_grid paints straight from the same cells (a pure pass-through).
+#   - Deterministic and portable -- the same channel renders the same image, which round-trips through the open
+#     QOI codec byte-for-byte.
+#   - The honest edge -- a frame cell carrying a byte the font cannot draw refuses ScooterFrameUnpaintable by
+#     name, having painted nothing.
+#   - The colored twin -- render_channel_fg paints the status header (row 0) in an accent color and the body in
+#     the reading color, a pure pass-through of text_grid.render_grid_fg; the colored face inks the same pixels
+#     as the single-ink face (color moves ink, adds none), reads the accent on the header and the body color
+#     below, round-trips through QOI, and a mis-sized palette refuses GridFgMismatch by name.
+#   - The full colored cell -- render_channel_bar paints the status row as a real BAR (white-on-blue), the header
+#     ink over its own header GROUND band and the body over the reading ground, a pure pass-through of
+#     text_grid.render_grid_cells; no header pixel stays the old white page (the band is a filled bar, where the
+#     fg-only twin left it white between letters), the body page below is untouched, it round-trips through QOI,
+#     and a mis-sized background palette refuses GridBgMismatch by name.
+#   - The drawn caret -- render_session paints a composing session with a visible block CURSOR at the caret cell
+#     (inverse video): the caret cell reads a solid ink block where the plain painted session reads solid ground,
+#     the flip confined byte-for-byte to that one cell, the cursor clearing and following the keeper when the caret
+#     walks home, and the whole drawn face round-trips through QOI.
+#
+# Facts only, custody-first: it reads a public journal a member already holds and paints it; no network, no key
+# signs, no funds. The wire that carries the image between two Constel piers reaches the serve gate -- the
+# maintainer's hand, not here.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/scooter_paint_witness.rish
+
+say "scooter-paint: Language EN -- a live channel's terminal frame painted into a portable image a surface can show."
+say "scooter-paint: Lens TAME -- pond composes image, faithful byte-for-byte to the painter, unpaintable cells refused by name, no key and no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+
+let bin = "pond/bin/scooter-paint"
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/scooter_paint.rye -femit-bin=${bin}"]
+assert build.ok else "scooter-paint: scooter_paint build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "scooter-paint: scooter_paint selftest exited non-zero"
+
+say selftest.out
+say "scooter-paint: GREEN -- the painted conversation is faithful, deterministic, portable, and refuses the unpaintable by name."

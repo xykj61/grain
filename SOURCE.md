@@ -107,7 +107,7 @@ Depth on extract and enclosure: Steps 5 and 6.
 From `~/grain`, still in the outer terminal (Ubuntu / Framework form):
 
 ```bash
-rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-<version>-x86_64.AppImage --gpu
+rishi/bin/rishi run tools/l/launch-cursor.rish --cursor ./Cursor-<version>-x86_64.AppImage --gpu
 ```
 
 Full launch options and the macOS twin: Step 9.
@@ -210,11 +210,11 @@ A fingerprint is meant to be shared and checked. It is also, quietly, beautiful 
 The tool reads your details from a config file, so it works for anyone. Copy the template, fill in your own values, and run it:
 
 ```bash
-cp tools/key-card.conf.example tools/key-card.conf   # then edit with your details
+cp tools/k/key-card.conf.example tools/key-card.conf   # then edit with your details
 # macOS (Homebrew qrencode + imagemagick), audited end to end in Rish:
-rishi/bin/rishi run tools/make_key_card.rish
+rishi/bin/rishi run tools/m/make_key_card.rish
 # Linux (vendored libqrencode + apt fonts):
-./tools/make-key-card.sh
+./tools/m/make-key-card.sh
 ```
 
 Your `tools/key-card.conf` holds only **public** information — your name, your forge handle, your email, and the fingerprints from Steps 2 and 3. Even so, it stays out of git (the committed `.example` is the only version tracked). Living slots are **`FP_SSH_GITHUB`**, **`FP_SSH_SECOND`**, and **`FP_OPENPGP`** (SUNN6). For a GitHub-only pier, fill GitHub + OpenPGP and leave Second as the example placeholder (skip its audit path), or use Second for a second GitHub key when you keep dual remotes. Generators still accept the legacy name `FP_SSH_CODEBERG` as an alias for Second. To read your living fingerprints back at any time:
@@ -224,11 +224,11 @@ ssh-keygen -lf ~/.ssh/id_ed25519_github.pub
 gpg --fingerprint you@example.com                 # the spaced 40-hex string
 ```
 
-On **macOS**, the Rish orchestrator ([`tools/make_key_card.rish`](tools/make_key_card.rish)) is the recommended path: it first audits every declared fingerprint against the real key on your host (so a card can never ship a wrong fingerprint), renders the cards with Homebrew's `qrencode` and ImageMagick, then audits the output PNGs — a green run proves the whole chain. Install its two dependencies once with `brew install qrencode imagemagick`; the font is **Menlo**, pinned — it ships on every Mac, so there is no font-install step at all. On **Linux**, `./tools/make-key-card.sh` builds `qrencode` from the vendored `gratitude/libqrencode` submodule and uses `apt`-installed Fira Code (`sudo apt install gcc libpng-dev pkg-config imagemagick fonts-firacode`) — the two hosts keep their own settled font choice.
+On **macOS**, the Rish orchestrator ([`tools/m/make_key_card.rish`](tools/m/make_key_card.rish)) is the recommended path: it first audits every declared fingerprint against the real key on your host (so a card can never ship a wrong fingerprint), renders the cards with Homebrew's `qrencode` and ImageMagick, then audits the output PNGs — a green run proves the whole chain. Install its two dependencies once with `brew install qrencode imagemagick`; the font is **Menlo**, pinned — it ships on every Mac, so there is no font-install step at all. On **Linux**, `./tools/m/make-key-card.sh` builds `qrencode` from the vendored `gratitude/libqrencode` submodule and uses `apt`-installed Fira Code (`sudo apt install gcc libpng-dev pkg-config imagemagick fonts-firacode`) — the two hosts keep their own settled font choice.
 
 The result is two images at the repository root, `keys_<font>_<yourhandle>_landscape.png` and `…_portrait.png`, in a **plain white-background, black-text palette** that prints cleanly and scans reliably (override `BG`/`FG` in the config for a themed card). Pin them to a profile, print them, keep them: they prove your identity to anyone who scans. The full walkthrough, written for any contributor, is [`manual/guides/key-cards-setup.md`](manual/guides/key-cards-setup.md).
 
-Alongside the composited PNG card, `rishi/bin/rishi run tools/make_key_qr_svg.rish` writes each QR code again as a small, standalone **SVG** — fully textual, diffable, no binary blob, since `qrencode` emits SVG directly for free. The PNG card stays the one to print; the SVGs exist for anywhere a checkable, text-native form fits better.
+Alongside the composited PNG card, `rishi/bin/rishi run tools/m/make_key_qr_svg.rish` writes each QR code again as a small, standalone **SVG** — fully textual, diffable, no binary blob, since `qrencode` emits SVG directly for free. The PNG card stays the one to print; the SVGs exist for anywhere a checkable, text-native form fits better.
 
 If Cursor is already set up (Step 5), you can simply ask the agent to do all of this for you — *"fill in my key-card config and render my cards"* — and it will, entirely from inside the sandbox.
 
@@ -275,9 +275,9 @@ When you upgrade Cursor, `chmod +x` the new download, then pass it with **`--cur
 
 **Ubuntu (26.04 LTS · Framework · GNOME Wayland).** The extract path needs nothing extra. Pass **`--gpu`** so ai-jail can use the Wayland/WebGPU path. Only if someone runs the `.AppImage` *directly* would they need FUSE — and that package is **`libfuse2t64`** (not `fuse`, not the old `libfuse2`). Since the jail path extracts, this stays a footnote. (Ubuntu 24.04 LTS hosts follow the same extract law.)
 
-**NixOS (Framework and similar).** NixOS does not run generic dynamically linked executables out of the box — and that holds for the extracted `AppRun` as much as for the `.AppImage`. Enable AppImage support in system config with `programs.appimage.enable = true;` and `programs.appimage.binfmt = true;` (NixOS 24.05 and later), which lets a `.AppImage` run directly when you choose that path; the older route is `appimage-run` from nixpkgs. Because binfmt registration acts on the `.AppImage` file, the launcher's **extracted-`AppRun`** path may additionally want an FHS wrapper — `steam-run` or `nix-ld` — to supply the dynamic loader and libraries. On a tested Framework host, extract once, then `./tools/cursor-jail.sh` from the repo root is the working form; if `AppRun` fails with loader errors, wrap the launch with `steam-run` from nixpkgs. The full NixOS map lives in **`context/specs/enclosure-editors.md`**.
+**NixOS (Framework and similar).** NixOS does not run generic dynamically linked executables out of the box — and that holds for the extracted `AppRun` as much as for the `.AppImage`. Enable AppImage support in system config with `programs.appimage.enable = true;` and `programs.appimage.binfmt = true;` (NixOS 24.05 and later), which lets a `.AppImage` run directly when you choose that path; the older route is `appimage-run` from nixpkgs. Because binfmt registration acts on the `.AppImage` file, the launcher's **extracted-`AppRun`** path may additionally want an FHS wrapper — `steam-run` or `nix-ld` — to supply the dynamic loader and libraries. On a tested Framework host, extract once, then `./tools/cu/cursor-jail.sh` from the repo root is the working form; if `AppRun` fails with loader errors, wrap the launch with `steam-run` from nixpkgs. The full NixOS map lives in **`context/specs/enclosure-editors.md`**.
 
-**macOS.** There is no AppImage and no `bwrap` here; Cursor already ships as `Cursor.app`, and the enclosure is Apple's own Seatbelt (`sandbox-exec`), driven by this project's own launcher rather than `cargo install ai-jail`. Two tools share the work: upstream **ai-jail** grew a native macOS backend and is the right choice for jailing a **terminal agent or shell** (`ai-jail bash`, `ai-jail claude`); this project's own [`tools/cursor_jail_macos.rish`](tools/cursor_jail_macos.rish) (Rish-native) and [`tools/cursor-jail-macos.sh`](tools/cursor-jail-macos.sh) (bash elder) jail the **Cursor GUI app itself**, which upstream does not aim at. Both are witnessed live — a write inside the project succeeds, a write to the real `$HOME` is denied by the kernel, proven from inside a running jailed window, not just by a scripted witness. The full walkthrough, including three hard-won launch traps (never exec the `cursor` CLI wrapper; pass `--no-sandbox` since Chromium cannot nest inside Seatbelt any more than inside `bwrap`; detach stdio with `nohup` so the app survives the launching script exiting) is [`manual/guides/macos-ai-jail-setup.md`](manual/guides/macos-ai-jail-setup.md). One named gap carries forward from Linux's `--private-home`: the macOS GUI launcher has no private-`$HOME` substitute yet, so your real home directory stays *readable* inside the jail even though it stays *unwritable* — Steps 7 and 8 below say what that means in practice.
+**macOS.** There is no AppImage and no `bwrap` here; Cursor already ships as `Cursor.app`, and the enclosure is Apple's own Seatbelt (`sandbox-exec`), driven by this project's own launcher rather than `cargo install ai-jail`. Two tools share the work: upstream **ai-jail** grew a native macOS backend and is the right choice for jailing a **terminal agent or shell** (`ai-jail bash`, `ai-jail claude`); this project's own [`tools/cu/cursor_jail_macos.rish`](tools/cu/cursor_jail_macos.rish) (Rish-native) and [`tools/cu/cursor-jail-macos.sh`](tools/cu/cursor-jail-macos.sh) (bash elder) jail the **Cursor GUI app itself**, which upstream does not aim at. Both are witnessed live — a write inside the project succeeds, a write to the real `$HOME` is denied by the kernel, proven from inside a running jailed window, not just by a scripted witness. The full walkthrough, including three hard-won launch traps (never exec the `cursor` CLI wrapper; pass `--no-sandbox` since Chromium cannot nest inside Seatbelt any more than inside `bwrap`; detach stdio with `nohup` so the app survives the launching script exiting) is [`manual/guides/macos-ai-jail-setup.md`](manual/guides/macos-ai-jail-setup.md). One named gap carries forward from Linux's `--private-home`: the macOS GUI launcher has no private-`$HOME` substitute yet, so your real home directory stays *readable* inside the jail even though it stays *unwritable* — Steps 7 and 8 below say what that means in practice.
 
 ---
 
@@ -341,14 +341,14 @@ ssh -F .git/ssh_config_urbit -T git@codeberg.org
 
 `core.sshCommand` is per-repo (stored in `.git/config`, itself untracked), so this touches nothing global and nothing another project on the same Mac relies on.
 
-**Linux, when this host already runs another project's own identity.** The same collision can happen on a shared Ubuntu or NixOS machine: if this host already has a `~/.ssh/config` `Host github.com` / `Host codeberg.org` block pinned to an older project's own key, that block wins for every repo on the host, this one included. Linux's own answer is simpler than macOS's, though, because `tools/cursor-jail.sh` already defaults to `ai-jail --private-home` — real kernel user-namespaces give the jailed Cursor session a genuinely separate `$HOME`, so the *other* project's real `~/.ssh` and `~/.gnupg` are already invisible from inside any jailed session here, with no enumeration workaround needed at all (unlike macOS's Seatbelt, which has no namespace-level private-home primitive and must deny each real `$HOME` entry by name). What Linux still wants, the same as macOS, is a *working* identity of its own inside that private, empty jailed `$HOME` — generated the same way as Step 8b/8c below, run from an ordinary terminal outside any jail:
+**Linux, when this host already runs another project's own identity.** The same collision can happen on a shared Ubuntu or NixOS machine: if this host already has a `~/.ssh/config` `Host github.com` / `Host codeberg.org` block pinned to an older project's own key, that block wins for every repo on the host, this one included. Linux's own answer is simpler than macOS's, though, because `tools/cu/cursor-jail.sh` already defaults to `ai-jail --private-home` — real kernel user-namespaces give the jailed Cursor session a genuinely separate `$HOME`, so the *other* project's real `~/.ssh` and `~/.gnupg` are already invisible from inside any jailed session here, with no enumeration workaround needed at all (unlike macOS's Seatbelt, which has no namespace-level private-home primitive and must deny each real `$HOME` entry by name). What Linux still wants, the same as macOS, is a *working* identity of its own inside that private, empty jailed `$HOME` — generated the same way as Step 8b/8c below, run from an ordinary terminal outside any jail:
 
 ```bash
-rishi/bin/rishi run tools/generate_jail_local_keys_linux.rish
+rishi/bin/rishi run tools/g/generate_jail_local_keys_linux.rish
 # paste the printed SSH and GPG public keys into GitHub and Codeberg
 ```
 
-This mirrors the macOS jail-local generator directly: identity from `GLOW_PROFILE.bron`, a dedicated SSH deploy key per forge, a jail-local `known_hosts` (fetched via `ssh-keyscan`, since a fresh `--private-home` jail starts with none at all), and a passphrase-free, signing-only GPG key, all under this project's own gitignored `.ssh/` and `.gnupg-rye/`, all wired into git config directly. Once both keys are pasted into both forges, relaunch Cursor in the jail as usual (`./tools/cursor-jail.sh`); the jailed session can now push and sign under its own dedicated identity, and the host's other project never enters the jail's view at all.
+This mirrors the macOS jail-local generator directly: identity from `GLOW_PROFILE.bron`, a dedicated SSH deploy key per forge, a jail-local `known_hosts` (fetched via `ssh-keyscan`, since a fresh `--private-home` jail starts with none at all), and a passphrase-free, signing-only GPG key, all under this project's own gitignored `.ssh/` and `.gnupg-rye/`, all wired into git config directly. Once both keys are pasted into both forges, relaunch Cursor in the jail as usual (`./tools/cu/cursor-jail.sh`); the jailed session can now push and sign under its own dedicated identity, and the host's other project never enters the jail's view at all.
 
 ---
 
@@ -356,12 +356,12 @@ This mirrors the macOS jail-local generator directly: identity from `GLOW_PROFIL
 
 Here is the heart of it. The sandbox is sealed: with a private home, it cannot see your host's `~/.gnupg`, `~/.ssh`, or `~/.config/gh`. So to let the agent push and sign from **inside**, we keep a small, deliberate set of project-local materials — each one gitignored, each one safe.
 
-**macOS now has a real answer to this step, not just a gap.** Reading your real `~/.ssh` and `~/.gnupg` from inside the jail is convenient, yet it is also the weaker posture: with reads open and network allowed by default (Step 6), a compromised agent could exfiltrate your real master identity without ever needing a write. `tools/cursor_jail_macos.rish --harden-home` (and the bash elder, `tools/cursor-jail-macos.sh --harden-home`) closes exactly that hole — it denies reads to the real credential stores under `$HOME` (`~/.ssh`, `~/.gnupg`, `~/.aws`, `~/.config/gh`, and the rest of the named list in the launcher itself), while everything else stays open, unchanged. Apple's Seatbelt resolves an overlapping allow/deny pair to **deny, regardless of order or specificity** — proven on this host — so the launcher denies only the specific credential-store paths themselves rather than attempting a blanket dotfile deny with an allow-back (that shape silently loses the allow-back here).
+**macOS now has a real answer to this step, not just a gap.** Reading your real `~/.ssh` and `~/.gnupg` from inside the jail is convenient, yet it is also the weaker posture: with reads open and network allowed by default (Step 6), a compromised agent could exfiltrate your real master identity without ever needing a write. `tools/cu/cursor_jail_macos.rish --harden-home` (and the bash elder, `tools/cu/cursor-jail-macos.sh --harden-home`) closes exactly that hole — it denies reads to the real credential stores under `$HOME` (`~/.ssh`, `~/.gnupg`, `~/.aws`, `~/.config/gh`, and the rest of the named list in the launcher itself), while everything else stays open, unchanged. Apple's Seatbelt resolves an overlapping allow/deny pair to **deny, regardless of order or specificity** — proven on this host — so the launcher denies only the specific credential-store paths themselves rather than attempting a blanket dotfile deny with an allow-back (that shape silently loses the allow-back here).
 
 Before your first `--harden-home` launch, generate dedicated, jail-only keys and register them with both forges — from an **ordinary terminal, outside any jail**, on purpose: a "dedicated, revocable" key is a weaker promise if the same agent that will use it also generated it.
 
 ```bash
-rishi/bin/rishi run tools/generate_jail_local_keys_macos.rish
+rishi/bin/rishi run tools/g/generate_jail_local_keys_macos.rish
 # paste the printed SSH and GPG public keys into GitHub and Codeberg
 ```
 
@@ -373,7 +373,7 @@ The GPG trustdb quirk named below still applies either way — `git log --show-s
 timeout 10 git --no-pager log --show-signature -1 | cat
 ```
 
-**A real, honest limit on self-testing.** `tools/cursor_jail_macos_harden_witness.rish` proves `--harden-home`'s read-deny logic, yet only when run from a terminal that is not already inside a jail. Proven on this host: a *nested* `sandbox_apply` carrying an explicit `(deny ...)` rule fails outright, even though the identical profile applies cleanly as a first, non-nested call, and even though an allow-only nested profile (the plain write-fence witness) nests just fine. An agent already working inside a jailed window cannot fully self-certify `--harden-home` from within that same window — run its witness from Terminal.app instead.
+**A real, honest limit on self-testing.** `tools/cu/cursor_jail_macos_harden_witness.rish` proves `--harden-home`'s read-deny logic, yet only when run from a terminal that is not already inside a jail. Proven on this host: a *nested* `sandbox_apply` carrying an explicit `(deny ...)` rule fails outright, even though the identical profile applies cleanly as a first, non-nested call, and even though an allow-only nested profile (the plain write-fence witness) nests just fine. An agent already working inside a jailed window cannot fully self-certify `--harden-home` from within that same window — run its witness from Terminal.app instead.
 
 **8a. An allow-listing `.gitignore`.** When a repo lives inside a sandbox home shared with the editor and your files, ignore everything by default and allow back only the project. This guarantees keys and tokens can never be committed by accident:
 
@@ -444,10 +444,10 @@ From inside your project folder, start Cursor in the sandbox. This grants the ed
 ```bash
 cd ~/yourrepo
 chmod +x ./Cursor-3.13.10-x86_64.AppImage   # each new download
-rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
+rishi/bin/rishi run tools/l/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
 ```
 
-That is the preferred outer-terminal form on Ubuntu 26.04 LTS GNOME Wayland (Framework). Bash elder equivalent: `./tools/cursor-jail.sh --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu`. Once extracted, later launches can omit `--cursor` and keep `--gpu`.
+That is the preferred outer-terminal form on Ubuntu 26.04 LTS GNOME Wayland (Framework). Bash elder equivalent: `./tools/cu/cursor-jail.sh --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu`. Once extracted, later launches can omit `--cursor` and keep `--gpu`.
 
 That runs the same command by hand:
 
@@ -461,39 +461,39 @@ ai-jail --private-home --no-docker --gpu -- ./squashfs-root/AppRun --no-sandbox 
 
 ```bash
 # Preferred (Rish) — fresh download
-rishi/bin/rishi run tools/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
+rishi/bin/rishi run tools/l/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
 # Already extracted
-rishi/bin/rishi run tools/launch-cursor.rish --gpu
+rishi/bin/rishi run tools/l/launch-cursor.rish --gpu
 # Bash elder
-./tools/cursor-jail.sh --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
-./tools/cursor-jail.sh --extract ./Cursor-3.9.16-x86_64.AppImage   # legacy unpack + launch
-./tools/cursor-jail.sh --appimage /path/to/squashfs-root/AppRun    # legacy AppRun
+./tools/cu/cursor-jail.sh --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
+./tools/cu/cursor-jail.sh --extract ./Cursor-3.9.16-x86_64.AppImage   # legacy unpack + launch
+./tools/cu/cursor-jail.sh --appimage /path/to/squashfs-root/AppRun    # legacy AppRun
 ```
 
 **macOS** — pass the app bundle (or binary) the same way:
 
 ```bash
-rishi/bin/rishi run tools/cursor_jail_macos.rish --cursor /Applications/Cursor.app
+rishi/bin/rishi run tools/cu/cursor_jail_macos.rish --cursor /Applications/Cursor.app
 ```
 
 `--no-sandbox` here disables Chromium's own sandbox, which cannot nest inside `bwrap`; the real boundary is ai-jail's namespaces plus Landlock and seccomp. The display passes through so the window appears; everything else stays sealed.
 
-For a **copy-and-fill** launch with `tools/enclosure.conf` (optional paths and `AIJAIL_BIN`):
+For a **copy-and-fill** launch with `tools/e/enclosure.conf` (optional paths and `AIJAIL_BIN`):
 
 ```bash
-cp tools/enclosure.conf.example tools/enclosure.conf   # edit HANDLE, REPO, binary paths
-./tools/cursor-jail.sh
+cp tools/e/enclosure.conf.example tools/e/enclosure.conf   # edit HANDLE, REPO, binary paths
+./tools/cu/cursor-jail.sh
 ```
 
 The older personal-copy pattern still works if you prefer it:
 
 ```bash
-cp tools/launch-cursor.sh.example tools/launch-cursor.sh
-chmod +x tools/launch-cursor.sh
-./tools/launch-cursor.sh
+cp tools/l/launch-cursor.sh.example tools/l/launch-cursor.sh
+chmod +x tools/l/launch-cursor.sh
+./tools/l/launch-cursor.sh
 ```
 
-`tools/launch-cursor.sh` stays gitignored; `tools/cursor-jail.sh` and `tools/launch-cursor.rish` are tracked for everyone who clones the repo.
+`tools/l/launch-cursor.sh` stays gitignored; `tools/cu/cursor-jail.sh` and `tools/l/launch-cursor.rish` are tracked for everyone who clones the repo.
 
 ### Two Notices You May See, Both Harmless
 
@@ -512,13 +512,13 @@ You can run **Zed** in its own ai-jail enclosure while **Cursor** stays open —
 Zed's **Claude Agent** bills through **Anthropic's API** (export `ANTHROPIC_API_KEY` before launch, or use `/login` in a Claude thread). That is independent of Cursor's subscription.
 
 ```bash
-cp tools/launch-zed.sh.example tools/launch-zed.sh
-chmod +x tools/launch-zed.sh
+cp tools/l/launch-zed.sh.example tools/l/launch-zed.sh
+chmod +x tools/l/launch-zed.sh
 export ANTHROPIC_API_KEY="sk-ant-..."    # your Anthropic console key
-./tools/launch-zed.sh
+./tools/l/launch-zed.sh
 ```
 
-On **GNOME Wayland** (Ubuntu 26.04 LTS on this Framework pier), ai-jail passes the display through; set **`USE_GPU=true`** in `tools/enclosure.conf` so Zed can reach `/dev/dri` (Vulkan/WebGPU). Without it, Zed may print `Landlock: fully enforced` and exit with no window. Full concurrency models, troubleshooting, and NixOS notes live in **`context/specs/enclosure-editors.md`**.
+On **GNOME Wayland** (Ubuntu 26.04 LTS on this Framework pier), ai-jail passes the display through; set **`USE_GPU=true`** in `tools/e/enclosure.conf` so Zed can reach `/dev/dri` (Vulkan/WebGPU). Without it, Zed may print `Landlock: fully enforced` and exit with no window. Full concurrency models, troubleshooting, and NixOS notes live in **`context/specs/enclosure-editors.md`**.
 
 ---
 

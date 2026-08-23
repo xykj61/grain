@@ -25,7 +25,7 @@ You just bought a real device — a Google Pixel 10a — and you want GrapheneOS
 - **A real USB-C cable** — the one that came in the box with the Pixel 10a, if you still have it.
   Avoid a USB hub (the front-panel ports on a desktop case are usually a hub); plug directly into a rear port on this laptop. Cheap or damaged cables are, by GrapheneOS's own account, the single most common cause of installer trouble.
 - **Not a virtual machine** — install from this real Ubuntu desktop directly, never through a VM (USB passthrough for this kind of low-level flashing is unreliable, and VMs often shortchange memory/storage).
-  This also means: **do this from your ordinary desktop session, outside `tools/cursor-jail.sh`'s own ai-jail** — the jail's whole point is walling off hardware and devices, which is exactly what this task needs to reach.
+  This also means: **do this from your ordinary desktop session, outside `tools/cu/cursor-jail.sh`'s own ai-jail** — the jail's whole point is walling off hardware and devices, which is exactly what this task needs to reach.
 - **Two Linux-specific housekeeping steps**, both one-time:
   ```bash
   sudo apt install android-sdk-platform-tools-common

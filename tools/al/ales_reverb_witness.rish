@@ -1,0 +1,41 @@
+# tools/al/ales_reverb_witness.rish — the REVERB: Schroeder's reverberator, parallel combs summed then diffused through series allpasses (ALES186).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES186.
+# Design read: active-designing/date/20260815/20260815-093042_fill-ales186-lotus-reverb.md
+# Stands on: lotus/echo.rye (ALES66 — the COMB stage and its precheck, run once per comb on a dry copy); lotus/allpass.rye (ALES184 — the
+# ALLPASS diffusion stage and its precheck, run in series on the comb-bank sum); lotus/timeline.rye (ALES2 — the Clip, max_clip, and the one
+# true saturate reused for the parallel sum); lotus/mix.rye (ALES3 — the same saturate, the summing lesson).
+#
+# lotus/reverb.rye composes the two proven time-based primitives into the wing's keystone: wet = series_allpass(sum of parallel combs(dry)).
+# It invents no new arithmetic — every sample it writes is written by a stage already proven byte for byte; its own work is the SHAPE of the
+# composition. The selftest proves: the composition law (a reverb of two combs and one allpass over an impulse EQUALS echo on two copies
+# summed once through saturate then the allpass on the sum, byte for byte, with a hand-computed value anchoring it); the single-comb
+# degenerate (one comb and no allpass IS ALES66's echo); silence stays silence; the tail decays to silence within the clip (both stages
+# below unity, so their composition settles); the saturation law (two loud in-phase combs sum past the i16 rail and pin to sample_max); and
+# the refusal / atomicity laws (an empty bank NoCombs, an over-long bank TooManyStages, a bad comb or allpass delay BadDelay, a feedback or
+# gain at unity BadGain, an out-of-range span BadRange — including a bad allpass AFTER valid combs, the clip untouched, so the reverb is
+# atomic, every stage validated before any write). Purely local — the delays counted in sample indices not milliseconds, no network, no
+# keys, no funds, no real device, no sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_reverb_witness.rish
+
+say "ales-reverb: Language EN — the time-based wing now holds every primitive the reverb was ever going to stand on: the comb is the feedback echo (ALES66), the allpass is Schroeder's diffusion stage (ALES184), both mono and both stereo. The reverb, named since ALES66 as the wing's large composition, was never one more read of the delay line; it is the NETWORK those two stage kinds compose into — and with both stages proven, the network itself is the keystone crux the whole wing was climbing toward."
+say "ales-reverb: Style Radiant — the law is stated positively: wet = series_allpass(sum of parallel combs(dry)). The combs run in parallel, each on its own copy of the dry so they never feed one another, their outputs summed and saturated ONCE per sample; the allpasses run in series on that sum, smearing the comb train into a dense reverberant wash. It invents no new arithmetic — every sample is written by a stage already proven byte for byte, so the reverb's own work is the SHAPE of the composition; a bank of one comb and no allpass IS the plain echo, the honest degenerate it stands on."
+say "ales-reverb: Lens TAME — one bounded i16 Clip, a u32 span, and two bounded slices of plain-fraction stage specs (up to max_stages combs and allpasses); each comb run on one bounded whole-clip copy through ALES66's echo, the comb-bank sum accumulated in one bounded [max_clip]i16 scratch and saturated once, each allpass run through ALES184's own bounded snapshot. Every stage and the span are validated up front through the stages' own precheck (NoCombs, TooManyStages, BadDelay, BadGain, BadRange) BEFORE any write, so the reverb is atomic — a bad late stage leaves the clip untouched; it writes values only and never a length; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/reverb"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb.rye -femit-bin=${bin}"]
+assert build.ok else "ales-reverb: build failed — ${build.err}"
+
+let outfile = "lotus/bin/reverb.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-reverb: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-reverb: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-reverb' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-reverb: selftest did not print the GREEN ales-reverb line"

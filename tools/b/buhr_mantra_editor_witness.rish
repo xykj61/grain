@@ -1,0 +1,36 @@
+# tools/b/buhr_mantra_editor_witness.rish — BUHR Journey 4, Rung 1.
+#
+# An edit is an append the graph already knows how to show. Journey 2 built the
+# reading half of Realidream's promise — the append-only log rendered as a readable
+# revision graph. This rung opens the writing half: a commit reads the lane's head
+# revision through the browser's own accessor, appends the next revision by Mantra's
+# public append_leaf (which enforces the append-only order and immutability laws), and
+# the very same render paints the grown graph. The proof is that the after-graph
+# carries exactly one new r<n> node on the edited lane, its chain link intact, every
+# other lane byte-for-byte unchanged — the surface holds no state the history does not.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/buhr_mantra_editor_witness.rish
+
+say "buhr-j4r1: Language EN — an edit is a Mantra append, and the same browser render paints the grown revision graph."
+say "buhr-j4r1: Lens TAME — the commit reads the head through the browser's accessor, appends by Mantra's own law; proven by exactly one new node and every other lane unchanged."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/mantra-editor"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mantra_editor.rye -femit-bin=${bin}"]
+assert build.ok else "buhr-j4r1: mantra_editor build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr-j4r1: mantra_editor selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr-j4r1: selftest did not speak GREEN"
+assert selftest.out contains "the b.txt lane grew r1 -> r2, every other lane unchanged" else "buhr-j4r1: the edit-grows-the-graph proof is missing"
+assert selftest.out contains "every earlier revision still stands (append-only)" else "buhr-j4r1: the append-only proof is missing"
+assert selftest.out contains "refuses — LaneUnknown" else "buhr-j4r1: the unknown-lane refuse proof is missing"
+
+# Journey 2 stays its own green binary — the editor is strictly additive over the reader.
+let rung2 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mantra_browser_witness.rish 2>&1"]
+assert rung2.ok else "buhr-j4r1: journey-two reader witness regressed"
+assert rung2.out contains "GREEN: BUHR-J2 " else "buhr-j4r1: the journey-two reader lost its green"
+
+say "GREEN: BUHR-J4r1 — an edit appends a revision and the same graph grows by exactly that node; read and write share one append-only history."

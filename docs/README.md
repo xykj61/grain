@@ -12,7 +12,7 @@
 
 - **Raw beneath** — dated notes, counsel, Bron logs, **foundations/** stay immutable.
 - **Compress above** — these pages distill many sources into operator guides.
-- **Lint keeps honest** — `tools/living_docs_lint.rish` (ratchet-advisory · five duties).
+- **Lint keeps honest** — `tools/l/living_docs_lint.rish` (ratchet-advisory · five duties).
 - **Pages compress; never replace.** Bron cards point ([`compass_card.bron`](compass_card.bron)); no load-bearing pins in docs.
 
 ## Index

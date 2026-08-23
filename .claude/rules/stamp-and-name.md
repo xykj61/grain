@@ -43,23 +43,23 @@ A room folds when it outgrows a reader. The shape is:
 
 **The whole stamp stays in the filename**, and the eight repeated characters earn their place three times over:
 
-- **The move becomes an invertible function.** Old path to new is computable from the basename alone -- read the first eight characters, insert `date/YYYYMMDD/`. No index, no table, no memory, and it works for rooms not yet folded. This is what makes a stale reference *resolvable* instead of lost, and it is the whole basis of [`tools/dated_path_resolve.rish`](../../tools/dated_path_resolve.rish).
+- **The move becomes an invertible function.** Old path to new is computable from the basename alone -- read the first eight characters, insert `date/YYYYMMDD/`. No index, no table, no memory, and it works for rooms not yet folded. This is what makes a stale reference *resolvable* instead of lost, and it is the whole basis of [`tools/d/dated_path_resolve.rish`](../../tools/d/dated_path_resolve.rish).
 - **The basename stays globally unique.** `152409_align.md` can exist on two hundred days; `grep -r` would then find the wrong one, silently, which is the worst failure a reference can have.
 - **The name survives leaving its path.** Editor tabs, `find` output, a filename pasted into a message -- `20260821-152409_the-standfast-read` still says when and what. `152409_the-standfast-read` says neither.
 
-**Living things are repointed; dated testimony is resolved.** A room's own index is repointed in the same pass, because an index's whole job is to point correctly. So is **living code** -- a witness running `grep -q ... <room>/<file>.md` resolves nothing, it simply fails, and folding four rooms broke roughly a thousand such functional references at once. Dated testimony is never rewritten. The line needs no roster because the tree already draws it: **a file whose own basename carries a one-clock stamp is testimony**; everything else is living. [`tools/dated_path_repoint.rish`](../../tools/dated_path_repoint.rish) applies exactly that rule, and [`tools/dated_path_repoint_witness.rish`](../../tools/dated_path_repoint_witness.rish) proves it -- a living file repointed, a dated-named file left byte-identical, no double fold, idempotent on a second pass. With 4,138 broken dated references already standing across 19,787 before the first fold, repointing by hand would mean editing thousands of dated logs -- a Tier 2 breach at scale, in service of tidiness. A stale reference is **resolved**, never rewritten:
+**Living things are repointed; dated testimony is resolved.** A room's own index is repointed in the same pass, because an index's whole job is to point correctly. So is **living code** -- a witness running `grep -q ... <room>/<file>.md` resolves nothing, it simply fails, and folding four rooms broke roughly a thousand such functional references at once. Dated testimony is never rewritten. The line needs no roster because the tree already draws it: **a file whose own basename carries a one-clock stamp is testimony**; everything else is living. [`tools/d/dated_path_repoint.rish`](../../tools/d/dated_path_repoint.rish) applies exactly that rule, and [`tools/d/dated_path_repoint_witness.rish`](../../tools/d/dated_path_repoint_witness.rish) proves it -- a living file repointed, a dated-named file left byte-identical, no double fold, idempotent on a second pass. With 4,138 broken dated references already standing across 19,787 before the first fold, repointing by hand would mean editing thousands of dated logs -- a Tier 2 breach at scale, in service of tidiness. A stale reference is **resolved**, never rewritten:
 
 ```
-rishi/bin/rishi run tools/dated_path_resolve.rish <reference> [<citing-file>]
+rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference> [<citing-file>]
 ```
 
-**A room folds past 256 flat files** -- a power of two, well below GitHub's 1,000-entry listing cap, because a bound placed at the cliff fails on the day it matters. [`tools/room_bound_witness.rish`](../../tools/room_bound_witness.rish) discovers rooms rather than listing them, so a room made tomorrow cannot escape the meter by going unnamed.
+**A room folds past 256 flat files** -- a power of two, well below GitHub's 1,000-entry listing cap, because a bound placed at the cliff fails on the day it matters. [`tools/r/room_bound_witness.rish`](../../tools/r/room_bound_witness.rish) discovers rooms rather than listing them, so a room made tomorrow cannot escape the meter by going unnamed.
 
 **A room earns ENFORCE by folding.** Once a room has been carried across, its references repointed and its resolver proven, letting it drift back over the bound is a choice rather than an inheritance -- so it moves from advisory to enforced, where crossing 256 is a red. Six rooms hold that seat: **`session-logs`, `counsel`, `active-designing`, `expanding-prompts`, `waymarks`** (`20260821.171331`), and **`active-development`**, which was **born enforced** on `20260821.174047` -- a room opened under the law never accumulated a backlog, so it has nothing to grandfather. An enforced room is **reported whether or not it holds anything** -- two of the five sit at zero flat files, and a discovery-only report dropped them entirely; a room that vanishes from a meter is not a room that passed it. Every other room stays advisory until its own fold.
 
 **The three tools must agree on what a dated file is.** The fold moves them, the resolver recovers references to them, and the census counts them -- and each disagreement cost a round: a fold looser than the resolver would have moved 33 files it could never find again, a census blind to the fold rule reported 82 recoveries as ambiguous, and a repointer whose regex did not anchor the extension silently missed 49 real references. One shape, `YYYYMMDD-HHMMSS_sprig.ext`, checked the same way everywhere.
 
-**No fold ships without the witness green.** [`tools/dated_path_witness.rish`](../../tools/dated_path_witness.rish) proves the resolver's five verdicts on real cases, proves the fold rule on a room that has never folded, refuses three RED paths, and holds the **lost-reference** census under a ceiling with **no slack**. The gate is on what the resolver *cannot* recover -- a basename that exists nowhere, or one at two paths where no answer is safe -- rather than on the whole broken count, because a reference the resolver recovers is the expected steady state and rises whenever a room folds. Moving a file changes its path and never its basename, so a correct fold leaves the lost count exactly where it stood. Lower it when a repair lands; never raise it.
+**No fold ships without the witness green.** [`tools/d/dated_path_witness.rish`](../../tools/d/dated_path_witness.rish) proves the resolver's five verdicts on real cases, proves the fold rule on a room that has never folded, refuses three RED paths, and holds the **lost-reference** census under a ceiling with **no slack**. The gate is on what the resolver *cannot* recover -- a basename that exists nowhere, or one at two paths where no answer is safe -- rather than on the whole broken count, because a reference the resolver recovers is the expected steady state and rises whenever a room folds. Moving a file changes its path and never its basename, so a correct fold leaves the lost count exactly where it stood. Lower it when a repair lands; never raise it.
 
 ## Write an illustration as a shape
 
@@ -75,7 +75,7 @@ context specs all carry it today; a room opened tomorrow carries it from its fir
 Three things follow, and each is already machinery rather than intention:
 
 - **A stamp comes from the one clock, never from memory.** `TZ=America/New_York date +%Y%m%d.%H%M%S`
-  on this pier, proven by `tools/one_clock_witness.rish`.
+  on this pier, proven by `tools/o/one_clock_witness.rish`.
 - **A version is chronological.** A later stamp is a later version; no counted suffix is minted.
   A ladder is marked by stamp and name, and its length is counted with `git log` rather than
   carried inside a name.
@@ -86,6 +86,39 @@ Three things follow, and each is already machinery rather than intention:
 **The public projection versions the same way.** The seed ships every fifth round
 ([`../../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md`](../../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md)),
 so its freshness is measured in rounds against the same clock rather than in an announcement.
+
+## A room folds by what its files are found by -- amended `20260823.144100`
+
+The bound is one number for every room: **256 flat entries.** The fold shape follows from a
+different question, and it has exactly two answers today.
+
+**A room whose files are found by WHEN folds by day**, into `date/YYYYMMDD/`. Session logs,
+counsel, the design rooms, waymarks -- you look for the note from the afternoon the decision was
+made, so the day is the key and the whole stamp stays in the basename.
+
+**A room whose files are found by WHAT folds by first sprig letter**, into `<room>/<letter>/`, with
+a letter that stands over bound alone splitting one letter deeper: `tools/ca/`, `tools/cr/`. Nobody
+looks for the witness they wrote on a Tuesday; they look for `caravan_suite_witness.rish`. `tools/`
+folded this way on `20260823.144100`, carrying 1,917 flat entries into 35 rooms on Keaton's word.
+
+**Both keep the one property that makes a fold safe:** the new path is a pure function of the
+basename, so a stale reference is **resolved rather than rewritten** and no index can go stale.
+`tools/d/dated_path_resolve.rish` computes the day answer; `tools/t/tool_path_resolve.rish`
+computes the letter answer, trying the two-letter room rather than looking up a table of which
+letters split. Living references are repointed in the same round -- `tools/d/dated_path_repoint.rish`
+and `tools/t/tool_path_repoint.rish` -- while dated testimony keeps every word it wrote.
+
+**One extension names its own room, ahead of the letter.** A `.rye` source of `tools/` lives in
+`tools/rye/`, together with the crypto shims and the `enrich/` room those sources import by bare
+name. Zig refuses an import that escapes the root file's directory, so a bare-name `@import` is a
+directory relationship the language enforces, and a room whose members import one another that way
+is one room by the compiler's own rule. The extension is visible in the basename, so the resolver
+stays a pure function.
+
+**A meter reads the room by its own rule.** `tools/fixtures/room_bound_scan.sh` counts a day-folded
+room by dated basenames and a letter-folded room by every flat entry, printing `counts=all` beside
+the second. That distinction is why `tools/` reached **7.4x the bound with every guard green**: not
+one of its entries carried a stamp, so the dated count read zero for the room's whole life.
 
 ## Accrete-never-break
 

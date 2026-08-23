@@ -1,0 +1,42 @@
+# tools/m/min_enclosing_circle_witness.rish -- the MINIMUM ENCLOSING CIRCLE (smallest covering disk) of a convex hull, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/convex_diameter.rye reads a shape's DIAMETER, the farthest pair of hull vertices. A
+# natural mistake is to read that as the shape's circle -- the disk whose diameter is the farthest pair. That disk does NOT always
+# cover the shape: an acute triangle's farthest pair is its longest edge, yet the disk on that edge leaves the third vertex outside,
+# and the smallest covering disk is the CIRCUMCIRCLE of all three. This rung reads that smallest covering disk directly by WELZL's
+# incremental move-to-front, with EXACT integer containment predicates and NO tolerance; only the reported center and radius are
+# read in f64, as image/convex_diameter.rye reports its length.
+#
+# The crux this witness proves on metal: an ACUTE triangle needs its 3-point circumcircle (its farthest-pair diameter disk leaves
+# the apex outside, an exact dot-product predicate) while a RIGHT triangle's minimum enclosing circle IS its hypotenuse-diameter
+# disk (a 2-point support, radius half the hypotenuse), distinguishing exactly when the round bound is the extra fact the diameter
+# cannot name; Welzl AGREES with an exact-RATIONAL brute-force oracle (every enclosing 2- and 3-subset disk, minimized by i128
+# cross-multiplication) on the triangles, a 5x5 raster block, and an irregular hexagon; every hull vertex enclosed; containment and
+# fits-through-a-round-hole reads; refusals by name and determinism. No network, no key, no funds -- the smallest-covering-disk
+# reader a surface names the day it wants a shape's round outer bound, its containment radius, or whether it clears a round hole.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/min_enclosing_circle_witness.rish
+
+say "min_enclosing_circle: Language EN -- Season G minimum enclosing circle (smallest covering disk) over image/convex_hull.rye's hull; the smallest disk covering every vertex by WELZL's incremental move-to-front, EXACT integer containment predicates, no tolerance; only the reported center and radius are read in f64, as image/convex_diameter.rye reports its dimensions."
+say "min_enclosing_circle: Style Radiant -- compose not braid: this rung owns only Welzl's sweep, the exact containment predicates (a two-point dot product, a three-point incircle determinant), and the reads over the circle; convex_hull owns the hull, contour the Point type. No gather, no blend, no codec, no color, no pixel-writing loop -- a reading, not a render."
+say "min_enclosing_circle: Lens TAME -- the hull is swept under min_circle_max_points; two in-image coordinates give a dot product under 2^31 in i64 and an incircle determinant under 2^60 in i128, so no accumulator wraps; a collinear three-point support refuses NotConvex, an empty hull EmptySource, an over-long hull HullTooLong; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/min_enclosing_circle"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/min_enclosing_circle.rye -femit-bin=${bin}"]
+assert build.ok else "min_enclosing_circle: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "min_enclosing_circle: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "min_enclosing_circle: ${out}"
+
+assert selftest.out contains "GREEN image-min-enclosing-circle" else "min_enclosing_circle: selftest did not print the GREEN line"
+assert selftest.out contains "the smallest covering disk is the 3-point CIRCUMCIRCLE" else "min_enclosing_circle: the acute-triangle crux did not print"
+assert selftest.out contains "Welzl AGREES with an exact-RATIONAL brute-force oracle" else "min_enclosing_circle: the oracle-agreement crux did not print"
+assert selftest.out contains "FITS-THROUGH-A-ROUND-HOLE" else "min_enclosing_circle: the containment read did not print"
+
+say "min_enclosing_circle: GREEN -- the smallest covering disk of a convex hull by Welzl's move-to-front agrees with an exact-rational brute-force oracle on every fixture; an acute triangle needs its 3-point circumcircle where the diameter disk leaves the apex outside, a right triangle's circle is its hypotenuse-diameter disk; every hull vertex enclosed, containment and fits-through-a-round-hole reads riding on it; refusals by name and determinism, on metal."

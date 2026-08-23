@@ -1,0 +1,51 @@
+# tools/al/ales_stereo_reverb_tone_witness.rish — the stereo tone: the reverb's DARKNESS knob across a stereo master (ALES199).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES199.
+# Design read: active-designing/date/20260815/20260815-104900_fill-ales199-lotus-stereo-reverb-tone.md
+# Stands on: lotus/stereo_reverb_preset.rye (ALES191 — the named-room stereo wet, run over the master unchanged); lotus/tone.rye (ALES40 — the
+# one-pole low-pass and its precheck, run per channel); lotus/pan.rye (the StereoClip); lotus/clock.rye (ALES5 — the sample clock); lotus/reverb_tone.rye
+# (ALES198 — the mono tone this mirrors per ear).
+#
+# lotus/stereo_reverb_tone.rye carries the reverb's DARKNESS knob across a stereo master — the same high-cut on the reverberant tail, over both
+# channels, one shared coefficient, the image held. It reverberates the master wet in place through ALES191's stereo_reverb_preset UNCHANGED, then
+# rolls the treble off EACH channel's wet with ALES40's proven one-pole low-pass at the same coefficient, no cross-channel read; tone_num == tone_den
+# is the identity, a smaller fraction darker. It invents no new audio arithmetic and prechecks the tone coefficient BEFORE the wet is written, so a
+# bad tone leaves both channels DRY and balanced (atomic). The selftest proves: at tone_num == tone_den the span equals stereo_reverb_preset byte for
+# byte on both channels; for a sub-unity coefficient each channel equals stereo_reverb_preset then tone.low_pass on that channel byte for byte and
+# each darkened channel differs from its wet; each darkened channel's high-frequency roughness is strictly less than its wet's; the image is held (a
+# centred master identical channel-to-channel, a stereo master distinct); the channels leave balanced and silence stays silence; and the faults
+# forward atomic (a bad tone coefficient BadTone with both channels still dry, a span past the clip DurationTooLong, an out-of-range span BadRange).
+# Purely local — one StereoClip, a validated clock; no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stereo_reverb_tone_witness.rish
+
+say "ales-stereo-reverb-tone: Language EN — ALES198 gave the MONO reverb its darkness knob (a high-cut on the reverberant tail, so the room absorbs highs the way a real space does). A keeper mixing a STEREO master still had no such knob, exactly as the pre-delay comfort stopped at mono before ALES195 carried it across. This rung is the thin twin ALES198 named next: the SAME high-cut, over BOTH channels of a StereoClip, one shared coefficient, the image held."
+say "ales-stereo-reverb-tone: Style Radiant — the identity edge is stated positively and proven exact on both ears: at tone_num == tone_den the span equals stereo_reverb_preset byte for byte (a full-open tone is exactly the un-darkened stereo reverb); a smaller fraction rolls off more treble, and each darkened channel's high-frequency roughness is strictly less than its wet's — the tail darkens on both ears. The image is held: a centred master stays identical channel-to-channel, a stereo master keeps its channels distinct."
+say "ales-stereo-reverb-tone: Lens TAME — one StereoClip of i16 PCM, a validated clock, and ALES191's fixed banks; NO new audio arithmetic — the tone is ALES40's proven one-pole low-pass over the proven stereo wet, run per ear; StereoReverbToneError = stereo_reverb_preset.StereoReverbPresetError || BadTone, the tone coefficient PRECHECKED before the wet is written so a BadTone leaves both channels dry and balanced (atomic), DurationTooLong / BadRange / BadTone by name before any write; siloed to lotus/, no network, no keys, no funds, no device. A wet-tail tone; a true in-loop Freeverb damping is named as a separate horizon, not claimed."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_reverb_tone"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_tone.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-reverb-tone: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_reverb_tone.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-reverb-tone: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-reverb-tone: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverb-tone' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-reverb-tone: selftest did not print the GREEN ales-stereo-reverb-tone line"
+
+# This rung runs ALES191's stereo_reverb_preset over its public API for the wet — re-prove the stereo named-room preset still stands green beside it.
+let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_preset.rye -femit-bin=lotus/bin/stereo_reverb_preset && lotus/bin/stereo_reverb_preset selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb-preset' && echo yes"]
+assert (trim preset.out) == "yes" else "ales-stereo-reverb-tone: the ALES191 stereo named-room preset regressed under its tone"
+
+# And re-prove ALES198's mono tone still stands green — the mono knob this mirrors per ear.
+let monot = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_tone.rye -femit-bin=lotus/bin/reverb_tone && lotus/bin/reverb_tone selftest 2>&1 | grep -q 'GREEN ales-reverb-tone' && echo yes"]
+assert (trim monot.out) == "yes" else "ales-stereo-reverb-tone: the ALES198 mono reverb tone regressed under its stereo twin"
+
+say "ales-stereo-reverb-tone: GREEN — the stereo tone: the reverb's DARKNESS knob across a stereo master. Reverberate the master wet in place through ALES191's stereo_reverb_preset unchanged, then roll the treble off each channel's wet with ALES40's proven one-pole low-pass at the same coefficient, no cross-channel read — tone_num == tone_den the identity, a smaller fraction darker — no new audio arithmetic, every darkened sample written by a proven stage. Proven on both channels: at tone_num == tone_den exactly stereo_reverb_preset byte for byte; for a sub-unity coefficient each channel equals stereo_reverb_preset then tone.low_pass on that channel byte for byte and each darkened channel differs from its wet; each darkened channel's high-frequency roughness is strictly less than its wet's; the image is held (a centred master identical channel-to-channel, a stereo master distinct); the channels leave balanced and silence stays silence; an illegal tone coefficient refuses BadTone with both channels still dry, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving both channels untouched; the ALES191 stereo preset and the ALES198 mono tone stay GREEN beside it. The tone axis now stands whole for mono and stereo; a true in-loop damped-comb primitive is the richer horizon."

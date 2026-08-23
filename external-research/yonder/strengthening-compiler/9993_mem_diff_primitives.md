@@ -137,7 +137,7 @@ Eleven programs, all green. `mem_diff_test.rye` exercises copyForwards, startsWi
 | `rye/lib/std/mem.zig` | Five strengthenings: precondition on `copyForwards`; `maybe` on `startsWith` and `endsWith`; postcondition on `find`; postcondition on `SplitIterator.next` |
 | `rye/tests/mem_diff_test.rye` | Parity test: all five functions across interesting cases |
 | `tools/parity.sh` | Corpus extended to 11 programs |
-| `tools/parity.rish` | Same witness extension |
+| `tools/p/parity.rish` | Same witness extension |
 | `external-research/yonder/strengthening-compiler/9993_mem_diff_primitives.md` | This record |
 
 ---
@@ -197,7 +197,7 @@ Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
 |------|-------|--------|
 | `rye/lib/std/mem.zig` | `diff` — Phase 4 `usize` seam policy applied | pending |
 | `rye/tests/mem_diff_test.rye` | witness program | pending |
-| `tools/parity.rish` | witness registered | pending |
+| `tools/p/parity.rish` | witness registered | pending |
 | `external-research/yonder/strengthening-compiler/9993_mem_diff_primitives.md` | pass record + audited surfaces | pending |
 | `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | pending |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9993 | pending |

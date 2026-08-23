@@ -1,0 +1,40 @@
+# tools/f/fora_catchup_witness.rish — a lagging pier brought current from a leader's snapshot + tail (FORA15).
+#
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# FORA15. Design read: active-designing/date/20260814/20260814-083100_fora15-constel-catchup-snapshot-install.md
+# Law kin: .claude/rules/placeholder-ship-names.md — the real-sky leader is built by decrees whose replies deframe at the
+# naming-law border, so a real address can never enter the history a follower catches up to.
+#
+# constel/catchup.rye spends FORA14's snapshot on the pier that fell behind. A follower lacks the effective entries
+# [follower.total(), leader.total()); the leader can serve an index only at or past its snapshot boundary. So the follower's
+# position chooses the method: TAIL CATCH-UP serves the missing tail live (verifying the overlap first, refusing Diverged on a
+# real disagreement); SNAPSHOT INSTALL adopts a compacted leader's summary wholesale then takes its tail (Raft's InstallSnapshot,
+# resting on FORA14's snapshot-identity). The selftest proves: tail catch-up appends and reads back; snapshot install reaches a
+# far-behind follower; already-current returns 0 untouched; a divergent overlap refuses Diverged unchanged; a longer follower
+# refuses Ahead; no fork across catch-up; bounded past max_tail; and a real decree-built sky drives it. Purely local — no socket,
+# no network, no keys, no funds, no real address ever formed.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/fora_catchup_witness.rish
+
+say "fora-catchup: Language EN — FORA15 brings the pier that fell behind current: a follower lacking a leader's committed tail either has it served live (tail catch-up) or, if it is too far behind to replay, installs the leader's compact snapshot and takes the tail — Raft's InstallSnapshot named in Constel's terms, spending FORA14's snapshot directly."
+say "fora-catchup: Style Radiant — the pier that was offline finds its way current; the snapshot it installs is the one true summary of what the sky agreed, and no catch-up ever papers over a real disagreement — a divergent overlap is refused whole."
+say "fora-catchup: Lens TAME — every catch-up ends with follower.equivalent(leader) asserted; the verifiable overlap is checked before a single append; the follower's tail stays bounded (auto-compacting) however far behind it was; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/catchup"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/catchup.rye -femit-bin=${bin}"]
+assert build.ok else "fora-catchup: build failed — ${build.err}"
+
+let outfile = "constel/bin/catchup.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-catchup: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-catchup: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-catchup' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-catchup: selftest did not print the GREEN fora-catchup line"
+
+say "fora-catchup: GREEN — the pier that fell behind reaches the sky's whole history, by served tail or installed snapshot, never a fork; the constel consensus track now heals a lagging replica, proven pure on the bench."

@@ -13,7 +13,7 @@ pond/bin/drawn-terminal sessiontest
 
 if [ -n "${WAYLAND_DISPLAY:-}" ]; then
   echo "preflight: Wayland metalsmoke..."
-  rishi/bin/rishi run tools/slc2a_ring3_metal.rish
+  rishi/bin/rishi run tools/s/slc2a_ring3_metal.rish
 else
   echo "preflight: WAYLAND_DISPLAY unset — skip metalsmoke; run preflight again on GNOME before live close."
 fi

@@ -1,0 +1,12 @@
+# rishi_fold_witness.rish — accumulate: fold over a list · 20260725.
+#
+#   rishi/bin/rishi run tools/r/rishi_fold_witness.rish
+
+let items = [1 2 3 4]
+let total = fold items from 0 as acc x: acc + x
+assert total == 10 else "fold sum failed"
+
+let joined = fold ["a" "b" "c"] from "" as acc s: join [acc s] ""
+assert joined == "abc" else "fold join failed"
+
+say "GREEN: Rishi fold — accumulate (sum · join-with) without shell."

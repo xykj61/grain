@@ -40,7 +40,7 @@ The scrub move and the loop region are reused whole; only the sorted named set a
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_markers_witness.rish`: **the crux** — markers added out of order stay sorted and unique, `nearest` returns the true nearest at several query points with ties resolving to the lower position, and a scrub `snap`ped to a track lands exactly on the nearest marker's position; a marker carries its name back byte-for-byte; `region_between` yields exactly the loop `[pos_i, pos_j)` and drives a real ALES14 loop; and the edges refuse by name — a duplicate position (`Duplicate`), a position past the master (`PastEnd`), an empty or oversized name (`BadName`), a track filled past the bound (`MarkersFull`), a nearest query on an empty track (`NoMarkers`), a non-ascending index pair (`BadPair`). Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker.
+`tools/al/ales_markers_witness.rish`: **the crux** — markers added out of order stay sorted and unique, `nearest` returns the true nearest at several query points with ties resolving to the lower position, and a scrub `snap`ped to a track lands exactly on the nearest marker's position; a marker carries its name back byte-for-byte; `region_between` yields exactly the loop `[pos_i, pos_j)` and drives a real ALES14 loop; and the edges refuse by name — a duplicate position (`Duplicate`), a position past the master (`PastEnd`), an empty or oversized name (`BadName`), a track filled past the bound (`MarkersFull`), a nearest query on an empty track (`NoMarkers`), a non-ascending index pair (`BadPair`). Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker.
 
 ## The road on
 

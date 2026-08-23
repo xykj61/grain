@@ -1,0 +1,33 @@
+# tools/ay/ayre_j7_fairtrade_cert_witness.rish — AYRE Journey 7 (Fair-trade), Rung 1.
+#
+# Season 2, Yield — the harvest's second promise: trades fairly. A fair-trade certificate
+# should mean one honest thing — a set of criteria a cooperative record either satisfies in
+# full or fails by name. pond/apps/fairtrade_cert.rye carries BUHR-J7r3's Brix-declaration
+# pattern from artifacts to fair-trade criteria: a `format fairtrade-cert-v1` certificate is
+# evaluated against a cooperative record of held attestations, satisfied only when the
+# record holds every required criterion (in declared order), refusing the whole
+# certification (Unsatisfied) on the first criterion the record lacks — never a certified
+# gap. A wrong header, a bad tag, an empty certificate, and two names on one line each
+# refuse (BadCertificate). Facts only; no funds move, no key is held (custody gate %3
+# untouched); demo attestations only.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ay/ayre_j7_fairtrade_cert_witness.rish
+
+say "ayre-j7r1: Language EN — a fair-trade certificate is satisfied only by a cooperative record that holds every required criterion."
+say "ayre-j7r1: Lens TAME — the certification refuses the whole join on the first unmet criterion; every malformed certificate refused."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/fairtrade-cert"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/fairtrade_cert.rye -femit-bin=${bin}"]
+assert build.ok else "ayre-j7r1: fairtrade_cert build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "ayre-j7r1: fairtrade_cert selftest exited non-zero"
+assert selftest.out contains "GREEN" else "ayre-j7r1: selftest did not speak GREEN"
+assert selftest.out contains "satisfied, naming exactly those criteria in declared order" else "ayre-j7r1: satisfied-in-order missing"
+assert selftest.out contains "refuses the whole certification (Unsatisfied) — never a certified gap" else "ayre-j7r1: gap refusal missing"
+assert selftest.out contains "each refuse (BadCertificate)" else "ayre-j7r1: malformed refusals missing"
+
+say "GREEN: AYRE-J7r1 fairtrade_cert — a fair-trade certificate means only what a cooperative record can honestly bear; the whole certification refuses on any unmet criterion."

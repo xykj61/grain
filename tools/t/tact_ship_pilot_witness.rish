@@ -1,0 +1,32 @@
+# tools/t/tact_ship_pilot_witness.rish — TACT Journey 1, Rung 1: the pilot spine.
+#
+# Season 1 of the 1,024-round itinerary (The World, TACT) carries one durable promise: a
+# stranger reaches a working, signed, publishable instance without the maintainer's hand on
+# each step. Ship-Pilot is the guided first-run that keeps it. This rung fixes the crux — the
+# ordered, enforced arc a keeper walks (identity, place, customs, app) — before any module is
+# wired, so the enforcement is proven pure: a step out of order refuses, a step whose
+# precondition is unmet holds without advancing, and the pilot reports READY only when every
+# step has passed in order.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/tact_ship_pilot_witness.rish
+
+say "tact1: Language EN — the first-run arc is a checklist that cannot be cheated."
+say "tact1: Lens TAME — bounded state machine; out-of-order and unmet-precondition each refuse; READY only when all pass."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/ship-pilot"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ship_pilot.rye -femit-bin=${bin}"]
+assert build.ok else "tact1: ship_pilot build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "tact1: ship_pilot selftest exited non-zero"
+assert selftest.out contains "GREEN" else "tact1: selftest did not speak GREEN"
+assert selftest.out contains "the four-step arc walked in order reaches PILOT READY" else "tact1: full-arc claim missing"
+assert selftest.out contains "a step jumped out of order refused OutOfOrder" else "tact1: out-of-order refusal missing"
+assert selftest.out contains "an unmet precondition held at its step, then advanced once met" else "tact1: unmet-precondition hold missing"
+assert selftest.out contains "the report checked passed steps, named the current one, and read the verdict" else "tact1: report claim missing"
+assert selftest.out contains "the first-run arc advances only in order and only when each step is proven" else "tact1: crux claim missing"
+
+say "tact1: GREEN — the Ship-Pilot spine enforces the first-run arc in order and by proof."

@@ -1,0 +1,48 @@
+# tools/h/hunk_photos_adjust_witness.rish — the Photos app tunes brightness and contrast on metal (HUNK10).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK10.
+# Design read: active-designing/date/20260813/20260813-154324_hunk-photos-scale-exploration.md (the Photos-app journey).
+# Teacher, thanked clean-room: the everyday iCloud Photos / Google Photos light/contrast sliders (concept only, siloed).
+#
+# HUNK3 cropped, HUNK8 turned and mirrored, HUNK9 resized; this rung gives the Photos app its light. `image/photos.rye`
+# `adjust` is a pure bounded function over the decoded RGBA grid: each color channel takes the affine map
+# out = (v-128)·num/den + 128 + brightness, clamped into 0..255 — contrast pivots around the 128 midpoint, brightness
+# shifts the whole channel, alpha passes through untouched. The selftest proves a neutral adjust recovers the source
+# byte-for-byte, a brightness lift and cut shift and clamp, a contrast push pivots around 128, a zero contrast flattens
+# to the midpoint, the adjusted image still re-encodes and round-trips as an open image, and a zero denominator, an
+# over-range brightness, and an empty image each refuse by name. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_photos_adjust_witness.rish
+
+say "hunk-photos-adjust: Language EN — HUNK10 gives the Photos app its light: a pure bounded brightness/contrast function over the decoded grid that returns a fresh open image, the source untouched."
+say "hunk-photos-adjust: Style Radiant — an adjusted image is still an open image: it re-encodes and round-trips byte-for-byte, so tuning stands on the open module the quest built, never a proprietary one."
+say "hunk-photos-adjust: Lens TAME — the affine map runs in i64 so no product wraps, contrast terms bounded by a named ceiling; brightness bounded to a full range or refuses; alpha passes through; positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/photos"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/photos.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-photos-adjust: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-photos-adjust: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+
+assert selftest.out contains "GREEN image-photos-adjust" else "hunk-photos-adjust: selftest did not print the GREEN adjust line"
+
+assert selftest.out contains "neutral adjust byte-identical" else "hunk-photos-adjust: the neutral adjust was not proven byte-identical"
+
+assert selftest.out contains "contrast pivots around the 128 midpoint" else "hunk-photos-adjust: the contrast pivot was not proven"
+
+assert selftest.out contains "alpha passes through untouched" else "hunk-photos-adjust: alpha pass-through was not proven"
+
+assert selftest.out contains "adjusted image re-encodes and round-trips" else "hunk-photos-adjust: an adjusted image did not round-trip as an open image"
+
+# HUNK3 crop, HUNK8 orient, and HUNK9 scale selftests still run in the same binary — their GREEN lines must remain.
+assert selftest.out contains "GREEN image-photos:" else "hunk-photos-adjust: HUNK3 crop selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-orient" else "hunk-photos-adjust: HUNK8 orient selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-scale" else "hunk-photos-adjust: HUNK9 scale selftest no longer GREEN beneath"
+
+say "hunk-photos-adjust: GREEN — the Photos app tunes brightness and contrast over the open grid; pure, bounded, alpha untouched, refusals named; HUNK3 crop, HUNK8 orient, and HUNK9 scale still GREEN beneath."

@@ -1,0 +1,34 @@
+# tools/b/buhr_quin_host_witness.rish — BUHR Journey 1, Rung 4: the Q-vane host.
+#
+# The three composed voices gathered under one bounded entry, proven end to end: a
+# single Lantern-shaped request is dispatched to whichever voice recognizes the
+# prompt — Lattice for arithmetic, Scribble for reading, Ember for corpus craft —
+# and the Lantern-contract Response returns tagged with the serving voice. A
+# disallowed model or zero budget surfaces at once (no fall-through); a prompt no
+# voice recognizes is refused rather than answered. Rungs one through three stay
+# their own green binaries.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/buhr_quin_host_witness.rish
+
+say "buhr4: Language EN — the Q-vane host gathers Lattice, Scribble, and Ember under one entry."
+say "buhr4: Lens TAME — one request dispatched by prompt; contract faults surface, unknown prompt refused."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/quin-host"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/quin_host.rye -femit-bin=${bin}"]
+assert build.ok else "buhr4: quin_host build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr4: quin_host selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr4: selftest did not speak GREEN"
+assert selftest.out contains "matmul dispatched to Lattice — text '19 22 43 50'" else "buhr4: Lattice route missing"
+assert selftest.out contains "outline dispatched to Scribble — text 'Grain Voices Detail'" else "buhr4: Scribble route missing"
+assert selftest.out contains "sum_lines dispatched to Ember — text '160'" else "buhr4: Ember route missing"
+assert selftest.out contains "length stop carried through from Ember — tokens 2" else "buhr4: metering carry-through missing"
+assert selftest.out contains "disallowed model refused at once" else "buhr4: fault-surfaces-first missing"
+assert selftest.out contains "no voice recognized the prompt — refused" else "buhr4: no-voice refusal missing (would be a fake answer)"
+assert selftest.out contains "zero budget refused by the Lantern contract" else "buhr4: Lantern budget gate missing"
+
+say "GREEN: BUHR4 — the Q-vane host dispatches by prompt across three voices; every fault held, no fake answer."

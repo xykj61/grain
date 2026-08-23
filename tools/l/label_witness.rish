@@ -1,0 +1,39 @@
+# tools/l/label_witness.rish -- the 8-connected component labeler proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the connected-component labeler the zhang_suen rung named. Where endpoints and branch
+# read a shape's LOCAL topology (where a skeleton ends, where it branches), this rung reads its GLOBAL topology: it partitions
+# the whole foreground into its maximal 8-connected pieces, so a surface can count the marks in a mask and tell which pixels
+# belong to the same one. The algorithm is the classic two-pass labeling with union-find equivalence resolution (Rosenfeld &
+# Pfaltz, 1966): a raster sweep assigns provisional labels and unions the already-visited 8-neighbors, then a second pass
+# resolves each label to its root and compacts the roots to a dense, raster-ordered range.
+#
+# The crux this witness proves on metal: two pixels touching only at a corner are ONE 8-connected component (where
+# 4-connectivity would split them); two blocks with a gap are TWO with distinct uniform labels; a U-shape whose two bars open
+# as separate labels before the bottom bridge is seen resolves to ONE component through the union-find; a lone dot is one and an
+# all-background mask zero; foreground is read by red >= 128 through branch.is_on (one binary door) so a faint mark still labels;
+# colorize renders a labeling to a real image that round-trips through the open QOI codec byte-for-byte; an empty source refuses
+# by name; the same mask labels deterministically. No network, no key, no funds -- the regions a surface names the day it counts
+# the marks in a mask, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/l/label_witness.rish
+
+say "label: Language EN -- Season G connected-component labeler; give every 8-connected piece of a mask its own dense raster-ordered label."
+say "label: Style Radiant -- compose not braid: this rung owns only the union-find, the two-pass sweep, and the raster-order compaction; branch.is_on decides the binary meaning of a pixel, qoi owns the buffers."
+say "label: Lens TAME -- the union-find parent array is bounded by the pixel count (TooManyLabels guards the impossible overflow by name); the source is refused by name up front so a refusal allocates nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/label"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/label.rye -femit-bin=${bin}"]
+assert build.ok else "label: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "label: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "label: ${out}"
+
+assert selftest.out contains "GREEN image-label" else "label: selftest did not print the GREEN line"
+
+say "label: GREEN -- corner-touch is one component, separate blocks two, a U-shape resolves to one through the union-find, colorize round-trips through the open QOI codec, on metal."

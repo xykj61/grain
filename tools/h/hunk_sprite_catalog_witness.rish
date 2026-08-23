@@ -1,0 +1,46 @@
+# tools/h/hunk_sprite_catalog_witness.rish — the marketplace catalog travels as text (HUNK7, sprite quest close).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · Open Image journey · rung HUNK7 (sprite quest close).
+# Design read: active-designing/date/20260813/20260813-201500_hunk-sprite-marketplace-index-exploration.md
+# Teacher, thanked clean-room: McMaster-Carr's one-sprite-sheet render trick (concept only, siloed).
+#
+# HUNK4 bound each product to a window, HUNK5 painted a window as a page, HUNK6 gave the sheet a content
+# address; this rung lets the index itself travel. image/sprite_catalog.rye render_catalog writes a SpriteIndex
+# as a flat-Bron format sprite-catalog-v1 record (one product <name> <x> <y> <w> <h> line per entry), and
+# parse_catalog reads it back into a fresh index over a given sheet — so render(parse(render(x))) is a fixed
+# point and the rebuilt index renders every product from the same window byte-for-byte. Parse validates each
+# window against the actual sheet (a window past a smaller sheet refuses through SpriteIndex.add), so a catalog
+# can never name bytes the sheet lacks; a bad header, a malformed line, and an extra field each refuse by name.
+# No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_sprite_catalog_witness.rish
+
+say "hunk-sprite-catalog: Language EN — HUNK7 lets the marketplace index travel: render_catalog writes it as a flat-Bron sprite-catalog-v1 record and parse_catalog reads it back over a sheet into a fresh index."
+say "hunk-sprite-catalog: Style Radiant — render(parse(render)) is a fixed point and the rebuilt index renders the same windows, so a marketplace crosses to text and home again losing nothing."
+say "hunk-sprite-catalog: Lens TAME — parse validates each window against the real sheet through SpriteIndex.add; a catalog names no bytes the sheet lacks; named refusals; bounded buffers; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/sprite_catalog"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/sprite_catalog.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-sprite-catalog: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-sprite-catalog: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-sprite-catalog: ${out}"
+
+assert selftest.out contains "GREEN sprite-catalog" else "hunk-sprite-catalog: selftest did not print the GREEN catalog line"
+
+assert selftest.out contains "fixed point" else "hunk-sprite-catalog: the selftest did not prove render(parse(render)) is a fixed point"
+
+assert selftest.out contains "window past a smaller sheet" else "hunk-sprite-catalog: the selftest did not prove a catalog names no window the sheet lacks"
+
+# HUNK4 stays GREEN — the catalog reads and rebuilds a SpriteIndex; the index underneath must still hold.
+let sprite = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/sprite.rye -femit-bin=image/bin/sprite && image/bin/sprite selftest 2>&1"]
+assert sprite.ok else "hunk-sprite-catalog: HUNK4 sprite re-run failed — ${sprite.out}"
+assert sprite.out contains "GREEN image-sprite" else "hunk-sprite-catalog: HUNK4 sprite selftest did not stay GREEN"
+
+say "hunk-sprite-catalog: GREEN — the marketplace catalog travels as text and rebuilds byte-for-byte on metal; HUNK4 index underneath stays GREEN. HUNK7 lands, the sprite quest closes."

@@ -1,0 +1,8 @@
+# dated_preference_auditor.rish — wrapper → dated_amendment_audit.sh (e239).
+# Canonical: sh tools/d/dated_amendment_audit.sh
+
+say "dated-preference-auditor: forwarding to dated_amendment_audit (canonical e239)."
+let body = run ["sh" "tools/d/dated_amendment_audit.sh"]
+say body.out
+assert body.ok else "dated-amendment-audit: shell failed"
+say "GREEN: dated-amendment-audit — report printed; no gate."

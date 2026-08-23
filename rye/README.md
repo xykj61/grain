@@ -72,10 +72,10 @@ Rye carries this all the way down. The backend keeps its own honest semantic ver
 Rye stands on the prebuilt Zig 0.16.0 toolchain kept at `../vendor/zig-toolchain`, fetched from the official release and verified against its published checksum before we trusted a byte of it. That fetch is one command now, and it runs before anything in this tree is built -- plain `sh`, since Rishi is itself a Rye program and cannot exist yet:
 
 ```sh
-sh tools/fetch-toolchain.sh
+sh tools/f/fetch-toolchain.sh
 ```
 
-Nothing is extracted unless the download matches a checksum pinned in this repository rather than fetched beside the file. Four platforms are pinned; the refusal is proven on metal by `tools/fetch_toolchain_witness.rish`.
+Nothing is extracted unless the download matches a checksum pinned in this repository rather than fetched beside the file. Four platforms are pinned; the refusal is proven on metal by `tools/f/fetch_toolchain_witness.rish`.
 
 Because the `rye` command is itself a Rye program (`src/main.rye`), Rye builds itself. The first build is the cold start, before any `rye` binary exists — `bootstrap.sh` bridges the source the way `rye build` does and hands it to the toolchain, pointed at Rye's own `std`:
 
@@ -113,9 +113,9 @@ rye/bin/rye build brushstroke/wayland_seed.rye brushstroke/xdg-shell-protocol.c 
 Rye's `std` grows by **strengthening** — assertions and `maybe` markers that state what the code already does, never changing behavior. Each pass is recorded in `../external-research/yonder/strengthening-compiler/` and proven by three **Rishi** gates (`../tools/*.rish`):
 
 ```sh
-rishi/bin/rishi run tools/parity.rish          # witness regression suite (116 programs)
-rishi/bin/rishi run tools/parity-selftest.rish # std must stay symlinked; tamper caught
-rishi/bin/rishi run tools/additive-gate.rish   # shape of std changes only (if any local patches)
+rishi/bin/rishi run tools/p/parity.rish          # witness regression suite (116 programs)
+rishi/bin/rishi run tools/p/parity-selftest.rish # std must stay symlinked; tamper caught
+rishi/bin/rishi run tools/ad/additive-gate.rish   # shape of std changes only (if any local patches)
 ```
 
 `rye/lib/std` is a **symlink** to the pinned toolchain — pristine overlay, not a fork. `parity.rish` runs each witness once against that `std` (the old differential baseline-vs-strengthened gate retired). `parity-selftest.rish` guards against accidental re-copying `std` into the tree. Details live in `../rye-learning-process/archive/ALMANAC.md` under *The Gate Trio in Rishi*.

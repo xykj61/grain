@@ -1,0 +1,53 @@
+# tools/h/hunk_photos_saturate_witness.rish — the Photos app tunes saturation on metal (HUNK21).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK21.
+# Design read: active-designing/date/20260813/20260813-170307_hunk-photos-saturate-exploration.md (the Photos-app journey).
+# Teacher, thanked clean-room: the everyday iCloud Photos / Google Photos saturation slider (concept only, siloed).
+#
+# HUNK10 gave the Photos app its light (brightness and contrast); this rung gives it its color. `image/photos.rye`
+# `saturate` is a pure bounded function over the decoded RGBA grid: each color channel takes the luma-preserving
+# map out = L + (c-L)·num/den, clamped into 0..255, where L is the pixel's own Rec.601 luma — so num == den recovers
+# the source, num == 0 flattens every pixel to its own gray (a true grayscale), num > den pushes colors apart, and a
+# gray pixel is a fixed point. The selftest proves a neutral saturation recovers the source byte-for-byte, a zero
+# saturation flattens each pixel to its luma (r==g==b), an already-gray pixel is a fixed point at every saturation,
+# a boost pushes each channel away from its luma, alpha passes through untouched, the saturated image still
+# re-encodes and round-trips as an open image, and a zero denominator, an over-ceiling numerator, and an empty image
+# each refuse by name. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_photos_saturate_witness.rish
+
+say "hunk-photos-saturate: Language EN — HUNK21 gives the Photos app its color: a pure bounded luma-preserving saturation function over the decoded grid that returns a fresh open image, the source untouched."
+say "hunk-photos-saturate: Style Radiant — a saturated image is still an open image: it re-encodes and round-trips byte-for-byte, so color tuning stands on the open module the quest built, never a proprietary one."
+say "hunk-photos-saturate: Lens TAME — the luma-preserving map runs in i64 so no product wraps, the saturation term bounded by a named ceiling or refuses; the luma weights sum to 256 so gray is exact; alpha passes through; positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/photos"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/photos.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-photos-saturate: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-photos-saturate: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+
+assert selftest.out contains "GREEN image-photos-saturate" else "hunk-photos-saturate: selftest did not print the GREEN saturate line"
+
+assert selftest.out contains "neutral saturation byte-identical" else "hunk-photos-saturate: the neutral saturation was not proven byte-identical"
+
+assert selftest.out contains "flattens each pixel to its own Rec.601 luma" else "hunk-photos-saturate: the zero-saturation grayscale flatten was not proven"
+
+assert selftest.out contains "already-gray pixel is a fixed point" else "hunk-photos-saturate: the gray fixed point was not proven"
+
+assert selftest.out contains "alpha passes through untouched" else "hunk-photos-saturate: alpha pass-through was not proven"
+
+assert selftest.out contains "saturated image re-encodes and round-trips" else "hunk-photos-saturate: a saturated image did not round-trip as an open image"
+
+# HUNK3 crop, HUNK8 orient, HUNK9 scale, and HUNK10 adjust selftests still run in the same binary — GREEN must hold.
+assert selftest.out contains "GREEN image-photos:" else "hunk-photos-saturate: HUNK3 crop selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-orient" else "hunk-photos-saturate: HUNK8 orient selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-scale" else "hunk-photos-saturate: HUNK9 scale selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos-adjust" else "hunk-photos-saturate: HUNK10 adjust selftest no longer GREEN beneath"
+
+say "hunk-photos-saturate: GREEN — the Photos app tunes saturation over the open grid; pure, bounded, luma-preserving, alpha untouched, refusals named; HUNK3 crop, HUNK8 orient, HUNK9 scale, and HUNK10 adjust still GREEN beneath."

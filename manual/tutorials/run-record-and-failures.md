@@ -26,7 +26,7 @@ Every `run` returns one record:
 Run RW-3:
 
 ```bash
-rishi/bin/rishi run tools/run_record_witness.rish
+rishi/bin/rishi run tools/r/run_record_witness.rish
 ```
 
 Open the script and read both branches: success captures stdout on `.out` with empty `.err`; a fault preserves code `7` and places the message on `.err`.
@@ -49,7 +49,7 @@ On a fault, flip the expectations: `(fail_run.ok == false)`, match `.code`, asse
 Shell meta-commands and CLI slips leave the session **running**, and stderr names what happened kindly:
 
 ```bash
-rishi/bin/rishi run tools/rw4_slc_failure_paths.rish
+rishi/bin/rishi run tools/r/rw4_slc_failure_paths.rish
 ```
 
 RW-4 pins: unknown meta-command · bad `:recall` · doomed `run` script · unknown CLI subcommand. Each asserts `.ok` or exit code **and** the human-readable fragment on stdout or stderr.

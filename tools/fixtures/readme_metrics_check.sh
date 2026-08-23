@@ -14,7 +14,7 @@
 #
 # Prints each expected row and whether the file holds it, then a verdict. Exit non-zero on drift.
 #
-# Driven by tools/readme_metrics_witness.rish. Run from the repository root.
+# Driven by tools/r/readme_metrics_witness.rish. Run from the repository root.
 
 set -eu
 

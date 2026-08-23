@@ -1,0 +1,38 @@
+# tools/b/buhr_mantra_browser_heads_witness.rish — BUHR Journey 2, Rung 3.
+#
+# The living edge, lit: rung two painted the append-only graph in one paper and one
+# ink; this rung lights each lane's head revision — the newest node in a chain — in
+# the sheet's warm edge token, while the older nodes keep the reading ink. The proof
+# is that the styled surface carries semantic color per cell (a reader sees where each
+# lane currently stands), the head is read from the very bytes rung one renders (never
+# a node the text does not show), and the paint is additive — the glyphs are unchanged.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/buhr_mantra_browser_heads_witness.rish
+
+say "buhr-j2r3: Language EN — each lane's head revision lit in a distinct token color on the Skate surface."
+say "buhr-j2r3: Lens TAME — head read from the rendered bytes, additive paint, both colors on the canvas."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/mantra-browser-heads"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mantra_browser_heads.rye -femit-bin=${bin}"]
+assert build.ok else "buhr-j2r3: mantra_browser_heads build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr-j2r3: mantra_browser_heads selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr-j2r3: selftest did not speak GREEN"
+assert selftest.out contains "head cells lit across the lanes, header row clean" else "buhr-j2r3: head cells not lit (or the header row leaked a head)"
+assert selftest.out contains "head_span finds the rightmost node, refuses non-lanes" else "buhr-j2r3: head_span reading proof missing"
+assert selftest.out contains "head color stands apart from the reading ink" else "buhr-j2r3: head color not distinct from ink"
+assert selftest.out contains "editor and view share one graph — text unchanged by the paint" else "buhr-j2r3: shared-graph / additive proof missing"
+assert selftest.out contains "ink pixels and" else "buhr-j2r3: both-colors-on-canvas proof missing"
+assert selftest.out contains "head pixels share the canvas" else "buhr-j2r3: head color did not reach the canvas"
+assert selftest.out contains "short viewport bounded to 3 rows" else "buhr-j2r3: viewport bound missing (overflow risk)"
+
+# Rung two stays its own green binary — the heads paint is strictly additive.
+let rung2 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mantra_browser_view_witness.rish 2>&1"]
+assert rung2.ok else "buhr-j2r3: rung two witness regressed"
+assert rung2.out contains "GREEN: BUHR-J2r2" else "buhr-j2r3: rung two lost its green"
+
+say "GREEN: BUHR-J2r3 — each lane's head revision lit in its own token color; the styled surface carries semantic color per cell."

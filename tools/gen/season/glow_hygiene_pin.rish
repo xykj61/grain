@@ -11,32 +11,32 @@ say "glow-hygiene: Style Radiant — prove folds; refuse shred/deploy."
 say "glow-hygiene: Lens TAME — Surface Season prep spine p2."
 
 say "glow-hygiene: text floor..."
-let text = run ["rishi/bin/rishi" "run" "tools/glow_text_floor_witness.rish"]
+let text = run ["rishi/bin/rishi" "run" "tools/g/glow_text_floor_witness.rish"]
 assert text.ok else "glow_hygiene: text floor failed"
 assert text.out contains "GREEN" else "glow_hygiene: text floor not GREEN"
 
 say "glow-hygiene: digraph twin..."
-let digraph = run ["rishi/bin/rishi" "run" "tools/glow_digraph_twin_witness.rish"]
+let digraph = run ["rishi/bin/rishi" "run" "tools/g/glow_digraph_twin_witness.rish"]
 assert digraph.ok else "glow_hygiene: digraph twin failed"
 assert digraph.out contains "GREEN" else "glow_hygiene: digraph twin not GREEN"
 
 say "glow-hygiene: rune alphabet..."
-let alpha = run ["rishi/bin/rishi" "run" "tools/glow_rune_alphabet_witness.rish"]
+let alpha = run ["rishi/bin/rishi" "run" "tools/g/glow_rune_alphabet_witness.rish"]
 assert alpha.ok else "glow_hygiene: rune alphabet failed"
 assert alpha.out contains "GREEN" else "glow_hygiene: rune alphabet not GREEN"
 
 say "glow-hygiene: tokens..."
-let tokens = run ["rishi/bin/rishi" "run" "tools/glow_tokens_witness.rish"]
+let tokens = run ["rishi/bin/rishi" "run" "tools/g/glow_tokens_witness.rish"]
 assert tokens.ok else "glow_hygiene: tokens failed"
 assert tokens.out contains "GREEN" else "glow_hygiene: tokens not GREEN"
 
 say "glow-hygiene: nest expression..."
-let expr = run ["rishi/bin/rishi" "run" "tools/glow_expr_witness.rish"]
+let expr = run ["rishi/bin/rishi" "run" "tools/g/glow_expr_witness.rish"]
 assert expr.ok else "glow_hygiene: expr failed"
 assert expr.out contains "GREEN" else "glow_hygiene: expr not GREEN"
 
 say "glow-hygiene: compose hop..."
-let compose = run ["rishi/bin/rishi" "run" "tools/glow_lower_compose_witness.rish"]
+let compose = run ["rishi/bin/rishi" "run" "tools/g/glow_lower_compose_witness.rish"]
 assert compose.ok else "glow_hygiene: compose failed"
 assert compose.out contains "GREEN" else "glow_hygiene: compose not GREEN"
 

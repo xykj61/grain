@@ -1,0 +1,40 @@
+# tools/al/ales_schmitt_witness.rish — the Schmitt trigger: a hysteresis comparator that gives ALES89's square a memory against chatter (ALES92).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES92.
+# Design read: active-designing/date/20260814/20260814-224452_fill-ales92-lotus-schmitt-trigger.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, sample_min/max) and the carried-state idiom of lotus/dc_block.rye (ALES91 — one carried implementation, the
+# from-silence form the default case). The sibling of lotus/infinite_clip.rye (ALES89 — the memoryless comparator): where the infinite clipper judges each
+# sample against one threshold on its own and chatters on a signal riding near the level, this rung carries one bit (which rail) and holds inside the band.
+#
+# lotus/schmitt.rye runs the two-threshold comparison sample by sample, flipping high on a rise past t_high and low on a fall past t_low, holding between. The
+# crux is that it CARRIES STATE (one bit, the rail), so — exactly as ALES91's carried DC blocker — a span compared in two pieces (the second continuing the
+# first's ending rail) equals the whole compared once, byte-for-byte, no spurious flip at the seam. The selftest proves it: a fresh trigger equals the
+# from-silence schmitt (rail low by convention); HYSTERESIS resists chatter a single-threshold comparator cannot (zero flips across a dither the comparator
+# chatters on); a span compared in two pieces equals the whole compared once (the crux); it flips exactly at the band edges (x ≥ t_high → high, x ≤ t_low →
+# low, between → hold); reset re-opens the low rail; the zero-width band (t_low = t_high) is the legal plain comparator; only two values ever appear
+# (±sample_max, odd about the band); the span discipline holds; an inverted band (t_low > t_high), a low below the floor, or a high above the ceiling refuses
+# BadThreshold with the rail untouched; an out-of-range span refuses BadRange with the clip untouched. Purely local — one two-threshold compare in i32, one bit
+# of state, one rail per sample; no saturate, no time constant, no real device, no real sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_schmitt_witness.rish
+
+say "ales-schmitt: Language EN — a real signal riding near a comparator's threshold (a hum on a gate key, a slow envelope crossing zero, a sensor line trembling at its trip point) crosses that single level many times in a row, and ALES89's memoryless comparator CHATTERS: the square flips on the noise, not on the event. The classic answer, a century old at the front of every zero-crossing detector, is the Schmitt trigger — HYSTERESIS: two thresholds and a memory of which rail the output is on. It flips up only on a rise past the upper threshold t_high, back down only on a fall past the lower t_low, and HOLDS between — the band [t_low, t_high] a dead zone the noise cannot rattle."
+say "ales-schmitt: Style Radiant — the law is stated positively: flip HIGH on a rise past t_high, flip LOW on a fall past t_low, hold between; the output is +sample_max on the high rail, −sample_max on the low, odd about the band, so no saturate is owed. The crux stands out: the trigger CARRIES ONE BIT — which rail — so a span compared in two pieces equals the whole compared once byte-for-byte — the carried-state SIBLING of the memoryless infinite clipper, the ALES91 shape. From silence the convention is the low rail (untriggered), stated plainly so the fresh trigger and the from-silence schmitt cannot drift."
+say "ales-schmitt: Lens TAME — one mono clip of i16 PCM triggered in place over a span; one two-threshold comparison carrying one bit of state, run sample by sample, the compare in i32 so a threshold at the deep rail is representable, only ±sample_max ever written (no saturate owed); the band must be two ordered thresholds inside the rails (sample_min ≤ t_low ≤ t_high ≤ sample_max) or refuse BadThreshold before a sample is touched; a span outside the samples refuses BadRange before any read or write, the clip and carried rail untouched on refusal; siloed to lotus/, the band over amplitude not time (no debounce time constant), no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/schmitt"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/schmitt.rye -femit-bin=${bin}"]
+assert build.ok else "ales-schmitt: build failed — ${build.err}"
+
+let outfile = "lotus/bin/schmitt.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-schmitt: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-schmitt: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-schmitt' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-schmitt: selftest did not print the GREEN ales-schmitt line"

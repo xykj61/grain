@@ -1,0 +1,50 @@
+# tools/m/mycelium_purse_knot_witness.rish — the per-account verdict reads across a Knot (Purse r3).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · Purse rung r3 — across a Knot.
+# r1 resolved a whole Cord Dag into a Purse; r2 let the per-account verdict travel. Yet a ledger a family
+# runs for years does not carry its whole past unbroken — the Knot (cord_knot.rye) ties off a committed
+# prefix into a sealed FoldState so a bounded Dag runs forever. This rung makes the Purse's corpus a Knot
+# plus its live suffix, mirroring the Till's own r3 carried from one shared drawer to many private purses.
+#
+# The crux this witness proves: a double-spend that spans the checkpoint. Alice is credited 100 and transfers
+# it to Bob INSIDE the sealed prefix; after the past is tied off and pruned, she signs a fresh transfer of the
+# same 100 to Carol in the live suffix. Her purse emptied in the checkpointed past, so the suffix transfer
+# finds nothing and comes up SHORT — a lawful no-op (amount <= what she ever received), Carol paid nothing,
+# conservation whole. The verdict never drifts: purses_match proves the full Cord and the Knot-continued
+# resolution name the identical moves, loss, balances, and loser. Integrity holds across the cut: a corrupt
+# Knot refuses KnotCorrupt before a fact is folded, a tampered suffix fact refuses IdentityRefused, a
+# never-could-pay transfer (500 past the 100 Alice was ever credited) refuses NeverPaid whole. Composes
+# purse + cord_knot + cord + fold public API only; demo keeper seeds — no key held.
+#
+# Scope: active-designing/date/20260813/20260813-072541_mycelium-purse-knot-across-a-cut-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_purse_knot_witness.rish
+
+say "mycelium-purse-knot: Language EN — a coin spent to Bob inside a sealed checkpoint cannot be spent again to Carol across the cut; the suffix transfer comes up short."
+say "mycelium-purse-knot: Style Radiant — the Knot ties off a length of Cord and begins the next; the per-account verdict reads one hand whether the move lives in a full Cord or a sealed Knot."
+say "mycelium-purse-knot: Lens TAME — the verdict never drifts across the cut; a corrupt Knot, a tampered suffix fact, a never-could-pay transfer each refuse whole; conservation holds; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/purse_knot"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/purse_knot.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-purse-knot: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-purse-knot: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-purse-knot: selftest did not speak GREEN"
+assert selftest.out contains "comes up short" else "mycelium-purse-knot: spent-out-across-cut claim missing"
+assert selftest.out contains "reads the same across the cut" else "mycelium-purse-knot: verdict-never-drifts claim missing"
+assert selftest.out contains "each refuse whole" else "mycelium-purse-knot: integrity-refusal claim missing"
+
+# The Purse whose verdict continues, and the Knot that seals the past, both stand at the door.
+let purse = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/purse.rye -femit-bin=mycelium/bin/purse && mycelium/bin/purse 2>&1"]
+assert purse.ok else "mycelium-purse-knot: the Purse whose verdict continues is not GREEN"
+assert purse.out contains "GREEN" else "mycelium-purse-knot: the Purse did not speak its GREEN"
+
+let knot = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot.rye -femit-bin=mycelium/bin/cord_knot && mycelium/bin/cord_knot 2>&1"]
+assert knot.ok else "mycelium-purse-knot: the Knot that seals the past is not GREEN"
+assert knot.out contains "GREEN" else "mycelium-purse-knot: the Knot did not speak its GREEN"
+
+say "mycelium-purse-knot: GREEN — the per-account verdict reads across a sealed checkpoint, the winning move and the spent-out loss the same whether in a full Cord or a Knot; corruption refuses whole; the Purse and the Knot stand at the door."

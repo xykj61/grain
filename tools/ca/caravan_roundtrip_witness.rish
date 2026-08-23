@@ -1,0 +1,90 @@
+# caravan_roundtrip_witness.rish -- Caravan roundtrip witness.
+#
+# Proves one declared channel carries BOTH ways between real processes:
+# every channel provisioned as two directed doorbells standing silent, the
+# virtualiser writing the ask and ringing, the client hearing that ring and
+# answering on the region it owns the other way, and the virtualiser
+# hearing the reply bell and reading the answer with the ask still standing
+# beside it.
+#
+# The crux check is the middle step: the virtualiser collects immediately
+# after requesting and hears `Unheard` on a channel it rang moments before,
+# because a directed bell carries a ring away from its sender and never
+# back to it. An undirected bell fails exactly here.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS %76 / %85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_roundtrip_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/roundtrip"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/roundtrip.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan roundtrip build failed"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+# Thirty-six rungs once ran a shared caravan/bin/read without building it, so the whole
+# arc was green only on a tree some earlier run had left warm. A witness owns what it
+# runs -- and, since REDS %133, the path it runs it from: eighty witnesses built that
+# one reader to one name, so two running at once contended for a single file and the
+# loser reddened a green tree. This one lands in caravan/bin/roundtrip_read.
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/roundtrip_read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+
+# The declaration a reply needs reads whole before anything runs on it.
+let decl = run ["sh" "-c" "caravan/bin/roundtrip_read caravan/systems/serial_duplex.bron 2>&1"]
+assert decl.ok else "the duplex declaration could not be read"
+assert decl.out contains "system serial_duplex" else "the duplex declaration lost its name"
+assert decl.out contains "verdict: whole" else "the duplex declaration did not read whole"
+
+# A fresh provisioning each run, so a bell found ringing was rung by this
+# run rather than left standing by the last one.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan roundtrip selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan roundtrip selftest not GREEN"
+assert test.out contains "no dependent hears its own ring" else "the echo claim did not close"
+assert test.out contains "one channel owns two bells that never share" else "the two directions shared a bell"
+
+# The walls a two-way channel invites, each answered by name in its own dependent.
+assert test.out contains "client_a: request rx_a then tx_a via client_b -- NotWired" else "an unwired pair rang a bell"
+assert test.out contains "client_a: request rx_a then tx_a via serial_virt -- WriteDenied" else "a read-only share accepted a write"
+assert test.out contains "client_b: request tx_a then rx_b via serial_virt -- NotGranted" else "a region held by another was reached"
+
+# The trip itself, in the order its meaning depends on.
+assert test.out contains "serial_virt: request rx_a then tx_a via client_a -- carried" else "the ask was not delivered"
+assert test.out contains "serial_virt: collect rx_a then tx_a via client_a -- Unheard" else "the virtualiser heard its own ring"
+assert test.out contains "client_a: reply rx_a then tx_a via serial_virt -- carried" else "the client did not answer"
+assert test.out contains "serial_virt: collect rx_a then tx_a via client_a -- carried" else "the answer did not come home"
+assert test.out contains "4 directed bells provisioned silent across 2 declared channels" else "the directions were not provisioned"
+assert test.out contains "22 bytes asked on rx_a and 27 bytes answered on tx_a" else "the round trip carried no bytes"
+
+# The four directed bells stand where the declaration put them, two per
+# declared channel, each holding a single counted byte.
+let bells = run ["sh" "-c" "ls caravan/.channels"]
+assert bells.ok else "the doorbells could not be listed"
+assert bells.out contains "serial_virt.to.client_a.bell" else "the outward bell is missing"
+assert bells.out contains "client_a.to.serial_virt.bell" else "the inward bell is missing"
+assert bells.out contains "serial_virt.to.client_b.bell" else "the second channel lost a direction"
+assert bells.out contains "client_b.to.serial_virt.bell" else "the second channel lost a direction"
+
+# Both directions really rang, measured from outside the program.
+let outward = run ["sh" "-c" "od -An -tu1 -N1 caravan/.channels/serial_virt.to.client_a.bell"]
+assert outward.ok else "the outward bell could not be measured"
+assert outward.out contains "1" else "the ask rang no bell"
+let inward = run ["sh" "-c" "od -An -tu1 -N1 caravan/.channels/client_a.to.serial_virt.bell"]
+assert inward.ok else "the inward bell could not be measured"
+assert inward.out contains "1" else "the answer rang no bell"
+
+# The client_b channel stayed silent both ways -- nothing rang it.
+let quiet = run ["sh" "-c" "od -An -tu1 -N1 caravan/.channels/serial_virt.to.client_b.bell"]
+assert quiet.ok else "the untouched bell could not be measured"
+assert quiet.out contains "0" else "a channel nobody used was rung"
+
+say "GREEN: Caravan roundtrip witness passed."

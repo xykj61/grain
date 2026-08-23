@@ -109,7 +109,7 @@
 
 **Kaeden word `121518`:** *kg i grant* — host on-path **opened**; same-sitting metal parity re-pin **allowed**.
 
-**Host sitting `140403`:** `lane_kvm` on-path G0-complete **GREEN** — phase A GRUB (2s) · phase B QMP glass 2359312 bytes · refuse-probe restored OK · cache gitignored. Script `tools/lane_kvm_onpath_host.rish`. Enclosure pair complete on metal: morning refuse GREEN (jail) · afternoon permit GREEN (Framework) · refuse restored. Next on word: fresh-sitting parity-first · G1 · Pond · Route two parked.
+**Host sitting `140403`:** `lane_kvm` on-path G0-complete **GREEN** — phase A GRUB (2s) · phase B QMP glass 2359312 bytes · refuse-probe restored OK · cache gitignored. Script `tools/l/lane_kvm_onpath_host.rish`. Enclosure pair complete on metal: morning refuse GREEN (jail) · afternoon permit GREEN (Framework) · refuse restored. Next on word: fresh-sitting parity-first · G1 · Pond · Route two parked.
 
 **Claude `125200` (guidance `123700`):** residue close **affirmed** after six living tip→nib lines (anvil · mandi · active-designing README · seam-season guard · giving-lane-t2 guard). Order **holds** — host on-path → G1 → Pond. Pre-flight: stage sculpt image · after restore run `lane_kvm.sh refuse-probe` on host · parity pin-what-prints / red-twice parks. Giving-family naming **affirmed** for future creator gratuity. Jail kg refuse honored as the floor working.
 
@@ -137,11 +137,11 @@
 
 **Claude `211400` N:** **six consecutive green sittings spanning at least seven calendar days** — breadth (editor · parity · QEMU · cold-start-after-reboot) · soak clock on frozen candidate (enclosure-enforcing edits reset) · red law (one red resets; two on one witness parks). Softening hinge (wrappers free) available if solo bench bites. Exit card complete; Claude second walk next (tip `40673e0`).
 
-**Kg `211900`:** living two-column witness `tools/pond_enclosure_scorecard.rish` — column one GREEN · column two gaps named · supersede season closed.
+**Kg `211900`:** living two-column witness `tools/p/pond_enclosure_scorecard.rish` — column one GREEN · column two gaps named · supersede season closed.
 
 **Claude `212412` second walk:** **freeze-worthy** affirmed. Four accretions landed — enforcing seam · `ENCLOSURE=ai-jail` retreat flag · exit bron path `bron-resins/pond-supersede-exit.bron` (absent measured) · `soak_start_nib`. Ask two: keep enforcing-code-resets until bite. Ask three: col2 probes landed refuse-until-candidate. Counsel [`../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md`](../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md).
 
-**Claude `213600` freeze affirm:** **freeze affirmed** with master-seal custody — exit bron counts only when detached `.asc` verifies against master `0646 2132…` alone (`tools/pond_exit_bron_master_seal.sh`). Season held for named build word (no clock). Counsel [`../active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md`](../active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md).
+**Claude `213600` freeze affirm:** **freeze affirmed** with master-seal custody — exit bron counts only when detached `.asc` verifies against master `0646 2132…` alone (`tools/p/pond_exit_bron_master_seal.sh`). Season held for named build word (no clock). Counsel [`../active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md`](../active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md).
 
 **Claude `214200` latch affirm:** seal **rests** — zero rewrites. Ceremony command on exit-card affirmation path (primary `!`). Doorway Status on `213600` note → **Checkable**. Crypto teacher **Monocypher** — must use `monocypher-ed25519` / `crypto_ed25519_check` (RFC 8032/SHA-512); default BLAKE2b EdDSA is the named red-to-avoid. Counsel [`../active-designing/date/20260712/20260712-214200_proven-seat-signed-kumara-monocypher.md`](../active-designing/date/20260712/20260712-214200_proven-seat-signed-kumara-monocypher.md).
 
@@ -151,7 +151,7 @@
 
 **Claude `220400` resting affirm:** signed-Kumara **rests** — no one-line. Reframe: Rye already freestanding (Aurora); Genode wants a linked runtime, not syscalls — seam-C is the thinnest plank; meaning stayed in Rye. Horizon: Rye-body+C-shim (trigger when logic outgrows seam-C or second Genode guest) · Zig genode std layer · own seat via Aurora/Puddle. Morning: living-docs lint first; parity-chapter word is Kaeden’s over coffee. Counsel [`../active-designing/date/20260712/20260712-220400_proven-seat-seam-c-and-rye-body.md`](../active-designing/date/20260712/20260712-220400_proven-seat-seam-c-and-rye-body.md).
 
-**Docs compression layer — shipped:** five pages under ceiling · [`living_docs_lint.rish`](../tools/living_docs_lint.rish) seated (ratchet-advisory · five duties) · doorway roster joins `docs/` · Status Checkable on every page · **keeper folds GREEN** `223300` (keeps-list · module Status · ORGANIZING inbound · Karpathy/ai-memory dispositions closed).
+**Docs compression layer — shipped:** five pages under ceiling · [`living_docs_lint.rish`](../tools/l/living_docs_lint.rish) seated (ratchet-advisory · five duties) · doorway roster joins `docs/` · Status Checkable on every page · **keeper folds GREEN** `223300` (keeps-list · module Status · ORGANIZING inbound · Karpathy/ai-memory dispositions closed).
 
 **Karpathy gist + ai-memory — closed `223300`:** gist → [`gratitude/karpathy/`](../gratitude/karpathy/) · distillation [`20260712-223300`](../external-research/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md) · ai-memory study shelf [`gratitude/ai-memory/`](../gratitude/ai-memory/) · daemon still parked.
 
@@ -264,7 +264,7 @@ In-process pass admits published read + signed submit; refuses unpublished diges
 | **Q4** | Wire-serves-the-fold + compass affirmed |
 | **Q5** | Settlement rail orthogonal |
 
-**OA-L4 landed** parity **167** — `foldReputationLog` + `tools/open_asks_lap4.rish`.
+**OA-L4 landed** parity **167** — `foldReputationLog` + `tools/o/open_asks_lap4.rish`.
 
 ## Zip 58 — handoff archive (`20260706.190644`)
 
@@ -274,7 +274,7 @@ Full-tree zip discipline unchanged; use **58** not 43.
 
 ## Zip 42 intake landed (`20260704.185412 UDT`) — Claude Fable 5 · unified packet
 
-**A1 pinned:** zip **42** @ base `43584d8` · recipe v5 held · **parity 152 GREEN** (116 std + 36 blocks) from bare on Claude bench (headless: hosted witnesses; thin-edge seams unexercised). **Cursor metal re-verified 152 GREEN** at intake (`rishi run tools/parity.rish`). **Both benches pin 152.** Designed-not-built **count=0** — Edit-5 slot open.
+**A1 pinned:** zip **42** @ base `43584d8` · recipe v5 held · **parity 152 GREEN** (116 std + 36 blocks) from bare on Claude bench (headless: hosted witnesses; thin-edge seams unexercised). **Cursor metal re-verified 152 GREEN** at intake (`rishi run tools/p/parity.rish`). **Both benches pin 152.** Designed-not-built **count=0** — Edit-5 slot open.
 
 | Item | Path |
 |------|------|
@@ -327,7 +327,7 @@ Full-tree zip at `git rev-parse HEAD` after intake commits; comment **is** the t
 | **A2** | Gloss spec architecture drafted — draft `context/specs/*_canonical-glosses.md` on Kaeden word |
 | **A3** | **Seat TWO_ROOMS as written** + one LEXICON row — awaits Kaeden |
 | **A4** | **SLC-L1 affirmed closed at lap one**; Open Asks before SLC-L2 |
-| **A5** | Doorway witness design (`tools/two_rooms_doorway.rish`) + pointer-resolution hook — on word |
+| **A5** | Doorway witness design (`tools/t/two_rooms_doorway.rish`) + pointer-resolution hook — on word |
 | **A6** | Amphora lap-two Tilak witness designed (four assertions, two fixtures) — mechanical when seed-home gate opens |
 | **A7** | Fold canon → one `context/specs/` home + eight pointer deltas |
 | **A8** | ROADMAP · TASKS · decoder refresh — structure and phrases only; Cursor applies on approval |
@@ -340,14 +340,14 @@ Prior tip: `2eb346b` · zip 40 @ `4ab032d` replaced
 
 **Cut discipline:** full-tree zip at **`git rev-parse HEAD`** on `main` after pull (substantive body `3e7bf9c`). Prior zip 40 @ `4ab032d` · prior Cursor tip `71e84be`. Recipe v5 is mandatory: [`expanding-prompts/yonder/20260703-205212_bench-raise-recipe-v5-accretion.md`](../expanding-prompts/yonder/20260703-205212_bench-raise-recipe-v5-accretion.md).
 
-**Cursor metal before zip:** parity **152 GREEN** (full `tools/parity.rish` re-run on host; SLC-L1 + crossing seed + RW-2 witnesses all green).
+**Cursor metal before zip:** parity **152 GREEN** (full `tools/p/parity.rish` re-run on host; SLC-L1 + crossing seed + RW-2 witnesses all green).
 
 ### Parity arithmetic since zip 40
 
 | Witness landed | Parity | Path |
 |----------------|--------|------|
-| Crossing manifest seed (lap-one parse) | **151** | `tools/crossing_manifest_seed.rish` · seed [`work-in-progress/20260703-202312_crossing_manifest_seed.rye`](20260703-202312_crossing_manifest_seed.rye) |
-| SLC-L1 verifiable receipt | **152** | `linengrow/receipt.rye` · `tools/slcl1_receipt.rish` wired in `tools/parity.rish` |
+| Crossing manifest seed (lap-one parse) | **151** | `tools/cr/crossing_manifest_seed.rish` · seed [`work-in-progress/20260703-202312_crossing_manifest_seed.rye`](20260703-202312_crossing_manifest_seed.rye) |
+| SLC-L1 verifiable receipt | **152** | `linengrow/receipt.rye` · `tools/s/slcl1_receipt.rish` wired in `tools/p/parity.rish` |
 
 Claude bench still pins **150** until recipe v5 re-run on Claude metal at zip **41** tip.
 
@@ -358,11 +358,11 @@ Claude bench still pins **150** until recipe v5 re-run on Claude metal at zip **
 | Item | Path | Implementation notes for Claude |
 |------|------|--------------------------------|
 | **SLC-L1 receipt** | `linengrow/receipt.rye` | Ed25519 sign · hex log append · SHA3-256 fold · verify; `selftest` subcommand; version stamp `20260704.020800` |
-| **SLC-L1 witness** | `tools/slcl1_receipt.rish` | Builds `linengrow/bin/receipt` at witness time (do **not** commit bin); asserts `selftest` GREEN |
+| **SLC-L1 witness** | `tools/s/slcl1_receipt.rish` | Builds `linengrow/bin/receipt` at witness time (do **not** commit bin); asserts `selftest` GREEN |
 | **Receipt fixes** | `linengrow/receipt.rye` | `trimLine` includes `\n` in trim set; `verifyRecord` uses `error.VerifyFailed` |
-| **Crossing seed witness** | `tools/crossing_manifest_seed.rish` | Lap-one parse of manifest seed; parity **151** |
-| **Parity wiring** | `tools/parity.rish` | Both witnesses in suite order |
-| **Lap vocabulary sweep** | `tools/lap_vocabulary_sweep.rish` · fixtures | Mechanical *ring* → *lap* / *thin-ring* → *thin-edge* audit helpers |
+| **Crossing seed witness** | `tools/cr/crossing_manifest_seed.rish` | Lap-one parse of manifest seed; parity **151** |
+| **Parity wiring** | `tools/p/parity.rish` | Both witnesses in suite order |
+| **Lap vocabulary sweep** | `tools/l/lap_vocabulary_sweep.rish` · fixtures | Mechanical *ring* → *lap* / *thin-ring* → *thin-edge* audit helpers |
 
 #### Context canon seated (Kaeden or UDT)
 
@@ -565,7 +565,7 @@ Law: [`foundations/20260703-202312_the-marked-value.md`](../foundations/20260703
 | What needs ordering | [`foundations/20260703-200712_what-needs-ordering.md`](../foundations/20260703-200712_what-needs-ordering.md) |
 | Amphora (research) | [`external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) |
 | Pottery suite (4 research) | `200712` mysticeti · move-for-rye · compute-commerce · cloneable-repo |
-| Seed (witnessed) | [`work-in-progress/20260703-202312_crossing_manifest_seed.rye`](20260703-202312_crossing_manifest_seed.rye) · `tools/crossing_manifest_seed.rish` |
+| Seed (witnessed) | [`work-in-progress/20260703-202312_crossing_manifest_seed.rye`](20260703-202312_crossing_manifest_seed.rye) · `tools/cr/crossing_manifest_seed.rish` |
 | Log | [`session-logs/archive/20260703/20260703-202312_the-marked-value-round.md`](../session-logs/archive/20260703/20260703-202312_the-marked-value-round.md) |
 
 Working-tier manifest digests verified against packet as-cut; path hygiene (`../context/`) applied post-verify. **Tilak**, **Pottery**, **Amphora** seated `20260703.203712 UDT`. The crossing manifest seed witness landed `20260704.020800` — parity **151**.
@@ -673,7 +673,7 @@ Fresh bench raised from tip `f92513b`. **Gate trio on this metal:** parity **142
 
 | Commit | Hash | Aspect |
 |--------|------|--------|
-| Batch 1 | `c7e5747` | `tools/slc1_version_step2.rish` · `tools/slc1_accept.rish` · bench-raise log |
+| Batch 1 | `c7e5747` | `tools/s/slc1_version_step2.rish` · `tools/s/slc1_accept.rish` · bench-raise log |
 | Batch 2 | `960ddf7` | fit memo · TASKS · RTAC · fit-check log · index rows · round-zero log |
 
 **Parked offer:** one-page fresh-bench tutorial — on appetite only; journey's pause held.

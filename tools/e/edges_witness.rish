@@ -1,0 +1,38 @@
+# tools/e/edges_witness.rish -- the Sobel edge detector proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the DETECT verb of the convolution floor, standing beside image/blur.rye and
+# image/gaussian.rye (which smooth) and image/sharpen.rye (which enhances detail). Where those change an image's softness,
+# an edge detector measures how fast the image is CHANGING at each pixel -- it lights the boundaries where one region meets
+# another and leaves the flat interiors dark, the first step of every outline, mask, and shape-finding pass.
+#
+# The crux this witness proves is that an edge is the Sobel gradient magnitude, integer-only. On metal: a flat field has no
+# edges and stays black with its alpha carried; a vertical edge lights a horizontal gradient to 255 while the flat interior
+# stays dark, and a horizontal edge is its mirror; a dim corner drives both gradients so the magnitude is 64 (|gx| + |gy|),
+# where a single kernel or a max would report only 32; gain scales the magnitude before the clamp (64 lifts to 192 at gain
+# 300, clamps to 255 at gain 500, darkens to 0 at gain 0); alpha is carried not detected; a 1x1 image has no edges; the edge
+# map round-trips through the open QOI codec byte-for-byte; an over-max gain and an empty source refuse by name having
+# allocated nothing; the same detection is deterministic. No network, no key, no funds -- the outline a surface draws the day
+# it wants a contour, a mask, or a shape, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/e/edges_witness.rish
+
+say "edges: Language EN -- Season G convolution; an RGBA image's edges found by the Sobel operator, the DETECT verb the smooth and sharpen rungs left open, the outline a contour, mask, or shape-finding pass wants."
+say "edges: Style Radiant -- an edge is two signed directional gradients combined by the L1 magnitude |gx| + |gy|, so a flat field returns zero and a boundary returns a large value; no float and no square root, deterministic; the alpha is carried so the edge map stays visible exactly where the source was."
+say "edges: Lens TAME -- u32 in-memory counts, the gain bounded by edge_max_gain; each function states its invariants positively; the source and gain guarded once up front so a refusal allocates nothing; the window clamps at the border so the 3x3 kernel is always full; the i32 intermediate clamped so a strong edge lands on 255 rather than wrapping; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/edges"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/edges.rye -femit-bin=${bin}"]
+assert build.ok else "edges: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "edges: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "edges: ${out}"
+
+assert selftest.out contains "GREEN image-edges" else "edges: selftest did not print the GREEN line"
+
+say "edges: GREEN -- the Sobel operator finds an image's edges, proven on metal atop the convolution floor, the outline a surface draws the day it wants a contour."

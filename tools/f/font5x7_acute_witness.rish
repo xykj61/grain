@@ -1,0 +1,30 @@
+# tools/f/font5x7_acute_witness.rish -- the acute vowels GROWN by composition prove themselves on metal (Season G).
+#
+# Season G (Open Media Primitives) - the first accent corpus grown rather than drawn. Where image/glyph_accent.rye
+# proved compose_accent_atlas on the grave mark, image/font5x7_acute.rye grows the a/e/o/u acute set (U+00E1, U+00E9,
+# U+00F3, U+00FA) by overlaying a single acute mark onto the lowercase base through a four-row table. The crux this
+# witness proves: each composed acute vowel equals image/font5x7_latin1.rye's own hand-drawn coverage BYTE-FOR-BYTE, and
+# the composed atlas round-trips through the gfa1 encoder/decoder byte-for-byte -- so the corpus grown by composition IS
+# the corpus drawn by hand, proven on a second mark. The dotted i acute is omitted honestly (its base carries a dot the
+# mark would not replace). No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/font5x7_acute_witness.rish
+
+say "font5x7-acute: Language EN -- Season G open-media primitive; the acute vowels grown by composition from one mark and a four-row table over the lowercase base, the O(letters + accents) economy proven on a second mark."
+say "font5x7-acute: Style Radiant -- the hand-drawn latin1 corpus is the specification; the composed acute vowels equal its coverage byte-for-byte and round-trip through gfa1 byte-identical, so a corpus grown by composition is the corpus drawn by hand, our own open font, no external font to license."
+say "font5x7-acute: Lens TAME -- u32 in-memory counts; the table bounded; accented codepoints strictly ascending (the order the encoder trusts); invariants positive (parity per row, the base present, the mark right-leaning); refusals named; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/font5x7_acute"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/font5x7_acute.rye -femit-bin=${bin}"]
+assert build.ok else "font5x7-acute: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "font5x7-acute: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "font5x7-acute: ${out}"
+
+assert selftest.out contains "GREEN image-font5x7-acute" else "font5x7-acute: selftest did not print the GREEN corpus line"

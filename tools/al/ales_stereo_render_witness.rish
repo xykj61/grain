@@ -1,0 +1,41 @@
+# tools/al/ales_stereo_render_witness.rish — an ordered chain of real effects over both channels of a StereoClip renders to a
+# canonical interleaved stereo RIFF/WAVE .wav, atomically, verify-before-trust (ALES218).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES218.
+# Design read: active-designing/date/20260815/20260815-132120_fill-ales218-lotus-stereo-render.md
+# Idiom kin: lotus/render.rye (ALES217, the Step chain and its per-Clip check/apply, reused per channel) · lotus/pan.rye
+# (ALES10, the StereoClip) · lotus/stereo_wav.rye (ALES216, the interleaved container). The mono→stereo twin of ALES217: it
+# invents no new effect and no new check, it only widens the render to the second channel.
+#
+# lotus/stereo_render.rye runs a bounded, ordered chain (gain · fade · invert) over both channels of a StereoClip and encodes
+# the result interleaved into the canonical stereo RIFF/WAVE layout. The selftest proves: each channel decodes byte-for-byte to
+# the same chain applied by hand (the stereo-render law); a stereo render is two mono renders sharing one container (the
+# independent-channel law); every legal render leaves the channels equal length (the balance law); a faulty step — a span past
+# the clip, a zero denominator, a small output, a chain past max_steps, a wild rate — refuses BY NAME before a sample moves,
+# leaving both channels byte-for-byte unchanged (the atomic promise); an empty StereoClip renders a valid 44-byte stereo header.
+# A byte container only — no real file opened, no DAC, no acoustic or electrical fact, no network, no keys, no funds, no device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stereo_render_witness.rish
+
+say "ales-stereo-render: Language EN — ALES218 is the mono→stereo twin of the render rung: an ordered chain of the tree's own effects runs over both channels of a StereoClip and becomes a real interleaved stereo .wav another program plays."
+say "ales-stereo-render: Style Radiant — the stereo-render law (byte-for-byte on each channel), the independent-channel law (two mono renders sharing one container), and the balance law (the channels leave equal length) each named and proven, every fault refusing by name before a sample moves."
+say "ales-stereo-render: Lens TAME — it reuses ALES217's Step, check_step, and apply_step verbatim per channel; the two channels enter equal-length and the chain preserves length, so the whole request is checkable before a sample moves and a faulty chain leaves both channels byte-for-byte unchanged; the sample rate is a carried field not a real clock; siloed to lotus/, no real file, no DAC, no network, no keys, no funds, no real device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_render"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_render.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-render: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_render.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-render: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-render: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-render' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-render: selftest did not print the GREEN ales-stereo-render line"
+
+say "ales-stereo-render: GREEN — an ordered chain of proven effects over both channels of a StereoClip renders to a canonical interleaved stereo .wav byte-for-byte and atomically; the render family stands whole for mono and stereo. The next Lotus rung can carry a named preset chain a keeper loads by name."

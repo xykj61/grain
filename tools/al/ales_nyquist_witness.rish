@@ -1,0 +1,37 @@
+# tools/al/ales_nyquist_witness.rish — nyquist_flip: flip the sign of every odd-indexed sample, the parity-cousin of invert (ALES107).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES107.
+# Design read: active-designing/date/20260815/20260815-004633_fill-ales107-lotus-nyquist.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip and its buf/len/samples, and saturate, the one true clamp), lotus/meter.rye (ALES13 — the peak/RMS meter, used only to
+# prove a parity sign-flip moves no loudness). Where ALES105's invert flips EVERY sample's sign about zero, the Nyquist flip flips every OTHER sign, holding the even seats
+# fixed — and by that one restraint it becomes modulation by the Nyquist frequency: multiplying by (-1)^n = cos(π n) reflects the spectrum, carrying a lowpass kernel to its
+# highpass twin (the classic spectral-inversion trick). The operation is stated honestly in the time domain; the spectral reading is interpretation, never computed.
+#
+# lotus/nyquist.rye walks the odd seats only, negating each through ALES2's saturate so the one non-exact sample (sample_min, whose negation +32768 is out of range) clamps
+# to sample_max rather than wrapping; even seats are left as they are, no second buffer. The crux is four laws. THE ALTERNATING-SIGN LAW: the flip lands a hand-computed
+# vector exactly (even seats held, odd seats negated). THE INVOLUTION LAW, WITH AN HONEST RAIL: the flip is its own inverse off the floor, yet an odd-indexed sample_min
+# pins to -32767 while an even-indexed sample_min is untouched. THE MAGNITUDE LAW: length and the peak magnitude (re-measured through ALES13) unchanged. THE FIXED-SEAT /
+# PARITY LAW: every even-indexed sample is a fixed point, and the all-zero and empty clips are each their own flip. The selftest proves all four plus the degenerate fixpoints.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_nyquist_witness.rish
+
+say "ales-nyquist: Language EN — the Nyquist flip flips the sign of every odd-indexed sample and holds the even ones fixed: y[n] = saturate((-1)^n · x[n]). It is the exact parity-cousin of invert — invert flips every sign, this flips every other one. By that restraint it is modulation by the Nyquist frequency, the spectral-inversion trick that carries a lowpass kernel to its highpass twin. It reseats values on existing samples and fabricates none."
+say "ales-nyquist: Style Radiant — the rule is stated positively: replace each odd-indexed sample with saturate(-x), leaving the even seats as they are, reusing ALES2's one true clamp so the signed rail lives in one place; length untouched, no second buffer. It completes the value family beside invert (the whole mirror). The crux stands out as four laws: the alternating-sign law (the flip lands the hand-computed vector exactly, even seats held and odd seats negated), the involution law with an honest rail (the flip is its own inverse off the floor, an odd-indexed sample_min pinning to -32767 while even seats always round-trip), the magnitude law (length and peak unchanged), and the fixed-seat / parity law (every even-indexed sample is a fixed point, the all-zero and empty clips each their own flip)."
+say "ales-nyquist: Lens TAME — one mono clip of i16 PCM, its odd seats sign-flipped in place through saturate in a single pass, no allocation and no second buffer; it reseats existing samples and fabricates none, changes no length, and reads no byte past len; it names no span and forwards no EditError — total on any legal Clip; the magnitude law is checked through ALES13's read-only meter (peak before equals peak after); the spectral reading is named as interpretation, not a measured rate; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/nyquist"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/nyquist.rye -femit-bin=${bin}"]
+assert build.ok else "ales-nyquist: build failed — ${build.err}"
+
+let outfile = "lotus/bin/nyquist.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-nyquist: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-nyquist: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-nyquist' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-nyquist: selftest did not print the GREEN ales-nyquist line"

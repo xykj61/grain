@@ -1,7 +1,7 @@
 # radiant_lint_scan.rish — advisory Radiant surface scan.
 #
 # Body: radiant_lint_scan.sh via run seam.
-# Outer: tools/radiant_lint.rish
+# Outer: tools/r/radiant_lint.rish
 #
 #   rishi/bin/rishi run tools/fixtures/radiant_lint_scan.rish
 

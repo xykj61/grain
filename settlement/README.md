@@ -37,7 +37,7 @@ A ledger is only as strong as what it turns away. `constellation.rye`'s selftest
 ```
 rye build settlement/constellation.rye -femit-bin=settlement/bin/constellation
 settlement/bin/constellation selftest
-rishi/bin/rishi run tools/settlement_constellation_witness.rish
+rishi/bin/rishi run tools/s/settlement_constellation_witness.rish
 ```
 
 ## The spoken name
@@ -49,7 +49,7 @@ It is custody, not mere registration. A keeper who **owns** the point (its Deed 
 ```
 rye build settlement/names.rye -femit-bin=settlement/bin/names
 settlement/bin/names selftest
-rishi/bin/rishi run tools/settlement_names_witness.rish
+rishi/bin/rishi run tools/s/settlement_names_witness.rish
 ```
 
 ## JARL, settled

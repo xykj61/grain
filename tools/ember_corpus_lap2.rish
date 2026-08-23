@@ -1,5 +1,0 @@
-# tools/ember_corpus_lap2.rish — shim → tools/gen/ember/ember_corpus_lap2.rish (born Kiln Season o1)
-if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/ember/ember_corpus_lap2.rish"]
-if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/ember/ember_corpus_lap2.rish" args[0]]
-if r.out != "" then say r.out
-exit r.code

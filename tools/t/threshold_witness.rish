@@ -1,0 +1,35 @@
+# tools/t/threshold_witness.rish -- an AUTOMATIC threshold from an image's own tones, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the whole segmentation family (label, distance, regions, centroid, watershed) reads a
+# binary MASK a fixture drew by hand. This rung makes the mask from a real image: the luma HISTOGRAM plus OTSU'S METHOD (1979),
+# the classic front door. The skeleton binarizers cut at a FIXED mid-gray (red byte at least 128); Otsu cuts where the image's
+# own histogram says to, so it adapts to a photo whose two tones both sit below the middle, or both above it.
+#
+# The crux this witness proves on metal: a dark bimodal image (gray-40 and gray-90, both below 128) tallies two humps of eight,
+# Otsu splits at 40 so the bright hump alone lights where a fixed 128 cut sees nothing; a bright bimodal image (gray-160 and
+# gray-220) splits at 160 where a fixed cut calls everything foreground; a single-tone image has no valley so Otsu returns 0;
+# the mask round-trips through the open QOI codec byte-for-byte; refusal by name. No network, no key, no funds -- the mask a
+# surface makes the day it turns a real photograph into a shape it can count, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/threshold_witness.rish
+
+say "threshold: Language EN -- Season G automatic threshold over a Pixmap; histogram tallies the luma of every pixel, otsu_threshold chooses the between-class-variance-maximizing split, threshold_mask renders the mask the family consumes."
+say "threshold: Style Radiant -- compose not braid: this rung owns only the luma projection, the histogram tally, and the between-class-variance search; qoi owns the RGBA buffers and the mask reads downstream through branch.is_on. No new gather, no blend, no codec."
+say "threshold: Lens TAME -- the class sums run in u64 so a full-image tally can never wrap; the histogram is a fixed 256-bin array; an empty source refuses EmptySource up front so a refusal allocates nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/threshold"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/threshold.rye -femit-bin=${bin}"]
+assert build.ok else "threshold: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "threshold: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "threshold: ${out}"
+
+assert selftest.out contains "GREEN image-threshold" else "threshold: selftest did not print the GREEN line"
+
+say "threshold: GREEN -- the dark bimodal image splits at 40 where a fixed 128 cut sees nothing, the bright one splits at 160 where a fixed cut calls everything foreground, a single-tone image returns 0, the mask round-trips through the open QOI codec, the refusal fires by name, on metal."

@@ -1,0 +1,28 @@
+# dexter_glass_keyboard_witness.rish — ZETA0–ZETA2 glass keyboard.
+#
+#   rishi/bin/rishi run tools/d/dexter_glass_keyboard_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/dexter_glass_keyboard_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/dexter_glass_keyboard_witness.rye -femit-bin=${bin}"]
+assert build.ok else "ZETA keyboard witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "ZETA keyboard witness exited non-zero"
+assert selftest.out contains "GREEN" else "ZETA not GREEN"
+assert selftest.out contains "waymark ZETA" else "ZETA missing waymark claim"
+assert selftest.out contains "letters QWERTY" else "ZETA missing letters claim"
+assert selftest.out contains "numbers page" else "ZETA missing numbers claim"
+assert selftest.out contains "symbols page" else "ZETA missing symbols claim"
+assert selftest.out contains "letters paint lines" else "ZETA1 missing paint claim"
+assert selftest.out contains "hit boxes" else "ZETA1 missing hit-box claim"
+assert selftest.out contains "tap drain" else "ZETA2 missing tap→Action claim"
+assert selftest.out contains "label-span hit" else "ZETA2b missing label-span hit claim"
+assert selftest.out contains "emoji UTF-8" else "ZETA4 missing emoji UTF-8 claim"
+assert selftest.out contains "distinct atlas" else "ZETA4 missing distinct-atlas claim"
+assert selftest.out contains "mode round-trip" else "ZETA missing mode round-trip claim"
+assert selftest.out contains "zeta6" else "ZETA6 missing ret/send claim"
+assert selftest.out contains "ret newline" else "ZETA6 missing newline claim"
+
+say "GREEN: ZETA0–ZETA6 — layout, label-span hit, tap→Action, emoji, mode round-trip, ret/send under waymark ZETA."

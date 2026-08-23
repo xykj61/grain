@@ -1,0 +1,54 @@
+# tools/m/mycelium_cord_bron_witness.rish — the Cord travels as text (r3).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · rung r3 — the Cord travels.
+# r1 fixed the deterministic-commit crux and r2 quarantined the equivocator. A consensus a developer
+# cannot hand to another node is only a sandbox; a mesh becomes a network when one node's agreed order
+# crosses to a second as readable bytes.
+#
+# The crux this witness proves: the agreed order travels with the bytes. A committed Dag renders to a
+# `format cord-dag-v1` record (one signed `block` line each, parents as following `parent` lines) and
+# parses back; the recovered Dag, re-admitted block by block under r1's own `add`, commits to the
+# byte-identical order and folds the real Mycelium supply law to the identical supply — so two nodes
+# agree by exchanging blocks alone. Every signature rides in the record and is re-verified on rebuild:
+# a tampered block refuses BadSignature at add, so corruption can never cross as consensus. A wrong
+# header, an unknown field, and a parent before any block each refuse. Demo keeper seeds only — no real
+# key, no funds, no network, no custody.
+#
+# Additive: r1 (deterministic commit) and r2 (Byzantine refusal) re-run GREEN under this one.
+#
+# Scope: active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_cord_bron_witness.rish
+
+say "mycelium-cord-bron: Language EN — one node's agreed order crosses to another as readable text, unchanged."
+say "mycelium-cord-bron: Style Radiant — the cord is drawn out of the dark as a written strand, and re-read whole where it lands."
+say "mycelium-cord-bron: Lens TAME — a purpose-built bounded reader; every signature re-verified on rebuild; a tampered block refuses; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/cord_bron"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_bron.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-cord-bron: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-cord-bron: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-cord-bron: selftest did not speak GREEN"
+assert selftest.out contains "rendered to a format cord-dag-v1 record and parsed back" else "mycelium-cord-bron: round-trip claim missing"
+assert selftest.out contains "commits to the byte-identical order and folds supply 700 over one star" else "mycelium-cord-bron: order-travels crux missing"
+assert selftest.out contains "re-rendering the parsed record reproduces the exact bytes" else "mycelium-cord-bron: fixed-point claim missing"
+assert selftest.out contains "a tampered block refuses BadSignature on rebuild" else "mycelium-cord-bron: tamper-refusal claim missing"
+assert selftest.out contains "a wrong header, an unknown field, and a parent before any block each refuse" else "mycelium-cord-bron: reader-refusals claim missing"
+
+# Additive: r1's deterministic commit and r2's Byzantine refusal both still stand beneath the travel round.
+let r1bin = "mycelium/bin/cord"
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord.rye -femit-bin=${r1bin} && ${r1bin} 2>&1"]
+assert r1.ok else "mycelium-cord-bron: r1 deterministic-commit witness is not GREEN"
+assert r1.out contains "GREEN" else "mycelium-cord-bron: r1 did not speak its GREEN"
+
+let r2bin = "mycelium/bin/cord_byzantine"
+let r2 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_byzantine.rye -femit-bin=${r2bin} && ${r2bin} 2>&1"]
+assert r2.ok else "mycelium-cord-bron: r2 Byzantine-refusal witness is not GREEN"
+assert r2.out contains "GREEN" else "mycelium-cord-bron: r2 did not speak its GREEN"
+
+say "mycelium-cord-bron: GREEN — a committed Cord travels as a format cord-dag-v1 record byte-for-byte, the recovered Dag commits to the identical order and folds the identical supply, a tampered block refuses on rebuild, and r1's commit and r2's Byzantine refusal still stand beneath."

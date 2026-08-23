@@ -1,0 +1,58 @@
+# tools/cr/crypto_monocypher_poly1305_parity_witness.rish — Monocypher-source parity for the standalone Poly1305 one-time authenticator, the MAC that
+# authenticates every sealed message. Our authored crypto/poly1305.rye and the vendored Monocypher's own C (vendor/monocypher, CC0/BSD-dual), each
+# compiled fresh and asked for the same eight tags, diffed byte-for-byte. The EIGHTH rung of the real Monocypher-source parity pattern (BLAKE2b ·
+# X25519 · Ed25519 · IETF AEAD · Argon2 · XChaCha20-Poly1305 flagship · Edwards↔Montgomery came before). Season G · Cryptography.
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# proving Rye output equals Monocypher output byte-for-byte." crypto/poly1305.rye's own selftest named Monocypher-source parity as an honest held
+# horizon ("its vendored source is a held fetch"); this rung closes it. Poly1305 was proven inside the AEAD flagship, yet never STANDALONE against
+# Monocypher's own crypto_poly1305 — so the MAC every Vault/Comlink/Lotus sealed carry rests on now stands proven in its own right.
+# Kin: crypto/poly1305.rye (our authored authenticator, GREEN against Zig's std.crypto and the RFC vector) · tools/rye/monocypher_poly1305_parity.rye (our
+# printing harness) · tools/fixtures/monocypher_poly1305_harness.c (Monocypher's printing harness) · tools/cr/crypto_monocypher_aead_parity_witness.rish
+# (the AEAD sibling that exercised Poly1305 embedded, not standalone). Monocypher stays the parity TARGET, vendored and unmodified, never a copied line,
+# studied clean-room (.claude/rules/gratitude-licenses.md).
+#
+# The eight lines are anchored to the world: the first seven are tags over deterministic messages of sizes {0, 1, 15, 16, 17, 34, 256} — the block
+# edges the polynomial must cross (empty · sub-block · exact block · one byte over · the RFC's 34-byte length · a 256-byte multi-block run) — where the
+# oracle is a second real implementation agreeing byte-for-byte; the eighth is the RFC 8439 §2.5.2 canonical message "Cryptographic Forum Research
+# Group", whose published tag a8061dc1305136c6c22b8baf0c0127a9 anchors the parity to the standard. Every tag is under the RFC 8439 §2.5.2 one-time key.
+# Purely local — no key of ours, no network, no funds, no device; constant-time timing-safety stays the Season's named horizon.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_monocypher_poly1305_parity_witness.rish
+
+say "crypto-monocypher-poly1305-parity: Language EN — Monocypher-source parity for the standalone Poly1305 one-time authenticator, the MAC that authenticates every sealed message. crypto/poly1305.rye named Monocypher-source parity as a held horizon and was only ever proven inside the AEAD flagship; this eighth rung closes the horizon and proves the authenticator STANDALONE against the ACTUAL vendored Monocypher C over eight tags, byte-for-byte."
+say "crypto-monocypher-poly1305-parity: Style Radiant — like against like. Our authored authenticator and the unmodified vendored Monocypher each compile fresh and each print, in order, tags for deterministic messages of sizes {0, 1, 15, 16, 17, 34, 256} and then for the RFC 8439 §2.5.2 canonical message. Two independent implementations, one set of inputs; the parity is that the eight tags agree hex for hex."
+say "crypto-monocypher-poly1305-parity: Lens TAME — no fabricated constant is trusted: the block-edge oracle is a second real implementation, and the eighth tag is anchored to RFC 8439 §2.5.2's published authenticator a8061dc1305136c6c22b8baf0c0127a9. The witness diffs the eight Monocypher lines against the eight Rye lines byte-for-byte AND asserts the published anchor. Monocypher is linked, never copied. Purely local — no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let cbin = "crypto/bin/monocypher_poly1305"
+let cout = "crypto/bin/monocypher_poly1305.out"
+let rout = "crypto/bin/rye_poly1305.out"
+
+# 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_poly1305_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+assert cbuild.ok else "crypto-monocypher-poly1305-parity: Monocypher C harness build failed — ${cbuild.err}"
+
+# 2. Run the Monocypher C harness — eight authenticator hex lines.
+let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
+assert crun.ok else "crypto-monocypher-poly1305-parity: Monocypher C harness exited non-zero — see ${cout}"
+
+# 3. Run our authored Rye harness — eight authenticator hex lines over the identical inputs.
+let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/rye/monocypher_poly1305_parity.rye > ${rout} 2>&1"]
+assert rrun.ok else "crypto-monocypher-poly1305-parity: Rye harness exited non-zero — see ${rout}"
+
+# 4. Byte-for-byte parity: the two eight-line outputs must be identical.
+let diff = run ["sh" "-c" "diff ${cout} ${rout} > /dev/null && echo same"]
+assert (trim diff.out) == "same" else "crypto-monocypher-poly1305-parity: Monocypher and Rye tags disagree — Monocypher:\n$(cat ${cout})\nRye:\n$(cat ${rout})"
+
+# 5. Anchor to the world: the eighth tag is RFC 8439 §2.5.2's published authenticator.
+let rfc_tag = "a8061dc1305136c6c22b8baf0c0127a9"
+let got_anchor = run ["sh" "-c" "sed -n '8p' ${cout}"]
+assert (trim got_anchor.out) == rfc_tag else "crypto-monocypher-poly1305-parity: the RFC 8439 §2.5.2 canonical tag is not the published a8061dc1305136c6c22b8baf0c0127a9"
+
+let shown = run ["sh" "-c" "cat ${cout}"]
+say "crypto-monocypher-poly1305-parity: the eight tags, agreed by both implementations:\n${shown.out}"
+
+say "GREEN crypto-monocypher-poly1305-parity: our authored crypto/poly1305.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical Poly1305 authenticators over the block-edge sizes {0, 1, 15, 16, 17, 34, 256} and the RFC 8439 §2.5.2 canonical message (anchored to the published tag a8061dc1305136c6c22b8baf0c0127a9). The EIGHTH real Monocypher-SOURCE parity rung, closing the held horizon crypto/poly1305.rye itself named and proving the standalone MAC every Vault/Comlink/Lotus sealed carry rests on — no recited constant, the block-edge oracle a second real implementation. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."

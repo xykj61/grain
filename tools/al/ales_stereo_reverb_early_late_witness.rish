@@ -1,0 +1,57 @@
+# tools/al/ales_stereo_reverb_early_late_witness.rish — the stereo early/late balance: the first reflections against the diffuse wash, per ear (ALES207).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES207.
+# Design read: active-designing/date/20260815/20260815-114348_fill-ales207-lotus-stereo-reverb-early-late.md
+# Stands on: lotus/reverb_early_late.rye (ALES206 — the mono early/late balance this mirrors per ear, its published early banks reused whole);
+# lotus/multitap_time.rye (ALES69 — the timed multi-tap voicing the early reflections, run per channel on a copy); lotus/stereo_reverb_preset.rye
+# (ALES191 — the named-room stereo wet, run over the master unchanged); lotus/pan.rye (the StereoClip and its two balanced channels); lotus/clock.rye
+# (ALES5 — the sample clock, converting the span); lotus/timeline.rye (ALES2 — the Clip each channel holds, its max_clip bounding the early copy).
+#
+# lotus/stereo_reverb_early_late.rye carries ALES206's early/late balance across a stereo master — the SAME crossfade over BOTH channels of a
+# StereoClip, one shared early bank, room, and balance, the image held. It computes the early reflections with ALES69's multitap_ms over the room's
+# fixed early bank (on a copy, run per channel, each reading its own dry — no cross-channel snapshot), reverberates the master WET in place through
+# ALES191's stereo_reverb_preset UNCHANGED, then blends each channel — out[i] = saturate((den-num)·early[i]/den + num·late[i]/den), the same linear
+# balance ALES206 proved, run per ear with no cross-channel read, saturated once. No new audio arithmetic. The early signal is computed on a copy and
+# the late preset prechecks, so a refusal never half-writes the master (atomic). The selftest proves on both channels: at balance = 0 each channel
+# equals multitap_ms over the room's early bank byte for byte; at balance = den it equals stereo_reverb_preset byte for byte; a half balance differs
+# from both and each sample of each channel is the honest weighted average; the image is held (a centred master identical channel-to-channel, a stereo
+# master distinct — no crossing); the channels leave balanced and silence stays silence; and the faults forward atomic (a bad fraction BadBalance, a
+# span past the clip DurationTooLong, an out-of-range span BadRange, both channels untouched). Purely local — one StereoClip, a validated clock, a
+# bounded early copy; no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stereo_reverb_early_late_witness.rish
+
+say "ales-stereo-reverb-early-late: Language EN — ALES206 gave the MONO reverb its early/late balance (a crossfade between a room's discrete first reflections and its diffuse late wash). Yet a keeper mixing a STEREO master had no such knob; the early/late balance stopped at mono, exactly as the wet/dry mix did before ALES193 carried it across. This rung is the thin twin ALES206 named next — the SAME crossfade over both channels, one shared early bank, room, and balance — and it invents no new primitive, composing proven stages per ear."
+say "ales-stereo-reverb-early-late: Style Radiant — the two edges are stated positively and proven exact on BOTH channels: at balance = 0 each channel equals ALES69's multi-tap over the room's published early bank byte for byte (fully toward early is exactly the first reflections), and at balance = den it equals ALES191's stereo_reverb_preset over the span byte for byte (fully toward late is exactly the stereo preset); between, each sample of each channel is the honest weighted average of its own early and its own late. The image is held — a centred master stays identical channel-to-channel, a genuinely stereo master keeps its channels distinct, no crossing — because the left ear blends left and the right ear blends right with one shared setting."
+say "ales-stereo-reverb-early-late: Lens TAME — one StereoClip of i16 PCM, a validated clock, ALES191's fixed reverb banks and ALES206's fixed early-tap banks, and one bounded full-master copy for the early signal; NO new audio arithmetic — the crossfade is ALES206's proven linear blend run per ear, each channel's early and late computed by a proven stage, saturated ONCE so it can never wrap; StereoReverbEarlyLateError = multitap_time.MultitapTimeError || stereo_reverb_preset.StereoReverbPresetError || BadBalance, the early multi-tap run on a COPY and the late preset PRECHECKED so a refusal never half-writes the master (atomic), BadBalance / DurationTooLong / BadRange by name before any write; siloed to lotus/, no network, no keys, no funds, no device. The early banks are named in MILLISECONDS, so one room sounds the same at any sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_reverb_early_late"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_early_late.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-reverb-early-late: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_reverb_early_late.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-reverb-early-late: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-reverb-early-late: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-reverb-early-late' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-reverb-early-late: selftest did not print the GREEN ales-stereo-reverb-early-late line"
+
+# This rung runs ALES191's stereo_reverb_preset over its public API for the late wash — re-prove the named-room stereo preset still stands green beside it.
+let preset = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_reverb_preset.rye -femit-bin=lotus/bin/stereo_reverb_preset && lotus/bin/stereo_reverb_preset selftest 2>&1 | grep -q 'GREEN ales-stereo-reverb-preset' && echo yes"]
+assert (trim preset.out) == "yes" else "ales-stereo-reverb-early-late: the ALES191 named-room stereo preset regressed under its early/late balance"
+
+# And ALES69's multitap_ms over its public API for the early reflections — re-prove the timed multi-tap still stands green beside it.
+let mt = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/multitap_time.rye -femit-bin=lotus/bin/multitap_time && lotus/bin/multitap_time selftest 2>&1 | grep -q 'GREEN ales-multitap-time' && echo yes"]
+assert (trim mt.out) == "yes" else "ales-stereo-reverb-early-late: the ALES69 timed multi-tap regressed under its early/late balance"
+
+# And re-prove ALES206's mono early/late balance still stands green — the mono rung this mirrors per ear.
+let mono = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build lotus/reverb_early_late.rye -femit-bin=lotus/bin/reverb_early_late && lotus/bin/reverb_early_late selftest 2>&1 | grep -q 'GREEN ales-reverb-early-late' && echo yes"]
+assert (trim mono.out) == "yes" else "ales-stereo-reverb-early-late: the ALES206 mono early/late balance regressed beside its stereo twin"
+
+say "ales-stereo-reverb-early-late: GREEN — the stereo early/late balance: the first reflections against the diffuse wash carried across a stereo master. Compute the early reflections with ALES69's multi-tap over the room's fixed early bank (on a copy, per channel, no cross-channel snapshot), the late wash with ALES191's stereo_reverb_preset in place, then blend each channel out[i] = saturate((den-num)·early[i]/den + num·late[i]/den), a linear crossfade run per ear, saturated once so a loud blend pins never wraps — no new audio arithmetic. Proven on both channels: at balance = 0 exactly the multi-tap over the room's early bank byte for byte (fully early); at balance = den exactly stereo_reverb_preset byte for byte (fully late); a half balance neither edge, each sample the honest weighted average; the image is held (centred identical, stereo distinct); the channels leave balanced and silence stays silence; a bad fraction refuses BadBalance, a span past the clip DurationTooLong, an out-of-range span BadRange, each leaving both channels untouched (the early multi-tap on the copy, the late preset prechecked, so atomic); the ALES191 stereo preset, the ALES69 multi-tap, and the ALES206 mono early/late balance stay GREEN beside it. The early/late axis now stands whole for mono and stereo; a fresh reverb axis (width or freeze) is next."

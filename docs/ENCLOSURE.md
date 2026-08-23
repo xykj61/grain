@@ -27,9 +27,9 @@ Full ruling: [`counsel/20260712-090512`](../counsel/date/20260712/20260712-09051
 
 ---
 
-## Wrapper surfaces — `tools/enclosure.conf`
+## Wrapper surfaces — `tools/e/enclosure.conf`
 
-Personal `tools/enclosure.conf` is gitignored; [`tools/enclosure.conf.example`](../tools/enclosure.conf.example) is the tracked template. Setup law: [`context/specs/enclosure-editors.md`](../context/specs/enclosure-editors.md).
+Personal `tools/e/enclosure.conf` is gitignored; [`tools/e/enclosure.conf.example`](../tools/e/enclosure.conf.example) is the tracked template. Setup law: [`context/specs/enclosure-editors.md`](../context/specs/enclosure-editors.md).
 
 | Surface | Default | Role |
 |---------|---------|------|
@@ -39,7 +39,7 @@ Personal `tools/enclosure.conf` is gitignored; [`tools/enclosure.conf.example`](
 | **`LANE_KVM`** | `false` | A-narrow gate — `/dev/kvm` only when on |
 | **`ENCLOSURE`** | `ai-jail` | Retreat flag — flip to `pond` only past master-signed exit bron |
 
-Wrappers honor `ENCLOSURE` before launch. `ENCLOSURE=pond` **refuses** unless exit bron is present-with-content **and** master-signed — verified by `tools/pond_exit_bron_master_seal.sh`.
+Wrappers honor `ENCLOSURE` before launch. `ENCLOSURE=pond` **refuses** unless exit bron is present-with-content **and** master-signed — verified by `tools/p/pond_exit_bron_master_seal.sh`.
 
 ---
 
@@ -49,9 +49,9 @@ Wrappers honor `ENCLOSURE` before launch. `ENCLOSURE=pond` **refuses** unless ex
 
 | Witness | When |
 |---------|------|
-| `rishi/bin/rishi run tools/lane_kvm_refuse.rish` | Lane off — daily editor default |
-| `rishi/bin/rishi run tools/proven_seat_g0_complete_jailed.rish` | Lane on inside jail |
-| `rishi/bin/rishi run tools/lane_kvm_onpath_host.rish` | Host one-shot Framework sitting |
+| `rishi/bin/rishi run tools/l/lane_kvm_refuse.rish` | Lane off — daily editor default |
+| `rishi/bin/rishi run tools/p/proven_seat_g0_complete_jailed.rish` | Lane on inside jail |
+| `rishi/bin/rishi run tools/l/lane_kvm_onpath_host.rish` | Host one-shot Framework sitting |
 
 **Retired:** D-Bus + systemd transient units as KVM doorway — [`113900`](../active-designing/date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md).
 
@@ -92,18 +92,18 @@ Full table: [`20260712-210800` scorecard](../active-designing/date/20260712/2026
 
 ```bash
 # Column one baseline (incumbent sixbar)
-rishi/bin/rishi run tools/pond_enclosure_sixbar.rish
+rishi/bin/rishi run tools/p/pond_enclosure_sixbar.rish
 
 # Two-column living measure (col1 GREEN · gaps named · season-closed)
-rishi/bin/rishi run tools/pond_enclosure_scorecard.rish
+rishi/bin/rishi run tools/p/pond_enclosure_scorecard.rish
 
 # Column-two probes (refuse-until-candidate · no season open)
-rishi/bin/rishi run tools/pond_enclosure_col2_probes.rish
+rishi/bin/rishi run tools/p/pond_enclosure_col2_probes.rish
 
 # Master-seal policy / season-closed / require
-tools/pond_exit_bron_master_seal.sh --policy
-tools/pond_exit_bron_master_seal.sh --season-closed
-tools/pond_exit_bron_master_seal.sh --require   # only when exit bron + .asc present
+tools/p/pond_exit_bron_master_seal.sh --policy
+tools/p/pond_exit_bron_master_seal.sh --season-closed
+tools/p/pond_exit_bron_master_seal.sh --require   # only when exit bron + .asc present
 ```
 
 **Incumbent-anchored cells** record behavior — never migrate literal ai-jail filenames or teacher binaries into Pond's required column.
@@ -141,7 +141,7 @@ Full card: [`20260712-210800` exit criteria](../active-designing/date/20260712/2
 
 ## Master seal and ceremony
 
-**Presence alone does not open the season.** An agent inside the jail could write and sandbox-sign the sentinel, so exit bron **counts only when master-signed** — a detached `.asc` verifies against the master fingerprint proved in `tools/pond_exit_bron_master_seal.sh` (isolated keyring holding only `context/keys/gpg_signing_06462132.pub.asc`).
+**Presence alone does not open the season.** An agent inside the jail could write and sandbox-sign the sentinel, so exit bron **counts only when master-signed** — a detached `.asc` verifies against the master fingerprint proved in `tools/p/pond_exit_bron_master_seal.sh` (isolated keyring holding only `context/keys/gpg_signing_06462132.pub.asc`).
 
 **Season states:**
 

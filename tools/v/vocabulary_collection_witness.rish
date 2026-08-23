@@ -1,0 +1,46 @@
+# tools/v/vocabulary_collection_witness.rish -- reader-facing prose says what it means.
+#
+# Seated `20260821.213540` on Keaton's word: **collection** in place of **corpus** on the pages a
+# newcomer meets. The measurement that shaped the sweep is worth carrying, because it argued
+# against the expensive version of the same idea:
+#
+#   corpus, living occurrences      3,286   of which 2,501 sit in .rye and .rish CODE
+#   bare `corpus` as an identifier  1,344   plus query_corpus, corpus_path, corpus_digest, ...
+#   tracked PATHS carrying the word   169   including a pond/apps/corpora/ room
+#   occurrences in dated testimony  1,525   across 736 files, never rewritten
+#   READER-FACING PROSE                62   <- the whole audience-facing surface
+#
+# Sixty-two edits reach every reader. A deep debride would rewrite 2,901 commits, force every
+# downstream to re-clone, and touch identifiers and paths no front-door reader ever sees -- and
+# the published seed is a SINGLE Option-B commit, so there is no public history to clean at all.
+# The cheap sweep buys the whole benefit; that is why this guard exists and that rewrite does not.
+#
+# And the sweep went PER SENSE rather than one abstract word for another, since `corpus` was doing
+# four jobs: the flw draw's 5,526-word source is a WORD LIST, the hosted .rye files are the HOSTED
+# SOURCES, a test or control set is a CONTROL SET, and Grain's living documents are a COLLECTION.
+#
+# ENFORCE -- the reader-facing rooms, at zero. ADVISORY -- the record (dated testimony, REDS,
+# CHECKPOINTS, archive, yonder, and the Lexicon row that seats the word) keeps every word it wrote and
+# is reported rather than failed. A guard that makes the record of a decision unwritable was hit
+# twice this day already, so the exemption is written into the roster rather than learned again.
+#
+# Read-only: no network, no key, no funds, and no prose is rewritten here.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/v/vocabulary_collection_witness.rish
+
+say "vocabulary-collection: Language EN -- the pages a newcomer meets say word list, hosted sources, control set, and collection, each where that is the true word."
+say "vocabulary-collection: Style Radiant -- the clearest word at whatever length it wants, per the Comlink tendency; one overloaded Latin noun swapped for one overloaded English noun would have moved the problem rather than solved it."
+say "vocabulary-collection: Lens TAME -- measurement beats memory; 62 reader-facing occurrences against 1,344 code identifiers and 169 paths decided the scope, and a planted control page proves the refusal on metal."
+
+let green = run ["sh" "tools/fixtures/vocabulary_collection_scan.sh"]
+assert green.ok else "vocabulary-collection: the living scan must exit 0 -- ${green.out}"
+assert green.out contains "enforce_hits=0" else "vocabulary-collection: a reader-facing page still says the retired word -- name the sense and use its own plain word"
+assert green.out contains "record=kept_by_law" else "vocabulary-collection: want the record reported and kept rather than swept"
+assert green.out contains "verdict=ok" else "vocabulary-collection: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/vocabulary_collection_scan.sh" "prove-red"]
+assert (red.ok == false) else "vocabulary-collection: prove-red must refuse, not merely report"
+assert red.out contains "RED_corpus_in_reader_prose_caught=2" else "vocabulary-collection: prove-red want both planted occurrences caught"
+
+say "GREEN: vocabulary-collection -- every reader-facing page carries the plain word, the record keeps every word it wrote, and a page that still says the retired one is refused on metal."

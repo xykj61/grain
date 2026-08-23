@@ -1,0 +1,58 @@
+# tools/m/mycelium_braid_true_witness.rish — the Braid reads a real reverting-chain fixture true (r4).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the Braid true to the bytes · rung r4 — the arc closes.
+# r1 fixed the linked-chain verdict, r2 let it travel, r3 read it across a Knot — all over Dags seated in code.
+# This closing rung carries the reader onto a real on-disk Cord record carrying a genuine REVERTING chain a
+# keeper can open and walk, proving the Braid's signature property is true to the bytes: a chain whose final
+# link overdraws reverses WHOLE, and not one coin moves.
+#
+# The app parses tools/fixtures/braid_dag.bron through cord_bron, rebuilds the Dag under cord.add (re-verifying
+# every signature), resolves it through braid, and reports the terminal recipient, the committed count, and the
+# rejected count; an independent awk reading of the same bytes (tools/fixtures/braid_dag_truth.awk) seeds
+# balances from the genesis credits and simulates the chain atomically in file order — two tools, one answer.
+# The fixture is reproducible (the generator re-emits byte-identical bytes), and a tampered record is never read
+# as true. Composes cord_bron + cord + braid public API only; demo keeper seeds — no key, no funds, no network,
+# no custody.
+#
+# Scope: active-designing/date/20260813/20260813-081709_mycelium-braid-linked-atomic-chain-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_braid_true_witness.rish
+
+say "mycelium-braid-true: Language EN — a real linked chain that reverses whole, and two tools that name the same terminal hand and the same reject verdict from the same bytes."
+say "mycelium-braid-true: Style Radiant — r1–r3 read Dags seated in code; r4 reads a record a keeper can open, walk, and hash, and the atom's all-or-nothing holds true to those bytes."
+say "mycelium-braid-true: Lens TAME — the reject verdict cross-checks against an independent awk; the Dag rebuilt under the Cord's own add; a tampered record never read as true; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/braid_true"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/braid_true.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-braid-true: build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "mycelium-braid-true: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-braid-true: selftest did not speak GREEN"
+assert selftest.out contains "the reverting chain moved not one coin" else "mycelium-braid-true: reversal-moved-nothing claim missing"
+assert selftest.out contains "conservation holds over the real bytes" else "mycelium-braid-true: conservation claim missing"
+assert selftest.out contains "a tampered header refused BadFormat" else "mycelium-braid-true: tamper-refusal claim missing"
+
+# The crux — two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
+let app = run ["sh" "-c" "${bin} measure 2>&1"]
+assert app.ok else "mycelium-braid-true: app measure exited non-zero"
+let awk = run ["sh" "-c" "awk -f tools/fixtures/braid_dag_truth.awk tools/fixtures/braid_dag.bron"]
+assert awk.ok else "mycelium-braid-true: awk truth read failed"
+assert awk.out contains "ed3234b276d4ceda57d59bad14fbaf5a773c0f318c999de3a60d53c5a5b34c05 0 1" else "mycelium-braid-true: awk triple not Dave's terminal · committed 0 · rejected 1"
+assert app.out == awk.out else "mycelium-braid-true: app and awk disagree — the reject verdict drifted from the bytes"
+
+# The fixture is genuinely what the Cord emits, not a hand-mock — the generator re-emits byte-identical bytes.
+let regen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run mycelium/braid_fixture_gen.rye 2>/tmp/braid_regen.bron >/dev/null && diff -q tools/fixtures/braid_dag.bron /tmp/braid_regen.bron && echo REPRODUCIBLE"]
+assert regen.ok else "mycelium-braid-true: fixture is not reproducible — the generator drifted"
+assert regen.out contains "REPRODUCIBLE" else "mycelium-braid-true: fixture regeneration did not match"
+
+# The Braid whose verdict this rung reads from real bytes, and the cord_bron reader that rebuilds the real
+# Dag, both stand at the door — their own selftests prove the machinery r4 rests on.
+let braid = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/braid.rye -femit-bin=mycelium/bin/braid && mycelium/bin/braid 2>&1"]
+assert braid.ok else "mycelium-braid-true: the Braid r1 the reading resolves is not GREEN"
+assert braid.out contains "GREEN" else "mycelium-braid-true: the Braid r1 did not speak its GREEN"
+
+say "mycelium-braid-true: GREEN — a real reverting linked-chain record reads true (app==awk, Dave's terminal · committed 0 · rejected 1); the whole atom reversed with not one coin moved, resolved under the Cord's own add and the agreed order, conservation whole, the fixture reproducible, a tampered record refused; the Braid stands at the door. The Mycelium Braid's agent-doable arc closes."

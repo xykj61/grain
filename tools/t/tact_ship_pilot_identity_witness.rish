@@ -1,0 +1,39 @@
+# tools/t/tact_ship_pilot_identity_witness.rish — TACT Journey 1, Rung 2: the identity step, wired.
+#
+# Rung one proved the pilot spine pure (each precondition a supplied signal). This rung wires
+# the first step, identity, to a real settlement: the step passes only when a genuine Kumara
+# genesis opens and its Deed verifies against the fresh constellation. From zero — a forged
+# bind, or a number that is no galaxy — no identity settles, so the pilot holds at identity and
+# never advances. Onboarding cannot walk past a keeper who has no real identity. Demo keeper
+# seeds only; the maintainer's own Kumara instance stays custody gate %4.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/tact_ship_pilot_identity_witness.rish
+
+say "tact1: Language EN — the identity step passes only on a real, verified genesis."
+say "tact1: Lens TAME — a forged bind and a non-galaxy number each hold the pilot at identity; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/ship-pilot-identity"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ship_pilot_identity.rye -femit-bin=${bin}"]
+assert build.ok else "tact1: ship_pilot_identity build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "tact1: ship_pilot_identity selftest exited non-zero"
+assert selftest.out contains "GREEN" else "tact1: selftest did not speak GREEN"
+assert selftest.out contains "a real demo genesis settled and the pilot advanced past identity" else "tact1: real-genesis claim missing"
+assert selftest.out contains "a forged bind never settled; the pilot held at identity" else "tact1: forged-bind hold missing"
+assert selftest.out contains "a non-galaxy number refused genesis; the pilot held at identity" else "tact1: non-galaxy refusal missing"
+assert selftest.out contains "the identity step passes only on a real, verified genesis" else "tact1: crux claim missing"
+
+# The pilot spine this rung wires into stays its own green binary — the identity step composes
+# over the spine's public attempt/current API, adding no new enforcement path.
+let spine_bin = "pond/bin/ship-pilot"
+let spine_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/ship_pilot.rye -femit-bin=${spine_bin}"]
+assert spine_build.ok else "tact1: ship_pilot spine re-build failed"
+let spine_selftest = run ["sh" "-c" "${spine_bin} selftest 2>&1"]
+assert spine_selftest.ok else "tact1: ship_pilot spine selftest exited non-zero"
+assert spine_selftest.out contains "GREEN" else "tact1: spine selftest did not speak GREEN"
+
+say "tact1: GREEN — the identity step is wired to a real genesis; the pilot holds when identity is not real."

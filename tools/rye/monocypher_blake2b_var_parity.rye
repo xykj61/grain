@@ -1,0 +1,81 @@
+//! tools/rye/monocypher_blake2b_var_parity.rye — our authored crypto/blake2b.rye asked for its OWN VARIABLE-LENGTH BLAKE2b (hash_var) over six
+//! (output-length, message) pairs, printed one 2*out_len-hex-character digest per line, so tools/cr/crypto_monocypher_blake2b_var_parity_witness.rish
+//! can diff our bytes against the vendored Monocypher's C (tools/fixtures/monocypher_blake2b_var_harness.c) byte-for-byte. Season G
+//! (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+//!
+//! The existing BLAKE2b parity rung proves only the 64-byte full digest; this harness exercises crypto/blake2b.rye's hash_var — the length-
+//! parameterized core Argon2's blake2b_long chain and RFC 9106 key derivation lean on — at output lengths 64/16/20/28/32/48 bytes. The six pairs,
+//! in order: (64, "abc") — the RFC 7693 Appendix A anchor; (16, ""); (20, "abc"); (28, one full 128-byte block byte i = i & 0xff); (32, a 200-byte
+//! multi-block input byte i = (i*7 + 1) & 0xff); (48, the classic fox pangram). Both harnesses feed the identical pairs, so the parity compares
+//! like against like: our Rye output and Monocypher's C output over identical inputs, must agree hex for hex.
+//!
+//! This authors NO cryptography — it is a printing harness over the GREEN crypto/blake2b.rye (reached through the tools/rye/blake2b.rye symlink, since
+//! Rye resolves imports beside the importing file). Purely local — no key, no network, no funds, no device.
+//!
+//! Run from the repository root:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/rye/monocypher_blake2b_var_parity.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const b2 = @import("blake2b.rye");
+
+/// The largest canonical message this harness prints, so the working buffer is bounded at construction rather than growing per call.
+const max_canonical_bytes: u32 = 200;
+
+/// BLAKE2b carries its output length in one parameter byte, so a variable digest is meaningful only for 1..64 bytes.
+const max_out_bytes: u32 = 64;
+
+/// The lowercase hex alphabet, so a variable-length digest renders without reaching for to_hex (which fixes the 64-byte case alone).
+const hex_alphabet = "0123456789abcdef";
+
+/// print_var_digest — render one variable-length BLAKE2b digest of `msg` as a line of 2*out_len lowercase hex characters.
+fn print_var_digest(out_len: u32, msg: []const u8) !void {
+    // invariant (precondition): the requested digest fits BLAKE2b's 1..64-byte output range.
+    assert(out_len >= 1 and out_len <= max_out_bytes);
+    // invariant (precondition): every canonical message fits the module's stated ceiling, so no hash exceeds the bound the buffer is sized for.
+    assert(msg.len <= max_canonical_bytes);
+    var out: [max_out_bytes]u8 = undefined;
+    try b2.hash_var(out[0..out_len], msg);
+    var i: u32 = 0;
+    while (i < out_len) : (i += 1) {
+        const byte = out[i];
+        print("{c}{c}", .{ hex_alphabet[byte >> 4], hex_alphabet[byte & 0x0f] });
+    }
+    // invariant (postcondition): the whole requested digest was rendered, two hex characters per byte.
+    assert(i == out_len);
+    print("\n", .{});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+
+    // 1. (64, "abc") — the RFC 7693 Appendix A known-answer (BLAKE2b-512).
+    try print_var_digest(64, "abc");
+
+    // 2. (16, "") — a 128-bit digest of the empty message.
+    try print_var_digest(16, "");
+
+    // 3. (20, "abc") — a 160-bit digest.
+    try print_var_digest(20, "abc");
+
+    // 4. (28, one full 128-byte block: byte i = i & 0xff) — a 224-bit digest.
+    var one_block: [128]u8 = undefined;
+    var i: u32 = 0;
+    // invariant: the block fills exactly its declared width before it is hashed, leaving no undefined byte in the digest input.
+    while (i < 128) : (i += 1) one_block[i] = @as(u8, @truncate(i));
+    try print_var_digest(28, &one_block);
+
+    // 5. (32, a 200-byte multi-block input: byte i = (i*7 + 1) & 0xff) — a 256-bit digest.
+    var multi: [200]u8 = undefined;
+    i = 0;
+    // invariant: the multi-block buffer fills exactly its declared width before it is hashed.
+    while (i < 200) : (i += 1) multi[i] = @as(u8, @truncate(i *% 7 +% 1));
+    try print_var_digest(32, &multi);
+
+    // 6. (48, the fox pangram) — a 384-bit digest.
+    try print_var_digest(48, "The quick brown fox jumps over the lazy dog");
+
+    return 0;
+}

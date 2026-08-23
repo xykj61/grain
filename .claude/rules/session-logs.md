@@ -22,7 +22,7 @@ When two logs share a second, add `_short-sprig` from `title` (or from `prompt` 
 
 After each new log, prepend a newest-first row to `session-logs/README.md`: stamp, linked title (`.bron` path), and one line of meaning drawn from `title` / `obs`.
 
-Batch hygiene for **archived Markdown** only: `rye run tools/align_session_logs.rye`. Living Bron logs are indexed by hand (or a future Bron-aware aligner).
+Batch hygiene for **archived Markdown** only: `rye run tools/rye/align_session_logs.rye`. Living Bron logs are indexed by hand (or a future Bron-aware aligner).
 
 ## Contents (Bron fields)
 
@@ -53,13 +53,13 @@ recommend keep-going|check-in what and why
 - **file** -- repeatable; `path` then why.
 - **recommend** -- one close line: `keep-going ...` when mechanical and policy-written; `check-in ...` when seams, Rishi/value-model, unruled design, or horizon facts.
 
-**Stamp timezone, per host -- one CLOCK, not one hand.** The invariant is a single canonical clock (later is always larger). Any agent may produce a stamp when it reads that clock; Cursor's automated stamping is welcome. On this Framework / cloud bench the zone is **`America/New_York`** by name (`context/specs/20260627-102012_one-clock-naming-law.md` addendum `20260724.205009` - `context/specs/20260722-125845_edt-framework-host-convention.md`). The macOS clone keeps Pacific (`context/specs/20260713-201910_pacific-time-local-clone-convention.md`). A zone change is itself a seated decision. Existing dated stamps are never rewritten. Witness: `tools/one_clock_witness.rish` (shape - mono - zone - blocking). `GLOW_PROFILE.bron`'s `timezone` field is the machine-local pointer.
+**Stamp timezone, per host -- one CLOCK, not one hand.** The invariant is a single canonical clock (later is always larger). Any agent may produce a stamp when it reads that clock; Cursor's automated stamping is welcome. On this Framework / cloud bench the zone is **`America/New_York`** by name (`context/specs/20260627-102012_one-clock-naming-law.md` addendum `20260724.205009` - `context/specs/20260722-125845_edt-framework-host-convention.md`). The macOS clone keeps Pacific (`context/specs/20260713-201910_pacific-time-local-clone-convention.md`). A zone change is itself a seated decision. Existing dated stamps are never rewritten. Witness: `tools/o/one_clock_witness.rish` (shape - mono - zone - blocking). `GLOW_PROFILE.bron`'s `timezone` field is the machine-local pointer.
 
 ## Archive fold
 
-Prior (and closed) days' logs live under `session-logs/date/YYYYMMDD/` -- the destination molted from `archive/` on `20260821.161758` with the mark law ([`stamp-and-name.md`](stamp-and-name.md)), since ORGANIZING defines archive as finished-and-historical while a log from nine days ago is the live record. **Preview:** `rishi/bin/rishi run tools/session_logs_archive_preview.rish`. **Fold:** `rishi/bin/rishi run tools/session_logs_archive.rish` -- folds `.kyri`, `.bron`, and historical `.md`; today's stamp stays flat, and the index is repointed in the same pass. Run fold on Keaton's word.
+Prior (and closed) days' logs live under `session-logs/date/YYYYMMDD/` -- the destination molted from `archive/` on `20260821.161758` with the mark law ([`stamp-and-name.md`](stamp-and-name.md)), since ORGANIZING defines archive as finished-and-historical while a log from nine days ago is the live record. **Preview:** `rishi/bin/rishi run tools/s/session_logs_archive_preview.rish`. **Fold:** `rishi/bin/rishi run tools/s/session_logs_archive.rish` -- folds `.kyri`, `.bron`, and historical `.md`; today's stamp stays flat, and the index is repointed in the same pass. Run fold on Keaton's word.
 
-**The room is bounded at 256 flat files**, enforced by `rishi/bin/rishi run tools/room_bound_witness.rish` -- because at roughly a hundred and eight logs a day an emptied room refills past GitHub's 1,000-entry listing cap in nine days, so the bound is the fix and the fold is only how it is met. **A stale reference is resolved, never rewritten:** `rishi/bin/rishi run tools/dated_path_resolve.rish <reference> [<citing-file>]`.
+**The room is bounded at 256 flat files**, enforced by `rishi/bin/rishi run tools/r/room_bound_witness.rish` -- because at roughly a hundred and eight logs a day an emptied room refills past GitHub's 1,000-entry listing cap in nine days, so the bound is the fix and the fold is only how it is met. **A stale reference is resolved, never rewritten:** `rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference> [<citing-file>]`.
 
 Bron session logs prefer `product_nib` - `suite_nib` - `git_nib` (or `nib <hash>`) over legacy `tip` fields.
 

@@ -1,0 +1,77 @@
+# rish_match_witness.rish — the `matches` primitive, the bounded pattern matcher.
+#
+# Proves Rishi can now test a string against a pattern the way a shell reaches for
+# `grep -qE` or `rg -q`, without shelling out — the primitive that unlocks folding the
+# regex seams of the Python → Rishi molt into native Rishi. The engine (rishi/src/match.rye)
+# is a bounded, linear-time NFA simulation: no backtracking, no ReDoS, every buffer a named
+# ceiling. Its answers were checked against Python's re.search across 812 pattern×input
+# pairs; this witness pins a representative set and the real seam patterns.
+#
+#   rishi/bin/rishi run tools/r/rish_match_witness.rish
+
+# Literals search unanchored; anchors pin the ends.
+assert ("xxabcxx" matches "abc") == true else "literal should match anywhere"
+assert ("ab" matches "abc") == false else "partial literal should not match"
+assert ("abcxx" matches "^abc") == true else "^ anchors the start"
+assert ("xabc" matches "^abc") == false else "^ must fail when not at start"
+assert ("xxabc" matches "abc$") == true else "$ anchors the end"
+assert ("" matches "^$") == true else "empty string matches ^$"
+
+# Dot, classes, and shorthands.
+assert ("abc" matches "a.c") == true else ". matches any byte"
+assert ("a\nc" matches "a.c") == false else ". does not cross a newline"
+assert ("x123x" matches "\d\d\d") == true else "\\d is a digit"
+assert ("e" matches "[a-f0-9]") == true else "class range"
+assert ("z" matches "[^0-9]") == true else "negated class"
+assert ("a b" matches "\s") == true else "\\s is whitespace"
+
+# Quantifiers, alternation, groups.
+assert ("ac" matches "ab*c") == true else "* allows zero"
+assert ("abbbc" matches "ab*c") == true else "* allows many"
+assert ("ac" matches "ab+c") == false else "+ needs one"
+assert ("ac" matches "ab?c") == true else "? allows zero"
+assert ("dogs" matches "(cat|dog)s") == true else "alternation in a group"
+assert ("cows" matches "(cat|dog)s") == false else "alternation rejects others"
+
+# Case-insensitive flag.
+assert ("The STAMP here" matches "(?i)stamp") == true else "(?i) folds case"
+
+# The real seam patterns the molt has been delegating to rg.
+let dated = "(^|/)\d\d\d\d\d\d\d\d-\d\d\d\d\d\d_"
+assert ("session-logs/20260809-110311_x.bron" matches dated) == true else "dated-name should match"
+assert ("README.md" matches dated) == false else "a plain name is not dated"
+assert ("# heading" matches "^#\s") == true else "H1 heading pattern"
+assert ("#nospace" matches "^#\s") == false else "H1 needs the space"
+assert ("a/b/c.png" matches "\.(png|jpg|jpeg|gif)$") == true else "skip-ext pattern"
+assert ("a/b/c.md" matches "\.(png|jpg|jpeg|gif)$") == false else "non-binary ext"
+assert ("**Stamp:** living ledger (born x)" matches "(?i)(\*\*Stamp:\*\* *living ledger|living ledger *\(born)") == true else "living-header pattern"
+
+# Counted repetition {n,m} and word boundary \b.
+assert ("20260809-110311" matches "^\d{8}-\d{6}$") == true else "counted stamp"
+assert ("dead" matches "[0-9a-f]{8,}") == false else "{8,} needs eight"
+assert ("deadbeef12" matches "[0-9a-f]{8,}") == true else "{8,} allows more"
+assert ("the cat sat" matches "\bcat\b") == true else "\\b word boundary"
+assert ("category" matches "\bcat\b") == false else "\\b rejects inside a word"
+
+# Composes with the rest of the value model: a filter over a list.
+let names = ["20260809-110311_a.md" "README.md" "20260101-000000_b.bron" "TASKS.md"]
+let dated_names = where names as f: (f matches dated)
+assert (length dated_names) == 2 else "matches works inside a where filter"
+
+# `find` — every non-overlapping leftmost-longest match, as a list of substrings.
+let nums = find "a12b345c6" "\d+"
+assert (length nums) == 3 else "find returns each match"
+assert (nums[0]) == "12" else "first match"
+assert (nums[2]) == "6" else "last match"
+let hexes = find "0xdeadbeef and cafef00d99" "(?:0x)?[0-9a-fA-F]{8,}"
+assert (length hexes) == 2 else "find gathers hex clumps"
+assert (find "no digits here" "\d+") == [] else "find returns an empty list on no match"
+let words = find "Foo and Bar Baz" "[A-Z][a-z]+"
+assert (join words " ") == "Foo Bar Baz" else "find composes with join"
+
+# Single-char-class lookbehind — the shape claim_preserve's PATH class needs.
+let path_pat = "(?<![A-Za-z0-9_])(?:\.\./)?(context|tools)/[A-Za-z0-9_./+-]+"
+let paths = find "see context/RIYO.md and mycontext/x and ../tools/foo.rish" path_pat
+assert (join paths "~") == "context/RIYO.md~../tools/foo.rish" else "lookbehind matches a root at a boundary, skips one mid-identifier"
+
+say "GREEN: Rishi match — `matches` tests a bounded regex in linear time and `find` extracts every match; both reproduce the seam patterns and compose with the value model."

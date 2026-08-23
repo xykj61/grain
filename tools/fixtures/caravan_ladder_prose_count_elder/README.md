@@ -8,7 +8,7 @@ It lives here so that [`../caravan_ladder_prose_count_scan.sh`](../caravan_ladde
 
 ## Why a tracked file rather than a commit reference
 
-`tools/caravan_ladder_copy_witness.rish` originally reached for this control with `git show HEAD:tools/caravan_ladder_spine_witness.rish`. That worked once, in the working tree, before the fix was committed -- and **stopped working the instant the fix landed**, because the fix and the guard rode in the same commit, so `HEAD` immediately named the repaired file. The control passed on the lap it was written and refused every lap after. REDS %109 records it.
+`tools/ca/caravan_ladder_copy_witness.rish` originally reached for this control with `git show HEAD:tools/ca/caravan_ladder_spine_witness.rish`. That worked once, in the working tree, before the fix was committed -- and **stopped working the instant the fix landed**, because the fix and the guard rode in the same commit, so `HEAD` immediately named the repaired file. The control passed on the lap it was written and refused every lap after. REDS %109 records it.
 
 A copy under version control answers both halves of that. It cannot drift with `HEAD`, and it survives a deep debride that would rewrite every commit hash in the tree -- so no future history rewrite can quietly disarm the RED path.
 

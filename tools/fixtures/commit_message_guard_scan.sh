@@ -68,7 +68,7 @@ check accept verbose-diff    'context: a subject\n\n# ------------------------ >
 
 # --- the mechanism sentence: a body says what changed before what it means ---------
 # Added 20260822 with `.claude/rules/mechanism-sentence.md`. Proven in depth by
-# `tools/mechanism_sentence_witness.rish`; the two cases here keep this roster honest about
+# `tools/m/mechanism_sentence_witness.rish`; the two cases here keep this roster honest about
 # every rule the hook now carries.
 check refuse thin-body 'caravan: the wire before the memory\n\nA boundary written twenty times is a boundary twenty places may drift across. The fall is exactly the carry less the reach, and the two readings move apart by better than sixty to one, which is how a reader tells a fold from a cost merely moved somewhere cheaper to count. The ceiling comes down, keeping the six lines of headroom the discipline has held all along, and the choir sings green at a hundred and seven.'
 check accept rich-body 'caravan: the wire before the memory\n\nThe fifty-five-line body moved into one published function in caravan/ladder_checks.rye, and each of the twenty rungs now calls it through a three-line stub that hands its own type in, so the shared body reaches every constant and error set through the rung that called it. All twenty-three contract symbols already stood public, so this widened no declaration anywhere on the ladder.'

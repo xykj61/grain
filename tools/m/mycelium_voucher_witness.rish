@@ -1,0 +1,63 @@
+# tools/m/mycelium_voucher_witness.rish — the Voucher: a node's signed attestation of a position (r1).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the Voucher · rung r1 — the crux.
+# The Statement answered WHERE DO I STAND as a pure projection, and statement_bron let it cross a wire.
+# Yet a statement that travels is still only a READING — nothing binds those numbers to the real agreed
+# order they claim, so a holder could hand over any balance and the counterparty's only recourse would be
+# to replay the whole ledger. The Voucher fills that blind spot: PROOF OF POSITION WITHOUT REPLAY. A node
+# reads an account's Statement out of a Dag and signs the position (balance · reserved · received) bound
+# to an ORDER-HEAD — one SHA-256 digest of the committed block order the reading was taken against.
+#
+# The crux this witness proves is A VOUCHER IS BOUND TO THE ORDER IT WAS READ AGAINST: verify_voucher
+# checks the signature offline against the record's own node key (trust the node, no ledger needed);
+# check_against(dag) re-derives the order-head and re-reads the Statement from the same Dag and confirms
+# every signed field matches (a node cannot vouch a false balance to a verifier who holds the blocks, nor
+# silently swap the order — the order-head is inside the signature). Arrival-independence is inherited: a
+# voucher made against one permutation of the round-2 facts checks against the other, because cord.commit
+# yields one agreed order per arrival, so the order-head folds to one digest and the Statement to one
+# position. Tamper refuses — a flipped balance breaks the offline signature, a wrong node key breaks it,
+# and an honest voucher for one ledger fails check_against a genuinely different ledger. Composes cord +
+# fold + lapse + statement + kumara public API only, editing none; the order-head fold is the Voucher's
+# own bounded derivation; demo node and keeper seeds — no key, no funds, no network, no custody.
+#
+# Scope: active-designing/date/20260813/20260813-095216_mycelium-voucher-attested-statement-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_voucher_witness.rish
+
+say "mycelium-voucher: Language EN — a node vouches for a holder's standing: a signed slip that proves what an account holds at a named agreed order, checkable by a stranger who never replays the book."
+say "mycelium-voucher: Style Radiant — the Statement made the position readable; the Voucher makes it provable, binding the reading to the one order the mesh agreed under a node's own signature."
+say "mycelium-voucher: Lens TAME — the attestation composes cord + fold + lapse + statement + kumara public API; the order-head folds at most cord_max_blocks ordered hashes; verifies offline and checks against the ledger it vouches and only that ledger; tamper refuses; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/voucher"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/voucher.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-voucher: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-voucher: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-voucher: selftest did not speak GREEN"
+assert selftest.out contains "binds an account's position to a named order-head" else "mycelium-voucher: order-head binding claim missing"
+assert selftest.out contains "verifies offline" else "mycelium-voucher: offline-verify claim missing"
+assert selftest.out contains "checks against the ledger it vouches" else "mycelium-voucher: check-against claim missing"
+assert selftest.out contains "inherits arrival-independence" else "mycelium-voucher: arrival-independence claim missing"
+assert selftest.out contains "refuses tamper" else "mycelium-voucher: tamper-refusal claim missing"
+assert selftest.out contains "Proof of position without replay stands" else "mycelium-voucher: closing claim missing"
+
+# The rendered voucher a keeper reads — a plain open-pledge attestation naming the node, the order-head,
+# the account, and the vouched position (balance 0, reserved 100, received 100).
+assert selftest.out contains "voucher node=" else "mycelium-voucher: rendered voucher missing"
+assert selftest.out contains "balance=0 reserved=100 received=100" else "mycelium-voucher: rendered open position missing"
+
+# The Statement the Voucher signs, and the Lapse whose ledger both read, stand at the door — their own
+# selftests prove the machinery the attestation rests on.
+let statement = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/statement.rye -femit-bin=mycelium/bin/statement && mycelium/bin/statement 2>&1"]
+assert statement.ok else "mycelium-voucher: the Statement the Voucher signs is not GREEN"
+assert statement.out contains "GREEN" else "mycelium-voucher: the Statement did not speak its GREEN"
+
+let lapse = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/lapse.rye -femit-bin=mycelium/bin/lapse && mycelium/bin/lapse 2>&1"]
+assert lapse.ok else "mycelium-voucher: the Lapse whose ledger the Voucher reads is not GREEN"
+assert lapse.out contains "GREEN" else "mycelium-voucher: the Lapse did not speak its GREEN"
+
+say "mycelium-voucher: GREEN — a node's signed voucher binds an account's position to a named order-head: it verifies offline, checks against the ledger it vouches and only that ledger, inherits arrival-independence, and refuses tamper (flipped field · wrong signer · cross-ledger); the Statement and the Lapse stand at the door. Proof of position without replay stands."

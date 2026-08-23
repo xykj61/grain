@@ -1,0 +1,103 @@
+# launch-claude-season.rish -- print the recipe for an unattended season run.
+#
+# The Rish preferred entry for running Claude Code across seasons inside ai-jail
+# with every permission prompt skipped, so the recursion continues without a hand
+# on each "Do you want to proceed?". This script PRINTS the recipe; it does not
+# launch claude itself, because the jail launch belongs in your outer terminal
+# (the same way `remember` keeps install lines on the operator desk). Copy the
+# printed command, run it there.
+#
+#   rishi/bin/rishi run tools/l/launch-claude-season.rish
+#
+# Discipline it keeps: safe by default (prints, never flips a bypass config for
+# you); civic (custody note -- the one irreversible rung stays manual); Lindy
+# (the durable memory is the repo -- ITINERARY, the logs, the plans -- not a
+# session id that resets with the jail).
+#
+# The one-line prompts below are the filled autonomous-loop recursion prompt.
+# Their living, versioned home is the root cellar recursion-prompts/ (seed
+# templates + dated filled versions), seated 20260812; census witness
+# tools/r/recursion_prompts_census_witness.rish. To evolve the loop, fill a fresh
+# version there rather than editing these lines from memory.
+
+# invariant: run from the repo root, where the durable memory lives.
+let root = run ["test" "-f" "construction/ITINERARY.md"]
+assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
+
+# invariant: the standing entry the recipe wraps must exist.
+let elder = run ["test" "-f" "tools/ag/agent-jail.sh"]
+assert elder.ok else "tools/ag/agent-jail.sh (the jail elder) is missing"
+
+say "Claude Code -- unattended season run inside ai-jail"
+say "================================================="
+say ""
+say "One hard requirement: run as a NON-ROOT user. Claude refuses"
+say "--dangerously-skip-permissions as root, and ai-jail is the sandbox this"
+say "flag is meant for -- so it is safe here, with nothing sensitive at risk."
+say ""
+say "0a) PRECONDITION on a fresh pier -- check the vendored parity targets out,"
+say "    or every vendored-source rung reds on an empty directory rather than a defect:"
+say "       git submodule update --init --recursive"
+say "    (vendor/monocypher and vendor/pqclean are the crypto parity oracles;"
+say "     vendor/sel4 and vendor/microkit are the microkernel trees the license"
+say "     witness sweeps per file. An uninitialised checkout is an environment fact,"
+say "     never a tree red -- see recursion-prompts/seed/autonomous-loop.seed.md.)"
+say ""
+say "1) Make the bypass standing (once) -- gitignored, never reaches the seed:"
+say "   in .claude/settings.local.json set  permissions.defaultMode = bypassPermissions"
+say "   (the exact JSON renders in:  ./tools/ag/agent-jail.sh --help)"
+say ""
+say "2) Launch -- resume a specific session (placeholder RESUME_SESSION_ID):"
+say "   ./tools/ag/agent-jail.sh --resume=RESUME_SESSION_ID --dangerously-skip-permissions claude --effort max"
+say ""
+say "3) Or continue the most recent session in this repo:"
+say "   ./tools/ag/agent-jail.sh --continue --dangerously-skip-permissions claude --effort max"
+say ""
+say "0) Smoke test first -- confirm -p runs in the jail (returns pong in seconds):"
+say "   ./tools/ag/agent-jail.sh --dangerously-skip-permissions claude --effort max -p 'reply with exactly: pong'"
+say "   -p mode is HEADLESS -- there is no interactive interface, and without"
+say "   --verbose it prints nothing until the lap finishes (minutes). Silence"
+say "   after the jail banner is the lap working, not a hang. --verbose streams it."
+say ""
+say "4) Most durable -- one lap, a fresh session driven by the repo's own memory"
+say "   (survives the jail resetting host HOME, where session ids live). One"
+say "   line, copy whole (no line-continuation joins -- copy the full line):"
+say ""
+say "   ./tools/ag/agent-jail.sh --dangerously-skip-permissions claude --effort max --output-format stream-json --verbose -p 'First read context/KYRI.md and context/GAUGE_STYLE.md so you are Kyri and write and reason in Gauge Guidance from the first token -- first rule, don''t be too smart about it; Door prose at or under 20% negative sentences, Field at or under 30%, Meter uncapped, then read construction/ITINERARY.md, then active-designing/date/20260812/20260812-171050_the-1024-round-itinerary.md, active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md, and active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md, noting the Lindy-priority Microkernel Target double-seat leads Seasons A-H by Lindy-first crux-first yet advance only its agent-doable study/research rungs and surface every fetch/license/hardware gate, then the top three rows of session-logs/README.md and the newest session log''s recommend line to pick up the running thread from the last lap; when a set (round-set, quest, journey, equinox, season) completes and its crux to-do items are hit, deep-read the recent log recommends, the construction ledgers (TASKS, ROADMAP, THREADS, REDS), and the itineraries for the next crux, then condense the done work out of construction/ITINERARY (checkpoint first when substantial) and refill its Now with live work so ITINERARY stays single-stranded, the live card of what is next and never a second copy of the log index; then take the next agent-doable lap, Lindy-first crux-first, following the compass and the harmony of all our styles; each lap deep-read one council-rota ROW from recursion-prompts/seed/autonomous-loop.seed.md section 1 -- the 5x3 grid of element by modality, three documents per lap, lap N reads row N mod 5 -- to keep the canon in view; Rye is the prioritized language and Glow is implemented on green-witnessed Rye; witness on metal; approve your own design rounds and trust yourself before checking in; double-seat any big vision that fills a calendar-itinerary blind spot; a breach rename records a checkpoint (construction/CHECKPOINTS.md) before it cuts; Standfast on reds -- close the open agent-closable reds in construction/REDS.md (root then a witness on metal) before new work, a red you cannot close surfaced like a gate; if a red''s root is a stale file relocate it (molt to fossil, archive, or yonder) after sweeping every inbound reference (the relative path, the bare filename, and any shorthand across code, docs, session logs, and code comments) and recording a checkpoint, never an autonomous shred or debride; Brushstroke development is paused pending DJINN''s Bit Design System; sweep the round''s prose Gauge (Twilight for a night piece) before each send -- code comments, Markdown, prose generally -- changing register never a claim, and state what holds then name the exception once rather than writing a rule as a ban, running  rishi/bin/rishi run tools/r/radiant_negation_witness.rish  and  rishi/bin/rishi run tools/p/prose_register_witness.rish  on any send that touched prose; send often -- push each finished increment (a new file, a passing witness, a doc) to origin and xykj61 as its own signed round so progress is followable on GitHub; every fifth round, the lap the rota closes its cycle, also project and force-push the public seed with  bash ~/grain/publish-seed.sh  -- its four gates hold and reds still come first; STOP and surface, never cross, the custody gates in ITINERARY (a key, a signature with your identity, provisioning, paying, the seed force-push). ty every1 baton prin recur'"
+say ""
+say "   Streaming: plain --verbose does NOT stream through a pipe (claude-code"
+say "   issue #733). --output-format stream-json --verbose emits one JSON event"
+say "   per line, LIVE -- the raw NDJSON scrolls as it works, which is proof of"
+say "   progress on this jq-less pier. For readable output, install jq once:"
+say "   sudo sh tools/p/pier_jq_install.sh (guarded, reversible NixOS rebuild), then"
+say "   pipe through the filter in recursion-prompts/README.md."
+say ""
+say "5) Continuous recursion -- wrap the lap in an OUTER-shell loop that stops on"
+say "   whichever comes first: the custody gates (the .loop-gates-only sentinel),"
+say "   or a wall-clock deadline (here 15:00 America/New_York tomorrow, computed by"
+say "   TZ-forced date so it holds on a UTC host). It lives in the outer terminal:"
+say "   the jail launch belongs outside, and the loop is kept out of the tree's"
+say "   own TAME-bounded code (this .rish only prints). Edit the 'tomorrow 15:00' to"
+say "   re-aim the deadline. The prompt points at the 1,024-round itinerary so the"
+say "   loop climbs the road's next crux, not only the next rung. One line, copy whole:"
+say ""
+say "   D=$(TZ=America/New_York date -d 'tomorrow 15:00' +%s); while [ $(date +%s) -lt $D ]; do rm -f .loop-gates-only; ./tools/ag/agent-jail.sh --dangerously-skip-permissions claude --effort max --output-format stream-json --verbose -p 'First read context/KYRI.md and context/GAUGE_STYLE.md so you are Kyri and write and reason in Gauge Guidance from the first token -- first rule, don''t be too smart about it; Door prose at or under 20% negative sentences, Field at or under 30%, Meter uncapped, then read construction/ITINERARY.md, then active-designing/date/20260812/20260812-171050_the-1024-round-itinerary.md, active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md, and active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md, the Lindy-priority Microkernel Target double-seat leading Seasons A-H by Lindy-first crux-first yet advancing only its agent-doable study/research rungs and surfacing every fetch/license/hardware gate, for the road ahead, and the top three rows of session-logs/README.md with the newest session log''s recommend line to pick up the running thread from the last lap; when a set (round-set, quest, journey, equinox, season) completes and its crux to-do items are hit, deep-read the recent log recommends, the construction ledgers (TASKS, ROADMAP, THREADS, REDS), and the itineraries for the next crux, then condense the done work out of construction/ITINERARY (checkpoint first when substantial) and refill its Now with live work so ITINERARY stays single-stranded, the live card of what is next and never a second copy of the log index; take the next agent-doable lap Lindy-first crux-first, optimizing for the harmony of all our styles balance compass; each lap deep-read one council-rota ROW from recursion-prompts/seed/autonomous-loop.seed.md section 1 -- the 5x3 grid of element by modality, three documents per lap, lap N reads row N mod 5 -- to keep the canon in view; Rye is the prioritized language and Glow is implemented on green-witnessed Rye; approve your own design rounds and make progress before panicking to check in; keep double-seating new visions that address calendar-itinerary blind spots and learned discoveries; a breach rename records a checkpoint (construction/CHECKPOINTS.md) before it cuts; Standfast on reds -- close the open agent-closable reds in construction/REDS.md (root then a witness on metal) before new work, a red you cannot close surfaced like a gate; if a red''s root is a stale file relocate it (molt to fossil, archive, or yonder) after sweeping every inbound reference (the relative path, the bare filename, and any shorthand across code, docs, session logs, and code comments) and recording a checkpoint, never an autonomous shred or debride; Brushstroke development is paused pending DJINN''s Bit Design System; sweep the round''s prose Gauge (Twilight for a night piece) before each send -- code comments, Markdown, prose generally -- changing register never a claim, and state what holds then name the exception once rather than writing a rule as a ban, running  rishi/bin/rishi run tools/r/radiant_negation_witness.rish  and  rishi/bin/rishi run tools/p/prose_register_witness.rish  on any send that touched prose; send often -- push each finished increment (a new file, a passing witness, a doc) to origin and xykj61 as its own signed round so progress is followable on GitHub; every fifth round, the lap the rota closes its cycle, also project and force-push the public seed with  bash ~/grain/publish-seed.sh  -- its four gates hold and reds still come first; STOP at the custody gates in ITINERARY (a key, a signature with your identity, provisioning, paying, the seed force-push); if only those gates remain, run the shell command  touch .loop-gates-only  and print GATES-ONLY, then stop. ty every1 baton prin recur' | tee /tmp/claude_lap.jsonl | jq -Rrj -f tools/s/stream_render.jq; [ -f .loop-gates-only ] && { echo GATES-ONLY: loop paused; break; }; sleep 20; done; echo loop ended at $(TZ=America/New_York date)"
+say ""
+say "   Readable now that jq is installed: tee saves the raw stream to"
+say "   /tmp/claude_lap.jsonl, then jq -f tools/s/stream_render.jq renders assistant"
+say "   text + [tool: ...] markers live. No-jq fallback: drop the ' | jq ...' segment"
+say "   and the raw NDJSON scrolls instead (still streams, just unformatted)."
+say ""
+say "   Why a file sentinel and not a grep: stream-json echoes the prompt (which"
+say "   contains the words GATES-ONLY), so a grep on the stream would false-stop"
+say "   after one lap. The agent instead touches .loop-gates-only when only gates"
+say "   remain, and the loop checks for that file -- the raw stream is for your"
+say "   eyes only. /tmp/claude_lap.jsonl keeps the last lap's events for review."
+say ""
+say "Custody note: the gates in ITINERARY stay MANUAL even in autonomous mode --"
+say "the seed force-push, provisioning and paying, funds and keys, and the"
+say "maintainer's own Kumara instance. Everything else may run unattended;"
+say "reds-first, witness-before-narrative, and Lindy-first are seated rules, so"
+say "the recursion stays disciplined on its own."
+say ""
+say "GREEN: season-run recipe printed -- copy a command above into your outer/jail terminal."

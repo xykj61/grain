@@ -25,7 +25,7 @@ assert redraw.ok else "pond-frame: redrawtest failed"
 assert redraw.out contains "GREEN" else "pond-frame: redrawtest not GREEN"
 
 say "pond-frame: Pond metalsmoke (Wayland hop)..."
-let metal = run ["rishi/bin/rishi" "run" "tools/slc2a_ring3_metal.rish"]
+let metal = run ["rishi/bin/rishi" "run" "tools/s/slc2a_ring3_metal.rish"]
 assert metal.ok else "pond-frame: metalsmoke failed"
 assert metal.out contains "GREEN: SLC-2a Wayland metal smoke" else "pond-frame: metalsmoke missing GREEN"
 

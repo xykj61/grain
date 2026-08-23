@@ -1,0 +1,152 @@
+# caravan_recant_witness.rish -- Caravan recant witness.
+#
+# `appraise.rye` taught a plan to publish the standard by which its silences are
+# read, and a run to weigh an unmarked loss by what came home after it. That
+# judgment goes to the wire and it stays there, which is what makes it a record.
+# The evidence under it belongs to one run alone.
+#
+#   A JUDGMENT A RUN'S OWN EVIDENCE DISPROVES IS TAKEN BACK AND REPAIRED.
+#
+# WHAT THIS RUNG PROVES, MEASURED:
+#
+#   * THE NUMBER THE TWO REVIEWS DISAGREE ON IS ARCS SPARED ON A JUDGMENT THIS
+#     RUN'S OWN EVIDENCE DISPROVES. The rung below weighs JUDGMENT: work a run
+#     did that nobody needed. This weighs a RECORD AGAINST ITSELF: work a run
+#     declined to do on the word of a run that is over, while its own record
+#     says that word no longer holds. It falls from 1 to 0.
+#   * THE ELDER READING SETTLES `borne`, WHICH TELLS AN OPERATOR THERE IS
+#     NOTHING LEFT TO DO while an arc of the plan stands unserved -- which is
+#     exactly why nothing below this rung could see it. Both runs take up 6
+#     phases, absorb 3 into standing dependents, lose 3 arcs, mark none of them,
+#     meet the same judgment on the wire, and report the plan SHORT when they
+#     first weigh it. Taking the judgment back costs one more dependent, 6
+#     against 5, and settles the plan `carried`, which is true.
+#   * A PLAN PUBLISHES WHETHER ITS OWN JUDGMENTS ANSWER TO A LATER RUN. The
+#     review is plan-level beside the standard, since it instructs about the
+#     record's own history rather than about one arc.
+#   * THE APPRAISAL IS THE ONE NOTE A RUN DOES NOT CLEAR. Every other note a
+#     plan carries provisions back to nothing at the head of a run; a judgment
+#     that vanished with its run was never a record. This witness reads the
+#     judgment still standing after the run that let it stand.
+#   * THE RECANTATION STANDS ON THE WIRE BESIDE THE APPRAISAL IT REVERSES. One
+#     glyph per phase, `r` where a standing judgment was taken back -- `.r....`
+#     names which phase of six this run refused to spare on an older run's word,
+#     and this witness reads it there rather than trusting the run's telling.
+#     The judgment leaves the wire in the same breath: `......`.
+#   * A RECANTATION IS BOUNDED BY THE JUDGMENT IT TAKES BACK. Only an arc some
+#     appraisal spared may be recanted, and every standing judgment this run can
+#     weigh is upheld or recanted, never both and never neither.
+#   * FOUR REFUSALS THIS RUNG EARNS, EACH ABOUT THE REVERSAL RATHER THAN THE
+#     REPAIR IT OPENS. `RecantEarly` is the moment: a judgment weighed again
+#     before the run published what it lost is judging from memory.
+#     `RecantUnappraised` is the supply. `RecantMiscounted` is the honesty of
+#     the count. `RecantUnspoken` is the answer -- a repair that declines to
+#     serve an arc its own run recanted is stopped by name before it settles.
+#   * A PLAN THAT LOSES NOTHING READS AS THE RUNG BELOW, all 16 pairs -- this
+#     arc's standing generalization test.
+#
+# Six RED paths were proven on metal before this witness claimed GREEN.
+# Withhold the recantation from the wire and the reversal never reaches the
+# repair. Let the repair spare a recanted arc and it refuses `RecantUnspoken`.
+# Disarm the moment and a judgment is weighed again before the run published
+# anything. Disarm the supply and a run takes back a judgment nobody ever made.
+# Let the count stop closing and a standing judgment is neither upheld nor
+# recanted, unminded. Plant a recantation reaching an arc no judgment ever
+# spared and the armed supply guard refuses `RecantUnappraised` at the run.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS %76 / %85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_recant_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/recant"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/recant.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan recant build failed -- ${build.err}"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/recant_read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+# The board declaration the rungs below opened, unchanged.
+let published = run ["sh" "-c" "caravan/bin/recant_read caravan/systems/serial_three_clients_board.bron 2>&1"]
+assert published.ok else "the board declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 11 -- grants 22" else "the board declaration changed shape"
+assert published.out contains "verdict: whole" else "the board declaration did not read whole"
+
+# A fresh start for the stores and the doorbells. The notes go with them here,
+# so the lap seats its own standing judgment rather than inheriting one from a
+# run this witness never watched.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels caravan/.recants"]
+assert clean.ok else "the region stores, doorbells, and recant notes could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan recant selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan recant selftest not GREEN"
+assert test.out contains "a judgment a run's own evidence disproves is taken back and repaired" else "the recantation finding did not close"
+
+# The recantation and its three standing refusals, read straight, before any
+# dependent runs. The fourth, `RecantUnspoken`, belongs to the run rather than
+# the fold, since only the wire can answer what a run published about its own
+# reversal.
+assert test.out contains "a plan publishes whether its own judgments answer to a later run" else "the recantation fold was not weighed"
+assert test.out contains "three refusals stand by name: early, unappraised, miscounted" else "the three standing refusals did not stand"
+
+# The appraisal and the bearing below, unchanged and still weighed here.
+assert test.out contains "a plan names what it expects of a phase, and what it would accept of a loss" else "the bearing below stopped being weighed"
+assert test.out contains "a repair still refuses by name: unread, whole, overreaching" else "the mend below stopped being weighed"
+
+# The generalization test: a plan that loses nothing reads as the rung below.
+assert test.out contains "a plan that loses nothing reads as the line handed, all 16 pairs" else "an unlost plan did not read as the line handed"
+
+# The recanting lap: one plan run twice against a judgment already on the wire,
+# once letting it stand and once weighing it again. Every number stands still
+# except the judgment -- and the one extra dependent the revisiting run spends
+# on the arc the elder reading left standing.
+assert test.out contains "phases: 6 standing, 6 revisiting" else "the two reviews ran different records"
+assert test.out contains "dependents: 5 standing, 6 revisiting" else "serving a disproved loss did not cost exactly one more dependent"
+assert test.out contains "phases absorbed into a standing dependent: 3 standing, 3 revisiting" else "the two reviews absorbed different phases"
+assert test.out contains "abandoned reach, conferred and never served: 3 standing, 3 revisiting" else "the two reviews lost different work"
+assert test.out contains "the plan, as the run first reports it: short by the work nobody served standing, short by the work nobody served revisiting" else "the two reviews first weighed the plan differently"
+assert test.out contains "phases re-seated to carry what was lost: 2 standing, 3 revisiting" else "the repair was not opened by the recantation"
+assert test.out contains "losses spared on a judgment already on the wire: 1 standing, 0 revisiting" else "the two reviews spared the same losses"
+assert test.out contains "standing judgments taken back on this run's own evidence: 0 standing, 1 revisiting" else "the reversal did not part the two readings"
+assert test.out contains "arcs spared on a judgment this run's evidence disproves: 1 against 0" else "the two reviews agreed about the standing judgment"
+assert test.out contains "arcs re-run against the plan's own word: 0 standing, 0 revisiting" else "a lap that marked nothing disobeyed its author"
+assert test.out contains "work still standing when the supervisor exits: 1 standing, 0 revisiting" else "the two reviews left different work standing"
+assert test.out contains "the plan, as an operator finally reads it: whole but for the loss its author chose to carry standing, carried out whole revisiting" else "the settlement did not part the two readings"
+assert test.out contains "breaks a named turn: 0 standing, 0 revisiting" else "the revisiting run broke an order its author named"
+
+# What an operator reads is what the wire carries. Every note is read here,
+# outside the run that wrote it, exactly as an operator would read them.
+let settled = run ["sh" "-c" "cat caravan/.recants/plan.settled"]
+assert settled.ok else "the plan published no settlement an operator could read"
+assert settled.out contains "c" else "the wire did not carry the carried settlement the repair earned"
+
+let recant_note = run ["sh" "-c" "cat caravan/.recants/plan.recant"]
+assert recant_note.ok else "the plan published no recantation an operator could read"
+assert recant_note.out contains ".r...." else "the wire did not name the one judgment this run took back"
+
+let appraisal_note = run ["sh" "-c" "cat caravan/.recants/plan.appraisal"]
+assert appraisal_note.ok else "the plan published no appraisal an operator could read"
+assert appraisal_note.out contains "......" else "a judgment taken back was left standing on the wire"
+
+let borne_note = run ["sh" "-c" "cat caravan/.recants/plan.bearing"]
+assert borne_note.ok else "the plan published no bearing an operator could read"
+assert borne_note.out contains "......" else "the wire named a phase in a lap whose author marked none"
+
+let lost_note = run ["sh" "-c" "cat caravan/.recants/plan.lost"]
+assert lost_note.ok else "the plan published no loss an operator could read"
+assert lost_note.out contains ".x.x.x" else "the wire did not name the three phases the plan lost"
+
+# The dependents measure the loss in their own hands, exactly as the rungs below
+# left them, and the follower that once spoke for the judgment falls with it.
+assert test.out contains "falls as its author declared, holding 1 conferred arcs it never served" else "a falling dependent did not fall holding its conferral"
+assert test.out contains "client_b: read 3 arcs of its own, 0 inherited at its first breath, 1 conferred, 0 returned, 1 still reachable at home" else "the dependent a conferral was made to did not read it as its own"
+assert test.out contains "client_c: read 3 arcs of its own, 0 inherited at its first breath, 1 conferred, 0 returned, 1 still reachable at home" else "the follower that once spoke for the judgment did not read its conferral"
+assert test.out contains "client_c: bytes differed" else "the follower that once spoke for the judgment came home after all"
+
+say "GREEN: Caravan recant witness passed."

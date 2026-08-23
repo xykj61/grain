@@ -1,0 +1,42 @@
+# tools/cr/crypto_elligator_witness.rish — Elligator 2 over Curve25519 authored in pure Rye: the map that hides an X25519 public key as a
+# uniformly random 32-byte string and reads it back, proven against Monocypher's OWN published Elligator vectors and the round-trip identity
+# (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names reimplementing Monocypher
+# primitives in Rye with byte-for-byte parity as the crux).
+# Kin: crypto/fe25519.rye (the base field this stands entirely on) and crypto/x25519.rye (the keys it hides and reveals). Monocypher
+# (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own arithmetic, studied clean-room from the public
+# Elligator 2 mathematics and Monocypher's public API (.claude/rules/gratitude-licenses.md).
+#
+# crypto/elligator.rye authors both maps from the standard — the direct map (representative → Montgomery u-coordinate) and the inverse map
+# (representable u-coordinate → representative under a random tweak) — over one shared invsqrt and the GREEN fe25519 field, calling no
+# std.crypto. The selftest anchors on Monocypher's OWN published elligator_dir and elligator_inv vectors quoted byte-for-byte (four direct
+# answers spanning the square and non-square branches; the inverse answers including an unrepresentable point) plus the round-trip identity
+# map(rev(map(h))) = map(h). Zig ships no Elligator, so unlike the hash and cipher rungs there is no std.crypto oracle; the byte-for-byte
+# Monocypher-source parity in tools/cr/crypto_monocypher_elligator_parity_witness.rish is the external anchor beside these vectors. Purely local —
+# no key, no network, no funds, no real device; the inverse map's one representability test is deliberately variable-time (keys tried at
+# random), and constant-time timing-safety stays the Season's named horizon.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_elligator_witness.rish
+
+say "crypto-elligator: Language EN — Elligator 2 over Curve25519: the map that hides an X25519 public key as a uniformly random 32-byte string and reads it back, the primitive Comlink's obfuscated handshake reaches for. Authored in pure Rye over the GREEN fe25519 field, proven against Monocypher's OWN published Elligator vectors byte-for-byte and the round-trip identity."
+say "crypto-elligator: Style Radiant — the law is stated positively: the direct map squares a 254-bit representative and folds it through w = −A / (1 + 2·r²), choosing the square or non-square branch by one shared invsqrt; the inverse map takes a representable u-coordinate back to a representative under a random tweak, reporting failure for the ~half of points that are not representable. Both rest on the field fe25519.rye already proved — Elligator adds no new field, only a new use of it."
+say "crypto-elligator: Lens TAME — the primitive calls no std.crypto; it is authored from the Elligator 2 mathematics, its three constants derived from the field (A = 486662, A² = A·A, ufactor = −2·√(−1)) with √(−1) the one embedded value verified equal to Monocypher's own. Parity holds against Monocypher's OWN published elligator_dir and elligator_inv vectors (both branches; an unrepresentable point) AND the round-trip identity. Zig ships no Elligator, so Monocypher-source parity is the external anchor (its own witness). Purely local — no key, no network, no funds, no device; the inverse map's representability test is deliberately variable-time, constant-time timing-safety the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/elligator"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/elligator.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-elligator: build failed — ${build.err}"
+
+let outfile = "crypto/bin/elligator.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-elligator: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-elligator: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-elligator' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-elligator: selftest did not print the GREEN crypto-elligator line"

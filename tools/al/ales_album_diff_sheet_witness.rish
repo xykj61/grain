@@ -1,0 +1,38 @@
+# tools/al/ales_album_diff_sheet_witness.rish — what changed in a record, as a readable page: render_sheet(diff, out) draws a classified
+# ALES232 Diff as its readable change page (ALES233).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES233.
+# Design read: active-designing/date/20260815/20260815-144829_fill-ales233-lotus-album-diff-sheet.md
+# Idiom kin: lotus/library_diff_sheet.rye (ALES230, the readable-projection idiom one level up) · lotus/album_diff.rye (ALES232, the
+# classified Diff this draws) · lotus/album_sheet.rye (ALES225, the record's own readable page). A projection, not a round-trip — no
+# new frame, no new hash.
+#
+# lotus/album_diff_sheet.rye renders a classified Diff as a `format lotus-album-diff-sheet-v1` page. The selftest proves: the page
+# opens with the format line and a four-tally summary (the summary law); every added, removed, and changed track appears in order with
+# its name and full digest(s), a changed line carrying both (the moved law); an unchanged track appears in no track line (the quiet
+# law); a too-small buffer refuses Overflow (the atomic law). A pure text render — no real file, no DAC, no network, no keys, no funds,
+# no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_album_diff_sheet_witness.rish
+
+say "ales-album-diff-sheet: Language EN — ALES233 draws a classified ALES232 Diff as a readable change page: a `format lotus-album-diff-sheet-v1` summary line then one added / removed / changed line per moved track — a keeper sees what moved in a record at a glance."
+say "ales-album-diff-sheet: Style Radiant — a projection, not a round-trip; the eye's version of the diff, mirroring library_diff_sheet (ALES230) one level down and completing album parity; the summary law, the moved law, the quiet law, and the atomic law each proven on metal."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/album_diff_sheet"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/album_diff_sheet.rye -femit-bin=${bin}"]
+assert build.ok else "ales-album-diff-sheet: build failed — ${build.err}"
+
+let outfile = "lotus/bin/album_diff_sheet.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-album-diff-sheet: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-album-diff-sheet: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-album-diff-sheet' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-album-diff-sheet: selftest did not print the GREEN ales-album-diff-sheet line"
+
+say "ales-album-diff-sheet: GREEN — a keeper reads what changed in a record as a page now, and the album level stands at full parity with the library level (content address · readable page · resolve · diff · diff page). The next Lotus crux still names who made it — a signed carry (crypto seam) on Keaton's word."

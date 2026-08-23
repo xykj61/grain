@@ -1,0 +1,48 @@
+# tools/m/mycelium_pledge_bron_witness.rish — the two-phase verdict travels as a readable record (r2).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · Pledge rung r2 — travel.
+# r1 resolved the agreed order into a Ledger: every account's spendable balance and reserved holdings, and
+# every pledge's settlement (open, posted, voided). A verdict a node cannot hand to another is only a local
+# reading, so r2 lets a resolved Ledger cross as `format pledge-v1` bytes — an `issued` line, one
+# `holds <pk> <balance> <reserved>` line per account, one `pledge <id> <from> <to> <amount> <state> <pos>`
+# line per pledge. Render writes it, parse reads it back byte-for-byte (a fixed point), and the recovered
+# Ledger answers the identical balances, reserves, and settlements.
+#
+# The record carries CONSERVATION as its own law — the Purse's supply law widened by one column: the
+# spendable balances PLUS the reserved holdings must sum to exactly the `issued` total, or the reader refuses
+# `BadInt` before trusting the record; no coin appears or vanishes in the crossing, whether spendable or held.
+# A purpose-built bounded reader refuses whole on a bad header (`BadFormat`), an unknown field (`UnknownField`,
+# never dropped), a bad hex key (`BadHex`), a broken conservation law or unknown pledge state (`BadInt`), a
+# missing issued (`BadFormat`), and an over-long verdict (`TooManyPledges` at render). Composes pledge + cord +
+# fold public API only; demo keeper seeds — no key, no funds, no network, no custody.
+#
+# Scope: active-designing/date/20260813/20260813-075049_mycelium-pledge-two-phase-transfer-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_pledge_bron_witness.rish
+
+say "mycelium-pledge-bron: Language EN — a promise held or kept crosses to a stranger as plain text, and the coins it names sum to exactly what was issued."
+say "mycelium-pledge-bron: Style Radiant — the reserved column travels beside the spendable, so a pledge in flight reads as true across the wire as it did at home."
+say "mycelium-pledge-bron: Lens TAME — render and a purpose-built bounded reader compose pledge + cord + fold public API; conservation of balance + reserved travels as the record's own law; seven malformed records refuse whole; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/pledge_bron"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/pledge_bron.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-pledge-bron: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-pledge-bron: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-pledge-bron: selftest did not speak GREEN"
+assert selftest.out contains "parses back byte-for-byte" else "mycelium-pledge-bron: round-trip claim missing"
+assert selftest.out contains "conservation of balance + reserved" else "mycelium-pledge-bron: conservation claim missing"
+assert selftest.out contains "each refuse" else "mycelium-pledge-bron: refusal claim missing"
+assert selftest.out contains "fixed point" else "mycelium-pledge-bron: fixed-point claim missing"
+
+# The Pledge whose two-phase verdict this record carries stands at the door — its own selftest proves the
+# machinery the travelled record rests on.
+let pledge = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/pledge.rye -femit-bin=mycelium/bin/pledge && mycelium/bin/pledge 2>&1"]
+assert pledge.ok else "mycelium-pledge-bron: the Pledge whose verdict travels is not GREEN"
+assert pledge.out contains "GREEN" else "mycelium-pledge-bron: the Pledge did not speak its GREEN"
+
+say "mycelium-pledge-bron: GREEN — the two-phase verdict renders to a format pledge-v1 record and parses back byte-for-byte, the recovered balances · reserves · settlements identical and conservation of balance + reserved intact; a bad header, unknown field, bad hex key, broken conservation law, unknown state, missing issued, and over-long verdict each refuse; the Pledge stands at the door."

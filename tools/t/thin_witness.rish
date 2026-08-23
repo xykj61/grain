@@ -1,0 +1,39 @@
+# tools/t/thin_witness.rish -- the thinning driver proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the thinning floor skeletonization, pruning, and endpoint detection descend from, the
+# natural sibling image/hitmiss.rye named. Where the hit-or-miss transform asks "does the foreground fit HERE and the ground
+# fit THERE", thinning turns that question into an action: one step is a SET DIFFERENCE, the binarized shape MINUS the pixels
+# the template pair matched (thin_once = A AND NOT hit_or_miss(A, fg, bg)); iterate the step and the on-set shrinks toward a
+# fixed point.
+#
+# The crux this witness proves on metal: thin_once removes exactly the matches (the set difference, byte-for-byte), a step
+# never adds a pixel (anti-extensive, so the on-set is strictly decreasing and thinning always terminates); a 4-wide 3-tall
+# solid block under the right-edge peel template thins to its single leftmost column over exactly three productive passes and
+# then converges; thinning the already-thin skeleton removes nothing in zero passes (idempotent); the thinned mask
+# round-trips through the open QOI codec byte-for-byte; an empty foreground, an empty background, an over-max template, and
+# an empty source refuse by name; the same thinning is deterministic in both its pass count and its pixels. No network, no
+# key, no funds -- the skeleton, the pruned branch, and the one-pixel medial line a surface reads a mask down to, on our own
+# open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/thin_witness.rish
+
+say "thin: Language EN -- Season G thinning driver; iterate the hit-or-miss transform and subtract every match until a whole pass changes nothing, the floor skeletonization and pruning descend from."
+say "thin: Style Radiant -- compose not braid: this rung owns only the set difference and the fixed-point loop; hitmiss.hit_or_miss owns the match, structure the fit gather beneath it; a step is anti-extensive, so the on-set is a strictly decreasing bounded sequence and the loop always settles."
+say "thin: Lens TAME -- the binary meaning of a pixel is read from hitmiss (one source of truth); the source and both templates guarded and refused by name up front so a refusal allocates nothing; the productive-pass ceiling is the initial foreground count plus one and the loop asserts it is never crossed; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/thin"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/thin.rye -femit-bin=${bin}"]
+assert build.ok else "thin: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "thin: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "thin: ${out}"
+
+assert selftest.out contains "GREEN image-thin" else "thin: selftest did not print the GREEN line"
+
+say "thin: GREEN -- an RGBA mask thinned to its skeleton by iterated hit-or-miss subtraction, a solid block carried to its one-pixel column over three productive passes to a fixed point, on metal."

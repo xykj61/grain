@@ -41,7 +41,7 @@ gpg --fingerprint you@example.com               # the spaced 40-hex string
 Copy the committed template to your own gitignored config and fill it in:
 
 ```bash
-cp tools/key-card.conf.example tools/key-card.conf
+cp tools/k/key-card.conf.example tools/key-card.conf
 ```
 
 Open `tools/key-card.conf` and set your name, handle, email, `FP_SSH_GITHUB`, `FP_SSH_SECOND`, and `FP_OPENPGP`. If you also fill in the optional `KEY_SSH_*` paths and `GPG_EMAIL`, the generator will **audit each fingerprint against the real key on your machine before it renders anything** — so a card can never go out with a fingerprint that does not match the key it claims. Your filled `tools/key-card.conf` stays out of git; only the `.example` template is tracked.
@@ -56,7 +56,7 @@ Install the two dependencies once, then run the Rish orchestrator:
 
 ```bash
 brew install qrencode imagemagick
-rishi/bin/rishi run tools/make_key_card.rish
+rishi/bin/rishi run tools/m/make_key_card.rish
 ```
 
 The orchestrator does three things in order, and stops loudly if any fails: it audits your declared fingerprints against your real keys, renders the landscape and portrait cards, then audits that the output images came out valid and correctly shaped. A green run means the whole chain held — the fingerprints on the card are the true ones, and the images are well-formed. **The font is Menlo** — it ships on every Mac, needs no install step, and is the settled choice for this path; no Fira Code lookup or install is needed.
@@ -64,7 +64,7 @@ The orchestrator does three things in order, and stops loudly if any fails: it a
 ### On Linux
 
 ```bash
-./tools/make-key-card.sh
+./tools/m/make-key-card.sh
 ```
 
 This builds its QR encoder from the vendored `gratitude/libqrencode` submodule into the gitignored `tools/.build/`, and uses `apt`-installed Fira Code. On Debian or Ubuntu, `sudo apt install gcc libpng-dev pkg-config imagemagick fonts-firacode` covers the dependencies.
@@ -74,7 +74,7 @@ This builds its QR encoder from the vendored `gratitude/libqrencode` submodule i
 The composited card above stays PNG — the diamond, the raster QR tiles, and the burned-in captions are ImageMagick's own compositing work, and rebuilding all of that as one hand-built vector document is a real project of its own, beyond this guide. What is quick: `qrencode` already emits SVG directly, so each of the three QR codes can also exist as a small, fully textual file — no binary blob, diffable, greppable, the same way this tree already prefers text for everything else it keeps:
 
 ```bash
-rishi/bin/rishi run tools/make_key_qr_svg.rish
+rishi/bin/rishi run tools/m/make_key_qr_svg.rish
 ```
 
 Writes `keys_<yourhandle>_ssh_github.svg`, `keys_<yourhandle>_ssh_second.svg`, and `keys_<yourhandle>_openpgp.svg` at the repository root — allow-listed in `.gitignore` alongside the PNG cards, since a QR code encodes only a public fingerprint and is exactly as safe to commit and share as the fingerprint text itself.
@@ -99,7 +99,7 @@ Everything here runs inside the macOS `sandbox-exec` enclosure or the Linux ai-j
 - **`qrencode not found`** — install it (`brew install qrencode`, or `apt install qrencode`).
 - **ImageMagick not found** — install it (`brew install imagemagick`, or `apt install imagemagick`).
 - **The audit fails with a fingerprint mismatch** — the fingerprint in your config does not match the key at the path you gave. Re-copy it from `ssh-keygen`/`gpg`; the audit is doing its job by refusing to render a misleading card.
-- **You want a different look than Menlo** — that is a deliberate, settled choice for this path (no install step, ships on every Mac), not a fallback; if you truly want a different font, edit `resolve_font` in `tools/make_key_card_macos.sh` directly.
+- **You want a different look than Menlo** — that is a deliberate, settled choice for this path (no install step, ships on every Mac), not a fallback; if you truly want a different font, edit `resolve_font` in `tools/m/make_key_card_macos.sh` directly.
 
 ---
 

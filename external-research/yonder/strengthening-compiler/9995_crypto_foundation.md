@@ -72,7 +72,7 @@ To the question — what can we strengthen, or what step can we take? — the fo
 | File | Audit | Status |
 |------|-------|--------|
 | `meta/foundation` | crypto dependency map | done |
-| `tools/parity.rish` | witness registered | done |
+| `tools/p/parity.rish` | witness registered | done |
 | `external-research/yonder/strengthening-compiler/9995_crypto_foundation.md` | pass record + audited surfaces | done |
 | `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9995 | done |

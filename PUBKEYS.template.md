@@ -7,7 +7,7 @@
 
 A fork begins here. Copy this file to `PUBKEYS.md` at the repository root and replace every placeholder with your own four public fingerprints — two SSH (forge authentication) and two OpenPGP (signing). The keeper's canonical record in this repository lives at `context/PUBKEYS.md`; a keeper may also place `PUBKEYS.md` at the root for local override.
 
-Run `rishi/bin/rishi run tools/identity_check.rish` from the repository root to prove the shape.
+Run `rishi/bin/rishi run tools/i/identity_check.rish` from the repository root to prove the shape.
 
 ---
 

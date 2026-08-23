@@ -1,0 +1,43 @@
+# tools/cr/crypto_bip32_witness.rish — BIP-32 hierarchical-deterministic keys, authored in pure Rye as a composition over stones already GREEN in
+# this tree, authoring NO new cryptography. One seed becomes a whole tree of keys: from a master, a keeper derives a child by an index, that
+# child's child, and so on down a path — every node reproducible from the seed, and any node exportable as an extended public key. This is the
+# rung a wallet's whole account model stands on: one backup phrase, one seed, and the ladder of addresses beneath it (crypto · Season G).
+#
+# Season: crypto — Season G (the Six-Season double-seat). This rung contributes only the BIP-32 orchestration — the child-key-derivation function,
+# the parent fingerprint, and the extended-key serialization envelope — over rungs each proven byte-for-byte on metal: HMAC-SHA-512
+# (crypto/hmac_sha512.rye) is the derivation PRF, secp256k1 public-key derivation and SEC1 compression (crypto/secp256k1_pubkey.rye) give
+# serP(point(k)), the scalar reduction modulo the group order n (crypto/secp256k1_scalar.rye) finishes the child key (I_L + k_par) mod n, HASH160
+# (crypto/bitcoin_address.rye) gives the four-byte parent fingerprint, and Base58Check (encoding/base58check.rye) wraps the 78-byte extended key.
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave, Rye first).
+# Clean-room: BIP-32 is a public standard; the assembly is ours, standing on our own parity-GREEN rungs, never a copied line
+# (.claude/rules/gratitude-licenses.md).
+#
+# Parity is proven at selftest the replayable way the tree favours — against BIP-32's own published Test Vector 1: from the published seed
+# 000102…0f, every one of the six chain nodes (m, m/0H, m/0H/1, m/0H/1/2H, m/0H/1/2H/2, m/0H/1/2H/2/1000000000) serializes to EXACTLY the spec's
+# published xprv AND xpub base58 strings, character for character — so a one-bit error anywhere in the HMAC, the modular add, the compression, the
+# fingerprint, or the envelope would break the match. No fabricated constant: the answers are the spec's own. Edge refusals BadSeedLength fire for
+# a too-short and a too-long seed. Purely local — every scalar is a TEST key from the spec's own seed, no network, no funds; signing with a real
+# identity key stays the custody gate, and public-only CKDpub is the named next rung.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_bip32_witness.rish
+
+say "crypto-bip32: Language EN — BIP-32 hierarchical-deterministic keys: a child private key is k_child = (parse256(I_L) + k_par) mod n, where I = HMAC-SHA-512(key = c_par, data = D) splits into a left half I_L that offsets the parent scalar and a right half I_R that becomes the child chain code. Hardened children feed 0x00‖ser256(k_par)‖ser32(i); normal children feed serP(point(k_par))‖ser32(i). The master is the same HMAC over the fixed key 'Bitcoin seed' and the seed. Composed entirely over the GREEN HMAC-SHA-512, secp256k1 pubkey, scalar reduce, HASH160, and Base58Check — authoring no new cryptography."
+say "crypto-bip32: Style Radiant — one seed, one backup phrase, and the whole ladder of a wallet's addresses beneath it, every node reproducible and any node exportable as an extended public key. neuter and ckd_pub derive the same public tree from an xpub alone — K_child = point(I_L) + K_par over the complete group law — so a watch-only wallet never holds a private key. This is the rung the account model stands on."
+say "crypto-bip32: Lens TAME — every width named (i_bytes 64, key_data_bytes 33, ext_serialized_bytes 78), every copy bounded, contract asserts on each function; it calls no cryptography of its own, only the GREEN rungs beneath it. Parity holds against BIP-32's own published Test Vector 1: from the published seed, all six chain nodes serialize to EXACTLY the spec's published xprv AND xpub strings, character for character; each node's neuter reproduces the same xpub, and for every normal index CKDpub reaches it from the neutered parent alone — a one-bit error anywhere would break a match. Edge refusals BadSeedLength and HardenedFromPublic fire. Purely local — no key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/bip32"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/bip32.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-bip32: build failed — ${build.err}"
+
+let outfile = "crypto/bin/bip32.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-bip32: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-bip32: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-bip32' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-bip32: selftest did not print the GREEN crypto-bip32 line"

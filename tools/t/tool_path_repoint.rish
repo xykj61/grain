@@ -1,0 +1,31 @@
+# tools/t/tool_path_repoint.rish -- repoint living files at the tools fold's new paths.
+#
+# WHY. The mark law resolves a stale reference rather than rewriting it, and that is right for
+# dated testimony: 2,866 dated files name a `tools/<file>` path and each keeps every word it ever
+# wrote. It is wrong for living code. A witness running `rishi/bin/rishi run tools/foo.rish`
+# resolves nothing once `foo.rish` sits in `tools/f/` -- it simply fails.
+#
+# So living things are repointed and testimony is resolved, with ONE room named on the living side:
+# `foundations/` carries dated basenames and living bodies, and `tools/f/foundations_link_witness.rish`
+# holds its broken links at zero on every roster run. A room a standing guard requires to resolve
+# is a room this tool must repoint.
+#
+# Dry by default. Nothing is written until `apply` is asked for by name.
+#
+# USAGE
+#   rishi/bin/rishi run tools/t/tool_path_repoint.rish          # report only
+#   rishi/bin/rishi run tools/t/tool_path_repoint.rish apply    # rewrite
+#
+# Proven by tools/t/tool_path_repoint_witness.rish. Kin: tools/t/tool_path_resolve.rish (which
+# recovers what this declines to rewrite) and tools/d/dated_path_repoint.rish (the sibling this
+# follows). Run from the repository root.
+
+let mode = "dry"
+if length args != 0 then let mode = args[0]
+
+say "tool-path-repoint: living things are repointed, dated testimony is resolved -- mode ${mode}."
+
+let run_scan = run ["sh" "tools/fixtures/tool_path_repoint_scan.sh" mode]
+assert run_scan.ok else "tool-path-repoint: the repoint pass must complete -- see stderr"
+say run_scan.out
+assert run_scan.out contains "verdict=ok" else "tool-path-repoint: the pass must balance before it is believed"

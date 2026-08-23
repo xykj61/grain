@@ -13,7 +13,7 @@ Pond holds **applications** that compose Rye OS modules above the kernel and com
 
 **Pond clause:** Pond's enclosure aspect runs what Brix composes under policy.
 
-**Customs (landed `20260710.161125`):** [`customs.rye`](customs.rye) — first policy concept. At receipt, each Tilak mark earns **place**, **hold**, or **refuse**. Root allow-list: `plain-bytes` may be placed; `await-word` waits for a human word; unknown marks refuse whole. Amphora cold scrub calls `customs inspect` on the cellar manifest before restore. Witness: `tools/pond_customs.rish` (parity **230**).
+**Customs (landed `20260710.161125`):** [`customs.rye`](customs.rye) — first policy concept. At receipt, each Tilak mark earns **place**, **hold**, or **refuse**. Root allow-list: `plain-bytes` may be placed; `await-word` waits for a human word; unknown marks refuse whole. Amphora cold scrub calls `customs inspect` on the cellar manifest before restore. Witness: `tools/p/pond_customs.rish` (parity **230**).
 
 **First application:** [`apps/drawn_terminal.rye`](apps/drawn_terminal.rye) — SLC-2a, the drawn terminal (Rishi session mirrored in a Brushstroke/Skate window). Granary weave view (`granaryviewtest`) folds resolve + Scribble onto Skate (parity **233**). Inference and commerce folds share that same glass.
 
@@ -49,16 +49,16 @@ rishi/bin/rishi run tools/fixtures/pond_build_drawn_terminal.rish
 | Step | Command | Purpose |
 |------|---------|---------|
 | **Build** | `rishi/bin/rishi run tools/fixtures/pond_build_drawn_terminal.rish` | Staged compile; asserts prepare/compile/prove/GREEN |
-| **Witness (session mirror)** | `rishi/bin/rishi run tools/slc2a_ring3_session.rish` | Headless session mirror (build + `sessiontest`) |
-| **Witness (SLC-2b)** | `rishi/bin/rishi run tools/slc2b_keyboard.rish` | Dexter keyboard path (build + `keyboardtest`) — parity **145** |
-| **Metalsmoke** | `rishi/bin/rishi run tools/slc2a_ring3_metal.rish` | Thin-lap Wayland slice (needs `WAYLAND_DISPLAY`) |
+| **Witness (session mirror)** | `rishi/bin/rishi run tools/s/slc2a_ring3_session.rish` | Headless session mirror (build + `sessiontest`) |
+| **Witness (SLC-2b)** | `rishi/bin/rishi run tools/s/slc2b_keyboard.rish` | Dexter keyboard path (build + `keyboardtest`) — parity **145** |
+| **Metalsmoke** | `rishi/bin/rishi run tools/s/slc2a_ring3_metal.rish` | Thin-lap Wayland slice (needs `WAYLAND_DISPLAY`) |
 | **Live** | `pond/bin/drawn-terminal` | Keyboard in the window; stdin still works for dev |
 
 **Metal close (Kaeden):** rishi preflight and metalsmoke, then live on GNOME Wayland:
 
 ```bash
 rishi/bin/rishi run tools/fixtures/pond_metal_close_preflight.rish
-rishi/bin/rishi run tools/slc2a_ring3_metal.rish
+rishi/bin/rishi run tools/s/slc2a_ring3_metal.rish
 pond/bin/drawn-terminal
 ```
 

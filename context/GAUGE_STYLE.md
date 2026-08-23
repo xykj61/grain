@@ -297,7 +297,7 @@ The grade number is the honest surprise: it was never the failing here, and chas
 missed the real one. Density of negation and density of reference are what make prose hard, and a
 syllable count sees neither.
 
-Held by [`../tools/prose_register_witness.rish`](../tools/prose_register_witness.rish), which
+Held by [`../tools/p/prose_register_witness.rish`](../tools/p/prose_register_witness.rish), which
 gates the Door tier and reports the rest.
 
 ## Softening -- reach for the warmer word

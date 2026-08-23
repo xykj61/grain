@@ -1,0 +1,41 @@
+# tools/cr/crypto_hkdf_sha256_witness.rish — HKDF-SHA-256 authored in pure Rye: Season G's key-derivation rung, the extract-then-expand
+# key schedule TLS 1.3, Noise, and Signal actually run, proven against RFC 5869's OWN published SHA-256 known-answers and byte-for-byte
+# against an independent implementation (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# Kin: crypto/hmac_sha256.rye (the keyed hash beneath it, GREEN) · crypto/sha256.rye (the hash beneath that) · crypto/hkdf_sha512.rye
+# (its 512-bit sibling). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity discipline target, never a copied line — our own
+# Rye, studied clean-room from the public standards (.claude/rules/gratitude-licenses.md).
+#
+# crypto/hkdf_sha256.rye composes the GREEN crypto/hmac_sha256.rye through RFC 5869's two steps — extract(salt, ikm) = HMAC(salt, ikm)
+# yields the 32-byte PRK (an empty salt keyed on HashLen zeros), and expand(PRK, info, L) walks T(i) = HMAC(PRK, T(i-1) ‖ info ‖ byte(i))
+# up to 255 blocks — authoring no new cryptography. The primitive calls no std.crypto. Because RFC 5869 publishes its known-answers over
+# SHA-256, parity is proven at selftest against three references runnable now: RFC 5869 Appendix A Test Cases 1, 2, and 3 (the published
+# PRK and output keying material) hex for hex; Zig's own std.crypto HKDF-SHA-256 byte-for-byte across those shapes plus a full 255-block
+# request; AND the RFC-4231-anchored HMAC beneath it (extract reproduces mac(ikm, salt) exactly). An over-long info, salt, ikm, or
+# request refuses its named error before a byte is mixed. Purely local — TEST inputs, no real identity key, no network, no funds, no
+# real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_hkdf_sha256_witness.rish
+
+say "crypto-hkdf-sha256: Language EN — Season G's key-derivation rung: HKDF-SHA-256 (RFC 5869), the standard 'turn one shared secret into as many independent keys as a protocol needs' primitive, the extract-then-expand key schedule TLS 1.3, the Noise protocol, and Signal actually run. It authors no new cryptography — it composes the GREEN crypto/hmac_sha256.rye through the RFC's two steps, so it is genuinely buildable this round and — the gift of the SHA-256 instantiation — carries RFC 5869's OWN published known-answer vectors, which the standard computes over SHA-256."
+say "crypto-hkdf-sha256: Style Radiant — the law is stated positively: extract(salt, ikm) = HMAC(salt, ikm) yields the 32-byte PRK (an empty salt keyed on HashLen zeros), expand(PRK, info, L) walks T(i) = HMAC(PRK, T(i-1) ‖ info ‖ byte(i)) from i = 1 up to 255 blocks and returns the first L bytes, so the same salt, ikm, info, and length always fold to the same key material anyone can replay against the standard's own vectors."
+say "crypto-hkdf-sha256: Lens TAME — the primitive calls no std.crypto; it composes an already-GREEN HMAC, bounded ikm/salt/info and a 255-block output cap, contract asserts on every function, each HMAC call beneath provably within its own message and key bounds so its error is unreachable and asserted rather than swallowed. Parity holds three ways: RFC 5869 Appendix A Test Cases 1, 2, and 3 published PRK and OKM hex for hex; Zig's independent std.crypto HKDF-SHA-256 byte-for-byte across those shapes plus a full 255-block request; and the RFC-4231-anchored HMAC beneath (extract reproduces mac(ikm, salt) exactly). An over-long info, salt, ikm, or request refuses its named error before a byte is mixed. Constant-time discipline stays the HMAC layer's named horizon. Purely local — TEST inputs, no real identity key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/hkdf_sha256"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/hkdf_sha256.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-hkdf-sha256: build failed — ${build.err}"
+
+let outfile = "crypto/bin/hkdf_sha256.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-hkdf-sha256: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-hkdf-sha256: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-hkdf-sha256' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-hkdf-sha256: selftest did not print the GREEN crypto-hkdf-sha256 line"

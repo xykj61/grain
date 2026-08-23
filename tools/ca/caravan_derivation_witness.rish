@@ -1,0 +1,102 @@
+# tools/ca/caravan_derivation_witness.rish -- the derivation tree, and the two kernel refusals only a tree can answer.
+#
+# WHY THIS RUNG. `caravan/refusals.rye` stated the eleven answers a capability invocation may receive, mapped Caravan's
+# four onto them, and named for each of the seven remaining which subsystem owes it. The DERIVATION TREE owed two --
+# `seL4_DeleteFirst` and `seL4_RevokeFirst` -- more than any other subsystem, because both are questions about lineage
+# rather than about rights. A table that maps a dependent to what it may do can never answer them. A table that also
+# knows who handed each capability on answers both, and `caravan/derivation.rye` is that table.
+#
+# WHAT IS PROVEN HERE, each on metal.
+#
+#   The two owed refusals are answered, in the kernel's own words, imported from the module the witness above binds
+#   against seL4's BSD-2-Clause header at run time -- so this rung inherits that binding rather than restating it.
+#
+#   Reach only ever narrows along a lineage. A derived capability carries a subset of its parent's rights, always;
+#   a request to widen is refused with `seL4_IllegalOperation` at the edge, and the whole-table invariant re-proves
+#   attenuation across every live slot afterward.
+#
+#   Revoke clears a whole lineage in one bounded pass and keeps the capability it was asked about, leaving no
+#   grandchild standing as reach nobody granted.
+#
+#   The module's own bounds -- thirty-two slots, four deep -- refuse by NAMED RYE ERROR rather than by a kernel
+#   answer, because the kernel offers no word for "the userland's table is full." The general bounds-checking debt
+#   `refusals.rye` names therefore stays open, and this rung does not claim it.
+#
+# WHAT IS NOT PROVEN. No kernel booted and no capability was invoked. This is policy on hosted ground: the lineage
+# rules are ours, written to the shape of the answers seL4 publishes, and they earn their behavioural proof the day a
+# root task actually invokes a capability.
+#
+# Season: the Lindy-priority Microkernel Target double-seat (seated `20260817`, ordered ahead of Seasons A-H),
+# Equinox 1 -- Caravan on the microkernel. Kin: tools/ca/caravan_refusals_witness.rish (the vocabulary this pays into) -
+# tools/ca/caravan_capabilities.rish (the four outcomes above the line) -
+# external-research/20260821-043831_the-libsel4-reach-and-the-vocabulary-caravan-inherits.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_derivation_witness.rish
+
+say "caravan-derivation: Language EN -- a capability that may be handed on makes a tree, and a tree is the only thing that can honestly say whether removing one grant would orphan reach somebody is still holding."
+say "caravan-derivation: Style Radiant -- three claims in order. Reach narrows along a lineage and never widens. A held slot and a derived-from capability answer with two distinct kernel refusals. And revoking clears a lineage whole, in one bounded pass."
+say "caravan-derivation: Lens TAME -- the module's asserts are the specification, and both RED paths are proven by planting them: a tree that lets reach widen as it is handed on must refuse itself, and a revoke that spares a grandchild must refuse itself."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/derivation"
+let header = "vendor/sel4/libsel4/include/sel4/errors.h"
+let control = "tools/fixtures/caravan_derivation_control.sh"
+let build_dir = "tools/.build/caravan_derivation"
+
+let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]
+assert mk.ok else "caravan-derivation: could not make the build directories"
+
+# 0. PRECONDITION, an environment fact rather than a tree red: the gitlink must actually be checked out, since the
+#    vocabulary this rung answers in is imported from the module that reads seL4's own header.
+let checked_out = run ["sh" "-c" "test -f ${header} && echo yes || echo no"]
+assert (trim checked_out.out) == "yes" else "caravan-derivation: vendor/sel4 is not checked out -- run `git submodule update --init --recursive` first; this is an environment precondition, not a tree red"
+
+# 1. THE MODULE BUILDS AND PROVES ITSELF. Its asserts are the specification.
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/derivation.rye -femit-bin=${bin}"]
+assert build.ok else "caravan-derivation: the module did not build"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan-derivation: the self-test exited non-zero"
+assert test.out contains "GREEN" else "caravan-derivation: the self-test is not GREEN"
+assert test.out contains "reach narrows along a lineage and never widens" else "caravan-derivation: attenuation was not claimed"
+assert test.out contains "a held slot answers seL4_DeleteFirst" else "caravan-derivation: the held-slot refusal is not seL4_DeleteFirst"
+assert test.out contains "a capability with children answers seL4_RevokeFirst" else "caravan-derivation: the derived-from refusal is not seL4_RevokeFirst"
+assert test.out contains "clears a lineage in one bounded pass" else "caravan-derivation: the revoke claim was not made"
+assert test.out contains "at most 4 deep over 32 slots" else "caravan-derivation: the module's own bounds moved without the witness moving with them"
+assert test.out contains "refusing by named error" else "caravan-derivation: the bounds no longer refuse by named Rye error"
+
+# 2. THE WORKED TREE READS AS A LINEAGE. A root, a child, a grandchild -- each narrower than the one above it, each
+#    knowing its parent, and the counts read from the tree rather than recited.
+let table = run ["sh" "-c" "${bin} table > ${build_dir}/table.txt 2>&1; echo done"]
+assert (trim table.out) == "done" else "caravan-derivation: the worked tree did not print"
+
+let printed = run ["sh" "-c" "cat ${build_dir}/table.txt"]
+assert printed.out contains "slot  0 resource 77 rights 111 depth 0 parent 32 children 2" else "caravan-derivation: the root did not stand at depth zero with two beneath it"
+assert printed.out contains "slot  1 resource 77 rights 011 depth 1 parent 0 children 1" else "caravan-derivation: the child did not narrow its parent's rights"
+assert printed.out contains "slot  2 resource 77 rights 001 depth 2 parent 1 children 0" else "caravan-derivation: the grandchild did not narrow the child's rights"
+
+# 3. THE TWO REFUSALS ARE THE KERNEL'S OWN, printed through `refusals.rye` rather than spelled here, so the binding
+#    that witness holds against seL4's BSD-2-Clause header carries through to this rung.
+assert printed.out contains "seL4_DeleteFirst -- the destination slot already holds a capability" else "caravan-derivation: seL4_DeleteFirst did not carry the meaning seL4 publishes"
+assert printed.out contains "seL4_RevokeFirst -- capabilities stand derived from this one" else "caravan-derivation: seL4_RevokeFirst did not carry the lineage meaning"
+
+# 4. RED PATH ONE -- a tree that lets reach WIDEN as it is handed on must refuse itself. Planted in a copy, built with
+#    the same compiler, and swept after.
+let widen = run ["sh" "-c" "sh ${control} ${zig} ${build_dir} attenuation 2>/dev/null"]
+assert widen.ok else "caravan-derivation: the attenuation control did not run"
+assert widen.out contains "planted=1" else "caravan-derivation: the widening copy was not planted -- the RED path would have proven nothing"
+assert widen.out contains "verdict=refused" else "caravan-derivation: RED path one did not fire -- a derivation granting more than its parent held passed the self-test"
+
+# 5. RED PATH TWO -- a revoke that sweeps only DIRECT children leaves a grandchild standing as reach nobody granted,
+#    and the postcondition inside `revoke` must name it.
+let shallow = run ["sh" "-c" "sh ${control} ${zig} ${build_dir} revoke 2>/dev/null"]
+assert shallow.ok else "caravan-derivation: the revoke control did not run"
+assert shallow.out contains "planted=1" else "caravan-derivation: the shallow-revoke copy was not planted -- the RED path would have proven nothing"
+assert shallow.out contains "verdict=refused" else "caravan-derivation: RED path two did not fire -- a revoke sparing a grandchild passed the self-test"
+
+say "caravan-derivation: lineage is kept -- every derived capability knows the slot it came from, and the whole table re-proves no orphan stands."
+say "caravan-derivation: reach narrows and never widens -- a widening derivation is refused with seL4_IllegalOperation at the edge, and a copy without that check fails its own self-test."
+say "caravan-derivation: the two owed refusals are answered -- a held destination slot is seL4_DeleteFirst, a capability with capabilities derived from it is seL4_RevokeFirst."
+say "caravan-derivation: revoke clears a lineage whole in one bounded pass, keeps the capability it was asked about, and a copy that spares a grandchild refuses itself."
+say "GREEN: Caravan keeps a derivation tree, and the derivation tree's two debts are paid."

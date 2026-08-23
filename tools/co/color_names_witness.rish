@@ -1,0 +1,45 @@
+# tools/co/color_names_witness.rish -- the sixteen HTML4 color names read over the open color algebra prove themselves (Season G).
+#
+# Season G (Open Media Primitives) -- the named-color table beside the WCAG contrast reading (image/color_contrast.rye), the
+# on-color swatch (image/color_swatch.rye), the tonal scale (image/color_scale.rye), the palette toolkit
+# (image/color_adjust.rye), and the open color algebra (image/color.rye).
+# Design read: active-designing/date/20260816/20260816-210735_season-g-color-algebra-crux.md (the color floor this stands on).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + HTML4 keywords -- public standards only).
+#
+# The crux this witness proves is the names a keeper reaches for before a hex: the sixteen HTML4 / CSS Level 1 color
+# keywords, the oldest and most durable named set on the web, each bound to its canonical hex. Written as a single-stranded
+# consumer -- this module NAMES each color and color DECIDES the bytes through its own parse_hex, so no private parser and
+# no channel byte stored here. Every named color round-trips through color.parse_hex; a name resolves case-insensitively;
+# an unknown name refuses UnknownColorName by name; name_of reads a color back to its exact name; the table is the whole
+# sorted, block-complete HTML4 set. No new storage, codec, or maths. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/color_names_witness.rish
+
+say "color-names: Language EN -- Season G's named-color table; a keeper reads a plain word ('red', 'navy', 'teal') to a color and a color back to its name, before ever naming a hex."
+say "color-names: Style Radiant -- compose not braid; this module NAMES each color and color DECIDES the bytes through its own parse_hex, so color's proofs carry through and no private parser is added."
+say "color-names: Lens TAME -- sixteen names bounded by named_color_count; every name bounded by name_max before the u32 seam-cast; an unknown name refused by name; name_of honest about unnamed and translucent colors; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/color_names"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color_names.rye -femit-bin=${bin}"]
+assert build.ok else "color-names: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "color-names: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "color-names: ${out}"
+
+# Honour the loom REDS %76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
+# output, so punctuation in the selftest prose can never break a check.
+assert out contains "GREEN image-color-names" else "color-names: selftest did not print the GREEN color-names line"
+assert out contains "every named color's canonical hex parses through color.parse_hex" else "color-names: a name did not compose over color's own parser"
+assert out contains "resolves case-insensitively" else "color-names: a name did not resolve case-insensitively"
+assert out contains "refuses UnknownColorName by name" else "color-names: an unknown name was not refused by name"
+assert out contains "name_of returns the exact name" else "color-names: name_of did not read a color back to its name"
+assert out contains "resolve_any is the universal front door" else "color-names: resolve_any did not read name/hex/functional alike"
+assert out contains "block-complete at sixteen" else "color-names: the table was not the whole HTML4 set of sixteen"
+
+say "color-names: GREEN -- the sixteen HTML4 color names whole over the open color algebra; every name round-trips through parse_hex, resolves case-insensitively, refuses the unknown, reads back by name_of, the set sorted and block-complete."

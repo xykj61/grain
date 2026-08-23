@@ -28,7 +28,7 @@
 # Absent `personal` rows are printed under their own heading either way, so defence in depth
 # stays visible rather than becoming invisible by being permitted.
 #
-# Kin: tools/sow_witness.rish (the rung that gates on this) - tools/fixtures/sow_project.sh
+# Kin: tools/s/sow_witness.rish (the rung that gates on this) - tools/fixtures/sow_project.sh
 # (the allowlist projector) - template-manifest.bron (the boundary itself).
 #
 # Run from the repository root.

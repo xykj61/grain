@@ -14,7 +14,7 @@
 //! studied for design concepts only (.claude/rules/gratitude-licenses.md). The stub's names are ours. What is proven here is the mechanism
 //! the whole family requires, which is exactly the part a toolchain either supports or does not.
 //!
-//! Built by tools/microkernel_zig_target_probe_witness.rish for riscv64, aarch64, and x86_64, each freestanding.
+//! Built by tools/m/microkernel_zig_target_probe_witness.rish for riscv64, aarch64, and x86_64, each freestanding.
 
 const cap_word = u64;
 const cap_handle = u64;

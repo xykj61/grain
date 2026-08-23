@@ -1,0 +1,49 @@
+# tools/m/mycelium_freight_bron_witness.rish — a world's freight travels as a readable record, and reads the
+# same offline (r3).
+#
+# Season D (Kresfa & Mycelium) · Puddle fleet orchestration × Mycelium consensus · rung r3 — travel.
+# r1 proved a moved world reads the byte-identical position on its new berth; r2 proved the whole fleet's
+# state is conserved across a healing. r3 lets a world's freight cross as `format freight-v1` bytes — a
+# manifest of id · berth host key · ledger order-head · account position (balance · reserved · received ·
+# present). The crux: a manifest parsed from bytes reads the byte-identical position offline, its advertised
+# order-head ACCEPTS the world's real ledger blocks through freight.receive, and a head altered in transit
+# makes those same blocks refuse FreightTampered. Render/parse is a fixed point. Composes freight + puddle +
+# cord + lapse + fold + voucher + kumara public API only; demo seeds — no key, no funds, no network, no world
+# moved.
+#
+# Scope: active-designing/date/20260813/20260813-121424_puddle-freight-world-state-migration-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_freight_bron_witness.rish
+
+say "mycelium-freight-bron: Language EN — a receiving node often meets a moving world as a manifest before it pulls the ledger; the freight-v1 record carries the world's position across the wire, and the head it advertises still catches a ledger that does not match it."
+say "mycelium-freight-bron: Style Radiant — the light record and the heavy ledger agree: the recovered manifest reads the identical position offline and accepts the real blocks, while a head altered in transit refuses."
+say "mycelium-freight-bron: Lens TAME — a purpose-built bounded reader refuses a bad header, unknown field, malformed line, bad hex, bad amount, bad flag, and a missing field; every field is required; composes freight + puddle + cord + lapse + fold + voucher + kumara public API only; demo seeds, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/freight_bron"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/freight_bron.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-freight-bron: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-freight-bron: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-freight-bron: selftest did not speak GREEN"
+assert selftest.out contains "parses back byte-for-byte" else "mycelium-freight-bron: fixed-point claim missing"
+assert selftest.out contains "reads the byte-identical position offline" else "mycelium-freight-bron: offline-position claim missing"
+assert selftest.out contains "refuse FreightTampered" else "mycelium-freight-bron: tamper-teeth claim missing"
+assert selftest.out contains "missing field each refuse" else "mycelium-freight-bron: refusal claim missing"
+assert selftest.out contains "The freight carries the position" else "mycelium-freight-bron: closing claim missing"
+
+# The Freight crux r3 travels stands on r1's own migration — its receive path is exactly what the manifest's
+# advertised head is checked against here.
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/freight.rye -femit-bin=mycelium/bin/freight && mycelium/bin/freight 2>&1"]
+assert r1.ok else "mycelium-freight-bron: the Freight r1 crux this round rides is not GREEN"
+assert r1.out contains "GREEN" else "mycelium-freight-bron: the Freight r1 crux did not speak its GREEN"
+
+# The Freight r2 conservation stands too — r3 travels the very position r2 sums across a whole fleet.
+let r2 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/freight_conservation.rye -femit-bin=mycelium/bin/freight_conservation && mycelium/bin/freight_conservation 2>&1"]
+assert r2.ok else "mycelium-freight-bron: the Freight r2 conservation is not GREEN"
+assert r2.out contains "GREEN" else "mycelium-freight-bron: the Freight r2 conservation did not speak its GREEN"
+
+say "mycelium-freight-bron: GREEN — a world's freight travels as readable text and reads the same offline: a receiving node accepts a moving world by its record alone, its advertised head accepts the real ledger blocks, a head altered in transit refuses, and every malformed or missing field refuses; the Freight r1 crux and r2 conservation both stand at the door. The freight carries the position."

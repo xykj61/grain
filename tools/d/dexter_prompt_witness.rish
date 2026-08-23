@@ -1,0 +1,34 @@
+# tools/d/dexter_prompt_witness.rish -- Dexter, the drawn prompt on metal.
+#
+# pond/apps/dexter_prompt.rye draws an editable line into a single bounded terminal row -- a prompt prefix
+# then the line's bytes, scrolled horizontally so the caret is always visible, the same 80-column width
+# scooter_view.rye draws its journal in. This witness builds the module to a binary and asserts its selftest
+# speaks GREEN over the four cruxes:
+#   - Short line fits -- prefix then text, padded to the full width, the caret past the text.
+#   - Long line scrolls -- a line wider than the row slides so the caret is always visible, at the end or home.
+#   - Empty line draws the prompt -- the caret waits just past the prefix, deterministic every time.
+#   - Over-wide prefix refuses -- a prefix leaving no room for the line is refused (PrefixTooWide).
+#
+# Facts only, custody-first: it draws a line of text into a row and holds nothing else -- no network, no key.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/dexter_prompt_witness.rish
+
+say "dexter-prompt: Language EN -- an editable line drawn into a bounded terminal row, the caret always in view."
+say "dexter-prompt: Lens TAME -- exactly the row width, a horizontally-scrolled window keeps the caret visible, no key and no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+
+let bin = "pond/bin/dexter-prompt"
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/dexter_prompt.rye -femit-bin=${bin}"]
+assert build.ok else "dexter-prompt: dexter_prompt build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "dexter-prompt: dexter_prompt selftest exited non-zero"
+assert selftest.out contains "GREEN" else "dexter-prompt: selftest did not speak GREEN"
+assert selftest.out contains "draws prefix then text, padded to the full width" else "dexter-prompt: short-line crux missing"
+assert selftest.out contains "scrolls so the caret is always visible" else "dexter-prompt: long-line crux missing"
+assert selftest.out contains "an empty line still draws its prompt" else "dexter-prompt: empty-line crux missing"
+assert selftest.out contains "is refused (PrefixTooWide)" else "dexter-prompt: prefix crux missing"
+
+say "GREEN: dexter-prompt -- an editable line drawn into a terminal row: prefix then a horizontally-scrolled window that keeps the caret always visible."

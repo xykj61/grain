@@ -34,7 +34,7 @@
 # USAGE
 #   sh tools/fixtures/prose_register_scan.sh
 #
-# Driven by tools/prose_register_witness.rish. Run from the repository root.
+# Driven by tools/p/prose_register_witness.rish. Run from the repository root.
 
 set -u
 

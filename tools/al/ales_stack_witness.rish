@@ -1,0 +1,39 @@
+# tools/al/ales_stack_witness.rish — a three-band tone stack: bass, mid, and treble from two one-pole splits (ALES42).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES42.
+# Design read: active-designing/date/20260814/20260814-162200_fill-ales42-lotus-tone-stack.md
+# Stands on: lotus/shelf.rye (ALES41 — the two-band scale-and-clamp), lotus/tone.rye (ALES40 — the low-pass/high-pass split),
+# and lotus/timeline.rye (ALES2 — the Clip and saturate).
+#
+# lotus/stack.rye widens ALES41's two knobs to three — bass, mid, and treble — with the mid band as the exact residual
+# M = x − L − H, so unity on all three reconstructs the input by construction. The selftest proves: silence stays silence;
+# unity on all three bands is the identity (the bands reconstruct the input); bass scales direct current while mid and treble
+# leave it untouched (the knobs are orthogonal at direct current); a boost SATURATES rather than wraps (scale in the wide
+# domain, clamp once — ALES8's fader lesson via ALES41); an illegal crossover refuses BadCoeff, a zero band denominator
+# BadGain, an out-of-range span BadRange leaving the clip untouched. Purely local — no network, no keys, no funds, no real
+# device, no real sample rate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stack_witness.rish
+
+say "ales-stack: Language EN — ALES42 widens ALES41's two knobs to three: bass, mid, and treble, the everyday tone stack of every amp and console."
+say "ales-stack: Style Radiant — the law is stated positively: unity on all three bands reconstructs the input exactly (the mid is the exact residual M = x − L − H), bass moves direct current while mid and treble do not (orthogonal knobs), and a boost saturates rather than wraps."
+say "ales-stack: Lens TAME — bounded Clip, u32 span, i16 samples; the low band and the high band each live in a scratch copy so the mid band's minuend stays intact; each band scaled in i64 and the sum clamped once (ALES8's fader lesson via ALES41); an illegal crossover refuses BadCoeff, a zero band denominator BadGain, an out-of-range span BadRange, each before a write; siloed to lotus/, no network, no keys, no funds, no device, no sample rate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stack"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stack.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stack: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stack.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stack: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stack: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stack' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stack: selftest did not print the GREEN ales-stack line"
+
+say "ales-stack: GREEN — a three-band tone stack gives a keeper bass, mid, and treble from ALES40's proven split, the mid band the exact residual so flat stays truly flat and only bass reaches the still low end. The next Lotus rung can carry the filter state across a re-berthed span, sweep the mid crossovers under an envelope, or name a crossover in hertz through a real time base."

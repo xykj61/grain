@@ -16,7 +16,7 @@
 //! design agenda is a thing the compiler and a witness both hold.
 //!
 //! TWO ROOMS. The eleven names and their ordering are checkable, and
-//! `tools/caravan_refusals_witness.rish` binds them against the vendored
+//! `tools/ca/caravan_refusals_witness.rish` binds them against the vendored
 //! BSD-2-Clause header on metal. So are three of the **meanings**: seL4
 //! publishes a description for each refusal in its own interface files, and
 //! the witness holds our sentence and the kernel's to each other, reporting

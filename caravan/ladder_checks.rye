@@ -39,7 +39,7 @@
 //! differed by a single qualifier now share one body.
 //!
 //! Brief: `../active-designing/date/20260820/20260820-131713_caravan-ladder-shared-harness.md`
-//! Meter: `../tools/caravan_ladder_copy_witness.rish`
+//! Meter: `../tools/ca/caravan_ladder_copy_witness.rish`
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -4729,7 +4729,7 @@ pub fn check_refrain_refusals(comptime rung: type) u8 {
 // three lines in this file rather than a fresh copy of everything beneath it.
 //
 // Brief: `../active-designing/date/20260820/20260820-204641_caravan-ladder-the-spine-the-meter-cannot-see.md`
-// Meter: `../tools/caravan_ladder_spine_witness.rish`
+// Meter: `../tools/ca/caravan_ladder_spine_witness.rish`
 // ---------------------------------------------------------------------------
 
 /// Reads a step's tally the same way from every rung.
@@ -9158,7 +9158,7 @@ pub fn herald_the_standing(
 /// a rung that wants a different reckoning writes a different `reckon_the_plan`
 /// and this spine reaches it. Lifted here is the sequence, never the substance.
 ///
-/// Measured by `../tools/caravan_ladder_carry_witness.rish`.
+/// Measured by `../tools/ca/caravan_ladder_carry_witness.rish`.
 pub fn run_in_forbear(
     comptime rung: type,
     allocator: std.mem.Allocator,

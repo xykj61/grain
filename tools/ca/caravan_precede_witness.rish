@@ -1,0 +1,102 @@
+# caravan_precede_witness.rish -- Caravan precede witness.
+#
+# `mask.rye` let a phase name the exact siblings of its own turn it follows,
+# held that set in one machine word, closed the plan once at the door, and
+# kept every admission after it at one bit test. Every reading in the arc up
+# to there orders phases INSIDE one turn and reads strangers by their regions
+# alone, so a turn that must follow another turn had no word for it at all.
+#
+#   A TURN MAY NAME A TURN, AND THE PLAN CLOSES THEM ONCE.
+#
+# A turn is the same small thing a phase's siblings were. A queue holds at
+# most `max_queue_len` phases, so it can never cut its work into more than
+# that many turns -- sixteen, which fits the same `u32` a sibling mask fits.
+# So the graph a phase was spared is spared ONE TIER UP, for the same reason
+# and at the same price: one forward pass at the door, one bit test after.
+#
+# WHAT THE TURN MASK BUYS, AND WHAT IT COSTS, MEASURED:
+#
+#   * DIRECTION IS WHAT RULES OUT A CYCLE WITHOUT A WALK. A turn may name
+#     only turns numbered below it, read once at the door, so the closing
+#     needs no visited set, no stack, and no second pass -- walking turn
+#     numbers upward, every turn a turn names is already closed.
+#   * A TURN SPEAKS WITH ONE VOICE. Every phase of a turn carries that
+#     turn's names, and a plan whose phases disagree is refused rather than
+#     run, so a cross-turn order stays a fact about turns.
+#   * Over the preceded lap -- `client_a` busy while turn 4 names turn 3 and
+#     turn 5 names turn 4 alone -- reading the regions and the siblings
+#     alone breaks a named turn 2 times, and the preceded reading breaks it
+#     0.
+#   * THE COST IS NAMED RATHER THAN HIDDEN. A cross-turn order is a
+#     constraint, so it can only take passes away: 3 passes by act and
+#     masked against 1 preceded, and 4 slots unspent against 6. This rung
+#     buys no slot; it buys an order that was previously unwritable, and a
+#     supervisor that keeps it. Safety first, then the slot, in TAME order.
+#   * The ISOLATION half needed nothing here either: two phases of two turns
+#     may genuinely stand at one instant whenever the regions allow it, and
+#     `commute.admissible` already answers that whole question.
+#
+# AN EMPTY TURN MASK IS THE SIBLING MASK, EXACTLY -- proven pair by pair over
+# the whole lap, so this rung generalizes `mask.rye` rather than rivalling
+# it, the same way a full sibling mask was the fence and the link.
+#
+# Both RED paths were proven on metal before this witness claimed GREEN.
+# Drop the turn order from `items_contend` and the pure read reds at a phase
+# inside a named turn being free to pass it -- caught in the happy zone,
+# before a single dependent starts. Keep the order and hide it from the choosing
+# alone, and the preceded run's own `fill_table` invariant fires on metal at
+# `caravan/precede.rye:616` -- so the assert that says a preceded reading
+# never runs a phase past a turn its turn named is load-bearing rather than
+# decorative.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS %76 / %85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_precede_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/precede"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/precede.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan precede build failed"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+# Thirty-six rungs once ran a shared caravan/bin/read without building it, so the whole
+# arc was green only on a tree some earlier run had left warm. A witness owns what it
+# runs -- and, since REDS %133, the path it runs it from: eighty witnesses built that
+# one reader to one name, so two running at once contended for a single file and the
+# loser reddened a green tree. This one lands in caravan/bin/precede_read.
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/precede_read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+
+# Nothing new is declared: a turn's names ride beside the phase, where
+# authorship belongs, rather than in the document, where a ceiling belongs.
+let published = run ["sh" "-c" "caravan/bin/precede_read caravan/systems/serial_three_clients_menu.bron 2>&1"]
+assert published.ok else "the published declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 10 -- grants 19" else "the published document changed shape"
+assert published.out contains "verdict: whole" else "the published declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan precede selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan precede selftest not GREEN"
+assert test.out contains "a turn may name a turn, and the plan closes them once" else "the precede finding did not close"
+
+# The turn mask read straight, before any supervisor spends it.
+assert test.out contains "a turn names only turns below it, so a cycle is refused rather than walked" else "direction did not rule out the cycle at the door"
+assert test.out contains "an empty turn mask is the sibling mask exactly, so the elder reading stands" else "the rung did not generalize the reading it extends"
+
+# The preceded lap: an order across turns no elder reading could keep.
+assert test.out contains "the preceded lap breaks a named turn 2 times by act, 2 masked, 0 preceded" else "the turn mask did not keep the order its author wrote"
+assert test.out contains "passes: 3 by act, 3 masked, 1 preceded" else "the cross-turn order did not cost the passes a constraint must cost"
+assert test.out contains "slots unspent: 4 by act, 4 masked, 6 preceded" else "the cost of the order was not reported honestly"
+assert test.out contains "7 dependents run to the same end under all three" else "the three readings did not run the same lap to the same end"
+
+say "GREEN: Caravan precede witness passed."

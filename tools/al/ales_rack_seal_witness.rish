@@ -1,0 +1,40 @@
+# tools/al/ales_rack_seal_witness.rish — the slot sheet, sealed (ALES34).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES34.
+# Design read: active-designing/date/20260814/20260814-151050_fill-ales34-lotus-rack-seal.md
+# Stands on: lotus/rack_sheet.rye (ALES33) — render_rack / parse_rack reused whole as the sealed body; lotus/rack.rye (ALES30) — the
+# Rack sealed and rebuilt. Mirrors the Sha256 verify-before-trust of lotus/wire.rye (ALES0).
+#
+# lotus/rack_seal.rye seals an ALES33 slot sheet with a Sha256 content digest and refuses to parse a record whose digest does not
+# match its body — the wire's verify-before-trust handed to the saveable sheet. The crux: a sealed slot sheet parses back to exactly
+# the same rack ONLY when its digest matches its body — seal_rack renders the plain ALES33 record as the body and writes a Sha256 over
+# exactly those bytes, and verify_and_parse recomputes the digest and hands the body to rack_sheet.parse_rack only on a match, so a
+# flipped sample, a truncated tail, or a hand-edited name is caught at the gate before a single slot is trusted. The selftest proves:
+# a sealed two-slot rack round-trips whole; a flipped body byte and a truncated tail refuse DigestMismatch; a plain record, a missing,
+# short, or non-hex digest line refuses BadRecord; a seal into a too-small buffer refuses Overflow. The seal proves a sheet arrived
+# whole, not who wrote it — no signature, no keys, no network, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_rack_seal_witness.rish
+
+say "ales-rack-seal: Language EN — ALES34 gives the ALES33 slot sheet a Sha256 content digest, so a keeper's saved rack verifies before it is trusted: a byte flipped in a copy-paste, a truncated file, a hand-edited sample is caught at the gate rather than parsed as some other rack, the same verify-before-trust the ALES0 audio wire already keeps for a live frame."
+say "ales-rack-seal: Style Radiant — the law is stated positively: a sealed slot sheet parses back to exactly the same rack ONLY when its digest matches its body — seal_rack wraps ALES33 whole and hashes exactly the rendered body, and verify_and_parse checks the digest BEFORE trust and hands the body to rack_sheet.parse_rack only on a match, so no corrupt record ever reaches the parser."
+say "ales-rack-seal: Lens TAME — rack_sheet.render_rack / parse_rack reused whole (the seal adds only the digest layer, no new grammar); the digest is a full Sha256 rendered 64 hex wide; a malformed header or digest line refuses BadRecord (structural), a body that no longer matches its digest refuses DigestMismatch (content), each before a slot is parsed; the seal proves a sheet arrived whole, not who wrote it — no signature, no key; siloed to lotus/, no network, no funds, no device, no meter, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/rack_seal"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/rack_seal.rye -femit-bin=${bin}"]
+assert build.ok else "ales-rack-seal: build failed — ${build.err}"
+
+let outfile = "lotus/bin/rack_seal.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-rack-seal: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-rack-seal: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-rack-seal' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-rack-seal: selftest did not print the GREEN ales-rack-seal line"
+
+say "ales-rack-seal: GREEN — a keeper's saved rack verifies before it is trusted: seal_rack writes a Sha256 over exactly the ALES33 body, verify_and_parse refuses DigestMismatch on any flipped sample or truncated tail before a single slot is parsed and BadRecord on a malformed seal, a sealed two-slot rack round-trips whole, and a too-small buffer refuses Overflow. The next Lotus rung can SIGN the seal with a Kumara key (who wrote it, not only that it arrived whole — a module seam, taken on Keaton's word), or carry a slot across the ALES0 audio wire (also Keaton's word)."

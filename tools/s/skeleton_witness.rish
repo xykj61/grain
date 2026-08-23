@@ -1,0 +1,37 @@
+# tools/s/skeleton_witness.rish -- the skeleton template pack proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the medial-axis skeleton the general thinning driver was built to run, the crux-first
+# sibling image/thin.rye named. Where the thinning driver reduces a shape as far as ONE template pair can carry it,
+# skeletonize sweeps the CLASSIC eight -- the two Golay structuring elements (an edge template and a corner template), each in
+# its four rotations -- in order, subtracting each match, until a whole sweep changes nothing.
+#
+# The crux this witness proves on metal: a one-pixel-wide plus SURVIVES skeletonize untouched in zero productive sweeps (the
+# anti-erosion property that defines a skeleton -- a plain erosion would delete it), while a solid 5x5 block thins to strictly
+# fewer pixels, stays non-empty and a subset of the block, and settles to a fixed point re-skeletonizing cannot move; the
+# productive-sweep count never exceeds the initial foreground count; the skeletonized mask round-trips through the open QOI
+# codec byte-for-byte; an empty source refuses by name; the same skeletonization is deterministic in both its sweep count and
+# its pixels. No network, no key, no funds -- the medial line a surface reaches for the day it reads a mask down to its bones,
+# on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/skeleton_witness.rish
+
+say "skeleton: Language EN -- Season G skeleton template pack; sweep the eight Golay hit-or-miss pairs in sequence and subtract every match until a whole sweep changes nothing, the medial-axis skeleton a mask reads down to."
+say "skeleton: Style Radiant -- compose not braid: this rung owns only the template geometry and the multi-pair sweep loop; thin.thin_once owns the set-difference step, hitmiss the match, structure the fit gather; a sweep of anti-extensive steps only removes pixels, so the on-set is a strictly decreasing bounded sequence and the loop always settles."
+say "skeleton: Lens TAME -- the binary meaning of a pixel is read from hitmiss (one source of truth); the source is guarded and refused by name up front so a refusal allocates nothing; the productive-sweep ceiling is the initial foreground count plus one and the loop asserts it is never crossed; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/skeleton"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/skeleton.rye -femit-bin=${bin}"]
+assert build.ok else "skeleton: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "skeleton: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "skeleton: ${out}"
+
+assert selftest.out contains "GREEN image-skeleton" else "skeleton: selftest did not print the GREEN line"
+
+say "skeleton: GREEN -- a one-pixel plus survives untouched while a solid block thins to a strictly smaller non-empty fixed point, the classic Golay thinning pack swept to a medial skeleton, on metal."

@@ -1,0 +1,18 @@
+# comlink_r1_dual_bind_probe.rish — dual-stack loopback readiness (ported from Python).
+#
+# The elder probe (tools/comlink_r1_dual_bind_probe.py, now removed) bound a UDP socket
+# on ::1 and on 127.0.0.1 to confirm the host could serve Comlink R1 dual-stack over
+# loopback. Comlink R1 was cut; this Rishi port keeps the readiness check the bind
+# depended on — both loopback addresses present on `lo` — since Rishi has no raw
+# socket syscall to bind directly. Ported over shred on Keaton's word; closes REDS %64
+# (the last TOOLS_PY_BAD), so `tame_style_check` reads clean.
+#
+#   rishi/bin/rishi run tools/co/comlink_r1_dual_bind_probe.rish
+
+let addrs = run ["sh" "-c" "ip -o addr show lo"]
+assert addrs.ok else "dual-bind probe: cannot read loopback (ip -o addr show lo)"
+assert (addrs.out contains "127.0.0.1") else "dual-bind probe: IPv4 loopback 127.0.0.1 absent"
+assert (addrs.out contains "::1") else "dual-bind probe: IPv6 loopback ::1 absent"
+
+say "dual-bind-ok: IPv4 (127.0.0.1) and IPv6 (::1) loopback both present on lo."
+say "GREEN: comlink R1 dual-bind probe — dual-stack loopback ready (Rishi port of the elder Python probe)."

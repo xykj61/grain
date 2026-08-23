@@ -4,7 +4,7 @@
 **Version:** `20260702.205630`
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
-**Witness:** `tools/caravan_capabilities.rish` · parity **142**
+**Witness:** `tools/ca/caravan_capabilities.rish` · parity **142**
 
 ---
 
@@ -13,7 +13,7 @@ This page documents only what the capability-table witness proves today — a bo
 ## Build and run
 
 ```bash
-rishi/bin/rishi run tools/caravan_capabilities.rish
+rishi/bin/rishi run tools/ca/caravan_capabilities.rish
 ```
 
 The witness builds `caravan/bin/capabilities` from [`caravan/capabilities.rye`](../../caravan/capabilities.rye) and runs `selftest`. Success ends with:

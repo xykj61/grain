@@ -1,0 +1,78 @@
+# tools/r/readme_metrics_witness.rish -- the front door's numbers are generated, and still true.
+#
+# WHY THIS RUNG. A README is the most Lindy-exposed document a project owns -- its whole promise is
+# that a reader arriving three years on still finds it true. A number typed there by hand is stale
+# the following morning and wrong within a month, and it is wrong in the one document everybody
+# trusts. So the front door carries generated numbers or none.
+#
+# But a generated number is only worth more than a hand-typed one while it is REGENERATED. Left
+# alone it becomes a hand-typed number wearing a generated number's clothes -- stale, and trusted
+# MORE than it deserves, because a comment above it says it was generated. This rung is what keeps
+# that from happening.
+#
+# WHAT IS PROVEN HERE, all on metal.
+#
+#   The block is currently TRUE. Each of its four rows is compared against a fresh measurement
+#   taken this second, not against a remembered one.
+#
+#   The block is generated rather than typed. The markers stand, and they say plainly that a hand
+#   must not edit between them.
+#
+#   The check REFUSES a drifted block. A copy of the real README has one digit changed the way a
+#   stale or hand-edited block would differ, and the check must catch it and exit non-zero. A
+#   check that has never refused is a check nobody has tested, and this one guards the place where
+#   a wrong number does the most damage and gets the least scrutiny.
+#
+#   Writing is idempotent. A second write changes nothing, so regenerating is always safe and
+#   never shows up as noise in a diff.
+#
+# WHAT IS NOT PROVEN. That the four numbers are the RIGHT four to show -- that is a judgement,
+# argued in tools/fixtures/readme_metrics_scan.sh, where the commit count and the tracked-file
+# count are deliberately absent because both move constantly and neither says whether the software
+# is well. This rung proves the numbers shown are true, not that they are the numbers worth
+# showing.
+#
+# Season: the Standfast restrategizing of `20260821`, arc four -- the beginner path.
+# Kin: tools/r/readme_metrics.rish (the renderer) - tools/fixtures/readme_metrics_check.sh (the
+# comparison) - tools/gen/season/fascia_metric_v0.rish (the fascia grade, unbraided this round,
+# REDS %112).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/readme_metrics_witness.rish
+
+say "readme-metrics: Language EN -- the front door shows generated numbers or none, because a hand-typed figure in the most-read file a project owns is a claim that rots where it is trusted most."
+say "readme-metrics: Style Radiant -- three claims. The block is true against a measurement taken this second. It is marked generated. And the check is proven to refuse a block that has drifted."
+say "readme-metrics: Lens TAME -- a generated number is only worth more than a typed one while it is regenerated; this is the rung that notices when it is not."
+
+let check = run ["sh" "tools/fixtures/readme_metrics_check.sh" "README.md"]
+assert check.ok else "readme-metrics: the README block has drifted from a fresh measurement -- regenerate it with rishi/bin/rishi run tools/r/readme_metrics.rish write"
+say check.out
+assert check.out contains "drift=0" else "readme-metrics: every row must match the measurement taken this second"
+assert check.out contains "verdict=true" else "readme-metrics: the check must agree with itself before it is believed"
+say "block GREEN -- every row true against a measurement taken this second"
+
+let generated = run ["grep" "-cF" "do not edit by hand" "README.md"]
+assert generated.ok else "readme-metrics: the block must say plainly that it is generated"
+say "marker GREEN -- the block tells a reader not to edit it by hand"
+
+# The RED path, built rather than trusted.
+let control = run ["sh" "tools/fixtures/readme_metrics_control.sh"]
+assert control.ok else "readme-metrics: the drift control must complete"
+say control.out
+assert control.out contains "planted=yes" else "readme-metrics: the control must actually plant its drift before claiming to catch it"
+assert control.out contains "refused=yes" else "readme-metrics: a drifted block must be refused, or the check guards nothing"
+assert control.out contains "verdict=stale" else "readme-metrics: a drifted block must be refused BY NAME"
+assert control.out contains "control_verdict=ok" else "readme-metrics: the control must agree with itself"
+say "RED path GREEN -- a drifted block is caught and refused by name"
+
+# Idempotence: regenerating must never show up as noise in a diff.
+let before = run ["sh" "-c" "cksum < README.md"]
+assert before.ok else "readme-metrics: README.md must be readable"
+let rewrite = run ["rishi/bin/rishi" "run" "tools/r/readme_metrics.rish" "write"]
+assert rewrite.ok else "readme-metrics: a rewrite must succeed"
+let after = run ["sh" "-c" "cksum < README.md"]
+assert after.ok else "readme-metrics: README.md must be readable after a rewrite"
+assert (before.out == after.out) else "readme-metrics: writing twice must change nothing -- a regenerate that dirties the tree is a regenerate nobody runs"
+say "idempotence GREEN -- a second write changes nothing"
+
+say "GREEN: readme-metrics -- the front door numbers are generated, currently true against a measurement taken this second, marked as generated, proven to refuse drift, and safe to rewrite."

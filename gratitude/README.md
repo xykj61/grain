@@ -62,7 +62,7 @@ When we adapt one of these works into Radiant Style, the rewrite lives elsewhere
   - Source: <https://github.com/akitaonrails/ai-jail>
 - **`ai-memory/`** — study shelf only (README beside `ai-jail/`). Docker daemon for agent session memory — adopt nothing; parked until Mantra/Weave projection round. See [`ai-memory/README.md`](ai-memory/README.md).
   - Source: <https://github.com/akitaonrails/ai-memory>
-- **`karpathy/`** — Andrej Karpathy's **LLM Wiki** gist (public). Study copy [`karpathy/llm-wiki.md`](karpathy/llm-wiki.md); distillation [`../external-research/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md`](../external-research/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md). Refresh: `tools/fetch_gratitude_web.sh karpathy-llm-wiki`.
+- **`karpathy/`** — Andrej Karpathy's **LLM Wiki** gist (public). Study copy [`karpathy/llm-wiki.md`](karpathy/llm-wiki.md); distillation [`../external-research/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md`](../external-research/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md). Refresh: `tools/f/fetch_gratitude_web.sh karpathy-llm-wiki`.
   - Source: <https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f>
 - **`mikrophone.md`** — the **mikroPhone** open-hardware privacy phone (RISC-V FE310 central MCU + i.MX 8M Plus ARM application module; CERN OHL v1.2 hardware, GPLv2 software, NLnet/NGI0-funded). A teacher for the RISC-V-core sovereign-phone horizon and the two-processor split, studied clean-room with attribution, never copied. Its honest lesson — bespoke open hardware is performance-limited by design — points the SLC product toward Glow software on capable existing hardware rather than a fabricated device. Study note [`mikrophone.md`](mikrophone.md).
   - Source: <https://mikrophone.net>
@@ -99,7 +99,7 @@ When we adapt one of these works into Radiant Style, the rewrite lives elsewhere
 - **`river.md`** — Isaac Freund's **River** compositor, GPLv3, held at clean-room distance. Lodestar for the eventual Rye-native compositor; we learn from public design, never link or copy source.
 - **`zig-wayland.md`** — Isaac Freund's **zig-wayland** (MIT) — Zig protocol scanner + libwayland bindings. Study note only (Surface p4); not cloned. Distinct from River's GPLv3 compositor sources.
 - **`genesis-daw.md`** — Andrew Kelley's **Genesis** DAW (GPL-3, gitlink distance) — the hot loop that birthed Zig; honored in `../gratitude/genesis-daw.md`; **Lotus** is our own studio name.
-- **`reaper.md`** + **`reaper/docs/`** — Cockos REAPER public web documentation (proprietary; study copies parsed 2026-06-30). Workflow lodestar for **Lotus**. Refresh: `tools/fetch_gratitude_web.sh reaper`.
+- **`reaper.md`** + **`reaper/docs/`** — Cockos REAPER public web documentation (proprietary; study copies parsed 2026-06-30). Workflow lodestar for **Lotus**. Refresh: `tools/f/fetch_gratitude_web.sh reaper`.
 - **`ap-mastering.md`** — Alain Paul / AP Mastering plugin design (Curvature, Versatile Compressor, etc.) — surface craft inspiration for Lotus plugin faces; public pages and YouTube only.
 
 ### The Realidream lane (`174500` — Kaeden affirms)

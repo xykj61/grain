@@ -1,0 +1,47 @@
+# tools/m/mycelium_constel_depart_witness.rish — a constellation tolerates f ships down, the (f+1)th
+# honestly fails (r2, the Constel fault-tolerance rung).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · Constel · rung r2.
+# r1 booted a named constellation and reached quorum when EVERY ship vouched. A real dev-net loses nodes.
+# The roll's Byzantine arithmetic promises a precise fault tolerance: an n-ship roll believes any quorum of
+# at least n − (n−1)/3 enrolled voices, so it survives up to f = (n−1)/3 down. r2 proves that promise: the
+# Muster stays the FULL roster (every ship enrolled whether up or not), only a subset is UP and vouches, and
+# the constellation still believes while the up count meets the threshold — then the (f+1)th departure
+# refuses BelowQuorum, the honest edge of the guarantee. A permanently smaller roster re-derives its own
+# lower threshold and still agrees.
+#
+# The crux this witness proves is EXACT FAULT TOLERANCE — a five-ship constellation tolerates one down (four
+# up still meets threshold four) and honestly fails BelowQuorum at two down, the roll keeping exactly the
+# promise its arithmetic makes (n − threshold == f). Composes constel + chorus + muster + voucher public API
+# only, editing none; demo seeds — no key, no funds, no network, no real value.
+#
+# Scope: active-designing/date/20260813/20260813-132009_mycelium-constel-named-dev-net-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_constel_depart_witness.rish
+
+say "mycelium-constel-depart: Language EN — a real dev-net loses nodes; the roll's Byzantine arithmetic promises it survives up to f = (n−1)/3 down, and this round proves the constellation keeps exactly that promise, believing while enough ships are up and honestly failing the moment one too many go dark."
+say "mycelium-constel-depart: Style Radiant — the Muster stays whole while ships go down; the constellation believes a quorum of the survivors up to the threshold its size sets, then refuses BelowQuorum at the honest edge — never one fault more than its arithmetic allows, never one less."
+say "mycelium-constel-depart: Lens TAME — the fault-tolerance law composes constel + chorus + muster + voucher public API only, editing none; every claim is an integer comparison of an up count against a derived threshold or a byte-comparison of the agreed head; the threshold is derived from the roll, never stored; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/constel_depart"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/constel_depart.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-constel-depart: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-constel-depart: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-constel-depart: selftest did not speak GREEN"
+assert selftest.out contains "tolerates 1 down" else "mycelium-constel-depart: the fault-tolerance claim missing"
+assert selftest.out contains "still meets threshold" else "mycelium-constel-depart: the meets-threshold claim missing"
+assert selftest.out contains "honestly fails BelowQuorum" else "mycelium-constel-depart: the honest-edge refusal claim missing"
+assert selftest.out contains "re-derives its own lower threshold" else "mycelium-constel-depart: the permanent-departure claim missing"
+
+# The r1 crux stands at the door — a departure rung means nothing unless the whole roster still reaches
+# quorum reproducibly when every ship is up.
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/constel.rye -femit-bin=mycelium/bin/constel && mycelium/bin/constel 2>&1"]
+assert r1.ok else "mycelium-constel-depart: the Constel r1 crux is not GREEN"
+assert r1.out contains "GREEN" else "mycelium-constel-depart: the Constel r1 did not speak its GREEN"
+
+say "mycelium-constel-depart: GREEN — a five-ship named constellation tolerates one ship down (four up still meets threshold four) and honestly fails BelowQuorum at two down, keeping exactly the promise its arithmetic makes; a permanently smaller roster re-derives its own lower threshold and still agrees; the Constel r1 crux stands at the door. The dev-net survives the faults it says it will."

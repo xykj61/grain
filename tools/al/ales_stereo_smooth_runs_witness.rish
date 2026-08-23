@@ -1,0 +1,36 @@
+# tools/al/ales_stereo_smooth_runs_witness.rish — stereo_smooth_runs: the run-length smoother carried into stereo, two independent hysteresis holds, the smoothing ALES95 named as a later rung read across both speakers (ALES153).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES153.
+# Design read: active-designing/date/20260815/20260815-055925_fill-ales153-lotus-stereo-smooth-runs.md
+# Stands on: lotus/smooth_runs.rye (ALES101 — the mono run-length smoother, run once per channel, its smooth_runs and SmoothError reused whole), lotus/stereo_segment.rye (ALES147 — the stereo voice-activity segmenter, whose
+# StereoSegments{left, right} this reads and rewrites, the two channels' runs kept apart), lotus/segment.rye (ALES95 — the mono Segments and max_segments), lotus/voiced.rye (ALES94 — the Verdict the runs carry). Unlike the
+# silence edits (ALES148–152) this meets no desync wall: smooth_runs is read-only over the labels, rewriting a run-length sequence and touching no PCM, so its honest stereo shape is the analysis-corner one ALES146/147 took —
+# run the proven mono smoother on each channel independently.
+#
+# lotus/stereo_smooth_runs.rye smooths in.left into out.left and in.right into out.right through ALES101's proven mono smooth_runs with the one shared min_run, keeping the two channels apart: a tick on the left is absorbed by
+# the left's neighbours, never the right's. Each channel inherits every one of ALES101's laws (coverage, coalesced, hold, idempotence, monotonicity) because each channel is a mono smooth. The crux is the stereo smooth law — each
+# channel's smoothed runs equal ALES101's mono smooth_runs on that channel, run for run — proven against the mono smoother directly across a grid of min_run values and several per-channel input shapes; StereoSmoothError reused
+# whole (the honest unreachable SegmentsFull, since smoothing only merges).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stereo_smooth_runs_witness.rish
+
+say "ales-stereo-smooth-runs: Language EN — stereo_smooth_runs smooths both channels of a stereo segmentation by absorbing every run shorter than min_run samples into the run it extends, per channel, keeping each channel's tiling exact and coalesced. It runs ALES101's proven mono smooth_runs on the left channel's runs into the output's left side, then on the right channel's runs into the right side, with one shared min_run. It is read-only over the labels — not one PCM sample is read or written on either speaker; this rewrites two run-length sequences, nothing else. The two channels flicker independently, so they smooth independently: a one-frame tick inside a pause on the left is absorbed by the left's neighbours, never the right's. Each channel inherits every one of the mono smoother's guarantees, because each channel is a mono smooth."
+say "ales-stereo-smooth-runs: Style Radiant — ALES101 absorbs every run shorter than a minimum into what surrounds it, the smoothing hysteresis ALES95 named as a later rung, so a one-frame tick inside a pause no longer splits it and a spurious quiet frame inside speech no longer spares a click: the decisive robustness move that turns a per-frame reader into a usable segmenter. Carried into stereo it meets no desync wall, unlike the silence edits ALES148 through ALES152 — smooth_runs is read-only over the labels, rewriting a run-length sequence and touching no PCM, changing no clip length — so its honest stereo shape is the analysis-corner one ALES146 and ALES147 took: run the proven mono smoother on each channel independently, keeping the two results apart in a StereoSegments. The two channels flicker independently, their segmentations differing in count and boundary as ALES147 proved, so they smooth independently. The crux is the stereo smooth law — each channel's smoothed runs equal ALES101's mono smooth_runs on that channel, run for run, across a grid of min_run values and several per-channel input shapes; the rung invents no new rewrite and no new fault, composing the proven mono smoother twice, once per side, its whole content being that the two sides stay apart rather than one shared list. Proven too: the independence law, a left blip coalescing to one run while a clean right stays two and identical channels smoothing identically; the well-formed law, each output tiling the same span and coalesced and holding min_run past the first per channel; and the degenerate law, min_run zero the identity on both, an empty channel empty, a single run unchanged, a min_run past a channel's span coalescing it to one carrying its first verdict independent of the other channel's span."
+say "ales-stereo-smooth-runs: Lens TAME — two bounded run-length sequences (left, right, each up to max_segments runs) smoothed by one shared min_run; the seam asserts both input sides are within the run-list ceiling on entry and both output sides never grow past their input count or the ceiling on exit, the per-run tiling and coalesced contract asserted inside ALES101's own smooth_runs; read-only over the labels, no PCM touched on either speaker, StereoSmoothError the mono SmoothError reused whole (the honest unreachable SegmentsFull, since smoothing only merges runs); the stereo smooth law is proven against ALES101's mono smooth_runs directly (a second call per channel) across nine min_run values with a flickering left and a clean right, the independence law proves a left blip coalesces to one silent run of 202 while the right stays two runs untouched, identical channels yield identical smoothed runs, the degenerate cases prove min_run zero the identity on both and an empty channel empty and single runs unchanged and a min_run past each channel's span coalescing it to one carrying its first verdict, and the grounded case proves the runs the stereo segmenter emits stay well-formed on both after smoothing; each output channel is checked as data by an independent well_smoothed reference (coverage same first start and total length, coalesced no adjacent shared verdict, hold every run past the first at least min_run); siloed to lotus/, a causal left-to-right minimum-duration hold per channel, no symmetric smoothing, no adaptive floor, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_smooth_runs"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_smooth_runs.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-smooth-runs: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_smooth_runs.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-smooth-runs: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-smooth-runs: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-smooth-runs' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-smooth-runs: selftest did not print the GREEN ales-stereo-smooth-runs line"

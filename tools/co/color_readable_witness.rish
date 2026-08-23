@@ -1,0 +1,46 @@
+# tools/co/color_readable_witness.rish -- nudge ANY color to MEET a WCAG contrast floor, proven over the open color algebra (Season G).
+#
+# Season G (Open Media Primitives) -- the contrast-fitter beside the readable-ink pick (image/color.rye readable_ink),
+# the tone reader (image/color_tone.rye), the hue-family classifier (image/color_name_group.rye), and the open color
+# algebra (image/color.rye).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + HSL model) and the W3C WCAG 2.x
+# contrast definition -- public standards only.
+#
+# The crux this witness proves is the accessibility question readable_ink cannot answer: given a foreground a keeper
+# WANTS to keep -- a brand red, a link blue -- how little must it move to clear a named WCAG floor against a background?
+# fit(fg, bg, target) searches lightness ALONE for the nearest clearing value, holding hue, saturation, and alpha, and
+# refuses by name when even pure black and pure white cannot reach the floor. Deliberately a SEPARATE module from
+# readable_ink (single-stranded: readable_ink REPLACES the color with black or white, fit KEEPS it). No new color math,
+# no parser. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/color_readable_witness.rish
+
+say "color-readable: Language EN -- Season G's contrast fitter; a keeper KEEPS a chosen color and moves it the smallest distance along lightness until it clears a named WCAG floor against a background."
+say "color-readable: Style Radiant -- compose not braid; color DECIDES contrast through contrast_ratio_x100 and the round trip through rgb_to_hsl/hsl_to_rgb, this module only SEARCHES lightness, and it stays separate from readable_ink (single-stranded)."
+say "color-readable: Lens TAME -- a bounded search of at most 101 lightness steps; a percent only, no seam cast; asserts on every fit and named refusal on the unreachable floor; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/color_readable"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color_readable.rye -femit-bin=${bin}"]
+assert build.ok else "color-readable: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "color-readable: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "color-readable: ${out}"
+
+# Honour the loom REDS %76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
+# output, so punctuation in the selftest prose can never break a check.
+assert out contains "GREEN image-color-readable" else "color-readable: selftest did not print the GREEN color-readable line"
+assert out contains "returns unchanged" else "color-readable: an already-legible color was not kept"
+assert out contains "nudged just enough to clear it" else "color-readable: a failing color was not fitted over the floor"
+assert out contains "keeps its hue and saturation" else "color-readable: the nudge moved more than lightness"
+assert out contains "the nearest clearing lightness" else "color-readable: the nudge was not the nearest clear"
+assert out contains "alpha is carried through the nudge" else "color-readable: alpha was dropped by a nudge"
+assert out contains "refuses ContrastUnreachable" else "color-readable: an impossible floor did not refuse by name"
+assert out contains "same fit returns the same color every time" else "color-readable: the fit was not deterministic"
+
+say "color-readable: GREEN -- the contrast fitter whole over the open color algebra; already-legible kept, a failing color nudged the smallest distance to clear the floor with its hue held, the nearest clear chosen, alpha carried, the impossible ceiling refused by name, deterministic; a keeper's own color gains accessibility without losing its identity."

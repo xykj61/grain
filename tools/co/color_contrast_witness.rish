@@ -1,0 +1,46 @@
+# tools/co/color_contrast_witness.rish -- a WCAG contrast table read over a whole on-color palette proves itself (Season G).
+#
+# Season G (Open Media Primitives) -- the accessibility table beside the on-color swatch (image/color_swatch.rye), the
+# tonal scale (image/color_scale.rye), the palette toolkit (image/color_adjust.rye), and the open color algebra
+# (image/color.rye).
+# Design read: active-designing/date/20260816/20260816-210735_season-g-color-algebra-crux.md (the color floor this stands on).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS Color spec + WCAG contrast -- public standards only).
+#
+# The crux this witness proves is the table a design system ships beside its colors: for every swatch of an on-color
+# palette, the exact WCAG contrast of its ink against its fill and which conformance bar that ink clears (AA-large,
+# AA-normal, AAA). Written as a single-stranded consumer -- color_swatch DECIDES each fill-and-ink pair, color MEASURES
+# each contrast, this module only READS one measurement per swatch. Every reading agrees byte-for-byte with color's own
+# contrast_ratio_x100 and meets_aa/meets_aaa; the three bars nest every row; this blue ramp clears AA-normal on every
+# tone; and the report is HONEST -- a deliberately low-contrast grey-on-grey swatch reads below AA-normal and the table
+# says so, so it reports illegible pairs as faithfully as legible ones. No new storage, codec, or maths. No network, no
+# key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/color_contrast_witness.rish
+
+say "color-contrast: Language EN -- Season G's accessibility table; a keeper reads back not just an on-color palette but a proof of which tones are legible body text, which need large text, and which reach the AAA bar."
+say "color-contrast: Style Radiant -- compose not braid; color_swatch DECIDES each fill-and-ink pair and color MEASURES each contrast, so a reading is a pure read over the two existing verbs, both modules' proofs carried through."
+say "color-contrast: Lens TAME -- u32 ratios on the x100 scale bounded 100..2100; every report one reading per swatch, bounded by report_max_tones; a length mismatch refused by name; honest about failing rows; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/color_contrast"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/color_contrast.rye -femit-bin=${bin}"]
+assert build.ok else "color-contrast: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "color-contrast: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "color-contrast: ${out}"
+
+# Honour the loom REDS %76 named: check every claim with Rishi's native `contains`, never a shell grep over interpolated
+# output, so an apostrophe in the selftest prose (here "swatch's ink") can never break a check.
+assert out contains "GREEN image-color-contrast" else "color-contrast: selftest did not print the GREEN color-contrast line"
+assert out contains "agreeing byte-for-byte with color.contrast_ratio_x100" else "color-contrast: a reading did not agree with color's own measurement"
+assert out contains "the three conformance bars nest every row" else "color-contrast: the AA-large / AA-normal / AAA bars did not nest"
+assert out contains "clears the AA-normal bar (450) on every one of its nine tones" else "color-contrast: the blue ramp did not clear AA-normal on every tone"
+assert out contains "reads below AA-normal and the table says so plainly" else "color-contrast: the report did not honestly report a failing row"
+assert out contains "refuses ReportLenMismatch by name" else "color-contrast: a length mismatch was not refused by name"
+
+say "color-contrast: GREEN -- the WCAG contrast table over a whole on-color palette whole; each reading measures its own swatch, the bars nest, the ramp clears AA, a failing row is reported honestly, a length mismatch refused, determinism proven."

@@ -11,8 +11,8 @@ This is accretion and alignment — no behavior changes, no renames across the t
 Confirm and report, then stop:
 
 - Current branch is `main`, working tree clean, level with `github/main`.
-- `context/TAME_STYLE.md` exists (the operational supplement) and `tools/width-check.rish` exists (the one live lint).
-- Report the current first three lines of `tools/width-check.rish` so we can see the stale header before refreshing it.
+- `context/TAME_STYLE.md` exists (the operational supplement) and `tools/w/width-check.rish` exists (the one live lint).
+- Report the current first three lines of `tools/w/width-check.rish` so we can see the stale header before refreshing it.
 
 ---
 
@@ -51,7 +51,7 @@ Report the hash and stop.
 
 ## Phase B — Refresh the stale width-check header
 
-The check in `tools/width-check.rish` stays exactly as it is — zero literal `usize` in authored `.rye` is still correct. Only its **comment header and closing messages** speak the retired fork-first language ("debt to be eliminated by the compiler fork," "the F1 gate," "F2 complete"). Replace the header block with the one below, and soften the two closing lines so they name explicit-width discipline rather than fork debt. Propose the diff, then commit on confirmation.
+The check in `tools/w/width-check.rish` stays exactly as it is — zero literal `usize` in authored `.rye` is still correct. Only its **comment header and closing messages** speak the retired fork-first language ("debt to be eliminated by the compiler fork," "the F1 gate," "F2 complete"). Replace the header block with the one below, and soften the two closing lines so they name explicit-width discipline rather than fork debt. Propose the diff, then commit on confirmation.
 
 New header:
 
@@ -69,7 +69,7 @@ New header:
 # We keep authored .rye usize-free because explicit width is good
 # Tiger on its own merit.
 #
-# Usage: rishi run tools/width-check.rish
+# Usage: rishi run tools/w/width-check.rish
 ```
 
 Closing messages: keep the GREEN line; reword the RED line from "debt for the compiler fork" to "explicit-width debt in authored Rye."
@@ -89,7 +89,7 @@ Written together by Kaeden and Reya 2.
 
 ## Phase C — Grow the first textual TAME checks (demand-driven, not a blocker)
 
-Grow a new `tools/tame-check.rish` that holds the textual rules from "What We Check, and When." Do the cheapest, highest-leverage checks first, each as **its own small commit with a witness** — a tiny fixture that should fail, and a confirmation that the check catches it, mirroring how `tidy.zig` snapshot-tests each rule. This grows beside SLC-1; it does not block it.
+Grow a new `tools/t/tame-check.rish` that holds the textual rules from "What We Check, and When." Do the cheapest, highest-leverage checks first, each as **its own small commit with a witness** — a tiny fixture that should fail, and a confirmation that the check catches it, mirroring how `tidy.zig` snapshot-tests each rule. This grows beside SLC-1; it does not block it.
 
 For each check, **propose the concrete `.rish` against Rishi's real builtins** (`run`, `grep`, `map`, `where`, `for-each`, `lines`, `length`, `starts-with`, `ends-with`, `contains`) and wait for confirmation before writing it.
 

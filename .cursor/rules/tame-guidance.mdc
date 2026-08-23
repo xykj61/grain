@@ -41,7 +41,7 @@ Tiger Style discipline: **`usize` is a boundary type, not a design type.** Full 
 - **`usize`** -- **only** at the inherited-std seam (`buf.len`, `[]T` indexing, Zig `std` APIs). Pair every `@intCast` with `assert(value <= std.math.maxInt(Target))`. Seam casts are correct Tiger code, not debt.
 - **Never** `usize` in struct fields, public params, or return types we publish.
 - Charter: `expanding-prompts/date/20260620/20260620-210812_explicit-width-audit.md`; inventory: `work-in-progress/20260620-212126_usize-width-baseline.md`.
-- Live lint: `tools/width-check.rish`; growing: `tools/tame-check.rish` (unqualified-assert, no `Self = @This()`, whitespace).
+- Live lint: `tools/w/width-check.rish`; growing: `tools/t/tame-check.rish` (unqualified-assert, no `Self = @This()`, whitespace).
 
 ## Season memory (authored Rye)
 
@@ -56,7 +56,7 @@ Safety first, performance second, joy third. Compiler fork (slice `len: u32`) is
 
 ## Tidy rules (`tame_style_check`)
 
-**Witness:** `tools/tame_style_check.rish` - **Scan:** `tools/fixtures/tame_style_scan.sh` - **Brief:** `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md`
+**Witness:** `tools/t/tame_style_check.rish` - **Scan:** `tools/fixtures/tame_style_scan.sh` - **Brief:** `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md`
 
 **Bans fail parity** -- fix before commit:
 
@@ -73,7 +73,7 @@ Safety first, performance second, joy third. Compiler fork (slice `len: u32`) is
 - functions past 70 lines -> split at natural seams; run module witnesses
 - zero `assert(` in core modules -> import assert; contract postconditions; see honest exempt list in scan script
 
-Run when touching authored `.rye`: `rishi/bin/rishi run tools/tame_style_check.rish`
+Run when touching authored `.rye`: `rishi/bin/rishi run tools/t/tame_style_check.rish`
 
 ## SLC Rye Definition of Done (hosted - linengrow - glass)
 

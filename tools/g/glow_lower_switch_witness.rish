@@ -1,0 +1,57 @@
+# glow_lower_switch_witness.rish — `?-` lowers to Rye; emitted program runs.
+#
+#   rishi/bin/rishi run tools/g/glow_lower_switch_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/lower_switch_witness"
+let welcome_rye = "glow/.cache/switch_kind_welcome.rye"
+let welcome_bin = "glow/bin/switch_kind_welcome"
+let unwelcome_rye = "glow/.cache/switch_kind_unwelcome.rye"
+let unwelcome_bin = "glow/bin/switch_kind_unwelcome"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_switch_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_switch_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "lower_switch_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_switch_witness not GREEN"
+assert selftest.out contains "mint arm" else "lower_switch_witness missing mint-arm claim"
+assert selftest.out contains "send arm" else "lower_switch_witness missing send-arm claim"
+assert selftest.out contains "minted/sent" else "lower_switch_witness missing default-arms claim"
+assert selftest.out contains "nests decimal arms" else "lower_switch_witness missing decimal-arms claim"
+assert selftest.out contains "nests cast arms" else "lower_switch_witness missing cast-arms claim"
+assert selftest.out contains "nests lent arm" else "lower_switch_witness missing lent-arm claim"
+assert selftest.out contains "nests mix arm" else "lower_switch_witness missing mix-arm claim"
+assert selftest.out contains "nests jam arm" else "lower_switch_witness missing jam-arm claim"
+assert selftest.out contains "nests cue arm" else "lower_switch_witness missing cue-arm claim"
+assert selftest.out contains "nests cue-of-jam arm" else "lower_switch_witness missing cue-of-jam-arm claim"
+assert selftest.out contains "nests nest jam arm" else "lower_switch_witness missing nest-jam-arm claim"
+assert selftest.out contains "nests nest jam right arm" else "lower_switch_witness missing nest-jam-right-arm claim"
+assert selftest.out contains "nests nest jam both arm" else "lower_switch_witness missing nest-jam-both-arm claim"
+assert selftest.out contains "MalformedArms" else "lower_switch_witness missing partial-arms refuse"
+assert selftest.out contains "ArmNotYetLowered" else "lower_switch_witness missing arm-refuse claim"
+assert selftest.out contains "decimal mint/send arms" else "lower_switch_witness missing gen desk claim"
+assert selftest.out contains "carries lent mint arm" else "lower_switch_witness missing switch-lent desk claim"
+assert selftest.out contains "carries mix mint arm" else "lower_switch_witness missing switch-mix desk claim"
+assert selftest.out contains "carries jam mint arm" else "lower_switch_witness missing switch-jam desk claim"
+assert selftest.out contains "carries cue mint arm" else "lower_switch_witness missing switch-cue desk claim"
+assert selftest.out contains "carries cue-of-jam mint arm" else "lower_switch_witness missing switch-cue-jam desk claim"
+assert selftest.out contains "carries cue nest jam mint arm" else "lower_switch_witness missing switch-cue-jam-nest desk claim"
+assert selftest.out contains "carries cue nest jam right mint arm" else "lower_switch_witness missing switch-cue-jam-right-nest desk claim"
+assert selftest.out contains "carries cue nest jam both mint arm" else "lower_switch_witness missing switch-cue-jam-both-nest desk claim"
+assert selftest.out contains "carries nest jam mint arm" else "lower_switch_witness missing switch-jam-nest desk claim"
+assert selftest.out contains "carries nest jam right mint arm" else "lower_switch_witness missing switch-jam-right-nest desk claim"
+assert selftest.out contains "carries nest jam both mint arm" else "lower_switch_witness missing switch-jam-both-nest desk claim"
+
+let build_welcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${welcome_rye} -femit-bin=${welcome_bin}"]
+assert build_welcome.ok else "switch welcome .rye build failed"
+let run_welcome = run ["sh" "-c" "${welcome_bin}; echo EXIT:$?"]
+assert run_welcome.ok else "switch welcome binary failed to launch"
+assert run_welcome.out contains "EXIT:0" else "switch welcome binary did not exit 0"
+
+let build_unwelcome = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${unwelcome_rye} -femit-bin=${unwelcome_bin}"]
+assert build_unwelcome.ok else "switch unwelcome .rye build failed"
+let run_unwelcome = run ["sh" "-c" "${unwelcome_bin}; echo EXIT:$?"]
+assert run_unwelcome.out contains "EXIT:1" else "switch unwelcome binary did not exit 1"
+
+say "GREEN: Glow `?-` switch hop — decimal/cast/lent/mix/jam/nest-jam/both/cue mint/send arms; welcome 0 / unwelcome 1."

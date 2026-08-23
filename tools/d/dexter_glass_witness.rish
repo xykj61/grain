@@ -1,0 +1,19 @@
+# dexter_glass_witness.rish — Dexter glass demo + live KEY + ZETA3 caret.
+#
+#   rishi/bin/rishi run tools/d/dexter_glass_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/dexter_glass_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/dexter_glass_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Dexter glass witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Dexter glass witness exited non-zero"
+assert selftest.out contains "GREEN" else "Dexter glass not GREEN"
+assert selftest.out contains "demo editor submits" else "Dexter glass missing editor claim"
+assert selftest.out contains "DEXTER line" else "Dexter glass missing Skate line claim"
+assert selftest.out contains "live KEY drain" else "Dexter glass missing live KEY drain claim"
+assert selftest.out contains "ZETA3 caret" else "Dexter glass missing ZETA3 caret claim"
+
+say "GREEN: Dexter glass witness passed — demo + live KEY + ZETA3 caret."

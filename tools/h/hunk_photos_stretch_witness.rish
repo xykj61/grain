@@ -1,0 +1,53 @@
+# tools/h/hunk_photos_stretch_witness.rish — the Photos app auto-levels: contrast stretch on metal (HUNK26).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Open Image · rung HUNK26.
+# Design read: active-designing/date/20260812/20260812-171050_the-1024-round-itinerary.md (Season A · the open image quest).
+# Teacher, thanked clean-room: the auto-levels / normalize gesture every photo app carries (concept only, siloed).
+#
+# HUNK25 gave the module its convolution filter primitive (blur, sharpen). This rung lands the ANALYTICAL filter
+# the levels and curves tools stand on: `image/photos.rye` `stretch` is a pure two-pass auto-levels over the
+# decoded RGBA grid — a first scan finds each color channel's darkest and brightest value, then a second pass
+# linearly maps that range onto the whole 0..255 byte range, alpha untouched. A flat channel (range zero) passes
+# through rather than dividing by nothing; a full-range channel is a fixed point; the map is monotone. The selftest
+# proves a dim red ramp [40,60,80,100] stretches to the exact rounded [0,85,170,255], the flat green and blue
+# channels pass through untouched, the map preserves order, an already-full-range channel and a solid color are
+# byte-identical, alpha rides through, the source stays pure, the stretched image still re-encodes and round-trips
+# as an open image, and an empty image refuses by name. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_photos_stretch_witness.rish
+
+say "hunk-photos-stretch: Language EN — HUNK26 gives the Photos app auto-levels: a pure two-pass contrast stretch over the decoded grid that returns a fresh open image, the source untouched."
+say "hunk-photos-stretch: Style Radiant — a stretched image is still an open image: it re-encodes and round-trips byte-for-byte, never a proprietary one; a flat channel passes through rather than dividing by nothing."
+say "hunk-photos-stretch: Lens TAME — the per-channel range scan and the rounded map stay far inside u32 (255·255 = 65025); a zero-range channel is guarded; positive invariants per fn; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/photos"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/photos.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-photos-stretch: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-photos-stretch: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+
+assert selftest.out contains "GREEN image-photos-stretch" else "hunk-photos-stretch: selftest did not print the GREEN stretch line"
+
+assert selftest.out contains "stretches to [0,85,170,255], the exact rounded map" else "hunk-photos-stretch: the exact auto-levels map was not proven"
+
+assert selftest.out contains "the flat green and blue channels pass through untouched" else "hunk-photos-stretch: the flat-channel passthrough was not proven"
+
+assert selftest.out contains "the map is monotone (order preserved)" else "hunk-photos-stretch: the monotone property was not proven"
+
+assert selftest.out contains "a channel already spanning [0,255] is a fixed point" else "hunk-photos-stretch: the full-range fixed point was not proven"
+
+assert selftest.out contains "stretched image re-encodes and round-trips" else "hunk-photos-stretch: a stretched image did not round-trip as an open image"
+
+assert selftest.out contains "an empty image refused by name" else "hunk-photos-stretch: the EmptyImage refusal was not proven"
+
+# The earlier Photos rungs share the binary — GREEN holds beneath.
+assert selftest.out contains "GREEN image-photos-convolve:" else "hunk-photos-stretch: HUNK25 convolve selftest no longer GREEN beneath"
+assert selftest.out contains "GREEN image-photos:" else "hunk-photos-stretch: HUNK3 crop selftest no longer GREEN beneath"
+
+say "hunk-photos-stretch: GREEN — HUNK26 auto-levels proven on metal; the dim ramp stretches to the exact full range; crop, orient, scale, area, bilinear, adjust, saturate, hue-turn, and convolve still GREEN beneath."

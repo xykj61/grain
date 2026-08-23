@@ -1,0 +1,38 @@
+# tools/f/fora_vote_witness.rish — a vote goes only to an up-to-date log, the election restriction (FORA21).
+#
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# FORA21. Design read: active-designing/date/20260814/20260814-084300_fora21-constel-vote-election-restriction.md
+#
+# constel/vote.rye writes the safety rule FORA18 leaned on but had not proven — Raft's §5.4.1 election restriction: a voter
+# grants its vote only if the candidate's log is at least as up-to-date as its own (a higher last term wins; at an equal term the
+# longer log wins). Without it, a candidate missing a committed entry could win and fork the ledger; with it, Leader Completeness
+# holds — any majority an incomplete candidate needs intersects the committed majority at a holder that refuses. The selftest
+# proves: the up-to-date predicate is exact; a vote is granted to an up-to-date candidate and refused to a stale one; THE
+# ELECTION RESTRICTION keeps an incomplete candidate from winning (its grant count below the threshold, the intersecting holders
+# each refusing); a complete candidate still wins; the dominance is by the entry, not by luck; and the poll runs bounded. Purely
+# local — no socket, no network, no keys, no funds, no real address ever formed.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/fora_vote_witness.rish
+
+say "fora-vote: Language EN — FORA21 writes Raft's §5.4.1 election restriction: a voter grants its vote only to a candidate at least as up-to-date as its own log. This is the rule that makes Leader Completeness true — the promise FORA18's commit rule leaned on."
+say "fora-vote: Style Radiant — a sky chooses only a leader that carries its whole settled history, and an entry the sky has truly committed outlives every election that follows it."
+say "fora-vote: Lens TAME — at_least_as_current is the §5.4.1 predicate; grant_vote and poll are bounded to the roster and the entry cap; the incomplete-candidate proof spends FORA9's intersection lemma over real TermedLogs; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/vote"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/vote.rye -femit-bin=${bin}"]
+assert build.ok else "fora-vote: build failed — ${build.err}"
+
+let outfile = "constel/bin/vote.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-vote: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-vote: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-vote' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-vote: selftest did not print the GREEN fora-vote line"
+
+say "fora-vote: GREEN — a vote goes only to an up-to-date log; the constel consensus track now proves Leader Completeness, the election restriction that keeps a committed entry alive through every future election, proven pure on the bench."

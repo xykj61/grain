@@ -1,0 +1,35 @@
+# tools/b/buhr_mantra_browser_view_witness.rish — BUHR Journey 2, Rung 2.
+#
+# The append-only graph, painted: the first Realidream app carried onto WADE1's
+# styled Skate surface. The same bytes rung one renders as readable text now land
+# on a Skate grid dressed by a resolved token sheet (Flax paper, Bark ink), the
+# glyphs rasterize to lit pixels, and the light and dark sheets paint distinct
+# grounds. Proven that editor (render) and view (grid) share one graph.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/buhr_mantra_browser_view_witness.rish
+
+say "buhr-j2r2: Language EN — Mantra's append-only graph painted onto the styled Skate surface."
+say "buhr-j2r2: Lens TAME — one shared graph, bounded viewport, lit pixels, distinct grounds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/mantra-browser-view"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mantra_browser_view.rye -femit-bin=${bin}"]
+assert build.ok else "buhr-j2r2: mantra_browser_view build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr-j2r2: mantra_browser_view selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr-j2r2: selftest did not speak GREEN"
+assert selftest.out contains "graph painted onto 6 styled rows" else "buhr-j2r2: styled paint of the whole graph missing"
+assert selftest.out contains "editor and view share one graph" else "buhr-j2r2: shared-graph proof missing"
+assert selftest.out contains "ink pixels lit over Flax paper" else "buhr-j2r2: glyphs did not reach the canvas"
+assert selftest.out contains "light and dark sheets paint distinct grounds" else "buhr-j2r2: styling was a no-op"
+assert selftest.out contains "short viewport bounded to 3 rows" else "buhr-j2r2: viewport bound missing (overflow risk)"
+
+# Rung one stays its own green binary — the view is strictly additive.
+let rung1 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mantra_browser_witness.rish 2>&1"]
+assert rung1.ok else "buhr-j2r2: rung one witness regressed"
+assert rung1.out contains "GREEN: BUHR-J2" else "buhr-j2r2: rung one lost its green"
+
+say "GREEN: BUHR-J2r2 — the append-only graph painted onto the styled Skate surface; editor and view share one graph."

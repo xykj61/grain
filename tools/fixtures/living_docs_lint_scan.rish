@@ -4,7 +4,7 @@
 # size and pattern duties can lean on the run seam (wc -c · grep) — Rish's
 # map-transform ceiling refuses files past 256 lines; roster docs are larger.
 #
-# Always prints advisories; exit 0. Outer wrapper: tools/living_docs_lint.rish
+# Always prints advisories; exit 0. Outer wrapper: tools/l/living_docs_lint.rish
 #
 #   rishi/bin/rishi run tools/fixtures/living_docs_lint_scan.rish
 

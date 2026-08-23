@@ -99,7 +99,7 @@ coords_e12_charter expanding-prompts/date/20260730/20260730-120233_e12-priority-
 coords_e12_recursion expanding-prompts/date/20260730/20260730-120317_equinox-season-e12-recursion-prompt.md
 coords_e13 bounded_tower GREEN 20260730.120531
 coords_e13_path edu/tower/bounded_tower.rye
-coords_e13_witness tools/edu_tower_witness.rish
+coords_e13_witness tools/e/edu_tower_witness.rish
 coords_e13_charter expanding-prompts/date/20260730/20260730-120426_e13-bounded-tower-charter.md
 coords_e13_tutorial docs-geode/tutorials/recursion-in-glow.md
 coords_e13_recursion expanding-prompts/date/20260730/20260730-120531_equinox-season-e13-recursion-prompt.md
@@ -110,7 +110,7 @@ coords_e14_charter expanding-prompts/date/20260730/20260730-120643_e14-houseplan
 coords_e14_recursion expanding-prompts/date/20260730/20260730-120714_equinox-season-e14-recursion-prompt.md
 coords_e15 tower_frame_bite GREEN 20260730.120905
 coords_e15_path edu/tower/frame_bound_overpush.rye
-coords_e15_witness tools/edu_tower_frame_bite_witness.rish
+coords_e15_witness tools/e/edu_tower_frame_bite_witness.rish
 coords_e15_charter expanding-prompts/date/20260730/20260730-120824_e15-tower-frame-bite-charter.md
 coords_e15_recursion expanding-prompts/date/20260730/20260730-120905_equinox-season-e15-recursion-prompt.md
 coords_e16 copy_sameness_almanac GREEN 20260730.121155
@@ -692,7 +692,7 @@ coords_sunn5_witness tools/gen/season/personalize_template_witness.rish
 coords_sunn5_recursion expanding-prompts/date/20260730/20260730-145124_sunn-recursion-prompt.md
 coords_sunn5_guide manual/guides/first-season-personalize.md
 coords_sunn6 key_cards_ops GREEN 20260730.145723
-coords_sunn6_path tools/key-card.conf.example
+coords_sunn6_path tools/k/key-card.conf.example
 coords_sunn6_witness tools/gen/season/sunn6_key_cards_ops_witness.rish
 coords_sunn6_recursion expanding-prompts/date/20260730/20260730-145723_sunn-recursion-prompt.md
 coords_sunn7 macos_enclosure GREEN 20260730.145920
@@ -776,11 +776,11 @@ coords_tend_two DONE 20260730.085559 fascia_entry 69 fascia_exit 69 delta 0
 coords_tend_three DONE 20260730.102430 fascia_entry 90 fascia_exit 90 delta 0
 coords_door_12 five_primitives_reference GREEN 20260730.103002
 coords_door_12_path docs-geode/sangha/03-five-primitives.md
-coords_door_12_witness tools/sangha_five_primitives_page_witness.rish
+coords_door_12_witness tools/s/sangha_five_primitives_page_witness.rish
 coords_door_12_next DONE
 coords_door_13 edu_discovery_walk GREEN 20260730.104053
 coords_door_13_path edu/discovery/round-trip-walk.md
-coords_door_13_witness tools/edu_discovery_walk_witness.rish
+coords_door_13_witness tools/e/edu_discovery_walk_witness.rish
 coords_door_13_next DONE
 coords_door_14 create_prep GREEN 20260730.110403
 coords_door_14_path counsel/replies/20260730-105636_create-prep-build-journey-j4.md
@@ -789,7 +789,7 @@ coords_door_14_next DONE
 coords_build_queue CLOSED seat 16 20260730.110403
 coords_build_handback_lean extend elder discovery wire
 coords_door_15 discovery_wire_round_trip GREEN 20260730.111639
-coords_door_15_path tools/discovery_round_trip_wire.rish
+coords_door_15_path tools/d/discovery_round_trip_wire.rish
 coords_door_15_lane comlink/discovery/round_trip_wire.rye
 coords_door_15_charter expanding-prompts/date/20260730/20260730-110806_door-15-discovery-wire-round-trip-charter.md
 coords_door_15_next DONE
@@ -826,7 +826,7 @@ coords_door_10_path mycelium/refusal_storm.rye
 coords_door_10_bound refusal_storm_min_cases 5
 coords_door_10_next DONE
 coords_door_11 performance_pin GREEN 20260730.101622
-coords_door_11_path tools/myc_perf_pin.rish
+coords_door_11_path tools/m/myc_perf_pin.rish
 coords_door_11_report work-in-progress/myc-s0-baselines.tsv
 coords_door_11_bound myc_perf_baseline_min_rows 5
 coords_door_11_next DONE
@@ -923,19 +923,19 @@ coords_fuse_e153_e177_tip_after_am 4767af411b
 coords_fuse_e153_e177_counsel counsel/date/20260801/20260801-131825_fuse-land-e153-e177-cursor-auto.md
 coords_e178 q38_q42_restore_completes GREEN 20260801.132235
 coords_e178_path counsel/date/20260801/20260801-132235_e178-q38-q42-restore-completes.md
-coords_e178_witness tools/amphora_restore_witness.rish
+coords_e178_witness tools/am/amphora_restore_witness.rish
 coords_e178_recursion active-designing/date/20260801/20260801-132235_e179-recursion.md
 coords_e179 q43_grand_round GREEN 20260801.132825
 coords_e179_path counsel/date/20260801/20260801-132825_e179-q43-grand-round-witness.md
-coords_e179_witness tools/amphora_grand_round_witness.rish
+coords_e179_witness tools/am/amphora_grand_round_witness.rish
 coords_e179_recursion active-designing/date/20260801/20260801-132825_e180-recursion.md
 coords_e180 q44_restore_negatives GREEN 20260801.133147
 coords_e180_path counsel/date/20260801/20260801-133147_e180-q44-restore-negatives.md
-coords_e180_witness tools/amphora_restore_negative_witness.rish
+coords_e180_witness tools/am/amphora_restore_negative_witness.rish
 coords_e180_recursion active-designing/date/20260801/20260801-133147_e181-recursion.md
 coords_e181 fuse_vps_q45_bounds GREEN 20260801.133857
 coords_e181_path counsel/date/20260801/20260801-133857_e181-fuse-vps-q45-bounds.md
-coords_e181_witness tools/amphora_bounds_agree.rish
+coords_e181_witness tools/am/amphora_bounds_agree.rish
 coords_e181_research external-research/20260801-132929_nixos-vps-clean-energy-mosh-cursor.md
 coords_e181_recursion active-designing/date/20260801/20260801-133857_e182-recursion.md
 coords_e182 q46_errors_named GREEN 20260801.134653
@@ -970,7 +970,7 @@ coords_e188_spec context/specs/20260801-140607_resin-manifest-v1.md
 coords_e188_recursion active-designing/date/20260801/20260801-140607_e189-recursion.md
 coords_e189 fuse_recut_q56_dogfood GREEN 20260801.141157
 coords_e189_path counsel/date/20260801/20260801-141157_e189-fuse-recut-race-q56-dogfood.md
-coords_e189_dogfood tools/amphora_dogfood_witness.rish
+coords_e189_dogfood tools/am/amphora_dogfood_witness.rish
 coords_e189_vps_region SEA_only
 coords_e189_token_rite PROPOSED
 coords_e189_recursion active-designing/date/20260801/20260801-141157_e190-recursion.md

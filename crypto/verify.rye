@@ -187,7 +187,7 @@ fn run_selftest() !u8 {
         "three Monocypher widths (16, 32, 64) an equal span compares equal and flipping EVERY single bit of EVERY byte compares unequal, our " ++
         "answer matching Zig's in every one of those cases; the fixed-width doors agree with the generic engine, and the edge refuses a " ++
         "length mismatch and an over-long compare before a byte is folded. Monocypher-source parity is landed: " ++
-        "tools/crypto_monocypher_verify_parity_witness.rish compiles the vendored Monocypher fresh and diffs its crypto_verify16/32/64 return " ++
+        "tools/cr/crypto_monocypher_verify_parity_witness.rish compiles the vendored Monocypher fresh and diffs its crypto_verify16/32/64 return " ++
         "against this primitive over equal and one-bit-differing inputs at every width. Purely local — no key, no signature, no network, no " ++
         "funds, no real device; the byte loop is data-independent by construction, and constant-time timing-safety stays the Season's named " ++
         "horizon, correctness proven here rather than a timing claim boasted.\n", .{});

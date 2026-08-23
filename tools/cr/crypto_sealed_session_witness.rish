@@ -1,0 +1,45 @@
+# tools/cr/crypto_sealed_session_witness.rish — the sealed session, Season G's SECOND composition over the GREEN Monocypher-parity primitives:
+# a seal-to-a-public-key box that sends one keeper a confidential message over an open channel, composing X25519 (key agreement),
+# BLAKE2b-512 (the KDF), and ChaCha20-Poly1305 (authenticated encryption), authoring no new cryptography (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names X25519 as the key-agreement
+# primitive Comlink's confidential session reaches for; this composition is the confidentiality twin of the signed carry's provenance).
+# Kin: crypto/x25519.rye · crypto/blake2b.rye · crypto/aead.rye (the GREEN primitives this composes) · crypto/signed_carry.rye (the
+# provenance twin). Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET of the primitives beneath, never a copied line — our
+# own composition, studied clean-room (.claude/rules/gratitude-licenses.md).
+#
+# crypto/sealed_session.rye composes three already-parity-GREEN primitives — X25519 (key agreement), BLAKE2b-512 (the key-derivation hash),
+# and ChaCha20-Poly1305 (authenticated encryption) — into the standard seal-to-a-public-key box, authoring no new cryptography. For each
+# message the sender takes a fresh ephemeral X25519 keypair (the caller supplies the randomness; the library invents no entropy), agrees a
+# one-message shared secret with the recipient's public key, and derives both a 32-byte session key and a 12-byte nonce from one
+# BLAKE2b-512 over (shared ‖ ephemeral pub ‖ recipient pub). A fresh ephemeral means a fresh key and a fresh nonce every message, so the
+# AEAD nonce is never reused under a key — the one rule ChaCha20-Poly1305 must keep. The recipient's own key is bound as authenticated
+# data, so a frame sealed to one keeper cannot be replayed to another; the sender's long-term identity never appears (a sealed box is
+# anonymous by construction). A frame is magic GSS1, ephemeral pubkey, cipher-len (u64 big-endian), ciphertext, and the Poly1305 tag;
+# open() rederives the secret from the recipient's private key and returns plaintext only when the tag verifies. Purely local over TEST
+# keypairs — no real identity key, no network, no funds, no real device; the ephemeral private must be fresh randomness in real use, and
+# agreeing a session with the maintainer's own identity key stays the custody gate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_sealed_session_witness.rish
+
+say "crypto-sealed-session: Language EN — Season G's SECOND composition over the GREEN Monocypher-parity primitives, the confidentiality twin of the signed carry's provenance: where the signed carry answers 'who made this record' in the clear, the sealed session answers 'only you can read this.' crypto/sealed_session.rye composes X25519 (key agreement), BLAKE2b-512 (the KDF), and ChaCha20-Poly1305 (authenticated encryption) into a sealed session carry that sends one keeper a confidential message over an open channel — Comlink's confidential session, standing as a library on primitives already parity-GREEN, authoring no new cryptography."
+say "crypto-sealed-session: Style Radiant — the law is stated positively: for each message the sender takes a fresh ephemeral X25519 keypair (the caller supplies fresh randomness), agrees a one-message shared secret with the recipient's public key, and derives both a 32-byte session key and a 12-byte nonce from one BLAKE2b-512 over (shared, ephemeral-pub, recipient-pub) — so a fresh ephemeral means a fresh key and a fresh nonce every message and the AEAD nonce is never reused, and the recipient's own key is bound as authenticated data so a frame sealed to one keeper cannot be replayed to another. A frame is magic GSS1, ephemeral pubkey, cipher-len (u64 big-endian), ciphertext, and the Poly1305 tag; open rederives the secret from the recipient's private key and returns plaintext only when the tag verifies."
+say "crypto-sealed-session: Lens TAME — the composition authors no new cryptography; it turns three proven stones into one anonymous sealed box (the sender's long-term identity never appears), bounds the message at the AEAD's own 64 KiB ceiling, and asserts its contracts on every function. GREEN on the first metal pass: round-trip across seven plaintext lengths (empty through 64 KiB), the ciphertext provably not the plaintext, the sealed-box freshness property (two ephemerals yield different frames that both open to the same message), byte-identical determinism given a fixed ephemeral, and six refusals — a wrong recipient, a tampered ciphertext, a tampered tag, and a tampered ephemeral key all fail OpenFailed revealing no plaintext, plus bad magic, two truncations, and an undersized buffer. Purely local over TEST keypairs — no real identity key, no network, no funds, no device; the ephemeral private must be fresh randomness in real use, constant-time timing-safety stays the named horizon, and agreeing a session with the maintainer's own identity key stays the custody gate."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/sealed_session"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/sealed_session.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-sealed-session: build failed — ${build.err}"
+
+let outfile = "crypto/bin/sealed_session.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-sealed-session: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-sealed-session: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-sealed-session' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-sealed-session: selftest did not print the GREEN crypto-sealed-session line"

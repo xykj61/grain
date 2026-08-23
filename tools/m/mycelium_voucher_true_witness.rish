@@ -1,0 +1,55 @@
+# tools/m/mycelium_voucher_true_witness.rish — a voucher reads a real ledger record true (r4, arc closes).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · the Voucher · rung r4.
+# r1 fixed the crux (a node's signed attestation binds a position to a named order-head, checkable against
+# the ledger it vouches), r2 let the proof travel, r3 read a voucher across a Knot — all over Dags seated in
+# code. This closing rung carries the attestation onto a REAL on-disk Cord record a keeper can open and hash.
+#
+# The crux this witness proves is TWO TOOLS, ONE ANSWER, TWICE OVER: the app parses the real fixture through
+# cord_bron, rebuilds the Dag under cord.add (re-verifying every signature), makes a voucher over the
+# genesis-funded account, and emits the vouched triple; tools/fixtures/statement_dag_truth.awk reads the same
+# bytes with an independent per-account deadline-clock accounting and names the identical position (app.out
+# == awk.out). And the order-head the node signed equals the head recomputed from the fixture's own agreed
+# order (asserted inside the app), so the signed order is the fixture's own, not a number from another world.
+# The voucher verifies offline and checks against the ledger it vouches; a tampered header refuses BadFormat.
+# Composes cord_bron + cord + lapse + statement + voucher + kumara public API only; demo node/keeper seeds —
+# no key, no funds, no network, no custody.
+#
+# Scope: active-designing/date/20260813/20260813-095216_mycelium-voucher-attested-statement-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_voucher_true_witness.rish
+
+say "mycelium-voucher-true: Language EN — a node's slip vouching a holder's standing on a real ledger record reads true to bytes a keeper can open and hash, the signed order the fixture's own agreed order."
+say "mycelium-voucher-true: Style Radiant — r1 fixed the crux, r2 let it travel, r3 crossed a Knot; r4 vouches a real record and the app and an awk name one position, the order-head recomputed matching the signed one."
+say "mycelium-voucher-true: Lens TAME — the reading composes cord_bron + cord + lapse + statement + voucher + kumara public API; the Dag is rebuilt under the Cord's own add; the awk ticks the same deadline clock in file order; the voucher verifies offline and checks against the ledger it vouches; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/voucher_true"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/voucher_true.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-voucher-true: build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "mycelium-voucher-true: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-voucher-true: selftest did not speak GREEN"
+assert selftest.out contains "the vouched account key and its balance · reserved · received match an independent reading" else "mycelium-voucher-true: true-to-bytes claim missing"
+assert selftest.out contains "the signed order-head equals the head recomputed from the fixture's own agreed order" else "mycelium-voucher-true: order-head claim missing"
+assert selftest.out contains "a tampered header refused BadFormat" else "mycelium-voucher-true: tamper-refusal claim missing"
+assert selftest.out contains "The Mycelium Voucher's agent-doable arc closes" else "mycelium-voucher-true: arc-close claim missing"
+
+# The crux — two tools, one answer. The app's measure tuple must equal awk's reading of the same bytes.
+let app = run ["sh" "-c" "${bin} measure 2>&1"]
+assert app.ok else "mycelium-voucher-true: app measure exited non-zero"
+let awk = run ["sh" "-c" "awk -f tools/fixtures/statement_dag_truth.awk tools/fixtures/lapse_dag.bron"]
+assert awk.ok else "mycelium-voucher-true: awk truth read failed"
+assert awk.out contains "bc7cbcb5636375fa1d82434d466724d92377f53b980695dd49d26d0ce12205a5 100 100 200" else "mycelium-voucher-true: awk tuple not the funded account · balance 100 · reserved 100 · received 200"
+assert app.out == awk.out else "mycelium-voucher-true: app and awk disagree — the vouched position drifted from the bytes"
+
+# The Voucher r1 whose attestation this rung reads over a real record stands at the door — its own selftest
+# proves the machinery the reading rests on.
+let voucher = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/voucher.rye -femit-bin=mycelium/bin/voucher && mycelium/bin/voucher 2>&1"]
+assert voucher.ok else "mycelium-voucher-true: the Voucher r1 this rung reads over a real record is not GREEN"
+assert voucher.out contains "GREEN" else "mycelium-voucher-true: the Voucher r1 did not speak its GREEN"
+
+say "mycelium-voucher-true: GREEN — a real ledger record is vouched true (app==awk, the funded account bc7cbcb5… · balance 100 · reserved 100 · received 200), the signed order-head the fixture's own agreed order, verifying offline and checking against the ledger it vouches, a tampered record refused; the Voucher r1 stands at the door. The Mycelium Voucher's agent-doable arc closes."

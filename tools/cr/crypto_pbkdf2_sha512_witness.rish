@@ -1,0 +1,42 @@
+# tools/cr/crypto_pbkdf2_sha512_witness.rish — PBKDF2-HMAC-SHA-512 authored in pure Rye: Season G's iteration-hard password KDF run with
+# SHA-512 as its PRF — the exact stretch BIP-39 folds a mnemonic and passphrase into a 512-bit wallet seed with (2048 rounds), and the KDF
+# several LUKS and PGP deployments run. Proven byte-for-byte against an independent implementation and transitively against the HMAC
+# beneath, the no-fabricated-constant way crypto/secp256k1_pubkey.rye favours (crypto · Season G).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
+# Kin: crypto/hmac_sha512.rye (the keyed hash beneath it, GREEN) · crypto/sha512.rye (the hash beneath that) · crypto/pbkdf2_sha256.rye
+# (the SHA-256 sibling of this construction) · crypto/argon2.rye (the memory-hard KDF this iteration-hard one stands beside). The coming
+# BIP-39 mnemonic→seed rung stands on this one. Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity discipline target, never a
+# copied line — our own Rye, studied clean-room from the public standards (.claude/rules/gratitude-licenses.md).
+#
+# crypto/pbkdf2_sha512.rye composes the GREEN crypto/hmac_sha512.rye through RFC 8018 §5.2 — each block T(i) = U(1) XOR … XOR U(c) with
+# U(1) = HMAC(P, S ‖ INT_32_BE(i)) and U(j) = HMAC(P, U(j-1)), the derived key the run of 64-byte blocks truncated to length — authoring
+# no new cryptography. The primitive calls no std.crypto. Parity is proven at selftest byte-for-byte against Zig's own std.crypto.pwhash
+# .pbkdf2 with HmacSha512 across single-iteration, the BIP-39 2048-round depth, multi-block, and partial-tail shapes, AND transitively
+# against the RFC-4231-anchored HMAC beneath (a single-iteration block is exactly HMAC(P, S ‖ INT_32_BE(1))). An over-long password, salt,
+# or request, a zero count, and an over-large count each refuse a named error before a byte is mixed. Purely local — TEST inputs, no real
+# identity key, no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_pbkdf2_sha512_witness.rish
+
+say "crypto-pbkdf2-sha512: Language EN — Season G's iteration-hard password KDF run with SHA-512 as its PRF: PBKDF2-HMAC-SHA-512 (RFC 8018 / RFC 2898), the standard 'stretch a password into a key by iterating a keyed hash many times' primitive. Run this way it is the exact stretch BIP-39 folds a mnemonic and passphrase into a 512-bit wallet seed with (2048 rounds, salt 'mnemonic'‖passphrase), and the KDF several LUKS and PGP deployments run. It authors no new cryptography — it composes the GREEN crypto/hmac_sha512.rye through the RFC's iterate-and-XOR, so it is genuinely buildable this round. It stands beside crypto/pbkdf2_sha256.rye (the SHA-256 sibling) and crypto/argon2.rye (memory-hard, where this is iteration-hard), and the coming BIP-39 mnemonic→seed rung stands on it."
+say "crypto-pbkdf2-sha512: Style Radiant — the law is stated positively: each block T(i) = U(1) XOR U(2) XOR … XOR U(c), with U(1) = HMAC(P, S ‖ INT_32_BE(i)) and U(j) = HMAC(P, U(j-1)), and the derived key is the run of 64-byte blocks truncated to the requested length, so the same password, salt, iteration count, and length always fold to the same key. One seed, one backup phrase, and the whole wallet tree beneath it begins right here."
+say "crypto-pbkdf2-sha512: Lens TAME — the primitive calls no std.crypto; it composes an already-GREEN HMAC, bounded password/salt/iterations and an output cap, contract asserts on every function, each HMAC call beneath provably within its own message and key bounds so its error is unreachable and asserted rather than swallowed. Parity holds the no-fabricated-constant way crypto/secp256k1_pubkey.rye favours: byte-for-byte against Zig's independent std.crypto.pwhash.pbkdf2 with HmacSha512 across single-iteration, the BIP-39 2048-round depth, multi-block, and partial-tail shapes, and transitively against the RFC-4231-anchored HMAC beneath (a single-iteration block is exactly HMAC(P, S ‖ INT_32_BE(1))). The world-bound published known-answer for this PRF is BIP-39's own Trezor vector, arriving with the BIP-39 rung this one unblocks. An over-long password, salt, or request, a zero count, and an over-large count each refuse a named error before a byte is mixed. Constant-time discipline stays the HMAC layer's named horizon. Purely local — TEST inputs, no real identity key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/pbkdf2_sha512"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/pbkdf2_sha512.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-pbkdf2-sha512: build failed — ${build.err}"
+
+let outfile = "crypto/bin/pbkdf2_sha512.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-pbkdf2-sha512: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-pbkdf2-sha512: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-pbkdf2-sha512' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-pbkdf2-sha512: selftest did not print the GREEN crypto-pbkdf2-sha512 line"

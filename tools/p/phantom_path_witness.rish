@@ -1,0 +1,70 @@
+# tools/p/phantom_path_witness.rish -- a tool reads a path the repository carries, or it reads nothing.
+#
+# WHY THIS RUNG. REDS %153 found an untracked compatibility symlink `work-in-progress -> crux`
+# at this pier's root and repaired the twenty-six document links resolving through it. The
+# machinery was never in that sweep's scope, and a census of path literals inside tracked tool
+# sources found 116 more across 58 files. `tools/fixtures/reds_first_scan.sh` set
+# `ledger="work-in-progress/REDS.md"`. `tools/co/compass_rose.rish` printed NOW_OK from a
+# `test -f work-in-progress/TASKS.md`. The Radiant lint's roster named three living cards
+# through the elder room. And `.brix`, the descriptor listing the bricks Mantra tracks, carried
+# two of them there.
+#
+# Every one answered correctly on this machine and would answer wrongly on a fresh clone. A
+# guard reading nothing passes exactly as readily as a guard reading everything, which is the
+# failure this rung exists to make impossible.
+#
+# WHAT IS PROVEN, on metal.
+#   Every path literal on a non-comment line of a tracked tools/**.rish, tools/**.sh, or .brix
+#   resolves in the tracked tree -- a tracked file, a tracked directory, a declared submodule,
+#   or a path travelling through a tracked symlink.
+#   Eight behaviors on throwaway git repositories: the clean tree free, a tool reading through
+#   an untracked symlink refused and counted, the same path in a comment free, a vendor literal
+#   free, a dot-room literal free, a literal resolving nowhere free, a literal through a tracked
+#   symlink free, and a phantom brick in the descriptor refused.
+#
+# WHAT PASSES FREE, and why each does. `vendor/` is provisioned by `git submodule update` and
+# tools/fetch_toolchain. `seed/` is the depersonalized projection, gitignored by design. A
+# dot-segment names a generated or machine-local room. And a COMMENT is free on purpose: this
+# rung reads what a tool READS, never what it SAYS, so a guard may always name the breach that
+# created it -- including this one, whose own prose names the elder room a dozen times.
+#
+# WHAT IS NOT PROVEN. That the tool reads the RIGHT file, only that the file is one a fresh
+# clone carries. A literal resolving nowhere at all is a plain dangling reference and belongs to
+# tools/d/dated_path_witness.rish; one duty, one guard, so two can never come to disagree.
+#
+# KIN. tools/t/tracked_link_witness.rish asks the same question of links a reader follows; this
+# rung asks it of paths a tool reads. Following a tracked symlink here composes with that rung's
+# already-proven promise that every tracked symlink lands inside the tree.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/p/phantom_path_witness.rish
+
+say "phantom-path: Language EN -- a guard's promise is worth what it is worth on a machine that is not this one."
+say "phantom-path: Style Radiant -- the tree states which paths its tools read, and the tracked index is what states it."
+say "phantom-path: Lens TAME -- safety first: a guard reading a room the repository lacks reports on a tree nobody else has."
+
+let scan = run ["sh" "tools/fixtures/phantom_path_scan.sh"]
+assert scan.ok else "phantom-path: a tool reads a path that resolves here and is absent from the repository -- read the scan's own lines"
+say scan.out
+assert scan.out contains "phantom_paths=0" else "phantom-path: every literal a tool reads must be one a fresh clone carries"
+assert scan.out contains "verdict=ok" else "phantom-path: the scan must balance before it is believed"
+say "field GREEN -- every path a tracked tool reads lands inside the tracked tree"
+
+let control = run ["sh" "tools/fixtures/phantom_path_control.sh"]
+assert control.ok else "phantom-path: the control must complete"
+say control.out
+assert control.out contains "case=clean_free ok" else "phantom-path: a tree whose tools read only tracked paths must pass free"
+assert control.out contains "case=phantom_refused ok" else "phantom-path: a tool reading through an untracked symlink must be refused"
+assert control.out contains "case=phantom_counted ok" else "phantom-path: the refusal must name a count, never only a verdict"
+assert control.out contains "case=comment_free ok" else "phantom-path: a comment naming the elder room must stay free"
+assert control.out contains "case=vendor_free ok" else "phantom-path: a provisioned vendor literal must pass free"
+assert control.out contains "case=dotroom_free ok" else "phantom-path: a generated dot-room literal must pass free"
+assert control.out contains "case=nowhere_free ok" else "phantom-path: a literal resolving nowhere belongs to the dated-path census"
+assert control.out contains "case=tracked_link_free ok" else "phantom-path: a literal through a tracked symlink resolves for a reader who clones"
+assert control.out contains "case=descriptor_refused ok" else "phantom-path: a phantom brick in .brix must be refused"
+assert control.out contains "case=ignored_free ok" else "phantom-path: a path git is told to ignore is a declared artifact and must pass free"
+assert control.out contains "case=unignored_refused ok" else "phantom-path: the same artifact with no ignore rule naming it must be refused"
+assert control.out contains "control=ok" else "phantom-path: the control must agree with itself"
+say "RED and GREEN paths proven -- three refusals bitten, seven honest readings left free"
+
+say "GREEN: phantom-path -- a tool reads a path the repository carries, or it reads nothing."

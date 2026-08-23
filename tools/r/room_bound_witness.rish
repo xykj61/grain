@@ -1,0 +1,92 @@
+# tools/r/room_bound_witness.rish -- no room grows past what a reader can open.
+#
+# WHY THIS RUNG. `session-logs/` held 1,492 dated files at room level on `20260821`, and GitHub's
+# web listing stops at 1,000 entries, so the room was genuinely unopenable in a browser. The fold
+# to `date/YYYYMMDD/` fixed it. This rung is what keeps it fixed -- because at roughly a hundred
+# and eight logs a day, an emptied room refills past a thousand in nine days, and a one-time sweep
+# would have bought nine days. The bound is the root fix; the sweep was only the symptom.
+#
+# WHAT IS PROVEN HERE.
+#
+#   Every room is discovered rather than listed. `tools/fixtures/room_bound_scan.sh` walks every
+#   top-level directory holding a dated file at its own level, so a room created tomorrow appears
+#   in the report without anyone remembering to add it.
+#
+#   The enforced roster holds, room by room. Five rooms earned enforcement by folding --
+#   `session-logs`, then `counsel`, `active-designing`, `expanding-prompts`, and `waymarks` --
+#   `active-development` was born enforced on `20260821.174047`, having no backlog to grandfather,
+#   and `tools` joined on `20260823.144100` the same way the first five did, by folding.
+#   Each is asserted by name, because a roster checked only in aggregate can lose a room
+#   without anyone noticing. Three of the seven hold ZERO flat files now, so a discovery-only report
+#   dropped them entirely; an enforced room is reported whether or not it holds anything. Two hundred fifty-six rather than a thousand, because a bound
+#   placed at the cliff fails on the day it matters.
+#
+#   TWO COUNTING RULES, and the second exists because the first was blind. The six day-folded
+#   rooms are counted by dated basename, which is what their fold moves. `tools/` folds by first
+#   sprig letter and not one of its 1,917 entries carried a stamp, so the dated count read ZERO for
+#   that room for its whole life while the room stood 7.4x over bound with every guard green. It is
+#   counted by every flat entry instead, symlinks included, and the scan prints `counts=all` beside
+#   it so a reader knows which rule answered.
+#
+#   Every other room is reported and books nothing. None stands over the bound today, and
+#   `external-research` at 160 is the next likely to cross -- it will be reported for a while
+#   before anyone has to act. A ratchet turns on touch; a sweep nobody asked for is not a fix.
+#
+#   Two RED paths are proven by construction, since the gate can fail in two directions. A
+#   throwaway room built over a deliberately tiny bound must be refused BY NAME. And a tree
+#   holding none of the enforced rooms must also be refused, because a room that vanishes from a
+#   meter is not a room that passed it -- it is a room nobody is watching.
+#
+# WHAT IS NOT PROVEN. This counts files; it does not judge whether a room's contents belong
+# together, and it says nothing about nesting depth beneath a room. A room could satisfy the
+# bound and still be badly organised, and no integer will notice.
+#
+# Season: the Standfast restrategizing of `20260821`, arc one -- the mark and the path.
+# Kin: .claude/rules/stamp-and-name.md (the fold's law) - tools/d/dated_path_witness.rish (the
+# resolver that makes a fold safe) - tools/s/session_logs_archive.rish (the fold itself).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/room_bound_witness.rish
+
+say "room-bound: Language EN -- a room that outgrows a reader stops being a room and starts being a pile. This holds every enforced room at a size a person can open, and reports the rest honestly rather than sweeping them unasked."
+say "room-bound: Style Radiant -- three claims. Rooms are discovered rather than listed. All seven enforced rooms are named and stand under 256, six counted by dated basename and one -- tools -- by every flat entry. And the gate is proven to close in both directions: on a room over its bound, and on an enforced room that has gone missing."
+say "room-bound: Lens TAME -- the bound is named at 256 rather than at GitHub's 1,000, because a maximum set at the cliff fails on the day it matters; every count below is the scan's own output rather than this file's memory."
+
+let scan = "tools/fixtures/room_bound_scan.sh"
+
+let roster = run ["sh" scan]
+# The message names BOTH causes, because it fired for the second one on a real clone and sent a
+# reader looking for a room to fold when the room was simply absent (REDS %120).
+assert roster.ok else "room-bound: an ENFORCED room either stands OVER the bound -- fold it to date/YYYYMMDD/ with tools/s/session_logs_archive.rish -- or is MISSING from this tree entirely, which on a fresh clone means it never entered the .gitignore allow-list. Read the roster lines above: verdict=over is the first, verdict=missing is the second."
+say roster.out
+assert roster.out contains "bound=256" else "room-bound: the seated bound is 256 -- a change to it is a seated decision, not a default"
+assert roster.out contains "enforced_over=0" else "room-bound: every enforced room must stand at or under the bound"
+assert roster.out contains "verdict=ok" else "room-bound: the roster must balance before it is believed"
+# Every enforced room is named, one assert apiece. A roster checked only in aggregate can lose a
+# room without anyone noticing -- `counsel` and `expanding-prompts` reached zero flat files on the
+# lap they folded and dropped straight off a discovery-only report.
+assert roster.out contains "room=session-logs flat=" else "room-bound: session-logs must appear in the roster -- a room that vanishes from a meter is not a room that passed it"
+assert roster.out contains "room=counsel flat=" else "room-bound: counsel is enforced and must be reported even at zero flat files"
+assert roster.out contains "room=active-designing flat=" else "room-bound: active-designing is enforced and must be reported"
+assert roster.out contains "room=active-development flat=" else "room-bound: active-development is enforced from birth and must be reported even while empty"
+assert roster.out contains "room=expanding-prompts flat=" else "room-bound: expanding-prompts is enforced and must be reported even at zero flat files"
+assert roster.out contains "room=waymarks flat=" else "room-bound: waymarks is enforced and must be reported"
+assert roster.out contains "roster=enforce" else "room-bound: at least one room must be enforced, or the gate guards nothing"
+
+# The RED path, built rather than trusted. A room of three dated files under a bound of two must
+# be refused, and refused by name, so the gate is known to close.
+let control = run ["sh" "tools/fixtures/room_bound_control.sh"]
+assert control.ok else "room-bound: the two-phase control must complete"
+say control.out
+assert control.out contains "over_named_by_room=yes" else "room-bound: an over-bound room must be refused by name rather than by a bare count"
+assert control.out contains "over_refused=yes" else "room-bound: a room over its bound must exit non-zero"
+# This number is the roster size on purpose. It moved 5 -> 6 when active-development opened, and
+# the assert caught it -- which is the point: a room joining or leaving the roster is a seated
+# decision, so it should have to be written down here rather than sliding in unremarked.
+assert control.out contains "enforced_rooms_named_absent=7" else "room-bound: every enforced room absent from a tree must be named absent, not passed over -- and this count is the roster size, so a change here means a room joined or left"
+assert control.out contains "all_counted_room_named=yes" else "room-bound: a letter-folded room over bound must red on its own counting rule and say which rule it used"
+assert control.out contains "missing_refused=yes" else "room-bound: an enforced room missing from the tree must refuse -- a room nobody can find has not passed"
+assert control.out contains "control_verdict=ok" else "room-bound: the control must agree with itself before it is believed"
+say "RED paths GREEN -- a room over its bound refuses by name, and an enforced room absent from the tree refuses too"
+
+say "GREEN: room-bound -- rooms discovered rather than listed, all seven enforced rooms named and under 256 (six by dated basename, tools by every flat entry), the rest reported and booking nothing, and the gate proven to close in three directions: on a dated room over its bound, on a letter-folded room over its bound, and on an enforced room gone missing."

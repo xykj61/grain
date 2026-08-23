@@ -1,0 +1,36 @@
+# tools/al/ales_stereo_shift_witness.rish — stereo_shift: the grid nudge carried into stereo, both channels in lockstep, total (no refusal) (ALES124).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES124.
+# Design read: active-designing/date/20260815/20260815-023038_fill-ales124-lotus-stereo-shift.md
+# Stands on: lotus/shift.rye (ALES108 — the mono grid nudge run once per channel), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye
+# (ALES2 — the Clip and its buf/len/samples), lotus/meter.rye (ALES13 — the peak/RMS meter). A Lotus master is a StereoClip whose defining invariant is that left and right hold the same length so
+# the channels stay aligned in time; nudging a take on the grid slides both speakers by the same amount at once. This rung carries ALES108's shift into stereo the way ALES122 carried silence_span:
+# run the proven mono shift on each channel with the same signed by. It is the plainest lift of the family — mono shift is total (no fault), so this stereo twin needs no validation and can never refuse.
+#
+# lotus/stereo_shift.rye slides both channels by the same signed by, reusing ALES108's mono shift per channel; because mono shift is total and holds each channel's length, the balance invariant is
+# preserved trivially and there is no EditError to forward. The crux is four laws. THE STEREO SHIFT LAW: each channel equals ALES108's mono shift on that channel byte for byte, both directions, the
+# vacated end silent. THE BALANCE / LENGTH LAW: left.len == right.len after, both holding their starting length. THE COMPOSITION-LOSS LAW: stereo_shift(k) then stereo_shift(-k) zeros the leading k on
+# both channels, a pre-silent region round-tripping. THE MAGNITUDE / DEGENERATE LAW: each channel's peak non-increasing, by 0 the identity, |by| >= len all silence, the empty pair its own shift.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stereo_shift_witness.rish
+
+say "ales-stereo-shift: Language EN — stereo_shift slides both channels of a StereoClip by the same signed by samples, so the grid nudge ALES108 named for a mono clip now lands on a real stereo master. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time; nudging a take earlier or later so it lands on the beat slides both speakers by the same amount at once. It is the plainest lift of the family — mono shift is total (it names no out-of-range span, so it raises no fault), so this stereo twin needs no validation and can never refuse, the length-preserving reseat beside stereo_silence_span, which overwrites in place, and stereo_move, which relocates. It carries ALES108's proven mono shift into stereo — the same signed by on each channel — so the slide lands identically in both and the stereo image stays balanced."
+say "ales-stereo-shift: Style Radiant — the rule is stated positively: run the mono shift per channel over its public API; because mono shift is total and holds each channel's length, the balance invariant is preserved trivially — both channels enter equal-length, both slide by the same magnitude, both hold their length, so they leave equal-length, and there is no fault to forward. The crux stands out as four laws: the stereo shift law (each channel equals ALES108's mono shift on that channel byte for byte in both directions, the surviving samples sliding by by and the vacated end silent), the balance / length law (left.len == right.len after the edit and both hold their starting length, the stereo image staying aligned), the composition-loss law (stereo_shift(k) then stereo_shift(-k) returns the leading k samples as silence on both channels, not their bytes, shift being not invertible, yet a pre-silent region round-tripping exactly), and the magnitude / degenerate law (each channel's peak re-measured through ALES13 non-increasing, by 0 the identity on both, |by| >= len all silence on both, the empty stereo pair its own shift)."
+say "ales-stereo-shift: Lens TAME — two bounded i16 Clips (left, right) slid in lockstep by one signed by; the balance invariant is asserted on entry and exit, and because mono shift is total (void, no EditError) and holds the length, the assertion can never fail and no refusal can land between the two channel edits; shift moves the survivors in place in the safe direction (a right shift copies back to front, a left shift front to back) and writes silence into the vacated span, no second buffer, so the length holds exactly; it reuses ALES108's shift per channel over its public API, inventing no new primitive; the stereo shift law is proven against ALES108's own shift run per channel, and the magnitude law reads each channel's peak through ALES13 so dropping a loud edge is shown to lower it; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_shift"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_shift.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-shift: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_shift.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-shift: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-shift: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-shift' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-shift: selftest did not print the GREEN ales-stereo-shift line"

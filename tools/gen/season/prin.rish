@@ -1,9 +1,9 @@
 # tools/gen/season/prin.rish — %prin · Prin — Matrix-style live print of Grain loops.
 #
 #   rishi/bin/rishi run tools/gen/season/prin.rish scope
-#   rishi/bin/rishi run tools/prin.rish scope          # accrete shim
+#   rishi/bin/rishi run tools/p/prin.rish scope          # accrete shim
 #
-# Outer aliases (live TTY): source tools/prin_aliases.sh  →  p pm pr pl pt pw pd po pnib
+# Outer aliases (live TTY): source tools/p/prin_aliases.sh  →  p pm pr pl pt pw pd po pnib
 # Scope slate: tools/gen/season/prin_scope.rish (Generator Season s4+)
 
 let mode = "matrix"

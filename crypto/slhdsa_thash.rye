@@ -22,7 +22,7 @@
 //! signature is 67 chains. Those shape the bounds below; every one is named rather than left a bare literal.
 //!
 //! ORACLE. crypto/shake.rye is our own SHAKE-256, already GREEN against Zig's std.crypto and the published FIPS 202 answers, so this module
-//! authors no new sponge -- it authors the ADDRESSING and the FRAMING around one. Parity is proven by tools/crypto_slhdsa_thash_witness.rish
+//! authors no new sponge -- it authors the ADDRESSING and the FRAMING around one. Parity is proven by tools/cr/crypto_slhdsa_thash_witness.rish
 //! against the vendored PQClean (vendor/pqclean, CC0-1.0), calling ITS OWN thash and prf_addr -- the same functions, the same inputs, the same
 //! bytes out. That the internals are diffable at all is why this ladder could open (active-designing/20260821-022912).
 //!
@@ -267,7 +267,7 @@ fn copy_bytes(destination: []u8, source: []const u8) void {
     assert(i == source.len);
 }
 
-/// Print a byte slice as lowercase hex on one line -- the shape tools/crypto_slhdsa_thash_witness.rish diffs against PQClean's own output.
+/// Print a byte slice as lowercase hex on one line -- the shape tools/cr/crypto_slhdsa_thash_witness.rish diffs against PQClean's own output.
 fn print_hex(bytes: []const u8) void {
     var i: usize = 0;
     while (i < bytes.len) : (i += 1) {

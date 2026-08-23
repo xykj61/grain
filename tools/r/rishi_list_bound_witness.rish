@@ -1,0 +1,38 @@
+# rishi_list_bound_witness.rish — max_list_items = 1024 (doorway roster 524, 20260725).
+#
+# Asserts the named bound in source, proves map/where over 600 lines GREEN,
+# native tame_style_scan_advise on the whole roster, and the doorway scan
+# (524 forward pages) which is what crossed 512.
+#
+#   rishi/bin/rishi run tools/r/rishi_list_bound_witness.rish
+
+let main = read-file "rishi/src/main.rye"
+assert (main contains "max_list_items: u32 = 1024") else "max_list_items not pinned at 1024"
+assert (main contains "two_rooms doorway roster crossed 512, 20260725") else "missing 1024 raise reason"
+assert (main contains "[max_list_items]Value") else "list buffers must use max_list_items"
+
+# Pipeline past the old 512 ceiling: 600 nonempty lines through where + map.
+let six_hundred = run ["sh" "-c" "seq 1 600"]
+assert six_hundred.ok else "seq 1 600 failed"
+let nums = where (lines six_hundred.out) as ln: ln != ""
+assert (length nums) == 600 else "where over 600 lines failed (bound still 512?)"
+let doubled = map nums as n: "${n}"
+assert (length doubled) == 600 else "map over 600 lines failed"
+
+# Native advise on the whole roster.
+let advise = run ["rishi/bin/rishi" "run" "tools/t/tame_style_scan_advise.rish"]
+assert advise.ok else "native tame_style_scan_advise ListTooLong or other failure"
+assert advise.out contains "ratchet: @memcpy application sites =" else "advise missing memcpy ratchet"
+assert advise.out contains "ratchet: zero assert( files remaining =" else "advise missing zero-assert ratchet"
+assert advise.out contains "ratchet: tools/*.py count =" else "advise missing tools py ratchet"
+
+let selftest = run ["rishi/bin/rishi" "run" "tools/t/tame_style_scan_advise_selftest.rish"]
+assert selftest.ok else "tame_style_scan_advise_selftest failed"
+assert selftest.out contains "GREEN" else "advise selftest not GREEN"
+
+# Doorway scan is the roster that crossed 512 (524 pages as of this pin).
+let doorway = run ["rishi/bin/rishi" "run" "tools/fixtures/two_rooms_doorway_scan.rish"]
+assert doorway.ok else "two_rooms doorway scan ListTooLong or other failure"
+assert doorway.out contains "OK   doorway scan complete" else "doorway scan missing OK"
+
+say "GREEN: Rishi max_list_items=1024 — pipeline 600 · advise · doorway 524 · selftest"

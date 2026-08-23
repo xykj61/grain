@@ -1,0 +1,37 @@
+# tools/al/ales_replace_witness.rish — replace: the general span-edit — remove `count`, insert `src` — exactly ALES2's cut then splice composed, generalizing cut, splice, and ALES114's paste_over (ALES115).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES115.
+# Design read: active-designing/date/20260815/20260815-014021_fill-ales115-lotus-replace.md
+# Stands on: lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, the cut and splice this rung composes, and the EditError reused whole), lotus/paste_over.rye (ALES114 — the
+# length-preserving overwrite this rung generalizes when src.len == count, imported to prove one corner of the generalization law), lotus/meter.rye (ALES13 — the peak/RMS meter).
+# ALES2's cut REMOVES a span and the clip shrinks; splice INSERTS and it grows; ALES114's paste_over writes ON TOP the same length. replace ties all three together: paste into a
+# selection — circle a span, drop different audio in its place, and the take changes length by however much longer or shorter the new audio is.
+#
+# lotus/replace.rye removes [at, at+count) and inserts src at at, checking ALL bounds before any write (BadRange when the removed span falls outside the samples, ClipFull when the
+# result would run past the buffer) then composing ALES2's cut then splice, each pre-validated to succeed so no refusal lands mid-edit. The crux is four laws. THE REPLACE LAW: the
+# span becomes src, the head untouched, the tail follows, the length is len − count + src.len (shorter, longer, equal). THE GENERALIZATION LAW: empty src equals cut, zero count
+# equals splice, src.len == count equals paste_over, each byte for byte. THE LENGTH LAW: the length changes by exactly src.len − count in all three directions. THE DEGENERATE /
+# REFUSAL LAW: replace(at, 0, empty) the identity, a span past the samples BadRange, a result past the buffer ClipFull.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_replace_witness.rish
+
+say "ales-replace: Language EN — replace removes the count samples starting at at and inserts src in their place, so [at, at+src.len) becomes src, everything before at is untouched, everything after the removed span follows the new audio unchanged, and the length becomes len − count + src.len. It is the general span-edit — exactly ALES2's cut(at, count) then splice(at, src), composed over ALES2's own public API. Paste into a selection is the button every editor ships: circle a span, drop different audio in its place, and the take changes length by however much longer or shorter the new audio is. Fix a flubbed bar with a shorter clean take and the song tightens; drop a fuller phrase over a thin one and it lengthens."
+say "ales-replace: Style Radiant — the rule is stated positively: remove [at, at+count) and insert src at at, checking all bounds before any write (BadRange when the removed span falls outside the samples, ClipFull when the result would run past the buffer), then composing cut then splice, each pre-validated to succeed so a refusal never lands mid-edit. It names the one move that generalizes three proven rungs at once. The crux stands out as four laws: the replace law (the span becomes src, the head untouched, the tail follows, the length is len − count + src.len), the generalization law (empty src equals cut, zero count equals splice, src.len == count equals paste_over, each byte for byte), the length law (the length changes by exactly src.len − count in all three directions), and the degenerate / refusal law (replace(at, 0, empty) the identity, a span past the samples BadRange, a result past the buffer ClipFull)."
+say "ales-replace: Lens TAME — one mono clip of i16 PCM whose named span is removed and refilled in place; the payload is a caller slice bounded once against max_clip before it is @intCast to u32 at the std seam (a bounded seam cast, correct Tiger code), the removed span is checked without underflow (count against the remainder), and the ClipFull headroom check (src.len against buf.len − len + count) lands before the cut mutates a single sample, so every refusal comes by name before any write, reusing ALES2's EditError whole and inventing none of its own; the generalization is proven against ALES2's own cut and splice and ALES114's own paste_over; it composes the two proven sub-edits over their public API with no new transport, buffer, or error; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/replace"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/replace.rye -femit-bin=${bin}"]
+assert build.ok else "ales-replace: build failed — ${build.err}"
+
+let outfile = "lotus/bin/replace.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-replace: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-replace: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-replace' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-replace: selftest did not print the GREEN ales-replace line"

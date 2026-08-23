@@ -36,7 +36,7 @@ The column is a plain parallel slice — one fader per placed track — rather t
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_fader_witness.rish`: a column of unity faders reproduces ALES6's master exactly (the mixer generalizes the table); a `1/2` fader halves one track before the sum; a `0/1` fader mutes a track (present but silent); two loud tracks each boosted still saturate once over the true faded sum (never per-track); a `-1/1` fader nulls a track against its own copy to exact silence (the wide-domain phase-cancel); a zero denominator refuses `BadGain`; a track past the master bound forwards `ClipFull`. Purely local — no socket, no network, no keys, no funds, no real device.
+`tools/al/ales_fader_witness.rish`: a column of unity faders reproduces ALES6's master exactly (the mixer generalizes the table); a `1/2` fader halves one track before the sum; a `0/1` fader mutes a track (present but silent); two loud tracks each boosted still saturate once over the true faded sum (never per-track); a `-1/1` fader nulls a track against its own copy to exact silence (the wide-domain phase-cancel); a zero denominator refuses `BadGain`; a track past the master bound forwards `ClipFull`. Purely local — no socket, no network, no keys, no funds, no real device.
 
 ## The road on
 

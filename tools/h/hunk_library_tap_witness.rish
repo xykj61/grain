@@ -1,0 +1,44 @@
+# tools/h/hunk_library_tap_witness.rish — tap a picture on the wall to open it in the editor, on metal (HUNK70).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK70.
+# Design read: active-designing/date/20260813/20260813-222956_hunk-filter-picker-exploration.md ("The road on from here").
+# Teacher, thanked clean-room: tapping a thumbnail in iCloud Photos / Google Photos to open the full picture
+# (concept only, siloed).
+#
+# HUNK69 painted the library as one wall, every tile at a fixed origin. This rung reads that geometry backward: a
+# tap in wall cells resolves to the library index under the finger (or nothing, on a gap or past the last tile),
+# and open_tapped fetches that image and opens the Photos editor over it — closing the loop the journey built:
+# library -> tap -> open -> edit -> save -> library. The fetch proves every bead first, so a tapped tile opens only
+# a verified picture. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_library_tap_witness.rish
+
+say "hunk-library-tap: Language EN — HUNK70 reads HUNK69's wall geometry backward; tap_tile resolves a wall-cell tap to a library index, and open_tapped fetches that image and opens the Photos editor over it."
+say "hunk-library-tap: Style Radiant — a finger meets the picture it touched; the loop closes — library, tap, open, edit, save, library — the wall growing by one when an opened picture is saved back."
+say "hunk-library-tap: Lens TAME — a tap on a gap or past the last tile opens nothing; the fetch proves every bead first, so a tapped tile opens a verified picture or refuses, never garbage on the canvas; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/library_tap"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/library_tap.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-library-tap: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-library-tap: selftest exited non-zero — ${selftest.out}"
+
+# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS %76).
+let out = trim selftest.out
+say "hunk-library-tap: ${out}"
+
+assert out contains "GREEN library-tap" else "hunk-library-tap: selftest did not print the GREEN library-tap line"
+assert out contains "a tap inside each of five wall tiles resolves to that tile's index" else "hunk-library-tap: an interior tap did not resolve to its tile"
+assert out contains "a tap on the gap column, the gap row, or the empty trailing slot resolves to nothing" else "hunk-library-tap: a gap or empty-slot tap did not resolve to nothing"
+assert out contains "a pixel tap maps through Skate's cell size to the same wall cell" else "hunk-library-tap: a pixel tap did not map to the drawn wall cell"
+assert out contains "tapping tile 3 opens the Photos editor over meadow.qoi byte-for-byte" else "hunk-library-tap: the tapped tile did not open its image byte-for-byte"
+assert out contains "a missed tap opens nothing" else "hunk-library-tap: a missed tap did not open nothing"
+assert out contains "the loop closes" else "hunk-library-tap: the library-tap-open-save-library loop did not close"
+assert out contains "grows the rebuilt library to six tiles" else "hunk-library-tap: saving the opened picture did not grow the library"
+
+say "hunk-library-tap: GREEN — a tap resolves to the tile under the finger and open_tapped opens that verified picture in the editor; gaps and empty slots open nothing; a pixel tap reaches the drawn cell; and the loop closes end to end — an opened picture saved back grows the library by one tile; no network, no key, no funds."

@@ -5,7 +5,7 @@
 # pier's root, and repaired the twenty-six document links that resolved through it. The
 # machinery was never in that sweep's scope. A census of path literals inside tracked tool
 # sources then found 116 more across 58 files -- `tools/fixtures/reds_first_scan.sh` reading
-# `ledger="work-in-progress/REDS.md"`, `tools/compass_rose.rish` printing NOW_OK on a
+# `ledger="work-in-progress/REDS.md"`, `tools/co/compass_rose.rish` printing NOW_OK on a
 # `test -f work-in-progress/TASKS.md`, the Radiant lint's own roster naming three living cards
 # through the old room, and `.brix`, the tree's composition descriptor, listing two bricks there.
 #
@@ -20,12 +20,19 @@
 #
 # WHAT PASSES FREE, by named rule, each for a stated reason.
 #   A literal resolving NOWHERE at all. That is a plain dangling reference and belongs to
-#     tools/dated_path_witness.rish; one duty, one guard, so two can never disagree.
+#     tools/d/dated_path_witness.rish; one duty, one guard, so two can never disagree.
 #   `vendor/`, which `git submodule update` and tools/fetch_toolchain provision.
 #   `seed/`, the depersonalized public projection, gitignored by design (`.claude/rules/git-signing.md`).
 #   Any path carrying a dot-segment -- `tools/.build`, `glow/.cache`, `crypto/bin/.cc_reg.txt`,
 #     `.gnupg-rye` -- because a dot names a generated or machine-local room.
 #   `construction/standing-equipment-runs.kyri`, the untracked run card the roster rewrites (%150).
+#   Any path GIT ITSELF ignores, asked with `git check-ignore` rather than guessed. A gitignored
+#     path is a declared build artifact: the repository states its absence, so a reader who clones
+#     is promised exactly what they get. This rule was earned (%169) -- two witnesses create the
+#     symlink `linengrow/lib_session_root_nest_cue_jam.rye` into `glow/.cache/` while they run, and
+#     `.gitignore` line 196 names it, so RUNNING the roster made this guard red on the next lap
+#     while the tree itself was sound. It subsumes the `seed/` and dot-segment rules above, which
+#     stay written for the reader and for the pass that never has to shell out.
 #   A `*_control.sh` fixture, because a control that proves a guard refuses must PLANT the thing
 #     it refuses -- this scan's own control writes `construction/ITINERARY.md` into a throwaway
 #     repository on purpose, and counting it makes the meter rise as the proof gets stronger. The
@@ -39,7 +46,7 @@
 # USAGE
 #   sh tools/fixtures/phantom_path_scan.sh
 #
-# Driven by tools/phantom_path_witness.rish. Run from the repository root.
+# Driven by tools/p/phantom_path_witness.rish. Run from the repository root.
 
 set -eu
 
@@ -65,7 +72,7 @@ cat "$work/files" "$work/dirs" "$work/subs" | sort -u > "$work/known"
 
 # A literal may travel through a TRACKED symlink -- `pond/apps/brushstroke` is one, pointing at
 # the tracked `brushstroke/` room -- and such a path resolves perfectly well for a reader who
-# clones. tools/tracked_link_witness.rish already gates every tracked symlink at landing inside
+# clones. tools/t/tracked_link_witness.rish already gates every tracked symlink at landing inside
 # the tracked tree, so following one here composes with a promise already proven rather than
 # assuming a new one. The map is prefix -> target, longest prefix winning.
 git ls-files -s | awk '$1=="120000"{ $1=""; $2=""; $3=""; sub(/^[ \t]+/,""); print }' > "$work/tlinks"
@@ -120,6 +127,10 @@ while IFS="$(printf '\t')" read -r src tok; do
   if [ -n "$through" ] && grep -qxF -- "$through" "$work/known"; then continue; fi
   # Resolving nowhere is a plain dangling reference; the dated-path census owns that duty.
   [ -e "$tok" ] || continue
+  # A path git is TOLD to ignore is a declared build artifact, so a reader who clones is
+  # promised its absence rather than its presence. This asks git rather than guessing:
+  # `git check-ignore` consults .gitignore, the excludes file, and every nested rule at once.
+  git check-ignore -q -- "$tok" 2>/dev/null && continue
   echo "$src -> $tok" >> "$work/phantom"
 done < "$work/lits"
 

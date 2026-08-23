@@ -1,0 +1,53 @@
+# tools/h/hunk_part_facets_header_witness.rish — the faceted query header above the narrowed-and-widened shelf (HUNK87).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · parts-marketplace journey · rung HUNK87.
+# Design read: active-designing/date/20260814/20260814-010517_hunk-part-facets-header-typed-groups-and-count-exploration.md
+# Teacher, thanked clean-room: McMaster-Carr's faceted sidebar — the chosen facets echoed and a result count over the
+# wall of parts (concept only, siloed).
+#
+# HUNK82 painted a query header over HUNK79's pure-AND shelf, yet reads only the conjunction. HUNK86 drew the whole
+# faceted grammar on glass (OR within a facet, AND across facets). This rung gives that faceted shelf its header:
+# brushstroke/part_facets_header.rye `format_facets_header` echoes the canonical faceted query and its result count,
+# `facets_header_row` draws it, and `facets_search_screen` stacks it over HUNK86's narrowed-and-widened shelf into one
+# grid. The selftest proves no drift — the echo re-parses to the same query (a fixed point of the parser), a |-free line
+# renders exactly HUNK82's AND header (a strict superset), the header count equals the shelf's count, and the stacked
+# screen equals facets_header_row and facets_search_shelf cell-for-cell — and the named refusals (a malformed clause, a
+# zero/over-ceiling header, a bad offset). A price is a fact echoed and compared, never moved.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_part_facets_header_witness.rish
+
+say "hunk-part-facets-header: Language EN — HUNK87 paints the faceted query header above HUNK86's narrowed-and-widened shelf: the typed groups echoed (OR within a facet, AND across) and an N-results count, stacked into one surface a keeper reads top to bottom."
+say "hunk-part-facets-header: Style Radiant — what a keeper asked, how many were found, and the parts themselves in one reading; the header echoes the query the machine understood (a fixed point of the parser), a |-free line drawing exactly HUNK82's AND header, a strict superset."
+say "hunk-part-facets-header: Lens TAME — pure text-and-painting over HUNK86 facets_search_shelf and HUNK85 count_facets; the header count equals the shelf count (no drift); a price clause is echoed and compared, never moved; positive invariants per fn; a malformed clause, a bad dimension, and a bad offset each refuse by name; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "brushstroke/bin/part_facets_header"
+
+let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_header.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-part-facets-header: build failed — ${build.err}"
+
+# Read the GREEN line from a file — it carries an apostrophe ("parser's") that breaks a shell single-quote round-trip.
+let outfile = "brushstroke/bin/part_facets_header.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "hunk-part-facets-header: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "hunk-part-facets-header: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN part-facets-header' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "hunk-part-facets-header: selftest did not print the GREEN part-facets-header line"
+
+# HUNK86 stays GREEN — the faceted shelf this rung stacks a header above.
+let s = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/part_facets_search.rye -femit-bin=brushstroke/bin/part_facets_search && brushstroke/bin/part_facets_search selftest > brushstroke/bin/part_facets_search.out 2>&1"]
+assert s.ok else "hunk-part-facets-header: HUNK86 part_facets_search re-run failed — see brushstroke/bin/part_facets_search.out"
+let s_green = run ["sh" "-c" "grep -q 'GREEN part-facets-search' brushstroke/bin/part_facets_search.out && echo yes"]
+assert (trim s_green.out) == "yes" else "hunk-part-facets-header: HUNK86 part_facets_search did not stay GREEN"
+
+# HUNK85 stays GREEN — the faceted query the header counts and the shelf filters by.
+let f = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/part_facets.rye -femit-bin=image/bin/part_facets && image/bin/part_facets selftest > image/bin/part_facets.out 2>&1"]
+assert f.ok else "hunk-part-facets-header: HUNK85 part_facets re-run failed — see image/bin/part_facets.out"
+let f_green = run ["sh" "-c" "grep -q 'GREEN part-facets' image/bin/part_facets.out && echo yes"]
+assert (trim f_green.out) == "yes" else "hunk-part-facets-header: HUNK85 part_facets did not stay GREEN"
+
+say "hunk-part-facets-header: GREEN — a keeper reads back the facets they widened and narrowed and the honest count of its answers, above the very parts that answer them; the query header a keeper can SEE stands whole (AND HUNK82, faceted HUNK87), and HUNK86 faceted shelf and HUNK85 faceted query beneath stay GREEN. HUNK87 lands."

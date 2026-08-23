@@ -1,0 +1,41 @@
+# tools/s/separable_witness.rish -- the separable convolution fast path proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the EFFICIENCY floor beneath the general NxN kernel. image/convolve_n.rye runs the fully
+# general signed window at any radius, yet it pays (2r+1)^2 taps per pixel -- 1089 taps for a 33x33 window. Many of the kernels a
+# surface actually reaches for are SEPARABLE: the 2D weight is the outer product of a horizontal 1D kernel and a vertical 1D
+# kernel, so the 2D convolution equals two 1D passes at 2*(2r+1) taps -- 66 for that same 33x33 window. The wide-kernel work
+# drops from square to linear.
+#
+# The crux this witness proves is that the separable fast path is not an approximation -- it is the SAME image: the two-pass 5x5
+# Gaussian and 5x5 box mean reproduce image/convolve_n.rye's one-pass output byte-for-byte, on a black-and-white checker and on a
+# colored translucent field, because both 1D normalizations are DEFERRED to a single final divide (so the integer window sum is
+# identical) and the clamp-to-edge border is itself separable (so clamping x in the row pass and y in the column pass lands the
+# identical border pixel a single 2D clamp would). On metal: the 5x5 Gaussian spreads a dot into a strictly descending symmetric
+# bell and holds a flat field flat; a directional (motion) kernel blurs across only, leaving a vertical line sharp down its
+# columns; a 1x1 image keeps its pixel under both passes; alpha is carried not convolved; the filtered image round-trips through
+# the open QOI codec byte-for-byte; a zero radius, an over-max radius, a mismatched weight count, a zero and over-max divisor, an
+# over-max bias and weight, and an empty source refuse by name; the same filter is deterministic. No network, no key, no funds --
+# the wide blur a photo surface leans on, run at the cost a wide blur should cost.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/separable_witness.rish
+
+say "separable: Language EN -- Season G convolution; an RGBA image filtered by a separable kernel in two 1D passes, the fast path a box mean, every Gaussian, and a motion blur reduce to, so a wide blur costs 2*(2r+1) taps rather than (2r+1)^2."
+say "separable: Style Radiant -- a SeparableKernel is a horizontal and a vertical 1D weight slice (each 2r+1 signed weights), a divisor that is the product of the two 1D normalizations, and a bias; the horizontal pass keeps the raw sum, the vertical pass sums those and divides ONCE, so the two-pass result is byte-for-byte the general convolve_n at the outer-product kernel, the alpha carried."
+say "separable: Lens TAME -- u32 in-memory counts, the radius, weight count, divisor, weights, and bias each bounded and refused by name; each function states its invariants positively; the source and kernel guarded once up front so a refusal allocates nothing; the window clamps at the border so each 1D pass is always full; the row intermediate i32 and the column sum i64 so a wide heavy kernel never wraps before the single divide; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/separable"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/separable.rye -femit-bin=${bin}"]
+assert build.ok else "separable: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "separable: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "separable: ${out}"
+
+assert selftest.out contains "GREEN image-separable" else "separable: selftest did not print the GREEN line"
+
+say "separable: GREEN -- a separable kernel filters an image in two 1D passes, reproducing image/convolve_n.rye's general NxN output byte-for-byte at a fraction of the taps, on metal."

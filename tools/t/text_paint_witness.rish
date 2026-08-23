@@ -1,0 +1,86 @@
+# tools/t/text_paint_witness.rish -- the open text-painting rung proves itself on metal (Season G, the paint half).
+#
+# Season G (Open Media Primitives) - the rung image/text_layout.rye named as the one it prepares. Where text_layout
+# PLACES a string's glyphs along a line and MEASURES their widths (pure geometry, no pixel touched), this rung PAINTS
+# that placement into an RGBA image. It is pure composition over the family's public APIs:
+#   - image/text_layout.rye places each glyph (its pen origin),
+#   - image/glyph.rye hands each glyph a coverage grid (one byte per cell, 0 no ink .. 255 full ink),
+#   - image/color.rye composites an ink color over the destination (Porter-Duff src-over),
+#   - image/qoi.rye owns the RGBA target (a Pixmap, four bytes per cell).
+# So the nine hand-drawn open corpora become not only usable geometry but a string SEEN on an image.
+#
+# The crux this witness proves: painting 'Hi!' red over a white canvas changes EXACTLY the number of pixels that carry
+# ink (no stray pixel, no missed cell); every changed pixel is exactly the ink and every other stays the background,
+# byte-for-byte; the paint is deterministic and paint_line matches the placed path byte-for-byte; a transparent ink is
+# a true no-op; a half-alpha ink blends through color.over exactly, not by a guess; the empty line paints nothing; and
+# a line that would overrun the target's width OR its height refuses PaintOutOfBounds BY NAME rather than writing a
+# pixel outside the buffer. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/text_paint_witness.rish
+
+say "text-paint: Language EN -- Season G's paint rung; the half that composites a laid-out string's glyph coverage into an RGBA image, so the nine open corpora become a string seen, not only measured."
+say "text-paint: Style Radiant -- pure composition over image/text_layout (geometry), image/glyph (coverage), image/color (src-over), and image/qoi (the RGBA target); no new storage, codec, palette, or geometry."
+say "text-paint: Lens TAME -- u32 pixel coordinates, u8 color and coverage bytes; the painted box is bound-checked ONCE up front so the inner loop is proven in-bounds; an overflowing paint is a named refusal (PaintOutOfBounds); no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/text_paint"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/text_paint.rye -femit-bin=${bin}"]
+assert build.ok else "text-paint: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "text-paint: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "text-paint: ${out}"
+
+assert selftest.out contains "GREEN image-text-paint" else "text-paint: selftest did not print the GREEN paint line"
+
+assert selftest.out contains "changed exactly 32 pixels" else "text-paint: the paint did not change exactly the inked-cell count"
+
+assert selftest.out contains "every changed pixel is the ink" else "text-paint: an ink pixel or a background pixel did not land exactly"
+
+assert selftest.out contains "half-alpha blends through color.over exactly" else "text-paint: the partial-alpha blend did not match color.over"
+
+assert selftest.out contains "PaintOutOfBounds refused by name" else "text-paint: the out-of-bounds refusal was not proven"
+
+assert selftest.out contains "clipping paints only the visible part" else "text-paint: the clipping painter did not paint only the visible part"
+
+assert selftest.out contains "matching the strict paint pixel-for-pixel" else "text-paint: the clipped pixels did not match the strict paint"
+
+assert selftest.out contains "a wrapped paragraph paints 2 stacked lines" else "text-paint: paint_paragraph did not stack the wrapped lines into a block"
+
+assert selftest.out contains "= summed line ink, disjoint bands" else "text-paint: the paragraph changed pixels did not equal the summed line ink"
+
+assert selftest.out contains "top band equals a standalone single-line paint" else "text-paint: the paragraph's top line band did not match a standalone single-line paint"
+
+assert selftest.out contains "refuses ParagraphOutOfBounds by name leaving the buffer untouched" else "text-paint: a too-short canvas did not refuse ParagraphOutOfBounds all-or-nothing"
+
+assert selftest.out contains "the paragraph aligns" else "text-paint: paragraph alignment did not prove out"
+
+assert selftest.out contains "alignment shifts ink sideways, adding none and dropping none" else "text-paint: centre/right-set did not match the offset composition at an equal pixel count"
+
+assert selftest.out contains "the paragraph justifies" else "text-paint: paragraph justification did not prove out"
+
+assert selftest.out contains "the paragraph clips" else "text-paint: paint_paragraph_clipped did not clip the block into a fixed box"
+
+assert selftest.out contains "a box it fits in paints byte-for-byte the strict paint" else "text-paint: a fitting box did not clip identically to the strict paragraph paint"
+
+assert selftest.out contains "paints just the first line" else "text-paint: a one-line-tall box did not paint only the visible first line"
+
+assert selftest.out contains "the paragraph sits in a box" else "text-paint: paint_paragraph_boxed did not place the block within a taller box"
+
+assert selftest.out contains "a top set reproduces the plain paragraph at the box origin" else "text-paint: a top vertical set did not reproduce the plain paragraph at the box origin"
+
+assert selftest.out contains "vertical placement moves the whole stack down as one" else "text-paint: middle/bottom set did not match a shifted paint at an equal pixel count"
+
+assert selftest.out contains "refuses ParagraphBoxTooShort by name leaving the buffer untouched" else "text-paint: a box shorter than the block did not refuse ParagraphBoxTooShort all-or-nothing"
+
+assert selftest.out contains "the paragraph sits in a 2-D box" else "text-paint: paint_paragraph_in_box did not place the block within a 2-D box"
+
+assert selftest.out contains "each corner equal to a plain aligned paint at the box offset" else "text-paint: a 2-D corner did not equal a plain aligned paint at the box offset"
+
+assert selftest.out contains "refusing ParagraphBoxTooNarrow on a box too narrow" else "text-paint: a box too narrow did not refuse ParagraphBoxTooNarrow on both axes"
+
+say "text-paint: GREEN -- the fonts become a string seen; ink composites through coverage exactly where the glyphs carry it, the paint is deterministic, a partial alpha blends true, a line that would overrun refuses by name, paint_placed_clipped paints only the visible part -- matching the strict paint pixel-for-pixel, degrading to a clean no-op fully off-canvas -- paint_paragraph stacks a never-overflow wrapped block into stepped lines, all-or-nothing, refusing ParagraphOutOfBounds by name on a canvas too short, paint_paragraph_justified flushes every wrapped line but the last to both margins of the column (the last left-set), a flat-edged newspaper block that changes the same pixel count as the left-set paint, paint_paragraph_clipped shows as much of that block as a fixed box holds where the strict painter would refuse, and paint_paragraph_boxed places the whole block top-, middle-, or bottom-set within a taller box -- a pure vertical shift that changes the same pixel count, refusing ParagraphBoxTooShort by name where the box is shorter than the block, and paint_paragraph_in_box places the block within a 2-D box on both axes at once -- left/centre/right and top/middle/bottom together, each corner equal to a plain aligned paint at the box offset, refusing ParagraphBoxTooNarrow or ParagraphBoxTooShort where the box does not hold it."

@@ -17,34 +17,34 @@
 # is deliberately untracked, so a fresh clone reads `never run here` rather than inheriting
 # another machine's memory.
 #
-# HOW IT IS KEPT HONEST. tools/standing_equipment_witness.rish proves every path exists,
+# HOW IT IS KEPT HONEST. tools/s/standing_equipment_witness.rish proves every path exists,
 # refuses a run card naming a guard the roster never seated, and refuses any recorded RED.
 # Add a guard by adding a record here; the meter counts the file rather than a sentence.
 
 format standing-equipment-v1
-stamp 20260823.045448
+stamp 20260823.144100
 voice Kyri
 runner tools/fixtures/standing_equipment_run.sh
 card construction/standing-equipment-runs.kyri
 
 guard banner_room
-path tools/banner_room_witness.rish
+path tools/b/banner_room_witness.rish
 seated 20260822.231949
 
 guard dated_path
-path tools/dated_path_witness.rish
+path tools/d/dated_path_witness.rish
 seated 20260821.203103
 
 guard dated_path_repoint
-path tools/dated_path_repoint_witness.rish
+path tools/d/dated_path_repoint_witness.rish
 seated 20260821.203103
 
 guard documented_room
-path tools/documented_room_witness.rish
+path tools/d/documented_room_witness.rish
 seated 20260821.203103
 
 guard empty_document
-path tools/empty_document_witness.rish
+path tools/e/empty_document_witness.rish
 seated 20260823.041442
 
 guard equinox_e123_living_pin_guard
@@ -52,39 +52,43 @@ path tools/gen/season/equinox_e123_living_pin_guard_witness.rish
 seated 20260817.000000
 
 guard exec_bit
-path tools/exec_bit_witness.rish
+path tools/e/exec_bit_witness.rish
 seated 20260823.025333
 
 guard fetch_toolchain
-path tools/fetch_toolchain_witness.rish
+path tools/f/fetch_toolchain_witness.rish
 seated 20260821.203103
 
 guard foundations_link
-path tools/foundations_link_witness.rish
+path tools/f/foundations_link_witness.rish
 seated 20260821.230319
 
 guard generated_page_freshness
-path tools/generated_page_freshness_witness.rish
+path tools/g/generated_page_freshness_witness.rish
 seated 20260823.000512
 
 guard geode_libraries
-path tools/geode_libraries_witness.rish
+path tools/g/geode_libraries_witness.rish
 seated 20260821.203103
 
+guard living_card_ascii
+path tools/l/living_card_ascii_witness.rish
+seated 20260817.000000
+
 guard living_docs_lint
-path tools/living_docs_lint.rish
+path tools/l/living_docs_lint.rish
 seated 20260821.203103
 
 guard nib_honesty
-path tools/nib_honesty_witness.rish
+path tools/n/nib_honesty_witness.rish
 seated 20260821.211943
 
 guard radiant_negation
-path tools/radiant_negation_witness.rish
+path tools/r/radiant_negation_witness.rish
 seated 20260821.211943
 
 guard readme_metrics
-path tools/readme_metrics_witness.rish
+path tools/r/readme_metrics_witness.rish
 seated 20260821.203103
 
 guard reds_ledger_monotone
@@ -92,53 +96,57 @@ path tools/gen/season/reds_ledger_monotone_witness.rish
 seated 20260821.235936
 
 guard room_bound
-path tools/room_bound_witness.rish
+path tools/r/room_bound_witness.rish
 seated 20260821.203103
 
 guard rye_bridge_cycle
-path tools/rye_bridge_cycle_witness.rish
+path tools/r/rye_bridge_cycle_witness.rish
 seated 20260821.232733
 
 guard sha3_file
-path tools/sha3_file_witness.rish
+path tools/s/sha3_file_witness.rish
 seated 20260821.203103
 
 guard phantom_path
-path tools/phantom_path_witness.rish
+path tools/p/phantom_path_witness.rish
 seated 20260823.010937
 
 guard prose_register
-path tools/prose_register_witness.rish
+path tools/p/prose_register_witness.rish
 seated 20260823.045448
 
 guard seed_link
-path tools/seed_link_witness.rish
+path tools/s/seed_link_witness.rish
 seated 20260823.034321
 
 guard shipped_binary_claim
-path tools/shipped_binary_claim_witness.rish
+path tools/s/shipped_binary_claim_witness.rish
 seated 20260821.203103
 
 guard tame_style_check
-path tools/tame_style_check.rish
+path tools/t/tame_style_check.rish
 seated 20260707.164612
 
 guard sow
-path tools/sow_witness.rish
+path tools/s/sow_witness.rish
 seated 20260823.134057
 
 guard tool_path
-path tools/tool_path_witness.rish
+path tools/t/tool_path_witness.rish
 seated 20260823.131241
 
+guard tool_path_repoint
+path tools/t/tool_path_repoint_witness.rish
+seated 20260823.144100
+
 guard tracked_link
-path tools/tracked_link_witness.rish
+path tools/t/tracked_link_witness.rish
 seated 20260823.002511
 
 guard vocabulary_collection
-path tools/vocabulary_collection_witness.rish
+path tools/v/vocabulary_collection_witness.rish
 seated 20260821.211943
 
 guard width_check
-path tools/width-check.rish
+path tools/w/width-check.rish
 seated 20260620.210812

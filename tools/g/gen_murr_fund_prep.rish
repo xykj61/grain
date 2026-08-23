@@ -1,0 +1,5 @@
+# tools/g/gen_murr_fund_prep.rish — accrete shim → tools/gen/fund/gen_murr_fund_prep.rish (Generator Season s5)
+if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/fund/gen_murr_fund_prep.rish"]
+if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/fund/gen_murr_fund_prep.rish" args[0]]
+if r.out != "" then say r.out
+exit r.code

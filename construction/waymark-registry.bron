@@ -7,7 +7,7 @@ seal b9f77066d65053ab81d5ee61cf5dfe9996fd3a5530900a906299295c15f6d1fda42cd339575
 # The immutable, self-verifying registry of every waymark ever drawn (living, retired, abandoned, transient, hand-seated).
 # Each corpus-drawn row is proven on metal: SHA3-512(input)[:8] as hex, mod corpus_size, +1 = index; corpus[index] = mark.
 # The seal is the SHA3-512 of the sealed body below (from the marker line, exclusive). Any edit breaks the seal.
-# Witness: tools/waymark_registry_witness.rish -- verifies the seal AND re-derives every corpus mark. Corpus pin: tools/fixtures/flw-four-letter.txt.
+# Witness: tools/w/waymark_registry_witness.rish -- verifies the seal AND re-derives every corpus mark. Corpus pin: tools/fixtures/flw-four-letter.txt.
 # Re-sealed 20260817.224342 under the waymark-elder debride: the five breach-elder rows removed; the registry records only living and hand-seated marks.
 # Re-sealed 20260821.023219: DISC seated for the Season G SLH-DSA ladder (Keaton's word -- name the arc and start it).
 # ---- sealed body ----

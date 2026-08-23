@@ -1,0 +1,36 @@
+# tools/d/dahl_j10_skate_group_witness.rish — Season 3 Journey 10 (Membership), Rung 1.
+#
+# Season 3, Commons — a community shapes its own membership by consent. Journey 9 (Skate) drew consent at
+# its smallest size: two keepers linked only by mutual request. Journey 10 draws the next size up, the
+# load-bearing one — a group, the one surface settlement/names.rye names in its own header as the surface
+# that genuinely needs consensus, proven now at more than two keepers. pond/apps/skate_group.rye fixes
+# the crux — a candidate is seated only when a quorum of distinct members votes. A group opens with a
+# founder roster and a fixed quorum t (2 <= t <= roster); a member votes for a candidate; the candidate
+# is admitted only when t distinct members have voted. One keeper voting twice is counted once
+# (AlreadyVoted), so a lone steward can never manufacture a quorum; admission is derived from the
+# distinct-vote count, never written. A non-member vote (NotMember), a re-admit (AlreadyMember), a lone
+# quorum (BadThreshold), an unreachable quorum (TooFewFounders), a doubled founder (DuplicateFounder),
+# and a full roster (GroupFull) each refuse. Pure state machine — no signing yet (r2 binds each vote to a
+# settled Kumara identity). Facts only; no network, no key, no real identity (serve reaches the custody
+# gate); demo keeper points only.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/dahl_j10_skate_group_witness.rish
+
+say "dahl-j10r1: Language EN — a candidate is seated only when a quorum of distinct members votes; one hand can never fake a quorum."
+say "dahl-j10r1: Lens TAME — consent proven past two keepers; a non-member, a re-admit, a lone quorum, an unreachable quorum, a doubled founder, and a full roster each refuse."
+
+let zig = "vendor/zig-toolchain/zig"
+
+let bin = "pond/bin/skate-group"
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/skate_group.rye -femit-bin=${bin}"]
+assert build.ok else "dahl-j10r1: skate_group build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "dahl-j10r1: skate_group selftest exited non-zero"
+assert selftest.out contains "GREEN" else "dahl-j10r1: selftest did not speak GREEN"
+assert selftest.out contains "only when a quorum of two distinct members voted did the candidate take a seat" else "dahl-j10r1: quorum-of-two crux missing"
+assert selftest.out contains "consent proven past two keepers" else "dahl-j10r1: quorum-past-two crux missing"
+assert selftest.out contains "one hand can never fake a quorum" else "dahl-j10r1: lone-steward crux missing"
+
+say "GREEN: dahl-j10r1 — skate_group seats a candidate only by a quorum of distinct members; one hand can never fake a quorum, and consent is proven past two keepers."

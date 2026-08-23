@@ -1,0 +1,42 @@
+# tools/cr/crypto_hybrid_signed_sealed_witness.rish — the HYBRID sealed-AND-signed door: a message sealed TO a hybrid identity AND signed BY a hybrid identity,
+# so one frame carries both confidentiality and provenance hardened on BOTH families at once — the classical Ed25519/X25519 world Comlink uses today AND the
+# post-quantum ML-DSA/ML-KEM world a lattice identity carries, authored in pure Rye. It completes the hybrid surface (the hybrid identity signs on both
+# families, the hybrid sealed door hides on both, and this door does both in one frame); the hybrid analog of crypto/kumara_pq_sealed.rye. It composes only
+# GREEN rungs (crypto/hybrid_sealed.rye the confidentiality onion, crypto/hybrid_identity.rye the hybrid signature), authoring no new cryptography (Season G).
+#
+# Season: crypto — provenance is a hybrid signature (Ed25519 beside ML-DSA, genuine only when both verify) over a BLAKE2b-512 digest of the sealed frame;
+# confidentiality is the onion of the classical X25519 box inside the post-quantum ML-KEM box. The envelope is opened verify-before-trust: the sender's two
+# public keys are checked against the reader's expectation and the hybrid signature verified BEFORE either agreement is opened.
+# Design read: active-designing/date/20260816/20260816-195850_the-hybrid-sealed-door-both-agreements.md · active-designing/date/20260816/20260816-192400_post-quantum-identity-is-dual-key.md.
+# Clean-room: BIP-39, SLIP-0010, RFC 5869, FIPS 203/204 are public standards; the framing is our own Rye wiring over our own GREEN rungs, no line copied
+# (.claude/rules/gratitude-licenses.md).
+#
+# crypto/hybrid_signed_sealed.rye is proven at every tier (small ML-DSA-44/ML-KEM-512, default ML-DSA-65/ML-KEM-768, large ML-DSA-87/ML-KEM-1024): a
+# confidential-and-authenticated round-trip across five plaintext lengths recovering the plaintext and both verified sender keys, and six refusals — a wrong
+# recipient (OpenFailed), a wrong expected sender (UnexpectedSigner, before any agreement is opened), a tampered inner ciphertext (BadSignature), a tampered
+# Ed25519 signature byte (BadSignature — a forger who breaks only the classical family is caught), a tampered ML-DSA signature byte (BadSignature — a forger
+# who breaks only the post-quantum family is caught), plus bad magic and truncation. Each composed half is proven one rung down. Purely local — no key held,
+# no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_hybrid_signed_sealed_witness.rish
+
+say "crypto-hybrid-signed-sealed: Language EN — the hybrid sealed-and-signed door: a message sealed to a hybrid identity and signed by a hybrid identity, so one frame carries both confidentiality and provenance hardened on both families at once — the classical Ed25519/X25519 world beside the post-quantum ML-DSA/ML-KEM world. It completes the hybrid surface and is the hybrid analog of crypto/kumara_pq_sealed. It composes crypto/hybrid_sealed (the confidentiality onion) and crypto/hybrid_identity (the hybrid signature), authoring no new cryptography."
+say "crypto-hybrid-signed-sealed: Style Radiant — the law is stated positively as one frame that proves who sent it and hides it from everyone else, falling only when both worlds fall at once. A forger who breaks one signature family is caught; an eavesdropper who breaks one agreement family reads nothing; only an adversary who breaks both families on both sides defeats it. The envelope is opened verify-before-trust — the sender named and the hybrid signature verified before either agreement is ever opened."
+say "crypto-hybrid-signed-sealed: Lens TAME — contract asserts (the header cursor consuming exactly the fixed prefix, the whole envelope within the caller's buffer), bounded copy loops, named-error composition from both the sealed onion and the hybrid signature. Proven at all three tiers with no fabricated constant: a confidential-and-authenticated round-trip recovers the plaintext and both verified sender keys; six refusals — a wrong recipient (OpenFailed), a wrong expected sender (UnexpectedSigner), a tampered inner frame (BadSignature), each signature half tampered alone (BadSignature), bad magic, and truncation. The module's own functions call no std.crypto — each half is proven one rung down. Every identity is a TEST hybrid identity from a published-vector mnemonic — no key held, no network, no funds, no device; a real hybrid identity from the maintainer's own phrase stays the custody gate, constant-time timing-safety the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/hybrid_signed_sealed"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/hybrid_signed_sealed.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-hybrid-signed-sealed: build failed — ${build.err}"
+
+let outfile = "crypto/bin/hybrid_signed_sealed.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-hybrid-signed-sealed: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-hybrid-signed-sealed: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-hybrid-signed-sealed' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-hybrid-signed-sealed: selftest did not print the GREEN crypto-hybrid-signed-sealed line"

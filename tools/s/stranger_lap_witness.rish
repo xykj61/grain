@@ -1,0 +1,30 @@
+# stranger_lap_witness.rish — OPEN_QUESTIONS #4 answer home (warm path · report).
+#
+# Runs the warm stranger lap and asserts the live bound comparator (elapsed
+# strictly under bound), not merely that elapsed/bound strings were printed.
+# Honest scope: warm = local path · --depth 1 · pre-warmed toolchain. Does not
+# prove network clone, full history, or cold install — see worker header.
+#
+# Advisory / report seat — not wired into parity_ch01. Cold path is a mode on
+# the same worker (STRANGER_LAP_MODE=cold). Framework cold REPORT landed
+# 20260725.174428 (29s under 1800); keep the claim ceiling until several hosts
+# justify tightening.
+#
+#   rishi/bin/rishi run tools/s/stranger_lap_witness.rish
+# Bound-negative fixture (proves comparator is live):
+#   rishi/bin/rishi run tools/s/stranger_lap_bound_negative_witness.rish
+
+let walk = run ["env" "STRANGER_LAP_MODE=warm" "sh" "tools/s/stranger_lap_worker.sh"]
+assert walk.ok else "stranger lap warm walk failed: ${walk.err}${walk.out}"
+assert walk.out contains "STRANGER_MODE=warm" else "stranger lap must print mode=warm"
+assert walk.out contains "STRANGER_CONFIG=local-path depth=1 toolchain=prewarmed" else "stranger lap missing warm config line"
+assert walk.out contains "STRANGER_BOUND_OK=1" else "stranger lap bound comparator did not OK"
+assert walk.out contains "STRANGER_ELAPSED_SECONDS=" else "stranger lap missing elapsed"
+assert walk.out contains "STRANGER_BOUND_SECONDS=1800" else "stranger lap seated bound must be claim ceiling 1800"
+assert walk.out contains "GREEN: stranger lap" else "stranger lap missing GREEN claim"
+assert walk.out contains "crockford_stamp_witness" else "stranger lap must name the seated witness"
+assert walk.out contains "REPORT:" else "stranger lap report posture line missing"
+
+# Surface worker REPORT lines so parity_ch01 (and eyes) can read STRANGER_* keys.
+say walk.out
+say "GREEN: stranger lap warm REPORT — local · depth 1 · prewarmed · bound comparator live · ceiling 1800s (OPEN_QUESTIONS #4 warm)."

@@ -1,0 +1,42 @@
+# tools/h/hunk_crop_gesture_witness.rish — drag a rectangle on the picture, it becomes a crop edit, on metal (HUNK60).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK60.
+# Design read: active-designing/date/20260813/20260813-222800_hunk-crop-gesture-exploration.md.
+# Teacher, thanked clean-room: the crop gesture of a photo app (iCloud Photos / Google Photos) — a keeper drags a
+# rectangle over the picture and the app crops to it (concept only, siloed).
+#
+# HUNK3 gave the Photos app a pure crop verb; the itinerary names cropping the crux gesture of the app. This rung is the
+# gesture: CropGesture turns a drag (HUNK50's down/move/up law, in image pixels) into a normalized, in-bounds .crop edit
+# a cursor can push, with a live preview through HUNK3's crop. A degenerate drag refuses NoRect rather than an empty crop.
+# No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_crop_gesture_witness.rish
+
+say "hunk-crop-gesture: Language EN — HUNK60 turns a drag on the picture into a .crop edit; press anchors a corner, a sweep sizes the rectangle, lift commits."
+say "hunk-crop-gesture: Style Radiant — a keeper finally crops by dragging a rectangle, in any direction, and the dragged rectangle is exactly what commit produces; a dragged crop joins the same non-destructive history as every other verb."
+say "hunk-crop-gesture: Lens TAME — a pure composition over HUNK3 crop and HUNK11 vocabulary; the rectangle is in-bounds by construction, a degenerate drag refuses NoRect and a zero-dimension image refuses BadImage by name; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/crop_gesture"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/crop_gesture.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-crop-gesture: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-crop-gesture: selftest exited non-zero — ${selftest.out}"
+
+# The claim checks use Rishi's native `contains` — the output is a Rishi value, never interpolated into a shell
+# single-quoted string, so an apostrophe or brace in the GREEN line can never break a check (the loom for REDS %76).
+let out = trim selftest.out
+say "hunk-crop-gesture: ${out}"
+
+assert out contains "GREEN crop-gesture" else "hunk-crop-gesture: selftest did not print the GREEN crop-gesture line"
+assert out contains "whose live preview equals a direct crop cell-for-cell and whose edit round-trips render/parse/apply to the same cropped image" else "hunk-crop-gesture: the dragged crop did not equal a direct crop or did not round-trip the vocabulary"
+assert out contains "a reverse drag normalizes to the same rectangle (direction never matters)" else "hunk-crop-gesture: a reverse drag did not normalize to the same rectangle"
+assert out contains "corners past the edges clamp to the whole image (cropping to it recovers the source)" else "hunk-crop-gesture: corners past the edges did not clamp"
+assert out contains "a tap and a zero-width sweep each refuse NoRect rather than commit an empty crop" else "hunk-crop-gesture: a degenerate drag did not refuse NoRect"
+assert out contains "a move with no press moves nothing" else "hunk-crop-gesture: an unarmed move moved a corner"
+assert out contains "a zero-dimension image refuses BadImage at open" else "hunk-crop-gesture: a bad image did not refuse by name"
+
+say "hunk-crop-gesture: GREEN — a drag on the picture becomes an in-bounds, non-destructive .crop edit whose preview equals a direct crop and whose edit round-trips the vocabulary; normalizing any direction, clamping to the image, and refusing a degenerate drag NoRect and a bad image BadImage by name; no network, no key, no funds."

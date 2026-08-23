@@ -36,7 +36,7 @@
 #   sh tools/fixtures/shipped_binary_claim_scan.sh
 #   sh tools/fixtures/shipped_binary_claim_scan.sh <dir>   # scan a throwaway tree, for the control
 #
-# Driven by tools/shipped_binary_claim_witness.rish. Run from the repository root.
+# Driven by tools/s/shipped_binary_claim_witness.rish. Run from the repository root.
 
 set -eu
 

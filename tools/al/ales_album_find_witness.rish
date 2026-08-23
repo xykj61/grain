@@ -1,0 +1,38 @@
+# tools/al/ales_album_find_witness.rish — resolve a track by name in a record: find(am, name) returns the track's index or null,
+# name_of / digest_of read its name and its content-address handle by index (ALES231).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES231.
+# Design read: active-designing/date/20260815/20260815-144122_fill-ales231-lotus-album-find.md
+# Idiom kin: lotus/library_find.rye (ALES228, the find / name_of resolve idiom one level up) · lotus/album_manifest.rye (ALES224, the
+# opened record this searches) · lotus/album_sheet.rye (ALES225, the readable page this makes usable). A read — no new frame, no new
+# hash, no error union.
+#
+# lotus/album_find.rye resolves a track by name in an opened album manifest. The selftest proves: a present name resolves to its index
+# in order and digest_of hands back the exact digest the manifest holds (the resolve law); a name the record lacks returns null, and a
+# prefix of a name still misses (the absence law); a null answer means every track was compared (the first-match law); a search over a
+# zero-track record returns null (the empty law). A pure lookup only — no real file, no DAC, no network, no keys, no funds, no real
+# device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_album_find_witness.rish
+
+say "ales-album-find: Language EN — ALES231 resolves a track by name in a record: find(am, name) returns the track's index or null, and name_of / digest_of read its name and its 64-hex content-address handle by index — the resolve every later per-track Lotus workflow (open · compare · cite THIS track) begins from."
+say "ales-album-find: Style Radiant — a resolve turns a listing into an index; the find / name_of idiom lifted whole from library_find.rye (ALES228) one level down, a miss an honest null rather than a fault; it brings the album level to parity with the library level (content address · readable page · resolve), the resolve law, the absence law, the first-match law, and the empty law each proven on metal."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/album_find"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/album_find.rye -femit-bin=${bin}"]
+assert build.ok else "ales-album-find: build failed — ${build.err}"
+
+let outfile = "lotus/bin/album_find.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-album-find: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-album-find: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-album-find' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-album-find: selftest did not print the GREEN ales-album-find line"
+
+say "ales-album-find: GREEN — a keeper reaches straight into a record by track name now, and the album level carries its full working set (content address · readable page · resolve), at parity with the library level. The next Lotus crux still names who made it — a signed carry (crypto seam) on Keaton's word."

@@ -1,0 +1,37 @@
+# tools/al/ales_smooth_trim_witness.rish — the smoothed silence trim: smooth the runs through ALES101 before stripping the silence (ALES102).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES102.
+# Design read: active-designing/date/20260815/20260815-001200_fill-ales102-lotus-smoothed-silence-trim.md
+# Stands on: lotus/trim_silence.rye (ALES96 — the silence stripper, the min-zero twin), lotus/smooth_runs.rye (ALES101 — the run-length smoother), lotus/segment.rye
+# (ALES95 — the segmenter), lotus/timeline.rye (ALES2 — the Clip and cut), lotus/voiced.rye (ALES94 — the .silent verdict). ALES96 strips the RAW segmentation, which
+# flickers — a loud tick in a pause reads voiced and is KEPT, a quiet frame between words reads silent and is CUT; smoothing first relabels the short tick silent
+# (stripped) and the short gap voiced (kept). One knob turns a literal silence remover into a speech-aware one.
+#
+# lotus/smooth_trim.rye segments [0, clip.len), smooths the runs with min_run, then walks the SMOOTHED runs BACK TO FRONT and cuts every .silent run. The crux is four
+# laws. THE MIN-ZERO LAW: smooth_trim(min=0) equals ALES96's trim_silence byte for byte. THE CONCAT LAW: the result equals the hand-built concatenation of the non-silent
+# smoothed runs. THE DECLICK LAW: a short voiced tick buried in silence, at a min_run past the tick, is removed — strictly shorter than the raw trim. THE KEEP-GAP LAW: a
+# short silent gap between two words, at a min_run past the gap, is kept — strictly longer than the raw trim. The selftest proves all four, plus: an all-silent clip
+# empties, a no-silent clip is unchanged, and an empty clip, a ragged frame length, an inverted band, and an illegal floor each refuse by name, the clip untouched.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_smooth_trim_witness.rish
+
+say "ales-smooth-trim: Language EN — ALES101 built the smoothing hysteresis; this rung is where it pays off. ALES96 strips every silent run from the RAW segmentation, and the raw segmentation flickers: a single loud tick buried in a pause reads voiced, so ALES96 KEEPS the click; a single quiet frame between two words reads silent, so ALES96 CUTS the gap and the words run together. Run ALES101 first and both vanish — the tick, shorter than min_run, is relabeled to the silence around it and stripped; the short gap, shorter than min_run, is relabeled to the speech around it and KEPT. One knob: remove the dead air, spare the breath, drop the click."
+say "ales-smooth-trim: Style Radiant — the rule is stated positively: segment [0, clip.len) into frames, smooth the runs with min_run, then walk the SMOOTHED runs BACK TO FRONT and cut every silent run. The crux stands out as four laws: the min-zero law (min=0 equals ALES96's trim byte for byte), the concat law (the result equals the hand-built concatenation of the non-silent smoothed runs), the declick law (a short voiced tick in silence is removed, strictly shorter than the raw trim), and the keep-gap law (a short silent gap in speech is kept, strictly longer than the raw trim). Honestly, smooth_trim is NOT monotone in min_run — a larger min_run removes more clicks yet keeps more gaps."
+say "ales-smooth-trim: Lens TAME — one mono clip of i16 PCM segmented through ALES95 (all its validation runs before any cut), smoothed through ALES101, then stripped; it edits only by removing whole smoothed-silent frames through ALES2's own cut, fabricating no sample and reordering nothing; min_run is a plain u32 with no illegal value; the error vocabulary is ALES96's TrimError with ALES101's SmoothError (only the honest-unreachable SegmentsFull) reused by name; the smoothing is a CAUSAL hold that cannot rescue a too-short opening run; siloed to lotus/, not a transcript or an adaptive VAD, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/smooth_trim"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/smooth_trim.rye -femit-bin=${bin}"]
+assert build.ok else "ales-smooth-trim: build failed — ${build.err}"
+
+let outfile = "lotus/bin/smooth_trim.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-smooth-trim: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-smooth-trim: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-smooth-trim' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-smooth-trim: selftest did not print the GREEN ales-smooth-trim line"

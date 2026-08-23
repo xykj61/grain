@@ -1,0 +1,42 @@
+# tools/cr/crypto_secp256k1_pubkey_witness.rish — SEC1 public-key serialization for secp256k1, authored in pure Rye as a composition over two
+# already-GREEN stones: the public-key derivation d·G (crypto/secp256k1_ecdsa_sign.rye · derive_public) and the point decompression that lifts a
+# compressed x back to its y (crypto/secp256k1_ecrecover.rye · decompress). It is the rung every address, every wallet import, and the coming
+# BIP-32 hierarchical-deterministic keys reach for: hand a public key as the 33-byte compressed (0x02/0x03‖x) or 65-byte uncompressed (0x04‖x‖y)
+# bytes the ecosystem passes around, and read either one back to its affine coordinates (crypto · Season G · Cryptography).
+#
+# Season: crypto — Season G (the Six-Season double-seat). This rung authors NO new cryptography: q = d·G is the GREEN derive_public, a compressed
+# key's y is recovered by the GREEN ecrecover.decompress, and it contributes only the SEC 2 tag-and-coordinates envelope (SEC 1 §2.3.3). Where
+# eth_address and bitcoin_address derive a HASHED address from a key, this serializes the key ITSELF in its two canonical dresses.
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave, Rye first).
+# Clean-room: the SEC 2 convention is a public standard; the assembly is ours, standing on our own parity-GREEN rungs, never a copied line
+# (.claude/rules/gratitude-licenses.md).
+#
+# Parity is proven at selftest the self-contained way the tree favours — against Zig's own std.crypto.ecc.Secp256k1 as an independent oracle: for
+# eight deterministic test scalars, our compressed and uncompressed encodings equal Zig's toCompressedSec1 and toUncompressedSec1 byte-for-byte,
+# our parse of each recovers exactly Zig's affine coordinates, and our parse of Zig's OWN compressed bytes recovers the same y — so a one-bit error
+# in the tag, coordinate order, or parity would break the match. No published constant is trusted; the oracle is a second implementation. Edge
+# refusals BadLength and BadTag each fire. Purely local — serializing a public key touches no secret; the private scalar is a TEST key, and signing
+# with a real identity key stays the custody gate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_secp256k1_pubkey_witness.rish
+
+say "crypto-secp256k1-pubkey: Language EN — SEC1 public-key serialization: a public key is a curve point, and a curve point has two published dresses. Compressed keeps only x and one parity bit (tag 0x02 even / 0x03 odd), because y² = x³ + 7 fixes y up to sign; uncompressed carries both coordinates behind tag 0x04. This module writes both from a private scalar, writes both from a known point, and parses either back to (x, y) — composed entirely over the GREEN derive_public and decompress, authoring no new cryptography."
+say "crypto-secp256k1-pubkey: Style Radiant — the rung every address, every wallet import, and the coming BIP-32 hierarchical-deterministic keys reach for. serP(point) — the compressed form — is exactly what BIP-32 hashes into each child's derivation; the uncompressed form is the 64-byte body Ethereum expands a key to. One envelope, two dresses, both standing on the same proven tower."
+say "crypto-secp256k1-pubkey: Lens TAME — every frame width named (compressed_bytes 33, uncompressed_bytes 65), every copy bounded, contract asserts on each function; it calls no std codec of its own, only the GREEN derive_public and decompress beneath it. Parity holds against Zig's own std.crypto.ecc.Secp256k1: our encodings equal toCompressedSec1 and toUncompressedSec1 byte-for-byte across eight deterministic scalars, our parse recovers Zig's own affine coordinates, and our parse of Zig's compressed bytes recovers the same y — a one-bit error anywhere would break it. Edge refusals BadLength and BadTag each fire. Purely local — no key, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/secp256k1_pubkey"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/secp256k1_pubkey.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-secp256k1-pubkey: build failed — ${build.err}"
+
+let outfile = "crypto/bin/secp256k1_pubkey.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-secp256k1-pubkey: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-secp256k1-pubkey: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-secp256k1-pubkey' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-secp256k1-pubkey: selftest did not print the GREEN crypto-secp256k1-pubkey line"

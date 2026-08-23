@@ -44,7 +44,7 @@ An **aura** names an atom's width and reading: `@u8` `@u16` `@u32` `@u64`, `@t` 
 <a id="g-call"></a>
 ### ✦ `%-` call — one argument
 
-**Shape:** `%-  double  amount` — gate, then one argument face, against a closed demo set. That line beside its `::` comment is the *entire* fixture [`gen/call-one.glow`](../../../glow/gen/call-one.glow) — a desk is honestly small. **STOA6.** **Source:** [`rune_call.rye`](../../../glow/rune_call.rye) · [`lower_call.rye`](../../../glow/lower_call.rye) · [`tools/glow_run_desk_witness.rish`](../../../tools/glow_run_desk_witness.rish).
+**Shape:** `%-  double  amount` — gate, then one argument face, against a closed demo set. That line beside its `::` comment is the *entire* fixture [`gen/call-one.glow`](../../../glow/gen/call-one.glow) — a desk is honestly small. **STOA6.** **Source:** [`rune_call.rye`](../../../glow/rune_call.rye) · [`lower_call.rye`](../../../glow/lower_call.rye) · [`tools/g/glow_run_desk_witness.rish`](../../../tools/g/glow_run_desk_witness.rish).
 
 <a id="g-call2"></a>
 ### ✦ `%+` two-arg · <a id="g-call3"></a>`%^` three-arg · <a id="g-calln"></a>`%*` named-arg
@@ -110,7 +110,7 @@ An **aura** names an atom's width and reading: `@u8` `@u16` `@u32` `@u64`, `@t` 
 <a id="g-bartis"></a>
 ### ✦ `|=` bartis — the gate
 
-**Shape:** two lines — header `|=  sample=@u32` (or `sample=<named>-shape`), then a body: the **identity** face, or a **call** `%-  <gate>  <sample-face>` against the closed demo set (`double` · `inc` · `dec` · `flip`). The parse is fully token-driven — skip newlines · `|=` · ident · `=` · aura-or-named-shape · newline · body · trailing newlines only — and the module's header is itself a ledger, forty-plus STOA lines from STOA100 to STOA330 recording every widening. Three boundary laws worth learning from: the sample shape must **nest** (`nest_type.assert_aura_nests` / `assert_bartis_named_shape`, refusing as `SampleDoesNotNest`); a call body's argument must be *the sample face itself* (`BodySampleMismatch` otherwise — no silent capture of a stranger); and an unknown gate refuses as `BodyGateNotYetLowered` — the frontier named, never faked. The named-shape allowlist runs `amount`→`nona` (nine fields), plus the tagged `kind`/`xact`/`xfer` — every entry a STOA seat. Twelve refusals in all, `EmptySource` through `BadToken`. **Desks:** identity, call bodies, argv generators (`gate-sample-u32.glow`, STOA101), tagged flips through STOA327. **Source:** [`rune_bartis.rye`](../../../glow/rune_bartis.rye):`parse_source` · [`lower_bartis.rye`](../../../glow/lower_bartis.rye) · [`tools/glow_lower_bartis_witness.rish`](../../../tools/glow_lower_bartis_witness.rish).
+**Shape:** two lines — header `|=  sample=@u32` (or `sample=<named>-shape`), then a body: the **identity** face, or a **call** `%-  <gate>  <sample-face>` against the closed demo set (`double` · `inc` · `dec` · `flip`). The parse is fully token-driven — skip newlines · `|=` · ident · `=` · aura-or-named-shape · newline · body · trailing newlines only — and the module's header is itself a ledger, forty-plus STOA lines from STOA100 to STOA330 recording every widening. Three boundary laws worth learning from: the sample shape must **nest** (`nest_type.assert_aura_nests` / `assert_bartis_named_shape`, refusing as `SampleDoesNotNest`); a call body's argument must be *the sample face itself* (`BodySampleMismatch` otherwise — no silent capture of a stranger); and an unknown gate refuses as `BodyGateNotYetLowered` — the frontier named, never faked. The named-shape allowlist runs `amount`→`nona` (nine fields), plus the tagged `kind`/`xact`/`xfer` — every entry a STOA seat. Twelve refusals in all, `EmptySource` through `BadToken`. **Desks:** identity, call bodies, argv generators (`gate-sample-u32.glow`, STOA101), tagged flips through STOA327. **Source:** [`rune_bartis.rye`](../../../glow/rune_bartis.rye):`parse_source` · [`lower_bartis.rye`](../../../glow/lower_bartis.rye) · [`tools/g/glow_lower_bartis_witness.rish`](../../../tools/g/glow_lower_bartis_witness.rish).
 
 <a id="g-barket"></a>
 ### ✦ `|^` barket — the gate with a helper core
@@ -133,9 +133,9 @@ The **27th digraph** (STOA111), tokenized, parsed, and lowered along the same la
 ## Running a Desk
 
 ```bash
-rishi/bin/rishi run tools/glow_run.rish glow/gen/bound-tick.glow      # a fixture
-rishi/bin/rishi run tools/glow_run.rish glow/gen/sample-u32.glow 42   # a generator, argv
-rishi/bin/rishi run tools/glow_run_desk_witness.rish                  # the whole desk, GREEN
+rishi/bin/rishi run tools/g/glow_run.rish glow/gen/bound-tick.glow      # a fixture
+rishi/bin/rishi run tools/g/glow_run.rish glow/gen/sample-u32.glow 42   # a generator, argv
+rishi/bin/rishi run tools/g/glow_run_desk_witness.rish                  # the whole desk, GREEN
 ```
 
 A fixture bakes its sample; a generator reads argv through Rishi's hand. Welcome exits `0`; the shell stays the hand that runs it.

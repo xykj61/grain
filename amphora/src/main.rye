@@ -30,7 +30,7 @@
 //!   max_carry_chunks (vessel roof / datagram · Q28)
 //!   exit_ok · exit_misread
 //!   Shared vessel bounds stay in amphora/*.rye; agreement via
-//!   tools/amphora_bounds_agree.rish (path C · alias groups · couples markers).
+//!   tools/am/amphora_bounds_agree.rish (path C · alias groups · couples markers).
 //!
 //! Errors (named for the fault — Q5–Q11 · Q20 · Q23–Q24 · Q46):
 //!   UnknownCommand · TooManyWords · MissingOperand · PathTooLong

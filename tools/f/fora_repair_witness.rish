@@ -1,0 +1,41 @@
+# tools/f/fora_repair_witness.rish — the leader heals a follower's divergent suffix (FORA17).
+#
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# FORA17. Design read: active-designing/date/20260814/20260814-083500_fora17-constel-log-repair-matching.md
+# Law kin: .claude/rules/placeholder-ship-names.md — the real-sky round builds the leader through termed decrees whose accepts
+# deframe at the naming-law border, so a real address can never enter the log the repair heals.
+#
+# constel/repair.rye gives the log·term stack the one thing it was missing to survive a REJOIN: a TermedLog whose per-entry term
+# lets a leader tell a conflict from a lag. FORA15's catch-up refused Diverged and stopped; FORA16 proved an old leader can't
+# commit, yet before it is out-voted it can still scribble uncommitted entries into its own log. Repair is the heal: find the
+# highest index where follower and leader agree, truncate the follower's divergent stale-term suffix, append the leader's true
+# entries — Raft's Log Matching Property, named in Constel's terms. The selftest proves: append is ordered and term-monotonic
+# (TermRegressed, LogFull); the Log Matching Property by enumeration; consistent_at gates a suffix; the heal makes a divergent
+# follower match exactly, common prefix unchanged; only the uncommitted tail moves; no fork across repair (two followers with
+# different suffixes both converge); and over a real sky the FORA16 old leader's uncommitted scribbles are precisely the tissue
+# repair removes. Purely local — no socket, no network, no keys, no funds, no real address ever formed.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/fora_repair_witness.rish
+
+say "fora-repair: Language EN — FORA17 heals a rejoining follower: a TermedLog carries the per-entry term so a leader can tell a real conflict from a mere lag, then truncate the follower's uncommitted stale-term suffix and append its own true entries — the common prefix never rewritten."
+say "fora-repair: Style Radiant — every honest pier finds its way back to the one true history; the only tissue a repair removes is the tissue the sky already agreed to forget."
+say "fora-repair: Lens TAME — the TermedLog is bounded (LogFull) and term-monotonic (TermRegressed); truncate_to is the only entry-removing mutation and only ever sheds an uncommitted tail; repair ends with follower.matches(leader) asserted; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/repair"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/repair.rye -femit-bin=${bin}"]
+assert build.ok else "fora-repair: build failed — ${build.err}"
+
+let outfile = "constel/bin/repair.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-repair: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-repair: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-repair' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-repair: selftest did not print the GREEN fora-repair line"
+
+say "fora-repair: GREEN — a rejoining follower's divergent stale-term suffix is repaired to the one true history, no fork; the constel consensus track now heals a pier that forked locally, proven pure on the bench."

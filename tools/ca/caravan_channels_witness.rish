@@ -1,0 +1,17 @@
+# caravan_channels_witness.rish -- Caravan static channel graph self-test witness.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_channels_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/channels"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/channels.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan channels build failed"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan channels selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan channels selftest not GREEN"
+
+say "GREEN: Caravan static channel graph witness passed."

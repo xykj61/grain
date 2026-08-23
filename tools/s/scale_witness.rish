@@ -1,0 +1,44 @@
+# tools/s/scale_witness.rish -- an RGBA image RESAMPLED to a new size by nearest-neighbor, proves itself on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the resize floor beneath the paint rungs, sibling to tools/co/compose_tiled_witness.rish
+# and tools/s/space_paint_witness.rish. Where compose lays one picture over another at its native size, this rung REMAKES
+# the picture at a named size: each destination pixel takes the color of the nearest source pixel, so an upscale doubles
+# whole pixels into clean blocks and a downscale samples one source pixel per destination cell, never inventing a
+# between-color. The verb a surface reaches for whenever a box and a picture disagree on extent -- a thumbnail shrunk from
+# a photo, a pixel-art sprite doubled to read at arm's length, a logo fit to a card. Stands on the open QOI codec
+# (image/qoi.rye) for its buffers, adding the one new map the family lacked and no color math, no blend, no codec.
+# Design read: active-designing/date/20260816/20260816-210735_season-g-color-algebra-crux.md (the open-media floor this joins).
+# Teacher, thanked clean-room: gratitude/w3c-css-color.md (the W3C CSS spec -- public standards only).
+#
+# The crux this witness proves is that a resize maps the nearest source pixel and mixes nothing: an identity resize
+# reproduces the source byte-for-byte; a 2x upscale doubles the four source pixels into four clean 2x2 blocks; a 2x
+# downscale samples the nearest source columns (0 and 2), never an average; a non-integer scale bends the map so a middle
+# cell repeats the first source column; a translucent source keeps its exact alpha byte through the scale (carried, never
+# blended); the scaled image round-trips through the open QOI codec byte-for-byte; a zero dimension, an empty source, and
+# an over-max target each refuse by name having allocated nothing. Nearest not blended -- qoi owns the buffers; this rung
+# only routes each destination pixel to its nearest source pixel. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/scale_witness.rish
+
+say "scale: Language EN -- Season G's resize verb; a keeper names a source and a target size and reads back the same picture at the new extent, each destination pixel the nearest source pixel, on our own open geometry and codec."
+say "scale: Style Radiant -- nearest not blended; image/qoi.rye owns the buffers, and this rung only ROUTES each destination pixel to its nearest source pixel by one integer per-axis map, so an upscale doubles whole pixels and a downscale samples one, inventing no between-color."
+say "scale: Lens TAME -- the destination bound-checked ONCE up front (its pixel count against the module's named ceiling, its dims against the codec's max) before any allocation; the source map one pure per-axis rule seen twice (sx = dx * src_w / dst_w, integer only, no float); all-or-nothing so a refusal allocates nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/scale"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/scale.rye -femit-bin=${bin}"]
+assert build.ok else "scale: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "scale: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "scale: ${out}"
+
+# Check the GREEN claim with Rishi's native `contains`, never a shell grep over interpolated output -- an apostrophe in
+# the selftest prose can never close a shell quote here, the loom REDS %76 taught the tree.
+assert selftest.out contains "GREEN image-scale" else "scale: selftest did not print the GREEN scale line"
+
+say "scale: GREEN -- an RGBA image resampled to a new size by nearest-neighbor, proven on metal: an identity resize reproduced the source byte-for-byte; a 2x upscale doubled whole pixels into clean blocks; a 2x downscale sampled the nearest source columns; a non-integer scale bent the map; a translucent source carried its exact alpha; a byte-for-byte QOI round trip; and every malformed resize refused by name having allocated nothing."

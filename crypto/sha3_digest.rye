@@ -16,7 +16,7 @@
 //! WHAT THIS DOES NOT REPLACE. That spec calls openssl the *independent host oracle*, and it was
 //! right to: a digest checked only against the code that produced it proves less than one checked
 //! against a stranger. This tool is the IMPLEMENTATION, so the lap runs anywhere; openssl stays
-//! the ORACLE wherever it is installed, and `tools/sha3_file_witness.rish` checks our digests
+//! the ORACLE wherever it is installed, and `tools/s/sha3_file_witness.rish` checks our digests
 //! against published FIPS 202 answers so the parity claim rests on a public standard rather than
 //! on whichever tools a given machine happens to carry.
 //!

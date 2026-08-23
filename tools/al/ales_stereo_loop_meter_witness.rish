@@ -1,0 +1,40 @@
+# tools/al/ales_stereo_loop_meter_witness.rish — metering a looping stereo region live (ALES18).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES18.
+# Design read: active-designing/20260814-fill-ales18-lotus-stereo-loop-meter.md
+# Stands on: lotus/stereo_meter.rye (ALES17) — the StereoMeter and feed/peak/rms reused whole; lotus/stereo_loop.rye (ALES16) —
+# the wrapping stereo read the meter is fed, in lockstep off the one head; lotus/loop.rye (ALES14) — the region and enter;
+# lotus/pan.rye (ALES10) — the StereoClip whose two channels share one length; lotus/meter.rye (ALES13) — the Meter and its bound.
+#
+# lotus/stereo_loop_meter.rye meters a LOOPING stereo region live — the ALES16 wrapping head under ALES17's two meters, the VU a
+# musician watches while a marked bar cycles. The crux: metering any WHOLE NUMBER OF CYCLES gives the IDENTICAL per-channel peak
+# and RMS as metering the region once at rest — peak is a max (invariant under repetition) and the K in sum_sq and count cancels
+# EXACTLY under the floor divide, so the live VU never drifts however long it loops. The selftest proves: block-and-cycle
+# invariance at 1-, 2-, 5-sample blocks and 1, 3, 7 cycles; stability across 100 cycles; a loud left and quiet right report
+# distinct levels; a rendered center pan loops-and-meters 0.707 per side (700); metering mutates neither channel; the cycle count
+# is refused past the meter bound. Purely local — no network, no keys, no funds, no real device, no real meter.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stereo_loop_meter_witness.rish
+
+say "ales-stereo-loop-meter: Language EN — ALES18 meters a LOOPING stereo region live: the ALES16 wrapping head under ALES17's two meters, the VU a musician watches while a marked bar cycles."
+say "ales-stereo-loop-meter: Style Radiant — the law is stated positively: metering any whole number of cycles reads the region's OWN true level, identical to the region metered at rest, however long the loop runs."
+say "ales-stereo-loop-meter: Lens TAME — ALES17's StereoMeter reused whole (no new arithmetic); the wrapping read fills both channels in lockstep across the seam (asserted); the cycle count is bounded to ALES13's meter capacity before any read (guarding the u32 product from overflow); read-only, mutating neither channel; siloed to lotus/, no network, no keys, no funds, no device, no meter, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_loop_meter"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_loop_meter.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-loop-meter: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_loop_meter.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-loop-meter: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-loop-meter: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-loop-meter' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-loop-meter: selftest did not print the GREEN ales-stereo-loop-meter line"
+
+say "ales-stereo-loop-meter: GREEN — a looping stereo region metered live off the ALES16 wrapping head under ALES17's two meters, the per-channel level identical to the region at rest for any cycle count and block size. With play, loop, and meter all stereo — and the loop now metered live — the read side's tools compose freely over two channels. The next Lotus rung can name a scrub window, offer the keeper the choice of pan/crossfade law, or (a module seam) a punch region tying playback back to the Mikrophone's capture."

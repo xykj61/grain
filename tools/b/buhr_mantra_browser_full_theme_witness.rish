@@ -1,0 +1,43 @@
+# tools/b/buhr_mantra_browser_full_theme_witness.rish — BUHR Journey 2, Rung 7.
+#
+# One .brush file re-skins the whole component — ground and accent at once. Rung four
+# themed the living edge (the head accent); rung six themed the reading ground
+# (paper/ink). Each proved one axis. This rung proves the property a design system
+# actually promises: a single `.brush` file (pond/apps/hot-edge.brush) sets all three
+# tokens — a dark page, a light ink, a terracotta head — and the same paint_heads
+# lowering re-skins the heads view on both axes together. The two axes are proven by
+# their own honest measures: the ground by role inversion (Flax rules the base canvas,
+# Bark rules the themed one), the accent by a clean zero (terracotta leaves zero
+# pixels on the untouched base canvas — a recolor, not an addition).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/buhr_mantra_browser_full_theme_witness.rish
+
+say "buhr-j2r7: Language EN — one .brush file's paper/ink/head override re-skins the heads view on both axes at once."
+say "buhr-j2r7: Lens TAME — the theme read through the real authoring loop, infused per-key, painted by rung three; ground proven by majority inversion, accent by a clean zero."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/mantra-browser-full-theme"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mantra_browser_full_theme.rye -femit-bin=${bin}"]
+assert build.ok else "buhr-j2r7: mantra_browser_full_theme build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr-j2r7: mantra_browser_full_theme selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr-j2r7: selftest did not speak GREEN"
+assert selftest.out contains "one file re-skins both axes" else "buhr-j2r7: the both-axes re-skin proof is missing"
+assert selftest.out contains "the palette law holds across the whole re-skin" else "buhr-j2r7: warm/low-blue proof across the re-skin missing"
+assert selftest.out contains "text unchanged by the theme" else "buhr-j2r7: additive-glyphs proof missing"
+assert selftest.out contains "refuses a full re-skin — ThemeIncomplete" else "buhr-j2r7: incomplete-theme refuse proof missing"
+
+# Rung four (accent) and rung six (ground) stay their own green binaries — this rung
+# composes both axes without disturbing either.
+let rung4 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mantra_browser_theme_witness.rish 2>&1"]
+assert rung4.ok else "buhr-j2r7: rung four witness regressed"
+assert rung4.out contains "GREEN: BUHR-J2r4" else "buhr-j2r7: rung four lost its green"
+
+let rung6 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mantra_browser_view_theme_witness.rish 2>&1"]
+assert rung6.ok else "buhr-j2r7: rung six witness regressed"
+assert rung6.out contains "GREEN: BUHR-J2r6" else "buhr-j2r7: rung six lost its green"
+
+say "GREEN: BUHR-J2r7 — one .brush file re-skins a whole component on both axes at once; the design-system theme is complete end to end."

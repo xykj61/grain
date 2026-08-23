@@ -1,0 +1,41 @@
+# tools/cl/cluster_seams_witness.rish -- the whole-tree seam decomposition of a cluster skeleton, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/cluster_minimum_spanning_tree.rye grows the skeleton and names its bridge edges;
+# image/cluster_mst_subtrees.rye reads the count-balance of each edge cut and names the most-balanced-by-count seam; image/cluster_subtree_frames.rye
+# reads what one cut's two limbs hold in space and whether their frames overlap. This rung joins those two readings over EVERY bridge at once:
+# seam_decomposition names per bridge its pair, gap, count-balance, and spatial cleanliness; is_clean_seam the per-seam spatial test; clean_seam_count
+# how many seams split cleanly; most_balanced_seam_is_clean whether the count-most-balanced seam is also a clean spatial split. Exact integers, NO
+# float, NO tolerance.
+#
+# The crux this witness proves on metal: a count balance and a spatial cleanliness are two different optima, so the seam that splits the counts most
+# evenly and the seam that splits the plane most cleanly can be OPPOSITE edges of the same tree. On a star-and-tail the count-most-balanced seam
+# over-claims in space while the only clean seam is the count-worst (most_balanced_seam_is_clean FALSE, clean_seam_count 1); on a collinear path every
+# seam splits cleanly and the count-most-balanced middle seam is among them (most_balanced_seam_is_clean TRUE, clean_seam_count 3). A lone-cluster
+# layout refuses NoEdges. Determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cl/cluster_seams_witness.rish
+
+say "cluster_seams: Language EN -- Season G the whole-tree seam decomposition; seam_decomposition names per bridge its pair, gap, count-balance, and spatial cleanliness, is_clean_seam the per-seam spatial test, clean_seam_count how many seams split cleanly, most_balanced_seam_is_clean whether the count-most-balanced seam is also a clean spatial split; NO float, NO tolerance."
+say "cluster_seams: Style Radiant -- compose not braid: this rung owns only the whole-tree join; cluster_minimum_spanning_tree owns build_mst and the edges, cluster_mst_subtrees owns edge_balance and most_balanced_edge, cluster_subtree_frames owns frames_overlap over the two limbs. A reading over a reading over a reading over a reading over a reading over a reading over a reading over a reading over a reading."
+say "cluster_seams: Lens TAME -- the cluster count can never exceed the object ceiling, so the tree holds at most that many minus one seams and the decomposition array holds one slot per seam; a lone-cluster layout refuses NoEdges, a non-bridge pair NotABridge, a zero or past-the-count id BadClusterId, a self pair SameCluster; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/cluster_seams"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/cluster_seams.rye -femit-bin=${bin}"]
+assert build.ok else "cluster_seams: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "cluster_seams: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "cluster_seams: ${out}"
+
+assert selftest.out contains "GREEN image-cluster-seams" else "cluster_seams: selftest did not print the GREEN line"
+assert selftest.out contains "ON A STAR-AND-TAIL THE TWO OPTIMA DIVERGE" else "cluster_seams: the divergence case did not print"
+assert selftest.out contains "the count optimum and the spatial optimum naming opposite edges" else "cluster_seams: the opposite-edges fact did not print"
+assert selftest.out contains "ON A COLLINEAR PATH THE TWO OPTIMA COINCIDE" else "cluster_seams: the coincidence case did not print"
+assert selftest.out contains "the divergence a fact about the LAYOUT not a flaw in either read" else "cluster_seams: the layout-fact conclusion did not print"
+
+say "cluster_seams: GREEN on metal -- the seam a surface offers to pull a group apart, chosen by where the halves come away with a clean visual gap, the count optimum and the spatial optimum naming opposite edges on a star yet the same edge on a path, exact integers with NO float and NO tolerance."

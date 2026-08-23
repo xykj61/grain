@@ -1,0 +1,143 @@
+# caravan_bear_witness.rish -- Caravan bear witness.
+#
+# `mend.rye` taught a run to read its own short verdict and run the plan again
+# for exactly the arcs it lost. It repairs everything it lost, because nothing
+# in the record ever told it otherwise.
+#
+#   A PLAN MAY NAME THE LOSS IT WOULD RATHER CARRY THAN REPAIR.
+#
+# That is the right default and the wrong law: some work is worth doing twice,
+# and some work is worth carrying as a loss -- and only the author of a plan
+# knows which is which.
+#
+# WHAT THIS RUNG PROVES, MEASURED:
+#
+#   * THE NUMBER THE TWO BEARINGS DISAGREE ON IS ARCS RE-RUN AGAINST THE PLAN'S
+#     OWN WORD. Every count before it weighs a harm -- reach a dependent held,
+#     a claim a supervisor made, an arc nobody carried. This weighs an
+#     OVERREACH: work a run did after its author asked it not to. It falls from
+#     1 to 0.
+#   * THE PLAN COMES OUT COMPLETE EITHER WAY, which is exactly why nothing
+#     below this rung could see it. Both runs take up 4 phases, absorb 2 into
+#     standing dependents, lose 2 arcs, and report the plan SHORT when they
+#     first weigh it. What the elder reading spent to reach `carried` was
+#     obedience -- and one more dependent, 4 against 3.
+#   * A PLAN NAMES WHAT IT EXPECTS OF A PHASE, AND WHAT IT WOULD ACCEPT OF A
+#     LOSS. `bear = true` sits beside the outcome a phase already declares, so
+#     the record says both. A phase that comes home is unaffected by it.
+#   * THE BEARING STANDS ON THE WIRE BESIDE THE LOSS. One glyph per phase, `b`
+#     where an arc was lost and its author asked it borne -- `...b` names which
+#     phase of four the plan chose to carry, straight off the wire, and this
+#     witness reads it there rather than trusting the run's telling.
+#   * THE SETTLEMENT GAINS A THIRD WORD, because two were no longer honest. A
+#     plan whose every repairable arc came home and whose borne arc remains is
+#     neither carried out nor plainly short: reporting it short would send an
+#     operator looking for work nobody wants done.
+#   * FOUR REFUSALS THIS RUNG EARNS, EACH ABOUT THE BEARING RATHER THAN THE
+#     REPAIR IT BOUNDS. `BearEarly` is the moment: a bearing weighed before the
+#     run published what it lost is obeying a plan it remembers. `BearWhole` is
+#     the work: a plan that lost nothing has nothing to bear. `BearMiscounted`
+#     is the honesty of the count: every lost arc is either borne or repaired,
+#     never both or neither. `BearOverrepaired` is the answer -- the hard half
+#     -- since a run that re-ran an arc its author asked it to bear, or that
+#     published a settlement the wire does not carry, would report an obedience
+#     it never practiced.
+#   * A PLAN THAT LOSES NOTHING READS AS THE RUNG BELOW, all 9 pairs -- this
+#     arc's standing generalization test.
+#
+# Six RED paths were proven on metal before this witness claimed GREEN.
+# Withhold the bearing note and the bearing run repairs every loss and settles
+# carried out whole. Let the repair reach past the bearing it read and it
+# refuses `BearOverrepaired` before it spawns anything. Withhold the settlement
+# from the wire and the run refuses the same way, rather than trusting a
+# judgment it never read back. Let the count stop closing and a loss neither
+# borne nor repaired passes unminded. Disarm the moment and a bearing is
+# weighed before the run published anything. Drop the bearing from a re-seated
+# phase and the fold catches a plan whose word survived one writing-down and
+# not the next.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS %76 / %85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_bear_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/bear"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/bear.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan bear build failed -- ${build.err}"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/bear_read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+# The board declaration the rungs below opened, unchanged.
+let published = run ["sh" "-c" "caravan/bin/bear_read caravan/systems/serial_three_clients_board.bron 2>&1"]
+assert published.ok else "the board declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 11 -- grants 22" else "the board declaration changed shape"
+assert published.out contains "verdict: whole" else "the board declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero, every bell
+# starts silent, and no run reads the last run's bearing for a plan this one
+# has not finished.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels caravan/.bears"]
+assert clean.ok else "the region stores, doorbells, and bearing notes could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan bear selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan bear selftest not GREEN"
+assert test.out contains "a plan may name the loss it would rather carry than repair" else "the bearing finding did not close"
+
+# The bearing and its three standing refusals, read straight, before any
+# dependent runs. The fourth, `BearOverrepaired`, belongs to the run rather than
+# the fold, since only the wire can answer what a plan published about its own
+# obedience.
+assert test.out contains "a plan names what it expects of a phase, and what it would accept of a loss" else "the bearing fold was not weighed"
+assert test.out contains "three refusals stand by name: early, whole, miscounted" else "the three standing refusals did not stand"
+
+# The repair below, unchanged and still weighed here.
+assert test.out contains "a repair still refuses by name: unread, whole, overreaching" else "the mend below stopped being weighed"
+
+# The generalization test: a plan that loses nothing reads as the rung below.
+assert test.out contains "a plan that loses nothing reads as the line handed, all 9 pairs" else "an unlost plan did not read as the line handed"
+
+# The bearing lap: one plan run twice, once repairing every loss it took and
+# once carrying the loss its author asked it to carry. Every number stands still
+# except obedience -- and the one extra dependent the elder reading spends on
+# work nobody asked for.
+assert test.out contains "phases: 4 repairing, 4 bearing" else "the two bearings ran different records"
+assert test.out contains "dependents: 4 repairing, 3 bearing" else "repairing a borne loss did not cost exactly one more dependent"
+assert test.out contains "phases absorbed into a standing dependent: 2 repairing, 2 bearing" else "the two bearings absorbed different phases"
+assert test.out contains "abandoned reach, conferred and never served: 2 repairing, 2 bearing" else "the two bearings lost different work"
+assert test.out contains "the plan, as the run first reports it: short by the work nobody served repairing, short by the work nobody served bearing" else "the two bearings first weighed the plan differently"
+assert test.out contains "phases re-seated to carry what was lost: 2 repairing, 1 bearing" else "the repair was not bounded by the bearing"
+assert test.out contains "losses carried rather than repaired: 0 repairing, 1 bearing" else "the bearing run carried the wrong number of losses"
+assert test.out contains "arcs re-run against the plan's own word: 1 against 0" else "the two bearings agreed about obedience"
+assert test.out contains "work still standing when the supervisor exits: 0 repairing, 1 bearing" else "the two bearings left different work standing"
+assert test.out contains "the plan, as an operator finally reads it: carried out whole repairing, whole but for the loss its author chose to carry bearing" else "the settlement did not part the two readings"
+assert test.out contains "breaks a named turn: 0 repairing, 0 bearing" else "the bearing run broke an order its author named"
+
+# What an operator reads is what the wire carries. Both notes are read here,
+# outside the run that wrote them, exactly as an operator would read them.
+let settled = run ["sh" "-c" "cat caravan/.bears/plan.settled"]
+assert settled.ok else "the plan published no settlement an operator could read"
+assert settled.out contains "b" else "the wire did not carry the borne settlement the plan earned"
+
+let borne_note = run ["sh" "-c" "cat caravan/.bears/plan.bearing"]
+assert borne_note.ok else "the plan published no bearing an operator could read"
+assert borne_note.out contains "...b" else "the wire did not name the one phase the plan chose to carry"
+
+let lost_note = run ["sh" "-c" "cat caravan/.bears/plan.lost"]
+assert lost_note.ok else "the plan published no loss an operator could read"
+assert lost_note.out contains ".x.x" else "the wire did not name the two phases the plan lost"
+
+# The dependents measure the loss in their own hands, exactly as the rungs below
+# left them, and each repair's dependent stands on its own line with no
+# conferral to ride in on.
+assert test.out contains "falls as its author declared, holding 1 conferred arcs it never served" else "a falling dependent did not fall holding its conferral"
+assert test.out contains "client_b: read 3 arcs of its own, 0 inherited at its first breath, 1 conferred, 0 returned, 1 still reachable at home" else "the dependent a conferral was made to did not read it as its own"
+assert test.out contains "client_a: read 3 arcs of its own, 0 inherited at its first breath, 1 conferred, 0 returned, 1 still reachable at home" else "the second dependent a conferral was made to did not read it as its own"
+
+say "GREEN: Caravan bear witness passed."

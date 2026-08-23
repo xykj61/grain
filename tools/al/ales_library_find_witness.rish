@@ -1,0 +1,38 @@
+# tools/al/ales_library_find_witness.rish — resolve an album by name in a catalog: find(lm, name) returns the album's index or null,
+# name_of / digest_of read its name and its content-address handle by index (ALES228).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES228.
+# Design read: active-designing/date/20260815/20260815-142750_fill-ales228-lotus-library-find.md
+# Idiom kin: lotus/rack.rye (ALES30, the find / name_of lookup idiom one level down) · lotus/library_manifest.rye (ALES226, the
+# opened catalog this searches) · lotus/library_sheet.rye (ALES227, the readable page this makes usable). A read — no new frame, no
+# new hash, no error union.
+#
+# lotus/library_find.rye resolves an album by name in an opened library manifest. The selftest proves: a present name resolves to its
+# index in order and digest_of hands back the exact digest the manifest holds (the resolve law); a name the catalog lacks returns
+# null, and a prefix of a name still misses (the absence law); a null answer means every album was compared (the first-match law); a
+# search over a zero-album catalog returns null (the empty law). A pure lookup only — no real file, no DAC, no network, no keys, no
+# funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_library_find_witness.rish
+
+say "ales-library-find: Language EN — ALES228 resolves an album by name in a catalog: find(lm, name) returns the album's index or null, and name_of / digest_of read its name and its 64-hex content-address handle by index — the resolve every later Lotus workflow (open · compare · publish THIS album) begins from."
+say "ales-library-find: Style Radiant — a resolve turns a listing into an index; the find / name_of idiom lifted whole from rack.rye (ALES30), a miss an honest null rather than a fault; the resolve law, the absence law, the first-match law, and the empty law each named and proven on metal."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/library_find"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/library_find.rye -femit-bin=${bin}"]
+assert build.ok else "ales-library-find: build failed — ${build.err}"
+
+let outfile = "lotus/bin/library_find.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-library-find: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-library-find: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-library-find' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-library-find: selftest did not print the GREEN ales-library-find line"
+
+say "ales-library-find: GREEN — a keeper reaches straight into their catalog by name now, and the library level carries its full working set (content address · readable page · resolve). The next Lotus crux still names who made it — a signed carry (crypto seam) on Keaton's word."

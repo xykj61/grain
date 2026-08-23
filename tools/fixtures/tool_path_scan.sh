@@ -25,6 +25,20 @@
 #   min_subdir_len      the shortest of their names
 #   collisions          computed rooms whose name equals an existing subdirectory -- held at zero
 #
+# AND THE ROOM AS IT NOW STANDS, which is what the readings above stop describing the moment the
+# fold lands. `tools/` folded on `20260823.144100`, so its flat count is zero and every flat
+# reading with it. A gate resting on those alone would pass by having nothing left to measure.
+#
+#   standing_rooms            subdirectories whose name is one or two letters, or `rye` -- the
+#                             rooms this fold makes, told apart from `bin`, `fixtures`, `gen`,
+#                             `hooks`, and the two guest rooms, every one three characters or more
+#   standing_max_room         the largest of them, by flat entries
+#   standing_rooms_over_bound standing rooms over the bound -- the post-fold gate, held at zero
+#   flat_shape_gate           one verdict for the flat readings: `ok` when the room has already
+#                             folded and nothing flat remains, or when the three flat gates all
+#                             pass; `red` otherwise. The comparison sits here, where the numbers
+#                             live, so a witness reads a verdict rather than re-deriving arithmetic
+#
 # THE WARNING THIS SCAN EXISTS TO RAISE, and it was found by running the scan rather than by
 # reading the plan. `symlinks_up` counts flat symlinks whose target opens with `../`, and a fold
 # moves each of them one directory deeper. `tools/x25519.rye -> ../crypto/x25519.rye` resolves to
@@ -134,6 +148,34 @@ min_subdir_len=$(awk '{print length($0)}' "$work/subdirs" | sort -n | head -1)
 awk '{print $2}' "$work/rooms" | sort > "$work/room_names"
 collisions=$(comm -12 "$work/room_names" "$work/subdirs" | wc -l | tr -d ' ')
 
+# THE ROOM AS IT NOW STANDS, which is what the readings above stop describing the moment the fold
+# lands. A folded room has no flat entries, so every flat reading falls to zero and a witness
+# asserting on them would pass by having nothing left to measure -- vacuous truth, the exact shape
+# REDS %161 named. So the standing fold rooms are measured in their own right: a subdirectory whose
+# name is one or two letters, or `rye`, is a room this fold made, and its own count is gated.
+find "$room" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; \
+  | grep -E '^([a-z]|[a-z][a-z]|rye)$' | sort > "$work/standing" || true
+standing_rooms=$(wc -l < "$work/standing" | tr -d ' ')
+
+standing_max_room=0
+standing_rooms_over_bound=0
+while read -r name; do
+  [ -n "$name" ] || continue
+  n=$(find "$room/$name" -maxdepth 1 -mindepth 1 \( -type f -o -type l \) | wc -l | tr -d ' ')
+  [ "$n" -gt "$standing_max_room" ] && standing_max_room=$n
+  [ "$n" -gt "$bound" ] && standing_rooms_over_bound=$((standing_rooms_over_bound + 1))
+done < "$work/standing"
+
+# ONE VERDICT FOR THE FLAT SHAPE, decided here where the numbers live rather than re-derived by
+# every caller. A room with nothing flat left has already folded, so its flat readings describe a
+# question that is answered; a room that still holds flat entries must pass all three.
+flat_shape_gate=red
+if [ "$flat_files" -eq 0 ]; then
+  flat_shape_gate=ok
+elif [ "$rooms_over_bound" -eq 0 ] && [ "$collisions" -eq 0 ] && [ "$min_basename_safe" = yes ]; then
+  flat_shape_gate=ok
+fi
+
 echo "room=$room"
 echo "bound=$bound"
 echo "flat_files=$flat_files"
@@ -150,3 +192,7 @@ echo "min_basename_safe=$min_basename_safe"
 echo "subdirs=$subdirs"
 echo "min_subdir_len=$min_subdir_len"
 echo "collisions=$collisions"
+echo "standing_rooms=$standing_rooms"
+echo "standing_max_room=$standing_max_room"
+echo "standing_rooms_over_bound=$standing_rooms_over_bound"
+echo "flat_shape_gate=$flat_shape_gate"

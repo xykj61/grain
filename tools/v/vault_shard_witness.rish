@@ -1,0 +1,36 @@
+# vault_shard_witness.rish — Vault, the keeper of secrets.
+#
+# Proves the disaster arithmetic on a FAKE key: a secret splits Shamir-style over
+# GF(256) into five shares at a threshold of three; any three recombine it byte-for-
+# byte, any two reveal nothing, a tampered share never verifies, and a lost location
+# survives while three remain. Each share is a signed shard tilak in a location-class,
+# emitted as `format vault-shard-v1` Bron with a full Ed25519 signature. The word is
+# main key, never a master; only a fake 0x11 seed lives in the tree (custody first).
+#
+# Build first:  rye build vault/shard.rye -femit-bin=vault/bin/shard
+#   rishi/bin/rishi run tools/v/vault_shard_witness.rish
+
+let st = run ["vault/bin/shard" "selftest"]
+assert st.ok else "vault shard selftest must exit 0"
+assert (st.err contains "GREEN") else "vault shard must report GREEN"
+assert (st.err contains "Shamir-style over GF(256)") else "the split is Shamir over GF(256)"
+assert (st.err contains "any three recombine it byte-for-byte") else "t shares reconstruct exactly"
+assert (st.err contains "any two reveal nothing") else "t-1 shares reveal nothing"
+assert (st.err contains "a lost location survives while three remain") else "a keeping survives a lost location"
+assert (st.err contains "a tampered share never verifies") else "a tampered share is refused"
+assert (st.err contains "main key") else "the word is main key"
+assert (st.err contains "custody first") else "only a fake seed lives in the tree"
+
+# (The forbidden word "master" never appears — guaranteed by the source grep and the
+# tame style check; the positive "main key" claim above stands in its place here.)
+
+# The emit prints five signed vault-shard-v1 records, each with a full 128-hex sig.
+let em = run ["vault/bin/shard" "emit"]
+assert em.ok else "vault shard emit must exit 0"
+assert (em.out contains "format vault-shard-v1") else "a shard is emitted as vault-shard-v1 Bron"
+assert (em.out contains "location home") else "a shard carries its location-class"
+assert (em.out contains "location brain") else "the brain share is a location-class"
+assert ((length (find em.out "format vault-shard-v1")) == 5) else "five shares, five shard records"
+assert ((length (find em.out "format vault-shard-v1")) == (length (find em.out "sig "))) else "every shard carries a signature"
+
+say "GREEN: vault shard — the keeper of secrets: a fake key splits Shamir-style, any three recombine it and any two do not, a tamper and a lost location are survived, each share a signed shard tilak; main key, never a master; custody first."

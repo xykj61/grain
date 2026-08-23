@@ -29,10 +29,24 @@
 # No network, no key, no funds. Plain 7-bit ASCII throughout.
 set -eu
 
+# EVERY `.rish` IN THE ROOM, AT ANY DEPTH, EXCEPT THE INSTRUMENT. Both rosters below read
+# `tools/*.rish` while the room stood flat; that glob matched nothing the moment `tools/` folded
+# into letter rooms on `20260823.144100`, and this scan would have reported `enforce_files_clean=0`
+# -- a perfect score earned by reading no files at all (REDS %169). A recursive find carries no
+# assumption about how deep the room is arranged.
+#
+# `tools/fixtures/` is pruned, because a fixture that PLANTS the fragile shape is instrument rather
+# than field -- the same rule the dated-path tools already keep by name, and the reason this tree
+# holds a `fragile_control.rish` at all. The elder flat glob excluded it by accident of depth; the
+# find excludes it on purpose.
+all_rish() {
+  find tools -type d -name fixtures -prune -o -type f -name '*.rish' -print 2>/dev/null | sort
+}
+
 MODE=${1:-}
 
 # ADVISORY roster -- device/outer-terminal gated; a conversion here cannot be witnessed from the jail.
-ADVISORY="tools/hawm1_seva_witness.rish tools/hawm3_seva_device_witness.rish tools/setu0_hearth_pull_onpath_host.rish tools/tube05_install_proof_onpath_host.rish"
+ADVISORY="tools/h/hawm1_seva_witness.rish tools/h/hawm3_seva_device_witness.rish tools/s/setu0_hearth_pull_onpath_host.rish tools/t/tube05_install_proof_onpath_host.rish"
 CONTROL=tools/fixtures/witness_claim_check_control/fragile_control.rish
 
 # A captured command result interpolated into a shell single-quoted word -- the exact hazard.
@@ -73,7 +87,7 @@ fi
 
 # ENFORCE: every runnable witness reads its claim natively.
 ENFORCE_FILES=0
-for p in tools/*.rish; do
+for p in $(all_rish); do
   test -f "$p" || continue
   if is_advisory "$p"; then
     continue
@@ -107,7 +121,7 @@ echo "advisory_total_captured_sites=$ADV_TOTAL"
 
 # The wider single-quoted-interpolation-into-grep shape, tree-wide, reported as debt to sweep on touch.
 SHAPE_TOTAL=0
-for p in tools/*.rish; do
+for p in $(all_rish); do
   test -f "$p" || continue
   FRAG=$(count_hits "$p" "$FRAGILE")
   if test "$FRAG" -ne 0; then

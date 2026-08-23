@@ -1,0 +1,37 @@
+# tools/f/fora_learner_witness.rish — a new member joins as a non-voting learner, catches up, and is promoted only once caught up (FORA25).
+#
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# FORA25. Design read: active-designing/date/20260814/20260814-073705_fora25-constel-learner-non-voting-replica.md
+#
+# constel/learner.rye adds the learner (non-voting replica), Raft's safe way to ADD a member (Ongaro §4.2.1): a new member joins as
+# a replica that receives and applies the log yet counts toward nothing, catches up out of the critical path, and is promoted to a
+# voter only once its match index is within a bounded lag of the leader's commit. The selftest proves: voter_count and
+# voter_majority draw the threshold over voters only, so a learner never enlarges the majority; a learner's ack never counts toward
+# commit; the crux — a fresh member added straight as a voter stalls commits while the same member staged as a learner keeps the sky
+# available; catch-up is a bounded lag with an exact boundary; promotion is refused NotCaughtUp until caught up; bounded. Purely
+# local — no socket, no network, no keys, no funds, no real address.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/fora_learner_witness.rish
+
+say "fora-learner: Language EN — FORA25 adds the learner (non-voting replica, Raft/Ongaro §4.2.1): a new member joins as a replica that applies the log yet counts toward nothing, catches up out of the critical path, and is promoted to a voter only once caught up."
+say "fora-learner: Style Radiant — a member is welcomed before it is weighed; it learns the sky's whole story before its voice is counted, so adding a hand never costs the sky its footing."
+say "fora-learner: Lens TAME — voter_count and voter_majority draw the strict majority (FORA9) over voters only; a learner's ack is skipped in commit_backing; caught_up computes the lag in u64 so a far-ahead leader never wraps; promotion is refused NotCaughtUp until the match is within the bound; siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/learner"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/learner.rye -femit-bin=${bin}"]
+assert build.ok else "fora-learner: build failed — ${build.err}"
+
+let outfile = "constel/bin/learner.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-learner: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-learner: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-learner' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-learner: selftest did not print the GREEN fora-learner line"
+
+say "fora-learner: GREEN — a new member joins as a non-voting learner and is admitted to the vote only once caught up; the constel consensus track now adds a hand without ever spending the sky's fault tolerance, the safe staging role between its catchup and its reconfig, proven pure on the bench."

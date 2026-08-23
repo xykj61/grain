@@ -1,0 +1,102 @@
+# caravan_arrive_witness.rish -- Caravan arrive witness.
+#
+# `arrange.rye` let a plan be written in any order and derived the sequence
+# its own names imply. Every rung in this arc up to there reasons over a
+# queue handed WHOLE before the first dependent starts, so work showing up after
+# the plan is seated had no door at all -- only a seating from the top.
+#
+#   A PHASE MAY ARRIVE AFTER THE PLAN IS SEATED, IN ONE BOUNDED PASS.
+#
+# An arrival is a claim about one phase, so it costs one walk of the plan.
+# A newcomer may take the tail exactly when three facts hold: nobody already
+# placed names its turn, its step is the next one that turn has open, and a
+# turn already standing says the same thing it says about what it follows.
+#
+# WHAT THE ARRIVAL BUYS, AND WHAT IT COSTS, MEASURED:
+#
+#   * ONE PASS RATHER THAN A SEATING. Six arrivals cost at most 96 tests --
+#     the queue's length each -- against 1536 to seat the plan again each
+#     time, the queue's square. The cost is printed from the bounds
+#     themselves rather than typed into prose.
+#   * A REFUSAL IS A NAME, NEVER A SURPRISE. A newcomer some placed phase
+#     was waiting for would have had to stand ahead of work already granted
+#     its place, so the door answers `ArrivalUnseated` with 0 dependents
+#     started. Safety first, in TAME order.
+#   * THE REFUSAL NAMES A REAL ORDER RATHER THAN A SHY READING: the same
+#     phase arriving BEFORE its waiter is welcome at the tail.
+#   * A PLAN GROWN ONE ARRIVAL AT A TIME IS THE PLAN WRITTEN WHOLE -- seven
+#     phases, phase for phase -- and it runs to the same end under the same
+#     reading: 1 pass against 1, 6 slots unspent against 6, 7 dependents to the
+#     same end, 0 named turns broken under both hands.
+#   * AN ARRIVAL ADDS WORK AND MOVES NOTHING. Every phase already placed
+#     keeps the name, the turn, the step, and the masks it arrived with.
+#   * THE LIMIT IS NAMED: the arrivals are answered at the door, before the
+#     run begins. Carrying one into a supervisor with dependents already in
+#     flight is the next rung's question.
+#
+# A PLAN GROWN BY ARRIVAL SEATS TO ITSELF, EXACTLY -- so this rung
+# generalizes `arrange.rye` rather than rivalling it, the same way a seated
+# plan arranged to itself and an empty turn mask was the sibling mask.
+#
+# Both RED paths were proven on metal before this witness claimed GREEN.
+# Let the door stop noticing who was waiting and the pure read reds at a turn
+# a placed phase awaited arriving at the tail -- caught in the happy zone,
+# before a single dependent starts; silence that read as well and the run's own
+# invariant fires at `caravan/arrive.rye:341`, so `assert(plan_is_seated)` is
+# load-bearing rather than decorative. Let the door stop checking a turn's
+# step order and the pure read reds at a phase skipping the step its own turn
+# had open.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS %76 / %85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_arrive_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/arrive"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/arrive.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan arrive build failed"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+# Thirty-six rungs once ran a shared caravan/bin/read without building it, so the whole
+# arc was green only on a tree some earlier run had left warm. A witness owns what it
+# runs -- and, since REDS %133, the path it runs it from: eighty witnesses built that
+# one reader to one name, so two running at once contended for a single file and the
+# loser reddened a green tree. This one lands in caravan/bin/arrive_read.
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/arrive_read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+
+# Nothing new is declared: an arrival adds a phase, and the document still
+# speaks only in ceilings.
+let published = run ["sh" "-c" "caravan/bin/arrive_read caravan/systems/serial_three_clients_menu.bron 2>&1"]
+assert published.ok else "the published declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 10 -- grants 19" else "the published document changed shape"
+assert published.out contains "verdict: whole" else "the published declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan arrive selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan arrive selftest not GREEN"
+assert test.out contains "a phase may arrive after the plan is seated, in one bounded pass" else "the arrive finding did not close"
+
+# The arrival read straight, before any supervisor spends it.
+assert test.out contains "a plan grown one arrival at a time is the plan written whole, 7 phases" else "a grown plan did not recover the plan its author wrote"
+assert test.out contains "6 arrivals cost at most 96 tests, against 1536 to seat the plan again each time" else "the cost of an arrival was not reported honestly"
+assert test.out contains "a newcomer a placed phase was waiting for is refused by name" else "the door did not refuse an awaited turn"
+
+# The arrival lap: one plan run twice, handed whole and handed one at a time.
+assert test.out contains "a newcomer a placed phase was waiting for is refused at the door, 0 dependents started" else "the refusal spent a dependent before answering"
+assert test.out contains "breaks a named turn: 0 handed whole, 0 grown by arrival" else "the grown run did not keep the order its author named"
+assert test.out contains "passes: 1 handed whole, 1 grown by arrival" else "the grown queue did not spend the passes the whole one spent"
+assert test.out contains "slots unspent: 6 handed whole, 6 grown by arrival" else "growing the plan changed what its slots cost"
+assert test.out contains "7 dependents run to the same end under both hands" else "the two hands did not run the same lap to the same end"
+
+say "GREEN: Caravan arrive witness passed."

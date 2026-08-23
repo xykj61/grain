@@ -1,0 +1,56 @@
+# tools/l/line_raycast_witness.rish -- read ONE directed line, named by two anchor taps (from A toward B), as a RAY CAST across the scene: the objects
+# the FINITE stroke pierces, ordered by the exact parameter at which the stroke ENTERS each object's box -- the true front-to-back a drag physically
+# experiences, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/line_slice.rye orders the pierced set front-to-back yet by each object's box CENTER projected on the
+# line; line_raycast orders by the NEAR FACE the stroke reaches first -- the slab-method entry parameter, kept as an exact rational with every
+# compare a cross-multiply. NO float, NO tolerance, NO square root.
+#
+# The crux this witness proves on metal: the box you enter first is not the one the cluster orders first. Over a scene where a narrow block Q is
+# nested in the x-span of a wide L shape P (their boxes overlapping into one cluster), the horizontal stroke A -> B casts [A, P, Q, B] while line_slice
+# orders the same set [A, Q, P, B] -- the cluster ties P and Q and falls back to label, so they trade places. The entry parameter is exact and rational
+# (A's is negative; along an oblique stroke A's entry is the later of two axes, max(-1/18, -1/14) = -1/18). And the ray cast is direction-truthful, not
+# a mirror: B -> A casts [B, P, Q, A], not the reverse [B, Q, P, A], since a nested object is entered after its container from both ends. Refusals by
+# name; determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/l/line_raycast_witness.rish
+
+say "line_raycast: Language EN -- Season G ray cast; a keeper drags a stroke across the scene and the objects light up in the order the stroke truly ENTERS them, so line_raycast reads the pierced set ordered by the slab-method entry parameter -- the near face the stroke reaches first, not the box center; NO float, NO tolerance, NO square root."
+say "line_raycast: Style Radiant -- compose not braid: this rung owns only the entry-parameter geometry and the rational order over it; line_pierce owns pierced_labels and the finite crossing that names the set, scene_manifest owns the per-object box, click_collinear owns the anchor centers. No crossing re-tested -- only the order within the set is this rung's own."
+say "line_raycast: Lens TAME -- the cast set is bounded by the component count, itself under the image pixel ceiling, and the sort is an insertion sort over that same small set; entry parameters are exact rationals compared by i128 cross-multiply; a missed object refuses NotHit, two anchors sharing a group refuse SameGroup, a background tap refuses EmptyClick, a point off the map refuses PointOutOfBounds, a label past the object count refuses BadTarget, an empty cast refuses HitEmpty, each having read nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/line_raycast"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/line_raycast.rye -femit-bin=${bin}"]
+assert build.ok else "line_raycast: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "line_raycast: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "line_raycast: ${out}"
+
+assert selftest.out contains "GREEN image-line-raycast" else "line_raycast: selftest did not print the GREEN line"
+assert selftest.out contains "as a RAY CAST across the scene" else "line_raycast: the ray-cast claim did not print"
+assert selftest.out contains "ordered by the exact parameter at which the stroke ENTERS each object's box" else "line_raycast: the entry-order claim did not print"
+assert selftest.out contains "THE BOX YOU ENTER FIRST IS NOT THE ONE THE CLUSTER ORDERS FIRST" else "line_raycast: the nearest-crossing crux did not print"
+assert selftest.out contains "casts [A, P, Q, B]" else "line_raycast: the cast order fact did not print"
+assert selftest.out contains "line_slice orders the same set [A, Q, P, B]" else "line_raycast: the slice-divergence fact did not print"
+assert selftest.out contains "P and Q trade places at ranks 1 and 2" else "line_raycast: the swap fact did not print"
+assert selftest.out contains "THE ENTRY PARAMETER IS EXACT AND RATIONAL" else "line_raycast: the exact-rational crux did not print"
+assert selftest.out contains "entry_param of the start anchor A is NEGATIVE" else "line_raycast: the negative-start fact did not print"
+assert selftest.out contains "max(-1/18, -1/14) = -1/18" else "line_raycast: the oblique-max fact did not print"
+assert selftest.out contains "THE RAY CAST IS DIRECTION-TRUTHFUL, NOT A MIRROR" else "line_raycast: the not-a-mirror crux did not print"
+assert selftest.out contains "casts [B, P, Q, A], NOT the reverse [B, Q, P, A]" else "line_raycast: the reversal-asymmetry fact did not print"
+assert selftest.out contains "entered AFTER P from BOTH ends" else "line_raycast: the nested-both-ends fact did not print"
+assert selftest.out contains "refuses NotHit" else "line_raycast: the NotHit refusal did not print"
+assert selftest.out contains "two anchors sharing a group refuse SameGroup" else "line_raycast: the SameGroup refusal did not print"
+assert selftest.out contains "a background tap refuses EmptyClick" else "line_raycast: the EmptyClick refusal did not print"
+assert selftest.out contains "a point off the map refuses PointOutOfBounds" else "line_raycast: the PointOutOfBounds refusal did not print"
+assert selftest.out contains "a label past the object count refuses BadTarget" else "line_raycast: the BadTarget refusal did not print"
+assert selftest.out contains "the first or last of an empty cast refuses HitEmpty" else "line_raycast: the HitEmpty refusal did not print"
+assert selftest.out contains "the same stroke casts the same objects in the same order twice" else "line_raycast: determinism did not print"
+
+say "line_raycast: GREEN on metal -- one directed line read as a ray cast: the objects the finite stroke pierces, ordered by the exact slab-method entry parameter, the true front-to-back a drag experiences; the box you enter first is not the one the cluster orders first (line_raycast [A, P, Q, B] vs line_slice [A, Q, P, B]), the entry parameter exact and rational, the cast direction-truthful and not a mirror, refusals by name, determinism. Season G open-media."

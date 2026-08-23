@@ -96,6 +96,30 @@ entries=$(reading "$pen/reaching" flat_files)
 echo "reaching_room=reds"
 proven=$((proven + 1))
 
+# ---- folded: a room with nothing flat left, whose STANDING rooms are what can still fail --------
+# The reading that keeps meaning something the day after a fold. `tools/` has no flat entries now,
+# so every flat reading sits at zero and a gate resting on those alone would pass by having nothing
+# to measure. Here one standing letter room is built over bound and one under, so the standing gate
+# is proven to rise while the flat gate correctly rests.
+mkdir -p "$pen/folded/c" "$pen/folded/m"
+for n in 1 2 3 4 5; do : > "$pen/folded/c/caravan_probe_${n}.rish"; done
+: > "$pen/folded/m/mycelium_probe.rish"
+
+[ "$(reading "$pen/folded" flat_files)" = "0" ] || { echo "control: a folded room must hold no flat entries" >&2; exit 1; }
+[ "$(reading "$pen/folded" flat_shape_gate)" = "ok" ] || { echo "control: a folded room has no flat question left to answer, so its flat gate must rest at ok" >&2; exit 1; }
+[ "$(reading "$pen/folded" standing_rooms)" = "2" ] || { echo "control: both letter rooms must be counted as standing rooms" >&2; exit 1; }
+[ "$(reading "$pen/folded" standing_max_room)" = "5" ] || { echo "control: the largest standing room must be measured, not guessed" >&2; exit 1; }
+[ "$(reading "$pen/folded" standing_rooms_over_bound)" = "1" ] || { echo "control: a standing room over bound must raise standing_rooms_over_bound" >&2; exit 1; }
+echo "folded_room=reds_on_the_standing_reading"
+proven=$((proven + 1))
+
+# The overflow room proves the other side of the same verdict: flat entries that cannot be folded
+# under bound must read `flat_shape_gate=red`, so `ok` is never merely the absence of a reading.
+[ "$(reading "$pen/overflow" flat_shape_gate)" = "red" ] || { echo "control: a room whose chosen shape fails must read flat_shape_gate=red" >&2; exit 1; }
+[ "$(reading "$pen/clean" flat_shape_gate)" = "ok" ] || { echo "control: a room the chosen shape handles must read flat_shape_gate=ok" >&2; exit 1; }
+echo "flat_shape_gate=proven_both_ways"
+proven=$((proven + 1))
+
 # ---- the scan's own refusal -------------------------------------------------------------------
 if sh "$scan" "$pen/no-such-room" "$bound" >/dev/null 2>&1; then
   echo "control: the scan must refuse a room that is not there" >&2

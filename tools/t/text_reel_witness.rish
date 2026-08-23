@@ -1,0 +1,40 @@
+# tools/t/text_reel_witness.rish -- Season G's capstone proves itself on metal: the open video codecs on a REAL corpus.
+#
+# Season G (Open Media Primitives) built each media floor apart -- the QOI still image, the whole open ASCII font, the
+# text-layout and text-paint rungs, and the two open video codecs (gfv1 intra-frame, gfd1 inter-frame). Each proved
+# itself on content crafted for the test. image/text_reel.rye is where they meet: it renders a REAL caption reel with
+# the finished font-and-paint family (a typewriter reveal of "GRAIN OPEN MEDIA", one glyph per frame, black on white),
+# then feeds that real motion through BOTH codecs.
+#
+# The crux this witness proves is the whole open-media family closing into one act: real rendered frames round-trip
+# byte-for-byte through gfv1 AND gfd1, the inter-frame codec is smaller than the intra-frame one on real text (the
+# reason inter-frame exists, shown on the kind of picture a surface actually plays), every later frame stored as a
+# delta (a reveal is never a scene cut), and the two formats stay distinct (a gfv1 stream refuses at the gfd1 magic).
+# No network, no key, no funds -- our own moving picture, on our own open codecs, proven on our own open font.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/text_reel_witness.rish
+
+say "text-reel: Language EN -- Season G's capstone; the open video codecs proven on a REAL rendered corpus rather than a crafted clip, real glyph frames that reconstruct within named bounds rather than playing garbage."
+say "text-reel: Style Radiant -- a typewriter reveal painted by the finished font-and-paint family, fed through both open codecs; decode(encode(reel)) recovers every frame byte for byte, and inter-frame beats intra-frame on real text."
+say "text-reel: Lens TAME -- u32 in-memory counts, u8 pixel bytes; every buffer names a maximum (the codecs' encoded_bound, the caption's frame count, the QOI ceilings beneath); each function states its invariants positively; compression a reported and measured fact on real content; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/text_reel"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/text_reel.rye -femit-bin=${bin}"]
+assert build.ok else "text-reel: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "text-reel: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "text-reel: ${out}"
+
+assert selftest.out contains "GREEN image-text-reel" else "text-reel: selftest did not print the GREEN capstone line"
+
+assert selftest.out contains "round-trip byte-identical through BOTH codecs" else "text-reel: the real reel did not round-trip through both codecs"
+
+assert selftest.out contains "bytes < intra-frame" else "text-reel: inter-frame was not smaller than intra-frame on the real corpus"
+
+say "text-reel: GREEN -- the open-media family whole; a real rendered reel round-trips byte-identical through both open codecs, inter-frame smaller than intra-frame on real text, the two formats distinct by name."

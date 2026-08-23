@@ -35,7 +35,7 @@ magic(4 "LOTS") · version(1) · cable(1) · payload_len(u32 LE, bytes) · diges
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_wire_witness.rish` builds the module, runs its selftest, and asserts the `GREEN ales-wire` line. The selftest proves: a block round-trips byte-for-byte on each cable tag; silence (all zero) and a full-scale block (alternating i16 min/max) carry exactly; **the audio border** — an odd payload length with a fixed-up digest still refuses `PartialSample`; a flipped byte refuses `DigestMismatch`; and an unknown cable, overlong, truncated, short, or bad-magic frame each refuses by name. Purely local — no network, no keys, no funds, no real device.
+`tools/al/ales_wire_witness.rish` builds the module, runs its selftest, and asserts the `GREEN ales-wire` line. The selftest proves: a block round-trips byte-for-byte on each cable tag; silence (all zero) and a full-scale block (alternating i16 min/max) carry exactly; **the audio border** — an odd payload length with a fixed-up digest still refuses `PartialSample`; a flipped byte refuses `DigestMismatch`; and an unknown cable, overlong, truncated, short, or bad-magic frame each refuses by name. Purely local — no network, no keys, no funds, no real device.
 
 ## The road on from here
 

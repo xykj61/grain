@@ -1,0 +1,40 @@
+# tools/d/drey_session_witness.rish — the memory that forgets (DREY0).
+#
+# Season A (Hardware & Right-to-Repair) · waymark DREY · Mikrophone firmware journey · founding rung DREY0.
+# Design read: active-designing/date/20260814/20260814-020500_drey-mikrophone-firmware-memory-that-forgets-exploration.md
+# Vision: foundations/20260801-005853_mantrapod-venture-pitch.md — "What forgets, protects."
+#
+# The Mantrapod's founding promise is a firmware invariant: working memory holds a keeper's capture while powered and
+# lets it dissolve when the device is set down; what a keeper carries out, they keep on purpose. mikrophone/session.rye
+# proves that shape pure in Rye, long before a board exists. Two buffers, two fates — `work` is the forgetful working
+# buffer that power_down zeroes whole, `keep` is the one committed payload a deliberate commit copies out and power_down
+# leaves untouched. The selftest proves: a capture holds only while powered (an unpowered capture refuses NotPowered),
+# the buffer is bounded (a capture past max_samples refuses BufferFull), commit is the one deliberate act (empty
+# NothingToCommit, a redundant commit AlreadyCommitted, a fresh commit updates the carried payload), power-down forgets
+# the working buffer whole (every byte zero) while the committed payload survives, and a session powered down without a
+# commit carries nothing.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/drey_session_witness.rish
+
+say "drey-session: Language EN — DREY0 opens Season A's Mikrophone firmware journey: a session buffer that holds a capture only while powered, persists nothing except on a deliberate commit, and provably dissolves on power-down."
+say "drey-session: Style Radiant — the device's founding promise ('What forgets, protects') proven pure in Rye before any metal, so every surface built on it inherits a session that leaks nothing it was never told to keep."
+say "drey-session: Lens TAME — two bounded fixed buffers, no heap outliving the power; every verb asserts positive invariants; NotPowered, BufferFull, NothingToCommit, AlreadyCommitted each refuse by name before a byte moves; power_down zeroes the working buffer whole; no disk, no network, no key, no funds (custody gate %2 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mikrophone/bin/session"
+
+let build = run ["sh" "-c" "mkdir -p mikrophone/bin && env RYE_ZIG=${zig} rye/bin/rye build mikrophone/session.rye -femit-bin=${bin}"]
+assert build.ok else "drey-session: build failed — ${build.err}"
+
+let outfile = "mikrophone/bin/session.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "drey-session: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "drey-session: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN drey-session' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "drey-session: selftest did not print the GREEN drey-session line"
+
+say "drey-session: GREEN — the Mikrophone session forgets on purpose; a committed payload is the one thing that survives the power. DREY0 lands, and the firmware journey opens on a session already known correct."

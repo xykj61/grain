@@ -1,0 +1,19 @@
+# dimeroll_sum_amounts_view.rish — Dimeroll sum amounts → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/dimeroll_sum_amounts_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Dimeroll sum amounts view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for sum amounts view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let view = run ["sh" "-c" "${bin} sumamountsviewtest 2>&1"]
+assert view.ok else "drawn terminal sumamountsviewtest exited non-zero"
+assert view.out contains "sum amounts view" else "sum amounts view missing expected output"
+assert view.out contains "GREEN" else "Dimeroll sum amounts view not GREEN"
+assert view.out contains "lines=5" else "sum amounts view missing five-line frame"
+
+say "GREEN: Dimeroll sum amounts view — journal amount total on Skate."

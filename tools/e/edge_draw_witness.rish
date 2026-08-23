@@ -1,0 +1,44 @@
+# tools/e/edge_draw_witness.rish -- draw the STRAIGHT EDGE between two points, and a POLYGON's closed outline, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/polygon.rye reads a shape's ordered ring down to the few VERTICES that define it (a
+# 5x5 square's sixteen boundary pixels become four corners). Those vertices name the shape yet draw nothing; a surface that wants
+# to SHOW the outline needs the inverse move -- the straight edge between one vertex and the next, filled as a run of pixels a
+# screen can light. This rung reads that: BRESENHAM's line algorithm (J.E. Bresenham 1965), the classic integer rasterizer, no
+# floating point and no gaps. draw_line is the reusable primitive (a wireframe, a chart axis, a polygon fill all descend from a
+# line drawer); paint_polygon composes it around a polygon's vertices, closing the last edge back to the first, so four corners
+# become a drawn quadrilateral outline -- the exact inverse of the simplify that produced them. Compose not braid: this rung owns
+# only the line rasterization and the routing of a polygon's edges through it; polygon owns the vertices, contour the Point type,
+# qoi the RGBA buffer. No gather, no blend, no codec, no color math beyond writing a caller's chosen RGBA.
+#
+# The crux this witness proves on metal: a polygon's vertices are a sparse set of corners, yet the drawn edge between two of them
+# is an 8-CONNECTED run where each plotted pixel touches the next -- the connectedness no vertex list carries. An axis-aligned
+# edge lights exactly the pixels between its endpoints (no overrun), a 45-degree diagonal walks the exact staircase, a shallow
+# line comes back an 8-connected run crossing every column once, a steep line is single-valued in its major axis with its run
+# length direction-free (the tie pixel a Bresenham honesty), and four corner vertices painted as a closed loop reproduce a
+# rectangle's boundary exactly (16 perimeter pixels, the interior dark -- an OUTLINE, not a fill). The drawn outline round-trips
+# the open QOI codec byte-for-byte; a vertex outside the canvas refuses VertexOutOfBounds and a zero-dimension canvas refuses
+# EmptySource having drawn nothing. No network, no key, no funds -- the outline a surface draws the moment it has a shape's
+# corners in hand, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/e/edge_draw_witness.rish
+
+say "edge_draw: Language EN -- Season G render over a polygon's vertices; draw_line rasterizes one straight edge by Bresenham's integer line algorithm, paint_polygon composes it around a polygon's corners into a closed connected outline, the inverse of the simplify that read them."
+say "edge_draw: Style Radiant -- compose not braid: owns only the line rasterization and the routing of a polygon's edges through it; polygon owns the vertices, contour the Point type, qoi the RGBA buffer. No gather, no blend, no codec, no color math beyond a caller's chosen RGBA."
+say "edge_draw: Lens TAME -- the line walk is bounded by the canvas (each step advances toward the endpoint, a hard step ceiling guards LineTooLong); a Bresenham run never leaves its endpoints' bounding box so two in-canvas vertices draw wholly in-canvas; a vertex outside the canvas refuses VertexOutOfBounds and a zero-dimension canvas refuses EmptySource; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/edge_draw"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/edge_draw.rye -femit-bin=${bin}"]
+assert build.ok else "edge_draw: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "edge_draw: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "edge_draw: ${out}"
+
+assert selftest.out contains "GREEN image-edge-draw" else "edge_draw: selftest did not print the GREEN line"
+
+say "edge_draw: GREEN -- an axis-aligned edge lights exactly its span, a 45-degree diagonal the exact staircase, a shallow line an 8-connected run crossing every column once, a steep line single-valued in its major axis with a direction-free run length, four corner vertices a closed rectangle outline (16 perimeter pixels, interior dark), the drawn outline round-trips QOI byte-for-byte, the refusals fire by name, on metal."

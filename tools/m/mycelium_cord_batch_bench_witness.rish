@@ -1,0 +1,49 @@
+# tools/m/mycelium_cord_batch_bench_witness.rish — batching is a pure throughput win (fact batching r3).
+#
+# Season D (Kresfa & Mycelium) · Mycelium consensus · fact batching · rung r3.
+# r1 proved a batched history folds to the byte-identical supply as the same facts one-per-block; r2
+# let it travel. This rung measures what batching bought, honestly: a fixed corpus of 32 facts is
+# arranged one-per-block (32 blocks) and packed into full batches of 16 (2 blocks), both folding to the
+# identical supply (320). The win is a STRUCTURAL count — a block's fixed cost (one author signature,
+# one node in the agreed order, one round of admission) is paid once per block, so 32 blocks fall to 2,
+# a 16x amortization for the same facts. Each fact still signs once in both.
+#
+# Two Rooms: the module asserts only what it proves exactly (identical supply, exact block counts) and
+# REPORTS the ratio as a measured observation, never an asserted invariant; a real wall-time benchmark
+# stays a named later loom round. This witness records the measured loom line. Demo seeds only — no key,
+# funds, network, or custody.
+#
+# Scope: active-designing/date/20260813/20260813-043303_mycelium-fact-batching-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mycelium_cord_batch_bench_witness.rish
+
+say "mycelium-cord-batch-bench: Language EN — batching is a pure throughput win, measured as a structural block-count ratio."
+say "mycelium-cord-batch-bench: Style Radiant — the same facts reach the same agreed past, carried by fewer, fuller blocks."
+say "mycelium-cord-batch-bench: Lens TAME — assert only the exact (identical supply, block counts); report the ratio; the stopwatch is a later loom round."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mycelium/bin/cord_batch_bench"
+
+let build = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_batch_bench.rye -femit-bin=${bin}"]
+assert build.ok else "mycelium-cord-batch-bench: build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mycelium-cord-batch-bench: selftest exited non-zero"
+assert selftest.out contains "GREEN" else "mycelium-cord-batch-bench: selftest did not speak GREEN"
+assert selftest.out contains "folds to the identical supply 320 whether one-per-block or batched" else "mycelium-cord-batch-bench: identical-supply claim missing"
+assert selftest.out contains "one-per-block carries 32 blocks; packed into full batches, 2 blocks" else "mycelium-cord-batch-bench: block-count claim missing"
+assert selftest.out contains "per-block cost amortized 16.0x" else "mycelium-cord-batch-bench: measured ratio missing"
+# The measured loom line rides in the output so a Loom-aware reader can trend it.
+assert selftest.out contains "loom cord_batch_bench facts=32 blocks_single=32 blocks_batched=2 block_sigs_saved=30 block_ratio_x10=160" else "mycelium-cord-batch-bench: loom metric line missing"
+
+# r1 and r2 stay green binaries at this door — accrete-never-break.
+let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_batch.rye -femit-bin=mycelium/bin/cord_batch && mycelium/bin/cord_batch 2>&1"]
+assert r1.ok else "mycelium-cord-batch-bench: fact-batching r1 is not GREEN"
+assert r1.out contains "GREEN" else "mycelium-cord-batch-bench: fact-batching r1 did not speak its GREEN"
+
+let r2 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_batch_bron.rye -femit-bin=mycelium/bin/cord_batch_bron && mycelium/bin/cord_batch_bron 2>&1"]
+assert r2.ok else "mycelium-cord-batch-bench: fact-batching r2 is not GREEN"
+assert r2.out contains "GREEN" else "mycelium-cord-batch-bench: fact-batching r2 did not speak its GREEN"
+
+say "mycelium-cord-batch-bench: GREEN — the same 32-fact corpus folds to one supply one-per-block (32 blocks) and batched (2 blocks), a measured 16x fewer block signatures; r1 and r2 stand green at their doors."

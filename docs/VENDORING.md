@@ -77,10 +77,10 @@ Seated: `vendor/genode` per [`204549`](../active-designing/date/20260712/2026071
 
 | Name | Home | Pinning witness | License | Role |
 |------|------|-----------------|---------|------|
-| **Genode** | `vendor/genode` | `tools/proven_seat_g1_fetch_sources.rish` | AGPL (teacher) | G1 posix/libc sources · guest only |
-| **Monocypher** | `vendor/monocypher` | `tools/proven_seat_signed_kumara_fetch.rish` | CC0 · BSD dual | signed-Kumara `crypto_ed25519_check` |
+| **Genode** | `vendor/genode` | `tools/p/proven_seat_g1_fetch_sources.rish` | AGPL (teacher) | G1 posix/libc sources · guest only |
+| **Monocypher** | `vendor/monocypher` | `tools/p/proven_seat_signed_kumara_fetch.rish` | CC0 · BSD dual | signed-Kumara `crypto_ed25519_check` |
 | **Zig toolchain** | `vendor/zig-toolchain` | naming-law fetch (see `context/specs/20260627-102012_one-clock-naming-law.md`) | MIT | Rye/Zig compiler prebuilt |
-| **ai-jail** | `gratitude/ai-jail` + `tools/.cache/bin/ai-jail` | `tools/enclosure.conf.example` + host pin notes | teacher license in gratitude | Daily enclosure · binary in cache |
+| **ai-jail** | `gratitude/ai-jail` + `tools/.cache/bin/ai-jail` | `tools/e/enclosure.conf.example` + host pin notes | teacher license in gratitude | Daily enclosure · binary in cache |
 | **libqrencode** | `gratitude/libqrencode` | gitlink commit | LGPL-2.1 | Key-card CLI in `tools/.build/` only |
 
 Full gratitude license matrix: [`external-research/20260620-014412_system.md`](../external-research/20260620-014412_system.md) → Gratitude Licenses and the Clean Room.

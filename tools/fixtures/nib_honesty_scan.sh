@@ -8,7 +8,7 @@
 # departing card stays one git-show away. Those two voices obey different laws:
 #
 #   THE NIB     is HEAD, HEAD's pre-amend sibling, or HEAD's parent. That law
-#               belongs to tools/remember_git_nib_witness.rish, the loom booked
+#               belongs to tools/r/remember_git_nib_witness.rish, the loom booked
 #               after REDS %103 fired twice, and is NOT re-implemented here.
 #   A CHECKPOINT is OFF main by construction after a deep debride -- the rewrite
 #               is what makes the walk-back worth recording. Demanding that a
@@ -107,7 +107,7 @@ if test -z "$nib"; then
 fi
 echo "git_nib=$nib"
 echo "git_nib_reach=$(reach_of "$nib")"
-echo "git_nib_state_law=tools/remember_git_nib_witness.rish"
+echo "git_nib_state_law=tools/r/remember_git_nib_witness.rish"
 
 # Split the nib's own local-only from the checkpoints'. The pre-amend sibling hash is
 # unreachable by construction -- the seated pin-then-amend ritual pins the hash and

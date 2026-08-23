@@ -1,0 +1,45 @@
+# tools/r/region_select_witness.rish -- given a query RECTANGLE, name every OBJECT it covers, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/hit_test.rye names the ONE object under a POINT; this rung names EVERY object a
+# RECTANGLE covers -- the marquee / drag-select and crop-region primitive a surface runs on a dragged box. Exact integers, NO float,
+# NO tolerance -- the label map is the arbiter, each object's bounding box only a prefilter.
+#
+# The crux this witness proves on metal, the point crux one dimension up: a bounding box that OVERLAPS the query rectangle is
+# NECESSARY but NOT SUFFICIENT. An L and a small block in its concavity have overlapping boxes, so a rectangle on the block overlaps
+# the L's box too (bbox_overlap_count 2) yet selects exactly one object; a rectangle in the empty concavity or wholly inside a ring's
+# hole overlaps a box yet selects nothing -- the box claims a rectangle the object does not fill; a whole-scene rectangle selects
+# every object ascending; a marquee off the map is a valid empty selection; a malformed rectangle refuses BadRect; determinism. No
+# network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/region_select_witness.rish
+
+say "region_select: Language EN -- Season G rectangle-to-object-set select; the label map is the arbiter, each object's bounding box only a prefilter; NO float, NO tolerance."
+say "region_select: Style Radiant -- compose not braid: this rung owns only the rectangle-to-object-set decision and the box-overlap prefilter reads; label owns the at arbiter, scene_manifest owns the per-object rows, regions owns the bounding box. No plane of its own, no pixel written -- a reading, not a render."
+say "region_select: Lens TAME -- the candidate scan runs components times under label_max_pixels; the arbiter scan reads the rectangle clamped to the map, under qoi's pixel ceiling; a malformed rectangle refuses BadRect, an off-map marquee selects empty; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/region_select"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/region_select.rye -femit-bin=${bin}"]
+assert build.ok else "region_select: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "region_select: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "region_select: ${out}"
+
+assert selftest.out contains "GREEN image-region-select" else "region_select: selftest did not print the GREEN line"
+assert selftest.out contains "the label map is the arbiter, each object's bounding box only a prefilter" else "region_select: the arbiter-versus-prefilter claim did not print"
+assert selftest.out contains "the DECISIVE box-is-a-prefilter crux one dimension up from the point hit test" else "region_select: the decisive crux did not print"
+assert selftest.out contains "OVERLAPS both boxes (bbox_overlap_count reads 2) yet selects exactly ONE object" else "region_select: the overlap crux did not print"
+assert selftest.out contains "a rectangle in the empty concavity" else "region_select: the empty-concavity case did not print"
+assert selftest.out contains "the box claiming a rectangle the object does not fill" else "region_select: the box-claims-what-the-object-does-not-fill claim did not print"
+assert selftest.out contains "a rectangle wholly inside a 5x5 ring's hole" else "region_select: the ring-hole case did not print"
+assert selftest.out contains "a whole-scene rectangle selects every object ascending, label 1 then label 2" else "region_select: the whole-scene case did not print"
+assert selftest.out contains "a marquee off the map is a valid empty selection" else "region_select: the off-map case did not print"
+assert selftest.out contains "a malformed rectangle refuses BadRect having read nothing" else "region_select: the BadRect refusal did not print"
+assert selftest.out contains "the same rectangle reads the same selection twice" else "region_select: determinism did not print"
+
+say "region_select: GREEN on metal -- given a rectangle, the region select names every object it truly covers, resolving the over-count a box-overlap prefilter leaves and selecting nothing where a box claims a rectangle the object does not fill; refusals by name, determinism. Season G open-media."

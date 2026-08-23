@@ -1,0 +1,38 @@
+# tools/al/ales_wire_witness.rish — a buffer of PCM samples crosses a self-describing local audio frame, verify-before-trust (ALES0).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES0.
+# Design read: active-designing/20260814-fill-ales0-lotus-audio-wire-shape.md
+# Idiom kin: constel/wire.rye (FORA3) · mikrophone/wire.rye (DREY1) — the same self-describing, Sha256-sealed frame the tree
+# already trusts, now carrying audio. The cable kind (XLR · USB-C · guitar) is a ROUTING TAG only: this rung asserts no
+# electrical fact — voltage, impedance, pinout, and audio-interface hardware stay a PAUSED hardware-research round.
+#
+# lotus/wire.rye frames a bounded block of i16 PCM samples into one self-describing layout (magic LOTS · version · cable ·
+# payload_len · Sha256 digest · payload) and deframes verify-before-trust. The selftest proves: the block round-trips
+# byte-for-byte on each cable tag; silence and full-scale i16 min/max samples carry exactly; a torn half-sample refuses
+# PartialSample at the audio border; a flipped byte refuses DigestMismatch; and an unknown cable, overlong, truncated, short,
+# or bad-magic frame each refuses by name. Purely local — no network, no keys, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_wire_witness.rish
+
+say "ales-wire: Language EN — ALES0 opens Season C (Lotus, the creative suite) with the basic audio wire shape: a buffer of PCM samples carried across a self-describing local frame, deframed verify-before-trust, exactly as DREY1 and FORA3 proved their payloads before any real wire."
+say "ales-wire: Style Radiant — one frame layout, a single source of truth (magic · version · cable · length · Sha256 · payload); every corruption refuses by name before a value is formed."
+say "ales-wire: Lens TAME — deframing is two independent gates, the Sha256 proving the payload whole and the audio border proving it sample-aligned so no torn half-sample reaches a timeline; the cable is a routing tag only, no electrical fact asserted; siloed to lotus/, no network, no keys, no funds, no real device (audio-interface hardware stays a paused research round)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/wire"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/wire.rye -femit-bin=${bin}"]
+assert build.ok else "ales-wire: build failed — ${build.err}"
+
+let outfile = "lotus/bin/wire.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-wire: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-wire: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-wire' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-wire: selftest did not print the GREEN ales-wire line"
+
+say "ales-wire: GREEN — a buffer of samples crosses a local audio frame proven whole and sample-aligned; the next Lotus rung can carry many such frames as a stream, or open the timeline that edits them."

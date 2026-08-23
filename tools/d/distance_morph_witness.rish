@@ -1,0 +1,38 @@
+# tools/d/distance_morph_witness.rish -- true-radius erosion and dilation prove themselves on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the crux-first payoff image/distance.rye named. image/morphology.rye grows a mark over a
+# SQUARE window and image/structure.rye over an ARBITRARY offset set, each paying the element's whole area per pixel. This rung
+# reads the chamfer distance field instead: erosion keeps the foreground pixels DEEPER than the radius, dilation runs the same
+# transform on the complement mask and keeps the pixels WITHIN the radius. One transform, two thresholds -- and a true disk.
+#
+# The crux this witness proves on metal: erode a solid 3x3 block by radius 1 down to its single center (a pixel survives when
+# its chamfer distance to background exceeds radius*3, so the ring at 3 is peeled and the center at 6 kept); dilate a lone dot by
+# radius 1 into a PLUS -- the four orthogonal neighbors lit at chamfer 3 and the four diagonal corners dark at chamfer 4, a true
+# Euclidean disk where a square-element dilate lights the corners too; the two verbs are EXACT DUALS, erode(A) equal to the
+# render-complement of dilate(complement(A)) byte-for-byte; a one-pixel line is all boundary so erode wipes it whole; the
+# reshaped mask round-trips through the open QOI codec byte-for-byte; a zero radius, an over-max radius, and an empty source
+# refuse by name; the same reshape is deterministic. No network, no key, no funds -- the true-radius grow and shrink a surface
+# runs the day a square is the wrong shape, on our own open geometry.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/distance_morph_witness.rish
+
+say "distance_morph: Language EN -- Season G true-radius erode and dilate; reshape an RGBA mask by a threshold over the chamfer distance field."
+say "distance_morph: Style Radiant -- compose not braid: this rung owns only the radius-to-threshold scale and the keep/drop threshold; distance.distance_chamfer owns the transform, branch.is_on decides the binary meaning of a pixel, qoi owns the buffers."
+say "distance_morph: Lens TAME -- the radius is bounded so its threshold stays far below the field sentinel; a zero radius, an over-max radius, and an empty source refuse by name up front so a refusal allocates nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/distance_morph"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/distance_morph.rye -femit-bin=${bin}"]
+assert build.ok else "distance_morph: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "distance_morph: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "distance_morph: ${out}"
+
+assert selftest.out contains "GREEN image-distance_morph" else "distance_morph: selftest did not print the GREEN line"
+
+say "distance_morph: GREEN -- erode peels a 3x3 block to its center, dilate grows a dot into a true-disk plus (diagonals dark where a square would light them), the two verbs are exact duals, erode wipes a one-pixel line, the mask round-trips through the open QOI codec, on metal."

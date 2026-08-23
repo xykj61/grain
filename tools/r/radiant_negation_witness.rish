@@ -1,0 +1,48 @@
+# tools/r/radiant_negation_witness.rish -- Radiant prose states what holds, and the meter says so.
+#
+# Radiant Style asks for affirmative contrast: `rather than` over a heavy `not`, `yet` over `but`,
+# a restated positive over a prohibition. Keaton read the tree on 20260821 and said the nots and
+# nevers were everywhere. He was right, and the number is sharper than the impression:
+#
+#   foundations/20260706-185112_follow-our-compass.md   0.40   the register to aim at
+#   context/RADIANT_STYLE.md                            1.30   the style guide itself
+#   .claude/rules/design-rooms.md                       1.90
+#   .claude/rules/ascii-first.md                        2.06
+#   .claude/rules/stamp-and-name.md                     2.83   worst, written that same day
+#
+# Five times the register, in the rules that teach the register. The cause is structural rather
+# than careless: LAW-SHAPED prose drifts negative, because the easiest form a rule can take is a
+# ban. The habit that answers it is one line long -- STATE WHAT HOLDS, THEN NAME THE EXCEPTION
+# ONCE -- and a habit with a meter is a check, while a habit without one is a hope.
+#
+# TWO ROSTERS by tier, the shape the ASCII guard already proved:
+#   ENFORCE  -- .claude/rules/*.md, living Tier 3 prose. Density may FALL freely; a rise above a
+#               file's own baseline row is a red. A ratchet, so the sweep happens on touch and no
+#               round is ever asked to rewrite thirty-seven rules at once.
+#   ADVISORY -- foundations/ and the style guides, REPORTED with a mean so a sweep has a target
+#               and never a hard failure. Dated testimony takes a recorded Radiant pass instead.
+#
+# A new rule with no baseline row is ADMITTED at its measured value and reported, so the guard
+# welcomes new law rather than blocking it; its ratchet begins on the second lap.
+#
+# Read-only: no network, no key, no funds, and no prose is rewritten here.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/radiant_negation_witness.rish
+
+say "radiant-negation: Language EN -- the living rules state what holds, and every one of them reads at or below the density it read at last lap."
+say "radiant-negation: Style Radiant -- affirmative contrast is the point, so the meter counts the negative constructions a reader actually meets and lets a seated compound like accrete-never-break read as vocabulary."
+say "radiant-negation: Lens TAME -- measurement beats memory; a feeling about the prose becomes a number per file, the ratchet only ever tightens, and a planted prohibition control proves the refusal on metal."
+
+let green = run ["sh" "tools/fixtures/radiant_negation_scan.sh"]
+assert green.ok else "radiant-negation: the living scan must exit 0 -- ${green.out}"
+assert green.out contains "enforce_risen=0" else "radiant-negation: a living rule rose above its own baseline -- state what holds, then name the exception once"
+assert green.out contains "advisory=ratchet_report" else "radiant-negation: want the advisory roster reported as a ratchet"
+assert green.out contains "register_target=0.40" else "radiant-negation: want the register named, so the sweep has somewhere to aim"
+assert green.out contains "verdict=ok" else "radiant-negation: want verdict ok"
+
+let red = run ["sh" "tools/fixtures/radiant_negation_scan.sh" "prove-red"]
+assert (red.ok == false) else "radiant-negation: prove-red must refuse, not merely report"
+assert red.out contains "RED_negation_rise_caught" else "radiant-negation: prove-red want the prohibition control caught"
+
+say "GREEN: radiant-negation -- every living rule reads at or below its baseline, the advisory roster is reported with a mean and a register to aim at, and a page written entirely as bans is refused on metal."

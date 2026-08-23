@@ -20,7 +20,7 @@ Kin: Pond customs · Kumara · Tilak seams · Mand policy · TUBE1 grants. Grow 
 | [`shape-mand-ring-count.glow`](shape-mand-ring-count.glow) | Mand’s three witnessed rings | same |
 
 ```
-rishi/bin/rishi run tools/glow_run.rish src/sec/shape-grant-family-count.glow
-rishi/bin/rishi run tools/glow_run.rish src/sec/shape-mand-ring-count.glow
+rishi/bin/rishi run tools/g/glow_run.rish src/sec/shape-grant-family-count.glow
+rishi/bin/rishi run tools/g/glow_run.rish src/sec/shape-mand-ring-count.glow
 rishi/bin/rishi run tools/gen/season/src_first_resident_witness.rish
 ```

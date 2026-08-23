@@ -1,0 +1,40 @@
+# tools/al/ales_stereo_decimate_witness.rish — stereo_decimate: the sample-rate decimator carried into stereo with ONE SHARED RUN GRID, both channels in lockstep, the time corner of the stereo NONLINEAR class
+# (ALES137).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES137.
+# Design read: active-designing/date/20260815/20260815-035333_fill-ales137-lotus-stereo-decimate.md
+# Stands on: lotus/decimate.rye (ALES83 — the mono zero-order hold run once per channel, each run held to its anchor), lotus/stereo_crush.rye (ALES136 — the resolution-axis twin whose image-breaking this rung
+# reverses), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max, max_clip). A Lotus master
+# is a StereoClip whose defining invariant is that left and right hold the same length. This rung carries ALES83's zero-order hold into stereo — holding one sample across a whole run in both channels so a
+# stream decimated to half or a quarter the rate lands on both speakers together, the stepped sample-and-hold voice of a converter read too slow. The decimator shapes TIME where the crush shapes resolution;
+# and it is the honest reverse of the two not-odd members — it copies an anchor rather than computing a new value, so because both channels share the run grid the stereo image is preserved from the anchor: an
+# out-of-phase master stays out of phase, a 1:2 master keeps its ratio at each held index.
+#
+# lotus/stereo_decimate.rye validates both channels once against the shared hold and length before either is mutated (BadHold on a hold outside [1, max_clip], BadRange on a span outside the samples), then
+# decimates both channels through ALES83's decimate; DecimateError reused whole. The crux is four laws. THE STEREO DECIMATE LAW: each channel equals ALES83's mono decimate with the same hold byte for byte. THE
+# BALANCE / LENGTH LAW: left.len == right.len after, both holding their starting length. THE SHARED-GRID IMAGE LAW: the image at each index equals the image at its run's anchor, the antisymmetry and ratio both
+# held (the honest reverse of the not-odd members), an identical-channel master staying identical, the map idempotent, hold 1 the identity. THE ATOMICITY / DEGENERATE LAW: a refusal leaves both channels
+# untouched and balanced, hold 1 the identity, count 0 the identity.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stereo_decimate_witness.rish
+
+say "ales-stereo-decimate: Language EN — stereo_decimate decimates a span in both channels of a stereo master by the same hold, partitioning the span into runs of hold samples and pinning every sample in a run to the run's first sample (its anchor), the same run grid on each, so one sample-rate decimation lands on both speakers together. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time. This rung carries the time corner of the stereo nonlinear class on ALES83's zero-order hold, running the proven mono decimate on each channel with the same hold, validated once against the shared hold and length before either channel is mutated so a refusal never decimates one channel and leaves the other at the full rate."
+say "ales-stereo-decimate: Style Radiant — the four DRIVE corners already carried into stereo shape amplitude, the bit-crush shapes resolution, and the decimator shapes the third axis, time, holding one sample across a whole run so a stream that entered at the full rate leaves at half or a quarter or a sixteenth, the aliased stepped voice of a converter read too slow, the crush's twin. And the decimator is the honest reverse of the two not-odd members: crush and tube compute new values, so they broke the inter-channel image, but the decimator copies an anchor across its run and computes no new number, so because both channels share the run grid and each holds its own anchor at the same time index the stereo image is preserved from the anchor. An out-of-phase master, right the negation of left, stays out of phase, because right at any index equals right at the anchor equals minus left at the anchor equals minus left at the index; a one to two master keeps its ratio at each held index; that is what a stereo decimation is, an image smeared in time and never split across channels. The rule is stated positively: the mono decimator carries no pre-gain and no grid, a pure time map — refuse BadHold and BadRange before either channel is mutated (each fault depends only on the shared hold or the shared length, so each is made once up front), else decimate both channels over the span by the same hold via ALES83's decimate. It reuses ALES83's DecimateError by name and ALES83's decimate for the arithmetic, inventing no new fault and no new primitive. The crux stands out as four laws: the stereo decimate law (each channel equals ALES83's mono decimate with the same hold byte for byte, every sample equal to its run's anchor), the balance / length law (left.len == right.len after the edit and both hold their starting length, a decimation copying values only), the shared-grid image law (the image at each index equals the image at its run's anchor, an out-of-phase master staying out of phase and a one to two master keeping its ratio at each held index where the not-odd class broke both, an identical-channel master staying identical, the map idempotent, hold one the identity), and the atomicity / degenerate law (any refusal leaves both channels byte for byte untouched and still balanced, hold one the identity on both, count zero the identity on both)."
+say "ales-stereo-decimate: Lens TAME — two bounded i16 Clips (left, right) decimated in lockstep by one shared zero-order hold; the balance invariant is asserted on entry and exit, the hold and span are bound-checked once before any write, and because those checks hold identically for both channels each mono decimation is pre-validated to succeed so no refusal can land between the two channel edits; decimate walks the span once per channel, computing each index's run anchor by flooring the offset to a whole multiple of hold and copying the anchor's already-original sample across the run (anchor at or before the index, written to itself before any later index in the run reads it), so every written value is a legal i16 by construction and no saturate is owed since the map narrows time never magnitude, never touching a byte past len so the length holds exactly; it reuses ALES83's decimate per channel over its public API and ALES83's DecimateError whole, inventing no new primitive; the stereo decimate law is proven against ALES83's own decimate run per channel and by hand, the shared-grid image law proves the antisymmetry and the ratio both hold at every held index on both channels (the honest reverse of the not-odd tube and crush), the map is idempotent, the two refusals leave both channels byte-for-byte untouched, and hold equal to one is the identity; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_decimate"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_decimate.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-decimate: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_decimate.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-decimate: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-decimate: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-decimate' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-decimate: selftest did not print the GREEN ales-stereo-decimate line"

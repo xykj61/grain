@@ -1,0 +1,36 @@
+# caravan_exercise_witness.rish -- Caravan exercise witness.
+#
+# Proves a granted region does real work: bytes written by the virtualiser
+# arrive in the client that was granted the same region, a read-only grant
+# refuses at the door and leaves the store byte-identical, an ungranted
+# region opens nothing at all, an execute grant never grows a write door,
+# and a reach past the declared extent refuses rather than widening it.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_exercise_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/exercise"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/exercise.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan exercise build failed"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan exercise selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan exercise selftest not GREEN"
+assert test.out contains "a granted region carries real bytes" else "the selftest did not close the loop"
+assert test.out contains "provisioned 3 regions, 73728 bytes declared" else "the worked example did not provision its declared memory"
+assert test.out contains "the grant did work -- 34 bytes crossed rx_a" else "no bytes crossed the declared share"
+assert test.out contains "refuses WriteDenied -- the store unchanged" else "a read-only grant was not refused at the door"
+assert test.out contains "refuses NotGranted, both ways, nothing opened" else "an ungranted region was reachable"
+assert test.out contains "W xor X holds at the door" else "an execute grant grew a write door"
+assert test.out contains "refuses PastEnd -- rx_a still 4096 bytes" else "a region grew by being used"
+
+# The provisioned stores stand at exactly their declared lengths on disk.
+let sizes = run ["sh" "-c" "wc -c < caravan/.regions/rx_a.bin; wc -c < caravan/.regions/font_rom.bin"]
+assert sizes.ok else "the provisioned stores could not be measured"
+assert sizes.out contains "4096" else "rx_a was not provisioned at its declared length"
+assert sizes.out contains "65536" else "font_rom was not provisioned at its declared length"
+
+say "GREEN: Caravan exercise witness passed."

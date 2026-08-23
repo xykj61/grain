@@ -4,7 +4,7 @@
 **Seated:** `20260724.144740`  
 **Reframed:** `20260724.193912` — outward publish declined; parity framing retired  
 **Status:** Checkable in-tree · demo face only  
-**Witness:** `rishi/bin/rishi run tools/glow_jamcue_vectors_witness.rish`  
+**Witness:** `rishi/bin/rishi run tools/g/glow_jamcue_vectors_witness.rish`  
 **Fixture:** [`../tools/fixtures/glow_jamcue_vectors.txt`](../tools/fixtures/glow_jamcue_vectors.txt)  
 **Canon:** `glow/expr.rye` — `jam_demo_*` · `jam_expect` · `cue_expect`
 

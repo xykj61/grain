@@ -1,0 +1,98 @@
+# tools/t/tool_path_repoint_witness.rish -- the tools repointer proven on metal, both sides.
+#
+# WHY THIS RUNG. `tools/` folded on `20260823.144100`: 1,917 flat entries moved into 35 rooms, and
+# every reference already written at a flat path stopped landing. Dated testimony keeps every word
+# it wrote and is RESOLVED by tools/t/tool_path_resolve.rish; living code is REPOINTED here. The
+# first pass rewrote 8,267 references across 2,398 files, and two corrective passes added 235 more
+# as the field boundary was narrowed twice. A tool that edits that many files earns its trust by
+# being proven on a tree whose right answer is known before it runs.
+#
+# WHAT IS PROVEN, all of it on a throwaway git repository built by
+# tools/fixtures/tool_path_repoint_control.sh, so nine behaviors are read rather than argued:
+#
+#   A living file citing a flat path that folded is REPOINTED.
+#   A dated-basename file citing the very same path is LEFT BYTE-IDENTICAL -- accrete-never-break,
+#     applied by the tree's own rule that a stamped basename is testimony.
+#   A dated-basename file inside `foundations/` IS repointed, because that room's links are gated
+#     at zero broken by a standing guard. The rule for joining that list is written in the scan:
+#     a dated-named room is living when a standing guard requires its references to resolve.
+#   A file already citing the folded path is left alone, which is what makes a second run free.
+#   A path that never moved -- `tools/fixtures/` was a subdirectory before the fold and after it --
+#     is left alone.
+#   An UNTRACKED file is left alone. This tree binds the agent's own transcripts in at
+#     `.claude-state/`, and a first pass over the whole disk reached 517 references inside a single
+#     transcript. Those are a memory of what an agent read rather than a reference anyone follows.
+#   `tool_path_*` keeps its citations, because tools/t/tool_path_witness.rish must cite a stale
+#     path to prove the resolver recovers one (REDS %121).
+#   `otherproject/tools/<basename>` is left alone even though the basename is in the map, because
+#     a leading segment is cut only behind a `$` -- the one case where the segment was a shell
+#     variable rather than a directory.
+#   `$ROOT/tools/<basename>` IS repointed, with the `$ROOT/` carried through untouched.
+#
+#   And idempotence: a second apply changes not one byte.
+#
+# WHAT IS NOT PROVEN HERE. The field pass itself is not re-run by this rung -- it edits the tree,
+# and a witness that edits the tree to prove it can is a witness nobody should trust. The field is
+# read in DRY mode only, and the reading gated is that nothing living is left to repoint, which is
+# the honest steady state after the fold.
+#
+# Season: the tools fold -- the repoint that followed the move.
+# Kin: tools/fixtures/tool_path_repoint_scan.sh - tools/fixtures/tool_path_repoint_control.sh -
+# tools/t/tool_path_resolve.rish - tools/t/tool_path_witness.rish -
+# tools/d/dated_path_repoint_witness.rish (the sibling this follows) -
+# .claude/rules/stamp-and-name.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/tool_path_repoint_witness.rish
+
+say "tool-path-repoint: Language EN -- a fold that breaks its own references costs more than the clutter it cleared, and a repointer that rewrites the wrong file costs more still. This proves which files it touches and which it leaves whole."
+say "tool-path-repoint: Style Gauge at Meter -- nine behaviors on a throwaway repository, each with its right answer known before the tool runs, plus idempotence and an honest dry reading of the field."
+say "tool-path-repoint: Lens TAME -- safety first: the field is read in dry mode only, every claim comes from the control's own output rather than from this file's memory, and the rule that protects dated testimony is tested rather than trusted."
+
+let bin = "rishi/bin/rishi"
+let control = "tools/fixtures/tool_path_repoint_control.sh"
+let scan = "tools/fixtures/tool_path_repoint_scan.sh"
+
+# ---------------------------------------------------------------------------------------------
+# PART ONE -- the nine behaviors, on a tree whose answers are known before the tool runs.
+# ---------------------------------------------------------------------------------------------
+
+let controlled = run ["sh" control]
+assert controlled.ok else "tool-path-repoint: the control must build its tree and prove every behavior"
+say controlled.out
+
+assert controlled.out contains "repointed_living=1" else "tool-path-repoint: a living file citing a folded path must be repointed"
+assert controlled.out contains "untouched_testimony=1" else "tool-path-repoint: a dated-basename file must be left byte-identical"
+assert controlled.out contains "repointed_living_room=1" else "tool-path-repoint: a dated-basename file in a living-named room must be repointed"
+assert controlled.out contains "untouched_already=1" else "tool-path-repoint: a file already citing the folded path must be left alone"
+assert controlled.out contains "untouched_elsewhere=1" else "tool-path-repoint: a path that never moved must be left alone"
+assert controlled.out contains "untouched_untracked=1" else "tool-path-repoint: an untracked file must be left alone"
+assert controlled.out contains "untouched_instrument=1" else "tool-path-repoint: the instrument must keep its deliberately stale citation"
+assert controlled.out contains "untouched_foreign=1" else "tool-path-repoint: a path in another tree must be left alone even when the basename matches"
+assert controlled.out contains "repointed_varprefix=1" else "tool-path-repoint: a path reached through a shell variable must be repointed, prefix carried through"
+assert controlled.out contains "idempotent=yes" else "tool-path-repoint: a second apply must change nothing at all"
+assert controlled.out contains "verdict=ok" else "tool-path-repoint: the control must reach its own verdict"
+say "control GREEN -- nine behaviors and idempotence, each read from a tree whose answer was known before the tool ran"
+
+# ---------------------------------------------------------------------------------------------
+# PART TWO -- the field, read DRY. Nothing living is left to repoint, which is the steady state.
+# ---------------------------------------------------------------------------------------------
+
+let field = run ["sh" scan]
+assert field.ok else "tool-path-repoint: the dry pass over the field must complete"
+say field.out
+assert field.out contains "mode=dry" else "tool-path-repoint: the field must be read in dry mode, never rewritten by a witness"
+assert field.out contains "verdict=ok" else "tool-path-repoint: the dry pass must balance"
+assert field.out contains "references_repointed=0" else "tool-path-repoint: a living reference still names a flat tools path -- run rishi/bin/rishi run tools/t/tool_path_repoint.rish apply"
+say "field GREEN -- no living file in the tree still names a tools path the fold moved"
+
+# ---------------------------------------------------------------------------------------------
+# PART THREE -- the driver runs, so the rung proves the tool a hand actually reaches for.
+# ---------------------------------------------------------------------------------------------
+
+let driver = run [bin "run" "tools/t/tool_path_repoint.rish"]
+assert driver.ok else "tool-path-repoint: the driver must run clean in its default dry mode"
+assert driver.out contains "mode=dry" else "tool-path-repoint: the driver must default to dry, so no hand rewrites the tree by forgetting a word"
+say "driver GREEN -- the tool a hand reaches for defaults to reporting rather than to rewriting"
+
+say "tool-path-repoint: GREEN -- nine behaviors proven on a throwaway repository, dated testimony left whole while a guarded room is repointed, an untracked file and another tree's path both left alone, idempotence proven, and the field standing at zero living references left to move."

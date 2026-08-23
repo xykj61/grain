@@ -5,7 +5,7 @@
 **Language:** EN
 **Last updated:** 2026-07-30 (Equinox e15 · frame-bound bite `20260730.120824`)
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`) · **Voice:** Kyri
-**Status:** Living tutorial · **metal GREEN** at `edu/tower/bounded_tower.rye` · frame bite `edu/tower/frame_bound_overpush.rye` · witnesses `tools/edu_tower_witness.rish` · `tools/edu_tower_frame_bite_witness.rish`
+**Status:** Living tutorial · **metal GREEN** at `edu/tower/bounded_tower.rye` · frame bite `edu/tower/frame_bound_overpush.rye` · witnesses `tools/e/edu_tower_witness.rish` · `tools/e/edu_tower_frame_bite_witness.rish`
 **Home:** `docs-geode/tutorials/` — the prod crystal for shipping docs
 **Naming note:** written for **Glow** and the **rune shell** surface; the rune shell's proper name awaits Keaton's word (`context/specs/reserved-vocabulary.md`)
 
@@ -92,8 +92,8 @@ The welcome side: `solve(3)` prints exactly seven moves and the postcondition ho
 
 ```
 env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run edu/tower/bounded_tower.rye
-rishi/bin/rishi run tools/edu_tower_witness.rish
-rishi/bin/rishi run tools/edu_tower_frame_bite_witness.rish
+rishi/bin/rishi run tools/e/edu_tower_witness.rish
+rishi/bin/rishi run tools/e/edu_tower_frame_bite_witness.rish
 ```
 
 

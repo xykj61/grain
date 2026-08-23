@@ -1,0 +1,36 @@
+# tools/w/watershed_witness.rish -- separate touching blobs a labeler reads as one, by marker-controlled flooding, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the segmentation move image/label.rye cannot make. A connected-component labeler reads two
+# objects that TOUCH as one component; no local test can split them. This rung treats the distance field (image/distance.rye) as
+# terrain, seats a source at each object's deep center (a marker, exactly the medial ridge image/medial_axis.rye reads), and floods
+# outward by Meyer's ordered immersion -- where two floods meet, a thin WATERSHED LINE falls, the cut that tells the two apart.
+#
+# The crux this witness proves on metal: a single solid bar 9 wide the labeler calls ONE component, seated with a marker at each
+# end's deep center, comes back TWO basins (the left marker keeps basin 1, the right basin 2) with a thin watershed line between
+# them; every foreground pixel comes back a basin or a watershed line and every background pixel stays 0; one marker floods a lone
+# blob whole with no line; colorize renders the segmentation (background black, watershed white, each basin its palette color)
+# round-tripping through the open QOI codec byte-for-byte; an empty field, a wrong-size marker map, no markers, and a depthless
+# field each refuse by name. No network, no key, no funds -- the cut a surface draws the day two marks touch and must be told apart.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/w/watershed_witness.rish
+
+say "watershed: Language EN -- Season G segmentation; marker-controlled flooding of the distance field, the cut a connected-component labeler cannot make."
+say "watershed: Style Radiant -- compose not braid: this rung owns only the ordered flood (terrain inversion, bucket priority queue, one-basin/two-basins decision); distance owns the terrain, label owns the marker and output types and the palette, qoi owns the buffer, branch.is_on is the binary door."
+say "watershed: Lens TAME -- the queue is a bucket list threaded through a next array sized to the pixel count, each pixel queued at most once and the flood loop bounded by the pixel count; an empty field, a size mismatch, no markers, and a depthless field each refuse by name up front so a refusal allocates nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/watershed"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/watershed.rye -femit-bin=${bin}"]
+assert build.ok else "watershed: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "watershed: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "watershed: ${out}"
+
+assert selftest.out contains "GREEN image-watershed" else "watershed: selftest did not print the GREEN line"
+
+say "watershed: GREEN -- a touching bar the labeler reads as one component splits into two basins with a watershed line between them, one marker floods a lone blob whole, colorize round-trips through the open QOI codec, on metal."

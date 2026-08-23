@@ -1,0 +1,44 @@
+# tools/r/roundness_universal_witness.rish -- close the UNIVERSAL inner-<=-outer roundness proof on metal (Season G).
+#
+# Season G (Open Media Primitives) -- image/roundness.rye reconciled a shape's INNER inscribed bound and OUTER enclosing bound in one
+# shared doubled pixel-square convention, and proved r_in^2 <= r_out^2 EXACTLY for the orthogonal geometry its fixtures were limited
+# by, naming a universal proof for arbitrary diagonal-limited shapes the honest next horizon. This rung closes that horizon by reading
+# the EXACT Euclidean inscribed radius at the deepest pixel -- the nearest-background-square distance, an exact integer, NO float, NO
+# tolerance -- so the inequality holds for EVERY shape, verified by containment rather than approximated by the chamfer.
+#
+# The crux this witness proves on metal: an orthogonal 5x5 block reaches its nearest background STRAIGHT, so the exact inner 25 EQUALS
+# image/roundness.rye's chamfer inner 225/9 (the chamfer exact for orthogonal geometry); a filled DIAMOND reaches its nearest
+# background DIAGONALLY, so the chamfer OVERCREDITS 121/9 ~ 13.44 while the true inscribed disk reaches only 10 doubled^2 -- yet the
+# universal inequality holds on both. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/roundness_universal_witness.rish
+
+say "roundness_universal: Language EN -- Season G universal inner-<=-outer roundness proof; the exact Euclidean inscribed radius by nearest-background-square scan; NO float, NO tolerance."
+say "roundness_universal: Style Radiant -- compose not braid: this rung owns only the exact nearest-background-square scan and the universal comparison; roundness owns the doubled convention, the outer bound, and the deepest-pixel center. A reading, not a render -- no plane of its own, no pixel written."
+say "roundness_universal: Lens TAME -- the background scan visits each pixel once under the qoi pixel ceiling; every distance is exact i128 in doubled^2; an empty source refuses EmptySource, an all-background mask NoForeground; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/roundness_universal"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/roundness_universal.rye -femit-bin=${bin}"]
+assert build.ok else "roundness_universal: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "roundness_universal: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "roundness_universal: ${out}"
+
+assert selftest.out contains "GREEN image-roundness-universal" else "roundness_universal: selftest did not print the GREEN line"
+assert selftest.out contains "the EXACT Euclidean inscribed radius at the deepest pixel" else "roundness_universal: the exact-inner claim did not print"
+assert selftest.out contains "the DECISIVE overcredit crux" else "roundness_universal: the decisive crux did not print"
+assert selftest.out contains "the exact inner 25 EQUALS image/roundness.rye's chamfer inner 225/9" else "roundness_universal: the orthogonal-agreement crux did not print"
+assert selftest.out contains "the chamfer OVERCREDITS an inner of (2*7-3)^2/9 = 121/9" else "roundness_universal: the diamond overcredit crux did not print"
+assert selftest.out contains "the true inscribed disk reaches only the CORNER of that background pixel, exact squared radius EXACTLY 10 doubled^2" else "roundness_universal: the exact-corner crux did not print"
+assert selftest.out contains "a disk verified inside the region sits inside any disk covering the region" else "roundness_universal: the geometric lemma did not print"
+assert selftest.out contains "inner_within_outer_universal decides exact_inner <= outer exactly and is ALWAYS true" else "roundness_universal: the universal claim did not print"
+assert selftest.out contains "an all-background mask refuses NoForeground and a zero-size source EmptySource" else "roundness_universal: the refusals did not print"
+assert selftest.out contains "reads the same exact bounds deterministically" else "roundness_universal: determinism did not print"
+
+say "roundness_universal: GREEN on metal -- the universal inner-<=-outer roundness proof closed for arbitrary diagonal-limited shapes by an exact nearest-background-square scan; the chamfer overcredit named where it reaches diagonally, confirmed exact where it reaches straight; refusals by name, determinism. Season G open-media."

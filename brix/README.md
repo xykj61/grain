@@ -19,7 +19,7 @@ It is **zero-copy** — parsed keys and values slice the two source buffers; onl
 ```
 rye build brix/infuse.rye -femit-bin=tools/.build/brix_infuse
 tools/.build/brix_infuse selftest
-rishi/bin/rishi run tools/brix_infuse_witness.rish
+rishi/bin/rishi run tools/b/brix_infuse_witness.rish
 ```
 
 Proven by `prove_infuse`: a scalar overridden, a base-only key kept, a repeated `field` list replaced, an empty override an identity over the base, and a too-small output refused.

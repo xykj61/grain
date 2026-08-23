@@ -4,13 +4,13 @@
 # the vocabulary pruning found two live meters under one name, told apart only by a capital
 # letter: the health face `sundial/sundial.rye` keeps **Sundial**, and this one became Plumb.
 # The FILE keeps its elder name because seven living files call it by that path, and a promise
-# kept is worth more than a tidy filename -- the same reason tools/session_logs_archive.rye kept
+# kept is worth more than a tidy filename -- the same reason tools/rye/session_logs_archive.rye kept
 # its name when its destination molted.
 #
 # Lexicon shortcut: measure how well the session recursion printout still
 # carries checkpoints from recent rounds. High green · low red.
 #   rishi/bin/rishi run tools/gen/season/sundial.rish
-#   rishi/bin/rishi run tools/sundial.rish            # accrete shim
+#   rishi/bin/rishi run tools/s/sundial.rish            # accrete shim
 #   prin sundial
 
 say "sundial: Language EN — recursion confidence meter (percent · color band)."

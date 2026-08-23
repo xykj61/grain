@@ -24,6 +24,29 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260823.143835` -- the tools room folds, 1,917 flat entries into 38 rooms
+
+**Walk-back nib:** `0d87a51fcd` -- pier and both remotes. A **working-tree move**, so every
+departing path stays in history: `git show 0d87a51fcd:tools/ca/caravan_suite_witness.rish`, and
+`git log --oneline 0d87a51fcd` browses the room as it stood flat.
+
+**Swept:** nothing is deleted. `tools/` holds **1,917 flat entries** against the 256 the mark law
+names -- 7.4x over, and past GitHub's 1,000-entry listing cap, so the web view is truncated for
+anyone browsing. Every flat entry moves: a `.rish`, `.sh`, or data file into `tools/<first sprig
+letter>/`, with `a` and `c` splitting one letter deeper because each stands over bound alone; and
+every `.rye` source, with the 24 crypto shims and the `enrich/` room it imports, into
+`tools/rye/`. Roughly 2,442 living references are repointed in the same round.
+
+**What waits there, worth recalling:** the flat room is the only place the pre-fold reference
+shape can be read whole -- 14,151 `tools/<file>` citations, of which 2,866 sit in dated testimony
+that keeps every word it wrote and is resolved rather than rewritten
+(`rishi/bin/rishi run tools/t/tool_path_resolve.rish <reference> [<citing-file>]`). The decision that
+put `.rye` in a room of its own rather than in letter rooms was made by measurement: Zig refuses
+an import that escapes the root file's directory (*import of file outside module path*, proven on
+metal this lap), so a bare-name `@import` is a directory relationship the language enforces, and
+the whole Rye closure of `tools/` is one room by the compiler's own rule.
+
+
 ### `20260823.105651` -- two rota laws fuse, and one leaves the tree
 
 **Walk-back nib:** `fa0cf45a2e` -- pier and both remotes. A **working-tree debride**, so the departing
@@ -291,7 +314,7 @@ git show 6e9c381f4c:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `30ad234a08` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. `counsel` (764 flat), `active-designing` (629), `expanding-prompts` (359), and `waymarks` (290) read at this nib exactly as they stood before the fold, and so does every living file before the repointer touched it.
 
-**Swept:** no file is removed. Each room's flat dated files `git mv` into `<room>/date/<day>/`, and each room's own `README.md` is repointed in the same pass. Then, for the first time, **living files are rewritten**: a reference in code or a living document whose target moved into a date fold is repointed in place. **Every file whose own basename carries a one-clock stamp is left byte-identical** -- that rule is what keeps this from becoming a rewrite of dated testimony, and it is proven on metal by `tools/dated_path_repoint_witness.rish` before it ran.
+**Swept:** no file is removed. Each room's flat dated files `git mv` into `<room>/date/<day>/`, and each room's own `README.md` is repointed in the same pass. Then, for the first time, **living files are rewritten**: a reference in code or a living document whose target moved into a date fold is repointed in place. **Every file whose own basename carries a one-clock stamp is left byte-identical** -- that rule is what keeps this from becoming a rewrite of dated testimony, and it is proven on metal by `tools/d/dated_path_repoint_witness.rish` before it ran.
 
 **What waits there, worth recalling:** the last look at four rooms that grew past what a browser can list, and the reason each fold was safe to make -- roughly a thousand functional references inside `tools/` pointed at flat paths in these rooms, counted before the move rather than discovered after it. The walk-back also holds every living file exactly as it read before any automated edit touched it, which is the thing worth being able to return to when a tool has rewritten three thousand candidates in one pass.
 
@@ -299,7 +322,7 @@ git show 6e9c381f4c:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `66875be46b` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The whole session-log room as it stood flat -- 1,492 dated files at room level, 892 `.bron` and 600 `.kyri`, beside the elder `archive/` holding 3,000 more across 44 day directories -- reads at this nib exactly as it read for the two months it grew that way.
 
-**Swept:** no file is removed and no byte is lost -- this is a `git mv` of every flat dated log into `session-logs/date/<day>/`, plus a rename of the elder `archive/` to `date/` so one room has one shape. `session-logs/README.md` is a **living** index, so its 1,491 flat links and its `archive/` links are repointed in place; every other reference in the tree is left exactly as written, to be **resolved** rather than rewritten (`tools/dated_path_resolve.rish`).
+**Swept:** no file is removed and no byte is lost -- this is a `git mv` of every flat dated log into `session-logs/date/<day>/`, plus a rename of the elder `archive/` to `date/` so one room has one shape. `session-logs/README.md` is a **living** index, so its 1,491 flat links and its `archive/` links are repointed in place; every other reference in the tree is left exactly as written, to be **resolved** rather than rewritten (`tools/d/dated_path_resolve.rish`).
 
 **What waits there, worth recalling:** the flat room is the last look at what two months of daily logging looks like in one `ls` -- and the honest reason the fold happened, since GitHub's web listing stops at 1,000 entries and the room held 1,492. The elder `archive/` name waits here too; it retires because ORGANIZING defines archive as finished-and-historical while a log from nine days ago is the live record.
 
@@ -748,7 +771,7 @@ git show 6e9c381f4c:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `d87f9d76b1` -- the last commit that still carried the elder waymark tissue whole, held **LOCALLY only** at the safety tag `pre-elder-debride-d87f9d76b1` until git GC. After the deep debride it is **no longer on the remotes** (origin + xykj61 force-pushed to the rewritten history).
 **Swept:** the dead tissue of five superseded waymarks and the retired module name, from the living tree (rules, LEXICON, ITINERARY, `waymark_derive.rish`, SHRED_PREP, the eight-season doc, the Cursor twin) and from **76 dead-mark session logs** (their dedicated logs and transitional records), which were **removed rather than rewritten** and then purged from **all git history** (path removal across every commit + full re-sign, force-push). The living ladders **DREY - FORA - WADE - LOWE** and the module **Dimeroll** carry only their standing names.
-**What waits there, worth recalling:** at nib `d87f9d76b1` (local safety tag only) the tree still labels every site with the superseded marks and holds all 76 dead-mark logs whole -- `git show d87f9d76b1:.claude/rules/waymark-ladders.md`, `git log --oneline d87f9d76b1`. **No canonical waymark fact was lost:** every mark ever drawn is sealed and re-derivable in [`waymark-registry.bron`](waymark-registry.bron) (witness `tools/waymark_registry_witness.rish` GREEN), which is exactly why the superseded marks were harmless before this cut. Counsel dated testimony, the REDS ledger, and the earlier CHECKPOINTS walk-back rows were **kept** -- decision record, reds record, recovery markers. Recovery: `git reset --hard pre-elder-debride-d87f9d76b1` locally **before GC**, or re-clone from a machine that still holds the old history.
+**What waits there, worth recalling:** at nib `d87f9d76b1` (local safety tag only) the tree still labels every site with the superseded marks and holds all 76 dead-mark logs whole -- `git show d87f9d76b1:.claude/rules/waymark-ladders.md`, `git log --oneline d87f9d76b1`. **No canonical waymark fact was lost:** every mark ever drawn is sealed and re-derivable in [`waymark-registry.bron`](waymark-registry.bron) (witness `tools/w/waymark_registry_witness.rish` GREEN), which is exactly why the superseded marks were harmless before this cut. Counsel dated testimony, the REDS ledger, and the earlier CHECKPOINTS walk-back rows were **kept** -- decision record, reds record, recovery markers. Recovery: `git reset --hard pre-elder-debride-d87f9d76b1` locally **before GC**, or re-clone from a machine that still holds the old history.
 
 ### `20260817.215539` -- urbit lineage DROPPED: private history re-rooted at Grain's first commit (deep debride EXECUTED, force-pushed)
 
@@ -761,7 +784,7 @@ git show 6e9c381f4c:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `27e1916049`
 **Swept:** *nothing yet* -- planted ahead of five newly approved breaches so each keeps its walk-back before it cuts. Four are **waymark redraws** to the living marks (same ladder, same goals, chosen on Keaton's word and reserved in the derive exclude): **DREY** (`season-a-mikrophone-forgetful-capture`, idx 1189), **FORA** (`constel-local-test-constellations`, idx 1594), **WADE** (`dimeroll-hr-and-accounting-entities`, idx 5141), **LOWE** (`cion-molt-living-mutants-and-fossils`, idx 2813). The fifth is a **module rename** to **Dimeroll** (a Comlink-tendency name change, ~147 living refs). Each is a **breach molt debride** that executes as its own signed round; the largest touches ~502 living sites (its rung labels, its `tools/` witnesses, the `mikrophone/` modules, and cross-refs from Constel/Lotus).
-**What waits there, worth recalling:** at nib `27e1916049` and every commit before it, the tree still labels every site with the superseded marks. Walk back with `git show 27e1916049:.claude/rules/waymark-ladders.md` or `git log --oneline 27e1916049`. New draws seated in `tools/waymark_derive.rish` (seated-draws comment + exclude) and `.claude/rules/waymark-ladders.md`; retirement noted in `context/LEXICON.md`, `construction/ITINERARY.md` open doors, and `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md`.
+**What waits there, worth recalling:** at nib `27e1916049` and every commit before it, the tree still labels every site with the superseded marks. Walk back with `git show 27e1916049:.claude/rules/waymark-ladders.md` or `git log --oneline 27e1916049`. New draws seated in `tools/w/waymark_derive.rish` (seated-draws comment + exclude) and `.claude/rules/waymark-ladders.md`; retirement noted in `context/LEXICON.md`, `construction/ITINERARY.md` open doors, and `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md`.
 
 ### `20260817.172514` -- ITINERARY Prior Git nib stack condensed (the code-edge trail folded to a pointer)
 
@@ -778,7 +801,7 @@ git show 6e9c381f4c:expanded-prompts/20260810-054332_green-witness-record-seed-r
 ### `20260816.220634` -- work-in-progress -> crux rename EXECUTED (the breach the 20260815 checkpoint pre-planted)
 
 **Walk-back nib:** `947c592333`
-**Swept:** the `work-in-progress/` directory renamed to `construction/` via `git mv`, so the living pins (ITINERARY, REDS, CHECKPOINTS, SHRED_PREP, ROADMAP, TASKS) now sort high alphabetically as Keaton seated. A back-compat symlink `work-in-progress -> crux` is committed so the 2,000+ dated session logs and counsel that cite `work-in-progress/...` still resolve unchanged -- accrete-never-break without rewriting one dated artifact. Only the loop paths (the seed and `tools/launch-claude-season.rish`) and the living rules that name the ledgers were repointed to `construction/`; the dated-bearing ledgers kept their historical `work-in-progress` wording and resolve through the symlink.
+**Swept:** the `work-in-progress/` directory renamed to `construction/` via `git mv`, so the living pins (ITINERARY, REDS, CHECKPOINTS, SHRED_PREP, ROADMAP, TASKS) now sort high alphabetically as Keaton seated. A back-compat symlink `work-in-progress -> crux` is committed so the 2,000+ dated session logs and counsel that cite `work-in-progress/...` still resolve unchanged -- accrete-never-break without rewriting one dated artifact. Only the loop paths (the seed and `tools/l/launch-claude-season.rish`) and the living rules that name the ledgers were repointed to `construction/`; the dated-bearing ledgers kept their historical `work-in-progress` wording and resolve through the symlink.
 **What waits there, worth recalling:** at nib `947c592333` and every commit before it, the tree still holds a real `work-in-progress/` directory -- every path in dated logs is literal there, not a symlink. A future full repoint of living references (dropping the symlink) would be its own ratchet round.
 
 ### `20260815.175524` -- Decision-wave breach queue: Bron->Kyri and work-in-progress->crux (prep, no cut yet)

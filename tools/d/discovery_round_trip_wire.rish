@@ -1,0 +1,75 @@
+# tools/d/discovery_round_trip_wire.rish — door 15 discovery wire round-trip
+#
+# Spawns two lanes (peers=2) under outer timeout 64, wait-for both,
+# asserts both-sides table digests equal, fold supply parity from GREEN
+# mycelium/fold.rye, and appends almanac seat 13 from metal on GREEN.
+#
+#   rishi/bin/rishi run tools/d/discovery_round_trip_wire.rish
+#
+# Bounds (recursion_block.brix): discovery_wire_peers 2 ·
+# discovery_wire_convergence_rounds_max 8 ·
+# discovery_wire_outer_timeout_seconds 64
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "comlink/.build/discovery_round_trip_wire"
+let lane_src = "comlink/discovery/round_trip_wire.rye"
+let almanac = "rye-learning-process/GLOW_ALMANAC.md"
+
+let prep = run ["sh" "-c" "mkdir -p comlink/.build"]
+assert prep.ok else "wire lab mkdir failed"
+
+# Build lane binary (-lc for nanosleep). Avoid $N in sh -c (rish expands digits).
+let build = run ["sh" "-c" "env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build comlink/discovery/round_trip_wire.rye -lc -femit-bin=comlink/.build/discovery_round_trip_wire"]
+assert build.ok else "wire lane build failed"
+
+let mk = run ["sh" "-c" "mktemp -d /tmp/grain-discovery-wire.XXXXXX"]
+assert mk.ok else "wire dir mktemp failed"
+let wire_dir = trim mk.out
+
+# Outer timeout 64 · spawn/wait-for both lanes — tree wire-lab shape.
+let lane_a = spawn ["timeout" "64" "${bin}" "lane" "A" "${wire_dir}"]
+let lane_b = spawn ["timeout" "64" "${bin}" "lane" "B" "${wire_dir}"]
+let a_done = wait-for lane_a
+let b_done = wait-for lane_b
+assert a_done.ok else "lane A failed or timed out"
+assert b_done.ok else "lane B failed or timed out"
+# Rye print on this bench lands in wait-for .err (stdout often empty).
+assert a_done.err contains "GREEN: discovery wire lane A" else "lane A missing GREEN"
+assert b_done.err contains "GREEN: discovery wire lane B" else "lane B missing GREEN"
+assert a_done.err contains "stranger refused · table_clean" else "lane A missing stranger refuse"
+assert b_done.err contains "stranger refused · table_clean" else "lane B missing stranger refuse"
+assert a_done.err contains "gossip_malformed refused whole" else "lane A missing gossip refuse"
+assert b_done.err contains "gossip_malformed refused whole" else "lane B missing gossip refuse"
+
+# Both-sides: digests written independently must match.
+let dig_a = run ["sh" "-c" "cat ${wire_dir}/digest-a"]
+let dig_b = run ["sh" "-c" "cat ${wire_dir}/digest-b"]
+assert dig_a.ok else "digest-a missing"
+assert dig_b.ok else "digest-b missing"
+assert trim dig_a.out == trim dig_b.out else "both-sides table digest mismatch"
+assert trim dig_a.out == "lane-a,lane-b" else "unexpected table digest"
+
+# Fold parity — compose GREEN mycelium/fold.rye twice (process seam · same prefix).
+# Capture via a small helper so UTF-8 middots and rish $digit expansion stay out of the way.
+let fold_parity = run ["sh" "tools/d/discovery_round_trip_wire_fold.sh"]
+assert fold_parity.ok else "fold parity helper failed"
+assert fold_parity.out contains "fold_supply_parity=" else "fold parity missing marker"
+assert fold_parity.out contains "GREEN" else "fold parity missing GREEN"
+
+# Bound pins present in lane source.
+let peers_pin = run ["sh" "-c" "grep -c 'wire_peers: u32 = 2' comlink/discovery/round_trip_wire.rye"]
+assert trim peers_pin.out != "0" else "wire_peers bound missing"
+let conv_pin = run ["sh" "-c" "grep -c 'wire_convergence_rounds_max: u32 = 8' comlink/discovery/round_trip_wire.rye"]
+assert trim conv_pin.out != "0" else "converge bound missing"
+let time_pin = run ["sh" "-c" "grep -c 'wire_outer_timeout_seconds: u32 = 64' comlink/discovery/round_trip_wire.rye"]
+assert trim time_pin.out != "0" else "timeout bound missing"
+
+# Almanac seat 13 — metal writes; helper is idempotent when seat already present.
+let append = run ["sh" "tools/d/discovery_round_trip_wire_almanac.sh"]
+assert append.ok else "almanac append failed"
+say append.out
+
+let cleanup = run ["sh" "-c" "rm -rf ${wire_dir}"]
+assert cleanup.ok else "wire dir cleanup failed"
+
+say "GREEN: discovery wire round-trip — peers=2 · both-sides · fold parity · refusals loud · timeout 64"

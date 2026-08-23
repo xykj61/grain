@@ -1,0 +1,43 @@
+# tools/d/dahl_j11_council_sky_bron_witness.rish — Season 3 Journey 11 (Council skies), Rung 3.
+#
+# Rungs one and two fixed the council rule and bound each ballot to a seat's signature. A council is only
+# useful to a commons if it can be carried and checked with no live council in hand. pond/apps/council_sky_bron.rye
+# renders a signed council to a format council-sky-v1 Bron record (a council line carrying the id, the
+# sky's galaxy/star/planet counts, and the seated size; one ballot line per signed vote) and parses it
+# back byte-for-byte. Still tie-free and quorum-honest offline: still_quorum_honest re-verifies every
+# carried ballot signature through rung two's verify_ballot (a flipped signature refuses BadConsent);
+# rebuild reconstructs the sky, re-seats the council through rung one's load (a record naming an even body
+# refuses EvenCouncil — the tie-free law travels with the record), and replays each ballot into an equal
+# live council whose outcome matches. Unknown/missing field, bad header, bad hex each refuse. Additive —
+# composes r1 and r2 over public API; both re-run GREEN. Demo keeper seeds only, no network (serve reaches
+# the custody gate).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/dahl_j11_council_sky_bron_witness.rish
+
+say "dahl-j11r3: Language EN — a signed council travels as Bron, byte-for-byte, recovers its sky, and stays tie-free and quorum-honest offline."
+say "dahl-j11r3: Lens TAME — a flipped ballot, an even body on rebuild, an unknown field, a bad header, a missing council line, and bad hex each refuse."
+
+let zig = "vendor/zig-toolchain/zig"
+
+let bin = "pond/bin/council-sky-bron"
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/council_sky_bron.rye -femit-bin=${bin}"]
+assert build.ok else "dahl-j11r3: council_sky_bron build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "dahl-j11r3: council_sky_bron selftest exited non-zero"
+assert selftest.out contains "GREEN" else "dahl-j11r3: selftest did not speak GREEN"
+assert selftest.out contains "rebuilt the identical tie-free outcome" else "dahl-j11r3: round-trip crux missing"
+assert selftest.out contains "refused BadConsent offline" else "dahl-j11r3: flipped-ballot refusal missing"
+assert selftest.out contains "refused EvenCouncil on rebuild" else "dahl-j11r3: even-body rebuild refusal missing"
+assert selftest.out contains "refused MissingCouncil" else "dahl-j11r3: missing-council refusal missing"
+
+# r1 and r2 stay their own GREEN binaries — additive.
+let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/council_sky.rye -femit-bin=pond/bin/council-sky && pond/bin/council-sky selftest 2>&1"]
+assert r1.ok else "dahl-j11r3: r1 did not stay GREEN"
+assert r1.out contains "GREEN" else "dahl-j11r3: r1 GREEN missing"
+let r2 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/council_sky_signed.rye -femit-bin=pond/bin/council-sky-signed && pond/bin/council-sky-signed selftest 2>&1"]
+assert r2.ok else "dahl-j11r3: r2 did not stay GREEN"
+assert r2.out contains "GREEN" else "dahl-j11r3: r2 GREEN missing"
+
+say "GREEN: dahl-j11r3 — council_sky_bron carries a signed council as Bron, byte-for-byte and tie-free offline; r1 and r2 stay GREEN."

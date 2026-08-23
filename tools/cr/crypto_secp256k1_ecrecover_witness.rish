@@ -1,0 +1,46 @@
+# tools/cr/crypto_secp256k1_ecrecover_witness.rish — ECDSA public-key RECOVERY on secp256k1 authored in pure Rye: the Ethereum ecrecover
+# primitive, the EVM precompile at address 0x01 that reads the SENDER back out of a signature — the operation behind every Sign-in-with-
+# Ethereum, every EIP-191/712 authentication, and every transaction-sender derivation. Given a message hash z, a signature (r, s), and a
+# recovery id of 0 or 1, it recovers the public key Q = r⁻¹·(s·R − z·G), composing only the GREEN base field, group law, scalar ladder, and
+# scalar field, and adding exactly one new base-field arithmetic — a square root for point decompression (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+# Design read: active-designing/date/20260816/20260816-040220_secp256k1-ecrecover.md (this rung's claim) and
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
+# Kin: crypto/secp256k1_ecdsa.rye (the verifier — recovery is verification run backward, GREEN) · crypto/secp256k1_ecdsa_sign.rye (the signer
+# whose (r, s) this reads a key out of, GREEN) · crypto/eth_address.rye (the address the recovered key resolves to, GREEN). secp256k1 is not in
+# Monocypher, so its source parity is not a rung here; the algebraic round-trip plus Zig's independent std.crypto are the two witnesses
+# (.claude/rules/gratitude-licenses.md).
+#
+# crypto/secp256k1_ecrecover.rye refuses unless r and s lie in [1, n−1], takes R's x to be r (r < n < p, always canonical — the j = 1 overflow
+# recovery ids 2 and 3 are outside v = 27/28 and refused exactly as the precompile refuses them), decompresses R by solving y² = x³ + 7 and
+# picking the root whose low bit matches the recovery id, folds the hash to a scalar mod n, computes r⁻¹ mod n, and recovers
+# Q = r⁻¹·(s·R − z·G). The square root is √a = a^((p+1)/4), valid because p ≡ 3 (mod 4), by the same fixed square-and-multiply ladder the base
+# field's inverse walks over a public exponent. The primitive calls no std.crypto. Parity is proven at selftest against an algebraic
+# round-trip (each of Zig's deterministic key pairs recovers back from its own (r, s) at exactly one recovery id and not the other; a one-bit
+# tamper of the hash recovers a different key; the recovered key's Ethereum address matches the key's own) and against Zig's own
+# std.crypto.ecc.Secp256k1.fromSec1 point decompression byte-for-byte on R's recovered y. Purely local — in RECOVERY every value (r, s, z, the
+# recovery id, the recovered key) is PUBLIC, so no real key, no signing (signing stays the custody gate), no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_secp256k1_ecrecover_witness.rish
+
+say "crypto-secp256k1_ecrecover: Language EN — ECDSA public-key RECOVERY on secp256k1 authored in pure Rye, the Ethereum ecrecover primitive (the EVM precompile at 0x01) that reads the SENDER back out of a signature. Given a message hash z, a signature (r, s), and a recovery id of 0 or 1, it refuses unless r, s in [1, n−1]; takes R's x to be r; decompresses R by solving y² = x³ + 7 for the root whose low bit matches the recovery id; z = hash mod n; and recovers Q = r⁻¹·(s·R − z·G) — composing only the GREEN base field, group law, scalar ladder, and scalar field, adding exactly one new base-field arithmetic, a square root."
+say "crypto-secp256k1_ecrecover: Style Radiant — recovery is verification run backward: where the verifier is handed a key and checks a signature, ecrecover is handed a signature and reads the key. The one new arithmetic is a base-field square root √a = a^((p+1)/4), valid because secp256k1's p ≡ 3 (mod 4), by the same fixed square-and-multiply ladder the base field's inverse already walks over a public exponent. The base point G is the SEC 2 generator parsed through the proven base field, never raw limbs. This is the whole Ethereum account model's foundation — the sender of a transaction is exactly the recovered key's address."
+say "crypto-secp256k1_ecrecover: Lens TAME — the primitive calls no std.crypto; every function names a bound and asserts its contracts; the j = 1 overflow recovery ids 2 and 3 are refused exactly as the EVM precompile refuses anything but v = 27/28. In RECOVERY every value (r, s, z, the recovery id, the recovered key) is PUBLIC, so the variable-time arithmetic leaks no secret — it answers 'who signed this?', never 'sign this', and signing with a real identity key stays the custody gate (#3/#4). Parity holds against an algebraic round-trip AND Zig's independent std.crypto.ecc.Secp256k1.fromSec1 byte-for-byte on R's recovered y. secp256k1 is not in Monocypher, so the two witnesses are the round-trip and Zig's std.crypto. Purely local — no real key, no signing, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/secp256k1_ecrecover"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/secp256k1_ecrecover.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-secp256k1_ecrecover: build failed — ${build.err}"
+
+let outfile = "crypto/bin/secp256k1_ecrecover.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-secp256k1_ecrecover: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-secp256k1_ecrecover: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-secp256k1-ecrecover' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-secp256k1_ecrecover: selftest did not print the GREEN crypto-secp256k1-ecrecover line"

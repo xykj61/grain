@@ -1,0 +1,5 @@
+# tools/p/prin_scope.rish — accrete shim → tools/gen/season/prin_scope.rish (Generator Season s4)
+if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_scope.rish"]
+if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/season/prin_scope.rish" args[0]]
+if r.out != "" then say r.out
+exit r.code

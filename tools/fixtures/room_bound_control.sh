@@ -14,7 +14,7 @@
 #
 # EXPECTED: phase one verdict=over with enforced_over=1; phase two every enforced room absent.
 #
-# Driven by tools/room_bound_witness.rish. Run from the repository root.
+# Driven by tools/r/room_bound_witness.rish. Run from the repository root.
 
 set -eu
 
@@ -26,6 +26,14 @@ mkdir -p "$work/session-logs"
 : > "$work/session-logs/20260101-000000_one.kyri"
 : > "$work/session-logs/20260101-000100_two.kyri"
 : > "$work/session-logs/20260101-000200_three.kyri"
+
+# The letter-folded room, counted by EVERY flat entry rather than by dated basenames. None of
+# these names carries a stamp, which is exactly the shape that read zero for `tools/` while the
+# real room stood 7.4x over bound. One of the three is a symlink, because the fold moves those too.
+mkdir -p "$work/tools"
+: > "$work/tools/alpha_witness.rish"
+: > "$work/tools/beta_witness.rish"
+ln -s alpha_witness.rish "$work/tools/gamma_witness.rish"
 
 cd "$work"
 over_out="$(sh "$root/tools/fixtures/room_bound_scan.sh" 2 2>&1 || true)"
@@ -54,7 +62,12 @@ over_named=no
 printf '%s\n' "$over_out" | grep -q 'room=session-logs flat=3 verdict=over roster=enforce' && over_named=yes
 echo "over_named_by_room=$over_named"
 
-if [ "$over_code" -ne 0 ] && [ "$missing_code" -ne 0 ] && [ "$over_named" = yes ]; then
+# The letter-folded room must red on its own counting rule, and say which rule it used.
+all_named=no
+printf '%s\n' "$over_out" | grep -q 'room=tools flat=3 verdict=over roster=enforce counts=all' && all_named=yes
+echo "all_counted_room_named=$all_named"
+
+if [ "$over_code" -ne 0 ] && [ "$missing_code" -ne 0 ] && [ "$over_named" = yes ] && [ "$all_named" = yes ]; then
   echo "control_verdict=ok"
 else
   echo "control_verdict=wrong"

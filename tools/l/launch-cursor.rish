@@ -1,0 +1,51 @@
+# launch-cursor.rish — start Cursor inside ai-jail from the repository root.
+#
+# Primary Linux launcher (Rish). Bash elder: tools/cu/cursor-jail.sh.
+# Framework host: Ubuntu 26.04 LTS · GNOME Wayland — pass --gpu.
+#
+# Reads --cursor, --extract, --appimage, and --gpu from script args (RS-3).
+# Bind defaults before any if — Rishi resolves names in every branch.
+# Never write `if … then assert cond else "msg"` — the else binds to if, not assert.
+# Invoke with bash — cursor-jail.sh needs pipefail and arrays (Ubuntu sh is dash).
+#
+#   # Fresh download in the pier root (chmod +x first), then extract + jail:
+#   rishi/bin/rishi run tools/l/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
+#
+#   # Already extracted:
+#   rishi/bin/rishi run tools/l/launch-cursor.rish --gpu
+#   rishi/bin/rishi run tools/l/launch-cursor.rish --cursor squashfs-root/AppRun --gpu
+#
+# --cursor PATH
+#   · ends with .AppImage  → extract into squashfs-root/, then launch (same as --extract)
+#   · otherwise            → treat PATH as AppRun (same as --appimage / positional)
+# --extract IMAGE          → legacy alias for AppImage extract
+# --appimage APPRUN        → legacy alias for extracted AppRun path
+# --gpu                    → ai-jail --gpu (GNOME Wayland / WebGPU)
+#
+# Shell equivalent: ./tools/cu/cursor-jail.sh --cursor ./Cursor-….AppImage --gpu
+# See: SOURCE.md Step 9 · context/specs/enclosure-editors.md
+
+let image = ""
+let apprun = "squashfs-root/AppRun"
+let cursor = ""
+if (args contains "--extract") then let image = flag args "--extract"
+if (args contains "--cursor") then let cursor = flag args "--cursor"
+if (args contains "--appimage") then let apprun = flag args "--appimage"
+
+# --cursor on a .AppImage means extract; any other path is the AppRun.
+if (args contains "--cursor") then if (cursor ends-with ".AppImage") then let image = cursor
+if (args contains "--cursor") then if ((cursor ends-with ".AppImage") == false) then let apprun = cursor
+
+let want_extract = false
+if image != "" then let want_extract = true
+
+if want_extract then if (args contains "--gpu") then let result = run ["bash" "tools/cu/cursor-jail.sh" "--extract" image "--gpu"] else let result = run ["bash" "tools/cu/cursor-jail.sh" "--extract" image]
+if want_extract then say "launch-cursor: extract+launch — cursor=${image} ok=${result.ok}"
+# Never `if … then assert … else "msg"` — else binds to if, not assert.
+if want_extract then assert result.ok
+if want_extract then exit 0
+
+if (args contains "--gpu") then let result = run ["bash" "tools/cu/cursor-jail.sh" "--gpu" apprun] else let result = run ["bash" "tools/cu/cursor-jail.sh" apprun]
+
+say "launch-cursor: cursor-jail finished — apprun=${apprun} ok=${result.ok}"
+assert result.ok else "cursor-jail failed to start Cursor in ai-jail"

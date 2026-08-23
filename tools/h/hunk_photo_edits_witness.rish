@@ -1,0 +1,50 @@
+# tools/h/hunk_photo_edits_witness.rish — the Photos app edits non-destructively on metal (HUNK11).
+#
+# Season A (Hardware & Right-to-Repair) · waymark HUNK · journey Photos app · rung HUNK11.
+# Design read: active-designing/date/20260813/20260813-155719_hunk-photo-edits-non-destructive-exploration.md
+# Teacher, thanked clean-room: the non-destructive edit history of iCloud Photos / Google Photos (concept only, siloed).
+#
+# HUNK3–HUNK10 gave the Photos app six pure verbs; this rung records those verbs as data. `image/photo_edits.rye`
+# holds an `EditList` and one `apply` that replays the whole list over a source image, returning a fresh edited image
+# with the source untouched. Replay is deterministic — the same list over the same source yields the same bytes every
+# time, the content-address guarantee an edited image never needs its pixels stored — and the list travels as a
+# flat-Bron `format photo-edits-v1` record, so render(parse(render(x))) is a fixed point. The selftest proves replay
+# composes the verbs by hand byte-for-byte, is deterministic and non-destructive (the empty list recovers the source),
+# stays an open image, travels as a fixed point, and refuses a bad header, an unknown verb, a malformed field, and an
+# extra field by name, with an out-of-bounds crop surfacing its own OutOfBounds through the fold. No network, no key,
+# no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/h/hunk_photo_edits_witness.rish
+
+say "hunk-photo-edits: Language EN — HUNK11 records the Photos verbs as data: an edit-list replayed over a source image returns a fresh edited image, the source never touched."
+say "hunk-photo-edits: Style Radiant — non-destructive is the real product: the original stays whole, the edits ride alongside as replayable text on the open module the quest built."
+say "hunk-photo-edits: Lens TAME — the list is bounded by a named ceiling, apply folds fresh images from a clone so the source is pure, replay is deterministic, refusals named; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/photo_edits"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/photo_edits.rye -femit-bin=${bin}"]
+assert build.ok else "hunk-photo-edits: build failed — ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "hunk-photo-edits: selftest exited non-zero — ${selftest.out}"
+
+let out = trim selftest.out
+say "hunk-photo-edits: ${out}"
+
+assert selftest.out contains "GREEN image-photo-edits" else "hunk-photo-edits: selftest did not print the GREEN edit-list line"
+
+assert selftest.out contains "equals the verbs by hand byte-for-byte" else "hunk-photo-edits: replay did not compose the verbs by hand"
+
+assert selftest.out contains "replay is deterministic" else "hunk-photo-edits: replay was not proven deterministic"
+
+assert selftest.out contains "the empty list recovers it" else "hunk-photo-edits: non-destructive replay was not proven"
+
+assert selftest.out contains "fixed point and the rebuilt list applies to the same bytes" else "hunk-photo-edits: the travel-as-text fixed point was not proven"
+
+assert selftest.out contains "edited image re-encodes and round-trips" else "hunk-photo-edits: an edited image did not round-trip as an open image"
+
+assert selftest.out contains "surfaces OutOfBounds through the fold" else "hunk-photo-edits: a verb's own refusal did not surface through the fold"
+
+say "hunk-photo-edits: GREEN — the Photos app edits non-destructively: verbs recorded as data, replayed deterministically over an untouched source, travelling as a fixed-point record; refusals named."

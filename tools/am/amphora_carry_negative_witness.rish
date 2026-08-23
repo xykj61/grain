@@ -1,0 +1,67 @@
+# tools/am/amphora_carry_negative_witness.rish — Q27: crossing plants must refuse.
+#
+# Uses the trust-dock witness seam (AMPHORA_CARRY_TRUST_DOCK) so tampered
+# chunks reach the assembly walls instead of being healed by a fresh cut:
+#   missing chunk   → chunk torn
+#   empty chunk     → chunk torn
+#   reordered pair  → crossing unequal
+#   forged bytes    → crossing unequal
+# and after every refusal, no far vessel stands; a plain carry then heals.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/am/amphora_carry_negative_witness.rish
+
+let season = "tools/fixtures/cellar_ring1_tree"
+let vessel = "/tmp/amphora_cneg_vessel.bron"
+let dock = "/tmp/amphora_cneg_dock"
+let far = "/tmp/amphora_cneg_dock/vessel.bron"
+
+let clean = run ["rm" "-rf" vessel dock]
+assert clean.ok else "carry_neg: clean must pass"
+let pour = run ["amphora/bin/amphora" "pour" season vessel]
+assert pour.ok else "carry_neg: pour must pass"
+let seed = run ["amphora/bin/amphora" "carry" vessel dock]
+assert seed.ok else "carry_neg: seed carry must pass"
+
+let torn_prep = run ["sh" "-c" "rm ${far} ${dock}/chunk-0002.bron"]
+assert torn_prep.ok else "carry_neg: torn plant must prepare"
+let torn = run ["env" "AMPHORA_CARRY_TRUST_DOCK=1" "amphora/bin/amphora" "carry" vessel dock]
+assert (torn.ok == false) else "carry_neg: missing chunk must refuse"
+assert torn.err contains "chunk torn" else "carry_neg: torn names its fault"
+let torn_far = run ["sh" "-c" "test ! -e ${far}"]
+assert torn_far.ok else "carry_neg: refusal must leave no far vessel"
+say "plant_missing=refused"
+
+let heal1 = run ["amphora/bin/amphora" "carry" vessel dock]
+assert heal1.ok else "carry_neg: heal after torn must pass"
+let empty_prep = run ["sh" "-c" "rm ${far}; : > ${dock}/chunk-0001.bron"]
+assert empty_prep.ok else "carry_neg: empty plant must prepare"
+let empty = run ["env" "AMPHORA_CARRY_TRUST_DOCK=1" "amphora/bin/amphora" "carry" vessel dock]
+assert (empty.ok == false) else "carry_neg: empty chunk must refuse"
+assert empty.err contains "chunk torn" else "carry_neg: empty names torn"
+say "plant_empty=refused"
+
+let heal2 = run ["amphora/bin/amphora" "carry" vessel dock]
+assert heal2.ok else "carry_neg: heal after empty must pass"
+let swap_prep = run ["sh" "-c" "rm ${far}; mv ${dock}/chunk-0001.bron ${dock}/t; mv ${dock}/chunk-0002.bron ${dock}/chunk-0001.bron; mv ${dock}/t ${dock}/chunk-0002.bron"]
+assert swap_prep.ok else "carry_neg: reorder plant must prepare"
+let swapped = run ["env" "AMPHORA_CARRY_TRUST_DOCK=1" "amphora/bin/amphora" "carry" vessel dock]
+assert (swapped.ok == false) else "carry_neg: reordered chunks must refuse"
+assert swapped.err contains "crossing unequal" else "carry_neg: reorder names unequal"
+say "plant_reorder=refused"
+
+let heal3 = run ["amphora/bin/amphora" "carry" vessel dock]
+assert heal3.ok else "carry_neg: heal after reorder must pass"
+let forge_prep = run ["sh" "-c" "rm ${far}; n=$(wc -c < ${dock}/chunk-0003.bron); head -c $n /dev/zero | tr '\\0' 'z' > ${dock}/chunk-0003.bron"]
+assert forge_prep.ok else "carry_neg: forge plant must prepare"
+let forged = run ["env" "AMPHORA_CARRY_TRUST_DOCK=1" "amphora/bin/amphora" "carry" vessel dock]
+assert (forged.ok == false) else "carry_neg: forged chunk must refuse"
+assert forged.err contains "crossing unequal" else "carry_neg: forge names unequal"
+say "plant_forge=refused"
+
+let heal4 = run ["amphora/bin/amphora" "carry" vessel dock]
+assert heal4.ok else "carry_neg: final heal must pass"
+let equal = run ["cmp" "-s" vessel far]
+assert equal.ok else "carry_neg: healed dock must equal the source"
+
+say "GREEN: amphora_carry_negative — missing · empty · reordered · forged all refuse; the dock heals."

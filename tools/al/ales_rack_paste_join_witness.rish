@@ -1,0 +1,39 @@
+# tools/al/ales_rack_paste_join_witness.rish — the rack's paste, joined (ALES32).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES32.
+# Design read: active-designing/date/20260814/20260814-145422_fill-ales32-lotus-rack-paste-join.md
+# Stands on: lotus/rack.rye (ALES30) — the named slots and find; lotus/paste_join.rye (ALES31) — the joined paste (ALES29's stereo
+# two-sided insert-join over a held span); lotus/pan.rye (ALES10) — the StereoClip.
+#
+# lotus/rack_paste_join.rye drops a NAMED slot into the middle of a master crossing BOTH its seams equal-power, where ALES30's rack
+# paste butts. The crux: rack_paste_join is EXACTLY ALES31's paste_join on the slot resolved by name — find resolves the unique name to
+# a single slot (ALES30's invariant) and hands its held board whole to paste_join, itself ALES29's proven two-sided stereo insert-join,
+# so the rack's joined paste adds only the name resolution and no new arithmetic, seam law, or bound. The selftest proves: a filed span
+# joined at a full-swing sign flip lands a seam sample strictly inside the extremes; the new length shares both overlaps; a slot joins
+# twice and cross-master with its held length unchanged and a second slot untouched; every edge refuses by name (NoSlot / Empty /
+# BadRange / ClipFull). Purely local — no network, no keys, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_rack_paste_join_witness.rish
+
+say "ales-rack-paste-join: Language EN — ALES32 hands the joined paste law to the rack: a keeper drops a FILED span (the count-in, the verse, the chorus) into the middle of a mix by name without a click at either boundary, the same seam law the single clipboard already joins by."
+say "ales-rack-paste-join: Style Radiant — the law is stated positively: rack_paste_join is exactly ALES31's paste_join on the slot resolved by name, so a filed span crosses both seams equal-power, stays atomic and non-consuming, and a second slot is untouched; it adds only the name resolution, no new arithmetic or seam law."
+say "ales-rack-paste-join: Lens TAME — rack.find and paste_join reused whole (no new sample-touching arithmetic, no new error beyond NoSlot); the slots and held spans already bounded by ALES30; a joined slot paste resolves the name before the insert and forwards Empty/BadRange/ClipFull by name; siloed to lotus/, no network, no keys, no funds, no device, no meter, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/rack_paste_join"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/rack_paste_join.rye -femit-bin=${bin}"]
+assert build.ok else "ales-rack-paste-join: build failed — ${build.err}"
+
+let outfile = "lotus/bin/rack_paste_join.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-rack-paste-join: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-rack-paste-join: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-rack-paste-join' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-rack-paste-join: selftest did not print the GREEN ales-rack-paste-join line"
+
+say "ales-rack-paste-join: GREEN — a keeper drops a filed span into the middle of a mix by name without a click: rack_paste_join crosses both seams of both channels equal-power (ALES31 over the ALES30 named slot), the new length shares both overlaps, the slot is unchanged so the joined paste is still non-consuming and cross-master, a second slot is untouched, and every edge refuses by name. The next Lotus rung can let a rack travel as text (a saveable slot sheet, mirroring the ALES22 cue sheet), or carry a slot across the ALES0 audio wire (a module seam, taken on Keaton's word)."

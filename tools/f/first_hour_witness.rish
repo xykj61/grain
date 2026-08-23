@@ -1,0 +1,21 @@
+# first_hour_witness.rish — proves the first-hour reference module (greet.rye).
+#
+# The Acme DX first hour ends when a newcomer's own module builds and their own
+# witness goes GREEN. This is that witness for the reference module: it builds
+# manual/tutorials/greet.rye to a gitignored bin, runs its selftest, and asserts the
+# GREEN line and one named claim — so a fact is proven, not merely that a program ran.
+#
+# Contract: active-designing/date/20260811/20260811-163927_acme-dx-first-hour-witness-contract.md
+#
+#   rishi/bin/rishi run tools/f/first_hour_witness.rish
+
+let zig = "/home/keeper/grain/vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} rye/bin/rye build manual/tutorials/greet.rye -femit-bin=tools/.build/greet"]
+assert build.ok else "greet build failed"
+
+let st = run ["tools/.build/greet" "selftest"]
+assert st.ok else "greet selftest exited non-zero"
+assert (st.err contains "GREEN") else "greet selftest not GREEN"
+assert (st.err contains "proven to fit its buffer") else "greet missing the bound claim"
+
+say "GREEN: first-hour witness — greet builds, bounds its input, and greets by proof; a newcomer's first module lands green."

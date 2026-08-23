@@ -8,7 +8,7 @@
 //!
 //!   rye build manual/tutorials/greet.rye -femit-bin=tools/.build/greet
 //!   tools/.build/greet selftest
-//!   rishi/bin/rishi run tools/first_hour_witness.rish
+//!   rishi/bin/rishi run tools/f/first_hour_witness.rish
 
 const std = @import("std");
 const assert = std.debug.assert;

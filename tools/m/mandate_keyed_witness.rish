@@ -1,0 +1,25 @@
+# mandate_keyed_witness.rish — Kumara-keyed vector records.
+#
+# Proves Mandate wired to identity: a record belongs to a settled Kumara point, and
+# only that point's owner may write it — the owner presents the point's Deed (verified
+# against the constellation) and signs the exact vector. A search returns point
+# numbers, and place_of resolves each to its place in the fractal. Every refusal holds:
+# a non-owner, a forged signature, a tampered vector; and an owner's re-signed upsert
+# updates in place.
+#
+# Build first:  rye build mandate/keyed.rye -femit-bin=mandate/bin/keyed
+#   rishi/bin/rishi run tools/m/mandate_keyed_witness.rish
+
+let st = run ["mandate/bin/keyed" "selftest"]
+assert st.ok else "mandate keyed selftest must exit 0"
+assert (st.err contains "GREEN") else "mandate keyed must report GREEN"
+assert (st.err contains "a vector belongs to a settled Kumara point") else "a record is keyed by a settled identity"
+assert (st.err contains "presents the point's Deed") else "the owner proves ownership with the Deed"
+assert (st.err contains "signs the exact vector") else "the keeper signs the exact vector"
+assert (st.err contains "stolen id cannot write for another identity") else "a stolen id cannot poison another identity's search"
+assert (st.err contains "place_of resolves each to its place in the fractal") else "a result resolves to its galaxy/star/planet"
+assert (st.err contains "every refusal holds") else "the keyed layer owes its refusals"
+assert (st.err contains "a non-owner, a forged signature, a tampered vector") else "non-owner, forged, and tampered writes all refuse"
+assert (st.err contains "updates in place") else "an owner's re-signed upsert updates in place"
+
+say "GREEN: mandate keyed — the vector store is Kumara-keyed: a record belongs to a settled identity, only its owner may write it, and a search returns who, not merely which number."

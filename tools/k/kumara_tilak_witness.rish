@@ -1,0 +1,42 @@
+# kumara_tilak_witness.rish — the Kumara identity template: point and bind.
+#
+# Proves the first two tilaks of a Kumara identity are made, signed both ways, and
+# verified — the load-bearing pair every other tilak hangs from. The crypto rides on
+# tally/kumara.rye (Ed25519 at the seam); this witness drives the built module and
+# checks both the proof and the Bron facts it emits.
+#
+# Build first:  rye build kumara/tilak.rye -femit-bin=kumara/bin/tilak
+#   rishi/bin/rishi run tools/k/kumara_tilak_witness.rish
+
+# The module's own selftest — every tilak verifies, every tamper refuses.
+# Diagnostics print to stderr; the Bron facts of `emit` go to stdout.
+let st = run ["kumara/bin/tilak" "selftest"]
+assert st.ok else "kumara tilak selftest must exit 0"
+assert (st.err contains "GREEN") else "selftest must report GREEN"
+assert (st.err contains "five tilaks") else "the selftest must exercise all five tilaks"
+assert (st.err contains "every tamper refuses") else "every tampered tilak must be refused"
+
+# The emitted instance holds all seven records: point, bind, turn, three caps, sponsor.
+let em = run ["kumara/bin/tilak" "emit"]
+assert em.ok else "emit must exit 0"
+let formats = find em.out "format kumara-[a-z]+-v1"
+assert (length formats) == 7 else "the instance emits seven tilak records (point · bind · turn · cap x3 · sponsor)"
+assert (em.out contains "format kumara-point-v1") else "emit a point fact"
+assert (em.out contains "format kumara-turn-v1") else "emit a rotation fact"
+assert (em.out contains "format kumara-sponsor-v1") else "emit a sponsor fact"
+
+# Every signature is present at full Ed25519 length (64 bytes = 128 hex).
+# The bind has two; turn one; each of three caps one; sponsor one — seven in all.
+let all_sigs = find em.out "(sig|sig_by_key|sig_by_keeper) [0-9a-f]{128}"
+assert (length all_sigs) == 7 else "every signed claim carries a full-length Ed25519 signature"
+
+# The three capabilities name the three powers.
+assert (em.out contains "power tend") else "the management capability names its power"
+assert (em.out contains "power sow") else "the spawn capability names its power"
+assert (em.out contains "power hand") else "the transfer capability names its power"
+
+# The point is kept by the keeper: its keeper hex is the bind's keeper_pubkey.
+let point_keeper = find em.out "\nkeeper [0-9a-f]{64}"
+assert (length point_keeper) == 1 else "the point names one keeper"
+
+say "GREEN: kumara tilak — all five tilaks made, each signed by its authorizing party, verified, emitted as Bron; every tamper refuses."

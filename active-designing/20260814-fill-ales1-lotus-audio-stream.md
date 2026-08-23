@@ -31,7 +31,7 @@ The stream only delimits and orders; it never re-checks a frame's integrity, so 
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_stream_witness.rish`: three frames back to back reassemble into `b0 ++ b1 ++ b2` sample-for-sample and in order; a frame split across two arrivals refuses `NeedMoreBytes` without moving the cursor and completes on its last byte with no torn sample; a wild length refuses `BadFrame`; an overfull stream refuses `StreamFull`; and a torn-sample frame read cleanly by the delimiter still refuses `PartialSample` at the audio border during reassembly. GREEN on the first build. Purely local — no socket, no network, no keys, no funds, no real device.
+`tools/al/ales_stream_witness.rish`: three frames back to back reassemble into `b0 ++ b1 ++ b2` sample-for-sample and in order; a frame split across two arrivals refuses `NeedMoreBytes` without moving the cursor and completes on its last byte with no torn sample; a wild length refuses `BadFrame`; an overfull stream refuses `StreamFull`; and a torn-sample frame read cleanly by the delimiter still refuses `PartialSample` at the audio border during reassembly. GREEN on the first build. Purely local — no socket, no network, no keys, no funds, no real device.
 
 ## The road on
 

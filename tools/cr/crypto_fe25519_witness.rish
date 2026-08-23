@@ -1,0 +1,44 @@
+# tools/cr/crypto_fe25519_witness.rish — the Curve25519 base field GF(2^255 − 19) authored in pure Rye: Season G's sixth rung, the durable
+# stone Ed25519 and X25519 both stand on, proven against by-hand known-answers and byte-for-byte against an independent implementation
+# (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-193010_fe25519-the-curve-field-crux.md (this round) and
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G names Ed25519 as the Lotus unblock, its field
+# math a separate gated round).
+# Kin: crypto/poly1305.rye (the limb-arithmetic sibling — five 26-bit limbs mod 2^130 − 5; this is five 51-bit limbs mod 2^255 − 19) ·
+# crypto/aead.rye · crypto/chacha20.rye. Monocypher (vendor/monocypher, CC0/BSD-dual) is the parity TARGET, never a copied line — our own
+# arithmetic, studied clean-room from the public mathematics of Curve25519 and Monocypher's public API (.claude/rules/gratitude-licenses.md).
+#
+# crypto/fe25519.rye carries a field element as five 51-bit limbs (radix 2^51) mod p = 2^255 − 19: limbwise add and sub, a schoolbook
+# multiply with the 2^255 ≡ 19 fold, squaring as the product with itself, and Fermat's inverse a^(p−2) by a fixed 254-squaring ladder;
+# packing performs the final conditional subtract of p so equal values always serialize identically. The primitive calls no std.crypto.
+# Parity is proven at selftest against two references runnable now: by-hand known-answers (1·1 = 1, 2·3 = 6, the base u-coordinate 9
+# round-trips, a − a = 0, a·a⁻¹ = 1, and the encodings of p and p+5 reduce to 0 and 5), and Zig's own std.crypto.ecc.Edwards25519.Fe as an
+# independent radix-2^51 implementation, byte-for-byte on the canonical packing of add, sub, mul, sq, and invert across a deterministic
+# spread of twenty-four field elements. The vendored Monocypher source is a held network fetch, so Monocypher-source parity is an honest
+# horizon rung. Purely local — a field element is arithmetic, not a secret and not a signature: no real key, no signing (Ed25519's signing
+# stays its own gated round), no network, no funds, no real device; constant-time timing-safety stays a separate named horizon.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_fe25519_witness.rish
+
+say "crypto-fe25519: Language EN — Season G's sixth rung: the Curve25519 base field GF(2^255 − 19) authored in pure Rye. The five GREEN primitives before it were integer arithmetic alone; the AEAD's own header stated the boundary — it adds no field math, the curve wants its own design round. This is that round's crux: the durable stone Ed25519 signing (the Lotus signed carry, Kumara identity, Vault, Comlink) and X25519 key agreement both stand on. It is pure arithmetic — no key, no signature, no identity, no custody gate — so once it is parity-GREEN, both curve operations become composition rounds over a proven base."
+say "crypto-fe25519: Style Radiant — the law is stated positively: a field element is a residue mod p = 2^255 − 19 carried in five 51-bit limbs; add and subtract limbwise, multiply with the field's own fold (any weight past 2^255 returns multiplied by 19, because 2^255 ≡ 19), square as the product with itself, invert by Fermat's a^(p−2), and pack with a final conditional subtract of p so equal values always serialize identically — the property the byte-for-byte parity check depends on."
+say "crypto-fe25519: Lens TAME — the primitive calls no std.crypto; it bounds every limb below the multiply schedule's headroom, accumulates products in 128-bit words, and asserts its contracts on every function. Parity holds against by-hand known-answers AND Zig's independent std.crypto.ecc.Edwards25519.Fe byte-for-byte on the canonical packing of add, sub, mul, sq, and invert across a deterministic spread of field elements; because the check is on canonical bytes, the two implementations carry limbs their own way and still agree exactly. Monocypher-source parity is a named horizon behind the held vendor fetch. Purely local — a field element is not a secret and not a signature, so no real key, no signing, no network, no funds, no device; constant-time timing-safety stays a separate named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/fe25519"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/fe25519.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-fe25519: build failed — ${build.err}"
+
+let outfile = "crypto/bin/fe25519.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-fe25519: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-fe25519: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-fe25519' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-fe25519: selftest did not print the GREEN crypto-fe25519 line"

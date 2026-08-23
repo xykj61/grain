@@ -1,0 +1,37 @@
+# tools/f/fora_tenure_witness.rish — a leader holds tenure only while a majority still answers, CheckQuorum (FORA24).
+#
+# Season: the Six-Season double-seat, Season D thread (Kresfa & Mycelium — the tree's own consensus) · waymark FORA · rung
+# FORA24. Design read: active-designing/date/20260814/20260814-084900_fora24-constel-tenure-checkquorum.md
+#
+# constel/tenure.rye adds CheckQuorum (Raft §6.2/§9.6), the proactive half of FORA20's reactive read guard: each election-timeout
+# window the leader counts how many piers answered its heartbeats (counting itself); if that backing falls below the majority
+# threshold, the leader steps down to follower — so a leader stranded in a minority partition stops believing it leads rather than
+# lingering or serving a stale lease-read. The selftest proves: backing counts self plus acks; a leader hearing a majority still
+# commands, one that does not steps down; the minority-partition leader steps down while the majority partition's leader commands;
+# the boundary is exact at the threshold; a lone or fully-connected leader behaves; bounded. Purely local — no socket, no network,
+# no keys, no funds, no real address.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/fora_tenure_witness.rish
+
+say "fora-tenure: Language EN — FORA24 adds CheckQuorum (Raft §6.2/§9.6): a leader counts who answers its heartbeats each window and steps down when its backing falls below a majority, so a minority-partition leader relinquishes on its own rather than lingering."
+say "fora-tenure: Style Radiant — a leader holds its title only while the sky still answers, and lets go the moment it cannot reach the majority that granted it."
+say "fora-tenure: Lens TAME — backing counts the leader plus each answering peer, bounded to the roster; still_commands and should_step_down are exact inverses about the majority threshold (FORA9); siloed to constel/, run from inside the jailed pier; no socket, no network, no keys, no funds, no real address ever formed (custody gate %2 and gate %4 untouched)."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "constel/bin/tenure"
+
+let build = run ["sh" "-c" "mkdir -p constel/bin && env RYE_ZIG=${zig} rye/bin/rye build constel/tenure.rye -femit-bin=${bin}"]
+assert build.ok else "fora-tenure: build failed — ${build.err}"
+
+let outfile = "constel/bin/tenure.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "fora-tenure: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "fora-tenure: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN fora-tenure' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "fora-tenure: selftest did not print the GREEN fora-tenure line"
+
+say "fora-tenure: GREEN — a leader holds tenure only while a majority still answers; the constel consensus track now sheds a stranded minority-partition leader proactively, the companion to its linearizable read guard, proven pure on the bench."

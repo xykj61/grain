@@ -3,7 +3,7 @@
 **Stamp:** `20260728.025220` · executive refresh `20260730.150702` (POLE)  
 **Voice:** Kyri (living) · Quin · nested Trya (historical open)  
 **Kind:** fund-prep page one — MUR Season prep; no deploy  
-**Generator:** `tools/gen_murr_fund_prep.rish`  
+**Generator:** `tools/g/gen_murr_fund_prep.rish`  
 Radiant pass `20260728.052625` — living rename spine named; tool-wave **GO** seated u21 · prefer **kg u32**; waiting harden u23–u25 residual clear
 
 ---

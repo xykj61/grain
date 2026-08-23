@@ -1,0 +1,59 @@
+# tools/cr/crypto_monocypher_parity_witness.rish — the FIRST real Monocypher-source parity witness: our authored crypto/blake2b.rye and the vendored
+# Monocypher's own C (vendor/monocypher, CC0/BSD-dual), each compiled fresh and asked for their BLAKE2b-512 over four identical canonical messages,
+# diffed byte-for-byte. Season G named this rung outright — crypto/blake2b.rye's own selftest calls Monocypher-source parity "an honest horizon
+# rung, added later without changing a byte here." The vendored fetch is no longer held; this closes that horizon (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness
+# proving Rye output equals Monocypher output byte-for-byte." Grain will face a security audit; parity against the ACTUAL library an auditor names,
+# not merely a recited constant, is the honest way to earn it.
+# Kin: crypto/blake2b.rye (our authored primitive, GREEN against Zig's std.crypto) · tools/rye/monocypher_blake2b_parity.rye (our printing harness) ·
+# tools/fixtures/monocypher_blake2b_harness.c (Monocypher's printing harness). Monocypher stays the parity TARGET, vendored and unmodified, never a
+# copied line — our own Rye, studied clean-room (.claude/rules/gratitude-licenses.md).
+#
+# The four messages are EXACTLY the four crypto/blake2b.rye's selftest proves our Rye against Zig over: the empty message, "abc" (RFC 7693 Appendix
+# A), one full 128-byte block, and a 200-byte multi-block input. The two harnesses print like against like. Purely local — no key, no network, no
+# funds, no device; constant-time timing-safety stays the Season's named horizon.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_monocypher_parity_witness.rish
+
+say "crypto-monocypher-parity: Language EN — the first REAL Monocypher-source parity witness. Every crypto/ witness so far proves our authored Rye against Zig's independent std.crypto; this rung proves our Rye against the ACTUAL vendored Monocypher C, the library Grain's audit names as its parity target. crypto/blake2b.rye's own selftest promised exactly this — 'Monocypher passes the same RFC vectors; its vendored source is a held fetch, so Monocypher-source parity is an honest horizon rung, added later.' The fetch is no longer held; this closes the horizon."
+say "crypto-monocypher-parity: Style Radiant — like against like. Our authored crypto/blake2b.rye and the unmodified vendored Monocypher each compile fresh and each print their own BLAKE2b-512 over the SAME four canonical messages (the empty message, 'abc', one full 128-byte block, a 200-byte multi-block input — the four the blake2b selftest already proves our Rye against Zig over). Two independent implementations, one set of inputs; the parity is that the two outputs agree hex for hex."
+say "crypto-monocypher-parity: Lens TAME — no fabricated constant is trusted: the oracle is a second real implementation. The witness diffs the four Monocypher lines against the four Rye lines byte-for-byte AND anchors both to the world, asserting the empty and 'abc' digests equal RFC 7693's published Appendix A known-answers. Monocypher is linked, never copied — clean-room discipline holds. Purely local — no key, no network, no funds, no device; constant-time timing-safety stays the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let cbin = "crypto/bin/monocypher_blake2b"
+let cout = "crypto/bin/monocypher_blake2b.out"
+let rout = "crypto/bin/rye_blake2b.out"
+
+# 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_blake2b_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+assert cbuild.ok else "crypto-monocypher-parity: Monocypher C harness build failed — ${cbuild.err}"
+
+# 2. Run the Monocypher C harness — four BLAKE2b-512 hex lines.
+let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
+assert crun.ok else "crypto-monocypher-parity: Monocypher C harness exited non-zero — see ${cout}"
+
+# 3. Run our authored Rye harness — four BLAKE2b-512 hex lines over the identical messages.
+let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/rye/monocypher_blake2b_parity.rye > ${rout} 2>&1"]
+assert rrun.ok else "crypto-monocypher-parity: Rye harness exited non-zero — see ${rout}"
+
+# 4. Byte-for-byte parity: the two four-line outputs must be identical.
+let diff = run ["sh" "-c" "diff ${cout} ${rout} > /dev/null && echo same"]
+assert (trim diff.out) == "same" else "crypto-monocypher-parity: Monocypher and Rye BLAKE2b-512 disagree — Monocypher:\n$(cat ${cout})\nRye:\n$(cat ${rout})"
+
+# 5. Anchor both to the world: RFC 7693 Appendix A published known-answers for the empty message (line 1) and "abc" (line 2).
+let rfc_empty = "786a02f742015903c6c6fd852552d272912f4740e15847618a86e217f71f5419d25e1031afee585313896444934eb04b903a685b1448b755d56f701afe9be2ce"
+let rfc_abc = "ba80a53f981c4d0d6a2797b69f12f6e94c212f14685ac4b74b12bb6fdbffa2d17d87c5392aab792dc252d5de4533cc9518d38aa8dbf1925ab92386edd4009923"
+
+let got_empty = run ["sh" "-c" "sed -n '1p' ${cout}"]
+assert (trim got_empty.out) == rfc_empty else "crypto-monocypher-parity: Monocypher empty-message digest is not the RFC 7693 published known-answer"
+
+let got_abc = run ["sh" "-c" "sed -n '2p' ${cout}"]
+assert (trim got_abc.out) == rfc_abc else "crypto-monocypher-parity: Monocypher 'abc' digest is not the RFC 7693 published known-answer"
+
+let shown = run ["sh" "-c" "cat ${cout}"]
+say "crypto-monocypher-parity: the four BLAKE2b-512 digests, agreed by both implementations:\n${shown.out}"
+
+say "GREEN crypto-monocypher-parity: our authored crypto/blake2b.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical BLAKE2b-512 over the empty message, \"abc\", a 128-byte block, and a 200-byte multi-block input, with the empty and \"abc\" digests matching RFC 7693's published Appendix A known-answers. The first real Monocypher-SOURCE parity, the audit target proven on metal — no recited constant, the oracle a second real implementation. Monocypher stays vendored and unmodified, linked never copied. Purely local, no key, no network, no funds, no device; constant-time timing-safety stays the named horizon."

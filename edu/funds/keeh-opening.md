@@ -3,7 +3,7 @@
 **Stamp:** `20260728.032134` (sponsor accrete) · seat `20260728.030310`  
 **Voice:** Quin  
 **Kind:** fund-prep page one — Keeh Season; Kia honor sponsor; no deploy  
-**Generator:** `tools/gen_keeh_fund_prep.rish`
+**Generator:** `tools/g/gen_keeh_fund_prep.rish`
 
 ---
 

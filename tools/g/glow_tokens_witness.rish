@@ -1,0 +1,45 @@
+# glow_tokens_witness.rish — TAME-tidy Glow token stream (STOA86).
+#
+#   rishi/bin/rishi run tools/g/glow_tokens_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/tokens_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/tokens_witness.rye -femit-bin=${bin}"]
+assert build.ok else "tokens_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "tokens_witness exited non-zero"
+assert selftest.out contains "GREEN" else "tokens_witness not GREEN"
+assert selftest.out contains "cast-named-xact" else "tokens_witness missing cast-named-xact claim"
+assert selftest.out contains "TooManyTokens" else "tokens_witness missing TooManyTokens"
+assert selftest.out contains "BadToken" else "tokens_witness missing BadToken"
+assert selftest.out contains "comments skipped" else "tokens_witness missing comment claim"
+assert selftest.out contains "named-cast peek" else "tokens_witness missing named-cast peek"
+assert selftest.out contains "named-cast parts" else "tokens_witness missing named-cast parts"
+assert selftest.out contains "shape-only peek" else "tokens_witness missing shape-only peek"
+assert selftest.out contains "cross-desk peek" else "tokens_witness missing cross-desk peek"
+assert selftest.out contains "cross-desk parts" else "tokens_witness missing cross-desk parts"
+assert selftest.out contains "TAME u32 spans" else "tokens_witness missing TAME u32 claim"
+assert selftest.out contains "STOA93" else "tokens_witness missing STOA93"
+assert selftest.out contains "STOA94" else "tokens_witness missing STOA94"
+assert selftest.out contains "STOA95" else "tokens_witness missing STOA95"
+assert selftest.out contains "cord literal lex" else "tokens_witness missing STOA216 cord literal"
+assert selftest.out contains "empty cord literal refused" else "tokens_witness missing empty cord refuse"
+assert selftest.out contains "unclosed cord literal refused" else "tokens_witness missing unclosed cord refuse"
+assert selftest.out contains "STOA216" else "tokens_witness missing STOA216"
+assert selftest.out contains "hex literal lex" else "tokens_witness missing STOA217 hex literal"
+assert selftest.out contains "bare @ux aura still lex" else "tokens_witness missing bare @ux after hex lit"
+assert selftest.out contains "odd hex literal refused" else "tokens_witness missing odd hex refuse"
+assert selftest.out contains "oversize hex literal refused" else "tokens_witness missing oversize hex refuse"
+assert selftest.out contains "STOA217" else "tokens_witness missing STOA217"
+
+# Width gate on the first Glow TAME surface (seam casts blessed).
+let width = run ["sh" "-c" "grep 'usize' glow/tokens.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l | tr -d ' '"]
+assert width.ok else "tokens width scan failed"
+assert trim width.out == "0" else "glow/tokens.rye still carries authored usize"
+
+let assert_import = run ["sh" "-c" "grep -c 'const assert = std.debug.assert' glow/tokens.rye | tr -d ' '"]
+assert trim assert_import.out == "1" else "glow/tokens.rye must import assert once"
+
+say "GREEN: Glow token stream — TAME tidy · peeks · STOA216 cord · STOA217 hex; STOA86/93/94/95/216/217."

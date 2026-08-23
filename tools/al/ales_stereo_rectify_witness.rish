@@ -1,0 +1,40 @@
+# tools/al/ales_stereo_rectify_witness.rish — stereo_rectify: the full-wave rectifier carried into stereo with ONE SHARED FOLD AT ZERO, the EVEN corner of the stereo NONLINEAR class, the strongest image-break in
+# the class (ALES138).
+#
+# Season: the Six-Season double-seat, Season C thread (Lotus · the creative suite) · waymark ALES · rung ALES138.
+# Design read: active-designing/date/20260815/20260815-040027_fill-ales138-lotus-stereo-rectify.md
+# Stands on: lotus/rectify.rye (ALES84 — the mono full-wave rectifier run once per channel, |x| pinned to the rail), lotus/stereo_decimate.rye (ALES137 — the image-PRESERVING member whose opposite pole this rung
+# is), lotus/pan.rye (ALES10 — the StereoClip, two mono Clips left/right, and its balance invariant), lotus/timeline.rye (ALES2 — the Clip, its buf/len/samples, sample_min/max). A Lotus master is a StereoClip
+# whose defining invariant is that left and right hold the same length. This rung carries ALES84's full-wave rectifier into stereo — folding the negative half of the wave up onto the positive side in both
+# channels so a rectification lands on both speakers together, the even-harmonic voice of the diode bridge. The rectifier is the strongest image-break in the class: an even map lands +a and −a on the same a, so
+# an out-of-phase master (right = −left) comes back with identical channels, the antisymmetry collapsed to mono — the honest opposite of the decimator, which copied an anchor and preserved the image.
+#
+# lotus/stereo_rectify.rye validates the span once against the shared length before either channel is mutated (BadRange on a span outside the samples), then rectifies both channels through ALES84's rectify;
+# RectifyError reused whole. The crux is four laws. THE STEREO RECTIFY LAW: each channel equals ALES84's mono rectify over the same span byte for byte. THE BALANCE / LENGTH LAW: left.len == right.len after, both
+# holding their starting length. THE IMAGE-COLLAPSE LAW: an out-of-phase master returns identical (the even map collapses antisymmetry to mono), the ratio held (|2x| = 2|x|), an identical-channel master staying
+# identical, every output non-negative on both, the map idempotent. THE ATOMICITY / DEGENERATE LAW: a refusal leaves both channels untouched and balanced, count 0 the identity.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/al/ales_stereo_rectify_witness.rish
+
+say "ales-stereo-rectify: Language EN — stereo_rectify rectifies a span in both channels of a stereo master, folding the negative half of the wave up onto the positive side, y = |x|, the same fold at zero on each, so one full-wave rectification lands on both speakers together. A Lotus master is two Clips heard together, one per speaker, whose defining invariant is that left and right hold the same length so the two channels stay aligned in time. This rung carries the even corner of the stereo nonlinear class on ALES84's rectifier, running the proven mono rectify on each channel, validated once against the shared length before either channel is mutated so a refusal never rectifies one channel and leaves the other signed."
+
+say "ales-stereo-rectify: Style Radiant — the six DRIVE and time readings already carried into stereo shape or hold a wave through odd and not-odd maps, and the rectifier is the complement, the purest even map, |−x| = |x|, folding a symmetric wave into a one-sided DC-heavy signal at double the frequency, the diode bridge and the octave-up fuzz. And the rectifier is the strongest image-break in the class, the honest opposite of the decimator: the decimator copied an anchor across its run and so preserved the stereo image, crush and tube computed new values and broke the antisymmetry, but the rectifier, an even map, collapses it. An out-of-phase master, right the negation of left, comes back with identical channels, because right at any index equals the magnitude of minus left equals the magnitude of left equals left after both are non-negative; the antisymmetry is not merely broken but folded down to mono on the magnitude, +a and −a landing on the same a. Yet the ratio holds, since the magnitude of two x equals twice the magnitude of x, so a one to two master keeps its one to two ratio; an identical-channel master stays identical. The rule is stated positively: the mono rectifier carries no gain, no ceiling, and no resolution, an absolute value having no parameter that could be illegal, so this is the plainest lift in the class, naming exactly one fault — refuse BadRange before either channel is mutated, else rectify both channels over the span via ALES84's rectify. It reuses ALES84's RectifyError by name and ALES84's rectify for the arithmetic, inventing no new fault and no new primitive. The crux stands out as four laws: the stereo rectify law (each channel equals ALES84's mono rectify over the same span byte for byte, every output the absolute value pinned to the rail), the balance / length law (left.len == right.len after the edit and both hold their starting length, a rectify writing values only), the image-collapse law (an out-of-phase master returns identical, the antisymmetry collapsed to mono where the not-odd class merely broke it, yet the ratio held, an identical master staying identical, every output non-negative on both, the map idempotent), and the atomicity / degenerate law (any refusal leaves both channels byte for byte untouched and still balanced, count zero the identity on both)."
+
+say "ales-stereo-rectify: Lens TAME — two bounded i16 Clips (left, right) rectified in lockstep by one shared fold at zero; the balance invariant is asserted on entry and exit, the span is bound-checked once before any write, and because that check depends only on the shared length and holds for both channels each mono rectify is pre-validated to succeed so no refusal can land between the two channel edits; rectify walks the span once per channel, reading each sample into i64 so negating sample_min never overflows before the pin, then y = saturate of the magnitude landing every output in zero to sample_max, the map memoryless (every output depends only on its own input) and each output at most its input's magnitude, never touching a byte past len so the length holds exactly; it reuses ALES84's rectify per channel over its public API and ALES84's RectifyError whole, inventing no new primitive and no new fault since an absolute value has no illegal parameter; the stereo rectify law is proven against ALES84's own rectify run per channel and by hand (negatives folding to their magnitude, the rail edge saturating sample_min to sample_max, non-negatives passing unchanged), the image-collapse law proves an out-of-phase master returns identical channels while a one to two master keeps its ratio (the honest opposite of the image-preserving decimator), every output non-negative on both, the map idempotent, the one refusal leaves both channels byte-for-byte untouched, and count equal to zero is the identity; siloed to lotus/, no real sample rate, no network, no keys, no funds, no device, no speaker."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lotus/bin/stereo_rectify"
+
+let build = run ["sh" "-c" "mkdir -p lotus/bin && env RYE_ZIG=${zig} rye/bin/rye build lotus/stereo_rectify.rye -femit-bin=${bin}"]
+assert build.ok else "ales-stereo-rectify: build failed — ${build.err}"
+
+let outfile = "lotus/bin/stereo_rectify.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "ales-stereo-rectify: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "ales-stereo-rectify: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN ales-stereo-rectify' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "ales-stereo-rectify: selftest did not print the GREEN ales-stereo-rectify line"

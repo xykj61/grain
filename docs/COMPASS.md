@@ -71,7 +71,7 @@ Full table: [`context/LEXICON.md`](../context/LEXICON.md) § Cursor loop.
 # cold-start order (paths only)
 cat docs/compass_card.bron
 # first GREEN in the habitat
-rishi/bin/rishi run tools/glow_expr_witness.rish
+rishi/bin/rishi run tools/g/glow_expr_witness.rish
 ```
 
 ---

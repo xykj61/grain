@@ -26,7 +26,7 @@ The names are drawn from the plain nautical and mercantile commons — a *galleo
 The Scribe reader validates each shape: `validates_galleon`, `validates_cutter`, and their kin each ask *is this a baton, does its archetype name the shape, and are the required fields present?* — the pattern of `is_session_log`, one predicate per shape. A short baton (a required field removed) is refused, so "required" means required.
 
 ```
-rishi/bin/rishi run tools/bat_fleet_witness.rish
+rishi/bin/rishi run tools/b/bat_fleet_witness.rish
 ```
 
 *Six shapes for the carries the tree already makes — the grand handoff, the tiny lap, the working round, the checkpoint, the audit, and the roll-up — each read and validated by the one reader.*

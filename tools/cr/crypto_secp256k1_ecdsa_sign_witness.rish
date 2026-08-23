@@ -1,0 +1,46 @@
+# tools/cr/crypto_secp256k1_ecdsa_sign_witness.rish — ECDSA signature SIGNING on secp256k1 authored in pure Rye: the rung that completes the
+# scheme the verifier (crypto/secp256k1_ecdsa.rye) could only check — the signature scheme Bitcoin and Ethereum sign with. Given a private
+# scalar and a message, it derives a deterministic per-message nonce and emits the ECDSA signature (r, s), composing only the GREEN scalar
+# field, point ladder, group law, base field, keyed hash, and message digest. Proven byte-for-byte against Zig's independent std.crypto and by
+# an algebraic round-trip through our own GREEN verifier (Season G · Cryptography).
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready).
+# Design read: active-designing/date/20260816/20260816-033541_secp256k1-ecdsa-sign.md (this rung's claim) and
+# active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (the priority spine: Rye first, Glow on green Rye).
+# Kin: crypto/secp256k1_ecdsa.rye (the verifier this signer round-trips through, GREEN) · crypto/secp256k1_scalar.rye (the order field, GREEN) ·
+# crypto/hmac_sha256.rye (the DRBG's keyed hash, GREEN) · crypto/ed25519_sign.rye (the sibling signer over the twisted Edwards group).
+# secp256k1 is not in Monocypher, so its source parity is not a rung here; the algebraic round-trip plus Zig's independent
+# std.crypto.sign.ecdsa are the two witnesses (.claude/rules/gratitude-licenses.md).
+#
+# crypto/secp256k1_ecdsa_sign.rye derives a per-message nonce k deterministically from the private scalar d and the raw message hash — Zig's
+# null-noise "Deterministic ECDSA with Additional Randomness" DRBG (RFC 6979's HMAC-DRBG with a 32-byte zero noise block and the raw digest),
+# reproduced exactly so the signature is byte-identical to Zig's — forms R = k·G, takes r = affine x of R mod n (refusing r = 0), computes
+# s = k⁻¹·(z + r·d) mod n (refusing s = 0), and emits (r, s) big-endian. G is the SEC 2 generator parsed through the proven base field, never
+# raw limbs. The primitive calls no std.crypto. Parity is proven at selftest against an algebraic round-trip (our signature verifies through
+# our own GREEN verifier; a tampered message no longer verifies; signing is deterministic; a zero private key is refused) and against Zig's own
+# std.crypto.sign.ecdsa.EcdsaSecp256k1Sha256 signature BYTE-FOR-BYTE across a spread of deterministic key pairs and messages. SIGNING touches a
+# secret, so it signs ONLY with a caller-supplied TEST key — signing with the maintainer's own identity key stays the custody gate, a
+# constant-time signing arithmetic stays a named horizon, and there is no network, no funds, no real device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_secp256k1_ecdsa_sign_witness.rish
+
+say "crypto-secp256k1_ecdsa_sign: Language EN — ECDSA signature SIGNING on secp256k1 authored in pure Rye, the rung that completes the scheme the verifier could only check. Given a private scalar d in [1, n−1] and a message, it derives a per-message nonce k deterministically from d and the raw SHA-256 hash, forms R = k·G, takes r = affine x of R mod n (refusing r = 0), computes s = k⁻¹·(z + r·d) mod n (refusing s = 0), and emits (r, s) big-endian — composing only the GREEN scalar field, point ladder, group law, base field, keyed hash, and message digest, no new cryptography."
+say "crypto-secp256k1_ecdsa_sign: Style Radiant — the deterministic nonce reproduces Zig's null-noise 'Deterministic ECDSA with Additional Randomness' DRBG exactly (RFC 6979's HMAC-DRBG with a 32-byte zero noise block and the raw message digest), so the whole signature is byte-identical to Zig's. The base point G is the SEC 2 generator, entered as its published big-endian coordinate bytes and parsed through the proven base field, never raw limbs. Byte order is the only product with the outside world — the ecosystem is big-endian, the scalar field and ladder walk little-endian, reversed at the file's boundary."
+say "crypto-secp256k1_ecdsa_sign: Lens TAME — the primitive calls no std.crypto; every function names a bound and asserts its contracts. SIGNING touches a secret (d and k), so unlike verification this rung is NOT value-public: the ladder and the scalar inversion branch on the secret, so it is correct and parity-GREEN yet NOT yet timing-safe (the Season's named constant-time horizon). It signs ONLY with a caller-supplied TEST key; signing with the maintainer's own identity key stays the custody gate (#3/#4). Parity holds against an algebraic round-trip AND Zig's independent std.crypto.sign.ecdsa.EcdsaSecp256k1Sha256 signature byte-for-byte across a spread of deterministic key pairs and messages. secp256k1 is not in Monocypher, so the two witnesses are the round-trip and Zig's std.crypto. Purely local — no real key, no signing of an identity, no network, no funds, no device."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "crypto/bin/secp256k1_ecdsa_sign"
+
+let build = run ["sh" "-c" "mkdir -p crypto/bin && env RYE_ZIG=${zig} rye/bin/rye build crypto/secp256k1_ecdsa_sign.rye -femit-bin=${bin}"]
+assert build.ok else "crypto-secp256k1_ecdsa_sign: build failed — ${build.err}"
+
+let outfile = "crypto/bin/secp256k1_ecdsa_sign.out"
+let selftest = run ["sh" "-c" "${bin} selftest > ${outfile} 2>&1"]
+assert selftest.ok else "crypto-secp256k1_ecdsa_sign: selftest exited non-zero — see ${outfile}"
+
+let shown = run ["sh" "-c" "cat ${outfile}"]
+say "crypto-secp256k1_ecdsa_sign: ${shown.out}"
+
+let green = run ["sh" "-c" "grep -q 'GREEN crypto-secp256k1-ecdsa-sign' ${outfile} && echo yes"]
+assert (trim green.out) == "yes" else "crypto-secp256k1_ecdsa_sign: selftest did not print the GREEN crypto-secp256k1-ecdsa-sign line"

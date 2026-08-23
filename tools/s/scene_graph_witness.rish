@@ -1,0 +1,44 @@
+# tools/s/scene_graph_witness.rish -- the whole scene's pairwise structure, on metal (Season G).
+#
+# Season G (Open Media Primitives) -- the scene-read family names a POINT's object (image/hit_test.rye), a RECTANGLE's objects
+# (image/region_select.rye), a POLYGON's objects (image/lasso_select.rye), a selection's FACTS and EXTENT (image/selection_summary.rye,
+# image/selection_bounds.rye), and a PAIR's spatial relation (image/object_relation.rye). This rung reads the WHOLE: build_scene_graph
+# joins object_relation over EVERY pair into one matrix, then nearest_neighbor and box_parent ask the scene-level questions no single
+# pair can answer -- who is nearest to whom, and which object nests inside which. Exact integers, NO float, NO tolerance.
+#
+# The crux this witness proves on metal: the box-is-a-prefilter lesson lifted from a PAIR to the scene's whole STRUCTURE, in two shapes.
+# THE NESTING FOREST OVER-CLAIMS ENCLOSURE -- three nested bracket-L / dot boxes build a clean three-level containment forest, yet
+# object_relation proves each child sits 2 pixels apart from its box parent, disjoint. THE NEAREST NEIGHBOR IS DIRECTED -- the dot's
+# nearest is the middle-L, whose nearest is the big-L, not the dot. Refusals by name, determinism. No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/scene_graph_witness.rish
+
+say "scene_graph: Language EN -- Season G whole-scene structure read; build_scene_graph joins object_relation over every pair into one matrix; nearest_neighbor and box_parent are whole-scene reads no single pair holds; NO float, NO tolerance."
+say "scene_graph: Style Radiant -- compose not braid: this rung owns only the pairwise matrix, the nearest-neighbor read, and the box-containment forest; object_relation owns each pair's overlap, direction, and exact distance, scene_manifest owns the per-object boxes, label owns the component map. A reading over a reading over a reading."
+say "scene_graph: Lens TAME -- the object count is capped at scene_graph_max_objects so the relation matrix (count squared) and the build loop are bounded; a background or past-the-count label refuses BadObjectLabel, a graph of fewer than two objects refuses NoNeighbor, a scene past the cap refuses TooManyObjects; all-or-nothing; no network, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "image/bin/scene_graph"
+
+let build = run ["sh" "-c" "mkdir -p image/bin && env RYE_ZIG=${zig} rye/bin/rye build image/scene_graph.rye -femit-bin=${bin}"]
+assert build.ok else "scene_graph: build failed -- ${build.err}"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "scene_graph: selftest exited non-zero -- ${selftest.out}"
+
+let out = trim selftest.out
+say "scene_graph: ${out}"
+
+assert selftest.out contains "GREEN image-scene-graph" else "scene_graph: selftest did not print the GREEN line"
+assert selftest.out contains "join object_relation over EVERY pair into one matrix" else "scene_graph: the matrix-join rule did not print"
+assert selftest.out contains "THE NESTING FOREST OVER-CLAIMS ENCLOSURE" else "scene_graph: the over-claims-enclosure case did not print"
+assert selftest.out contains "the TIGHTEST containing box the middle-L" else "scene_graph: the tightest-parent fact did not print"
+assert selftest.out contains "each child sits Chebyshev distance 2 APART from its box parent" else "scene_graph: the forest-over-claim fact did not print"
+assert selftest.out contains "THE NEAREST NEIGHBOR IS DIRECTED, NOT SYMMETRIC" else "scene_graph: the directed-neighbor case did not print"
+assert selftest.out contains "an object can be someone's nearest without their being its own" else "scene_graph: the asymmetry statement did not print"
+assert selftest.out contains "the structural floor of 2" else "scene_graph: the structural floor did not print"
+assert selftest.out contains "refuses NoNeighbor" else "scene_graph: the no-neighbor refusal did not print"
+assert selftest.out contains "refuses TooManyObjects" else "scene_graph: the too-many-objects refusal did not print"
+
+say "scene_graph: GREEN on metal -- the whole scene's pairwise structure; the nesting forest a hierarchy of frames never of substance; the nearest-neighbor relation directed; refusals by name, determinism. Season G open-media."

@@ -1,0 +1,59 @@
+# tools/cr/crypto_monocypher_hkdf_sha512_parity_witness.rish — Monocypher-source parity for HKDF-SHA-512 (RFC 5869), the extract-then-expand key-derivation
+# function every handshake, sealed box, and vault key schedule stands on. Our authored crypto/hkdf_sha512.rye and the vendored Monocypher's own C
+# (vendor/monocypher, CC0/BSD-dual), each compiled fresh and asked for the same four outputs, diffed byte-for-byte. The SIXTEENTH rung of the real
+# Monocypher-source parity pattern (BLAKE2b · X25519 · Ed25519 · IETF AEAD · Argon2 · XChaCha20-Poly1305 flagship · Edwards↔Montgomery · standalone
+# Poly1305 · standalone ChaCha20 · standalone SHA-512 · HMAC-SHA-512 · HChaCha20 · variable BLAKE2b · keyed BLAKE2b · constant-time verify came before).
+# Season G · Cryptography.
+#
+# Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, Monocypher-parity, audit-ready).
+# Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md — Season G's crux rungs name "the parity witness proving
+# Rye output equals Monocypher output byte-for-byte." crypto/hkdf_sha512.rye proves itself against Zig's std.crypto HKDF-SHA-512 and transitively against
+# the RFC-4231-anchored HMAC beneath it; this rung adds the audit's own parity target, standing on the HMAC-SHA-512 Monocypher-parity rung the round
+# before. HKDF-SHA-512 is the key-derivation primitive the sealed session, the per-record subkey, and every future vault key ladder fold their shared
+# secret through — so it stands proven against the very library Grain's audit names.
+# Kin: crypto/hkdf_sha512.rye (our authored KDF, GREEN against Zig's std.crypto and the RFC-4231 HMAC beneath) · crypto/hmac_sha512.rye (the keyed hash
+# beneath it, Monocypher-parity the round before) · tools/rye/monocypher_hkdf_sha512_parity.rye (our printing harness) ·
+# tools/fixtures/monocypher_hkdf_sha512_harness.c (Monocypher's printing harness). Monocypher's HKDF-SHA-512 lives in its OPTIONAL module
+# (src/optional/monocypher-ed25519.c, crypto_sha512_hkdf), linked so like meets like. Monocypher stays the parity TARGET, vendored and unmodified, never
+# a copied line, studied clean-room (.claude/rules/gratitude-licenses.md).
+#
+# RFC 5869 publishes its known-answer vectors over SHA-256 and SHA-1 rather than SHA-512, so this SHA-512 instantiation's anchor is a second real
+# implementation agreeing byte-for-byte: Monocypher's crypto_sha512_hkdf, its own composition over the same RFC's two steps. The four lines cover the
+# RFC's three published input shapes plus a block-crossing request — line 1 the short-salt-and-info Test Case 1 structure (42 bytes), line 2 the
+# longer-inputs Test Case 2 structure (82 bytes, several blocks), line 3 the zero-length-salt-and-info Test Case 3 structure (the salt becomes HashLen
+# zeros, 42 bytes), and line 4 a two-block-crossing 100-byte request — the same coverage crypto/hkdf_sha512.rye's own selftest uses.
+# Purely local — no key of ours, no network, no funds, no device; constant-time timing-safety stays the HMAC layer's named horizon (this proves the
+# derived key material's correctness, not a timing claim).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crypto_monocypher_hkdf_sha512_parity_witness.rish
+
+say "crypto-monocypher-hkdf-sha512-parity: Language EN — Monocypher-source parity for HKDF-SHA-512 (RFC 5869), the extract-then-expand key-derivation function every handshake, sealed box, and vault key schedule stands on. crypto/hkdf_sha512.rye proves itself against Zig's std.crypto; this sixteenth rung adds the audit's own parity target and proves the KDF against the ACTUAL vendored Monocypher C over four outputs, byte-for-byte — standing on the HMAC-SHA-512 Monocypher-parity rung the round before."
+say "crypto-monocypher-hkdf-sha512-parity: Style Radiant — like against like. Our authored KDF and the unmodified vendored Monocypher each compile fresh and each print, in order, RFC 5869's Test Case 1 structure (short salt and info), Test Case 2 structure (longer inputs, several blocks), Test Case 3 structure (zero-length salt and info), and a two-block-crossing request. Two independent implementations, one set of inputs; the parity is that the four lines agree hex for hex."
+say "crypto-monocypher-hkdf-sha512-parity: Lens TAME — no fabricated constant is trusted: RFC 5869 publishes no SHA-512 known-answer, so the oracle is a second real implementation (Monocypher's crypto_sha512_hkdf), and crypto/hkdf_sha512.rye independently ties its own extract and first expand block back to the RFC-4231-anchored HMAC in its selftest. The witness diffs the four Monocypher lines against the four Rye lines byte-for-byte. Monocypher's HKDF-SHA-512 is its optional module, linked never copied. Purely local — no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon."
+
+let zig = "vendor/zig-toolchain/zig"
+let cbin = "crypto/bin/monocypher_hkdf_sha512"
+let cout = "crypto/bin/monocypher_hkdf_sha512.out"
+let rout = "crypto/bin/rye_hkdf_sha512.out"
+
+# 1. Build the Monocypher C harness, linking the unmodified vendored core AND the optional SHA-512/HKDF module with zig cc.
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src -I vendor/monocypher/src/optional tools/fixtures/monocypher_hkdf_sha512_harness.c vendor/monocypher/src/monocypher.c vendor/monocypher/src/optional/monocypher-ed25519.c -o ${cbin}"]
+assert cbuild.ok else "crypto-monocypher-hkdf-sha512-parity: Monocypher C harness build failed — ${cbuild.err}"
+
+# 2. Run the Monocypher C harness — four HKDF-SHA-512 hex lines.
+let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]
+assert crun.ok else "crypto-monocypher-hkdf-sha512-parity: Monocypher C harness exited non-zero — see ${cout}"
+
+# 3. Run our authored Rye harness — four HKDF-SHA-512 hex lines over the identical inputs.
+let rrun = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run tools/rye/monocypher_hkdf_sha512_parity.rye > ${rout} 2>&1"]
+assert rrun.ok else "crypto-monocypher-hkdf-sha512-parity: Rye harness exited non-zero — see ${rout}"
+
+# 4. Byte-for-byte parity: the two four-line outputs must be identical.
+let diff = run ["sh" "-c" "diff ${cout} ${rout} > /dev/null && echo same"]
+assert (trim diff.out) == "same" else "crypto-monocypher-hkdf-sha512-parity: Monocypher and Rye output disagree — Monocypher:\n$(cat ${cout})\nRye:\n$(cat ${rout})"
+
+let shown = run ["sh" "-c" "cat ${cout}"]
+say "crypto-monocypher-hkdf-sha512-parity: the four lines, agreed by both implementations:\n${shown.out}"
+
+say "GREEN crypto-monocypher-hkdf-sha512-parity: our authored crypto/hkdf_sha512.rye and the vendored Monocypher's own C, each compiled fresh, produce byte-for-byte identical HKDF-SHA-512 output over RFC 5869's Test Case 1, 2, and 3 input structures and a two-block-crossing request. The SIXTEENTH real Monocypher-SOURCE parity rung, proving the extract-then-expand key-derivation function the sealed session, the per-record subkey, and every future vault key ladder fold their shared secret through — standing on the HMAC-SHA-512 Monocypher-parity rung the round before. RFC 5869 publishes no SHA-512 known-answer, so the anchor is a second real implementation agreeing byte-for-byte, with crypto/hkdf_sha512.rye independently tying its extract and first expand block back to the RFC-4231-anchored HMAC in its own selftest. Monocypher's HKDF-SHA-512 is its optional module, linked never copied. Purely local, no key of ours, no network, no funds, no device; constant-time timing-safety stays the named horizon, this rung proving the derived key material's correctness rather than a timing claim."

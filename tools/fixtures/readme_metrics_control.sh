@@ -11,7 +11,7 @@
 #
 # EXPECTED: verdict=stale, drift at least 1, exit non-zero.
 #
-# Driven by tools/readme_metrics_witness.rish. Run from the repository root.
+# Driven by tools/r/readme_metrics_witness.rish. Run from the repository root.
 
 set -eu
 

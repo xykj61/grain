@@ -21,7 +21,7 @@ The selftest proves it all on a **fake** key: five shares at a threshold of thre
 rye build vault/shard.rye -femit-bin=vault/bin/shard
 vault/bin/shard selftest   # the disaster arithmetic, on a fake key
 vault/bin/shard emit       # five signed vault-shard-v1 records
-rishi/bin/rishi run tools/vault_shard_witness.rish
+rishi/bin/rishi run tools/v/vault_shard_witness.rish
 ```
 
 ## Two disciplines this module never breaks

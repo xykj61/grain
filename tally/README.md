@@ -15,7 +15,7 @@ Beside the allocator itself, Tally holds a second kind of thing: small, universa
 |------|--------|
 | [`seed.rye`](seed.rye) | the first running Tally — a bounded region, asserted edges |
 | [`gardens.rye`](gardens.rye) | Tally v1 — a fixed set of named Regions in one Gardens, each its own bounded garden |
-| Bounds | `max_gardens = 8` · `max_name_len = 32` — pinned on metal by [`../tools/tally_gardens_witness.rish`](../tools/tally_gardens_witness.rish) (Tensegral r10) |
+| Bounds | `max_gardens = 8` · `max_name_len = 32` — pinned on metal by [`../tools/t/tally_gardens_witness.rish`](../tools/t/tally_gardens_witness.rish) (Tensegral r10) |
 
 ## The Marks
 
@@ -33,20 +33,20 @@ Beside the allocator itself, Tally holds a second kind of thing: small, universa
 
 ## Who calls Tally
 
-**Canon seam map** (Tensegral r11). Callers reach marks through their own symlinks or imports — not copies. Tally itself imports **`std` only**. Witness: [`../tools/tally_caller_map_witness.rish`](../tools/tally_caller_map_witness.rish). Saga shelf points here rather than keeping a second table.
+**Canon seam map** (Tensegral r11). Callers reach marks through their own symlinks or imports — not copies. Tally itself imports **`std` only**. Witness: [`../tools/t/tally_caller_map_witness.rish`](../tools/t/tally_caller_map_witness.rish). Saga shelf points here rather than keeping a second table.
 
 | Consumer family | Typical marks (symlink / import) |
 |-----------------|----------------------------------|
 | `linengrow/` (mala · wov · disclosure) | `kumara` · `tally_copy` · `parse_int` · `bud` |
 | `caravan/` · `mantra/` · `comlink/` · `brushstroke/` | `tally_copy` · `parse_int` · `no_padding` (comlink wire) |
 | `rishi/` · `glow/` · `aurora/` · `amphora/` · `granary/` · `mand/` · `mandi/` · `pond/apps/*` | marks as each surface needs |
-| `tools/kumara.rye` | Kumara seed path |
+| `tools/rye/kumara.rye` | Kumara seed path |
 
 Other season shelves cite this section; they do not duplicate the rows.
 
 ## Elder call sites migrate on touch
 
-`copyForwards`/`copyBackwards` and bare `@memcpy` are banned in new code; `tools/tame_style_check.rish` counts what remains and only ever watches the count fall. Nothing here is a sweep — each mark earns its home the day a real caller needs it, and `maybe` and `no_padding` both arrived exactly that way: proposed in full, unseated, until the tree had something genuine to use them on.
+`copyForwards`/`copyBackwards` and bare `@memcpy` are banned in new code; `tools/t/tame_style_check.rish` counts what remains and only ever watches the count fall. Nothing here is a sweep — each mark earns its home the day a real caller needs it, and `maybe` and `no_padding` both arrived exactly that way: proposed in full, unseated, until the tree had something genuine to use them on.
 
 ---
 

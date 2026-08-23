@@ -1,0 +1,343 @@
+# tools/ca/caravan_ladder_copy_witness.rish -- the Caravan ladder's carried checks are a measured number, and the fold that ended most of them holds.
+#
+# Every rung of the Caravan arc imports the implementation of the rung beneath it. For eighty-odd rungs it also carried a
+# fresh copy of that rung's self-test, because a check function was private and a later rung had no way to call the one
+# below it. Measured rather than recalled, that reached 779 copied bodies over 54,612 lines, growing about 4,383 a rung.
+#
+# On Keaton's word the ladder folded (the 20260820.131713 design call, option A): every check is public now, and a rung
+# whose check is byte-for-byte the rung below's runs it there. 523 bodies fold that way, 39,962 lines leave the ladder,
+# and the carry falls to 12,035 -- a little over a fifth of what it was.
+#
+# Two residues stayed home, and A could not take either. A check that reaches the wire is never run in the rung below:
+# the bodies match, yet each rung keeps its notes in its own directory, so the rung below would provision its own wire
+# and leave this rung's cold -- which is exactly how the cold-start discipline REDS %92 seated caught the first, bolder
+# cut of that fold. Nor is a check run below when its tail chains into a check this rung invented.
+#
+# Three rungs later the carry stood at 17,997, and Keaton's word opened option B: caravan/ladder_checks.rye, the harness
+# a rung hands itself to. A lifted check takes the rung as a comptime parameter and reaches every helper through it, so
+# one body runs against whichever rung handed itself in -- its own report, its own helpers, its own wire -- and every
+# chained check re-enters the rung rather than ending in the rung below. Both residues fall to it: 57 bodies lift across
+# 30 rungs, and the carry falls to 1,952, a ninth of what stood before it.
+#
+# Two rungs later the meter named its own next crux, and reading which bodies made up the number answered it: 85 of the
+# 89 duplicated bodies were identical five-line stubs, and two rungs only write the same stub when they name the same
+# rung below. `desist.rye`, born as a copy of `mind.rye`, had inherited its delegations whole and folded two rungs down
+# into `forbear.rye`, skipping its own neighbor (REDS %98). Repointed one step down, with its four remaining copied
+# bodies lifted, the carry fell to 2,202 -- and the one-step rule became a guard rather than a habit. The beckon rung
+# carried it to 3,324: a new rung re-enters four chained check bodies of the rung below, which is the fold's named
+# residue rather than a regression.
+#
+# The lap after that answered the residue by name. Eight of those chained bodies stood byte-identical across every rung
+# holding them, so all eight lifted into the harness: the mind chain's measure and wire, the whole desist chain, and
+# the beckon rung's check and refusals. Two stayed home honestly -- a chain's last link ends in `return 0` in the rung
+# that tops the ladder and climbs in every rung above it, so `check_beckon_measure` and `check_beckon_wire` are not yet
+# two copies of one body and cost the carry nothing. The carry fell 3,324 to 2,762, and a new rung now costs stubs
+# rather than bodies.
+#
+# So this witness changed jobs with the scan beneath it. It began proving a ratchet was measurable; it now proves a wall
+# holds, at 4,000 against a standing of 2,762 -- about two rungs of headroom at the carry's own rate.
+#
+# Seven claims, each proven on metal:
+#   1. The living ladder counts clean under a named ceiling.
+#   2. The A fold is real, counted off the ladder rather than believed: 757 checks run in the rung that owns them,
+#      counted in either form a rung may name that rung -- directly, or by handing it to the shared harness.
+#   3. The B fold is real on the same terms: 69 check bodies stand in the harness, each run against the rung that
+#      handed itself in.
+#   4. The C fold is real, and it is a wall rather than a ratchet: zero rungs carry a stub that only forwards itself
+#      to the harness, since the harness now answers for a rung that says nothing.
+#   5. The counting itself is right, proven on a two-module corpus whose one carried check and six carried lines are
+#      countable by hand.
+#   6. The fold walks down one rung at a time: every folding rung names one rung below, and no rung below is named
+#      twice -- proven on the living ladder and on three-rung corpora small enough to read, in both fold forms.
+#   7. No lifted body carries the harness's own parameter name into prose a person reads -- the `rung.` prefix belongs
+#      in code and never in a printed line or a comment, since the lift that writes it is mechanical and reaches what
+#      no compiler weighs (REDS %99).
+#   8. Every RED path refuses by name -- a corpus with no modules, a corpus whose modules hold no checks at all (the
+#      REDS %97 shape: a count that cannot see what it measures), a corpus grown past its ceiling, a rung reaching
+#      past its neighbor in either form, and a lifted body whose printed line or comment its own lift rewrote.
+#
+# Brief: active-designing/date/20260820/20260820-131713_caravan-ladder-shared-harness.md
+# No network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_ladder_copy_witness.rish
+
+say "caravan-ladder-copy: Language EN -- the checks the ladder carries forward are counted rather than recalled, so the design call rests on a number."
+say "caravan-ladder-copy: Style Radiant -- measurement beats memory; a ratchet surfaced once became a meter, and the meter became the wall that keeps the fold folded."
+say "caravan-ladder-copy: Lens TAME -- safety first: the ceiling is named, the counting is proven by hand on a corpus, the fold is read out of the count rather than claimed, and every refusal has a name."
+
+let living = run ["sh" "tools/fixtures/caravan_ladder_copy_scan.sh"]
+assert living.ok else "caravan-ladder-copy: the living ladder scan must exit 0 -- ${living.out}"
+assert living.out contains "LADDER_COPY_OK" else "caravan-ladder-copy: want the living ladder under its named ceiling"
+assert living.out contains "LADDER_MODULES" else "caravan-ladder-copy: want the module count named"
+assert living.out contains "copied_lines=" else "caravan-ladder-copy: want the carried lines named"
+
+say "caravan-ladder-copy: living ladder -- ${living.out}"
+
+# The fold itself, read off the ladder rather than claimed. A folded check is one line that runs the check in the rung
+# below, so the fold is countable: 913 of them stand -- the 523 the fold landed, plus the 39 each that the allay,
+# forbear, mind, desist, beckon, answer, abate, conclude, respect, refrain, and farewell rungs folded as they were
+# written.
+# A rung names the rung below in either of two forms, and the count reads both: the elder form calls the check on that
+# rung directly, and the harness form hands that rung to the shared body, which is what a rung writes once the rung
+# below publishes no stub of its own. Counting one form alone would read a move between them as a loss.
+# A tree that lost these would be carrying the bodies again, whatever the prose said. The number climbs with each new
+# rung and never falls, so a drop is a regression this wall names on the lap it happens.
+let folds = run ["sh" "-c" "grep -hE 'return ([a-z_]+_rung[.]check_|ladder_checks[.]check_[a-z0-9_]+[(][a-z_]+_rung)' caravan/*.rye | wc -l | tr -d ' '"]
+assert folds.ok else "caravan-ladder-copy: could not count the folded checks -- ${folds.err}"
+assert (trim folds.out) == "952" else "caravan-ladder-copy: want 952 checks run in the rung below, read ${trim folds.out}"
+say "caravan-ladder-copy: fold A -- ${trim folds.out} checks run in the rung that owns them rather than carried"
+
+# The B fold, read at its own home. A lifted body lives in `ladder_checks.rye` and takes the rung as a comptime
+# parameter, so the one body runs against whichever rung handed itself in -- that rung's own report, its own wire. The
+# bodies are what B folded, so the bodies are what B is counted by. This number climbs as bodies lift and never falls.
+let harnessed = run ["sh" "-c" "grep -c '^pub fn check_' caravan/ladder_checks.rye | tr -d ' '"]
+assert harnessed.ok else "caravan-ladder-copy: could not count the harnessed bodies -- ${harnessed.err}"
+assert (trim harnessed.out) == "89" else "caravan-ladder-copy: want 89 bodies standing in the harness, read ${trim harnessed.out}"
+say "caravan-ladder-copy: fold B -- ${trim harnessed.out} check bodies stand in the harness, each run against the rung that called it"
+
+# The C fold -- silence is an answer. Until the 20260820.182533 fold, a rung published a five-line stub for every
+# lifted check it merely climbed to, because the harness re-entered the rung by name and a name it could not find was
+# a compile error. Now the harness reaches each chained link through `link`, which runs the rung's own body when that
+# rung wrote one and its own body when the rung said nothing -- so a rung publishes a check only to CHANGE it. Those
+# stubs were the whole remaining carry, byte-identical across rungs by construction, and 612 of them left the ladder.
+# Stated as a wall: no rung carries a stub that only forwards itself to the harness. Zero, and it stays zero.
+let stubs = run ["sh" "-c" "grep -h 'return ladder_checks[.]check_[a-z0-9_]*(@This()' caravan/*.rye | wc -l | tr -d ' '"]
+assert stubs.ok else "caravan-ladder-copy: could not count the forwarding stubs -- ${stubs.err}"
+assert (trim stubs.out) == "0" else "caravan-ladder-copy: want no rung forwarding a stub to the harness, read ${trim stubs.out}"
+say "caravan-ladder-copy: fold C -- ${trim stubs.out} forwarding stubs stand; a rung publishes a check only to change it"
+
+# The one-step rule -- no rung reaches past its neighbor. The two folds above say how many checks run somewhere other than
+# where they are written; this one says the fold walks DOWN ONE RUNG AT A TIME. A rung that reaches two rungs down skips
+# its neighbor, and then both rungs hold the same five-line stub byte for byte -- which is a copy the meter counts and a
+# chain a reader cannot follow. `desist.rye` was born as a copy of `mind.rye` and inherited its delegations whole, so
+# both folded into `forbear.rye` and 195 lines rode the ladder for it. Stated as a rule a machine checks, the drift can
+# never re-enter unseen: a rung folds into at most one rung, and no rung is folded into by two.
+let reach = run ["sh" "tools/fixtures/caravan_ladder_reach_scan.sh"]
+assert reach.ok else "caravan-ladder-copy: the living ladder must walk down one rung at a time -- ${reach.out}"
+assert reach.out contains "LADDER_REACH_OK" else "caravan-ladder-copy: want every folding rung naming one rung below"
+say "caravan-ladder-copy: one-step rule -- ${trim reach.out}"
+
+# The reach rule proven on a corpus small enough to read: three rungs, each folding into the one beneath it.
+let reach_pass = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_reach_corpus sh tools/fixtures/caravan_ladder_reach_scan.sh"]
+assert reach_pass.ok else "caravan-ladder-copy: the walking corpus must pass -- ${reach_pass.out}"
+assert reach_pass.out contains "LADDER_REACH_MODULES 3 folding=2" else "caravan-ladder-copy: want three rungs, two of them folding"
+
+# RED path four -- the planted drift. The top rung of this corpus reaches past its neighbor into the bottom rung, which
+# is exactly the shape this round took off the living ladder. A guard that never refuses is a habit; this one refuses.
+let reach_skip = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_reach_skip_corpus sh tools/fixtures/caravan_ladder_reach_scan.sh"]
+assert (reach_skip.ok == false) else "caravan-ladder-copy: a rung reaching past its neighbor must refuse"
+assert reach_skip.out contains "reason=shared_target" else "caravan-ladder-copy: want the skipped neighbor refused by name"
+
+# The same rule proven in the harness form, which is what a rung writes once the rung below publishes no stub. A guard
+# that reads only the elder form would see no fold at all in these three rungs and pass a ladder that had drifted --
+# the REDS %97 shape, a count that cannot see what it measures. So both shapes are proven, welcome and refusal alike.
+let reach_harness = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_reach_harness_corpus sh tools/fixtures/caravan_ladder_reach_scan.sh"]
+assert reach_harness.ok else "caravan-ladder-copy: the harness-form walking corpus must pass -- ${reach_harness.out}"
+assert reach_harness.out contains "LADDER_REACH_MODULES 3 folding=2" else "caravan-ladder-copy: want the harness form read as a fold"
+
+# RED path five -- the planted drift, written in the harness form.
+let reach_harness_skip = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_reach_harness_skip_corpus sh tools/fixtures/caravan_ladder_reach_scan.sh"]
+assert (reach_harness_skip.ok == false) else "caravan-ladder-copy: a harness-form rung reaching past its neighbor must refuse"
+assert reach_harness_skip.out contains "reason=shared_target" else "caravan-ladder-copy: want the harness-form skip refused by name"
+
+# The prose rule -- a lifted body never carries the harness's own parameter name into a line a person reads. Lifting a
+# check into ladder_checks.rye means prefixing every symbol of the rung it was handed with `rung.`, and that rewrite is
+# mechanical. A mechanical rewrite over a whole function reaches what a compiler never weighs: the sentences a check
+# prints and the comments saying why. This lap's own lift wrote `rung.standing`, `rung.read`, and `rung.carry` into
+# fifteen printed lines and comments; the module compiled and ran GREEN, and one witness asserting on an exact sentence
+# was the only thing that saw it (REDS %99). Stated as a rule a machine checks, the next lift cannot corrupt prose in
+# the dark.
+let prose = run ["sh" "tools/fixtures/caravan_ladder_harness_prose_scan.sh"]
+assert prose.ok else "caravan-ladder-copy: no lifted body may carry the harness parameter name into prose -- ${prose.out}"
+assert prose.out contains "HARNESS_PROSE_OK" else "caravan-ladder-copy: want the living harness clean of rung-in-prose"
+say "caravan-ladder-copy: harness prose -- ${trim prose.out}"
+
+# RED path six -- a lifted body whose printed line was rewritten by its own lift. The guard generates nothing it tracks:
+# the control is made here, from the living harness, so it can never drift from the shape the scan enforces.
+let prose_literal = run ["sh" "-c" "d=$(mktemp -d); sed '0,/word standing where/s//word rung.standing where/' caravan/ladder_checks.rye > $d/hurt.rye; CARAVAN_HARNESS=$d/hurt.rye sh tools/fixtures/caravan_ladder_harness_prose_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert (prose_literal.ok == false) else "caravan-ladder-copy: a rewritten printed line must refuse"
+assert prose_literal.out contains "HARNESS_PROSE_BAD literal" else "caravan-ladder-copy: want the corrupted literal named by line"
+
+# RED path seven -- the same fault in a comment, which a reader trusts exactly as far as they trust the code beside it.
+let prose_comment = run ["sh" "-c" "d=$(mktemp -d); printf '// a body rung.reaching its helper\npub fn check_a(comptime rung: type) u8 { return rung.n(); }\n' > $d/hurt.rye; CARAVAN_HARNESS=$d/hurt.rye sh tools/fixtures/caravan_ladder_harness_prose_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert (prose_comment.ok == false) else "caravan-ladder-copy: a rewritten comment must refuse"
+assert prose_comment.out contains "HARNESS_PROSE_BAD comment" else "caravan-ladder-copy: want the corrupted comment named by line"
+
+# The welcome the tightening earned. The rule is about a `rung.` that *reaches a symbol*, so the pattern names exactly
+# that -- a `rung.` with an identifier character after it. The elder pattern named any `rung.` at all, and so it refused
+# two hand-written sentences closing on the ordinary English noun (REDS %100). A lift can only ever write `rung.` with a
+# name behind it, so the gap this leaves open is one the fault cannot reach through; proven here rather than reasoned,
+# by handing the scan a comment and a printed line that each end on the plain word.
+let prose_english = run ["sh" "-c" "d=$(mktemp -d); printf '// one body serves every rung.\npub fn check_a(comptime rung: type) u8 { print(\042  the same from every rung.\\n\042, .{}); return rung.n(); }\n' > $d/plain.rye; CARAVAN_HARNESS=$d/plain.rye sh tools/fixtures/caravan_ladder_harness_prose_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert prose_english.ok else "caravan-ladder-copy: the plain English word must be welcomed -- ${prose_english.out}"
+assert prose_english.out contains "HARNESS_PROSE_OK" else "caravan-ladder-copy: want a sentence closing on the ordinary noun read clean"
+
+# And the welcome beside the refusals, so a guard that reds on valid input can never teach the bench to route around it:
+# the harness exactly as it stood before this lap, with eighty-odd bodies already lifted, reads clean.
+let prose_elder = run ["sh" "-c" "d=$(mktemp -d); git show HEAD:caravan/ladder_checks.rye > $d/elder.rye; CARAVAN_HARNESS=$d/elder.rye sh tools/fixtures/caravan_ladder_harness_prose_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert prose_elder.ok else "caravan-ladder-copy: the elder harness must read clean -- ${prose_elder.out}"
+assert prose_elder.out contains "HARNESS_PROSE_OK" else "caravan-ladder-copy: want the elder harness welcomed"
+
+# The recited-count rule -- a ladder meter's own prose recites no module count. The spine meter closed every run saying
+# its spine stood "across 102 modules" while the scan it had just asserted printed 104, and then 105: the assert bound
+# the SCAN OUTPUT and left the closing sentence unguarded, so it drifted twice without a RED (REDS %108, the family
+# REDS %105 named one shelf over). A meter's own subject is pinned in an assert beside its prose and moves with it; the
+# module count is nobody's subject, which is exactly why nobody updates it. So the rule is no number at all -- the
+# measurement is already printed verbatim by each meter's `living ladder` line, which cannot drift because it is the
+# scan's own output.
+let recited = run ["sh" "tools/fixtures/caravan_ladder_prose_count_scan.sh"]
+assert recited.ok else "caravan-ladder-copy: no ladder meter may recite a module count in prose -- ${recited.out}"
+assert recited.out contains "LADDER_PROSE_COUNT_OK" else "caravan-ladder-copy: want every ladder meter's prose free of a recited module count and every closing number held by an assert"
+say "caravan-ladder-copy: recited counts -- ${trim recited.out}"
+
+# RED path eleven -- the spine meter exactly as it shipped, which is the strongest available control: the guard must
+# name the very line that drifted, rather than a shape invented to be caught.
+#
+# THIS CONTROL WAS ONCE `git show HEAD:` AND THAT WAS ITS OWN RED (REDS %109). The fix and the guard rode in the same
+# commit, so `HEAD` named the drifted file while that commit was still unmade and the repaired file from the moment it
+# landed -- the control proved itself once and never again. A tracked copy cannot drift with `HEAD`, and it outlives a
+# deep debride that would rewrite every hash in the tree, so the RED path stays armed through both.
+let recited_elder = run ["sh" "tools/fixtures/caravan_ladder_prose_count_scan.sh" "tools/fixtures/caravan_ladder_prose_count_elder"]
+assert (recited_elder.ok == false) else "caravan-ladder-copy: the drifted spine prose must refuse"
+assert recited_elder.out contains "LADDER_PROSE_BAD say" else "caravan-ladder-copy: want the drifted line named by file and number"
+
+# The closing-line rule, and RED path twelve -- the carry meter exactly as it shipped (REDS %110). The rule above
+# refuses one phrase, and the very next meter drifted on words it does not name: the carry meter closed every run
+# reciting "137,176 lines across 10,198 copied bodies of the 18,039 standing on it" while its own assert four lines
+# earlier said 137,185, 10,199, and 18,055. So the guard grew a second rule bounded by a PROPERTY rather than by a
+# vocabulary -- every number in a meter's closing GREEN line stands asserted in that same file, separators stripped --
+# and it is strictly stronger than the first: pointed at the elder spine meter it refuses that line too, on the number
+# rather than on the noun. Drawn at the closing line first, it widened to every `say` within the same lap -- the line
+# directly above the carry meter's close recited the same stale number, so the boundary proved too narrow before it was
+# an hour old.
+let recited_close = run ["sh" "tools/fixtures/caravan_ladder_prose_count_scan.sh" "tools/fixtures/caravan_ladder_prose_close_elder"]
+assert (recited_close.ok == false) else "caravan-ladder-copy: the drifted carry close must refuse"
+assert recited_close.out contains "LADDER_PROSE_BAD printed" else "caravan-ladder-copy: want the drifted printed number named by file, line, and value"
+assert recited_close.out contains "recites 137176 with no assert holding it" else "caravan-ladder-copy: want the carried-line drift named by the number that actually shipped"
+assert recited_elder.out contains "LADDER_PROSE_BAD printed" else "caravan-ladder-copy: want the printed-number rule refusing the elder spine line as well, on the number rather than the noun"
+
+# The sigil, both directions (REDS %131). A `%`-sigilled row is this tree's own name for an immutable ledger
+# record, so it comes off a `say` line before any number is read -- `.claude/rules/git-signing.md` names `%`
+# a CONSTANT TERM, and a REDS row can never drift, which is the only fault this scan exists to catch. The
+# guard reddened on `REDS %130` in the carry meter's own prose and stood red through a shipped commit, which
+# is exactly how a gate that refuses valid input teaches a bench to route around it.
+#
+# Both directions run on one generated control rather than on the living tree, so neither can drift with a
+# later lap: a meter whose only numbers wear the sigil reads clean, and the same meter with one bare count
+# beside those citations is still refused by that count. The exemption is a name, never a doorway.
+#
+# The sigil is written `%%` inside these controls because `printf` reads a bare `%` as a format conversion and
+# truncated the whole generated line the first time, so BOTH legs passed while testing an empty sentence --
+# the welcome for having nothing to refuse, the refusal leg for having no count left to find. A fixture that
+# passes for the wrong reason is a fixture that proves nothing, and it was caught by the refusal leg failing.
+let sigil = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \042ok\042 else \042e\042\nsay \042the row REDS %%131 follows REDS %%130 and cites gate %%1\042\n' > $d/caravan_ladder_sigil_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+assert sigil.ok else "caravan-ladder-copy: a meter reciting only sigilled row names must read clean -- ${sigil.out}"
+assert sigil.out contains "LADDER_PROSE_COUNT_OK" else "caravan-ladder-copy: want the sigilled citation welcomed as a name rather than counted as a measurement"
+
+let sigil_bare = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \042ok\042 else \042e\042\nsay \042the row REDS %%131 folded 47 rungs\042\n' > $d/caravan_ladder_sigil_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+assert (sigil_bare.ok == false) else "caravan-ladder-copy: a bare count standing beside a sigilled name must still refuse"
+assert sigil_bare.out contains "recites 47 with no assert holding it" else "caravan-ladder-copy: want the bare count named by its own value, the sigil beside it granting it nothing"
+
+# A one-clock stamp is a name on exactly the sigil's reasoning (REDS %135). A meter citing the design read
+# behind it put a dated filename in a `say` line, and both digit runs of the stamp were refused as recited
+# counts. A stamp is fixed when the file is named and can never drift, which is the only fault this scan
+# exists to catch. Both legs run on generated controls, so the bound is proven rather than described: the
+# two shapes the naming law defines are welcomed as names, and a bare eight-digit number standing beside a
+# stamp is still refused at its own value. The exemption is a name, never a doorway -- the same sentence the
+# sigil legs above earned, and the reason this pair sits directly beneath them.
+let stamp = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \042ok\042 else \042e\042\nsay \042the reading is active-designing/20260822-101058_what-a-widening-costs-a-rungs-door.md, seated 20260822.101058\042\n' > $d/caravan_ladder_stamp_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+assert stamp.ok else "caravan-ladder-copy: a meter citing a dated path by its one-clock stamp must read clean -- ${stamp.out}"
+assert stamp.out contains "LADDER_PROSE_COUNT_OK" else "caravan-ladder-copy: want both one-clock shapes welcomed as names rather than counted as measurements"
+
+let stamp_bare = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \042ok\042 else \042e\042\nsay \042the reading seated 20260822.101058 folded 20260822 rungs\042\n' > $d/caravan_ladder_stamp_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+assert (stamp_bare.ok == false) else "caravan-ladder-copy: a bare count standing beside a one-clock stamp must still refuse"
+assert stamp_bare.out contains "recites 20260822 with no assert holding it" else "caravan-ladder-copy: want the bare number named at its own value, the stamp beside it granting it nothing"
+
+# A NUMBER SPELLED IN WORDS IS STILL A NUMBER (REDS %143). This arc's meters write their prose almost
+# entirely in spelled-out numbers, so the printed-number property above -- which reads digit runs -- was
+# reading nothing at all where the drift actually lives. A GREEN line shipped saying "each of the twenty-two
+# folding rungs keeps a three-line stub" for a lap that folded forty-four, and the scan read that file clean
+# at printed=0. REDS %142 had already written the lesson down, that a meter reading digits sees half of what
+# it looks for, and left it unbuilt; the second firing builds it.
+#
+# Three legs, so the bound is proven rather than described. A spelled count of ten or more with no assert
+# holding it refuses at the value it names. The same spelled count refuses no longer once an assert in the
+# same file holds it, which proves the leg reads the property rather than merely the vocabulary. And a
+# spelled number below ten passes free, because under ten a spelled word in English prose is a determiner --
+# "one published body", "two lines" -- and those are reported as `spelled_small` rather than read, so the
+# scan never narrows its own subject without saying so (REDS %102).
+let spelled_bare = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \042ok\042 else \042e\042\nsay \042each of the twenty-two folding rungs keeps a stub\042\n' > $d/caravan_ladder_spelled_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+assert (spelled_bare.ok == false) else "caravan-ladder-copy: a spelled count no assert holds must refuse"
+assert spelled_bare.out contains "recites 22 in words with no assert holding it" else "caravan-ladder-copy: want the spelled count named at the value it spells"
+
+let spelled_held = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \042folding=22\042 else \042e\042\nsay \042each of the twenty-two folding rungs keeps a stub\042\n' > $d/caravan_ladder_spelled_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+assert spelled_held.ok else "caravan-ladder-copy: a spelled count an assert holds must read clean -- ${spelled_held.out}"
+assert spelled_held.out contains "spelled=1" else "caravan-ladder-copy: want the spelled count read and held rather than merely unseen"
+
+let spelled_small = run ["sh" "-c" "d=$(mktemp -d); printf 'assert x.out contains \042ok\042 else \042e\042\nsay \042one published body and two lines of call, five names reached in all\042\n' > $d/caravan_ladder_spelled_witness.rish; sh tools/fixtures/caravan_ladder_prose_count_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+assert spelled_small.ok else "caravan-ladder-copy: a determiner below ten must pass free -- ${spelled_small.out}"
+assert spelled_small.out contains "spelled_small=3" else "caravan-ladder-copy: want the words below ten counted and reported rather than silently dropped"
+
+# The counting proven by hand. The corpus holds two rungs: the lower carries two distinct checks, the
+# upper carries one of them forward byte for byte and adds one of its own. So four checks stand, three
+# bodies are distinct, exactly one is a copy, and that copy is six lines long -- countable by eye in the
+# fixture itself, which is what makes this a proof of the counter rather than a second opinion from it.
+let corpus = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_copy_corpus CARAVAN_LADDER_COPY_CEILING=10 sh tools/fixtures/caravan_ladder_copy_scan.sh"]
+assert corpus.ok else "caravan-ladder-copy: the corpus scan must exit 0 -- ${corpus.out}"
+assert corpus.out contains "LADDER_MODULES 2" else "caravan-ladder-copy: want the corpus read as two rungs"
+assert corpus.out contains "LADDER_CHECKS 4 distinct=3 copies=1" else "caravan-ladder-copy: want four checks, three distinct, one carried"
+assert corpus.out contains "copied_lines=6" else "caravan-ladder-copy: want the one carried check counted at its six real lines"
+
+# RED path one -- a corpus holding no rung modules at all.
+let empty = run ["sh" "-c" "d=$(mktemp -d); CARAVAN_LADDER_DIR=$d sh tools/fixtures/caravan_ladder_copy_scan.sh; s=$?; rmdir $d; exit $s"]
+assert (empty.ok == false) else "caravan-ladder-copy: an empty corpus must refuse"
+assert empty.out contains "reason=no_modules" else "caravan-ladder-copy: want the empty corpus refused by name"
+
+# RED path two -- modules that hold no checks. This is the REDS %97 shape: the scan read a real corpus
+# and answered zero, and a zero nobody questions is a guess wearing a measurement's clothes. Here the
+# zero refuses instead.
+let hollow = run ["sh" "-c" "d=$(mktemp -d); printf 'const std = @import(\"std\");\\n' > $d/hollow.rye; CARAVAN_LADDER_DIR=$d sh tools/fixtures/caravan_ladder_copy_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert (hollow.ok == false) else "caravan-ladder-copy: a corpus with no checks must refuse"
+assert hollow.out contains "reason=no_checks" else "caravan-ladder-copy: want the hollow corpus refused by name"
+
+# RED path three -- the ceiling has teeth. The corpus carries six lines; held at five, it refuses, which proves the
+# ceiling is a real gate rather than a printed number. The proof runs on the corpus rather than the living ladder,
+# because the folded ladder is meant to sit under its ceiling and a gate must be provable without breaking the thing
+# it guards.
+let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_copy_corpus CARAVAN_LADDER_COPY_CEILING=5 sh tools/fixtures/caravan_ladder_copy_scan.sh"]
+assert (ceiling.ok == false) else "caravan-ladder-copy: a ladder past its ceiling must refuse"
+assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-copy: want the ceiling breach refused by name"
+
+# The roster, asked here because this meter runs on every fold lap and the choir does not (REDS %101).
+# The printing meter was born, proved itself GREEN on its own lap, and stood outside the choir for two
+# laps -- REDS %81's shape exactly, in a second module. Singing 98 witnesses costs minutes; asking whether
+# the roster is whole costs two greps, so the question rides with the cheap meter a fold lap already pulls.
+# A lantern that fires twice becomes a loom.
+let roster = run ["sh" "tools/fixtures/caravan_roster_bijection_scan.sh"]
+assert roster.ok else "caravan-ladder-copy: the Caravan roster must hear every witness on disk -- ${roster.out}"
+assert roster.out contains "ROSTER_OK" else "caravan-ladder-copy: want the roster whole in both directions -- ${roster.out}"
+say "caravan-ladder-copy: the roster -- ${trim roster.out}"
+
+# RED path eight -- a witness on disk that no roster line names. This is the exact shape both %81 and %101
+# wore, planted here so the guard is proven by doing rather than by reasoning: a throwaway directory holds
+# the living roster's own witnesses plus one more, and the scan names the stranger and refuses.
+let unheard = run ["sh" "-c" "d=$(mktemp -d); for f in $(find tools -maxdepth 2 -name 'caravan_*_witness.rish' -type f); do : > $d/$(basename $f); done; : > $d/caravan_unregistered_witness.rish; CARAVAN_TOOLS_DIR=$d sh tools/fixtures/caravan_roster_bijection_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert (unheard.ok == false) else "caravan-ladder-copy: a witness no roster names must refuse"
+assert unheard.out contains "reason=unheard" else "caravan-ladder-copy: want the unheard witness refused by name"
+assert unheard.out contains "caravan_unregistered_witness" else "caravan-ladder-copy: want the unheard witness named, so a red says which one"
+
+# RED path nine -- the other direction: a roster naming a witness with no file behind it. A count that
+# describes a tree which no longer exists is the %97 family, and it refuses too.
+let phantom = run ["sh" "-c" "d=$(mktemp -d); for f in $(find tools -maxdepth 2 -name 'caravan_*_witness.rish' -type f); do : > $d/$(basename $f); done; rm -f $d/caravan_abate_witness.rish; CARAVAN_TOOLS_DIR=$d sh tools/fixtures/caravan_roster_bijection_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert (phantom.ok == false) else "caravan-ladder-copy: a roster line pointing at nothing must refuse"
+assert phantom.out contains "reason=phantom" else "caravan-ladder-copy: want the phantom registration refused by name"
+
+# RED path ten -- a directory holding no Caravan witnesses at all. The REDS %97 shape once more: a scan
+# reading a real place and answering zero, where the zero is its own blindness. It refuses rather than
+# reporting a whole roster over an empty tree.
+let bare = run ["sh" "-c" "d=$(mktemp -d); CARAVAN_TOOLS_DIR=$d sh tools/fixtures/caravan_roster_bijection_scan.sh; s=$?; rmdir $d; exit $s"]
+assert (bare.ok == false) else "caravan-ladder-copy: a directory holding no witnesses must refuse"
+assert bare.out contains "reason=no_witnesses" else "caravan-ladder-copy: want the empty witness directory refused by name"
+
+say "GREEN: caravan-ladder-copy -- the folded ladder stands counted under a named ceiling, all three folds are read out of the ladder rather than claimed, the counting is proven by hand on a two-rung corpus, the fold walks down one rung at a time in either form a rung may write it, the Caravan roster is asked here every lap so no witness is born unheard, and every RED path refuses by name, the two prose rules and both roster directions among them, welcomed on the elder harness and refused on the drifted line that actually shipped."
