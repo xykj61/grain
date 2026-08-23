@@ -12,4 +12,4 @@
 
 **Clean room:** We study the talk and the architectural lesson; we never copy Electric source into our modules. The lane's gratitude shelf seats this name formally per Kaeden's word (`20260708.174500`).
 
-**Cross-ref:** [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md) — Visual Track · [`../external-research/20260708-021912_grain-sketchbook-realidream-mining.md`](../external-research/20260708-021912_grain-sketchbook-realidream-mining.md)
+**Cross-ref:** [`../crux/ROADMAP.md`](../crux/ROADMAP.md) — Visual Track · [`../external-research/20260708-021912_grain-sketchbook-realidream-mining.md`](../external-research/20260708-021912_grain-sketchbook-realidream-mining.md)
