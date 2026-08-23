@@ -22,7 +22,7 @@
 # Add a guard by adding a record here; the meter counts the file rather than a sentence.
 
 format standing-equipment-v1
-stamp 20260822.233748
+stamp 20260823.025333
 voice Kyri
 runner tools/fixtures/standing_equipment_run.sh
 card crux/standing-equipment-runs.kyri
@@ -46,6 +46,10 @@ seated 20260821.203103
 guard equinox_e123_living_pin_guard
 path tools/gen/season/equinox_e123_living_pin_guard_witness.rish
 seated 20260817.000000
+
+guard exec_bit
+path tools/exec_bit_witness.rish
+seated 20260823.025333
 
 guard fetch_toolchain
 path tools/fetch_toolchain_witness.rish

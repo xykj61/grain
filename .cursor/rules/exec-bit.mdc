@@ -1,0 +1,78 @@
+---
+description: A file mode is tracked content -- rewrite in place (cat tmp > f), never mv tmp f, so the exec bit survives; attach when a tool rewrites tracked files in bulk
+alwaysApply: false
+---
+
+# The Exec Bit -- a mode is tracked content
+
+**Seated:** `20260823.025333` on Keaton's word - **Status:** Living - **Kin:** [`reds-first`](reds-first.mdc) - [`docs-implementation-sync`](docs-implementation-sync.mdc) - [`collaboration`](collaboration.mdc) (*References are promises*) - **Witness:** [`../../tools/exec_bit_witness.rish`](../../tools/exec_bit_witness.rish)
+
+**A file's mode is content the repository tracks, and a rewrite preserves it.** When a tool
+rewrites a tracked file in place, it writes through the original inode -- `cat "$tmp" > "$f"` --
+so the mode the repository carries survives the write.
+
+The one shape to reach for, and the one to leave alone:
+
+```sh
+awk '...' "$f" > "$f.tmp" && cat "$f.tmp" > "$f" && rm -f "$f.tmp"   # mode survives
+awk '...' "$f" > "$f.tmp" && mv "$f.tmp" "$f"                        # mode is the tmp file's
+```
+
+`sed -i`, `perl -i`, and truncate-and-write all preserve the mode. `mv` and `cp` carry the
+source's mode instead, and that is the whole of the trap.
+
+## Why the rule exists
+
+On `20260823` a repoint pass rewrote 116 path literals across 58 tracked tool sources and, in the
+same commit, dropped mode `100755` to `100644` on **thirty-nine** tracked files. The rewrite moved
+a temporary over each original. Nothing in the diff said so -- a mode change moves no lines, so
+`git show --stat` reported `1 file changed, 0 insertions, 0 deletions` and the round read as a
+clean repoint. Every standing guard stayed green, because every standing guard read lines.
+
+One of the thirty-nine was `tools/agent-jail.sh`, which the unattended loop invokes as
+`./tools/agent-jail.sh`. The loop answered `Permission denied` once every twenty seconds through
+the night, and the season it was running stopped there until a hand ran `chmod +x`.
+
+## What stands, and how it is measured
+
+[`../../tools/exec_bit_witness.rish`](../../tools/exec_bit_witness.rish) over
+[`../../tools/fixtures/exec_bit_scan.sh`](../../tools/fixtures/exec_bit_scan.sh) gates two
+readings at zero and reports a third:
+
+| Reading | Held at | Measured `20260823.025333` |
+|---|---|---|
+| Directly invoked, carrying a shebang, at `100644` | **zero, enforced** | 0 of 18 |
+| Working-tree exec bit disagreeing with the index | **zero, enforced** | 0 of 13,650 |
+| Uninvoked shebang files at `100644` | ratchet under a ceiling that only falls | 58 |
+
+**Directly invoked** means a living tracked file writes `./path` in command position -- the promise
+`./tools/agent-jail.sh` makes to whoever clones. A path with its interpreter named ahead of it
+(`sh ./x`, `rishi run ./x`) needs no exec bit and passes free, which is why the 58 fixture scans
+sit in the ratchet rather than the gate: every witness runs them as `run ["sh" "tools/..."]`.
+
+The second reading is the early one. A mode that has drifted in the working tree is a mode about
+to be committed by accident, and the working tree is where repair costs one `chmod`. It makes a
+deliberate mode change loud, which is the point rather than a cost.
+
+[`../../tools/fixtures/exec_bit_control.sh`](../../tools/fixtures/exec_bit_control.sh) builds real
+git repositories in a temporary pen and proves sixteen behaviors -- five refusals bitten and
+eleven honest readings left free, the ratchet ceiling proven from both sides by planting
+fifty-nine files against a ceiling of fifty-eight, so no override exists and none is wanted.
+
+## What this does not reach
+
+**A shebang naming an interpreter this machine has**, and whether an executable file does anything
+worth doing. The guard proves the tree can run what it says to run, and stops there.
+
+**Dated testimony** keeps every reference it ever wrote, so a log invoking a script that has since
+moved gates nothing (accrete-never-break). Only living files make the promise.
+
+## Repair, when it reds
+
+```sh
+chmod +x <path> && git update-index --chmod=+x <path>
+```
+
+Both halves: the working tree so the next run works, and the index so a fresh clone inherits it.
+
+Canonical Claude twin: [`../../.claude/rules/exec-bit.md`](../../.claude/rules/exec-bit.md).

@@ -1,0 +1,70 @@
+# tools/exec_bit_witness.rish -- a script the tree tells you to run is a script you can run.
+#
+# WHY THIS RUNG. On 20260823 the commit 1c233b39db repointed 116 path literals across 58 tracked
+# tool sources and dropped mode 100755 to 100644 on thirty-nine tracked files in the same pass.
+# The rewrite wrote each file to a temporary and moved the temporary over the original, and `mv`
+# carries the temporary's mode rather than the original's. Nothing in the diff said so: a mode
+# change moves no lines, so `git show --stat` read the round as a clean repoint and every standing
+# guard stayed green. One of the thirty-nine was tools/agent-jail.sh, which the unattended loop
+# invokes as `./tools/agent-jail.sh`, so the loop answered `Permission denied` once every twenty
+# seconds through the night until a hand ran `chmod +x`.
+#
+# The mode is tracked content. A guard that reads only lines cannot see it, which is why this
+# rung reads modes and nothing else.
+#
+# WHAT IS PROVEN, on metal.
+#   Every tracked file carrying a shebang that a living tracked file invokes directly -- `./path`
+#   in command position -- holds index mode 100755. Eighteen files stand in that set.
+#   Every tracked file's on-disk exec bit agrees with its index mode, so a drift is seen in the
+#   working tree rather than discovered in history.
+#   Sixteen behaviors on throwaway repositories: the agreeing tree free and reading zero, the
+#   regression itself refused, counted, and named, an interpreter named ahead of the path free,
+#   a Markdown link target free, a file without a shebang free, dated testimony free, working-tree
+#   drift counted and refused, and the ratchet counted, free under its ceiling, refused one over.
+#
+# WHAT IS REPORTED RATHER THAN GATED. Fifty-eight tracked shebang files at 100644 that nothing
+# invokes directly -- the fixture scans, which every witness runs as `run ["sh" "tools/..."]` with
+# the interpreter named. Their exec bit is genuinely optional, so a sweep would be tidiness rather
+# than repair. The ceiling only ever falls.
+#
+# WHAT IS NOT PROVEN. That a shebang names an interpreter this machine has, and that an executable
+# file does anything worth doing. Only that the tree can run what it says to run.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/exec_bit_witness.rish
+
+say "exec-bit: Language EN -- a mode is tracked content, and content that moves no lines still moves."
+say "exec-bit: Style Radiant -- the tree states what it can run, and the index is what states it."
+say "exec-bit: Lens TAME -- safety first: a guard that reads only lines cannot see the byte that broke the loop."
+
+let scan = run ["sh" "tools/fixtures/exec_bit_scan.sh"]
+assert scan.ok else "exec-bit: a script the tree invokes directly cannot be run -- read the scan's own lines"
+say scan.out
+assert scan.out contains "directly_invoked_not_exec=0" else "exec-bit: every directly invoked script must carry mode 100755"
+assert scan.out contains "worktree_index_disagreements=0" else "exec-bit: the working tree must agree with the index on every mode"
+assert scan.out contains "verdict=ok" else "exec-bit: the scan must balance before it is believed"
+say "field GREEN -- every script the tree invokes directly runs in a fresh clone"
+
+let control = run ["sh" "tools/fixtures/exec_bit_control.sh"]
+assert control.ok else "exec-bit: the control must complete"
+say control.out
+assert control.out contains "agreeing_free=yes" else "exec-bit: a tree whose invoked script is executable must pass free"
+assert control.out contains "clean_reads_zero=yes" else "exec-bit: a clean tree must read zero rather than merely pass"
+assert control.out contains "invoked_seen=yes" else "exec-bit: the reading must find the caller it is meant to find"
+assert control.out contains "lost_bit_refused=yes" else "exec-bit: an invoked script at 100644 must be refused"
+assert control.out contains "lost_bit_counted=yes" else "exec-bit: the refusal must name a count, never only a verdict"
+assert control.out contains "lost_bit_named=yes" else "exec-bit: the refusal must name the file, so the repair is one line away"
+assert control.out contains "interpreter_named_free=yes" else "exec-bit: `sh ./x` names its interpreter and needs no exec bit"
+assert control.out contains "markdown_link_free=yes" else "exec-bit: a Markdown link target invokes nothing"
+assert control.out contains "no_shebang_free=yes" else "exec-bit: a file without a shebang is run by something that names it"
+assert control.out contains "dated_testimony_free=yes" else "exec-bit: dated testimony keeps every reference it ever wrote"
+assert control.out contains "worktree_drift_counted=yes" else "exec-bit: a working-tree mode drifting from the index must be counted"
+assert control.out contains "worktree_drift_refused=yes" else "exec-bit: a drifting mode must be refused where it is cheapest to see"
+assert control.out contains "ratchet_counted=yes" else "exec-bit: an uninvoked shebang file at 100644 must be counted as a ratchet"
+assert control.out contains "ratchet_under_ceiling_free=yes" else "exec-bit: a ratchet under its ceiling must pass free"
+assert control.out contains "ratchet_over_counted=yes" else "exec-bit: the ratchet must count past its ceiling rather than saturate"
+assert control.out contains "ratchet_over_ceiling_refused=yes" else "exec-bit: a ratchet over its ceiling must refuse"
+assert control.out contains "control_verdict=ok" else "exec-bit: the control must agree with itself"
+say "RED and GREEN paths proven -- five refusals bitten, eleven honest readings left free"
+
+say "GREEN: exec-bit -- a script the tree tells you to run is a script you can run."
