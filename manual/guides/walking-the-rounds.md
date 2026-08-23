@@ -13,19 +13,19 @@
 
 ## What a round actually is
 
-A **round** is one unit of work — roughly one exchange with Keaton — and it is told as a very short story. Not decorated as one afterward: *told* as one, because the story shape is what keeps the work honest. A story needs an inciting incident, a turn, and receipts, and a round that lacks any of the three is usually hiding something — work that started from assumption, a fault passed over quietly, or a claim nobody ran.
+A **round** is one unit of work — roughly one exchange with Keaton — and it is told as a very short story. Not decorated as one afterward: *told* as one, because the story shape is what keeps the work honest. A story needs an inciting incident, a turn, and receipts, and a round carrying all three usually has the whole story in it — work that started from assumption, a fault passed over quietly, or a claim nobody ran.
 
 The whole craft fits in one sentence: **measure, walk, turn, close — and quote the machine at every step.**
 
 ## The theme is handed to you
 
-Every round walks under a **priority** — one discipline from a sixteen-slot wheel (`priority_of_round(n)` in `glow/mod_clock.rye` computes it from the round number). You do not pick the theme; the wheel does. This matters more than it sounds. A narrator who chooses their own theme flatters their own strengths. A narrator handed *explicit bounds* on the day they least expected it goes looking where they were not going to look — and the record of this workshop shows that is exactly where the faults live. Compute the slot on metal at the round's open. Never assume it; one round here named a slot before the machinery could, and that sentence became a recorded fault.
+Every round walks under a **priority** — one discipline from a sixteen-slot wheel (`priority_of_round(n)` in `glow/mod_clock.rye` computes it from the round number). The wheel picks the theme, and you take it as it comes. This matters more than it sounds. A narrator who chooses their own theme flatters their own strengths. A narrator handed *explicit bounds* on the day they least expected it goes looking somewhere they had planned to walk past — and the record of this workshop shows that is exactly where the faults live. Compute the slot on metal at the round's open. Read it rather than assume it: one round here named a slot ahead of the machinery, and that sentence became a recorded fault.
 
 ## Open with a question to the tree
 
 The first tool call of a round is always a **measurement**, never an act. Before building, ask: does this seam exist? Is this name free? What does the meter read right now? The measurement is your inciting incident — the thing the round is *about* arrives in the tool output, in the machine's own words, before you have said anything.
 
-Two rules follow from this. **Report what ran, never what will run** — a round narrates its past tense only. And when a measurement contradicts what you meant to do, *the measurement wins and becomes the story*: one round here went looking for a missing utility, found it already existed, and the honest telling was "the seam was already closed" rather than an invented gap. That round produced the least code of its season and one of its best repairs.
+Two rules follow from this. **Report what ran, never what will run** — a round narrates its past tense only. And when a measurement contradicts what you meant to do, *the measurement wins and becomes the story*: one round here went looking for a utility it expected to write, found it already standing, and the honest telling was "the seam was already closed" rather than an invented gap. That round produced the least code of its season and one of its best repairs.
 
 ## Let the machine be a character
 

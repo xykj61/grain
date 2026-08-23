@@ -37,7 +37,7 @@ How a new fund joins the constellation wheel: a **four-letter** name, a **`.fund
 
 ## Step 1 — four-letter name (Civic Style)
 
-A fund name on this wheel carries **exactly four ASCII letters**, lowercase in vane form (`%gren`), title case in prose (**Gren**). The shape matches the house habit of short, speakable names (vanes, waymarks, modules), yet borrows no waymark draw for the fund itself.
+A fund name on this wheel carries **exactly four ASCII letters**, lowercase in vane form (`%gren`), title case in prose (**Gren**). The shape matches the house habit of short, speakable names (vanes, waymarks, modules), while leaving every waymark draw to the ladders that own them.
 
 **Worked example — Gren:**
 
@@ -106,7 +106,7 @@ The constellation contract is a **phone book** rather than a mint. Version one h
 
 ## Step 5 — knock Comlink first
 
-Every constellation prep generator knocks **Comlink** before any seating byte. The wire is the door; the phone book is the book behind it. No generator skips the house stack.
+Every constellation prep generator knocks **Comlink** before any seating byte. The wire is the door; the phone book is the book behind it. Every generator runs through the house stack.
 
 | Check | Standing |
 |-------|----------|
@@ -121,7 +121,7 @@ Every constellation prep generator knocks **Comlink** before any seating byte. T
 
 ## Step 6 — the refuse-walk
 
-A tutorial that can deploy is a tutorial that lies. Step six holds the practiced **RED**: name the forbidden verbs and prove the generator exits rather than pretends.
+A tutorial teaches, and a deploy stays with the hand that owns it. Step six holds the practiced **RED**: name the forbidden verbs and prove the generator exits rather than pretends.
 
 | Verb | Who may run it | Tutorial / gen-gren |
 |------|----------------|---------------------|
