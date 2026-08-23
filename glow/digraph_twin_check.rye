@@ -36,7 +36,7 @@ fn run_selftest(init: std.process.Init) !u8 {
         assert(std.mem.eql(u8, got, line));
         count += 1;
     }
-    assert(count == 27);
+    assert(count == 28);
     print("OK digraph_twin_check {d}\n", .{count});
     return 0;
 }

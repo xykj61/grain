@@ -103,9 +103,10 @@ say queue.out
 # stands beside `head`, naming the best fall among families that publish no
 # function and no constant. An import binding re-exported stays free, since
 # every lift this arc has taken widened imports and nothing else.
-assert queue.out contains "QUEUE_OK head=answered_by fall=330 free_head=bound_the_relay free_fall=312 examined=44 families=700" else "reach-visibility: want both heads named -- the best fall, and the best fall that costs nothing"
+assert queue.out contains "QUEUE_OK head=answered_by fall=330 free_head=confer_words free_fall=294 examined=45 families=700" else "reach-visibility: want both heads named -- the best fall, and the best fall that costs nothing"
 assert queue.out contains "QUEUE_ROW family=answered_by fall=330 folding=34 lines=13 stub=3 widens=68 widens_fn=34 widens_const=34 carry=429" else "reach-visibility: want the priced head carrying its price in its own row, split by kind, so a reader prices it without a second run"
-assert queue.out contains "QUEUE_ROW family=bound_the_relay fall=312 folding=7 lines=55 stub=3 widens=0 widens_fn=0 widens_const=0 carry=330" else "reach-visibility: want the free head standing second by fall and first by price -- seven rungs of fifty-five lines, the narrowest and deepest row the queue holds"
+assert queue.out contains "QUEUE_ROW family=confer_words fall=294 folding=43 lines=10 stub=3 widens=43 widens_fn=0 widens_const=0 carry=420" else "reach-visibility: want the free head carrying its own kind of price -- forty-three rungs of a ten-line body, free by the two columns the meter prices and costing forty-three import re-exports, which every lift of this arc has measured as free"
+assert queue.out contains "QUEUE_ROW family=reclaim_notes fall=294 folding=43 lines=10 stub=3 widens=0 widens_fn=0 widens_const=0 carry=420" else "reach-visibility: want the row beneath the free head, at the same fall over the same forty-three rungs and costing nothing of any kind -- so a reader sees that free-by-the-columns and free-absolutely are two different readings the meter keeps side by side"
 assert queue.ok else "reach-visibility: the ranked queue must read cleanly"
 
 # read_own_line folded this lap, so the same scan run against it now reads a
@@ -242,10 +243,10 @@ assert fourth.ok else "reach-visibility: the widest remaining family must read c
 # before it is opened.
 let sink = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "sink"]
 say sink.out
-assert sink.out contains "SINK_OK total=64320 below_fold_line=1140 above_fold_line=63180" else "reach-visibility: want the fold line's whole foreclosure measured against the foldable corpus, private bodies counted beside public ones"
+assert sink.out contains "SINK_OK total=63956 below_fold_line=1140 above_fold_line=62816" else "reach-visibility: want the fold line's whole foreclosure measured against the foldable corpus, private bodies counted beside public ones"
 assert sink.out contains "SINK_ABOVE rung=queue.rye holds=29" else "reach-visibility: want the queue store's holding read off disk rather than described"
 assert sink.out contains "SINK_ABOVE rung=serve.rye holds=38" else "reach-visibility: want the serve module's holding read off disk rather than described"
-assert sink.out contains "SINK_ABOVE rung=farewell.rye holds=3736" else "reach-visibility: want the widest holding above the line, so the spread is a measurement rather than a feeling"
+assert sink.out contains "SINK_ABOVE rung=farewell.rye holds=3684" else "reach-visibility: want the widest holding above the line, so the spread is a measurement rather than a feeling"
 assert sink.out contains "SINK_BELOW rung=entrust.rye holds=168" else "reach-visibility: want the largest holding already below the fold line named"
 assert sink.ok else "reach-visibility: the sink meter must read cleanly"
 

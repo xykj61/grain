@@ -125,13 +125,13 @@ let errplacard = run ["sh" "-c" "head -n 7 src/sur/shape-brush-parse-error-count
 assert errplacard.ok else "first-resident: sur brush-parse-error-count placard scan failed"
 let errcount = trim errplacard.out
 assert errcount == "6" else "first-resident: sur brush-parse-error-count placard missing six lines"
-let errnotes = run ["sh" "-c" "grep -q 'example    10' src/sur/shape-brush-parse-error-count.glow && grep -q 'ParseError' src/sur/shape-brush-parse-error-count.glow && grep -q 'SourceTooLarge' src/sur/shape-brush-parse-error-count.glow && grep -q 'MissingAtNib' src/sur/shape-brush-parse-error-count.glow && echo ERR_OK"]
+let errnotes = run ["sh" "-c" "grep -q 'example    13' src/sur/shape-brush-parse-error-count.glow && grep -q 'ParseError' src/sur/shape-brush-parse-error-count.glow && grep -q 'SourceTooLarge' src/sur/shape-brush-parse-error-count.glow && grep -q 'MissingAtNib' src/sur/shape-brush-parse-error-count.glow && echo ERR_OK"]
 assert errnotes.ok else "first-resident: sur brush-parse-error-count notes scan failed"
-assert errnotes.out contains "ERR_OK" else "first-resident: sur brush parse error count=10 not named"
+assert errnotes.out contains "ERR_OK" else "first-resident: sur brush parse error count=13 not named"
 let errrye = run ["sh" "-c" "grep -q 'MissingAtNib' brushstroke/brush_parse.rye && grep -q 'SourceTooLarge' brushstroke/brush_parse.rye && sed -n '/^pub const ParseError = error{/,/^};/p' brushstroke/brush_parse.rye | grep -cE '^[ ]+[A-Z][A-Za-z]+'"]
 assert errrye.ok else "first-resident: brush_parse ParseError scan failed"
 let errrye_n = trim errrye.out
-assert errrye_n == "10" else "first-resident: brush_parse ParseError count is not ten"
+assert errrye_n == "13" else "first-resident: brush_parse ParseError count is not thirteen"
 let errgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" errdesk]
 assert errgate.ok else "first-resident: sur brush-parse-error-count shape lower/build/run failed"
 assert errgate.out contains "EXIT:0" else "first-resident: sur brush-parse-error-count shape did not exit 0"
@@ -142,13 +142,13 @@ let surfplacard = run ["sh" "-c" "head -n 7 src/sur/shape-brush-surface-field-co
 assert surfplacard.ok else "first-resident: sur brush-surface-field-count placard scan failed"
 let surfcount = trim surfplacard.out
 assert surfcount == "6" else "first-resident: sur brush-surface-field-count placard missing six lines"
-let surfnotes = run ["sh" "-c" "grep -q 'example    4' src/sur/shape-brush-surface-field-count.glow && grep -q 'BrushSurface' src/sur/shape-brush-surface-field-count.glow && grep -q 'at_nib' src/sur/shape-brush-surface-field-count.glow && grep -q 'line_count' src/sur/shape-brush-surface-field-count.glow && echo SURF_OK"]
+let surfnotes = run ["sh" "-c" "grep -q 'example    5' src/sur/shape-brush-surface-field-count.glow && grep -q 'BrushSurface' src/sur/shape-brush-surface-field-count.glow && grep -q 'at_nib' src/sur/shape-brush-surface-field-count.glow && grep -q 'line_count' src/sur/shape-brush-surface-field-count.glow && echo SURF_OK"]
 assert surfnotes.ok else "first-resident: sur brush-surface-field-count notes scan failed"
-assert surfnotes.out contains "SURF_OK" else "first-resident: sur BrushSurface field count=4 not named"
+assert surfnotes.out contains "SURF_OK" else "first-resident: sur BrushSurface field count=5 not named"
 let surfrye = run ["sh" "-c" "sed -n '/^pub const BrushSurface = struct {/,/^};/p' brushstroke/brush_parse.rye | grep -cE '^[ ]+[a-z_]+:'"]
 assert surfrye.ok else "first-resident: brush_parse BrushSurface scan failed"
 let surfrye_n = trim surfrye.out
-assert surfrye_n == "4" else "first-resident: brush_parse BrushSurface field count is not four"
+assert surfrye_n == "5" else "first-resident: brush_parse BrushSurface field count is not five"
 let surfgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/glow_run_worker.sh" surfdesk]
 assert surfgate.ok else "first-resident: sur brush-surface-field-count shape lower/build/run failed"
 assert surfgate.out contains "EXIT:0" else "first-resident: sur brush-surface-field-count shape did not exit 0"

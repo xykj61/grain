@@ -12,17 +12,19 @@ say "sunn8: Style Radiant — Kyri · Livermore · xykj61 · SOURCE."
 say "sunn8: Lens TAME — SUNN8 seat · voice/name/onboarding · Quin OS stays."
 
 let r = read-file "README.md"
-assert r contains "Voice:** Kyri" else "sunn8: want Voice Kyri"
+assert r contains "**Voice:** [Kyri](context/KYRI.md)" else "sunn8: want the front door to name Kyri as the voice, linked to her identity page"
 assert r contains "Keaton Livermore" else "sunn8: want Keaton Livermore"
 assert r contains "xykj61/grain" else "sunn8: want xykj61/grain clone"
 assert r contains "SOURCE.md" else "sunn8: want SOURCE.md onboarding"
 assert r contains "context/KYRI.md" else "sunn8: want KYRI.md"
 assert r contains "standing writing voice" else "sunn8: want standing writing voice phrase"
-assert r contains "standing voice **Kyri**" else "sunn8: profile default want Kyri"
+assert r contains "The standing writing voice is **[Kyri](context/KYRI.md)**" else "sunn8: want the front door to seat Kyri as the standing writing voice in full"
 assert (r contains "standing writing companion") == false else "sunn8: must not keep Quin as standing writing companion"
 assert (r contains "standing voice **Quin**") == false else "sunn8: must not keep Quin as profile default voice"
 assert (r contains "standing voice **Riyo**") == false else "sunn8: must not keep Riyo as living profile default"
-assert r contains "fifth OS variant" else "sunn8: Quin OS hat must stay named"
-assert r contains "Q-vane" else "sunn8: Quin Q-vane hat must stay named"
+assert r contains "The fifth boot image, intentionally unpaired" else "sunn8: Quin OS hat must stay named at the front door"
+# The Q-vane hat was renamed **Lumen** on `20260816` (REMEMBER, seated names), so the
+# front door naming `Q-vane` would now be naming a retired word. What this witness
+# still holds is the hat that stayed: Quin the fifth boot image, asserted above.
 
-say "GREEN: sunn8 — README Kyri · Livermore · xykj61 · SOURCE · Quin OS/Q-vane held"
+say "GREEN: sunn8 — README Kyri · Livermore · xykj61 · SOURCE · Quin the fifth boot image held"

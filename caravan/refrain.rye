@@ -7684,59 +7684,7 @@ pub fn mind_the_impasse(io: std.Io, mind: Mind, report_out: *Report) (RunError |
 /// the forbearing is withheld after, so a run that falls between the two hands
 /// the matter on exactly as the rung below it always did.
 pub fn bound_the_relay(io: std.Io, named_before: ?[max_minds_bytes]u8, desist: Desist, report_out: *Report) (RunError || NoteError)!void {
-    const mark = mind_published(io);
-    const named = mind_of(report_out).minded >= 1 and mark != null;
-    if (!named) {
-        // invariant: a run that named no impasse bounds nothing
-        assert(desist_of(report_out).walled == 0);
-        // invariant: a run that named no impasse leaves no relay unbounded
-        assert(desist_of(report_out).unbounded == 0);
-        return;
-    }
-    const this_mark = mark orelse return error.DesistUnnamed;
-    const twice = came_round_twice(named_before, this_mark);
-    const round_count: u32 = if (twice) 1 else 0;
-    if (round_count == 0) {
-        // The matter is on its first round, and the next run is owed its look.
-        // invariant: a matter on its first round is relayed rather than walled
-        assert(desist_of(report_out).walled == 0);
-        // invariant: a first round leaves no twice-carried relay unbounded
-        assert(desist_of(report_out).unbounded == 0);
-        return;
-    }
-
-    // The measurement this rung moves, weighed against the marks actually
-    // standing rather than against anything the plan asked for, so a matter
-    // nobody bounds is counted rather than refused.
-    desist_of(report_out).unbounded = unbounded_relays(round_count, desist);
-    const walled_count = walled_in(round_count, desist);
-    const relayed_count = relayed_in(round_count, desist);
-    if (desist == .relays) {
-        // invariant: a relaying run stands no wall, however plainly it read
-        assert(walled_count == 0);
-        desist_of(report_out).relayed = relayed_count;
-        return;
-    }
-
-    // The mark before the elder, and the elder before the reader's own word:
-    // all three reads supply the ladder rather than short-circuiting it, so
-    // every refusal below is reached by argument and named in its own order.
-    var address_buf: [max_address_len]u8 = @splat(0);
-    const where = address_published(io, &address_buf) orelse "";
-    const reply = if (addressable(where)) rest_written(io, where) else null;
-    const matched = if (reply) |said| minds_carries(this_mark, holds_bytes(said)) else false;
-    if (desist_refusal(round_count, walled_count, relayed_count, named, twice, matched)) |why| return why;
-
-    // invariant: a bounding run walls the one matter it named twice over
-    assert(walled_count == 1);
-    try wall_note(io, this_mark);
-    // The wire before the memory, once more: the wall an operator will read is
-    // read back, and only then does the report believe a boundary stands.
-    if (!desist_holds(wall_standing(io), walls_bytes(this_mark))) return error.DesistMisrecorded;
-    desist_of(report_out).walled = walled_count;
-    desist_of(report_out).relayed = relayed_count;
-    // invariant: a bounding run leaves no relay of its own unbounded
-    assert(desist_of(report_out).unbounded == 0);
+    return ladder_checks.bound_the_relay(@This(), io, named_before, desist, report_out);
 }
 
 /// Carries the wall this run stood out to the reader who can act on it.

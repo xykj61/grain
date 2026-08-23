@@ -27,10 +27,10 @@ let rye_n = length (where (lines rye.out) as ln: ln != "")
 let glow_n = length (where (lines glow.out) as ln: ln != "")
 let fix_n = length (where (lines (read-file fixture)) as ln: ln != "")
 let wrong_n = length (where (lines (read-file wrong)) as ln: ln != "")
-assert rye_n == 27 else "rye extract count not 27"
-assert glow_n == 27 else "glow extract count not 27"
-assert fix_n == 27 else "fixture count not 27"
-assert wrong_n == 27 else "wrong-order fixture count not 27"
+assert rye_n == 28 else "rye extract count not 28"
+assert glow_n == 28 else "glow extract count not 28"
+assert fix_n == 28 else "fixture count not 28"
+assert wrong_n == 28 else "wrong-order fixture count not 28"
 
 # Byte-identical line streams — order is law.
 let cmp_rye = run ["sh" "-c" "tools/fixtures/glow_digraph_rye_extract.sh | cmp -s - ${fixture}"]
@@ -52,11 +52,11 @@ let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye 
 assert build.ok else "digraph_twin_check build failed: ${build.err}${build.out}"
 let check = run ["sh" "-c" "${bin} 2>&1"]
 assert check.ok else "digraph_twin_check failed: ${check.err}${check.out}"
-assert check.out contains "OK digraph_twin_check 27" else "digraph_twin_check missing OK 27"
+assert check.out contains "OK digraph_twin_check 28" else "digraph_twin_check missing OK 28"
 
-# Alphabet gate still GREEN at 27.
+# Alphabet gate still GREEN, at 28 now that barlus is named.
 let alpha = run ["rishi/bin/rishi" "run" "tools/glow_rune_alphabet_witness.rish"]
 assert alpha.ok else "glow_rune_alphabet_witness failed under digraph twin"
-assert alpha.out contains "27" else "alphabet witness must still name 27"
+assert alpha.out contains "28" else "alphabet witness must still name 28"
 
 say "GREEN: STOA333 digraph-table twin rung 1a — desk ≡ fixture ≡ Rye · wrong-order fails · tokenize rune2"

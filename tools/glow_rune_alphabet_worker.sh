@@ -7,6 +7,7 @@ ROOT=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
 TABLE="$ROOT/active-designing/date/20260719/20260719-220814_glow-rune-pronunciation-closed-table.md"
 BARTIS_BRIEF="$ROOT/active-designing/date/20260720/20260720-033852_glow-bartis-g1-row.md"
 BARKET_BRIEF="$ROOT/active-designing/date/20260720/20260720-151119_glow-barket-g1-row.md"
+BARLUS_BRIEF="$ROOT/active-designing/20260822-221639_glow-barlus-g1-row.md"
 TOKENS="$ROOT/glow/tokens.rye"
 
 PAIRS=$(awk '/const pairs =/,/};/' "$TOKENS")
@@ -16,8 +17,8 @@ echo "$PAIRS" | grep -q 'const pairs' || {
 }
 
 COUNT=$(echo "$PAIRS" | grep -oE '"[^"]{2}"' | wc -l | tr -d ' ')
-test "$COUNT" = "27" || {
-  echo "FAIL: expected 27 digraphs in match_rune2, got $COUNT"
+test "$COUNT" = "28" || {
+  echo "FAIL: expected 28 digraphs in match_rune2, got $COUNT"
   exit 1
 }
 
@@ -43,6 +44,11 @@ while IFS="$(printf '\t')" read -r glyph spoken; do
       echo "FAIL: barket G1 brief missing spoken barket"
       exit 1
     }
+  elif [ "$glyph" = "|+" ]; then
+    grep -F "barlus" "$BARLUS_BRIEF" >/dev/null || {
+      echo "FAIL: barlus G1 brief missing spoken barlus"
+      exit 1
+    }
   else
     grep -F "| $spoken |" "$TABLE" >/dev/null || {
       echo "FAIL: table missing spoken $spoken"
@@ -50,6 +56,7 @@ while IFS="$(printf '\t')" read -r glyph spoken; do
     }
   fi
 done <<'EOF'
+|+	barlus
 |-	barhep
 |%	barcen
 |=	bartis
@@ -79,8 +86,8 @@ $%	buccen
 /+	faslus
 EOF
 
-test "$n" = "27" || {
-  echo "FAIL: expected 27 head rows, got $n"
+test "$n" = "28" || {
+  echo "FAIL: expected 28 head rows, got $n"
   exit 1
 }
 
@@ -95,6 +102,10 @@ grep -F '**26**' "$BARTIS_BRIEF" >/dev/null || {
 }
 grep -F '**27**' "$BARKET_BRIEF" >/dev/null || {
   echo 'FAIL: barket G1 brief must claim **27** (barket as 27th digraph)'
+  exit 1
+}
+grep -F '**28**' "$BARLUS_BRIEF" >/dev/null || {
+  echo 'FAIL: barlus G1 brief must claim **28** (barlus as 28th digraph)'
   exit 1
 }
 grep -F 'glow_rune_alphabet_witness.rish' "$TABLE" >/dev/null || {

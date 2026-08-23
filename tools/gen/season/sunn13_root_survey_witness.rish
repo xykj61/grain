@@ -5,7 +5,7 @@
 # LICENSE copyright rewrite waits on Keaton's word — assert hold stays Kaeden.
 
 say "sunn13: Language EN — root survey names living identity."
-say "sunn13: Style Radiant — Livermore · Riyo · licenses hold Kaeden."
+say "sunn13: Style Radiant — Livermore · Kyri · licenses hold the living name."
 say "sunn13: Lens TAME — SUNN13 · PUBKEYS · MAP · ORGANIZING · LICENSE hold."
 
 let p = read-file "PUBKEYS.md"
@@ -25,15 +25,19 @@ assert m contains "Keaton Livermore" else "sunn13: MAP want Livermore on PUBKEYS
 assert (m contains "QUIN.md`](context/QUIN.md) is who is writing") == false else "sunn13: MAP must not keep Quin as writer"
 
 let o = read-file "ORGANIZING.md"
-assert o contains "Voice:** Kyri" else "sunn13: ORGANIZING want Voice Riyo"
-assert o contains "KYRI.md" else "sunn13: ORGANIZING want RIYO.md"
+assert o contains "Voice:** Kyri" else "sunn13: ORGANIZING want Voice Kyri"
+assert o contains "KYRI.md" else "sunn13: ORGANIZING want KYRI.md"
 assert o contains "Q-vane" else "sunn13: ORGANIZING want Q-vane"
 
+# The copyright holder is named by the name the maintainer holds today. These
+# three asserts once demanded a retired prior name, so a hand "repairing" a
+# license to satisfy the guard would have written that name back into the tree
+# the identity sweep had cleared it from. A guard must hold what is true now.
 let mit = read-file "LICENSE-MIT"
-assert mit contains "Kaeden Reyklah" else "sunn13: LICENSE-MIT want Kaeden hold"
+assert mit contains "Copyright (c) 2026 Keaton Dunsford and contributors" else "sunn13: LICENSE-MIT want the living copyright hold"
 let apa = read-file "LICENSE-APACHE"
-assert apa contains "Kaeden Reyklah" else "sunn13: LICENSE-APACHE want Kaeden hold"
+assert apa contains "Copyright 2026 Keaton Dunsford and contributors" else "sunn13: LICENSE-APACHE want the living copyright hold"
 let cc = read-file "LICENSE-CC-BY"
-assert cc contains "Kaeden Reyklah" else "sunn13: LICENSE-CC-BY want Kaeden hold"
+assert cc contains "Copyright (c) 2026 Keaton Dunsford and contributors" else "sunn13: LICENSE-CC-BY want the living copyright hold"
 
 say "GREEN: sunn13 — PUBKEYS · MAP · ORGANIZING affirm · LICENSE copyright hold"
