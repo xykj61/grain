@@ -11,8 +11,8 @@
 # and called that the git nib; condensing the card on 20260819 moved a CHECKPOINT row
 # above the nib line, so the guard began grading a walk-back nib against the nib's
 # own law -- and a checkpoint is off main BY CONSTRUCTION after a deep debride, which is
-# the entire reason it was worth recording. It also read work-in-progress/REMEMBER.md,
-# an untracked hardlink of the living construction/REMEMBER.md that no fresh clone carries.
+# the entire reason it was worth recording. It also read construction/ITINERARY.md,
+# an untracked hardlink of the living construction/ITINERARY.md that no fresh clone carries.
 # Nothing caught either, because this witness is on no roster and in no suite: it
 # went red the lap the card was condensed and no run ever asked it.
 #
@@ -45,7 +45,7 @@ say "nib-honesty: Lens TAME -- measurement beats memory; reachability is compute
 
 let green = run ["sh" "tools/fixtures/nib_honesty_scan.sh"]
 assert green.ok else "nib-honesty: the living sweep must exit 0 -- ${green.out}"
-assert green.out contains "card=construction/REMEMBER.md" else "nib-honesty: want the tracked living card, not the untracked hardlink"
+assert green.out contains "card=construction/ITINERARY.md" else "nib-honesty: want the tracked living card, not the untracked hardlink"
 assert green.out contains "gone=0" else "nib-honesty: an advertised hash resolves nowhere -- a floating claim, refused by name. On a fresh clone this is expected for local-only checkpoints; on the pier that wrote the card it is a broken walk-back"
 assert green.out contains "git_nib=" else "nib-honesty: want the Git nib read by name from its own field"
 assert green.out contains "git_nib_state_law=tools/remember_git_nib_witness.rish" else "nib-honesty: want the nib-state law cited, not re-implemented"

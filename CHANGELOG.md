@@ -8,7 +8,7 @@ Grain keeps a change record more complete than a hand-written changelog could be
 ## Where the changes live
 
 - **`git log --show-signature`** — every commit is GPG-signed and component-prefixed, with a Radiant body naming what changed and why (per [`CONTRIBUTING.md`](CONTRIBUTING.md)). The history proves both what changed and who wrote it, in any clone.
-- **The session log** — in the full project field, every response also writes a session log naming the reasoning behind the change, indexed newest-first at `session-logs/README.md`, and the living operator card `work-in-progress/REMEMBER.md` holds the current nib and the arc of the day. These reasoning traces name the maintainer by design and stay in the private field; the signed history above is the record that ships.
+- **The session log** — in the full project field, every response also writes a session log naming the reasoning behind the change, indexed newest-first at `session-logs/README.md`, and the living operator card `construction/ITINERARY.md` holds the current nib and the arc of the day. These reasoning traces name the maintainer by design and stay in the private field; the signed history above is the record that ships.
 
 ## On versions
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 # tools/fixtures/standing_equipment_scan.sh -- the roster is real, and it says when each guard ran.
 #
-# WHY. The standing-equipment roster lived in one paragraph of construction/REMEMBER.md. A paragraph
+# WHY. The standing-equipment roster lived in one paragraph of construction/ITINERARY.md. A paragraph
 # can be trusted; it cannot be run, counted, or dated. REDS %147 found eight standing witnesses
 # each holding a count its source had moved past, and REDS %149 found the living-pin bound guard
 # unrun for four laps while the pin it measures sat 2,050 bytes over its bound. Both were found

@@ -4,7 +4,7 @@
 #
 # The seal of the chronological-semantic labeling law, in its three living halves:
 #   (1) the living operator PINS carry no bare count-up-from-0 identity (a season ordinal
-#       or a waymark-redundant equinox number) — labeling_law_scan.sh over REMEMBER /
+#       or a waymark-redundant equinox number) — labeling_law_scan.sh over ITINERARY /
 #       ROADMAP / THREADS;
 #   (2) the living MODULE SURFACES carry no bare "lap N" capability identity — the CION
 #       module labeling guard (cion_module_labeling_witness), which LOWE Journey 14 grew
@@ -31,7 +31,7 @@ say "grad-seal: Style Radiant — semantic identity above, coords beneath; no ba
 say "grad-seal: Lens TAME — guard the living now-lines; a planted count-up must bite."
 
 # The living operator pins carry no bare count-up-from-0 identity.
-let pins = run ["sh" "tools/fixtures/labeling_law_scan.sh" "construction/REMEMBER.md" "construction/ROADMAP.md" "construction/THREADS.md"]
+let pins = run ["sh" "tools/fixtures/labeling_law_scan.sh" "construction/ITINERARY.md" "construction/ROADMAP.md" "construction/THREADS.md"]
 say pins.out
 assert pins.out contains "verdict=ok" else "grad-seal: a living pin carries a bare count-up-from-0 identity"
 # values_apart: the verdict key and the exit status must agree.

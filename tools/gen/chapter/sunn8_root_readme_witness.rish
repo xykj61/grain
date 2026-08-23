@@ -23,7 +23,7 @@ assert (r contains "standing writing companion") == false else "sunn8: must not 
 assert (r contains "standing voice **Quin**") == false else "sunn8: must not keep Quin as profile default voice"
 assert (r contains "standing voice **Riyo**") == false else "sunn8: must not keep Riyo as living profile default"
 assert r contains "The fifth boot image, intentionally unpaired" else "sunn8: Quin OS hat must stay named at the front door"
-# The Q-vane hat was renamed **Lumen** on `20260816` (REMEMBER, seated names), so the
+# The Q-vane hat was renamed **Lumen** on `20260816` (ITINERARY, seated names), so the
 # front door naming `Q-vane` would now be naming a retired word. What this witness
 # still holds is the hat that stayed: Quin the fifth boot image, asserted above.
 

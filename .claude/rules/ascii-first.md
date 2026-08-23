@@ -2,7 +2,7 @@
 
 **Seated:** `20260816.214652` on Keaton's word - **Status:** Living - **Kin:** [`reds-first`](reds-first.md) - [`standfast`](../foundations/20260816-214652_standfast-the-stopped-line.md) - REDS %83
 
-Write every new document, code comment, and commit message in **plain 7-bit ASCII**. A non-ASCII character no reader needs is a corruption waiting to compound -- REMEMBER.md silently triple-encoded itself into 2,797 runs of unreadable mojibake bytes (the classic capital-A-tilde garble) before anyone caught it (REDS %83), because a tool read the UTF-8 file as Latin-1 and rewrote it. ASCII-first is how that never happens again.
+Write every new document, code comment, and commit message in **plain 7-bit ASCII**. A non-ASCII character no reader needs is a corruption waiting to compound -- the operator card (then named `REMEMBER.md`) silently triple-encoded itself into 2,797 runs of unreadable mojibake bytes (the classic capital-A-tilde garble) before anyone caught it (REDS %83), because a tool read the UTF-8 file as Latin-1 and rewrote it. ASCII-first is how that never happens again.
 
 ## The substitutions
 

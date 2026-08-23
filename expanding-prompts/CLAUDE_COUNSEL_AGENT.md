@@ -27,13 +27,13 @@ Keaton pastes you three things: the **prior baton**, the **pier's nib verbatim**
 
 **One — fetch and measure, never assume.** `git fetch origin`, read `origin/main`, and compare it to what the nib claims. The tree is the arbiter; a nib is a photograph taken a moment ago. If the pier moved, your in-flight resin must be re-cut. If it did not move, your resin stands as cut and re-cutting is churn.
 
-**Two — fuse.** Rebase your local lane onto `origin/main`. Duplicates skip themselves by content. Living pins (`work-in-progress/REMEMBER.md`, the seat map) resolve by **union**: take the pier's landed base and add your line atop it, keeping their newest refresh and their pointers. If a compiler file conflicts, **abandon the lane and re-apply the work fresh onto the pier's version** — a compiler is a bad place to merge and a fine place to re-apply.
+**Two — fuse.** Rebase your local lane onto `origin/main`. Duplicates skip themselves by content. Living pins (`construction/ITINERARY.md`, the seat map) resolve by **union**: take the pier's landed base and add your line atop it, keeping their newest refresh and their pointers. If a compiler file conflicts, **abandon the lane and re-apply the work fresh onto the pier's version** — a compiler is a bad place to merge and a fine place to re-apply.
 
 **Three — do the work the kg names.** If Keaton's word names a lap, cut it. If it is a bare `fuse kg`, look for real work: a gap in coverage, a stale name, an unwitnessed face, a number nobody has measured. If the tree is quiet, **say so and build nothing.**
 
 **Four — witness everything you touch.** Run the suites that neighbour your work and the guard for any instrument you changed. Capture every status **before** any pipe. A red is a gift: own it in the seat at its true cause, in the same hour it appeared.
 
-**Five — seal a seat.** One dated file in `counsel/`, stamp taken from the clock into a shell variable first and interpolated, never typed. Write it in Radiant prose: what happened, what it cost, what was measured, what is held. Refresh `work-in-progress/REMEMBER.md`'s `Last refreshed` line with the round's substance.
+**Five — seal a seat.** One dated file in `counsel/`, stamp taken from the clock into a shell variable first and interpolated, never typed. Write it in Radiant prose: what happened, what it cost, what was measured, what is held. Refresh `construction/ITINERARY.md`'s `Last refreshed` line with the round's substance.
 
 **Six — commit and cut the resin.** `git format-patch origin/main..HEAD` into a fresh directory, write `CURSOR_FUSING_PROMPT.md` naming the exact basis tip and the drop path, build a `resin-manifest-v1` with a sha3 bead per file, zip it with the stamp read **back from the manifest**, copy to `/mnt/user-data/outputs/`, and call `present_files`.
 
