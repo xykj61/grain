@@ -252,6 +252,8 @@ stays fresh in mind.
 [`docs-geode/tutorials/the-first-hour.md`](docs-geode/tutorials/the-first-hour.md). Clone, run one
 witness, read the green line it prints, write five lines and run them. One page, one path.
 
+Shopping for the three things that hour needs -- a language model, a source forge, and somewhere to keep bytes -- has its own guide at [`docs-geode/tutorials/SHOPPING.md`](docs-geode/tutorials/SHOPPING.md). It names no winner and quotes no price on purpose, so it stays true; what it gives you is the order to shop in and the questions that decide each purchase.
+
 Then, in order:
 
 1. **[`SOURCE.md`](SOURCE.md)** -- from nothing to a signed, sandboxed home.
