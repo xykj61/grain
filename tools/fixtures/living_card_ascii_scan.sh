@@ -28,7 +28,7 @@ MODE=${1:-}
 # ENFORCE roster -- pins swept ASCII-first; zero bytes above 0x7F allowed.
 ENFORCE="construction/REMEMBER.md construction/REDS.md"
 # ADVISORY roster -- legacy dated non-ASCII reported as a ratchet, never a hard fail.
-ADVISORY="construction/ROADMAP.md construction/TASKS.md construction/EQUINOX_SEAT_MAP.md construction/SHRED_PREP.md construction/THREADS.md construction/CAIRNS.md"
+ADVISORY="construction/ROADMAP.md construction/TASKS.md construction/EQUINOX_SEAT_MAP.md construction/SHRED_PREP.md construction/THREADS.md construction/CHECKPOINTS.md"
 CONTROL=tools/fixtures/living_card_ascii_control/mojibake_control.md
 
 # Count lines carrying any byte above 0x7F. grep -c exits 1 on zero matches, so guard it.
