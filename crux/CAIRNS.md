@@ -26,15 +26,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ### `20260823.072824` -- the deep debride: personal material leaves the history
 
-**Walk-back nib:** `a3a4e62b38` -- **and this one is different from every cairn above it.** This is
+**Walk-back nib:** `52393ae830` -- **and this one is different from every cairn above it.** This is
 a *deep* debride, so after the force-push the walk-back commit is **unreachable on both remotes**.
 The pre-debride history survives in two places instead: a verified full bundle at
-`.debride-safe/pre-debride-a3a4e62b38.bundle` (559 MB, untracked, on this pier), and any clone
+`.debride-safe/pre-debride-52393ae830.bundle` (559 MB, untracked, on this pier), and any clone
 taken before `20260823.072824`.
 
 ```
-git clone .debride-safe/pre-debride-a3a4e62b38.bundle recovered   # the whole tree as it stood
-git -C recovered log --oneline a3a4e62b38                          # browse it
+git clone .debride-safe/pre-debride-52393ae830.bundle recovered   # the whole tree as it stood
+git -C recovered log --oneline 52393ae830                          # browse it
 ```
 
 **Swept:** four paths removed from all 3,313 commits --
@@ -61,7 +61,7 @@ one-clock law.
 
 ### `20260823.041442` -- the two temperatures become one room and a fold
 
-**Walk-back nib:** `997ba249af` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+**Walk-back nib:** `be94f7ab82` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
 
 **Swept:** the `expanded-prompts/` room is removed. It held **two** tracked files against
 `expanding-prompts/`'s 584 -- one dated record and its own README -- and its seating row is
@@ -77,29 +77,29 @@ is cold -- so the second room became a second way of saying one thing. That is t
 for the unify, and it is the thing to re-read if the temperatures ever want separate rooms again.
 
 ```
-git show 997ba249af:expanded-prompts/README.md
-git show 997ba249af:expanded-prompts/20260810-054332_green-witness-record-seed-ready.md
+git show be94f7ab82:expanded-prompts/README.md
+git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-ready.md
 ```
 
 ### `20260822.234745` -- the standing roster leaves prose for a file
 
-**Walk-back nib:** `337c466fc7` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+**Walk-back nib:** `518cf4098a` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
 
 **Swept:** two living cards. `crux/REMEMBER.md` gave up its **standing-equipment paragraph** -- the long prose chronicle that opened *"Seventeen stood green when this line was written"* and then named sixteen witnesses across the sentences after it, each with the stamp and story of its own seating -- replaced by a short line pointing at [`standing-equipment.kyri`](standing-equipment.kyri), which twenty machine-readable records now hold. The card's **Now** block moved from the banner-and-path lap to this one. And `crux/REDS.md` folded rows **%148** and **%149** to [`archive/REDS-the-banner-and-the-unrun-bound-rows-148-149.md`](archive/REDS-the-banner-and-the-unrun-bound-rows-148-149.md) as rows %150-%151 carried it past its 24,576-byte bound.
 
-**What waits there, worth recalling:** the departing paragraph is the only place each guard's **seating story** was ever written -- why `nib_honesty` was rewritten after two days red, why `radiant_negation` reports `foundations/` against a register of 0.40, why `rye_bridge_cycle` is the first guard ever pointed at our own compiler. The roster file keeps each guard's name, path, and seating stamp; it deliberately keeps no story, because a roster that carries prose becomes a paragraph again. Those stories live on in each guard's own header comment and in the dated session logs that seated them. `git show 337c466fc7:crux/REMEMBER.md` reads the departing card whole.
+**What waits there, worth recalling:** the departing paragraph is the only place each guard's **seating story** was ever written -- why `nib_honesty` was rewritten after two days red, why `radiant_negation` reports `foundations/` against a register of 0.40, why `rye_bridge_cycle` is the first guard ever pointed at our own compiler. The roster file keeps each guard's name, path, and seating stamp; it deliberately keeps no story, because a roster that carries prose becomes a paragraph again. Those stories live on in each guard's own header comment and in the dated session logs that seated them. `git show 518cf4098a:crux/REMEMBER.md` reads the departing card whole.
 
 ### `20260822.195336` -- the ledger folds two closed rows as the queue is ranked
 
-**Walk-back nib:** `d4b0e44248` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+**Walk-back nib:** `f798693b85` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
 
 **Swept:** two living cards. `crux/REDS.md` shed the four paragraphs of rows **%142** and **%143** -- the line-citation red and the spelled-number red, opened and closed -- to [`archive/REDS-line-citation-and-spelled-number-rows-142-143.md`](archive/REDS-line-citation-and-spelled-number-rows-142-143.md), because booking row **%145** pushed the living pin past its 24,576-byte bound and the e123 guard said so. Every byte is kept; the archive file holds the four paragraphs unchanged. And `crux/REMEMBER.md` replaced its **Now** block, the `bearing_note` lift giving way to the `appraisal_note` lift and the ranked queue that came with it.
 
-**What waits there, worth recalling:** row %142's own reasoning about why a **line citation** cannot survive its file -- the honest citation is the one that points at something still there after forty lines land above it -- and row %143's spelled-number reader with its bound at ten, where a spelled word below ten is a determiner rather than a measurement. Both lessons now stand as running guards rather than as prose, which is why the prose could fold. `git show d4b0e44248:crux/REDS.md` reads the ledger whole; `git show d4b0e44248:crux/REMEMBER.md` reads the departing card.
+**What waits there, worth recalling:** row %142's own reasoning about why a **line citation** cannot survive its file -- the honest citation is the one that points at something still there after forty lines land above it -- and row %143's spelled-number reader with its bound at ten, where a spelled word below ten is a determiner rather than a measurement. Both lessons now stand as running guards rather than as prose, which is why the prose could fold. `git show f798693b85:crux/REDS.md` reads the ledger whole; `git show f798693b85:crux/REMEMBER.md` reads the departing card.
 
 ### `20260822.192044` -- three lift laps condense into one live row
 
-**Walk-back nib:** `ba5295fb99` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card's **Now** block as it read after the `read_the_reply` lap stands whole at this nib, together with the two laps of prose that accreted beside it.
+**Walk-back nib:** `8aecfffb6a` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card's **Now** block as it read after the `read_the_reply` lap stands whole at this nib, together with the two laps of prose that accreted beside it.
 
 **Swept:** `crux/REMEMBER.md` -- the **Now** block, roughly nine paragraphs, replaced by one live row naming the `bearing_note` lift and the queue it leaves. Three laps of departing detail leave the card: `read_the_reply` (the row free of every priced column), `asked_of` (the constant that answered from above), and `found_path` (the fall as a product).
 
@@ -108,7 +108,7 @@ git show 997ba249af:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 ### `20260822.054053` -- the ten glyph-note and note-path folds condense into one row
 
-**Walk-back nib:** `57c365fbc2` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read through the ten-fold arc stands whole at this nib: the per-fold live-edge rows for `press_path`, `bearing_published`, `appraisal_published`, `recant_published`, the roster round, and the laps between them, each in the words its own round wrote.
+**Walk-back nib:** `9f3e807c23` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read through the ten-fold arc stands whole at this nib: the per-fold live-edge rows for `press_path`, `bearing_published`, `appraisal_published`, `recant_published`, the roster round, and the laps between them, each in the words its own round wrote.
 
 **Swept:** six live-edge rows fold into one. The INNER LOOP directives, the guard roster, every seated law, and the season table stay untouched.
 
@@ -118,7 +118,7 @@ git show 997ba249af:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 ### `20260821.203501` -- the operator card condenses a day of folds and takes the Standfast edge
 
-**Walk-back nib:** `5f09ec4273` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read through the Caravan ladder arc stands whole at this nib: nineteen live-edge rows, `fold AI` at the front, and the full narration of every fold from D through AI in the words each round wrote for itself.
+**Walk-back nib:** `9714cf1a85` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card as it read through the Caravan ladder arc stands whole at this nib: nineteen live-edge rows, `fold AI` at the front, and the full narration of every fold from D through AI in the words each round wrote for itself.
 
 **Swept:** nineteen live-edge rows fold into two -- one for the Standfast day that has become the edge, one condensing the Caravan ladder arc that produced them. The card is 58,608 bytes and carries a standing condensation debt named in its own INNER LOOP; this pays part of it. The INNER LOOP directives, the guard roster, and every seated law stay untouched.
 
@@ -549,21 +549,21 @@ git show 997ba249af:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 ### `20260819.125806` -- REMEMBER's Season-G scene-read chronicle folded to a pointer as the live edge moves to the Microkernel Target
 
-**Walk-back nib:** `4a50722016` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
+**Walk-back nib:** `784a6c3f07` -- reachable in normal history (a working-tree condense, never a history rewrite); the full departing card is one `git show` away.
 **Swept:** the **Live edge** bullet's whole Season-G scene-read chronicle (~5 KB of one run-on line) -- the four selectors named inline (`scene_manifest`, `hit_test`, `region_select`, `lasso_select`), the composing reads (`selection_summary`, `selection_bounds`, `object_relation`, `scene_graph`), and the entire line family rung by rung with its stamps and GREEN notes (`line_distance` through `line_corridor_summary`, `line_pierce`, `line_cross` and its rational meeting point, `line_raycast` and its slab-method entry parameter). The family stands whole and green at 227 image modules; the live front has moved to the Lindy-priority Microkernel Target, so the card keeps a pointer where the chronicle stood and refills Now with the live arc.
-**What waits there, worth recalling:** at nib `4a50722016` the departing card holds the complete inline prose for the scene-read and line families -- the exact-integer reasoning, the `CrossNotWhole` refusal rather than a rounded intersection, and why `line_raycast` diverges from `line_slice` exactly where a wide box swallows a narrow one. No fact was lost: every rung carries its own dated log in `session-logs/` and a durable entry in `image/README.md`.
+**What waits there, worth recalling:** at nib `784a6c3f07` the departing card holds the complete inline prose for the scene-read and line families -- the exact-integer reasoning, the `CrossNotWhole` refusal rather than a rounded intersection, and why `line_raycast` diverges from `line_slice` exactly where a wide box swallows a narrow one. No fact was lost: every rung carries its own dated log in `session-logs/` and a durable entry in `image/README.md`.
 
 ### `20260819.104554` -- REMEMBER's three giant prose run-ons (167 KB of a 197 KB card) folded to single-stranded pointers at the line-family set-close
 
-**Walk-back nib:** `82b7ee3342` -- reachable in normal history (a working-tree condense, not a history rewrite); the full departing card is one `git show` away.
+**Walk-back nib:** `8ab8212cd7` -- reachable in normal history (a working-tree condense, not a history rewrite); the full departing card is one `git show` away.
 **Swept:** the three accreted run-on lines that had survived every prior condense -- the current **Live edge** chronicle (line 16, ~64 KB: every scene-read module named inline with its stamp and GREEN status, a second copy of the log index), the stale **Latest lap `20260813`** Season-A/HUNK snapshot (line 38, ~56 KB), and the **BUHR OPENED `20260812`** exploration bullet that had drifted *into* the custody-gates numbered list (line 99, ~47 KB). Folded to short pointers naming only the live edge and the next crux, directing to `session-logs/` and `image/README.md` for per-rung detail. The card fell from ~197 KB to under its advisory bound.
-**What waits there, worth recalling:** at nib `82b7ee3342` the departing card holds the complete inline prose for the whole Season G scene-read line and cluster family (line_distance through line_corridor_summary, the selection ladder, object_relation, scene_graph), the full HUNK Season-A opening account, and the whole BUHR intelligence-equinox exploration -- `git show 82b7ee3342:crux/REMEMBER.md`. No fact was lost: each rung's crux, bounds, and metal-GREEN account lives verbatim in its dated `.kyri` session log, `image/README.md` carries the durable per-module entries, and the season table plus the double-seat itineraries hold the arc-level record. The condense keeps the operator card the live card of what is next, never a second copy of the log index.
+**What waits there, worth recalling:** at nib `8ab8212cd7` the departing card holds the complete inline prose for the whole Season G scene-read line and cluster family (line_distance through line_corridor_summary, the selection ladder, object_relation, scene_graph), the full HUNK Season-A opening account, and the whole BUHR intelligence-equinox exploration -- `git show 8ab8212cd7:crux/REMEMBER.md`. No fact was lost: each rung's crux, bounds, and metal-GREEN account lives verbatim in its dated `.kyri` session log, `image/README.md` carries the durable per-module entries, and the season table plus the double-seat itineraries hold the arc-level record. The condense keeps the operator card the live card of what is next, never a second copy of the log index.
 
 ### `20260818.225452` -- REMEMBER prior-nib comment wall folded to a pointer; Now reaimed at the roundness + Season G completion boundary
 
-**Walk-back nib:** `d2368cb9db` -- reachable in normal history (a working-tree condense, not a history rewrite); the full departing card is one `git show` away.
+**Walk-back nib:** `79ec36981c` -- reachable in normal history (a working-tree condense, not a history rewrite); the full departing card is one `git show` away.
 **Swept:** the ~38-line wall of dead `<!-- prior nib -->` HTML comments in REMEMBER's INNER LOOP (the whole roundness quest -- roundness_universal, roundness, hit_test, scene_manifest, euler_scene, euler_number, and every earlier shape descriptor back through regions -- each a former live edge stacked as a comment), plus the ~4,600-char roundness_universal Git-nib paragraph, folded to short single-stranded pointers naming only the newest rung and directing to `session-logs/` for the per-rung detail. The card had grown back to ~187 KB, over its advisory bound; this is the same condense the `20260818.101851` cairn recorded, one boundary later.
-**What waits there, worth recalling:** at nib `d2368cb9db` the REMEMBER card holds the complete per-nib prose for the entire roundness quest and the earlier shape-descriptor family inline -- `git show d2368cb9db:crux/REMEMBER.md`. No fact was lost: each rung's crux, bounds, and metal-GREEN account is preserved verbatim in its dated `.kyri` session log, and `image/README.md` carries the durable per-module entries. The condense keeps the operator card the live card of what is next, not a second copy of the log index.
+**What waits there, worth recalling:** at nib `79ec36981c` the REMEMBER card holds the complete per-nib prose for the entire roundness quest and the earlier shape-descriptor family inline -- `git show 79ec36981c:crux/REMEMBER.md`. No fact was lost: each rung's crux, bounds, and metal-GREEN account is preserved verbatim in its dated `.kyri` session log, and `image/README.md` carries the durable per-module entries. The condense keeps the operator card the live card of what is next, not a second copy of the log index.
 
 ### `20260818.101851` -- REMEMBER Now condensed: the giant per-nib live-edge and git-nib paragraphs folded to pointers
 
@@ -610,9 +610,9 @@ git show 997ba249af:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 ### `20260817.171714` -- REMEMBER Today arc condensed (the done-work wall folded to a pointer)
 
-**Walk-back nib:** `3b8b0d4858`
+**Walk-back nib:** `bff58996b3`
 **Swept:** the `## Today 20260811 -- a full arc` section of `crux/REMEMBER.md` (lines 228-306), a wall of ~160 dated done-work bullets -- 116 `LANDED`, 24 `OPENED`, 17 `COMPLETE`, 7 `CLOSED`, 5 `SEATED` -- condensed to a single lean pointer that names the big landed arcs and defers every detail to the session logs and git history. Done on Keaton's word so the operator card stays single-stranded: the live work-front, never a second copy of the log index. No other section touched; the INNER LOOP directives, the Compass Season table, Waymarks, gates, and open doors all stand.
-**What waits there, worth recalling:** at nib `3b8b0d4858` and every commit before it, the full arc reads whole -- `git show 3b8b0d4858:crux/REMEMBER.md`. Every bullet it held (Mandate, the Acme DX season, CION labeling, the AHOY front door and WADE surface, the Singularity, the Twilight palette, BUHR's MCP surface, the 1,024-round itinerary, TACT Journeys 1/2/4, the recursion cellar, Season A / HUNK, Constel and Testament) is also recorded in `session-logs/` as its own dated `.bron`/`.kyri` log. Nothing landed is lost; the wall simply moved to where the record belongs.
+**What waits there, worth recalling:** at nib `bff58996b3` and every commit before it, the full arc reads whole -- `git show bff58996b3:crux/REMEMBER.md`. Every bullet it held (Mandate, the Acme DX season, CION labeling, the AHOY front door and WADE surface, the Singularity, the Twilight palette, BUHR's MCP surface, the 1,024-round itinerary, TACT Journeys 1/2/4, the recursion cellar, Season A / HUNK, Constel and Testament) is also recorded in `session-logs/` as its own dated `.bron`/`.kyri` log. Nothing landed is lost; the wall simply moved to where the record belongs.
 
 ### `20260816.220634` -- work-in-progress -> crux rename EXECUTED (the breach the 20260815 cairn pre-planted)
 
@@ -622,9 +622,9 @@ git show 997ba249af:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 ### `20260815.175524` -- Decision-wave breach queue: Bron->Kyri and work-in-progress->crux (prep, no cut yet)
 
-**Walk-back nib:** `9e3c2dccfa`
+**Walk-back nib:** `00ff3c1d27`
 **Swept:** *nothing yet* -- planted **ahead** of two newly approved breaches so each keeps its walk-back before it cuts: **Bron -> Kyri** (unify the notation entirely under Kyri -- `.kyri` takes the responsibility of `.bron`; Kyri is voice - notation - *compressed receipts* - preferred Grain variant, named in gratitude after Kyrie Irving) and **`work-in-progress/` -> `crux/`** (a higher-sorting priority folder -- `crux/REMEMBER.md`, etc.; 902 files reference `work-in-progress/`, every one repointed in the rename round). Each executes as its own signed loop round; the dated `.bron` logs' deep rename stays a separate circled step under the one-clock law.
-**What waits there, worth recalling:** the whole tree under the elder folder name `work-in-progress/` and the elder notation name `.bron` -- every REMEMBER/CAIRNS/TASKS path, every `.bron` session log, and the pre-rename reference graph. Walk back with `git show 9e3c2dccfa:work-in-progress/REMEMBER.md` or `git log --oneline 9e3c2dccfa`. Decisions + flags: [`../active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md).
+**What waits there, worth recalling:** the whole tree under the elder folder name `work-in-progress/` and the elder notation name `.bron` -- every REMEMBER/CAIRNS/TASKS path, every `.bron` session log, and the pre-rename reference graph. Walk back with `git show 00ff3c1d27:work-in-progress/REMEMBER.md` or `git log --oneline 00ff3c1d27`. Decisions + flags: [`../active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md).
 
 ### `20260813.020035` -- Double-seat expansion breach queue (prep, no cut yet)
 
