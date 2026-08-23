@@ -13,7 +13,7 @@
 # tally; measured against the head-scan's unmarked list, zero files carried a mark deeper
 # in the body. The head window loses nothing and invents nothing.
 #
-# For every dated artifact (YYYYMMDD-HHMMSS_slug) that git history shows was MODIFIED
+# For every dated artifact (YYYYMMDD-HHMMSS_sprig) that git history shows was MODIFIED
 # after its introducing commit, it asks whether the file carries one of the lawful marks
 # the dated law names: a recorded `Radiant pass <stamp>`, an erratum or named correction,
 # or a living-ledger header. Files with none are listed as UNMARKED — which is a

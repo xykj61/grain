@@ -193,7 +193,7 @@ This is not about dumbing down. It is about removing unnecessary weight from lan
 - **Suffering and harm language** — words like "slaughter," "poisoned," "exploitation," or "suffering" can be replaced with language that describes the same reality more gently. "Inputs drawn outside the plant kingdom" carries the same meaning as "animal slaughter byproducts" without the weight.
 - **Ego and judgment language** — "imposing what the ego prefers" becomes "overriding what the ecosystem already knows." The point lands; the sting is gone.
 - **Negation-heavy constructions** — "carries no residue of exploitation" becomes "woven entirely from care." Affirmative, lighter, equally true.
-- **Creatures deserve gentle treatment in prose too** — a slug "gently guided to a shadier corner of the garden" lives a more dignified life in the piece than one "redirected rather than poisoned." Small beings deserve small courtesies of language.
+- **Creatures deserve gentle treatment in prose too** — a sprig "gently guided to a shadier corner of the garden" lives a more dignified life in the piece than one "redirected rather than poisoned." Small beings deserve small courtesies of language.
 **A useful test:** read the sentence aloud to a kind, attentive eight-year-old in your mind. If the word would make them flinch or ask a heavy follow-up question, find a gentler path to the same truth.
  
 **The gentle register does not avoid difficult realities.** It simply chooses the warmest accurate word rather than the bluntest one. The soil is still nourished by care. The devotion is still pure. The meaning arrives intact — and the listener arrives with it, rather than pulling back.
@@ -201,7 +201,7 @@ This is not about dumbing down. It is about removing unnecessary weight from lan
 | Original | Gentle Register |
 |---|---|
 | "animal suffering or slaughter byproducts" | "inputs drawn outside the plant kingdom" |
-| "the slug redirected rather than poisoned" | "the slug gently guided to a shadier corner" |
+| "the sprig redirected rather than poisoned" | "the sprig gently guided to a shadier corner" |
 | "pure devotion that carries no residue of exploitation" | "pure devotion woven entirely from care" |
 | "imposing what the ego prefers" | "overriding what the ecosystem already knows" |
 | "the commodification of almost everything" | "the tendency to turn even sacred things into transactions" |

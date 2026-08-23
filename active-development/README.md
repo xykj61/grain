@@ -31,7 +31,7 @@ The test is deliberately blunt. A filing rule that needs a paragraph of adjudica
 
 ## What holds here
 
-- **One-clock names.** `YYYYMMDD-HHMMSS_short-slug.md`, the whole stamp, per the [mark law](../.claude/rules/stamp-and-name.md). No ascending marks, no round numbers minted into filenames -- a stamp orders it and a name means it.
+- **One-clock names.** `YYYYMMDD-HHMMSS_short-sprig.md`, the whole stamp, per the [mark law](../.claude/rules/stamp-and-name.md). No ascending marks, no round numbers minted into filenames -- a stamp orders it and a name means it.
 - **A bound of 256 flat files**, enforced from the day this room opened rather than earned later by folding. This room was born under the law and never accumulated a backlog, so there is nothing to grandfather: it folds to `date/YYYYMMDD/` before it can ever outgrow a reader (`tools/room_bound_witness.rish`).
 - **References are resolved, never rewritten.** A note here that cites a file which later moves keeps its words; [`tools/dated_path_resolve.rish`](../tools/dated_path_resolve.rish) finds the new home.
 - **Radiant Style**, the same as everywhere. A round note is short and working prose, not a rough draft of English.

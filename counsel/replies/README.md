@@ -12,7 +12,7 @@
 
 One dated file per reply, naming the memo it answers:
 
-`YYYYMMDD-HHMMSS_re-<short-slug-of-counsel>.md`
+`YYYYMMDD-HHMMSS_re-<short-sprig-of-counsel>.md`
 
 ### Sections
 

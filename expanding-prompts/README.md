@@ -24,13 +24,13 @@ Every expanded prompt ends on the same warm note the request that seeded it carr
 
 ## One clock, one order
 
-Dated prompts carry `YYYYMMDD-HHMMSS_short-slug.md`; this README is the living foundation. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+Dated prompts carry `YYYYMMDD-HHMMSS_short-sprig.md`; this README is the living foundation. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
 **Consumed prompts** — including executed `cursor-*` bench passes and legacy `cursor-prompt_*` files from the one-clock reorg — rest in [`yonder/`](yonder/) when the work they drove has landed. Session logs record the outcome; the prompt stays as an honest record of how the request was expanded.
 
 ## Redirects and retired patterns
 
-**Executed prompts** become redirect stubs at the stub-event stamp `20260621-051612` with distinct `-redirect` slugs. See also [`../external-research/README.md`](../external-research/README.md).
+**Executed prompts** become redirect stubs at the stub-event stamp `20260621-051612` with distinct `-redirect` sprigs. See also [`../external-research/README.md`](../external-research/README.md).
 
 **Current tooling (use these):**
 

@@ -35,7 +35,7 @@ Every revival keeps five rules, each drawn from a law this project already lives
 
 ## The Clock a Revival Keeps
 
-A revival is born with its Glow name **and** its own warm-aura date-atom stamp (`YYYYMMDD.HHMMSS` in headers, `YYYYMMDD-HHMMSS_slug` in filenames), exactly as every dated artifact does — see [`../context/specs/20260714-024800_warm-aura-date-atom-naming.md`](../context/specs/20260714-024800_warm-aura-date-atom-naming.md). Reviving and archiving speak the same clock: the elder keeps its name and stamp, the revival is stamped fresh at its own birth, and later is always larger. Nothing about reviving invents a different dated shape.
+A revival is born with its Glow name **and** its own warm-aura date-atom stamp (`YYYYMMDD.HHMMSS` in headers, `YYYYMMDD-HHMMSS_sprig` in filenames), exactly as every dated artifact does — see [`../context/specs/20260714-024800_warm-aura-date-atom-naming.md`](../context/specs/20260714-024800_warm-aura-date-atom-naming.md). Reviving and archiving speak the same clock: the elder keeps its name and stamp, the revival is stamped fresh at its own birth, and later is always larger. Nothing about reviving invents a different dated shape.
 
 ## Revivals in Motion (the index)
 

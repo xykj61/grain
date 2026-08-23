@@ -10,13 +10,13 @@ Historical Markdown logs live under `session-logs/date/YYYYMMDD/` (folded by day
 
 ## Filename
 
-`YYYYMMDD-HHMMSS_short-slug.kyri` -- hyphen stamp in the filename; body field `stamp YYYYMMDD.HHMMSS` (dot form). New logs are `.kyri` (the notation molted from Bron `20260810`); the `.bron` logs already on disk are never renamed and tools read both.
+`YYYYMMDD-HHMMSS_short-sprig.kyri` -- hyphen stamp in the filename; body field `stamp YYYYMMDD.HHMMSS` (dot form). New logs are `.kyri` (the notation molted from Bron `20260810`); the `.bron` logs already on disk are never renamed and tools read both.
 
 **No countdown prefix** (`99999_`, etc.) -- retired. One clock only.
 
 Full naming law: `context/specs/20260627-102012_one-clock-naming-law.md` (extension is `.bron` for this stream). Files sort ascending by stamp; the living index in `session-logs/README.md` reads newest first.
 
-When two logs share a second, add `_short-slug` from `title` (or from `prompt` when titles match). Derive a missing stamp from the file's first-commit date per the naming law.
+When two logs share a second, add `_short-sprig` from `title` (or from `prompt` when titles match). Derive a missing stamp from the file's first-commit date per the naming law.
 
 ## Index
 

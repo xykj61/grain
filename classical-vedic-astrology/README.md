@@ -64,7 +64,7 @@ classical-vedic-astrology/
 |-------|-------|---------|
 | — | [yonder/README.md](yonder/README.md) | Morning-cast drafts superseded by the evening recast |
 
-- **`studies/`** — numbered silo library `00`–`20` and growing. Each study lives in a **topic folder** (`nakshatras/`, `planets-in-signs/`, `planet-in-house/`, …) with a hyphenated slug. The master index is [`studies/README.md`](studies/README.md); the composable map lives in [`templates/reading-template.md`](templates/reading-template.md).
+- **`studies/`** — numbered silo library `00`–`20` and growing. Each study lives in a **topic folder** (`nakshatras/`, `planets-in-signs/`, `planet-in-house/`, …) with a hyphenated sprig. The master index is [`studies/README.md`](studies/README.md); the composable map lives in [`templates/reading-template.md`](templates/reading-template.md).
 - **`templates/reading-template.md`** — how a reading is made, section by section, silo by silo.
 - **`templates/reading-template.html`** — the Alice demonstration as a self-drawing page.
 - **`templates/20260705-020812_reading-template.html`** — tokenized two-wheel template for full classical readings.

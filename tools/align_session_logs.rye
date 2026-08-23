@@ -15,7 +15,7 @@ const readme_header =
     \\
     \\Naming follows [`context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
     \\
-    \\**Filename:** `YYYYMMDD-HHMMSS_short-slug.md` — no countdown prefix. **Body:** `**Stamp:**` in dot form (`YYYYMMDD.HHMMSS`); **Editor** and **Model** at the top per `.claude/rules/session-logs.md`.
+    \\**Filename:** `YYYYMMDD-HHMMSS_short-sprig.md` — no countdown prefix. **Body:** `**Stamp:**` in dot form (`YYYYMMDD.HHMMSS`); **Editor** and **Model** at the top per `.claude/rules/session-logs.md`.
     \\
     \\**Commit discipline:** ship the log in the **same commit** as the work it records whenever possible. A follow-up commit only for the log is a last resort. Re-align the archive with `rye run tools/align_session_logs.rye`.
     \\
@@ -34,7 +34,7 @@ const LogMeta = struct {
 const ParsedName = struct {
     ymd: []const u8,
     hms: []const u8,
-    slug: ?[]const u8,
+    sprig: ?[]const u8,
 };
 
 fn parse_fname(name: []const u8) ?ParsedName {
@@ -45,8 +45,8 @@ fn parse_fname(name: []const u8) ?ParsedName {
     const hms = stem[9..15];
     for (ymd) |c| if (c < '0' or c > '9') return null;
     for (hms) |c| if (c < '0' or c > '9') return null;
-    const slug: ?[]const u8 = if (stem.len > 16 and stem[15] == '_') stem[16..] else null;
-    return .{ .ymd = ymd, .hms = hms, .slug = slug };
+    const sprig: ?[]const u8 = if (stem.len > 16 and stem[15] == '_') stem[16..] else null;
+    return .{ .ymd = ymd, .hms = hms, .sprig = sprig };
 }
 
 fn dot_stamp(a: std.mem.Allocator, ymd: []const u8, hms: []const u8) ![]const u8 {
@@ -104,10 +104,10 @@ fn infer_editor_model(a: std.mem.Allocator, text: []const u8, ymd: []const u8) !
     return try std.fmt.allocPrint(a, "**Editor:** (historical) \u{00b7} **Model:** (historical)", .{});
 }
 
-fn slug_to_title(a: std.mem.Allocator, slug: []const u8) ![]const u8 {
+fn slug_to_title(a: std.mem.Allocator, sprig: []const u8) ![]const u8 {
     var out = std.ArrayListUnmanaged(u8).empty;
     errdefer out.deinit(a);
-    for (slug) |c| {
+    for (sprig) |c| {
         try out.append(a, if (c == '-') ' ' else c);
     }
     return try out.toOwnedSlice(a);
@@ -189,7 +189,7 @@ fn has_countdown_h1(line: []const u8) bool {
     return false;
 }
 
-fn repair_weak_h1(a: std.mem.Allocator, h1: []const u8, slug: ?[]const u8, ymd: []const u8, hms: []const u8, content: []const u8) ![]const u8 {
+fn repair_weak_h1(a: std.mem.Allocator, h1: []const u8, sprig: ?[]const u8, ymd: []const u8, hms: []const u8, content: []const u8) ![]const u8 {
     if (!std.mem.eql(u8, std.mem.trim(u8, h1, " \t"), weak_h1)) return try a.dupe(u8, h1);
     if (has_substring(content, "## The Request") and std.mem.eql(u8, ymd, "20260619") and std.mem.eql(u8, hms, "072600")) {
         return try a.dupe(u8, "# Session log \u{2014} first log (one-clock practice begins)");
@@ -206,7 +206,7 @@ fn repair_weak_h1(a: std.mem.Allocator, h1: []const u8, slug: ?[]const u8, ymd: 
             return try std.fmt.allocPrint(a, "# Session log \u{2014} {s}", .{clipped});
         }
     }
-    if (slug) |s| {
+    if (sprig) |s| {
         const title = try slug_to_title(a, s);
         defer a.free(title);
         return try std.fmt.allocPrint(a, "# Session log \u{2014} {s}", .{title});
@@ -214,9 +214,9 @@ fn repair_weak_h1(a: std.mem.Allocator, h1: []const u8, slug: ?[]const u8, ymd: 
     return try std.fmt.allocPrint(a, "# Session log \u{2014} {s}-{s}", .{ ymd, hms });
 }
 
-fn fix_h1(a: std.mem.Allocator, line: []const u8, slug: ?[]const u8, dot: []const u8, content: []const u8, ymd: []const u8, hms: []const u8) ![]const u8 {
+fn fix_h1(a: std.mem.Allocator, line: []const u8, sprig: ?[]const u8, dot: []const u8, content: []const u8, ymd: []const u8, hms: []const u8) ![]const u8 {
     if (!std.mem.startsWith(u8, line, "#")) {
-        if (slug) |s| {
+        if (sprig) |s| {
             const title = try slug_to_title(a, s);
             defer a.free(title);
             return try std.fmt.allocPrint(a, "# Session log \u{2014} {s}", .{title});
@@ -224,7 +224,7 @@ fn fix_h1(a: std.mem.Allocator, line: []const u8, slug: ?[]const u8, dot: []cons
         return try std.fmt.allocPrint(a, "# Session log \u{2014} {s}", .{dot});
     }
     if (has_countdown_h1(line)) {
-        if (slug) |s| {
+        if (sprig) |s| {
             const title = try slug_to_title(a, s);
             defer a.free(title);
             return try std.fmt.allocPrint(a, "# Session log \u{2014} {s}", .{title});
@@ -246,7 +246,7 @@ fn fix_h1(a: std.mem.Allocator, line: []const u8, slug: ?[]const u8, dot: []cons
         const rest = std.mem.trim(u8, line["# Session Log \u{00b7}".len..], " \t");
         return try std.fmt.allocPrint(a, "# Session log \u{2014} {s}", .{rest});
     }
-    return repair_weak_h1(a, line, slug, ymd, hms, content);
+    return repair_weak_h1(a, line, sprig, ymd, hms, content);
 }
 
 fn extract_meaning(a: std.mem.Allocator, content: []const u8, h1: []const u8) ![]const u8 {
@@ -296,7 +296,7 @@ fn link_title(a: std.mem.Allocator, h1: []const u8, fname: []const u8) ![]const 
     }
     if (title.len == 0 or std.mem.eql(u8, title, fname)) {
         if (parse_fname(fname)) |parsed| {
-            if (parsed.slug) |s| return try slug_to_title(a, s);
+            if (parsed.sprig) |s| return try slug_to_title(a, s);
         }
         return try a.dupe(u8, fname[0 .. fname.len - 3]);
     }
@@ -326,7 +326,7 @@ fn align_file(a: std.mem.Allocator, fname: []const u8, original: []const u8) !st
     const header_part = original[0..header_end];
     const body_part = original[header_end..];
 
-    const h1 = try fix_h1(a, first, parsed.slug, dot, original, parsed.ymd, parsed.hms);
+    const h1 = try fix_h1(a, first, parsed.sprig, dot, original, parsed.ymd, parsed.hms);
     errdefer a.free(h1);
 
     var out = std.ArrayListUnmanaged(u8).empty;

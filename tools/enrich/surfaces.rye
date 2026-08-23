@@ -67,12 +67,12 @@ pub fn filename_guess(a: std.mem.Allocator, stem: []const u8) ![]const []const u
     var out = std.ArrayListUnmanaged([]const u8).empty;
     errdefer out.deinit(a);
     const us = std.mem.indexOfScalar(u8, stem, '_') orelse return &.{};
-    var slug = stem[us + 1 ..];
-    if (std.mem.eql(u8, slug, "tally_gardens") or std.mem.eql(u8, slug, "mantra_seed")) return &.{};
-    if (std.mem.endsWith(u8, slug, "_strengthen")) slug = slug[0 .. slug.len - "_strengthen".len];
+    var sprig = stem[us + 1 ..];
+    if (std.mem.eql(u8, sprig, "tally_gardens") or std.mem.eql(u8, sprig, "mantra_seed")) return &.{};
+    if (std.mem.endsWith(u8, sprig, "_strengthen")) sprig = sprig[0 .. sprig.len - "_strengthen".len];
     var parts: [16][]const u8 = undefined;
     var n: usize = 0;
-    var it = std.mem.splitScalar(u8, slug, '_');
+    var it = std.mem.splitScalar(u8, sprig, '_');
     while (it.next()) |p| {
         if (n < parts.len) {
             parts[n] = p;

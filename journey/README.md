@@ -13,7 +13,7 @@ A journey sits inside the wider **calendar** — the general collection of quest
 
 ## How this folder fills
 
-- One file (or subfolder) per journey, dated by the one-clock law (`YYYYMMDD-HHMMSS_slug.md`).
+- One file (or subfolder) per journey, dated by the one-clock law (`YYYYMMDD-HHMMSS_sprig.md`).
 - A journey names its **bound** up front — how many rungs, a power of 2 — so it finishes rather than sprawls (Simple · Lovable · Complete).
 - A journey closes with a **recursion baton** that cites its parent and folds in only its delta, threaded into the calendar of rounds.
 
