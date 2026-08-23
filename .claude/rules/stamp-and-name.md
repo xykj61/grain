@@ -65,6 +65,28 @@ rishi/bin/rishi run tools/dated_path_resolve.rish <reference> [<citing-file>]
 
 An example path in prose is a **shape**, not a path: `date/YYYYMMDD/YYYYMMDD-HHMMSS_slug.ext`, with letter placeholders standing where the digits would go. Never build an example out of a real-looking stamp and a slug that names no file -- write the placeholders and the illustration stays honest. A fabricated path reads as a real citation to every reader and to every tool -- the census counted three of them as broken references on the day this law was written, in the law itself, in the resolver's witness, and in the research note that proposed it. A lantern that fires twice becomes a loom, so it is written here: **illustrate with placeholders, cite only what exists.**
 
+## One shape, every room -- amended `20260823.111029`
+
+The `YYYYMMDD-HHMMSS_slug.ext` name and its `date/YYYYMMDD/` fold are **the tree's one filing
+shape**, and they hold in every room that dates its work rather than only in `session-logs/`.
+Foundations, active-designing, active-development, expanding-prompts, counsel, waymarks, and
+context specs all carry it today; a room opened tomorrow carries it from its first file.
+
+Three things follow, and each is already machinery rather than intention:
+
+- **A stamp comes from the one clock, never from memory.** `TZ=America/New_York date +%Y%m%d.%H%M%S`
+  on this pier, proven by `tools/one_clock_witness.rish`.
+- **A version is chronological.** A later stamp is a later version; no counted suffix is minted.
+  A ladder is marked by stamp and name, and its length is counted with `git log` rather than
+  carried inside a name.
+- **A room folds past 256 flat files**, into `date/YYYYMMDD/` with the whole stamp kept in the
+  basename, so the move stays an invertible function and a stale reference is resolved rather than
+  rewritten.
+
+**The public projection versions the same way.** The seed ships every fifth round
+([`../../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md`](../../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md)),
+so its freshness is measured in rounds against the same clock rather than in an announcement.
+
 ## Accrete-never-break
 
 Every dated log, counsel note, waymark, and commit that already wrote `Fold AI`, `f0-f63`, or `STOA178` **keeps every letter it wrote** -- the one-clock law and accrete-never-break protect them, and the marks stay readable forever. This law governs what is marked from here forward, and living *Now* lines may sweep to it as they are touched.

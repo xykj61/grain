@@ -21,6 +21,27 @@ By the end you will have a repository that an AI agent can grow and **commit to,
 
 ---
 
+## The five reads that carry the whole spirit
+
+Written or reseated `20260823`, and worth an hour before the first command. Each is Gauge Style at
+its Door or Field setting, which means plain words first and a measurement behind every claim.
+
+1. **[`README.md`](README.md)** -- the front door. What Grain gives you, what runs today, and the
+   rooms of the tree, at 13% negative sentences and a 7.9 reading grade.
+2. **[Why this exists](foundations/20260823-034321_the-return-that-feeds-everyone.md)** -- soil,
+   materials, and the computer as one question, with no code in it. A field that feeds itself and a
+   program that declares every allocation are the same discipline.
+3. **[New Gauge Style](context/GAUGE_STYLE.md)** -- how everything here is written, and its first
+   rule before all others: **don't be too smart about it.** Three settings by reader, each with a
+   number a program checks.
+4. **[The shape you grew and the shape you are](foundations/20260823-105651_the-shape-you-grew-and-the-shape-you-are.md)**
+   -- why this tree looks as it does. One law governs time, the other form.
+5. **[The seed that ships every fifth round](foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md)**
+   -- how the public projection stays close to the tree that makes it.
+
+Then **[your first hour](docs-geode/tutorials/the-first-hour.md)**: clone, run one witness, read the
+green line, write five lines of your own. One page, one path.
+
 ## Part One — The First Day
 
 A first day that ends with Cursor open inside the enclosure — before any forge keys. Short moves here; depth lives in Part Two (Steps 5, 6, and 9).
