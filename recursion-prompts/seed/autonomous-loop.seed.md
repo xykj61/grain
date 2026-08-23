@@ -50,6 +50,29 @@ Load these named paths too, so the loop carries the disciplines an unattended ru
 - **Mechanism first, meaning after** -- every commit body and every session log names the change in ordinary engineering words (file, function, parameter, type, import, call) in at least one plain sentence, BEFORE any metaphor. A reader who knows the language and has never opened this tree must reconstruct *what changed* from that sentence alone. `tools/hooks/commit-msg` enforces it at write time and leaves a refused message untouched on disk; the law is `.claude/rules/mechanism-sentence.md` and the why is `foundations/20260822-014628_the-mechanism-and-the-metaphor.md`. The meter counts vocabulary, so word presence is the check and a reader reconstructing the diff is the standard.
 - **Running thread** -- start each lap by reading the top few rows of `session-logs/README.md` and the newest log's `recommend` line. That row plus the recommend field are the lap-to-lap baton, so the run picks up the last lap's arc -- which family just closed, what was left undone -- rather than rediscovering it from ITINERARY alone. The record is not only a memory; it is the handoff.
 
+### The seed ships every fifth round
+
+**On the lap the rota closes its cycle -- lap N where `N mod 5 == 0` -- project and force-push the
+public seed.** One count serves both, so neither wants remembering separately.
+
+```
+bash ~/grain/publish-seed.sh
+```
+
+The four gates hold at every cadence and none of them is skipped: the leak scan must read
+`IDENT_CLEAN` or the push refuses; the commit stays anonymous and unsigned, because signing would
+bind the depersonalised seed back to the maintainer; the commit-message wall re-arms itself, since
+the script re-creates `seed/.git` each publish; and `tools/seed_link_witness.rish` must be green,
+so the front door reads whole in the seed as well as the field.
+
+**Reds come first.** A red books the allocation and a cadence is constructive work, so a stopped
+line stays stopped until the red closes -- then the seed ships on the next lap that qualifies.
+
+Why: a projection published rarely drifts from the thing it projects, and the drift stays hidden in
+the one place anyone looks. Measured `20260823`, the seed carried 867 links naming rooms it leaves
+behind. Foundation:
+[`../../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md`](../../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md).
+
 ### The council rota -- one element's triad deep-read per lap (5 x 3)
 
 The lenses above load every lap. The **rota** is the supplement: deep-read **one row** of the grid
