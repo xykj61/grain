@@ -13,7 +13,7 @@ CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 PRIN=tools/gen/season/prin_scope.rish
 FASCIA_SH=tools/fixtures/fascia_metric_v0.sh
-SHRED_PREP=work-in-progress/SHRED_PREP.md
+SHRED_PREP=crux/SHRED_PREP.md
 
 if ! test -f "$CONTROL_SCAN"; then
   echo "CONTROL=ABSENT"

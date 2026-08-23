@@ -141,6 +141,17 @@ if [ -s "$work/absent.txt" ]; then
   mv "$work/pairs.kept" "$work/pairs.txt"
 fi
 
+# A PLANTED FIXTURE NAME IS NOT A REFERENCE EITHER, and for the same reason one step further out.
+# A control plants a name that must match nothing; the session log explaining the control then
+# quotes it, and the log is testimony rather than instrument, so no name-match on the control can
+# reach the quotation. The list subtracts the planted basename wherever it is quoted, which is safe
+# because such a name is built to name nothing -- a stamp of all zeros names no lap this tree ran.
+for _fb in $(dp_fixture_basenames); do
+  [ -n "$_fb" ] || continue
+  grep -v ":.*${_fb}\$" "$work/pairs.txt" > "$work/pairs.nofix" 2>/dev/null || : > "$work/pairs.nofix"
+  mv "$work/pairs.nofix" "$work/pairs.txt"
+done
+
 # Six fields out, so no later step has to guess which path a column holds:
 #   verdict, citing file, reference as written, reading one, reading two, recovered home
 awk -F: '

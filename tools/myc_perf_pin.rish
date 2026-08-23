@@ -21,12 +21,12 @@ if pin.out != "" then say pin.out
 assert pin.ok else "myc_perf_pin: driver failed — correctness or thin rows"
 assert pin.out contains "GREEN: myc_perf_pin" else "myc_perf_pin: missing GREEN line"
 
-let report = run ["test" "-f" "work-in-progress/myc-s0-baselines.tsv"]
-assert report.ok else "myc_perf_pin: missing work-in-progress/myc-s0-baselines.tsv"
+let report = run ["test" "-f" "crux/myc-s0-baselines.tsv"]
+assert report.ok else "myc_perf_pin: missing crux/myc-s0-baselines.tsv"
 
-let header = run ["sh" "-c" "head -1 work-in-progress/myc-s0-baselines.tsv"]
+let header = run ["sh" "-c" "head -1 crux/myc-s0-baselines.tsv"]
 assert header.ok else "myc_perf_pin: header read failed"
 assert header.out contains "name" else "myc_perf_pin: bad header"
 assert header.out contains "elapsed_ms" else "myc_perf_pin: bad header"
 
-say "GREEN: myc_perf_pin — S0 baselines pinned · bound=5 · report=work-in-progress/myc-s0-baselines.tsv · no tuning"
+say "GREEN: myc_perf_pin — S0 baselines pinned · bound=5 · report=crux/myc-s0-baselines.tsv · no tuning"

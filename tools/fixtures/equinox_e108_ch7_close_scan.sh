@@ -10,11 +10,11 @@
 set -eu
 
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
-MAP=work-in-progress/EQUINOX_SEAT_MAP.md
+MAP=crux/EQUINOX_SEAT_MAP.md
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 PRIN=tools/gen/season/prin_scope.rish
 FASCIA_SH=tools/fixtures/fascia_metric_v0.sh
-REDS=work-in-progress/REDS.md
+REDS=crux/REDS.md
 ZERO=tools/fixtures/zero_view_scan.sh
 M3=tools/fixtures/oldness_census_scan.sh
 M4=tools/fixtures/radiant_h1_fence_scan.sh

@@ -14,9 +14,9 @@ DUTY=counsel/date/20260731/20260731-224453_amphora-cli-nested-equinox-charter.md
 ELDER=counsel/date/20260801/20260801-024355_e141-amphora-cli-equinox-charter.md
 README=amphora/README.md
 LEXICON=context/LEXICON.md
-MAP=work-in-progress/EQUINOX_SEAT_MAP.md
-REMEMBER=work-in-progress/REMEMBER.md
-REDS=work-in-progress/REDS.md
+MAP=crux/EQUINOX_SEAT_MAP.md
+REMEMBER=crux/REMEMBER.md
+REDS=crux/REDS.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 

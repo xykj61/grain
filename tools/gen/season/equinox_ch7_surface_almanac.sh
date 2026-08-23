@@ -30,7 +30,7 @@ entry = (
     "**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_ch7_surface_witness.rish` · **Stamp:** `"
     + stamp
     + "` · **Witness:** `tools/gen/season/equinox_ch7_surface_witness.rish` · "
-    "scan `tools/fixtures/equinox_ch7_surface_scan.sh` · pin `work-in-progress/EQUINOX_SEAT_MAP.md`\n"
+    "scan `tools/fixtures/equinox_ch7_surface_scan.sh` · pin `crux/EQUINOX_SEAT_MAP.md`\n"
     "Expected shelf ep044/ep045 · commence control/M5/M6/shed/M8/M9/saga-seat · "
     "meter e102–e105 · zero-view · REDS monotone · itinerary modes · "
     "fork not_consumed · shelf end ep045 · ABSENT refuses · baton breach 0. "

@@ -12,8 +12,8 @@ set -eu
 MODE=${1:-}
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 COUNSEL=counsel/date/20260731/20260731-214426_e119-close-seat-surfaces.md
-MAP=work-in-progress/EQUINOX_SEAT_MAP.md
-REMEMBER=work-in-progress/REMEMBER.md
+MAP=crux/EQUINOX_SEAT_MAP.md
+REMEMBER=crux/REMEMBER.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 ELDER=tools/gen/season/equinox_e118_metal_corrections_witness.rish

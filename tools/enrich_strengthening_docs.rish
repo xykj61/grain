@@ -24,7 +24,7 @@ assert zig_ver.ok else "pinned ziglang toolchain missing at vendor/zig-toolchain
 let real_before = run ["md5sum" "external-research/yonder/strengthening-compiler/0000_STRENGTHENING_LEXICON.md"]
 assert real_before.ok else "could not checksum the real lexicon file before the run"
 
-let crosswalk_path = "work-in-progress/992_strengthening_width_crosswalk.md"
+let crosswalk_path = "crux/992_strengthening_width_crosswalk.md"
 let crosswalk_before = run ["test" "-f" crosswalk_path]
 
 # Rebuild binary (gitignored under tools/bin/): rye build → tools/bin/enrich-strengthening-docs
@@ -65,7 +65,7 @@ assert after_first contains "## Rye std surface" else "first run did not add the
 assert after_first contains "## Width notes" else "first run did not add the width section"
 assert after_first contains "std.mem.eql" else "first run lost the backtick-wrapped std reference it was meant to find"
 
-let crosswalk_out = read-file "${work}/work-in-progress/992_strengthening_width_crosswalk.md"
+let crosswalk_out = read-file "${work}/crux/992_strengthening_width_crosswalk.md"
 assert crosswalk_out contains "9001" else "crosswalk output is missing the fixture pass row"
 
 let lexicon_out = read-file "${work}/external-research/yonder/strengthening-compiler/0000_STRENGTHENING_LEXICON.md"
@@ -80,7 +80,7 @@ assert real_after.ok else "could not checksum the real lexicon file after the ru
 assert real_after.out == real_before.out else "the real external-research/yonder/strengthening-compiler/0000_STRENGTHENING_LEXICON.md changed — this witness must never touch it"
 
 let crosswalk_after = run ["test" "-f" crosswalk_path]
-assert crosswalk_after.ok == crosswalk_before.ok else "the real work-in-progress/ gained or lost the crosswalk file — this witness must never touch it"
+assert crosswalk_after.ok == crosswalk_before.ok else "the real crux/ gained or lost the crosswalk file — this witness must never touch it"
 
 let cleanup = run ["rm" "-rf" work]
 assert cleanup.ok else "enrich_strengthening_docs fixture cleanup failed"

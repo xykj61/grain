@@ -25,7 +25,7 @@ entry = (
     "### 111. Equinox e107 seat map: corrected close path after seat 110 spent on e106; proposes seat 112 CLOSE CHOIR as check·test·prepare; bundle as crossing mode; shred Keaton-gated; ch5+ch6 close-seat row still parked.\n"
     "**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e107_seat_map_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/season/equinox_e107_seat_map_witness.rish` · scan `tools/fixtures/equinox_seat_map_scan.sh` · pin `work-in-progress/EQUINOX_SEAT_MAP.md`\n"
+    + "` · **Witness:** `tools/gen/season/equinox_e107_seat_map_witness.rish` · scan `tools/fixtures/equinox_seat_map_scan.sh` · pin `crux/EQUINOX_SEAT_MAP.md`\n"
     "Expected control_gate · seat_map 110 spent · 112 close choir proposed · "
     "bundle crossing mode · shred Keaton-gated · fork not_consumed · "
     "seats 97–110 · shelf end ep045 · baton breach 0. "

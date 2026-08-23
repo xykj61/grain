@@ -33,8 +33,8 @@ let tree = run ["sh" "-c" tree_cmd]
 say tree.out
 if tree.ok == false then say "(searcher exit non-zero — usually zero matches; required sweeps still print)"
 
-say "collision-guard: required sweep — work-in-progress/ready-to-ask-claude.md"
-let rtac = run ["sh" "-c" "grep -n -C 2 -i -- '${name}' work-in-progress/ready-to-ask-claude.md"]
+say "collision-guard: required sweep — crux/ready-to-ask-claude.md"
+let rtac = run ["sh" "-c" "grep -n -C 2 -i -- '${name}' crux/ready-to-ask-claude.md"]
 say rtac.out
 if rtac.ok == false then say "(no hits in RTAC)"
 

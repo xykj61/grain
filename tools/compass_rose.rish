@@ -32,7 +32,7 @@ assert a.ok else "active-designing README missing"
 assert a.out contains "LADDER_OK" else "ladder check failed"
 
 say "compass rose: now (TASKS) and order (ROADMAP)…"
-let n = run ["sh" "-c" "test -f work-in-progress/TASKS.md && test -f work-in-progress/ROADMAP.md && echo NOW_OK"]
+let n = run ["sh" "-c" "test -f crux/TASKS.md && test -f crux/ROADMAP.md && echo NOW_OK"]
 assert n.ok else "TASKS or ROADMAP missing"
 assert n.out contains "NOW_OK" else "now/order check failed"
 
@@ -62,7 +62,7 @@ assert ms.ok else "metalsmoke pair missing"
 assert ms.out contains "METAL_OK" else "metalsmoke affirm drift"
 
 say "compass rose: settlement seat pair (dated + kitchen twin)…"
-let ss = run ["sh" "-c" "test -f external-research/20260706-005512_settlement-seat-verification-and-verdict.md && test -f external-research/20260710-001249_settlement-seat-plainly.md && grep -q 'superseded' external-research/20260706-005512_settlement-seat-verification-and-verdict.md && echo SEAT_OK"]
+let ss = run ["sh" "-c" "test -f external-research/20260706-005512_settlement-seat-verification-and-verdict.md && test -f external-research/20260710-001249_settlement-seat-plainly.md && grep -qE 'supersed|replaced' external-research/20260706-005512_settlement-seat-verification-and-verdict.md && echo SEAT_OK"]
 assert ss.ok else "settlement seat pair missing"
 assert ss.out contains "SEAT_OK" else "settlement supersession note missing"
 

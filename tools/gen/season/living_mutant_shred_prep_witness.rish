@@ -8,7 +8,7 @@ say "shred-prep: Language EN — Class H fossils listed; cut not opened."
 say "shred-prep: Style Radiant — crawl deps · wait seat · accrete mutants."
 say "shred-prep: Lens TAME — Surface Season p34."
 
-let list = run ["test" "-f" "work-in-progress/SHRED_PREP.md"]
+let list = run ["test" "-f" "crux/SHRED_PREP.md"]
 assert list.ok else "shred-prep: SHRED_PREP.md missing"
 let seat = run ["test" "-f" "counsel/date/20260728/20260728-224716_surface-season-p32-living-mutant-shred-prep.md"]
 assert seat.ok else "shred-prep: p32 counsel seat missing"
@@ -19,12 +19,12 @@ say "shred-prep: lexicon..."
 let lex = run ["sh" "-c" "grep -q 'living mutant' context/LEXICON.md && grep -q 'writing fossil' context/LEXICON.md && grep -q 'shred-prep list' context/LEXICON.md && grep -q 'transitive writing crawl' context/LEXICON.md && echo LEX_OK"]
 assert lex.ok else "shred-prep: lexicon scan failed"
 assert lex.out contains "LEX_OK" else "shred-prep: living mutant · writing fossil · shred-prep · transitive crawl missing"
-let crawl = run ["sh" "-c" "grep -q 'transitive writing crawl' work-in-progress/SHRED_PREP.md && grep -q 'Wafer closure' work-in-progress/SHRED_PREP.md && grep -q '9 nodes' work-in-progress/SHRED_PREP.md && echo CRAWL_OK"]
+let crawl = run ["sh" "-c" "grep -q 'transitive writing crawl' crux/SHRED_PREP.md && grep -q 'Wafer closure' crux/SHRED_PREP.md && grep -q '9 nodes' crux/SHRED_PREP.md && echo CRAWL_OK"]
 assert crawl.ok else "shred-prep: wafer closure scan failed"
 assert crawl.out contains "CRAWL_OK" else "shred-prep: SHRED_PREP must carry wafer closure"
 
 say "shred-prep: Class H rows..."
-let rows = run ["sh" "-c" "grep -q '20260629-063512_realidream.md' work-in-progress/SHRED_PREP.md && grep -q '20260629-063512_the-graph-beneath-the-surface.md' work-in-progress/SHRED_PREP.md && grep -q '20260629-063512_lantern-lattice-anvil.md' work-in-progress/SHRED_PREP.md && grep -q '20260728-221253_lantern-lattice-anvil.md' work-in-progress/SHRED_PREP.md && grep -q '20260629-063512_the-wafer-and-the-sovereign-coin.md' work-in-progress/SHRED_PREP.md && grep -q '20260728-232511_lantern-lattice-kiln.md' work-in-progress/SHRED_PREP.md && echo CLASS_H"]
+let rows = run ["sh" "-c" "grep -q '20260629-063512_realidream.md' crux/SHRED_PREP.md && grep -q '20260629-063512_the-graph-beneath-the-surface.md' crux/SHRED_PREP.md && grep -q '20260629-063512_lantern-lattice-anvil.md' crux/SHRED_PREP.md && grep -q '20260728-221253_lantern-lattice-anvil.md' crux/SHRED_PREP.md && grep -q '20260629-063512_the-wafer-and-the-sovereign-coin.md' crux/SHRED_PREP.md && grep -q '20260728-232511_lantern-lattice-kiln.md' crux/SHRED_PREP.md && echo CLASS_H"]
 assert rows.ok else "shred-prep: Class H scan failed"
 assert rows.out contains "CLASS_H" else "shred-prep: Class H must list Kiln living + Anvil fossils"
 
@@ -37,7 +37,7 @@ assert noback.ok else "shred-prep: backlink ban scan failed"
 assert noback.out contains "CLEAN" else "shred-prep: living Status must not link back to fossil"
 
 say "shred-prep: shred stays RED..."
-let red = run ["sh" "-c" "grep -q 'shred RED' work-in-progress/SHRED_PREP.md && grep -q 'Class H' work-in-progress/SHRED_PREP.md && echo RED_OK"]
+let red = run ["sh" "-c" "grep -q 'shred RED' crux/SHRED_PREP.md && grep -q 'Class H' crux/SHRED_PREP.md && echo RED_OK"]
 assert red.ok else "shred-prep: RED pin scan failed"
 assert red.out contains "RED_OK" else "shred-prep: list must keep shred RED and Class H"
 
