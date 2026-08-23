@@ -108,8 +108,61 @@ if [ "$FAMILY" = "prove-red" ]; then
     esac
     rm -f "$ctl/left_v.rye" "$ctl/right_v.rye"
 
-    printf 'pub fn lone(a: u32) u32 {\n    return a;\n}\n' > "$ctl/two.rye"
-    printf 'pub fn lone(a: u32) u32 {\n    return a + 1;\n}\n' > "$ctl/three.rye"
+    # The queue must refuse a ladder where no two rungs write one body, rather
+    # than print an empty list and answer ok about its own blindness (REDS %97).
+    printf 'pub fn alone(a: u32) u32 {\n    return a;\n}\n' > "$ctl/solo_a.rye"
+    printf 'pub fn alone(a: u32) u32 {\n    return a + 9;\n}\n' > "$ctl/solo_b.rye"
+    out=$(LADDER_DIR="$ctl" sh "$0" queue 2>&1) || true
+    printf '%s\n' "$out" | sed 's/^/control-queue-empty: /'
+    case "$out" in
+        *verdict=no_foldable*) echo "RED_queue_blindness_refused_rather_than_empty" ;;
+        *) echo "verdict=prove_red_queue_answered_where_nothing_folds"; fails=1 ;;
+    esac
+    rm -f "$ctl/solo_a.rye" "$ctl/solo_b.rye"
+
+    # And the queue must rank by FALL rather than by carry, which is the whole
+    # reason it exists. The two controls are built so the orderings disagree:
+    # `broad` is twenty rungs of four lines -- carry 76, much the larger -- yet
+    # returns only (20 - 1) * (4 - 3) = 19, because a four-line body barely
+    # outgrows the three-line stub replacing it. `deep` is three rungs of
+    # twenty-one lines -- carry 42 -- and returns (3 - 1) * (21 - 3) = 36. A
+    # meter ordering by carry names broad first; this one must name deep,
+    # because a hand reading a carry list is exactly how the living queue came
+    # to miss three deep families for thirty laps (REDS %145).
+    i=1
+    while [ "$i" -le 20 ]; do
+        printf 'pub fn broad(a: u32) u32 {\n    _ = a;\n    return 1;\n}\n' > "$ctl/wide_$i.rye"
+        i=$((i + 1))
+    done
+    i=1
+    while [ "$i" -le 3 ]; do
+        {
+            printf 'pub fn deep(a: u32) u32 {\n'
+            j=1
+            while [ "$j" -le 18 ]; do printf '    _ = a;\n'; j=$((j + 1)); done
+            printf '    return a;\n}\n'
+        } > "$ctl/tall_$i.rye"
+        i=$((i + 1))
+    done
+    out=$(LADDER_DIR="$ctl" QUEUE_DEPTH=2 sh "$0" queue 2>&1) || true
+    printf '%s\n' "$out" | sed 's/^/control-queue-rank: /'
+    case "$out" in
+        *"QUEUE_ROW family=deep fall=36 folding=3 lines=21 stub=3 widens=0 carry=42"*)
+            case "$out" in
+                *"QUEUE_ROW family=broad fall=19 folding=20 lines=4 stub=3 widens=0 carry=76"*)
+                    case "$out" in
+                        *"QUEUE_OK head=deep fall=36"*)
+                            echo "RED_queue_ranked_by_fall_where_carry_ordered_the_other_way" ;;
+                        *) echo "verdict=prove_red_queue_named_the_wrong_head"; fails=1 ;;
+                    esac ;;
+                *) echo "verdict=prove_red_queue_lost_the_broad_family"; fails=1 ;;
+            esac ;;
+        *) echo "verdict=prove_red_queue_mispriced_the_deep_family"; fails=1 ;;
+    esac
+    i=1
+    while [ "$i" -le 20 ]; do rm -f "$ctl/wide_$i.rye"; i=$((i + 1)); done
+    i=1
+    while [ "$i" -le 3 ]; do rm -f "$ctl/tall_$i.rye"; i=$((i + 1)); done
 
     # The sink meter must refuse a directory holding no public function rather
     # than answer zero, since a zero and a blindness read identically (REDS %97).
@@ -222,6 +275,111 @@ if [ "$FAMILY" = "sink" ]; then
     done < "$work/hold"
 
     echo "SINK_OK total=$total below_fold_line=$sunk above_fold_line=$((total - sunk)) dir=$DIR"
+    exit 0
+fi
+
+# QUEUE mode -- which family returns the most, ranked rather than remembered.
+#
+# For thirty-odd laps this arc chose its next family from a shortlist a hand
+# kept in a witness, and the GREEN line said "the fall queue leads with" a name
+# off that list. A shortlist answers about the rows on it and stays silent
+# about every row nobody thought to add, so the claim was an impression wearing
+# a measurement's clothes -- the same shape REDS %130 booked for a single row's
+# cost, reappearing one level up at the ORDERING (REDS %145). `suits_path`
+# returns three hundred and fifty and had never once been asked.
+#
+# The rank is exact rather than sampled, because carry bounds fall from above.
+# A family of `rungs` rungs each holding `lines` lines returns
+# (folding - 1) * (lines - stub), and folding <= rungs while lines - stub <=
+# lines, so fall <= (rungs - 1) * lines = carry, always. Rank every family by carry,
+# measure fall down that order, and stop the moment the next carry falls to or
+# below the best fall already seen: nothing further down can beat it. So this
+# reads the whole field while opening only the handful of rows that could win.
+#
+# `carry` here is the carry scan's own number -- (rungs - 1) * lines, the lines
+# a lift would stop repeating -- so the two meters speak one arithmetic.
+#
+# QUEUE_DEPTH (default 12): how many ranked rows to print once the search ends.
+if [ "$FAMILY" = "queue" ]; then
+    depth=${QUEUE_DEPTH:-12}
+    work=$(mktemp -d)
+    trap 'rm -rf "$work"' EXIT
+
+    # Every top-level body in the ladder, keyed by name plus flattened text, so
+    # identical bodies group. Visibility leaves the key (REDS %144).
+    : > "$work/all"
+    for f in "$DIR"/*.rye; do
+        [ -f "$f" ] || continue
+        base=$(basename "$f")
+        [ "$base" = "$HARNESS" ] && continue
+        awk '
+            /^(pub )?fn [a-z_0-9]+\(/ && !p { p = 1; n = 0; body = ""; name = ($1 == "pub") ? $3 : $2; sub(/\(.*/, "", name) }
+            p { n = n + 1; keyed = $0; sub(/^pub /, "", keyed); body = body "\001" keyed }
+            p && /^}$/ { printf "%s\t%d\t%s\n", name, n, body; p = 0 }
+        ' "$f" >> "$work/all"
+    done
+
+    if [ ! -s "$work/all" ]; then
+        echo "QUEUE_REFUSED verdict=no_bodies dir=$DIR reason=no_rung_declares_a_function"
+        exit 1
+    fi
+
+    # One row per family of two or more identical bodies: name, rungs, lines,
+    # carry. Sorted by carry descending, which is the bound the search walks.
+    sort -t"$(printf '\t')" -k1,1 -k3,3 "$work/all" |
+        awk -F"\t" '
+            { key = $1 "\t" $3
+              if (key != prev) { flush(); prev = key; count = 0; nm = $1; ln = $2 }
+              count = count + 1 }
+            function flush() { if (count >= 2) printf "%s %d %d %d\n", nm, count, ln, (count - 1) * ln }
+            END { flush() }
+        ' | sort -k4,4nr -k1,1 > "$work/bycarry"
+
+    if [ ! -s "$work/bycarry" ]; then
+        echo "QUEUE_REFUSED verdict=no_foldable dir=$DIR reason=no_two_rungs_write_one_body"
+        exit 1
+    fi
+
+    # The threshold is the DEPTH-th best fall measured so far, not the best.
+    # Stopping at the best fall names the head correctly and truncates the tail
+    # wrongly: on the lap this mode was written, `bound_the_relay` returned 312
+    # and went unseen while `term_written` at 270 printed above it, because the
+    # search had already closed on a head of 350. A top-of-K list is complete
+    # only when nothing unexamined could displace its Kth row.
+    floor=0
+    examined=0
+    : > "$work/ranked"
+    while read -r name rungs lines carry; do
+        # The bound closes the search: carry bounds fall from above, so once a
+        # family's carry falls to the Kth-best fall, nothing below it can enter
+        # the printed list.
+        [ "$carry" -le "$floor" ] && break
+        row=$(sh "$0" "$name" 2>/dev/null | grep '^REACH_OK ' || true)
+        examined=$((examined + 1))
+        [ -n "$row" ] || continue
+        fall=$(printf '%s\n' "$row" | sed 's/.* fall=//')
+        widens=$(printf '%s\n' "$row" | sed 's/.* widens=\([0-9]*\) .*/\1/')
+        folding=$(printf '%s\n' "$row" | sed 's/.* folding=\([0-9]*\) .*/\1/')
+        stub=$(printf '%s\n' "$row" | sed 's/.* stub=\([0-9]*\) .*/\1/')
+        printf '%s %s %s %s %s %s %s\n' "$fall" "$name" "$folding" "$lines" "$stub" "$widens" "$carry" >> "$work/ranked"
+        floor=$(sort -k1,1nr "$work/ranked" | awk -v d="$depth" 'NR == d { print $1; found = 1 } END { if (!found) print 0 }')
+    done < "$work/bycarry"
+
+    if [ ! -s "$work/ranked" ]; then
+        echo "QUEUE_REFUSED verdict=no_fall dir=$DIR reason=no_family_returns_anything"
+        exit 1
+    fi
+
+    sort -k1,1nr -k2,2 "$work/ranked" | head -n "$depth" |
+        while read -r fall name folding lines stub widens carry; do
+            echo "QUEUE_ROW family=$name fall=$fall folding=$folding lines=$lines stub=$stub widens=$widens carry=$carry"
+        done
+
+    head=$(sort -k1,1nr -k2,2 "$work/ranked" | head -1)
+    hname=$(printf '%s\n' "$head" | awk '{print $2}')
+    hfall=$(printf '%s\n' "$head" | awk '{print $1}')
+    families=$(wc -l < "$work/bycarry" | tr -d ' ')
+    echo "QUEUE_OK head=$hname fall=$hfall examined=$examined families=$families dir=$DIR"
     exit 0
 fi
 
