@@ -20,7 +20,7 @@ Devotional, contemplative, or mystical pieces; founding visions and earned bened
 ## Discipline it keeps
 
 - **Register only, never a claim.** Like a Radiant pass, a Twilight pass holds numbers, paths, stamps, proper nouns, and modality counts exactly (`claim_preserve_witness`).
-- **The fifteen themes are archetype in-tree.** Their private source — the author's poems — lives in the withheld `twilight/` silo (verdict `personal`, never in the public seed); tracked seed-bound prose names no person and reproduces no personal art.
+- **The fifteen themes are archetype in-tree.** Their private source — the author's poems — lives in the `twilight/` silo on the author's own disk, held in **no repository at all** since the deep debride of `20260823.072824` removed it from every commit (verdict `personal`); tracked prose names no person and reproduces no personal art.
 - **Fifteen across the sky; nine over twenty-seven.** The palette grew nine → fifteen (`20260811`, Keaton's word) to match the **sky fractal `3·9·15·27`**; the original nine still double as nine navamsa (D9) groups of three across the 27 nakshatras / council d27 — dharma-essence per group. Calendar tie: `context/TWILIGHT_STYLE.md`.
 
 Canonical Cursor twin: `.cursor/rules/twilight-style.mdc`.
