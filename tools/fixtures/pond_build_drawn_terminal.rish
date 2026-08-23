@@ -7,6 +7,15 @@
 #   sh tools/fixtures/pond_build_drawn_terminal.sh
 
 say "build: witness — drawn-terminal compile (prepare → compile → prove)"
+
+# The build script exits 3, and only 3, when this machine carries no graphical link seam.
+# A Wayland application on a headless pier is a fact about the machine rather than the tree
+# (REDS %173), so the gate is reported and the witness stops here rather than reddening.
+let gate = run ["sh" "-c" "sh tools/fixtures/pond_build_drawn_terminal.sh >/dev/null 2>&1; test $? -eq 3"]
+if gate.ok then say "GATED: drawn-terminal wants a host with a display — no graphical link seam here."
+if gate.ok then say "GATED: run it on a Wayland host, or provision the seams — a NixOS rebuild, a hand's gate."
+if gate.ok then exit 0
+
 let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
 assert build.ok else "drawn_terminal build failed"
 assert build.out contains "build: prepare" else "build missing prepare phase"

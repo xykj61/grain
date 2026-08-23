@@ -60,9 +60,9 @@ fn run_selftest() !u8 {
 
     // Caravan table: agent-a owns state-a (rw), agent-b owns state-b (rw).
     var table: caps.CapabilityTable = .{};
-    const agent_a = try table.add_child("agent-a");
+    const agent_a = try table.add_dependent("agent-a");
     try agent_a.grant(caps.Capability.init(state_a, caps.right_read | caps.right_write));
-    const agent_b = try table.add_child("agent-b");
+    const agent_b = try table.add_dependent("agent-b");
     try agent_b.grant(caps.Capability.init(state_b, caps.right_read | caps.right_write));
     print("pool-p1: two agents, each owning its own state resource in Caravan's table\n", .{});
 
