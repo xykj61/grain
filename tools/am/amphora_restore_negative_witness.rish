@@ -1,0 +1,70 @@
+# tools/am/amphora_restore_negative_witness.rish — Q44: planted restore negatives.
+#
+# Three plants, each caught at its named wall:
+#   tampered seal_cargo  → seal unopened (walls / open refuse); no out-home
+#   truncated vessel     → stamp unverified; no out-home
+#   forged resin body    → cargo unproven after open; refuse named
+#
+#   rishi/bin/rishi run tools/am/amphora_restore_negative_witness.rish
+
+let season = "tools/fixtures/cellar_ring1_tree"
+let home = "/tmp/amphora_rneg_home"
+let vessel = "/tmp/amphora_rneg_home/v.bron"
+let tamp_sh = "tools/fixtures/amphora_tamper_seal_cargo.sh"
+
+let wipe = run ["rm" "-rf" home]
+assert wipe.ok else "rneg: home wipe"
+let mk = run ["mkdir" "-p" home]
+assert mk.ok else "rneg: home mkdir"
+
+let pour = run ["amphora/bin/amphora" "pour" season vessel]
+assert pour.ok else "rneg: seed pour must pass"
+
+# --- plant 1: tamper seal_cargo, then re-stamp so the seal wall is the one that speaks ---
+let bak = run ["sh" "-c" "cp /tmp/amphora_rneg_home/v.bron /tmp/amphora_rneg_home/v.bron.bak"]
+assert bak.ok else "rneg: bak must land"
+let tamp_prep = run ["sh" tamp_sh "/tmp/amphora_rneg_home/v.bron"]
+assert tamp_prep.ok else "rneg: tamper plant must prepare"
+let restamp = run ["amphora/bin/vessel-core" "sign" "/tmp/amphora_rneg_home/v.bron"]
+assert restamp.ok else "rneg: re-stamp after tamper must pass (isolates seal wall)"
+let tamp = run ["amphora/bin/amphora" "restore" vessel]
+assert (tamp.ok == false) else "rneg: tampered seal_cargo must refuse"
+assert tamp.err contains "seal unopened" else "rneg: tamper names seal unopened"
+let tamp_out = run ["sh" "-c" "test ! -e /tmp/amphora_rneg_home/v.bron.season"]
+assert tamp_out.ok else "rneg: tamper refusal must leave no out-home"
+say "plant_tamper_seal=refused"
+
+let heal1 = run ["sh" "-c" "cp /tmp/amphora_rneg_home/v.bron.bak /tmp/amphora_rneg_home/v.bron"]
+assert heal1.ok else "rneg: heal vessel after tamper"
+
+# --- plant 2: truncate vessel ---
+let trunc_prep = run ["sh" "-c" "cp /tmp/amphora_rneg_home/v.bron /tmp/amphora_rneg_home/v.bron.full; n=$(wc -c < /tmp/amphora_rneg_home/v.bron); head -c $((n/2)) /tmp/amphora_rneg_home/v.bron.full > /tmp/amphora_rneg_home/v.bron"]
+assert trunc_prep.ok else "rneg: truncate plant must prepare"
+let trunc = run ["amphora/bin/amphora" "restore" vessel]
+assert (trunc.ok == false) else "rneg: truncated vessel must refuse"
+assert trunc.err contains "stamp unverified" else "rneg: truncate names stamp unverified"
+let trunc_out = run ["sh" "-c" "test ! -e /tmp/amphora_rneg_home/v.bron.season"]
+assert trunc_out.ok else "rneg: truncate refusal must leave no out-home"
+say "plant_truncated=refused"
+
+let heal2 = run ["sh" "-c" "cp /tmp/amphora_rneg_home/v.bron.full /tmp/amphora_rneg_home/v.bron"]
+assert heal2.ok else "rneg: heal vessel after truncate"
+
+# --- plant 3: forge one resin body ---
+let forge_prep = run ["sh" "-c" "f=$(ls /tmp/amphora_rneg_home/resins | head -1); test x$f != x; printf 'FORGED-BYTES-NOT-THE-SEASON\n' > /tmp/amphora_rneg_home/resins/$f"]
+assert forge_prep.ok else "rneg: forge resin plant must prepare"
+let forge = run ["amphora/bin/amphora" "restore" vessel]
+assert (forge.ok == false) else "rneg: forged resin must refuse"
+assert forge.err contains "cargo unproven" else "rneg: forge names cargo unproven"
+say "plant_forged_digest=refused"
+
+# Clear any partial out-home the forge plant may have left mid-write.
+let clear = run ["sh" "-c" "rm -rf /tmp/amphora_rneg_home/v.bron.season"]
+assert clear.ok else "rneg: clear partial out-home"
+let heal3 = run ["amphora/bin/amphora" "pour" season vessel]
+assert heal3.ok else "rneg: re-pour heal must pass"
+let ok = run ["amphora/bin/amphora" "restore" vessel]
+assert ok.ok else "rneg: healed restore must pass"
+assert ok.err contains "restore complete" else "rneg: healed restore completes"
+
+say "GREEN: amphora_restore_negative — tamper · truncate · forged digest, each refused at its wall."

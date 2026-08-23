@@ -1,6 +1,6 @@
 # wov_tb_pin_check.rish — assert gratitude/tigerbeetle pin shape (no TB link).
 #
-# Invoked by tools/wov_tb_pin.rish from the repository root.
+# Invoked by tools/w/wov_tb_pin.rish from the repository root.
 
 let pin_full = "59f2b995b6db9116ed8b257a33e39705234b3a6e"
 let pin_short = "59f2b99"

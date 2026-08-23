@@ -1,6 +1,6 @@
 #!/bin/sh
 # tools/fixtures/vendored_license_scan.sh -- the per-file SPDX census over the vendored microkernel trees, printed as plain key=value
-# lines for tools/sel4_userlevel_license_witness.rish to assert on. Measurement, never memory: every number here is counted from the
+# lines for tools/s/sel4_userlevel_license_witness.rish to assert on. Measurement, never memory: every number here is counted from the
 # files on disk at run time.
 #
 # Why per-file rather than per-project: seL4 splits its licensing at the kernel boundary -- GPL-2.0 kernel, BSD-2-Clause userlevel -- so

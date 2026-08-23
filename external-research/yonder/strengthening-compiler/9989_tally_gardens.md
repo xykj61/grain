@@ -37,7 +37,7 @@ Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
 |------|-------|--------|
 | `tally/gardens.rye` | authored Tier A widths | done |
 | `rye/tests/tally_gardens_test.rye` | witness program | done |
-| `tools/parity.rish` | witness registered | done |
+| `tools/p/parity.rish` | witness registered | done |
 | `external-research/yonder/strengthening-compiler/9989_tally_gardens.md` | pass record + audited surfaces | done |
 | `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9989 | done |

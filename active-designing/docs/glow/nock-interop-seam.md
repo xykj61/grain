@@ -19,7 +19,7 @@ Glow's value model is Grain's six shapes. Nock's world is **nouns**: every value
 
 | Crossing | Law | Witness / module |
 |----------|-----|------------------|
-| Truth polarity | Glow ambient = Zig `bool`; Nock loobean 0=yes / 1=no | [`truth_semantics.rye`](../../../glow/truth_semantics.rye) · [`glow_truth_semantics_witness`](../../../tools/glow_truth_semantics_witness.rish) |
+| Truth polarity | Glow ambient = Zig `bool`; Nock loobean 0=yes / 1=no | [`truth_semantics.rye`](../../../glow/truth_semantics.rye) · [`glow_truth_semantics_witness`](../../../tools/g/glow_truth_semantics_witness.rish) |
 | Interpreter | Opcodes 0–11, depth-bounded eval | [`glow/nock/`](../../../glow/nock/README.md) pin |
 | Role | Second backend only | Seated in `glow/nock/README.md` and the RISC-V revival brief |
 | eq mirror (firstborn) | desk and formula answer as one on 32·31·33; raw loobean read beside the product | [`nock_glow_mirror_witness`](../../../glow/nock/nock_glow_mirror_witness.rye) |

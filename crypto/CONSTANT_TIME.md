@@ -103,7 +103,7 @@ claims none.
   *posture* — a property of the code — and books the measurement that would earn a
   timing claim.
 - It does **not** weaken any correctness or parity claim. Those are GREEN, re-provable
-  by `tools/crypto_suite_witness.rish`, and independent of timing.
+  by `tools/cr/crypto_suite_witness.rish`, and independent of timing.
 - It does **not** hold or touch a real key. Every witness runs over TEST keys and the
   RFC's public vectors. Signing or agreeing with the maintainer's own identity key
   stays the custody gate: the library builds and verifies; it never holds the key.

@@ -33,7 +33,7 @@ The sum itself is ALES3's mixer discipline unchanged — each scaled sample runs
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_crossfade_witness.rish`: the overlap **begins as pure outgoing and ends as pure incoming** (seamless splice); the **center holds equal power** — each side `0.707·den`, distinctly louder than a linear crossfade's `0.5·den`, the audible proof the curve is angular; crossing a clip with **itself** holds constant loudness across the whole overlap (the equal-power promise); a loud overlap **saturates** rather than wraps; the weights match ALES11's pan split exactly (the law is one, field and time); a length mismatch and a too-short overlap each refuse `BadRange` by name. Purely local — no socket, no network, no keys, no funds, no real device, no real speaker.
+`tools/al/ales_crossfade_witness.rish`: the overlap **begins as pure outgoing and ends as pure incoming** (seamless splice); the **center holds equal power** — each side `0.707·den`, distinctly louder than a linear crossfade's `0.5·den`, the audible proof the curve is angular; crossing a clip with **itself** holds constant loudness across the whole overlap (the equal-power promise); a loud overlap **saturates** rather than wraps; the weights match ALES11's pan split exactly (the law is one, field and time); a length mismatch and a too-short overlap each refuse `BadRange` by name. Purely local — no socket, no network, no keys, no funds, no real device, no real speaker.
 
 ## The road on
 

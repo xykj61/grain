@@ -1,0 +1,43 @@
+# rs3_launch_cursor.rish — RS-3 witness: launch-cursor reads flags from args.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/rs3_launch_cursor.rish
+
+let default_run = run ["rishi/bin/rishi" "run" "tools/fixtures/rs3_launch_apprun.rish"]
+assert default_run.ok else "default apprun must resolve"
+assert default_run.out contains "squashfs-root/AppRun" else "default apprun path"
+
+let custom = run ["rishi/bin/rishi" "run" "tools/fixtures/rs3_launch_apprun.rish" "--appimage" "custom/AppRun"]
+assert custom.ok else "custom --appimage must resolve"
+assert custom.out contains "custom/AppRun" else "custom apprun path"
+
+let extract = run ["rishi/bin/rishi" "run" "tools/fixtures/rs3_launch_extract.rish" "--extract" "./Cursor-3.11.13-x86_64.AppImage" "--gpu"]
+assert extract.ok else "extract+gpu flags must resolve without UndefinedName"
+assert extract.out contains "extract:./Cursor-3.11.13-x86_64.AppImage" else "extract path"
+assert extract.out contains "gpu:yes" else "gpu flag"
+
+let gpu_only = run ["rishi/bin/rishi" "run" "tools/fixtures/rs3_launch_extract.rish" "--gpu"]
+assert gpu_only.ok else "--gpu alone must not UndefinedName on image"
+assert gpu_only.out contains "gpu:yes" else "gpu-only flag"
+assert gpu_only.out contains "apprun:squashfs-root/AppRun" else "gpu-only default apprun"
+
+# --cursor on a .AppImage resolves to extract; on AppRun resolves to apprun.
+let cursor_img = run ["rishi/bin/rishi" "run" "tools/fixtures/rs3_launch_extract.rish" "--cursor" "./Cursor-3.13.10-x86_64.AppImage" "--gpu"]
+assert cursor_img.ok else "--cursor AppImage must resolve"
+assert cursor_img.out contains "extract:./Cursor-3.13.10-x86_64.AppImage" else "--cursor AppImage extract path"
+assert cursor_img.out contains "gpu:yes" else "--cursor AppImage gpu"
+
+let cursor_run = run ["rishi/bin/rishi" "run" "tools/fixtures/rs3_launch_extract.rish" "--cursor" "custom/AppRun"]
+assert cursor_run.ok else "--cursor AppRun must resolve"
+assert cursor_run.out contains "apprun:custom/AppRun" else "--cursor AppRun path"
+
+# macOS twin: --cursor .app → Contents/MacOS/Cursor; bare path stays bare.
+let mac_app = run ["rishi/bin/rishi" "run" "tools/fixtures/rs3_launch_macos_cursor.rish" "--cursor" "/Applications/Cursor.app"]
+assert mac_app.ok else "macOS --cursor .app must resolve"
+assert mac_app.out contains "app_bin:/Applications/Cursor.app/Contents/MacOS/Cursor" else "macOS .app → binary"
+
+let mac_bin = run ["rishi/bin/rishi" "run" "tools/fixtures/rs3_launch_macos_cursor.rish" "--cursor" "/opt/Cursor.app/Contents/MacOS/Cursor"]
+assert mac_bin.ok else "macOS --cursor binary must resolve"
+assert mac_bin.out contains "app_bin:/opt/Cursor.app/Contents/MacOS/Cursor" else "macOS bare binary"
+
+say "GREEN: RS-3 — launch-cursor and macOS jail read --cursor from args."

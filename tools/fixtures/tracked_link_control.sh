@@ -18,7 +18,7 @@
 # USAGE
 #   sh tools/fixtures/tracked_link_control.sh
 #
-# Driven by tools/tracked_link_witness.rish. Run from the repository root.
+# Driven by tools/t/tracked_link_witness.rish. Run from the repository root.
 
 set -eu
 

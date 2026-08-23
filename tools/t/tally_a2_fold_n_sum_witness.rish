@@ -1,0 +1,48 @@
+# tools/t/tally_a2_fold_n_sum_witness.rish — Ashvini a2: list fold widens (STOA335).
+#
+#   rishi/bin/rishi run tools/t/tally_a2_fold_n_sum_witness.rish
+#
+# Pair (STOA333) stays green. Triple is the first widen. Quad proves emit is N-wide
+# across the closed `$:` allowlist — Mantra's Weave shape, not a third verb.
+
+say "a2-n-sum: Language EN — list fold past two fields (STOA335)."
+say "a2-n-sum: Lens TAME — triple · quad; pair neighbor; wrong nest refuses."
+
+let zig = "vendor/zig-toolchain/zig"
+let triple = "src/lib/gate-tally-fold-triple-sum.glow"
+let quad = "src/lib/gate-tally-fold-quad-sum.glow"
+
+say "a2-n-sum: empty triple (0 0 0) answers 0..."
+let t0 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" triple "0" "0" "0"]
+assert t0.ok else "a2-n-sum: empty triple failed to run"
+assert t0.out contains "EXIT:0" else "a2-n-sum: empty triple did not exit 0"
+assert t0.out contains "0" else "a2-n-sum: empty triple did not speak 0"
+
+say "a2-n-sum: within triple (1 2 3) answers 6..."
+let t1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" triple "1" "2" "3"]
+assert t1.ok else "a2-n-sum: triple accept failed to run"
+assert t1.out contains "EXIT:0" else "a2-n-sum: triple accept did not exit 0"
+assert t1.out contains "6" else "a2-n-sum: triple accept did not speak 6"
+
+say "a2-n-sum: empty quad (0 0 0 0) answers 0..."
+let q0 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" quad "0" "0" "0" "0"]
+assert q0.ok else "a2-n-sum: empty quad failed to run"
+assert q0.out contains "EXIT:0" else "a2-n-sum: empty quad did not exit 0"
+assert q0.out contains "0" else "a2-n-sum: empty quad did not speak 0"
+
+say "a2-n-sum: within quad (1 1 1 1) answers 4..."
+let q1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" quad "1" "1" "1" "1"]
+assert q1.ok else "a2-n-sum: quad accept failed to run"
+assert q1.out contains "EXIT:0" else "a2-n-sum: quad accept did not exit 0"
+assert q1.out contains "4" else "a2-n-sum: quad accept did not speak 4"
+
+say "a2-n-sum: sum under @u32 must refuse (wrong nest)..."
+let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools/fixtures/gate-fold-sum-on-u32.glow" "3"]
+assert plant.err contains "SampleDoesNotNest" else "a2-n-sum: wrong-nest plant was accepted"
+
+say "a2-n-sum: pair neighbor still green (3 5 → 8)..."
+let pair = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/lib/gate-tally-fold-pair-sum.glow" "3" "5"]
+assert pair.ok else "a2-n-sum: pair regression failed"
+assert pair.out contains "8" else "a2-n-sum: pair did not speak 8"
+
+say "GREEN: a2 N-sum fold — triple · quad; pair stands; wrong nest refuses."

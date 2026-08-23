@@ -23,7 +23,7 @@ for p in \
   rishi/src/tally_copy.rye \
   rishi/src/parse_int.rye \
   mandi/tally_copy.rye \
-  tools/kumara.rye
+  tools/rye/kumara.rye
 do
   if [ ! -e "$p" ]; then
     echo "$p"

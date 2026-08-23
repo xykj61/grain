@@ -3,7 +3,7 @@
 **Stamp:** `20260728.033820` (sponsor) · seat `20260728.033404`  
 **Voice:** Quin  
 **Kind:** fund-prep page one — Shyu; Hyundai honor sponsor; Wayne dedication held  
-**Generator:** `tools/gen_shyu_fund_prep.rish`
+**Generator:** `tools/g/gen_shyu_fund_prep.rish`
 
 ---
 

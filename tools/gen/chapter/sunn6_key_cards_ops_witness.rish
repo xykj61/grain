@@ -12,7 +12,7 @@ assert ops.ok else "sunn6: first-day-personal-ops.md ABSENT"
 let cards = run ["test" "-f" "manual/guides/key-cards-setup.md"]
 assert cards.ok else "sunn6: key-cards-setup.md ABSENT"
 
-let ex = run ["test" "-f" "tools/key-card.conf.example"]
+let ex = run ["test" "-f" "tools/k/key-card.conf.example"]
 assert ex.ok else "sunn6: key-card.conf.example ABSENT"
 
 let ops_body = read-file "manual/guides/first-day-personal-ops.md"
@@ -26,22 +26,22 @@ assert cards_body contains "FP_SSH_SECOND" else "sunn6: cards want FP_SSH_SECOND
 assert cards_body contains "ssh_second.svg" else "sunn6: cards want ssh_second.svg"
 assert cards_body contains "SOURCE.md" else "sunn6: cards want SOURCE cite"
 
-let conf = read-file "tools/key-card.conf.example"
+let conf = read-file "tools/k/key-card.conf.example"
 assert conf contains "FP_SSH_SECOND" else "sunn6: example want FP_SSH_SECOND"
 assert conf contains "FP_SSH_GITHUB" else "sunn6: example want FP_SSH_GITHUB"
 assert conf contains "KEY_SSH_SECOND" else "sunn6: example want KEY_SSH_SECOND"
 assert (conf contains "FP_SSH_CODEBERG=") == false else "sunn6: living example must not declare FP_SSH_CODEBERG="
 
-let sh = read-file "tools/make-key-card.sh"
+let sh = read-file "tools/m/make-key-card.sh"
 assert sh contains "FP_SSH_SECOND" else "sunn6: linux script want SECOND"
 assert sh contains "SSH · GitHub" else "sunn6: linux script want GitHub label"
 assert sh contains "FP_SSH_CODEBERG" else "sunn6: linux script want legacy alias"
 
-let mac = read-file "tools/make_key_card_macos.sh"
+let mac = read-file "tools/m/make_key_card_macos.sh"
 assert mac contains "FP_SSH_SECOND" else "sunn6: macos script want SECOND"
 assert mac contains "SSH · Second" else "sunn6: macos script want Second label"
 
-let audit = read-file "tools/key_card_audit.sh"
+let audit = read-file "tools/k/key_card_audit.sh"
 assert audit contains "KEY_SSH_SECOND" else "sunn6: audit want KEY_SSH_SECOND"
 assert audit contains "Second SSH" else "sunn6: audit want Second SSH prose"
 

@@ -275,7 +275,7 @@ fn run_selftest() !u8 {
         "now: the RFC 8439 known-answers (the §2.3.2 block for counter 1 AND the §2.4.2 encryption of the RFC's own 114-byte plaintext) " ++
         "match hex for hex and decrypt round-trips exactly, and our authored Rye equals Zig's independent std.crypto ChaCha20IETF " ++
         "byte-for-byte over the empty message, a 5-byte input, an exact-64-byte boundary, and a 200-byte multi-block input at a raised " ++
-        "counter. Monocypher-source parity is landed: tools/crypto_monocypher_chacha20_parity_witness.rish compiles the vendored " ++
+        "counter. Monocypher-source parity is landed: tools/cr/crypto_monocypher_chacha20_parity_witness.rish compiles the vendored " ++
         "Monocypher fresh and diffs its crypto_chacha20_ietf keystream and ciphertext against this cipher byte-for-byte over the RFC's " ++
         "§2.3.2 block, §2.4.2 encryption, and those same block edges. A length-mismatched or over-long call refuses before a byte is enciphered. Purely local arithmetic — the " ++
         "primitive calls no std.crypto, the key and nonce are the RFC's public vectors, no real secret, no signature, no network, no " ++

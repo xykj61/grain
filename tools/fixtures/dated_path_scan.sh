@@ -3,7 +3,7 @@
 #
 # WHY. Every folded room leaves references behind that point at the flat path a file used to
 # hold. This walks every dated reference in the field, resolves each the way a reader would,
-# and reports how many still land. Driven by tools/dated_path_witness.rish.
+# and reports how many still land. Driven by tools/d/dated_path_witness.rish.
 #
 # WHAT A DATED REFERENCE IS. Any string shaped YYYYMMDD-HHMMSS_sprig.ext, with an optional
 # directory prefix and any number of leading ../ segments.
@@ -16,7 +16,7 @@
 #      a sibling and a day fold is what separated the siblings
 #   4. by basename across every tracked file -- the recovery the full stamp buys
 #
-# Reading 3 was missing here for one lap while `tools/dated_path_resolve.rish` already had it,
+# Reading 3 was missing here for one lap while `tools/d/dated_path_resolve.rish` already had it,
 # and the two instruments disagreed the moment four rooms folded: 82 references the resolver
 # recovers by computation were reported ambiguous by this scan, because the same basename exists
 # in two rooms and the scan had thrown away the room the reference itself names. A census that

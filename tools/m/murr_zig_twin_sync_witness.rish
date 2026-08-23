@@ -1,0 +1,20 @@
+# murr_zig_twin_sync_witness.rish — MUR module-wave step 7 · rye/zig twin discipline.
+#
+# Rye is the authored surface. The toolchain bridges `.rye` → adjacent `.zig`
+# for compile, then clears the bridge (`*.rye.zig` gitignored). Standalone
+# tracked `murr_core.zig` stays ABSENT on purpose. This witness proves the
+# living rename spine does not leave mala_* twin debt.
+#
+#   rishi/bin/rishi run tools/m/murr_zig_twin_sync_witness.rish
+
+say "murr-zig-twin: Language EN — MUR rye/zig twin sync (module step 7)."
+say "murr-zig-twin: Style Radiant — rye authored · zig emit bridge · no mala drift."
+say "murr-zig-twin: Lens TAME — prove absence of tracked zig twin debt."
+
+let probe = run ["bash" "tools/fixtures/murr_zig_twin_sync.sh"]
+assert probe.ok else "murr zig twin sync REFUSE — see stderr"
+assert probe.out contains "witness:murr-zig-twin GREEN" else "murr zig twin missing GREEN witness line"
+assert probe.out contains "GREEN: murr-zig-twin" else "murr zig twin missing GREEN summary"
+say probe.out
+
+say "GREEN: MUR zig twin sync — rye authored surface; emit bridge; mala twin debt clear."

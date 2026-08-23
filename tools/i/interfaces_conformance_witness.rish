@@ -1,0 +1,39 @@
+# interfaces_conformance_witness.rish — the reference module keeps the interface shape.
+#
+# Acme DX dev season, interfaces surface · 20260811. The interfaces-surface contract
+# (active-designing/date/20260811/20260811-170901_acme-dx-interfaces-surface-contract.md) names the
+# shape a Grain module presents: an API (opening triad, a named bound, invariant
+# asserts, a snake_case verb), a CLI (a selftest verb that greens), and a witness. This
+# proves the teaching reference — manual/tutorials/greet.rye — still keeps that shape,
+# so if the reference a newcomer copies ever drifts from the contract, a machine reds,
+# not the newcomer's first day.
+#
+#   rishi/bin/rishi run tools/i/interfaces_conformance_witness.rish
+
+# --- API surface: the four marks the contract requires ---
+let triad = run ["sh" "-c" "grep -q 'const std = @import' manual/tutorials/greet.rye && grep -q 'const assert = std.debug.assert' manual/tutorials/greet.rye && grep -q 'const print = std.debug.print' manual/tutorials/greet.rye"]
+assert triad.ok else "interfaces: greet.rye is missing the opening triad (std/assert/print)"
+
+let bound = run ["sh" "-c" "grep -qE 'pub const max_' manual/tutorials/greet.rye"]
+assert bound.ok else "interfaces: greet.rye has no named max_ bound"
+
+let inv = run ["sh" "-c" "test $(grep -c 'invariant:' manual/tutorials/greet.rye) -ge 2"]
+assert inv.ok else "interfaces: greet.rye has fewer than two // invariant: asserts"
+
+let verb = run ["sh" "-c" "grep -qE 'pub fn [a-z]' manual/tutorials/greet.rye"]
+assert verb.ok else "interfaces: greet.rye has no snake_case pub fn verb"
+
+# --- CLI surface: the binary answers selftest with a GREEN line ---
+let zig = "/home/keeper/grain/vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} rye/bin/rye build manual/tutorials/greet.rye -femit-bin=tools/.build/greet"]
+assert build.ok else "interfaces: greet.rye did not build"
+
+let sel = run ["tools/.build/greet" "selftest"]
+assert sel.ok else "interfaces: greet selftest did not exit 0"
+assert (sel.err contains "GREEN") else "interfaces: greet selftest is not GREEN"
+
+# --- witness surface: the reference module has its own witness ---
+let wit = run ["sh" "-c" "test -f tools/f/first_hour_witness.rish"]
+assert wit.ok else "interfaces: the reference module has no witness (tools/f/first_hour_witness.rish)"
+
+say "GREEN: interfaces conformance — the reference module keeps the contract's shape: opening triad, a named bound, invariant asserts, a snake_case verb, a selftest that greens, and a witness."

@@ -62,7 +62,7 @@ Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
 |------|-------|--------|
 | `rye/lib/std/crypto/timing_safe.zig` | `eql` — Phase 4 `usize` seam policy applied | done |
 | `rye/tests/crypto_timing_safe_eql_test.rye` | witness program | done |
-| `tools/parity.rish` | witness registered | done |
+| `tools/p/parity.rish` | witness registered | done |
 | `external-research/yonder/strengthening-compiler/9937_crypto_timing_safe_eql.md` | pass record + audited surfaces | done |
 | `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9937 | done |

@@ -1,0 +1,121 @@
+# caravan_relay_witness.rish -- Caravan chained-relay witness.
+#
+# Proves what opens the moment one domain holds two roles. Every ring in
+# this arc until now was one hop wide: each domain either asked or answered,
+# and the region it wrote said which. `serial_relay.bron` seats a middle --
+# `relay_virt` answers `client` and asks `backend` in the same run.
+#
+# Three findings ride here.
+#
+# The shape is derived, never declared. A region with exactly one writer and
+# one reader is a directed flow; five flows fall out of ten grants; and the
+# one domain that spans two peers is the relay, named by the document's own
+# arithmetic rather than by a role word.
+#
+# A chain cannot deadlock, because no verb waits. The client asks a second
+# time while nothing at all has been answered, and the relay forwards that
+# new pair with four asks standing unanswered behind it.
+#
+# And the isolation has a price worth naming. `client` and `backend` share
+# no channel and no region, which is exactly what keeps two hops from
+# collapsing into one -- yet it leaves the client nothing to attest the far
+# end with. The author in an answer reaches it as a claim taken on the
+# relay's word. Memory attests a neighbor; a stranger wants a signature the
+# bytes carry themselves.
+#
+# Both RED paths were proven on metal before this witness was written.
+# Making the relay wait until its backlog cleared -- the blocking door --
+# stopped the second forwarding pass dead at `QueueFull` with two asks in
+# hand and the whole chain frozen behind it. Opening a back channel between
+# the two ends (a region granted rw to `backend` and r to `client`) made
+# three domains span two peers, and the shape check refused a chain with no
+# single middle.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS %76 / %85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_relay_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/relay"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/relay.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan relay build failed"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+# Thirty-six rungs once ran a shared caravan/bin/read without building it, so the whole
+# arc was green only on a tree some earlier run had left warm. A witness owns what it
+# runs -- and, since REDS %133, the path it runs it from: eighty witnesses built that
+# one reader to one name, so two running at once contended for a single file and the
+# loser reddened a green tree. This one lands in caravan/bin/relay_read.
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/relay_read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+
+# The first declaration in this arc with a middle domain: three domains, two
+# channels, five directed regions, ten grants.
+let decl = run ["sh" "-c" "caravan/bin/relay_read caravan/systems/serial_relay.bron 2>&1"]
+assert decl.ok else "the chain declaration could not be read"
+assert decl.out contains "system serial_relay" else "the chain declaration lost its name"
+assert decl.out contains "domains 3 -- channels 2 -- regions 5 -- grants 10" else "the chain declaration changed shape"
+assert decl.out contains "verdict: whole" else "the chain declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan relay selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan relay selftest not GREEN"
+assert test.out contains "a chain crosses two seams without waiting, and the far end is taken on the relay's word" else "the relay claim did not close"
+
+# The wire holds every step to its own verb's shape. A forwarding pass
+# without the region it counts backlog in, a collecting pass handed a peer
+# its verb never names, an unnamed verb, and a padded count are each refused
+# rather than run against whatever names they happened to bring.
+assert test.out contains "the wire holds every step to its verb's own shape, 3 hops and 2 peers here" else "the plan wire did not read back"
+
+# The shape, derived from the grants before a single process runs.
+assert test.out contains "5 directed flows derived from 10 grants, with no role word declared" else "the flows were not derived from the grants"
+assert test.out contains "relay_virt spans 2 peers and is the only domain that does -- the middle, by arithmetic" else "the middle domain was not found by arithmetic"
+assert test.out contains "client and backend share no region and no channel -- the two ends never meet" else "the two ends of the chain were not held apart"
+
+# The crux, read as it happens: the client asks again while nothing stands
+# answered, and the relay forwards the new pair with a full backlog behind
+# it. The blocking RED probe stopped exactly here.
+assert test.out contains "client: asked 2, head now 2" else "the first pair was never asked"
+assert test.out contains "relay_virt: forwarded 2, 2 awaiting an answer" else "the first pair was never forwarded"
+assert test.out contains "client: asked 2, head now 4" else "the second pair was never asked"
+assert test.out contains "relay_virt: forwarded 2, 4 awaiting an answer" else "a relay waited on its own backlog"
+
+# The far end answers the origin each ask named, and the relay carries every
+# answer back byte for byte rather than composing one of its own.
+assert test.out contains "backend: answered 4 for the origin each ask named" else "the far end did not answer the origin"
+assert test.out contains "relay_virt: delivered 4 unchanged" else "the relay did not carry the answers whole"
+
+# And the honest finding: the client reads the far end's name out of the
+# bytes and reports it as exactly what it is.
+assert test.out contains "client: collected 4, each claiming backend -- a claim, never an attestation" else "the client did not name the far end as a claim"
+
+# The whole chain's arithmetic, read from the one domain that sees both ends.
+assert test.out contains "relay_virt: asked 4, forwarded 4, answered 4, delivered 4, taken 4" else "the chain did not settle hop for hop"
+assert test.out contains "relay_virt: every hop settled at 4 between client and backend" else "the chain did not settle end to end"
+assert test.out contains "4 directed bells provisioned silent across 2 declared channels" else "the run did not start silent both ways"
+assert test.out contains "4 asks crossed two seams and came home, 2 of them asked while none stood answered" else "the run did not carry a chain that never waited"
+assert test.out contains "every hop settled at 4, and no domain ever waited on another" else "the relay claim did not close"
+
+# The wall that keeps two hops two hops long: the far end holds no grant at
+# all on the near end's memory, so the reach is refused before any
+# permission is even compared.
+assert test.out contains "backend: shortcut across 1 hop(s) -- NotGranted" else "the far end reached the near end's memory"
+assert test.out contains "the far end holds no grant on the near end's memory -- NotGranted" else "the shortcut wall did not close"
+
+# And the wall that keeps the origin honest: a relay that could author the
+# asks it forwards would make every origin its own invention.
+assert test.out contains "relay_virt: forge across 1 hop(s) -- WriteDenied" else "a relay authored the asks it carries"
+assert test.out contains "the relay holds read alone on the asks it carries -- WriteDenied" else "the origin wall did not close"
+
+say "GREEN: Caravan relay witness passed."

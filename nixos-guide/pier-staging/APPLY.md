@@ -9,7 +9,7 @@
 - `vim`, `neovim`, `kakoune` on the system PATH  
 - `cursor-cli` overlay → upstream `2026.08.04-aaa8809` (patchelf'd), past nixpkgs 26.05's May pin  
 
-## From host tmux (`pier` session, **outside** `./tools/agent-jail.sh`)
+## From host tmux (`pier` session, **outside** `./tools/ag/agent-jail.sh`)
 
 ```bash
 sudo cp -a /etc/nixos/configuration.nix /etc/nixos/configuration.nix.bak-pre-editors-cursor

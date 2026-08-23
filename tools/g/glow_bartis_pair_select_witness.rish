@@ -1,0 +1,34 @@
+# tools/g/glow_bartis_pair_select_witness.rish — STOA341: face-valued arms.
+#
+#   rishi/bin/rishi run tools/g/glow_bartis_pair_select_witness.rish
+#
+# An arm may now answer with a face instead of a literal — min and max become
+# one desk each, and every vane's clamp is a select away. Strangers still refuse.
+
+say "341: max fixture — the larger of the demo pair answers..."
+let f1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-pair-max.glow"]
+assert f1.ok else "341: max fixture failed"
+assert f1.out contains "GREEN" else "341: max fixture not GREEN"
+
+say "341: min fixture — the smaller answers..."
+let f2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-pair-min.glow"]
+assert f2.ok else "341: min fixture failed"
+assert f2.out contains "GREEN" else "341: min fixture not GREEN"
+
+say "341: argv — max both ways, min once..."
+let a1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-pair-max.glow" "9" "4"]
+assert a1.ok else "341: max 9 4 failed"
+let a2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-pair-max.glow" "4" "9"]
+assert a2.ok else "341: max 4 9 failed"
+let a3 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-pair-min.glow" "4" "9"]
+assert a3.ok else "341: min 4 9 failed"
+
+say "341: literal arms unbroken — the eq family still speaks..."
+let lg = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-pair-eq-faces.glow" "7" "7"]
+assert lg.ok else "341: eq-faces regression"
+
+say "341: stranger arm names no face — refuse..."
+let st = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-pair-stranger-arm-refuse.glow"]
+assert (st.ok == false) else "341: stranger arm must refuse"
+
+say "GREEN: STOA341 — arms select faces; min and max are one desk each; strangers refuse; the walls can finally answer with what they hold."

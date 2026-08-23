@@ -159,7 +159,7 @@ Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
 | `misc` | `count` — co-strengthened in this pass | pending |
 | `rye/lib/std/mem.zig` | `countScalar` — co-strengthened in this pass | pending |
 | `rye/tests/mem_count_test.rye` | witness program | pending |
-| `tools/parity.rish` | witness registered | pending |
+| `tools/p/parity.rish` | witness registered | pending |
 | `external-research/yonder/strengthening-compiler/9951_mem_count.md` | pass record + audited surfaces | pending |
 | `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | pending |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9951 | pending |

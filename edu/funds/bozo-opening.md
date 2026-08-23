@@ -3,7 +3,7 @@
 **Stamp:** `20260730.150702` (POLE · DJINN executive) · Helen dedication `20260728.035025` · Linn seat `20260728.034317`  
 **Voice:** Kyri  
 **Kind:** fund-prep page one — grow the seat; no deploy  
-**Generator:** `tools/gen_bozo_fund_prep.rish`
+**Generator:** `tools/g/gen_bozo_fund_prep.rish`
 
 ---
 

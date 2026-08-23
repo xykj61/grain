@@ -15,7 +15,7 @@
 #
 # EXPECTED: drift_refused=yes, agreeing_free=yes, voice_free=yes, status_free=yes.
 #
-# Driven by tools/banner_room_witness.rish. Run from the repository root.
+# Driven by tools/b/banner_room_witness.rish. Run from the repository root.
 
 set -eu
 

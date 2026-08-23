@@ -30,7 +30,7 @@ Errors are ALES2's `timeline.EditError` reused whole — the stereo join, like t
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_stereo_join_witness.rish`: a five-sample master joined to a five-sample span over a two-sample overlap lands both channels at length 8 and still aligned; each channel carries its own audio through its own equal-power seam (left crossing 1000→200, right crossing 4000→800), its seam head pure outgoing and seam tail pure incoming with its own remainder appended; a full overlap is a pure crossfade with nothing appended in both channels; and an unequal-length span, an overlap under two, an overlap past the tail, and an overflow each refuse by name leaving both channels untouched and aligned. Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker.
+`tools/al/ales_stereo_join_witness.rish`: a five-sample master joined to a five-sample span over a two-sample overlap lands both channels at length 8 and still aligned; each channel carries its own audio through its own equal-power seam (left crossing 1000→200, right crossing 4000→800), its seam head pure outgoing and seam tail pure incoming with its own remainder appended; a full overlap is a pure crossfade with nothing appended in both channels; and an unequal-length span, an overlap under two, an overlap past the tail, and an overflow each refuse by name leaving both channels untouched and aligned. Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker.
 
 ## The road on
 

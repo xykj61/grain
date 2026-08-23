@@ -17,10 +17,10 @@ This reifies [`external-research/20260713-212900_self-hosted-vpn-cto-credential-
 ## The Client Half — Runs Here, Right Now
 
 ```bash
-rishi/bin/rishi run tools/vpn_wireguard_client_setup.rish
+rishi/bin/rishi run tools/v/vpn_wireguard_client_setup.rish
 ```
 
-(Prefix with `./tools/glow_host_run.sh --` if `RYE_ZIG`/`RYE_LIB` still want setting in your shell — see [`../../GLOW_HOST.template.bron`](../../GLOW_HOST.template.bron).)
+(Prefix with `./tools/g/glow_host_run.sh --` if `RYE_ZIG`/`RYE_LIB` still want setting in your shell — see [`../../GLOW_HOST.template.bron`](../../GLOW_HOST.template.bron).)
 
 On first run, if `wg` isn't installed, the script pauses and hands you the exact command (`brew install wireguard-tools`) rather than installing networking software for you — installing it stays a deliberate act, never a silent one. Run it again once installed, and it will:
 
@@ -34,7 +34,7 @@ On first run, if `wg` isn't installed, the script pauses and hands you the exact
 ## The Server Half — Bring This to Your VPS
 
 ```bash
-scp tools/vpn_wireguard_server_setup.sh root@your-vps:/root/
+scp tools/v/vpn_wireguard_server_setup.sh root@your-vps:/root/
 ssh root@your-vps
 bash vpn_wireguard_server_setup.sh <this-laptop's-public-key-from-step-above>
 ```

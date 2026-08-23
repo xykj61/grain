@@ -4,7 +4,7 @@
 # receive buffer and reaches none of the other's; both run a shared
 # read-execute font, which is sharing made deliberate and visible.
 #
-# Read whole by `caravan/read.rye`; proven by tools/caravan_read_witness.rish.
+# Read whole by `caravan/read.rye`; proven by tools/ca/caravan_read_witness.rish.
 
 system serial_stack
 

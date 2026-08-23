@@ -1,0 +1,33 @@
+# tools/b/buhr_reading_query_witness.rish — BUHR Journey 1, Rung 2.
+#
+# The Q-vane host pattern carried to the reading voice, proven end to end: a
+# bounded Lantern-shaped request routes through Scribble for a real reading of a
+# pinned markdown document and returns a Lantern-contract-bounded response.
+# Scribble's parse is genuine (real headings, real fence kinds), the allow-list
+# gates the model, and the length budget truncates with a length stop exactly as
+# Lantern's own contract does. Rung one (Lattice + Lantern) is untouched.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/buhr_reading_query_witness.rish
+
+say "buhr2: Language EN — Scribble + Lantern composed as one bounded reading query."
+say "buhr2: Lens TAME — real markdown reading, bounded request, bounded response; unknown op refused."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/reading-query"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/reading_query.rye -femit-bin=${bin}"]
+assert build.ok else "buhr2: reading_query build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr2: reading_query selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr2: selftest did not speak GREEN"
+assert selftest.out contains "outline routed to Scribble — text 'Grain Voices Detail'" else "buhr2: real outline reading missing"
+assert selftest.out contains "headings2 routed to Scribble — text 'Voices'" else "buhr2: real depth-two fold missing"
+assert selftest.out contains "fences routed to Scribble — text 'rye 1 rish 1 plain 1'" else "buhr2: real fence-kinds reading missing"
+assert selftest.out contains "length budget — tokens 3 length" else "buhr2: length-budget stop missing"
+assert selftest.out contains "model not allowed refused" else "buhr2: allow-list gate missing"
+assert selftest.out contains "unknown op refused" else "buhr2: unknown-op refusal missing (would be a fake answer)"
+assert selftest.out contains "zero budget refused by Lantern contract" else "buhr2: Lantern budget gate missing"
+
+say "GREEN: BUHR2 — Scribble + Lantern composed; real reading routed and returned bounded by the contract."

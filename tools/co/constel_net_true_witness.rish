@@ -1,0 +1,51 @@
+# tools/co/constel_net_true_witness.rish — Constel dev-net harness, Rung 4: the net reads true (the arc closes).
+#
+# Rungs one through three named a fake dev-net, settled a whole d12·d60 branch, and let a constel travel
+# as a format constel-net-v1 record — all over nets seated in code. This closing rung carries the reader
+# onto a REAL on-disk constel record (tools/fixtures/constel_net.bron, produced reproducibly by
+# pond/apps/constel_net_fixture_gen.rye, @embedFile-bound through a pond/apps/corpora/ symlink) and proves
+# what the reader reports is true to the bytes. The crux is the cross-check: constel_net_true reports the
+# roster size · galaxy · planet, and tools/fixtures/constel_net_truth.awk reads the same file independently;
+# the witness asserts the app's triple equals awk's — two tools, one answer (3 3 267). And the record is a
+# genuine, law-safe harness net: it re-renders to the embedded bytes exactly, its recovered name still
+# carries a digit. Demo seeds only — no key, no network, no custody (gate %4 untouched).
+#
+# Law:   active-designing/date/20260813/20260813-022222_constel-test-network-naming-law.md
+# Scope: active-designing/date/20260813/20260813-022908_constel-devnet-harness-exploration.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/constel_net_true_witness.rish
+
+say "constel-net-true: Language EN — the reading of a real constel record is true to the bytes; app and awk give one answer."
+say "constel-net-true: Style Radiant — the fixture is what the harness renders, and its safe name holds on the real bytes."
+say "constel-net-true: Lens TAME — roster size, galaxy, and planet cross-check against an independent awk; a tampered record is never read as true; demo seeds only, no key held."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/constel-net-true"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_net_true.rye -femit-bin=${bin}"]
+assert build.ok else "constel-net-true: constel_net_true build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "constel-net-true: constel_net_true selftest exited non-zero"
+assert selftest.out contains "GREEN" else "constel-net-true: selftest did not speak GREEN"
+assert selftest.out contains "matches an independent count of the same bytes" else "constel-net-true: read-true claim missing"
+assert selftest.out contains "re-renders to the embedded bytes exactly, and its recovered name is still law-safe" else "constel-net-true: genuine-harness-net claim missing"
+assert selftest.out contains "a tampered header refused BadFormat" else "constel-net-true: tamper refusal missing"
+assert selftest.out contains "The harness's agent-doable arc closes" else "constel-net-true: arc-close claim missing"
+
+# The crux — two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
+let app = run ["sh" "-c" "${bin} measure 2>&1"]
+assert app.ok else "constel-net-true: app measure exited non-zero"
+let awk = run ["sh" "-c" "awk -f tools/fixtures/constel_net_truth.awk tools/fixtures/constel_net.bron"]
+assert awk.ok else "constel-net-true: awk truth read failed"
+assert awk.out contains "3 3 267" else "constel-net-true: awk triple not 3 3 267"
+assert app.out == awk.out else "constel-net-true: app and awk disagree — the reading drifted from the bytes"
+
+# Rung three stays its own GREEN binary — this rung reads the record it renders, never replaces it, so
+# the travel crux stands at r4's door.
+let r3 = run ["sh" "-c" "rishi/bin/rishi run tools/co/constel_net_bron_witness.rish 2>&1"]
+assert r3.ok else "constel-net-true: rung three (the net travels) is not GREEN under the closing rung"
+assert r3.out contains "constel-net-bron: GREEN" else "constel-net-true: rung three did not speak its GREEN"
+
+say "constel-net-true: GREEN — a real constel record reads true (app==awk, 3 3 267) and is a genuine, law-safe harness net; rung three stands at its door. The Constel dev-net harness's agent-doable arc closes."

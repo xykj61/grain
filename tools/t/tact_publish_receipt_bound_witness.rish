@@ -1,0 +1,36 @@
+# tools/t/tact_publish_receipt_bound_witness.rish — TACT Journey 2, Rung 2: the receipt bound.
+#
+# Rung one proved a receipt's signature offline against a supplied key. This rung binds the
+# receipt to the settled ledger: the publisher's Deed verifies against the constellation
+# commitment (the current member), the receipt's point is exactly the Deed's, and the signature
+# verifies by that Deed's own keeper. Only then does the receipt resolve to the publisher's place
+# in the topology. A Deed the constellation does not hold refuses NotMember; a receipt whose point
+# disagrees refuses NotMember; a signature the keeper never made refuses BadSignature.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/tact_publish_receipt_bound_witness.rish
+
+say "tact2: Language EN — a receipt binds only to a current member at its own point."
+say "tact2: Lens TAME — a tampered Deed, a point disagreement, and a wrong signer each refuse; then a place resolves."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/publish-receipt-bound"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/publish_receipt_bound.rye -femit-bin=${bin}"]
+assert build.ok else "tact2: publish_receipt_bound build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "tact2: publish_receipt_bound selftest exited non-zero"
+assert selftest.out contains "GREEN" else "tact2: selftest did not speak GREEN"
+assert selftest.out contains "a current member's receipt bound to the ledger and resolved a galaxy place" else "tact2: bound-resolve claim missing"
+assert selftest.out contains "a tampered Deed refused NotMember; it is no longer the committed member" else "tact2: non-member refusal missing"
+assert selftest.out contains "a receipt whose point disagrees with the Deed refused NotMember" else "tact2: point-disagreement refusal missing"
+assert selftest.out contains "a signature the Deed's keeper never made refused BadSignature" else "tact2: wrong-signer refusal missing"
+assert selftest.out contains "a receipt binds only to a current member at its own point" else "tact2: crux claim missing"
+
+# The offline receipt (r1) this rung binds stays its own green binary.
+let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/publish_receipt.rye -femit-bin=pond/bin/publish-receipt && pond/bin/publish-receipt selftest 2>&1"]
+assert r1.ok else "tact2: publish_receipt r1 re-run failed"
+assert r1.out contains "GREEN" else "tact2: r1 selftest did not speak GREEN"
+
+say "tact2: GREEN — a receipt binds to a settled, current keeper at a named place, or names its refusal."

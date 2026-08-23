@@ -14,7 +14,7 @@
 
 A broadcast is a fold over a signed, append-only, ordered log. Live carriage and audience chat are more signed facts in the same stream; the VOD is the log at rest.
 
-**Waymark draw:** input `sala-broadcast-live-session-fold` · SHA3-512 · flw.txt → **JABS** (`tools/waymark_derive.rish`, `20260717.191030`). Bare `B0`–`B3` was the draft letter; **JABS** is the seated mark (same collision class as Genode’s B-ladder / bare letters).
+**Waymark draw:** input `sala-broadcast-live-session-fold` · SHA3-512 · flw.txt → **JABS** (`tools/w/waymark_derive.rish`, `20260717.191030`). Bare `B0`–`B3` was the draft letter; **JABS** is the seated mark (same collision class as Genode’s B-ladder / bare letters).
 
 ## Rung table
 
@@ -29,9 +29,9 @@ A broadcast is a fold over a signed, append-only, ordered log. Live carriage and
 
 ```bash
 # input_name = sala-broadcast-live-session-fold  (already seated → JABS)
-rishi/bin/rishi run tools/waymark_derive.rish
-rishi/bin/rishi run tools/seva_backchannel_witness.rish
-rishi/bin/rishi run tools/seva_jabs2_glass_audience_witness.rish
+rishi/bin/rishi run tools/w/waymark_derive.rish
+rishi/bin/rishi run tools/s/seva_backchannel_witness.rish
+rishi/bin/rishi run tools/s/seva_jabs2_glass_audience_witness.rish
 ```
 
 ---

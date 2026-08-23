@@ -1,0 +1,24 @@
+# pleac_strings_witness.rish — the PLEAC strings cookbook (join · split).
+#
+# SOON. Proves pleac/strings.rye: join glues a list with a separator between pieces
+# (never trailing); split cuts a string on a separator into pieces, zero-copy; the pair
+# are inverses (split(join(xs, sep), sep) == xs when no piece holds the separator); a
+# no-separator source yields one whole piece; an empty separator and a too-small join
+# output are refused.
+#
+# Build first:  rye build pleac/strings.rye -femit-bin=tools/.build/pleac_strings
+#   rishi/bin/rishi run tools/p/pleac_strings_witness.rish
+
+let zig = "/home/keeper/grain/vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} rye/bin/rye build pleac/strings.rye -femit-bin=tools/.build/pleac_strings"]
+assert build.ok else "pleac strings build failed"
+
+let st = run ["tools/.build/pleac_strings" "selftest"]
+assert st.ok else "pleac strings selftest exited non-zero"
+assert (st.err contains "GREEN") else "pleac strings selftest not GREEN"
+assert (st.err contains "join glues a list") else "pleac strings missing the join claim"
+assert (st.err contains "split cuts a string") else "pleac strings missing the split claim"
+assert (st.err contains "are inverses") else "pleac strings missing the round-trip claim"
+assert (st.err contains "empty separator is refused") else "pleac strings missing the bounded refusal"
+
+say "GREEN: pleac strings — join and split, inverse and bounded, zero-copy on the cut, witnessed."

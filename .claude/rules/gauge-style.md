@@ -4,7 +4,7 @@
 
 **Full guide:** [`../../context/GAUGE_STYLE.md`](../../context/GAUGE_STYLE.md) - **Seated:** `20260823.045448` on Keaton's word - **Status:** Living
 **Inherits:** [`radiant-style`](radiant-style.md) (warmth) - `context/CIVIC_STYLE.md` (name what you reward) - [`tame-guidance`](tame-guidance.md) (bound every claim, say why)
-**Meter:** [`../../tools/prose_register_witness.rish`](../../tools/prose_register_witness.rish)
+**Meter:** [`../../tools/p/prose_register_witness.rish`](../../tools/p/prose_register_witness.rish)
 
 Write documentation, analysis, forecasting, ecosystem description, and design essays in **Gauge
 Style** -- writing that carries measurements and stays worth reading. Radiant Style keeps its

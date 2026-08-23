@@ -1,0 +1,101 @@
+# caravan_overtake_witness.rish -- Caravan overtake witness.
+#
+# `rolling.rye` admitted head-of-line only and named its reason plainly:
+# reaching past a blocked head would reorder the lap, and in these documents
+# order is meaning. `harvest.rye` then answered which dependent a turn reaps and
+# found that readiness converts a slot, never a domain. This rung answers the
+# question both left standing -- may a supervisor look past a blocked head at
+# all, and what must a document declare for the reordering to keep meaning?
+#
+#   A DOCUMENT THAT NAMES ITS REGIONS HAS ALREADY NAMED ITS LAWFUL ORDER.
+#
+# Nothing new is declared. Where two items touch a region in common their
+# order is the arc itself -- an ask reaches its passer before the passer
+# reaches its taker. Where they touch no region in common the order between
+# them is incidental, and either first is the same run. So the test for a
+# lawful pass is derived from the declaration rather than added to it.
+#
+# ISOLATION AND ORDER ARE TWO QUESTIONS. Whether two items may run at the
+# same instant is `rolling.admissible`, unchanged, and it refuses a domain
+# beside itself. Whether one may run BEFORE another is `share_a_hop`, and it
+# never asks which domain an item belongs to at all.
+#
+# THE FINDING HAS TWO HALVES, each measured over one document:
+#
+#   * Over the ordered lap it converts NOTHING. Every candidate is refused
+#     either by the running table or by a region it shares with the head:
+#     0 lawful passes, the same 9 slot-turns unspent under both readings,
+#     6 asks home either way.
+#   * Over a lap whose head blocks on its OWN DOMAIN it converts the whole
+#     of it: 2 slot-turns unspent in line against 0 overtaking, 2 lawful
+#     passes reaching 2 items back, same 4 dependents and same peak of 3.
+#
+# THE UNCHECKED READING IS CARRIED AS A CONTROL AND BREAKS ON METAL. It keeps
+# the isolation exactly and drops only the order test. Handed a lap where a
+# taker sits behind its own passer, it takes first, the home hears no bell
+# that was never rung, and the run refuses -- faster and wrong, proven rather
+# than argued.
+#
+# Both RED paths were proven on metal before this witness claimed GREEN. With
+# the order test dropped from the checked reading, the ORDERED LAP itself
+# refuses with OutcomeMismatch -- so its zero lawful passes is real work, not
+# an absence of candidates. With overtaking removed entirely, the
+# self-blocking lap goes RED at 2 slot-turns unspent.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS %76 / %85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_overtake_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/overtake"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/overtake.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan overtake build failed"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+# Thirty-six rungs once ran a shared caravan/bin/read without building it, so the whole
+# arc was green only on a tree some earlier run had left warm. A witness owns what it
+# runs -- and, since REDS %133, the path it runs it from: eighty witnesses built that
+# one reader to one name, so two running at once contended for a single file and the
+# loser reddened a green tree. This one lands in caravan/bin/overtake_read.
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/overtake_read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+
+# A fourth question of one declaration rather than a fourth declaration.
+let clients = run ["sh" "-c" "caravan/bin/overtake_read caravan/systems/serial_three_clients.bron 2>&1"]
+assert clients.ok else "the three-client declaration could not be read"
+assert clients.out contains "domains 4 -- channels 3 -- regions 9 -- grants 15" else "the three-client document changed shape"
+assert clients.out contains "verdict: whole" else "the three-client declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan overtake selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan overtake selftest not GREEN"
+assert test.out contains "a document that names its regions has already named its lawful order" else "the overtake finding did not close"
+
+# The order test read straight, before any supervisor spends it.
+assert test.out contains "an ask, its passer, and its taker share a region; two clients share none" else "the order test did not read the arc as meaning"
+assert test.out contains "it never asks which domain" else "the order test leaned on domains rather than regions"
+
+# The ordered lap: the order is the arc, so no pass is lawful.
+assert test.out contains "the ordered lap leaves 9 slot-turns unspent -- in line 2, overtaking 2" else "overtaking moved slots the arc was holding"
+assert test.out contains "the head waits on its own arc: 0 lawful passes, 6 asks home under both" else "the ordered lap admitted a pass or lost an ask"
+
+# The self-blocking lap: the order is incidental, so the pass converts it.
+assert test.out contains "the self-blocking lap leaves 2 slot-turns unspent in line and 0 overtaking" else "overtaking did not convert the slots a self-blocked head held"
+assert test.out contains "the head waits on its own domain: 2 lawful passes, reaching 2 items back" else "the self-blocking lap did not reach past its head"
+assert test.out contains "4 dependents run to the same end under both, at a peak of 3" else "the two readings did not run the same lap to the same end"
+
+# The control: dropping the order test is faster, and wrong.
+assert test.out contains "the checked reading refuses the pass and brings 2 asks home" else "the checked reading did not hold the arc it was handed"
+assert test.out contains "the home hears no bell: the run refuses" else "the unchecked reading did not break where the document said it would"
+
+say "GREEN: Caravan overtake witness passed."

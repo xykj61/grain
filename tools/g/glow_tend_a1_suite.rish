@@ -1,0 +1,41 @@
+# tools/g/glow_tend_a1_suite.rish — one lap proves the whole a1 era (e216).
+#
+#   rishi/bin/rishi run tools/g/glow_tend_a1_suite.rish
+#
+# Runs every a1 deciding-gate witness in one bounded pass: the pier's dec,
+# the four family firsts, and the two second walls — seven gates, both
+# sides each, the malformed plant guarding the grammar inside the tally
+# witness. One green line at the end means the era stands whole.
+
+say "a1-suite: Language EN — seven gates, one lap (Ashvini a1)."
+say "a1-suite: Lens TAME — each witness bounded; the suite stops loud on the first red."
+
+let r1 = run ["rishi/bin/rishi" "run" "tools/t/tally_glow_tend_a1_gate_dec_witness.rish"]
+assert r1.ok else "a1-suite: dec witness RED"
+say "a1-suite: 1/7 dec GREEN"
+
+let r2 = run ["rishi/bin/rishi" "run" "tools/t/tally_glow_tend_a1_gate_bound_witness.rish"]
+assert r2.ok else "a1-suite: tally bound witness RED"
+say "a1-suite: 2/7 tally-bound (with plant) GREEN"
+
+let r3 = run ["rishi/bin/rishi" "run" "tools/ca/caravan_dependents_a1_gate_bound_witness.rish"]
+assert r3.ok else "a1-suite: caravan dependents witness RED"
+say "a1-suite: 3/7 caravan-dependents GREEN"
+
+let r4 = run ["rishi/bin/rishi" "run" "tools/au/aurora_wire_a1_gate_bound_witness.rish"]
+assert r4.ok else "a1-suite: aurora wire witness RED"
+say "a1-suite: 4/7 aurora-wire GREEN"
+
+let r5 = run ["rishi/bin/rishi" "run" "tools/m/mantra_gen_floor_a1_gate_witness.rish"]
+assert r5.ok else "a1-suite: mantra gen-floor witness RED"
+say "a1-suite: 5/7 mantra-gen-floor GREEN"
+
+let r6 = run ["rishi/bin/rishi" "run" "tools/t/tally_name_len_a1_gate_bound_witness.rish"]
+assert r6.ok else "a1-suite: tally name-len witness RED"
+say "a1-suite: 6/7 tally-name-len GREEN"
+
+let r7 = run ["rishi/bin/rishi" "run" "tools/ca/caravan_caps_a1_gate_bound_witness.rish"]
+assert r7.ok else "a1-suite: caravan caps witness RED"
+say "a1-suite: 7/7 caravan-caps GREEN"
+
+say "GREEN: a1 suite — seven gates decide on both sides; the era stands whole in one lap."

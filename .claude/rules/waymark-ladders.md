@@ -1,15 +1,15 @@
 # Waymark Ladders — Draw Before You Number
 
-**Canon:** `context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md` · witness `tools/waymark_derive.rish` · Lexicon **Waymark**.
+**Canon:** `context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md` · witness `tools/w/waymark_derive.rish` · Lexicon **Waymark**.
 
-**Immutable registry (single source of truth, seated `20260817`):** [`../../construction/waymark-registry.bron`](../../construction/waymark-registry.bron) is the sealed, self-verifying canonical record of **every** waymark ever drawn -- living, retired, abandoned, transient, hand-seated -- each drawn row carrying its input, index, and status. Witness [`../../tools/waymark_registry_witness.rish`](../../tools/waymark_registry_witness.rish) proves it GREEN two ways: a **SHA3-512 seal** over the body (any edit breaks it) and a **re-derivation** of every collection mark from its input on metal. This registry is the authority; the table below is its readable face. Because the canonical truth is sealed here, the elder marks in old logs and git history are redundant historical noise -- the naming truth no longer depends on them.
+**Immutable registry (single source of truth, seated `20260817`):** [`../../construction/waymark-registry.bron`](../../construction/waymark-registry.bron) is the sealed, self-verifying canonical record of **every** waymark ever drawn -- living, retired, abandoned, transient, hand-seated -- each drawn row carrying its input, index, and status. Witness [`../../tools/w/waymark_registry_witness.rish`](../../tools/w/waymark_registry_witness.rish) proves it GREEN two ways: a **SHA3-512 seal** over the body (any edit breaks it) and a **re-derivation** of every collection mark from its input on metal. This registry is the authority; the table below is its readable face. Because the canonical truth is sealed here, the elder marks in old logs and git history are redundant historical noise -- the naming truth no longer depends on them.
 
 ## When a ladder opens
 
 Before the first rung is written as `X0` / `X1` / … in TASKS, ROADMAP, compressors, module titles, or session logs that speak as *now*:
 
 1. Choose a **canonical hyphenated input name** for the ladder (stable, descriptive, lowercase).
-2. Set `input_name` in `tools/waymark_derive.rish` and run `rishi/bin/rishi run tools/waymark_derive.rish`.
+2. Set `input_name` in `tools/w/waymark_derive.rish` and run `rishi/bin/rishi run tools/w/waymark_derive.rish`.
 3. Seat the printed four-letter **waymark** in Lexicon + the script’s seated-draws comment + exclude list.
 4. **Mark each step by stamp and name, never by an ascending number** -- amended `20260821.160050` by
    the mark law ([`stamp-and-name.md`](stamp-and-name.md)). A waymark is a **name** drawn for a
@@ -54,7 +54,7 @@ Before the first rung is written as `X0` / `X1` / … in TASKS, ROADMAP, compres
 
 **Hand-seated names on the exclude roster** (not waymark draws): **SEVA** (viewer; absent from flw), **MAND** (M vane; in flw), **MONA** (prior name of Mand — one season). **SALA** retired from exclude with the Sala→Seva alias close.
 
-Word-list pin: `tools/fixtures/flw-four-letter.txt` · witness `tools/waymark_derive_witness.rish`.
+Word-list pin: `tools/fixtures/flw-four-letter.txt` · witness `tools/w/waymark_derive_witness.rish`.
 
 ## Accrete-never-break
 

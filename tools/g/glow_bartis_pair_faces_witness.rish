@@ -1,0 +1,29 @@
+# glow_bartis_pair_faces_witness.rish — STOA338 pair-faces (parse + metal after 338b).
+#
+#   rishi/bin/rishi run tools/g/glow_bartis_pair_faces_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/lower_bartis_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/lower_bartis_witness.rye -femit-bin=${bin}"]
+assert build.ok else "lower_bartis_witness build failed: ${build.err}${build.out}"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "lower_bartis_witness exited non-zero"
+assert selftest.out contains "GREEN" else "lower_bartis_witness not GREEN"
+assert selftest.out contains "bartis_pair" else "STOA338 missing bartis_pair emit"
+assert selftest.out contains "pair-faces eq" else "STOA338 missing pair-faces eq claim"
+assert selftest.out contains "pair-faces gth" else "STOA338 missing pair-faces gth claim"
+assert selftest.out contains "BodyFaceMismatch" else "STOA338 missing stranger-face refuse"
+assert selftest.out contains "lone bracket" else "STOA338 missing lone-bracket refuse"
+assert selftest.out contains "gate-pair-eq-faces.glow" else "STOA338 missing eq fixture claim"
+assert selftest.out contains "gate-pair-gth-faces.glow" else "STOA338 missing gth fixture claim"
+
+# Standing laps stay warm beside the relational gate.
+let argv = run ["rishi/bin/rishi" "run" "tools/g/glow_bartis_argv_witness.rish"]
+assert argv.ok else "glow_bartis_argv_witness must stay GREEN beside STOA338"
+
+let a2 = run ["rishi/bin/rishi" "run" "tools/g/glow_tend_a2_suite.rish"]
+assert a2.ok else "glow_tend_a2_suite must stay GREEN beside STOA338"
+
+say "GREEN: STOA338 pair-faces — parse · metal bartis_pair · stranger/lone refuses · argv+a2 warm."

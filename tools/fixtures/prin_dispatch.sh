@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# prin_dispatch.sh — single argv router for tools/prin.rish
+# prin_dispatch.sh — single argv router for tools/p/prin.rish
 
 set -euo pipefail
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
@@ -28,7 +28,7 @@ Round open:
   itinerary.rish <r>  # a specific round's whole day (coords · theme · ranking · carry)
 
 Outer terminal:
-  cd ~/grain && source tools/prin_aliases.sh
+  cd ~/grain && source tools/p/prin_aliases.sh
   pw                  # dual live view while an agent loop runs
   # or two panes:  p   |   pt
   prin scope          # outer pause · inner season standing

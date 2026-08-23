@@ -1,6 +1,6 @@
 //! edu/tower/frame_bound_overpush.rye — intentional over-push · expected to abort.
 //!
-//! Fixture for tools/edu_tower_frame_bite_witness.rish (e15).
+//! Fixture for tools/e/edu_tower_frame_bite_witness.rish (e15).
 //! A capacity-one stack accepts one push; the second push asserts.
 //! Do not "fix" this file to print GREEN — its job is to refuse.
 //!

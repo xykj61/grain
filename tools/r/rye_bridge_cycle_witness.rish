@@ -1,0 +1,60 @@
+# tools/r/rye_bridge_cycle_witness.rish -- the compiler that builds everything, given a guard of its own.
+#
+# WHY THIS RUNG. Rye builds every `.rye` file in this tree -- Caravan's hundred and ten rungs, the
+# crypto ladder, Aurora's freestanding seed, and Rye itself. It is the most Lindy-exposed tool the
+# tree owns, and until this witness it carried no check on its own build bridge at all. A fault
+# there is a fault under everything.
+#
+# WHAT WENT WRONG. `bridge_rye_tree` walks a root `.rye` file and every `.rye` it imports,
+# recursively, staging each as a `.zig` the toolchain can read. Its visited set was appended AFTER
+# the walk into a file's own imports rather than before -- so while a cycle was being traversed
+# nothing was ever marked seen, and two files importing each other recursed until the stack died.
+# Not a named error, not a diagnostic: a segfault (REDS %125). Beneath it sat a second fault of the
+# same family -- the file the walk STARTS from bridged to `foo.rye.zig` while every dependency
+# bridged to `foo.zig`, so a module that imported the root by name asked the toolchain for a file
+# the bridge had never written. One file had two names, and only the cycle ever asked.
+#
+# HOW IT WAS FOUND. By measurement rather than by reading. A carry fold on the Caravan ladder wanted
+# four base modules to import the shared harness that already imports them, so the question "does
+# Rye allow a mutual import?" was asked of the compiler rather than of memory. It answered with a
+# segmentation fault.
+#
+# WHAT IS PROVEN, on metal, over `tools/fixtures/rye_bridge_cycle_control.sh`.
+#   Two `.rye` files that import each other bridge, compile, link, and run, with a value crossing
+#   the cycle and returning unchanged.
+#   The root of the walk is reachable BY NAME from one of its own dependencies -- one file, one
+#   bridged name.
+#   An import chain deeper than `max_bridge_depth` refuses by NAME rather than exhausting the
+#   stack, and the bound is read off the source rather than recited here, since a number written
+#   into a comment drifts the moment the source moves (REDS %110).
+#   Every staged `.zig` is swept afterward, so a bridge run leaves its corpus as it found it.
+#
+# WHAT IS NOT PROVEN. That mutual imports are good design -- they are merely legal now, as they
+# already are in Zig's own file-as-struct model. Single-strandedness still argues for a graph a
+# reader can hold, and this witness guards the compiler rather than the taste.
+#
+# The corpus is written for the question and thrown away after. The tree holds no mutual `.rye`
+# import today, so a scan of the tree would have proved the bridge correct by proving nothing
+# reached the fault -- which is REDS %102's family exactly.
+#
+# No network, no key, no funds, no device.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/rye_bridge_cycle_witness.rish
+
+say "rye-bridge-cycle: Language EN -- Rye builds every .rye file this tree holds, and until now it carried no guard on its own build bridge."
+say "rye-bridge-cycle: Style Radiant -- the fault was measured rather than reasoned about; the compiler was asked a question and answered with a segfault, so the question became a witness."
+say "rye-bridge-cycle: Lens TAME -- safety first: no unbounded recursion, a named error at a named bound, and both the welcome and the refusal proven on a corpus whose answer is known by construction."
+
+let control = run ["sh" "tools/fixtures/rye_bridge_cycle_control.sh"]
+assert control.ok else "rye-bridge-cycle: the build bridge did not survive its own corpus -- ${control.err}"
+say control.out
+
+assert control.out contains "verdict=ok" else "rye-bridge-cycle: the control must balance before it is believed"
+assert control.out contains "CYCLE_BUILD ok" else "rye-bridge-cycle: two files importing each other must bridge and compile"
+assert control.out contains "root_reached_from_dependency=yes" else "rye-bridge-cycle: the root of the walk must be reachable by name from its own dependency -- one file, one bridged name"
+assert control.out contains "CYCLE_RUN ok" else "rye-bridge-cycle: the built cycle must run, with the value crossing it unchanged"
+assert control.out contains "STAGED_LEFTOVERS count=0" else "rye-bridge-cycle: every staged .zig must be swept away after a bridge run"
+assert control.out contains "DEEP_REFUSAL named" else "rye-bridge-cycle: a chain past the bound must refuse BY NAME rather than exhaust the stack"
+
+say "GREEN: rye-bridge-cycle -- the build bridge terminates on a cyclic import graph, names its bound when a chain runs past it, reaches its own root by one name, and leaves no staging behind."

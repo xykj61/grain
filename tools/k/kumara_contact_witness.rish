@@ -1,0 +1,25 @@
+# kumara_contact_witness.rish — the contact card, the live descendant key, redirects.
+#
+# Proves a Kumara contact delegates a live descendant key under a cold main key,
+# refuses a tampered key, rotates without touching the main, resolves a bounded
+# redirect map, and emits well-formed contact-v1 facts. The crypto rides on
+# tally/kumara.rye (Ed25519 at the seam); this witness drives the built module.
+#
+# Build first (the vendored toolchain):
+#   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build kumara/contact.rye -femit-bin=kumara/bin/contact
+#   rishi/bin/rishi run tools/k/kumara_contact_witness.rish
+
+# The module's own selftest — delegate, live, tamper-refused, resolve, rotate.
+let st = run ["kumara/bin/contact" "selftest"]
+assert st.ok else "kumara contact selftest must exit 0"
+assert (st.err contains "GREEN") else "selftest must report GREEN"
+assert (st.err contains "tamper-refused") else "a tampered descendant key must be refused"
+assert (st.err contains "rotate") else "the live key must rotate under the same main key"
+
+# The emitted contact holds the point, the redirect count, and a live key.
+let em = run ["kumara/bin/contact" "emit"]
+assert em.ok else "kumara contact emit must exit 0"
+assert (em.out contains "format contact-v1") else "emit must print the contact-v1 format tag"
+assert (em.out contains "live_key_live true") else "the emitted contact's live key must verify"
+
+say "GREEN: kumara contact witness — delegate, live, rotate, resolve, emit."

@@ -14,7 +14,7 @@
 # must both already exist in the target -- this never invents a place to put the block, since a
 # tool guessing where a generated block belongs is a tool that will one day guess wrong.
 #
-# Driven by tools/readme_metrics.rish; proven by tools/readme_metrics_witness.rish.
+# Driven by tools/r/readme_metrics.rish; proven by tools/r/readme_metrics_witness.rish.
 
 set -eu
 

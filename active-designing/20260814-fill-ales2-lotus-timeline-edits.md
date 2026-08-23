@@ -35,7 +35,7 @@ Three properties compose, each bounded and checked at the edge:
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_timeline_witness.rish`: cut removes a span exactly and closes the gap; gain saturates rather than wraps (`20000×2 → +32767`) and a negative num inverts phase clamping i16-min's negation; a sub-span gain leaves the rest untouched; splice inserts in order; splice then cut the same span round-trips to the original; an out-of-range cut refuses `BadRange` leaving the clip untouched; a zero-denominator gain refuses `BadGain`; an overflowing splice refuses `ClipFull`; and the rung composes on ALES1 — a byte stream reassembles into a gapless Timeline, a Clip loads it, and an edit lands on the reassembled audio. GREEN on the first build. Purely local — no socket, no network, no keys, no funds, no real device.
+`tools/al/ales_timeline_witness.rish`: cut removes a span exactly and closes the gap; gain saturates rather than wraps (`20000×2 → +32767`) and a negative num inverts phase clamping i16-min's negation; a sub-span gain leaves the rest untouched; splice inserts in order; splice then cut the same span round-trips to the original; an out-of-range cut refuses `BadRange` leaving the clip untouched; a zero-denominator gain refuses `BadGain`; an overflowing splice refuses `ClipFull`; and the rung composes on ALES1 — a byte stream reassembles into a gapless Timeline, a Clip loads it, and an edit lands on the reassembled audio. GREEN on the first build. Purely local — no socket, no network, no keys, no funds, no real device.
 
 ## The road on
 

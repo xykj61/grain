@@ -15,21 +15,21 @@ The module grew as one foundation and a family of compositions. `recall_lap1.rye
 
 | File | One line | Witness |
 |------|----------|---------|
-| `recall_lap1.rye` | The foundation: `BoltCatalog`, append-immutable revisions, digest-verified `recall`, in-process `syncRevision` | `tools/mantra_recall_lap1.rish` (+lap2, lap3) |
+| `recall_lap1.rye` | The foundation: `BoltCatalog`, append-immutable revisions, digest-verified `recall`, in-process `syncRevision` | `tools/m/mantra_recall_lap1.rish` (+lap2, lap3) |
 | `recall_sync_wire.rye` | Sync request/response payload encoding for the wire | (exercised by every wire witness) |
-| `recall_sync_delivery.rye` | One-shot per-resin sync over sealed datagrams, hosted **38478/38479** | `tools/mantra_recall_lap3_wire.rish` |
-| `resin_batch.rye` | The signed batch frame (kind `0x03`): one signature, payloads prove by digest, have-already lane | `tools/mantra_resin_batch.rish` |
-| `beading.rye` | A resin too large for one frame beads into content-addressed beads under a `bead-index` | `tools/mantra_beading.rish` |
-| `recall_beaded.rye` | Append and recall transparent to size; beads land as derived `{path}.bN` leaves; `hydrate_bead_store_from_catalog` | `tools/mantra_recall_beaded.rish` |
+| `recall_sync_delivery.rye` | One-shot per-resin sync over sealed datagrams, hosted **38478/38479** | `tools/m/mantra_recall_lap3_wire.rish` |
+| `resin_batch.rye` | The signed batch frame (kind `0x03`): one signature, payloads prove by digest, have-already lane | `tools/m/mantra_resin_batch.rish` |
+| `beading.rye` | A resin too large for one frame beads into content-addressed beads under a `bead-index` | `tools/m/mantra_beading.rish` |
+| `recall_beaded.rye` | Append and recall transparent to size; beads land as derived `{path}.bN` leaves; `hydrate_bead_store_from_catalog` | `tools/m/mantra_recall_beaded.rish` |
 | `recall_batch_wire.rye` | Batch response framing + chunking (kind `0x04`) and the bounded `BatchAssembler` | (via batch witness) |
-| `recall_batch_delivery.rye` | Batch sync over the wire, hosted **38480/38481**, chunked and beaded crossings; one bound socket per assembly with a silent-peer timeout | `tools/mantra_recall_batch_wire.rish` |
-| `recall_by_mark.rye` | Read by Tilak within peer/bolt/revision; shared marks refuse without a path hint | `tools/mantra_recall_by_mark.rish` |
+| `recall_batch_delivery.rye` | Batch sync over the wire, hosted **38480/38481**, chunked and beaded crossings; one bound socket per assembly with a silent-peer timeout | `tools/m/mantra_recall_batch_wire.rish` |
+| `recall_by_mark.rye` | Read by Tilak within peer/bolt/revision; shared marks refuse without a path hint | `tools/m/mantra_recall_by_mark.rish` |
 | `recall_two_way_sync.rye` (+`_delivery`, **38482/38483**) | Both directions as two symmetric `syncRevision` calls | `tools/mantra_recall_two_way_sync*.rish` |
 | `recall_catch_up.rye` (+`_delivery`, **38484/38485**) | Try the next unheld revision until one ask comes back empty | `tools/mantra_recall_catch_up*.rish` |
 | `recall_subscribe_poll.rye` (+`_delivery`, **38486/38487**) | Bounded repeat cycles over catch-up; host mirror is the same loop with a named pair list; `sleepIntervalNs` at cycle boundary | `tools/mantra_recall_subscribe_poll*.rish` |
-| `recall_tablecloth_query.rye` | Optional-field filter over the bounded catalog; every match returned in held order | `tools/mantra_recall_tablecloth_query.rish` |
-| `snapshot_export.rye` | I2 snapshot export: batch replay · horizon bundles · hosted wire per revision group | `tools/mantra_snapshot_replay.rish`, `tools/mantra_snapshot_horizon.rish`, `tools/mantra_snapshot_wire.rish` |
-| `snapshot_export_delivery.rye` | Snapshot export delivery: source-loop + fetcher over batch wire, hosted **38490/38491**; device **15567/15568** | `tools/mantra_snapshot_wire.rish` |
+| `recall_tablecloth_query.rye` | Optional-field filter over the bounded catalog; every match returned in held order | `tools/m/mantra_recall_tablecloth_query.rish` |
+| `snapshot_export.rye` | I2 snapshot export: batch replay · horizon bundles · hosted wire per revision group | `tools/m/mantra_snapshot_replay.rish`, `tools/m/mantra_snapshot_horizon.rish`, `tools/m/mantra_snapshot_wire.rish` |
+| `snapshot_export_delivery.rye` | Snapshot export delivery: source-loop + fetcher over batch wire, hosted **38490/38491**; device **15567/15568** | `tools/m/mantra_snapshot_wire.rish` |
 | `src/` | Mantra's own seed: `main.rye`, `diff.rye`, and the Weave aspect (`weave.rye`) beneath the namespace | SLC-1 witnesses |
 
 Device-wire labs mirror the hosted ports under `../comlink/run_*_lab.sh` (sync **15561/15562**, batch **15563/15564**, catch-up **15565/15566**, snapshot **15567/15568**).

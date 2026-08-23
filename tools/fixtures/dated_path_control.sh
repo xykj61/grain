@@ -10,7 +10,7 @@
 #
 # EXPECTED OUTPUT: refs_total=2, refs_home=1, refs_broken=1, broken_gone=1, verdict=ok.
 #
-# Driven by tools/dated_path_witness.rish. Run from the repository root.
+# Driven by tools/d/dated_path_witness.rish. Run from the repository root.
 
 set -eu
 

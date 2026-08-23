@@ -43,7 +43,7 @@ fn welcome_query(io: std.Io) !void {
 
     const n_rish = try ac.query_corpus(&cat, .{ .kind = .rish }, hits[0..]);
     assert(n_rish == 1);
-    assert(std.mem.eql(u8, cat.chunks[hits[0]].path_slice(), "tools/parity.rish"));
+    assert(std.mem.eql(u8, cat.chunks[hits[0]].path_slice(), "tools/p/parity.rish"));
 
     const n_prefix = try ac.query_corpus(&cat, .{ .path_prefix = "pond/" }, hits[0..]);
     assert(n_prefix == 1);
@@ -98,7 +98,7 @@ fn welcome_path_suffix(io: std.Io) !void {
 
     const n_rish = try ac.query_corpus(&cat, .{ .path_suffix = ".rish" }, hits[0..]);
     assert(n_rish == 1);
-    assert(std.mem.eql(u8, cat.chunks[hits[0]].path_slice(), "tools/parity.rish"));
+    assert(std.mem.eql(u8, cat.chunks[hits[0]].path_slice(), "tools/p/parity.rish"));
 
     const n_combo = try ac.query_corpus(&cat, .{ .kind = .rye, .path_suffix = ".rye" }, hits[0..]);
     assert(n_combo == 2);

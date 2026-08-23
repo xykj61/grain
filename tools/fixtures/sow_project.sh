@@ -2,7 +2,7 @@
 # sow_project.sh — project the clean public seed from the private field.
 #
 # POSIX seam (cp / sed / git-ls-files) per ORGANIZING's .sh boundary; driven by
-# tools/sow.rish, which reads template-manifest.bron. The mechanism named in
+# tools/s/sow.rish, which reads template-manifest.bron. The mechanism named in
 # external-research/20260808-045124 (Movement I), pinned to the seed/ target by
 # 20260808-062500 (field + seed layout).
 #

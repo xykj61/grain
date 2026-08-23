@@ -1,0 +1,54 @@
+# glow_bartis_horizon_witness.rish — bartis implement witness (STOA100 GREEN).
+#
+# Proves |= bartis is tokenized, the thin identity gate lowers, and the welcome
+# binary exits 0. Replaces the STOA99 horizon check now that STOA100 is GREEN.
+#
+#   rishi/bin/rishi run tools/g/glow_bartis_horizon_witness.rish
+
+let tame = "context/TAME_GUIDANCE.md"
+let tokens = "glow/tokens.rye"
+let g1_brief = "active-designing/date/20260720/20260720-033852_glow-bartis-g1-row.md"
+let horizon_brief = "active-designing/20260720-033340_stoa99-bartis-horizon-wording.md"
+let readme = "glow/README.md"
+
+# TAME now carries STOA100 implement note.
+let tame_pin = run ["sh" "-c" "grep -F 'STOA100' ${tame}"]
+assert tame_pin.ok else "TAME missing STOA100 bartis implement"
+
+# tokens.rye now tokenizes |= (STOA100 implement).
+let has_bartis = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|='"]
+assert has_bartis.ok else "tokens.rye must now tokenize |= (STOA100)"
+
+# |^ barket tokenizes as of STOA111 (sibling of bartis; lower held).
+let has_barket = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|^'"]
+assert has_barket.ok else "tokens.rye must tokenize |^ (STOA111)"
+
+# New G1 row brief exists and names bartis.
+let brief_ok = run ["sh" "-c" "test -f ${g1_brief} && grep -F 'bartis' ${g1_brief}"]
+assert brief_ok.ok else "bartis G1 row brief missing or incomplete"
+
+# STOA99 horizon brief still exists as dated artifact.
+let horizon_ok = run ["sh" "-c" "test -f ${horizon_brief}"]
+assert horizon_ok.ok else "STOA99 horizon brief missing"
+
+# README names bartis (GREEN mention expected).
+let readme_h = run ["sh" "-c" "grep -F 'bartis' ${readme}"]
+assert readme_h.ok else "glow/README must name bartis"
+
+# Alphabet witness GREEN (expects 27 digraphs with barket).
+let alpha = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_rune_alphabet_witness.rish"]
+assert alpha.ok else "glow_rune_alphabet_witness failed under bartis implement"
+assert alpha.out contains "GREEN" else "glow_rune_alphabet_witness not GREEN"
+
+# Bartis lower witness GREEN.
+let lower = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_lower_bartis_witness.rish"]
+assert lower.ok else "glow_lower_bartis_witness failed"
+assert lower.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
+
+# STOA101 argv deepen stays GREEN beside the identity fixture.
+let argv = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_bartis_argv_witness.rish"]
+assert argv.ok else "glow_bartis_argv_witness failed under bartis deepen"
+assert argv.out contains "GREEN" else "glow_bartis_argv_witness not GREEN"
+assert argv.out contains "STOA101" else "glow_bartis_argv_witness missing STOA101"
+
+say "GREEN: Glow bartis implement — |= tokenized, identity + argv sample; STOA100–101."

@@ -32,7 +32,7 @@ The metaphor earns its place by standing on a mechanism the reader already holds
 
 `tools/hooks/commit-msg` enforces it at write time: a body of sixty words or more carries at least three distinct mechanism words, a short body carries one. The message stays untouched on disk, so a refusal is edited and committed again. Measured at seating: 21 of the last 40 commit bodies read below the floor.
 
-`tools/mechanism_sentence_witness.rish` holds the trailing-window count under a ceiling that only falls. The meter counts vocabulary, so it proves a floor rather than a comprehension -- **word presence is the check; a reader reconstructing the diff is the standard.**
+`tools/m/mechanism_sentence_witness.rish` holds the trailing-window count under a ceiling that only falls. The meter counts vocabulary, so it proves a floor rather than a comprehension -- **word presence is the check; a reader reconstructing the diff is the standard.**
 
 ## What rests
 

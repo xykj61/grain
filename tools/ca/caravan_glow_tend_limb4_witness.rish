@@ -1,0 +1,41 @@
+# tools/ca/caravan_glow_tend_limb4_witness.rish — Caravan C4 supervisor exits (e198).
+#
+#   rishi/bin/rishi run tools/ca/caravan_glow_tend_limb4_witness.rish
+
+say "caravan-tend-4: Language EN — fourth Caravan Glow Tend limb (sur museum)."
+say "caravan-tend-4: Style Radiant — three meanings named; Rye still decides restarts."
+say "caravan-tend-4: Lens TAME — Equinox e198 · Ashvini nest-only · Equinox B."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/sur/shape-caravan-supervisor-exit-meanings.glow"
+
+say "caravan-tend-4: placard..."
+let placard = run ["sh" "-c" "head -n 7 src/sur/shape-caravan-supervisor-exit-meanings.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "caravan-tend-4: placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "caravan-tend-4: placard missing six lines"
+
+say "caravan-tend-4: example locks to three meanings..."
+let ex = run ["sh" "-c" "grep -q 'example    3' src/sur/shape-caravan-supervisor-exit-meanings.glow"]
+assert ex.ok else "caravan-tend-4: example 3 missing"
+let names = run ["sh" "-c" "grep -q 'cycle_ok' src/sur/shape-caravan-supervisor-exit-meanings.glow && grep -q 'stop_requested' src/sur/shape-caravan-supervisor-exit-meanings.glow && grep -q 'fall' src/sur/shape-caravan-supervisor-exit-meanings.glow"]
+assert names.ok else "caravan-tend-4: placard must name cycle_ok · stop_requested · fall"
+let elder = run ["sh" "-c" "grep -q 'caravan/supervisor_exit.rye' src/sur/shape-caravan-supervisor-exit-meanings.glow"]
+assert elder.ok else "caravan-tend-4: supervisor_exit.rye citation missing"
+
+say "caravan-tend-4: rye still seats cycle_ok=0 and stop_requested=8..."
+let rye0 = run ["sh" "-c" "grep -E '^pub const cycle_ok: u8 = 0;$' caravan/supervisor_exit.rye"]
+assert rye0.ok else "caravan-tend-4: cycle_ok must remain 0"
+let rye8 = run ["sh" "-c" "grep -E '^pub const stop_requested: u8 = 8;$' caravan/supervisor_exit.rye"]
+assert rye8.ok else "caravan-tend-4: stop_requested must remain 8"
+
+say "caravan-tend-4: lower and run..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk]
+assert gate.ok else "caravan-tend-4: shape lower/build/run failed"
+assert gate.out contains "EXIT:0" else "caravan-tend-4: shape did not exit 0"
+
+say "caravan-tend-4: C3 and Aurora A1 still present..."
+let prior = run ["sh" "-c" "test -f src/sur/shape-caravan-max-name-len.glow -a -f src/sur/shape-aurora-wire-capacity.glow"]
+assert prior.ok else "caravan-tend-4: C3 or A1 missing"
+
+say "GREEN: caravan Glow Tend limb 4 — three exit meanings in src/sur/; C3+A1 kept."

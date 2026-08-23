@@ -21,10 +21,10 @@ Mandi names the offer: a signed `vessel-listing-v1` binds `vessel_parent` + MALA
 |-------|------|
 | `mandi_core.rye` | Sign / verify / receipt / parent bind |
 | `mandi.rye` | Selftest binary |
-| `tools/mandi_lap1.rish` | Witness → parity **238** |
+| `tools/m/mandi_lap1.rish` | Witness → parity **238** |
 
 ```sh
-rishi/bin/rishi run tools/mandi_lap1.rish
+rishi/bin/rishi run tools/m/mandi_lap1.rish
 ```
 
 ## Floor view
@@ -32,7 +32,7 @@ rishi/bin/rishi run tools/mandi_lap1.rish
 Citizen window on Skate — five lines: floor title, vessel parent prefix, price, receipt prefix, fold green. Lying listing refused.
 
 ```sh
-rishi/bin/rishi run tools/mandi_floor_view.rish
+rishi/bin/rishi run tools/m/mandi_floor_view.rish
 ```
 
 Witness → parity **240** (`mandiviewtest`).
@@ -42,7 +42,7 @@ Witness → parity **240** (`mandiviewtest`).
 In-process close: listing receipt + `vessel-payment-v1` (MALA send digest + WOV transfer digest) under seed `0x68`. Refuses zero, lying, mismatches, overdraft, insufficient, double settle.
 
 ```sh
-rishi/bin/rishi run tools/mandi_listing_settle.rish
+rishi/bin/rishi run tools/m/mandi_listing_settle.rish
 ```
 
 Witness → parity **242**.
@@ -52,7 +52,7 @@ Witness → parity **242**.
 Citizen window on Skate — six lines: settle title, listing receipt, price, payment prefix, settled, fold green. Double settle refused.
 
 ```sh
-rishi/bin/rishi run tools/mandi_settle_view.rish
+rishi/bin/rishi run tools/m/mandi_settle_view.rish
 ```
 
 Witness → parity **244** (`mandisettletest`).

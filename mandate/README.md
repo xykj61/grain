@@ -24,7 +24,7 @@ Mandate is Grain's search organ — a **vector store**, its own answer to turbop
 ```
 rye build mandate/store.rye -femit-bin=mandate/bin/store
 mandate/bin/store selftest
-rishi/bin/rishi run tools/mandate_store_witness.rish
+rishi/bin/rishi run tools/m/mandate_store_witness.rish
 ```
 
 The selftest frames its vectors as image embeddings (nature and city tags) so the nearest neighbours are legible by hand; the vectors are plainly synthetic, so no key or network is touched.

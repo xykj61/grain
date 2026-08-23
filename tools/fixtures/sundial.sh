@@ -45,9 +45,9 @@ if test -f counsel/date/20260728/20260728-030310_the-keeh-season-quint-charter.m
 else
   miss "live: Keeh quint charter"
 fi
-if test -f tools/gen_keeh_fund_prep.rish; then ok "live: gen_keeh"; else miss "live: gen_keeh"; fi
-if test -f tools/gen_shyu_fund_prep.rish; then ok "live: gen_shyu"; else miss "live: gen_shyu"; fi
-if test -f tools/gen_linn_fund_prep.rish; then ok "live: gen_linn"; else miss "live: gen_linn"; fi
+if test -f tools/g/gen_keeh_fund_prep.rish; then ok "live: gen_keeh"; else miss "live: gen_keeh"; fi
+if test -f tools/g/gen_shyu_fund_prep.rish; then ok "live: gen_shyu"; else miss "live: gen_shyu"; fi
+if test -f tools/g/gen_linn_fund_prep.rish; then ok "live: gen_linn"; else miss "live: gen_linn"; fi
 if test -f gratitude/kia.md; then ok "live: Kia gratitude"; else miss "live: Kia gratitude"; fi
 if test -f gratitude/hyundai.md; then ok "live: Hyundai gratitude"; else miss "live: Hyundai gratitude"; fi
 if test -f gratitude/helen-atthowe.md; then ok "live: Helen Atthowe gratitude"; else miss "live: Helen Atthowe gratitude"; fi

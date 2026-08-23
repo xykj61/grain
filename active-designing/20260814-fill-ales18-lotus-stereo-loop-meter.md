@@ -30,7 +30,7 @@ Both the wrapping read and the two meters are reused whole; only the reference-a
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_stereo_loop_meter_witness.rish`: block-and-cycle invariance — a looping region metered live at 1-, 2-, and 5-sample blocks and 1, 3, 7 cycles gives the **identical** per-channel peak and RMS as `measure_region` at rest; **stability across 100 cycles** (the same peak and RMS as one cycle — the human payoff of the K-cancels fact); a loud left and a quiet right report distinct levels off the live loop; a `StereoClip` rendered by ALES11's `power.render_stereo` loops-and-meters its two channels exactly (a center pan's `0.707` per side, `700` on a `1000` source); the live loop meter mutates neither channel; and the cycle count is refused past ALES13's meter bound. Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker.
+`tools/al/ales_stereo_loop_meter_witness.rish`: block-and-cycle invariance — a looping region metered live at 1-, 2-, and 5-sample blocks and 1, 3, 7 cycles gives the **identical** per-channel peak and RMS as `measure_region` at rest; **stability across 100 cycles** (the same peak and RMS as one cycle — the human payoff of the K-cancels fact); a loud left and a quiet right report distinct levels off the live loop; a `StereoClip` rendered by ALES11's `power.render_stereo` loops-and-meters its two channels exactly (a center pan's `0.707` per side, `700` on a `1000` source); the live loop meter mutates neither channel; and the cycle count is refused past ALES13's meter bound. Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker.
 
 ## The road on
 

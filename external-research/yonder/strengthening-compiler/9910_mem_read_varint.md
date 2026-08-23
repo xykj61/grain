@@ -66,7 +66,7 @@ pub fn readVarInt(comptime ReturnType: type, bytes: []const u8, endian: Endian) 
 |------|-------|--------|
 | `rye/lib/std/mem.zig` | `readVarInt` — named `u32` bound; empty-wire assert | done |
 | `rye/tests/mem_read_varint_test.rye` | witness program | done |
-| `tools/parity.rish` | witness registered | done |
+| `tools/p/parity.rish` | witness registered | done |
 | `external-research/yonder/strengthening-compiler/9910_mem_read_varint.md` | pass record | done |
 
 ## Postconditions

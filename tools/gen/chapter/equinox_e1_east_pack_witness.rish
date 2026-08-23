@@ -38,7 +38,7 @@ assert tl.ok else "equinox-e3: tally total_capacity RED"
 assert tl.out contains "GREEN" else "equinox-e3: tally total_capacity not GREEN"
 
 # The guard the e1 collision slipped past — now runnable on a bare cloud raise.
-let cg = run ["sh" "-c" "rishi/bin/rishi run tools/collision_guard.rish total_capacity 2>&1"]
+let cg = run ["sh" "-c" "rishi/bin/rishi run tools/co/collision_guard.rish total_capacity 2>&1"]
 assert cg.ok else "equinox-e3: collision_guard RED"
 assert cg.out contains "GREEN" else "equinox-e3: collision_guard not GREEN"
 
@@ -147,7 +147,7 @@ assert ab.out contains "GREEN" else "voice-v11: almanac breach not GREEN"
 
 # v12 · slot 12 · opening_lines_and_silo: six authored .rye files now sit inside
 # the elder roster, so the canonical head is proven rather than merely kept.
-let ol = run ["sh" "-c" "rishi/bin/rishi run tools/opening_lines_witness.rish 2>&1"]
+let ol = run ["sh" "-c" "rishi/bin/rishi run tools/o/opening_lines_witness.rish 2>&1"]
 assert ol.ok else "voice-v12: opening lines RED"
 assert ol.out contains "GREEN" else "voice-v12: opening lines not GREEN"
 assert ol.out contains "all 25 hosted files" else "voice-v12: the roster lost files"

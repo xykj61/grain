@@ -63,19 +63,19 @@ Expected Amber-shaped snapshot · restore · fold remainder equals fresh; unknow
 Expected keypair tamper · unknown kind · append-only unchanged · overdraw · seam truncate/ship tamper — five cases under bound 5. Metal answered GREEN — cases=5 · bound=5 · log.len=3. Negative space gathers without inventing a sixth primitive.
 
 ### 10. S0 wall-time baselines for five myc GREEN mains record elapsed_ms without tuning.
-**Ran:** `rishi/bin/rishi run tools/myc_perf_pin.rish` · **Stamp:** `20260730.101622` · **Witness:** `tools/myc_perf_pin.rish` · report `work-in-progress/myc-s0-baselines.tsv`  
+**Ran:** `rishi/bin/rishi run tools/m/myc_perf_pin.rish` · **Stamp:** `20260730.101622` · **Witness:** `tools/m/myc_perf_pin.rish` · report `work-in-progress/myc-s0-baselines.tsv`  
 Expected correctness-first timing of fold · fold_persist · ship_sol · build_bounds · refusal_storm under bound 5 · no budget red. Metal answered GREEN — rows=5 · bound=5 · elapsed_ms fold=102 · fold_persist=72 · ship_sol=33 · build_bounds=24 · refusal_storm=112. Measurement precedes movement.
 
 ### 11. The five primitives speak as one Sangha reference page; sections and myc paths resolve on metal.
-**Ran:** `rishi/bin/rishi run tools/sangha_five_primitives_page_witness.rish` · **Stamp:** `20260730.103032` · **Witness:** `docs-geode/sangha/03-five-primitives.md` · `tools/sangha_five_primitives_page_witness.rish`  
+**Ran:** `rishi/bin/rishi run tools/s/sangha_five_primitives_page_witness.rish` · **Stamp:** `20260730.103032` · **Witness:** `docs-geode/sangha/03-five-primitives.md` · `tools/s/sangha_five_primitives_page_witness.rish`  
 Expected five sections (keypair · signed event · append-only log · pure fold · capability) citing GREEN myc only. Metal answered GREEN — five sections · six myc paths · README indexed. Companion myc re-runs this door: fold · fold_persist · ship_sol · refusal_storm · build_bounds · kumara all GREEN.
 
 ### 12. An edu walk re-runs discovery quartet plus myc fold; the wire pier is not claimed.
-**Ran:** `rishi/bin/rishi run tools/edu_discovery_walk_witness.rish` · **Stamp:** `20260730.104152` · **Witness:** `edu/discovery/round-trip-walk.md` · `tools/edu_discovery_walk_witness.rish`  
+**Ran:** `rishi/bin/rishi run tools/e/edu_discovery_walk_witness.rish` · **Stamp:** `20260730.104152` · **Witness:** `edu/discovery/round-trip-walk.md` · `tools/e/edu_discovery_walk_witness.rish`  
 Expected five GREEN steps (descriptor · table · gossip · introduce · fold) and an honesty line that wire both-sides stays queued. Metal answered GREEN — five steps · quartet + fold · no wire pier claimed.
 
 ### 13. Two discovery lanes converge tables across a spawn/wait-for wire; fold supply matches both sides.
-**Ran:** `rishi/bin/rishi run tools/discovery_round_trip_wire.rish` · **Stamp:** `20260730.111628` · **Witness:** `tools/discovery_round_trip_wire.rish` · `comlink/discovery/round_trip_wire.rye`
+**Ran:** `rishi/bin/rishi run tools/d/discovery_round_trip_wire.rish` · **Stamp:** `20260730.111628` · **Witness:** `tools/d/discovery_round_trip_wire.rish` · `comlink/discovery/round_trip_wire.rye`
 Expected peers=2 · both-sides digest equality · stranger + gossip refuse loud · fold supply parity under timeout 64. Metal answered GREEN — digest lane-a,lane-b · refuse limbs · supply equal. Elder seat 6 wire both-sides lands as door 15.
 
 ### 14. The equinox map sits as Brix data; a witness checks four flanks and the kendras.
@@ -103,7 +103,7 @@ Expected East utilities and harden limbs GREEN in one re-touch. Metal answered G
 Expected 16 slots · 12 base once each · 4 doubles with min gap 6. Metal answered GREEN. The mod-clock priority fold enters chapter two.
 
 ### 19. The classic tower solves with an explicit bounded stack; seventeen rings refuse whole.
-**Ran:** `rishi/bin/rishi run tools/edu_tower_witness.rish` · **Stamp:** `20260730.120531` · **Witness:** `tools/edu_tower_witness.rish` · `edu/tower/bounded_tower.rye`
+**Ran:** `rishi/bin/rishi run tools/e/edu_tower_witness.rish` · **Stamp:** `20260730.120531` · **Witness:** `tools/e/edu_tower_witness.rish` · `edu/tower/bounded_tower.rye`
 Expected solve(3)=7 moves · TooManyRings at 17 · tally/stack beneath · tutorial pinned. Metal answered GREEN. Recursion stays out; the depth is named.
 
 ### 20. Houseplant names a Kumara ship owner's whole grain repository project tree.
@@ -111,7 +111,7 @@ Expected solve(3)=7 moves · TooManyRings at 17 · tally/stack beneath · tutori
 Expected Lexicon row with ship · repository · project tree · pier/verse distinct · ladder accretion. Metal answered GREEN. The plant is the tree, not the keypair.
 
 ### 21. A capacity-one stack refuses a second push; the tower's frame bound bites from a fixture.
-**Ran:** `rishi/bin/rishi run tools/edu_tower_frame_bite_witness.rish` · **Stamp:** `20260730.120858` · **Witness:** `tools/edu_tower_frame_bite_witness.rish` · `edu/tower/frame_bound_overpush.rye`
+**Ran:** `rishi/bin/rishi run tools/e/edu_tower_frame_bite_witness.rish` · **Stamp:** `20260730.120858` · **Witness:** `tools/e/edu_tower_frame_bite_witness.rish` · `edu/tower/frame_bound_overpush.rye`
 Expected overpush EXIT=1 with assertion failure · welcome tower still GREEN. Metal answered GREEN. Negative space as loud as welcome.
 
 ### 22. Fourteen symlinks and one real file keep tally/copy.rye sameness; a drifted fixture is refused.

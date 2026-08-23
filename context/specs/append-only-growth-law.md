@@ -34,7 +34,7 @@ Rosters seat now. Folds run when each pin nears its bound.
 
 ## Lint
 
-`tools/living_docs_lint.rish` duty 6 flags a pin **past** the bound. Companion advisory (same duty family): a pin **near** the bound (at or above 90% of `living_pin_max_bytes`) names the fold as the remedy and points at that genre’s seasons roster. Advisory; never blocking.
+`tools/l/living_docs_lint.rish` duty 6 flags a pin **past** the bound. Companion advisory (same duty family): a pin **near** the bound (at or above 90% of `living_pin_max_bytes`) names the fold as the remedy and points at that genre’s seasons roster. Advisory; never blocking.
 
 ## Companion
 

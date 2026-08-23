@@ -27,7 +27,7 @@ ALES7 opened the read side of the suite: a play head that reads a master forward
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_loop_witness.rish`: a loop turned off reads identically to ALES7's forward `read_block` (the last block honestly short, the read past the end empty); a region `[1, 4)` of a five-sample master cycles `20, 30, 40, 20, 30, 40, …` exactly, and reading K cycles concatenates to the region repeated K times (no sample skipped at the seam, none doubled); the head stays within `[start, end)` after every read; a loop over the whole master `[0, len)` cycles the full master (continuous replay); a single-sample region repeats that one sample; `make` refuses `BadLoop` on an empty, inverted, or past-the-master region; `mark_ms` places the region at real times through the clock; and the loop reads only — the master is never mutated. Purely local — no socket, no network, no keys, no funds, no real device.
+`tools/al/ales_loop_witness.rish`: a loop turned off reads identically to ALES7's forward `read_block` (the last block honestly short, the read past the end empty); a region `[1, 4)` of a five-sample master cycles `20, 30, 40, 20, 30, 40, …` exactly, and reading K cycles concatenates to the region repeated K times (no sample skipped at the seam, none doubled); the head stays within `[start, end)` after every read; a loop over the whole master `[0, len)` cycles the full master (continuous replay); a single-sample region repeats that one sample; `make` refuses `BadLoop` on an empty, inverted, or past-the-master region; `mark_ms` places the region at real times through the clock; and the loop reads only — the master is never mutated. Purely local — no socket, no network, no keys, no funds, no real device.
 
 ## The road on
 

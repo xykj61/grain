@@ -1,0 +1,39 @@
+# tools/b/buhr_mantra_browser_view_theme_witness.rish — BUHR Journey 2, Rung 6.
+#
+# A .brush mode theme recolors the whole reading ground: rung two painted the full
+# revision graph on the base sheet's Flax paper and Bark ink; rung four themed the
+# living edge (the head accent). This rung carries the authoring loop to the other
+# side of the sheet — the reading ground itself. A real `.brush` file's `style:`
+# block overrides `paper` and `ink`, the WADE1 cascade infuses that override over
+# the base sheet, and rung two's unchanged paint_graph paints the whole graph on the
+# *authored* ground. The proof is that the entire reading surface flips light→dark by
+# editing one `.brush` file, not Skate or Rye — and that the flip is real: the base
+# sheet's Flax paper leaves zero pixels on the themed canvas.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/buhr_mantra_browser_view_theme_witness.rish
+
+say "buhr-j2r6: Language EN — a .brush mode theme's paper/ink override recolors the whole reading ground on the Skate surface."
+say "buhr-j2r6: Lens TAME — the theme read through the real authoring loop, infused per-key, painted by rung two; recolor proven by the ground flipping from the light majority to the dark majority."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/mantra-browser-view-theme"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mantra_browser_view_theme.rye -femit-bin=${bin}"]
+assert build.ok else "buhr-j2r6: mantra_browser_view_theme build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr-j2r6: mantra_browser_view_theme selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr-j2r6: selftest did not speak GREEN"
+assert selftest.out contains "ground flipped — dark ground" else "buhr-j2r6: the ground did not flip from light to dark on the canvas"
+assert selftest.out contains "the palette law holds through the mode theme" else "buhr-j2r6: warm/low-blue proof through the theme missing"
+assert selftest.out contains "text unchanged by the theme" else "buhr-j2r6: additive-glyphs proof missing"
+assert selftest.out contains "the override is what flips the surface" else "buhr-j2r6: default-base baseline proof missing"
+assert selftest.out contains "refuses to theme — ThemeMissingGround" else "buhr-j2r6: style-less refuse proof missing"
+
+# Rung two stays its own green binary — the theme is strictly additive over it.
+let rung2 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mantra_browser_view_witness.rish 2>&1"]
+assert rung2.ok else "buhr-j2r6: rung two witness regressed"
+assert rung2.out contains "GREEN: BUHR-J2r2" else "buhr-j2r6: rung two lost its green"
+
+say "GREEN: BUHR-J2r6 — a .brush mode theme's ground override recolors the whole reading surface; the design-system ground is themeable end to end."

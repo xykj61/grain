@@ -36,7 +36,7 @@ Bounds are proven, not trusted: `max_pan_den` bounds the pan denominator, and `s
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_pan_witness.rish`: center pan splits a track equally; hard left and hard right route the whole track to one channel; pan composes with the fader (half level, center pan → a quarter each side); two tracks panned opposite separate into the two channels; the linear-pan invariant holds — left + right reproduces the mono fader mix exactly for any pan position; `make` refuses `BadGain` / `BadRange`; a track past the master bound forwards `ClipFull`. GREEN on the first build. Purely local — no socket, no network, no keys, no funds, no real device, no real speaker.
+`tools/al/ales_pan_witness.rish`: center pan splits a track equally; hard left and hard right route the whole track to one channel; pan composes with the fader (half level, center pan → a quarter each side); two tracks panned opposite separate into the two channels; the linear-pan invariant holds — left + right reproduces the mono fader mix exactly for any pan position; `make` refuses `BadGain` / `BadRange`; a track past the master bound forwards `ClipFull`. GREEN on the first build. Purely local — no socket, no network, no keys, no funds, no real device, no real speaker.
 
 ## The road on
 

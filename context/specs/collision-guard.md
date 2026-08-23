@@ -19,7 +19,7 @@ Claude’s `061012` collision guard truncated its output and classified mudra’
 
 ## Practice
 
-1. Search owned surfaces with `rg -n -C 2` (or `tools/collision_guard.rish NAME`) — never pipe through `head` / `tail` / a capped pager that drops hits.
+1. Search owned surfaces with `rg -n -C 2` (or `tools/co/collision_guard.rish NAME`) — never pipe through `head` / `tail` / a capped pager that drops hits.
 2. **Always** sweep these three surfaces explicitly, even when the tree-wide search looks clean:
    - `construction/ready-to-ask-claude.md` (parks and alternates)
    - `context/specs/reserved-vocabulary.md`
@@ -35,7 +35,7 @@ Claude’s `061012` collision guard truncated its output and classified mudra’
 ## Tool
 
 ```
-rishi/bin/rishi run tools/collision_guard.rish NAME
+rishi/bin/rishi run tools/co/collision_guard.rish NAME
 ```
 
 Prints every match with two lines of context, then reprints the three required surfaces. Classification remains a human step recorded in the seating spec — the tool proves the print is whole.

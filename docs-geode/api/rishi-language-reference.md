@@ -125,7 +125,7 @@ let block = "first${nl}second"
 `rishi/tests/*.rish` holds a test per feature, and `tools/rish_*_witness.rish` proves the exit vocabulary, the environment lookup, and the regex primitive on metal. Run one:
 
 ```sh
-rishi/bin/rishi run tools/rish_exit_codes_witness.rish
+rishi/bin/rishi run tools/r/rish_exit_codes_witness.rish
 ```
 
 ```

@@ -103,7 +103,7 @@ Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
 | `misc` | `findNonePos` — Phase 4 `usize` seam policy applied | done |
 | `misc` | `findNone` — Phase 4 `usize` seam policy applied | done |
 | `rye/tests/find_none_pos_test.rye` | witness program | done |
-| `tools/parity.rish` | witness registered | done |
+| `tools/p/parity.rish` | witness registered | done |
 | `external-research/yonder/strengthening-compiler/9965_find_none_pos.md` | pass record + audited surfaces | done |
 | `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9965 | done |

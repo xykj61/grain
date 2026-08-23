@@ -58,7 +58,7 @@ Everything in [`context/`](context/README.md) is a promise we keep on purpose. [
 
 ## The Two Grains
 
-This field is one person's grown season. The public template — **grain-os/grain**, its own fresh history — is *projected* from it by [`tools/sow.rish`](tools/sow.rish), which carries forward only the shareable rooms and withholds every private one. The boundary is named, path by path, in [`template-manifest.bron`](template-manifest.bron), and proven clean by [`tools/sow_witness.rish`](tools/sow_witness.rish): no name, no key, no personal path ever reaches the seed. See [`external-research/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md`](external-research/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md).
+This field is one person's grown season. The public template — **grain-os/grain**, its own fresh history — is *projected* from it by [`tools/s/sow.rish`](tools/s/sow.rish), which carries forward only the shareable rooms and withholds every private one. The boundary is named, path by path, in [`template-manifest.bron`](template-manifest.bron), and proven clean by [`tools/s/sow_witness.rish`](tools/s/sow_witness.rish): no name, no key, no personal path ever reaches the seed. See [`external-research/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md`](external-research/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md).
 
 ## Licenses (hold)
 

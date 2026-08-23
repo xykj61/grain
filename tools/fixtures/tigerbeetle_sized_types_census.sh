@@ -41,12 +41,12 @@ if test -f "$ROOT/docs/TIGER_STYLE.md" \
 fi
 
 WIDTH_CHECK=no
-if test -f tools/width-check.rish; then
+if test -f tools/w/width-check.rish; then
   WIDTH_CHECK=yes
 fi
 
 USIZE_AUDIT=no
-if test -f tools/tame_usize_audit.rye; then
+if test -f tools/rye/tame_usize_audit.rye; then
   USIZE_AUDIT=yes
 fi
 

@@ -39,10 +39,10 @@ Token-dense on purpose. This is the smallest form that still holds TAME's highes
 
 ## The checkable surface (the audit runs these)
 
-- `tools/width-check.rish` — widths (seam-only `usize`).
-- `tools/tame_style_check.rish` — tidy **bans** (fail) + **ratchets** (migrate on touch).
-- `tools/rune_assert_sweep.rish` — asserting cores keep their asserts.
-- `tools/living_docs_lint.rish` — living-doc links, status, retired words.
+- `tools/w/width-check.rish` — widths (seam-only `usize`).
+- `tools/t/tame_style_check.rish` — tidy **bans** (fail) + **ratchets** (migrate on touch).
+- `tools/r/rune_assert_sweep.rish` — asserting cores keep their asserts.
+- `tools/l/living_docs_lint.rish` — living-doc links, status, retired words.
 
 Run them when touching authored code; the **TAME Guidance Audit Quest** (one Quest/Equinox, double-seated) walks all four and books reds.
 

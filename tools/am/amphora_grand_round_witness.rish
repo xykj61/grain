@@ -1,0 +1,68 @@
+# tools/am/amphora_grand_round_witness.rish — Q43: the grand round, measured whole.
+#
+# pour → carry → restore-from-far → same parent · four files land ·
+# original digests match · re-restore welcomes.
+#
+#   rishi/bin/rishi run tools/am/amphora_grand_round_witness.rish
+
+let season = "tools/fixtures/cellar_ring1_tree"
+let home = "/tmp/amphora_grand_round_home"
+let near = "/tmp/amphora_grand_round_home/near"
+let vessel = "/tmp/amphora_grand_round_home/near/v.bron"
+let dock = "/tmp/amphora_grand_round_home/dock"
+let far = "/tmp/amphora_grand_round_home/dock/vessel.bron"
+let out_home = "/tmp/amphora_grand_round_home/dock/vessel.bron.season"
+let hello = "/tmp/amphora_grand_round_home/dock/vessel.bron.season/hello.txt"
+let nested = "/tmp/amphora_grand_round_home/dock/vessel.bron.season/nested/leaf.txt"
+let blob = "/tmp/amphora_grand_round_home/dock/vessel.bron.season/blob.bin"
+let empty = "/tmp/amphora_grand_round_home/dock/vessel.bron.season/empty.file"
+
+let wipe = run ["rm" "-rf" home]
+assert wipe.ok else "grand_round: home wipe"
+let mk = run ["mkdir" "-p" near]
+assert mk.ok else "grand_round: near mkdir"
+
+let pour = run ["amphora/bin/amphora" "pour" season vessel]
+assert pour.ok else "grand_round: pour must exit ok"
+assert pour.err contains "resins written" else "grand_round: pour must write resins"
+
+let carry = run ["amphora/bin/amphora" "carry" vessel dock]
+assert carry.ok else "grand_round: carry must exit ok"
+assert carry.err contains "carry complete" else "grand_round: carry completion spoken"
+assert carry.err contains "resins ferried" else "grand_round: resins must ferry"
+
+let equal = run ["cmp" "-s" vessel far]
+assert equal.ok else "grand_round: far bytes must equal near bytes"
+
+let far_verify = run ["amphora/bin/vessel-core" "verify" far]
+assert far_verify.ok else "grand_round: far stamp must verify"
+let far_open = run ["amphora/bin/vessel-seal" "open-check" far]
+assert far_open.ok else "grand_round: far seal must open"
+
+let restore = run ["amphora/bin/amphora" "restore" far]
+assert restore.ok else "grand_round: restore-from-far must exit ok"
+assert restore.err contains "restore catalog files=4" else "grand_round: want four cargo lines"
+assert restore.err contains "restore same-parent ok" else "grand_round: want same-parent"
+assert restore.err contains "restore complete" else "grand_round: want complete"
+
+let h = run ["test" "-f" hello]
+assert h.ok else "grand_round: hello.txt must land from far"
+let n = run ["test" "-f" nested]
+assert n.ok else "grand_round: nested/leaf.txt must land from far"
+let b = run ["test" "-f" blob]
+assert b.ok else "grand_round: blob.bin must land from far"
+let e = run ["test" "-f" empty]
+assert e.ok else "grand_round: empty.file must land from far"
+
+let cmp_hello = run ["cmp" "-s" "tools/fixtures/cellar_ring1_tree/hello.txt" hello]
+assert cmp_hello.ok else "grand_round: hello bytes must match season"
+let cmp_blob = run ["cmp" "-s" "tools/fixtures/cellar_ring1_tree/blob.bin" blob]
+assert cmp_blob.ok else "grand_round: blob bytes must match season"
+let cmp_leaf = run ["cmp" "-s" "tools/fixtures/cellar_ring1_tree/nested/leaf.txt" nested]
+assert cmp_leaf.ok else "grand_round: leaf bytes must match season"
+
+let again = run ["amphora/bin/amphora" "restore" far]
+assert again.ok else "grand_round: same-parent re-restore must welcome"
+
+say "round=poured carried restored equal=true same-parent=ok files=4"
+say "GREEN: amphora_grand_round — pour · carry · restore-from-far · same parent · home."

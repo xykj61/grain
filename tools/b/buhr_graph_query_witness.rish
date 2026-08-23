@@ -1,0 +1,45 @@
+# tools/b/buhr_graph_query_witness.rish — BUHR Journey 6, Rung 1: the intelligence reads the surface.
+#
+# The equinox's two halves meet: a Lantern-shaped request whose corpus is the living
+# Mantra graph itself. A bounded request routes by prompt to a real reading of the
+# actual BoltCatalog the browser renders — lane_count, bolt_count, a lane's head
+# revision, a bolts/lanes summary — each metered by the same Lantern contract that
+# governs every other voice. The head the voice reports (r2 on a.txt) is exactly the
+# head the browser paints and the editor continues. A length budget truncates with a
+# length stop; a disallowed model, an unknown op, and a zero budget each refuse (no
+# fake answer). The reading journeys stay their own green binaries.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/buhr_graph_query_witness.rish
+
+say "buhr6: Language EN — a Q-vane query whose corpus is the living Mantra graph."
+say "buhr6: Lens TAME — every answer a real graph reading; contract faults surface, unknown prompt refused."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/graph-query"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/graph_query.rye -femit-bin=${bin}"]
+assert build.ok else "buhr6: graph_query build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr6: graph_query selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr6: selftest did not speak GREEN"
+assert selftest.out contains "lane_count read the live graph — text '3'" else "buhr6: lane_count reading missing"
+assert selftest.out contains "bolt_count read the live graph — text '2'" else "buhr6: bolt_count reading missing"
+assert selftest.out contains "head read the living edge — a.txt at r2" else "buhr6: head reading missing (the living edge)"
+assert selftest.out contains "summary read the live graph — text 'bolts=2 lanes=3'" else "buhr6: summary reading missing"
+assert selftest.out contains "length budget — tokens 1 length" else "buhr6: metering/length stop missing"
+assert selftest.out contains "model not allowed refused" else "buhr6: model allow-list gate missing"
+assert selftest.out contains "unknown op refused (no fake answer)" else "buhr6: no-fake-answer refusal missing"
+assert selftest.out contains "zero budget refused by Lantern contract" else "buhr6: Lantern budget gate missing"
+
+# The reading journey the query reads over stays its own green binary — the graph the
+# voice counts is the graph the browser renders, proven separately.
+let browser_bin = "pond/bin/mantra-browser"
+let browser_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mantra_browser.rye -femit-bin=${browser_bin}"]
+assert browser_build.ok else "buhr6: mantra_browser re-build failed"
+let browser_selftest = run ["sh" "-c" "${browser_bin} selftest 2>&1"]
+assert browser_selftest.ok else "buhr6: mantra_browser selftest regressed"
+assert browser_selftest.out contains "GREEN" else "buhr6: mantra_browser did not speak GREEN"
+
+say "GREEN: BUHR6 — the intelligence reads the living surface; the count the voice reports is the count the view shows."

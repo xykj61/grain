@@ -1,0 +1,58 @@
+# tools/f/foundations_link_witness.rish -- a link a reader clicks in the why-room lands.
+#
+# WHY THIS RUNG. `foundations/` is the most Lindy-exposed room this tree owns after the front door.
+# It is read first, cited most, and written for the long return -- the reader who arrives three
+# years on and finds it still true. A dead link there is decay in exactly the place the Lindy
+# discipline was written to protect.
+#
+# It is also the room the tree's own tools are blind to, and each blindness was reasonable on its
+# own. `dated_path_repoint.rish` classifies by basename: a file whose name carries a one-clock
+# stamp is testimony and is never rewritten -- correct for a session log, and wrong for a living
+# foundation, whose whole room is stamp-named by convention and living by status.
+# `dated_path_witness.rish` grades the resolver, so a stale reference it can recover counts as
+# RECOVERABLE and the census stays honest -- while a reader clicking a link has no resolver.
+# `living_docs_lint.rish` does own a broken-link duty and never walks this room.
+#
+# So on `20260821` five rooms folded to `date/YYYYMMDD/` and six essays graduated into
+# `foundations/`, and thirty-eight links broke across twenty-four living files with every meter
+# green -- including step 2 of the compass rose, the tree's own navigation hub, pointing at a path
+# that no longer existed (REDS %124). Three tools looked at the room and each correctly saw
+# something that was not its job.
+#
+# WHAT IS PROVEN, on metal.
+#   Every relative Markdown link in every `.md` under `foundations/` resolves from its citing
+#   file's own directory, with an anchor trimmed first, since `file.md#section` is a claim about
+#   `file.md`.
+#   The check REFUSES a link whose target moved away, names it, and counts it -- proven on a
+#   throwaway room whose answer is known by construction.
+#   The two exemptions hold: an http link and a bare anchor are left alone, since neither is a
+#   claim about a path on disk.
+#
+# WHAT IS NOT PROVEN. That an anchor names a real heading, that an http link answers, or that a
+# backticked path in prose is current. This proves the clickable surface, and says so.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/foundations_link_witness.rish
+
+say "foundations-link: Language EN -- a foundation is written for the reader who arrives three years on, and a link is the only part of it that can quietly stop being true."
+say "foundations-link: Style Radiant -- every clickable link lands, the refusal is proven on a planted move, and the exemptions are named rather than assumed."
+say "foundations-link: Lens TAME -- the failure was silent by construction: three tools read this room and each correctly saw something that was not its job."
+
+let scan = run ["sh" "tools/fixtures/foundations_link_scan.sh"]
+assert scan.ok else "foundations-link: a link in the why-room points at a path that is no longer there -- repoint the living citation, and resolve a dated one rather than rewriting it"
+say scan.out
+assert scan.out contains "links_broken=0" else "foundations-link: every clickable link in foundations must land"
+assert scan.out contains "verdict=ok" else "foundations-link: the scan must balance before it is believed"
+say "field GREEN -- every link a reader can click in the why-room resolves on disk"
+
+let control = run ["sh" "tools/fixtures/foundations_link_control.sh"]
+assert control.ok else "foundations-link: the control must complete"
+say control.out
+assert control.out contains "broken_refused=yes" else "foundations-link: a link whose target moved away must be refused and named"
+assert control.out contains "resolving_accepted=yes" else "foundations-link: a link that lands must be accepted, including through a folded room"
+assert control.out contains "http_ignored=yes" else "foundations-link: an http link is no claim about a path on disk"
+assert control.out contains "anchor_ignored=yes" else "foundations-link: a bare anchor is no claim about a path on disk"
+assert control.out contains "control_verdict=ok" else "foundations-link: the control must agree with itself"
+say "RED and GREEN paths proven -- a moved target refused and named, a folded target accepted, the two exemptions held"
+
+say "GREEN: foundations-link -- every link a reader clicks in the why-room lands, and the room is no longer invisible to the meters that move it."

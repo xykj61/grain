@@ -2,7 +2,7 @@
 
 **Stamp:** `20260730.104053` · door 13 **GREEN** under j4 h4 Accrete-never-break  
 **Language:** EN · **Voice:** Kyri · **Style:** Radiant  
-**Lane:** edu discovery walk · `edu/` law · witness `tools/edu_discovery_walk_witness.rish`  
+**Lane:** edu discovery walk · `edu/` law · witness `tools/e/edu_discovery_walk_witness.rish`  
 **Companion pattern:** [`../../docs-geode/sangha/01-descriptor-exchange.md`](../../docs-geode/sangha/01-descriptor-exchange.md)
 
 *Written together by Keaton and Riyo.*
@@ -81,7 +81,7 @@ Law: supply = issued − taxed at every prefix. Overdraw and unknown kinds refus
 When you want the bench to re-run the whole walk and assert every GREEN line:
 
 ```
-rishi/bin/rishi run tools/edu_discovery_walk_witness.rish
+rishi/bin/rishi run tools/e/edu_discovery_walk_witness.rish
 ```
 
 Expect: `GREEN: edu discovery walk — five steps · quartet + fold · no wire pier claimed`

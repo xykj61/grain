@@ -25,7 +25,7 @@ The read side of the suite has three tools — play (ALES7), meter (ALES13), loo
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_stereo_meter_witness.rish`: a fresh stereo meter reads silence in both channels; a stereo master metered **live** off ALES15's stereo transport, block by block at 1-, 2-, and 7-sample blocks, gives the **identical** per-channel peak and RMS as ALES13's whole-master `measure_stereo` (block-invariance per channel, the two channels feeding the same count every block); a loud left and a quiet right report distinct levels; a `StereoClip` rendered by ALES11's `power.render_stereo` meters its two channels exactly (a center pan's `0.707` per side, `700` on a `1000` source); metering never mutates either channel; and `feed` refuses `MeterFull` past the bound, leaving the meter untouched. Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker.
+`tools/al/ales_stereo_meter_witness.rish`: a fresh stereo meter reads silence in both channels; a stereo master metered **live** off ALES15's stereo transport, block by block at 1-, 2-, and 7-sample blocks, gives the **identical** per-channel peak and RMS as ALES13's whole-master `measure_stereo` (block-invariance per channel, the two channels feeding the same count every block); a loud left and a quiet right report distinct levels; a `StereoClip` rendered by ALES11's `power.render_stereo` meters its two channels exactly (a center pan's `0.707` per side, `700` on a `1000` source); metering never mutates either channel; and `feed` refuses `MeterFull` past the bound, leaving the meter untouched. Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker.
 
 ## The road on
 

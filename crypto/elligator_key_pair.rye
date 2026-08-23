@@ -34,7 +34,7 @@
 //! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. A representative is not a signature and a seed
 //! handed here is a test seed; this file signs nothing and holds no real key. It calls no std.crypto in the composition itself. Zig's std.crypto
 //! ships no Elligator keypair, so — like every rung of the key-hiding family — there is no independent std.crypto oracle; the byte-for-byte
-//! agreement with the actual vendored Monocypher in tools/crypto_monocypher_elligator_key_pair_parity_witness.rish is the external anchor.
+//! agreement with the actual vendored Monocypher in tools/cr/crypto_monocypher_elligator_key_pair_parity_witness.rish is the external anchor.
 //! Constant-time timing-safety stays a separate named horizon: rev's one representability test is variable-time, which is the very reason keys
 //! are tried at RANDOM here rather than fixed — the arithmetic beneath is data-independent by construction.
 //!

@@ -24,12 +24,12 @@ The proven-seat ladder proves the **seat** before the house claims it. Each rung
 
 | Rung | Grade | Primary witness | Serial / artifact words | State |
 |------|-------|-----------------|-------------------------|-------|
-| **G0** | environment | `tools/proven_seat_g0.rish` | SeaBIOS → disk → **GRUB loading** (TCG) | GREEN |
-| **G0-complete** | kvm path | `tools/lane_kvm_onpath_host.rish` | Leitzentrale **Components** graph · GRUB on COM1 | GREEN `140403` |
-| **G1** | **digest-grade** | `tools/proven_seat_g1.rish` (after fetch chain) | *fixture holds; seat speaks* | **closed** `204549` |
-| **signed-Kumara** | **signed-Kumara** | `tools/proven_seat_signed_kumara.rish` | verify GREEN + tamper-refuse GREEN | **resting** `220400` |
+| **G0** | environment | `tools/p/proven_seat_g0.rish` | SeaBIOS → disk → **GRUB loading** (TCG) | GREEN |
+| **G0-complete** | kvm path | `tools/l/lane_kvm_onpath_host.rish` | Leitzentrale **Components** graph · GRUB on COM1 | GREEN `140403` |
+| **G1** | **digest-grade** | `tools/p/proven_seat_g1.rish` (after fetch chain) | *fixture holds; seat speaks* | **closed** `204549` |
+| **signed-Kumara** | **signed-Kumara** | `tools/p/proven_seat_signed_kumara.rish` | verify GREEN + tamper-refuse GREEN | **resting** `220400` |
 
-**Pair law (signed-Kumara):** guest must call `crypto_ed25519_check` at least twice (good + tampered) and must never reference `crypto_eddsa_`. Proved by `tools/proven_seat_signed_kumara_fetch.rish` assert 2.
+**Pair law (signed-Kumara):** guest must call `crypto_ed25519_check` at least twice (good + tampered) and must never reference `crypto_eddsa_`. Proved by `tools/p/proven_seat_signed_kumara_fetch.rish` assert 2.
 
 **META trio (G1):** toolchain · sources · ground — fields and pins live in [`20260712-195339`](../active-designing/date/20260712/20260712-195339_proven-seat-g1-crossing-pin.md) and cache META files written by fetch witnesses (`g1-sources-meta.txt`, `g1-toolchain-meta.txt`). Do not trust this page for byte pins; run the fetch witness.
 
@@ -45,7 +45,7 @@ The proven-seat ladder proves the **seat** before the house claims it. Each rung
 | Genode `posix` + `libc` | **Runtime shape** — `Libc::Component::construct` entry |
 | Goa SDK | Same toolchain family when versions align |
 
-**Pinned G1 path:** smallest honest `receipt_core` verify-witness as **posix/libc** component, **25.05** toolchain + **26.05** sources, jailed TCG serial (`KERNEL=nova`). Probe: `tools/proven_seat_g1_crossing_probe.rish`.
+**Pinned G1 path:** smallest honest `receipt_core` verify-witness as **posix/libc** component, **25.05** toolchain + **26.05** sources, jailed TCG serial (`KERNEL=nova`). Probe: `tools/p/proven_seat_g1_crossing_probe.rish`.
 
 Full spike record: [`20260712-195339`](../active-designing/date/20260712/20260712-195339_proven-seat-g1-crossing-pin.md).
 
@@ -59,7 +59,7 @@ Rye already runs freestanding on bare metal (Aurora). A Genode component **links
 
 **Rye-body horizon (parked):** freestanding Rye objects + ~10-line C shim owning `construct`. **Trigger:** guest logic outgrows seam-C, or a second Genode guest wants Rye authoring. Counsel: [`20260712-220400`](../active-designing/date/20260712/20260712-220400_proven-seat-seam-c-and-rye-body.md).
 
-**Crypto teacher (signed-Kumara):** **Monocypher** with `monocypher-ed25519` / `crypto_ed25519_check` (RFC 8032 / SHA-512). Default BLAKE2b EdDSA is the named red-to-avoid. Pin proved by `tools/proven_seat_signed_kumara_fetch.rish`.
+**Crypto teacher (signed-Kumara):** **Monocypher** with `monocypher-ed25519` / `crypto_ed25519_check` (RFC 8032 / SHA-512). Default BLAKE2b EdDSA is the named red-to-avoid. Pin proved by `tools/p/proven_seat_signed_kumara_fetch.rish`.
 
 ---
 
@@ -70,7 +70,7 @@ Run from repository root. Teacher images and builddirs stay under `tools/.cache/
 ### G0 — TCG boot milestone (jail-runnable)
 
 ```bash
-rishi/bin/rishi run tools/proven_seat_g0.rish
+rishi/bin/rishi run tools/p/proven_seat_g0.rish
 ```
 
 Stage `sculpt-26-04.img` per witness header (sha256 asserted in witness).
@@ -80,16 +80,16 @@ Stage `sculpt-26-04.img` per witness header (sha256 asserted in witness).
 **Refuse floor** (lane off, inside jail):
 
 ```bash
-rishi/bin/rishi run tools/lane_kvm_refuse.rish
+rishi/bin/rishi run tools/l/lane_kvm_refuse.rish
 ```
 
 **On-path host one-shot** (outside ai-jail, `/dev/kvm` present):
 
 ```bash
-rishi/bin/rishi run tools/lane_kvm_onpath_host.rish
+rishi/bin/rishi run tools/l/lane_kvm_onpath_host.rish
 ```
 
-Optional same-sitting parity: add `--parity`. Jailed boot alone: `LANE_KVM=true rishi/bin/rishi run tools/proven_seat_g0_complete_jailed.rish`.
+Optional same-sitting parity: add `--parity`. Jailed boot alone: `LANE_KVM=true rishi/bin/rishi run tools/p/proven_seat_g0_complete_jailed.rish`.
 
 D-Bus/systemd host escape is **retired** — [`113900`](../active-designing/date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md).
 
@@ -98,24 +98,24 @@ D-Bus/systemd host escape is **retired** — [`113900`](../active-designing/date
 Chain in order (each witness GREEN before the next):
 
 ```bash
-rishi/bin/rishi run tools/proven_seat_g1_fetch_toolchain.rish
-rishi/bin/rishi run tools/proven_seat_g1_fetch_sources.rish
-rishi/bin/rishi run tools/proven_seat_g1_prepare_libc.rish
-rishi/bin/rishi run tools/proven_seat_g1_create_builddir.rish
-rishi/bin/rishi run tools/proven_seat_g1_build_guest.rish
-rishi/bin/rishi run tools/proven_seat_g1.rish
+rishi/bin/rishi run tools/p/proven_seat_g1_fetch_toolchain.rish
+rishi/bin/rishi run tools/p/proven_seat_g1_fetch_sources.rish
+rishi/bin/rishi run tools/p/proven_seat_g1_prepare_libc.rish
+rishi/bin/rishi run tools/p/proven_seat_g1_create_builddir.rish
+rishi/bin/rishi run tools/p/proven_seat_g1_build_guest.rish
+rishi/bin/rishi run tools/p/proven_seat_g1.rish
 ```
 
-Crossing sanity: `rishi/bin/rishi run tools/proven_seat_g1_crossing_probe.rish`.
+Crossing sanity: `rishi/bin/rishi run tools/p/proven_seat_g1_crossing_probe.rish`.
 
 Guest sources: `tools/proven_seat_g1_guest/`. Grade **digest-grade** — verify-content rides as passenger; name the grade on the Status line so every reader reads it exactly.
 
 ### signed-Kumara — verify + refuse pair (jail-runnable · no KVM)
 
 ```bash
-rishi/bin/rishi run tools/proven_seat_signed_kumara_fetch.rish
-rishi/bin/rishi run tools/proven_seat_signed_kumara_build_guest.rish
-rishi/bin/rishi run tools/proven_seat_signed_kumara.rish
+rishi/bin/rishi run tools/p/proven_seat_signed_kumara_fetch.rish
+rishi/bin/rishi run tools/p/proven_seat_signed_kumara_build_guest.rish
+rishi/bin/rishi run tools/p/proven_seat_signed_kumara.rish
 ```
 
 Expected serial lines (verbatim):
@@ -123,7 +123,7 @@ Expected serial lines (verbatim):
 - `GREEN: signed-Kumara — signature holds; seat verifies (amount 100)`
 - `GREEN: signed-Kumara — tampered signature refused; seat stands guard`
 
-Fixture generator: `tools/proven_seat_signed_kumara_gen.rye` through `tally/kumara`. Test seed only — **seed never crossed** onto the seat claim.
+Fixture generator: `tools/rye/proven_seat_signed_kumara_gen.rye` through `tally/kumara`. Test seed only — **seed never crossed** onto the seat claim.
 
 **Resting** — no one-line before the ladder sleeps. Morning word (Kaeden): whether fetch · build · serial join a parity chapter.
 
@@ -134,7 +134,7 @@ Chapter 1 prints `living_docs_lint` ratchet advisory beside `tame_style`. Chapte
 Separate from the ladder rungs — Wasm receipt-verify under Env ceiling:
 
 ```bash
-rishi/bin/rishi run tools/parity.rish
+rishi/bin/rishi run tools/p/parity.rish
 ```
 
 Host re-pin landed `20260712.193958`. See `work-in-progress/TASKS.md` for suite nib and chapter claims.

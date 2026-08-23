@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260727.132111`
 **Chapter:** one — gates
-**Desk:** `gate-pleac-double-u32.glow` · **Witness:** `tools/pleac_ch01_witness.rish`
+**Desk:** `gate-pleac-double-u32.glow` · **Witness:** `tools/p/pleac_ch01_witness.rish`
 
 *Written together by Keaton and Quin.*
 
@@ -16,8 +16,8 @@
 **Run it.**
 
 ```
-rishi/bin/rishi run tools/glow_run.rish edu/pleac/ch01/gate-pleac-double-u32.glow 21
-rishi/bin/rishi run tools/pleac_ch01_witness.rish
+rishi/bin/rishi run tools/g/glow_run.rish edu/pleac/ch01/gate-pleac-double-u32.glow 21
+rishi/bin/rishi run tools/p/pleac_ch01_witness.rish
 ```
 
 **The green line.** `GREEN: pleac ch01 — the first gate answers 42; the cookbook is open.`

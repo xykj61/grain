@@ -25,7 +25,7 @@
 # Prints one `key=value` line per proven behavior and `control_verdict=ok` on the tail. Exit is
 # non-zero the moment a behavior fails, so a witness gates on the run itself.
 #
-# Kin: tools/fixtures/sow_manifest_cover.sh (the check under test) - tools/sow_witness.rish.
+# Kin: tools/fixtures/sow_manifest_cover.sh (the check under test) - tools/s/sow_witness.rish.
 #
 # Run from the repository root.
 

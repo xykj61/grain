@@ -4,7 +4,7 @@
 //! Honest Two Rooms: imports lowered Rye from glow/.cache (via symlink),
 //! not .glow source. Seva B0 fold and glow_native_activity stay untouched.
 //!
-//!   rishi/bin/rishi run tools/stoa71_glow_import_seam_witness.rish
+//!   rishi/bin/rishi run tools/s/stoa71_glow_import_seam_witness.rish
 
 const std = @import("std");
 const assert = std.debug.assert;

@@ -21,4 +21,4 @@ A doc's claim belongs in the checkable room only once a witness actually binds i
 
 ## What already catches part of this, mechanically
 
-`tools/living_docs_lint.rish` catches broken relative links, orphan roster pages, retired-word usage, and missing Status lines -- the mechanical half. It does not and cannot check whether a doc's *behavioral claim* is still honestly true; that check is this rule's job, done by reading and running, every time a doc or the code it describes is touched.
+`tools/l/living_docs_lint.rish` catches broken relative links, orphan roster pages, retired-word usage, and missing Status lines -- the mechanical half. It does not and cannot check whether a doc's *behavioral claim* is still honestly true; that check is this rule's job, done by reading and running, every time a doc or the code it describes is touched.

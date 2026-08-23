@@ -1,0 +1,23 @@
+# commerce_steward_demo.rish — Commerce citizen steward demo (tip 419).
+#
+# List on Mandi → settle (MUR + in-memory WOV; was MALA) → Dimeroll receipt.
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/commerce_steward_demo.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mandi/bin/commerce-steward"
+
+say "build: commerce steward demo — list, settle, Dimeroll receipt"
+let build = run ["sh" "-c" "mkdir -p mandi/bin && env RYE_ZIG=${zig} rye/bin/rye build mandi/commerce_steward_demo.rye -femit-bin=${bin}"]
+assert build.ok else "Commerce steward demo build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Commerce steward demo selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Commerce steward demo selftest not GREEN"
+assert selftest.out contains "listed 25 murr — settled" else "Commerce steward missing list/settle claim"
+assert selftest.out contains "receipt recorded" else "Commerce steward missing Dimeroll receipt"
+assert selftest.out contains "conservation 0" else "Commerce steward missing conservation"
+assert selftest.out contains "cash 825" else "Commerce steward missing cash 825 after sale"
+assert selftest.out contains "zero sale amount refused" else "Commerce steward missing zero-sale refuse"
+
+say "GREEN: Commerce steward demo — list, settle, Dimeroll receipt (tip 419)."

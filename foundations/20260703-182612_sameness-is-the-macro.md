@@ -9,7 +9,7 @@
 **Status:** Foundation brief — **grain strand seated** `20260704.023400 UDT` ([`20260702-184312_the-grain-and-the-crossing.md`](20260702-184312_the-grain-and-the-crossing.md))
 
 *Written together by Kaeden and Rio 3.*
-Radiant pass `20260728.003317` — Tensegral Arc II fold `tools/tensegral_arc_ii_witness.rish` (path cite only; claims unchanged)
+Radiant pass `20260728.003317` — Tensegral Arc II fold `tools/t/tensegral_arc_ii_witness.rish` (path cite only; claims unchanged)
 Radiant pass `20260725.035453`
 
 ---

@@ -23,7 +23,7 @@
 #
 # EXPECTED: docs_free=yes, clean_staged=yes, dirty_refused=yes, fresh_quiet=yes, no_rishi_free=yes.
 #
-# Driven by tools/generated_page_freshness_witness.rish. Run from the repository root.
+# Driven by tools/g/generated_page_freshness_witness.rish. Run from the repository root.
 
 set -eu
 
@@ -37,7 +37,10 @@ git config user.email fixture@example.invalid
 git config user.name Fixture
 git config commit.gpgsign false
 
-mkdir -p tools/hooks rishi/bin
+# The pen mirrors the real tree's rooms, generator rooms included: the hook names its generators
+# at `tools/r/` and `tools/g/` since the `20260823.144100` fold, so the stand-ins must stand there
+# too or the control proves a shape the hook no longer has.
+mkdir -p tools/hooks tools/r tools/g rishi/bin
 cp "$root/tools/hooks/pre-commit" tools/hooks/pre-commit
 chmod +x tools/hooks/pre-commit
 git config core.hooksPath tools/hooks
@@ -54,15 +57,15 @@ generator=$2
 : > .generator-ran
 count=$(git ls-files 'tools/*_witness.rish' | wc -l | tr -d ' ')
 case "$generator" in
-  tools/readme_metrics.rish) page=README.md ;;
-  tools/geode_libraries.rish) page=docs-geode/libraries/README.md ;;
+  tools/r/readme_metrics.rish) page=README.md ;;
+  tools/g/geode_libraries.rish) page=docs-geode/libraries/README.md ;;
   *) exit 1 ;;
 esac
 printf 'witnesses=%s\n' "$count" > "$page"
 GEN
 chmod +x rishi/bin/rishi
-printf '# generator stand-in, read by the hook only for its presence\n' > tools/readme_metrics.rish
-printf '# generator stand-in, read by the hook only for its presence\n' > tools/geode_libraries.rish
+printf '# generator stand-in, read by the hook only for its presence\n' > tools/r/readme_metrics.rish
+printf '# generator stand-in, read by the hook only for its presence\n' > tools/g/geode_libraries.rish
 
 mkdir -p docs-geode/libraries
 printf 'witnesses=0\n' > README.md
