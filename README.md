@@ -29,6 +29,14 @@ in plain English with no code in it, or spend
 **[your first hour](docs-geode/tutorials/the-first-hour.md)** cloning the tree and watching
 something turn green on your own machine.
 
+When you want more than two, **[`SOURCE.md`](SOURCE.md)** opens with the five reads that carry the
+whole spirit, and **[`docs-geode/`](docs-geode/README.md)** holds the shipped shelf: the
+[language reference](docs-geode/api/rishi-language-reference.md), a
+[generated index of every library](docs-geode/libraries/README.md),
+[four demos you can run in a minute](docs-geode/demos/README.md), the
+[teaching surfaces](docs-geode/edu/README.md), and
+[how to read this tree](docs-geode/study/README.md).
+
 ---
 
 ## Contents
