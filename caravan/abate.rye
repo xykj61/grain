@@ -7056,63 +7056,7 @@ pub fn read_the_reply(io: std.Io, allay: Allay, report_out: *Report) (RunError |
 /// to open the same question a third time from nothing, and leaves the decline
 /// where the next run reads its inheritance.
 pub fn hold_the_matter(io: std.Io, forbear: Forbear, report_out: *Report) (RunError || NoteError)!void {
-    if (desist_of(report_out).walled >= 1) {
-        // The wall stands, so the relay is stayed: a matter this correspondence
-        // has carried twice without moving is handed to nobody. It is neither
-        // forborne nor left unhanded -- it is bounded, which is this rung's own
-        // third answer and the reason the count above stays honest.
-        // invariant: a bounding run hands its walled matter on to nobody
-        assert(forbear_of(report_out).forborne == 0);
-        // invariant: a bounded matter is counted as walled rather than unhanded
-        assert(forbear_of(report_out).unhanded == 0);
-        return;
-    }
-    var address_buf: [max_address_len]u8 = @splat(0);
-    const where = address_published(io, &address_buf) orelse "";
-    const on_wire = if (addressable(where)) recounted_to(io, where) else null;
-    const reply = if (on_wire != null) rest_written(io, where) else null;
-    const word = rests_rest(reply);
-    const standing_count: u32 = if (word) |said| (if (said == .stands) @as(u32, 1) else 0) else 0;
-    if (standing_count == 0) {
-        // invariant: a run reading no standing word hands on no forbearance
-        assert(forbear_of(report_out).forborne == 0);
-        // invariant: a run reading no standing word leaves no matter unhanded
-        assert(forbear_of(report_out).unhanded == 0);
-        return;
-    }
-
-    // The measurement this rung moves, weighed against the word actually
-    // standing rather than against anything the plan asked for, so an impasse
-    // nobody carries is counted rather than refused.
-    forbear_of(report_out).unhanded = unhanded_matters(standing_count, forbear);
-    const forborne_count = forborne_in(standing_count, forbear);
-    const opened_count = opened_in(standing_count, forbear);
-    if (forbear == .opens) {
-        // invariant: an opening run hands on nothing, however plainly it read
-        assert(forborne_count == 0);
-        forbear_of(report_out).opened = opened_count;
-        return;
-    }
-
-    // The reading before the word, and the word before the note: all three
-    // reads supply the ladder rather than short-circuiting it, so every refusal
-    // below is reached by argument and named in its own order.
-    const opened_reply = allay_of(report_out).read_back >= 1;
-    const stands = if (word) |said| said == .stands else false;
-    const answered = reply orelse return error.ForbearUnread;
-    const matched = rests_answers(reply, on_wire orelse return error.ForbearUnread);
-    if (forbear_refusal(standing_count, forborne_count, opened_count, opened_reply, stands, matched)) |why| return why;
-
-    // invariant: a forbearing run hands on the one matter its reader left standing
-    assert(forborne_count == 1);
-    try forbear_note(io, answered);
-    // The wire before the memory, once more: the note the next run will open is
-    // read back, and only then does the report believe a forbearance stands.
-    if (!forbear_holds(hold_standing(io), holds_bytes(answered))) return error.ForbearMisrecorded;
-    forbear_of(report_out).forborne = forborne_count;
-    forbear_of(report_out).opened = opened_count;
-    // invariant: a forbearing run leaves no matter of its own unhanded
-    assert(forbear_of(report_out).unhanded == 0);
+    return ladder_checks.hold_the_matter(@This(), io, forbear, report_out);
 }
 
 /// Names the impasse this run opened holding, where the outcome is read.

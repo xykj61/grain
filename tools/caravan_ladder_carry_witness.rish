@@ -59,9 +59,9 @@ say "caravan-ladder-carry: Lens TAME -- safety first: the ceiling is named, the 
 
 let living = run ["sh" "tools/fixtures/caravan_ladder_carry_scan.sh"]
 assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
-assert living.out contains "CARRY_OK carried=59810 ceiling=59810" else "caravan-ladder-carry: want the living carry under its named ceiling"
+assert living.out contains "CARRY_OK carried=59474 ceiling=59474" else "caravan-ladder-carry: want the living carry under its named ceiling"
 assert living.out contains "CARRY_MODULES 110" else "caravan-ladder-carry: want all 109 ladder modules read, the rungs and the harness alike"
-assert living.out contains "CARRY_BODIES 18197 distinct=7985 copies=10212 carried_lines=59810" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
+assert living.out contains "CARRY_BODIES 18198 distinct=7986 copies=10212 carried_lines=59474" else "caravan-ladder-carry: want the whole carry standing where this lap measured it"
 
 say "caravan-ladder-carry: living ladder -- ${living.out}"
 
@@ -72,7 +72,7 @@ assert living.out contains "CARRY_TOP mend_the_plan: 37 rungs x 19 lines = 684 c
 assert living.out contains "CARRY_TOP fill_table: 43 rungs x 16 lines = 672 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
 assert living.out contains "CARRY_TOP start_one: 42 rungs x 14 lines = 574 carried" else "caravan-ladder-carry: want the family standing third in the queue named beside the two above it"
 assert living.out contains "CARRY_TOP confer_one: 40 rungs x 12 lines = 468 carried" else "caravan-ladder-carry: want the row standing fourth in the queue the scan prints"
-say "caravan-ladder-carry: the fold queue -- suits_path left it, the sixth member of the reader-box path family and the second row in a row the ranked queue handed over. Every rung that held it wrote one body byte for byte, and every one of them folded, since none stands below the fold line. Each now calls a three-line stub. What makes it a family rather than a coincidence is the comptime assert inside it: a word must land in the same box, at the same width, as the finding it answers, and that rule stood written once per rung until this lap. The two meters are meant to be read together rather than one standing in for the other: this one says what a family costs today, that one says what a lift would return."
+say "caravan-ladder-carry: the fold queue -- hold_the_matter left it, the deepest body this arc has taken and the third row in a row the ranked queue handed over. The rungs that held it wrote one body byte for byte, and every one of them folded, since none stands below the fold line. Each now calls a three-line stub. Three more rungs declare the same name and keep their own copies, each on its merits: one reads its walling count off its report directly where the folding rungs reach it through an accessor, and two carry no walling clause at all, since neither report holds the sub-record it would consult. The two meters are meant to be read together rather than one standing in for the other: this one says what a family costs today, that one says what a lift would return."
 
 
 # The three named meters, read here beside the wide one so no reader mistakes a window for the room. Every number below

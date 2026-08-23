@@ -11117,6 +11117,92 @@ pub fn read_the_reply(
     assert(rung.allay_of(report_out).unheard == 0);
 }
 
+/// Hands the matter its reader left standing to the run that comes after.
+///
+/// **It runs after the reading below it, and it reads that reading's own
+/// word.** Only a reply actually opened can be held back on, so this rung takes
+/// its subject off the wire rather than from anything the plan asked for -- and
+/// a run whose reader says the matter rests hands on nothing at all, which is
+/// the honest ending rather than an argument kept alive past its close.
+///
+/// **Forbearing is holding back, and holding back is a record.** The run
+/// decides nothing, overturns nothing, and answers nobody again -- it declines
+/// to open the same question a third time from nothing, and leaves the decline
+/// where the next run reads its inheritance.
+///
+/// Seven rungs held this body byte for byte, and it is the deepest body the arc
+/// has lifted. Three more declare the same name and keep their own copies, each
+/// on its merits rather than on drift: `caravan/desist.rye` reads `walled` off
+/// its report directly where these seven reach it through `desist_of`, and
+/// `caravan/mind.rye` and `caravan/forbear.rye` carry no walling clause at all,
+/// since neither report holds a desisting sub-record to consult. The sub-record
+/// accessor is what names the shape a rung answers, so a difference there is
+/// meaning rather than duplication.
+///
+/// Every symbol this body reaches already stood public in all seven rungs, so
+/// the lift widens nothing of any kind. Measured rather than read: `REACH_OK
+/// family=hold_the_matter folding=7 widens=0 stub=3 fall=336` from
+/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+pub fn hold_the_matter(comptime rung: type, io: std.Io, forbear: rung.Forbear, report_out: *rung.Report) (rung.RunError || rung.NoteError)!void {
+    if (rung.desist_of(report_out).walled >= 1) {
+        // The wall stands, so the relay is stayed: a matter this correspondence
+        // has carried twice without moving is handed to nobody. It is neither
+        // forborne nor left unhanded -- it is bounded, which is this rung's own
+        // third answer and the reason the count above stays honest.
+        // invariant: a bounding run hands its walled matter on to nobody
+        assert(rung.forbear_of(report_out).forborne == 0);
+        // invariant: a bounded matter is counted as walled rather than unhanded
+        assert(rung.forbear_of(report_out).unhanded == 0);
+        return;
+    }
+    var address_buf: [rung.max_address_len]u8 = @splat(0);
+    const where = rung.address_published(io, &address_buf) orelse "";
+    const on_wire = if (rung.addressable(where)) rung.recounted_to(io, where) else null;
+    const reply = if (on_wire != null) rung.rest_written(io, where) else null;
+    const word = rung.rests_rest(reply);
+    const standing_count: u32 = if (word) |said| (if (said == .stands) @as(u32, 1) else 0) else 0;
+    if (standing_count == 0) {
+        // invariant: a run reading no standing word hands on no forbearance
+        assert(rung.forbear_of(report_out).forborne == 0);
+        // invariant: a run reading no standing word leaves no matter unhanded
+        assert(rung.forbear_of(report_out).unhanded == 0);
+        return;
+    }
+
+    // The measurement this rung moves, weighed against the word actually
+    // standing rather than against anything the plan asked for, so an impasse
+    // nobody carries is counted rather than refused.
+    rung.forbear_of(report_out).unhanded = rung.unhanded_matters(standing_count, forbear);
+    const forborne_count = rung.forborne_in(standing_count, forbear);
+    const opened_count = rung.opened_in(standing_count, forbear);
+    if (forbear == .opens) {
+        // invariant: an opening run hands on nothing, however plainly it read
+        assert(forborne_count == 0);
+        rung.forbear_of(report_out).opened = opened_count;
+        return;
+    }
+
+    // The reading before the word, and the word before the note: all three
+    // reads supply the ladder rather than short-circuiting it, so every refusal
+    // below is reached by argument and named in its own order.
+    const opened_reply = rung.allay_of(report_out).read_back >= 1;
+    const stands = if (word) |said| said == .stands else false;
+    const answered = reply orelse return error.ForbearUnread;
+    const matched = rung.rests_answers(reply, on_wire orelse return error.ForbearUnread);
+    if (rung.forbear_refusal(standing_count, forborne_count, opened_count, opened_reply, stands, matched)) |why| return why;
+
+    // invariant: a forbearing run hands on the one matter its reader left standing
+    assert(forborne_count == 1);
+    try rung.forbear_note(io, answered);
+    // The wire before the memory, once more: the note the next run will open is
+    // read back, and only then does the report believe a forbearance stands.
+    if (!rung.forbear_holds(rung.hold_standing(io), rung.holds_bytes(answered))) return error.ForbearMisrecorded;
+    rung.forbear_of(report_out).forborne = forborne_count;
+    rung.forbear_of(report_out).opened = opened_count;
+    // invariant: a forbearing run leaves no matter of its own unhanded
+    assert(rung.forbear_of(report_out).unhanded == 0);
+}
+
 /// Reads back the question this reader was asked, or nothing at all.
 ///
 /// The wire before the memory, one tier further out again: a run learns that it
