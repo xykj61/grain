@@ -83,7 +83,20 @@ DP_READMIT_DIRS="recursion-prompts/seed"
 
 # Files whose dated paths are the instrument's own fixtures rather than citations of the field.
 # Matched by NAME, so an entry here excludes that filename wherever it sits.
-DP_EXCLUDE_NAMES="dated_path_* banner_room_control.sh room_bound_control.sh session_logs_archive.rye shipped_binary_claim_control.sh tracked_link_control.sh"
+# A CONTROL IS INSTRUMENT, CATEGORICALLY -- amended 20260823.124407.
+#
+# This list named controls ONE AT A TIME, and paid for it repeatedly: the census gained
+# `shipped_binary_claim_control.sh`, then `tracked_link_control.sh`, then `banner_room_control.sh`,
+# each after a new control planted a dated name the tree deliberately does not carry. Four more
+# controls were written in a single session on 20260823 -- exec_bit, seed_link, empty_document,
+# prose_register -- and `foundations_link_control.sh` was contributing six planted names while
+# still absent from the list.
+#
+# `tools/fixtures/phantom_path_scan.sh` already learned this and excludes the GLOB: a `*_control.sh`
+# fixture plants what its guard refuses, so its paths are fixtures by construction rather than by
+# anyone remembering to add them. The same rule holds here. A lantern that fires twice becomes a
+# loom; this one fired six times.
+DP_EXCLUDE_NAMES="dated_path_* *_control.sh session_logs_archive.rye"
 
 # The same test, applied to a file whose NAME cannot carry the exemption. `docs-geode/demos/`
 # demonstrates the resolver recovering a stale reference, which requires quoting one -- and the
