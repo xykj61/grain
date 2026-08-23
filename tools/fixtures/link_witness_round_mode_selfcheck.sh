@@ -6,7 +6,7 @@ ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
 cd "$ROOT"
 
 SNAP=/tmp/link_witness_round_selfcheck_before.txt
-SCRATCH=work-in-progress/_link_witness_round_mode_scratch.md
+SCRATCH=crux/_link_witness_round_mode_scratch.md
 cleanup() {
   rm -f "$SCRATCH"
 }
