@@ -8,6 +8,7 @@
 | Tutorial | For | Shape |
 |---|---|---|
 | [The First Hour](the-first-hour.md) | someone who has never seen this tree | six commands from `git clone` to five lines they wrote, two of which are assertions |
+| [Shopping](SHOPPING.md) | someone about to buy the three things a first hour needs | a way to choose a model, a forge, and somewhere to keep bytes -- ordered safety, performance, joy, naming no winner so it keeps |
 | [Recursion in Glow](recursion-in-glow.md) | someone past the first hour, meeting the language | how a rune-shaped language expresses a loop that carries itself |
 
 ## What earns a place here

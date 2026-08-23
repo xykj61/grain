@@ -8,6 +8,8 @@ is a map you will want **after** this hour.*
 **Status:** Living - the beginner path
 **You will need:** a Linux or macOS terminal with `git`, `curl`, and `tar`, and about an hour.
 
+> Still choosing the three things this hour rests on -- a language model, a source forge, and somewhere to keep bytes? [`SHOPPING.md`](SHOPPING.md) is how to shop for them, ordered safety, performance, joy.
+
 ---
 
 ## What you are about to do
