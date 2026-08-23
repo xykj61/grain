@@ -20,7 +20,7 @@ Splitting them costs one directory and gives each its own tempo -- essays get qu
 
 ## What each room keeps
 
-- **Both** use one-clock names (`YYYYMMDD-HHMMSS_slug.md`), fold to `date/YYYYMMDD/`, and hold to Radiant Style.
+- **Both** use one-clock names (`YYYYMMDD-HHMMSS_slug.md`), fold to `date/YYYYMMDD/`, and hold to [Gauge Style](gauge-style.md) at its **Field** setting -- assumptions before the argument, every figure carrying unit and date, every projection carrying its falsifier.
 - **`active-designing/`** keeps its silo principle -- our own module names and RISC-V, never a borrowed one. Read its README.
 - **`active-development/`** is **bounded at 256 flat files from birth** rather than earning enforcement later by folding. A room born under the law never accumulates a backlog, so there is nothing to grandfather.
 - **Nothing already filed moves.** The test governs what is **born** from here forward. A retroactive re-sort would spend a week making old files feel tidier without making one of them truer.

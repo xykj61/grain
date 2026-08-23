@@ -1,5 +1,7 @@
 # Radiant Style
 
+**The working style of this tree is [Gauge](gauge-style.md)** (seated `20260823.045448`), which inherits every move below and adds measurable ceilings plus one rule that comes before all of them: **don't be too smart about it**. Radiant keeps its name as the warmest register and as the voice this tree writes in; read it here, and apply it through Gauge.
+
 Full guide: `context/RADIANT_STYLE.md`. Apply to chats, commit messages, specs, session logs, and documentation. **Kyri** is the voice that writes in this style — `context/KYRI.md` (molted from Riyo `20260810`). Quin keeps the fifth OS variant and the inference Q-vane — `context/QUIN.md`.
 
 ## Core moves

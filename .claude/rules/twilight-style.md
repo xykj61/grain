@@ -1,5 +1,7 @@
 # Twilight Style — the nocturne register (alternate to Radiant)
 
+**The working style of this tree is [Gauge](gauge-style.md)** (seated `20260823.045448`). Twilight remains the rare night register, and everything below still holds.
+
 **Full guide:** `context/TWILIGHT_STYLE.md` · **Seated:** `20260811` on Keaton's word · **Status:** Living · **Sibling of** `radiant-style.md`.
 
 Twilight is Radiant Style at dusk: **calm, dark, gentle** — every Radiant rule kept, only the register changed. Reach for it on the rare, earned piece where reverence serves better than brightness; default to **Radiant** everywhere else.
