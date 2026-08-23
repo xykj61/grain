@@ -38,11 +38,11 @@
 
 set -u
 
-DOOR="README.md foundations/README.md foundations/20260823-034321_the-return-that-feeds-everyone.md"
+DOOR="README.md foundations/README.md foundations/20260823-034321_the-return-that-feeds-everyone.md docs-geode/tutorials/the-first-hour.md docs-geode/demos/README.md"
 DOOR_MAX=20
 FIELD_MAX=30
 # The ratchet's ceiling only ever falls. Measured 20260823 across the teaching tier.
-ceiling=16   # measured 20260823; no override exists -- the control plants its own tiers
+ceiling=14   # 16 at seating; two swept 20260823.061415 -- it only falls
 
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT INT TERM

@@ -67,7 +67,7 @@ where they overlap glue into one truth*. Together they are this tree's own rule 
 may change while a claim never does, and the tree's habit of treating a contradiction between two
 documents as a real defect. Concepts only, no theorem imported, no jargon carried into the prose.
 
-### Rung 7 -- The sweep. STANDFAST, awaiting Keaton's word
+### Rung 7 -- The sweep. RUNNING, opened by Keaton's word `20260823.061415`
 
 **Sixteen** teaching-tier documents read above the Field target. The beginner tutorial reads
 **51%** and the demos page **62%** -- the two pages most likely to be a newcomer's second and third
@@ -75,8 +75,15 @@ click. Beyond them the tree holds thousands of pages written under the elder lab
 
 When the word comes, the sweep runs in this order, highest reader-traffic first:
 
-1. `docs-geode/tutorials/the-first-hour.md` (51%) and `docs-geode/demos/README.md` (62%).
-2. The remaining fourteen teaching-tier documents above 30%, lowering the ratchet ceiling on each.
+1. `docs-geode/tutorials/the-first-hour.md` and `docs-geode/demos/README.md`. **LANDED
+   `20260823.061415`** -- **51% to 0%** and **62% to 15%**, both promoted onto the enforced Door
+   roster, and the teaching ceiling lowered 16 to 14. The demos page also carried two stale
+   outputs, found by re-running all four commands rather than trusting the page: `flat=59` had
+   become **148** and `fascia=45` had become **41**. A register pass holds a claim exactly, so the
+   drifted numbers were repaired as a separate factual fix and the page now says which two moved.
+2. The remaining **fourteen** teaching-tier documents above 30%, lowering the ratchet ceiling on
+   each. Re-run any command a page quotes while rewriting it -- the demos page proved a page's
+   outputs drift faster than its prose.
 3. `CONTRIBUTING.md` (42%), `SOURCE.md`, `MAP.md`, and the root guides.
 4. The 848 seed-dead links of `%160`, repaired in the same pass as each document's rewrite, since
    both want a rewrite rather than a repoint.
