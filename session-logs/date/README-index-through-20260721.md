@@ -5,778 +5,778 @@
 
 This table reads **newest first** within the closed shelf. Living index: [`../README.md`](../README.md).
 
-- `20260721.194941` — [STOA215-216 literals · cord lex](archive/20260721/20260721-194941_stoa215-216-literals-cord-lex.bron) — inventory; Kind.cord_lit GREEN
-- `20260721.194756` — [STOA208-214 send · literals next](archive/20260721/20260721-194756_stoa208-214-send-literals-next.bron) — pier send; lean C
-- `20260721.194203` — [STOA214 after fixture cast check-in](archive/20260721/20260721-194203_stoa214-after-fixture-cast-checkin.bron) — leans A send (rec) · B–D
-- `20260721.194058` — [STOA213 fixture cast twins GREEN](archive/20260721/20260721-194058_stoa213-fixture-cast-twins.bron) — named+import; literals held
-- `20260721.193404` — [STOA212 fields surface GREEN](archive/20260721/20260721-193404_stoa212-fields-surface-green.bron) — FactFields parse; wired into replay
-- `20260721.193303` — [STOA211 replay compose GREEN](archive/20260721/20260721-193303_stoa211-replay-compose-green.bron) — line·sign·digest; no sala.replay
-- `20260721.193220` — [STOA210 replay-body inventory](archive/20260721/20260721-193220_stoa210-replay-body-inventory.bron) — lean C; rec C1 compose
-- `20260721.192947` — [STOA209 cord bound 1024 GREEN](archive/20260721/20260721-192947_stoa209-cord-bound-1024.bron) — aura_t_max_bytes; fact hex fits
-- `20260721.192700` — [STOA206-207 send · STOA208 kg](archive/20260721/20260721-192700_stoa206-207-send-stoa208-kg.bron) — pier send; cast-import next
-- `20260721.192558` — [STOA207 fact-line cast twin GREEN](archive/20260721/20260721-192558_stoa207-fact-line-cast-twin.bron) — same-desk ^-; desk pin
-- `20260721.191254` — [STOA206 fact-line desk · AD shelf](archive/20260721/20260721-191254_stoa206-fact-line-desk-and-ad-shelf.bron) — B3 GREEN; folder roles named
-- `20260721.190850` — [STOA201-204 send · STOA205 check-in](archive/20260721/20260721-190850_stoa201-204-send-stoa205-checkin.bron) — pier send; leans A–D
-- `20260721.190637` — [STOA204 replay digest honesty GREEN](archive/20260721/20260721-190637_stoa204-replay-digest-honesty.bron) — claim_digest_log on claim path
-- `20260721.190527` — [STOA203 append sign+line GREEN](archive/20260721/20260721-190527_stoa203-append-sign-line-compose.bron) — compose; no sala.append_event
-- `20260721.190240` — [STOA202 line surface GREEN](archive/20260721/20260721-190240_stoa202-line-surface-green.bron) — B2 claim_demo_line
-- `20260721.190209` — [STOA200 send · STOA201 sign](archive/20260721/20260721-190209_stoa200-send-stoa201-sign.bron) — pier send; claim_demo_sign GREEN
-- `20260721.185942` — [STOA200 vane-body inventory](archive/20260721/20260721-185942_stoa200-vane-body-inventory.bron) — lean B; B1 chosen as STOA201
-- `20260721.185805` — [STOA199A Pixel eyes GREEN](archive/20260721/20260721-185805_stoa199a-pixel-eyes-green.bron) — lean A; HAWM1 hex on glass
-- `20260721.185700` — [STOA199A Pixel eyes guide](archive/20260721/20260721-185700_stoa199a-pixel-eyes-guide.bron) — what GREEN glass looks like
-- `20260721.185407` — [STOA199A Pixel restart howto](archive/20260721/20260721-185407_stoa199a-pixel-restart-howto.bron) — host adb install proof lines
-- `20260721.185137` — [STOA198 send · STOA199 check-in](archive/20260721/20260721-185137_stoa198-send-stoa199-checkin.bron) — pier send; leans A–E awaiting
-- `20260721.183554` — [STOA197 send · STOA198 Glow fold](archive/20260721/20260721-183554_stoa197-send-stoa198-fold.bron) — pier send; NA run_demo_fold
-- `20260721.183253` — [STOA196 send · STOA197 compose](archive/20260721/20260721-183253_stoa196-send-stoa197-compose.bron) — pier send; claim via append+replay
-- `20260721.183126` — [STOA195 send · STOA196 replay](archive/20260721/20260721-183126_stoa195-send-stoa196-replay.bron) — pier send; claim_replay_demo_root GREEN
-- `20260721.182950` — [STOA194 send · STOA195 append](archive/20260721/20260721-182950_stoa194-send-stoa195-append.bron) — pier send; append_demo_log GREEN
-- `20260721.182623` — [STOA194 digest port GREEN](archive/20260721/20260721-182623_stoa194-digest-port-green.bron) — lean C claim_digest_log
-- `20260721.182501` — [STOA193 fixture pin GREEN](archive/20260721/20260721-182501_stoa193-fixture-pin-green.bron) — lean B product stamps/memos/root
-- `20260721.182415` — [STOA192 send · STOA193 check-in](archive/20260721/20260721-182415_stoa192-send-stoa193-checkin.bron) — pier send; lean B chosen
-- `20260721.182250` — [STOA192 fixture desk GREEN](archive/20260721/20260721-182250_stoa192-fixture-desk-green.bron) — lean B demo-fixture-constants-shape
-- `20260721.182041` — [STOA192 after claim wire check-in](archive/20260721/20260721-182041_stoa192-after-claim-wire-checkin.bron) — leans A–E; lean B chosen
-- `20260721.181903` — [STOA191 claim wire · send](archive/20260721/20260721-181903_stoa191-claim-wire-send.bron) — NativeActivity via claim_demo_fold; pier send
-- `20260721.181551` — [STOA190 mold→shape · send](archive/20260721/20260721-181551_stoa190-mold-to-shape-send.bron) — living shape surface; pier send
-- `20260721.180917` — [STOA189 ShapeSpec API GREEN](archive/20260721/20260721-180917_stoa189-shapespec-api-green.bron) — rune_shape · lower_shape; unsent with 186–188
-- `20260721.180800` — [shape vs mold API held](archive/20260721/20260721-180800_shape-vs-mold-api-held.bron) — citizen shape; MoldSpec seam separate
-- `20260721.180725` — [STOA188 $% payload emit GREEN](archive/20260721/20260721-180725_stoa188-pct-payload-emit-green.bron) — cord/hex lower; unsent with 186–187
-- `20260721.180520` — [STOA187 thin $% payload @t/@ux GREEN](archive/20260721/20260721-180520_stoa187-pct-payload-thin-green.bron) — parse + refuse; unsent with 186
-- `20260721.180120` — [STOA186 sala-event cast GREEN](archive/20260721/20260721-180120_stoa186-sala-cast-green.bron) — cast-named-sala-event; unsent
-- `20260721.180054` — [STOA185 send · STOA186A](archive/20260721/20260721-180054_stoa185-send-stoa186a.bron) — claim shell to pier; sala cast twin next
-- `20260721.180008` — [STOA186 check-in seated](archive/20260721/20260721-180008_stoa186-checkin-seated.bron) — leans A–D after claim shell
-- `20260721.175857` — [STOA185 Glow claim shell GREEN](archive/20260721/20260721-175857_stoa185-claim-shell-green.bron) — elder fold behind Glow assert; unsent
-- `20260721.175804` — [STOA182–184 send · claim shell](archive/20260721/20260721-175804_stoa182-184-send-stoa185b.bron) — cord/hex pack to pier; lean B next
-- `20260721.175343` — [STOA184 @ux hex lower GREEN](archive/20260721/20260721-175343_stoa184-ux-lower-green.bron) — [32]u8 emit; sala from/to @ux; unsent
-- `20260721.175252` — [STOA183 thin @ux hex GREEN](archive/20260721/20260721-175252_stoa183-ux-thin-green.bron) — bound 32; lower held; unsent
-- `20260721.174709` — [STOA183 check-in seated](archive/20260721/20260721-174709_stoa183-checkin-seated.bron) — leans A–E after named-cast cord
-- `20260721.174530` — [STOA182A named-cast cord GREEN](archive/20260721/20260721-174530_stoa182-named-cast-cord-green.bron) — ^- @t emit; unsent
-- `20260721.174435` — [STOA181 send · STOA182A](archive/20260721/20260721-174435_stoa181-send-stoa182a.bron) — cord lower to pier; lean A named-cast cord
-- `20260721.173800` — [STOA182 check-in seated](archive/20260721/20260721-173800_stoa182-checkin-seated.bron) — leans A–E after cord lower
-- `20260721.173629` — [STOA181 @t cord lower GREEN](archive/20260721/20260721-173629_stoa181-at-cord-lower-green.bron) — [256]u8 emit; sala text @t; unsent
-- `20260721.173330` — [STOA180 send · then kg STOA181](archive/20260721/20260721-173330_stoa180-send.bron) — thin @t pack to pier; cord lower next
-- `20260721.173239` — [STOA180 handoff witnesses GREEN](archive/20260721/20260721-173239_stoa180-handoff-witnesses-green.bron) — await send; then STOA181
-- `20260721.173015` — [Cursor handoff STOA180](archive/20260721/20260721-173015_cursor-handoff-stoa180.bron) — fresh-agent card; send then STOA181
-- `20260721.172935` — [Deferred witness diags closed](archive/20260721/20260721-172935_deferred-witness-diag-closed.bron) — barket RED was compound assert; already fixed
-- `20260721.172554` — [STOA180 thin @t GREEN · shape kept](archive/20260721/20260721-172554_stoa180-at-thin-shape-kept.bron) — cord bound 256; lower held; mold prose residual
-- `20260721.171644` — [Shape vs type vocabulary](archive/20260721/20260721-171644_shape-vs-type-vocabulary.bron) — recommend keep shape; type already refused
-- `20260721.171030` — [STOA177–179 send · STOA180 check-in](archive/20260721/20260721-171030_stoa177-179-send-stoa180-checkin.bron) — Sala B0 Glow pack; @t aura leans A–E
-- `20260721.170403` — [STOA179 sala-event-shape GREEN](archive/20260721/20260721-170403_stoa179-sala-event-shape-green.bron) — SalaEventShape desk; @t debt held; cast held
-- `20260721.165732` — [STOA178 gap inventory GREEN](archive/20260721/20260721-165732_stoa178-gap-inventory-green.bron) — sala-event-shape named as STOA179; @t debt held
-- `20260721.165342` — [STOA177 lean A · Sala B0 Glow thin face](archive/20260721/20260721-165342_stoa177-lean-a-sala-b0-glow.bron) — product season open; STOA178 first-lap leans A–D
-- `20260721.014926` — [STOA176 send · STOA177 check-in](archive/20260721/20260721-014926_stoa176-send-stoa177-checkin.bron) — cast inventary ship; leans A–D awaiting word
-- `20260721.014657` — [STOA175 full desk witness GREEN](archive/20260721/20260721-014657_stoa175-desk-witness-green.bron) — glow_run_desk_witness exit 0 after STOA175 pack
-- `20260721.014503` — [STOA175 sent · STOA176 cast widen](archive/20260721/20260721-014503_stoa175-sent-stoa176-cast-widen.bron) — pier 0494e655fe; peek 4–12 · triple…nona casts unsent
-- `20260721.013450` — [STOA174 sent · STOA175 pair named-cast](archive/20260721/20260721-013450_stoa174-sent-stoa175-pair-cast.bron) — origin 4513f26522; pair cast unsent; codeberg retry
-- `20260721.013147` — [STOA173 sent · STOA174 lean A pin polish](archive/20260721/20260721-013147_stoa173-sent-stoa174-pin-polish.bron) — pier 32a54b483b; shape-primary pins unsent
-- `20260721.012720` — [STOA172 sent · STOA173 nona · STOA174 check-in](archive/20260721/20260721-012720_stoa172-sent-stoa173-green-checkin.bron) — inventary closed; await A/B/C/D
-- `20260721.012510` — [STOA171 sent · STOA172 shape-octa GREEN](archive/20260721/20260721-012510_stoa171-sent-stoa172-green.bron) — pier 25ce71648e; octa dual unsent
-- `20260721.012320` — [STOA170 sent · STOA171 shape-hepta GREEN](archive/20260721/20260721-012320_stoa170-sent-stoa171-green.bron) — pier 0caaa726c1; hepta dual unsent
-- `20260721.012150` — [STOA169 sent · STOA170 shape-hexa GREEN](archive/20260721/20260721-012150_stoa169-sent-stoa170-green.bron) — pier 17d564524c; hexa dual unsent
-- `20260721.011830` — [STOA168 sent · STOA169 shape-penta GREEN](archive/20260721/20260721-011830_stoa168-sent-stoa169-green.bron) — pier 160148622a; penta dual unsent
-- `20260721.011650` — [STOA167 sent · STOA168 shape-quad GREEN](archive/20260721/20260721-011650_stoa167-sent-stoa168-green.bron) — pier 90c3c29d78; quad dual + mold-only budget unsent
-- `20260721.011330` — [STOA166 sent · STOA167 shape-triple GREEN](archive/20260721/20260721-011330_stoa166-sent-stoa167-green.bron) — pier b7a177689d; triple dual unsent
-- `20260721.011210` — [STOA165 sent · STOA166 shape-xfer GREEN](archive/20260721/20260721-011210_stoa165-sent-stoa166-green.bron) — pier e12a95e0b2; xfer dual unsent
-- `20260721.011040` — [STOA164 sent · STOA165 shape-xact GREEN](archive/20260721/20260721-011040_stoa164-sent-stoa165-green.bron) — pier 2a1630e4f2; xact dual unsent
-- `20260721.010859` — [STOA163 sent · STOA164 shape-kind GREEN](archive/20260721/20260721-010859_stoa163-sent-stoa164-green.bron) — pier 3296306995; kind dual unsent
-- `20260721.010709` — [STOA162 sent · STOA163 shape-pair GREEN](archive/20260721/20260721-010709_stoa162-sent-stoa163-green.bron) — pier 471e0585c2; pair dual unsent
-- `20260721.010520` — [STOA161 sent · STOA162 shape-count GREEN](archive/20260721/20260721-010520_stoa161-sent-stoa162-green.bron) — pier c913bc9c82; count dual unsent
-- `20260721.010333` — [STOA161 lean A · shape-amount dual GREEN](archive/20260721/20260721-010333_stoa161-shape-amount-dual-green.bron) — inventary + dual desks; unsent
-- `20260721.005900` — [STOA160 pin · STOA161 check-in restated](archive/20260721/20260721-005900_stoa160-pin-checkin-restated.bron) — ITINERARY pin 3ac6464df6; await A/B/C
-- `20260721.005729` — [STOA160 send · STOA161 check-in](archive/20260721/20260721-005729_stoa160-send-stoa161-checkin.bron) — send nona-shape; rename/Sala check-in
-- `20260721.005350` — [STOA159 sent · STOA160 GREEN closes ladder](archive/20260721/20260721-005350_stoa159-sent-stoa160-green.bron) — pier 2e963fcd01; next rename/Sala
-- `20260721.005327` — [STOA160 nona-shape alias GREEN](archive/20260721/20260721-005327_stoa160-nona-shape-green.bron) — nona-shape ≡ nona-mold; ladder closed; unsent
-- `20260721.005252` — [STOA159 send then kg nona-shape](archive/20260721/20260721-005252_stoa159-send-then-kg.bron) — send octa-shape; kg STOA160
-- `20260721.005000` — [STOA158 sent · STOA159 GREEN](archive/20260721/20260721-005000_stoa158-sent-stoa159-green.bron) — pier 214e0a8b8f; next nona-shape
-- `20260721.004935` — [STOA159 octa-shape alias GREEN](archive/20260721/20260721-004935_stoa159-octa-shape-green.bron) — octa-shape ≡ octa-mold; unsent
-- `20260721.004901` — [STOA158 send then kg octa-shape](archive/20260721/20260721-004901_stoa158-send-then-kg.bron) — send hepta-shape; kg STOA159
-- `20260721.004550` — [STOA157 sent · STOA158 GREEN](archive/20260721/20260721-004550_stoa157-sent-stoa158-green.bron) — pier 97c7ec52a4; next octa-shape
-- `20260721.004523` — [STOA158 hepta-shape alias GREEN](archive/20260721/20260721-004523_stoa158-hepta-shape-green.bron) — hepta-shape ≡ hepta-mold; unsent
-- `20260721.004449` — [STOA157 send then kg hepta-shape](archive/20260721/20260721-004449_stoa157-send-then-kg.bron) — send hexa-shape; kg STOA158
-- `20260721.004100` — [STOA156 sent · STOA157 GREEN](archive/20260721/20260721-004100_stoa156-sent-stoa157-green.bron) — pier 4c86c751e2; next hepta-shape
-- `20260721.004052` — [STOA157 hexa-shape alias GREEN](archive/20260721/20260721-004052_stoa157-hexa-shape-green.bron) — hexa-shape ≡ hexa-mold; unsent
-- `20260721.003952` — [STOA156 send then kg hexa-shape](archive/20260721/20260721-003952_stoa156-send-then-kg.bron) — send penta-shape; kg STOA157
-- `20260721.003600` — [STOA155 sent · STOA156 GREEN](archive/20260721/20260721-003600_stoa155-sent-stoa156-green.bron) — pier 9a66cd6822; next hexa-shape
-- `20260721.003545` — [STOA156 penta-shape alias GREEN](archive/20260721/20260721-003545_stoa156-penta-shape-green.bron) — penta-shape ≡ penta-mold; unsent
-- `20260721.003514` — [STOA155 send then kg penta-shape](archive/20260721/20260721-003514_stoa155-send-then-kg.bron) — send quad-shape; kg STOA156
-- `20260721.003200` — [STOA154 sent · STOA155 GREEN](archive/20260721/20260721-003200_stoa154-sent-stoa155-green.bron) — pier 114f874af8; next penta-shape
-- `20260721.003129` — [STOA155 quad-shape alias GREEN](archive/20260721/20260721-003129_stoa155-quad-shape-green.bron) — quad-shape ≡ quad-mold; unsent
-- `20260721.003056` — [STOA154 send then kg quad-shape](archive/20260721/20260721-003056_stoa154-send-then-kg.bron) — send triple-shape; kg STOA155
-- `20260721.002540` — [STOA154 triple-shape alias GREEN](archive/20260721/20260721-002540_stoa154-triple-shape-green.bron) — triple-shape ≡ triple-mold; unsent
-- `20260721.002459` — [STOA153 send then kg triple-shape](archive/20260721/20260721-002459_stoa153-send-then-kg.bron) — send xfer-shape; kg STOA154
-- `20260721.002051` — [STOA153 xfer-shape alias GREEN](archive/20260721/20260721-002051_stoa153-xfer-shape-green.bron) — xfer-shape ≡ xfer-mold; sent `8471232968`
-- `20260721.001851` — [STOA152 send then kg xfer-shape](archive/20260721/20260721-001851_stoa152-send-then-kg.bron) — send xact-shape; kg STOA153
-- `20260721.001351` — [STOA152 xact-shape alias GREEN](archive/20260721/20260721-001351_stoa152-xact-shape-green.bron) — xact-shape ≡ xact-mold; sent `694447ab34`
-- `20260721.001326` — [STOA151 send · stay on alias path](archive/20260721/20260721-001326_stoa151-send-alias-path.bron) — send kind-shape; kg xact-shape
-- `20260721.001244` — [Shape sed force-push counsel](archive/20260721/20260721-001244_shape-sed-force-push-counsel.bron) — no whole-tree sed; aliases or scoped rename
-- `20260721.000743` — [STOA151 kind-shape alias GREEN](archive/20260721/20260721-000743_stoa151-kind-shape-green.bron) — kind-shape ≡ kind-mold; unsent
-- `20260721.000705` — [STOA150 send then kg kind-shape](archive/20260721/20260721-000705_stoa150-send-then-kg.bron) — send pair-shape; kg STOA151
-- `20260721.000234` — [STOA150 pair-shape alias GREEN](archive/20260721/20260721-000234_stoa150-pair-shape-green.bron) — pair-shape ≡ pair-mold; unsent
-- `20260721.000044` — [STOA149 send then kg pair-shape](archive/20260721/20260721-000044_stoa149-send-then-kg.bron) — send count-shape; kg STOA150
-- `20260720.235652` — [STOA149 count-shape alias GREEN](archive/20260720/20260720-235652_stoa149-count-shape-green.bron) — count-shape ≡ count-mold; unsent
-- `20260720.235434` — [STOA148 pushed · STOA149 approved](archive/20260720/20260720-235434_stoa148-pushed-shape-next.bron) — origin+codeberg; next count-shape kg
-- `20260720.235200` — [STOA148 send · shape-first next](archive/20260720/20260720-235200_stoa148-send-shape-next.bron) — send amount-shape; approve STOA149 count-shape
-- `20260720.234340` — [STOA148 amount-shape alias GREEN](archive/20260720/20260720-234340_stoa148-amount-shape-green.bron) — amount-shape ≡ amount-mold; capacity freeze held
-- `20260720.234155` — [Live-sent send and next check-in](archive/20260720/20260720-234155_live-sent-send-next-check-in.bron) — pin d2f3084c7d; next door check-in
-- `20260720.234015` — [Privacy audit before live-sent send](archive/20260720/20260720-234015_privacy-audit-before-live-sent-send.bron) — redact MAC/IP; keep lab port 38503
-- `20260720.233805` — [SETU6.5 live-sent enx GREEN](archive/20260720/20260720-233805_setu65-live-sent-enx-green.bron) — enx* CDC-NCM → tether gateway :38503 sent
-- `20260720.233344` — [Pixel connected · NCM pending](archive/20260720/20260720-233344_pixel-connected-ncm-pending.bron) — adb was up; need USB tethering then kg
-- `20260720.232932` — [UDT resume on Framework host](archive/20260720/20260720-232932_udt-resume-framework-host.bron) — Etc/UTC stamps; SETU live-sent check-in next
-- `20260720.231936` — [Capacity freeze at nine · Framework next SETU sent](archive/20260720/20260720-231936_capacity-freeze-framework-next.bron) — stop field ladder; Framework lean A = live SETU sent
-- `20260720.231825` — [Framework season survey for parent](archive/20260720/20260720-231825_framework-season-survey.bron) — Framework host vs iOS language; SETU live-sent thinnest Framework door
-- `20260720.231633` — [How far the closed-field mold ladder](archive/20260720/20260720-231633_how-far-field-ladder.bron) — no stop policy yet; recommend capacity ceiling check-in
-- `20260720.231547` — [kg STOA145-147 complete · STOA148 mapped](archive/20260720/20260720-231547_kg-stoa147-complete.bron) — octa/nona laps sent; deca identity mapped
-- `20260720.231547` — [Glow compass send STOA147](archive/20260720/20260720-231547_glow-compass-stoa147-send.bron) — nona flip sent; STOA148 mapped
-- `20260720.231547` — [STOA147 approved and sent](archive/20260720/20260720-231547_stoa147-approved-sent.bron) — claim 2e84c960d4
-- `20260720.231547` — [STOA147 send complete](archive/20260720/20260720-231547_stoa147-send-complete.bron) — origin main language claim 2e84c960d4
-- `20260720.231547` — [STOA148 next map after nona flip](archive/20260720/20260720-231547_stoa148-next-map.bron) — lean A deca-mold gate identity
-- `20260720.231419` — [STOA147 nona-mold flip GREEN](archive/20260720/20260720-231419_stoa147-nona-flip-green.bron) — NonaMold from↔amount · ref 9 stays · expect 3/5/1/2/7/4/6/8/9
-- `20260720.231128` — [kg STOA145-146 complete · STOA147 mapped](archive/20260720/20260720-231128_kg-stoa146-complete.bron) — octa flip + nona identity sent; nona flip mapped
-- `20260720.231128` — [Glow compass send STOA146](archive/20260720/20260720-231128_glow-compass-stoa146-send.bron) — nona-mold sent; STOA147 mapped
-- `20260720.231128` — [STOA146 approved and sent](archive/20260720/20260720-231128_stoa146-approved-sent.bron) — claim 08069058b5
-- `20260720.231128` — [STOA146 send complete](archive/20260720/20260720-231128_stoa146-send-complete.bron) — origin main language claim 08069058b5
-- `20260720.231128` — [STOA147 next map after nona-mold](archive/20260720/20260720-231128_stoa147-next-map.bron) — lean A nona-mold flip call-body
-- `20260720.231018` — [STOA146 nona-mold gate GREEN](archive/20260720/20260720-231018_stoa146-nona-mold-green.bron) — NonaMold identity · ref 9 · deca refuse
-- `20260720.230350` — [kg STOA145 complete · STOA146 mapped](archive/20260720/20260720-230350_kg-stoa145-complete.bron) — octa flip sent; nona identity mapped
-- `20260720.230350` — [Glow compass send STOA145](archive/20260720/20260720-230350_glow-compass-stoa145-send.bron) — octa flip sent; STOA146 mapped
-- `20260720.230350` — [STOA145 approved and sent](archive/20260720/20260720-230350_stoa145-approved-sent.bron) — claim f85dfed1a4
-- `20260720.230350` — [STOA145 send complete](archive/20260720/20260720-230350_stoa145-send-complete.bron) — origin main language claim f85dfed1a4
-- `20260720.230350` — [STOA146 next map after octa flip](archive/20260720/20260720-230350_stoa146-next-map.bron) — lean A nona-mold gate identity
-- `20260720.230219` — [STOA145 octa-mold flip GREEN](archive/20260720/20260720-230219_stoa145-octa-flip-green.bron) — from↔amount · fee/nonce/memo/tag/to/via stay; await send
-- `20260720.225744` — [Why mold ladder — Hoon nest with TAME bounds](archive/20260720/20260720-225744_why-mold-bounds-ladder.bron) — emulate molds/nest; refuse unbounded gold; SLC field ladder
-- `20260720.225659` — [kg STOA143-144 complete · STOA145 mapped](archive/20260720/20260720-225659_kg-stoa144-complete.bron) — hepta flip + octa identity sent; octa flip mapped
-- `20260720.225659` — [Glow compass send STOA144](archive/20260720/20260720-225659_glow-compass-stoa144-send.bron) — octa-mold sent; STOA145 mapped
-- `20260720.225659` — [STOA144 approved and sent](archive/20260720/20260720-225659_stoa144-approved-sent.bron) — claim a7f22cfcb7
-- `20260720.225659` — [STOA144 send complete](archive/20260720/20260720-225659_stoa144-send-complete.bron) — origin main language claim a7f22cfcb7
-- `20260720.225659` — [STOA145 next map after octa-mold](archive/20260720/20260720-225659_stoa145-next-map.bron) — lean A octa-mold flip call-body
-- `20260720.225448` — [STOA144 octa-mold gate GREEN](archive/20260720/20260720-225448_stoa144-octa-mold-green.bron) — OctaMold identity · via 8 · nona refuse
-- `20260720.224907` — [kg STOA143 complete · STOA144 mapped](archive/20260720/20260720-224907_kg-stoa143-complete.bron) — hepta flip sent; octa identity mapped
-- `20260720.224907` — [Glow compass send STOA143](archive/20260720/20260720-224907_glow-compass-stoa143-send.bron) — hepta flip sent; STOA144 mapped
-- `20260720.224907` — [STOA143 approved and sent](archive/20260720/20260720-224907_stoa143-approved-sent.bron) — claim d7a4c1653f
-- `20260720.224907` — [STOA143 send complete](archive/20260720/20260720-224907_stoa143-send-complete.bron) — origin main language claim d7a4c1653f
-- `20260720.224907` — [STOA144 next map after hepta flip](archive/20260720/20260720-224907_stoa144-next-map.bron) — lean A octa-mold gate identity
-- `20260720.224734` — [STOA143 hepta-mold flip GREEN](archive/20260720/20260720-224734_stoa143-hepta-flip-green.bron) — from↔amount · fee/nonce/memo/tag/to stay; await send
-- `20260720.223440` — [STOA140 hexa-mold seat map for STOA142](archive/20260720/20260720-223440_stoa140-hexa-mirror-map.bron) — claim 33922c54c8 edit checklist · hepta mirror keys
-- `20260720.223012` — [Mold vocabulary search — keep Hoon word](archive/20260720/20260720-223012_mold-vocabulary-search.bron) — no Glow-native mold rename found; STOA130 renamed wet/dry only
-- `20260720.224210` — [kg STOA142 complete · STOA143 mapped](archive/20260720/20260720-224210_kg-stoa142-complete.bron) — hepta-mold sent; hepta flip mapped
-- `20260720.224201` — [Glow compass send STOA142](archive/20260720/20260720-224201_glow-compass-stoa142-send.bron) — hepta-mold sent; STOA143 mapped
-- `20260720.224201` — [STOA142 approved and sent](archive/20260720/20260720-224201_stoa142-approved-sent.bron) — claim 3ed907d693
-- `20260720.224200` — [STOA142 send complete](archive/20260720/20260720-224200_stoa142-send-complete.bron) — origin main language claim 3ed907d693
-- `20260720.224200` — [STOA143 next map after hepta-mold](archive/20260720/20260720-224200_stoa143-next-map.bron) — lean A hepta-mold flip call-body
-- `20260720.224116` — [STOA142 hepta-mold gate GREEN](archive/20260720/20260720-224116_stoa142-hepta-mold-green.bron) — HeptaMold identity · baked 5/3/1/2/7/4/6; await send
-- `20260720.223226` — [Glow OS shape vocabulary seated](archive/20260720/20260720-223226_glow-os-shape-seated.bron) — shape surface · mold study; desk rename horizon
-- `20260720.223052` — [Glow OS word other than mold](archive/20260720/20260720-223052_glow-os-word-than-mold.bron) — recommend shape · norm · rupa; rename is check-in
-- `20260720.222829` — [Finish STOA140 pin then seat STOA141](archive/20260720/20260720-222829_finish-stoa140-pin.bron) — pin leftovers · hexa flip sent · STOA142 mapped
-- `20260720.222828` — [Glow compass send STOA141](archive/20260720/20260720-222828_glow-compass-stoa141-send.bron) — hexa flip sent; STOA142 mapped
-- `20260720.222828` — [STOA141 approved and sent](archive/20260720/20260720-222828_stoa141-approved-sent.bron) — claim 59c6b37e04
-- `20260720.222827` — [STOA141 send complete](archive/20260720/20260720-222827_stoa141-send-complete.bron) — origin main language claim 59c6b37e04
-- `20260720.222827` — [STOA142 next map after hexa flip](archive/20260720/20260720-222827_stoa142-next-map.bron) — lean A hepta-mold gate identity
-- `20260720.222724` — [STOA141 hexa-mold flip GREEN](archive/20260720/20260720-222724_stoa141-hexa-flip-green.bron) — from↔amount · fee/nonce/memo/tag stay; await send
-- `20260720.222407` — [Glow compass send STOA140](archive/20260720/20260720-222407_glow-compass-stoa140-send.bron) — hexa-mold sent; STOA141 mapped
-- `20260720.222407` — [STOA140 approved and sent](archive/20260720/20260720-222407_stoa140-approved-sent.bron) — claim 33922c54c8
-- `20260720.222406` — [STOA140 send complete](archive/20260720/20260720-222406_stoa140-send-complete.bron) — origin main language claim 33922c54c8
-- `20260720.222406` — [STOA141 next map after hexa-mold](archive/20260720/20260720-222406_stoa141-next-map.bron) — lean A hexa-mold flip call-body
-- `20260720.222338` — [STOA140 hexa-mold gate GREEN](archive/20260720/20260720-222338_stoa140-hexa-mold-green.bron) — HexaMold identity · baked 5/3/1/2/7/4; await send
-- `20260720.221824` — [STOA140 hexa-mold seating checklist](archive/20260720/20260720-221824_stoa140-hexa-mold-checklist.bron) — edit map for hexa identity · hepta refuse
-- `20260720.221704` — [Glow compass send STOA139](archive/20260720/20260720-221704_glow-compass-stoa139-send.bron) — penta flip sent; STOA140 mapped
-- `20260720.221704` — [STOA139 approved and sent](archive/20260720/20260720-221704_stoa139-approved-sent.bron) — claim 069e747e49
-- `20260720.221703` — [STOA139 send complete](archive/20260720/20260720-221703_stoa139-send-complete.bron) — origin main language claim 069e747e49
-- `20260720.221703` — [STOA140 next map after penta flip](archive/20260720/20260720-221703_stoa140-next-map.bron) — lean A hexa-mold gate identity
-- `20260720.221625` — [STOA139 penta-mold flip GREEN](archive/20260720/20260720-221625_stoa139-penta-flip-green.bron) — from↔amount · fee/nonce/memo stay; await send
-- `20260720.215637` — [Glow compass send STOA138](archive/20260720/20260720-215637_glow-compass-stoa138-send.bron) — penta-mold sent; STOA139 mapped
-- `20260720.215637` — [STOA138 approved and sent](archive/20260720/20260720-215637_stoa138-approved-sent.bron) — claim 3f5ed81211
-- `20260720.215636` — [STOA138 send complete](archive/20260720/20260720-215636_stoa138-send-complete.bron) — origin main language claim 3f5ed81211
-- `20260720.215636` — [STOA139 next map after penta-mold](archive/20260720/20260720-215636_stoa139-next-map.bron) — lean A penta-mold flip call-body
-- `20260720.215530` — [STOA138 penta-mold gate GREEN](archive/20260720/20260720-215530_stoa138-penta-mold-green.bron) — PentaMold identity · baked 5/3/1/2/7; await send
-- `20260720.200417` — [Glow compass send STOA137](archive/20260720/20260720-200417_glow-compass-stoa137-send.bron) — quad flip sent; STOA138 mapped
-- `20260720.200417` — [STOA137 approved and sent](archive/20260720/20260720-200417_stoa137-approved-sent.bron) — claim 968e4fb81e
-- `20260720.200416` — [STOA137 send complete](archive/20260720/20260720-200416_stoa137-send-complete.bron) — origin main language claim 968e4fb81e
-- `20260720.200416` — [STOA138 next map after quad flip](archive/20260720/20260720-200416_stoa138-next-map.bron) — lean A penta-mold gate identity
-- `20260720.200332` — [STOA137 quad-mold flip GREEN](archive/20260720/20260720-200332_stoa137-quad-flip-green.bron) — from↔amount · fee/nonce stay; await send
-- `20260720.200046` — [Glow compass send STOA134–136](archive/20260720/20260720-200046_glow-compass-stoa134-136-send.bron) — triple · quad · triple flip sent; STOA137 mapped
-- `20260720.200023` — [STOA136 approved and sent](archive/20260720/20260720-200023_stoa136-approved-sent.bron) — claim aa460089fb
-- `20260720.200022` — [STOA136 send complete](archive/20260720/20260720-200022_stoa136-send-complete.bron) — origin main language claim aa460089fb
-- `20260720.200022` — [STOA137 next map after triple flip](archive/20260720/20260720-200022_stoa137-next-map.bron) — lean A quad-mold flip call-body
-- `20260720.195943` — [STOA136 triple-mold flip GREEN](archive/20260720/20260720-195943_stoa136-triple-flip-green.bron) — from↔amount · fee stays; await send
-- `20260720.195743` — [STOA135 approved and sent](archive/20260720/20260720-195743_stoa135-approved-sent.bron) — claim 2c211b9a0c
-- `20260720.195742` — [STOA135 send complete](archive/20260720/20260720-195742_stoa135-send-complete.bron) — origin main language claim 2c211b9a0c
-- `20260720.195742` — [STOA136 next map after quad-mold](archive/20260720/20260720-195742_stoa136-next-map.bron) — lean A triple-mold flip call-body
-- `20260720.195710` — [STOA135 quad-mold gate GREEN](archive/20260720/20260720-195710_stoa135-quad-mold-green.bron) — QuadMold identity · baked 5/3/1/2; await send
-- `20260720.195132` — [STOA134 approved and sent](archive/20260720/20260720-195132_stoa134-approved-sent.bron) — claim 5dc52a407b
-- `20260720.195131` — [STOA134 send complete](archive/20260720/20260720-195131_stoa134-send-complete.bron) — origin main language claim 5dc52a407b
-- `20260720.195131` — [STOA135 next map after triple-mold](archive/20260720/20260720-195131_stoa135-next-map.bron) — lean A quad-mold gate identity
-- `20260720.195028` — [STOA134 triple-mold gate GREEN](archive/20260720/20260720-195028_stoa134-triple-mold-green.bron) — TripleMold identity · baked 5/3/1; await send
-- `20260720.194437` — [STOA134 triple-mold gate identity map](archive/20260720/20260720-194437_stoa134-triple-mold-map.bron) — lean A closed three-field $: gate sample
-- `20260720.194422` — [STOA133 approved and sent](archive/20260720/20260720-194422_stoa133-approved-sent.bron) — claim df051870f7
-- `20260720.194421` — [STOA133 send complete](archive/20260720/20260720-194421_stoa133-send-complete.bron) — origin main language claim df051870f7
-- `20260720.194421` — [STOA134 next map after count argv](archive/20260720/20260720-194421_stoa134-next-map.bron) — gold vs tagged argv vs triple; compass pick
-- `20260720.194401` — [STOA133 count-mold argv GREEN](archive/20260720/20260720-194401_stoa133-count-argv-green.bron) — count argv desks · glow_run stem; await send
-- `20260720.194143` — [STOA133 count-mold argv map](archive/20260720/20260720-194143_stoa133-count-argv-map.bron) — lean A count argv twin beside fixtures
-- `20260720.194130` — [STOA132 approved and sent](archive/20260720/20260720-194130_stoa132-approved-sent.bron) — claim d74e1a5cf3 · tip aac8f65e6f
-- `20260720.194123` — [STOA132 send complete](archive/20260720/20260720-194123_stoa132-send-complete.bron) — origin main language claim d74e1a5cf3
-- `20260720.194123` — [STOA133 next map after amount argv](archive/20260720/20260720-194123_stoa133-next-map.bron) — count argv vs gold/triple; compass pick
-- `20260720.194102` — [STOA132 amount-mold argv GREEN](archive/20260720/20260720-194102_stoa132-amount-argv-green.bron) — amount argv desks · glow_run stem; await send
-- `20260720.193805` — [STOA132 amount-mold argv map](archive/20260720/20260720-193805_stoa132-amount-argv-map.bron) — lean A u32-shaped named-mold argv beside fixtures
-- `20260720.193750` — [STOA131 kg pair flip sent](archive/20260720/20260720-193750_stoa131-kg-pair-flip-sent.bron) — claim 0bb33ad665 · tip 839ec78d48
-- `20260720.193738` — [STOA131 send complete](archive/20260720/20260720-193738_stoa131-send-complete.bron) — origin main language claim 0bb33ad665
-- `20260720.193738` — [STOA132 next map after pair flip call-body](archive/20260720/20260720-193738_stoa132-next-map.bron) — gold vs argv vs triple-mold; compass pick
-- `20260720.193722` — [STOA131 pair-mold flip call-body GREEN](archive/20260720/20260720-193722_stoa131-pair-call-body-green.bron) — PairMold swap · baked 5/3 → 3/5; await send
-- `20260720.193357` — [STOA131 pair-mold flip call-body map](archive/20260720/20260720-193357_stoa131-pair-call-body-map.bron) — lean A closed multi-field $: flip call-body (from↔amount)
-- `20260720.193316` — [STOA130 naming approved and sent](archive/20260720/20260720-193316_stoa130-naming-approved-sent.bron) — stated/nesting/gold on main · claim 2bf5ba11dc
-- `20260720.193254` — [STOA130 send complete](archive/20260720/20260720-193254_stoa130-send-complete.bron) — origin main language claim 2bf5ba11dc · tip 2bf5ba11dc
-- `20260720.193254` — [STOA131 next map after stated nesting gold](archive/20260720/20260720-193254_stoa131-next-map.bron) — gold vs call-body under pair; compass pick
-- `20260720.193228` — [STOA130 stated nesting gold vocabulary GREEN](archive/20260720/20260720-193228_stoa130-stated-nesting-gold-green.bron) — stated/nesting/gold APIs · LEXICON merge; await send
-- `20260720.192529` — [Wet dry alternatives in Glow paradigm](archive/20260720/20260720-192529_wet-dry-glow-paradigm-terms.bron) — counsel: stated/nesting/gold continuum; no rename yet
-- `20260720.192448` — [STOA129 send complete](archive/20260720/20260720-192448_stoa129-send-complete.bron) — origin main language claim fa2c85e9b8 · tip fa2c85e9b8
-- `20260720.192448` — [STOA130 next map after xfer flip call-body](archive/20260720/20260720-192448_stoa130-next-map.bron) — gold vs call-body under pair; compass pick
-- `20260720.192411` — [STOA129 xfer-mold flip call-body GREEN](archive/20260720/20260720-192411_stoa129-xfer-call-body-green.bron) — XferMold switch · baked mint/5/3 → .send; await send
-- `20260720.192038` — [STOA129 xfer-mold flip call-body map](archive/20260720/20260720-192038_stoa129-xfer-call-body-map.bron) — lean A closed multi-face payload $% flip call-body; py→rish pin helpers
-- `20260720.192011` — [STOA128 send complete](archive/20260720/20260720-192011_stoa128-send-complete.bron) — origin main language claim 08809fc52c · tip 08809fc52c
-- `20260720.192011` — [STOA129 next map after xact flip call-body](archive/20260720/20260720-192011_stoa129-next-map.bron) — gold vs call-body under xfer; compass pick
-- `20260720.191944` — [STOA128 xact-mold flip call-body GREEN](archive/20260720/20260720-191944_stoa128-xact-call-body-green.bron) — XactMold switch · baked mint/5 → .send; await send
-- `20260720.191033` — [STOA128 xact-mold flip call-body map](archive/20260720/20260720-191033_stoa128-xact-call-body-map.bron) — lean A closed payload $% flip call-body
-- `20260720.190941` — [STOA127 send complete](archive/20260720/20260720-190941_stoa127-send-complete.bron) — origin main language claim 03f39d2eff · tip 03f39d2eff
-- `20260720.190941` — [STOA128 next map after kind flip call-body](archive/20260720/20260720-190941_stoa128-next-map.bron) — gold vs call-body under xact; compass pick
-- `20260720.190904` — [STOA127 kind-mold flip call-body GREEN](archive/20260720/20260720-190904_stoa127-kind-call-body-green.bron) — KindMold switch · baked .mint → .send; await send
-- `20260720.190544` — [STOA127 kind-mold flip call-body map](archive/20260720/20260720-190544_stoa127-kind-call-body-map.bron) — lean A closed unit $% flip call-body
-- `20260720.185917` — [STOA126 send complete](archive/20260720/20260720-185917_stoa126-send-complete.bron) — origin main language claim 2b0f4bbc71 · tip 2b0f4bbc71
-- `20260720.185917` — [STOA127 next map after pair-mold gate](archive/20260720/20260720-185917_stoa127-next-map.bron) — gold vs call-body under kind; compass pick
-- `20260720.185844` — [STOA126 pair-mold gate sample GREEN](archive/20260720/20260720-185844_stoa126-pair-mold-green.bron) — PairMold · baked from 5 amount 3; await send
-- `20260720.185502` — [STOA126 pair-mold gate sample map](archive/20260720/20260720-185502_stoa126-pair-mold-map.bron) — lean A multi-field $: gate identity
-- `20260720.185421` — [STOA125 send complete](archive/20260720/20260720-185421_stoa125-send-complete.bron) — origin main language claim a8630d802b · tip a8630d802b
-- `20260720.185421` — [STOA126 next map after xfer-mold gate](archive/20260720/20260720-185421_stoa126-next-map.bron) — gold vs pair-mold vs call-body; compass pick
-- `20260720.185354` — [STOA125 xfer-mold gate sample GREEN](archive/20260720/20260720-185354_stoa125-xfer-mold-green.bron) — XferMold · baked .mint from 5 amount 3; await send
-- `20260720.184953` — [STOA125 xfer-mold gate sample map](archive/20260720/20260720-184953_stoa125-xfer-mold-map.bron) — lean A multi-face payload $% gate identity
-- `20260720.184838` — [STOA124 send complete](archive/20260720/20260720-184838_stoa124-send-complete.bron) — origin main language claim 404a1d1ef0 · tip 404a1d1ef0
-- `20260720.184838` — [STOA125 next map after xact-mold gate](archive/20260720/20260720-184838_stoa125-next-map.bron) — gold vs xfer-mold; compass pick
-- `20260720.184738` — [STOA124 xact-mold gate sample GREEN](archive/20260720/20260720-184738_stoa124-xact-mold-green.bron) — XactMold · baked .mint amount 5; await send
-- `20260720.184304` — [STOA124 xact-mold gate sample map](archive/20260720/20260720-184304_stoa124-xact-mold-map.bron) — lean A payload $% gate identity
-- `20260720.184219` — [STOA123 send complete](archive/20260720/20260720-184219_stoa123-send-complete.bron) — origin main language claim 7b9d350d26 · tip f15f33c18d
-- `20260720.184219` — [STOA124 next map after kind-mold gate](archive/20260720/20260720-184219_stoa124-next-map.bron) — gold vs xact-mold; compass pick
-- `20260720.184155` — [STOA123 kind-mold gate sample GREEN](archive/20260720/20260720-184155_stoa123-kind-mold-green.bron) — KindMold · baked .mint; await send
-- `20260720.183837` — [STOA123 kind-mold gate sample map](archive/20260720/20260720-183837_stoa123-kind-mold-map.bron) — lean A unit $% gate identity
-- `20260720.183712` — [STOA123 kind-mold gate samples map](archive/20260720/20260720-183712_stoa123-kind-mold-samples-map.bron) — parse+lower identity lean A; gold held
-- `20260720.183547` — [STOA122 send complete](archive/20260720/20260720-183547_stoa122-send-complete.bron) — origin main language claim 04865f8715 · tip 094c2dd83a
-- `20260720.183547` — [STOA123 next map after count-mold](archive/20260720/20260720-183547_stoa123-next-map.bron) — kind-mold vs gold; compass pick
-- `20260720.183524` — [STOA122 count-mold named allowlist GREEN](archive/20260720/20260720-183524_stoa122-count-mold-green.bron) — amount · count closed set; await send
-- `20260720.183259` — [STOA122 count-mold named allowlist map](archive/20260720/20260720-183259_stoa122-count-mold-map.bron) — lean A second closed named mold
-- `20260720.183105` — [STOA121 send complete](archive/20260720/20260720-183105_stoa121-send-complete.bron) — origin main language claim c33f775cd2 · tip 689a374a73
-- `20260720.183105` — [STOA122 next map after barket wet-through](archive/20260720/20260720-183105_stoa122-next-map.bron) — thicker doors; compass pick next
-- `20260720.183032` — [STOA121 barket wet-through-nests GREEN](archive/20260720/20260720-183032_stoa121-barket-wet-nests-green.bron) — |^ is_wet=true under stated mold; await send
-- `20260720.182857` — [STOA120 send complete](archive/20260720/20260720-182857_stoa120-send-complete.bron) — origin main language claim 7ef2eb5e15 · tip 8fd29c32bb
-- `20260720.182857` — [STOA121 barket wet-through-nests map](archive/20260720/20260720-182857_stoa121-barket-wet-nests-map.bron) — lean A |^ is_wet=true under stated mold
-- `20260720.182824` — [STOA120 wet-nests barket/bartis wire GREEN](archive/20260720/20260720-182824_stoa120-wet-nests-wire-green.bron) — expansion dry wire; await send
-- `20260720.182420` — [STOA119 send complete](archive/20260720/20260720-182420_stoa119-send-complete.bron) — origin main language claim 471fe68b04 · tip d961878652
-- `20260720.182420` — [STOA120 wet-nests barket wire map](archive/20260720/20260720-182420_stoa120-wet-nests-wire-map.bron) — lean A wire into barket/bartis; no Claude pause
-- `20260720.182341` — [STOA119 wet-nests accept GREEN](archive/20260720/20260720-182341_stoa119-wet-nests-green.bron) — assert_sample_wet_nests · two molds one path; await send
-- `20260720.181950` — [STOA119 wet accept thin claim](archive/20260720/20260720-181950_stoa119-wet-accept-thin-claim.bron) — WET_ACCEPT_THIN under stated mold; lean A
-- `20260720.181658` — [STOA119 wet accept map](archive/20260720/20260720-181658_stoa119-wet-accept-map.bron) — check-in ambient wet accept
-- `20260720.181658` — [STOA118 send complete](archive/20260720/20260720-181658_stoa118-send-complete.bron) — origin main at eecdbb8dd2 / tip 79ee7bf590
-- `20260720.181627` — [STOA118 named-mold barket GREEN](archive/20260720/20260720-181627_stoa118-named-mold-barket-green.bron) — amount-mold · kind refuse; await send
-- `20260720.181308` — [STOA118 named-mold barket vs wet accept](archive/20260720/20260720-181308_stoa118-named-mold-vs-wet-accept.bron) — lean A named-mold barket; wet accept held
-- `20260720.181159` — [STOA118 wet accept map](archive/20260720/20260720-181159_stoa118-wet-accept-map.bron) — check-in ambient wet accept
-- `20260720.181159` — [STOA117 send complete](archive/20260720/20260720-181159_stoa117-send-complete.bron) — origin main at 102b2f228a / tip ce8dae027c
-- `20260720.181134` — [STOA117 barket TAME tidy GREEN](archive/20260720/20260720-181134_stoa117-barket-tame-tidy-green.bron) — append_print · parse_body · ban seat; await send
-- `20260720.180814` — [STOA117 wet accept vs TAME tidy map](archive/20260720/20260720-180814_stoa117-next-map.bron) — check-in wet accept vs tidy
-- `20260720.180814` — [STOA116 send complete](archive/20260720/20260720-180814_stoa116-send-complete.bron) — origin main at b79e8d55c9 / tip 9578621ca2
-- `20260720.180747` — [STOA116 barket call-body inc/dec GREEN](archive/20260720/20260720-180747_stoa116-barket-inc-dec-green.bron) — +%1/-%1 · fixture+argv7 exit 0; await send
-- `20260720.180414` — [STOA116 barket inc/dec vs wet accept map](archive/20260720/20260720-180414_stoa116-barket-next-map.bron) — check-in barket inc/dec vs wet accept
-- `20260720.180414` — [STOA115 send complete](archive/20260720/20260720-180414_stoa115-send-complete.bron) — origin main at ff73855b82
-- `20260720.180350` — [STOA115 barket call-body double GREEN](archive/20260720/20260720-180350_stoa115-barket-call-body-green.bron) — *% 2 · fixture+argv7 exit 0; await send
-- `20260720.180016` — [STOA115 barket call-body vs wet accept map](archive/20260720/20260720-180016_stoa115-barket-next-map.bron) — check-in call-body vs wet accept
-- `20260720.180016` — [STOA114 send complete](archive/20260720/20260720-180016_stoa114-send-complete.bron) — origin main at 04e5a1e511 / tip d661d3712c
-- `20260720.175953` — [STOA114 barket argv sample GREEN](archive/20260720/20260720-175953_stoa114-barket-argv-green.bron) — argv generator · sample 9 exit 0; await send
-- `20260720.175549` — [STOA114 barket deepen vs wet accept map](archive/20260720/20260720-175549_stoa114-barket-deepen-map.bron) — check-in argv vs call-body vs wet accept
-- `20260720.175549` — [STOA113 send complete](archive/20260720/20260720-175549_stoa113-send-complete.bron) — origin main at 11ce632d8a / tip 5850b78930
-- `20260720.175527` — [STOA113 barket identity lower GREEN](archive/20260720/20260720-175527_stoa113-barket-lower-green.bron) — barket_gate · fixture exit 0; await send
-- `20260720.175029` — [STOA113 barket lower vs Sala B0 map](archive/20260720/20260720-175029_stoa113-barket-lower-map.bron) — check-in before thin lower; wet/Sala held
-- `20260720.175029` — [STOA112 send complete](archive/20260720/20260720-175029_stoa112-send-complete.bron) — origin main at 6d02c6f96858
-- `20260720.174907` — [STOA112 barket header parse GREEN](archive/20260720/20260720-174907_stoa112-barket-parse-green.bron) — dry BarketSpec · BodyNotYetLowered; await send
-- `20260720.174521` — [STOA112 barket parse map — thinnest honest GREEN](archive/20260720/20260720-174521_stoa112-barket-parse-map.bron) — dry-shaped demo; BodyNotYetLowered; lower/dispatch/Sala held
-- `20260720.151450` — [STOA112 barket parse vs Sala B0 map](archive/20260720/20260720-151450_stoa112-barket-parse-map.bron) — check-in before thin parse; lower/wet/Sala held
-- `20260720.151450` — [STOA111 send complete](archive/20260720/20260720-151450_stoa111-send-complete.bron) — origin main at eb2a65794210
-- `20260720.151247` — [STOA111 barket tokenize GREEN](archive/20260720/20260720-151247_stoa111-barket-tokenize-green.bron) — |^ → 27; parse/lower held; await send
-- `20260720.151046` — [STOA110 send complete](archive/20260720/20260720-151046_stoa110-send-complete.bron) — origin main at 8b181a4f46ab
-- `20260720.150956` — [STOA111 barket tokenize vs Sala B0 map](archive/20260720/20260720-150956_stoa111-barket-tokenize-map.bron) — lean A tokenize-only step 2; parse/lower held
-- `20260720.150837` — [STOA110 wet-refuse nest GREEN](archive/20260720/20260720-150837_stoa110-wet-refuse-nest-green.bron) — assert_sample_not_wet; await send
-- `20260720.150538` — [STOA110 wet-refuse nest vs barket map](archive/20260720/20260720-150538_stoa110-wet-refuse-vs-barket-map.bron) — lean A wet refuse first; barket held
-- `20260720.150042` — [STOA109 named-mold bartis vs barket map](archive/20260720/20260720-150042_stoa109-named-mold-vs-barket-map.bron) — lean A sample=amount-mold; barket held
-- `20260720.145715` — [STOA108 $% tag nest vs barket map](archive/20260720/20260720-145715_stoa108-tag-nest-vs-barket-map.bron) — lean A assert_tag_nests; barket held
-- `20260720.150618` — [STOA109 send complete](archive/20260720/20260720-150618_stoa109-send-complete.bron) — origin main at 8e7bb3cbc3fa
-- `20260720.150429` — [STOA109 named-mold bartis GREEN](archive/20260720/20260720-150429_stoa109-named-mold-bartis-green.bron) — sample=amount-mold · kind refuse; await send
-- `20260720.150127` — [STOA108 send complete](archive/20260720/20260720-150127_stoa108-send-complete.bron) — origin main at a98ebdc488be
-- `20260720.145928` — [STOA108 nest/type $% tag nest GREEN](archive/20260720/20260720-145928_stoa108-tag-nest-green.bron) — assert_tag_nests · mold-kind; await send
-- `20260720.145753` — [STOA107 send complete](archive/20260720/20260720-145753_stoa107-send-complete.bron) — origin main at 3feeed801dfa
-- `20260720.043453` — [STOA107 nest/type thin implement GREEN](archive/20260720/20260720-043453_stoa107-nest-type-thin-green.bron) — SampleDoesNotNest · bartis wire; await send
-- `20260720.043234` — [STOA106 send complete](archive/20260720/20260720-043234_stoa106-send-complete.bron) — origin main at 222c2458d4f4
-- `20260720.043140` — [STOA107 nest/type thin implement map](archive/20260720/20260720-043140_stoa107-nest-type-thin-map.bron) — bartis dry-aura nest assert; barket/wet held
-- `20260720.043033` — [STOA106 nest/type surface wording GREEN](archive/20260720/20260720-043033_stoa106-nest-type-surface-green.bron) — wet-sample precondition named; await send
-- `20260720.042913` — [STOA105 send complete](archive/20260720/20260720-042913_stoa105-send-complete.bron) — origin main at b8b1e0d65369
-- `20260720.042833` — [STOA105 bartis TAME tidy GREEN](archive/20260720/20260720-042833_stoa105-bartis-tame-tidy-green.bron) — append_print · copy_disjoint · overflow seat; await send
-- `20260720.042220` — [STOA104 send complete](archive/20260720/20260720-042220_stoa104-send-complete.bron) — origin main at 28448e643dae
-- `20260720.042150` — [STOA104 bartis call-body inc/dec GREEN](archive/20260720/20260720-042150_stoa104-bartis-inc-dec-green.bron) — closed trio double/inc/dec; await send
-- `20260720.041702` — [STOA103 send complete](archive/20260720/20260720-041702_stoa103-send-complete.bron) — origin main at 36f822dc0f57
-- `20260720.041204` — [STOA103 bartis call-body double GREEN](archive/20260720/20260720-041204_stoa103-bartis-call-body-green.bron) — %- double sample; fixture+argv; await send
-- `20260720.040746` — [STOA102 send complete](archive/20260720/20260720-040746_stoa102-send-complete.bron) — origin main at 19386bb574b4
-- `20260720.040713` — [STOA102 barket horizon wording GREEN](archive/20260720/20260720-040713_stoa102-barket-horizon-green.bron) — |^ named untokenized; wet/gold held; await send
-- `20260720.040612` — [STOA101 send complete](archive/20260720/20260720-040612_stoa101-send-complete.bron) — origin main at 21d402ad3013
-- `20260720.040546` — [STOA100 send + STOA101 lean A approve](archive/20260720/20260720-040546_stoa100-send-stoa101-approve.bron) — main 7e5970f715; argv bartis PR await send
-- `20260720.040533` — [STOA101 bartis argv sample GREEN](archive/20260720/20260720-040533_stoa101-bartis-argv-green.bron) — generator gate-sample-u32; fixture stays baked; await send
-- `20260720.040050` — [STOA100 send complete](archive/20260720/20260720-040050_stoa100-send-complete.bron) — origin main at 7e5970f71529
-- `20260720.040025` — [STOA100 living docs close](archive/20260720/20260720-040025_stoa100-living-close.bron) — STOA.md · TASKS · ITINERARY · ROADMAP; await send
-- `20260720.033852` — [STOA100 thin bartis implement GREEN](archive/20260720/20260720-033852_stoa100-bartis-implement.bron) — |= tokenized, identity gate lowers, baked sample 5 exits 0; all witnesses GREEN
-- `20260720.033500` — [STOA100 bartis first-lap survey](archive/20260720/20260720-033500_stoa100-bartis-first-lap-survey.bron) — tokens/dispatch/demo-gate/alphabet analysis; thinnest fixture-desk claim
-- `20260720.040025` — [STOA99 send complete](archive/20260720/20260720-040025_stoa99-send-complete.bron) — origin main at 2b5e5eb7da
-- `20260719.233340` — [STOA99 bartis horizon wording GREEN](archive/20260719/20260719-233340_stoa99-bartis-horizon-green.bron) — Glow gate named; await send
-- `20260719.233327` — [STOA98 send complete](archive/20260719/20260719-233327_stoa98-send-complete.bron) — origin main at 620a7cb58f
-- `20260719.233200` — [STOA98 G5 Nock family notes GREEN](archive/20260719/20260719-233200_stoa98-g5-nock-notes-green.bron) — wut truth pin; await send
-- `20260719.233140` — [STOA97 send complete](archive/20260719/20260719-233140_stoa97-send-complete.bron) — origin main at 21c158ff01
-- `20260719.233050` — [STOA97 token MoldSpec G4 GREEN](archive/20260719/20260719-233050_stoa97-token-mold-spec-green.bron) — compass lean A; await send
-- `20260720.032713` — [STOA97 token→MoldSpec rewrite](archive/20260720/20260720-032713_stoa97-token-mold-spec.bron) — parse_source walks token stream; lower_multi retired
-- `20260719.231725` — [STOA96 send complete](archive/20260719/20260719-231725_stoa96-send-complete.bron) — origin main at 4217096449
-- `20260719.231450` — [STOA96 TAME tidy lower_mold GREEN](archive/20260719/20260719-231450_stoa96-tame-tidy-mold-green.bron) — width-check · ban overflow seat · docs; await send
-- `20260720.031128` — [STOA96 lower_mold TAME tidy rewrite](archive/20260720/20260720-031128_stoa96-lower-mold-tame-tidy.bron) — assert · u32 · append_print · split emitters on main
-- `20260719.225349` — [STOA95 send complete](archive/20260719/20260719-225349_stoa95-send-complete.bron) — origin main at fb356deace
-- `20260719.225321` — [STOA95 mold-only peek GREEN](archive/20260719/20260719-225321_stoa95-mold-only-peek-green.bron) — looks_like_mold_only wire; await send
-- `20260719.224948` — [STOA94 send complete](archive/20260719/20260719-224948_stoa94-send-complete.bron) — origin main at 5d5e4856a0
-- `20260719.224520` — [STOA94 same-desk mold-body tokens GREEN](archive/20260719/20260719-224520_stoa94-same-desk-mold-body-green.bron) — named_cast_parts mold span; await send
-- `20260719.224130` — [STOA93 send complete](archive/20260719/20260719-224130_stoa93-send-complete.bron) — origin main at 1dabeed7b6
-- `20260720.024223` — [STOA94 same-desk mold-body tokens plan seated](archive/20260720/20260720-024223_stoa94-same-desk-mold-body-plan.bron) — NamedCastParts span + still rm.parse_source; no token→MoldSpec
-- `20260720.023513` — [STOA93 G4 token-driven lower slice plan seated](archive/20260720/20260720-023513_stoa93-g4-token-lower-plan.bron) — cross-desk parse via tokens; peeks stay; no bartis
-- `20260720.022956` — [STOA92 G3 thin argv sample plan seated](archive/20260720/20260720-022956_stoa92-g3-thin-argv-plan.bron) — Rishi forwards @u32; fixture cast-u32 kept; no bartis
-- `20260719.224027` — [STOA93 token-driven cross-desk parse GREEN](archive/20260719/20260719-224027_stoa93-token-driven-lower-green.bron) — cross_desk_parts; await send
-- `20260719.223610` — [STOA92 send complete](archive/20260719/20260719-223610_stoa92-send-complete.bron) — origin main at 7c6f5e9b6d
-- `20260719.223351` — [STOA92 thin argv sample G3 GREEN](archive/20260719/20260719-223351_stoa92-argv-sample-g3-green.bron) — sample-u32 reads Rishi argv; await send
-- `20260719.223110` — [STOA91 send complete](archive/20260719/20260719-223110_stoa91-send-complete.bron) — origin main at 1022d8cab1
-- `20260719.222752` — [STOA91 TAME alphabet pin G2 GREEN](archive/20260719/20260719-222752_stoa91-tame-alphabet-pin-green.bron) — family index in TAME_GUIDANCE; await send
-- `20260719.222642` — [STOA90 send complete](archive/20260719/20260719-222642_stoa90-send-complete.bron) — origin main at 90c011e4dc
-- `20260719.220955` — [STOA90 G1 closed pronunciation table GREEN](archive/20260719/20260719-220955_stoa90-g1-alphabet-green.bron) — 25 heads bound to tokens.rye; await send
-- `20260719.204820` — [iOS handoff send complete](archive/20260719/20260719-204820_ios-handoff-send-complete.bron) — origin + codeberg at 9da6c6ef3d
-- `20260719.204759` — [Cursor iOS handoff and core port order](archive/20260719/20260719-204759_cursor-ios-handoff-and-core-port.bron) — dry cores fit; wet hold; await send
-- `20260719.204500` — [STOA89 send complete](archive/20260719/20260719-204500_stoa89-send-complete.bron) — origin + codeberg at bcf3780543
-- `20260719.204340` — [STOA89 pin and STOA90 check-in](archive/20260719/20260719-204340_stoa89-pin-stoa90-check-in.bron) — pin f29414bb99; lean A pronunciation table G1
-- `20260719.204307` — [STOA89 rune alphabet and generator wording](archive/20260719/20260719-204307_stoa89-rune-alphabet-roadmap.bron) — adopt Hoon alphabet; fixture vs generator; await send
-- `20260719.203740` — [STOA89 check-in after assertion runes](archive/20260719/20260719-203740_stoa89-check-in.bron) — lean A token-driven lower slice
-- `20260719.203726` — [STOA88 assertion runes send](archive/20260719/20260719-203726_stoa88-assert-runes-send.bron) — pin 0530ed5f20; then STOA89 check-in
-- `20260719.203207` — [STOA88 Glow assertion runes GREEN](archive/20260719/20260719-203207_stoa88-assert-runes-green.bron) — ?> / ?< TAME; await send
-- `20260719.203130` — [STOA88 check-in after TAME tidy named-cast](archive/20260719/20260719-203130_stoa88-check-in.bron) — lean A token-driven lower slice
-- `20260719.203117` — [STOA87 TAME tidy named-cast send](archive/20260719/20260719-203117_stoa87-tame-tidy-named-cast-send.bron) — pin 376c2996b1; then STOA88 check-in
-- `20260719.202541` — [STOA87 TAME tidy named-cast GREEN](archive/20260719/20260719-202541_stoa87-tame-tidy-named-cast-green.bron) — assert · u32 · copy_disjoint; await send
-- `20260719.202420` — [STOA87 check-in after TAME tidy tokens](archive/20260719/20260719-202420_stoa87-check-in.bron) — lean A tidy lower_named_cast
-- `20260719.202411` — [STOA86 TAME tidy tokens send](archive/20260719/20260719-202411_stoa86-tame-tidy-tokens-send.bron) — pin 114d683bb1; then STOA87 check-in
-- `20260719.201942` — [STOA86 TAME tidy tokens GREEN](archive/20260719/20260719-201942_stoa86-tame-tidy-tokens-green.bron) — first Glow roster surface; await send
-- `20260719.201904` — [STOA86 redirect — not enough tidy TAME Glow](archive/20260719/20260719-201904_stoa86-tame-tidy-redirect.bron) — lean A TAME tidy tokens
-- `20260719.201830` — [STOA86 check-in after cross-desk token peek](archive/20260719/20260719-201830_stoa86-check-in.bron) — lean A token-driven lower slice
-- `20260719.201819` — [STOA85 cross-desk token peek send](archive/20260719/20260719-201819_stoa85-cross-desk-token-peek-send.bron) — pin 08b0a63d60; then STOA86 check-in
-- `20260719.201500` — [STOA85 cross-desk token peek GREEN](archive/20260719/20260719-201500_stoa85-cross-desk-token-peek-green.bron) — /+ then ^- peek; await send
-- `20260719.201420` — [STOA85 check-in after named-cast token peek](archive/20260719/20260719-201420_stoa85-check-in.bron) — lean A cross-desk token peek
-- `20260719.201411` — [STOA84 named-cast token peek send](archive/20260719/20260719-201411_stoa84-named-cast-token-peek-send.bron) — pin 0316619e39; then STOA85 check-in
-- `20260719.201027` — [STOA84 named-cast token peek GREEN](archive/20260719/20260719-201027_stoa84-named-cast-token-peek-green.bron) — glow_run wire; await send
-- `20260719.200850` — [STOA84 check-in after token stream](archive/20260719/20260719-200850_stoa84-check-in.bron) — lean A wire glow_run onto tokens
-- `20260719.200836` — [STOA83 bounded token stream send](archive/20260719/20260719-200836_stoa83-token-stream-send.bron) — pin b1f29af76f; then STOA84 check-in
-- `20260719.200706` — [STOA83 bounded token stream GREEN](archive/20260719/20260719-200706_stoa83-token-stream-green.bron) — cast-named-xact kinds; await send
-- `20260719.200545` — [STOA83 check-in after payload $% cast](archive/20260719/20260719-200545_stoa83-check-in.bron) — lean A general token stream
-- `20260719.200530` — [STOA82 payload $% named-cast send](archive/20260719/20260719-200530_stoa82-payload-percent-cast-send.bron) — pin 6df7cff43b; then STOA83 check-in
-- `20260719.200508` — [STOA82 payload $% named-cast GREEN](archive/20260719/20260719-200508_stoa82-payload-percent-cast-green.bron) — XactMold same-desk + import; await send
-- `20260719.195855` — [STOA82 check-in after tagged named-cast](archive/20260719/20260719-195855_stoa82-check-in.bron) — lean A payload $% named-cast
-- `20260719.195840` — [STOA81 tagged named-cast send](archive/20260719/20260719-195840_stoa81-tagged-named-cast-send.bron) — pin 95c6ccfb90; then STOA82 check-in
-- `20260719.195819` — [STOA81 tagged named-cast GREEN](archive/20260719/20260719-195819_stoa81-tagged-named-cast-green.bron) — KindMold same-desk + import; await send
-- `20260719.195255` — [STOA81 check-in after multi-face $%](archive/20260719/20260719-195255_stoa81-check-in.bron) — lean A tagged named-cast
-- `20260719.195240` — [STOA80 multi-face $% payload send](archive/20260719/20260719-195240_stoa80-multi-face-percent-send.bron) — pin b4ae1128cb; then STOA81 check-in
-- `20260719.195216` — [STOA80 multi-face $% payload GREEN](archive/20260719/20260719-195216_stoa80-multi-face-percent-green.bron) — XferMold from+amount; await send
-- `20260719.194745` — [STOA80 check-in after cross-desk cast](archive/20260719/20260719-194745_stoa80-check-in.bron) — lean A multi-face $% payload
-- `20260719.194730` — [STOA79 cross-desk named-cast send](archive/20260719/20260719-194730_stoa79-cross-desk-cast-send.bron) — pin 1ef344cc08; then STOA80 check-in
-- `20260719.194711` — [STOA79 cross-desk named-cast GREEN](archive/20260719/20260719-194711_stoa79-cross-desk-cast-green.bron) — /+ mold-amount then ^-; await send
-- `20260719.194200` — [STOA79 check-in after $% payload](archive/20260719/20260719-194200_stoa79-check-in.bron) — lean A cross-desk named-cast
-- `20260719.194145` — [STOA78 $% payload arms send](archive/20260719/20260719-194145_stoa78-percent-payload-send.bron) — pin f0de302057; then STOA79 check-in
-- `20260719.193907` — [STOA78 $% payload arms GREEN](archive/20260719/20260719-193907_stoa78-percent-payload-green.bron) — XactMold union; await send
-- `20260719.193640` — [STOA78 check-in after named-cast](archive/20260719/20260719-193640_stoa78-check-in.bron) — lean A $% payload arms
-- `20260719.193621` — [STOA77 same-desk named-cast send](archive/20260719/20260719-193621_stoa77-named-cast-send.bron) — pin 4dcad53d30; then STOA78 check-in
-- `20260719.193538` — [STOA77 same-desk named-cast resolve GREEN](archive/20260719/20260719-193538_stoa77-named-cast-green.bron) — AmountMold from +$ then ^-; await send
-- `20260719.193036` — [STOA77 check-in after $% mold](archive/20260719/20260719-193036_stoa77-check-in.bron) — lean A named-cast resolve
-- `20260719.193002` — [STOA76 thin +$ / $% tagged mold send](archive/20260719/20260719-193002_stoa76-tagged-mold-send.bron) — ship $% mold; then STOA77 check-in
-- `20260719.192936` — [STOA76 thin +$ / $% tagged mold GREEN](archive/20260719/20260719-192936_stoa76-tagged-mold-green.bron) — KindMold desk; await send
-- `20260719.192404` — [STOA76 check-in after multi-field mold](archive/20260719/20260719-192404_stoa76-check-in.bron) — lean A $% tagged-union mold
-- `20260719.192329` — [STOA75 multi-field +$ / $: mold send](archive/20260719/20260719-192329_stoa75-multi-field-mold-send.bron) — ship multi-field mold; then STOA76 check-in
-- `20260719.192241` — [STOA75 multi-field +$ / $: mold GREEN](archive/20260719/20260719-192241_stoa75-multi-field-mold-green.bron) — PairMold desk; await send
-- `20260719.191719` — [STOA73 Pixel product-root install eyes GREEN](archive/20260719/20260719-191719_stoa73-pixel-product-root-eyes.bron) — on-device expect 5; Sala hex kept
-- `20260719.191208` — [Pixel adb no device on host install](archive/20260719/20260719-191208_pixel-adb-no-device.bron) — attach Pixel then re-run install
-- `20260719.191101` — [Pixel STOA73 install instructions](archive/20260719/20260719-191101_pixel-stoa73-install-instructions.bron) — outer-terminal product-root eyes
-- `20260719.190913` — [STOA75 check-in after thin mold](archive/20260719/20260719-190913_stoa75-check-in.bron) — lean A multi-field $:
-- `20260719.190842` — [STOA74 thin +$ / $: mold send](archive/20260719/20260719-190842_stoa74-thin-mold-send.bron) — ship thin mold; then STOA75 check-in
-- `20260719.190825` — [STOA74 thin +$ / $: mold GREEN](archive/20260719/20260719-190825_stoa74-thin-mold-green.bron) — AmountMold desk; await send
-- `20260719.184938` — [STOA74 check-in after product-root write](archive/20260719/20260719-184938_stoa74-check-in.bron) — lean A host install product-root eyes
-- `20260719.184915` — [STOA73 product-root write path send](archive/20260719/20260719-184915_stoa73-product-root-write-send.bron) — ship write path; then STOA74 check-in
-- `20260719.184836` — [STOA73 product-root write path GREEN](archive/20260719/20260719-184836_stoa73-product-root-write-green.bron) — glow_product_root.txt expect 5; await send
-- `20260719.182754` — [STOA73 check-in after APK import wire](archive/20260719/20260719-182754_stoa73-check-in.bron) — lean A on-device product-root proof
-- `20260719.182724` — [STOA72 NativeActivity APK Glow import wire send](archive/20260719/20260719-182724_stoa72-glow-apk-import-send.bron) — ship APK import wire; then STOA73 check-in
-- `20260719.182648` — [STOA72 NativeActivity APK Glow import wire GREEN](archive/20260719/20260719-182648_stoa72-glow-apk-import-green.bron) — pack expect 5; await send
-- `20260719.182321` — [STOA72 check-in after import seam](archive/20260719/20260719-182321_stoa72-check-in.bron) — lean A APK wire of same import
-- `20260719.182240` — [STOA71 NativeActivity-path Glow import seam send](archive/20260719/20260719-182240_stoa71-glow-import-seam-send.bron) — ship import seam; then STOA72 check-in
-- `20260719.182120` — [STOA71 NativeActivity-path Glow import seam GREEN](archive/20260719/20260719-182120_stoa71-glow-import-seam-green.bron) — lowered-Rye @import expect 5; await send
-- `20260719.181703` — [STOA70 session-root nest-left product desk send](archive/20260719/20260719-181703_stoa70-session-root-nest-product-send.bron) — ship session-root; then STOA71 check-in
-- `20260719.181259` — [STOA70 session-root nest-left product desk GREEN](archive/20260719/20260719-181259_stoa70-session-root-nest-product-green.bron) — session-root expect 5; await send
-- `20260719.181143` — [STOA69 next-root product desk send](archive/20260719/20260719-181143_stoa69-next-root-product-desk-send.bron) — ship next-root; then STOA70 check-in
-- `20260719.180837` — [STOA69 next-root product desk GREEN](archive/20260719/20260719-180837_stoa69-next-root-product-desk-green.bron) — next-root expect 5; await send
-- `20260719.175835` — [STOA69 Glow language need check-in](archive/20260719/20260719-175835_stoa69-glow-language-need-check-in.bron) — nest trios closed; lean A product desk
-- `20260719.175326` — [STOA68 /+ payload nest-both cue-of-jam send](archive/20260719/20260719-175326_stoa68-use-lib-payload-both-cue-jam-send.bron) — ship `/+` payload nest-both; then STOA69 check-in
-- `20260719.175024` — [STOA68 /+ payload nest-both cue-of-jam GREEN](archive/20260719/20260719-175024_stoa68-use-lib-payload-both-cue-jam-green.bron) — `/+` payload nest-both unpack 0; await send
-- `20260719.174844` — [STOA67 /+ payload nest-right cue-of-jam send](archive/20260719/20260719-174844_stoa67-use-lib-payload-right-cue-jam-send.bron) — ship `/+` payload nest-right; then STOA68 check-in
-- `20260719.174531` — [STOA67 /+ payload nest-right cue-of-jam GREEN](archive/20260719/20260719-174531_stoa67-use-lib-payload-right-cue-jam-green.bron) — `/+` payload nest-right unpack 0; await send
-- `20260719.174434` — [STOA66 /+ payload nest-left cue-of-jam send](archive/20260719/20260719-174434_stoa66-use-lib-payload-nest-cue-jam-send.bron) — ship `/+` payload nest-left; then STOA67 check-in
-- `20260719.174116` — [STOA66 /+ payload nest-left cue-of-jam GREEN](archive/20260719/20260719-174116_stoa66-use-lib-payload-nest-cue-jam-green.bron) — `/+` payload nest-left unpack 5; await send
-- `20260719.174026` — [STOA65 /+ payload cue-of-jam send](archive/20260719/20260719-174026_stoa65-use-lib-payload-cue-jam-send.bron) — ship `/+` payload cue-jam; then STOA66 check-in
-- `20260719.173708` — [STOA65 /+ payload cue-of-jam GREEN](archive/20260719/20260719-173708_stoa65-use-lib-payload-cue-jam-green.bron) — `/+` payload unpack 5; await send
-- `20260719.173459` — [STOA64 face→payload nest-both cue-of-jam send](archive/20260719/20260719-173459_stoa64-payload-nest-both-cue-jam-send.bron) — ship payload nest-both; then STOA65 check-in
-- `20260719.173215` — [STOA64 face→payload nest-both cue-of-jam GREEN](archive/20260719/20260719-173215_stoa64-payload-nest-both-cue-jam-green.bron) — payload nest-both unpack 0; await send
-- `20260719.172924` — [STOA63 face→payload nest-right cue-of-jam send](archive/20260719/20260719-172924_stoa63-payload-nest-right-cue-jam-send.bron) — ship payload nest-right; then STOA64 check-in
-- `20260719.172625` — [STOA63 face→payload nest-right cue-of-jam GREEN](archive/20260719/20260719-172625_stoa63-payload-nest-right-cue-jam-green.bron) — payload nest-right unpack 0; await send
-- `20260719.172521` — [STOA62 face→payload nest-left cue-of-jam send](archive/20260719/20260719-172521_stoa62-payload-nest-cue-jam-send.bron) — ship payload nest-left; then STOA63 check-in
-- `20260719.172234` — [STOA62 face→payload nest-left cue-of-jam GREEN](archive/20260719/20260719-172234_stoa62-payload-nest-cue-jam-green.bron) — payload nest-left unpack; await send
-- `20260719.172139` — [STOA61 face→payload cue-of-jam send](archive/20260719/20260719-172139_stoa61-payload-cue-jam-send.bron) — ship payload cue-of-jam; then STOA62 check-in
-- `20260719.171844` — [STOA61 face→payload cue-of-jam GREEN](archive/20260719/20260719-171844_stoa61-payload-cue-jam-green.bron) — outer note into payload unpack; await send
-- `20260719.171755` — [STOA60 /+ nest-both cue-of-jam send](archive/20260719/20260719-171755_stoa60-use-lib-both-cue-jam-send.bron) — ship `/+` nest-both; then STOA61 check-in
-- `20260719.171500` — [STOA60 /+ nest-both cue-of-jam GREEN](archive/20260719/20260719-171500_stoa60-use-lib-both-cue-jam-green.bron) — import nest-both cue-jam unpack; await send
-- `20260719.171414` — [STOA59 /+ nest-right cue-of-jam send](archive/20260719/20260719-171414_stoa59-use-lib-right-cue-jam-send.bron) — ship `/+` nest-right; then STOA60 check-in
-- `20260719.171131` — [STOA59 /+ nest-right cue-of-jam GREEN](archive/20260719/20260719-171131_stoa59-use-lib-right-cue-jam-green.bron) — import nest-right cue-jam unpack; await send
-- `20260719.171044` — [STOA58 /+ nest-left cue-of-jam send](archive/20260719/20260719-171044_stoa58-use-lib-nest-cue-jam-send.bron) — ship `/+` nest-left; then STOA59 check-in
-- `20260719.170718` — [STOA58 /+ nest-left cue-of-jam GREEN](archive/20260719/20260719-170718_stoa58-use-lib-nest-cue-jam-green.bron) — import nest-left cue-jam unpack; await send
-- `20260719.170433` — [STOA57 /+ cue-of-jam library send](archive/20260719/20260719-170433_stoa57-use-lib-cue-jam-send.bron) — ship `/+` cue-of-jam; then STOA58 check-in
-- `20260719.170057` — [STOA57 /+ cue-of-jam library GREEN](archive/20260719/20260719-170057_stoa57-use-lib-cue-jam-green.bron) — import lib-core-cue-jam unpack; await send
-- `20260719.170009` — [STOA56 face→nest-both cue-of-jam send](archive/20260719/20260719-170009_stoa56-face-nest-both-cue-jam-send.bron) — ship nest-both cue-of-jam; then STOA57 check-in
-- `20260719.165724` — [STOA56 face→nest-both cue-of-jam GREEN](archive/20260719/20260719-165724_stoa56-face-nest-both-cue-jam-green.bron) — face→nest-both cue-of-jam; await send
-- `20260719.165641` — [STOA55 face→nest-right cue-of-jam send](archive/20260719/20260719-165641_stoa55-face-nest-right-cue-jam-send.bron) — ship nest-right cue-of-jam; then STOA56 check-in
-- `20260719.165404` — [STOA55 face→nest-right cue-of-jam GREEN](archive/20260719/20260719-165404_stoa55-face-nest-right-cue-jam-green.bron) — face→nest-right cue-of-jam; await send
-- `20260719.165320` — [STOA54 face→nest-left cue-of-jam send](archive/20260719/20260719-165320_stoa54-face-nest-cue-jam-send.bron) — ship nest-left cue-of-jam; then STOA55 check-in
-- `20260719.165048` — [STOA54 face→nest-left cue-of-jam GREEN](archive/20260719/20260719-165048_stoa54-face-nest-cue-jam-green.bron) — face→nest-left cue-of-jam; await send
-- `20260719.164913` — [STOA53 face→core cue-of-jam send](archive/20260719/20260719-164913_stoa53-face-core-cue-jam-send.bron) — ship face→`|%` cue-of-jam; then STOA54 check-in
-- `20260719.164640` — [STOA53 face→core cue-of-jam GREEN](archive/20260719/20260719-164640_stoa53-face-core-cue-jam-green.bron) — outer face into cue-of-jam arm; await send
-- `20260719.164234` — [STOA52 bind→inline nest-both send](archive/20260719/20260719-164234_stoa52-bind-inline-nest-both-send.bron) — ship inline nest-both; then STOA53 check-in
-- `20260719.163945` — [STOA52 bind→inline nest-both GREEN](archive/20260719/20260719-163945_stoa52-bind-inline-nest-both-green.bron) — nest-both cue-of-jam under binds; await send
-- `20260719.163814` — [STOA51 bind→inline nest-right send](archive/20260719/20260719-163814_stoa51-bind-inline-nest-right-send.bron) — ship inline nest-right; then STOA52 check-in
-- `20260719.163527` — [STOA51 bind→inline nest-right GREEN](archive/20260719/20260719-163527_stoa51-bind-inline-nest-right-green.bron) — nest-right cue-of-jam under binds; await send
-- `20260719.163412` — [STOA50 bind→inline nest cue-jam send](archive/20260719/20260719-163412_stoa50-bind-inline-nest-cue-jam-send.bron) — ship inline nest-left; then STOA51 check-in
-- `20260719.163125` — [STOA50 bind→inline nest cue-jam GREEN](archive/20260719/20260719-163125_stoa50-bind-inline-nest-cue-jam-green.bron) — nest-left cue-of-jam under binds; await send
-- `20260719.162842` — [STOA49 bind→inline cue-of-jam send](archive/20260719/20260719-162842_stoa49-bind-inline-cue-jam-send.bron) — ship inline product compose; then STOA50 check-in
-- `20260719.162549` — [STOA49 bind→inline cue-of-jam GREEN](archive/20260719/20260719-162549_stoa49-bind-inline-cue-jam-green.bron) — authored one-line round-trip; await send
-- `20260719.162410` — [STOA48 four-bind nest-both send](archive/20260719/20260719-162410_stoa48-four-bind-nest-both-send.bron) — ship four-bind product compose; then STOA49 check-in
-- `20260719.161949` — [STOA48 four-bind nest-both GREEN](archive/20260719/20260719-161949_stoa48-four-bind-nest-both-green.bron) — distinct right mix pair; await send
-- `20260719.161720` — [STOA47 resume after battery](archive/20260719/20260719-161720_stoa47-resume-after-battery.bron) — suite + send after charge; STOA48 check-in
-- `20260719.161649` — [STOA47 three-bind nest-left send](archive/20260719/20260719-161649_stoa47-three-bind-nest-left-send.bron) — ship three-bind product compose; then STOA48 check-in
-- `20260719.155553` — [STOA47 three-bind nest-left GREEN](archive/20260719/20260719-155553_stoa47-three-bind-nest-left-green.bron) — distinct pack-right atom; resume after battery
-- `20260719.155310` — [STOA46 bind→nest-both-jam→cue send](archive/20260719/20260719-155310_stoa46-bind-nest-both-jam-cue-send.bron) — ship nest-both product compose; then STOA47 check-in
-- `20260719.154840` — [STOA46 bind→nest-both-jam→cue GREEN](archive/20260719/20260719-154840_stoa46-bind-nest-both-jam-cue-green.bron) — authored nest-both pack unpack; await send
-- `20260719.154714` — [STOA45 bind→nest-right-jam→cue send](archive/20260719/20260719-154714_stoa45-bind-nest-right-jam-cue-send.bron) — ship nest-right product compose; then STOA46 nest-both
-- `20260719.154325` — [STOA45 bind→nest-right-jam→cue GREEN](archive/20260719/20260719-154325_stoa45-bind-nest-right-jam-cue-green.bron) — authored nest-right pack unpack; await send
-- `20260719.154122` — [STOA44 bind→nest-jam→cue send](archive/20260719/20260719-154122_stoa44-bind-nest-jam-cue-send.bron) — ship nest product compose; then STOA45 check-in
-- `20260719.154112` — [STOA44 bind→nest-jam→cue GREEN](archive/20260719/20260719-154112_stoa44-bind-nest-jam-cue-green.bron) — authored nest pack unpack; await send
-- `20260719.153620` — [STOA43 bind→jam→cue send](archive/20260719/20260719-153620_stoa43-bind-jam-cue-send.bron) — ship product multi-line; then STOA44 check-in
-- `20260719.153556` — [STOA43 bind→jam→cue GREEN](archive/20260719/20260719-153556_stoa43-bind-jam-cue-green.bron) — authored bind pack unpack; await send
-- `20260719.153019` — [STOA42 cue nest jam both send](archive/20260719/20260719-153019_stoa42-cue-nest-jam-both-send.bron) — ship nest-both cue; then STOA43 check-in
-- `20260719.153013` — [STOA42 cue nest jam both GREEN](archive/20260719/20260719-153013_stoa42-cue-nest-jam-both-green.bron) — cue of nest jam both; await send
-- `20260719.152040` — [STOA41 cue nest jam right send](archive/20260719/20260719-152040_stoa41-cue-nest-jam-right-send.bron) — ship nest-right cue; then STOA42 check-in
-- `20260719.151831` — [STOA41 cue nest jam right GREEN](archive/20260719/20260719-151831_stoa41-cue-nest-jam-right-green.bron) — cue of nest jam right; await send
-- `20260719.151134` — [STOA39 push ack](archive/20260719/20260719-151134_stoa39-push-ack.bron) — delayed notify; STOA40 already shipped
-- `20260719.150811` — [STOA40 cue nest jam left send](archive/20260719/20260719-150811_stoa40-cue-nest-jam-send.bron) — ship nest cue; then STOA41 check-in
-- `20260719.150634` — [STOA40 cue nest jam left GREEN](archive/20260719/20260719-150634_stoa40-cue-nest-jam-green.bron) — cue of nest jam; await send
-- `20260719.145927` — [STOA39 jam→cue compose send](archive/20260719/20260719-145927_stoa39-jam-cue-compose-send.bron) — ship compose; then STOA40 nest cue
-- `20260719.145738` — [STOA39 jam→cue compose GREEN](archive/20260719/20260719-145738_stoa39-jam-cue-compose-green.bron) — cross-line pack unpack; await send
-- `20260719.145227` — [STOA38 cue-of-jam send](archive/20260719/20260719-145227_stoa38-cue-of-jam-send.bron) — ship cue nest; then STOA39 multi-line
-- `20260719.145101` — [STOA39 check-in](archive/20260719/20260719-145101_stoa39-check-in.bron) — after cue-of-jam; send STOA38 first
-- `20260719.144929` — [STOA38 cue-of-jam GREEN](archive/20260719/20260719-144929_stoa38-cue-of-jam-green.bron) — nest cue jam; await send · STOA39 check-in
-- `20260719.144120` — [STOA37 nest jam both send](archive/20260719/20260719-144120_stoa37-nest-jam-both-send.bron) — ship both-mix; then STOA38 cue nest
-- `20260719.143736` — [STOA38 check-in](archive/20260719/20260719-143736_stoa38-check-in.bron) — cue-of-jam shapes; send STOA37 first
-- `20260719.143329` — [STOA37 nest jam both GREEN](archive/20260719/20260719-143329_stoa37-nest-jam-both-green.bron) — both-mix seats; await send · STOA38 cue-of-jam
-- `20260719.140950` — [STOA37 check-in after rest](archive/20260719/20260719-140950_stoa37-check-in.bron) — lean A both-mix · then B round-trip
-- `20260719.010916` — [Rest handoff · morning continue](archive/20260719/20260719-010916_rest-handoff-morning-continue.bron) — ITINERARY dawn card; STOA37 A/B/C
-- `20260719.010738` — [STOA34–36 nest jam send](archive/20260719/20260719-010738_stoa34-36-nest-jam-send.bron) — ship nest jam left/right; STOA37 check-in
-- `20260719.010610` — [STOA36 desk GREEN · kg pause](archive/20260719/20260719-010610_stoa36-desk-green-kg-pause.bron) — full desk suite GREEN; send / STOA37 check-in
-- `20260719.010409` — [STOA36 nest jam right GREEN](archive/20260719/20260719-010409_stoa36-nest-jam-right-green.bron) — jam right mix; await send with STOA34–35
-- `20260719.005650` — [STOA35 nest jam open core GREEN](archive/20260719/20260719-005650_stoa35-nest-jam-open-core-green.bron) — ++ nest jam; await send with STOA34
-- `20260719.005207` — [STOA34 nest jam arms GREEN](archive/20260719/20260719-005207_stoa34-nest-jam-arms-green.bron) — ?:/?-/~ nest jam; await send
-- `20260719.004851` — [Send STOA33 nest jam face](archive/20260719/20260719-004851_send-stoa33-nest-jam.bron) — pier ship; STOA34 nest jam arms
-- `20260719.002726` — [STOA33 nest jam face GREEN](archive/20260719/20260719-002726_stoa33-nest-jam-face-green.bron) — jam-of-mix face; await send
-- `20260719.002221` — [Send STOA32 cue nest GREEN](archive/20260719/20260719-002221_send-stoa32-cue-nest.bron) — (cue …) desks; STOA33 check-in
-- `20260719.001323` — [Send STOA31 STOA32 check-in](archive/20260719/20260719-001323_send-stoa31-stoa32-checkin.bron) — pier ship; STOA32 cue next
-- `20260719.001148` — [STOA31 payload library compose GREEN](archive/20260719/20260719-001148_stoa31-payload-library-compose-green.bron) — /+ payload nest pack; await send
-- `20260719.001002` — [Send STOA30 STOA31 check-in](archive/20260719/20260719-001002_send-stoa30-stoa31-checkin.bron) — pier ship; STOA31 forks next
-- `20260719.000745` — [STOA30 payload-open compose GREEN](archive/20260719/20260719-000745_stoa30-payload-open-compose-green.bron) — face→payload nest pack; await send
-- `20260719.000619` — [Send STOA25-29 STOA30 check-in](archive/20260719/20260719-000619_send-stoa25-29-stoa30-checkin.bron) — pier ship; STOA30 payload+open next
-- `20260719.000324` — [STOA29 nest library compose GREEN](archive/20260719/20260719-000324_stoa29-nest-library-compose-green.bron) — /+ jam pack battery; await send
-- `20260719.000132` — [STOA28 face-to-open-core GREEN](archive/20260719/20260719-000132_stoa28-face-to-open-core-green.bron) — face→nest pack compose; await send
-- `20260718.235804` — [STOA27 nest arm body GREEN](archive/20260718/20260718-235804_stoa27-nest-arm-body-green.bron) — jam/mix/lent/cast ++ bodies; await send
-- `20260718.235530` — [STOA26 library compose GREEN](archive/20260718/20260718-235530_stoa26-library-compose-green.bron) — /+ import open arm; await send
-- `20260718.235220` — [STOA25 open arm body GREEN](archive/20260718/20260718-235220_stoa25-open-arm-body-green.bron) — authored ++ sample/literal; await send
-- `20260718.234809` — [STOA25 language until product direction](archive/20260718/20260718-234809_stoa25-language-until-product-direction.bron) — north star: Glow-authored product
-- `20260718.234632` — [Send STOA24 STOA25 check-in](archive/20260718/20260718-234632_send-stoa24-stoa25-checkin.bron) — pier ship; STOA25 forks next
-- `20260718.234430` — [STOA24 face-to-payload GREEN](archive/20260718/20260718-234430_stoa24-face-to-payload-green.bron) — compose-core-payload; await send
-- `20260718.234338` — [Send STOA23 check-in](archive/20260718/20260718-234338_send-stoa23-checkin.bron) — pier ship; STOA24 forks next
-- `20260718.234311` — [STOA23 check-in before send](archive/20260718/20260718-234311_stoa23-checkin-before-send.bron) — pier lag; STOA24 forks open
-- `20260718.234122` — [STOA23 two-face add GREEN](archive/20260718/20260718-234122_stoa23-two-face-add-green.bron) — compose-core-add; await send
-- `20260718.233813` — [Send STOA22 check-in](archive/20260718/20260718-233813_send-stoa22-checkin.bron) — pier ship; STOA23 forks next
-- `20260718.233317` — [STOA22 check-in before send](archive/20260718/20260718-233317_stoa22-checkin-before-send.bron) — pier lag; STOA23 forks open
-- `20260718.233120` — [STOA22 face-to-three GREEN](archive/20260718/20260718-233120_stoa22-face-to-three-green.bron) — compose-core-three; await send
-- `20260718.232925` — [Send STOA21 check-in](archive/20260718/20260718-232925_send-stoa21-checkin.bron) — pier ship; STOA22 forks next
-- `20260718.232724` — [STOA21 check-in before send](archive/20260718/20260718-232724_stoa21-checkin-before-send.bron) — pier lag; STOA22 forks open
-- `20260718.232419` — [STOA21 typed payload GREEN](archive/20260718/20260718-232419_stoa21-typed-payload-green.bron) — amount=@u32 on |%; await send
-- `20260718.232145` — [Send STOA19-20 check-in](archive/20260718/20260718-232145_send-stoa19-20-checkin.bron) — pier ship; STOA21 forks next
-- `20260718.231814` — [STOA19-20 check-in before send](archive/20260718/20260718-231814_stoa19-20-checkin-before-send.bron) — pier lag; STOA21 forks open
-- `20260718.231511` — [STOA19-20 compose three GREEN](archive/20260718/20260718-231511_stoa19-20-compose-three-green.bron) — face→two-arm + three-arm; await send
-- `20260718.231243` — [Send STOA18 check-in](archive/20260718/20260718-231243_send-stoa18-checkin.bron) — pier ship; STOA19 forks next
-- `20260718.231041` — [STOA18 check-in before send](archive/20260718/20260718-231041_stoa18-checkin-before-send.bron) — pier lag; STOA19 forks open
-- `20260718.230846` — [STOA18 face-to-core GREEN](archive/20260718/20260718-230846_stoa18-face-to-core-green.bron) — compose-core desk; await send
-- `20260718.230754` — [Send STOA17 approve face-core](archive/20260718/20260718-230754_send-stoa17-approve-face-core.bron) — pier ship; STOA18 face→core next
-- `20260718.230550` — [STOA17 check-in before send](archive/20260718/20260718-230550_stoa17-checkin-before-send.bron) — pier lag; STOA18 forks open
-- `20260718.225931` — [STOA17 core payload GREEN](archive/20260718/20260718-225931_stoa17-core-payload-green.bron) — =/ amount on |%; await send
-- `20260718.225613` — [Send STOA15-16 check-in](archive/20260718/20260718-225613_send-stoa15-16-checkin.bron) — pier ship; STOA17 forks next
-- `20260718.225150` — [STOA15-16 two-arm library GREEN](archive/20260718/20260718-225150_stoa15-16-two-arm-library-green.bron) — core-two + lib emit; await send
-- `20260718.224511` — [Send STOA14 approve B then D](archive/20260718/20260718-224511_send-stoa14-approve-b-d.bron) — pier ship; two-arm then library next
-- `20260718.224413` — [STOA15 check-in after core](archive/20260718/20260718-224413_stoa15-checkin-after-core.bron) — send vs two-arm vs compose vs library
-- `20260718.224030` — [STOA14 core double GREEN](archive/20260718/20260718-224030_stoa14-core-double-green.bron) — |% ++ double --; desk core-double
-- `20260718.223834` — [Send STOA12-13 approve cores](archive/20260718/20260718-223834_send-stoa12-13-approve-cores.bron) — pier ship; STOA14 brief+thin next
-- `20260718.223657` — [STOA14 cores check-in](archive/20260718/20260718-223657_stoa14-cores-checkin.bron) — send vs thin battery vs brief-first
-- `20260718.223431` — [STOA13 typed multi GREEN](archive/20260718/20260718-223431_stoa13-typed-multi-green.bron) — @u32 multi-line; desk multi-typed
-- `20260718.221812` — [STOA12 compose add GREEN](archive/20260718/20260718-221812_stoa12-compose-add-green.bron) — face→face→%+; desk compose-add
-- `20260718.221622` — [STOA12 check-in after send](archive/20260718/20260718-221622_stoa12-checkin-after-send.bron) — cores vs typed multi vs %+ compose
-- `20260718.221526` — [Send STOA10-11 compose](archive/20260718/20260718-221526_send-stoa10-11-compose.bron) — pier ship; multi-line + face→call
-- `20260718.212131` — [STOA11 compose call GREEN](archive/20260718/20260718-212131_stoa11-compose-call-green.bron) — face→%-; desk compose-call
-- `20260718.211817` — [STOA10 multi-line GREEN](archive/20260718/20260718-211817_stoa10-multi-line-green.bron) — 2–4 bare faces; desk multi-face
-- `20260718.211531` — [Send SETU6.5 and STOA0-9](archive/20260718/20260718-211531_send-setu65-stoa0-9.bron) — pier ship; STOA10 multi-line next
-- `20260718.211343` — [STOA9 call named GREEN](archive/20260718/20260718-211343_stoa9-call-named-green.bron) — sixteenth head %*; desk call-named
-- `20260718.211059` — [STOA8 call three GREEN](archive/20260718/20260718-211059_stoa8-call-three-green.bron) — fifteenth head %^; desk call-three
-- `20260718.210823` — [STOA7 call two GREEN](archive/20260718/20260718-210823_stoa7-call-two-green.bron) — fourteenth head %+; desk call-two
-- `20260718.205959` — [STOA6 call one GREEN](archive/20260718/20260718-205959_stoa6-call-one-green.bron) — thirteenth head %-; desk call-one
-- `20260718.205715` — [STOA5 list cell GREEN](archive/20260718/20260718-205715_stoa5-list-cell-green.bron) — twelfth head :~; desk cell-list
-- `20260718.205500` — [STOA4 quad cell GREEN](archive/20260718/20260718-205500_stoa4-quad-cell-green.bron) — eleventh head :^; desk cell-quad
-- `20260718.205303` — [STOA3 triple cell GREEN](archive/20260718/20260718-205303_stoa3-triple-cell-green.bron) — tenth head :+; desk cell-triple
-- `20260718.205119` — [STOA witnesses run in-tree](archive/20260718/20260718-205119_stoa-witnesses-run-in-tree.bron) — jam · cell · full desk GREEN
-- `20260718.204634` — [STOA2 cell pair GREEN](archive/20260718/20260718-204634_stoa2-cell-pair-green.bron) — ninth head :-; desk cell-pair
-- `20260718.203656` — [STOA1 jam nest GREEN](archive/20260718/20260718-203656_stoa1-jam-nest-green.bron) — cell-pack (a<<16)|b; desks GREEN
-- `20260718.202737` — [STOA supersedes MAIR](archive/20260718/20260718-202737_stoa-supersedes-mair.bron) — language waymark redraw; STOA0 claimed
-- `20260718.202545` — [MAIR Glow language waymark](archive/20260718/20260718-202545_mair-glow-language-waymark.bron) — first draw; superseded same day
-- `20260718.201917` — [Glow language vs product SLC](archive/20260718/20260718-201917_glow-language-slc-orientation.bron) — eight heads GREEN; no language waymark yet
-- `20260718.201826` — [SETU6.5 lab TX gate GREEN](archive/20260718/20260718-201826_setu65-lab-tx-gate-green.bron) — stand-in refuses; host SKIP; send next
-- `20260718.201530` — [SETU6.5 check-in after send](archive/20260718/20260718-201530_setu65-checkin-after-send.bron) — live TX; await approve or pause
-- `20260718.201510` — [Send SETU6 lab harness](archive/20260718/20260718-201510_send-setu6-lab-harness.bron) — pier ship; SETU6.5 check-in
-- `20260718.201446` — [Phone needed for SETU6?](archive/20260718/20260718-201446_phone-needed-for-setu6.bron) — no for stand-in; SETU6.5 later
-- `20260718.201232` — [SETU6 lab harness GREEN](archive/20260718/20260718-201232_setu6-lab-harness-green.bron) — stand-in; payload 289b; send next
-- `20260718.194250` — [SETU6 check-in after season close](archive/20260718/20260718-194250_setu6-checkin-after-season-close.bron) — CDC-NCM lab; await approve
-- `20260718.194211` — [Send HOLD Wayland · eyes seen](archive/20260718/20260718-194211_send-hold-wayland-eyes-seen.bron) — pier ship; season close kg
-- `20260718.193951` — [HOLD Wayland eyes GREEN · archive](archive/20260718/20260718-193951_hold-wayland-eyes-green.bron) — Desk raster; fold 165; send next
-- `20260718.193720` — [HOLD Wayland eyes check-in](archive/20260718/20260718-193720_hold-wayland-eyes-checkin.bron) — thin face; await approve
-- `20260718.193658` — [Send HOLD1 host look · check-in](archive/20260718/20260718-193658_send-hold1-host-look-checkin.bron) — pier ship; Wayland eyes check-in
-- `20260718.193607` — [HOLD1 host Pixel look GREEN](archive/20260718/20260718-193607_hold1-host-pixel-look.bron) — SETU0→HOLD1 on device; send look
-- `20260718.193240` — [Send HOLD1 Desk Skate hold](archive/20260718/20260718-193240_send-hold1-desk-skate.bron) — pier ship; SETU6 / Wayland eyes check-in
-- `20260718.193122` — [HOLD1 Desk Skate hold GREEN](archive/20260718/20260718-193122_hold1-desk-skate-green.bron) — rows 0–1 on Desk Skate
-- `20260718.192950` — [Send Acme · Glow · waymark hygiene](archive/20260718/20260718-192950_send-acme-glow-waymark-hygiene.bron) — pier ship; HOLD1 build next
-- `20260718.192716` — [Acme · waymark · Glow hygiene](archive/20260718/20260718-192716_acme-waymark-glow-hygiene.bron) — eight heads synced; Quin tutorials; HOLD1 next
-- `20260718.192424` — [HOLD1 thin face after ready](archive/20260718/20260718-192424_hold1-thin-face-ready.bron) — Desk Skate hold chrome; await approve
-- `20260718.192317` — [Send HOLD0 stale-bin honesty](archive/20260718/20260718-192317_send-hold0-stale-bin-honesty.bron) — pier ship; pause; HOLD1 check-in
-- `20260718.192129` — [Optimal path · operator state](archive/20260718/20260718-192129_optimal-path-forward-state.bron) — send honesty; optional usb_desk; pause
-- `20260718.190855` — [Explain HOLD0 meaning](archive/20260718/20260718-190855_explain-hold0-meaning.bron) — plain read of hold line + host chain
-- `20260718.190736` — [HOLD0 stale-bin honesty GREEN](archive/20260718/20260718-190736_hold0-stale-bin-honesty.bron) — local ignores leftovers; host SKIP clears
-- `20260718.190639` — [Host HOLD0 look · season close](archive/20260718/20260718-190639_host-hold0-look-season-close.bron) — Pixel pull GREEN; stale ping/frame named
-- `20260718.190346` — [adb no device · Pixel USB](archive/20260718/20260718-190346_adb-no-device-pixel-attached.bron) — 10a on USB; plugdev/auth then re-pull
-- `20260718.190001` — [Direction after HOLD0](archive/20260718/20260718-190001_direction-after-hold0.bron) — host look to close season; HOLD1 check-in
-- `20260718.185709` — [Send HOLD0 Desk Hearth Hold](archive/20260718/20260718-185709_send-hold0-desk-hearth-hold.bron) — pier ship; HOLD1 / SETU6 check-in
-- `20260718.185604` — [What do I need to do](archive/20260718/20260718-185604_what-do-i-need-to-do.bron) — send HOLD0; optional host pull; HOLD1 check-in
-- `20260718.185349` — [Desk Hearth Hold · HOLD0 GREEN](archive/20260718/20260718-185349_desk-hearth-hold-season-hold0.bron) — season open; Desk hold line; SETU6 parked
-- `20260718.184733` — [Send SETU5 · thoughts](archive/20260718/20260718-184733_send-setu5-thoughts.bron) — pier SETU5; SETU6 check-in or pause
-- `20260718.184537` — [SETU5 device payload GREEN](archive/20260718/20260718-184537_setu5-device-payload-green.bron) — max_frame 554; lane_frame.bin; send next
-- `20260718.184449` — [Send SETU4 · kg SETU5](archive/20260718/20260718-184449_send-setu4-kg-setu5.bron) — pier SETU4; SETU5 device-wire payload next
-- `20260718.184323` — [SETU4 framed live lane GREEN](archive/20260718/20260718-184323_setu4-framed-live-lane-green.bron) — framed UDP :38502; gadget SKIP; send next
-- `20260718.184214` — [Send SETU3 · affirm kg SETU4](archive/20260718/20260718-184214_send-setu3-affirm-kg-setu4.bron) — pier SETU3; SETU4 framed live lane next
-- `20260718.134613` — [SETU3 NCM frame GREEN](archive/20260718/20260718-134613_setu3-ncm-frame-green.bron) — virtio+eth wrap; send next; SETU4 check-in
-- `20260718.134458` — [Send SETU2 · approve SETU3 next](archive/20260718/20260718-134458_send-setu2-approve-setu3.bron) — pier SETU2; SETU3 NCM frame under approval
-- `20260718.134348` — [Send SETU1 · SETU2 hosted UDP GREEN](archive/20260718/20260718-134348_send-setu1-setu2-hosted-udp.bron) — pier SETU1; SETU2 demo GREEN; send next
-- `20260718.134246` — [Send SETU1 lane ping](archive/20260718/20260718-134246_send-setu1-lane-ping.bron) — pier ship; SETU2 under approval next
-- `20260718.134110` — [kg SETU1 persist · host GREEN](archive/20260718/20260718-134110_kg-setu1-persist-host-green.bron) — lane_ping.bin hold; host SKIP; send next
-- `20260718.134020` — [SETU1 screen check answer](archive/20260718/20260718-134020_setu1-screen-check-answer.bron) — no Pixel look required; usb_desk optional
-- `20260718.133853` — [SETU1 approved · lane ping GREEN](archive/20260718/20260718-133853_setu1-approve-lane-ping-green.bron) — usb_desk seals; local refuses; send next
-- `20260718.133735` — [Thoughts after SETU0.5 send](archive/20260718/20260718-133735_thoughts-after-setu05-send.bron) — check-in SETU1; not kg into NCM
-- `20260718.133705` — [Send SETU0.5 and compose briefs](archive/20260718/20260718-133705_send-setu05-compose-briefs.bron) — pier ship; SETU1 check-in next
-- `20260718.133619` — [Compose briefs + SETU0.5 seat](archive/20260718/20260718-133619_compose-briefs-setu05-seat.bron) — ER+revive seated; Desk station GREEN
-- `20260718.133400` — [Fuse Amber Amphora with Glass Desk?](archive/20260718/20260718-133400_fuse-amber-amphora-glass-desk.bron) — compose later; finish SETU0.5 first
-- `20260718.133125` — [Where this is going](archive/20260718/20260718-133125_where-this-is-going.bron) — Wired Glass → Desk pier → Mantrapod same fold
-- `20260718.133102` — [Thoughts after SETU0 send](archive/20260718/20260718-133102_thoughts-after-setu0-send.bron) — wire_lane gap · Desk apply before NCM?
-- `20260718.132937` — [Send LULU3-5 and SETU0](archive/20260718/20260718-132937_send-lulu3-5-setu0.bron) — pier ship; SETU1 check-in next
-- `20260718.132736` — [SETU0 affirmed · GREEN host pull](archive/20260718/20260718-132736_setu0-affirm-green-host-pull.bron) — adb pulled kd hearth; Desk agree; send next
-- `20260718.132503` — [LULU5 GREEN · preference ladder closed](archive/20260718/20260718-132503_lulu5-green-ladder-closed.bron) — cell affirmed; SETU0 check-in next
-- `20260718.132031` — [LULU4 GREEN · LULU5 cellular](archive/20260718/20260718-132031_lulu4-green-lulu5-cell.bron) — wire affirmed; cell preference packed
-- `20260718.131549` — [LULU3 GREEN · LULU4 wire_lane](archive/20260718/20260718-131549_lulu3-green-lulu4-wire.bron) — home edit affirmed; wire preference packed
-- `20260718.130940` — [LULU3 home_id editor](archive/20260718/20260718-130940_lulu3-home-id-editor.bron) — Settings home row · draft · pointer; pack for Pixel
-- `20260718.130756` — [Send LULU·ZETA6 · affirm next](archive/20260718/20260718-130756_send-lulu-zeta6-affirm-next.bron) — pier ship; Wired Glass + home_id affirmed next
-- `20260718.130606` — [LULU2 hold-open GREEN · closed](archive/20260718/20260718-130606_lulu2-hold-open-green-closed.bron) — perfect; LULU0–2 closed; next check-in or send
-- `20260718.130251` — [LULU2 Pixel GREEN · hold-open](archive/20260718/20260718-130251_lulu2-pixel-green-hold-open.bron) — list under finger via timerfd; release quiet
-- `20260718.125835` — [LULU2 Settings list affirmed](archive/20260718/20260718-125835_lulu2-settings-list-affirmed.bron) — long-press list · tap select · pack for Pixel
-- `20260718.125639` — [LULU1 persist GREEN · rung closed](archive/20260718/20260718-125639_lulu1-persist-green-closed.bron) — restart keeps preset; LULU2 check-in next
-- `20260718.125312` — [LULU1 cycle GREEN · Bron persist](archive/20260718/20260718-125312_lulu1-cycle-green-bron-persist.bron) — cycle affirmed; files/kd/hearth.bron save/load
-- `20260718.124821` — [LULU1 status GREEN · tap cycle](archive/20260718/20260718-124821_lulu1-status-green-tap-cycle.bron) — status affirmed; tap row 1 cycles presets
-- `20260718.124610` — [LULU1 Pixel GREEN · hearth status](archive/20260718/20260718-124610_lulu1-pixel-green-hearth-status.bron) — larger glyphs affirmed; row 1 `kd · scaled_540`
-- `20260718.124259` — [LULU1 Hearth apply GREEN](archive/20260718/20260718-124259_lulu1-hearth-apply-green.bron) — apply_glass · scaled_540 default · pack for Pixel
-- `20260718.123900` — [LULU0 Hearth Bron GREEN](archive/20260718/20260718-123900_lulu0-hearth-bron-green.bron) — home_id + display_preset mold
-- `20260718.123705` — [ZETA6 Pixel look GREEN](archive/20260718/20260718-123705_zeta6-pixel-look-green.bron) — P1–P6 ret · ^ send; thin Skate intentional
-- `20260718.123245` — [remember adb install + restart](archive/20260718/20260718-123245_remember-adb-install-restart.bron) — outer-terminal reprint
-- `20260718.122938` — [ZETA6 ret newline · ^ send](archive/20260718/20260718-122938_zeta6-ret-newline-send-key.bron) — device-free GREEN; pack for Pixel
-- `20260718.122145` — [LULU · ZETA6 · Hearth align send](archive/20260718/20260718-122145_lulu-zeta6-hearth-align-send.bron) — waymark LULU; ret→newline design
-- `20260717.214340` — [JABS2 ret toggle vs cycle](archive/20260717/20260717-214340_jabs2-ret-toggle-vs-cycle.bron) — prefer cycle N; gesture check-in
-- `20260717.213745` — [JABS2 bare ret empty chat](archive/20260717/20260717-213745_jabs2-bare-ret-empty-chat.bron) — first-tap ret → chat ·
-- `20260717.213242` — [remember rule · Glow first code](archive/20260717/20260717-213242_remember-rule-save-glow-first.bron) — ITINERARY card · Acme open-runes note
-- `20260717.213058` — [JABS2 finish-zone + mode round-trip](archive/20260717/20260717-213058_jabs2-finish-zone-mode-roundtrip.bron) — close row 13 only; TAME bans GREEN
-- `20260717.212257` — [kg JABS2 live chat face](archive/20260717/20260717-212257_kg-jabs2-live-chat-face.bron) — Dexter ret → chat · line; pack GREEN
-- `20260717.205837` — [adb empty — host terminal](archive/20260717/20260717-205837_adb-empty-host-terminal.bron) — jail has no /dev/bus/usb
-- `20260717.205718` — [Remind adb reconnect keyboard](archive/20260717/20260717-205718_remind-adb-reconnect-keyboard.bron) — install + NativeActivity start
-- `20260717.191417` — [BRB save progress · resume brief](archive/20260717/20260717-191417_brb-save-progress-resume-brief.bron) — pier clean; glass season seated
-- `20260717.191030` — [Seat waymark JABS · ZETA4 · JABS2 glass](archive/20260717/20260717-191030_seat-waymark-jabs-zeta4-jabs2.bron) — draw JABS; rules; prune; force-push seat
-- `20260717.190646` — [ZETA4 look GREEN · JABS2 glass](archive/20260717/20260717-190646_zeta4-look-kg-sala-b2-glass.bron) — glyphs loved; JABS2 rows 14–15 on Pixel
-- `20260717.190139` — [ZETA4 look GREEN · distinct glyphs](archive/20260717/20260717-190139_zeta4-look-green-distinct-glyphs.bron) — Pixel GREEN; per-face silhouettes
-- `20260717.185842` — [ZETA4 emoji nod witness install](archive/20260717/20260717-185842_zeta4-emoji-nod-witness-install.bron) — atlas · UTF-8 · APK on Pixel
-- `20260717.185037` — [Send ZETA2b look and Glow forms](archive/20260717/20260717-185037_send-zeta2b-look-glow-forms.bron) — commit · push · pier
-- `20260717.184837` — [ZETA2b ZETA5 Pixel look GREEN](archive/20260717/20260717-184837_zeta2b-zeta5-pixel-look-green.bron) — type · delete · tabs · :)
-- `20260717.183924` — [ZETA2b hit density pack install](archive/20260717/20260717-183924_zeta2b-hit-density-pack-install.bron) — label-span hit; phone scale; APK on Pixel
-- `20260717.183622` — [Seat Glow OS · Desk · Glass](archive/20260717/20260717-183622_seat-glow-os-desk-glass.bron) — Keaton chose unification + forms
-- `20260717.183425` — [Write form-factor note · send · kg](archive/20260717/20260717-183425_write-form-factor-note-send-kg.bron) — naming/orientation silo; ship; ZETA2b next
-- `20260717.183345` — [ZETA Pixel typing GREEN · align gaps](archive/20260717/20260717-183345_zeta-pixel-typing-green-align.bron) — type works; ZETA2b hit-box/density next
-- `20260717.183015` — [ZETA3 caret blink · kg](archive/20260717/20260717-183015_zeta3-caret-blink-kg.bron) — `|` pulse via timerfd; pack+install; eyes next
-- `20260717.182418` — [TAME Lap 2 · kg means keep going](archive/20260717/20260717-182418_tame-lap2-kg-keep-going.bron) — Lap2 GREEN; kg≠send; zero-assert 3 left
-- `20260717.181715` — [TAME SLC realign · Lap 1 GREEN](archive/20260717/20260717-181715_tame-slc-realign-lap1.bron) — advise truth; DoD rules; glass asserts; memcpy 0
-- `20260717.180933` — [ZETA2 tap→Action · ZETA1 Pixel look](archive/20260717/20260717-180933_zeta2-tap-action-pixel-look.bron) — keyboard visible; taps drain to Dexter; install Success
-- `20260717.180725` — [ZETA1 letters paint + hit · kg](archive/20260717/20260717-180725_zeta1-letters-paint-hit-kg.bron) — QWERTY on Skate 14–17; pack GREEN
-- `20260717.180147` — [Seat waymark ZETA and ZETA0 layouts](archive/20260717/20260717-180147_waymark-seat-zeta-and-zeta0.bron) — ZETA drawn; layout tables GREEN; ZETA1 next
-- `20260717.175328` — [Glass keyboard · iOS-inspired · align · send](archive/20260717/20260717-175328_glass-keyboard-ios-inspired-align-send.bron) — own Skate QWERTY; layout tables next; IME/caret gaps named
-- `20260717.174805` — [Dexter D3 live KEY drain · kg](archive/20260717/20260717-174805_dexter-d3-live-key-drain-kg.bron) — showSoftInput + KEY→Action; pack GREEN
-- `20260717.174434` — [Check-in after Dexter D2](archive/20260717/20260717-174434_check-in-after-dexter-d2.bron) — lean soft-keyboard drain or rest
-- `20260717.174336` — [Dexter D2 Pixel look GREEN · kg](archive/20260717/20260717-174336_dexter-d2-pixel-look-green-kg.bron) — Keaton confirmed title + DEXTER line on device
-- `20260717.174257` — [Guidance — Dexter D2 next](archive/20260717/20260717-174257_guidance-dexter-d2-next.bron) — host install + eyes on DEXTER line
-- `20260717.174151` — [kg — tree already clean](archive/20260717/20260717-174151_kg-tree-already-clean.bron) — main at fee0fbf8f0; nothing left to ship
-- `20260717.174036` — [Compass card · foundations compress · send](archive/20260717/20260717-174036_compass-card-foundations-compress-send.bron) — decline archive/Bron essays; COMPASS + card; three-prompt ROADMAP align
-- `20260717.173749` — [Witness habitat · markup pipeline · send](archive/20260717/20260717-173749_witness-habitat-markup-pipeline-send.bron) — Acme face for happy zone; fusion spine; Cursor-and-the-compass scaffold
-- `20260717.173248` — [Dexter D0+D1 glass send](archive/20260717/20260717-173248_dexter-d0-d1-glass-send.bron) — DEXTER line · glow; pack GREEN; D2 next
-- `20260717.173042` — [Check-in after Dexter Dill align](archive/20260717/20260717-173042_check-in-after-dexter-align.bron) — lean D0 or rest; hold jam and Dill
-- `20260717.172832` — [Align Dexter Dill Glow — research silo ROADMAP send](archive/20260717/20260717-172832_align-dexter-dill-glow-send.bron) — active-reviving silo; D0–D2 named; mix held closed
-- `20260717.172720` — [Check-in — Dexter · Dill · Glow GrapheneOS](archive/20260717/20260717-172720_check-in-dexter-dill-glow.bron) — Dexter under Brushstroke/Sala; Dill stays gap
-- `20260717.172403` — [Check-in after mix-as-arm](archive/20260717/20260717-172403_check-in-after-mix-as-arm.bron) — rest · B2 layout · or jam if appetite
-- `20260717.171840` — [Glow mix-as-arm send](archive/20260717/20260717-171840_glow-mix-as-arm-send.bron) — ?: ?- ?~ XOR arms; mix form closed
-- `20260717.171524` — [Glow (mix …) under =/ — second paren nest](archive/20260717/20260717-171524_glow-mix-paren-under-face.bron) — XOR desk face-mix; jam still refuses
-- `20260717.171232` — [Glow lent seating brief for mix](archive/20260717/20260717-171232_glow-lent-mix-seating-brief.bron) — lent code path mapped; mix = Hoon XOR next
-- `20260717.171116` — [Check-in after B1 Pixel look](archive/20260717/20260717-171116_check-in-after-b1-pixel.bron) — lean mix paren or B2 glass layout
-- `20260717.171015` — [Sala B1 Pixel look GREEN](archive/20260717/20260717-171015_sala-b1-pixel-look-green.bron) — Keaton confirmed title + B1 line on device
-- `20260717.170610` — [Pixel look — Sala B1 glass lines](archive/20260717/20260717-170610_pixel-look-sala-b1-glass.bron) — title + row 11 carriage; host install
-- `20260717.170335` — [Sala B1 glass carriage send](archive/20260717/20260717-170335_sala-b1-glass-carriage-send.bron) — welcome path paints row 11; pack GREEN
-- `20260717.165932` — [Check-in after lent-as-arm](archive/20260717/20260717-165932_check-in-after-lent-as-arm.bron) — lean product HAWM/TUBE or one new paren
-- `20260717.165715` — [Glow lent-as-arm closes the form](archive/20260717/20260717-165715_glow-lent-as-arm.bron) — ?: ?- ?~ length arms; foundations unmoved
-- `20260717.165200` — [Compass vs Glow surface — check-in](archive/20260717/20260717-165200_compass-vs-glow-surface-check-in.bron) — keep foundations; working layer for rune surface
-- `20260717.165112` — [Check-in after lent paren send](archive/20260717/20260717-165112_check-in-after-lent-paren.bron) — lean lent-as-arm next
-- `20260717.164748` — [Glow (lent …) first paren nest form](archive/20260717/20260717-164748_glow-lent-paren-nest-form.bron) — expr lent_of under =/; desk GREEN
-- `20260717.164450` — [Check-in after shared nest expr send](archive/20260717/20260717-164450_check-in-after-shared-nest-expr.bron) — paren op vs tokens vs HAWM2
-- `20260717.164350` — [Glow shared nest expr — first general-lexer lap](archive/20260717/20260717-164350_glow-shared-nest-expr-first-lexer-lap.bron) — expr.rye; lowers share nests; GREEN
-- `20260717.163946` — [TWO_ROOMS send then check-in](archive/20260717/20260717-163946_two-rooms-send-and-check-in.bron) — git nib 26cbe45419; three doors named
-- `20260717.163748` — [TWO_ROOMS Quin refresh and doorway GREEN](archive/20260717/20260717-163748_two-rooms-quin-and-doorway-green.bron) — Voice Quin; 25 Status tokens; witness GREEN
-- `20260717.163310` — [Techno-Optimist gratitude to Quin then send Glow @u64](archive/20260717/20260717-163310_techno-optimist-quin-and-u64-send.bron) — manifesto Voice Quin; nest @u64 to pier
-- `20260717.163004` — [Nested @u64 closes unsigned cast family](archive/20260717/20260717-163004_nested-u64-cast-family.bron) — face + arm nests; desk GREEN
-- `20260717.162620` — [Quin intentionally unpaired — five settled](archive/20260717/20260717-162620_quin-intentionally-unpaired.bron) — five boot images; no twin hunt
-- `20260717.162114` — [Quin seated as fifth OS variant](archive/20260717/20260717-162114_quin-fifth-os-variant.bron) — beside Reya · Riyo · Trey · Triz; twin open
-- `20260717.161823` — [Glass covers Network · Sensors toggles](archive/20260717/20260717-161823_glass-covers-network-sensors.bron) — load-bearing toggles; pack path unchanged
-- `20260717.161727` — [Glow template bron refresh then continue](archive/20260717/20260717-161727_glow-template-bron-refresh.bron) — Quin · linux host · Eastern-capable clock in templates
-- `20260717.161626` — [README front-door sync + OTHER_SENSORS send](archive/20260717/20260717-161626_readme-sync-and-other-sensors-send.bron) — run-today names Glow desk + TUBE/HAWM
-- `20260717.161448` — [TUBE0.5 sensors emits OTHER_SENSORS](archive/20260717/20260717-161448_tube05-sensors-other-sensors-emit.bron) — closed table row; pairs with Sensors Grant
-- `20260717.161357` — [send GrapheneOS product-edge stack then kg](archive/20260717/20260717-161357_send-grapheneos-product-edge.bron) — Resource Scope · Network · Sensors · glass cover to pier
-- `20260717.161220` — [Glass covers declared Storage · Contact](archive/20260717/20260717-161220_glass-covers-storage-contact.bron) — covering scopes load-bearing; pack path unchanged
-- `20260717.161013` — [Sensors Grant mold + gated TUBE1 admit](archive/20260717/20260717-161013_sensors-grant-gated-admit.bron) — appears zeroed; gated door + glass live
-- `20260717.160828` — [Network Grant wired into TUBE1 admit](archive/20260717/20260717-160828_tube1-network-grant-wire.bron) — networked door + glass; deny/revoke appear down
-- `20260717.160607` — [Network Grant — GrapheneOS Network toggle parallel](archive/20260717/20260717-160607_network-grant-grapheneos-toggle.bron) — binary grant mold GREEN; TUBE1 wire next
-- `20260717.155846` — [Contact Scope + multi-scope admit GREEN](archive/20260717/20260717-155846_contact-scope-multi-scope-admit.bron) — Resource Scope stacks Storage + Contact; pack GREEN
-- `20260717.155651` — [TUBE1 admits through Storage Scope](archive/20260717/20260717-155651_tube1-storage-scope-wire.bron) — scoped door + glass; pack GREEN
-- `20260717.155520` — [Glow Storage Scope — GrapheneOS parallel in Glow](archive/20260717/20260717-155520_glow-storage-scope-grapheneos-parallel.bron) — grant mold GREEN; GrapheneOS path stays Glow
-- `20260717.155335` — [send expression nests and Zig truth ruling then check-in](archive/20260717/20260717-155335_send-expression-nests-and-truth.bron) — nests + truth to pier; next seam needs a ruling
-- `20260717.155111` — [?~ then/else arm expressions — decimal and cast](archive/20260717/20260717-155111_null-arm-expressions.bron) — ?~ nests 1 0; ?-category arms closed at this width
-- `20260717.154943` — [seat Glow Zig ambient truth · Nock loobean seam-only](archive/20260717/20260717-154943_glow-truth-zig-ambient-seated.bron) — ruling + witness + LEXICON; desk GREEN
-- `20260717.154803` — [counsel — Glow loobean vs Zig/Rye bool](archive/20260717/20260717-154803_glow-loobean-vs-zig-bool-counsel.bron) — counsel before seating; superseded by 154943 ruling
-- `20260717.154644` — [?- mint/send arm expressions — decimal and cast](archive/20260717/20260717-154644_switch-arm-expressions.bron) — ?- nests %mint 1 %send 0; desk GREEN
-- `20260717.154458` — [?: then/else arm expressions — decimal and cast](archive/20260717/20260717-154458_conditional-arm-expressions.bron) — ?: nests 1 0 and ^- arms; desk GREEN
-- `20260717.154327` — [first nested value expression — =/ over ^-](archive/20260717/20260717-154327_face-nested-cast-expression.bron) — face nests cast-of-literal; desk GREEN
-- `20260717.154204` — [send Glow body-deepen lap then check-in](archive/20260717/20260717-154204_send-body-deepen-lap.bron) — deepen batch to pier; next seam needs a ruling
-- `20260717.154131` — [=* named source — = category bodies complete](archive/20260717/20260717-154131_alias-named-source-complete.bron) — stock source; deepen lap closed at this width
-- `20260717.154012` — [Glow desk looks run in-jail by Quin](archive/20260717/20260717-154012_glow-self-look-in-jail.bron) — no Android; stop asking Keaton to re-run glow_run
-- `20260717.153951` — [=. trailing mutate value deepens GREEN](archive/20260717/20260717-153951_mutate-trailing-value.bron) — decimal after root; mutate-root.glow 42
-- `20260717.153900` — [?~ then/else named arms deepen GREEN](archive/20260717/20260717-153900_null-named-arms.bron) — root/cont arms; null-records.glow
-- `20260717.153756` — [=/ trailing bound value deepens GREEN](archive/20260717/20260717-153756_face-trailing-value.bron) — decimal after face clause; face-root.glow 42
-- `20260717.153656` — [?- mint/send named arms deepen GREEN](archive/20260717/20260717-153656_switch-named-arms.bron) — %mint/%send faces; switch-kind.glow
-- `20260717.153609` — [Counsel — do not make Glow the %g vane](archive/20260717/20260717-153609_glow-not-g-vane-counsel.bron) — Pool stays Gall-role; Glow stays language
-- `20260717.153525` — [?: then/else named arms deepen GREEN](archive/20260717/20260717-153525_conditional-named-arms.bron) — delivered/dropped if-expression; if-gth.glow
-- `20260717.153403` — [Lent emit deepens to shrinking fold GREEN](archive/20260717/20260717-153403_lent-shrinking-fold.bron) — while len>0 + slice[1..]; BoundExceeded on non-shrink
-- `20260717.152923` — [send eight-head emit and cast auras](archive/20260717/20260717-152923_send-eight-heads-and-auras.bron) — =. · =* · @u8–@u64 to pier
-- `20260717.152847` — [Glow cast auras @u8–@u64 GREEN](archive/20260717/20260717-152847_glow-cast-aura-family.bron) — unsigned family; cast-u8.glow; deepen still check-in
-- `20260717.152730` — [Glow =* alias — eight heads emit GREEN](archive/20260717/20260717-152730_glow-alias-eight-complete.bron) — no-copy alias; all eight hops via desk
-- `20260717.152622` — [Glow =. mutate lowers to Rye GREEN](archive/20260717/20260717-152622_glow-mutate-root-lower.bron) — bare root var write; mutate-root.glow
-- `20260717.152511` — [send Glow generator hops through ?~](archive/20260717/20260717-152511_send-glow-hops-through-null.bron) — ?- · =/ · ?~ to pier; kg to =.
-- `20260717.152438` — [Glow ?~ null lowers to Rye GREEN](archive/20260717/20260717-152438_glow-null-records-lower.bron) — records.cur optional null-test; null-records.glow
-- `20260717.152245` — [Glow =/ face lowers to Rye GREEN](archive/20260717/20260717-152245_glow-face-root-lower.bron) — next-root=@u32 / bare tick; face-root.glow
-- `20260717.152019` — [Glow ?- switch lowers to Rye GREEN](archive/20260717/20260717-152019_glow-switch-kind-lower.bron) — kind.cur-record mint/send; switch-kind.glow
-- `20260717.151854` — [send Glow generator hops through ?:](archive/20260717/20260717-151854_send-glow-hops-through-if.bron) — lent · cast · conditional to pier; kg to ?-
-- `20260717.151802` — [Glow ?: conditional lowers to Rye GREEN](archive/20260717/20260717-151802_glow-conditional-lower.bron) — (gth tick 32) / ready if-else; if-gth.glow
-- `20260717.151634` — [Glow ^- @u32 cast lowers to Rye GREEN](archive/20260717/20260717-151634_glow-cast-u32-lower.bron) — checked cast hop; cast-u32.glow via glow_run
-- `20260717.151515` — [glow_run desk witness wired into parity](archive/20260717/20260717-151515_glow-run-desk-parity.bron) — bound-tick + lent-tick via Rishi hand
-- `20260717.151403` — [Glow (lent …) bound lowers to Rye GREEN](archive/20260717/20260717-151403_glow-lent-bound-lower.bron) — runtime face.len emit; lent-tick.glow via glow_run
-- `20260717.151200` — [Keaton confirmed glow_run bound-tick GREEN](archive/20260717/20260717-151200_glow-run-bound-tick-green.bron) — first generator hop closed on his hand
-- `20260717.151000` — [First Glow generator hop — |- lowers to Rye GREEN](archive/20260717/20260717-151000_glow-generator-first-hop.bron) — bound-tick.glow via Rishi hand
-- `20260717.150600` — [Glow generator vs Rishi naming — recommendation](archive/20260717/20260717-150600_glow-generator-rishi-naming.bron) — keep Rishi shell; glow build + |- lower first
-- `20260717.150453` — [Eighth rune head — =* alias GREEN](archive/20260717/20260717-150453_eighth-rune-alias.bron) — = category complete; unsaved with =.
-- `20260717.150409` — [Seventh rune head — =. mutate GREEN](archive/20260717/20260717-150409_seventh-rune-mutate.bron) — = category deepened; unsaved
-- `20260717.150309` — [send TUBE glass through TUBE7 and six rune heads](archive/20260717/20260717-150309_send-glass-and-rune-heads.bron) — pier holds glass + |- ^- ?: ?- =/ ?~
-- `20260717.150219` — [Sixth rune head — ?~ null test GREEN](archive/20260717/20260717-150219_sixth-rune-null.bron) — ? category deepened; composition heads covered; batch unsaved
-- `20260717.150053` — [Fifth rune head — =/ face binding GREEN](archive/20260717/20260717-150053_fifth-rune-face.bron) — = category opened; parity wired; batch unsaved
-- `20260717.150005` — [Fourth rune head — ?- exhaustive switch GREEN](archive/20260717/20260717-150005_fourth-rune-switch.bron) — subject wing parses; parity wired; batch unsaved
-- `20260717.145912` — [Third rune category — ?: if/then/else head GREEN](archive/20260717/20260717-145912_third-rune-conditional.bron) — test child parses; parity wired; batch unsaved
-- `20260717.145547` — [TUBE4 look and TUBE7 glass path GREEN — batch](archive/20260717/20260717-145547_tube4-tube7-glass-green-batch.bron) — Pixel rail closed; TUBE6/HAWM2 check-in; send later
-- `20260717.145400` — [TUBE3 look closed; TUBE4 glass painted — batch](archive/20260717/20260717-145400_tube3-look-tube4-glass-batch.bron) — pack GREEN; host look for market · acquired; send later
-- `20260717.144620` — [TUBE3 sealed fetch painted on Skate Android glass](archive/20260717/20260717-144620_tube3-fetch-on-skate-glass.bron) — pack GREEN; host look for sealed · fetch ok
-- `20260717.144536` — [TUBE2 Pixel look GREEN — send and kg](archive/20260717/20260717-144536_tube2-pixel-look-green.bron) — look closed; TUBE3 glass next
-- `20260717.144300` — [send TUBE2 glass and OpenVM silo](archive/20260717/20260717-144300_send-tube2-and-openvm-silo.bron) — pier holds glass path + soundness silo
-- `20260717.144200` — [silo OpenVM pairing-hint soundness lessons](archive/20260717/20260717-144200_openvm-soundness-silo.bron) — composition · hints · cheap membership; Sigma pin affirmed
-- `20260717.144132` — [pause — save TUBE2 glass progress](archive/20260717/20260717-144132_pause-save-tube2-glass.bron) — commit glass path; look still open
-- `20260717.140800` — [TUBE2 publish painted on Skate Android glass](archive/20260717/20260717-140800_tube2-pub-on-skate-glass.bron) — pack GREEN; host look for published · verified
-- `20260717.140623` — [send TUBE5 Mantra revision and glass tip](archive/20260717/20260717-140623_send-tube5-glass-tip.bron) — Pixel look confirmed; ship to pier
-- `20260717.140320` — [tube05 install proof — no adb device](archive/20260717/20260717-140320_tube05-install-no-adb-device.bron) — Pixel on USB; adb still empty; authorize then retry
-- `20260717.135727` — [TUBE5 tip painted on Skate Android glass](archive/20260717/20260717-135727_tube5-tip-on-skate-glass.bron) — pack GREEN; host look for tip rev2 next
-- `20260717.135248` — [TUBE5 Mantra-revision witness GREEN](archive/20260717/20260717-135248_tube5-mantra-revision-green.bron) — dense rev history + rollback-by-selection; parity wired
-- `20260717.135053` — [Send TUBE4 market-rail GREEN](archive/20260717/20260717-135053_send-tube4-market-rail.bron) — commit + push; kg TUBE5 Mantra revision next
-- `20260717.134355` — [TUBE4 market-rail witness GREEN](archive/20260717/20260717-134355_tube4-market-rail-green.bron) — Exchange + Neth settle + fetch unlock; parity wired
-- `20260717.134122` — [Send TUBE3 sealed resin-fetch GREEN](archive/20260717/20260717-134122_send-tube3-resin-fetch.bron) — commit + push; next TUBE4 market rail
-- `20260717.134037` — [TUBE3 sealed resin-fetch witness GREEN](archive/20260717/20260717-134037_tube3-resin-fetch-green.bron) — Comlink seal + published-set gate; parity wired
-- `20260717.133825` — [Send TUBE2 signed publish GREEN](archive/20260717/20260717-133825_send-tube2-publish.bron) — commit + push; kg TUBE3 resin fetch next
-- `20260717.131618` — [TUBE2 signed publish witness GREEN](archive/20260717/20260717-131618_tube2-publish-green.bron) — Granary name-fact + admit before install; parity wired
-- `20260717.131410` — [Send TUBE1 admission and glass gate GREEN](archive/20260717/20260717-131410_send-tube1-glass-pixel.bron) — commit + push; kg TUBE2 next
-- `20260717.131404` — [TUBE1 glass gate seen on the Pixel](archive/20260717/20260717-131404_tube1-glass-seen-on-pixel.bron) — install proof GREEN; T1 title confirmed on glass
-- `20260717.131158` — [TUBE1 glass gate wired into NativeActivity onCreate](archive/20260717/20260717-131158_tube1-glass-gate-on-create.bron) — R2 paints only after admit; pack GREEN
-- `20260717.131030` — [TUBE1 admission witness GREEN](archive/20260717/20260717-131030_tube1-admission-green.bron) — manifest caps must match grant; parity_ch01 wired
-- `20260717.130922` — [Send R2 surface on Pixel GREEN](archive/20260717/20260717-130922_send-r2-surface-pixel.bron) — commit + push; kg next after glass present seam
-- `20260717.130848` — [Sala R2 surface seen on the Pixel](archive/20260717/20260717-130848_r2-surface-seen-on-pixel.bron) — install proof GREEN; three panels confirmed on glass
-- `20260717.130735` — [Sala R2 multi-panel surface on Skate Android glass](archive/20260717/20260717-130735_sala-r2-surface-on-skate-glass.bron) — pack GREEN; host look for three panels next
-- `20260717.130610` — [Send R1 thin-view on Pixel GREEN](archive/20260717/20260717-130610_send-r1-thin-view-pixel.bron) — commit + push; kg R2 multi-panel next
-- `20260717.130602` — [Sala R1 thin-view seen on the Pixel](archive/20260717/20260717-130602_r1-thin-view-seen-on-pixel.bron) — install proof GREEN; ledger lines confirmed on glass
-- `20260717.130434` — [Sala R1 thin-view painted on Skate Android glass](archive/20260717/20260717-130434_sala-r1-thin-view-on-skate-glass.bron) — pack GREEN; host look for ledger lines next
-- `20260717.130209` — [Send Bron archive fold through 20260716](archive/20260717/20260717-130209_send-bron-archive-fold.bron) — commit + push origin and codeberg; kg thin-view next
-- `20260717.130124` — [Archive fold Bron days through 20260716](archive/20260717/20260717-130124_archive-bron-days-through-16.bron) — tool accepts .bron; 209 logs folded; today stays flat
-- `20260717.125858` — [Skate look confirmed on the Pixel](archive/20260717/20260717-125858_skate-seen-on-pixel.bron) — Skate glyphs on GrapheneOS glass; install proof GREEN
-- `20260717.125642` — [Skate grid rasterized onto Android NativeActivity glass](archive/20260717/20260717-125642_skate-on-android-glass.bron) — pack GREEN; host look next
-- `20260717.125302` — [Tap to close confirmed on the Pixel](archive/20260717/20260717-125302_tap-to-close-confirmed.bron) — chrome + input finish seen on GrapheneOS
-- `20260717.125143` — [Surface chrome — title GREEN, match color, tap to close](archive/20260717/20260717-125143_surface-title-tap-close.bron) — pack GREEN; host look next
-- `20260717.124843` — [First NativeActivity surface seen on the Pixel](archive/20260717/20260717-124843_surface-seen-on-pixel.bron) — Keaton confirmed hex on GrapheneOS glass; install proof GREEN
-- `20260717.124458` — [First NativeActivity surface paints the Sala root hex](archive/20260717/20260717-124458_native-activity-surface-hex.bron) — ANativeWindow software paint; pack GREEN; host look next
-- `20260717.124130` — [What next after TUBE0.5 closed end to end](archive/20260717/20260717-124130_what-next-after-tube05.bron) — surface vs rest vs other lanes
-- `20260717.124029` — [ANativeActivity_finish reproven GREEN on the Pixel](archive/20260717/20260717-124029_tube05-finish-pixel-reproof-green.bron) — finish after write; install proof still GREEN
-- `20260717.123314` — [ANativeActivity_finish after Sala fold; Pixel GREEN sent](archive/20260717/20260717-123314_tube05-finish-after-fold.bron) — e7496585b9 sent; finish + libandroid; pack re-GREEN
-- `20260717.123226` — [TUBE0.5 install GREEN on the physical Pixel 10a](archive/20260717/20260717-123226_tube05-pixel-install-green.bron) — stallion / GrapheneOS; sala_root.txt matches HAWM1; TUBE0.5 end to end
-- `20260717.123100` — [Pixel shows adb unauthorized](archive/20260717/20260717-123100_adb-unauthorized-pixel.bron) — Allow dialog was the gate; witness error improved
-- `20260717.122450` — [Instructions for next steps after TUBE0.5 HAWM0 GREEN](archive/20260717/20260717-122450_next-steps-tube05-pixel.bron) — Pixel USB install proof named as the finishing edge
-- `20260717.122231` — [Model fields corrected to Cursor Grok 4.5 300k High Fast](archive/20260717/20260717-122231_model-field-corrected-to-grok.bron) — Claude credits exhausted; afternoon TUBE0.5 logs re-attributed; Framework host profile updated
-- `20260717.122010` — [TUBE0.5 on-device install GREEN on HAWM0](archive/20260717/20260717-122010_tube05-hawm0-install-green.bron) — host HAWM0 boot + install proof; sala_root.txt matches HAWM1 root
-- `20260717.121800` — [Ten batches roll-up — align and send](archive/20260717/20260717-121800_align-send-ten-batches.md) ([Bron](archive/20260717/20260717-121800_align-send-ten-batches.bron)) — MD summary of Pixel→HAWM3→TUBE0.5 arc; compass align; host install proof named as the one next step
-- `20260717.121743` — [TUBE0.5 jailed slice polished and re-verified GREEN](archive/20260717/20260717-121743_tube05-jailed-slice-ready.bron) — rye rebuilt with build-lib; HAWM door + README synced; pack witness still GREEN
-- `20260717.121625` — [TUBE0.5 install-proof host witness ready](archive/20260717/20260717-121625_tube05-install-proof-host-witness.bron) — one-shot adb install + sala_root.txt check; jail correctly refuses without a device
-- `20260717.121445` — [Sala B0 fold wired into TUBE0.5 NativeActivity APK](archive/20260717/20260717-121445_sala-fold-wired-tube05-apk.bron) — pack worker ASCII fix; NDK-linked arm64+x86_64 APK; onCreate runs HAWM1 demo fold; host-side witness GREEN
-- `20260717.020613` — [gratitude/grapheneos/ docs mirror finished](archive/20260717/20260717-020613_grapheneos-gratitude-mirror-complete.bron) — CLI install guide, features overview, and appreciation README complete the mirror
-- `20260717.022323` — [Dual-door docs orientation — HAWM and TUBE compressors](archive/20260717/20260717-022323_dual-door-docs-hawm-tube.bron) — language path and device path meet at packaging; LEXICON seats both ladders
-- `20260717.021857` — [TUBE0.5 host-side packaging GREEN](archive/20260717/20260717-021857_tube05-host-side-apk-green.bron) — first Glow NativeActivity APK packed (permission emission, envelope, signed APK)
-- `20260717.014522` — [No Kotlin transpiler; a native-activity shim instead](archive/20260717/20260717-014522_native-activity-shim-decision.bron) — Glow stays native for Android; TUBE0.5 named as the missing installable-APK rung
-- `20260717.013213` — [GrapheneOS installed on the physical Pixel 10a](archive/20260717/20260717-013213_grapheneos-installed-pixel-10a.bron) — HAWM3 touches real hardware for the first time on the whole ladder
+- `20260721.194941` — [STOA215-216 literals · cord lex](20260721/20260721-194941_stoa215-216-literals-cord-lex.bron) — inventory; Kind.cord_lit GREEN
+- `20260721.194756` — [STOA208-214 send · literals next](20260721/20260721-194756_stoa208-214-send-literals-next.bron) — pier send; lean C
+- `20260721.194203` — [STOA214 after fixture cast check-in](20260721/20260721-194203_stoa214-after-fixture-cast-checkin.bron) — leans A send (rec) · B–D
+- `20260721.194058` — [STOA213 fixture cast twins GREEN](20260721/20260721-194058_stoa213-fixture-cast-twins.bron) — named+import; literals held
+- `20260721.193404` — [STOA212 fields surface GREEN](20260721/20260721-193404_stoa212-fields-surface-green.bron) — FactFields parse; wired into replay
+- `20260721.193303` — [STOA211 replay compose GREEN](20260721/20260721-193303_stoa211-replay-compose-green.bron) — line·sign·digest; no sala.replay
+- `20260721.193220` — [STOA210 replay-body inventory](20260721/20260721-193220_stoa210-replay-body-inventory.bron) — lean C; rec C1 compose
+- `20260721.192947` — [STOA209 cord bound 1024 GREEN](20260721/20260721-192947_stoa209-cord-bound-1024.bron) — aura_t_max_bytes; fact hex fits
+- `20260721.192700` — [STOA206-207 send · STOA208 kg](20260721/20260721-192700_stoa206-207-send-stoa208-kg.bron) — pier send; cast-import next
+- `20260721.192558` — [STOA207 fact-line cast twin GREEN](20260721/20260721-192558_stoa207-fact-line-cast-twin.bron) — same-desk ^-; desk pin
+- `20260721.191254` — [STOA206 fact-line desk · AD shelf](20260721/20260721-191254_stoa206-fact-line-desk-and-ad-shelf.bron) — B3 GREEN; folder roles named
+- `20260721.190850` — [STOA201-204 send · STOA205 check-in](20260721/20260721-190850_stoa201-204-send-stoa205-checkin.bron) — pier send; leans A–D
+- `20260721.190637` — [STOA204 replay digest honesty GREEN](20260721/20260721-190637_stoa204-replay-digest-honesty.bron) — claim_digest_log on claim path
+- `20260721.190527` — [STOA203 append sign+line GREEN](20260721/20260721-190527_stoa203-append-sign-line-compose.bron) — compose; no sala.append_event
+- `20260721.190240` — [STOA202 line surface GREEN](20260721/20260721-190240_stoa202-line-surface-green.bron) — B2 claim_demo_line
+- `20260721.190209` — [STOA200 send · STOA201 sign](20260721/20260721-190209_stoa200-send-stoa201-sign.bron) — pier send; claim_demo_sign GREEN
+- `20260721.185942` — [STOA200 vane-body inventory](20260721/20260721-185942_stoa200-vane-body-inventory.bron) — lean B; B1 chosen as STOA201
+- `20260721.185805` — [STOA199A Pixel eyes GREEN](20260721/20260721-185805_stoa199a-pixel-eyes-green.bron) — lean A; HAWM1 hex on glass
+- `20260721.185700` — [STOA199A Pixel eyes guide](20260721/20260721-185700_stoa199a-pixel-eyes-guide.bron) — what GREEN glass looks like
+- `20260721.185407` — [STOA199A Pixel restart howto](20260721/20260721-185407_stoa199a-pixel-restart-howto.bron) — host adb install proof lines
+- `20260721.185137` — [STOA198 send · STOA199 check-in](20260721/20260721-185137_stoa198-send-stoa199-checkin.bron) — pier send; leans A–E awaiting
+- `20260721.183554` — [STOA197 send · STOA198 Glow fold](20260721/20260721-183554_stoa197-send-stoa198-fold.bron) — pier send; NA run_demo_fold
+- `20260721.183253` — [STOA196 send · STOA197 compose](20260721/20260721-183253_stoa196-send-stoa197-compose.bron) — pier send; claim via append+replay
+- `20260721.183126` — [STOA195 send · STOA196 replay](20260721/20260721-183126_stoa195-send-stoa196-replay.bron) — pier send; claim_replay_demo_root GREEN
+- `20260721.182950` — [STOA194 send · STOA195 append](20260721/20260721-182950_stoa194-send-stoa195-append.bron) — pier send; append_demo_log GREEN
+- `20260721.182623` — [STOA194 digest port GREEN](20260721/20260721-182623_stoa194-digest-port-green.bron) — lean C claim_digest_log
+- `20260721.182501` — [STOA193 fixture pin GREEN](20260721/20260721-182501_stoa193-fixture-pin-green.bron) — lean B product stamps/memos/root
+- `20260721.182415` — [STOA192 send · STOA193 check-in](20260721/20260721-182415_stoa192-send-stoa193-checkin.bron) — pier send; lean B chosen
+- `20260721.182250` — [STOA192 fixture desk GREEN](20260721/20260721-182250_stoa192-fixture-desk-green.bron) — lean B demo-fixture-constants-shape
+- `20260721.182041` — [STOA192 after claim wire check-in](20260721/20260721-182041_stoa192-after-claim-wire-checkin.bron) — leans A–E; lean B chosen
+- `20260721.181903` — [STOA191 claim wire · send](20260721/20260721-181903_stoa191-claim-wire-send.bron) — NativeActivity via claim_demo_fold; pier send
+- `20260721.181551` — [STOA190 mold→shape · send](20260721/20260721-181551_stoa190-mold-to-shape-send.bron) — living shape surface; pier send
+- `20260721.180917` — [STOA189 ShapeSpec API GREEN](20260721/20260721-180917_stoa189-shapespec-api-green.bron) — rune_shape · lower_shape; unsent with 186–188
+- `20260721.180800` — [shape vs mold API held](20260721/20260721-180800_shape-vs-mold-api-held.bron) — citizen shape; MoldSpec seam separate
+- `20260721.180725` — [STOA188 $% payload emit GREEN](20260721/20260721-180725_stoa188-pct-payload-emit-green.bron) — cord/hex lower; unsent with 186–187
+- `20260721.180520` — [STOA187 thin $% payload @t/@ux GREEN](20260721/20260721-180520_stoa187-pct-payload-thin-green.bron) — parse + refuse; unsent with 186
+- `20260721.180120` — [STOA186 sala-event cast GREEN](20260721/20260721-180120_stoa186-sala-cast-green.bron) — cast-named-sala-event; unsent
+- `20260721.180054` — [STOA185 send · STOA186A](20260721/20260721-180054_stoa185-send-stoa186a.bron) — claim shell to pier; sala cast twin next
+- `20260721.180008` — [STOA186 check-in seated](20260721/20260721-180008_stoa186-checkin-seated.bron) — leans A–D after claim shell
+- `20260721.175857` — [STOA185 Glow claim shell GREEN](20260721/20260721-175857_stoa185-claim-shell-green.bron) — elder fold behind Glow assert; unsent
+- `20260721.175804` — [STOA182–184 send · claim shell](20260721/20260721-175804_stoa182-184-send-stoa185b.bron) — cord/hex pack to pier; lean B next
+- `20260721.175343` — [STOA184 @ux hex lower GREEN](20260721/20260721-175343_stoa184-ux-lower-green.bron) — [32]u8 emit; sala from/to @ux; unsent
+- `20260721.175252` — [STOA183 thin @ux hex GREEN](20260721/20260721-175252_stoa183-ux-thin-green.bron) — bound 32; lower held; unsent
+- `20260721.174709` — [STOA183 check-in seated](20260721/20260721-174709_stoa183-checkin-seated.bron) — leans A–E after named-cast cord
+- `20260721.174530` — [STOA182A named-cast cord GREEN](20260721/20260721-174530_stoa182-named-cast-cord-green.bron) — ^- @t emit; unsent
+- `20260721.174435` — [STOA181 send · STOA182A](20260721/20260721-174435_stoa181-send-stoa182a.bron) — cord lower to pier; lean A named-cast cord
+- `20260721.173800` — [STOA182 check-in seated](20260721/20260721-173800_stoa182-checkin-seated.bron) — leans A–E after cord lower
+- `20260721.173629` — [STOA181 @t cord lower GREEN](20260721/20260721-173629_stoa181-at-cord-lower-green.bron) — [256]u8 emit; sala text @t; unsent
+- `20260721.173330` — [STOA180 send · then kg STOA181](20260721/20260721-173330_stoa180-send.bron) — thin @t pack to pier; cord lower next
+- `20260721.173239` — [STOA180 handoff witnesses GREEN](20260721/20260721-173239_stoa180-handoff-witnesses-green.bron) — await send; then STOA181
+- `20260721.173015` — [Cursor handoff STOA180](20260721/20260721-173015_cursor-handoff-stoa180.bron) — fresh-agent card; send then STOA181
+- `20260721.172935` — [Deferred witness diags closed](20260721/20260721-172935_deferred-witness-diag-closed.bron) — barket RED was compound assert; already fixed
+- `20260721.172554` — [STOA180 thin @t GREEN · shape kept](20260721/20260721-172554_stoa180-at-thin-shape-kept.bron) — cord bound 256; lower held; mold prose residual
+- `20260721.171644` — [Shape vs type vocabulary](20260721/20260721-171644_shape-vs-type-vocabulary.bron) — recommend keep shape; type already refused
+- `20260721.171030` — [STOA177–179 send · STOA180 check-in](20260721/20260721-171030_stoa177-179-send-stoa180-checkin.bron) — Sala B0 Glow pack; @t aura leans A–E
+- `20260721.170403` — [STOA179 sala-event-shape GREEN](20260721/20260721-170403_stoa179-sala-event-shape-green.bron) — SalaEventShape desk; @t debt held; cast held
+- `20260721.165732` — [STOA178 gap inventory GREEN](20260721/20260721-165732_stoa178-gap-inventory-green.bron) — sala-event-shape named as STOA179; @t debt held
+- `20260721.165342` — [STOA177 lean A · Sala B0 Glow thin face](20260721/20260721-165342_stoa177-lean-a-sala-b0-glow.bron) — product season open; STOA178 first-lap leans A–D
+- `20260721.014926` — [STOA176 send · STOA177 check-in](20260721/20260721-014926_stoa176-send-stoa177-checkin.bron) — cast inventary ship; leans A–D awaiting word
+- `20260721.014657` — [STOA175 full desk witness GREEN](20260721/20260721-014657_stoa175-desk-witness-green.bron) — glow_run_desk_witness exit 0 after STOA175 pack
+- `20260721.014503` — [STOA175 sent · STOA176 cast widen](20260721/20260721-014503_stoa175-sent-stoa176-cast-widen.bron) — pier 0494e655fe; peek 4–12 · triple…nona casts unsent
+- `20260721.013450` — [STOA174 sent · STOA175 pair named-cast](20260721/20260721-013450_stoa174-sent-stoa175-pair-cast.bron) — origin 4513f26522; pair cast unsent; codeberg retry
+- `20260721.013147` — [STOA173 sent · STOA174 lean A pin polish](20260721/20260721-013147_stoa173-sent-stoa174-pin-polish.bron) — pier 32a54b483b; shape-primary pins unsent
+- `20260721.012720` — [STOA172 sent · STOA173 nona · STOA174 check-in](20260721/20260721-012720_stoa172-sent-stoa173-green-checkin.bron) — inventary closed; await A/B/C/D
+- `20260721.012510` — [STOA171 sent · STOA172 shape-octa GREEN](20260721/20260721-012510_stoa171-sent-stoa172-green.bron) — pier 25ce71648e; octa dual unsent
+- `20260721.012320` — [STOA170 sent · STOA171 shape-hepta GREEN](20260721/20260721-012320_stoa170-sent-stoa171-green.bron) — pier 0caaa726c1; hepta dual unsent
+- `20260721.012150` — [STOA169 sent · STOA170 shape-hexa GREEN](20260721/20260721-012150_stoa169-sent-stoa170-green.bron) — pier 17d564524c; hexa dual unsent
+- `20260721.011830` — [STOA168 sent · STOA169 shape-penta GREEN](20260721/20260721-011830_stoa168-sent-stoa169-green.bron) — pier 160148622a; penta dual unsent
+- `20260721.011650` — [STOA167 sent · STOA168 shape-quad GREEN](20260721/20260721-011650_stoa167-sent-stoa168-green.bron) — pier 90c3c29d78; quad dual + mold-only budget unsent
+- `20260721.011330` — [STOA166 sent · STOA167 shape-triple GREEN](20260721/20260721-011330_stoa166-sent-stoa167-green.bron) — pier b7a177689d; triple dual unsent
+- `20260721.011210` — [STOA165 sent · STOA166 shape-xfer GREEN](20260721/20260721-011210_stoa165-sent-stoa166-green.bron) — pier e12a95e0b2; xfer dual unsent
+- `20260721.011040` — [STOA164 sent · STOA165 shape-xact GREEN](20260721/20260721-011040_stoa164-sent-stoa165-green.bron) — pier 2a1630e4f2; xact dual unsent
+- `20260721.010859` — [STOA163 sent · STOA164 shape-kind GREEN](20260721/20260721-010859_stoa163-sent-stoa164-green.bron) — pier 3296306995; kind dual unsent
+- `20260721.010709` — [STOA162 sent · STOA163 shape-pair GREEN](20260721/20260721-010709_stoa162-sent-stoa163-green.bron) — pier 471e0585c2; pair dual unsent
+- `20260721.010520` — [STOA161 sent · STOA162 shape-count GREEN](20260721/20260721-010520_stoa161-sent-stoa162-green.bron) — pier c913bc9c82; count dual unsent
+- `20260721.010333` — [STOA161 lean A · shape-amount dual GREEN](20260721/20260721-010333_stoa161-shape-amount-dual-green.bron) — inventary + dual desks; unsent
+- `20260721.005900` — [STOA160 pin · STOA161 check-in restated](20260721/20260721-005900_stoa160-pin-checkin-restated.bron) — ITINERARY pin 3ac6464df6; await A/B/C
+- `20260721.005729` — [STOA160 send · STOA161 check-in](20260721/20260721-005729_stoa160-send-stoa161-checkin.bron) — send nona-shape; rename/Sala check-in
+- `20260721.005350` — [STOA159 sent · STOA160 GREEN closes ladder](20260721/20260721-005350_stoa159-sent-stoa160-green.bron) — pier 2e963fcd01; next rename/Sala
+- `20260721.005327` — [STOA160 nona-shape alias GREEN](20260721/20260721-005327_stoa160-nona-shape-green.bron) — nona-shape ≡ nona-mold; ladder closed; unsent
+- `20260721.005252` — [STOA159 send then kg nona-shape](20260721/20260721-005252_stoa159-send-then-kg.bron) — send octa-shape; kg STOA160
+- `20260721.005000` — [STOA158 sent · STOA159 GREEN](20260721/20260721-005000_stoa158-sent-stoa159-green.bron) — pier 214e0a8b8f; next nona-shape
+- `20260721.004935` — [STOA159 octa-shape alias GREEN](20260721/20260721-004935_stoa159-octa-shape-green.bron) — octa-shape ≡ octa-mold; unsent
+- `20260721.004901` — [STOA158 send then kg octa-shape](20260721/20260721-004901_stoa158-send-then-kg.bron) — send hepta-shape; kg STOA159
+- `20260721.004550` — [STOA157 sent · STOA158 GREEN](20260721/20260721-004550_stoa157-sent-stoa158-green.bron) — pier 97c7ec52a4; next octa-shape
+- `20260721.004523` — [STOA158 hepta-shape alias GREEN](20260721/20260721-004523_stoa158-hepta-shape-green.bron) — hepta-shape ≡ hepta-mold; unsent
+- `20260721.004449` — [STOA157 send then kg hepta-shape](20260721/20260721-004449_stoa157-send-then-kg.bron) — send hexa-shape; kg STOA158
+- `20260721.004100` — [STOA156 sent · STOA157 GREEN](20260721/20260721-004100_stoa156-sent-stoa157-green.bron) — pier 4c86c751e2; next hepta-shape
+- `20260721.004052` — [STOA157 hexa-shape alias GREEN](20260721/20260721-004052_stoa157-hexa-shape-green.bron) — hexa-shape ≡ hexa-mold; unsent
+- `20260721.003952` — [STOA156 send then kg hexa-shape](20260721/20260721-003952_stoa156-send-then-kg.bron) — send penta-shape; kg STOA157
+- `20260721.003600` — [STOA155 sent · STOA156 GREEN](20260721/20260721-003600_stoa155-sent-stoa156-green.bron) — pier 9a66cd6822; next hexa-shape
+- `20260721.003545` — [STOA156 penta-shape alias GREEN](20260721/20260721-003545_stoa156-penta-shape-green.bron) — penta-shape ≡ penta-mold; unsent
+- `20260721.003514` — [STOA155 send then kg penta-shape](20260721/20260721-003514_stoa155-send-then-kg.bron) — send quad-shape; kg STOA156
+- `20260721.003200` — [STOA154 sent · STOA155 GREEN](20260721/20260721-003200_stoa154-sent-stoa155-green.bron) — pier 114f874af8; next penta-shape
+- `20260721.003129` — [STOA155 quad-shape alias GREEN](20260721/20260721-003129_stoa155-quad-shape-green.bron) — quad-shape ≡ quad-mold; unsent
+- `20260721.003056` — [STOA154 send then kg quad-shape](20260721/20260721-003056_stoa154-send-then-kg.bron) — send triple-shape; kg STOA155
+- `20260721.002540` — [STOA154 triple-shape alias GREEN](20260721/20260721-002540_stoa154-triple-shape-green.bron) — triple-shape ≡ triple-mold; unsent
+- `20260721.002459` — [STOA153 send then kg triple-shape](20260721/20260721-002459_stoa153-send-then-kg.bron) — send xfer-shape; kg STOA154
+- `20260721.002051` — [STOA153 xfer-shape alias GREEN](20260721/20260721-002051_stoa153-xfer-shape-green.bron) — xfer-shape ≡ xfer-mold; sent `8471232968`
+- `20260721.001851` — [STOA152 send then kg xfer-shape](20260721/20260721-001851_stoa152-send-then-kg.bron) — send xact-shape; kg STOA153
+- `20260721.001351` — [STOA152 xact-shape alias GREEN](20260721/20260721-001351_stoa152-xact-shape-green.bron) — xact-shape ≡ xact-mold; sent `694447ab34`
+- `20260721.001326` — [STOA151 send · stay on alias path](20260721/20260721-001326_stoa151-send-alias-path.bron) — send kind-shape; kg xact-shape
+- `20260721.001244` — [Shape sed force-push counsel](20260721/20260721-001244_shape-sed-force-push-counsel.bron) — no whole-tree sed; aliases or scoped rename
+- `20260721.000743` — [STOA151 kind-shape alias GREEN](20260721/20260721-000743_stoa151-kind-shape-green.bron) — kind-shape ≡ kind-mold; unsent
+- `20260721.000705` — [STOA150 send then kg kind-shape](20260721/20260721-000705_stoa150-send-then-kg.bron) — send pair-shape; kg STOA151
+- `20260721.000234` — [STOA150 pair-shape alias GREEN](20260721/20260721-000234_stoa150-pair-shape-green.bron) — pair-shape ≡ pair-mold; unsent
+- `20260721.000044` — [STOA149 send then kg pair-shape](20260721/20260721-000044_stoa149-send-then-kg.bron) — send count-shape; kg STOA150
+- `20260720.235652` — [STOA149 count-shape alias GREEN](20260720/20260720-235652_stoa149-count-shape-green.bron) — count-shape ≡ count-mold; unsent
+- `20260720.235434` — [STOA148 pushed · STOA149 approved](20260720/20260720-235434_stoa148-pushed-shape-next.bron) — origin+codeberg; next count-shape kg
+- `20260720.235200` — [STOA148 send · shape-first next](20260720/20260720-235200_stoa148-send-shape-next.bron) — send amount-shape; approve STOA149 count-shape
+- `20260720.234340` — [STOA148 amount-shape alias GREEN](20260720/20260720-234340_stoa148-amount-shape-green.bron) — amount-shape ≡ amount-mold; capacity freeze held
+- `20260720.234155` — [Live-sent send and next check-in](20260720/20260720-234155_live-sent-send-next-check-in.bron) — pin d2f3084c7d; next door check-in
+- `20260720.234015` — [Privacy audit before live-sent send](20260720/20260720-234015_privacy-audit-before-live-sent-send.bron) — redact MAC/IP; keep lab port 38503
+- `20260720.233805` — [SETU6.5 live-sent enx GREEN](20260720/20260720-233805_setu65-live-sent-enx-green.bron) — enx* CDC-NCM → tether gateway :38503 sent
+- `20260720.233344` — [Pixel connected · NCM pending](20260720/20260720-233344_pixel-connected-ncm-pending.bron) — adb was up; need USB tethering then kg
+- `20260720.232932` — [UDT resume on Framework host](20260720/20260720-232932_udt-resume-framework-host.bron) — Etc/UTC stamps; SETU live-sent check-in next
+- `20260720.231936` — [Capacity freeze at nine · Framework next SETU sent](20260720/20260720-231936_capacity-freeze-framework-next.bron) — stop field ladder; Framework lean A = live SETU sent
+- `20260720.231825` — [Framework season survey for parent](20260720/20260720-231825_framework-season-survey.bron) — Framework host vs iOS language; SETU live-sent thinnest Framework door
+- `20260720.231633` — [How far the closed-field mold ladder](20260720/20260720-231633_how-far-field-ladder.bron) — no stop policy yet; recommend capacity ceiling check-in
+- `20260720.231547` — [kg STOA145-147 complete · STOA148 mapped](20260720/20260720-231547_kg-stoa147-complete.bron) — octa/nona laps sent; deca identity mapped
+- `20260720.231547` — [Glow compass send STOA147](20260720/20260720-231547_glow-compass-stoa147-send.bron) — nona flip sent; STOA148 mapped
+- `20260720.231547` — [STOA147 approved and sent](20260720/20260720-231547_stoa147-approved-sent.bron) — claim 2e84c960d4
+- `20260720.231547` — [STOA147 send complete](20260720/20260720-231547_stoa147-send-complete.bron) — origin main language claim 2e84c960d4
+- `20260720.231547` — [STOA148 next map after nona flip](20260720/20260720-231547_stoa148-next-map.bron) — lean A deca-mold gate identity
+- `20260720.231419` — [STOA147 nona-mold flip GREEN](20260720/20260720-231419_stoa147-nona-flip-green.bron) — NonaMold from↔amount · ref 9 stays · expect 3/5/1/2/7/4/6/8/9
+- `20260720.231128` — [kg STOA145-146 complete · STOA147 mapped](20260720/20260720-231128_kg-stoa146-complete.bron) — octa flip + nona identity sent; nona flip mapped
+- `20260720.231128` — [Glow compass send STOA146](20260720/20260720-231128_glow-compass-stoa146-send.bron) — nona-mold sent; STOA147 mapped
+- `20260720.231128` — [STOA146 approved and sent](20260720/20260720-231128_stoa146-approved-sent.bron) — claim 08069058b5
+- `20260720.231128` — [STOA146 send complete](20260720/20260720-231128_stoa146-send-complete.bron) — origin main language claim 08069058b5
+- `20260720.231128` — [STOA147 next map after nona-mold](20260720/20260720-231128_stoa147-next-map.bron) — lean A nona-mold flip call-body
+- `20260720.231018` — [STOA146 nona-mold gate GREEN](20260720/20260720-231018_stoa146-nona-mold-green.bron) — NonaMold identity · ref 9 · deca refuse
+- `20260720.230350` — [kg STOA145 complete · STOA146 mapped](20260720/20260720-230350_kg-stoa145-complete.bron) — octa flip sent; nona identity mapped
+- `20260720.230350` — [Glow compass send STOA145](20260720/20260720-230350_glow-compass-stoa145-send.bron) — octa flip sent; STOA146 mapped
+- `20260720.230350` — [STOA145 approved and sent](20260720/20260720-230350_stoa145-approved-sent.bron) — claim f85dfed1a4
+- `20260720.230350` — [STOA145 send complete](20260720/20260720-230350_stoa145-send-complete.bron) — origin main language claim f85dfed1a4
+- `20260720.230350` — [STOA146 next map after octa flip](20260720/20260720-230350_stoa146-next-map.bron) — lean A nona-mold gate identity
+- `20260720.230219` — [STOA145 octa-mold flip GREEN](20260720/20260720-230219_stoa145-octa-flip-green.bron) — from↔amount · fee/nonce/memo/tag/to/via stay; await send
+- `20260720.225744` — [Why mold ladder — Hoon nest with TAME bounds](20260720/20260720-225744_why-mold-bounds-ladder.bron) — emulate molds/nest; refuse unbounded gold; SLC field ladder
+- `20260720.225659` — [kg STOA143-144 complete · STOA145 mapped](20260720/20260720-225659_kg-stoa144-complete.bron) — hepta flip + octa identity sent; octa flip mapped
+- `20260720.225659` — [Glow compass send STOA144](20260720/20260720-225659_glow-compass-stoa144-send.bron) — octa-mold sent; STOA145 mapped
+- `20260720.225659` — [STOA144 approved and sent](20260720/20260720-225659_stoa144-approved-sent.bron) — claim a7f22cfcb7
+- `20260720.225659` — [STOA144 send complete](20260720/20260720-225659_stoa144-send-complete.bron) — origin main language claim a7f22cfcb7
+- `20260720.225659` — [STOA145 next map after octa-mold](20260720/20260720-225659_stoa145-next-map.bron) — lean A octa-mold flip call-body
+- `20260720.225448` — [STOA144 octa-mold gate GREEN](20260720/20260720-225448_stoa144-octa-mold-green.bron) — OctaMold identity · via 8 · nona refuse
+- `20260720.224907` — [kg STOA143 complete · STOA144 mapped](20260720/20260720-224907_kg-stoa143-complete.bron) — hepta flip sent; octa identity mapped
+- `20260720.224907` — [Glow compass send STOA143](20260720/20260720-224907_glow-compass-stoa143-send.bron) — hepta flip sent; STOA144 mapped
+- `20260720.224907` — [STOA143 approved and sent](20260720/20260720-224907_stoa143-approved-sent.bron) — claim d7a4c1653f
+- `20260720.224907` — [STOA143 send complete](20260720/20260720-224907_stoa143-send-complete.bron) — origin main language claim d7a4c1653f
+- `20260720.224907` — [STOA144 next map after hepta flip](20260720/20260720-224907_stoa144-next-map.bron) — lean A octa-mold gate identity
+- `20260720.224734` — [STOA143 hepta-mold flip GREEN](20260720/20260720-224734_stoa143-hepta-flip-green.bron) — from↔amount · fee/nonce/memo/tag/to stay; await send
+- `20260720.223440` — [STOA140 hexa-mold seat map for STOA142](20260720/20260720-223440_stoa140-hexa-mirror-map.bron) — claim 33922c54c8 edit checklist · hepta mirror keys
+- `20260720.223012` — [Mold vocabulary search — keep Hoon word](20260720/20260720-223012_mold-vocabulary-search.bron) — no Glow-native mold rename found; STOA130 renamed wet/dry only
+- `20260720.224210` — [kg STOA142 complete · STOA143 mapped](20260720/20260720-224210_kg-stoa142-complete.bron) — hepta-mold sent; hepta flip mapped
+- `20260720.224201` — [Glow compass send STOA142](20260720/20260720-224201_glow-compass-stoa142-send.bron) — hepta-mold sent; STOA143 mapped
+- `20260720.224201` — [STOA142 approved and sent](20260720/20260720-224201_stoa142-approved-sent.bron) — claim 3ed907d693
+- `20260720.224200` — [STOA142 send complete](20260720/20260720-224200_stoa142-send-complete.bron) — origin main language claim 3ed907d693
+- `20260720.224200` — [STOA143 next map after hepta-mold](20260720/20260720-224200_stoa143-next-map.bron) — lean A hepta-mold flip call-body
+- `20260720.224116` — [STOA142 hepta-mold gate GREEN](20260720/20260720-224116_stoa142-hepta-mold-green.bron) — HeptaMold identity · baked 5/3/1/2/7/4/6; await send
+- `20260720.223226` — [Glow OS shape vocabulary seated](20260720/20260720-223226_glow-os-shape-seated.bron) — shape surface · mold study; desk rename horizon
+- `20260720.223052` — [Glow OS word other than mold](20260720/20260720-223052_glow-os-word-than-mold.bron) — recommend shape · norm · rupa; rename is check-in
+- `20260720.222829` — [Finish STOA140 pin then seat STOA141](20260720/20260720-222829_finish-stoa140-pin.bron) — pin leftovers · hexa flip sent · STOA142 mapped
+- `20260720.222828` — [Glow compass send STOA141](20260720/20260720-222828_glow-compass-stoa141-send.bron) — hexa flip sent; STOA142 mapped
+- `20260720.222828` — [STOA141 approved and sent](20260720/20260720-222828_stoa141-approved-sent.bron) — claim 59c6b37e04
+- `20260720.222827` — [STOA141 send complete](20260720/20260720-222827_stoa141-send-complete.bron) — origin main language claim 59c6b37e04
+- `20260720.222827` — [STOA142 next map after hexa flip](20260720/20260720-222827_stoa142-next-map.bron) — lean A hepta-mold gate identity
+- `20260720.222724` — [STOA141 hexa-mold flip GREEN](20260720/20260720-222724_stoa141-hexa-flip-green.bron) — from↔amount · fee/nonce/memo/tag stay; await send
+- `20260720.222407` — [Glow compass send STOA140](20260720/20260720-222407_glow-compass-stoa140-send.bron) — hexa-mold sent; STOA141 mapped
+- `20260720.222407` — [STOA140 approved and sent](20260720/20260720-222407_stoa140-approved-sent.bron) — claim 33922c54c8
+- `20260720.222406` — [STOA140 send complete](20260720/20260720-222406_stoa140-send-complete.bron) — origin main language claim 33922c54c8
+- `20260720.222406` — [STOA141 next map after hexa-mold](20260720/20260720-222406_stoa141-next-map.bron) — lean A hexa-mold flip call-body
+- `20260720.222338` — [STOA140 hexa-mold gate GREEN](20260720/20260720-222338_stoa140-hexa-mold-green.bron) — HexaMold identity · baked 5/3/1/2/7/4; await send
+- `20260720.221824` — [STOA140 hexa-mold seating checklist](20260720/20260720-221824_stoa140-hexa-mold-checklist.bron) — edit map for hexa identity · hepta refuse
+- `20260720.221704` — [Glow compass send STOA139](20260720/20260720-221704_glow-compass-stoa139-send.bron) — penta flip sent; STOA140 mapped
+- `20260720.221704` — [STOA139 approved and sent](20260720/20260720-221704_stoa139-approved-sent.bron) — claim 069e747e49
+- `20260720.221703` — [STOA139 send complete](20260720/20260720-221703_stoa139-send-complete.bron) — origin main language claim 069e747e49
+- `20260720.221703` — [STOA140 next map after penta flip](20260720/20260720-221703_stoa140-next-map.bron) — lean A hexa-mold gate identity
+- `20260720.221625` — [STOA139 penta-mold flip GREEN](20260720/20260720-221625_stoa139-penta-flip-green.bron) — from↔amount · fee/nonce/memo stay; await send
+- `20260720.215637` — [Glow compass send STOA138](20260720/20260720-215637_glow-compass-stoa138-send.bron) — penta-mold sent; STOA139 mapped
+- `20260720.215637` — [STOA138 approved and sent](20260720/20260720-215637_stoa138-approved-sent.bron) — claim 3f5ed81211
+- `20260720.215636` — [STOA138 send complete](20260720/20260720-215636_stoa138-send-complete.bron) — origin main language claim 3f5ed81211
+- `20260720.215636` — [STOA139 next map after penta-mold](20260720/20260720-215636_stoa139-next-map.bron) — lean A penta-mold flip call-body
+- `20260720.215530` — [STOA138 penta-mold gate GREEN](20260720/20260720-215530_stoa138-penta-mold-green.bron) — PentaMold identity · baked 5/3/1/2/7; await send
+- `20260720.200417` — [Glow compass send STOA137](20260720/20260720-200417_glow-compass-stoa137-send.bron) — quad flip sent; STOA138 mapped
+- `20260720.200417` — [STOA137 approved and sent](20260720/20260720-200417_stoa137-approved-sent.bron) — claim 968e4fb81e
+- `20260720.200416` — [STOA137 send complete](20260720/20260720-200416_stoa137-send-complete.bron) — origin main language claim 968e4fb81e
+- `20260720.200416` — [STOA138 next map after quad flip](20260720/20260720-200416_stoa138-next-map.bron) — lean A penta-mold gate identity
+- `20260720.200332` — [STOA137 quad-mold flip GREEN](20260720/20260720-200332_stoa137-quad-flip-green.bron) — from↔amount · fee/nonce stay; await send
+- `20260720.200046` — [Glow compass send STOA134–136](20260720/20260720-200046_glow-compass-stoa134-136-send.bron) — triple · quad · triple flip sent; STOA137 mapped
+- `20260720.200023` — [STOA136 approved and sent](20260720/20260720-200023_stoa136-approved-sent.bron) — claim aa460089fb
+- `20260720.200022` — [STOA136 send complete](20260720/20260720-200022_stoa136-send-complete.bron) — origin main language claim aa460089fb
+- `20260720.200022` — [STOA137 next map after triple flip](20260720/20260720-200022_stoa137-next-map.bron) — lean A quad-mold flip call-body
+- `20260720.195943` — [STOA136 triple-mold flip GREEN](20260720/20260720-195943_stoa136-triple-flip-green.bron) — from↔amount · fee stays; await send
+- `20260720.195743` — [STOA135 approved and sent](20260720/20260720-195743_stoa135-approved-sent.bron) — claim 2c211b9a0c
+- `20260720.195742` — [STOA135 send complete](20260720/20260720-195742_stoa135-send-complete.bron) — origin main language claim 2c211b9a0c
+- `20260720.195742` — [STOA136 next map after quad-mold](20260720/20260720-195742_stoa136-next-map.bron) — lean A triple-mold flip call-body
+- `20260720.195710` — [STOA135 quad-mold gate GREEN](20260720/20260720-195710_stoa135-quad-mold-green.bron) — QuadMold identity · baked 5/3/1/2; await send
+- `20260720.195132` — [STOA134 approved and sent](20260720/20260720-195132_stoa134-approved-sent.bron) — claim 5dc52a407b
+- `20260720.195131` — [STOA134 send complete](20260720/20260720-195131_stoa134-send-complete.bron) — origin main language claim 5dc52a407b
+- `20260720.195131` — [STOA135 next map after triple-mold](20260720/20260720-195131_stoa135-next-map.bron) — lean A quad-mold gate identity
+- `20260720.195028` — [STOA134 triple-mold gate GREEN](20260720/20260720-195028_stoa134-triple-mold-green.bron) — TripleMold identity · baked 5/3/1; await send
+- `20260720.194437` — [STOA134 triple-mold gate identity map](20260720/20260720-194437_stoa134-triple-mold-map.bron) — lean A closed three-field $: gate sample
+- `20260720.194422` — [STOA133 approved and sent](20260720/20260720-194422_stoa133-approved-sent.bron) — claim df051870f7
+- `20260720.194421` — [STOA133 send complete](20260720/20260720-194421_stoa133-send-complete.bron) — origin main language claim df051870f7
+- `20260720.194421` — [STOA134 next map after count argv](20260720/20260720-194421_stoa134-next-map.bron) — gold vs tagged argv vs triple; compass pick
+- `20260720.194401` — [STOA133 count-mold argv GREEN](20260720/20260720-194401_stoa133-count-argv-green.bron) — count argv desks · glow_run stem; await send
+- `20260720.194143` — [STOA133 count-mold argv map](20260720/20260720-194143_stoa133-count-argv-map.bron) — lean A count argv twin beside fixtures
+- `20260720.194130` — [STOA132 approved and sent](20260720/20260720-194130_stoa132-approved-sent.bron) — claim d74e1a5cf3 · tip aac8f65e6f
+- `20260720.194123` — [STOA132 send complete](20260720/20260720-194123_stoa132-send-complete.bron) — origin main language claim d74e1a5cf3
+- `20260720.194123` — [STOA133 next map after amount argv](20260720/20260720-194123_stoa133-next-map.bron) — count argv vs gold/triple; compass pick
+- `20260720.194102` — [STOA132 amount-mold argv GREEN](20260720/20260720-194102_stoa132-amount-argv-green.bron) — amount argv desks · glow_run stem; await send
+- `20260720.193805` — [STOA132 amount-mold argv map](20260720/20260720-193805_stoa132-amount-argv-map.bron) — lean A u32-shaped named-mold argv beside fixtures
+- `20260720.193750` — [STOA131 kg pair flip sent](20260720/20260720-193750_stoa131-kg-pair-flip-sent.bron) — claim 0bb33ad665 · tip 839ec78d48
+- `20260720.193738` — [STOA131 send complete](20260720/20260720-193738_stoa131-send-complete.bron) — origin main language claim 0bb33ad665
+- `20260720.193738` — [STOA132 next map after pair flip call-body](20260720/20260720-193738_stoa132-next-map.bron) — gold vs argv vs triple-mold; compass pick
+- `20260720.193722` — [STOA131 pair-mold flip call-body GREEN](20260720/20260720-193722_stoa131-pair-call-body-green.bron) — PairMold swap · baked 5/3 → 3/5; await send
+- `20260720.193357` — [STOA131 pair-mold flip call-body map](20260720/20260720-193357_stoa131-pair-call-body-map.bron) — lean A closed multi-field $: flip call-body (from↔amount)
+- `20260720.193316` — [STOA130 naming approved and sent](20260720/20260720-193316_stoa130-naming-approved-sent.bron) — stated/nesting/gold on main · claim 2bf5ba11dc
+- `20260720.193254` — [STOA130 send complete](20260720/20260720-193254_stoa130-send-complete.bron) — origin main language claim 2bf5ba11dc · tip 2bf5ba11dc
+- `20260720.193254` — [STOA131 next map after stated nesting gold](20260720/20260720-193254_stoa131-next-map.bron) — gold vs call-body under pair; compass pick
+- `20260720.193228` — [STOA130 stated nesting gold vocabulary GREEN](20260720/20260720-193228_stoa130-stated-nesting-gold-green.bron) — stated/nesting/gold APIs · LEXICON merge; await send
+- `20260720.192529` — [Wet dry alternatives in Glow paradigm](20260720/20260720-192529_wet-dry-glow-paradigm-terms.bron) — counsel: stated/nesting/gold continuum; no rename yet
+- `20260720.192448` — [STOA129 send complete](20260720/20260720-192448_stoa129-send-complete.bron) — origin main language claim fa2c85e9b8 · tip fa2c85e9b8
+- `20260720.192448` — [STOA130 next map after xfer flip call-body](20260720/20260720-192448_stoa130-next-map.bron) — gold vs call-body under pair; compass pick
+- `20260720.192411` — [STOA129 xfer-mold flip call-body GREEN](20260720/20260720-192411_stoa129-xfer-call-body-green.bron) — XferMold switch · baked mint/5/3 → .send; await send
+- `20260720.192038` — [STOA129 xfer-mold flip call-body map](20260720/20260720-192038_stoa129-xfer-call-body-map.bron) — lean A closed multi-face payload $% flip call-body; py→rish pin helpers
+- `20260720.192011` — [STOA128 send complete](20260720/20260720-192011_stoa128-send-complete.bron) — origin main language claim 08809fc52c · tip 08809fc52c
+- `20260720.192011` — [STOA129 next map after xact flip call-body](20260720/20260720-192011_stoa129-next-map.bron) — gold vs call-body under xfer; compass pick
+- `20260720.191944` — [STOA128 xact-mold flip call-body GREEN](20260720/20260720-191944_stoa128-xact-call-body-green.bron) — XactMold switch · baked mint/5 → .send; await send
+- `20260720.191033` — [STOA128 xact-mold flip call-body map](20260720/20260720-191033_stoa128-xact-call-body-map.bron) — lean A closed payload $% flip call-body
+- `20260720.190941` — [STOA127 send complete](20260720/20260720-190941_stoa127-send-complete.bron) — origin main language claim 03f39d2eff · tip 03f39d2eff
+- `20260720.190941` — [STOA128 next map after kind flip call-body](20260720/20260720-190941_stoa128-next-map.bron) — gold vs call-body under xact; compass pick
+- `20260720.190904` — [STOA127 kind-mold flip call-body GREEN](20260720/20260720-190904_stoa127-kind-call-body-green.bron) — KindMold switch · baked .mint → .send; await send
+- `20260720.190544` — [STOA127 kind-mold flip call-body map](20260720/20260720-190544_stoa127-kind-call-body-map.bron) — lean A closed unit $% flip call-body
+- `20260720.185917` — [STOA126 send complete](20260720/20260720-185917_stoa126-send-complete.bron) — origin main language claim 2b0f4bbc71 · tip 2b0f4bbc71
+- `20260720.185917` — [STOA127 next map after pair-mold gate](20260720/20260720-185917_stoa127-next-map.bron) — gold vs call-body under kind; compass pick
+- `20260720.185844` — [STOA126 pair-mold gate sample GREEN](20260720/20260720-185844_stoa126-pair-mold-green.bron) — PairMold · baked from 5 amount 3; await send
+- `20260720.185502` — [STOA126 pair-mold gate sample map](20260720/20260720-185502_stoa126-pair-mold-map.bron) — lean A multi-field $: gate identity
+- `20260720.185421` — [STOA125 send complete](20260720/20260720-185421_stoa125-send-complete.bron) — origin main language claim a8630d802b · tip a8630d802b
+- `20260720.185421` — [STOA126 next map after xfer-mold gate](20260720/20260720-185421_stoa126-next-map.bron) — gold vs pair-mold vs call-body; compass pick
+- `20260720.185354` — [STOA125 xfer-mold gate sample GREEN](20260720/20260720-185354_stoa125-xfer-mold-green.bron) — XferMold · baked .mint from 5 amount 3; await send
+- `20260720.184953` — [STOA125 xfer-mold gate sample map](20260720/20260720-184953_stoa125-xfer-mold-map.bron) — lean A multi-face payload $% gate identity
+- `20260720.184838` — [STOA124 send complete](20260720/20260720-184838_stoa124-send-complete.bron) — origin main language claim 404a1d1ef0 · tip 404a1d1ef0
+- `20260720.184838` — [STOA125 next map after xact-mold gate](20260720/20260720-184838_stoa125-next-map.bron) — gold vs xfer-mold; compass pick
+- `20260720.184738` — [STOA124 xact-mold gate sample GREEN](20260720/20260720-184738_stoa124-xact-mold-green.bron) — XactMold · baked .mint amount 5; await send
+- `20260720.184304` — [STOA124 xact-mold gate sample map](20260720/20260720-184304_stoa124-xact-mold-map.bron) — lean A payload $% gate identity
+- `20260720.184219` — [STOA123 send complete](20260720/20260720-184219_stoa123-send-complete.bron) — origin main language claim 7b9d350d26 · tip f15f33c18d
+- `20260720.184219` — [STOA124 next map after kind-mold gate](20260720/20260720-184219_stoa124-next-map.bron) — gold vs xact-mold; compass pick
+- `20260720.184155` — [STOA123 kind-mold gate sample GREEN](20260720/20260720-184155_stoa123-kind-mold-green.bron) — KindMold · baked .mint; await send
+- `20260720.183837` — [STOA123 kind-mold gate sample map](20260720/20260720-183837_stoa123-kind-mold-map.bron) — lean A unit $% gate identity
+- `20260720.183712` — [STOA123 kind-mold gate samples map](20260720/20260720-183712_stoa123-kind-mold-samples-map.bron) — parse+lower identity lean A; gold held
+- `20260720.183547` — [STOA122 send complete](20260720/20260720-183547_stoa122-send-complete.bron) — origin main language claim 04865f8715 · tip 094c2dd83a
+- `20260720.183547` — [STOA123 next map after count-mold](20260720/20260720-183547_stoa123-next-map.bron) — kind-mold vs gold; compass pick
+- `20260720.183524` — [STOA122 count-mold named allowlist GREEN](20260720/20260720-183524_stoa122-count-mold-green.bron) — amount · count closed set; await send
+- `20260720.183259` — [STOA122 count-mold named allowlist map](20260720/20260720-183259_stoa122-count-mold-map.bron) — lean A second closed named mold
+- `20260720.183105` — [STOA121 send complete](20260720/20260720-183105_stoa121-send-complete.bron) — origin main language claim c33f775cd2 · tip 689a374a73
+- `20260720.183105` — [STOA122 next map after barket wet-through](20260720/20260720-183105_stoa122-next-map.bron) — thicker doors; compass pick next
+- `20260720.183032` — [STOA121 barket wet-through-nests GREEN](20260720/20260720-183032_stoa121-barket-wet-nests-green.bron) — |^ is_wet=true under stated mold; await send
+- `20260720.182857` — [STOA120 send complete](20260720/20260720-182857_stoa120-send-complete.bron) — origin main language claim 7ef2eb5e15 · tip 8fd29c32bb
+- `20260720.182857` — [STOA121 barket wet-through-nests map](20260720/20260720-182857_stoa121-barket-wet-nests-map.bron) — lean A |^ is_wet=true under stated mold
+- `20260720.182824` — [STOA120 wet-nests barket/bartis wire GREEN](20260720/20260720-182824_stoa120-wet-nests-wire-green.bron) — expansion dry wire; await send
+- `20260720.182420` — [STOA119 send complete](20260720/20260720-182420_stoa119-send-complete.bron) — origin main language claim 471fe68b04 · tip d961878652
+- `20260720.182420` — [STOA120 wet-nests barket wire map](20260720/20260720-182420_stoa120-wet-nests-wire-map.bron) — lean A wire into barket/bartis; no Claude pause
+- `20260720.182341` — [STOA119 wet-nests accept GREEN](20260720/20260720-182341_stoa119-wet-nests-green.bron) — assert_sample_wet_nests · two molds one path; await send
+- `20260720.181950` — [STOA119 wet accept thin claim](20260720/20260720-181950_stoa119-wet-accept-thin-claim.bron) — WET_ACCEPT_THIN under stated mold; lean A
+- `20260720.181658` — [STOA119 wet accept map](20260720/20260720-181658_stoa119-wet-accept-map.bron) — check-in ambient wet accept
+- `20260720.181658` — [STOA118 send complete](20260720/20260720-181658_stoa118-send-complete.bron) — origin main at eecdbb8dd2 / tip 79ee7bf590
+- `20260720.181627` — [STOA118 named-mold barket GREEN](20260720/20260720-181627_stoa118-named-mold-barket-green.bron) — amount-mold · kind refuse; await send
+- `20260720.181308` — [STOA118 named-mold barket vs wet accept](20260720/20260720-181308_stoa118-named-mold-vs-wet-accept.bron) — lean A named-mold barket; wet accept held
+- `20260720.181159` — [STOA118 wet accept map](20260720/20260720-181159_stoa118-wet-accept-map.bron) — check-in ambient wet accept
+- `20260720.181159` — [STOA117 send complete](20260720/20260720-181159_stoa117-send-complete.bron) — origin main at 102b2f228a / tip ce8dae027c
+- `20260720.181134` — [STOA117 barket TAME tidy GREEN](20260720/20260720-181134_stoa117-barket-tame-tidy-green.bron) — append_print · parse_body · ban seat; await send
+- `20260720.180814` — [STOA117 wet accept vs TAME tidy map](20260720/20260720-180814_stoa117-next-map.bron) — check-in wet accept vs tidy
+- `20260720.180814` — [STOA116 send complete](20260720/20260720-180814_stoa116-send-complete.bron) — origin main at b79e8d55c9 / tip 9578621ca2
+- `20260720.180747` — [STOA116 barket call-body inc/dec GREEN](20260720/20260720-180747_stoa116-barket-inc-dec-green.bron) — +%1/-%1 · fixture+argv7 exit 0; await send
+- `20260720.180414` — [STOA116 barket inc/dec vs wet accept map](20260720/20260720-180414_stoa116-barket-next-map.bron) — check-in barket inc/dec vs wet accept
+- `20260720.180414` — [STOA115 send complete](20260720/20260720-180414_stoa115-send-complete.bron) — origin main at ff73855b82
+- `20260720.180350` — [STOA115 barket call-body double GREEN](20260720/20260720-180350_stoa115-barket-call-body-green.bron) — *% 2 · fixture+argv7 exit 0; await send
+- `20260720.180016` — [STOA115 barket call-body vs wet accept map](20260720/20260720-180016_stoa115-barket-next-map.bron) — check-in call-body vs wet accept
+- `20260720.180016` — [STOA114 send complete](20260720/20260720-180016_stoa114-send-complete.bron) — origin main at 04e5a1e511 / tip d661d3712c
+- `20260720.175953` — [STOA114 barket argv sample GREEN](20260720/20260720-175953_stoa114-barket-argv-green.bron) — argv generator · sample 9 exit 0; await send
+- `20260720.175549` — [STOA114 barket deepen vs wet accept map](20260720/20260720-175549_stoa114-barket-deepen-map.bron) — check-in argv vs call-body vs wet accept
+- `20260720.175549` — [STOA113 send complete](20260720/20260720-175549_stoa113-send-complete.bron) — origin main at 11ce632d8a / tip 5850b78930
+- `20260720.175527` — [STOA113 barket identity lower GREEN](20260720/20260720-175527_stoa113-barket-lower-green.bron) — barket_gate · fixture exit 0; await send
+- `20260720.175029` — [STOA113 barket lower vs Sala B0 map](20260720/20260720-175029_stoa113-barket-lower-map.bron) — check-in before thin lower; wet/Sala held
+- `20260720.175029` — [STOA112 send complete](20260720/20260720-175029_stoa112-send-complete.bron) — origin main at 6d02c6f96858
+- `20260720.174907` — [STOA112 barket header parse GREEN](20260720/20260720-174907_stoa112-barket-parse-green.bron) — dry BarketSpec · BodyNotYetLowered; await send
+- `20260720.174521` — [STOA112 barket parse map — thinnest honest GREEN](20260720/20260720-174521_stoa112-barket-parse-map.bron) — dry-shaped demo; BodyNotYetLowered; lower/dispatch/Sala held
+- `20260720.151450` — [STOA112 barket parse vs Sala B0 map](20260720/20260720-151450_stoa112-barket-parse-map.bron) — check-in before thin parse; lower/wet/Sala held
+- `20260720.151450` — [STOA111 send complete](20260720/20260720-151450_stoa111-send-complete.bron) — origin main at eb2a65794210
+- `20260720.151247` — [STOA111 barket tokenize GREEN](20260720/20260720-151247_stoa111-barket-tokenize-green.bron) — |^ → 27; parse/lower held; await send
+- `20260720.151046` — [STOA110 send complete](20260720/20260720-151046_stoa110-send-complete.bron) — origin main at 8b181a4f46ab
+- `20260720.150956` — [STOA111 barket tokenize vs Sala B0 map](20260720/20260720-150956_stoa111-barket-tokenize-map.bron) — lean A tokenize-only step 2; parse/lower held
+- `20260720.150837` — [STOA110 wet-refuse nest GREEN](20260720/20260720-150837_stoa110-wet-refuse-nest-green.bron) — assert_sample_not_wet; await send
+- `20260720.150538` — [STOA110 wet-refuse nest vs barket map](20260720/20260720-150538_stoa110-wet-refuse-vs-barket-map.bron) — lean A wet refuse first; barket held
+- `20260720.150042` — [STOA109 named-mold bartis vs barket map](20260720/20260720-150042_stoa109-named-mold-vs-barket-map.bron) — lean A sample=amount-mold; barket held
+- `20260720.145715` — [STOA108 $% tag nest vs barket map](20260720/20260720-145715_stoa108-tag-nest-vs-barket-map.bron) — lean A assert_tag_nests; barket held
+- `20260720.150618` — [STOA109 send complete](20260720/20260720-150618_stoa109-send-complete.bron) — origin main at 8e7bb3cbc3fa
+- `20260720.150429` — [STOA109 named-mold bartis GREEN](20260720/20260720-150429_stoa109-named-mold-bartis-green.bron) — sample=amount-mold · kind refuse; await send
+- `20260720.150127` — [STOA108 send complete](20260720/20260720-150127_stoa108-send-complete.bron) — origin main at a98ebdc488be
+- `20260720.145928` — [STOA108 nest/type $% tag nest GREEN](20260720/20260720-145928_stoa108-tag-nest-green.bron) — assert_tag_nests · mold-kind; await send
+- `20260720.145753` — [STOA107 send complete](20260720/20260720-145753_stoa107-send-complete.bron) — origin main at 3feeed801dfa
+- `20260720.043453` — [STOA107 nest/type thin implement GREEN](20260720/20260720-043453_stoa107-nest-type-thin-green.bron) — SampleDoesNotNest · bartis wire; await send
+- `20260720.043234` — [STOA106 send complete](20260720/20260720-043234_stoa106-send-complete.bron) — origin main at 222c2458d4f4
+- `20260720.043140` — [STOA107 nest/type thin implement map](20260720/20260720-043140_stoa107-nest-type-thin-map.bron) — bartis dry-aura nest assert; barket/wet held
+- `20260720.043033` — [STOA106 nest/type surface wording GREEN](20260720/20260720-043033_stoa106-nest-type-surface-green.bron) — wet-sample precondition named; await send
+- `20260720.042913` — [STOA105 send complete](20260720/20260720-042913_stoa105-send-complete.bron) — origin main at b8b1e0d65369
+- `20260720.042833` — [STOA105 bartis TAME tidy GREEN](20260720/20260720-042833_stoa105-bartis-tame-tidy-green.bron) — append_print · copy_disjoint · overflow seat; await send
+- `20260720.042220` — [STOA104 send complete](20260720/20260720-042220_stoa104-send-complete.bron) — origin main at 28448e643dae
+- `20260720.042150` — [STOA104 bartis call-body inc/dec GREEN](20260720/20260720-042150_stoa104-bartis-inc-dec-green.bron) — closed trio double/inc/dec; await send
+- `20260720.041702` — [STOA103 send complete](20260720/20260720-041702_stoa103-send-complete.bron) — origin main at 36f822dc0f57
+- `20260720.041204` — [STOA103 bartis call-body double GREEN](20260720/20260720-041204_stoa103-bartis-call-body-green.bron) — %- double sample; fixture+argv; await send
+- `20260720.040746` — [STOA102 send complete](20260720/20260720-040746_stoa102-send-complete.bron) — origin main at 19386bb574b4
+- `20260720.040713` — [STOA102 barket horizon wording GREEN](20260720/20260720-040713_stoa102-barket-horizon-green.bron) — |^ named untokenized; wet/gold held; await send
+- `20260720.040612` — [STOA101 send complete](20260720/20260720-040612_stoa101-send-complete.bron) — origin main at 21d402ad3013
+- `20260720.040546` — [STOA100 send + STOA101 lean A approve](20260720/20260720-040546_stoa100-send-stoa101-approve.bron) — main 7e5970f715; argv bartis PR await send
+- `20260720.040533` — [STOA101 bartis argv sample GREEN](20260720/20260720-040533_stoa101-bartis-argv-green.bron) — generator gate-sample-u32; fixture stays baked; await send
+- `20260720.040050` — [STOA100 send complete](20260720/20260720-040050_stoa100-send-complete.bron) — origin main at 7e5970f71529
+- `20260720.040025` — [STOA100 living docs close](20260720/20260720-040025_stoa100-living-close.bron) — STOA.md · TASKS · ITINERARY · ROADMAP; await send
+- `20260720.033852` — [STOA100 thin bartis implement GREEN](20260720/20260720-033852_stoa100-bartis-implement.bron) — |= tokenized, identity gate lowers, baked sample 5 exits 0; all witnesses GREEN
+- `20260720.033500` — [STOA100 bartis first-lap survey](20260720/20260720-033500_stoa100-bartis-first-lap-survey.bron) — tokens/dispatch/demo-gate/alphabet analysis; thinnest fixture-desk claim
+- `20260720.040025` — [STOA99 send complete](20260720/20260720-040025_stoa99-send-complete.bron) — origin main at 2b5e5eb7da
+- `20260719.233340` — [STOA99 bartis horizon wording GREEN](20260719/20260719-233340_stoa99-bartis-horizon-green.bron) — Glow gate named; await send
+- `20260719.233327` — [STOA98 send complete](20260719/20260719-233327_stoa98-send-complete.bron) — origin main at 620a7cb58f
+- `20260719.233200` — [STOA98 G5 Nock family notes GREEN](20260719/20260719-233200_stoa98-g5-nock-notes-green.bron) — wut truth pin; await send
+- `20260719.233140` — [STOA97 send complete](20260719/20260719-233140_stoa97-send-complete.bron) — origin main at 21c158ff01
+- `20260719.233050` — [STOA97 token MoldSpec G4 GREEN](20260719/20260719-233050_stoa97-token-mold-spec-green.bron) — compass lean A; await send
+- `20260720.032713` — [STOA97 token→MoldSpec rewrite](20260720/20260720-032713_stoa97-token-mold-spec.bron) — parse_source walks token stream; lower_multi retired
+- `20260719.231725` — [STOA96 send complete](20260719/20260719-231725_stoa96-send-complete.bron) — origin main at 4217096449
+- `20260719.231450` — [STOA96 TAME tidy lower_mold GREEN](20260719/20260719-231450_stoa96-tame-tidy-mold-green.bron) — width-check · ban overflow seat · docs; await send
+- `20260720.031128` — [STOA96 lower_mold TAME tidy rewrite](20260720/20260720-031128_stoa96-lower-mold-tame-tidy.bron) — assert · u32 · append_print · split emitters on main
+- `20260719.225349` — [STOA95 send complete](20260719/20260719-225349_stoa95-send-complete.bron) — origin main at fb356deace
+- `20260719.225321` — [STOA95 mold-only peek GREEN](20260719/20260719-225321_stoa95-mold-only-peek-green.bron) — looks_like_mold_only wire; await send
+- `20260719.224948` — [STOA94 send complete](20260719/20260719-224948_stoa94-send-complete.bron) — origin main at 5d5e4856a0
+- `20260719.224520` — [STOA94 same-desk mold-body tokens GREEN](20260719/20260719-224520_stoa94-same-desk-mold-body-green.bron) — named_cast_parts mold span; await send
+- `20260719.224130` — [STOA93 send complete](20260719/20260719-224130_stoa93-send-complete.bron) — origin main at 1dabeed7b6
+- `20260720.024223` — [STOA94 same-desk mold-body tokens plan seated](20260720/20260720-024223_stoa94-same-desk-mold-body-plan.bron) — NamedCastParts span + still rm.parse_source; no token→MoldSpec
+- `20260720.023513` — [STOA93 G4 token-driven lower slice plan seated](20260720/20260720-023513_stoa93-g4-token-lower-plan.bron) — cross-desk parse via tokens; peeks stay; no bartis
+- `20260720.022956` — [STOA92 G3 thin argv sample plan seated](20260720/20260720-022956_stoa92-g3-thin-argv-plan.bron) — Rishi forwards @u32; fixture cast-u32 kept; no bartis
+- `20260719.224027` — [STOA93 token-driven cross-desk parse GREEN](20260719/20260719-224027_stoa93-token-driven-lower-green.bron) — cross_desk_parts; await send
+- `20260719.223610` — [STOA92 send complete](20260719/20260719-223610_stoa92-send-complete.bron) — origin main at 7c6f5e9b6d
+- `20260719.223351` — [STOA92 thin argv sample G3 GREEN](20260719/20260719-223351_stoa92-argv-sample-g3-green.bron) — sample-u32 reads Rishi argv; await send
+- `20260719.223110` — [STOA91 send complete](20260719/20260719-223110_stoa91-send-complete.bron) — origin main at 1022d8cab1
+- `20260719.222752` — [STOA91 TAME alphabet pin G2 GREEN](20260719/20260719-222752_stoa91-tame-alphabet-pin-green.bron) — family index in TAME_GUIDANCE; await send
+- `20260719.222642` — [STOA90 send complete](20260719/20260719-222642_stoa90-send-complete.bron) — origin main at 90c011e4dc
+- `20260719.220955` — [STOA90 G1 closed pronunciation table GREEN](20260719/20260719-220955_stoa90-g1-alphabet-green.bron) — 25 heads bound to tokens.rye; await send
+- `20260719.204820` — [iOS handoff send complete](20260719/20260719-204820_ios-handoff-send-complete.bron) — origin + codeberg at 9da6c6ef3d
+- `20260719.204759` — [Cursor iOS handoff and core port order](20260719/20260719-204759_cursor-ios-handoff-and-core-port.bron) — dry cores fit; wet hold; await send
+- `20260719.204500` — [STOA89 send complete](20260719/20260719-204500_stoa89-send-complete.bron) — origin + codeberg at bcf3780543
+- `20260719.204340` — [STOA89 pin and STOA90 check-in](20260719/20260719-204340_stoa89-pin-stoa90-check-in.bron) — pin f29414bb99; lean A pronunciation table G1
+- `20260719.204307` — [STOA89 rune alphabet and generator wording](20260719/20260719-204307_stoa89-rune-alphabet-roadmap.bron) — adopt Hoon alphabet; fixture vs generator; await send
+- `20260719.203740` — [STOA89 check-in after assertion runes](20260719/20260719-203740_stoa89-check-in.bron) — lean A token-driven lower slice
+- `20260719.203726` — [STOA88 assertion runes send](20260719/20260719-203726_stoa88-assert-runes-send.bron) — pin 0530ed5f20; then STOA89 check-in
+- `20260719.203207` — [STOA88 Glow assertion runes GREEN](20260719/20260719-203207_stoa88-assert-runes-green.bron) — ?> / ?< TAME; await send
+- `20260719.203130` — [STOA88 check-in after TAME tidy named-cast](20260719/20260719-203130_stoa88-check-in.bron) — lean A token-driven lower slice
+- `20260719.203117` — [STOA87 TAME tidy named-cast send](20260719/20260719-203117_stoa87-tame-tidy-named-cast-send.bron) — pin 376c2996b1; then STOA88 check-in
+- `20260719.202541` — [STOA87 TAME tidy named-cast GREEN](20260719/20260719-202541_stoa87-tame-tidy-named-cast-green.bron) — assert · u32 · copy_disjoint; await send
+- `20260719.202420` — [STOA87 check-in after TAME tidy tokens](20260719/20260719-202420_stoa87-check-in.bron) — lean A tidy lower_named_cast
+- `20260719.202411` — [STOA86 TAME tidy tokens send](20260719/20260719-202411_stoa86-tame-tidy-tokens-send.bron) — pin 114d683bb1; then STOA87 check-in
+- `20260719.201942` — [STOA86 TAME tidy tokens GREEN](20260719/20260719-201942_stoa86-tame-tidy-tokens-green.bron) — first Glow roster surface; await send
+- `20260719.201904` — [STOA86 redirect — not enough tidy TAME Glow](20260719/20260719-201904_stoa86-tame-tidy-redirect.bron) — lean A TAME tidy tokens
+- `20260719.201830` — [STOA86 check-in after cross-desk token peek](20260719/20260719-201830_stoa86-check-in.bron) — lean A token-driven lower slice
+- `20260719.201819` — [STOA85 cross-desk token peek send](20260719/20260719-201819_stoa85-cross-desk-token-peek-send.bron) — pin 08b0a63d60; then STOA86 check-in
+- `20260719.201500` — [STOA85 cross-desk token peek GREEN](20260719/20260719-201500_stoa85-cross-desk-token-peek-green.bron) — /+ then ^- peek; await send
+- `20260719.201420` — [STOA85 check-in after named-cast token peek](20260719/20260719-201420_stoa85-check-in.bron) — lean A cross-desk token peek
+- `20260719.201411` — [STOA84 named-cast token peek send](20260719/20260719-201411_stoa84-named-cast-token-peek-send.bron) — pin 0316619e39; then STOA85 check-in
+- `20260719.201027` — [STOA84 named-cast token peek GREEN](20260719/20260719-201027_stoa84-named-cast-token-peek-green.bron) — glow_run wire; await send
+- `20260719.200850` — [STOA84 check-in after token stream](20260719/20260719-200850_stoa84-check-in.bron) — lean A wire glow_run onto tokens
+- `20260719.200836` — [STOA83 bounded token stream send](20260719/20260719-200836_stoa83-token-stream-send.bron) — pin b1f29af76f; then STOA84 check-in
+- `20260719.200706` — [STOA83 bounded token stream GREEN](20260719/20260719-200706_stoa83-token-stream-green.bron) — cast-named-xact kinds; await send
+- `20260719.200545` — [STOA83 check-in after payload $% cast](20260719/20260719-200545_stoa83-check-in.bron) — lean A general token stream
+- `20260719.200530` — [STOA82 payload $% named-cast send](20260719/20260719-200530_stoa82-payload-percent-cast-send.bron) — pin 6df7cff43b; then STOA83 check-in
+- `20260719.200508` — [STOA82 payload $% named-cast GREEN](20260719/20260719-200508_stoa82-payload-percent-cast-green.bron) — XactMold same-desk + import; await send
+- `20260719.195855` — [STOA82 check-in after tagged named-cast](20260719/20260719-195855_stoa82-check-in.bron) — lean A payload $% named-cast
+- `20260719.195840` — [STOA81 tagged named-cast send](20260719/20260719-195840_stoa81-tagged-named-cast-send.bron) — pin 95c6ccfb90; then STOA82 check-in
+- `20260719.195819` — [STOA81 tagged named-cast GREEN](20260719/20260719-195819_stoa81-tagged-named-cast-green.bron) — KindMold same-desk + import; await send
+- `20260719.195255` — [STOA81 check-in after multi-face $%](20260719/20260719-195255_stoa81-check-in.bron) — lean A tagged named-cast
+- `20260719.195240` — [STOA80 multi-face $% payload send](20260719/20260719-195240_stoa80-multi-face-percent-send.bron) — pin b4ae1128cb; then STOA81 check-in
+- `20260719.195216` — [STOA80 multi-face $% payload GREEN](20260719/20260719-195216_stoa80-multi-face-percent-green.bron) — XferMold from+amount; await send
+- `20260719.194745` — [STOA80 check-in after cross-desk cast](20260719/20260719-194745_stoa80-check-in.bron) — lean A multi-face $% payload
+- `20260719.194730` — [STOA79 cross-desk named-cast send](20260719/20260719-194730_stoa79-cross-desk-cast-send.bron) — pin 1ef344cc08; then STOA80 check-in
+- `20260719.194711` — [STOA79 cross-desk named-cast GREEN](20260719/20260719-194711_stoa79-cross-desk-cast-green.bron) — /+ mold-amount then ^-; await send
+- `20260719.194200` — [STOA79 check-in after $% payload](20260719/20260719-194200_stoa79-check-in.bron) — lean A cross-desk named-cast
+- `20260719.194145` — [STOA78 $% payload arms send](20260719/20260719-194145_stoa78-percent-payload-send.bron) — pin f0de302057; then STOA79 check-in
+- `20260719.193907` — [STOA78 $% payload arms GREEN](20260719/20260719-193907_stoa78-percent-payload-green.bron) — XactMold union; await send
+- `20260719.193640` — [STOA78 check-in after named-cast](20260719/20260719-193640_stoa78-check-in.bron) — lean A $% payload arms
+- `20260719.193621` — [STOA77 same-desk named-cast send](20260719/20260719-193621_stoa77-named-cast-send.bron) — pin 4dcad53d30; then STOA78 check-in
+- `20260719.193538` — [STOA77 same-desk named-cast resolve GREEN](20260719/20260719-193538_stoa77-named-cast-green.bron) — AmountMold from +$ then ^-; await send
+- `20260719.193036` — [STOA77 check-in after $% mold](20260719/20260719-193036_stoa77-check-in.bron) — lean A named-cast resolve
+- `20260719.193002` — [STOA76 thin +$ / $% tagged mold send](20260719/20260719-193002_stoa76-tagged-mold-send.bron) — ship $% mold; then STOA77 check-in
+- `20260719.192936` — [STOA76 thin +$ / $% tagged mold GREEN](20260719/20260719-192936_stoa76-tagged-mold-green.bron) — KindMold desk; await send
+- `20260719.192404` — [STOA76 check-in after multi-field mold](20260719/20260719-192404_stoa76-check-in.bron) — lean A $% tagged-union mold
+- `20260719.192329` — [STOA75 multi-field +$ / $: mold send](20260719/20260719-192329_stoa75-multi-field-mold-send.bron) — ship multi-field mold; then STOA76 check-in
+- `20260719.192241` — [STOA75 multi-field +$ / $: mold GREEN](20260719/20260719-192241_stoa75-multi-field-mold-green.bron) — PairMold desk; await send
+- `20260719.191719` — [STOA73 Pixel product-root install eyes GREEN](20260719/20260719-191719_stoa73-pixel-product-root-eyes.bron) — on-device expect 5; Sala hex kept
+- `20260719.191208` — [Pixel adb no device on host install](20260719/20260719-191208_pixel-adb-no-device.bron) — attach Pixel then re-run install
+- `20260719.191101` — [Pixel STOA73 install instructions](20260719/20260719-191101_pixel-stoa73-install-instructions.bron) — outer-terminal product-root eyes
+- `20260719.190913` — [STOA75 check-in after thin mold](20260719/20260719-190913_stoa75-check-in.bron) — lean A multi-field $:
+- `20260719.190842` — [STOA74 thin +$ / $: mold send](20260719/20260719-190842_stoa74-thin-mold-send.bron) — ship thin mold; then STOA75 check-in
+- `20260719.190825` — [STOA74 thin +$ / $: mold GREEN](20260719/20260719-190825_stoa74-thin-mold-green.bron) — AmountMold desk; await send
+- `20260719.184938` — [STOA74 check-in after product-root write](20260719/20260719-184938_stoa74-check-in.bron) — lean A host install product-root eyes
+- `20260719.184915` — [STOA73 product-root write path send](20260719/20260719-184915_stoa73-product-root-write-send.bron) — ship write path; then STOA74 check-in
+- `20260719.184836` — [STOA73 product-root write path GREEN](20260719/20260719-184836_stoa73-product-root-write-green.bron) — glow_product_root.txt expect 5; await send
+- `20260719.182754` — [STOA73 check-in after APK import wire](20260719/20260719-182754_stoa73-check-in.bron) — lean A on-device product-root proof
+- `20260719.182724` — [STOA72 NativeActivity APK Glow import wire send](20260719/20260719-182724_stoa72-glow-apk-import-send.bron) — ship APK import wire; then STOA73 check-in
+- `20260719.182648` — [STOA72 NativeActivity APK Glow import wire GREEN](20260719/20260719-182648_stoa72-glow-apk-import-green.bron) — pack expect 5; await send
+- `20260719.182321` — [STOA72 check-in after import seam](20260719/20260719-182321_stoa72-check-in.bron) — lean A APK wire of same import
+- `20260719.182240` — [STOA71 NativeActivity-path Glow import seam send](20260719/20260719-182240_stoa71-glow-import-seam-send.bron) — ship import seam; then STOA72 check-in
+- `20260719.182120` — [STOA71 NativeActivity-path Glow import seam GREEN](20260719/20260719-182120_stoa71-glow-import-seam-green.bron) — lowered-Rye @import expect 5; await send
+- `20260719.181703` — [STOA70 session-root nest-left product desk send](20260719/20260719-181703_stoa70-session-root-nest-product-send.bron) — ship session-root; then STOA71 check-in
+- `20260719.181259` — [STOA70 session-root nest-left product desk GREEN](20260719/20260719-181259_stoa70-session-root-nest-product-green.bron) — session-root expect 5; await send
+- `20260719.181143` — [STOA69 next-root product desk send](20260719/20260719-181143_stoa69-next-root-product-desk-send.bron) — ship next-root; then STOA70 check-in
+- `20260719.180837` — [STOA69 next-root product desk GREEN](20260719/20260719-180837_stoa69-next-root-product-desk-green.bron) — next-root expect 5; await send
+- `20260719.175835` — [STOA69 Glow language need check-in](20260719/20260719-175835_stoa69-glow-language-need-check-in.bron) — nest trios closed; lean A product desk
+- `20260719.175326` — [STOA68 /+ payload nest-both cue-of-jam send](20260719/20260719-175326_stoa68-use-lib-payload-both-cue-jam-send.bron) — ship `/+` payload nest-both; then STOA69 check-in
+- `20260719.175024` — [STOA68 /+ payload nest-both cue-of-jam GREEN](20260719/20260719-175024_stoa68-use-lib-payload-both-cue-jam-green.bron) — `/+` payload nest-both unpack 0; await send
+- `20260719.174844` — [STOA67 /+ payload nest-right cue-of-jam send](20260719/20260719-174844_stoa67-use-lib-payload-right-cue-jam-send.bron) — ship `/+` payload nest-right; then STOA68 check-in
+- `20260719.174531` — [STOA67 /+ payload nest-right cue-of-jam GREEN](20260719/20260719-174531_stoa67-use-lib-payload-right-cue-jam-green.bron) — `/+` payload nest-right unpack 0; await send
+- `20260719.174434` — [STOA66 /+ payload nest-left cue-of-jam send](20260719/20260719-174434_stoa66-use-lib-payload-nest-cue-jam-send.bron) — ship `/+` payload nest-left; then STOA67 check-in
+- `20260719.174116` — [STOA66 /+ payload nest-left cue-of-jam GREEN](20260719/20260719-174116_stoa66-use-lib-payload-nest-cue-jam-green.bron) — `/+` payload nest-left unpack 5; await send
+- `20260719.174026` — [STOA65 /+ payload cue-of-jam send](20260719/20260719-174026_stoa65-use-lib-payload-cue-jam-send.bron) — ship `/+` payload cue-jam; then STOA66 check-in
+- `20260719.173708` — [STOA65 /+ payload cue-of-jam GREEN](20260719/20260719-173708_stoa65-use-lib-payload-cue-jam-green.bron) — `/+` payload unpack 5; await send
+- `20260719.173459` — [STOA64 face→payload nest-both cue-of-jam send](20260719/20260719-173459_stoa64-payload-nest-both-cue-jam-send.bron) — ship payload nest-both; then STOA65 check-in
+- `20260719.173215` — [STOA64 face→payload nest-both cue-of-jam GREEN](20260719/20260719-173215_stoa64-payload-nest-both-cue-jam-green.bron) — payload nest-both unpack 0; await send
+- `20260719.172924` — [STOA63 face→payload nest-right cue-of-jam send](20260719/20260719-172924_stoa63-payload-nest-right-cue-jam-send.bron) — ship payload nest-right; then STOA64 check-in
+- `20260719.172625` — [STOA63 face→payload nest-right cue-of-jam GREEN](20260719/20260719-172625_stoa63-payload-nest-right-cue-jam-green.bron) — payload nest-right unpack 0; await send
+- `20260719.172521` — [STOA62 face→payload nest-left cue-of-jam send](20260719/20260719-172521_stoa62-payload-nest-cue-jam-send.bron) — ship payload nest-left; then STOA63 check-in
+- `20260719.172234` — [STOA62 face→payload nest-left cue-of-jam GREEN](20260719/20260719-172234_stoa62-payload-nest-cue-jam-green.bron) — payload nest-left unpack; await send
+- `20260719.172139` — [STOA61 face→payload cue-of-jam send](20260719/20260719-172139_stoa61-payload-cue-jam-send.bron) — ship payload cue-of-jam; then STOA62 check-in
+- `20260719.171844` — [STOA61 face→payload cue-of-jam GREEN](20260719/20260719-171844_stoa61-payload-cue-jam-green.bron) — outer note into payload unpack; await send
+- `20260719.171755` — [STOA60 /+ nest-both cue-of-jam send](20260719/20260719-171755_stoa60-use-lib-both-cue-jam-send.bron) — ship `/+` nest-both; then STOA61 check-in
+- `20260719.171500` — [STOA60 /+ nest-both cue-of-jam GREEN](20260719/20260719-171500_stoa60-use-lib-both-cue-jam-green.bron) — import nest-both cue-jam unpack; await send
+- `20260719.171414` — [STOA59 /+ nest-right cue-of-jam send](20260719/20260719-171414_stoa59-use-lib-right-cue-jam-send.bron) — ship `/+` nest-right; then STOA60 check-in
+- `20260719.171131` — [STOA59 /+ nest-right cue-of-jam GREEN](20260719/20260719-171131_stoa59-use-lib-right-cue-jam-green.bron) — import nest-right cue-jam unpack; await send
+- `20260719.171044` — [STOA58 /+ nest-left cue-of-jam send](20260719/20260719-171044_stoa58-use-lib-nest-cue-jam-send.bron) — ship `/+` nest-left; then STOA59 check-in
+- `20260719.170718` — [STOA58 /+ nest-left cue-of-jam GREEN](20260719/20260719-170718_stoa58-use-lib-nest-cue-jam-green.bron) — import nest-left cue-jam unpack; await send
+- `20260719.170433` — [STOA57 /+ cue-of-jam library send](20260719/20260719-170433_stoa57-use-lib-cue-jam-send.bron) — ship `/+` cue-of-jam; then STOA58 check-in
+- `20260719.170057` — [STOA57 /+ cue-of-jam library GREEN](20260719/20260719-170057_stoa57-use-lib-cue-jam-green.bron) — import lib-core-cue-jam unpack; await send
+- `20260719.170009` — [STOA56 face→nest-both cue-of-jam send](20260719/20260719-170009_stoa56-face-nest-both-cue-jam-send.bron) — ship nest-both cue-of-jam; then STOA57 check-in
+- `20260719.165724` — [STOA56 face→nest-both cue-of-jam GREEN](20260719/20260719-165724_stoa56-face-nest-both-cue-jam-green.bron) — face→nest-both cue-of-jam; await send
+- `20260719.165641` — [STOA55 face→nest-right cue-of-jam send](20260719/20260719-165641_stoa55-face-nest-right-cue-jam-send.bron) — ship nest-right cue-of-jam; then STOA56 check-in
+- `20260719.165404` — [STOA55 face→nest-right cue-of-jam GREEN](20260719/20260719-165404_stoa55-face-nest-right-cue-jam-green.bron) — face→nest-right cue-of-jam; await send
+- `20260719.165320` — [STOA54 face→nest-left cue-of-jam send](20260719/20260719-165320_stoa54-face-nest-cue-jam-send.bron) — ship nest-left cue-of-jam; then STOA55 check-in
+- `20260719.165048` — [STOA54 face→nest-left cue-of-jam GREEN](20260719/20260719-165048_stoa54-face-nest-cue-jam-green.bron) — face→nest-left cue-of-jam; await send
+- `20260719.164913` — [STOA53 face→core cue-of-jam send](20260719/20260719-164913_stoa53-face-core-cue-jam-send.bron) — ship face→`|%` cue-of-jam; then STOA54 check-in
+- `20260719.164640` — [STOA53 face→core cue-of-jam GREEN](20260719/20260719-164640_stoa53-face-core-cue-jam-green.bron) — outer face into cue-of-jam arm; await send
+- `20260719.164234` — [STOA52 bind→inline nest-both send](20260719/20260719-164234_stoa52-bind-inline-nest-both-send.bron) — ship inline nest-both; then STOA53 check-in
+- `20260719.163945` — [STOA52 bind→inline nest-both GREEN](20260719/20260719-163945_stoa52-bind-inline-nest-both-green.bron) — nest-both cue-of-jam under binds; await send
+- `20260719.163814` — [STOA51 bind→inline nest-right send](20260719/20260719-163814_stoa51-bind-inline-nest-right-send.bron) — ship inline nest-right; then STOA52 check-in
+- `20260719.163527` — [STOA51 bind→inline nest-right GREEN](20260719/20260719-163527_stoa51-bind-inline-nest-right-green.bron) — nest-right cue-of-jam under binds; await send
+- `20260719.163412` — [STOA50 bind→inline nest cue-jam send](20260719/20260719-163412_stoa50-bind-inline-nest-cue-jam-send.bron) — ship inline nest-left; then STOA51 check-in
+- `20260719.163125` — [STOA50 bind→inline nest cue-jam GREEN](20260719/20260719-163125_stoa50-bind-inline-nest-cue-jam-green.bron) — nest-left cue-of-jam under binds; await send
+- `20260719.162842` — [STOA49 bind→inline cue-of-jam send](20260719/20260719-162842_stoa49-bind-inline-cue-jam-send.bron) — ship inline product compose; then STOA50 check-in
+- `20260719.162549` — [STOA49 bind→inline cue-of-jam GREEN](20260719/20260719-162549_stoa49-bind-inline-cue-jam-green.bron) — authored one-line round-trip; await send
+- `20260719.162410` — [STOA48 four-bind nest-both send](20260719/20260719-162410_stoa48-four-bind-nest-both-send.bron) — ship four-bind product compose; then STOA49 check-in
+- `20260719.161949` — [STOA48 four-bind nest-both GREEN](20260719/20260719-161949_stoa48-four-bind-nest-both-green.bron) — distinct right mix pair; await send
+- `20260719.161720` — [STOA47 resume after battery](20260719/20260719-161720_stoa47-resume-after-battery.bron) — suite + send after charge; STOA48 check-in
+- `20260719.161649` — [STOA47 three-bind nest-left send](20260719/20260719-161649_stoa47-three-bind-nest-left-send.bron) — ship three-bind product compose; then STOA48 check-in
+- `20260719.155553` — [STOA47 three-bind nest-left GREEN](20260719/20260719-155553_stoa47-three-bind-nest-left-green.bron) — distinct pack-right atom; resume after battery
+- `20260719.155310` — [STOA46 bind→nest-both-jam→cue send](20260719/20260719-155310_stoa46-bind-nest-both-jam-cue-send.bron) — ship nest-both product compose; then STOA47 check-in
+- `20260719.154840` — [STOA46 bind→nest-both-jam→cue GREEN](20260719/20260719-154840_stoa46-bind-nest-both-jam-cue-green.bron) — authored nest-both pack unpack; await send
+- `20260719.154714` — [STOA45 bind→nest-right-jam→cue send](20260719/20260719-154714_stoa45-bind-nest-right-jam-cue-send.bron) — ship nest-right product compose; then STOA46 nest-both
+- `20260719.154325` — [STOA45 bind→nest-right-jam→cue GREEN](20260719/20260719-154325_stoa45-bind-nest-right-jam-cue-green.bron) — authored nest-right pack unpack; await send
+- `20260719.154122` — [STOA44 bind→nest-jam→cue send](20260719/20260719-154122_stoa44-bind-nest-jam-cue-send.bron) — ship nest product compose; then STOA45 check-in
+- `20260719.154112` — [STOA44 bind→nest-jam→cue GREEN](20260719/20260719-154112_stoa44-bind-nest-jam-cue-green.bron) — authored nest pack unpack; await send
+- `20260719.153620` — [STOA43 bind→jam→cue send](20260719/20260719-153620_stoa43-bind-jam-cue-send.bron) — ship product multi-line; then STOA44 check-in
+- `20260719.153556` — [STOA43 bind→jam→cue GREEN](20260719/20260719-153556_stoa43-bind-jam-cue-green.bron) — authored bind pack unpack; await send
+- `20260719.153019` — [STOA42 cue nest jam both send](20260719/20260719-153019_stoa42-cue-nest-jam-both-send.bron) — ship nest-both cue; then STOA43 check-in
+- `20260719.153013` — [STOA42 cue nest jam both GREEN](20260719/20260719-153013_stoa42-cue-nest-jam-both-green.bron) — cue of nest jam both; await send
+- `20260719.152040` — [STOA41 cue nest jam right send](20260719/20260719-152040_stoa41-cue-nest-jam-right-send.bron) — ship nest-right cue; then STOA42 check-in
+- `20260719.151831` — [STOA41 cue nest jam right GREEN](20260719/20260719-151831_stoa41-cue-nest-jam-right-green.bron) — cue of nest jam right; await send
+- `20260719.151134` — [STOA39 push ack](20260719/20260719-151134_stoa39-push-ack.bron) — delayed notify; STOA40 already shipped
+- `20260719.150811` — [STOA40 cue nest jam left send](20260719/20260719-150811_stoa40-cue-nest-jam-send.bron) — ship nest cue; then STOA41 check-in
+- `20260719.150634` — [STOA40 cue nest jam left GREEN](20260719/20260719-150634_stoa40-cue-nest-jam-green.bron) — cue of nest jam; await send
+- `20260719.145927` — [STOA39 jam→cue compose send](20260719/20260719-145927_stoa39-jam-cue-compose-send.bron) — ship compose; then STOA40 nest cue
+- `20260719.145738` — [STOA39 jam→cue compose GREEN](20260719/20260719-145738_stoa39-jam-cue-compose-green.bron) — cross-line pack unpack; await send
+- `20260719.145227` — [STOA38 cue-of-jam send](20260719/20260719-145227_stoa38-cue-of-jam-send.bron) — ship cue nest; then STOA39 multi-line
+- `20260719.145101` — [STOA39 check-in](20260719/20260719-145101_stoa39-check-in.bron) — after cue-of-jam; send STOA38 first
+- `20260719.144929` — [STOA38 cue-of-jam GREEN](20260719/20260719-144929_stoa38-cue-of-jam-green.bron) — nest cue jam; await send · STOA39 check-in
+- `20260719.144120` — [STOA37 nest jam both send](20260719/20260719-144120_stoa37-nest-jam-both-send.bron) — ship both-mix; then STOA38 cue nest
+- `20260719.143736` — [STOA38 check-in](20260719/20260719-143736_stoa38-check-in.bron) — cue-of-jam shapes; send STOA37 first
+- `20260719.143329` — [STOA37 nest jam both GREEN](20260719/20260719-143329_stoa37-nest-jam-both-green.bron) — both-mix seats; await send · STOA38 cue-of-jam
+- `20260719.140950` — [STOA37 check-in after rest](20260719/20260719-140950_stoa37-check-in.bron) — lean A both-mix · then B round-trip
+- `20260719.010916` — [Rest handoff · morning continue](20260719/20260719-010916_rest-handoff-morning-continue.bron) — ITINERARY dawn card; STOA37 A/B/C
+- `20260719.010738` — [STOA34–36 nest jam send](20260719/20260719-010738_stoa34-36-nest-jam-send.bron) — ship nest jam left/right; STOA37 check-in
+- `20260719.010610` — [STOA36 desk GREEN · kg pause](20260719/20260719-010610_stoa36-desk-green-kg-pause.bron) — full desk suite GREEN; send / STOA37 check-in
+- `20260719.010409` — [STOA36 nest jam right GREEN](20260719/20260719-010409_stoa36-nest-jam-right-green.bron) — jam right mix; await send with STOA34–35
+- `20260719.005650` — [STOA35 nest jam open core GREEN](20260719/20260719-005650_stoa35-nest-jam-open-core-green.bron) — ++ nest jam; await send with STOA34
+- `20260719.005207` — [STOA34 nest jam arms GREEN](20260719/20260719-005207_stoa34-nest-jam-arms-green.bron) — ?:/?-/~ nest jam; await send
+- `20260719.004851` — [Send STOA33 nest jam face](20260719/20260719-004851_send-stoa33-nest-jam.bron) — pier ship; STOA34 nest jam arms
+- `20260719.002726` — [STOA33 nest jam face GREEN](20260719/20260719-002726_stoa33-nest-jam-face-green.bron) — jam-of-mix face; await send
+- `20260719.002221` — [Send STOA32 cue nest GREEN](20260719/20260719-002221_send-stoa32-cue-nest.bron) — (cue …) desks; STOA33 check-in
+- `20260719.001323` — [Send STOA31 STOA32 check-in](20260719/20260719-001323_send-stoa31-stoa32-checkin.bron) — pier ship; STOA32 cue next
+- `20260719.001148` — [STOA31 payload library compose GREEN](20260719/20260719-001148_stoa31-payload-library-compose-green.bron) — /+ payload nest pack; await send
+- `20260719.001002` — [Send STOA30 STOA31 check-in](20260719/20260719-001002_send-stoa30-stoa31-checkin.bron) — pier ship; STOA31 forks next
+- `20260719.000745` — [STOA30 payload-open compose GREEN](20260719/20260719-000745_stoa30-payload-open-compose-green.bron) — face→payload nest pack; await send
+- `20260719.000619` — [Send STOA25-29 STOA30 check-in](20260719/20260719-000619_send-stoa25-29-stoa30-checkin.bron) — pier ship; STOA30 payload+open next
+- `20260719.000324` — [STOA29 nest library compose GREEN](20260719/20260719-000324_stoa29-nest-library-compose-green.bron) — /+ jam pack battery; await send
+- `20260719.000132` — [STOA28 face-to-open-core GREEN](20260719/20260719-000132_stoa28-face-to-open-core-green.bron) — face→nest pack compose; await send
+- `20260718.235804` — [STOA27 nest arm body GREEN](20260718/20260718-235804_stoa27-nest-arm-body-green.bron) — jam/mix/lent/cast ++ bodies; await send
+- `20260718.235530` — [STOA26 library compose GREEN](20260718/20260718-235530_stoa26-library-compose-green.bron) — /+ import open arm; await send
+- `20260718.235220` — [STOA25 open arm body GREEN](20260718/20260718-235220_stoa25-open-arm-body-green.bron) — authored ++ sample/literal; await send
+- `20260718.234809` — [STOA25 language until product direction](20260718/20260718-234809_stoa25-language-until-product-direction.bron) — north star: Glow-authored product
+- `20260718.234632` — [Send STOA24 STOA25 check-in](20260718/20260718-234632_send-stoa24-stoa25-checkin.bron) — pier ship; STOA25 forks next
+- `20260718.234430` — [STOA24 face-to-payload GREEN](20260718/20260718-234430_stoa24-face-to-payload-green.bron) — compose-core-payload; await send
+- `20260718.234338` — [Send STOA23 check-in](20260718/20260718-234338_send-stoa23-checkin.bron) — pier ship; STOA24 forks next
+- `20260718.234311` — [STOA23 check-in before send](20260718/20260718-234311_stoa23-checkin-before-send.bron) — pier lag; STOA24 forks open
+- `20260718.234122` — [STOA23 two-face add GREEN](20260718/20260718-234122_stoa23-two-face-add-green.bron) — compose-core-add; await send
+- `20260718.233813` — [Send STOA22 check-in](20260718/20260718-233813_send-stoa22-checkin.bron) — pier ship; STOA23 forks next
+- `20260718.233317` — [STOA22 check-in before send](20260718/20260718-233317_stoa22-checkin-before-send.bron) — pier lag; STOA23 forks open
+- `20260718.233120` — [STOA22 face-to-three GREEN](20260718/20260718-233120_stoa22-face-to-three-green.bron) — compose-core-three; await send
+- `20260718.232925` — [Send STOA21 check-in](20260718/20260718-232925_send-stoa21-checkin.bron) — pier ship; STOA22 forks next
+- `20260718.232724` — [STOA21 check-in before send](20260718/20260718-232724_stoa21-checkin-before-send.bron) — pier lag; STOA22 forks open
+- `20260718.232419` — [STOA21 typed payload GREEN](20260718/20260718-232419_stoa21-typed-payload-green.bron) — amount=@u32 on |%; await send
+- `20260718.232145` — [Send STOA19-20 check-in](20260718/20260718-232145_send-stoa19-20-checkin.bron) — pier ship; STOA21 forks next
+- `20260718.231814` — [STOA19-20 check-in before send](20260718/20260718-231814_stoa19-20-checkin-before-send.bron) — pier lag; STOA21 forks open
+- `20260718.231511` — [STOA19-20 compose three GREEN](20260718/20260718-231511_stoa19-20-compose-three-green.bron) — face→two-arm + three-arm; await send
+- `20260718.231243` — [Send STOA18 check-in](20260718/20260718-231243_send-stoa18-checkin.bron) — pier ship; STOA19 forks next
+- `20260718.231041` — [STOA18 check-in before send](20260718/20260718-231041_stoa18-checkin-before-send.bron) — pier lag; STOA19 forks open
+- `20260718.230846` — [STOA18 face-to-core GREEN](20260718/20260718-230846_stoa18-face-to-core-green.bron) — compose-core desk; await send
+- `20260718.230754` — [Send STOA17 approve face-core](20260718/20260718-230754_send-stoa17-approve-face-core.bron) — pier ship; STOA18 face→core next
+- `20260718.230550` — [STOA17 check-in before send](20260718/20260718-230550_stoa17-checkin-before-send.bron) — pier lag; STOA18 forks open
+- `20260718.225931` — [STOA17 core payload GREEN](20260718/20260718-225931_stoa17-core-payload-green.bron) — =/ amount on |%; await send
+- `20260718.225613` — [Send STOA15-16 check-in](20260718/20260718-225613_send-stoa15-16-checkin.bron) — pier ship; STOA17 forks next
+- `20260718.225150` — [STOA15-16 two-arm library GREEN](20260718/20260718-225150_stoa15-16-two-arm-library-green.bron) — core-two + lib emit; await send
+- `20260718.224511` — [Send STOA14 approve B then D](20260718/20260718-224511_send-stoa14-approve-b-d.bron) — pier ship; two-arm then library next
+- `20260718.224413` — [STOA15 check-in after core](20260718/20260718-224413_stoa15-checkin-after-core.bron) — send vs two-arm vs compose vs library
+- `20260718.224030` — [STOA14 core double GREEN](20260718/20260718-224030_stoa14-core-double-green.bron) — |% ++ double --; desk core-double
+- `20260718.223834` — [Send STOA12-13 approve cores](20260718/20260718-223834_send-stoa12-13-approve-cores.bron) — pier ship; STOA14 brief+thin next
+- `20260718.223657` — [STOA14 cores check-in](20260718/20260718-223657_stoa14-cores-checkin.bron) — send vs thin battery vs brief-first
+- `20260718.223431` — [STOA13 typed multi GREEN](20260718/20260718-223431_stoa13-typed-multi-green.bron) — @u32 multi-line; desk multi-typed
+- `20260718.221812` — [STOA12 compose add GREEN](20260718/20260718-221812_stoa12-compose-add-green.bron) — face→face→%+; desk compose-add
+- `20260718.221622` — [STOA12 check-in after send](20260718/20260718-221622_stoa12-checkin-after-send.bron) — cores vs typed multi vs %+ compose
+- `20260718.221526` — [Send STOA10-11 compose](20260718/20260718-221526_send-stoa10-11-compose.bron) — pier ship; multi-line + face→call
+- `20260718.212131` — [STOA11 compose call GREEN](20260718/20260718-212131_stoa11-compose-call-green.bron) — face→%-; desk compose-call
+- `20260718.211817` — [STOA10 multi-line GREEN](20260718/20260718-211817_stoa10-multi-line-green.bron) — 2–4 bare faces; desk multi-face
+- `20260718.211531` — [Send SETU6.5 and STOA0-9](20260718/20260718-211531_send-setu65-stoa0-9.bron) — pier ship; STOA10 multi-line next
+- `20260718.211343` — [STOA9 call named GREEN](20260718/20260718-211343_stoa9-call-named-green.bron) — sixteenth head %*; desk call-named
+- `20260718.211059` — [STOA8 call three GREEN](20260718/20260718-211059_stoa8-call-three-green.bron) — fifteenth head %^; desk call-three
+- `20260718.210823` — [STOA7 call two GREEN](20260718/20260718-210823_stoa7-call-two-green.bron) — fourteenth head %+; desk call-two
+- `20260718.205959` — [STOA6 call one GREEN](20260718/20260718-205959_stoa6-call-one-green.bron) — thirteenth head %-; desk call-one
+- `20260718.205715` — [STOA5 list cell GREEN](20260718/20260718-205715_stoa5-list-cell-green.bron) — twelfth head :~; desk cell-list
+- `20260718.205500` — [STOA4 quad cell GREEN](20260718/20260718-205500_stoa4-quad-cell-green.bron) — eleventh head :^; desk cell-quad
+- `20260718.205303` — [STOA3 triple cell GREEN](20260718/20260718-205303_stoa3-triple-cell-green.bron) — tenth head :+; desk cell-triple
+- `20260718.205119` — [STOA witnesses run in-tree](20260718/20260718-205119_stoa-witnesses-run-in-tree.bron) — jam · cell · full desk GREEN
+- `20260718.204634` — [STOA2 cell pair GREEN](20260718/20260718-204634_stoa2-cell-pair-green.bron) — ninth head :-; desk cell-pair
+- `20260718.203656` — [STOA1 jam nest GREEN](20260718/20260718-203656_stoa1-jam-nest-green.bron) — cell-pack (a<<16)|b; desks GREEN
+- `20260718.202737` — [STOA supersedes MAIR](20260718/20260718-202737_stoa-supersedes-mair.bron) — language waymark redraw; STOA0 claimed
+- `20260718.202545` — [MAIR Glow language waymark](20260718/20260718-202545_mair-glow-language-waymark.bron) — first draw; superseded same day
+- `20260718.201917` — [Glow language vs product SLC](20260718/20260718-201917_glow-language-slc-orientation.bron) — eight heads GREEN; no language waymark yet
+- `20260718.201826` — [SETU6.5 lab TX gate GREEN](20260718/20260718-201826_setu65-lab-tx-gate-green.bron) — stand-in refuses; host SKIP; send next
+- `20260718.201530` — [SETU6.5 check-in after send](20260718/20260718-201530_setu65-checkin-after-send.bron) — live TX; await approve or pause
+- `20260718.201510` — [Send SETU6 lab harness](20260718/20260718-201510_send-setu6-lab-harness.bron) — pier ship; SETU6.5 check-in
+- `20260718.201446` — [Phone needed for SETU6?](20260718/20260718-201446_phone-needed-for-setu6.bron) — no for stand-in; SETU6.5 later
+- `20260718.201232` — [SETU6 lab harness GREEN](20260718/20260718-201232_setu6-lab-harness-green.bron) — stand-in; payload 289b; send next
+- `20260718.194250` — [SETU6 check-in after season close](20260718/20260718-194250_setu6-checkin-after-season-close.bron) — CDC-NCM lab; await approve
+- `20260718.194211` — [Send HOLD Wayland · eyes seen](20260718/20260718-194211_send-hold-wayland-eyes-seen.bron) — pier ship; season close kg
+- `20260718.193951` — [HOLD Wayland eyes GREEN · archive](20260718/20260718-193951_hold-wayland-eyes-green.bron) — Desk raster; fold 165; send next
+- `20260718.193720` — [HOLD Wayland eyes check-in](20260718/20260718-193720_hold-wayland-eyes-checkin.bron) — thin face; await approve
+- `20260718.193658` — [Send HOLD1 host look · check-in](20260718/20260718-193658_send-hold1-host-look-checkin.bron) — pier ship; Wayland eyes check-in
+- `20260718.193607` — [HOLD1 host Pixel look GREEN](20260718/20260718-193607_hold1-host-pixel-look.bron) — SETU0→HOLD1 on device; send look
+- `20260718.193240` — [Send HOLD1 Desk Skate hold](20260718/20260718-193240_send-hold1-desk-skate.bron) — pier ship; SETU6 / Wayland eyes check-in
+- `20260718.193122` — [HOLD1 Desk Skate hold GREEN](20260718/20260718-193122_hold1-desk-skate-green.bron) — rows 0–1 on Desk Skate
+- `20260718.192950` — [Send Acme · Glow · waymark hygiene](20260718/20260718-192950_send-acme-glow-waymark-hygiene.bron) — pier ship; HOLD1 build next
+- `20260718.192716` — [Acme · waymark · Glow hygiene](20260718/20260718-192716_acme-waymark-glow-hygiene.bron) — eight heads synced; Quin tutorials; HOLD1 next
+- `20260718.192424` — [HOLD1 thin face after ready](20260718/20260718-192424_hold1-thin-face-ready.bron) — Desk Skate hold chrome; await approve
+- `20260718.192317` — [Send HOLD0 stale-bin honesty](20260718/20260718-192317_send-hold0-stale-bin-honesty.bron) — pier ship; pause; HOLD1 check-in
+- `20260718.192129` — [Optimal path · operator state](20260718/20260718-192129_optimal-path-forward-state.bron) — send honesty; optional usb_desk; pause
+- `20260718.190855` — [Explain HOLD0 meaning](20260718/20260718-190855_explain-hold0-meaning.bron) — plain read of hold line + host chain
+- `20260718.190736` — [HOLD0 stale-bin honesty GREEN](20260718/20260718-190736_hold0-stale-bin-honesty.bron) — local ignores leftovers; host SKIP clears
+- `20260718.190639` — [Host HOLD0 look · season close](20260718/20260718-190639_host-hold0-look-season-close.bron) — Pixel pull GREEN; stale ping/frame named
+- `20260718.190346` — [adb no device · Pixel USB](20260718/20260718-190346_adb-no-device-pixel-attached.bron) — 10a on USB; plugdev/auth then re-pull
+- `20260718.190001` — [Direction after HOLD0](20260718/20260718-190001_direction-after-hold0.bron) — host look to close season; HOLD1 check-in
+- `20260718.185709` — [Send HOLD0 Desk Hearth Hold](20260718/20260718-185709_send-hold0-desk-hearth-hold.bron) — pier ship; HOLD1 / SETU6 check-in
+- `20260718.185604` — [What do I need to do](20260718/20260718-185604_what-do-i-need-to-do.bron) — send HOLD0; optional host pull; HOLD1 check-in
+- `20260718.185349` — [Desk Hearth Hold · HOLD0 GREEN](20260718/20260718-185349_desk-hearth-hold-season-hold0.bron) — season open; Desk hold line; SETU6 parked
+- `20260718.184733` — [Send SETU5 · thoughts](20260718/20260718-184733_send-setu5-thoughts.bron) — pier SETU5; SETU6 check-in or pause
+- `20260718.184537` — [SETU5 device payload GREEN](20260718/20260718-184537_setu5-device-payload-green.bron) — max_frame 554; lane_frame.bin; send next
+- `20260718.184449` — [Send SETU4 · kg SETU5](20260718/20260718-184449_send-setu4-kg-setu5.bron) — pier SETU4; SETU5 device-wire payload next
+- `20260718.184323` — [SETU4 framed live lane GREEN](20260718/20260718-184323_setu4-framed-live-lane-green.bron) — framed UDP :38502; gadget SKIP; send next
+- `20260718.184214` — [Send SETU3 · affirm kg SETU4](20260718/20260718-184214_send-setu3-affirm-kg-setu4.bron) — pier SETU3; SETU4 framed live lane next
+- `20260718.134613` — [SETU3 NCM frame GREEN](20260718/20260718-134613_setu3-ncm-frame-green.bron) — virtio+eth wrap; send next; SETU4 check-in
+- `20260718.134458` — [Send SETU2 · approve SETU3 next](20260718/20260718-134458_send-setu2-approve-setu3.bron) — pier SETU2; SETU3 NCM frame under approval
+- `20260718.134348` — [Send SETU1 · SETU2 hosted UDP GREEN](20260718/20260718-134348_send-setu1-setu2-hosted-udp.bron) — pier SETU1; SETU2 demo GREEN; send next
+- `20260718.134246` — [Send SETU1 lane ping](20260718/20260718-134246_send-setu1-lane-ping.bron) — pier ship; SETU2 under approval next
+- `20260718.134110` — [kg SETU1 persist · host GREEN](20260718/20260718-134110_kg-setu1-persist-host-green.bron) — lane_ping.bin hold; host SKIP; send next
+- `20260718.134020` — [SETU1 screen check answer](20260718/20260718-134020_setu1-screen-check-answer.bron) — no Pixel look required; usb_desk optional
+- `20260718.133853` — [SETU1 approved · lane ping GREEN](20260718/20260718-133853_setu1-approve-lane-ping-green.bron) — usb_desk seals; local refuses; send next
+- `20260718.133735` — [Thoughts after SETU0.5 send](20260718/20260718-133735_thoughts-after-setu05-send.bron) — check-in SETU1; not kg into NCM
+- `20260718.133705` — [Send SETU0.5 and compose briefs](20260718/20260718-133705_send-setu05-compose-briefs.bron) — pier ship; SETU1 check-in next
+- `20260718.133619` — [Compose briefs + SETU0.5 seat](20260718/20260718-133619_compose-briefs-setu05-seat.bron) — ER+revive seated; Desk station GREEN
+- `20260718.133400` — [Fuse Amber Amphora with Glass Desk?](20260718/20260718-133400_fuse-amber-amphora-glass-desk.bron) — compose later; finish SETU0.5 first
+- `20260718.133125` — [Where this is going](20260718/20260718-133125_where-this-is-going.bron) — Wired Glass → Desk pier → Mantrapod same fold
+- `20260718.133102` — [Thoughts after SETU0 send](20260718/20260718-133102_thoughts-after-setu0-send.bron) — wire_lane gap · Desk apply before NCM?
+- `20260718.132937` — [Send LULU3-5 and SETU0](20260718/20260718-132937_send-lulu3-5-setu0.bron) — pier ship; SETU1 check-in next
+- `20260718.132736` — [SETU0 affirmed · GREEN host pull](20260718/20260718-132736_setu0-affirm-green-host-pull.bron) — adb pulled kd hearth; Desk agree; send next
+- `20260718.132503` — [LULU5 GREEN · preference ladder closed](20260718/20260718-132503_lulu5-green-ladder-closed.bron) — cell affirmed; SETU0 check-in next
+- `20260718.132031` — [LULU4 GREEN · LULU5 cellular](20260718/20260718-132031_lulu4-green-lulu5-cell.bron) — wire affirmed; cell preference packed
+- `20260718.131549` — [LULU3 GREEN · LULU4 wire_lane](20260718/20260718-131549_lulu3-green-lulu4-wire.bron) — home edit affirmed; wire preference packed
+- `20260718.130940` — [LULU3 home_id editor](20260718/20260718-130940_lulu3-home-id-editor.bron) — Settings home row · draft · pointer; pack for Pixel
+- `20260718.130756` — [Send LULU·ZETA6 · affirm next](20260718/20260718-130756_send-lulu-zeta6-affirm-next.bron) — pier ship; Wired Glass + home_id affirmed next
+- `20260718.130606` — [LULU2 hold-open GREEN · closed](20260718/20260718-130606_lulu2-hold-open-green-closed.bron) — perfect; LULU0–2 closed; next check-in or send
+- `20260718.130251` — [LULU2 Pixel GREEN · hold-open](20260718/20260718-130251_lulu2-pixel-green-hold-open.bron) — list under finger via timerfd; release quiet
+- `20260718.125835` — [LULU2 Settings list affirmed](20260718/20260718-125835_lulu2-settings-list-affirmed.bron) — long-press list · tap select · pack for Pixel
+- `20260718.125639` — [LULU1 persist GREEN · rung closed](20260718/20260718-125639_lulu1-persist-green-closed.bron) — restart keeps preset; LULU2 check-in next
+- `20260718.125312` — [LULU1 cycle GREEN · Bron persist](20260718/20260718-125312_lulu1-cycle-green-bron-persist.bron) — cycle affirmed; files/kd/hearth.bron save/load
+- `20260718.124821` — [LULU1 status GREEN · tap cycle](20260718/20260718-124821_lulu1-status-green-tap-cycle.bron) — status affirmed; tap row 1 cycles presets
+- `20260718.124610` — [LULU1 Pixel GREEN · hearth status](20260718/20260718-124610_lulu1-pixel-green-hearth-status.bron) — larger glyphs affirmed; row 1 `kd · scaled_540`
+- `20260718.124259` — [LULU1 Hearth apply GREEN](20260718/20260718-124259_lulu1-hearth-apply-green.bron) — apply_glass · scaled_540 default · pack for Pixel
+- `20260718.123900` — [LULU0 Hearth Bron GREEN](20260718/20260718-123900_lulu0-hearth-bron-green.bron) — home_id + display_preset mold
+- `20260718.123705` — [ZETA6 Pixel look GREEN](20260718/20260718-123705_zeta6-pixel-look-green.bron) — P1–P6 ret · ^ send; thin Skate intentional
+- `20260718.123245` — [remember adb install + restart](20260718/20260718-123245_remember-adb-install-restart.bron) — outer-terminal reprint
+- `20260718.122938` — [ZETA6 ret newline · ^ send](20260718/20260718-122938_zeta6-ret-newline-send-key.bron) — device-free GREEN; pack for Pixel
+- `20260718.122145` — [LULU · ZETA6 · Hearth align send](20260718/20260718-122145_lulu-zeta6-hearth-align-send.bron) — waymark LULU; ret→newline design
+- `20260717.214340` — [JABS2 ret toggle vs cycle](20260717/20260717-214340_jabs2-ret-toggle-vs-cycle.bron) — prefer cycle N; gesture check-in
+- `20260717.213745` — [JABS2 bare ret empty chat](20260717/20260717-213745_jabs2-bare-ret-empty-chat.bron) — first-tap ret → chat ·
+- `20260717.213242` — [remember rule · Glow first code](20260717/20260717-213242_remember-rule-save-glow-first.bron) — ITINERARY card · Acme open-runes note
+- `20260717.213058` — [JABS2 finish-zone + mode round-trip](20260717/20260717-213058_jabs2-finish-zone-mode-roundtrip.bron) — close row 13 only; TAME bans GREEN
+- `20260717.212257` — [kg JABS2 live chat face](20260717/20260717-212257_kg-jabs2-live-chat-face.bron) — Dexter ret → chat · line; pack GREEN
+- `20260717.205837` — [adb empty — host terminal](20260717/20260717-205837_adb-empty-host-terminal.bron) — jail has no /dev/bus/usb
+- `20260717.205718` — [Remind adb reconnect keyboard](20260717/20260717-205718_remind-adb-reconnect-keyboard.bron) — install + NativeActivity start
+- `20260717.191417` — [BRB save progress · resume brief](20260717/20260717-191417_brb-save-progress-resume-brief.bron) — pier clean; glass season seated
+- `20260717.191030` — [Seat waymark JABS · ZETA4 · JABS2 glass](20260717/20260717-191030_seat-waymark-jabs-zeta4-jabs2.bron) — draw JABS; rules; prune; force-push seat
+- `20260717.190646` — [ZETA4 look GREEN · JABS2 glass](20260717/20260717-190646_zeta4-look-kg-sala-b2-glass.bron) — glyphs loved; JABS2 rows 14–15 on Pixel
+- `20260717.190139` — [ZETA4 look GREEN · distinct glyphs](20260717/20260717-190139_zeta4-look-green-distinct-glyphs.bron) — Pixel GREEN; per-face silhouettes
+- `20260717.185842` — [ZETA4 emoji nod witness install](20260717/20260717-185842_zeta4-emoji-nod-witness-install.bron) — atlas · UTF-8 · APK on Pixel
+- `20260717.185037` — [Send ZETA2b look and Glow forms](20260717/20260717-185037_send-zeta2b-look-glow-forms.bron) — commit · push · pier
+- `20260717.184837` — [ZETA2b ZETA5 Pixel look GREEN](20260717/20260717-184837_zeta2b-zeta5-pixel-look-green.bron) — type · delete · tabs · :)
+- `20260717.183924` — [ZETA2b hit density pack install](20260717/20260717-183924_zeta2b-hit-density-pack-install.bron) — label-span hit; phone scale; APK on Pixel
+- `20260717.183622` — [Seat Glow OS · Desk · Glass](20260717/20260717-183622_seat-glow-os-desk-glass.bron) — Keaton chose unification + forms
+- `20260717.183425` — [Write form-factor note · send · kg](20260717/20260717-183425_write-form-factor-note-send-kg.bron) — naming/orientation silo; ship; ZETA2b next
+- `20260717.183345` — [ZETA Pixel typing GREEN · align gaps](20260717/20260717-183345_zeta-pixel-typing-green-align.bron) — type works; ZETA2b hit-box/density next
+- `20260717.183015` — [ZETA3 caret blink · kg](20260717/20260717-183015_zeta3-caret-blink-kg.bron) — `|` pulse via timerfd; pack+install; eyes next
+- `20260717.182418` — [TAME Lap 2 · kg means keep going](20260717/20260717-182418_tame-lap2-kg-keep-going.bron) — Lap2 GREEN; kg≠send; zero-assert 3 left
+- `20260717.181715` — [TAME SLC realign · Lap 1 GREEN](20260717/20260717-181715_tame-slc-realign-lap1.bron) — advise truth; DoD rules; glass asserts; memcpy 0
+- `20260717.180933` — [ZETA2 tap→Action · ZETA1 Pixel look](20260717/20260717-180933_zeta2-tap-action-pixel-look.bron) — keyboard visible; taps drain to Dexter; install Success
+- `20260717.180725` — [ZETA1 letters paint + hit · kg](20260717/20260717-180725_zeta1-letters-paint-hit-kg.bron) — QWERTY on Skate 14–17; pack GREEN
+- `20260717.180147` — [Seat waymark ZETA and ZETA0 layouts](20260717/20260717-180147_waymark-seat-zeta-and-zeta0.bron) — ZETA drawn; layout tables GREEN; ZETA1 next
+- `20260717.175328` — [Glass keyboard · iOS-inspired · align · send](20260717/20260717-175328_glass-keyboard-ios-inspired-align-send.bron) — own Skate QWERTY; layout tables next; IME/caret gaps named
+- `20260717.174805` — [Dexter D3 live KEY drain · kg](20260717/20260717-174805_dexter-d3-live-key-drain-kg.bron) — showSoftInput + KEY→Action; pack GREEN
+- `20260717.174434` — [Check-in after Dexter D2](20260717/20260717-174434_check-in-after-dexter-d2.bron) — lean soft-keyboard drain or rest
+- `20260717.174336` — [Dexter D2 Pixel look GREEN · kg](20260717/20260717-174336_dexter-d2-pixel-look-green-kg.bron) — Keaton confirmed title + DEXTER line on device
+- `20260717.174257` — [Guidance — Dexter D2 next](20260717/20260717-174257_guidance-dexter-d2-next.bron) — host install + eyes on DEXTER line
+- `20260717.174151` — [kg — tree already clean](20260717/20260717-174151_kg-tree-already-clean.bron) — main at fee0fbf8f0; nothing left to ship
+- `20260717.174036` — [Compass card · foundations compress · send](20260717/20260717-174036_compass-card-foundations-compress-send.bron) — decline archive/Bron essays; COMPASS + card; three-prompt ROADMAP align
+- `20260717.173749` — [Witness habitat · markup pipeline · send](20260717/20260717-173749_witness-habitat-markup-pipeline-send.bron) — Acme face for happy zone; fusion spine; Cursor-and-the-compass scaffold
+- `20260717.173248` — [Dexter D0+D1 glass send](20260717/20260717-173248_dexter-d0-d1-glass-send.bron) — DEXTER line · glow; pack GREEN; D2 next
+- `20260717.173042` — [Check-in after Dexter Dill align](20260717/20260717-173042_check-in-after-dexter-align.bron) — lean D0 or rest; hold jam and Dill
+- `20260717.172832` — [Align Dexter Dill Glow — research silo ROADMAP send](20260717/20260717-172832_align-dexter-dill-glow-send.bron) — active-reviving silo; D0–D2 named; mix held closed
+- `20260717.172720` — [Check-in — Dexter · Dill · Glow GrapheneOS](20260717/20260717-172720_check-in-dexter-dill-glow.bron) — Dexter under Brushstroke/Sala; Dill stays gap
+- `20260717.172403` — [Check-in after mix-as-arm](20260717/20260717-172403_check-in-after-mix-as-arm.bron) — rest · B2 layout · or jam if appetite
+- `20260717.171840` — [Glow mix-as-arm send](20260717/20260717-171840_glow-mix-as-arm-send.bron) — ?: ?- ?~ XOR arms; mix form closed
+- `20260717.171524` — [Glow (mix …) under =/ — second paren nest](20260717/20260717-171524_glow-mix-paren-under-face.bron) — XOR desk face-mix; jam still refuses
+- `20260717.171232` — [Glow lent seating brief for mix](20260717/20260717-171232_glow-lent-mix-seating-brief.bron) — lent code path mapped; mix = Hoon XOR next
+- `20260717.171116` — [Check-in after B1 Pixel look](20260717/20260717-171116_check-in-after-b1-pixel.bron) — lean mix paren or B2 glass layout
+- `20260717.171015` — [Sala B1 Pixel look GREEN](20260717/20260717-171015_sala-b1-pixel-look-green.bron) — Keaton confirmed title + B1 line on device
+- `20260717.170610` — [Pixel look — Sala B1 glass lines](20260717/20260717-170610_pixel-look-sala-b1-glass.bron) — title + row 11 carriage; host install
+- `20260717.170335` — [Sala B1 glass carriage send](20260717/20260717-170335_sala-b1-glass-carriage-send.bron) — welcome path paints row 11; pack GREEN
+- `20260717.165932` — [Check-in after lent-as-arm](20260717/20260717-165932_check-in-after-lent-as-arm.bron) — lean product HAWM/TUBE or one new paren
+- `20260717.165715` — [Glow lent-as-arm closes the form](20260717/20260717-165715_glow-lent-as-arm.bron) — ?: ?- ?~ length arms; foundations unmoved
+- `20260717.165200` — [Compass vs Glow surface — check-in](20260717/20260717-165200_compass-vs-glow-surface-check-in.bron) — keep foundations; working layer for rune surface
+- `20260717.165112` — [Check-in after lent paren send](20260717/20260717-165112_check-in-after-lent-paren.bron) — lean lent-as-arm next
+- `20260717.164748` — [Glow (lent …) first paren nest form](20260717/20260717-164748_glow-lent-paren-nest-form.bron) — expr lent_of under =/; desk GREEN
+- `20260717.164450` — [Check-in after shared nest expr send](20260717/20260717-164450_check-in-after-shared-nest-expr.bron) — paren op vs tokens vs HAWM2
+- `20260717.164350` — [Glow shared nest expr — first general-lexer lap](20260717/20260717-164350_glow-shared-nest-expr-first-lexer-lap.bron) — expr.rye; lowers share nests; GREEN
+- `20260717.163946` — [TWO_ROOMS send then check-in](20260717/20260717-163946_two-rooms-send-and-check-in.bron) — git nib 26cbe45419; three doors named
+- `20260717.163748` — [TWO_ROOMS Quin refresh and doorway GREEN](20260717/20260717-163748_two-rooms-quin-and-doorway-green.bron) — Voice Quin; 25 Status tokens; witness GREEN
+- `20260717.163310` — [Techno-Optimist gratitude to Quin then send Glow @u64](20260717/20260717-163310_techno-optimist-quin-and-u64-send.bron) — manifesto Voice Quin; nest @u64 to pier
+- `20260717.163004` — [Nested @u64 closes unsigned cast family](20260717/20260717-163004_nested-u64-cast-family.bron) — face + arm nests; desk GREEN
+- `20260717.162620` — [Quin intentionally unpaired — five settled](20260717/20260717-162620_quin-intentionally-unpaired.bron) — five boot images; no twin hunt
+- `20260717.162114` — [Quin seated as fifth OS variant](20260717/20260717-162114_quin-fifth-os-variant.bron) — beside Reya · Riyo · Trey · Triz; twin open
+- `20260717.161823` — [Glass covers Network · Sensors toggles](20260717/20260717-161823_glass-covers-network-sensors.bron) — load-bearing toggles; pack path unchanged
+- `20260717.161727` — [Glow template bron refresh then continue](20260717/20260717-161727_glow-template-bron-refresh.bron) — Quin · linux host · Eastern-capable clock in templates
+- `20260717.161626` — [README front-door sync + OTHER_SENSORS send](20260717/20260717-161626_readme-sync-and-other-sensors-send.bron) — run-today names Glow desk + TUBE/HAWM
+- `20260717.161448` — [TUBE0.5 sensors emits OTHER_SENSORS](20260717/20260717-161448_tube05-sensors-other-sensors-emit.bron) — closed table row; pairs with Sensors Grant
+- `20260717.161357` — [send GrapheneOS product-edge stack then kg](20260717/20260717-161357_send-grapheneos-product-edge.bron) — Resource Scope · Network · Sensors · glass cover to pier
+- `20260717.161220` — [Glass covers declared Storage · Contact](20260717/20260717-161220_glass-covers-storage-contact.bron) — covering scopes load-bearing; pack path unchanged
+- `20260717.161013` — [Sensors Grant mold + gated TUBE1 admit](20260717/20260717-161013_sensors-grant-gated-admit.bron) — appears zeroed; gated door + glass live
+- `20260717.160828` — [Network Grant wired into TUBE1 admit](20260717/20260717-160828_tube1-network-grant-wire.bron) — networked door + glass; deny/revoke appear down
+- `20260717.160607` — [Network Grant — GrapheneOS Network toggle parallel](20260717/20260717-160607_network-grant-grapheneos-toggle.bron) — binary grant mold GREEN; TUBE1 wire next
+- `20260717.155846` — [Contact Scope + multi-scope admit GREEN](20260717/20260717-155846_contact-scope-multi-scope-admit.bron) — Resource Scope stacks Storage + Contact; pack GREEN
+- `20260717.155651` — [TUBE1 admits through Storage Scope](20260717/20260717-155651_tube1-storage-scope-wire.bron) — scoped door + glass; pack GREEN
+- `20260717.155520` — [Glow Storage Scope — GrapheneOS parallel in Glow](20260717/20260717-155520_glow-storage-scope-grapheneos-parallel.bron) — grant mold GREEN; GrapheneOS path stays Glow
+- `20260717.155335` — [send expression nests and Zig truth ruling then check-in](20260717/20260717-155335_send-expression-nests-and-truth.bron) — nests + truth to pier; next seam needs a ruling
+- `20260717.155111` — [?~ then/else arm expressions — decimal and cast](20260717/20260717-155111_null-arm-expressions.bron) — ?~ nests 1 0; ?-category arms closed at this width
+- `20260717.154943` — [seat Glow Zig ambient truth · Nock loobean seam-only](20260717/20260717-154943_glow-truth-zig-ambient-seated.bron) — ruling + witness + LEXICON; desk GREEN
+- `20260717.154803` — [counsel — Glow loobean vs Zig/Rye bool](20260717/20260717-154803_glow-loobean-vs-zig-bool-counsel.bron) — counsel before seating; superseded by 154943 ruling
+- `20260717.154644` — [?- mint/send arm expressions — decimal and cast](20260717/20260717-154644_switch-arm-expressions.bron) — ?- nests %mint 1 %send 0; desk GREEN
+- `20260717.154458` — [?: then/else arm expressions — decimal and cast](20260717/20260717-154458_conditional-arm-expressions.bron) — ?: nests 1 0 and ^- arms; desk GREEN
+- `20260717.154327` — [first nested value expression — =/ over ^-](20260717/20260717-154327_face-nested-cast-expression.bron) — face nests cast-of-literal; desk GREEN
+- `20260717.154204` — [send Glow body-deepen lap then check-in](20260717/20260717-154204_send-body-deepen-lap.bron) — deepen batch to pier; next seam needs a ruling
+- `20260717.154131` — [=* named source — = category bodies complete](20260717/20260717-154131_alias-named-source-complete.bron) — stock source; deepen lap closed at this width
+- `20260717.154012` — [Glow desk looks run in-jail by Quin](20260717/20260717-154012_glow-self-look-in-jail.bron) — no Android; stop asking Keaton to re-run glow_run
+- `20260717.153951` — [=. trailing mutate value deepens GREEN](20260717/20260717-153951_mutate-trailing-value.bron) — decimal after root; mutate-root.glow 42
+- `20260717.153900` — [?~ then/else named arms deepen GREEN](20260717/20260717-153900_null-named-arms.bron) — root/cont arms; null-records.glow
+- `20260717.153756` — [=/ trailing bound value deepens GREEN](20260717/20260717-153756_face-trailing-value.bron) — decimal after face clause; face-root.glow 42
+- `20260717.153656` — [?- mint/send named arms deepen GREEN](20260717/20260717-153656_switch-named-arms.bron) — %mint/%send faces; switch-kind.glow
+- `20260717.153609` — [Counsel — do not make Glow the %g vane](20260717/20260717-153609_glow-not-g-vane-counsel.bron) — Pool stays Gall-role; Glow stays language
+- `20260717.153525` — [?: then/else named arms deepen GREEN](20260717/20260717-153525_conditional-named-arms.bron) — delivered/dropped if-expression; if-gth.glow
+- `20260717.153403` — [Lent emit deepens to shrinking fold GREEN](20260717/20260717-153403_lent-shrinking-fold.bron) — while len>0 + slice[1..]; BoundExceeded on non-shrink
+- `20260717.152923` — [send eight-head emit and cast auras](20260717/20260717-152923_send-eight-heads-and-auras.bron) — =. · =* · @u8–@u64 to pier
+- `20260717.152847` — [Glow cast auras @u8–@u64 GREEN](20260717/20260717-152847_glow-cast-aura-family.bron) — unsigned family; cast-u8.glow; deepen still check-in
+- `20260717.152730` — [Glow =* alias — eight heads emit GREEN](20260717/20260717-152730_glow-alias-eight-complete.bron) — no-copy alias; all eight hops via desk
+- `20260717.152622` — [Glow =. mutate lowers to Rye GREEN](20260717/20260717-152622_glow-mutate-root-lower.bron) — bare root var write; mutate-root.glow
+- `20260717.152511` — [send Glow generator hops through ?~](20260717/20260717-152511_send-glow-hops-through-null.bron) — ?- · =/ · ?~ to pier; kg to =.
+- `20260717.152438` — [Glow ?~ null lowers to Rye GREEN](20260717/20260717-152438_glow-null-records-lower.bron) — records.cur optional null-test; null-records.glow
+- `20260717.152245` — [Glow =/ face lowers to Rye GREEN](20260717/20260717-152245_glow-face-root-lower.bron) — next-root=@u32 / bare tick; face-root.glow
+- `20260717.152019` — [Glow ?- switch lowers to Rye GREEN](20260717/20260717-152019_glow-switch-kind-lower.bron) — kind.cur-record mint/send; switch-kind.glow
+- `20260717.151854` — [send Glow generator hops through ?:](20260717/20260717-151854_send-glow-hops-through-if.bron) — lent · cast · conditional to pier; kg to ?-
+- `20260717.151802` — [Glow ?: conditional lowers to Rye GREEN](20260717/20260717-151802_glow-conditional-lower.bron) — (gth tick 32) / ready if-else; if-gth.glow
+- `20260717.151634` — [Glow ^- @u32 cast lowers to Rye GREEN](20260717/20260717-151634_glow-cast-u32-lower.bron) — checked cast hop; cast-u32.glow via glow_run
+- `20260717.151515` — [glow_run desk witness wired into parity](20260717/20260717-151515_glow-run-desk-parity.bron) — bound-tick + lent-tick via Rishi hand
+- `20260717.151403` — [Glow (lent …) bound lowers to Rye GREEN](20260717/20260717-151403_glow-lent-bound-lower.bron) — runtime face.len emit; lent-tick.glow via glow_run
+- `20260717.151200` — [Keaton confirmed glow_run bound-tick GREEN](20260717/20260717-151200_glow-run-bound-tick-green.bron) — first generator hop closed on his hand
+- `20260717.151000` — [First Glow generator hop — |- lowers to Rye GREEN](20260717/20260717-151000_glow-generator-first-hop.bron) — bound-tick.glow via Rishi hand
+- `20260717.150600` — [Glow generator vs Rishi naming — recommendation](20260717/20260717-150600_glow-generator-rishi-naming.bron) — keep Rishi shell; glow build + |- lower first
+- `20260717.150453` — [Eighth rune head — =* alias GREEN](20260717/20260717-150453_eighth-rune-alias.bron) — = category complete; unsaved with =.
+- `20260717.150409` — [Seventh rune head — =. mutate GREEN](20260717/20260717-150409_seventh-rune-mutate.bron) — = category deepened; unsaved
+- `20260717.150309` — [send TUBE glass through TUBE7 and six rune heads](20260717/20260717-150309_send-glass-and-rune-heads.bron) — pier holds glass + |- ^- ?: ?- =/ ?~
+- `20260717.150219` — [Sixth rune head — ?~ null test GREEN](20260717/20260717-150219_sixth-rune-null.bron) — ? category deepened; composition heads covered; batch unsaved
+- `20260717.150053` — [Fifth rune head — =/ face binding GREEN](20260717/20260717-150053_fifth-rune-face.bron) — = category opened; parity wired; batch unsaved
+- `20260717.150005` — [Fourth rune head — ?- exhaustive switch GREEN](20260717/20260717-150005_fourth-rune-switch.bron) — subject wing parses; parity wired; batch unsaved
+- `20260717.145912` — [Third rune category — ?: if/then/else head GREEN](20260717/20260717-145912_third-rune-conditional.bron) — test child parses; parity wired; batch unsaved
+- `20260717.145547` — [TUBE4 look and TUBE7 glass path GREEN — batch](20260717/20260717-145547_tube4-tube7-glass-green-batch.bron) — Pixel rail closed; TUBE6/HAWM2 check-in; send later
+- `20260717.145400` — [TUBE3 look closed; TUBE4 glass painted — batch](20260717/20260717-145400_tube3-look-tube4-glass-batch.bron) — pack GREEN; host look for market · acquired; send later
+- `20260717.144620` — [TUBE3 sealed fetch painted on Skate Android glass](20260717/20260717-144620_tube3-fetch-on-skate-glass.bron) — pack GREEN; host look for sealed · fetch ok
+- `20260717.144536` — [TUBE2 Pixel look GREEN — send and kg](20260717/20260717-144536_tube2-pixel-look-green.bron) — look closed; TUBE3 glass next
+- `20260717.144300` — [send TUBE2 glass and OpenVM silo](20260717/20260717-144300_send-tube2-and-openvm-silo.bron) — pier holds glass path + soundness silo
+- `20260717.144200` — [silo OpenVM pairing-hint soundness lessons](20260717/20260717-144200_openvm-soundness-silo.bron) — composition · hints · cheap membership; Sigma pin affirmed
+- `20260717.144132` — [pause — save TUBE2 glass progress](20260717/20260717-144132_pause-save-tube2-glass.bron) — commit glass path; look still open
+- `20260717.140800` — [TUBE2 publish painted on Skate Android glass](20260717/20260717-140800_tube2-pub-on-skate-glass.bron) — pack GREEN; host look for published · verified
+- `20260717.140623` — [send TUBE5 Mantra revision and glass tip](20260717/20260717-140623_send-tube5-glass-tip.bron) — Pixel look confirmed; ship to pier
+- `20260717.140320` — [tube05 install proof — no adb device](20260717/20260717-140320_tube05-install-no-adb-device.bron) — Pixel on USB; adb still empty; authorize then retry
+- `20260717.135727` — [TUBE5 tip painted on Skate Android glass](20260717/20260717-135727_tube5-tip-on-skate-glass.bron) — pack GREEN; host look for tip rev2 next
+- `20260717.135248` — [TUBE5 Mantra-revision witness GREEN](20260717/20260717-135248_tube5-mantra-revision-green.bron) — dense rev history + rollback-by-selection; parity wired
+- `20260717.135053` — [Send TUBE4 market-rail GREEN](20260717/20260717-135053_send-tube4-market-rail.bron) — commit + push; kg TUBE5 Mantra revision next
+- `20260717.134355` — [TUBE4 market-rail witness GREEN](20260717/20260717-134355_tube4-market-rail-green.bron) — Exchange + Neth settle + fetch unlock; parity wired
+- `20260717.134122` — [Send TUBE3 sealed resin-fetch GREEN](20260717/20260717-134122_send-tube3-resin-fetch.bron) — commit + push; next TUBE4 market rail
+- `20260717.134037` — [TUBE3 sealed resin-fetch witness GREEN](20260717/20260717-134037_tube3-resin-fetch-green.bron) — Comlink seal + published-set gate; parity wired
+- `20260717.133825` — [Send TUBE2 signed publish GREEN](20260717/20260717-133825_send-tube2-publish.bron) — commit + push; kg TUBE3 resin fetch next
+- `20260717.131618` — [TUBE2 signed publish witness GREEN](20260717/20260717-131618_tube2-publish-green.bron) — Granary name-fact + admit before install; parity wired
+- `20260717.131410` — [Send TUBE1 admission and glass gate GREEN](20260717/20260717-131410_send-tube1-glass-pixel.bron) — commit + push; kg TUBE2 next
+- `20260717.131404` — [TUBE1 glass gate seen on the Pixel](20260717/20260717-131404_tube1-glass-seen-on-pixel.bron) — install proof GREEN; T1 title confirmed on glass
+- `20260717.131158` — [TUBE1 glass gate wired into NativeActivity onCreate](20260717/20260717-131158_tube1-glass-gate-on-create.bron) — R2 paints only after admit; pack GREEN
+- `20260717.131030` — [TUBE1 admission witness GREEN](20260717/20260717-131030_tube1-admission-green.bron) — manifest caps must match grant; parity_ch01 wired
+- `20260717.130922` — [Send R2 surface on Pixel GREEN](20260717/20260717-130922_send-r2-surface-pixel.bron) — commit + push; kg next after glass present seam
+- `20260717.130848` — [Sala R2 surface seen on the Pixel](20260717/20260717-130848_r2-surface-seen-on-pixel.bron) — install proof GREEN; three panels confirmed on glass
+- `20260717.130735` — [Sala R2 multi-panel surface on Skate Android glass](20260717/20260717-130735_sala-r2-surface-on-skate-glass.bron) — pack GREEN; host look for three panels next
+- `20260717.130610` — [Send R1 thin-view on Pixel GREEN](20260717/20260717-130610_send-r1-thin-view-pixel.bron) — commit + push; kg R2 multi-panel next
+- `20260717.130602` — [Sala R1 thin-view seen on the Pixel](20260717/20260717-130602_r1-thin-view-seen-on-pixel.bron) — install proof GREEN; ledger lines confirmed on glass
+- `20260717.130434` — [Sala R1 thin-view painted on Skate Android glass](20260717/20260717-130434_sala-r1-thin-view-on-skate-glass.bron) — pack GREEN; host look for ledger lines next
+- `20260717.130209` — [Send Bron archive fold through 20260716](20260717/20260717-130209_send-bron-archive-fold.bron) — commit + push origin and codeberg; kg thin-view next
+- `20260717.130124` — [Archive fold Bron days through 20260716](20260717/20260717-130124_archive-bron-days-through-16.bron) — tool accepts .bron; 209 logs folded; today stays flat
+- `20260717.125858` — [Skate look confirmed on the Pixel](20260717/20260717-125858_skate-seen-on-pixel.bron) — Skate glyphs on GrapheneOS glass; install proof GREEN
+- `20260717.125642` — [Skate grid rasterized onto Android NativeActivity glass](20260717/20260717-125642_skate-on-android-glass.bron) — pack GREEN; host look next
+- `20260717.125302` — [Tap to close confirmed on the Pixel](20260717/20260717-125302_tap-to-close-confirmed.bron) — chrome + input finish seen on GrapheneOS
+- `20260717.125143` — [Surface chrome — title GREEN, match color, tap to close](20260717/20260717-125143_surface-title-tap-close.bron) — pack GREEN; host look next
+- `20260717.124843` — [First NativeActivity surface seen on the Pixel](20260717/20260717-124843_surface-seen-on-pixel.bron) — Keaton confirmed hex on GrapheneOS glass; install proof GREEN
+- `20260717.124458` — [First NativeActivity surface paints the Sala root hex](20260717/20260717-124458_native-activity-surface-hex.bron) — ANativeWindow software paint; pack GREEN; host look next
+- `20260717.124130` — [What next after TUBE0.5 closed end to end](20260717/20260717-124130_what-next-after-tube05.bron) — surface vs rest vs other lanes
+- `20260717.124029` — [ANativeActivity_finish reproven GREEN on the Pixel](20260717/20260717-124029_tube05-finish-pixel-reproof-green.bron) — finish after write; install proof still GREEN
+- `20260717.123314` — [ANativeActivity_finish after Sala fold; Pixel GREEN sent](20260717/20260717-123314_tube05-finish-after-fold.bron) — e7496585b9 sent; finish + libandroid; pack re-GREEN
+- `20260717.123226` — [TUBE0.5 install GREEN on the physical Pixel 10a](20260717/20260717-123226_tube05-pixel-install-green.bron) — stallion / GrapheneOS; sala_root.txt matches HAWM1; TUBE0.5 end to end
+- `20260717.123100` — [Pixel shows adb unauthorized](20260717/20260717-123100_adb-unauthorized-pixel.bron) — Allow dialog was the gate; witness error improved
+- `20260717.122450` — [Instructions for next steps after TUBE0.5 HAWM0 GREEN](20260717/20260717-122450_next-steps-tube05-pixel.bron) — Pixel USB install proof named as the finishing edge
+- `20260717.122231` — [Model fields corrected to Cursor Grok 4.5 300k High Fast](20260717/20260717-122231_model-field-corrected-to-grok.bron) — Claude credits exhausted; afternoon TUBE0.5 logs re-attributed; Framework host profile updated
+- `20260717.122010` — [TUBE0.5 on-device install GREEN on HAWM0](20260717/20260717-122010_tube05-hawm0-install-green.bron) — host HAWM0 boot + install proof; sala_root.txt matches HAWM1 root
+- `20260717.121800` — [Ten batches roll-up — align and send](20260717/20260717-121800_align-send-ten-batches.md) ([Bron](20260717/20260717-121800_align-send-ten-batches.bron)) — MD summary of Pixel→HAWM3→TUBE0.5 arc; compass align; host install proof named as the one next step
+- `20260717.121743` — [TUBE0.5 jailed slice polished and re-verified GREEN](20260717/20260717-121743_tube05-jailed-slice-ready.bron) — rye rebuilt with build-lib; HAWM door + README synced; pack witness still GREEN
+- `20260717.121625` — [TUBE0.5 install-proof host witness ready](20260717/20260717-121625_tube05-install-proof-host-witness.bron) — one-shot adb install + sala_root.txt check; jail correctly refuses without a device
+- `20260717.121445` — [Sala B0 fold wired into TUBE0.5 NativeActivity APK](20260717/20260717-121445_sala-fold-wired-tube05-apk.bron) — pack worker ASCII fix; NDK-linked arm64+x86_64 APK; onCreate runs HAWM1 demo fold; host-side witness GREEN
+- `20260717.020613` — [gratitude/grapheneos/ docs mirror finished](20260717/20260717-020613_grapheneos-gratitude-mirror-complete.bron) — CLI install guide, features overview, and appreciation README complete the mirror
+- `20260717.022323` — [Dual-door docs orientation — HAWM and TUBE compressors](20260717/20260717-022323_dual-door-docs-hawm-tube.bron) — language path and device path meet at packaging; LEXICON seats both ladders
+- `20260717.021857` — [TUBE0.5 host-side packaging GREEN](20260717/20260717-021857_tube05-host-side-apk-green.bron) — first Glow NativeActivity APK packed (permission emission, envelope, signed APK)
+- `20260717.014522` — [No Kotlin transpiler; a native-activity shim instead](20260717/20260717-014522_native-activity-shim-decision.bron) — Glow stays native for Android; TUBE0.5 named as the missing installable-APK rung
+- `20260717.013213` — [GrapheneOS installed on the physical Pixel 10a](20260717/20260717-013213_grapheneos-installed-pixel-10a.bron) — HAWM3 touches real hardware for the first time on the whole ladder

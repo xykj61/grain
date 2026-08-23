@@ -1,6 +1,6 @@
 # Lila and the Long Return — the general prioritization rule
 
-**Seated:** `20260811.214023` on Keaton's word · **Status:** Living · **Kin:** [`the Long Return`](../foundations/20260811-211431_the-lindy-effect-and-the-long-return.md) · [`reds-first`](reds-first.md) · [`align`](align.md) · Lexicon **crux** · **Lila and the Long Return**
+**Seated:** `20260811.214023` on Keaton's word · **Status:** Living · **Kin:** [`the Long Return`](../../foundations/20260811-211431_the-lindy-effect-and-the-long-return.md) · [`reds-first`](reds-first.md) · [`align`](align.md) · Lexicon **crux** · **Lila and the Long Return**
 
 When ordering any allocation — a **season**, **equinox**, **journey**, **quest**, or a single **round** — order it by two fused priorities, in this order:
 
@@ -19,4 +19,4 @@ When ordering any allocation — a **season**, **equinox**, **journey**, **quest
 
 A tree that grows fast can spend its best hours on whatever shouts loudest. the Long Return points the hours at what will outlast the shouting; Lila points them at the hard move that actually advances the work rather than the easy one that merely adds to the count. Together they answer *what next?* the same way at every scale — most durable, then hardest-solvable — so the plan compounds instead of scattering.
 
-Canonical Cursor twin: [`../.cursor/rules/lila-and-the-long-return.mdc`](../.cursor/rules/lila-and-the-long-return.mdc).
+Canonical Cursor twin: [`../.cursor/rules/lila-and-the-long-return.mdc`](../../.cursor/rules/lila-and-the-long-return.mdc).

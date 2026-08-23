@@ -1,81 +1,86 @@
 # Session-logs overflow shelf
-- `20260722.125845` — [EDT Framework host stamp return](20260722-125845_edt-framework-host-convention.bron) — America/New_York; UDT era stays
-- `20260722.130034` — [EDT Ubuntu Settings confirmed](20260722-130034_edt-ubuntu-settings-confirmed.bron) — date EDT; localtime New York
-- `20260722.130125` — [STOA217 hex literal lex GREEN](20260722-130125_stoa217-hex-literal-lex.bron) — Kind.hex_lit; bare @ux kept
-- `20260722.130254` — [STOA215-217 send · STOA218 check-in](20260722-130254_stoa215-217-send-stoa218-checkin.bron) — pier send; rec C3 parse
-- `20260722.130329` — [ITINERARY git nib after STOA218](20260722-130329_remember-git-nib-stoa218.bron) — pin 756a83b8bb
-- `20260722.130604` — [STOA219 face=lit parse GREEN](20260722-130604_stoa219-face-lit-parse.bron) — parse_face_lit; lower held
-- `20260722.130753` — [Hoon.hoon study vs Glow path](20260722-130753_hoon-hoon-study-vs-glow-path.bron) — selective study; not continuous mint mirror
-- `20260722.130902` — [STOA220 face=lit lower GREEN](20260722-130902_stoa220-face-lit-lower-emit.bron) — lit bytes; demos absent
-- `20260722.131153` — [Archive fold · STOA221 fixture lits](20260722-131153_archive-fold-stoa221-fixture-lits.bron) — 613 folded; C5 GREEN
-- `20260722.131348` — [STOA219-221 send · STOA222 check-in](20260722-131348_stoa219-221-send-stoa222-checkin.bron) — pier send; rec product wire
-- `20260722.131432` — [ITINERARY git nib after STOA222](20260722-131432_remember-git-nib-stoa222.bron) — pin 6285b8182ee4
-- `20260722.131511` — [STOA223 product fixture lit wire](20260722-131511_stoa223-product-fixture-lit-desk-wire.bron) — lit_desk_binds_pins GREEN
-- `20260722.131841` — [STOA223 send · STOA224 check-in](20260722-131841_stoa223-send-stoa224-checkin.bron) — pier send; rec fact-line lits
-- `20260722.131928` — [ITINERARY git nib after STOA224](20260722-131928_remember-git-nib-stoa224.bron) — pin 91ad5674502a
-- `20260722.132020` — [STOA225 fact-line demo lit sample](20260722-132020_stoa225-fact-line-demo-lit-sample.bron) — sig/fact pins · desk bind GREEN
-- `20260722.132320` — [STOA225 send · STOA226 check-in](20260722-132320_stoa225-send-stoa226-checkin.bron) — pier send; rec rest
-- `20260722.132402` — [ITINERARY git nib after STOA226](20260722-132402_remember-git-nib-stoa226.bron) — pin d1feb98c479a
-- `20260722.132533` — [STOA227 demo line pin emit GREEN](20260722-132533_stoa227-demo-line-pin-emit.bron) — pins ≡ claim_demo_line
-- `20260722.132705` — [STOA228 after demo pin emit check-in](20260722-132705_stoa228-after-demo-pin-emit-checkin.bron) — rec send; then append/fold
-- `20260722.132757` — [STOA227 send · STOA228 · lean B next](20260722-132757_stoa227-send-stoa228-checkin.bron) — pier send; append wire
-- `20260722.132831` — [ITINERARY git nib after STOA228](20260722-132831_remember-git-nib-stoa228.bron) — pin 0db7ef379153
-- `20260722.133004` — [STOA229 append first-event pin emit](20260722-133004_stoa229-append-first-event-pin-emit.bron) — event 1 from pins; HAWM1
-- `20260722.133103` — [ITINERARY git nib after STOA229](20260722-133103_remember-git-nib-stoa229.bron) — pin 779751bbeecc
-- `20260722.133211` — [STOA230 after append pin wire check-in](20260722-133211_stoa230-after-append-pin-wire-checkin.bron) — rec send; then rest
-- `20260722.133343` — [STOA230 send · rest next](20260722-133343_stoa230-send-rest-next.bron) — pier send; lean B rest
-- `20260722.133429` — [ITINERARY git nib after STOA230](20260722-133429_remember-git-nib-stoa230.bron) — pin 82aae70dc231
-- `20260722.133631` — [After rest · rec events 2–3 pins](20260722-133631_after-rest-rec-events-2-3-pins.bron) — kg same recipe as event 1
-- `20260722.133717` — [STOA231 demo events 2–3 pin emit](20260722-133717_stoa231-demo-events-2-3-pin-emit.bron) — pins · desk · append GREEN
-- `20260722.134008` — [STOA231 send · STOA232 check-in](20260722-134008_stoa231-send-stoa232-checkin.bron) — pier send; rec rest
-- `20260722.134048` — [ITINERARY git nib after STOA232](20260722-134048_remember-git-nib-stoa232.bron) — pin 9f7786b86115
-- `20260722.134205` — [STOA233 runtime desk emit GREEN](20260722-134205_stoa233-runtime-desk-emit.bron) — desk extract ≡ pins; HAWM1
-- `20260722.134415` — [STOA233 send · STOA234 · round-close](20260722-134415_stoa233-send-stoa234-round-close.bron) — auto send+check-in seated
-- `20260722.134513` — [ITINERARY git nib after STOA234](20260722-134513_remember-git-nib-stoa234.bron) — pin d24701ce4b20
-- `20260722.134657` — [STOA235–236 desk-file claim round](20260722-134657_stoa235-236-desk-file-claim-round.bron) — from_desk_file; NA asset next
-- `20260722.135324` — [STOA237–238 embedded desk round](20260722-135324_stoa237-238-embedded-desk-round.bron) — embed in .so; Pixel eyes next
-- `20260722.134735` — [ITINERARY git nib after STOA236](20260722-134735_remember-git-nib-stoa236.bron) — pin 580f607c8b61
-- `20260722.135406` — [ITINERARY git nib after STOA238](20260722-135406_remember-git-nib-stoa238.bron) — pin 6aa85ec080f6
-- `20260722.135605` — [STOA239–240 Pixel eyes round](20260722-135605_stoa239-240-pixel-eyes-round.bron) — HAWM1 on device; name next door
-- `20260722.135647` — [ITINERARY git nib after STOA240](20260722-135647_remember-git-nib-stoa240.bron) — pin a0b9fc9b2300
-- `20260722.135731` — [Recommend after Pixel eyes arc](20260722-135731_rec-after-pixel-eyes-arc.bron) — size face_lit or pause
-- `20260722.141044` — [STOA243–244 authored line body round](20260722-141044_stoa243-244-line-body-round.bron) — format/parse own body; next authored surface
-- `20260722.140125` — [ITINERARY git nib after STOA242](20260722-140125_remember-git-nib-stoa242.bron) — pin b5fc164eda97
-- `20260722.140100` — [STOA241–242 face_lit agree round](20260722-140100_stoa241-242-face-lit-agree-round.bron) — product stand-in ≡ Glow pins; name next door
-- `20260722.141353` — [STOA245–246 authored sign body round](20260722-141353_stoa245-246-sign-body-round.bron) — sign/verify own body; digest next
-- `20260722.141102` — [ITINERARY git nib after STOA244](20260722-141102_remember-git-nib-stoa244.bron) — pin c003ffbb7bfe
-- `20260722.141553` — [ITINERARY git nib after STOA248](20260722-141553_remember-git-nib-stoa248.bron) — pin 361969662bc1
-- `20260722.141542` — [STOA247–248 authored digest body round](20260722-141542_stoa247-248-digest-body-round.bron) — Sha3 own body; name next door
-- `20260722.141403` — [ITINERARY git nib after STOA246](20260722-141403_remember-git-nib-stoa246.bron) — pin c874d977a872
-- `20260722.141731` — [ITINERARY git nib after STOA250](20260722-141731_remember-git-nib-stoa250.bron) — pin aee500ffe5a0
-- `20260722.141720` — [STOA249–250 authored fields body round](20260722-141720_stoa249-250-fields-body-round.bron) — parse own body; name next door
-- `20260722.142054` — [STOA251–252 N-field emit inventary](20260722-142054_stoa251-252-n-field-inventory-round.bron) — language return; identity emit next
-- `20260722.142101` — [ITINERARY git nib after STOA252](20260722-142101_remember-git-nib-stoa252.bron) — pin e0e9a43e8168
-- `20260722.142353` — [STOA253–254 bartis N-field identity](20260722-142353_stoa253-254-n-field-identity-round.bron) — emit_n_field_identity; barket twin next
-- `20260722.142353` — [ITINERARY git nib after STOA254](20260722-142353_remember-git-nib-stoa254.bron) — pin 8492f8195698
-- `20260722.143410` — [STOA255–256 barket N-field identity](20260722-143410_stoa255-256-barket-n-field-identity-round.bron) — barket emit_n_field_identity; flip next
-- `20260722.143510` — [ITINERARY git nib after STOA256](20260722-143510_remember-git-nib-stoa256.bron) — pin df21de606e7f
-- `20260722.143539` — [ITINERARY git nib STOA256 fix](20260722-143539_remember-git-nib-stoa256-fix.bron) — pin df21de606e7f on living card
-- `20260722.143648` — [Check-in HAWM fleet and shape-only](20260722-143648_checkin-hawm-fleet-shape-only.bron) — 2A shape living · 1A HAWM harvest
-- `20260722.144300` — [STOA257–258 shape-only living](20260722-144300_stoa257-258-shape-only-living-round.bron) — living -shape; study alias held; flip next
-- `20260722.144745` — [ITINERARY git nib after STOA258](20260722-144745_remember-git-nib-stoa258.bron) — pin 02b62dc59096
-- `20260722.144811` — [ITINERARY git nib STOA258 fix](20260722-144811_remember-git-nib-stoa258-fix.bron) — pin 02b62dc59096 on living card
-- `20260722.144843` — [Check-in humanity green runes Glow name](20260722-144843_checkin-humanity-green-runes-glow-name.bron) — finish · meter · keep Glow
-- `20260722.145017` — [Surveys close · Glow name grounds](20260722-145017_surveys-close-glow-name-grounds.bron) — cite acceptance specs on check-in
-- `20260722.145236` — [STOA259–260 bartis N-field flip](20260722-145236_stoa259-260-n-field-flip-round.bron) — flip emit; barket twin next
-- `20260722.145314` — [ITINERARY git nib after STOA260](20260722-145314_remember-git-nib-stoa260.bron) — pin 171b5c7bbdff
-- `20260722.145840` — [STOA261–262 barket N-field flip](20260722-145840_stoa261-262-barket-n-field-flip-round.bron) — barket flip emit; inventary deepen closed; finishing edge next
-- `20260722.145936` — [ITINERARY git nib after STOA262](20260722-145936_remember-git-nib-stoa262.bron) — pin c1ed098ebcf8
-- `20260722.150432` — [STOA263–264 Pixel authored-fold eyes](20260722-150432_stoa263-264-pixel-authored-fold-eyes.bron) — pack+install HAWM1; Dexter→Sala next
-- `20260722.150537` — [ITINERARY git nib after STOA264](20260722-150537_remember-git-nib-stoa264.bron) — pin baa28401bc4c
-- `20260722.150725` — [STOA265 Dexter→Sala append research](20260722-150725_stoa265-dexter-sala-append-research.bron) — live append unwired; lean A device-free
-- `20260722.150806` — [STOA265 Dexter Sala append check-in](20260722-150806_stoa265-dexter-sala-append-checkin.bron) — lean A typed memo→append_event
-- `20260722.150910` — [ITINERARY git nib after STOA265](20260722-150910_remember-git-nib-stoa265.bron) — pin 722d8c560422
-- `20260722.151101` — [STOA266–267 typed memo append](20260722-151101_stoa266-267-typed-memo-append-round.bron) — glow memo via append_event; Dexter helper next
-- `20260722.151156` — [ITINERARY git nib after STOA267](20260722-151156_remember-git-nib-stoa267.bron) — pin 51d744686e0e
-- `20260722.151335` — [STOA268–269 Dexter Sala helper](20260722-151335_stoa268-269-dexter-sala-helper-round.bron) — submit→append_typed_memo; glass wire next
-- `20260722.151427` — [ITINERARY git nib after STOA269](20260722-151427_remember-git-nib-stoa269.bron) — pin 72d20f7ba7db
-- `20260722.151834` — [STOA270–271 live-root wire](20260722-151834_stoa270-271-live-root-wire-round.bron) — submit→live root; paint next
-- `20260722.151924` — [ITINERARY git nib after STOA271](20260722-151924_remember-git-nib-stoa271.bron) — pin cbab2ee0e209
-- `20260722.152217` — [STOA272–273 live-root Skate paint](20260722-152217_stoa272-273-live-root-paint-round.bron) — LIVE · N · hex8; HAWM 1A next when mobile
-- `20260722.152325` — [ITINERARY git nib after STOA273](20260722-152325_remember-git-nib-stoa273.bron) — pin de1113bad8c5
+
+> **Rows without a link.** Some rows below name a lap whose log never landed -- checked against
+> the whole of git history on `20260823.184309`, the named file was never added in any commit. The row
+> keeps its stamp and its meaning, and carries no link, since a link promises a file a reader can open.
+
+- `20260722.125845` — [EDT Framework host stamp return](20260722/20260722-125845_edt-framework-host-convention.bron) — America/New_York; UDT era stays
+- `20260722.130034` — [EDT Ubuntu Settings confirmed](20260722/20260722-130034_edt-ubuntu-settings-confirmed.bron) — date EDT; localtime New York
+- `20260722.130125` — [STOA217 hex literal lex GREEN](20260722/20260722-130125_stoa217-hex-literal-lex.bron) — Kind.hex_lit; bare @ux kept
+- `20260722.130254` — [STOA215-217 send · STOA218 check-in](20260722/20260722-130254_stoa215-217-send-stoa218-checkin.bron) — pier send; rec C3 parse
+- `20260722.130329` — [ITINERARY git nib after STOA218](20260722/20260722-130329_remember-git-nib-stoa218.bron) — pin 756a83b8bb
+- `20260722.130604` — [STOA219 face=lit parse GREEN](20260722/20260722-130604_stoa219-face-lit-parse.bron) — parse_face_lit; lower held
+- `20260722.130753` — [Hoon.hoon study vs Glow path](20260722/20260722-130753_hoon-hoon-study-vs-glow-path.bron) — selective study; not continuous mint mirror
+- `20260722.130902` — [STOA220 face=lit lower GREEN](20260722/20260722-130902_stoa220-face-lit-lower-emit.bron) — lit bytes; demos absent
+- `20260722.131153` — [Archive fold · STOA221 fixture lits](20260722/20260722-131153_archive-fold-stoa221-fixture-lits.bron) — 613 folded; C5 GREEN
+- `20260722.131348` — [STOA219-221 send · STOA222 check-in](20260722/20260722-131348_stoa219-221-send-stoa222-checkin.bron) — pier send; rec product wire
+- `20260722.131432` — [ITINERARY git nib after STOA222](20260722/20260722-131432_remember-git-nib-stoa222.bron) — pin 6285b8182ee4
+- `20260722.131511` — [STOA223 product fixture lit wire](20260722/20260722-131511_stoa223-product-fixture-lit-desk-wire.bron) — lit_desk_binds_pins GREEN
+- `20260722.131841` — [STOA223 send · STOA224 check-in](20260722/20260722-131841_stoa223-send-stoa224-checkin.bron) — pier send; rec fact-line lits
+- `20260722.131928` — [ITINERARY git nib after STOA224](20260722/20260722-131928_remember-git-nib-stoa224.bron) — pin 91ad5674502a
+- `20260722.132020` — [STOA225 fact-line demo lit sample](20260722/20260722-132020_stoa225-fact-line-demo-lit-sample.bron) — sig/fact pins · desk bind GREEN
+- `20260722.132320` — [STOA225 send · STOA226 check-in](20260722/20260722-132320_stoa225-send-stoa226-checkin.bron) — pier send; rec rest
+- `20260722.132402` — [ITINERARY git nib after STOA226](20260722/20260722-132402_remember-git-nib-stoa226.bron) — pin d1feb98c479a
+- `20260722.132533` — [STOA227 demo line pin emit GREEN](20260722/20260722-132533_stoa227-demo-line-pin-emit.bron) — pins ≡ claim_demo_line
+- `20260722.132705` — [STOA228 after demo pin emit check-in](20260722/20260722-132705_stoa228-after-demo-pin-emit-checkin.bron) — rec send; then append/fold
+- `20260722.132757` — [STOA227 send · STOA228 · lean B next](20260722/20260722-132757_stoa227-send-stoa228-checkin.bron) — pier send; append wire
+- `20260722.132831` — [ITINERARY git nib after STOA228](20260722/20260722-132831_remember-git-nib-stoa228.bron) — pin 0db7ef379153
+- `20260722.133004` — [STOA229 append first-event pin emit](20260722/20260722-133004_stoa229-append-first-event-pin-emit.bron) — event 1 from pins; HAWM1
+- `20260722.133103` — ITINERARY git nib after STOA229 `20260722-133103_remember-git-nib-stoa229.bron` *(log never landed)* — pin 779751bbeecc
+- `20260722.133211` — [STOA230 after append pin wire check-in](20260722/20260722-133211_stoa230-after-append-pin-wire-checkin.bron) — rec send; then rest
+- `20260722.133343` — [STOA230 send · rest next](20260722/20260722-133343_stoa230-send-rest-next.bron) — pier send; lean B rest
+- `20260722.133429` — ITINERARY git nib after STOA230 `20260722-133429_remember-git-nib-stoa230.bron` *(log never landed)* — pin 82aae70dc231
+- `20260722.133631` — [After rest · rec events 2–3 pins](20260722/20260722-133631_after-rest-rec-events-2-3-pins.bron) — kg same recipe as event 1
+- `20260722.133717` — [STOA231 demo events 2–3 pin emit](20260722/20260722-133717_stoa231-demo-events-2-3-pin-emit.bron) — pins · desk · append GREEN
+- `20260722.134008` — [STOA231 send · STOA232 check-in](20260722/20260722-134008_stoa231-send-stoa232-checkin.bron) — pier send; rec rest
+- `20260722.134048` — ITINERARY git nib after STOA232 `20260722-134048_remember-git-nib-stoa232.bron` *(log never landed)* — pin 9f7786b86115
+- `20260722.134205` — [STOA233 runtime desk emit GREEN](20260722/20260722-134205_stoa233-runtime-desk-emit.bron) — desk extract ≡ pins; HAWM1
+- `20260722.134415` — [STOA233 send · STOA234 · round-close](20260722/20260722-134415_stoa233-send-stoa234-round-close.bron) — auto send+check-in seated
+- `20260722.134513` — ITINERARY git nib after STOA234 `20260722-134513_remember-git-nib-stoa234.bron` *(log never landed)* — pin d24701ce4b20
+- `20260722.134657` — [STOA235–236 desk-file claim round](20260722/20260722-134657_stoa235-236-desk-file-claim-round.bron) — from_desk_file; NA asset next
+- `20260722.135324` — [STOA237–238 embedded desk round](20260722/20260722-135324_stoa237-238-embedded-desk-round.bron) — embed in .so; Pixel eyes next
+- `20260722.134735` — ITINERARY git nib after STOA236 `20260722-134735_remember-git-nib-stoa236.bron` *(log never landed)* — pin 580f607c8b61
+- `20260722.135406` — ITINERARY git nib after STOA238 `20260722-135406_remember-git-nib-stoa238.bron` *(log never landed)* — pin 6aa85ec080f6
+- `20260722.135605` — [STOA239–240 Pixel eyes round](20260722/20260722-135605_stoa239-240-pixel-eyes-round.bron) — HAWM1 on device; name next door
+- `20260722.135647` — ITINERARY git nib after STOA240 `20260722-135647_remember-git-nib-stoa240.bron` *(log never landed)* — pin a0b9fc9b2300
+- `20260722.135731` — [Recommend after Pixel eyes arc](20260722/20260722-135731_rec-after-pixel-eyes-arc.bron) — size face_lit or pause
+- `20260722.141044` — [STOA243–244 authored line body round](20260722/20260722-141044_stoa243-244-line-body-round.bron) — format/parse own body; next authored surface
+- `20260722.140125` — ITINERARY git nib after STOA242 `20260722-140125_remember-git-nib-stoa242.bron` *(log never landed)* — pin b5fc164eda97
+- `20260722.140100` — [STOA241–242 face_lit agree round](20260722/20260722-140100_stoa241-242-face-lit-agree-round.bron) — product stand-in ≡ Glow pins; name next door
+- `20260722.141353` — [STOA245–246 authored sign body round](20260722/20260722-141353_stoa245-246-sign-body-round.bron) — sign/verify own body; digest next
+- `20260722.141102` — ITINERARY git nib after STOA244 `20260722-141102_remember-git-nib-stoa244.bron` *(log never landed)* — pin c003ffbb7bfe
+- `20260722.141553` — ITINERARY git nib after STOA248 `20260722-141553_remember-git-nib-stoa248.bron` *(log never landed)* — pin 361969662bc1
+- `20260722.141542` — [STOA247–248 authored digest body round](20260722/20260722-141542_stoa247-248-digest-body-round.bron) — Sha3 own body; name next door
+- `20260722.141403` — ITINERARY git nib after STOA246 `20260722-141403_remember-git-nib-stoa246.bron` *(log never landed)* — pin c874d977a872
+- `20260722.141731` — ITINERARY git nib after STOA250 `20260722-141731_remember-git-nib-stoa250.bron` *(log never landed)* — pin aee500ffe5a0
+- `20260722.141720` — [STOA249–250 authored fields body round](20260722/20260722-141720_stoa249-250-fields-body-round.bron) — parse own body; name next door
+- `20260722.142054` — [STOA251–252 N-field emit inventary](20260722/20260722-142054_stoa251-252-n-field-inventory-round.bron) — language return; identity emit next
+- `20260722.142101` — ITINERARY git nib after STOA252 `20260722-142101_remember-git-nib-stoa252.bron` *(log never landed)* — pin e0e9a43e8168
+- `20260722.142353` — [STOA253–254 bartis N-field identity](20260722/20260722-142353_stoa253-254-n-field-identity-round.bron) — emit_n_field_identity; barket twin next
+- `20260722.142353` — ITINERARY git nib after STOA254 `20260722-142353_remember-git-nib-stoa254.bron` *(log never landed)* — pin 8492f8195698
+- `20260722.143410` — [STOA255–256 barket N-field identity](20260722/20260722-143410_stoa255-256-barket-n-field-identity-round.bron) — barket emit_n_field_identity; flip next
+- `20260722.143510` — ITINERARY git nib after STOA256 `20260722-143510_remember-git-nib-stoa256.bron` *(log never landed)* — pin df21de606e7f
+- `20260722.143539` — ITINERARY git nib STOA256 fix `20260722-143539_remember-git-nib-stoa256-fix.bron` *(log never landed)* — pin df21de606e7f on living card
+- `20260722.143648` — [Check-in HAWM fleet and shape-only](20260722/20260722-143648_checkin-hawm-fleet-shape-only.bron) — 2A shape living · 1A HAWM harvest
+- `20260722.144300` — [STOA257–258 shape-only living](20260722/20260722-144300_stoa257-258-shape-only-living-round.bron) — living -shape; study alias held; flip next
+- `20260722.144745` — ITINERARY git nib after STOA258 `20260722-144745_remember-git-nib-stoa258.bron` *(log never landed)* — pin 02b62dc59096
+- `20260722.144811` — ITINERARY git nib STOA258 fix `20260722-144811_remember-git-nib-stoa258-fix.bron` *(log never landed)* — pin 02b62dc59096 on living card
+- `20260722.144843` — [Check-in humanity green runes Glow name](20260722/20260722-144843_checkin-humanity-green-runes-glow-name.bron) — finish · meter · keep Glow
+- `20260722.145017` — [Surveys close · Glow name grounds](20260722/20260722-145017_surveys-close-glow-name-grounds.bron) — cite acceptance specs on check-in
+- `20260722.145236` — [STOA259–260 bartis N-field flip](20260722/20260722-145236_stoa259-260-n-field-flip-round.bron) — flip emit; barket twin next
+- `20260722.145314` — ITINERARY git nib after STOA260 `20260722-145314_remember-git-nib-stoa260.bron` *(log never landed)* — pin 171b5c7bbdff
+- `20260722.145840` — [STOA261–262 barket N-field flip](20260722/20260722-145840_stoa261-262-barket-n-field-flip-round.bron) — barket flip emit; inventary deepen closed; finishing edge next
+- `20260722.145936` — ITINERARY git nib after STOA262 `20260722-145936_remember-git-nib-stoa262.bron` *(log never landed)* — pin c1ed098ebcf8
+- `20260722.150432` — [STOA263–264 Pixel authored-fold eyes](20260722/20260722-150432_stoa263-264-pixel-authored-fold-eyes.bron) — pack+install HAWM1; Dexter→Sala next
+- `20260722.150537` — ITINERARY git nib after STOA264 `20260722-150537_remember-git-nib-stoa264.bron` *(log never landed)* — pin baa28401bc4c
+- `20260722.150725` — [STOA265 Dexter→Sala append research](20260722/20260722-150725_stoa265-dexter-sala-append-research.bron) — live append unwired; lean A device-free
+- `20260722.150806` — [STOA265 Dexter Sala append check-in](20260722/20260722-150806_stoa265-dexter-sala-append-checkin.bron) — lean A typed memo→append_event
+- `20260722.150910` — ITINERARY git nib after STOA265 `20260722-150910_remember-git-nib-stoa265.bron` *(log never landed)* — pin 722d8c560422
+- `20260722.151101` — [STOA266–267 typed memo append](20260722/20260722-151101_stoa266-267-typed-memo-append-round.bron) — glow memo via append_event; Dexter helper next
+- `20260722.151156` — ITINERARY git nib after STOA267 `20260722-151156_remember-git-nib-stoa267.bron` *(log never landed)* — pin 51d744686e0e
+- `20260722.151335` — [STOA268–269 Dexter Sala helper](20260722/20260722-151335_stoa268-269-dexter-sala-helper-round.bron) — submit→append_typed_memo; glass wire next
+- `20260722.151427` — ITINERARY git nib after STOA269 `20260722-151427_remember-git-nib-stoa269.bron` *(log never landed)* — pin 72d20f7ba7db
+- `20260722.151834` — [STOA270–271 live-root wire](20260722/20260722-151834_stoa270-271-live-root-wire-round.bron) — submit→live root; paint next
+- `20260722.151924` — ITINERARY git nib after STOA271 `20260722-151924_remember-git-nib-stoa271.bron` *(log never landed)* — pin cbab2ee0e209
+- `20260722.152217` — [STOA272–273 live-root Skate paint](20260722/20260722-152217_stoa272-273-live-root-paint-round.bron) — LIVE · N · hex8; HAWM 1A next when mobile
+- `20260722.152325` — ITINERARY git nib after STOA273 `20260722-152325_remember-git-nib-stoa273.bron` *(log never landed)* — pin de1113bad8c5
