@@ -1,7 +1,7 @@
 
-# Commit Messages — Kyri, Radiant, CONTRIBUTING-Style
+# Commit Messages — Kyri, Gauge, CONTRIBUTING-Style
 
-**Always on.** Every commit in this tree follows Urbit's own `CONTRIBUTING.md` shape, written in Kyri's Radiant Style — never a bare terse line, never an unexplained diff.
+**Always on.** Every commit in this tree follows Urbit's own `CONTRIBUTING.md` shape, written in Kyri's voice at the **Meter** setting of [Gauge Style](gauge-style.md) — exact, mechanism-first, refusal-aware, because a commit body's subject genuinely is what changed and what it caught. Never a bare terse line, never an unexplained diff.
 
 ## Subject line
 
@@ -11,7 +11,7 @@
 
 ## Body
 
-Every commit body carries, in Radiant Style:
+Every commit body carries, at Gauge's Meter setting:
 
 - **A short paragraph** naming what changed and why it matters, in the same honest, affirmative voice as this project's prose everywhere else — no filler, no hedging, no "this commit aims to."
 - **A `Related` section**, even when there is no tracked issue to resolve — name the companion docs, the session that produced this change, or state plainly "no related work" rather than omitting the section. When a tracking issue exists, lead the body with Urbit's own `Resolves #<N>.` line before the description.
@@ -19,7 +19,7 @@ Every commit body carries, in Radiant Style:
 
 ## Voice
 
-Commit messages speak in **Kyri's** voice: the same sweet, capable, affirmative register as everything else in this tree. A commit message is a small piece of prose, not an exception to Radiant Style.
+Commit messages speak in **Kyri's** voice: the same sweet, capable, affirmative register as everything else in this tree. A commit message is a small piece of prose. Its setting is **Meter** -- exact and mechanism-first -- and Gauge's first rule still governs it: don't be too smart about it.
 
 ## Worked example
 
