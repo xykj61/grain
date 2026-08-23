@@ -1,0 +1,189 @@
+# tools/tool_path_resolve.rish -- find a tool's home from a reference that may be stale.
+#
+# WHY THIS TOOL EXISTS. `tools/` holds 1,915 flat files against the 256 the mark law names --
+# 7.5x over, and past GitHub's 1,000-entry listing cap, so the web view of the room is already
+# truncated for anyone browsing. The room folds by FIRST SPRIG LETTER (Keaton's word,
+# `20260823.130056`), which moves every one of those files and stops every reference already
+# written at the flat path from landing. Measured `20260823.124407`: 14,151 references name a
+# `tools/<file>` path, of which 2,442 live in files that may be repointed and 2,866 sit in dated
+# testimony that keeps every word it ever wrote. So a stale reference is RESOLVED here rather
+# than rewritten, exactly as `tools/dated_path_resolve.rish` does for the `date/YYYYMMDD/` fold.
+#
+# THE SHAPE THIS RESOLVES, measured `20260823.131241` on 1,915 flat files. One letter leaves two
+# rooms over bound -- `c` at 331 and `a` at 291 -- so those two split one letter deeper: `al` at
+# 241, `ca` at 117, `cr` at 107, `co` at 69. Twenty-one letter rooms and a handful of two-letter
+# ones, every one under 256.
+#
+# WHY IT CAN WORK AT ALL, and it is the same property that makes the day fold safe. The new path
+# is a pure function of the basename: `caravan_x.rish` yields `c` yields `tools/c/caravan_x.rish`,
+# computable with no index, no table, and no memory of which files moved. The two-letter rooms
+# are TRIED rather than looked up, so no list of which letters split can go stale -- if `m` ever
+# crosses the bound and splits, this tool already resolves `m` references without being edited.
+#
+# THE FIVE READINGS, first hit winning. The order is deliberate -- the readings that cost nothing
+# come first, the pure computation before the index, and the index before giving up.
+#   1. as written, from the citing file's own directory -- the shell resolves it, so no path
+#      normalization is written here and none can be written wrongly. This is also the reading
+#      that answers correctly BEFORE the fold runs, and for every path the fold leaves alone.
+#   2. as written, root-relative, with leading ../ dropped
+#   3. THE LETTER RULE, pure: <room>/<first letter>/<basename>, and <room>/<first two letters>/
+#      <basename> for a room that split one deeper -- computed from the basename alone. For a
+#      BARE basename the room is read off the CITING file instead, since a bare reference was a
+#      sibling and a fold is precisely what separates siblings.
+#   4. by basename across every tracked file -- recovers a move the letter rule cannot predict
+#   5. missing -- reported plainly, never invented
+#
+# WHAT IT NEVER DOES. It does not move a file, edit a reference, or guess. A basename living at
+# two paths is reported as ambiguous with both named, and so is the case where the one-letter and
+# two-letter candidates BOTH stand -- under a correct fold only one of them exists, so both
+# existing means the room is mid-move and no single answer is safe. Choosing one silently is how
+# a resolver starts lying.
+#
+# WHY A LETTER ROOM CANNOT COLLIDE with the seven subdirectories `tools/` already holds -- `bin`,
+# `enrich`, `fixtures`, `gen`, `hooks`, and the two `proven_seat_*` guests. Every one is a word of
+# three characters or more, and every room this rule computes is one or two. Measured rather than
+# assumed, and asserted by the witness.
+#
+# USAGE
+#   rishi/bin/rishi run tools/tool_path_resolve.rish <reference> [<citing-file>]
+#
+#   $ rishi/bin/rishi run tools/tool_path_resolve.rish tools/caravan_suite_witness.rish
+#   verdict=home
+#   home=tools/caravan_suite_witness.rish
+#
+# Exit is permanent-failure when the reference resolves nowhere, so a caller can gate on it.
+#
+# Proven by tools/tool_path_witness.rish. Kin: tools/dated_path_resolve.rish (the sibling this
+# is modelled on), .claude/rules/stamp-and-name.md (the mark law and the 256 bound), and
+# expanding-prompts/20260823-124407_the-ranked-remainder.md (the round this opens).
+#
+# Run from the repository root.
+
+assert length args != 0 else "tool-path-resolve: name a reference -- rishi/bin/rishi run tools/tool_path_resolve.rish <reference> [<citing-file>]"
+
+let reference = args[0]
+let argc = length args
+let citer = ""
+if argc != 1 then let citer = args[1]
+
+assert length reference != 0 else "tool-path-resolve: the reference must not be empty"
+
+# The basename is the key the whole tool turns on, so the reference is taken apart first.
+let segments = split reference "/"
+let segment_count = length segments
+let last_index = segment_count - 1
+let basename = segments[last_index]
+assert length basename != 0 else "tool-path-resolve: the reference must end in a filename, not a slash"
+
+let reference_length = length reference
+let basename_length = length basename
+let room_length = reference_length - basename_length - 1
+let room = ""
+if segment_count != 1 then let room = slice reference 0 room_length
+
+# READING ONE -- as written, from the citing file's own directory. The shell already knows how
+# to resolve `../`, so that resolution is borrowed rather than reimplemented; a normalizer
+# written here would be one more thing that could be wrong.
+let citer_segments = split citer "/"
+let citer_count = length citer_segments
+let citer_last_index = citer_count - 1
+let citer_last = citer_segments[citer_last_index]
+let citer_dir_length = (length citer) - (length citer_last) - 1
+let citer_dir = ""
+if citer_count != 1 then let citer_dir = slice citer 0 citer_dir_length
+
+let from_citer = ""
+if length citer != 0 then let from_citer = reference
+if length citer_dir != 0 then let from_citer = "${citer_dir}/${reference}"
+
+let citer_hit = false
+if length from_citer != 0 then let citer_hit = (run ["test" "-e" from_citer]).ok
+
+# READING TWO -- root-relative, with any leading ../ dropped. This tree's prose cites paths this
+# way throughout, so it is a first-class reading rather than a fallback.
+let up_pieces = split reference "../"
+let up_count = length up_pieces
+let up_last_index = up_count - 1
+let rooted = reference
+if up_count != 1 then let rooted = up_pieces[up_last_index]
+let rooted_hit = (run ["test" "-e" rooted]).ok
+
+# READING THREE -- the letter rule, computed from the basename alone. A tool basename is a
+# `snake_case` word, so its first two characters are the whole shape test; the shortest flat
+# name in the room measures eight characters, and the bound is checked before either slice so
+# nothing is cut before its length is known.
+let letterable = (basename_length != 0)
+let two_letterable = (basename_length != 0)
+if basename_length == 1 then let two_letterable = false
+
+let one_letter = ""
+let two_letter = ""
+if letterable then let one_letter = slice basename 0 1
+if two_letterable then let two_letter = slice basename 0 2
+
+# A BARE basename was a sibling reference -- two files sitting flat in one room, one naming the
+# other with no directory at all. A fold puts siblings in different letter rooms and breaks
+# exactly those. The citing file still names the room, so the room is read off it: context the
+# reference already carries, rather than a guess between namesakes. A citer that has ITSELF been
+# folded names a letter room, so that last segment is dropped to recover the room proper.
+let fold_room = room
+let citer_room = citer_dir
+let citer_dir_segments = split citer_dir "/"
+let citer_dir_depth = length citer_dir_segments
+let citer_dir_tail_index = citer_dir_depth - 1
+let citer_dir_tail = citer_dir_segments[citer_dir_tail_index]
+let citer_dir_tail_length = length citer_dir_tail
+let citer_in_letter_room = false
+if citer_dir_tail_length == 1 then let citer_in_letter_room = true
+if citer_dir_tail_length == 2 then let citer_in_letter_room = true
+let citer_room_length = (length citer_dir) - citer_dir_tail_length - 1
+if ?& [citer_in_letter_room (citer_dir_depth != 1)] then let citer_room = slice citer_dir 0 citer_room_length
+if length room == 0 then let fold_room = citer_room
+
+let fold_one = ""
+let fold_two = ""
+if letterable then let fold_one = "${fold_room}/${one_letter}/${basename}"
+if two_letterable then let fold_two = "${fold_room}/${two_letter}/${basename}"
+
+let fold_one_hit = false
+let fold_two_hit = false
+if letterable then let fold_one_hit = (run ["test" "-e" fold_one]).ok
+if two_letterable then let fold_two_hit = (run ["test" "-e" fold_two]).ok
+
+# Under a correct fold exactly one of the two candidates stands. Both standing means the room is
+# mid-move, and there the resolver names both rather than picking the one it happens to test last.
+let fold_both_hit = ?& [fold_one_hit fold_two_hit]
+let fold_either_hit = ?| [fold_one_hit fold_two_hit]
+let fold_home = fold_one
+if fold_two_hit then let fold_home = fold_two
+if fold_both_hit then let fold_home = "${fold_one} ${fold_two}"
+
+# READING FOUR -- by basename across every tracked file. Reached only when the three cheaper
+# readings miss, and reported as ambiguous rather than guessed when the basename is shared.
+let tracked = run ["git" "ls-files"]
+assert tracked.ok else "tool-path-resolve: git ls-files must succeed -- run this from the repository root of a git tree"
+let all_paths = lines tracked.out
+let by_basename = where all_paths as p: p ends-with "/${basename}"
+let match_count = length by_basename
+
+# The verdict, written weakest first so each stronger reading simply overwrites it. Rishi holds
+# no ordering operator, so "more than one" is the standing case that zero and one correct.
+let verdict = "ambiguous"
+let home = join by_basename " "
+if match_count == 0 then let verdict = "missing"
+if match_count == 0 then let home = "-"
+if match_count == 1 then let verdict = "recovered-by-index"
+if match_count == 1 then let home = by_basename[0]
+if fold_either_hit then let verdict = "recovered-by-letter-rule"
+if fold_either_hit then let home = fold_home
+if fold_both_hit then let verdict = "ambiguous"
+if rooted_hit then let verdict = "home"
+if rooted_hit then let home = rooted
+if citer_hit then let verdict = "home"
+if citer_hit then let home = from_citer
+
+say "verdict=${verdict}"
+say "home=${home}"
+say "basename=${basename}"
+
+if verdict == "missing" then exit exit-permanent
