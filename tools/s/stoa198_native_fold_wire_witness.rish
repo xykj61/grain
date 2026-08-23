@@ -1,0 +1,34 @@
+# stoa198_native_fold_wire_witness.rish — NativeActivity calls Glow product fold.
+#
+# Proves glow_native_activity imports glow_seva_b0_fold and calls
+# run_demo_fold (STOA198). Claim compose stays underneath. Pack GREEN.
+#
+#   rishi/bin/rishi run tools/s/stoa198_native_fold_wire_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+
+# 1) Glow product fold GREEN (agrees elder).
+let fold = run ["rishi/bin/rishi" "run" "tools/g/glow_seva_b0_fold_witness.rish"]
+assert fold.ok else "glow_seva_b0_fold_witness failed"
+assert fold.out contains "GREEN" else "glow_seva_b0_fold_witness missing GREEN"
+
+# 2) Claim compose still GREEN underneath.
+let claim = run ["rishi/bin/rishi" "run" "tools/g/glow_seva_b0_claim_witness.rish"]
+assert claim.ok else "glow_seva_b0_claim_witness failed"
+assert claim.out contains "GREEN" else "glow_seva_b0_claim_witness missing GREEN"
+
+# 3) Entry source wires the Glow fold (docs-implementation sync).
+# STOA237: onCreate uses embedded-desk fold; pin fold stays available on host.
+let src = run ["sh" "-c" "grep -q 'glow_seva_b0_fold.rye' linengrow/glow_native_activity.rye && grep -q 'run_demo_fold_from_embedded_desk' linengrow/glow_native_activity.rye && ! grep -q '@import(\"seva_b0_fold.rye\")' linengrow/glow_native_activity.rye && ! grep -q '@import(\"glow_seva_b0_claim.rye\")' linengrow/glow_native_activity.rye"]
+assert src.ok else "glow_native_activity missing Glow embedded-desk fold wire / still imports elder or claim directly"
+
+# 4) Pack path still GREEN with the wired entry.
+let pack = run ["rishi/bin/rishi" "run" "tools/t/tube05_apk_pack_witness.rish"]
+# e209: surface the worker's own named reason before the red, so an
+# aapt-less bench reads its true cause on the last line, not "just above".
+if pack.err contains "missing aapt" then say "stoa198: bench lacks aapt — Android pack toolchain is pier/metal lane"
+if pack.out contains "missing aapt" then say "stoa198: bench lacks aapt — Android pack toolchain is pier/metal lane"
+assert pack.ok else "tube05_apk_pack_witness failed after fold wire"
+assert pack.out contains "GREEN" else "tube05_apk_pack_witness missing GREEN"
+
+say "GREEN: STOA198 — NativeActivity runs glow_seva_b0_fold; pack device-free; compose underneath."

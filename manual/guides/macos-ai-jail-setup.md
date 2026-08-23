@@ -15,7 +15,7 @@ You are on macOS, and [`SOURCE.md`](../../SOURCE.md)'s Step 6 describes ai-jail.
 1. **Upstream ai-jail itself now runs on macOS.** It grew a native `sandbox-exec` backend, and it is the right tool here for what it was always for: wrapping **terminal agents and shells** (`ai-jail claude`, `ai-jail bash`). Installed and witnessed on this host, v1.13.0.
 2. **This project's own launcher jails the Cursor GUI app** -- something this launcher aims at on its own. It is a Rish script generating a Seatbelt profile and launching Cursor.app inside it, with project-local state. The research behind the approach lives in [`external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md`](../../external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md); the gratitude note for upstream's macOS arrival is [`gratitude/20260714-070200_ai-jail-macos-backend.md`](../../gratitude/20260714-070200_ai-jail-macos-backend.md).
 
-**The primary launcher and witness are written in Rish** -- [`tools/cursor_jail_macos.rish`](../../tools/cursor_jail_macos.rish) and [`tools/cursor_jail_macos_witness.rish`](../../tools/cursor_jail_macos_witness.rish). The witness now tests the launcher's own emitted profile (one source of truth, no drifting copy). The original bash pair, [`tools/cursor-jail-macos.sh`](../../tools/cursor-jail-macos.sh) and [`tools/cursor_jail_macos_witness.sh`](../../tools/cursor_jail_macos_witness.sh), stays as the elder -- same policy, for a host without Rishi built yet.
+**The primary launcher and witness are written in Rish** -- [`tools/cu/cursor_jail_macos.rish`](../../tools/cu/cursor_jail_macos.rish) and [`tools/cu/cursor_jail_macos_witness.rish`](../../tools/cu/cursor_jail_macos_witness.rish). The witness now tests the launcher's own emitted profile (one source of truth, no drifting copy). The original bash pair, [`tools/cu/cursor-jail-macos.sh`](../../tools/cu/cursor-jail-macos.sh) and [`tools/cu/cursor_jail_macos_witness.sh`](../../tools/cu/cursor_jail_macos_witness.sh), stays as the elder -- same policy, for a host without Rishi built yet.
 
 ## What You Get, Plainly
 
@@ -31,9 +31,9 @@ From any terminal -- Terminal.app or otherwise, with or without another Cursor a
 
 ```bash
 cd ~/grain
-rishi/bin/rishi run tools/cursor_jail_macos.rish
+rishi/bin/rishi run tools/cu/cursor_jail_macos.rish
 # Optional: point at a non-default install
-rishi/bin/rishi run tools/cursor_jail_macos.rish --cursor /Applications/Cursor.app
+rishi/bin/rishi run tools/cu/cursor_jail_macos.rish --cursor /Applications/Cursor.app
 ```
 
 Cursor opens with its own state under `.cursor-state/`, and every write it or its extensions attempt lands only inside `~/grain` (or fails). The launcher returns immediately; the jailed app keeps running on its own, independent of the terminal that started it.
@@ -41,7 +41,7 @@ Cursor opens with its own state under `.cursor-state/`, and every write it or it
 **Prove the fence before you trust it** (worth doing once per host, and cheap enough to run any time):
 
 ```bash
-rishi/bin/rishi run tools/cursor_jail_macos_witness.rish
+rishi/bin/rishi run tools/cu/cursor_jail_macos_witness.rish
 ```
 
 Two green lines: a write inside the project succeeding, and a write outside it (to your real `$HOME`) denied. The kernel itself enforcing the actual profile the launcher emits.
@@ -49,19 +49,19 @@ Two green lines: a write inside the project succeeding, and a write outside it (
 **Deny network for a session** (a review pass with no reason to reach the internet):
 
 ```bash
-rishi/bin/rishi run tools/cursor_jail_macos.rish --no-network
+rishi/bin/rishi run tools/cu/cursor_jail_macos.rish --no-network
 ```
 
 **Inspect the policy** without launching anything:
 
 ```bash
-rishi/bin/rishi run tools/cursor_jail_macos.rish --print-profile
+rishi/bin/rishi run tools/cu/cursor_jail_macos.rish --print-profile
 ```
 
 **The bash elder works identically** if Rishi is not built yet:
 
 ```bash
-./tools/cursor-jail-macos.sh [--no-network|--print-profile]
+./tools/cu/cursor-jail-macos.sh [--no-network|--print-profile]
 ```
 
 ## Denying the Real Credential Stores (`--harden-home`)
@@ -69,7 +69,7 @@ rishi/bin/rishi run tools/cursor_jail_macos.rish --print-profile
 Reads staying open everywhere (above) is a real trade-off, priced honestly: combined with network allowed by default, an agent that reads your real `~/.ssh` or `~/.gnupg` and then reaches the network has an exfiltration path that needs no write at all. `--harden-home` closes exactly that path, leaving intact the general "reads stay open" trade-off for everything else:
 
 ```bash
-rishi/bin/rishi run tools/cursor_jail_macos.rish --harden-home
+rishi/bin/rishi run tools/cu/cursor_jail_macos.rish --harden-home
 ```
 
 It denies reads to a named list of real credential stores under `$HOME` -- `~/.ssh`, `~/.gnupg`, `~/.aws`, `~/.config/gh`, `~/.terraform.d`, `~/.docker`, `~/.kube`, `~/.azure`, `~/.gcloud`, `~/.codeberg-token`, `~/.netrc`, `~/.git-credentials`, `~/.npmrc` -- and leaves every other read exactly as open as the default profile. It is a **deny-only list of specific paths**, not a blanket "deny all dotfiles, allow back a few" rule: Apple's Seatbelt on this host resolves an overlapping allow/deny pair to **deny, no matter which rule is written first or which is more specific** (proven directly -- an `(allow file-read* (literal ...))` placed *before* an overlapping `(deny file-read* (regex ...))` still denies). A blanket-deny-then-allow-back shape would have silently also denied `~/.gitconfig` and every shell rc file it tried to allow back; naming only the credential stores themselves sidesteps that trap entirely.
@@ -78,17 +78,17 @@ It denies reads to a named list of real credential stores under `$HOME` -- `~/.s
 
 ```bash
 cd ~/grain
-rishi/bin/rishi run tools/generate_jail_local_keys_macos.rish
+rishi/bin/rishi run tools/g/generate_jail_local_keys_macos.rish
 ```
 
 This makes a fresh SSH deploy key for **GitHub** (and, today, still a historically named Codeberg-shaped second key file from the dual-forge season -- the generator refresh that retires that mint is a later door), a jail-local `known_hosts` (fetched fresh via `ssh-keyscan`, since `--harden-home` denies the real `~/.ssh/known_hosts` too -- it lives inside the same denied `~/.ssh` subpath, and without a jail-local replacement every push fails with `Host key verification failed` before it ever gets to checking your key), and a passphrase-free, signing-only GPG key -- all living under this project's own gitignored `.ssh/` and `.gnupg-rye/`, never your master identity, always revocable, always this one small scope (the same shape `SOURCE.md` Step 8c already names for the Linux launcher). For a **GitHub-living** pier, paste the GitHub deploy key into GitHub's SSH settings; skip Codeberg while it stays retired from living push. You do the pasting yourself, on purpose. Running key *generation* from outside any jail, rather than delegating it to the agent that will later use the keys, is a deliberate choice -- a "dedicated, revocable" key means less if the same agent that will wield it also minted it.
 
 **Git wiring is automatic.** The script itself sets `core.sshCommand` (pointing at a repo-local `.git/ssh_config_urbit` it still writes under that historical filename -- rename later; the file is untracked either way), naming the identity files and the jail-local `known_hosts`, plus `gpg.program` (a tiny wrapper exporting `GNUPGHOME`, per `SOURCE.md` Step 8c's own pattern), and `user.signingkey` -- nothing to configure by hand afterward. Rerunning the script is safe: it leaves existing key material alone and only refreshes the SSH comment and the repo-local config, so editing `GLOW_PROFILE.bron` and rerunning re-stamps identity without minting new keys.
 
-**Prove it, from outside the jail.** `tools/cursor_jail_macos_harden_witness.rish` checks that `~/.ssh` and `~/.gnupg` are denied while `~/.gitconfig` and the project stay readable, yet only when the shell running it is not already inside a jail:
+**Prove it, from outside the jail.** `tools/cu/cursor_jail_macos_harden_witness.rish` checks that `~/.ssh` and `~/.gnupg` are denied while `~/.gitconfig` and the project stay readable, yet only when the shell running it is not already inside a jail:
 
 ```bash
-rishi/bin/rishi run tools/cursor_jail_macos_harden_witness.rish
+rishi/bin/rishi run tools/cu/cursor_jail_macos_harden_witness.rish
 ```
 
 This is a real limit, named and measured: proven directly on this host, once a process is already `sandbox_apply`'d, a *second*, nested `sandbox_apply` carrying an explicit `(deny ...)` rule fails outright -- `sandbox-exec: sandbox_apply: Operation not permitted` -- even though the identical profile applies cleanly as a first, non-nested call, and even though an allow-only nested profile (the plain write-fence witness above) nests without issue. An agent already working inside a jailed window reaches only partway toward self-certifying `--harden-home` from within that same window; the witness says so plainly rather than reporting a pass it has not earned.
@@ -115,7 +115,7 @@ What the scoped-token setup buys, when you skip it entirely: `gh`'s conveniences
 `--harden-home` denies a short, named list of credential stores. `--private-home` denies the *rest* of your real `$HOME` too -- every top-level entry except this project's own directory, enumerated fresh at every launch:
 
 ```bash
-rishi/bin/rishi run tools/cursor_jail_macos.rish --private-home
+rishi/bin/rishi run tools/cu/cursor_jail_macos.rish --private-home
 ```
 
 **Why not a blanket deny of the whole real `$HOME`?** Because this project's own repository lives *inside* the real `$HOME` on a standard macOS layout -- a blanket `(deny file-read* (subpath $HOME))` would deny the project's own path along with everything else, and Apple's Seatbelt resolves an overlapping allow/deny pair to deny, no exceptions, no way to carve the project back out (the same rule `--harden-home` already proved). `--private-home` sidesteps that trap entirely: it lists every top-level `$HOME` entry *except* the project's own directory and denies each individually, so there is never an overlap to resolve in the first place. The full design reasoning, including the shape that was tried and found unbuildable before this one, lives in [`active-designing/yonder/20260714-184500_macos-full-private-home-design.md`](../../active-designing/yonder/20260714-184500_macos-full-private-home-design.md).
@@ -123,13 +123,13 @@ rishi/bin/rishi run tools/cursor_jail_macos.rish --private-home
 Combine freely with `--harden-home` -- the two overlap harmlessly where `--harden-home`'s named credential stores also happen to be top-level `$HOME` entries:
 
 ```bash
-rishi/bin/rishi run tools/cursor_jail_macos.rish --harden-home --private-home
+rishi/bin/rishi run tools/cu/cursor_jail_macos.rish --harden-home --private-home
 ```
 
 **Prove it, from outside the jail** -- same honest self-testing limit as `--harden-home`'s own witness (a nested `sandbox_apply` carrying a `deny` rule fails on this host even when the identical profile applies cleanly as a first, non-nested call):
 
 ```bash
-rishi/bin/rishi run tools/cursor_jail_macos_private_home_witness.rish
+rishi/bin/rishi run tools/cu/cursor_jail_macos_private_home_witness.rish
 ```
 
 **One real, named incompleteness.** A *symlinked* top-level `$HOME` entry gets its own literal path denied, yet Seatbelt evaluates a symlink by its resolved target -- if that target lies outside `$HOME` entirely, reading through the symlink is not covered. Closing that fully would mean resolving and denying every symlink's real target too, not built yet.
@@ -187,7 +187,7 @@ timeout 10 git --no-pager log --show-signature -1 | cat
 ## When Something Goes Wrong
 
 - **`sandbox-exec: command not found`** -- this script is macOS-only; you are not on macOS, or something is unusually broken about this install.
-- **`Cursor.app not found`** -- install Cursor to `/Applications`, or point `CURSOR_BIN` in `tools/enclosure.conf` at the app's real binary (`.../Cursor.app/Contents/MacOS/Cursor` -- not the CLI wrapper) and use the bash elder, which reads that file.
+- **`Cursor.app not found`** -- install Cursor to `/Applications`, or point `CURSOR_BIN` in `tools/e/enclosure.conf` at the app's real binary (`.../Cursor.app/Contents/MacOS/Cursor` -- not the CLI wrapper) and use the bash elder, which reads that file.
 - **A write you expected to work is denied** -- the profile only allows writes under this project's own path, `/tmp`, and macOS's usual temp directories. Anything else needs its own named allowance, added deliberately, not opened wide. (A known cosmetic instance: a `SQLITE_READONLY` complaint from an analytics service on first boot -- an outside-the-fence write being correctly refused.)
 - **The window never appears, yet the script printed success** -- this was the CLI-wrapper trap (fact 1 above); if you see it again, confirm the launcher is executing the app binary directly (`--print-profile` and the `spawn` line in the script name it).
 

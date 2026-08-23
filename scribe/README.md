@@ -18,7 +18,7 @@ A Kyri document is `format <name>` on the first line, then `key value` fields â€
 ```
 rye build scribe/reader.rye -femit-bin=scribe/bin/reader
 scribe/bin/reader selftest
-rishi/bin/rishi run tools/scribe_reader_witness.rish
+rishi/bin/rishi run tools/s/scribe_reader_witness.rish
 ```
 
 ## Horizons

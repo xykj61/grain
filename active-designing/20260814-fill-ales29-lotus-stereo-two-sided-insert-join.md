@@ -30,7 +30,7 @@ Errors are ALES2's `timeline.EditError` reused whole — the stereo insert, like
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_stereo_insert_join_witness.rish`: a 10-sample master with a 5-sample span inserted at the middle over lead 2 / trail 2 lands both channels at length 11 and still aligned; each channel carries its own audio through its own two seams (left flowing 100→200, right 500→600) with its leading seam pure outgoing and trailing seam pure incoming; and an unequal-length span, a past-the-master position, a lead wider than the head, a trail wider than the following audio, and an overflow each refuse by name leaving both channels untouched and aligned. Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker.
+`tools/al/ales_stereo_insert_join_witness.rish`: a 10-sample master with a 5-sample span inserted at the middle over lead 2 / trail 2 lands both channels at length 11 and still aligned; each channel carries its own audio through its own two seams (left flowing 100→200, right 500→600) with its leading seam pure outgoing and trailing seam pure incoming; and an unequal-length span, a past-the-master position, a lead wider than the head, a trail wider than the following audio, and an overflow each refuse by name leaving both channels untouched and aligned. Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker.
 
 ## The road on
 

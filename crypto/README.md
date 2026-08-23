@@ -163,14 +163,14 @@ RFC known-answer and Zig's independent `std.crypto`. To re-prove the **whole
 library** with one command:
 
 ```
-rishi/bin/rishi run tools/crypto_suite_witness.rish
+rishi/bin/rishi run tools/cr/crypto_suite_witness.rish
 ```
 
-[`../tools/crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) runs all
+[`../tools/cr/crypto_suite_witness.rish`](../tools/cr/crypto_suite_witness.rish) runs all
 eighty per-file witnesses in the dependency order above, rebuilding and reproving
 each from source, and refuses whole — naming the file that stopped it — the moment
 any one goes RED, and then runs the **count guard**
-([`../tools/crypto_count_guard_witness.rish`](../tools/crypto_count_guard_witness.rish)) —
+([`../tools/cr/crypto_count_guard_witness.rish`](../tools/cr/crypto_count_guard_witness.rish)) —
 a bijection asserting the suite registers exactly the `crypto/*.rye` files on disk, so
 a file and its proof can never disagree, and printing the computed count as the source
 of truth for the spelled numbers above. A GREEN suite means every claim in this library

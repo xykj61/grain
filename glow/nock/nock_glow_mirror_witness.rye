@@ -25,7 +25,7 @@ fn run_gate(a: std.mem.Allocator, io: std.Io, sample: []const u8) ![]u8 {
     assert(sample.len > 0);
     assert(sample.len < 8); // a u32 sample in text stays short
     const result = try std.process.run(a, io, .{
-        .argv = &.{ "env", "RYE_ZIG=vendor/zig-toolchain/zig", "sh", "tools/glow_run_worker.sh", desk, sample },
+        .argv = &.{ "env", "RYE_ZIG=vendor/zig-toolchain/zig", "sh", "tools/g/glow_run_worker.sh", desk, sample },
         .stdout_limit = .limited(max_worker_out_bytes),
     });
     const code: u8 = switch (result.term) {

@@ -33,7 +33,7 @@ The wider domain is the only new fact. ALES11's `isqrt` was bounded to the pan f
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_meter_witness.rish`: silence reads peak `0` and RMS `0`; a full-scale constant reads its own magnitude as both peak and RMS (the RMS of a DC signal is its level); `rms ≤ peak` holds across a sweep of signals; **block-invariance** — metering a master in 1-, 2-, and 7-sample blocks off the transport gives the identical peak and RMS as one whole `measure` (the same root reading the same audio, at any block size); a stereo master meters each channel independently; metering never mutates the master (read-only, like the transport); and `feed` refuses `MeterFull` past the bound. Purely local — no socket, no network, no keys, no funds, no real device, no real meter hardware.
+`tools/al/ales_meter_witness.rish`: silence reads peak `0` and RMS `0`; a full-scale constant reads its own magnitude as both peak and RMS (the RMS of a DC signal is its level); `rms ≤ peak` holds across a sweep of signals; **block-invariance** — metering a master in 1-, 2-, and 7-sample blocks off the transport gives the identical peak and RMS as one whole `measure` (the same root reading the same audio, at any block size); a stereo master meters each channel independently; metering never mutates the master (read-only, like the transport); and `feed` refuses `MeterFull` past the bound. Purely local — no socket, no network, no keys, no funds, no real device, no real meter hardware.
 
 ## The road on
 

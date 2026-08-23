@@ -34,7 +34,7 @@ Lindy-first, crux-first: a selection is the primitive every span edit rides on �
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_selection_witness.rish`: a selection cut removes the span from both channels in lockstep, equal to cutting each by hand, the stereo staying aligned; a gain scales the span in both channels and leaves the rest and the lengths untouched; silence zeroes the span in both; a selection grabbed between two markers drives a real cut; and every edge refuses by name — an empty, inverted, or past-the-master span (`BadSelection`), a zero denominator (`BadGain`), a non-ascending marker pair (`BadPair`), and a stale span past a shrunk master (`BadRange`) refused before either channel is touched. Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker.
+`tools/al/ales_selection_witness.rish`: a selection cut removes the span from both channels in lockstep, equal to cutting each by hand, the stereo staying aligned; a gain scales the span in both channels and leaves the rest and the lengths untouched; silence zeroes the span in both; a selection grabbed between two markers drives a real cut; and every edge refuses by name — an empty, inverted, or past-the-master span (`BadSelection`), a zero denominator (`BadGain`), a non-ascending marker pair (`BadPair`), and a stale span past a shrunk master (`BadRange`) refused before either channel is touched. Purely local — no socket, no network, no keys, no funds, no real device, no real meter, no real speaker.
 
 ## The road on
 

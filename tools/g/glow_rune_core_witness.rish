@@ -1,0 +1,33 @@
+# glow_rune_core_witness.rish — thin `|%` core shape.
+#
+#   rishi/bin/rishi run tools/g/glow_rune_core_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/rune_core_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_core_witness.rye -femit-bin=${bin}"]
+assert build.ok else "rune_core_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "rune_core_witness exited non-zero"
+assert selftest.out contains "GREEN" else "rune_core_witness not GREEN"
+assert selftest.out contains "one-arm double parses" else "rune_core_witness missing one-arm claim"
+assert selftest.out contains "two-arm double" else "rune_core_witness missing two-arm claim"
+assert selftest.out contains "three-arm double" else "rune_core_witness missing three-arm claim"
+assert selftest.out contains "payload amount+double parses" else "rune_core_witness missing payload claim"
+assert selftest.out contains "typed @u32 payload parses" else "rune_core_witness missing typed payload claim"
+assert selftest.out contains "AuraNotYetLowered" else "rune_core_witness missing AuraNotYetLowered"
+assert selftest.out contains "PayloadAfterArm" else "rune_core_witness missing PayloadAfterArm"
+assert selftest.out contains "NotACore" else "rune_core_witness missing NotACore"
+assert selftest.out contains "nest jam-of-mix arm parses" else "rune_core_witness missing nest jam-of-mix claim"
+assert selftest.out contains "nest jam-right-mix arm parses" else "rune_core_witness missing nest jam-right-mix claim"
+assert selftest.out contains "nest jam-both-mix arm parses" else "rune_core_witness missing nest jam-both-mix claim"
+assert selftest.out contains "cue-of-jam arm parses" else "rune_core_witness missing cue-of-jam claim"
+assert selftest.out contains "cue nest jam arm parses" else "rune_core_witness missing cue nest jam claim"
+assert selftest.out contains "cue nest jam right arm parses" else "rune_core_witness missing cue nest jam right claim"
+assert selftest.out contains "cue nest jam both arm parses" else "rune_core_witness missing cue nest jam both claim"
+
+say "GREEN: Glow `|%` thin core — arms and bare or typed @u32 payload; STOA14/15/17/20/21/35/36/37."
+
+
+

@@ -23,9 +23,9 @@ t = t.replace(
 )
 entry = (
     "### 21. A capacity-one stack refuses a second push; the tower's frame bound bites from a fixture.\n"
-    "**Ran:** `rishi/bin/rishi run tools/edu_tower_frame_bite_witness.rish` · **Stamp:** `"
+    "**Ran:** `rishi/bin/rishi run tools/e/edu_tower_frame_bite_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/edu_tower_frame_bite_witness.rish` · `edu/tower/frame_bound_overpush.rye`\n"
+    + "` · **Witness:** `tools/e/edu_tower_frame_bite_witness.rish` · `edu/tower/frame_bound_overpush.rye`\n"
     "Expected overpush EXIT=1 with assertion failure · welcome tower still GREEN. "
     "Metal answered GREEN. Negative space as loud as welcome.\n\n"
 )

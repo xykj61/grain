@@ -29,7 +29,7 @@
 #   sh tools/fixtures/fetch_toolchain_scan.sh plan         # say what it would do; touch nothing
 #   sh tools/fixtures/fetch_toolchain_scan.sh verify F H    # verify one file against one hash
 #
-# Driven by tools/fetch_toolchain.rish; proven by tools/fetch_toolchain_witness.rish.
+# Driven by tools/f/fetch_toolchain.rish; proven by tools/f/fetch_toolchain_witness.rish.
 # Run from the repository root.
 
 set -eu

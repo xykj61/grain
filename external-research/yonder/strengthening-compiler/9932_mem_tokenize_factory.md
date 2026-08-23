@@ -186,7 +186,7 @@ Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
 | `rye/lib/std/mem.zig` | `tokenizeAny` — Phase 4 `usize` seam policy applied | done |
 | `rye/lib/std/mem.zig` | `tokenizeSequence` — Phase 4 `usize` seam policy applied | done |
 | `rye/tests/mem_tokenize_factory_test.rye` | witness program | done |
-| `tools/parity.rish` | witness registered | done |
+| `tools/p/parity.rish` | witness registered | done |
 | `external-research/yonder/strengthening-compiler/9932_mem_tokenize_factory.md` | pass record + audited surfaces | done |
 | `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9932 | done |

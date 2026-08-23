@@ -26,7 +26,7 @@ This is **not** "everything is an atom or a cell." Atom and cell name Nock's nou
 | Glow source | Faces, shapes, gates, cells-as-syntax (`:-` · `:+` · …) over ordinary values | Working pin [`glow/README.md`](../../../glow/README.md) |
 | Ambient truth | Zig / Rye `bool` · POSIX exits (0 success) | Checkable — [`glow-truth` seat](../../../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md) |
 | Lowering | Glow → ordinary `.rye` → Zig | Checkable path; desks and witnesses on the pin |
-| Metal | Zig → RISC-V | Checkable where [`glow_riscv_target_witness`](../../../tools/glow_riscv_target_witness.rish) binds; wider surface still Design |
+| Metal | Zig → RISC-V | Checkable where [`glow_riscv_target_witness`](../../../tools/g/glow_riscv_target_witness.rish) binds; wider surface still Design |
 
 **Cells in Glow syntax** (pair, triple, list heads) are **composition forms** for values already in the one model — named faces side by side — not a redefinition of Grain values as Nock nouns.
 

@@ -1,0 +1,18 @@
+# tame_style_tools_py_ban_selftest.rish — proves the tools/*.py gate is live.
+#
+# Positive: repo-root scan is TOOLS_PY_OK (zero).
+# Negative: SCAN_ROOT pointed at context/fixtures/tools_py_ban_tree (planted
+# tools/planted.py) must FAIL with TOOLS_PY_BAD.
+#
+#   rishi/bin/rishi run tools/t/tame_style_tools_py_ban_selftest.rish
+
+let clean = run ["sh" "tools/fixtures/tools_py_ban_scan.sh"]
+assert clean.ok else "tools/*.py ban selftest: living tree must be clean"
+assert clean.out contains "TOOLS_PY_OK" else "tools/*.py ban selftest missing TOOLS_PY_OK"
+
+let planted = run ["env" "TOOLS_PY_SCAN_ROOT=context/fixtures/tools_py_ban_tree" "sh" "tools/fixtures/tools_py_ban_scan.sh"]
+assert (planted.ok == false) else "tools/*.py ban selftest: planted tree must FAIL"
+assert planted.out contains "TOOLS_PY_BAD" else "tools/*.py ban selftest missing TOOLS_PY_BAD"
+assert planted.out contains "planted.py" else "tools/*.py ban selftest must name the plant"
+
+say "GREEN: tools/*.py ban — living zero OK; planted .py FAILS."

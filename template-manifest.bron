@@ -16,7 +16,7 @@ status proposal
 #
 # A `scrub` directory may still hold individual `personal` files that the
 # projection must exclude by sub-path; those are named in the sub-exclude
-# section at the foot. The projection tool (proposed tools/sow.rish) reads
+# section at the foot. The projection tool (proposed tools/s/sow.rish) reads
 # this file and its witness proves: no personal path, no real key, no real
 # name ever appears in the projected seed.
 
@@ -341,8 +341,8 @@ sub_exclude tools/fixtures/gen_shyu_fund_prep.sh
 sub_exclude tools/fixtures/gen_trya_fund_prep.sh
 sub_exclude tools/fixtures/sundial.sh
 sub_exclude tools/gen/fund
-sub_exclude tools/pond_enclosure_sixbar.rish
-sub_exclude tools/pond_exit_bron_master_seal.sh
+sub_exclude tools/p/pond_enclosure_sixbar.rish
+sub_exclude tools/p/pond_exit_bron_master_seal.sh
 sub_exclude waymarks/date/20260730/20260730-150702_pole0-3-bozo-murr-hats.md
 sub_exclude context/specs/20260713-201910_pacific-time-local-clone-convention.md
 

@@ -33,7 +33,7 @@ A column of default strips (no mute, no solo, unity fader) resolves to a unity f
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_strip_witness.rish`: no mute and no solo reproduces ALES8's fader mix byte-for-byte; a muted track goes silent, the rest unchanged; a soloed track silences every other track even un-muted ones; two solos are heard together; a muted-and-soloed track is still heard (solo-in-place overrides its own mute); a zero denominator on an audible strip forwards `BadGain`; a track past the master bound forwards `ClipFull`. GREEN on the first build. Purely local — no socket, no network, no keys, no funds, no real device.
+`tools/al/ales_strip_witness.rish`: no mute and no solo reproduces ALES8's fader mix byte-for-byte; a muted track goes silent, the rest unchanged; a soloed track silences every other track even un-muted ones; two solos are heard together; a muted-and-soloed track is still heard (solo-in-place overrides its own mute); a zero denominator on an audible strip forwards `BadGain`; a track past the master bound forwards `ClipFull`. GREEN on the first build. Purely local — no socket, no network, no keys, no funds, no real device.
 
 ## The road on
 

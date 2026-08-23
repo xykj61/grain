@@ -9,7 +9,7 @@
 //! the build embeds (the @embedFile idiom, through symlinks in pond/apps/corpora/).
 //!
 //! Three real files stand as the corpus: manual/tutorials/greet.rye (the first-hour
-//! reference), tally/stack.rye (a real module), tools/one_clock_witness.rish (a real
+//! reference), tally/stack.rye (a real module), tools/o/one_clock_witness.rish (a real
 //! witness). count_rye reads 2 rye chunks; sum_lines totals the real line counts;
 //! paths_rye lists the real rye paths. The witness cross-checks sum_lines against an
 //! independent `wc -l` of the same real files, so Ember's arithmetic is bound to the
@@ -48,7 +48,7 @@ const Member = struct {
 const members = [_]Member{
     .{ .path = "manual/tutorials/greet.rye", .kind = "rye", .bytes = f_greet },
     .{ .path = "tally/stack.rye", .kind = "rye", .bytes = f_stack },
-    .{ .path = "tools/one_clock_witness.rish", .kind = "rish", .bytes = f_clock },
+    .{ .path = "tools/o/one_clock_witness.rish", .kind = "rish", .bytes = f_clock },
 };
 
 // The generated catalog never exceeds this — three chunks of a bounded shape, far

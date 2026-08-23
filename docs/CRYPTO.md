@@ -158,16 +158,16 @@ rung had not already proven. Every file carries a per-file witness
 ## Proving it — one command greens the whole library
 
 ```bash
-rishi/bin/rishi run tools/crypto_suite_witness.rish
+rishi/bin/rishi run tools/cr/crypto_suite_witness.rish
 ```
 
-[`crypto_suite_witness.rish`](../tools/crypto_suite_witness.rish) rebuilds each
+[`crypto_suite_witness.rish`](../tools/cr/crypto_suite_witness.rish) rebuilds each
 `crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs all
 eighty per-file witnesses in the dependency order above, refusing whole —
 naming the file that stopped it — the moment any one goes RED. A GREEN suite means
 every claim here is re-provable by tooling, not trusted from a commit message
 alone (measurement beats memory). It then runs the **count guard**
-([`crypto_count_guard_witness.rish`](../tools/crypto_count_guard_witness.rish)) — a
+([`crypto_count_guard_witness.rish`](../tools/cr/crypto_count_guard_witness.rish)) — a
 bijection asserting the suite registers exactly the `crypto/*.rye` files on disk and
 printing the computed count, so the spelled number above can never silently drift
 from the files again (booked by [`REDS`](../construction/REDS.md) #80).
@@ -175,8 +175,8 @@ from the files again (booked by [`REDS`](../construction/REDS.md) #80).
 To prove one rung alone, run its witness — for example:
 
 ```bash
-rishi/bin/rishi run tools/crypto_ed25519_sign_witness.rish
-rishi/bin/rishi run tools/crypto_vault_seal_witness.rish
+rishi/bin/rishi run tools/cr/crypto_ed25519_sign_witness.rish
+rishi/bin/rishi run tools/cr/crypto_vault_seal_witness.rish
 ```
 
 Each witness asserts its `GREEN crypto-<name>` line against the RFC known-answer

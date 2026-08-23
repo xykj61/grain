@@ -13,7 +13,7 @@
 # USAGE
 #   sh tools/fixtures/seed_link_control.sh
 #
-# Driven by tools/seed_link_witness.rish. Run from the repository root.
+# Driven by tools/s/seed_link_witness.rish. Run from the repository root.
 
 set -u
 

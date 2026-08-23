@@ -36,7 +36,7 @@
 #   sh tools/fixtures/dated_path_repoint_scan.sh          # dry run -- reports, touches nothing
 #   sh tools/fixtures/dated_path_repoint_scan.sh apply    # rewrite the living files
 #
-# Driven by tools/dated_path_repoint.rish; proven by tools/dated_path_repoint_witness.rish.
+# Driven by tools/d/dated_path_repoint.rish; proven by tools/d/dated_path_repoint_witness.rish.
 # Run from the repository root.
 
 set -eu
@@ -78,7 +78,7 @@ echo "folded_files_mapped=$(wc -l < "$work/map.tsv" | tr -d ' ')"
 # candidate list is narrowed by one grep first, so awk is spawned only for files that could
 # possibly hold a dated reference.
 # THE INSTRUMENT'S OWN FIXTURES ARE NOT THE FIELD, and this cost a real red to learn (%121).
-# tools/dated_path_witness.rish holds a deliberately STALE reference -- the flat path a file
+# tools/d/dated_path_witness.rish holds a deliberately STALE reference -- the flat path a file
 # answered to before its room folded -- because proving the resolver recovers such a path requires
 # having one. An earlier apply run repointed it to the folded path, which left the assert checking
 # that an already-correct path resolves: true, and worthless. The census already excluded these by

@@ -3,8 +3,8 @@
 **Stamp:** `20260728.035025` (Helen dedication) · seat `20260728.034317`  
 **Living name:** **Bozo (fund)** — rename-forward `20260730.150702` · see [`bozo-opening.md`](bozo-opening.md)  
 **Voice:** Quin · nested Trya (earth seat) — historical page voice  
-**Kind:** fund-prep page one — historical; living generator is `tools/gen_bozo_fund_prep.rish`  
-**Generator (historical shim):** `tools/gen_linn_fund_prep.rish` → bozo
+**Kind:** fund-prep page one — historical; living generator is `tools/g/gen_bozo_fund_prep.rish`  
+**Generator (historical shim):** `tools/g/gen_linn_fund_prep.rish` → bozo
 
 ---
 

@@ -28,7 +28,7 @@
 ```
 env RYE_ZIG="$PWD/vendor/zig-toolchain/zig" rye/bin/rye build scribe/reader.rye -femit-bin=scribe/bin/reader
 scribe/bin/reader selftest
-rishi/bin/rishi run tools/scribe_dashboard_witness.rish
+rishi/bin/rishi run tools/s/scribe_dashboard_witness.rish
 ```
 `[VOICEOVER]` Here's the whole rhythm. You build a module. You run its selftest. You run its witness -- and it goes green. Build, prove, green. That loop is the heartbeat of the whole system, and you'll run it in your first hour.
 

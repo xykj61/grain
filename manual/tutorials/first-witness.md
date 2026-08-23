@@ -17,7 +17,7 @@ A **witness** is a `.rish` script that proves one honest fact about the system. 
 From the repository root:
 
 ```bash
-rishi/bin/rishi run tools/run_record_witness.rish
+rishi/bin/rishi run tools/r/run_record_witness.rish
 ```
 
 You should see:
@@ -30,7 +30,7 @@ When the line appears, the witness passed. Where an `assert` finds its fact want
 
 ## Step 2 — Read what it does
 
-Open `tools/run_record_witness.rish`. The shape is the whole discipline:
+Open `tools/r/run_record_witness.rish`. The shape is the whole discipline:
 
 1. **`let`** — bind a name to a value (here, the result of `run`)
 2. **`run`** — execute an external command; receive a four-field record (`.ok`, `.code`, `.out`, `.err`)
@@ -44,7 +44,7 @@ Every witness checks `.ok` or `.code` before trusting output. RW-3 pins a succes
 Hosted Rye modules carry a three-line head — `const assert` and `const print` bindings, no qualified `std.debug.*` calls. The opening-lines witness scans the collection:
 
 ```bash
-rishi/bin/rishi run tools/opening_lines_witness.rish
+rishi/bin/rishi run tools/o/opening_lines_witness.rish
 ```
 
 Rishi scripts (`.rish`) follow the same spirit with `#` comments and `assert`/`say`; they orchestrate builds and gates rather than host module logic.
@@ -67,18 +67,18 @@ Run it:
 rishi/bin/rishi run tools/fixtures/my_first_witness.rish
 ```
 
-When it passes, you hold the whole pattern: **run, assert, say GREEN**. Negative space works the same way — assert that something *fails*, as in `tools/rs1_args.rish` and `tools/rw4_slc_failure_paths.rish`.
+When it passes, you hold the whole pattern: **run, assert, say GREEN**. Negative space works the same way — assert that something *fails*, as in `tools/r/rs1_args.rish` and `tools/r/rw4_slc_failure_paths.rish`.
 
 ## Step 5 — Where to go next
 
 | Next read | Why |
 |-----------|-----|
 | [`reference/rishi-language.md`](../reference/rishi-language.md) | Full syntax at parity 142 |
-| `tools/rs1_args.rish` | Script arguments and friendly failures |
-| `tools/rw4_slc_failure_paths.rish` | Shell meta-command and CLI failure paths |
-| `tools/parity.rish` | The full witness suite |
+| `tools/r/rs1_args.rish` | Script arguments and friendly failures |
+| `tools/r/rw4_slc_failure_paths.rish` | Shell meta-command and CLI failure paths |
+| `tools/p/parity.rish` | The full witness suite |
 
-Wire a new witness into `tools/parity.rish` only when the team agrees the fact belongs in the regression gate — parity increments one step at a time.
+Wire a new witness into `tools/p/parity.rish` only when the team agrees the fact belongs in the regression gate — parity increments one step at a time.
 
 ---
 

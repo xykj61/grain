@@ -9,7 +9,7 @@
 # declaration -- which is exactly the distinction this artifact exists to
 # make visible.
 #
-# Read by `caravan/roster.rye`; proven by tools/caravan_roster_witness.rish.
+# Read by `caravan/roster.rye`; proven by tools/ca/caravan_roster_witness.rish.
 
 system wide_roster
 

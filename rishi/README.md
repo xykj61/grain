@@ -62,9 +62,9 @@ supporting:
   `write-file path value` writes a value to a path; `list-dir path` returns
   entry names as a list (`tests/file_io.rish`).
 - **`env`** — `env "NAME"` reads the process environment; empty string when unset
-  (`tests/env.rish`; witness `tools/rish_env_witness.rish`).
+  (`tests/env.rish`; witness `tools/r/rish_env_witness.rish`).
 - **Exit vocabulary** — pre-bound `exit-ok`, `exit-temporary`, `exit-permanent`,
-  `exit-could-not-begin`; `exit EXPR` ends the script (`tools/rish_exit_codes_witness.rish`).
+  `exit-could-not-begin`; `exit EXPR` ends the script (`tools/r/rish_exit_codes_witness.rish`).
 - **`lines`** — `lines text` splits a string on newlines into a list of strings.
 - **`starts-with`** — `text starts-with prefix` checks whether a string begins
   with a given prefix (used in gates and tests).
@@ -140,9 +140,9 @@ rishi/bin/rishi run rishi/tests/string_builtins.rish   # length, trim, slice
 Rishi orchestrates Rye's strengthening safety net — all `.rish`, no `.sh`:
 
 ```sh
-rishi/bin/rishi run tools/parity.rish           # behavior: witnesses via rye run, 21 programs GREEN
-rishi/bin/rishi run tools/parity-selftest.rish  # gate turns RED on tamper
-rishi/bin/rishi run tools/additive-gate.rish    # shape: assertions-only std diff
+rishi/bin/rishi run tools/p/parity.rish           # behavior: witnesses via rye run, 21 programs GREEN
+rishi/bin/rishi run tools/p/parity-selftest.rish  # gate turns RED on tamper
+rishi/bin/rishi run tools/ad/additive-gate.rish    # shape: assertions-only std diff
 ```
 
 Each test is a run of facts that all hold — comparison and `assert`, lists and
@@ -152,7 +152,7 @@ the broken fact, and exits non-zero: the gate behavior `parity.rish` leans on.
 
 ## How It Grows
 
-The first version was the seed; **`parity.rish` now runs** and guards the whole strengthened witness set (`../tools/parity.rish`). **`parity-selftest.rish`** proves the gate turns RED on a real divergence. **`additive-gate.rish`** classifies std diffs as assertions-only or REVIEW. Together they are the gate trio documented in `../rye-learning-process/archive/ALMANAC.md`.
+The first version was the seed; **`parity.rish` now runs** and guards the whole strengthened witness set (`../tools/p/parity.rish`). **`parity-selftest.rish`** proves the gate turns RED on a real divergence. **`additive-gate.rish`** classifies std diffs as assertions-only or REVIEW. Together they are the gate trio documented in `../rye-learning-process/archive/ALMANAC.md`.
 
 Two north stars guide further growth. `tests/hello.rish` is what runs today;
 `examples/pond.rish` is where we are headed — an illustrative sketch of Rishi

@@ -1,0 +1,50 @@
+# cursor_jail_macos_witness.rish — proves the sandbox-exec profile emitted
+# by tools/cu/cursor_jail_macos.rish actually fences writes to the project
+# directory, on this host.
+#
+# The Rish-native primary witness, reviving tools/cu/cursor_jail_macos_witness.sh
+# (its bash elder, kept beside this one). The profile under test is the
+# launcher's own --print-profile output -- one source of truth, no drifting
+# copy -- captured through a shell redirect because run's captured .out
+# escapes real newlines to literal backslash-n text (a named Rishi gap).
+#
+# Refuse witness: a write outside the project must be denied.
+# Permit witness: a write inside the project must succeed.
+#
+#   rishi/bin/rishi run tools/cu/cursor_jail_macos_witness.rish
+
+let sandbox_check = run ["sh" "-c" "command -v sandbox-exec"]
+assert sandbox_check.ok else "sandbox-exec not found -- this witness is macOS-only."
+
+let pwd_run = run ["pwd"]
+let repo = trim pwd_run.out
+let home = env "HOME"
+
+let build_mk = run ["mkdir" "-p" "${repo}/tools/.build"]
+assert build_mk.ok else "could not create tools/.build/"
+
+let profile_path = "tools/.build/cursor_jail_macos_witness_profile.sbpl"
+let emit = run ["sh" "-c" "rishi/bin/rishi run tools/cu/cursor_jail_macos.rish --print-profile > ${profile_path}"]
+assert emit.ok else "could not emit the launcher's profile via --print-profile"
+
+say "== permit witness: write inside the project =="
+let inside_path = "${repo}/tools/.cursor_jail_macos_witness.tmp"
+let cleanup_inside_before = run ["rm" "-f" inside_path]
+let permit = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "echo witness > '${inside_path}'"]
+assert permit.ok else "FAIL: write inside the project was denied -- the profile is too strict"
+say "PASS: write inside the project succeeded"
+let cleanup_inside_after = run ["rm" "-f" inside_path]
+
+say "== refuse witness: write outside the project =="
+let outside_path = "${home}/.cursor_jail_macos_witness_escape.tmp"
+let cleanup_outside_before = run ["rm" "-f" outside_path]
+let refuse = run ["sandbox-exec" "-f" profile_path "--" "sh" "-c" "echo escape > '${outside_path}'"]
+if refuse.ok then say "FAIL: write outside the project succeeded -- the sandbox is not enforcing"
+assert (refuse.ok == false) else "FAIL: write outside the project succeeded -- the sandbox is not enforcing"
+say "PASS: write outside the project was denied"
+
+let escape_check = run ["test" "-e" outside_path]
+assert (escape_check.ok == false) else "FAIL: escape file exists despite denied write"
+
+say "== both witnesses green =="
+say "GREEN: cursor-jail-macos enclosure -- permit and refuse both hold."

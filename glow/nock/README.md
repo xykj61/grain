@@ -7,7 +7,7 @@
 
 ---
 
-**Nock is Glow's second backend, never its execution floor.** Per [`../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md`](../../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md), Glow's primary path compiles straight through Zig to RISC-V — proven, green, byte-identical across nine keystone pieces, this interpreter's own three laps and its first jet among them (see [`../tools/glow_riscv_target_witness.rish`](../../tools/glow_riscv_target_witness.rish)). This interpreter exists for one purpose only: Urbit-world interop and verification, so Glow can meet the Nock world and be checked against it, the way Hoon itself once needed Nock as the floor a decade before RISC-V existed to be one.
+**Nock is Glow's second backend, never its execution floor.** Per [`../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md`](../../active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md), Glow's primary path compiles straight through Zig to RISC-V — proven, green, byte-identical across nine keystone pieces, this interpreter's own three laps and its first jet among them (see [`../tools/g/glow_riscv_target_witness.rish`](../../tools/g/glow_riscv_target_witness.rish)). This interpreter exists for one purpose only: Urbit-world interop and verification, so Glow can meet the Nock world and be checked against it, the way Hoon itself once needed Nock as the floor a decade before RISC-V existed to be one.
 
 **Loobeans stay Nock's own law here.** Opcode 6 treats atom **0 as yes** and **1 as no** — correct for Nock, and **not** Glow ambient truth. Glow uses Zig/`bool` and POSIX exits; crossing into this interpreter converts through [`../glow/truth_semantics.rye`](../../truth_semantics.rye). Ruling: [`../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md`](../../context/specs/20260717-154943_glow-truth-zig-ambient-nock-loobean-seam.md).
 
@@ -48,7 +48,7 @@ Per the runes-scoping study's own jet proposal, [`JET_DEC.md`](JET_DEC.md) names
 
 - No Hoon-to-Nock compiler exists; this interpreter reduces hand-built nouns, not parsed Hoon source.
 - No jet (acceleration) layer exists yet; every reduction runs the plain interpreter, unaccelerated.
-- This is not, and is never meant to become, Glow's execution floor — RISC-V already holds that role, proven at [`../tools/glow_riscv_target_witness.rish`](../../tools/glow_riscv_target_witness.rish).
+- This is not, and is never meant to become, Glow's execution floor — RISC-V already holds that role, proven at [`../tools/g/glow_riscv_target_witness.rish`](../../tools/g/glow_riscv_target_witness.rish).
 
 ## The First Crossing — a Glow Gate Mirrored (e263)
 

@@ -83,7 +83,7 @@ gitignored `encoding/bin/` and asserts its `GREEN encoding-<name>` line against 
 standard's known-answers and Zig's independent `std` implementation:
 
 ```
-rishi/bin/rishi run tools/encoding_base64_witness.rish
+rishi/bin/rishi run tools/e/encoding_base64_witness.rish
 ```
 
 ## Honest scope

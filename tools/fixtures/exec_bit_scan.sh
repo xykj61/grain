@@ -6,14 +6,14 @@
 # The rewrite read each file, wrote a temporary beside it, and moved the temporary over the
 # original -- and `mv` carries the temporary's mode, never the original's. Nothing in the diff
 # said so: `git show --stat` counts lines, and a mode change moves no lines, so the round read
-# as a clean repoint. One of the thirty-nine was tools/agent-jail.sh, which the unattended loop
-# invokes as `./tools/agent-jail.sh`, so the loop answered `Permission denied` once every twenty
+# as a clean repoint. One of the thirty-nine was tools/ag/agent-jail.sh, which the unattended loop
+# invokes as `./tools/ag/agent-jail.sh`, so the loop answered `Permission denied` once every twenty
 # seconds until a hand ran `chmod +x`. The guard that would have caught it did not exist.
 #
 # WHAT IS GATED, hard.
 #   Every tracked file carrying a shebang that a LIVING tracked file invokes directly -- as
 #   `./path` in command position -- holds index mode 100755. This is the load-bearing set: when
-#   the tree writes `./tools/agent-jail.sh`, that is a promise a fresh clone must be able to keep.
+#   the tree writes `./tools/ag/agent-jail.sh`, that is a promise a fresh clone must be able to keep.
 #   Every tracked file's on-disk exec bit agrees with its index mode. A mode that has drifted in
 #   the working tree is a mode about to be committed by accident, and this is where it is cheapest
 #   to see. It also makes a DELIBERATE chmod loud, which is the point rather than a cost.
@@ -29,7 +29,7 @@
 # USAGE
 #   sh tools/fixtures/exec_bit_scan.sh
 #
-# Driven by tools/exec_bit_witness.rish. Run from the repository root.
+# Driven by tools/e/exec_bit_witness.rish. Run from the repository root.
 
 set -u
 

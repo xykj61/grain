@@ -44,7 +44,7 @@ A metaphor that follows the mechanism carries meaning forward. A metaphor that s
 
 ## The meter, and its honest limit
 
-[`../../tools/mechanism_sentence_witness.rish`](../../tools/mechanism_sentence_witness.rish) over [`../../tools/fixtures/mechanism_sentence_scan.sh`](../../tools/fixtures/mechanism_sentence_scan.sh) counts distinct mechanism words per commit body across a trailing window and holds the count of thin bodies under a ceiling that only falls. Measured at seating: **21 of the last 40 commit bodies** read below the floor.
+[`../../tools/m/mechanism_sentence_witness.rish`](../../tools/m/mechanism_sentence_witness.rish) over [`../../tools/fixtures/mechanism_sentence_scan.sh`](../../tools/fixtures/mechanism_sentence_scan.sh) counts distinct mechanism words per commit body across a trailing window and holds the count of thin bodies under a ceiling that only falls. Measured at seating: **21 of the last 40 commit bodies** read below the floor.
 
 The meter counts vocabulary, so it proves a floor rather than a comprehension. One commit scoring three still left its reader unable to name the change, which is how this law came to be written. **Word presence is the check; a reader reconstructing the diff is the standard.** Honest and incomplete is a different thing from wrong, and the second number to read is always the prose itself.
 

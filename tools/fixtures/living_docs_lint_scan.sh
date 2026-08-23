@@ -162,7 +162,7 @@ fi
 : >"$TMP/canon"
 for rel in \
   context/PUBKEYS.md \
-  tools/pond_exit_bron_master_seal.sh \
+  tools/p/pond_exit_bron_master_seal.sh \
   context/keys/gpg_signing_06462132.pub.asc \
   active-designing/date/20260712/20260712-210800_pond-supersede-exit-criteria.md \
   active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md
@@ -251,7 +251,7 @@ while IFS= read -r shpath; do
   [ -n "$shpath" ] && [ -f "$shpath" ] || continue
   # Skip permanent entry-point exemptions by path name
   case "$shpath" in
-    rye/bootstrap.sh|tools/cursor-jail.sh|tools/cursor-jail-macos.sh|tools/fetch_gratitude_web.sh|*slc1_accept.sh|*slc1_version_step2.sh|*cast_a_chart*) continue ;;
+    rye/bootstrap.sh|tools/cu/cursor-jail.sh|tools/cu/cursor-jail-macos.sh|tools/f/fetch_gratitude_web.sh|*slc1_accept.sh|*slc1_version_step2.sh|*cast_a_chart*) continue ;;
   esac
   n=$(wc -l <"$shpath" | tr -d ' ')
   if [ "$n" -gt "$SHELL_BODY_LINE_FLOOR" ]; then

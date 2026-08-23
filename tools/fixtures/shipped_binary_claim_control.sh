@@ -15,7 +15,7 @@
 #   quoted    -- a living page quoting that phrase while citing its REDS row     -> ALLOWED
 #   dated     -- a dated artifact that said it when it was true                  -> ALLOWED
 #
-# Driven by tools/shipped_binary_claim_witness.rish. Run from the repository root.
+# Driven by tools/s/shipped_binary_claim_witness.rish. Run from the repository root.
 
 set -eu
 

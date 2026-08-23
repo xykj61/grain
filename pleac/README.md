@@ -18,7 +18,7 @@ The canonical pair, inverse when no piece holds the separator:
 ```
 rye build pleac/strings.rye -femit-bin=tools/.build/pleac_strings
 tools/.build/pleac_strings selftest
-rishi/bin/rishi run tools/pleac_strings_witness.rish
+rishi/bin/rishi run tools/p/pleac_strings_witness.rish
 ```
 
 ## Lists (`lists.rye`, landed `20260811`)
@@ -34,7 +34,7 @@ The grouping trio over a bounded list of `u32`:
 ```
 rye build pleac/lists.rye -femit-bin=tools/.build/pleac_lists
 tools/.build/pleac_lists selftest
-rishi/bin/rishi run tools/pleac_lists_witness.rish
+rishi/bin/rishi run tools/p/pleac_lists_witness.rish
 ```
 
 ## Numbers (`numbers.rye`, landed `20260811`)
@@ -50,7 +50,7 @@ The number primitives over `u32`, total (every bad input a named refusal):
 ```
 rye build pleac/numbers.rye -femit-bin=tools/.build/pleac_numbers
 tools/.build/pleac_numbers selftest
-rishi/bin/rishi run tools/pleac_numbers_witness.rish
+rishi/bin/rishi run tools/p/pleac_numbers_witness.rish
 ```
 
 ## Wired into the interpreter

@@ -1,0 +1,41 @@
+# tools/s/scooter_scroll_witness.rish -- Scooter, the read cursor, on metal.
+#
+# pond/apps/scooter_scroll.rye is the terminal family's missing READ-side model. scooter_view.rye folds a
+# channel into a bounded frame, yet it always draws the FIRST posts and marks the rest "(+N more)" -- a keeper
+# cannot read history that scrolled off. This module is the scroll position: the seq of the topmost visible
+# post, with clamp verbs, so a keeper pages up into older posts and back down to the latest. Held PURE integer
+# logic -- it names WHICH posts are visible and how many hide above and below; it draws no pixel and reads no
+# channel body, so scooter_view keeps the drawing and this keeps the position.
+# This witness builds the module and asserts its selftest speaks GREEN over the six cruxes:
+#   - A journal shorter than the body shows every post, nothing hidden, home at the top.
+#   - The home view anchors the newest posts to the bottom, the rest hidden above.
+#   - Paging up reveals older posts and marks the newer ones below, clamping at the first.
+#   - Paging down returns toward the newest and clamps at the home view, never past it.
+#   - An empty journal and an over-far top both clamp to a real empty window, no phantom post.
+#   - At every scroll position the window partitions the journal -- above + shown + below is the whole.
+#
+# Facts only, custody-first: it computes a scroll position over a post count -- no network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/scooter_scroll_witness.rish
+
+say "scooter-scroll: Language EN -- a bounded read cursor over a journal, so a keeper pages through history."
+say "scooter-scroll: Lens TAME -- the scroll position held pure; clamps never underflow, the window always partitions the journal, no TTY, no key, no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+
+let bin = "pond/bin/scooter-scroll"
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/scooter_scroll.rye -femit-bin=${bin}"]
+assert build.ok else "scooter-scroll: scooter_scroll build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "scooter-scroll: scooter_scroll selftest exited non-zero"
+assert selftest.out contains "GREEN" else "scooter-scroll: selftest did not speak GREEN"
+assert selftest.out contains "shows every post" else "scooter-scroll: short-journal crux missing"
+assert selftest.out contains "anchors the newest posts to the bottom" else "scooter-scroll: home-view crux missing"
+assert selftest.out contains "paging up reveals older posts" else "scooter-scroll: page-up crux missing"
+assert selftest.out contains "paging down returns toward the newest" else "scooter-scroll: page-down crux missing"
+assert selftest.out contains "clamp to a real empty window" else "scooter-scroll: empty-window crux missing"
+assert selftest.out contains "the window partitions the journal" else "scooter-scroll: partition crux missing"
+
+say "GREEN: scooter-scroll -- a keeper pages through journal history, the scroll position bounded, pure, and always partitioning the journal."

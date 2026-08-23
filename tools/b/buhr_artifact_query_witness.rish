@@ -1,0 +1,47 @@
+# tools/b/buhr_artifact_query_witness.rish — BUHR Journey 8, Rung 1: the intelligence reads the store.
+#
+# Journey 6 let a voice read the living Realidream graph; Journey 7 built Tablecloth, the
+# named artifact store. This rung joins the two: a Lantern-shaped request whose corpus is
+# a named artifact, read only through Tablecloth's fetch_artifact — every bead proven by
+# digest and the whole against its recorded content address before a byte reaches the
+# voice. The crux, witnessed: a tampered bead refuses the fetch (DigestMismatch) and the
+# voice answers nothing rather than reading corruption; an unknown name refuses too. The
+# Lantern contract holds — bytes/words/line each read the true store, a length budget
+# truncates with a length stop, a disallowed model and a zero budget refuse. Journey 7's
+# store stays its own green binary (this voice composes over its public fetch only).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/buhr_artifact_query_witness.rish
+
+say "buhr8: Language EN — a voice's corpus is a named Tablecloth artifact, read only through the verified fetch."
+say "buhr8: Lens TAME — content-addressed storage is the intelligence's integrity guarantee; tamper and unknown name refuse."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/artifact-query"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/artifact_query.rye -femit-bin=${bin}"]
+assert build.ok else "buhr8: artifact_query build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr8: artifact_query selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr8: selftest did not speak GREEN"
+assert selftest.out contains "bytes read the store" else "buhr8: bytes op missing"
+assert selftest.out contains "words read the verified content" else "buhr8: words op missing"
+assert selftest.out contains "line read the verified content" else "buhr8: line op missing"
+assert selftest.out contains "length budget - tokens 3 length" else "buhr8: length metering missing"
+assert selftest.out contains "unknown name refused" else "buhr8: unknown-name refusal missing"
+assert selftest.out contains "tampered bead refused - the corpus proves itself before the voice reads it" else "buhr8: the crux refusal missing"
+assert selftest.out contains "unknown op refused" else "buhr8: unknown-op refusal missing"
+assert selftest.out contains "model not allowed refused" else "buhr8: model-not-allowed refusal missing"
+assert selftest.out contains "zero budget refused" else "buhr8: zero-budget refusal missing"
+
+# Journey 7's named artifact store — the corpus this voice reads — stays its own green
+# binary; rung one of Journey 8 composes over its public fetch, additively.
+let store_bin = "pond/bin/tablecloth"
+let store_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/tablecloth.rye -femit-bin=${store_bin}"]
+assert store_build.ok else "buhr8: tablecloth (J7r1) re-build failed"
+let store_selftest = run ["sh" "-c" "${store_bin} selftest 2>&1"]
+assert store_selftest.ok else "buhr8: tablecloth (J7r1) selftest exited non-zero"
+assert store_selftest.out contains "GREEN" else "buhr8: tablecloth (J7r1) did not speak GREEN"
+
+say "buhr8: GREEN — the intelligence reads the artifact store, and only bytes that proved themselves; every refusal holds."

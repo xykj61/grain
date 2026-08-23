@@ -18,7 +18,7 @@ At most **one** functional spec in designed-not-built flight until that spec's f
 Add after the deep-archive horizon line:
 
 ```markdown
-- [x] **Designed-not-built spec bound (Edit 5)** — at most one functional spec in flight until its first lap runs green; witness [`tools/designed_not_built_witness.rish`](../../tools/designed_not_built_witness.rish) wired in parity.
+- [x] **Designed-not-built spec bound (Edit 5)** — at most one functional spec in flight until its first lap runs green; witness [`tools/d/designed_not_built_witness.rish`](../../tools/d/designed_not_built_witness.rish) wired in parity.
 ```
 
 Remove or strike the Open Questions line for Edit 5.
@@ -28,18 +28,18 @@ Remove or strike the Open Questions line for Edit 5.
 Add row:
 
 ```markdown
-| **At most one designed-not-built functional spec** (`context/specs/*.md` Status) | `tools/designed_not_built_witness.rish` (live gate after Edit 5 ruling) |
+| **At most one designed-not-built functional spec** (`context/specs/*.md` Status) | `tools/d/designed_not_built_witness.rish` (live gate after Edit 5 ruling) |
 ```
 
-### 3. `tools/parity.rish`
+### 3. `tools/p/parity.rish`
 
-Wire `tools/designed_not_built_witness.rish` into the witness suite (increment parity to **143** — RW-3 at **141**, RW-4 at **142**).
+Wire `tools/d/designed_not_built_witness.rish` into the witness suite (increment parity to **143** — RW-3 at **141**, RW-4 at **142**).
 
 ### 4. Verify
 
 ```bash
-rishi/bin/rishi run tools/designed_not_built_witness.rish
-rishi/bin/rishi run tools/parity.rish
+rishi/bin/rishi run tools/d/designed_not_built_witness.rish
+rishi/bin/rishi run tools/p/parity.rish
 ```
 
 ## If Kaeden rules **against**
@@ -49,12 +49,12 @@ Note the ruling in the session log; leave witness on disk unwired; remove this f
 ## Witness (live gate, parity **143**)
 
 - Scan: `tools/fixtures/designed_not_built_scan.sh`
-- Witness: `tools/designed_not_built_witness.rish`
+- Witness: `tools/d/designed_not_built_witness.rish`
 
 Run manually today:
 
 ```bash
-rishi/bin/rishi run tools/designed_not_built_witness.rish
+rishi/bin/rishi run tools/d/designed_not_built_witness.rish
 ```
 
 ---

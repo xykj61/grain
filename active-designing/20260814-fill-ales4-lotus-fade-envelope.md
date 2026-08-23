@@ -30,7 +30,7 @@ A fade is a gain whose fraction moves, so it composes cleanly: ALES3's `mix` sum
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_fade_witness.rish`: a fade-in ramps `0 → full` with exact endpoints (first sample silent, last unchanged) and a linear middle; a fade-out mirrors it to silence; a ramp past unity saturates (`20000×2` and `×3` pin to `+32767`); a sub-span fade leaves the rest untouched; a single-sample fade takes the end level; a zero denominator refuses `BadGain`; an out-of-range span refuses `BadRange` leaving the clip untouched. GREEN on the first build. Purely local — no socket, no network, no keys, no funds, no real device, no real sample rate (the ramp runs across sample indices, not seconds).
+`tools/al/ales_fade_witness.rish`: a fade-in ramps `0 → full` with exact endpoints (first sample silent, last unchanged) and a linear middle; a fade-out mirrors it to silence; a ramp past unity saturates (`20000×2` and `×3` pin to `+32767`); a sub-span fade leaves the rest untouched; a single-sample fade takes the end level; a zero denominator refuses `BadGain`; an out-of-range span refuses `BadRange` leaving the clip untouched. GREEN on the first build. Purely local — no socket, no network, no keys, no funds, no real device, no real sample rate (the ramp runs across sample indices, not seconds).
 
 ## The road on
 

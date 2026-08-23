@@ -1,0 +1,35 @@
+# tools/au/aurora_glow_tend_limb1_witness.rish — Aurora A1 in src/sur/ (e197).
+#
+#   rishi/bin/rishi run tools/au/aurora_glow_tend_limb1_witness.rish
+
+say "aurora-tend-1: Language EN — first Aurora Glow Tend limb (sur museum)."
+say "aurora-tend-1: Style Radiant — wire bound pedestal; boot stays in aurora/src."
+say "aurora-tend-1: Lens TAME — Equinox e197 · Ashvini nest-only · Equinox B."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/sur/shape-aurora-wire-capacity.glow"
+
+say "aurora-tend-1: placard..."
+let placard = run ["sh" "-c" "head -n 7 src/sur/shape-aurora-wire-capacity.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "aurora-tend-1: placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "aurora-tend-1: placard missing six lines"
+
+say "aurora-tend-1: example locks to rye wire_capacity..."
+let ex = run ["sh" "-c" "grep -q 'example    512' src/sur/shape-aurora-wire-capacity.glow"]
+assert ex.ok else "aurora-tend-1: example 512 missing"
+let elder = run ["sh" "-c" "grep -q 'aurora/src/posted.rye' src/sur/shape-aurora-wire-capacity.glow"]
+assert elder.ok else "aurora-tend-1: posted.rye citation missing"
+let rye = run ["sh" "-c" "grep -E '^const wire_capacity: usize = 512;$' aurora/src/posted.rye"]
+assert rye.ok else "aurora-tend-1: rye wire_capacity must remain 512"
+
+say "aurora-tend-1: lower and run..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk]
+assert gate.ok else "aurora-tend-1: shape lower/build/run failed"
+assert gate.out contains "EXIT:0" else "aurora-tend-1: shape did not exit 0"
+
+say "aurora-tend-1: Caravan and Tally Tend still present..."
+let prior = run ["sh" "-c" "test -f src/sur/shape-caravan-max-name-len.glow -a -f src/sur/shape-tally-parse-int-laws.glow -a -f src/lib/shape-tally-max-gardens.glow"]
+assert prior.ok else "aurora-tend-1: prior Tend pedestals missing"
+
+say "GREEN: aurora Glow Tend limb 1 — wire_capacity=512 in src/sur/; Tend ladder kept."

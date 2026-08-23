@@ -1,0 +1,19 @@
+# dimeroll_sight_view.rish — Linengrow sight: carriage + books on one Skate frame.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/dimeroll_sight_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Linengrow sight view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for sight view witness"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let sight = run ["sh" "-c" "${bin} sightviewtest 2>&1"]
+assert sight.ok else "drawn terminal sightviewtest exited non-zero"
+assert sight.out contains "sight view" else "sight view witness missing expected output"
+assert sight.out contains "GREEN" else "Linengrow sight view witness not GREEN"
+assert sight.out contains "lines=8" else "sight view missing eight-line frame"
+
+say "GREEN: Linengrow sight view — carriage and books fold to one Skate frame."

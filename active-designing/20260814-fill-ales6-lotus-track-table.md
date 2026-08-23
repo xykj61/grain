@@ -33,7 +33,7 @@ An empty session renders silence; a single track renders that track at its offse
 
 ## What the witness proves (GREEN on metal)
 
-`tools/ales_track_witness.rish`: three tracks at three real offsets sum into one aligned master; the sum saturates once over all three (a mid-range trio still clamps correctly, never per-track); an empty session renders silence; a single track reproduces `place_at`; two tracks at offset zero reproduce `mix`; adding past `max_tracks` refuses `SessionFull`; a track whose placed end exceeds the master refuses `ClipFull`. GREEN on the first build. Purely local — no socket, no network, no keys, no funds, no real device.
+`tools/al/ales_track_witness.rish`: three tracks at three real offsets sum into one aligned master; the sum saturates once over all three (a mid-range trio still clamps correctly, never per-track); an empty session renders silence; a single track reproduces `place_at`; two tracks at offset zero reproduce `mix`; adding past `max_tracks` refuses `SessionFull`; a track whose placed end exceeds the master refuses `ClipFull`. GREEN on the first build. Purely local — no socket, no network, no keys, no funds, no real device.
 
 ## The road on
 

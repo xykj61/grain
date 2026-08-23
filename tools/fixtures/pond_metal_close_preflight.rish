@@ -7,7 +7,7 @@
 # the .sh sibling retires to yonder only after this witness passes on metal.
 # The Wayland metalsmoke stays a separate step by design — Rishi keeps no
 # conditional yet, and the metalsmoke check belongs on GNOME:
-#   rishi/bin/rishi run tools/slc2a_ring3_metal.rish
+#   rishi/bin/rishi run tools/s/slc2a_ring3_metal.rish
 # Interactive remainder (Kaeden): type, idle ~1 min, fill past the ceiling, :quit.
 
 say "preflight: Language EN — metal close automated path."
@@ -25,5 +25,5 @@ assert session.ok else "drawn terminal sessiontest exited non-zero"
 assert session.out contains "GREEN" else "drawn terminal session witness not GREEN"
 
 say "PREFLIGHT GREEN: build and headless witness passed."
-say "Next, on GNOME: rishi/bin/rishi run tools/slc2a_ring3_metal.rish"
+say "Next, on GNOME: rishi/bin/rishi run tools/s/slc2a_ring3_metal.rish"
 say "Then the live close: pond/bin/drawn-terminal — see pond/README.md, five steps."

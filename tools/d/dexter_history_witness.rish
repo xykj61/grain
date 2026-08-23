@@ -1,0 +1,34 @@
+# tools/d/dexter_history_witness.rish -- Dexter, the bounded history ring on metal.
+#
+# pond/apps/dexter_history.rye remembers the lines a keeper has committed, so a prompt walks back through
+# what was typed -- the up-and-down-arrow recall every shell carries, beside dexter_line.rye's editable
+# line. This witness builds the module to a binary and asserts its selftest speaks GREEN over the four cruxes:
+#   - Commit remembers the newest -- each finished line reads back oldest-first, byte-for-byte.
+#   - Recall walks a cursor -- recall_prev steps toward older lines, recall_next toward newer, off the
+#     newest returns to the live edge; past either end is refused by name (NoEarlier / NoLater).
+#   - The ring drops the oldest -- past the cap it holds the most recent max_history lines.
+#   - Commit resets to the live edge -- and an over-long line is refused (EntryTooLong), never truncated.
+#
+# Facts only, custody-first: it remembers lines of text and holds nothing else -- no network, no key, no funds.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/dexter_history_witness.rish
+
+say "dexter-history: Language EN -- a bounded ring of past lines, the recall half of Dexter's prompt."
+say "dexter-history: Lens TAME -- commit remembers the newest, recall walks a cursor, the ring drops the oldest at the cap, no key and no funds."
+
+let zig = "vendor/zig-toolchain/zig"
+
+let bin = "pond/bin/dexter-history"
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/dexter_history.rye -femit-bin=${bin}"]
+assert build.ok else "dexter-history: dexter_history build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "dexter-history: dexter_history selftest exited non-zero"
+assert selftest.out contains "GREEN" else "dexter-history: selftest did not speak GREEN"
+assert selftest.out contains "remembers each finished line, oldest first" else "dexter-history: commit crux missing"
+assert selftest.out contains "recall_prev walks toward older lines" else "dexter-history: recall crux missing"
+assert selftest.out contains "the ring drops the oldest" else "dexter-history: ring crux missing"
+assert selftest.out contains "an over-long line is refused not truncated" else "dexter-history: commit-reset crux missing"
+
+say "GREEN: dexter-history -- a bounded ring of past lines: commit remembers the newest, recall walks a cursor, the ring drops the oldest at the cap."

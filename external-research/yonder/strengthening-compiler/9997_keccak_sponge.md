@@ -168,7 +168,7 @@ Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
 |------|-------|--------|
 | `rye/lib/std/crypto/keccak_p.zig` | `keccak` — Phase 4 `usize` seam policy applied | pending |
 | `rye/tests/sha3_512_test.rye` | witness program | pending |
-| `tools/parity.rish` | witness registered | pending |
+| `tools/p/parity.rish` | witness registered | pending |
 | `external-research/yonder/strengthening-compiler/9997_keccak_sponge.md` | pass record + audited surfaces | pending |
 | `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | pending |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9997 | pending |

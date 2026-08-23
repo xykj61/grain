@@ -1,0 +1,41 @@
+# tools/b/buhr_mcp_prompt_witness.rish — BUHR Journey 11, Rung 1: the MCP prompts surface.
+#
+# The Model Context Protocol names three first-class surfaces. Journey 9 served tools (a verb a
+# caller invokes), Journey 10 served resources (a noun a caller reads); this rung serves the
+# third — prompts, a named reusable template a server offers. A format mcp-prompt-v1 descriptor
+# declares a prompt (name, summary, arg lines, a {name}-placeholder template body); a
+# format mcp-prompt-get-v1 request binds each argument; the fill answers a
+# format mcp-prompt-result-v1 whose body is the finished text, holding no placeholder. The crux:
+# prompts/get returns the template filled with every declared argument and every placeholder
+# resolved — nothing half-substituted — and every refusal crosses back as a named MCP error
+# (prompt_not_found, unknown_argument, missing_argument, unbound_placeholder). Reads no network —
+# the Comlink-served transport stays the held serve gate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/buhr_mcp_prompt_witness.rish
+
+say "buhr11r1: Language EN — Grain speaks MCP's third surface, prompts; a server offers a named template and fills it on request."
+say "buhr11r1: Lens TAME — a prompts/get answer holds no live placeholder, or it names its refusal; nothing arrives half-filled."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "pond/bin/mcp-prompt"
+
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/mcp_prompt.rye -femit-bin=${bin}"]
+assert build.ok else "buhr11r1: mcp_prompt build failed"
+
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "buhr11r1: mcp_prompt selftest exited non-zero"
+assert selftest.out contains "GREEN" else "buhr11r1: selftest did not speak GREEN"
+assert selftest.out contains "prompts/get round-trips" else "buhr11r1: the fill round-trip is missing"
+assert selftest.out contains "no placeholder left" else "buhr11r1: the no-placeholder crux is missing"
+assert selftest.out contains "a multi-line filled body survives" else "buhr11r1: the multi-line-body proof is missing"
+assert selftest.out contains "a repeated placeholder fills every occurrence" else "buhr11r1: the repeated-placeholder proof is missing"
+assert selftest.out contains "answered prompt_not_found" else "buhr11r1: the unknown-prompt refusal is missing"
+assert selftest.out contains "answered unknown_argument" else "buhr11r1: the undeclared-argument refusal is missing"
+assert selftest.out contains "answered missing_argument" else "buhr11r1: the missing-argument refusal is missing"
+assert selftest.out contains "answered unbound_placeholder" else "buhr11r1: the crux unbound-placeholder refusal is missing"
+assert selftest.out contains "an unknown request field refused" else "buhr11r1: the unknown-field refusal is missing"
+assert selftest.out contains "a wrong request format header refused" else "buhr11r1: the bad-format refusal is missing"
+assert selftest.out contains "belies its len field refused" else "buhr11r1: the body-len-mismatch refusal is missing"
+
+say "buhr11r1: GREEN — the prompts/get fill is complete or named; the template surface is owned beside tools and resources."

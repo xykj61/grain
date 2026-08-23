@@ -1,0 +1,19 @@
+# dimeroll_chart_view.rish — Dimeroll chart of accounts → Skate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/dimeroll_chart_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: Dimeroll chart view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for chart view"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let view = run ["sh" "-c" "${bin} chartviewtest 2>&1"]
+assert view.ok else "drawn terminal chartviewtest exited non-zero"
+assert view.out contains "chart view" else "chart view missing expected output"
+assert view.out contains "GREEN" else "Dimeroll chart view not GREEN"
+assert view.out contains "lines=6" else "chart view missing six-line frame"
+
+say "GREEN: Dimeroll chart view — four accounts compose a Skate frame."

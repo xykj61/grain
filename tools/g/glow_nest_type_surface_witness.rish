@@ -1,0 +1,54 @@
+# glow_nest_type_surface_witness.rish — nest/type surface wording (STOA106+).
+#
+# Proves living pins name nest/type surface, ambient gold stays held,
+# barket is tokenized (STOA111), and stated bartis remains GREEN. Docs-only
+# binder grown when tokenize landed — ambient gold still held (STOA130).
+#
+#   rishi/bin/rishi run tools/g/glow_nest_type_surface_witness.rish
+
+let tame = "context/TAME_GUIDANCE.md"
+let tokens = "glow/tokens.rye"
+let brief = "active-designing/date/20260720/20260720-042931_stoa106-nest-type-surface-wording.md"
+let lexicon = "context/LEXICON.md"
+let readme = "glow/README.md"
+
+# TAME carries STOA106 nest/type surface note.
+let tame_pin = run ["sh" "-c" "grep -F 'STOA106' ${tame}"]
+assert tame_pin.ok else "TAME missing STOA106 nest/type surface"
+let tame_nest = run ["sh" "-c" "grep -F 'nest/type surface' ${tame}"]
+assert tame_nest.ok else "TAME missing nest/type surface phrase"
+
+# tokens.rye MUST tokenize |^ as of STOA111 (parse/lower land at STOA112–113).
+let has_barket = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|^'"]
+assert has_barket.ok else "tokens.rye must tokenize |^ (STOA111)"
+
+# |= bartis remains tokenized (STOA100+) — nest wording does not undo bartis.
+let has_bartis = run ["sh" "-c" "awk '/const pairs =/,/};/' ${tokens} | grep -F '|='"]
+assert has_bartis.ok else "tokens.rye must still tokenize |= (bartis GREEN)"
+
+# Dated STOA106 brief keeps historical wet sample hold (dated_guard).
+let brief_ok = run ["sh" "-c" "test -f ${brief} && grep -F 'nest/type surface' ${brief} && grep -F 'wet sample' ${brief}"]
+assert brief_ok.ok else "STOA106 nest/type surface brief missing or incomplete"
+let brief_stoa = run ["sh" "-c" "grep -F 'STOA106' ${brief}"]
+assert brief_stoa.ok else "STOA106 brief must name STOA106"
+
+# Lexicon seats Nest/type surface + Glow stated/nesting/gold continuum (STOA130).
+let lex_nest = run ["sh" "-c" "grep -F 'Nest/type surface' ${lexicon}"]
+assert lex_nest.ok else "LEXICON missing Nest/type surface"
+let lex_ladder = run ["sh" "-c" "grep -F 'Stated / nesting / gold' ${lexicon}"]
+assert lex_ladder.ok else "LEXICON missing Stated / nesting / gold"
+
+# README names nest/type surface.
+let readme_h = run ["sh" "-c" "grep -F 'nest/type surface' ${readme}"]
+assert readme_h.ok else "glow/README must name nest/type surface"
+
+# Sibling horizons stay GREEN.
+let barket = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_barket_horizon_witness.rish"]
+assert barket.ok else "glow_barket_horizon_witness failed under nest/type wording"
+assert barket.out contains "GREEN" else "glow_barket_horizon_witness not GREEN"
+
+let bartis = run ["sh" "-c" "rishi/bin/rishi run tools/g/glow_lower_bartis_witness.rish"]
+assert bartis.ok else "glow_lower_bartis_witness failed under nest/type wording"
+assert bartis.out contains "GREEN" else "glow_lower_bartis_witness not GREEN"
+
+say "GREEN: Glow nest/type surface wording — stated/nesting/gold seated; barket tokenized; bartis GREEN; STOA106+ · STOA130."

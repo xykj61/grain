@@ -366,7 +366,7 @@ fn run_selftest() !u8 {
         "Forum Research Group\" under the RFC's one-time key) matches hex for hex, and our authored Rye equals Zig's independent " ++
         "std.crypto Poly1305 byte-for-byte across the empty message, a sub-block input, an exact 16-byte block, one byte over a block, " ++
         "the RFC's 34-byte length, and a 256-byte multi-block input. Monocypher-source parity is landed: " ++
-        "tools/crypto_monocypher_poly1305_parity_witness.rish compiles the vendored Monocypher fresh and diffs its crypto_poly1305 tags " ++
+        "tools/cr/crypto_monocypher_poly1305_parity_witness.rish compiles the vendored Monocypher fresh and diffs its crypto_poly1305 tags " ++
         "against this authenticator byte-for-byte across those same block edges plus the RFC's canonical message. An over-long call refuses before a block is absorbed. Purely " ++
         "local arithmetic — the primitive calls no std.crypto, the key is the RFC's public one-time vector, no real secret, no signature, " ++
         "no network, no funds, no real device; constant-time timing-safety stays a separate named horizon. The authenticator now stands " ++

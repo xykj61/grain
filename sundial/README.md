@@ -6,7 +6,7 @@ A sundial tells the **time** of day by a shadow. This one tells the **health** o
 rye build sundial/sundial.rye -femit-bin=sundial/bin/sundial
 sundial/bin/sundial selftest    # prove the counts, the percent, the all-green
 sundial/bin/sundial emit        # render a Ledgerworks health roll-up
-rishi/bin/rishi run tools/sundial_witness.rish
+rishi/bin/rishi run tools/s/sundial_witness.rish
 ```
 
 ## What it shows

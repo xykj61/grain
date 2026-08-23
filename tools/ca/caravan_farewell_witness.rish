@@ -1,0 +1,185 @@
+# caravan_farewell_witness.rish -- Caravan farewell witness.
+#
+# `refrain.rye` opened the last door: a run that reads its own named ending
+# spares that reader a second summons and takes the standing one back down, so
+# naming an ending finally costs the plan a letter it would otherwise send.
+#
+#   A RUN THAT HAS SPARED A READER CARRIES ITS OWN LAST WORD TO THE BOX THAT
+#   PERSON ALREADY READS, SO A SILENCE THEY NEVER ASKED TO INTERPRET BECOMES A
+#   CLOSE THEY WERE TOLD ABOUT.
+#
+# The rung proves:
+#
+#   * THE NUMBER THE TWO PLANS DISAGREE ON IS READERS A PLAN STOPPED WRITING TO
+#     WITHOUT EVER SAYING SO. Both runs read the same record a run before today
+#     published. What parts them is whether the person it is about ever hears
+#     of it. It falls 1 to 0.
+#   * A SILENCE EXPLAINS NOTHING. A plan that honored a reader's ending and a
+#     plan that mislaid their file read exactly alike from the outside, so the
+#     one courtesy the whole arc was spent to earn arrives as an absence the
+#     reader is left to interpret.
+#   * A RUN BIDS FAREWELL ONLY WHERE A READER WAS ACTUALLY SPARED.
+#     `FarewellUnspared` refuses by name.
+#   * A PARTING IS ONLY EVER CARRIED TO AN ADDRESS A RUN MAY REACH.
+#     `FarewellUnaddressed` refuses by name.
+#   * THE LETTER NAMES THE SPARING IT IS ABOUT. A reader holding an older
+#     parting would read their newest matter as closed by a run before today.
+#     `FarewellMismatched` is the rung itself, refused by name.
+#   * EVERY BYTE OF THE PARTING SAVE ONE CAME FROM OUTSIDE THIS RUN. The record
+#     is copied whole into `caravan/.readers/desk.fares` and this run's own byte
+#     written last; the record copied the mark, the mark the closure, the
+#     closure the answer, the answer the call, the call the wall, the wall the
+#     impasse, and that impasse the reader's own first refusal -- nine tiers in
+#     fourteen bytes.
+#   * THE TELLING LANDS WHERE THE READER IS, NOT WHERE THE RECORD IS. Every note
+#     this rung climbs past lives under the plan's own directory, where a person
+#     must come looking; this one lands outside it, so the arc's last courtesy is
+#     visible on the wire as a record leaving the place records are kept.
+#   * A PARTING CARRIES THE ARC'S LAST WORD, NEVER ITS BOUNDARY. The wall stands,
+#     the mark stands, and the record stands; the reader is simply told that the
+#     plan has stopped writing.
+#   * BIDDING FAREWELL IS NOT SETTLING. Every record beneath -- the settlement,
+#     the quarrel, its age, its standing, the finding, the plan's own word, the
+#     concession, the meeting, the redress, the delivery, the second look, the
+#     telling, the reader's reply, the mark, the wall, the reader's own answer,
+#     the abatement, and the sparing -- comes out of a parting run exactly as it
+#     went in. Both runs settle `carried out whole`.
+#   * A PARTING SURVIVES A PROVISIONING, AND OUTLIVES THE RECORD IT NAMES.
+#     Proven as its own fold, outside any run.
+#
+# Run: rishi/bin/rishi run tools/ca/caravan_farewell_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/farewell"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/farewell.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan farewell build failed -- ${build.err}"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/farewell_read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+# The board declaration the rungs below opened, unchanged.
+let published = run ["sh" "-c" "caravan/bin/farewell_read caravan/systems/serial_three_clients_board.bron 2>&1"]
+assert published.ok else "the board declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 11 -- grants 22" else "the board declaration changed shape"
+assert published.out contains "verdict: whole" else "the board declaration did not read whole"
+
+# A fresh start for the stores, the doorbells, this plan's notes, and the boxes
+# outside it. Every quarrel, every finding, every debt, every mark, every ending,
+# every sparing and every word this witness reads was seated by the lap itself,
+# standing in for the runs and the correspondents that met this argument before
+# today.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels caravan/.minds caravan/.readers"]
+assert clean.ok else "the region stores, doorbells, notes, and outside boxes could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan farewell selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan farewell selftest not GREEN"
+assert test.out contains "a run that has spared a reader carries its own last word to the box that person already reads" else "the farewell finding did not close"
+
+# The parting and its five refusals, read straight, before any dependent runs.
+assert test.out contains "five refusals stand by name: unspared, unaddressed, mismatched, miscounted, misrecorded" else "the five farewell refusals did not stand"
+assert test.out contains "the parting this rung keeps: the plan carries its own last word to the box its reader already reads" else "a parting plan did not read as one"
+assert test.out contains "what a quiet plan tells an operator: the plan spares that reader and simply stops writing" else "a quiet plan did not read as one"
+assert test.out contains "a parting carries fourteen bytes: the record it was handed, echoed whole" else "a parting did not name what it carries"
+assert test.out contains "a parting survives a provisioning, and outlives the record it names" else "a parting was never proven past a provisioning"
+
+# The refraining below it, unchanged and still proven on its own fold.
+assert test.out contains "a record survives a provisioning, and the summons it spares stays down" else "the refraining below stopped being proven"
+
+# THE MEASUREMENT. The two plans read the same published sparing, and only one
+# of them ever tells the person it is about.
+assert test.out contains "readers a plan stopped writing to without ever saying so: 1 against 0" else "the number this rung moves did not fall 1 to 0"
+assert test.out contains "spared readers this run finally told the plan had stopped writing: 0 quiet, 1 parting" else "the parting run did not tell the one reader its record spared"
+assert test.out contains "spared readers this run left to interpret a silence: 1 quiet, 0 parting" else "the other half of the count did not close"
+
+# The refraining below reads honestly on this pair: neither plan is handed a
+# named ending to open holding, so neither has a reader to spare, and the record
+# both plans act on was published by the harness for a run before today.
+assert test.out contains "readers of a named ending this run finally left alone: 0 quiet, 0 parting" else "a plan spared a reader where it named no ending"
+assert test.out contains "readers a plan summoned again about a matter it had already named as ended: 0 against 0" else "a plan was charged a reader summoned again where it named no ending"
+
+# Every rung beneath, standing exactly still. A parting carries one letter and
+# rewrites nothing else.
+assert test.out contains "the plan, as an operator finally reads it: carried out whole quiet, carried out whole parting" else "a parting run rewrote what the work came to"
+assert test.out contains "work still standing when the supervisor exits: 0 quiet, 0 parting" else "a parting run left work standing"
+assert test.out contains "breaks a named turn: 0 quiet, 0 parting" else "a parting run broke a named turn"
+assert test.out contains "carried calls this run opened its reader's own answer to: 1 quiet, 1 parting" else "the opening below moved under a parting run"
+assert test.out contains "opened releases this run took its own wall down on: 0 quiet, 0 parting" else "a run abated a wall on a word that released nothing"
+
+# THE LETTER ITSELF, read off the wire rather than out of the run's own words,
+# and read in the reader's own box rather than among the plan's notes. Fourteen
+# bytes: the record echoed whole, and this run's own byte last.
+let parting = run ["sh" "-c" "cat caravan/.readers/desk.fares"]
+assert parting.ok else "a parting run told nobody at all"
+assert parting.out contains "osrwsmwbyocrfl" else "the parting did not carry the record this run read, with its own byte last"
+
+# The record it names, standing exactly where the harness left it. A parting
+# carries a sparing outward and never rewrites one.
+let spared = run ["sh" "-c" "cat caravan/.minds/plan.refrain"]
+assert spared.ok else "a parting run took down the record it was only telling of"
+assert spared.out contains "osrwsmwbyocrf" else "the published sparing changed under a parting run"
+
+# The wall, still standing. A parting takes the arc's last word outward rather
+# than the boundary down, so a reader who let the wall stand keeps it and is
+# simply told the plan has stopped writing.
+let wall = run ["sh" "-c" "test -e caravan/.minds/plan.wall && echo standing || echo gone"]
+assert wall.ok else "the wall could not be read"
+assert wall.out contains "standing" else "a parting run took down the wall it was only telling a reader about"
+
+# The reader's own answer, still in the reader's own box. A plan reads a
+# person's word rather than taking it.
+let handed = run ["sh" "-c" "cat caravan/.readers/desk.hands"]
+assert handed.ok else "the reader this lap runs stopped holding their own answer"
+assert handed.out contains "osrwsmwby" else "a parting run rewrote the answer it was only asked to read"
+
+# The settlement beneath everything, untouched.
+let settled = run ["sh" "-c" "cat caravan/.minds/plan.settled"]
+assert settled.ok else "a parting run left no settlement at all"
+assert settled.out contains "c" else "a parting run rewrote what the work came to"
+
+# The planted control. A witness that only reads the run's own words would print
+# GREEN over a letter that was never carried, so the parting is taken out of the
+# reader's box and the very read that closed the claim is made again -- it must
+# fail, on metal, with the box empty. Then the wire is restored to exactly what
+# the run left.
+let plant = run ["sh" "-c" "cp caravan/.readers/desk.fares caravan/.readers/desk.fares.kept && rm caravan/.readers/desk.fares"]
+assert plant.ok else "the planted control could not take the parting down"
+
+let control = run ["sh" "-c" "cat caravan/.readers/desk.fares 2>/dev/null"]
+assert control.ok == false else "a parting that does not exist was read all the same"
+
+let restore = run ["sh" "-c" "mv caravan/.readers/desk.fares.kept caravan/.readers/desk.fares"]
+assert restore.ok else "the wire could not be restored after the planted control"
+
+let restored = run ["sh" "-c" "cat caravan/.readers/desk.fares"]
+assert restored.ok else "the parting did not come back after the planted control"
+assert restored.out contains "osrwsmwbyocrfl" else "the restored parting did not name the sparing this run told of"
+
+# The second planted control, on the naming rather than the delivery: a parting
+# about some other sparing is written into the very same box, and the read that
+# closes the claim fails on metal because the bytes name a matter this run never
+# spared anybody about. Then the true letter is put back exactly as it stood.
+let replant = run ["sh" "-c" "cp caravan/.readers/desk.fares caravan/.readers/desk.fares.kept && printf 'osrwsmwbyocrxl' > caravan/.readers/desk.fares"]
+assert replant.ok else "the planted parting could not be written"
+
+let recontrol = run ["sh" "-c" "cat caravan/.readers/desk.fares"]
+assert recontrol.ok else "the planted parting could not be read"
+assert recontrol.out contains "osrwsmwbyocrfl" == false else "a parting about some other sparing read as this run's"
+
+let reclean = run ["sh" "-c" "mv caravan/.readers/desk.fares.kept caravan/.readers/desk.fares"]
+assert reclean.ok else "the true parting could not be put back"
+
+let reread = run ["sh" "-c" "cat caravan/.readers/desk.fares"]
+assert reread.ok else "the parting did not come back after the second planted control"
+assert reread.out contains "osrwsmwbyocrfl" else "the restored parting did not name the sparing this run told of"
+
+# The dependents measure the loss in their own hands, exactly as the rungs below
+# left them, and the follower that once spoke for the judgment falls with it.
+assert test.out contains "falls as its author declared, holding 1 conferred arcs it never served" else "a falling dependent did not fall holding its conferral"
+assert test.out contains "client_b: read 3 arcs of its own, 0 inherited at its first breath, 1 conferred, 0 returned, 1 still reachable at home" else "the dependent a conferral was made to did not read it as its own"
+assert test.out contains "client_c: bytes differed" else "the follower that once spoke for the judgment came home after all"
+
+say "GREEN: Caravan farewell witness passed."

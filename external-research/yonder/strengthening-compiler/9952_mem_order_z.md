@@ -155,7 +155,7 @@ Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
 | `rye/lib/std/mem.zig` | `boundedOrderZ` — inherited `usize` seam; assertions only | done |
 | `rye/lib/std/mem.zig` | `findSentinel` — inherited `usize` seam; assertions only | done |
 | `rye/tests/mem_order_z_test.rye` | witness program | done |
-| `tools/parity.rish` | witness registered | done |
+| `tools/p/parity.rish` | witness registered | done |
 | `external-research/yonder/strengthening-compiler/9952_mem_order_z.md` | pass record + audited surfaces | done |
 | `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9952 | done |

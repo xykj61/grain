@@ -1,0 +1,22 @@
+# glow_seva_b0_fields_witness.rish — Glow FactFields parse surface (STOA212 · STOA249).
+#
+#   rishi/bin/rishi run tools/g/glow_seva_b0_fields_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "linengrow/bin/glow_seva_b0_fields_witness"
+
+let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/glow_seva_b0_fields_witness.rye -femit-bin=${bin}"]
+assert build.ok else "glow_seva_b0_fields_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "glow_seva_b0_fields_witness exited non-zero"
+assert selftest.out contains "GREEN" else "glow_seva_b0_fields_witness not GREEN"
+assert selftest.out contains "fixture root pin seated" else "glow_seva_b0_fields_witness missing fixture"
+assert selftest.out contains "claim_demo_fields round-trip" else "glow_seva_b0_fields_witness missing fields round-trip"
+assert selftest.out contains "incomplete fact refuses parse" else "glow_seva_b0_fields_witness missing incomplete refuse"
+assert selftest.out contains "leading-zero amount refuses" else "glow_seva_b0_fields_witness missing amount refuse"
+assert selftest.out contains "STOA212" else "glow_seva_b0_fields_witness missing STOA212"
+assert selftest.out contains "STOA249" else "glow_seva_b0_fields_witness missing STOA249"
+assert selftest.out contains "fields body agrees elder" else "glow_seva_b0_fields_witness missing authored body agree"
+
+say "GREEN: Glow Seva B0 fields surface — product-authored fields body; STOA249."

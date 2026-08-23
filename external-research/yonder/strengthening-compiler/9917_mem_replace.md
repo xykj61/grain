@@ -68,7 +68,7 @@ Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
 |------|-------|--------|
 | `misc` | `replace` — Phase 4 `usize` seam policy applied | done |
 | `rye/tests/mem_replace_test.rye` | witness program | done |
-| `tools/parity.rish` | witness registered | done |
+| `tools/p/parity.rish` | witness registered | done |
 | `external-research/yonder/strengthening-compiler/9917_mem_replace.md` | pass record + audited surfaces | done |
 | `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9917 | done |

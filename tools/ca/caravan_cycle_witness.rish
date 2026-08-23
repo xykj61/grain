@@ -1,0 +1,127 @@
+# caravan_cycle_witness.rish -- Caravan ring witness.
+#
+# Proves what opens when a shape loses its ends. Every declaration in this
+# arc has had them: serial_relay gave a chain a middle, and a client that
+# only asks and a backend that only answers were the whole point.
+# `serial_cycle.bron` removes them -- alder writes ask_ab and reads ask_ca,
+# birch writes ask_bc and reads ask_ab, cedar writes ask_ca and reads
+# ask_bc, so every domain is a middle and the flow graph closes on itself.
+#
+# Four findings ride here.
+#
+# The ring is derived twice over, never declared. Every domain spans exactly
+# two peers, so nothing here is an end -- a ring is the shape with no ends.
+# And exactly one directed walk visits all three domains once and returns
+# where it began, searched out of the flow graph, which is the circulation
+# order alder to birch to cedar and home.
+#
+# A closed graph settles for the same reason a chain does: no verb waits. A
+# pass moves what stands, rings the neighbor that carries it further, and
+# returns. alder places a second pair while the first is still travelling,
+# and all four come home.
+#
+# An ask that travels a full lap arrives at the domain that wrote it. At one
+# hop the region names the author and the bytes name the origin, and the two
+# agree; after a lap they must disagree, and that disagreement is exactly
+# what a completed lap looks like.
+#
+# And the ring takes something away. No domain holds a grant on every
+# region, so no domain can total the lap it belongs to -- alder reads three
+# of four and the arc between the other two is refused NotGranted before any
+# permission is compared. A ring has no vantage point; only the parent
+# outside it sees the whole. That fact follows from the ends fact rather
+# than standing on its own: a domain reaching every region would have to
+# touch every other domain, which makes a star, and a star has ends.
+#
+# Both RED paths were proven on metal before this witness was written.
+# Reversing one edge -- letting alder write ask_ca so cedar reads it --
+# leaves the grants looking much the same and closes the walk nowhere, and
+# the search refused a declaration whose grants close on no single lap.
+# Running the chain declaration (serial_relay) through this shape check
+# found two domains spanning other than two peers and refused a shape with
+# an end.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS %76 / %85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_cycle_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/cycle"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/cycle.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan cycle build failed"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+# Thirty-six rungs once ran a shared caravan/bin/read without building it, so the whole
+# arc was green only on a tree some earlier run had left warm. A witness owns what it
+# runs -- and, since REDS %133, the path it runs it from: eighty witnesses built that
+# one reader to one name, so two running at once contended for a single file and the
+# loser reddened a green tree. This one lands in caravan/bin/cycle_read.
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/cycle_read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+
+# The first declaration in this arc with no ends: three domains, three
+# channels, four directed regions, eight grants.
+let decl = run ["sh" "-c" "caravan/bin/cycle_read caravan/systems/serial_cycle.bron 2>&1"]
+assert decl.ok else "the ring declaration could not be read"
+assert decl.out contains "system serial_cycle" else "the ring declaration lost its name"
+assert decl.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the ring declaration changed shape"
+assert decl.out contains "verdict: whole" else "the ring declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan cycle selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan cycle selftest not GREEN"
+assert test.out contains "a ring closes its lap without waiting, and no domain inside it sees the whole" else "the ring claim did not close"
+
+# The wire holds every step to its own verb's shape. A passing step without
+# the region it carries into, a homecoming step handed a neighbor its verb
+# never names, an unnamed verb, and a padded count are each refused rather
+# than run against whatever names they happened to bring.
+assert test.out contains "the wire holds every step to its verb's own shape, 2 regions and 2 neighbors here" else "the plan wire did not read back"
+
+# The shape, derived from the grants before a single process runs. Both RED
+# probes stopped exactly here.
+assert test.out contains "4 directed flows derived from 8 grants, with no role word declared" else "the flows were not derived from the grants"
+assert test.out contains "every domain spans exactly 2 peers -- a ring is the shape with no ends" else "the ring was not found by arithmetic"
+assert test.out contains "one lap closes and only one: alder to birch to cedar and home" else "the circulation order was not derived"
+assert test.out contains "the widest reach any domain holds is 3 of 4 regions -- a ring has no vantage point" else "a domain inside the ring could total the whole"
+
+# What a badly ordered pass costs: a domain reading for its lap before its
+# predecessor has rung hears an unrung bell and returns.
+assert test.out contains "alder: home across 2 region(s) -- Unheard" else "an early read did not report itself"
+assert test.out contains "a domain reading before its predecessor rang hears an unrung bell -- a wasted pass, never a stopped ring" else "the ordering cost was not named"
+
+# The lap itself, read as it happens: alder places a second pair while the
+# first is still travelling, and nothing anywhere waits.
+assert test.out contains "alder: placed 2, head now 2" else "the first pair was never placed"
+assert test.out contains "birch: passed 2 from alder onward to cedar" else "the first pair was never carried"
+assert test.out contains "alder: placed 2, head now 4" else "the second pair was never placed"
+assert test.out contains "cedar: passed 4 from birch onward to alder" else "the last arc did not carry the whole lap"
+
+# The lap closes where it began, and the ask says so itself.
+assert test.out contains "alder: took 4 home from cedar, each naming alder as its origin -- a full lap" else "the lap did not close where it began"
+assert test.out contains "alder: reads 3 regions, each standing at 4, between birch and cedar" else "a domain read other than its own arc"
+assert test.out contains "6 directed bells provisioned silent across 3 declared channels" else "the run did not start silent both ways"
+assert test.out contains "4 asks travelled a full lap and came home, 2 of them placed while the first pair was still travelling" else "the run did not carry a lap that never waited"
+assert test.out contains "every arc settled at 4, and no domain ever waited on another" else "the ring did not settle arc for arc"
+
+# The wall that makes the ring's cost real: the arc between the other two
+# domains carries no grant for alder at all.
+assert test.out contains "alder: peek across 1 region(s) -- NotGranted" else "a domain inside the ring read the arc closed to it"
+assert test.out contains "the arc between the other two domains is closed to alder -- NotGranted" else "the vantage wall did not close"
+
+# And the wall that keeps the origin honest: a passer carries what it was
+# handed rather than authoring asks in its predecessor's region.
+assert test.out contains "birch: forge across 1 region(s) -- WriteDenied" else "a passer authored the asks it carries"
+assert test.out contains "a passer holds read alone on the region it carries from -- WriteDenied" else "the origin wall did not close"
+
+say "GREEN: Caravan cycle witness passed."

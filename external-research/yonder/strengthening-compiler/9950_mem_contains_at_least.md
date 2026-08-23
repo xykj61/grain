@@ -180,7 +180,7 @@ Lexicon ✅ requires every row **`done`** and zero **`fail`** rows.
 | `misc` | `containsAtLeastScalar2` — Phase 4 `usize` seam policy applied | done |
 | `rye/lib/std/mem.zig` | `containsAtLeastScalar2` — inherited `usize` seam; assertions only | done |
 | `rye/tests/mem_contains_at_least_test.rye` | witness program | done |
-| `tools/parity.rish` | witness registered | done |
+| `tools/p/parity.rish` | witness registered | done |
 | `external-research/yonder/strengthening-compiler/9950_mem_contains_at_least.md` | pass record + audited surfaces | done |
 | `## usize explicit audit` | per-surface locus table — gates lexicon ✅ | done |
 | `992_strengthening_width_crosswalk.md` | lexicon row 9950 | done |

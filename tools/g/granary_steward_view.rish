@@ -1,0 +1,20 @@
+# granary_steward_view.rish — Granary weave steward: list → settle → Dimeroll (tip 424).
+#
+# Golden: drawn terminal granary steward view: listed=100 settled=1 cash=900 conservation=0 memo=granary:weave-sale … — GREEN
+# Run from the repository root:
+#   rishi/bin/rishi run tools/g/granary_steward_view.rish
+
+let bin = "pond/bin/drawn-terminal"
+
+say "build: granary steward view — drawn-terminal compile"
+let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+assert build.ok else "drawn_terminal build failed for granary steward"
+assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
+
+let view = run ["sh" "-c" "${bin} granarystewardtest 2>&1"]
+assert view.ok else "drawn terminal granarystewardtest exited non-zero"
+assert view.out contains "GREEN" else "Granary steward witness not GREEN"
+assert view.out contains "drawn terminal granary steward view: listed=100 settled=1 cash=900 conservation=0 memo=granary:weave-sale" else "Granary steward missing golden finale"
+assert view.out contains "lines=8" else "Granary steward missing eight-line frame"
+
+say "GREEN: Granary steward view — weave list, settle, Dimeroll receipt on one Skate frame (tip 424)."

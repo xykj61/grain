@@ -20,7 +20,7 @@
 | [`api/`](api/rishi-language-reference.md) | Professional API surface | **living** -- [the Rishi language reference](api/rishi-language-reference.md): every form the shell understands, each line run before it was written, and the edges |
 | [`wiki/`](wiki/README.md) | Bidirectional relative-link Markdown wiki | **living** -- the shelf's own crosslink map: every page, what it leads to, what leads back |
 | [`study/`](study/README.md) | Study guides | **living** -- [how to read this tree](study/README.md): four questions, four rooms, and two habits worth borrowing first |
-| [`libraries/`](libraries/README.md) | Library docs | **living, generated** -- 38 rooms holding Rye modules, counted off the tree by `tools/geode_libraries.rish` and held true by its witness |
+| [`libraries/`](libraries/README.md) | Library docs | **living, generated** -- 38 rooms holding Rye modules, counted off the tree by `tools/g/geode_libraries.rish` and held true by its witness |
 | [`edu/`](edu/README.md) | Tutorials (shipped; `../edu/` may draft) | **living** -- the index of teaching surfaces and which door leads where |
 | [`demos/`](demos/README.md) | Demos | **living** -- four things you can run in a minute, output included |
 | [`templates/`](templates/README.md) | Templates | **pointer crush** -- Acme personalize + Bron (e149) |

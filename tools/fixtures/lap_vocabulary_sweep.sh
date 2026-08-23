@@ -2,7 +2,7 @@
 # lap_vocabulary_sweep.sh — word-boundary ring→lap on forward-facing prose only.
 # Thin-ring testing vocabulary becomes thin edge. Frozen witness path basenames stay
 # (slc2a_ring3_metal.rish, cellar_first_ring.rish, additive-gate.rish).
-# Run from repo root via: rishi/bin/rishi run tools/lap_vocabulary_sweep.rish
+# Run from repo root via: rishi/bin/rishi run tools/l/lap_vocabulary_sweep.rish
 set -eu
 
 DRY="${1:-}"
@@ -108,8 +108,8 @@ for f in \
   linengrow/*.md linengrow/README.md \
   ORGANIZING.md CLAUDE.md SIMPLE_LOVABLE_COMPLETE.md \
   brushstroke/*.rye pond/apps/drawn_terminal.rye pond/apps/brushstroke/wayland_seed.rye \
-  tools/parity.rish tools/slc2a_ring*.rish tools/cellar_first_ring.rish \
-  tools/designed_not_built_witness.rish \
+  tools/p/parity.rish tools/slc2a_ring*.rish tools/ce/cellar_first_ring.rish \
+  tools/d/designed_not_built_witness.rish \
   .claude/rules/*.md .cursor/rules/*.mdc
 do
   case "$f" in

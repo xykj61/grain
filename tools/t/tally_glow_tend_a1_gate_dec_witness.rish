@@ -1,0 +1,32 @@
+# tools/t/tally_glow_tend_a1_gate_dec_witness.rish — Ashvini a1 first Tend gate (e209).
+#
+#   rishi/bin/rishi run tools/t/tally_glow_tend_a1_gate_dec_witness.rish
+#
+# Bartis argv gates prove the answer by exit code (lower_bartis emit_argv_main):
+# EXIT:0 means bartis_gate(sample) == sample-1. No stdout numeral yet — that is say.
+
+say "tally-a1-dec: Language EN — Ashvini a1 · first Tend gate that does work."
+say "tally-a1-dec: Style Radiant — dec bartis beyond pedestals; Rye still lowers."
+say "tally-a1-dec: Lens TAME — Equinox e209 · Ashvini a1 OPEN · Equinox B."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/lib/gate-tally-dec-u32.glow"
+
+say "tally-a1-dec: lower and run sample 21 (EXIT:0 proves predecessor)..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "21"]
+assert gate.ok else "tally-a1-dec: lower/build/run failed"
+assert gate.out contains "EXIT:0" else "tally-a1-dec: 21 dec must prove 20 via exit 0"
+
+say "tally-a1-dec: living binary accepts the same sample..."
+let answer = run ["./glow/bin/gate-tally-dec-u32" "21"]
+assert answer.ok else "tally-a1-dec: binary refused sample 21 (dec proof failed)"
+
+say "tally-a1-dec: second sample refuses..."
+let bad = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "21" "9"]
+assert bad.out contains "FAIL" else "tally-a1-dec: must refuse second sample"
+
+say "tally-a1-dec: Tend pedestals still present..."
+let prior = run ["sh" "-c" "test -f src/sur/shape-aurora-signature-length.glow -a -f src/sur/shape-mantra-store-dir-count.glow -a -f src/lib/shape-tally-maybe-poles.glow"]
+assert prior.ok else "tally-a1-dec: A4, M4, or T5 missing"
+
+say "GREEN: Ashvini a1 — gate-tally-dec-u32 does work in src/lib/; pedestals kept."

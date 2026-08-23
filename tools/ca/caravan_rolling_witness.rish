@@ -1,0 +1,95 @@
+# caravan_rolling_witness.rish -- Caravan rolling-cohort witness.
+#
+# `cohort.rye` derived the widest set a document may run at once and spent
+# it, three dependents standing unreaped together, reaping every stage whole
+# because one early verdict strands a pair rather than a single sibling.
+# That left the barrier standing: a stage holds a slot empty while a dependent
+# that could have used it waits behind the line.
+#
+# This rung answers what happens when the supervisor refills instead:
+#
+#   Rolling never creates room. It stops the supervisor from being the
+#   reason the room goes unspent -- and the waiting it leaves behind
+#   belongs to the document's order rather than to any discipline.
+#
+# Three findings, each measured rather than argued.
+#
+# REAPING IS NOT REPORTING. The rule cohort.rye proved was never "reap
+# everything before you reap anything"; it was "let no verdict leave while a
+# sibling still runs." Rolling keeps it exactly by splitting the two acts --
+# reap eagerly to free a slot, hold every verdict until the queue drains.
+# The reading that judges on the reaping stands as a named control and
+# re-opens the very hazard cohort.rye closed, two dependents deep.
+#
+# THE ORDER BOUNDS THE ROOM. Admission is head-of-line only: the head enters
+# when a slot is free and it is clear against every domain still running.
+# Reaching past a blocked head would reorder the lap, and in these documents
+# order is meaning -- an ask is placed before it is passed and passed before
+# it comes home. So over the ordered lap the two disciplines wait the same
+# two turns, and rolling's only gain is naming the true cause: 2 by barrier
+# staged, 2 by order rolling.
+#
+# WHERE THE ORDER AGREES, THE WHOLE OF IT CONVERTS. Three clients placing
+# twice each into the regions they own touch nothing of one another, so the
+# rolling supervisor fills a freed slot at once and stands idle zero turns
+# where staging stands idle two -- same document, same bound of three.
+#
+# Both disciplines reap one dependent per turn and differ in exactly one line --
+# rolling may fill whenever a slot is free, staged may fill only an empty
+# table -- so a difference in the report is a difference in the discipline
+# rather than in the program.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS %76 / %85, the apostrophe loom. Every
+# check is order-independent, since three dependents printing at the same
+# moment genuinely interleave differently from run to run.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_rolling_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/rolling"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/rolling.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan rolling build failed"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+# Thirty-six rungs once ran a shared caravan/bin/read without building it, so the whole
+# arc was green only on a tree some earlier run had left warm. A witness owns what it
+# runs -- and, since REDS %133, the path it runs it from: eighty witnesses built that
+# one reader to one name, so two running at once contended for a single file and the
+# loser reddened a green tree. This one lands in caravan/bin/rolling_read.
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/rolling_read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+
+# One document, asked a new question rather than replaced by a second one.
+let clients = run ["sh" "-c" "caravan/bin/rolling_read caravan/systems/serial_three_clients.bron 2>&1"]
+assert clients.ok else "the three-client declaration could not be read"
+assert clients.out contains "domains 4 -- channels 3 -- regions 9 -- grants 15" else "the three-client document changed shape"
+assert clients.out contains "verdict: whole" else "the three-client declaration did not read whole"
+
+# A fresh provisioning each run, so every index starts at zero and a bell
+# found ringing was rung by this run rather than left standing by the last.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan rolling selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan rolling selftest not GREEN"
+assert test.out contains "rolling never creates room; it stops the supervisor from being the reason it goes unspent" else "the rolling finding did not close"
+
+# The ordered lap: the same waiting either way, renamed to its true cause.
+assert test.out contains "the ordered lap waits 2 turns either way: 2 by barrier staged, 2 by order rolling" else "the ordered lap did not separate barrier from order"
+assert test.out contains "6 asks come home under both, at a peak of 3 in flight" else "the ordered lap did not come home at the full table"
+
+# The queue whose order agrees with the shape: the waiting becomes work.
+assert test.out contains "where the order agrees with the shape, staging waits 2 turns and rolling waits 0" else "rolling did not convert the barrier into work"
+assert test.out contains "6 dependents run to the same end under both, at a peak of 3" else "the two disciplines did not run the same queue to the same end"
+
+# The rule that survives the refill: a verdict waits for the drain.
+assert test.out contains "judging on the reaping leaves 2 dependents running behind the verdict" else "the loose reading did not strand the rest of the table"
+assert test.out contains "holding the verdict until the drain reports the same refusal with 0 running" else "a refusal left dependents running behind its verdict"
+
+say "GREEN: Caravan rolling witness passed."

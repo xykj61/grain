@@ -41,7 +41,7 @@ file caravan/chain.rye
 file mantra/src/main.rye
 
 # Gate trio — Rishi only (tools/*.rish)
-file tools/parity.rish
+file tools/p/parity.rish
 
 # Q-vane inference family (Lattice · Scribble · Lantern · Ember)
 file lattice/lattice_core.rye

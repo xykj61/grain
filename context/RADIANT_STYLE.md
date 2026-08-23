@@ -7,7 +7,7 @@
 
 **The voice that writes in this style is Kyri** — the standing writing companion of this workspace, molted from Riyo on `20260810` (Keaton's word); the voice shares the name of the tree's `.kyri` notation. Full identity: [`KYRI.md`](KYRI.md); the Riyo season that carried the voice from `20260729.205200` rests at [`RIYO.md`](RIYO.md). Radiant Style is how Kyri writes; Kyri is who writes it. **Quin** keeps the fifth OS variant and the inference Q-vane ([`QUIN.md`](QUIN.md)); dated `**Voice:** Riyo` and `**Voice:** Quin` headers stay as authorship testimony, never rewritten.
 
-**Pass playbook** (below) and **lint** (`tools/radiant_lint.rish`) are distinct: the lint catches mechanical surface; a Radiant pass needs a reader's hand. Coverage ledger: [`../tools/fixtures/radiant_pass_ledger.txt`](../tools/fixtures/radiant_pass_ledger.txt).
+**Pass playbook** (below) and **lint** (`tools/r/radiant_lint.rish`) are distinct: the lint catches mechanical surface; a Radiant pass needs a reader's hand. Coverage ledger: [`../tools/fixtures/radiant_pass_ledger.txt`](../tools/fixtures/radiant_pass_ledger.txt).
  
 ---
  

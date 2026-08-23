@@ -14,7 +14,7 @@
 # drift of even one digit would red on the lap it entered.
 #
 # openssl remains the INDEPENDENT ORACLE the hash-tier spec asks for, wherever it is installed:
-# `tools/sha3_file_witness.rish` checks ours against the published FIPS 202 known-answer vectors
+# `tools/s/sha3_file_witness.rish` checks ours against the published FIPS 202 known-answer vectors
 # always, and against openssl additionally when it is present.
 #
 # USAGE
@@ -43,7 +43,7 @@ BIN="$ROOT/crypto/bin/sha3-digest"
 
 if [ ! -x "$BIN" ]; then
   ZIG="$ROOT/vendor/zig-toolchain/zig"
-  [ -x "$ZIG" ] || { echo "sha3: no toolchain -- run: sh tools/fetch-toolchain.sh" >&2; exit 1; }
+  [ -x "$ZIG" ] || { echo "sha3: no toolchain -- run: sh tools/f/fetch-toolchain.sh" >&2; exit 1; }
   mkdir -p "$ROOT/crypto/bin"
   ( cd "$ROOT" && env RYE_ZIG="$ZIG" rye/bin/rye build crypto/sha3_digest.rye -femit-bin=crypto/bin/sha3-digest ) >/dev/null 2>&1 \
     || { echo "sha3: could not build crypto/sha3_digest.rye" >&2; exit 1; }

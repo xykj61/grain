@@ -34,7 +34,7 @@ Add a short section to the Rye supplement of `TAME_GUIDANCE`, beside the seam po
 
 ## Edit 2 — Scope `width-check` to the Hosted Corpus
 
-Remove `aurora/src/deciding.rye` from the `files` list in `tools/width-check.rish`, and add a comment in its place stating why:
+Remove `aurora/src/deciding.rye` from the `files` list in `tools/w/width-check.rish`, and add a comment in its place stating why:
 
 > `# aurora/* is freestanding: usize is the machine word there — addresses, CSRs, hardware`
 > `# masks. Governed by the freestanding width policy in TAME_GUIDANCE, not this hosted gate.`
@@ -53,7 +53,7 @@ In `aurora/src/deciding.rye`, add a brief comment near the `Machine` struct and 
 
 Confirm first that the hosted corpus is truly clean — Comlink's TH-6 migration landed, so `comlink/hosted_wire.rye` and every other listed file should pass. Then:
 
-- Make `width-check.rish` a registered witness in `tools/parity.rish`, so authored `usize` in the hosted corpus becomes a **blocking** failure rather than a standalone gate.
+- Make `width-check.rish` a registered witness in `tools/p/parity.rish`, so authored `usize` in the hosted corpus becomes a **blocking** failure rather than a standalone gate.
 - Parity rises by one and stays green.
 
 This is the milestone the width work has climbed toward since TH-1: the hosted corpus holds fixed widths by construction, enforced on every run.
@@ -63,8 +63,8 @@ This is the milestone the width work has climbed toward since TH-1: the hosted c
 ## Verify on Metal (host)
 
 ```
-rishi/bin/rishi run tools/width-check.rish   → hosted corpus zero authored usize, GREEN
-rishi/bin/rishi run tools/parity.rish        → GREEN (width-check now inside, count risen)
+rishi/bin/rishi run tools/w/width-check.rish   → hosted corpus zero authored usize, GREEN
+rishi/bin/rishi run tools/p/parity.rish        → GREEN (width-check now inside, count risen)
 rye build  (incl. aurora freestanding riscv64) → unchanged, GREEN
 aurora/run.sh <stage>                        → still wakes in qemu — kernel widths untouched
 ```

@@ -19,7 +19,7 @@
 | **Metal** | Framework 16 AMD Ryzen 7040 · Ubuntu 24.04 LTS · GNOME Wayland · native SVM · `/dev/kvm` on the host |
 | **Cursor session** | Inside **ai-jail** (`hostname ai-sandbox`) — GPU/Wayland passed; **`/dev/kvm` not passed** while `LANE_KVM=false` |
 | **Pond** | Horizon for superseding ai-jail with TAME-guided safety — **not yet** the daily enclosure |
-| **`lane_kvm`** | A-narrow gate in `tools/enclosure.conf` — **off by default**; `/dev/kvm` only; refuse `tools/lane_kvm_refuse.rish`; on-path `tools/proven_seat_g0_complete_jailed.rish` (`-display none` · `-nic none`) |
+| **`lane_kvm`** | A-narrow gate in `tools/e/enclosure.conf` — **off by default**; `/dev/kvm` only; refuse `tools/l/lane_kvm_refuse.rish`; on-path `tools/p/proven_seat_g0_complete_jailed.rish` (`-display none` · `-nic none`) |
 | **Retired** | Host user D-Bus + systemd transient units as the KVM doorway — [`113900`](20260712-113900_lane-kvm-retire-dbus-escape.md) |
 
 Signing: Kaeden’s own keys on this host; lane key stays cloud; sandbox key stays ai-jail.
@@ -36,18 +36,18 @@ Kaeden: *“i grant my word for any recommendation.”* Treated as the seat word
 | Signature file | `sculpt-26-04.img.asc` fetched beside the image |
 | QEMU | `qemu-system-x86_64` 8.2.2 |
 | Boot milestone (TCG / nographic) | SeaBIOS → “Booting from Hard Disk…” → **“GRUB loading.”** |
-| Witness | `tools/proven_seat_g0.rish` |
+| Witness | `tools/p/proven_seat_g0.rish` |
 
 ## G0-complete — Leitzentrale under KVM (Framework host)
 
 | Check | Result |
 |-------|--------|
 | Accel (legacy `004012`) | `-accel kvm -cpu host -machine q35 -m 4G` on the **host** via D-Bus/systemd — **retired** [`113900`](20260712-113900_lane-kvm-retire-dbus-escape.md) |
-| Accel (living) | Same QEMU shape under **`lane_kvm`**: `-display none` · `-nic none` · QMP screendump — `tools/proven_seat_g0c_lane_kvm.sh` |
+| Accel (living) | Same QEMU shape under **`lane_kvm`**: `-display none` · `-nic none` · QMP screendump — `tools/p/proven_seat_g0c_lane_kvm.sh` |
 | Glass (`004012`) | Screendump `g0c-leitzentrale-witness.png` — Sculpt **Components** graph with live **`leitzentrale`** node |
 | Serial floor | GRUB loading on COM1 |
-| Refuse witness | `tools/lane_kvm_refuse.rish` — **GREEN** with `LANE_KVM=false` |
-| On witness | `tools/proven_seat_g0_complete_jailed.rish` — ready; needs `LANE_KVM=true` + `/dev/kvm` (host one-shot `run_with_lane_kvm.sh`) |
+| Refuse witness | `tools/l/lane_kvm_refuse.rish` — **GREEN** with `LANE_KVM=false` |
+| On witness | `tools/p/proven_seat_g0_complete_jailed.rish` — ready; needs `LANE_KVM=true` + `/dev/kvm` (host one-shot `run_with_lane_kvm.sh`) |
 | Eyes | Session log `20260712.004012` — human/agent witness of the Leitzentrale glass |
 
 Bare-metal USB boot stays a **separate word**. Depot/red diagnostics on first boot are teacher-image unfinished edges, not our blockers for G0-complete.
@@ -57,7 +57,7 @@ Bare-metal USB boot stays a **separate word**. Depot/red diagnostics on first bo
 | Lap | Prove |
 |-----|-------|
 | **G1 crossing** | **Named** `195339` — Genode toolchain + posix/libc; probe GREEN; toolchain fetch next |
-| **G1 serial** | `receipt_core` verify-witness one GREEN on jailed TCG serial — skeleton `tools/proven_seat_g1.rish` |
+| **G1 serial** | `receipt_core` verify-witness one GREEN on jailed TCG serial — skeleton `tools/p/proven_seat_g1.rish` |
 | **G2** | Capability-shaped Genode component (console/ROM only) — check in with Claude first |
 | **G3** | Optional Caravan seed pattern as Genode parent — check in with Claude first |
 

@@ -6,4 +6,4 @@ here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(cd "$here/.." && pwd)"
 cd "$repo"
 
-exec rishi/bin/rishi run tools/comlink_granary_resin_wire_lab.rish
+exec rishi/bin/rishi run tools/co/comlink_granary_resin_wire_lab.rish

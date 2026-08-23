@@ -5,11 +5,11 @@ ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
 
 # Fold prior polish witnesses.
-rishi/bin/rishi run tools/inner_i1_twah_residual.rish >/dev/null
-rishi/bin/rishi run tools/inner_i2_djin_prose.rish >/dev/null
+rishi/bin/rishi run tools/i/inner_i1_twah_residual.rish >/dev/null
+rishi/bin/rishi run tools/i/inner_i2_djin_prose.rish >/dev/null
 
 # Living Gren door present; retired Twah generator gone.
-test -f tools/gen_gren_fund_prep.rish
+test -f tools/g/gen_gren_fund_prep.rish
 test -f edu/funds/gren-creating-one-of-twelve.md
 test ! -e tools/gen_twah_fund_prep.rish
 test ! -e tools/fixtures/gen_twah_fund_prep.sh
@@ -31,7 +31,7 @@ else
 fi
 
 export RYE_ZIG="${RYE_ZIG:-$ROOT/vendor/zig-toolchain/zig}"
-out="$(rishi/bin/rishi run tools/gen_gren_fund_prep.rish 2>&1)" || {
+out="$(rishi/bin/rishi run tools/g/gen_gren_fund_prep.rish 2>&1)" || {
   echo "inner-i3 REFUSE: gen_gren left GREEN" >&2
   exit 1
 }

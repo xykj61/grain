@@ -1,0 +1,32 @@
+# glow_expr_witness.rish — shared nest-expression parser GREEN.
+#
+#   rishi/bin/rishi run tools/g/glow_expr_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/expr_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} rye/bin/rye build glow/expr_witness.rye -femit-bin=${bin}"]
+assert build.ok else "expr_witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "expr_witness exited non-zero"
+assert selftest.out contains "GREEN" else "expr_witness not GREEN"
+assert selftest.out contains "decimal prefix" else "expr_witness missing decimal claim"
+assert selftest.out contains "nested ^- @u32" else "expr_witness missing @u32 nest claim"
+assert selftest.out contains "nested ^- @u64" else "expr_witness missing @u64 nest claim"
+assert selftest.out contains "bare face" else "expr_witness missing face claim"
+assert selftest.out contains "(lent records) paren form" else "expr_witness missing lent paren claim"
+assert selftest.out contains "(mix root x) paren form" else "expr_witness missing mix paren claim"
+assert selftest.out contains "(jam from amount) paren form" else "expr_witness missing jam paren claim"
+assert selftest.out contains "(jam (mix from amount) amount) nest form" else "expr_witness missing nest jam claim"
+assert selftest.out contains "(jam cell (mix from amount)) nest-right form" else "expr_witness missing nest jam right claim"
+assert selftest.out contains "(jam (mix from amount) (mix cell gate)) nest-both form" else "expr_witness missing nest jam both claim"
+assert selftest.out contains "(cue cell) paren form" else "expr_witness missing cue paren claim"
+assert selftest.out contains "(cue (jam from amount)) nest form" else "expr_witness missing cue-of-jam claim"
+assert selftest.out contains "(cue (jam (mix from amount) amount)) nest-left form" else "expr_witness missing cue nest jam claim"
+assert selftest.out contains "(cue (jam cell (mix from amount))) nest-right form" else "expr_witness missing cue nest jam right claim"
+assert selftest.out contains "(cue (jam (mix from amount) (mix cell gate))) nest-both form" else "expr_witness missing cue nest jam both claim"
+assert selftest.out contains "ExprNotYetLowered" else "expr_witness missing other-paren refuse"
+assert selftest.out contains "parse_whole refuses leftover" else "expr_witness missing whole-rest claim"
+
+say "GREEN: Glow shared nest-expression parser — lent, mix, jam, nest jam left/right/both, cue, cue-of-jam, and cue nest jam left/right/both seated."

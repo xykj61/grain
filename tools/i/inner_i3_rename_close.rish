@@ -1,0 +1,15 @@
+# tools/i/inner_i3_rename_close.rish — Inner Scope i3: close rename-polish (i1–i3).
+#
+#   rishi/bin/rishi run tools/i/inner_i3_rename_close.rish
+
+say "inner-i3: Language EN — close Twah→Djin rename-polish block."
+say "inner-i3: Style Radiant — GREEN when i1·i2 fold and living Djin doors hold."
+say "inner-i3: Lens TAME — i3 prepares i4 fascia entry; does not land fascia* tools."
+
+let close = run ["sh" "tools/fixtures/inner_i3_rename_close.sh"]
+assert close.ok else "inner-i3 rename-close RED — see stderr"
+assert close.out contains "GREEN: inner-i3" else "inner-i3 missing GREEN line"
+assert close.out contains "rename-polish block i1–i3 CLOSED" else "inner-i3 missing CLOSED line"
+say close.out
+
+say "GREEN: inner-i3 — rename-polish closed; hand fascia machinery to i4."

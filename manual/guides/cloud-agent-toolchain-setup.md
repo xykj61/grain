@@ -44,9 +44,9 @@ rishi 20260621.062112 -- the shell of the Rye ecosystem (first version)
 From here, any `.rish` witness runs exactly as it would on a persistent host:
 
 ```bash
-rishi/bin/rishi run tools/neth_root_witness.rish
-rishi/bin/rishi run tools/neth_serial_core_witness.rish
-rishi/bin/rishi run tools/neth_root_install_witness.rish
+rishi/bin/rishi run tools/n/neth_root_witness.rish
+rishi/bin/rishi run tools/n/neth_serial_core_witness.rish
+rishi/bin/rishi run tools/n/neth_root_install_witness.rish
 ```
 
 All three ran **GREEN** on this cloud host at `20260715.054500` -- the first time any Neth witness has run GREEN outside a Mac-hosted or Ubuntu-desktop sitting.
@@ -60,7 +60,7 @@ This holds for a same-sitting cloud agent for the reasons named above (an epheme
 ## What This Does Not Set Up
 
 - **ai-jail sits this one out.** The platform already provides the boundary, per the reasoning above; this guide stands as the honest alternative to `context/specs/enclosure-editors.md` rather than an extension of it.
-- **No Wayland.** This recipe installs neither `libwayland-dev` nor `libxkbcommon-dev`, so SLC-2a Lap 1's Brushstroke viewer witness (and anything downstream of it in `tools/parity_ch01.rish`'s full sequential run) still halts here -- the same named gap as the macOS-host runs, for a different underlying reason (missing dev headers on a minimal cloud image, rather than Wayland being Linux-only). A future pass could `apt-get install libwayland-dev libxkbcommon-dev` to close this specific gap on a cloud host; this guide's own witnessed run did not attempt it.
+- **No Wayland.** This recipe installs neither `libwayland-dev` nor `libxkbcommon-dev`, so SLC-2a Lap 1's Brushstroke viewer witness (and anything downstream of it in `tools/p/parity_ch01.rish`'s full sequential run) still halts here -- the same named gap as the macOS-host runs, for a different underlying reason (missing dev headers on a minimal cloud image, rather than Wayland being Linux-only). A future pass could `apt-get install libwayland-dev libxkbcommon-dev` to close this specific gap on a cloud host; this guide's own witnessed run did not attempt it.
 - **No persistence across sessions.** Each fresh Cursor Cloud Agent VM starts over; this recipe is a same-sitting raise rather than a one-time setup. A future environment-config pass (via `cursor.com/onboard`) could bake this into the base image directly, if cloud-hosted witness runs become a standing need rather than an occasional one.
 
 ## Related

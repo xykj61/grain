@@ -7,7 +7,7 @@
 //! one function, both preconditions asserted, then the builtin it guards.
 //!
 //! Elder call sites migrate as they are touched — the ratchet, counted by
-//! `tools/tame_style_check.rish` — rather than in one sweep. New code
+//! `tools/t/tame_style_check.rish` — rather than in one sweep. New code
 //! reaches here first.
 //!
 //!   rye build tally/copy.rye -femit-bin=tally/bin/copy

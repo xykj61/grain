@@ -1,0 +1,23 @@
+# rish_lower_witness.rish — the `lower` string builtin.
+#
+# Proves Rishi can ASCII-lowercase a string, so a case-insensitive compare is a plain
+# `lower a == lower b`. Only A–Z shift; digits, punctuation, and non-letters pass
+# through untouched, and the length never changes.
+#
+#   rishi/bin/rishi run tools/r/rish_lower_witness.rish
+
+let a = lower "Living Ledger"
+assert a == "living ledger" else "lower should fold A-Z to a-z"
+
+# Already-lowercase text is unchanged.
+let b = lower "already lower"
+assert b == "already lower" else "lower should leave lowercase untouched"
+
+# Non-letters pass through; only ASCII letters shift.
+let c = lower "Stamp-2026: OK!"
+assert c == "stamp-2026: ok!" else "lower should shift only ASCII letters, keeping digits and punctuation"
+
+# Case-insensitive compare is the point.
+assert (lower "HELLO") == (lower "hello") else "lower makes a case-insensitive compare a plain equality"
+
+say "GREEN: Rishi lower — ASCII-lowercases a string, shifts only A-Z, preserves length, enables case-insensitive compare."

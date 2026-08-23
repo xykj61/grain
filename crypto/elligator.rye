@@ -29,7 +29,7 @@
 //! answers and the inverse map's point+tweak→status(+representative) answers — and the round-trip identity map(rev(u)) = u across a
 //! deterministic spread of points (every point a direct map produces is representable, so its inverse must succeed and re-map to it). Zig's
 //! std.crypto ships no Elligator, so unlike the hash and cipher rungs there is no independent std.crypto oracle; the byte-for-byte
-//! Monocypher-source parity in tools/crypto_monocypher_elligator_parity_witness.rish is the external anchor. Constant-time timing-safety stays
+//! Monocypher-source parity in tools/cr/crypto_monocypher_elligator_parity_witness.rish is the external anchor. Constant-time timing-safety stays
 //! a separate named horizon — crypto_elligator_rev is deliberately variable-time in exactly one place (whether a point is representable),
 //! which is why a caller tries fresh random keys rather than fixed ones; the arithmetic beneath is data-independent by construction.
 //!

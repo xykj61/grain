@@ -1,7 +1,7 @@
 #!/bin/sh
 # tools/fixtures/caravan_roster_bijection_scan.sh -- is every Caravan witness on disk heard by the choir?
 #
-# The Caravan choir (tools/caravan_suite_witness.rish) sings a written roster, and a written roster
+# The Caravan choir (tools/ca/caravan_suite_witness.rish) sings a written roster, and a written roster
 # drifts from the disk beside it the moment a lap writes a new witness and forgets the line. This scan
 # reads both sides and answers in one word, so the answer is a measurement rather than a memory.
 #
@@ -22,12 +22,12 @@
 #   phantom -- a roster line names a witness with no file behind it. The choir would refuse to run, and
 #              the count it prints would describe a tree that no longer exists.
 #
-# CARAVAN_ROSTER_FILE (default tools/caravan_suite_witness.rish): the file whose registrations are read.
+# CARAVAN_ROSTER_FILE (default tools/ca/caravan_suite_witness.rish): the file whose registrations are read.
 # CARAVAN_TOOLS_DIR   (default tools): the directory the witnesses stand in, so the PASS and FAIL
 #                     fixtures prove both paths without touching the living tree.
 set -eu
 
-ROSTER=${CARAVAN_ROSTER_FILE:-tools/caravan_suite_witness.rish}
+ROSTER=${CARAVAN_ROSTER_FILE:-tools/ca/caravan_suite_witness.rish}
 TOOLS=${CARAVAN_TOOLS_DIR:-tools}
 
 if [ ! -f "$ROSTER" ]; then
@@ -39,8 +39,11 @@ work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
 
 # The witnesses standing on disk, bare-named and sorted, the choir itself left out -- a choir need not
-# register itself.
-find "$TOOLS" -maxdepth 1 -name 'caravan_*_witness.rish' -type f \
+# register itself. TWO LEVELS, not one: `tools/` folded into letter rooms on `20260823.144100`, so
+# every Caravan witness now stands at `tools/ca/`, and a depth of one matched nothing while
+# reporting a confident zero (REDS %169). The pen the control builds stays flat, which a depth of
+# two still reaches.
+find "$TOOLS" -maxdepth 2 -name 'caravan_*_witness.rish' -type f \
   | sed 's:.*/::; s:\.rish$::' \
   | grep -v '^caravan_suite_witness$' \
   | sort > "$work/disk"

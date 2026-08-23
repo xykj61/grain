@@ -9,7 +9,7 @@
 # USAGE
 #   sh tools/fixtures/exec_bit_control.sh
 #
-# Driven by tools/exec_bit_witness.rish. Run from the repository root.
+# Driven by tools/e/exec_bit_witness.rish. Run from the repository root.
 
 set -u
 

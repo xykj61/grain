@@ -1,0 +1,184 @@
+# caravan_refrain_witness.rish -- Caravan refrain witness.
+#
+# `respect.rye` opened the last door: a run that inherits a closed
+# correspondence names that ending where the outcome is read, so an operator
+# learns the matter closed and the plan stops carrying an ending it never read.
+#
+#   A RUN THAT HAS NAMED AN ENDING CALLS THAT READER NO FURTHER ABOUT THE
+#   MATTER, AND TAKES THE SUMMONS BACK DOWN, RATHER THAN SUMMONING A PERSON
+#   WHO ALREADY SAID THEY WERE DONE.
+#
+# The rung proves:
+#
+#   * THE NUMBER THE TWO PLANS DISAGREE ON IS READERS A PLAN SUMMONED AGAIN
+#     ABOUT A MATTER IT HAD ALREADY NAMED AS ENDED. Both runs read the same
+#     mark a run before today published. What parts them is whether the plan
+#     does anything about it. It falls 1 to 0.
+#   * NAMING AN ENDING BUYS ITS READER NOTHING UNTIL IT CHANGES WHAT THE PLAN
+#     DOES NEXT. The rung below makes the outcome say the matter closed; this
+#     one is the first rung in the arc where saying so costs the plan a letter
+#     it would otherwise have sent.
+#   * A RUN REFRAINS ONLY WHERE AN ENDING WAS ACTUALLY NAMED. `RefrainUnnamed`
+#     refuses by name.
+#   * A READER WHO HAS TAKEN THE MATTER UP AGAIN IS NEVER SPARED.
+#     `RefrainTakenUp` refuses by name -- the consent guard of this tier,
+#     mirror to `RespectUnended` below it.
+#   * THE RECORD NAMES THE ENDING IT SPARES A READER ABOUT, weighed against the
+#     word standing in that reader's own box where they left it.
+#     `RefrainMismatched` is the rung itself, refused by name.
+#   * EVERY BYTE OF THE RECORD SAVE ONE CAME FROM OUTSIDE THIS RUN. The mark is
+#     copied whole into `caravan/.minds/plan.refrain` and this run's own byte
+#     written last; the mark copied the closure, the closure the record, the
+#     record the answer, the answer the call, the call the wall, the wall the
+#     impasse, and that impasse the reader's own first refusal -- eight tiers in
+#     thirteen bytes.
+#   * THE RECORD IS THE ACT, AND THE TAKING DOWN IS ONLY ITS CLOSE. The record
+#     lands first and the summons comes down after, so a run falling between the
+#     two leaves a reader summoned rather than a reader spared with nothing on
+#     the wire saying why.
+#   * REFRAINING TAKES DOWN THE SUMMONS, NEVER THE BOUNDARY. The wall stands and
+#     the mark stands; a reader who let the wall stand keeps it and simply stops
+#     hearing about it.
+#   * REFRAINING IS NOT SETTLING. Every record beneath -- the settlement, the
+#     quarrel, its age, its standing, the finding, the plan's own word, the
+#     concession, the meeting, the redress, the delivery, the second look, the
+#     telling, the reader's reply, the mark, the wall, the reader's own answer,
+#     and the abatement -- comes out of a refraining run exactly as it went in.
+#     Both runs settle `carried out whole`.
+#   * A RECORD SURVIVES A PROVISIONING, AND THE SUMMONS IT SPARES STAYS DOWN.
+#     Proven as its own fold, outside any run.
+#
+# Run: rishi/bin/rishi run tools/ca/caravan_refrain_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/refrain"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/refrain.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan refrain build failed -- ${build.err}"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/refrain_read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+# The board declaration the rungs below opened, unchanged.
+let published = run ["sh" "-c" "caravan/bin/refrain_read caravan/systems/serial_three_clients_board.bron 2>&1"]
+assert published.ok else "the board declaration could not be read"
+assert published.out contains "domains 4 -- channels 3 -- regions 11 -- grants 22" else "the board declaration changed shape"
+assert published.out contains "verdict: whole" else "the board declaration did not read whole"
+
+# A fresh start for the stores, the doorbells, this plan's notes, and the boxes
+# outside it. Every quarrel, every finding, every debt, every mark, every ending
+# and every word this witness reads was seated by the lap itself, standing in
+# for the runs and the correspondents that met this argument before today.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels caravan/.minds caravan/.readers"]
+assert clean.ok else "the region stores, doorbells, notes, and outside boxes could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan refrain selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan refrain selftest not GREEN"
+assert test.out contains "a run that has named an ending calls that reader no further about the matter" else "the refrain finding did not close"
+
+# The refraining and its five refusals, read straight, before any dependent runs.
+assert test.out contains "five refusals stand by name: unnamed, taken up, mismatched, miscounted, misrecorded" else "the five refrain refusals did not stand"
+assert test.out contains "the refraining this rung keeps: the plan reads its own ending, spares that reader, and takes the summons back down" else "a refraining plan did not read as one"
+assert test.out contains "what a calling plan tells an operator: the plan reads its own ending and summons that reader about the matter again" else "a calling plan did not read as one"
+assert test.out contains "a record carries thirteen bytes: the mark it was handed, echoed whole" else "a record did not name what it carries"
+assert test.out contains "a record survives a provisioning, and the summons it spares stays down" else "a record was never proven past a provisioning"
+
+# The respecting below it, unchanged and still proven on its own fold.
+assert test.out contains "a mark survives a provisioning, and outlives the closure it names" else "the respecting below stopped being proven"
+
+# THE MEASUREMENT. The two plans read the same named ending, and only one of
+# them lets it change what the plan does next.
+assert test.out contains "readers a plan summoned again about a matter it had already named as ended: 1 against 0" else "the number this rung moves did not fall 1 to 0"
+assert test.out contains "readers of a named ending this run finally left alone: 0 calling, 1 refraining" else "the refraining run did not spare the one reader its mark named"
+assert test.out contains "readers of a named ending this run summoned about the matter again: 1 calling, 0 refraining" else "the other half of the count did not close"
+
+# The respecting below reads honestly on this pair: neither plan is handed a
+# closure to open holding, so neither has an inherited ending to name, and the
+# mark both plans act on was written by the harness for a run before today.
+assert test.out contains "inherited endings this run named where the outcome is read: 0 calling, 0 refraining" else "a plan named an ending neither inherited"
+assert test.out contains "endings a run opened holding and never named: 0 against 0" else "a plan was charged an ending unnamed where it inherited none"
+
+# Every rung beneath, standing exactly still. Refraining publishes one record,
+# takes down one summons, and rewrites nothing else.
+assert test.out contains "the plan, as an operator finally reads it: carried out whole calling, carried out whole refraining" else "a refraining run rewrote what the work came to"
+assert test.out contains "work still standing when the supervisor exits: 0 calling, 0 refraining" else "a refraining run left work standing"
+assert test.out contains "breaks a named turn: 0 calling, 0 refraining" else "a refraining run broke a named turn"
+assert test.out contains "carried calls this run opened its reader's own answer to: 1 calling, 1 refraining" else "the opening below moved under a refraining run"
+assert test.out contains "opened releases this run took its own wall down on: 0 calling, 0 refraining" else "a run abated a wall on a word that released nothing"
+
+# THE RECORD ITSELF, read off the wire rather than out of the run's own words.
+# Thirteen bytes: the mark echoed whole, and this run's own byte last.
+let record = run ["sh" "-c" "cat caravan/.minds/plan.refrain"]
+assert record.ok else "a refraining run published no record at all"
+assert record.out contains "osrwsmwbyocrf" else "the record did not carry the mark this run read, with its own byte last"
+
+# And the summons came down. This is what makes the sparing an act rather than a
+# courtesy: the box outside this plan holds no call about a matter its reader
+# already ended, and the record that says so stands.
+let summons = run ["sh" "-c" "test -e caravan/.readers/desk.walls && echo standing || echo gone"]
+assert summons.ok else "the reader's box could not be read"
+assert summons.out contains "gone" else "a refraining run left its summons standing in the reader's box"
+
+# The mark the run acted on, standing exactly where the harness left it. A
+# refraining reads an ending and never rewrites one.
+let named = run ["sh" "-c" "cat caravan/.minds/plan.respect"]
+assert named.ok else "a refraining run took down the ending it was only acting on"
+assert named.out contains "osrwsmwbyocr" else "the named ending changed under a refraining run"
+
+# The wall, still standing. A refraining takes down the summons rather than the
+# boundary, so a reader who let it stand keeps it and stops hearing about it.
+let wall = run ["sh" "-c" "test -e caravan/.minds/plan.wall && echo standing || echo gone"]
+assert wall.ok else "the wall could not be read"
+assert wall.out contains "standing" else "a refraining run took down the wall it was only sparing a reader about"
+
+# The reader's own answer, still in the reader's own box. A plan reads a
+# person's word rather than taking it.
+let handed = run ["sh" "-c" "cat caravan/.readers/desk.hands"]
+assert handed.ok else "the reader this lap runs stopped holding their own answer"
+assert handed.out contains "osrwsmwby" else "a refraining run rewrote the answer it was only asked to read"
+
+# The settlement beneath everything, untouched.
+let settled = run ["sh" "-c" "cat caravan/.minds/plan.settled"]
+assert settled.ok else "a refraining run left no settlement at all"
+assert settled.out contains "c" else "a refraining run rewrote what the work came to"
+
+# The planted control. A witness that only reads the run's own words would print
+# GREEN over a record that was never published, so the note is taken down and the
+# very read that closed the claim is made again -- it must fail, on metal, with
+# the note gone. Then the wire is restored to exactly what the run left.
+let plant = run ["sh" "-c" "cp caravan/.minds/plan.refrain caravan/.minds/plan.refrain.kept && rm caravan/.minds/plan.refrain"]
+assert plant.ok else "the planted control could not take the record down"
+
+let control = run ["sh" "-c" "cat caravan/.minds/plan.refrain 2>/dev/null"]
+assert control.ok == false else "a record that does not exist was read all the same"
+
+let restore = run ["sh" "-c" "mv caravan/.minds/plan.refrain.kept caravan/.minds/plan.refrain"]
+assert restore.ok else "the wire could not be restored after the planted control"
+
+let restored = run ["sh" "-c" "cat caravan/.minds/plan.refrain"]
+assert restored.ok else "the record did not come back after the planted control"
+assert restored.out contains "osrwsmwbyocrf" else "the restored record did not name the reader this run spared"
+
+# The second planted control, on the act rather than the record: a summons put
+# back into the reader's box makes the very read that closed the sparing claim
+# fail on metal. Then the box is emptied again, exactly as the run left it.
+let replant = run ["sh" "-c" "printf 'osrwsmwb' > caravan/.readers/desk.walls"]
+assert replant.ok else "the planted summons could not be put back"
+
+let recontrol = run ["sh" "-c" "test -e caravan/.readers/desk.walls && echo standing || echo gone"]
+assert recontrol.ok else "the planted summons could not be read"
+assert recontrol.out contains "standing" else "a planted summons did not stand"
+
+let reclean = run ["sh" "-c" "rm caravan/.readers/desk.walls"]
+assert reclean.ok else "the planted summons could not be taken back down"
+
+# The dependents measure the loss in their own hands, exactly as the rungs below
+# left them, and the follower that once spoke for the judgment falls with it.
+assert test.out contains "falls as its author declared, holding 1 conferred arcs it never served" else "a falling dependent did not fall holding its conferral"
+assert test.out contains "client_b: read 3 arcs of its own, 0 inherited at its first breath, 1 conferred, 0 returned, 1 still reachable at home" else "the dependent a conferral was made to did not read it as its own"
+assert test.out contains "client_c: bytes differed" else "the follower that once spoke for the judgment came home after all"
+
+say "GREEN: Caravan refrain witness passed."

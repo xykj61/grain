@@ -1,0 +1,60 @@
+format session-log-v1
+stamp 20260823.152322
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The tools room folds by letter, and six reds ride along
+prompt Recur -- Kyri and Gauge first, then ITINERARY and the rota row, Standfast on reds, take the next agent-doable lap Lindy-first crux-first, approve my own design rounds, send often.
+think Head of lap: commit count 3332, so N mod 5 = 2 and the council rota reads row 2 -- Fire/Mars, cut and stop. Standfast, reds-first, the three depths of removal. Fitting for a round that moves 1,917 files.
+think Ran the standing roster before touching anything. 29 of 29 GREEN on metal at 20260823.143422, run_verdict=ok. No open agent-closable red, so the line was clear and the constructive queue opened.
+think The crux was named by the prior lap: Tier 1.1, the tools fold, step three of six. The prior lap handed forward one open question -- leave the 24 crypto/tally symlinks flat, or deepen every target one level -- and the instruction says approve my own design rounds, so I answered it rather than checking in.
+think Neither option was right, and measurement is what showed it. The importers move too. A symlink left flat at tools/x25519.rye is useless to monocypher_x25519_parity.rye once that file sits in tools/m/, and a symlink deepened into tools/x/ is equally useless to it. A bare-name @import resolves in the importer's own directory.
+think Probed the compiler rather than reasoning about it. Wrote a .rye importing ../../crypto/x25519.rye and ran it: `error: import of file outside module path`. Zig refuses an import that escapes the root file's directory, which is exactly why the 24 shims exist. So the shim and its importer must share a room, and the whole Rye closure of tools/ is one room by the compiler's own rule.
+think That gave the third answer: .rye sources fold to tools/rye/ as a unit, with the 24 shims and the enrich/ room they import, while everything else folds by first sprig letter. The rule stays computable from the basename alone -- extension names the room for sources, first letter for scripts -- so the resolver stays a pure function and needs no table.
+think Checkpoint recorded at nib 0d87a51fcd before the cut, per .claude/rules/checkpoint.md. Then the move: 1,917 entries into 35 rooms, a and c splitting one letter deeper, max room 240, zero over bound, zero collisions with a standing subdirectory.
+obs REDS %166, and it was a near-miss on privacy. `git add -A tools/` staged tools/e/enclosure.conf -- one person's host configuration -- because .gitignore withheld it as /tools/enclosure.conf and the fold had moved it a directory deeper. Caught by reading the staged list rather than trusting the add. Nothing committed. The six personal names now match at any depth with no leading slash, each checked unique in the tracked collection first. The general form: a gitignore pattern anchored to a path is a promise about a location, and any fold is a change of location.
+obs REDS %167. The new repointer sourced the dated-path exclusion list wholesale, on the honest reasoning that both tools ask what is field and what is instrument. They do -- the answer differs because the references differ. That list protects deliberately stale COUNSEL citations; excluding dated_path_witness.rish also protected its live `tools/dated_path_resolve.rish` invocation, so the witness ran a tool at a path that no longer stood. Four guards red on the roster run immediately after the move. An exclusion list is scoped to a meter, never to a file.
+obs REDS %168, and it is the one worth carrying furthest. The ITINERARY said tools/ reached 7.4x the bound because the room sat off the enforced roster. Measurement says worse: room_bound_scan.sh counts files whose basename carries a one-clock stamp, because the rooms it was written for fold by day. Not one of the 1,917 carried a stamp, so adding tools to the roster would have changed nothing -- the meter would have reported zero and passed. A meter is blind to whatever its counting rule was not written for.
+obs foundations/ turned out to be the one dated-named room that must be repointed. 76 documents with stamped basenames and living bodies, whose links foundations_link_witness holds at zero broken on every roster run. Two links naming ../tools/drey_witness.rish and ../tools/hunk_qoi_witness.rish reddened it. The rule written into the scan: a dated-named room is living when a standing guard requires its references to resolve. Nothing else qualifies today.
+obs The candidate-narrowing grep was too clever and cost a pass. It demanded that `tools/` open a word, which declined every ../tools/x.rish in the tree -- 204 of them. Correctness belongs in the awk that consults the map; the narrowing is a speed filter and is now deliberately wide.
+obs The prefix rule tightened in the same pass. A leading segment is cut only when the text before the match ends in `$`, which is the whole set of cases where the segment was a shell variable rather than a directory. So $ROOT/tools/x.rish is repointed with its prefix carried through, and otherproject/tools/x.rish is left alone even when the basename is in the map. Both proven in the control.
+obs The letter rule now reaches the ../ shape. Reading three took the room as written, so ../../tools/e/x.rish tested a path outside the tree and always missed, and the index answered by the weaker reading. Taking the room root-relative -- the same way reading two already takes the whole path -- lets the pure computation answer the shape 204 of this tree's own references wear.
+obs A guard whose room has folded can start passing for the wrong reason. tool_path_scan.sh gated on min_basename_safe and rooms_over_bound, both of which fall to zero when a room has nothing flat left. That is REDS %161's vacuous truth. The scan now decides the flat question itself and reports flat_shape_gate, and gates the standing rooms in their own right; the control proves the verdict both ok and red.
+obs REDS %169, and it is the lap's real teaching. A repointer moves text; a fold moves depth. Four kinds of reference fail silently and none is text: a shell glob over tools/*.rish matches nothing, a find -maxdepth 1 matches nothing, thirty-three scripts computing the repository root as $(dirname "$0")/.. land inside tools/, and two tracked symlinks point at flat paths no text rewriter can see.
+obs The sharpest instance is the one that passed green. docs-geode/libraries/README.md regenerated with a witness count of zero for all thirty-eight rooms, and geode_libraries_witness passed, because page and fresh render are computed by the same generator and the generator's glob was broken. A freshness guard proves a page agrees with its generator, never that the generator is right. The page's own header warns that a confident wrong zero is worse than no number at all.
+obs REDS %170. Running tools/l/living_card_ascii_witness.rish by hand while chasing something else found the operator card carrying four non-ASCII lines since the 20260823.103804 ROADMAP fusion. The guard was seated 20260817 as REDS %83's booked prevention and was never added to the roster, so nothing had ever run it. Third firing of the same lantern after %156 and %165; the guard is the 31st now.
+obs REDS %171, and it answers %156's open question by measurement rather than by opinion. The roster covers 31 guards over roughly 1,800 witnesses, so the fold needed a wider gate: three witnesses drawn from each of the 29 letter rooms, 86 run, 12 red. Five device or OS gated and correct to refuse here, three wanting an unbuilt amphora binary, two not reds at all, and two genuine and older than this fold -- pool_isolation calls a member linengrow/capabilities.rye has not had since 2026-07-15. A roster is a sample, and a sample nobody has drawn is a coverage claim nobody has checked.
+obs Two reds left open on purpose, named rather than routed around: pool_isolation_witness and pond_ring_lantern_witness, both module drift in linengrow/ and pond/ rather than anything this fold touched. Closing them would widen this round well past its keystone.
+loom witness=tool_path_repoint_scan files_considered=5879 candidates=3324 files_touched=2398 references_repointed=8502 wall_s=23
+loom witness=standing_equipment_run guards=31 green=31 red=0
+loom sweep=random_witness_draw rooms=29 sampled=86 red=12 genuine=2 device_gated=5 unbuilt=3 not_reds=2
+file tools/fixtures/tool_path_repoint_scan.sh the repointer -- tracked files only, one instrument name, one living dated room, one cut behind a dollar sign
+file tools/fixtures/tool_path_repoint_control.sh nine behaviors on a throwaway git repository, each answer known before the tool runs
+file tools/t/tool_path_repoint.rish the driver a hand reaches for, dry by default
+file tools/t/tool_path_repoint_witness.rish the rung, roster guard 30
+file tools/t/tool_path_resolve.rish the room taken root-relative before the letter rule, so ../tools/x.rish is computed rather than indexed
+file tools/t/tool_path_witness.rish re-aimed at the folded room -- a stale reference recovered is a real case now rather than a planted one
+file tools/fixtures/tool_path_scan.sh standing_rooms, standing_max_room, standing_rooms_over_bound, flat_shape_gate -- readings that keep meaning the day after a fold
+file tools/fixtures/tool_path_control.sh two behaviors added, seven proven
+file tools/fixtures/room_bound_scan.sh two counting rules, and counts=all printed beside the second
+file tools/fixtures/room_bound_control.sh a letter-folded room over bound, proven to red
+file tools/r/room_bound_witness.rish seven enforced rooms, six by dated basename and tools by every flat entry
+file tools/fixtures/generated_page_freshness_control.sh the pen mirrors the hook's generator rooms
+file .gitignore five personal names withheld by basename at any depth, after the fold retired their anchors
+file .claude/rules/stamp-and-name.md a room folds by what its files are found by -- day or first sprig letter
+file .cursor/rules/stamp-and-name.mdc the Cursor twin, same amendment
+file construction/CHECKPOINTS.md walk-back nib 0d87a51fcd, recorded before the cut
+file construction/REDS.md rows %166, %167, %168 booked; row %165 folded to archive under the 24,576-byte bound
+file construction/standing-equipment.kyri tool_path_repoint seated as the 30th guard
+file tools/fixtures/geode_libraries_scan.sh a recursive find rather than a flat glob, so the witness count is a number again
+file tools/fixtures/witness_claim_check_scan.sh the same fix, with tools/fixtures pruned as instrument
+file tools/fixtures/caravan_roster_bijection_scan.sh two levels, not one
+file tools/ca/caravan_suite_witness.rish the same, and the choir sings 108 again
+file tools/ca/caravan_ladder_copy_witness.rish its two planted pens built from a recursive find
+file tools/co/corpus_twin_verbose.sh a tool_home helper that tries the two-letter room first
+file pond/apps/corpora/one_clock.rish retargeted one level deeper
+file tools/fixtures/tame_usize_audit.rye retargeted into the rye room
+file construction/standing-equipment.kyri living_card_ascii seated as the 31st guard
+file construction/ITINERARY.md Now refilled with the landed fold and its three reds
+recommend keep-going -- the fold is landed, all 31 rostered guards GREEN, and two pre-existing reds are named and open (pool_isolation, pond_ring_lantern -- module drift in linengrow/ and pond/, both older than this fold). Standfast points the next lap at those two first. Next in Tier 1: the 848 seed-dead links, then a Door-setting front page for Caravan and for Mycelium, which is what the ranked remainder calls the real crux -- a reader arriving today still cannot say in one sentence what either module does. The seed force-push stays Keaton's word.

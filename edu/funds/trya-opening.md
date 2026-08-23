@@ -3,7 +3,7 @@
 **Stamp:** `20260728.024417`  
 **Voice:** Quin · nested Trya  
 **Kind:** fund-prep page one — grow the seat; no deploy  
-**Generator:** `tools/gen_trya_fund_prep.rish`
+**Generator:** `tools/g/gen_trya_fund_prep.rish`
 
 ---
 

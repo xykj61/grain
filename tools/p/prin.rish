@@ -1,0 +1,6 @@
+# tools/p/prin.rish — accrete shim → tools/gen/chapter/prin.rish (Generator Chapter s4)
+# Forward at most one argv; never default-run matrix (hangs on live TTY).
+if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/chapter/prin.rish"]
+if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/chapter/prin.rish" args[0]]
+if r.out != "" then say r.out
+exit r.code

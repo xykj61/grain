@@ -1,0 +1,62 @@
+# tools/m/mechanism_sentence_witness.rish -- a commit body says what changed before what it means.
+#
+# Keaton read six commits of one Caravan refactoring arc and still had to ask what the arc did.
+# The folds were sound and the choir was green; the bodies described the work entirely in image.
+# The `note_path` commit contains no occurrence of `file`, `function`, `parameter`, `import`, or
+# `call` -- so the mechanism was genuinely absent from the record, and the only reader who could
+# reconstruct it was the one who had already written it.
+#
+# The law is one line: MECHANISM FIRST, MEANING AFTER (`.claude/rules/mechanism-sentence.md`).
+# This witness holds it at two tiers, the shape the ASCII and negation guards already proved:
+#
+#   WALL      `tools/hooks/commit-msg` refuses a thin body at write time. Proven here on metal:
+#             a body written purely in image is refused, a body naming its function and file is
+#             welcomed, and an honestly-short body passes free rather than being nagged.
+#   ADVISORY  the trailing window is reported against a ceiling that only ever falls. 21 of the
+#             40 commits standing at seating read below the floor, and accrete-never-break
+#             forbids rewriting a single one of them -- so the ratchet tightens as clean bodies
+#             land rather than by any round rewriting history.
+#
+# ONE VOCABULARY, asserted. The hook and the scan each carry the mechanism-word line, and this
+# witness reads both out and compares them. A wall and its meter that drift apart are worse than
+# either alone -- the same lesson the dated-path tools paid three rounds to learn.
+#
+# The meter counts vocabulary, so it proves a FLOOR rather than a comprehension. One commit
+# scoring three still left its reader unable to name the change, which is how this law came to
+# be written. Word presence is the check; a reader reconstructing the diff is the standard.
+#
+# Read-only: no network, no key, no funds, and no message on disk is rewritten here.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mechanism_sentence_witness.rish
+
+say "mechanism-sentence: Language EN -- every commit body names the change in plain engineering words before it reaches for an image."
+say "mechanism-sentence: Style Radiant -- the metaphor keeps its place and earns it by standing on a mechanism the reader already holds."
+say "mechanism-sentence: Lens TAME -- measurement beats memory; a feeling about the prose becomes a number per commit, the ratchet only tightens, and a body written purely in image is refused on metal."
+
+let green = run ["sh" "tools/fixtures/mechanism_sentence_scan.sh"]
+assert green.ok else "mechanism-sentence: the living scan must exit 0 -- ${green.out}"
+assert green.out contains "window=40" else "mechanism-sentence: want the trailing window measured at forty commits"
+assert green.out contains "ceiling=21" else "mechanism-sentence: want the ceiling named, so a reader sees what the ratchet is holding"
+assert green.out contains "vocabulary=17" else "mechanism-sentence: the mechanism vocabulary changed size -- say why in the same commit"
+assert green.out contains "verdict=ok" else "mechanism-sentence: thin bodies rose above the ceiling -- mechanism first, meaning after"
+
+let red = run ["sh" "tools/fixtures/mechanism_sentence_scan.sh" "prove-red"]
+assert (red.ok == false) else "mechanism-sentence: prove-red must refuse, not merely report"
+assert red.out contains "RED_metaphor_only_caught" else "mechanism-sentence: prove-red want the metaphor-only control caught"
+
+let agree = run ["sh" "tools/fixtures/mechanism_words_agree.sh"]
+assert agree.ok else "mechanism-sentence: the wall and the meter disagree on the vocabulary -- ${agree.out}"
+assert agree.out contains "vocabulary_agrees=1" else "mechanism-sentence: want the hook and the scan reading one word list"
+
+let wall = run ["sh" "tools/fixtures/mechanism_wall_scan.sh"]
+assert wall.ok else "mechanism-sentence: the wall scan failed to run -- ${wall.out}"
+assert wall.out contains "WALL_REFUSES_METAPHOR 1" else "mechanism-sentence: the hook let a body written purely in image through"
+assert wall.out contains "WALL_WELCOMES_MECHANISM 1" else "mechanism-sentence: the hook refused a body that names its function and its file"
+assert wall.out contains "WALL_SPARES_SHORT 1" else "mechanism-sentence: the hook nagged an honestly-short body, which teaches nothing"
+assert wall.out contains "WALL_EXEMPTS_SEED_ROOT 1" else "mechanism-sentence: the public seed's root commit describes a repository rather than a change and must pass"
+assert wall.out contains "WALL_EXEMPTION_BORROWED 0" else "mechanism-sentence: an ordinary commit borrowed the seed-root exemption -- the wall has grown a door"
+assert wall.out contains "WALL_TEACHES 1" else "mechanism-sentence: the refusal must name the rule and the vocabulary it counted"
+assert wall.out contains "WALL_MESSAGE_KEPT 1" else "mechanism-sentence: the hook altered a message it refused -- a refusal leaves the author's words untouched"
+
+say "GREEN: mechanism-sentence -- the wall refuses a body written purely in image and welcomes one that names its function and its file, the hook and the meter read one vocabulary, and the trailing window stands at or under its ceiling."

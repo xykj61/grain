@@ -77,7 +77,7 @@ Plan:
 1. Backup inventory of current divergences (list paths + one-line why each existed).
 2. Reset to pristine (copy or symlink strategy matching how `rye/lib/` already symlinks `compiler_rt`, `libc`, etc.).
 3. Re-apply **only** divergences Kaeden approves from harvest list (likely none in `std` — invariants move to seeds).
-4. Run `tools/parity.rish` — expect behavior change; document what gates now mean under pristine `std` (parity may need redefinition; propose, do not silently break).
+4. Run `tools/p/parity.rish` — expect behavior change; document what gates now mean under pristine `std` (parity may need redefinition; propose, do not silently break).
 5. Update `rye/README.md`, `rye-learning-process/ALMANAC.md` to state pristine overlay policy.
 
 **This is the highest-risk move.** Print full plan and diff stats; **no execution until Kaeden confirms.**
@@ -92,7 +92,7 @@ Plan:
 
 - Prefer `u32`/`u64`; **avoid** `usize` in authored Rye.
 - Assert bound + `@intCast` at inherited-std seam is **correct**, not DEBT awaiting F3.
-- `tools/width-check.rish` enforces authored corpus — keep.
+- `tools/w/width-check.rish` enforces authored corpus — keep.
 - F1–F5 and F3 std rewrite → **deferred horizon** (link `active-designing/date/20260628/20260628-043542_thin-frontend-slc-direction.md`), not "the plan."
 
 **Also update** `work-in-progress/ROADMAP.md` spine:

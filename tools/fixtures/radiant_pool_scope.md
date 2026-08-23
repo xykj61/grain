@@ -41,7 +41,7 @@ When a file is touched: run **`claim_preserve_witness`** (includes **`markdown_s
 
 ## Witness gate (blocking)
 
-`tools/markdown_structure_witness.rish` — table separators · balanced fences · link syntax · heading levels vs BASE. Wired into `claim_preserve_witness.rish`. Negative: `context/fixtures/markdown_structure_broken_table.md`.
+`tools/m/markdown_structure_witness.rish` — table separators · balanced fences · link syntax · heading levels vs BASE. Wired into `claim_preserve_witness.rish`. Negative: `context/fixtures/markdown_structure_broken_table.md`.
 
 ---
 

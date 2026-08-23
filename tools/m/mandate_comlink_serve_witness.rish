@@ -1,0 +1,21 @@
+# mandate_comlink_serve_witness.rish — a Mandate query served over Comlink, sealed.
+#
+# Proves the transport half of "served over Comlink": serve.rye's request/response
+# bytes ride Comlink as a sealed datagram (wire_format.seal_message — X25519,
+# ChaCha20-Poly1305, Sha3 name, kumara signature), opened on the far side. A query
+# served over Comlink returns exactly what a direct in-process query would; the request
+# is verified before the store is touched, so a tampered frame is refused.
+#
+# Build first:  rye build mandate/comlink_serve.rye -femit-bin=mandate/bin/comlink_serve
+#   rishi/bin/rishi run tools/m/mandate_comlink_serve_witness.rish
+
+let st = run ["mandate/bin/comlink_serve" "selftest"]
+assert st.ok else "mandate comlink_serve selftest must exit 0"
+assert (st.err contains "GREEN") else "mandate comlink_serve must report GREEN"
+assert (st.err contains "crosses Comlink as a sealed datagram") else "a query crosses Comlink sealed"
+assert (st.err contains "returns exactly what a direct in-process query would") else "the served answer equals a direct query"
+assert (st.err contains "verified before the store is touched") else "a request is verified before the store is touched"
+assert (st.err contains "a flipped byte fails to open") else "a tampered datagram is refused"
+assert (st.err contains "fit the sealed-message budget at compile time") else "both messages fit one datagram, proven at compile time"
+
+say "GREEN: mandate comlink_serve — a Mandate query served over Comlink as a sealed, signed, name-checked datagram; the answer equals a direct query, and a tampered frame is refused, witnessed."

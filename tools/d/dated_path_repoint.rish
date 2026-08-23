@@ -1,0 +1,25 @@
+# tools/d/dated_path_repoint.rish -- repoint living files at a folded room's new paths.
+#
+# WHY. The mark law resolves a stale reference rather than rewriting it, and that is right for
+# dated testimony. It is wrong for living code: a witness running `grep -q ... counsel/2026...md`
+# resolves nothing, it simply fails. So living things are repointed and testimony is resolved,
+# and the line is drawn by the tree's own convention -- a file whose own basename carries a
+# one-clock stamp is testimony and is never written to here.
+#
+# Dry by default. Nothing is written until `apply` is asked for by name.
+#
+# USAGE
+#   rishi/bin/rishi run tools/d/dated_path_repoint.rish          # report only
+#   rishi/bin/rishi run tools/d/dated_path_repoint.rish apply    # rewrite
+#
+# Proven by tools/d/dated_path_repoint_witness.rish. Run from the repository root.
+
+let mode = "dry"
+if length args != 0 then let mode = args[0]
+
+say "dated-path-repoint: living things are repointed, dated testimony is resolved -- mode ${mode}."
+
+let run_scan = run ["sh" "tools/fixtures/dated_path_repoint_scan.sh" mode]
+assert run_scan.ok else "dated-path-repoint: the repoint pass must complete -- see stderr"
+say run_scan.out
+assert run_scan.out contains "verdict=ok" else "dated-path-repoint: the pass must balance before it is believed"

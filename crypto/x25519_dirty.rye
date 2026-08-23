@@ -26,7 +26,7 @@
 //!
 //! HONEST SCOPE — software only, purely LOCAL, no network, no funds, no real device, no identity. This file signs nothing and holds no key; a
 //! dirty public key is public. It calls no std.crypto in the primitive. Zig's std.crypto ships no "dirty" X25519, so — like Elligator — there
-//! is no independent std.crypto oracle; the byte-for-byte Monocypher-source parity in tools/crypto_monocypher_x25519_dirty_parity_witness.rish
+//! is no independent std.crypto oracle; the byte-for-byte Monocypher-source parity in tools/cr/crypto_monocypher_x25519_dirty_parity_witness.rish
 //! is the external anchor, proving our dirty_small equals BOTH Monocypher's crypto_x25519_dirty_small AND its crypto_x25519_dirty_fast (the two
 //! agree by Monocypher's own design, and we agree with both). Constant-time timing-safety stays a separate named horizon: the ladder is
 //! data-independent by construction, and a dirty key is not itself a secret.
@@ -266,7 +266,7 @@ fn run_selftest() !u8 {
     var j: u32 = 0;
     while (j < 32) : (j += 1) sk[j] = @as(u8, @truncate(j + 1));
     const pk = dirty_small(&sk);
-    // The byte-for-byte external anchor is tools/crypto_monocypher_x25519_dirty_parity_witness.rish, which builds the ACTUAL Monocypher and
+    // The byte-for-byte external anchor is tools/cr/crypto_monocypher_x25519_dirty_parity_witness.rish, which builds the ACTUAL Monocypher and
     // diffs it against this module over sixteen keys — a stronger and self-updating oracle than a single pasted KAT, so the selftest proves the
     // internal invariants (L, reduction, the non-trivial output) and defers the byte-exact answer to that live parity.
     var nonzero = false;

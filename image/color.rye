@@ -15,7 +15,7 @@
 //! meets_aa_large · meets_aaa), so a surface chooses legible text on any fill rather than guessing.
 //! No network, no key, no funds — the color model Brushstroke and Skate read the day the design system lands.
 //!
-//!   rishi/bin/rishi run tools/color_algebra_witness.rish
+//!   rishi/bin/rishi run tools/co/color_algebra_witness.rish
 //!
 //! (selftest lowered to a binary by the witness, exactly as image/qoi.rye is:)
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build image/color.rye -femit-bin=image/bin/color && image/bin/color selftest

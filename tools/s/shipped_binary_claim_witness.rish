@@ -1,0 +1,54 @@
+# tools/s/shipped_binary_claim_witness.rish -- no living page may say the tools ship in a clone.
+#
+# WHY THIS RUNG. The fault fired twice. REDS %117: the manual's first-hour page told a newcomer the
+# two tools "already live inside your clone" and "came with the copy." REDS %118: the machines
+# guide said it three more times, and the developer guide illustrated the run-record with a binary
+# nothing in the tree builds. Both pages are the kind a stranger meets first, and both were false
+# on the one point a stranger cannot check for themselves -- because checking it requires the very
+# thing the page claims they already have.
+#
+# A lantern that fires twice becomes a loom. This is the loom.
+#
+# WHAT IS PROVEN, on metal.
+#   The premise is MEASURED, not assumed: `git ls-files rye/bin rishi/bin` is counted each run. If
+#   the tree ever does ship binaries, the claims become true and the guard stands down rather than
+#   enforcing a rule whose reason expired.
+#   No living page asserts otherwise today.
+#   No RUNNABLE block invokes a bare `rye` or `rishi` -- a second way to misname the tools, added
+#   after the sandboxing guide and two video scripts each did (REDS %119). Only ```bash and ```sh
+#   fences are read, since usage tables and captured version output live in unlabeled ones.
+#   The guard REFUSES an assertion -- proven on a planted page.
+#   The guard ALLOWS a quotation and a dated artifact -- which is the half that is easy to miss.
+#   Its own first run reddened on three pages that quoted the phrase in order to explain it was
+#   false. A guard that makes the record of a fault unwritable has erased its own reason, so the
+#   exemptions are principled: a line citing a `REDS %` row is discussing the fault, and the
+#   emphasis-quote form is quoting rather than asserting.
+#
+# WHAT IS NOT PROVEN. That every command in the manual runs -- that is a reader's walk and a
+# separate round. This proves one specific false claim cannot return unnoticed.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/shipped_binary_claim_witness.rish
+
+say "shipped-binary: Language EN -- the pages a stranger reads first told them the tools were already in their clone. Twice. This is the guard that makes a third time impossible."
+say "shipped-binary: Style Radiant -- the premise is measured, the claim is refused, and the record of the fault stays writable."
+say "shipped-binary: Lens TAME -- a guard that cannot notice its own premise expiring is a guard that will one day be wrong with confidence, so the tracked count is read each run."
+
+let scan = run ["sh" "tools/fixtures/shipped_binary_claim_scan.sh"]
+assert scan.ok else "shipped-binary: a living page claims the tools arrive with a clone -- read the claim lines above; git tracks none of them"
+say scan.out
+assert scan.out contains "tracked_binaries=0" else "shipped-binary: the premise moved -- binaries are tracked now, so the manual's elder claims would be TRUE and this guard wants rewriting rather than obeying"
+assert scan.out contains "claims_found=0" else "shipped-binary: no living page may assert the tools ship in a clone"
+assert scan.out contains "bare_invocations=0" else "shipped-binary: a runnable block invokes a bare rye or rishi -- neither is on a PATH, so no reader can run it; write rye/bin/rye and rishi/bin/rishi"
+assert scan.out contains "verdict=ok" else "shipped-binary: the scan must balance before it is believed"
+say "field GREEN -- the premise is measured at zero, and no living page says otherwise"
+
+let control = run ["sh" "tools/fixtures/shipped_binary_claim_control.sh"]
+assert control.ok else "shipped-binary: the two-case control must complete"
+say control.out
+assert control.out contains "asserted_refused=yes" else "shipped-binary: a page asserting the claim must be refused, or the guard guards nothing"
+assert control.out contains "quoted_and_dated_allowed=yes" else "shipped-binary: a quotation and a dated artifact must be allowed -- a guard that makes the record of a fault unwritable erases its own reason"
+assert control.out contains "control_verdict=ok" else "shipped-binary: the control must agree with itself"
+say "RED and GREEN paths both proven -- an assertion refused, a quotation and a dated artifact allowed"
+
+say "GREEN: shipped-binary -- the premise is measured, no living page asserts the tools ship, and the guard is proven to refuse a claim while letting the record of it stand."

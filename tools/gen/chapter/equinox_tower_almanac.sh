@@ -23,9 +23,9 @@ t = t.replace(
 )
 entry = (
     "### 19. The classic tower solves with an explicit bounded stack; seventeen rings refuse whole.\n"
-    "**Ran:** `rishi/bin/rishi run tools/edu_tower_witness.rish` · **Stamp:** `"
+    "**Ran:** `rishi/bin/rishi run tools/e/edu_tower_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/edu_tower_witness.rish` · `edu/tower/bounded_tower.rye`\n"
+    + "` · **Witness:** `tools/e/edu_tower_witness.rish` · `edu/tower/bounded_tower.rye`\n"
     "Expected solve(3)=7 moves · TooManyRings at 17 · tally/stack beneath · tutorial pinned. "
     "Metal answered GREEN. Recursion stays out; the depth is named.\n\n"
 )

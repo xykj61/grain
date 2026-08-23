@@ -1,0 +1,101 @@
+# caravan_rederive_witness.rish -- Caravan rederive witness.
+#
+# Proves where a supervised dependent's rights come from. `restart.rye` proved
+# a fall survivable, and every restart in it took its capability line from
+# a table the supervisor derived once at boot and then carried in memory.
+# This ring removes that second authority: every attempt -- the first and
+# each restart after it -- reloads the declaration from disk and derives
+# the dependent's line from that read.
+#
+# The claim is checkable two ways from outside the program. The count says
+# every attempt derived its own rights, and the lenient policy leaves a
+# widened memory standing at the moment of the spawn, so the dependent's own
+# refusal names which of the two descriptions it was handed.
+#
+# Both RED paths were proven on metal before this witness was written.
+# Handing the dependent the REMEMBERED line rather than the freshly derived one
+# tripped `line_agrees` inside `spawn_slot` -- the widened line refused
+# before a process started. Deriving once before the loop and reusing it
+# broke the per-attempt count in `run_plan`, which is the claim stated in
+# reverse.
+#
+# One earlier finding rode in the same round and is worth keeping: the
+# first cut of this ring could not state its own claim. Under `refuse`
+# nothing spawns, and under `heal` the memory agrees again before any line
+# is chosen -- so neither policy could tell a document-derived line from a
+# remembered one. The `report` policy exists because measurement asked for
+# it.
+#
+# Checks read the selftest output natively (`contains`), never a shell grep
+# over interpolated output -- REDS %76 / %85, the apostrophe loom.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/ca/caravan_rederive_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "caravan/bin/rederive"
+
+let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build caravan/rederive.rye -femit-bin=${bin}"]
+
+assert build.ok else "caravan rederive build failed"
+
+# The reader this witness runs is built here rather than borrowed (REDS %92).
+# Thirty-six rungs once ran a shared caravan/bin/read without building it, so the whole
+# arc was green only on a tree some earlier run had left warm. A witness owns what it
+# runs -- and, since REDS %133, the path it runs it from: eighty witnesses built that
+# one reader to one name, so two running at once contended for a single file and the
+# loser reddened a green tree. This one lands in caravan/bin/rederive_read.
+let read_bin_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build caravan/read.rye -femit-bin=caravan/bin/rederive_read"]
+assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err}"
+
+
+# The declaration every attempt re-reads stands whole before anything runs
+# on it -- the same two-client system `restart.rye` already falls inside.
+let decl = run ["sh" "-c" "caravan/bin/rederive_read caravan/systems/serial_two_clients.bron 2>&1"]
+assert decl.ok else "the two-client declaration could not be read"
+assert decl.out contains "domains 3 -- channels 2 -- regions 4 -- grants 8" else "the two-client declaration changed shape"
+assert decl.out contains "verdict: whole" else "the two-client declaration did not read whole"
+
+# A fresh provisioning each run, so a bell found ringing was rung by this
+# run rather than left standing by the last one.
+let clean = run ["sh" "-c" "rm -rf caravan/.regions caravan/.channels"]
+assert clean.ok else "the region stores and doorbells could not be cleared"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "caravan rederive selftest exited non-zero"
+assert test.out contains "GREEN" else "caravan rederive selftest not GREEN"
+assert test.out contains "derived again for every attempt" else "the derivation claim did not close"
+
+# A derivation is a function of the file. Two readings of one unchanged
+# document produce the same table, or re-deriving per attempt buys nothing.
+assert test.out contains "two readings of one unchanged document derive the same 3 dependents" else "two readings of one document disagreed"
+
+# The drift is the quiet kind: a region the document already granted, at a
+# right it never granted. Only a comparison against the document finds it.
+assert test.out contains "a widened remembered right contradicts the declaration: serial_virt may write tx_a" else "the widened right did not contradict the declaration"
+
+# The refusing policy: nothing runs on a system whose two descriptions of
+# itself have parted.
+assert test.out contains "serial_virt: memory and document disagree about serial_virt -- refuse" else "the drift was not named under the refusing policy"
+assert test.out contains "refuses the spawn by name" else "a drifted memory started a dependent"
+
+# The healing policy: the document wins, the memory is replaced, and the
+# dependent runs on rights the declaration granted this second.
+assert test.out contains "serial_virt: memory and document disagree about serial_virt -- heal" else "the drift was not named under the healing policy"
+assert test.out contains "a healed supervisor takes the document's line and runs on it" else "the heal did not complete"
+
+# The lenient policy, which is where the claim becomes observable. The
+# memory is still widened at the moment of the spawn, and the dependent is
+# asked to do exactly the act that memory wrongly permits. `WriteDenied`
+# is the document's line arriving at the dependent rather than the parent's.
+assert test.out contains "serial_virt: memory and document disagree about serial_virt -- report" else "the drift was not named under the lenient policy"
+assert test.out contains "serial_virt: request tx_a then tx_a via client_a [run] -- WriteDenied" else "a widened memory reached the dependent"
+assert test.out contains "a widened memory still standing, serial_virt is refused the write to tx_a" else "the lenient claim did not close"
+
+# And the count, measured across a real restart: four attempts, four
+# derivations. A supervisor that derived once and remembered would read
+# fewer derivations than attempts here.
+assert test.out contains "client_b: fell -- restart 1/3, rights derived again" else "the restart did not derive again"
+assert test.out contains "4 attempts across a restart derived their rights 4 times" else "an attempt ran on rights it did not derive"
+
+say "GREEN: Caravan rederive witness passed."

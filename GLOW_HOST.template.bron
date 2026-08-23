@@ -7,7 +7,7 @@
 # to .claude/rules and .cursor/rules, but for the host and toolchain rather
 # than agent behavior.
 #
-# Read by: tools/glow_host_run.sh
+# Read by: tools/g/glow_host_run.sh
 # See: external-research/20260714-005658_native-arm64-parity-witness-run.md
 # (the RYE_ZIG/RYE_LIB PATH-fallback footgun this file exists to close)
 #

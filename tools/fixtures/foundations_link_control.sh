@@ -12,7 +12,7 @@
 #
 # EXPECTED: broken_refused=yes, resolving_accepted=yes, http_ignored=yes, anchor_ignored=yes.
 #
-# Driven by tools/foundations_link_witness.rish. Run from the repository root.
+# Driven by tools/f/foundations_link_witness.rish. Run from the repository root.
 
 set -eu
 

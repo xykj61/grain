@@ -26,7 +26,7 @@ grep -q 'Grain Energy PBC' context/LEXICON.md
 grep -q 'Djin (fund) (retired name)' context/LEXICON.md
 grep -q 'gren.fund' context/LEXICON.md
 grep -q 'Taurus' context/LEXICON.md
-test -f tools/prin.rish
+test -f tools/p/prin.rish
 test -f tools/fixtures/prin_dispatch.sh
 test -f "$PAGE"
 grep -q 'Gren' "$PAGE"

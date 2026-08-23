@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260727.141617`
 **Chapter:** one — gates
-**Desk:** `gate-say-u32.glow` · **Witness:** `tools/pleac_ch01_2_witness.rish`
+**Desk:** `gate-say-u32.glow` · **Witness:** `tools/p/pleac_ch01_2_witness.rish`
 
 *Written together by Keaton and Quin.*
 
@@ -18,9 +18,9 @@
 **Run it.**
 
 ```
-rishi/bin/rishi run tools/glow_run.rish edu/pleac/ch01/gate-say-u32.glow 21
+rishi/bin/rishi run tools/g/glow_run.rish edu/pleac/ch01/gate-say-u32.glow 21
 ./glow/bin/gate-say-u32 21        # prints: 21
-rishi/bin/rishi run tools/pleac_ch01_2_witness.rish
+rishi/bin/rishi run tools/p/pleac_ch01_2_witness.rish
 ```
 
 **The green line.** `GREEN: pleac 1.2 — the gate speaks; every future witness may now assert a value.`

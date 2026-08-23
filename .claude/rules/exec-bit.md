@@ -1,6 +1,6 @@
 # The Exec Bit -- a mode is tracked content
 
-**Seated:** `20260823.025333` on Keaton's word - **Status:** Living - **Kin:** [`reds-first`](reds-first.md) - [`docs-implementation-sync`](docs-implementation-sync.md) - [`collaboration`](collaboration.md) (*References are promises*) - **Witness:** [`../../tools/exec_bit_witness.rish`](../../tools/exec_bit_witness.rish)
+**Seated:** `20260823.025333` on Keaton's word - **Status:** Living - **Kin:** [`reds-first`](reds-first.md) - [`docs-implementation-sync`](docs-implementation-sync.md) - [`collaboration`](collaboration.md) (*References are promises*) - **Witness:** [`../../tools/e/exec_bit_witness.rish`](../../tools/e/exec_bit_witness.rish)
 
 **A file's mode is content the repository tracks, and a rewrite preserves it.** When a tool
 rewrites a tracked file in place, it writes through the original inode -- `cat "$tmp" > "$f"` --
@@ -24,13 +24,13 @@ a temporary over each original. Nothing in the diff said so -- a mode change mov
 `git show --stat` reported `1 file changed, 0 insertions, 0 deletions` and the round read as a
 clean repoint. Every standing guard stayed green, because every standing guard read lines.
 
-One of the thirty-nine was `tools/agent-jail.sh`, which the unattended loop invokes as
-`./tools/agent-jail.sh`. The loop answered `Permission denied` once every twenty seconds through
+One of the thirty-nine was `tools/ag/agent-jail.sh`, which the unattended loop invokes as
+`./tools/ag/agent-jail.sh`. The loop answered `Permission denied` once every twenty seconds through
 the night, and the season it was running stopped there until a hand ran `chmod +x`.
 
 ## What stands, and how it is measured
 
-[`../../tools/exec_bit_witness.rish`](../../tools/exec_bit_witness.rish) over
+[`../../tools/e/exec_bit_witness.rish`](../../tools/e/exec_bit_witness.rish) over
 [`../../tools/fixtures/exec_bit_scan.sh`](../../tools/fixtures/exec_bit_scan.sh) gates two
 readings at zero and reports a third:
 
@@ -41,7 +41,7 @@ readings at zero and reports a third:
 | Uninvoked shebang files at `100644` | ratchet under a ceiling that only falls | 58 |
 
 **Directly invoked** means a living tracked file writes `./path` in command position -- the promise
-`./tools/agent-jail.sh` makes to whoever clones. A path with its interpreter named ahead of it
+`./tools/ag/agent-jail.sh` makes to whoever clones. A path with its interpreter named ahead of it
 (`sh ./x`, `rishi run ./x`) needs no exec bit and passes free, which is why the 58 fixture scans
 sit in the ratchet rather than the gate: every witness runs them as `run ["sh" "tools/..."]`.
 
