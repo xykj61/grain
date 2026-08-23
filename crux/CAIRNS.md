@@ -24,6 +24,41 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260823.072824` -- the deep debride: personal material leaves the history
+
+**Walk-back nib:** `a3a4e62b38` -- **and this one is different from every cairn above it.** This is
+a *deep* debride, so after the force-push the walk-back commit is **unreachable on both remotes**.
+The pre-debride history survives in two places instead: a verified full bundle at
+`.debride-safe/pre-debride-a3a4e62b38.bundle` (559 MB, untracked, on this pier), and any clone
+taken before `20260823.072824`.
+
+```
+git clone .debride-safe/pre-debride-a3a4e62b38.bundle recovered   # the whole tree as it stood
+git -C recovered log --oneline a3a4e62b38                          # browse it
+```
+
+**Swept:** four paths removed from all 3,313 commits --
+`foundations/20260730-022147_keaton-livermore-resume-draft.md`,
+`foundations/20260730-022147_personal-ontology.md`,
+`foundations/20260730-022147_cover-letter-co-authored.md`, and the `twilight/` room. Twenty-five
+commits touch them. Every rewritten commit is re-signed in the same pass, so the tree stays fully
+signed; the honest cost is one reclone for every downstream.
+
+**What waits there, worth recalling:** the resume draft, the personal ontology, and the
+co-authored cover letter are a real record of one person's thinking in `20260730`, and the
+`twilight/` room holds the poems that are the private source of the fifteen Twilight themes --
+`context/TWILIGHT_STYLE.md` names them as archetype in-tree while the poems themselves stay
+withheld. **All four survive on disk, untracked**, exactly as `letters/` does, so the work is
+still available to its author and simply out of every repository.
+
+**Why now, and why this target.** `REDS %162` named three resolutions for a depersonalisation that
+protected an already-public field. Keaton took the first on `20260823.045448` -- make the field
+private -- which closed the immediate exposure and left the content sitting in history. This is
+the third resolution taken deliberately afterward, so the material is gone rather than merely
+unreachable. A survey for other debride targets on `20260823.072824` found none: every filename is
+honest, every commit message was true when written, and the 2,783 `.bron` logs are protected by the
+one-clock law.
+
 ### `20260823.041442` -- the two temperatures become one room and a fold
 
 **Walk-back nib:** `997ba249af` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
