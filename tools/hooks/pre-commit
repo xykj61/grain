@@ -1,0 +1,89 @@
+#!/bin/sh
+# pre-commit -- a generated page is refreshed by the commit that moves the numbers it shows.
+#
+# WHY THIS WALL. Two pages in this tree are GENERATED and compared against a fresh render by a
+# standing guard: README.md's four front-door numbers (tools/readme_metrics.rish) and the crushed
+# library index docs-geode/libraries/README.md (tools/geode_libraries.rish). Both count witnesses
+# and Rye modules, which is precisely what most laps here add. So a page goes stale inside the very
+# commit that made it stale, and the guard reds on the NEXT cold start rather than on the lap that
+# earned it. That happened three times across two days: REDS %151 found the front door reading a
+# fascia grade the tree had left, %152 found it one witness behind seventeen minutes after a repair,
+# and the roster's very next run caught the library index the same way, on the lap that added this
+# hook's own witness.
+#
+# The discipline was already written, in a comment at the head of
+# tools/fixtures/readme_metrics_scan.sh: "Add a witness or a module and this block goes stale, so it
+# is regenerated in the same commit." A rule living in a comment is a rule no program runs, which is
+# the lesson REDS %150 paid for about a roster in prose. This is that comment, made executable.
+#
+# WHAT IT DOES, in order:
+#   1. Rests unless rishi is executable here. A tree without it -- the depersonalized seed, a
+#      shallow checkout -- commits exactly as it always has.
+#   2. Rests unless the staged change ADDS or DELETES a tools/*_witness.rish or a *.rye file.
+#      Nothing else moves the fast numbers, and a ten-second render on every commit is a hook the
+#      bench would learn to route around.
+#   3. For each generated page whose generator and page are both on disk: renders it afresh. When
+#      the page already matched, nothing happens.
+#   4. When a page changed and it held no unstaged edits, stages it -- the regeneration is the only
+#      thing staged, so nothing of the author's is swept in.
+#   5. When a page changed and it DID hold unstaged edits, refuses the commit and says so plainly.
+#      The refreshed page is already in the worktree; the author stages it.
+#
+# WHAT IS NOT COVERED, said plainly: the fascia grade and the rooms-over-bound count can drift from
+# a commit that adds no witness and no module, and this hook is silent about both. The rostered
+# guards still catch them at a cold start. This closes the fast, frequent half.
+#
+# Proven both ways by tools/generated_page_freshness_witness.rish over
+# tools/fixtures/generated_page_freshness_control.sh, on a throwaway repository.
+# Armed by rishi/bin/rishi run tools/install_hooks.rish.
+
+set -eu
+
+[ -x rishi/bin/rishi ] || exit 0
+
+# The staged change moves a fast number only when a witness or a module arrives or leaves.
+moved=$(git diff --cached --name-only --diff-filter=AD -- 'tools/*_witness.rish' '*.rye')
+[ -n "$moved" ] || exit 0
+
+# One line per generated page: the generator, then the page it writes.
+pages="tools/readme_metrics.rish:README.md
+tools/geode_libraries.rish:docs-geode/libraries/README.md"
+
+refused=no
+staged=""
+
+for pair in $pages; do
+  generator=${pair%%:*}
+  page=${pair#*:}
+
+  [ -f "$generator" ] || continue
+  [ -f "$page" ] || continue
+
+  if git diff --quiet -- "$page"; then dirty=no; else dirty=yes; fi
+  before=$(git hash-object "$page")
+
+  if ! rishi/bin/rishi run "$generator" write >/dev/null 2>&1; then
+    echo "pre-commit: $generator is present and failed -- run" >&2
+    echo "  rishi/bin/rishi run $generator write" >&2
+    echo "and read its error before committing." >&2
+    exit 1
+  fi
+
+  after=$(git hash-object "$page")
+  [ "$before" = "$after" ] && continue
+
+  if [ "$dirty" = yes ]; then
+    echo "pre-commit: this commit moves the numbers $page shows, so it was refreshed in the" >&2
+    echo "worktree. It carries unstaged edits of your own, so it was left unstaged rather than" >&2
+    echo "swept into this commit. Stage $page and commit again." >&2
+    refused=yes
+    continue
+  fi
+
+  git add "$page"
+  staged="$staged $page"
+done
+
+[ "$refused" = no ] || exit 1
+[ -n "$staged" ] && echo "pre-commit: regenerated and staged with this commit --$staged"
+exit 0
