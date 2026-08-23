@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20260823.142302
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The row that names a room
+prompt Same lap, continued -- the every-fifth-round seed cadence ran on its first cycle and found a red, so Standfast stopped the line until it closed.
+think Commit count at lap start was 3330, so N mod 5 = 0 and the rota closed its cycle. That is the cadence lap. Ran the projection and the four gates rather than the push, since ITINERARY names seed projection agent-doable and the force-push a custody gate.
+think sow_witness went red on M1 -- the manifest does not classify every root path exactly once. The tail showed two names; reading the scan's own two lists showed five. In tree not classified: construction, surf. In manifest not in tree: crux, skate, twilight.
+think Checked the harm direction before anything else, because a seed red could mean a leak. The projector is an allowlist -- line 50 of sow_project.sh, everything unclassified withheld by default -- so the safe direction. Then verified on disk rather than by reading: seed/surf stands, seed/construction is absent, both correct.
+obs So the damage was to the audit record rather than to the boundary. The 94 allow rows drive shipping and were repointed correctly by each rename; the template/scrub/personal rows are the coverage record saying every room has a considered verdict, and those went stale.
+obs The forensics gave the lesson in one diff. Commit 32d5bc0e45 changed `allow skate` to `allow surf` and walked past `template skate` in the same file. The sweep matched path-shaped rows; a classification row's second field is a bare room name, so no path sweep can see it. crux -> construction repointed 491 references and missed `personal crux` for exactly the same reason.
+obs The twilight row was a different thing and needed care rather than deletion. Its own comment says it is kept as defence in depth after the debride. Set equality refused it, so M1 had read BAD since 20260823.072824. Reshaped the check to read the three verdicts for what they are: a template or scrub row naming an absent path stays gated because it promises to ship what is not there; a personal row naming an absent path is permitted and reported.
+obs Watched myself for the anti-pattern -- loosening a guard to make a red go away. Two readings got stricter in the same pass, so it is a repair on balance. The elder check ran sort -u on both sides, so a path classified TWICE collapsed to one entry and the stated promise of exactly once went unchecked for the file's whole life. Proved it by feeding both versions one doubled manifest: elder M1_OK, reshaped M1_BAD.
+obs The deeper root is the one worth keeping. sow_witness was not on the standing-equipment roster, so nothing ran the guard over the public boundary for six hours across several rounds. That is REDS %156's lesson arriving again at the guard where the cost is privacy. Seated as the 29th.
+obs The cadence earned its seat on its first cycle. Seated 20260823.111029, run once, found a six-hour-old red in the one place a stale record would have mattered most.
+obs Two more reds surfaced from my own work and both were the guards reading correctly. tracked_link caught the two new REDS archive files being linked from living prose while still untracked. exec_bit caught three new fixture scans carrying shebangs at 100644, raising a ratchet whose ceiling only falls -- answered with the exec bit rather than by raising the ceiling, since the files declare an interpreter and can honestly be run.
+loom cover tree_roots_unclassified=2 manifest_ghosts=3 allow_rows=94 doubled_check=new
+loom seed copied=6789 scrubbed=1048 withheld=122 ident=IDENT_CLEAN personal=NO_PERSONAL
+loom pin reds_bytes_before=27594 bound=24576 folded_rows=164 folded_accountings=5 after=23614
+loom roster guards=29 green=29 red=0 seated=sow,tool_path
+file template-manifest.bron the two stale classification rows repointed, each seated verdict carried forward unchanged
+file tools/fixtures/sow_manifest_cover.sh the three verdicts read for what they are; shipping rows gated, defence in depth permitted and reported, doubling newly caught
+file tools/fixtures/sow_manifest_cover_control.sh six behaviors on throwaway manifests -- one rests, one permitted, three red, one refuses
+file construction/REDS.md row %165 booked and closed; two closed ranges folded to bring the pin back under bound
+file construction/standing-equipment.kyri sow seated as the 29th guard, so the boundary guard is run rather than merely standing
+file construction/ITINERARY.md the cadence state: projection and all four gates green, the force-push standing as the custody gate
+recommend check-in (Keaton) -- the seed is projected and all four gates read green (IDENT_CLEAN, NO_PERSONAL, M1_OK, seed_link GREEN), so the every-fifth-round cadence is ready and only the force-push remains. That push is named as a custody gate in the same breath that grants the cadence, so it waits for your word rather than my reading. Say ship the seed and it goes; otherwise the next lap takes the fold's step three, which has one open question waiting -- leave the 24 crypto/tally symlinks flat, or deepen every target one level.
