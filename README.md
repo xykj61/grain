@@ -222,7 +222,7 @@ Then, in order:
 1. **[`SOURCE.md`](SOURCE.md)** -- from nothing to a signed, sandboxed home.
 2. **[`ORGANIZING.md`](ORGANIZING.md)** -- where each kind of work lives.
 3. **[`MAP.md`](MAP.md)** -- the rooms of the tree at a glance.
-4. **[`manual/glow-os/`](manual/glow-os/README.md)** -- the onboarding rooms.
+4. **[`manual/grain-os/`](manual/grain-os/README.md)** -- the onboarding rooms.
 5. **[`CONTRIBUTING.md`](CONTRIBUTING.md)** -- how a contribution arrives: small, signed,
    component-prefixed, and written like prose.
 

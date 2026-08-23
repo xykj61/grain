@@ -24,6 +24,21 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260823.085309` -- the manual's onboarding room becomes grain-os
+
+**Walk-back nib:** `e90f314dc7` -- pier and both remotes. A **breach**, so nothing is rewritten and
+`git show e90f314dc7:manual/grain-os/README.md` reads any departing file at its old path.
+
+**Swept:** `manual/grain-os/` becomes `manual/grain-os/` -- 5 tracked files, with 173 occurrences
+of the name across 89 files. The 16 **living** files are repointed; the 73 files of **dated
+testimony** keep every word they wrote.
+
+**What waits there, worth recalling:** the room was named for **Glow**, the rune language, at a
+time when the language was the thing a newcomer met first. The system's own name is **Grain**, and
+the room is where a reader arrives to learn the system rather than the language -- so the elder
+name sent every newcomer to the wrong noun on their first click. The language keeps its name
+everywhere it is actually the subject; only the onboarding room moves.
+
 ### `20260823.082418` -- the crux room becomes construction
 
 **Walk-back nib:** `06d7d487a3` -- pier and both remotes. This is a **breach** rather than a debride, so
