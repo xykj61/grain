@@ -22,7 +22,7 @@
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 0 |
 | [`comlink/`](../../comlink/README.md) | 72 | 7 |
 | [`constel/`](../../constel/README.md) | 31 | 33 |
-| [`crux/`](../../crux/README.md) | 1 | 8 |
+| [`crux/`](../../crux/README.md) | 1 | 9 |
 | [`crypto/`](../../crypto/README.md) | 82 | 113 |
 | [`dimeroll/`](../../dimeroll/README.md) | 2 | 2 |
 | [`edu/`](../../edu/README.md) | 2 | 5 |
@@ -45,7 +45,7 @@
 | [`mycelium/`](../../mycelium/README.md) | 95 | 81 |
 | [`pleac/`](../../pleac/README.md) | 3 | 5 |
 | [`pond/`](../../pond/README.md) | 151 | 149 |
-| [`rishi/`](../../rishi/README.md) | 2 | 1350 |
+| [`rishi/`](../../rishi/README.md) | 2 | 1351 |
 | [`rye/`](../../rye/README.md) | 117 | 1158 |
 | [`scribble/`](../../scribble/README.md) | 2 | 0 |
 | [`scribe/`](../../scribe/README.md) | 2 | 3 |
