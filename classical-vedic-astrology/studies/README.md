@@ -3,7 +3,7 @@
 # Studies — The Silo Library
 
 **Language:** EN
-**Last updated:** 2026-07-05 (Movement 2 begun — studies %55–%57; Brooke chapters cite shelf)
+**Last updated:** 2026-07-05 (Movement 2 begun — studies %55–%57; the reading chapters cite this shelf)
 **Style:** Radiant (see `../../context/RADIANT_STYLE.md`), gentle register
 
 Each study distills one placement pattern in our own voice. Studies live in **topic folders**; the **#** column preserves the growing numbered order (`00`–`20` and onward). The silo map in [`../templates/reading-template.md`](../templates/reading-template.md) is the composable index.
