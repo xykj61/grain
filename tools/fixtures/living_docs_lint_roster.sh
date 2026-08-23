@@ -15,6 +15,6 @@ for f in rye/README.md rishi/README.md tally/README.md caravan/README.md mantra/
 done
 # living pins under pin-and-ledger law (duty 6 size bound)
 echo "session-logs/README.md"
-echo "crux/TASKS.md"
-echo "crux/ROADMAP.md"
-echo "crux/REMEMBER.md"
+echo "construction/TASKS.md"
+echo "construction/ROADMAP.md"
+echo "construction/REMEMBER.md"

@@ -1,10 +1,10 @@
-# crux/standing-equipment.kyri -- the standing guards, as a list a program can read.
+# construction/standing-equipment.kyri -- the standing guards, as a list a program can read.
 #
 # WHY THIS FILE EXISTS. The roster of standing equipment lived in one paragraph of
-# crux/REMEMBER.md, in prose. A paragraph can be read and it can be trusted; it cannot
+# construction/REMEMBER.md, in prose. A paragraph can be read and it can be trusted; it cannot
 # be run, counted, or dated. Two consecutive rounds paid for that: REDS %147 found eight
 # standing witnesses each holding a count its source had moved past, and REDS %149 found
-# the living-pin bound guard unrun for four laps while crux/REDS.md sat 2,050 bytes over
+# the living-pin bound guard unrun for four laps while construction/REDS.md sat 2,050 bytes over
 # the bound it measures. Both were caught by a hand that happened to run something.
 #
 # The tree already seats the strand this file's sibling completes. The grain says a guard
@@ -13,7 +13,7 @@
 #
 # WHAT A ROW MEANS. One `guard` record per standing check, each naming the path a runner
 # invokes and the stamp the guard was seated. The roster is the authority for what stands;
-# crux/standing-equipment-runs.kyri records when each last ran ON THIS PIER, and that card
+# construction/standing-equipment-runs.kyri records when each last ran ON THIS PIER, and that card
 # is deliberately untracked, so a fresh clone reads `never run here` rather than inheriting
 # another machine's memory.
 #
@@ -25,7 +25,7 @@ format standing-equipment-v1
 stamp 20260823.045448
 voice Kyri
 runner tools/fixtures/standing_equipment_run.sh
-card crux/standing-equipment-runs.kyri
+card construction/standing-equipment-runs.kyri
 
 guard banner_room
 path tools/banner_room_witness.rish

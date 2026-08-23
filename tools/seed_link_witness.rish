@@ -3,7 +3,7 @@
 # WHY THIS RUNG. This tree publishes two ways from one set of files. The maintainer's field
 # carries every room; the public seed is an ALLOWLIST projection named path by path in
 # template-manifest.bron. One README serves both. So a link that resolves perfectly in the field
-# -- `gratitude/Rust.md`, `crux/REMEMBER.md` -- resolves NOWHERE for a reader who arrives at the
+# -- `gratitude/Rust.md`, `construction/REMEMBER.md` -- resolves NOWHERE for a reader who arrives at the
 # seed, because the seed never carried that room.
 #
 # tools/tracked_link_witness.rish asks "is this in the repository." That is the right question

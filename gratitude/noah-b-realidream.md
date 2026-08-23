@@ -11,4 +11,4 @@
 
 **Shelf note:** Kaeden affirmed a formal gratitude line for the name's source (`20260708.174500`). We honor the artist and the feeling the name carries; we do not import recordings into the tree.
 
-**Cross-ref:** [`../crux/ROADMAP.md`](../crux/ROADMAP.md) — Visual Track
+**Cross-ref:** [`../construction/ROADMAP.md`](../construction/ROADMAP.md) — Visual Track

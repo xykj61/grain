@@ -113,7 +113,7 @@ The witness names its Language · Style · Lens, then prints one `GREEN` line st
 
 ## The two rooms — what runs, and what waits for a hand
 
-Everything above **runs green today** over demo seeds — no real key, no funds, no network, no custody. The protocol is proven; the world-touching acts are named and held, each a custody gate that stays the keeper's own hand ([REMEMBER](../crux/REMEMBER.md)):
+Everything above **runs green today** over demo seeds — no real key, no funds, no network, no custody. The protocol is proven; the world-touching acts are named and held, each a custody gate that stays the keeper's own hand ([REMEMBER](../construction/REMEMBER.md)):
 
 - **Comlink-served** — a node fetching a live roster, a moving world's freight, or another shard's out-fact over the real network reaches the serve gate.
 - **A real Aurora host** for any world reaches the provisioning gate and the maintainer's own Kumara instance.

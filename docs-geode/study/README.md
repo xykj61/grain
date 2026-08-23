@@ -23,7 +23,7 @@ A tree this size is unreadable front to back and perfectly readable by question.
 
 **Read the witness, not the claim.** Nothing here is called working because a document says so. `tools/*_witness.rish` holds more than sixteen hundred proofs that run on real hardware, and a green line is a fact a computer spoke first. When a page and a witness disagree, the witness is right and the page is a bug.
 
-**Read the reds.** [`crux/REDS.md`](../../crux/REDS.md) records what this tree got wrong, in three fields: what went wrong, what caught it, what it taught. It is the fastest way to learn how a project actually thinks, because nobody polishes a mistake. Start at the newest and read backward.
+**Read the reds.** [`construction/REDS.md`](../../construction/REDS.md) records what this tree got wrong, in three fields: what went wrong, what caught it, what it taught. It is the fastest way to learn how a project actually thinks, because nobody polishes a mistake. Start at the newest and read backward.
 
 ## The teachers, kept in their own room
 

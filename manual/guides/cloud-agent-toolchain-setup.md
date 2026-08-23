@@ -17,7 +17,7 @@ Such a session still needs one thing: the same `rye`/`rishi` build chain every w
 
 ## The Recipe (Confirmed Working, `20260715.054500`)
 
-This is the same recipe an earlier Cursor for iOS round used against a persistent ai-jail host (`crux/archive/20260703-021412_counsel-and-confirmation-tests.md`, Step 1) -- pip's `ziglang` package stands in for the checksum-verified official-release fetch `rye/README.md` names for a persistent host. Confirmed fresh on a Cursor Cloud Agent's own Linux x86_64 sandbox:
+This is the same recipe an earlier Cursor for iOS round used against a persistent ai-jail host (`construction/archive/20260703-021412_counsel-and-confirmation-tests.md`, Step 1) -- pip's `ziglang` package stands in for the checksum-verified official-release fetch `rye/README.md` names for a persistent host. Confirmed fresh on a Cursor Cloud Agent's own Linux x86_64 sandbox:
 
 ```bash
 cd /workspace   # or wherever the clone root is
@@ -68,7 +68,7 @@ This holds for a same-sitting cloud agent for the reasons named above (an epheme
 - [`20260731-014410_opus-bench-raise.md`](20260731-014410_opus-bench-raise.md) -- Opus-measured raise: symlink `lib/` plus a `zig` wrapper (why `rye/lib/*` needs that exact shape).
 - `../../rye/README.md` -- the persistent-host build path this recipe stands beside.
 - `../../context/specs/enclosure-editors.md` -- the ai-jail-enclosed persistent-host path this guide stands beside.
-- `../../crux/archive/20260703-021412_counsel-and-confirmation-tests.md` -- the earlier Cursor for iOS round that first used this exact pip recipe, against a persistent ai-jail host rather than a disposable cloud VM.
+- `../../construction/archive/20260703-021412_counsel-and-confirmation-tests.md` -- the earlier Cursor for iOS round that first used this exact pip recipe, against a persistent ai-jail host rather than a disposable cloud VM.
 - `../../session-logs/date/20260715/20260715-062000_cloud-toolchain-raised-neth-green.bron` -- the session that confirmed this recipe fresh and ran the Neth witnesses GREEN on it.
 
 ---

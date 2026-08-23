@@ -1,12 +1,12 @@
 #!/bin/sh
 # tools/fixtures/standing_equipment_run.sh -- run every rostered guard and record when each ran.
 #
-# WHY. crux/standing-equipment.kyri names what stands. This runs it, and writes one line per
+# WHY. construction/standing-equipment.kyri names what stands. This runs it, and writes one line per
 # guard into the run card, so the question "when did this last run?" has an answer on disk
 # rather than in a memory of a round. REDS %149 taught the sentence this exists to make
 # checkable: a bound is only a bound on the laps someone runs it.
 #
-# WHAT IT WRITES. crux/standing-equipment-runs.kyri, one `ran <name> <stamp> <verdict>` line
+# WHAT IT WRITES. construction/standing-equipment-runs.kyri, one `ran <name> <stamp> <verdict>` line
 # per guard, rewritten whole on each run rather than appended, so the card stays bounded at
 # the roster's own size. The card is untracked by design -- it measures THIS pier's history,
 # and a fresh clone that has run nothing should say so.
@@ -19,8 +19,8 @@
 
 set -eu
 
-roster="crux/standing-equipment.kyri"
-card="crux/standing-equipment-runs.kyri"
+roster="construction/standing-equipment.kyri"
+card="construction/standing-equipment-runs.kyri"
 only="${1:-}"
 
 [ -f "$roster" ] || { echo "refused: no roster at $roster" >&2; exit 1; }
@@ -77,7 +77,7 @@ while IFS= read -r line; do
 done < "$roster"
 
 {
-  echo "# crux/standing-equipment-runs.kyri -- when each standing guard last ran on THIS pier."
+  echo "# construction/standing-equipment-runs.kyri -- when each standing guard last ran on THIS pier."
   echo "# Written by tools/fixtures/standing_equipment_run.sh; untracked on purpose, so a fresh"
   echo "# clone reads 'never run here' rather than inheriting another machine's memory."
   echo "format standing-equipment-runs-v1"

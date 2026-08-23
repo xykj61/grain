@@ -32,7 +32,7 @@ assert a.ok else "active-designing README missing"
 assert a.out contains "LADDER_OK" else "ladder check failed"
 
 say "compass rose: now (TASKS) and order (ROADMAP)…"
-let n = run ["sh" "-c" "test -f crux/TASKS.md && test -f crux/ROADMAP.md && echo NOW_OK"]
+let n = run ["sh" "-c" "test -f construction/TASKS.md && test -f construction/ROADMAP.md && echo NOW_OK"]
 assert n.ok else "TASKS or ROADMAP missing"
 assert n.out contains "NOW_OK" else "now/order check failed"
 

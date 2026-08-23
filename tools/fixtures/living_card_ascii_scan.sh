@@ -1,7 +1,7 @@
 #!/bin/sh
 # Living-card ASCII guard (REDS %83) -- the operator card stays plain 7-bit ASCII.
 #
-# The operator card corrupted itself once: crux/REMEMBER.md silently triple-encoded
+# The operator card corrupted itself once: construction/REMEMBER.md silently triple-encoded
 # into 2,797 runs of capital-A-tilde mojibake before anyone caught it (REDS %83),
 # because a tool read the UTF-8 file as Latin-1 and rewrote it, and each later edit
 # re-encoded the mangled bytes another layer. This guard catches the NEXT mojibake on
@@ -26,9 +26,9 @@ set -eu
 MODE=${1:-}
 
 # ENFORCE roster -- pins swept ASCII-first; zero bytes above 0x7F allowed.
-ENFORCE="crux/REMEMBER.md crux/REDS.md"
+ENFORCE="construction/REMEMBER.md construction/REDS.md"
 # ADVISORY roster -- legacy dated non-ASCII reported as a ratchet, never a hard fail.
-ADVISORY="crux/ROADMAP.md crux/TASKS.md crux/EQUINOX_SEAT_MAP.md crux/SHRED_PREP.md crux/THREADS.md crux/CAIRNS.md"
+ADVISORY="construction/ROADMAP.md construction/TASKS.md construction/EQUINOX_SEAT_MAP.md construction/SHRED_PREP.md construction/THREADS.md construction/CAIRNS.md"
 CONTROL=tools/fixtures/living_card_ascii_control/mojibake_control.md
 
 # Count lines carrying any byte above 0x7F. grep -c exits 1 on zero matches, so guard it.
