@@ -93,6 +93,18 @@ DP_EXCLUDE_NAMES="dated_path_* banner_room_control.sh room_bound_control.sh sess
 # without a leading ./ -- each consumer adds what its own matcher needs.
 DP_EXCLUDE_PATHS="docs-geode/demos/README.md"
 
+# A NAME A CONTROL PLANTS IS NEVER A FILE THE TREE HAS -- and the record of that control is
+# testimony, not instrument, so a name-match on the control cannot reach it. `tracked_link_control.sh`
+# plants `20260101-000000_a-dated-note.md` to prove dated testimony passes free, and the exclusion
+# above keeps the control itself out of the corpus. The SESSION LOG that narrates why then quoted
+# the planted name, and the census counted it as a real reference resolving nowhere -- the meter
+# rising because the round explained itself well.
+#
+# So the exemption belongs to the planted NAME rather than to any file that mentions it. A basename
+# listed here is subtracted wherever it is quoted, which is safe precisely because these names are
+# constructed to match nothing: a stamp of all zeros names no lap this tree ever ran.
+DP_FIXTURE_BASENAMES="20260101-000000_a-dated-note.md"
+
 # Each helper REPLACES the positional parameters, so a caller captures its own arguments first.
 # Globbing is disabled while the list is expanded, because `dated_path_*` is a pattern meant for
 # grep and find rather than one the shell should resolve against the working directory.
@@ -154,6 +166,14 @@ dp_find_prune() {
 dp_readmit_dirs() {
   set -f
   set -- $DP_READMIT_DIRS
+  set +f
+  printf '%s\n' "$@"
+}
+
+# The planted fixture basenames, emitted one per line for a consumer to subtract from its corpus.
+dp_fixture_basenames() {
+  set -f
+  set -- $DP_FIXTURE_BASENAMES
   set +f
   printf '%s\n' "$@"
 }

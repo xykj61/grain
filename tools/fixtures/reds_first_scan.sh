@@ -12,7 +12,7 @@ set -eu
 law="foundations/20260729-224828_reds-first-and-the-allocation.md"
 study="external-research/20260729-224828_the-line-that-stops-itself.md"
 thanks="gratitude/toyota-production-system.md"
-ledger="work-in-progress/REDS.md"
+ledger="crux/REDS.md"
 
 faults=0
 for f in "$law" "$study" "$thanks" "$ledger"; do

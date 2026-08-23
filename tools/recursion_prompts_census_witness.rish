@@ -14,8 +14,8 @@ say "recursion-prompts: Language EN — the cellar of prompts that wake a bench,
 say "recursion-prompts: Lens CIVIC/TAME — every seed must carry the GATES-ONLY stop clause."
 
 # invariant: run from the repo root, where the cellar lives.
-let root = run ["test" "-f" "work-in-progress/REMEMBER.md"]
-assert root.ok else "run from the repo root (work-in-progress/REMEMBER.md not found)"
+let root = run ["test" "-f" "crux/REMEMBER.md"]
+assert root.ok else "run from the repo root (crux/REMEMBER.md not found)"
 
 # invariant: the charter is present.
 let readme = run ["test" "-f" "recursion-prompts/README.md"]

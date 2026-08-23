@@ -16,7 +16,7 @@ let prog_src  = "rye/tests/sha3_512_test.rye"
 say "std-overlay-guard: checking rye/lib/std is a symlink…"
 
 let link_check = run ["test" "-L" std_link]
-assert link_check.ok else "rye/lib/std is not a symlink — re-fork detected. Restore pristine overlay per work-in-progress/archive/20260628-044300_std-refork-plan.md"
+assert link_check.ok else "rye/lib/std is not a symlink — re-fork detected. Restore pristine overlay per crux/archive/20260628-044300_std-refork-plan.md"
 
 let readlink = run ["readlink" "-f" std_link]
 assert readlink.ok else "could not readlink rye/lib/std"
