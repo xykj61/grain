@@ -4,7 +4,7 @@
 **Stamp:** `20260703.200712 UDT` (Kaeden's clock)
 **Supersedes:** the `20260703-195112` cut of this writing (unseated)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** TAME
-**Register:** active-designing — siloed; names only our own modules (foundations graduation on Kaeden's word)
+**Register:** foundations -- siloed; names only our own modules. Graduated from `active-designing/` on `20260821.211423` under the design-rooms test, having awaited the word since `20260703`.
 **Status:** Active design — toll vocabulary seated `20260704.020800` per [`../context/specs/20260704-020800_one-word-one-gate.md`](../context/specs/20260704-020800_one-word-one-gate.md)
 **Ground:** [`../context/specs/20260704-020800_one-word-one-gate.md`](../context/specs/20260704-020800_one-word-one-gate.md)
 
