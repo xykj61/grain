@@ -82,7 +82,7 @@ rg -q 'Rye OS' "$ELDER" || {
   echo "verdict=misread"
   exit 1
 }
-rg -q '^\*\*Voice:\*\* Riyo|Keaton Livermore|runs Grain on' "$ELDER" && {
+rg -q '^\*\*Voice:\*\* Riyo|Keaton Dunsford|runs Grain on' "$ELDER" && {
   echo "elder=failed"
   echo "detail=elder_still_carries_living_rewrite"
   echo "verdict=misread"
@@ -104,7 +104,7 @@ rg -q 'Kaeden Reyklah' "$KIN" || {
   echo "verdict=misread"
   exit 1
 }
-rg -q 'Keaton Livermore' "$KIN" && {
+rg -q 'Keaton Dunsford' "$KIN" && {
   echo "kin=failed"
   echo "detail=kin_still_carries_living_rewrite"
   echo "verdict=misread"
@@ -132,7 +132,7 @@ rg -q '^\*\*Voice:\*\* Riyo' "$NEW" || {
   echo "verdict=misread"
   exit 1
 }
-rg -q 'Keaton Livermore' "$NEW" || {
+rg -q 'Keaton Dunsford' "$NEW" || {
   echo "new_pitch=failed"
   echo "detail=want_keaton"
   echo "verdict=misread"
