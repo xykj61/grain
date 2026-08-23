@@ -7751,57 +7751,7 @@ pub fn hold_the_matter(io: std.Io, forbear: Forbear, report_out: *Report) (RunEr
 /// between the two leaves an impasse standing for the next hand rather than one
 /// quietly gone.
 pub fn mind_the_impasse(io: std.Io, mind: Mind, report_out: *Report) (RunError || NoteError)!void {
-    const handed = hold_standing(io);
-    const word = holds_rest(handed);
-    const inherited_count: u32 = if (word) |said| (if (said == .stands) @as(u32, 1) else 0) else 0;
-    if (inherited_count == 0) {
-        // invariant: a run opening holding nothing names no impasse
-        assert(mind_of(report_out).minded == 0);
-        // invariant: a run opening holding nothing leaves no impasse unnamed
-        assert(mind_of(report_out).unminded == 0);
-        return;
-    }
-
-    // The measurement this rung moves, weighed against the forbearance actually
-    // standing rather than against anything the plan asked for, so an impasse
-    // nobody names is counted rather than refused.
-    mind_of(report_out).unminded = unminded_impasses(inherited_count, mind);
-    const minded_count = minded_in(inherited_count, mind);
-    const begun_count = begun_in(inherited_count, mind);
-    if (mind == .begins) {
-        // invariant: a beginning run names nothing, however plainly it read
-        assert(minded_count == 0);
-        mind_of(report_out).begun = begun_count;
-        return;
-    }
-
-    // The note before the word, and the word before the mark: all three reads
-    // supply the ladder rather than short-circuiting it, so every refusal below
-    // is reached by argument and named in its own order.
-    const hold = handed orelse return error.MindUninherited;
-    const stands = if (word) |said| said == .stands else false;
-    // The mark names the matter it is about, and the only honest source for
-    // that is the reader's own reply -- read where its writer left it, exactly
-    // as the forbearing beneath it reads.
-    var address_buf: [max_address_len]u8 = @splat(0);
-    const where = address_published(io, &address_buf) orelse "";
-    const reply = if (addressable(where)) rest_written(io, where) else null;
-    const matched = if (reply) |said| holds_carries(handed, said) else false;
-    if (mind_refusal(inherited_count, minded_count, begun_count, handed != null, stands, matched)) |why| return why;
-
-    // invariant: a minding run names the one impasse it opened holding
-    assert(minded_count == 1);
-    try mind_note(io, hold);
-    // The wire before the memory, once more: the mark an operator will read is
-    // read back, and only then does the report believe an impasse was named.
-    if (!mind_holds(mind_published(io), minds_bytes(hold))) return error.MindMisrecorded;
-    // And only then does the inheritance come down, since a mark that never
-    // landed would leave the next hand with neither the impasse nor the word.
-    clear_forbear(io);
-    mind_of(report_out).minded = minded_count;
-    mind_of(report_out).begun = begun_count;
-    // invariant: a minding run leaves no impasse of its own unnamed
-    assert(mind_of(report_out).unminded == 0);
+    return ladder_checks.mind_the_impasse(@This(), io, mind, report_out);
 }
 
 /// Stands a wall around the matter this run named for the second time.
