@@ -12,6 +12,13 @@ say "ring2: Lens TAME — one gate, many cargos; refuse still blocks whole."
 
 let zig = "vendor/zig-toolchain/zig"
 
+# A Wayland application on a headless pier is a machine fact, never a tree red (REDS %173).
+# The build fixture exits 3, and only 3, when no graphical link seam stands here.
+let gate = run ["sh" "-c" "sh tools/fixtures/pond_build_drawn_terminal.sh >/dev/null 2>&1; test $? -eq 3"]
+if gate.ok then say "GATED: ring2 wants a host with a display — no graphical link seam on this machine."
+if gate.ok then say "GATED: customs and the manifests are host-free; the collaboration lap wants glass."
+if gate.ok then exit 0
+
 say "ring2: customs stands (build)..."
 let bc = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "pond/customs.rye" "-femit-bin=pond/bin/customs"]
 assert bc.ok else "ring2: customs failed to build"

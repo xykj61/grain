@@ -49,15 +49,23 @@ if ! test -f "${PROTO}"; then
 fi
 echo "build: prepare — source and xdg-shell protocol present"
 
-if command -v pkg-config >/dev/null 2>&1; then
-  if pkg-config --exists xkbcommon 2>/dev/null; then
-    echo "build: prepare — host link seam xkbcommon (pkg-config)"
-  else
-    echo "build: prepare — xkbcommon not found via pkg-config; link may still succeed on metal"
-  fi
-else
-  echo "build: prepare — pkg-config absent; assuming host link seams on metal"
+# Ask the shared probe whether this machine carries a graphical link seam, rather than assuming.
+# WHY (REDS %173): this block used to print "assuming host link seams on metal" and hand a guess to
+# a compile that discovered the truth at link time, where an absent GUI library on a headless pier
+# reads as a broken tree instead of a machine without a screen. One probe, six callers.
+# `set -e` is on, and the probe exits 3 by design, so the call is guarded: an unguarded
+# command substitution would end the script at the assignment with no line explaining why.
+probe_code=0
+probe=$(sh tools/fixtures/display_seam_probe.sh 2>&1) || probe_code=$?
+probe=$(printf '%s\n' "$probe" | head -1)
+if [ "$probe_code" -eq 3 ]; then
+  echo "build: GATED -- ${probe}"
+  echo "build: GATED -- drawn-terminal is a Wayland application, so it wants a host with a display"
+  echo "build: GATED -- provisioning those libraries is a NixOS rebuild, which is a gate a hand opens"
+  echo "verdict=gated_no_display"
+  exit 3
 fi
+echo "build: prepare -- ${probe}"
 echo "build: prepare — link seams: ${LINK_SEAMS}"
 
 echo "build: prepare — ensuring pond/bin/"
