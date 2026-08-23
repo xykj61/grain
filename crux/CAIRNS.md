@@ -24,6 +24,28 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260823.041442` -- the two temperatures become one room and a fold
+
+**Walk-back nib:** `997ba249af` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** the `expanded-prompts/` room is removed. It held **two** tracked files against
+`expanding-prompts/`'s 584 -- one dated record and its own README -- and its seating row is
+amended in `context/LEXICON.md`, `crux/TASKS.md`, and `crux/REMEMBER.md`.
+
+**What waits there, worth recalling:** the room was seated `20260810` on Keaton's word to file
+intent by **temperature** rather than only by stamp -- `expanding-prompts/` hot and live,
+`expanded-prompts/` cold and at rest -- and its README says that well, in one page worth reading
+before anyone proposes the split again. The idea is kept rather than dropped: the
+`date/YYYYMMDD/` fold that arrived after it (`.claude/rules/stamp-and-name.md`) already encodes
+exactly the same distinction structurally -- flat at the room root is hot, folded under `date/`
+is cold -- so the second room became a second way of saying one thing. That is the whole reason
+for the unify, and it is the thing to re-read if the temperatures ever want separate rooms again.
+
+```
+git show 997ba249af:expanded-prompts/README.md
+git show 997ba249af:expanded-prompts/20260810-054332_green-witness-record-seed-ready.md
+```
+
 ### `20260822.234745` -- the standing roster leaves prose for a file
 
 **Walk-back nib:** `337c466fc7` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
