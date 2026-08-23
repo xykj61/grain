@@ -36,7 +36,7 @@ your_repo_dir ~/grain
 
 # --- Source pier you forked from (Grain living face — rewrite the "to" map) -
 # These name what the shared docs may still say until find/replace runs.
-source_pier_name Keaton Livermore
+source_pier_name Keaton Dunsford
 source_pier_name_prior Keaton Dunsford
 source_pier_pseudonym Kaeden Reyklah
 source_pier_handle xykj61
@@ -52,7 +52,7 @@ source_pier_az_planet ~pacpet-solreb
 # --- Find / replace map (from → to) — apply before teaching your own pier ---
 # Tools and agents read these pairs; humans may sed. Never rewrite git history.
 replace_count 12
-replace_0_from Keaton Livermore
+replace_0_from Keaton Dunsford
 replace_0_to Your Full Name
 replace_1_from Keaton Dunsford
 replace_1_to Your Full Name

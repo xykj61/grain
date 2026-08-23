@@ -50,7 +50,7 @@ check() {
   fi
 }
 
-check "Keaton Livermore" "livermore"
+check "Keaton Dunsford" "livermore"
 check "git clone https://github.com/xykj61/grain.git" "xykj61 clone"
 check "standing writing voice is **Kyri**" "kyri writing"
 check "dual-push" "dual-push"

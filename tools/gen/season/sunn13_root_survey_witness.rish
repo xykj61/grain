@@ -10,7 +10,7 @@ say "sunn13: Lens TAME — SUNN13 · PUBKEYS · MAP · ORGANIZING · LICENSE hol
 
 let p = read-file "PUBKEYS.md"
 assert p contains "Voice:** Kyri" else "sunn13: PUBKEYS want Voice Riyo"
-assert p contains "Keaton Livermore" else "sunn13: PUBKEYS want Keaton Livermore"
+assert p contains "Keaton Dunsford" else "sunn13: PUBKEYS want Keaton Dunsford"
 assert p contains "xykj61/grain" else "sunn13: PUBKEYS want xykj61/grain"
 assert p contains "REMOTE_ROSTER" else "sunn13: PUBKEYS want REMOTE_ROSTER"
 assert p contains "Keaton Dunsford" else "sunn13: PUBKEYS want dated Dunsford note kept"
@@ -21,7 +21,7 @@ assert m contains "context/KYRI.md" else "sunn13: MAP want RIYO.md writing cite"
 assert m contains "Q-vane" else "sunn13: MAP want Q-vane kept"
 assert m contains "Licenses (hold)" else "sunn13: MAP want Licenses hold section"
 assert m contains "Kaeden Reyklah" else "sunn13: MAP want Kaeden Reyklah hold named"
-assert m contains "Keaton Livermore" else "sunn13: MAP want Livermore on PUBKEYS face"
+assert m contains "Keaton Dunsford" else "sunn13: MAP want Livermore on PUBKEYS face"
 assert (m contains "QUIN.md`](context/QUIN.md) is who is writing") == false else "sunn13: MAP must not keep Quin as writer"
 
 let o = read-file "ORGANIZING.md"

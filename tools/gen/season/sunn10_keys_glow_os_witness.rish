@@ -8,7 +8,7 @@ say "sunn10: Lens TAME — SUNN10 · keys/README · glow-os/overview."
 
 let k = read-file "keys/README.md"
 assert k contains "Voice:** Kyri" else "sunn10: keys want Voice Riyo"
-assert k contains "Keaton Livermore" else "sunn10: keys want Keaton Livermore"
+assert k contains "Keaton Dunsford" else "sunn10: keys want Keaton Dunsford"
 assert k contains "xykj61" else "sunn10: keys want xykj61"
 assert k contains "SUNN10" else "sunn10: keys want SUNN10 stamp"
 assert k contains "Keaton Dunsford" else "sunn10: keys want dated Dunsford testimony kept"
@@ -16,7 +16,7 @@ assert (k contains "current identity** (`xykj61` / Keaton Dunsford") == false el
 
 let o = read-file "manual/grain-os/overview.md"
 assert o contains "Voice:** Kyri" else "sunn10: overview want Voice Riyo"
-assert o contains "Keaton Livermore" else "sunn10: overview want Keaton Livermore"
+assert o contains "Keaton Dunsford" else "sunn10: overview want Keaton Dunsford"
 assert o contains "SUNN10" else "sunn10: overview want SUNN10 stamp"
 assert o contains "xykj61" else "sunn10: overview want xykj61"
 assert o contains "intentionally unpaired" else "sunn10: overview want Quin unpaired"

@@ -32,7 +32,7 @@ assert rem contains "e50 next" else "sunn15: REMEMBER want e50 next"
 
 let src = read-file "SOURCE.md"
 assert src contains "SUNN15" else "sunn15: SOURCE want SUNN15 stamp"
-assert src contains "Keaton Livermore" else "sunn15: SOURCE want Livermore"
+assert src contains "Keaton Dunsford" else "sunn15: SOURCE want Livermore"
 assert src contains "standing writing voice is **Kyri**" else "sunn15: SOURCE want Riyo writing"
 
 let lex = read-file "context/LEXICON.md"

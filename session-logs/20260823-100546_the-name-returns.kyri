@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260823.100546
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The name returns
+prompt Keaton granted the last of the four renames -- his own name back to Keaton Dunsford from Keaton Livermore, across every commit, force-pushed, with all else kept the same.
+think This one differs in kind from the three before it. Those moved files; this rewrites authorship, which is the one field a signature attests to. So it is a deep debride rather than a breach, and it went last by design so a single history rewrite covers everything the renames touched.
+think Measured the identities before rewriting rather than assuming one. 2,656 commits authored and 3,011 committed as Keaton Livermore; three other identities also stand in the history -- Cursor Agent, the Riyo counsel container, and a Quin bench-sim. Keaton's word was his own name and all else the same, so the other three keep theirs exactly.
+think Read the signing key's UID before touching anything, because a name change could have quietly broken verification. It reads Keaton Livermore (xykj61, jail-only Linux ai-jail) with the email xykj61@gmail.com. Verification binds to the EMAIL, which does not move, so signatures hold -- yet git log --show-signature will now show commits authored by one name and signed by a key whose UID says another.
+think Named that mismatch in the checkpoint row rather than leaving it to be discovered. Adding a UID to a key is custody-gated and waits for Keaton's hand; a known cosmetic fact beats a surprise.
+obs Bundled 564 MB and checkpointed before the cut, then filter-repo with a mailmap rewrote both author and committer in 17.68 seconds, and filter-branch re-signed all 3,322 in 122 seconds. Verified after: 3,322 of 3,322 read G, zero occurrences of the elder name in any commit metadata field.
+obs Thirty-five name references repointed across 20 living files; 28 files of dated testimony keep every word, which is the same line every rename this session has drawn.
+obs nib_honesty reddened again, as it must -- a rewrite moves every hash and the living cards cite them. The bundle-plus-author-date-and-subject technique recovered 35 of 100 across three cards; the rest sit in CHECKPOINTS and REDS rows citing pre-rewrite states that no longer exist, which is the honest cost of a second rewrite in one day.
+loom debride authored=2656 committed=3011 rewrite_seconds=17.68 resign_seconds=122 commits=3322 signed_after=3322 elder_in_metadata=0 living_files=20 name_refs=35 testimony_untouched=28 bundle_mb=564
+file construction/CHECKPOINTS.md the walk-back, the bundle, and the honest note about the key UID
+file construction/REMEMBER.md nib citations repointed against the pre-rewrite bundle
+recommend check-in (Keaton) -- all four renames are landed and the name is returned. Next in your order: the seed force-push with a new initial carrying the Gauge, TAME, and Civic harmony, then REMEMBER becoming ITINERARY fused with ROADMAP and TASKS, then the rota fusion and the every-fifth-round seed foundation. Each is its own round; the seed push wants the ITINERARY fusion to land first so the seed ships the card in its final shape rather than twice.

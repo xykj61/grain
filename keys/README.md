@@ -3,12 +3,12 @@
 **Language:** EN  
 **Voice:** Kyri  
 **Last updated:** `20260730.153549` (SUNN10 — living identity face)  
-**Living identity:** `xykj61` / **Keaton Livermore** (see `../PUBKEYS.md`)  
+**Living identity:** `xykj61` / **Keaton Dunsford** (see `../PUBKEYS.md`)  
 **Dated filing:** first file in this folder named the `xykj61` / Keaton Dunsford identity (`20260716.115927`) — that stamp stays; the living name is Livermore.
 
 ---
 
-This is the root `keys/` folder for **this fork's current identity** (`xykj61` / Keaton Livermore). It mirrors `../context/keys/`, the same-shaped folder that holds the **retired** `veganreyklah2` / Kaeden identity's own dedicated keys — kept there exactly as history, never edited going forward.
+This is the root `keys/` folder for **this fork's current identity** (`xykj61` / Keaton Dunsford). It mirrors `../context/keys/`, the same-shaped folder that holds the **retired** `veganreyklah2` / Kaeden identity's own dedicated keys — kept there exactly as history, never edited going forward.
 
 | File | Fingerprint (short) | Role |
 |------|---------------------|------|
