@@ -7,7 +7,7 @@
 # both `link a b` and `link b a` appear. A one-sided request (only one direction present) is a hold,
 # not a mutual link, and is not counted among them.
 #
-#   awk -f tools/fixtures/skate_circle_truth.awk skate/fixtures/circle.bron
+#   awk -f tools/fixtures/skate_circle_truth.awk surf/fixtures/circle.bron
 #   -> "<members> <links> <mutual_links>"
 
 /^member / { members += 1 }

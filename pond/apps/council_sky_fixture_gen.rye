@@ -1,4 +1,4 @@
-//! pond/apps/council_sky_fixture_gen.rye — generate skate/fixtures/council.bron with real Ed25519 ballot signatures.
+//! pond/apps/council_sky_fixture_gen.rye — generate surf/fixtures/council.bron with real Ed25519 ballot signatures.
 //!
 //! DAHL-J11r4 reads a real council record true. This generator produces that fixture reproducibly: it
 //! builds a demo signed council over the demo keeper seeds and renders it through rung three's own
@@ -15,7 +15,7 @@
 //! The record prints on stderr (the tree's `std.debug.print` convention), so capture stderr, not stdout:
 //!
 //!   rye build pond/apps/council_sky_fixture_gen.rye -femit-bin=pond/bin/council-sky-fixture-gen
-//!   pond/bin/council-sky-fixture-gen 2> skate/fixtures/council.bron
+//!   pond/bin/council-sky-fixture-gen 2> surf/fixtures/council.bron
 
 const std = @import("std");
 const assert = std.debug.assert;

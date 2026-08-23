@@ -8,7 +8,7 @@
 # the quorum. Because the body is odd, at most one side ever reaches it, so a decided proposal is decided
 # one way. A proposal short of quorum on both sides holds open and is not counted.
 #
-#   awk -f tools/fixtures/council_sky_truth.awk skate/fixtures/council.bron
+#   awk -f tools/fixtures/council_sky_truth.awk surf/fixtures/council.bron
 #   -> "<size> <ballots> <decided>"
 
 /^council / { size = $6; quorum = int(size / 2) + 1 }

@@ -7,7 +7,7 @@
 ::
 ::  Surface Season p37 — fifth pedestal in src/sur (structure museum).
 ::  Names brush_skate_rows in brushstroke/brush_parse.rye (equals
-::  max_frame_lines). Does not invent a Wayland window · skate/ graduation ·
+::  max_frame_lines). Does not invent a Wayland window · surf/ graduation ·
 ::  or Realidream invent.
 +$  brush-skate-rows-shape
   $:  rows=@u32

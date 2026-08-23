@@ -24,6 +24,26 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260823.094410` -- Skate becomes Surf, and the social layer is named Surf Social
+
+**Walk-back nib:** `06d7169f81` -- pier and both remotes. A **breach**, so nothing is rewritten.
+
+**Swept:** the `surf/` directory becomes `surf/` (4 fixture files), the name **Surf** is seated in
+`context/LEXICON.md`, and living prose naming the module is repointed. **Surf Social** is seated as
+the social layer's name, with the domain `surf-social.com` claimed `20260823`.
+
+**What is deliberately NOT swept, and why.** Nineteen code files carry the elder name --
+`brushstroke/skate_grid.rye`, `brushstroke/image_skate.rye`, `linengrow/skate_grid.rye`,
+`pond/apps/skate_circle.rye` and their kin -- along with dozens of Rye identifiers
+(`skate_base`, `skate_cell`, `brush_skate_cols`, `image_skate_version`). They keep their names.
+
+This is the Comlink tendency's own seated rule rather than a shortcut: *"A module earns a new name
+by being re-grown beside its elder, born-named, not by a mass rename... it does not license
+churn."* So **Surf is the born name from here forward**, and the elder tissue is renamed when it
+is re-grown, module by module, with witnesses green -- rather than by a sweep that would touch
+2,816 word uses and dozens of symbols in one pass. Thirty-one dated filenames also carry `skate`
+and, as always, keep every letter.
+
 ### `20260823.090034` -- checkpoint becomes checkpoint, and one word carries both senses
 
 **Walk-back nib:** `560448ab11` -- pier and both remotes. A **breach**, so nothing is rewritten and

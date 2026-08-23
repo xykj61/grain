@@ -7,7 +7,7 @@
 ::
 ::  Surface Season p40 — sixth pedestal in src/sur (structure museum).
 ::  Names max_brush_bytes in brushstroke/brush_parse.rye (16 * 1024).
-::  Does not invent a Wayland window · skate/ graduation · or Realidream invent.
+::  Does not invent a Wayland window · surf/ graduation · or Realidream invent.
 +$  brush-max-bytes-shape
   $:  bytes=@u32
   ==

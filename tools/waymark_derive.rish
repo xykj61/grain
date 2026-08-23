@@ -112,6 +112,8 @@ say "corpus sha3-512: ${digest_val}"
 # MAND is the seated M vane (in flw corpus; exclude so it never draws as a waymark).
 # MONA is the same-day prior name of Mand -- exclude for one season.
 # SALA dropped from exclude at alias retirement 20260724.202412 (Sala is historical).
+# SURF is the seated social-network module name from 20260823.094410 (in flw corpus; exclude
+# so it never draws as a waymark). It replaced Skate, which was never in the corpus.
 # Placeholder below is the most recent seat; change it when drawing the next.
 # Most recent seats (breach molt debride replacements 20260817):
 #   input_name rests on WADE's below.
@@ -144,7 +146,7 @@ assert shape_check.ok else "derived waymark '${word_val}' is not exactly four up
 # Existing proper names this scheme must never echo (four-letter Lexicon
 # identities + seated waymarks). Seated waymarks also live in
 # .cursor/rules/waymark-ladders.mdc -- if the word matches, append -2 and redraw.
-let exclude_check = run ["sh" "-c" "echo '${word_val}' | grep -qxE '(BRIX|BRON|POND|MURR|MALA|SEVA|MAND|MONA|POOL|QUIN|RIYO|REYA|TREY|TERA|TRIZ|OJJO|GLOW|RHYZ|PEAL|HAWM|TUBE|ZETA|JABS|LULU|SETU|MAIR|STOA|SUNN|POLE|SOON|JARL|BUHR|TACT|GISM|AYRE|DAHL|KOFF|CION|VOLS|OFFY|GRAD|BOZO|LINN|AHOY|HUNK|ALES|DREY|FORA|LOWE|WADE|DISC)'"]
+let exclude_check = run ["sh" "-c" "echo '${word_val}' | grep -qxE '(BRIX|BRON|POND|MURR|SURF|MALA|SEVA|MAND|MONA|POOL|QUIN|RIYO|REYA|TREY|TERA|TRIZ|OJJO|GLOW|RHYZ|PEAL|HAWM|TUBE|ZETA|JABS|LULU|SETU|MAIR|STOA|SUNN|POLE|SOON|JARL|BUHR|TACT|GISM|AYRE|DAHL|KOFF|CION|VOLS|OFFY|GRAD|BOZO|LINN|AHOY|HUNK|ALES|DREY|FORA|LOWE|WADE|DISC)'"]
 assert (exclude_check.ok == false) else "derived waymark collides with an already-seated name -- append -2 to input_name above and rerun"
 
 say ""

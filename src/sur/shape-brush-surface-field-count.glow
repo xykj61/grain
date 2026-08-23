@@ -7,7 +7,7 @@
 ::
 ::  Surface Season p43 — ninth pedestal in src/sur (structure museum).
 ::  Names BrushSurface in brushstroke/brush_parse.rye (five fields).
-::  Does not invent a Wayland window · skate/ graduation · or Realidream invent.
+::  Does not invent a Wayland window · surf/ graduation · or Realidream invent.
 +$  brush-surface-field-count-shape
   $:  fields=@u32
   ==
