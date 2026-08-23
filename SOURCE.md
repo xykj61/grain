@@ -75,7 +75,7 @@ git clone https://github.com/xykj61/grain.git ~/grain
 cd ~/grain
 ```
 
-Public HTTPS, no fork, no keys yet. This pier’s living public clone is **`xykj61/grain`**. A second GitHub remote, `autoproject96/grain`, may exist as the agentic research lane (`origin` on this pier) — see [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md). Living Cursor sends **dual-push** both remotes when both exist. **Codeberg is retired** from living push (Terms July 2026) until a new second forge is chosen.
+Public HTTPS, no fork, no keys yet. This pier’s living public clone is **`xykj61/grain`**. A second GitHub remote, `groupproject405/grain`, may exist as the agentic research lane (`origin` on this pier) — see [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md). Living Cursor sends **dual-push** both remotes when both exist. **Codeberg is retired** from living push (Terms July 2026) until a new second forge is chosen.
 
 Forks arrive naturally in Part Two, once forge accounts exist.
 
@@ -145,7 +145,7 @@ Make a **GitHub** account — <https://github.com> — free, and the living forg
 
 Pick a handle you can keep — for example, `youruser`. Verify your email; the Verified badge later depends on it.
 
-**This pier** uses GitHub `xykj61/grain` as the public clone you just fetched, and may also carry `autoproject96/grain` as a second remote for agentic research. Canonical remote count: [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md).
+**This pier** uses GitHub `xykj61/grain` as the public clone you just fetched, and may also carry `groupproject405/grain` as a second remote for agentic research. Canonical remote count: [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md).
 
 **Codeberg** (<https://codeberg.org>) was the second home for a season. It is **retired from living push** under Terms (July 2026) that bar mostly-LLM projects and cryptocurrency-related projects. Keep an account if you like; do not plan Part Two around Codeberg until Grain names a new second forge.
 
@@ -174,7 +174,7 @@ ssh-keygen -lf ~/.ssh/id_ed25519_github.pub
 # SHA256:EXAMPLEgithubFINGERPRINTexampleEXAMPLEexample0000
 ```
 
-If this pier later carries a **second GitHub remote** (for example `autoproject96/grain` beside `xykj61/grain`), make a **second** SSH pair with its own filename and comment so each remote can rotate alone — same shape, second file. Do **not** mint a Codeberg key for Part Two while Codeberg stays retired from living push.
+If this pier later carries a **second GitHub remote** (for example `groupproject405/grain` beside `xykj61/grain`), make a **second** SSH pair with its own filename and comment so each remote can rotate alone — same shape, second file. Do **not** mint a Codeberg key for Part Two while Codeberg stays retired from living push.
 
 ---
 

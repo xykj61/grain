@@ -31,7 +31,7 @@ git push --force origin main             # origin here IS grain-os/grain
 
 This is the **only** place `commit.gpgsign` is false anywhere in the tree, and it is a privacy safeguard, not a lapse.
 
-**Living remotes** (`20260730.030553` — Keaton's word): always push **both** `origin` (GitHub `autoproject96/grain`) and `xykj61` (GitHub `xykj61/grain`) from Cursor. Codeberg stays retired from living push (Terms July 2026). Canonical count: `context/REMOTE_ROSTER.md`. **Pier write Option 2** (`20260730.034136` — Keaton's word): Cloud may meet **auth-refused** on `origin`; name it, finish the `xykj61` path, and leave `origin`/`main` sync to the home pier — never spread a home credential onto Cloud.
+**Living remotes** (`20260730.030553` — Keaton's word): always push **both** `origin` (GitHub `groupproject405/grain`) and `xykj61` (GitHub `xykj61/grain`) from Cursor. Codeberg stays retired from living push (Terms July 2026). Canonical count: `context/REMOTE_ROSTER.md`. **Pier write Option 2** (`20260730.034136` — Keaton's word): Cloud may meet **auth-refused** on `origin`; name it, finish the `xykj61` path, and leave `origin`/`main` sync to the home pier — never spread a home credential onto Cloud.
 
 ## Our own record numbers wear `%`, never `#` -- seated `20260820.005250`
 

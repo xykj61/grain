@@ -14,8 +14,10 @@
 
 | Remote | Forge |
 |--------|-------|
-| `origin` | GitHub `autoproject96/grain` |
+| `origin` | GitHub `groupproject405/grain` |
 | `xykj61` | GitHub `xykj61/grain` -- **speeddial `xy`** (Lexicon, `20260823.173634`): say **xy** for the private field and **seed** for `grain-os/grain`, since both were being called *the grain repo* and they are opposite things |
+
+**Renamed `20260823.184309` on Keaton's word:** the GitHub organization **`autoproject96` became `groupproject405`**, and `origin` is repointed to `git@github.com:groupproject405/grain.git`. GitHub keeps a redirect from the elder name, which is why nothing broke and why the repoint could be done calmly rather than under an outage. Both names are on the seed's IDENT leak roster and both scrub to `acme-owner`, since dated testimony keeps every `autoproject96` it ever wrote. A **deep debride** of the 11 commit-message occurrences is granted and **booked as a standfast** rather than run -- see `construction/REDS.md`.
 
 **Seed / public projection remote** (`20260817` — Keaton's word: grain-os is an xykj61 organization):
 
@@ -29,7 +31,7 @@
 
 | Remote | Forge | Why |
 |--------|-------|-----|
-| `codeberg` | Codeberg `autoproject96/grain` | Codeberg Terms (July 2026) bar mostly-LLM projects and cryptocurrency-related projects; Grain pauses Codeberg until a new second forge is chosen |
+| `codeberg` | Codeberg `groupproject405/grain` | Codeberg Terms (July 2026) bar mostly-LLM projects and cryptocurrency-related projects; Grain pauses Codeberg until a new second forge is chosen |
 
 **Legacy remotes** (history hand-off · optional · not living push):
 

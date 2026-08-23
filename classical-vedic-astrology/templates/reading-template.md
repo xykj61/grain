@@ -3,10 +3,11 @@
 *One skeleton for every new reading. Fill the brackets, verify the sky twice, compose each section from the study silos, and close with a blessing. The person's true name lives only in the copy you hand them; the working copies carry a placeholder, so the craft stays portable and the person stays private.*
 
 **Stamp:** `20260701.232912`
-**Style:** Radiant (see `RADIANT_STYLE.md`), gentle register throughout
+**Style:** Gauge at its Field setting, warm register throughout (see `../../context/GAUGE_STYLE.md`)
+**Refreshed:** `20260823.184309` -- the worked index anonymized so the template ships
 **Companions:** [`../cast_a_chart.rish`](../cast_a_chart.rish) (the computation), the numbered study silos in [`studies/`](../studies/) (`00`–`20` and those yet to come; index at [`studies/README.md`](../studies/README.md)), [`../../context/SILO_TECHNIQUE.md`](../../context/SILO_TECHNIQUE.md)
 
-*Written together by Kaeden and Reya 2; shaped into a template with the outside reading (Fable 5) at Kaeden's direction.*
+*Written with the voices this tree carried at the time, and shaped into a template on the maintainer's direction.*
 
 ---
 
@@ -133,30 +134,26 @@
 | The hinge of the lights at birth | `studies/reading-themes/20260705-195800_the-hinge-of-the-lights-at-birth.md` |
 | The three paths braid | `studies/reading-themes/20260705-195800_the-three-paths-braid.md` |
 
-### Brooke reading — chapter silos (`readings/brooke/`)
+### A worked chapter index -- the demonstration reading
+
+*A real reading's chapter index lived here once. It named a private person's ascendant, their
+placements, and the stamps derived from their birth moment, so it moved out with the readings
+themselves. A template demonstrates on the sample, never on somebody's chart -- which is what the
+"keep the name apart" rule above was already asking for.*
 
 | Chapter | Silo |
 |---------|------|
-| Shelf index | `readings/brooke/README.md` |
-| Season and three paths | `readings/brooke/20260705-020812_the-season-and-the-three-paths.md` |
-| Placements table | `readings/brooke/20260705-020812_the-placements-at-a-glance.md` |
-| Foundation (dharma, D9) | `readings/brooke/20260705-020812_the-ninth-chart-and-the-shape-of-dharma.md` |
-| Ascendant (Makara) | `readings/brooke/20260705-020812_the-makara-at-the-door-the-lion-within.md` |
-| Sun | `readings/brooke/20260705-020812_the-priests-light-on-the-marriage-angle.md` |
-| Moon | `readings/brooke/20260705-020812_the-spartan-heart-under-vishnus-star.md` |
-| Venus | `readings/brooke/20260705-020812_love-as-dharma-twice.md` |
-| Mercury | `readings/brooke/20260705-020812_the-articulate-heart.md` |
-| Jupiter | `readings/brooke/20260705-020812_deep-faith-among-the-gathered.md` |
-| Saturn (steward) | `readings/brooke/20260705-020812_the-makers-discipline.md` |
-| Rahu and Ketu | `readings/brooke/20260705-020812_hunger-and-release.md` |
-| Yogas | `readings/brooke/20260705-020812_companions-of-the-lights.md` |
-| Stars | `readings/brooke/20260705-020812_a-temple-of-star-gods.md` |
-| Almanac day | `readings/brooke/20260705-020812_the-day-she-was-born.md` |
-| Three paths braid | `readings/brooke/20260705-020812_one-braid.md` |
-| Full reading (composed) | `readings/brooke/20260705-020812_dharma-and-the-two-wheels.md` |
-| Divine mother as teacher | `studies/synthesis/20260705-045812_the-divine-mother-as-the-charts-teacher.md` |
-| Two-wheel HTML template | `templates/20260705-020812_reading-template.html` |
-| Diurnal wheel method | `_method/rendering/SILO_DIURNAL_WHEEL.md` |
+| The whole demonstration reading | `readings/alice-sample-reading.md` |
+| Season and three paths | `<reading>/<stamp>_the-season-and-the-three-paths.md` |
+| Placements table | `<reading>/<stamp>_the-placements-at-a-glance.md` |
+| Foundation (dharma, D9) | `<reading>/<stamp>_the-ninth-chart-and-the-shape-of-dharma.md` |
+| Ascendant | `<reading>/<stamp>_the-<sign>-at-the-door.md` |
+| One chapter per light and planet | `<reading>/<stamp>_<the-chapter-name>.md` |
+| Shelf index | `<reading>/README.md` |
+
+The angle brackets are placeholders, in the shape the mark law asks for: a real stamp beside a
+sprig that names no file reads as a citation to every tool that walks this tree.
+
 
 New placements earn the next number, a topic folder, a hyphenated filename, and a row here — see [`studies/README.md`](../studies/README.md).
 

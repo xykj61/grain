@@ -46,6 +46,7 @@ s/npub1[a-z0-9]\{58\}/acme-owner-npub/g
 # is exactly the placeholder a newcomer expects to fill in.
 s/xykj61/acme-owner/g
 s/autoproject96/acme-owner/g
+s/groupproject405/acme-owner/g
 
 # STILL DELIBERATELY ABSENT: the real Azimuth ship names (bandun, pacpet-solreb).
 # Those are code literals whose value is behavior, not prose — swapping them is a

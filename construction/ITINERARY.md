@@ -81,7 +81,7 @@ All **fourteen** remaining documents swept `20260823.070754`, and the ratchet ce
 
 **Elder note -- the sweep as it was declared.** **16** teaching-tier documents above the Field target; the beginner tutorial **51%**, the demos page **62%**. Order when the word comes: those two, then the other fourteen, then `CONTRIBUTING.md` (42%) and the root guides, then the 848 seed-dead links of %160 repaired in the same passes, then breach, molt, and republish the seed. Prompt: `expanding-prompts/20260823-045448_the-gauge-standfast.md`. Essay: `active-designing/20260823-045448_the-register-and-the-reader.md`.
 
-**%162 CLOSED on Keaton's word.** `xykj61` and `autoproject96` are **PRIVATE**, verified. `grain-os/grain` stays public and is republished when the standfast lifts. No history rewritten, no signature changed.
+**%162 CLOSED on Keaton's word.** `xykj61` and `groupproject405` are **PRIVATE**, verified. `grain-os/grain` stays public and is republished when the standfast lifts. No history rewritten, no signature changed.
 
 **Deep debride approved and banked, deliberately unspent.** Keaton granted a deep molt, breach, and debride `20260823.045448` -- renames, reference repointing, commit-message rewriting, force push, reclone accepted. No rename is wanted today, and running it now would want running again once the sweep rewrites the same messages. Spent once at the **close** of the sweep it costs one reclone rather than two; re-signing is proven (2,901 commits, `20260817`). Calls it in early: a filename that misleads, or a commit message now known to be untrue.
 
@@ -99,7 +99,7 @@ All **fourteen** remaining documents swept `20260823.070754`, and the ratchet ce
 
 **The roster audit, asked and answered (%159's open question).** Six candidate blind classes tested empirically rather than guessed. **Healthy:** case-insensitive filename collisions (0, so the macOS clone is safe), oversized blobs (largest 2.8 MB against GitHub's 100 MB refusal), editor-rule twin parity (39 Claude / 40 Cursor, none claiming a twin that is absent), submodule declarations. **Blind:** the seed projection (%160), and **empty tracked documents** (%161) -- two at **zero bytes**, one of them a session log *indexed in its own README*, so the index promises a reasoning record that does not exist. **Vacuous truth is the shape of the class:** a check phrased as *nothing here is wrong* is answered perfectly by a file with nothing in it. A rung gating tracked documents at a minimum honest size is the next lap.
 
-**GATE -- %162, and it wants Keaton's word.** The seed withholds the maintainer's GPG signature so the anonymous seed cannot be linked back. Checked directly: **all three remotes read `PUBLIC`** -- `grain-os`, `xykj61`, `autoproject96`. The field the seed is depersonalised *from* is world-readable and tracks `PUBKEYS.md`, a resume draft, a personal ontology, a cover letter, and the `twilight/` poems -- material the manifest carefully excludes from the seed while the field publishes it anyway. Content matching links the two in one search, so the unsigned commit buys nothing. Three resolutions, all Keaton's: make the field private, accept the linkage and restore signing, or debride the personal material. **Two touch published history.**
+**GATE -- %162, and it wants Keaton's word.** The seed withholds the maintainer's GPG signature so the anonymous seed cannot be linked back. Checked directly: **all three remotes read `PUBLIC`** -- `grain-os`, `xykj61`, `groupproject405`. The field the seed is depersonalised *from* is world-readable and tracks `PUBKEYS.md`, a resume draft, a personal ontology, a cover letter, and the `twilight/` poems -- material the manifest carefully excludes from the seed while the field publishes it anyway. Content matching links the two in one search, so the unsigned commit buys nothing. Three resolutions, all Keaton's: make the field private, accept the linkage and restore signing, or debride the personal material. **Two touch published history.**
 
 **The front door and the founding statement, rewritten.** `foundations/20260823-034321_the-return-that-feeds-everyone.md` is the new siloed universal writing -- soil, materials, and the computer as one question, with the closed loop named as the shared discipline (*a system that renews itself from within needs no input it cannot account for*) and a witness named as *a certification for code*. No person, firm, brand, or figure survives the crossing. The README leads with the problem, gives TAME and the witness their first plain-English introduction, names **Caravan** as the crux under way, and explains the rooms -- including the field-only ones -- in prose a stranger can follow.
 
@@ -160,7 +160,7 @@ Seated ladders: **HAWM - TUBE - ZETA - JABS - LULU - STOA - SETU - SUNN - POLE**
 ## Pier & hands
 
 - **Pier path** -- `~/grain` (persists across jail resets) - agent `home-xy-grain` - Cloud on `xykj61/grain`.
-- **Lane** -- every **send** pushes both `origin` (autoproject96) and `xykj61`. ls-remote guard first; `origin` may 403 from the cloud (home pier closes the gap). Map: [`../PUBKEYS.md`](../PUBKEYS.md) - [`../context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
+- **Lane** -- every **send** pushes both `origin` (groupproject405) and `xykj61`. ls-remote guard first; `origin` may 403 from the cloud (home pier closes the gap). Map: [`../PUBKEYS.md`](../PUBKEYS.md) - [`../context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
 - **Jail authors; host installs** -- agents write inside the project / enclosure; USB `adb` installs and key ops stay Keaton's hand.
 - **Live state** (`20260808`) -- guides 0-2 CLOSED - `gh` as `xykj61` - Claude Code on pier - **agent-jail GREEN** (`./tools/ag/agent-jail.sh` for claude + cursor-agent) - editors + Aug cursor-cli witnessed - tmux `pier` standing.
 - **Cursor launch** -- `rishi/bin/rishi run tools/l/launch-cursor.rish --cursor ./Cursor-*.AppImage --gpu`.
@@ -232,6 +232,43 @@ witnesses** and Mycelium at **98 with 80** -- both far past sketch. So the bottl
 building; it is that a reader arriving today cannot say what either one does, while the tools room
 holding their proofs sits **7.4x over its bound**. Tier 1 is legibility: the tools fold, the 848
 seed-dead links, and a Door-setting front page for each of the two big modules.
+
+**BOOKED `20260823.184309` -- the organization rename, the astrology room, and four doors named.**
+
+- **`autoproject96` -> `groupproject405`, living half done.** `origin` repoints to
+  `git@github.com:groupproject405/grain.git`; **32 occurrences swept across 16 living files**; both
+  names sit on the seed's IDENT roster and both scrub to `acme-owner`, since dated testimony keeps
+  every elder name it wrote. The **deep debride is granted and booked as a STANDFAST** rather than
+  run -- 199 occurrences tree-wide, 83 dated files, and **only 11 inside commit messages**, which is
+  the whole of what a rewrite reaches, against every downstream re-cloning. GitHub keeps a redirect
+  from the elder name, so nothing is broken today. Row in `REDS.md`.
+- **`classical-vedic-astrology/` ships its METHOD.** Reclassified in `template-manifest.bron` from
+  `personal` to `template`, with `readings/` and `yonder/` **sub_excluded** -- a natal chart carries
+  a named person's birth date, time, and place, and the room's own README records that those friends
+  asked for privacy. What ships is how a chart is cast, the 27 nakshatra seats, the studies, and the
+  teachings; the rota the seasons are named from now has its method in the open. `sow_witness` reads
+  IDENT_CLEAN and NO_PERSONAL, and the projection carries no named person. Woven into the root README
+  beside the rooms that ship, where *Crux* also became **Construction**, five days after the rename.
+
+**Four doors booked `20260823.184309`, in Lindy order:**
+
+1. **`SOURCE.md` molt into Gauge - Civic - TAME.** The onboarding page is the seed's second-most-read
+   document and it predates all three registers. A molt seats a living mutant at a fresh stamp; the
+   fossil stays. Agent-doable.
+2. **The MOX constellation on SUI, with `xykj61` as the maintainer's planet.** Seven of fifteen
+   instantiations are named (MOX, EBB, EBBB, dETH, dSOL, dSUI, SIYA); this seats the topology --
+   which instantiation answers for which point, and how a planet resolves to a Mycelium store. Design
+   is agent-doable; **anything touching a real chain is a gate.**
+3. **Kumara seed-key derivation -- ONE seed phrase, every live key.** The design is agent-doable and
+   the generation is **not**. Shape: a single high-entropy seed, backed up in Vault, from which both
+   the **Comlink X25519/Ed25519** keys and the **post-quantum SLH-DSA-SHAKE-256s** keys derive by
+   domain-separated SHAKE-256, so one phrase restores everything and no key is ever stored twice.
+   Algorithm agility is already seated, so the derivation path carries a scheme tag and a version.
+   **CUSTODY GATE, uncrossed:** generating the maintainer's real seed, writing it to Vault, or signing
+   with it stays a hand's work. An agent may write and witness the derivation library against test
+   vectors and fake constel identities, and stops there.
+4. **Atthowe ecological / biocyclic-vegan, Dimeroll, and Mycelium** carry forward as the standing
+   why beneath all three.
 
 **The voice ships, a document may have two homes, and the shed list came back empty (`20260823.182512`).**
 `context/KYRI.md` is depersonalized and on the seed's allow list, so the standing voice reaches the

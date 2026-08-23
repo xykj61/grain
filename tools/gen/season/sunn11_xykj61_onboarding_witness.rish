@@ -5,14 +5,14 @@
 # APPLY.md is root-ignored (pier-local CREATE packs) — never assert it here.
 
 say "sunn11: Language EN — living onboarding clones name xykj61."
-say "sunn11: Style Radiant — beginner xykj61 · origin lane autoproject96 kept."
+say "sunn11: Style Radiant — beginner xykj61 · origin lane groupproject405 kept."
 say "sunn11: Lens TAME — SUNN11 · clone lock · dual-push named · roster truth."
 
 let s = read-file "SOURCE.md"
 assert s contains "git clone https://github.com/xykj61/grain.git ~/grain" else "sunn11: SOURCE want xykj61 clone"
 assert s contains "dual-push" else "sunn11: SOURCE want dual-push language"
 assert s contains "REMOTE_ROSTER" else "sunn11: SOURCE want REMOTE_ROSTER cite"
-assert (s contains "git clone https://github.com/autoproject96/grain") == false else "sunn11: SOURCE must not clone autoproject96"
+assert (s contains "git clone https://github.com/groupproject405/grain") == false else "sunn11: SOURCE must not clone groupproject405"
 # Door stamp may leave SOURCE Status as later doors accrete; metal above stays.
 
 let r = read-file "README.md"
@@ -30,13 +30,13 @@ assert e contains "https://github.com/xykj61/grain.git" else "sunn11: enclosure 
 
 let p = read-file "tools/gen/season/personalize.template.brix"
 assert p contains "source_pier_clone https://github.com/xykj61/grain.git" else "sunn11: personalize want xykj61 clone"
-assert p contains "source_pier_agent_lane autoproject96" else "sunn11: personalize want agent lane kept"
+assert p contains "source_pier_agent_lane groupproject405" else "sunn11: personalize want agent lane kept"
 
 let f = read-file "manual/guides/first-season-personalize.md"
 assert f contains "xykj61/grain" else "sunn11: first-season-personalize want xykj61/grain"
 
 let roster = read-file "context/REMOTE_ROSTER.md"
-assert roster contains "`origin` | GitHub `autoproject96/grain`" else "sunn11: roster want origin autoproject96"
+assert roster contains "`origin` | GitHub `groupproject405/grain`" else "sunn11: roster want origin groupproject405"
 assert roster contains "`xykj61` | GitHub `xykj61/grain`" else "sunn11: roster want xykj61 remote"
 
 say "GREEN: sunn11 — living onboarding clones xykj61 · dual-push named · roster origin kept"

@@ -10,7 +10,7 @@
 
 This proposal to Urbit — **Grain**, a downstream research repository — carries its own identity forward from here. The record below is this identity's public face; the private halves stay home.
 
-**Identity Remake** `20260729.141658`: professional name **Keaton Dunsford** · email **xykj61@gmail.com** · handle **@xykj61**. Prior jail-local Dunsford keys archived off-tree. **Codeberg retired** as a living remote (Terms July 2026 — LLM-heavy and cryptocurrency-related project bans). Living forge: **GitHub** — beginner clone [`xykj61/grain`](https://github.com/xykj61/grain); dual remotes per [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md) (`origin` = `autoproject96/grain` · `xykj61` = `xykj61/grain`) until a second forge is chosen.
+**Identity Remake** `20260729.141658`: professional name **Keaton Dunsford** · email **xykj61@gmail.com** · handle **@xykj61**. Prior jail-local Dunsford keys archived off-tree. **Codeberg retired** as a living remote (Terms July 2026 — LLM-heavy and cryptocurrency-related project bans). Living forge: **GitHub** — beginner clone [`xykj61/grain`](https://github.com/xykj61/grain); dual remotes per [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md) (`origin` = `groupproject405/grain` · `xykj61` = `xykj61/grain`) until a second forge is chosen.
 
 ---
 

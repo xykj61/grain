@@ -15,7 +15,7 @@
 #   - A file that names the maintainer is run through the name->role scrub
 #     (tools/fixtures/sow_scrub.sed). If it comes out identity-clean it is
 #     kept scrubbed; if it still carries a functional handle or a code literal
-#     (xykj61, autoproject96, bandun, pacpet-solreb) it is WITHHELD for human
+#     (xykj61, groupproject405, bandun, pacpet-solreb) it is WITHHELD for human
 #     judgment. So the seed is clean by construction, not by trust.
 #   - Only git-tracked files move (git ls-files), so build output under
 #     gitignored bin/.cache dirs never reaches the seed.
@@ -30,7 +30,7 @@ SEED="seed"
 SCRUB="tools/fixtures/sow_scrub.sed"
 # Maintainer identity: real names, the retired copyright name, the forge
 # handles, and the real Azimuth points. One place; the witness reuses it.
-IDENT='Keaton|Kaeden|Livermore|Reyklah|Dunsford|Mayacama|xykj61|autoproject96|bandun|pacpet-solreb|keatonsiya|xnkg30|veganreyklah|cherry996|415.?915.?6666|npub1[a-z0-9]{40}|6Rb5E|AHs34|siyafund|bitscape|thebittradingcompany|xykj61atgmail|xykld2|xy96gen-z|DJINN|DJINN|groupproject36|grain_energy|grain.energy|Grain Energy|Siya Fund|Vultr|Wenatchee|Sabey|Washoe County|Daylight DC-1|Tlon Corporation|0646 2132 D3E6|DBF8 5343 7A93|keatondun|keatonlivermore|teamcarry11|xwb122m|b122mnet|xnflor3|kaexvx9|kj3x39|b122m|construction3x39|vegancpa|veganaccountant|veganarchitect|veganbookkeeper|@gmail.com|Sealy|Zendex|CC8BA671|06462132|DxE|Direct Action Everywhere|wayne-hsiung|helen-atthowe|sarah-guo|kyler-murray|ariana-grande|kamala-harris|Pacific Time|Pacific time|66041JEA306288|bhagavan851c05a|kae3g|Brooke|Alexandra Livermore|Smart Access|maicmalamurr'
+IDENT='Keaton|Kaeden|Livermore|Reyklah|Dunsford|Mayacama|xykj61|groupproject405|bandun|pacpet-solreb|keatonsiya|xnkg30|veganreyklah|cherry996|415.?915.?6666|npub1[a-z0-9]{40}|6Rb5E|AHs34|siyafund|bitscape|thebittradingcompany|xykj61atgmail|xykld2|xy96gen-z|DJINN|DJINN|groupproject36|grain_energy|grain.energy|Grain Energy|Siya Fund|Vultr|Wenatchee|Sabey|Washoe County|Daylight DC-1|Tlon Corporation|0646 2132 D3E6|DBF8 5343 7A93|keatondun|keatonlivermore|teamcarry11|xwb122m|b122mnet|xnflor3|kaexvx9|kj3x39|b122m|construction3x39|vegancpa|veganaccountant|veganarchitect|veganbookkeeper|@gmail.com|Sealy|Zendex|CC8BA671|06462132|DxE|Direct Action Everywhere|wayne-hsiung|helen-atthowe|sarah-guo|kyler-murray|ariana-grande|kamala-harris|Pacific Time|Pacific time|66041JEA306288|bhagavan851c05a|kae3g|Brooke|Alexandra Livermore|Smart Access|maicmalamurr'
 
 [ -f "$MANIFEST" ] || { echo "sow: $MANIFEST missing" >&2; exit 1; }
 [ -f "$SCRUB" ]    || { echo "sow: $SCRUB missing" >&2; exit 1; }

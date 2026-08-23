@@ -26,7 +26,7 @@ git push --force origin main             # origin here IS grain-os/grain
 
 This is the **only** place `commit.gpgsign` is false anywhere in the tree, and it is a privacy safeguard, not a lapse.
 
-**Living remotes** (`20260730.030553` — Keaton's word): always push **both** `origin` (GitHub `autoproject96/grain`) and `xykj61` (GitHub `xykj61/grain`). Codeberg stays retired from living push. Canonical count: `context/REMOTE_ROSTER.md`.
+**Living remotes** (`20260730.030553` — Keaton's word): always push **both** `origin` (GitHub `groupproject405/grain`) and `xykj61` (GitHub `xykj61/grain`). Codeberg stays retired from living push. Canonical count: `context/REMOTE_ROSTER.md`.
 
 ## Our own record numbers wear `%`, never `#` -- seated `20260820.005250`
 
