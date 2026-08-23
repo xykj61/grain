@@ -1,0 +1,38 @@
+format session-log-v1
+stamp 20260822.235157
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The roster that could not be run, and the three reds its first run found
+prompt Take the next agent-doable lap Lindy-first crux-first, Standfast on reds, read one council-rota row, send the increment.
+
+think Council rota row 0 -- Aether/Jupiter, why the work exists: follow-our-compass, the Lindy effect, the grain and the crossing. The row handed the crux twice over. The Lindy essay says truth that was checked stays checkable while truth merely asserted decays, and the grain seats the strand that a guard which cannot red guards nothing (row 59). The standing-equipment roster was asserted prose, so it had already decayed twice.
+think Standfast first: every REDS row through %149 reads closed, so the line was clear for new work. Then read the last three logs' recommend lines, and all three named the same open question -- a meter that reports when each guard last ran. Two rounds asking for the same thing is a lantern that has fired twice, which outranks another Caravan ladder lift on Lindy weight even though the ladder queue is ranked and waiting.
+think Found the root before designing. The roster lived in one prose bullet of crux/REMEMBER.md opening "Seventeen stood green when this line was written" and then naming sixteen witnesses across the sentences after it -- a count disagreeing with its own list, which is the whole failure in one sentence. A paragraph cannot be executed, tallied, or dated.
+think Designed the run card untracked on purpose. A tracked card would carry one machine's run history into every clone, so a fresh clone would inherit a memory rather than take a measurement. Untracked, a fresh clone honestly reads never-run-here, which is why that count is reported as a ratchet rather than gated -- gating it would red every clone on the day it lands.
+think Kept the roster free of prose deliberately. Each guard's seating story -- why nib_honesty was rewritten after two days red, why rye_bridge_cycle is the first guard pointed at our own compiler -- stays in each guard's own header comment and its dated log. A roster that carries stories becomes a paragraph again, which is the thing being fixed.
+think Ran the roster rather than trusting it, which is the roster's own sentence. Seventeen green, three red. Booked %151 under Standfast and closed it before writing anything else.
+
+obs The mechanism: crux/standing-equipment.kyri holds twenty `guard` / `path` / `seated` records; tools/fixtures/standing_equipment_run.sh reads them, invokes each path through rishi, and rewrites crux/standing-equipment-runs.kyri with one `ran <name> <stamp> <verdict>` line per guard; tools/fixtures/standing_equipment_scan.sh reads both files and gates path existence, whole guard records, rostered run names, and zero recorded reds; tools/standing_equipment_witness.rish drives the scan and the control and asserts each verdict by name.
+obs The three reds are one family. readme_metrics and geode_libraries both refused because a generated page stopped being regenerated, and that failure is invisible in every diff -- the page still looks generated, because it was, once. Both were repaired by a `write` command that had existed the whole time and nobody invoked. The fascia reading had fallen 45 -> 41 and the front door never said so.
+obs The third red is the retired word walking back into the very card its guard watches, written 20260821.232733, one day after the sweep that retired it. Repaired per sense rather than by a second abstract word: a set written for the question is a control set, which is exactly the sense the retirement row itself names.
+obs The bound guard was run this lap rather than discovered four laps late. Booking two rows carried crux/REDS.md to 25,365 bytes against its 24,576 bound, so rows %148-%149 folded to crux/archive/ with the doorway line written in the same act and every relative link repointed one level deeper and checked to resolve on disk. The pin stands at 19,569.
+obs The reds-monotone witness refused twice on the way, once for the headline total and once for the span, each time because a number was one row behind the spine. That is the guard doing its job, and it is the second lap running where a ledger guard corrected a hand.
+obs No .rye moved this lap, so the Caravan choir was not run; the ladder arc's queue is unchanged and named in REMEMBER for the next lap.
+loom witness=standing_equipment_run guards=20 green_first_pass=17 red_first_pass=3 green_after_repair=20
+
+file crux/standing-equipment.kyri the roster as twenty machine-readable records, replacing a paragraph nothing could run
+file tools/fixtures/standing_equipment_run.sh runs every rostered guard and writes the untracked run card
+file tools/fixtures/standing_equipment_scan.sh the meter -- four hard gates, the never-run count as a ratchet
+file tools/fixtures/standing_equipment_control.sh five refusals and two free readings proven on throwaway rosters
+file tools/standing_equipment_witness.rish drives both and asserts every verdict by name
+file crux/REDS.md rows %150 and %151 booked and closed; rows %148-%149 folded; headline recites the measured spine
+file crux/archive/REDS-the-banner-and-the-unrun-bound-rows-148-149.md the folded rows, links repointed one level deeper
+file crux/CAIRNS.md the walk-back for the departing standing-equipment paragraph at 337c466fc7
+file crux/REMEMBER.md the roster paragraph becomes a pointer; Now refilled; git nib carried
+file README.md the generated metrics block regenerated -- fascia 41, 1650 witnesses over 1890 modules
+file docs-geode/libraries/README.md the library index regenerated to equal a fresh render
+file .gitignore the run card is untracked on purpose, so a clone measures rather than inherits
+
+recommend keep-going the ladder arc's queue is unchanged and waiting -- rests_path leads the free-absolutely reading at 250 over eleven rungs, confer_words holds the queue's free head at 294 over forty-three rungs priced at forty-three import re-exports, and answered_by still leads by return at 330 costing sixty-eight openings. Beside it, the roster now answers the question two rounds asked, and it opens a sharper one on its first run: two of the three reds were generated pages that stopped being regenerated, which is a failure mode no diff shows, so the honest next meter asks which OTHER generated surfaces in this tree have no witness comparing them against a fresh render.

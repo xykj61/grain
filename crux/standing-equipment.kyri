@@ -1,0 +1,108 @@
+# crux/standing-equipment.kyri -- the standing guards, as a list a program can read.
+#
+# WHY THIS FILE EXISTS. The roster of standing equipment lived in one paragraph of
+# crux/REMEMBER.md, in prose. A paragraph can be read and it can be trusted; it cannot
+# be run, counted, or dated. Two consecutive rounds paid for that: REDS %147 found eight
+# standing witnesses each holding a count its source had moved past, and REDS %149 found
+# the living-pin bound guard unrun for four laps while crux/REDS.md sat 2,050 bytes over
+# the bound it measures. Both were caught by a hand that happened to run something.
+#
+# The tree already seats the strand this file's sibling completes. The grain says a guard
+# that cannot red guards nothing (REDS row 59), and every guard here can red. The strand
+# beside it, learned the hard way twice: a guard that is never run guards nothing either.
+#
+# WHAT A ROW MEANS. One `guard` record per standing check, each naming the path a runner
+# invokes and the stamp the guard was seated. The roster is the authority for what stands;
+# crux/standing-equipment-runs.kyri records when each last ran ON THIS PIER, and that card
+# is deliberately untracked, so a fresh clone reads `never run here` rather than inheriting
+# another machine's memory.
+#
+# HOW IT IS KEPT HONEST. tools/standing_equipment_witness.rish proves every path exists,
+# refuses a run card naming a guard the roster never seated, and refuses any recorded RED.
+# Add a guard by adding a record here; the meter counts the file rather than a sentence.
+
+format standing-equipment-v1
+stamp 20260822.233748
+voice Kyri
+runner tools/fixtures/standing_equipment_run.sh
+card crux/standing-equipment-runs.kyri
+
+guard banner_room
+path tools/banner_room_witness.rish
+seated 20260822.231949
+
+guard dated_path
+path tools/dated_path_witness.rish
+seated 20260821.203103
+
+guard dated_path_repoint
+path tools/dated_path_repoint_witness.rish
+seated 20260821.203103
+
+guard documented_room
+path tools/documented_room_witness.rish
+seated 20260821.203103
+
+guard equinox_e123_living_pin_guard
+path tools/gen/season/equinox_e123_living_pin_guard_witness.rish
+seated 20260817.000000
+
+guard fetch_toolchain
+path tools/fetch_toolchain_witness.rish
+seated 20260821.203103
+
+guard foundations_link
+path tools/foundations_link_witness.rish
+seated 20260821.230319
+
+guard geode_libraries
+path tools/geode_libraries_witness.rish
+seated 20260821.203103
+
+guard living_docs_lint
+path tools/living_docs_lint.rish
+seated 20260821.203103
+
+guard nib_honesty
+path tools/nib_honesty_witness.rish
+seated 20260821.211943
+
+guard radiant_negation
+path tools/radiant_negation_witness.rish
+seated 20260821.211943
+
+guard readme_metrics
+path tools/readme_metrics_witness.rish
+seated 20260821.203103
+
+guard reds_ledger_monotone
+path tools/gen/season/reds_ledger_monotone_witness.rish
+seated 20260821.235936
+
+guard room_bound
+path tools/room_bound_witness.rish
+seated 20260821.203103
+
+guard rye_bridge_cycle
+path tools/rye_bridge_cycle_witness.rish
+seated 20260821.232733
+
+guard sha3_file
+path tools/sha3_file_witness.rish
+seated 20260821.203103
+
+guard shipped_binary_claim
+path tools/shipped_binary_claim_witness.rish
+seated 20260821.203103
+
+guard tame_style_check
+path tools/tame_style_check.rish
+seated 20260707.164612
+
+guard vocabulary_collection
+path tools/vocabulary_collection_witness.rish
+seated 20260821.211943
+
+guard width_check
+path tools/width-check.rish
+seated 20260620.210812
