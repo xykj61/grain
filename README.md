@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/grain-logo.svg" width="168" height="168" alt="Grain — a sepia-gold wheat stalk whose ten grains are the sephirot, woven on a linen grid" />
+  <img src="assets/grain-logo.svg" width="168" height="168" alt="Grain -- a sepia-gold wheat stalk whose ten grains are the sephirot, woven on a linen grid" />
 </p>
 
 <h1 align="center">Grain</h1>
@@ -17,159 +17,291 @@
 
 ---
 
-**Language:** EN · **Style:** [Radiant](context/RADIANT_STYLE.md) · **Voice:** [Kyri](context/KYRI.md)
-**Status:** Living — the front door; every claim marks what runs today versus what is named and scoped.
-**Last updated:** `20260811.211431` (AHOY front-door season · logo · Lindy-durable rewrite · seed synonyms named early)
+**Grain is an operating system you can actually own.** Every promise it makes is checked by a
+program rather than asserted in a sentence, every part of it declares its limits before it runs,
+and the keys stay in your hands. It is early and it says so. What is here already runs, and this
+page marks plainly which parts those are.
+
+**New here?** Two links, and nothing else you need yet: **[why this exists](foundations/20260823-034321_the-return-that-feeds-everyone.md)**
+for the idea in plain English with no code in it, and **[your first hour](docs-geode/tutorials/the-first-hour.md)**
+to clone the tree and watch something turn green on your own machine.
 
 ---
 
-Welcome — and I mean that warmly. This is **Grain**. It is written in **[Glow](glow/README.md)**, a language whose grammar is made of **runes** — short symbolic heads, a glyph or two apiece, that name a structure the way a chord symbol names a bar of music: terse, precise, quick to learn once you know the small vocabulary. Glow's semantics are **bounded, asserted, and statically disciplined**, and they lower through **[Rye](rye/README.md)** all the way to **RISC-V** — the open, royalty-free hardware floor built to outlast us all. No virtual machine in the hot path. Determinism comes from discipline; speed comes from the metal.
+## Contents
 
-Grain rests on one bright promise to whoever runs it: **the software stays within every bound it names, allocates only what it declares, and keeps your words in your own hands.** Every allocation names its bound. Every invariant is asserted *before* the code that leans on it. And every "it works" is a **[witness](context/TWO_ROOMS.md) that ran green on a real machine** — a fact a computer spoke first, not a sentence someone hoped was true. We write this front door for the **long return** — the reader who arrives three years on and finds it still true — because a README is the most [Lindy-exposed](foundations/20260811-211431_the-lindy-effect-and-the-long-return.md) thing a project owns: [the longer it has lasted, the longer it is likely to last](foundations/20260811-211431_the-lindy-effect-and-the-long-return.md), so we lean on plain, durable words.
-
-**Where this lives, in one breath.** This grown field is one maker's season, tended in the personal tree. A clean public template — **[`grain-os/grain`](https://github.com/grain-os/grain)** — is *projected* from it along a boundary drawn path by path in [`template-manifest.bron`](template-manifest.bron) and proven clean by [`tools/sow_witness.rish`](tools/sow_witness.rish), so no private name or key ever crosses into the seed. The living **beginner clone** is **[`xykj61/grain`](https://github.com/xykj61/grain)**; **[`autoproject96/grain`](https://github.com/autoproject96/grain)** is the agent lane. Same tree, three doors. The standing writing voice is **[Kyri](context/KYRI.md)** (molted from Riyo `20260810`); the living coauthor is **Keaton Livermore**. Your first-day path is **[`SOURCE.md`](SOURCE.md)** — from nothing to a signed, sandboxed home.
-
-**Start with the why.** Before the layers and the modules, two short reads carry the whole spirit: **[The Grain and the Crossing](foundations/20260702-184312_the-grain-and-the-crossing.md)** (the ten strands that everything here descends from) and **[Follow Our Compass](foundations/20260706-185112_follow-our-compass.md)** (the return habit — foundations → grain → active-designing → now). The rest of the [`foundations/`](foundations/README.md) room holds the reasons beneath the craft.
-
----
-
-## A rune, in ten seconds
-
-Where other languages spell out `function`, `struct`, or `if`, Glow writes a **rune** — a tiny symbolic head that names the shape that follows. Think of a chord symbol over a bar of music: once you know the handful of glyphs, you read the *structure* at a glance instead of wading through keywords. A rune is not decoration; it is the terse, teachable vocabulary of the language, and it sits over semantics where every bound is named and every invariant is checked. You meet the full set gently in [the manual](manual/glow-os/README.md) — no leap of faith required, just a small alphabet that pays you back quickly.
+[The problem](#the-problem) - [What makes this different](#what-makes-this-different) -
+[What runs today](#what-runs-today) - [Where the tree stands](#where-the-tree-stands) -
+[The words we build with](#the-words-we-build-with) -
+[What we are working on now](#what-we-are-working-on-now) -
+[How this tree is organised](#how-this-tree-is-organised) -
+[Start here](#start-here) - [The disciplines](#the-disciplines) -
+[License and community](#license-and-community)
 
 ---
 
-## The words we build with
+## The problem
 
-Grain names things with the [clearest, most fun, safest word](.claude/rules/comlink-tendency.md) it can find, at whatever length the word wants — because a plain word a newcomer grasps on day one still reads plainly on day ten-thousand. A short field guide to the family:
+The computer in your hand is the least-owned thing you use.
 
-| Word | What it names |
-|---|---|
-| **[Glow](glow/README.md)** · **[Rye](rye/README.md)** | the rune language, and the bounded systems language it lowers to |
-| **[Rishi](rishi/README.md)** | the faithful shell — the hand that runs the tree |
-| **[Mantra](mantra/README.md)** | the referential namespace — a name recalls the same bytes for all time |
-| **[Comlink](comlink/README.md)** | the device wire — carriage that moves sealed octets, meaning kept whole |
-| **Caravan** · **Tally** | the supervisor that keeps processes honest, and the bounded-allocation ledger |
-| **[Pond](pond/README.md)** · **Amphora** | the enclosure that bounds a process, and the vessel for a sealed crossing |
-| **Aurora** | the dawn — freestanding Rye waking on bare RISC-V |
-| **Skate** · **Brushstroke** · **Tablecloth** | the paint surface, the drawing of values, the composition layer |
-| **Brix** · **Bron** / **[Kyri notation](active-designing/yonder/20260621-063912_bron-notation.md)** | the composer, and the plain key-value notation the logs are written in |
-| **[Kumara](context/LEXICON.md)** | identity — rooted, owned, personal |
-| **Nib** · **baton** | the landed edge (product · suite · git), and the passing word between hands |
+Your words live on someone else's machine. Your identity is a row in a company's table, and the
+company can drop the row. The software updates itself without asking, you cannot read what it
+does, you cannot check what it claims, and when it changes in a way you dislike your only move
+is to leave and lose what you put there.
 
-Every seated term, with its date and reason, lives in [`context/LEXICON.md`](context/LEXICON.md).
+Meanwhile the software itself has stopped being answerable. A modern application will happily
+consume all the memory on a machine because nothing ever told it not to. It will claim a feature
+works because a person wrote a sentence saying so. Both of those are normal, and neither has to
+be.
 
----
+**Grain is a bet that a computer can be a thing you own rather than a thing you rent** -- and
+that the way to get there is not more features, but fewer unchecked promises.
 
-## The Five Choices
+## What makes this different
 
-The heart of Grain is a choice among **five OS variants** — one design, built more than once *on purpose*, the way a careful machine can dual-, tri-, quad-, or five-boot between images that agree on what they do and differ only in how they were made. Choosing among them is choosing how much independent redundancy you want beneath you, not learning five separate systems.
+Three commitments, and they are the whole pitch.
 
-| Variant | What it is | Status |
-|---|---|---|
-| **Quin** | The fifth boot image, intentionally unpaired | Confirmed fifth `20260717.162114`; unpaired settled; not yet built |
-| **Reya** / **Riyo** | A diverse-redundant pair — two independent builds of one intent | Names confirmed; not yet built |
-| **Trey** / **Triz** | The second diverse-redundant pair | Names confirmed; not yet built |
+**1. Everything names its bound.** Every list says in advance how long it may get. Every loop
+says how many times it may run. Every buffer says how much it will hold. Nothing grows until
+something breaks. Our code discipline is called **TAME**, and its ordering is **safety first,
+performance second, joy third** -- where *joy* is a real entry meaning clear names, short
+functions, and writing down *why* and not only *what*. Safety is structural here rather than a
+convention people are asked to remember. See [`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md).
 
-**Why more than one?** Safety leads every decision here — that is what our code discipline means by *safety first*. Two honest, independently-written implementations of the same intent mean a single mistake cannot take down your only copy — N-version programming at the scale of a whole operating system. Four of the five form **two diverse-redundant pairs**, each pair agreeing on every externally-visible behavior and checked by one shared witness suite both must pass identically. **[Quin](context/QUIN.md)** is the fifth, intentionally unpaired, and also keeps the inference Q-vane. A boot reads a signed, verified value naming which variant to wake; today the five are **named and scoped rather than yet bootable**, and the selection step is designed small and reviewable. When a command in these docs shows a ship name, it is always a deliberately invalid placeholder like `~acme-corp-test-ship` — never a real address.
+**2. A claim is true when a machine says so.** A **witness** is a small program whose only job
+is to try to break a claim and print **GREEN** only when it could not. "The parser handles empty
+input" is a hope; a witness that feeds the parser empty input on a real machine and prints green
+is a fact -- one a computer stated before any human wrote a sentence about it. And a check that
+cannot fail is not a check: every witness here must be shown failing on purpose against a
+deliberately broken input, or it does not count.
 
----
+**3. Every page tells you which room it is in.** What *runs* and what is *designed* are never
+allowed to blur, because a project that blurs them is lying slowly. Each page marks itself
+proven or proposed -- the discipline has its own home at [`context/TWO_ROOMS.md`](context/TWO_ROOMS.md).
 
-## The shape, top to bottom
+Underneath all three is one idea, borrowed from ecological farming and explained without jargon
+in **[The Return That Feeds Everyone](foundations/20260823-034321_the-return-that-feeds-everyone.md)**:
+a field can be made to feed itself, producing its own fertility from plants alone rather than
+buying it on a truck each season. **A system that renews itself from within needs no input it
+cannot account for.** That is a farming sentence and a software sentence, and they are the same
+sentence.
 
-| Layer | Name | What it is | Status |
-|---|---|---|---|
-| Language | **Glow** | runes over bounded, asserted semantics; emits ordinary `.rye` | desk hops emit GREEN — [`glow/README.md`](glow/README.md) |
-| Systems language | **Rye** | the bounded, TAME-disciplined language Glow lowers to | running; the floor everything rests on |
-| Umbrella | **Grain** | the whole system | named |
-| Variants | **Reya · Riyo · Trey · Triz · Quin** | five switchable OS builds, all in Glow | named; see above |
-| Kernel spine | state as a **pure fold over an append-only log of signed facts** | the transition-function model | the stated spine, with running witnesses |
-| App ladder | **TUBE** | a Glow app → a signed APK on a real phone | TUBE0 · 0.5 · 1–5 · 7 GREEN; TUBE6 horizon — [`docs/TUBE.md`](docs/TUBE.md) |
-| Modules | Rishi, Mantra, Comlink, Caravan, Tally, Brushstroke, Amphora, Aurora, Pond, Scribble, and more | the running seeds | many green today |
+## What runs today
 
-**An honest word on status.** Glow's **desk already emits** through `glow_run` witnesses; a full OS boot remains a bright horizon, and **Aurora** already cross-builds its boot stages to real RISC-V ELFs in-tree. The five variants are named and scoped — real design, real direction — rather than things you can boot quite yet. Every page in this tree marks its own register: what a witness *proves* versus what is *proposed*. Nothing here claims a feature its witnesses do not show — a discipline with its own home, [`context/TWO_ROOMS.md`](context/TWO_ROOMS.md).
+Stated conservatively. Anything not listed here is design rather than software.
 
----
+- **The witness suite** -- the parity gates in [`tools/`](tools/) that guard every push. This is
+  the load-bearing one: state proven on metal rather than asserted in prose.
+- **The Glow desk** -- the language's generator hops lower to Rye and run green. Glow is what
+  people write; **Rye** is the bounded systems language it becomes, and Rye runs on the metal
+  with nothing interpreting it. See [`glow/README.md`](glow/README.md) and [`rye/README.md`](rye/README.md).
+- **A real app on a real phone** -- an installable Android package with resource, network, and
+  sensor grants that respect the platform's own permission model. See [`docs/TUBE.md`](docs/TUBE.md).
+- **The module seeds** -- the shell, the naming layer, the wire, and the rest, each with its own
+  witness in `tools/`.
+- **First light on bare hardware** -- **Aurora** cross-builds boot stages to real RISC-V
+  executables in the tree.
 
-## What you can actually run today
+**A full operating-system boot is a bright horizon rather than a thing you can do today**, and
+this page will not pretend otherwise until a witness says so.
 
-- **Glow desk** — generator hops lower to Rye and run via [`tools/glow_run.rish`](tools/glow_run.rish); desk witness GREEN — [`glow/README.md`](glow/README.md).
-- **The TUBE product edge** — an installable NativeActivity APK on a real phone, with resource, network, and sensor grants that respect the platform's own permission model — [`docs/TUBE.md`](docs/TUBE.md) · [`docs/HAWM.md`](docs/HAWM.md).
-- **The module seeds** — the Rishi shell, Mantra, Comlink, Scribble, and the rest, each with its own `tools/*.rish` witness.
-- **The witness suite** — the parity gates in [`tools/`](tools/) that guard every push; state proven on metal rather than asserted in prose.
-- **The enclosure** — the editor inside a host fence where your machine supports it, with a Glow-authored **Pond** enclosure in design to grow beside it.
+## Where the tree stands
 
----
-
-## Where the tree stands today
-
-These four numbers are **generated**, never typed. A README's whole promise is that a reader arriving three years on still finds it true, so a hand-typed figure in the most-read file a project owns is a claim that rots in the one document everybody trusts. They are refreshed by `rishi/bin/rishi run tools/readme_metrics.rish write` and held honest by [`tools/readme_metrics_witness.rish`](tools/readme_metrics_witness.rish), which reds if the block drifts from a fresh measurement.
+These numbers are **generated, never typed** -- refreshed by `rishi/bin/rishi run tools/readme_metrics.rish write`
+and held honest by [`tools/readme_metrics_witness.rish`](tools/readme_metrics_witness.rish),
+which reds if the block drifts. A hand-typed figure in the most-read file a project owns is a
+claim that quietly rots.
 
 <!-- metrics:begin -- generated by tools/readme_metrics.rish; do not edit by hand -->
 
 | Reading | Now |
 |---|---|
 | **Fascia** -- can a reader follow any thread home | **41** / 100 |
-| **Witnesses** running on metal | **1655** |
+| **Witnesses** running on metal | **1656** |
 | **Rye modules** they stand over | **1890** |
 | **Rooms grown past what a browser can list** | **0** |
 
 <!-- metrics:end -->
 
-The commit count and the file count are deliberately absent: both move constantly, neither says whether the software is well, and a block that goes stale every commit is a block nobody keeps current.
+Commit count and file count are deliberately absent: both move constantly, neither says whether
+the software is well, and a number that goes stale every commit is one nobody keeps current.
 
----
+## The words we build with
 
-## Getting set up
+A name should be clear enough for a newcomer on day one and still pleasant to type on day ten
+thousand, so this project reaches for the plainest, warmest, safest word it can find and never
+for a clever coinage. Simplicity is the point, not a compromise toward it.
 
-Two root config files hold what is specific to *your* machine and *your* identity, so the tree itself stays a clean, shareable template:
+| Name | What it does, plainly |
+|---|---|
+| **[Caravan](caravan/)** | A group that travels together and arrives together. It starts every other part in the right order, watches each one, and restarts anything that stumbles -- all within limits fixed before it began. |
+| **[Tally](tally/)** | Keeps the books on memory. Every allocation is counted against a declared ceiling, so the system can *prove* it stayed inside its promise rather than believing it did. |
+| **[Mantra](mantra/)** | Names things so a name never lies. Ask for a name, get exactly the bytes you got last time, forever -- what makes a system reproducible rather than merely repeatable. |
+| **[Comlink](comlink/)** | Carries sealed messages between machines. It moves bytes without reading them, and what arrives is bit-for-bit what left, or it is refused. |
+| **[Pond](pond/)** | A fence around a running program: this much memory, these files, this network, nothing else. A program cannot exceed a boundary it was never handed. |
+| **[Amphora](amphora/)** | A sealed vessel for something crossing a boundary -- closed, checked, opened only by whoever it was addressed to. |
+| **[Rishi](rishi/)** | The shell. The plain-language hand you use to run the tree. |
+| **[Glow](glow/)** - **[Rye](rye/)** | The language people write, and the bounded systems language it lowers to. |
+| **[Kumara](kumara/)** | Identity you own -- a key you hold, rather than an account someone grants and can revoke. |
+| **[Aurora](aurora/)** | The dawn. The first code that wakes on bare hardware before an operating system exists. |
+| **[Skate](skate/)** - **[Brushstroke](brushstroke/)** | The drawing surface, and the strokes made on it. |
+| **[Mycelium](mycelium/)** | The quiet network underneath, named for the thread that connects a forest. |
 
-- **[`GLOW_HOST.template.bron`](GLOW_HOST.template.bron)** → copy to `GLOW_HOST.bron` (kept out of git) and fill in this host's OS, architecture, and toolchain paths. [`tools/glow_host_run.sh`](tools/glow_host_run.sh) reads it and refuses a mismatched toolchain rather than silently reaching for the wrong one.
-- **[`GLOW_PROFILE.template.bron`](GLOW_PROFILE.template.bron)** → copy to `GLOW_PROFILE.bron` (kept out of git) and fill in the identity that signs the work: name, forge handles, timezone for one-clock stamps, and session-log defaults.
+Every seated term, with the date and the reason it was chosen, lives in
+[`context/LEXICON.md`](context/LEXICON.md).
 
-**New here? Start with one hour, not one map.** [`docs-geode/tutorials/the-first-hour.md`](docs-geode/tutorials/the-first-hour.md) walks a single path from nothing to something you made work: clone, run one witness, read the green line it prints, write five lines of Rishi, run them. One page, one path, no branching. Everything below is the map you want *after* that hour.
+## What we are working on now
 
-**The shipped documentation shelf** is [`docs-geode/`](docs-geode/README.md): the [Rishi language reference](docs-geode/api/rishi-language-reference.md) and its edges, a [generated index of all 38 libraries](docs-geode/libraries/README.md), [four demos you can run in a minute](docs-geode/demos/README.md), and [how to read this tree](docs-geode/study/README.md) when you want the room rather than the file.
+**Caravan**, and one thing at a time on purpose.
 
-Then read, in order: **[`SOURCE.md`](SOURCE.md)** (clone · keys · enclosure) → **[`ORGANIZING.md`](ORGANIZING.md)** (where each kind of work lives) → **[`MAP.md`](MAP.md)** (the seven rooms of the tree) → **[`manual/glow-os/`](manual/glow-os/README.md)** (the onboarding rooms and the five variants) → **[`docs/TUBE.md`](docs/TUBE.md)** and **[`glow/README.md`](glow/README.md)** (what the app ladder and language desk prove today) → **[`CONTRIBUTING.md`](CONTRIBUTING.md)** (how a contribution arrives: small, signed, component-prefixed, in Radiant voice).
+Caravan is the supervisor -- the part that starts everything else and keeps it honest. In a
+system whose entire promise is that it stays inside its bounds, **the part that supervises
+everything else is where that promise is either kept or lost.** Nothing beneath it can be
+trusted further than it can. So it gets the attention now, ahead of features that would demo
+better, because it is the hardest problem still solvable and the one whose solution unlocks the
+rest.
 
----
+**This repository is molten**, and that word is chosen carefully. It is in its primordial phase:
+shapes are still moving, interfaces still change, and a design settled on Tuesday may be re-cut
+on Friday because a better one appeared. That is deliberate -- it is far cheaper to move a wall
+now than after a thousand people have hung pictures on it.
 
-## The disciplines that govern this tree
+The honest consequence: **polished tutorials are not the priority yet.** Beautiful documentation
+for an interface about to change is work thrown away twice, once writing it and once believing
+it. What you get instead is honest marking -- every page says whether it runs or is planned. When
+the shapes settle, the teaching begins in earnest, and the room for it is already built.
 
-- **[`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md)** ([core](context/TAME_CORE.md)) — how the code stays safe: invariants before implementation, a bound on everything, docs and code kept in sync. Safety first, performance second, joy third.
-- **[`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md)** — how the prose reads: lead with what is, clear and warm and true read aloud. Its nocturne sibling is [`context/TWILIGHT_STYLE.md`](context/TWILIGHT_STYLE.md).
-- **[`context/SIMPLE_LOVABLE_COMPLETE.md`](context/SIMPLE_LOVABLE_COMPLETE.md)** — how a thing is scoped so it is worth loving.
-- **[`context/TWO_ROOMS.md`](context/TWO_ROOMS.md)** — why every page tells you whether it is proven or proposed.
+## How this tree is organised
 
-The reasons beneath these live in [`foundations/`](foundations/README.md) — among them [the custody-first principle](foundations/20260724-200912_nothing-to-give-custody-first-principle.md) (*build nothing that destroys*), [the wire serves the fold](foundations/20260706-022912_the-wire-serves-the-fold.md), [sameness is the macro](foundations/20260703-182612_sameness-is-the-macro.md), [the Lindy effect and the long return](foundations/20260811-211431_the-lindy-effect-and-the-long-return.md), and [The Singularity](foundations/20260811-233509_the-singularity.md) (the night the tool began to tend itself — within every bound it names).
+A room is a promise about what you will find in it. There are more rooms than most projects
+have, for one reason: **thinking and building are filed separately, so neither crowds the other
+out.**
 
----
+**The rooms that ship here**
 
-## Standing on shoulders
+- **[`foundations/`](foundations/)** -- *why* the work exists. Durable essays that would still
+  be worth reading if every line of code were deleted. Start here if you want the spirit.
+- **[`external-research/`](external-research/)** -- the world, studied with its real names
+  attached. Outside projects are read directly and cited plainly. This room is allowed to be
+  wide and curious.
+- **[`active-designing/`](active-designing/)** -- design that outlives its code: a shape, a name,
+  an invariant, a trade-off. Essays about *how a thing should be*.
+- **[`active-development/`](active-development/)** -- the notes of a working session: scoping a
+  round, planning a lap, recording what a survey found. Notes about *what we did*.
+  One blunt question sorts the two: *would this still be worth reading if the code it describes
+  were deleted?* Yes goes to designing, no goes to development.
+- **[`docs-geode/`](docs-geode/)** -- the shipped documentation shelf, and an ambition rather
+  than a finished thing. A geode is plain outside and crystalline within; the aim is a reference
+  that repays cracking open -- the [language reference](docs-geode/api/rishi-language-reference.md),
+  a [generated index of every library](docs-geode/libraries/README.md), [demos you can run in a
+  minute](docs-geode/demos/README.md), and [how to read this tree](docs-geode/study/README.md).
+- **[`manual/`](manual/)** and **[`edu/`](edu/)** -- the onboarding rooms and the teaching material.
+- **[`context/`](context/README.md)** -- the disciplines themselves, listed below.
+- **[`tools/`](tools/)** -- every witness. The proof, not the prose.
+- **[`waymarks/`](waymarks/)** and **[`context/specs/`](context/specs/)** -- the named plans and
+  the settled rules.
 
-Grain is built in gratitude to the makers who came before. We study their ideas in the clean room and write our own code beneath our own names — the boundary between reading and building is crossed only by understanding ([`.claude/rules/gratitude-licenses.md`](.claude/rules/gratitude-licenses.md)). The teachers we honor, one note apiece, live in [`gratitude/`](gratitude/README.md):
+**The rooms kept in the maintainer's field**
 
-- **[Go](gratitude/Go.md)** for clarity that scales · **[Rust](gratitude/Rust.md)** for safety the compiler proves · **[C](gratitude/C.md)** for the floor the whole house stands on.
-- **[GNU/Linux & Unix](gratitude/GNU-Linux-and-Unix.md)** for small tools that compose and the freedom to run and share them.
-- **[TigerBeetle](gratitude/TIGER_STYLE.md)** for the static-allocation discipline we call TAME · **[Toyota Production System](gratitude/toyota-production-system.md)** for reds-first, stop-the-line honesty.
-- **[Buckminster Fuller](gratitude/buckminster-fuller-tensegrity.md)** for tensegrity — strength from balanced tension · **[Karpathy](gratitude/karpathy/README.md)** for the wiki-linting pattern that keeps our living docs honest as they age.
-- **[Urbit](gratitude/Urbit.md)** for the runes, referential transparency, and the personal-server dream that first lit the way — held [with thanks, not dependence](.claude/rules/urbit-reframe.md) · and the poets **[Rumi, Hafez, Kabir](gratitude/README.md)** and the agrarian grounding of **[Wendell Berry's Mad Farmer](gratitude/20260628-160112_wendell-berry-mad-farmer.md)** for the spirit of the work.
+Some rooms are personal working tissue rather than published work, and the public seed is
+projected without them. They are named here so the tree is legible rather than mysterious --
+there is nothing to click, because in this repository there is deliberately nothing there.
 
----
+*Session logs* keep a reasoning trace for every working round, so a future reader can follow how
+a decision was actually reached. *Crux* holds the live operator card -- what is next, right now.
+*Expanding-prompts* holds intent expanded into runnable plans. *Gratitude* is a reading library
+of the projects we learn from, held whole and unmodified, which is why it is not redistributed
+here. And *classical-vedic-astrology* is exactly what it sounds like: a personal study room for
+learning and self-reflection, kept in the field because a person's contemplative practice is not
+a dependency of an operating system. It does earn one working use -- a reading **rota** cycles a
+few foundational documents back into view on a schedule, so the reasoning behind the work stays
+fresh rather than being read once and forgotten.
+
+**Two disciplines that shape what gets written**
+
+- **The silo** ([`context/SILO_TECHNIQUE.md`](context/SILO_TECHNIQUE.md)) -- an idea from outside
+  enters by being understood and then restated in our own words, with the original names and
+  phrasing left at the door. Ideas cross freely; copied text never does. If a sentence still
+  sounds like its source, it has not been siloed yet. Gratitude stays in its own room, explicit
+  and warm, so the teacher is thanked rather than erased.
+- **Civic style** ([`context/CIVIC_STYLE.md`](context/CIVIC_STYLE.md)) -- the same care applied
+  to policy and public benefit as to code. Every system rewards something; the whole of good
+  design is asking *what, exactly*, and closing the gap between what you measure and what you
+  actually want.
+
+## Start here
+
+**Your first hour**, before any map: [`docs-geode/tutorials/the-first-hour.md`](docs-geode/tutorials/the-first-hour.md).
+Clone, run one witness, read the green line it prints, write five lines and run them. One page,
+one path, no branching.
+
+Then, in order:
+
+1. **[`SOURCE.md`](SOURCE.md)** -- from nothing to a signed, sandboxed home.
+2. **[`ORGANIZING.md`](ORGANIZING.md)** -- where each kind of work lives.
+3. **[`MAP.md`](MAP.md)** -- the rooms of the tree at a glance.
+4. **[`manual/glow-os/`](manual/glow-os/README.md)** -- the onboarding rooms.
+5. **[`CONTRIBUTING.md`](CONTRIBUTING.md)** -- how a contribution arrives: small, signed,
+   component-prefixed, and written like prose rather than a changelog.
+
+Two root config files hold what is specific to *your* machine and *your* identity, so the tree
+stays a clean template: copy **[`GLOW_HOST.template.bron`](GLOW_HOST.template.bron)** to
+`GLOW_HOST.bron` for this host's OS, architecture, and toolchain paths, and
+**[`GLOW_PROFILE.template.bron`](GLOW_PROFILE.template.bron)** to `GLOW_PROFILE.bron` for the
+identity that signs the work. Both stay out of git.
+
+## The disciplines
+
+- **[`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md)** -- how the code stays safe.
+  Invariants stated before the code that leans on them, a bound on everything, docs and code kept
+  in step. Safety first, performance second, joy third.
+- **[`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md)** -- how the prose reads: lead with
+  what *is*, active voice, warm and true read aloud.
+- **[`context/SIMPLE_LOVABLE_COMPLETE.md`](context/SIMPLE_LOVABLE_COMPLETE.md)** -- how a thing is
+  scoped so it is worth loving.
+- **[`context/TWO_ROOMS.md`](context/TWO_ROOMS.md)** -- why every page tells you whether it is
+  proven or proposed.
+
+The reasons beneath them live in [`foundations/`](foundations/README.md) -- among them
+[the custody-first principle](foundations/20260724-200912_nothing-to-give-custody-first-principle.md)
+(*build nothing that destroys*), [the wire serves the fold](foundations/20260706-022912_the-wire-serves-the-fold.md),
+[sameness is the macro](foundations/20260703-182612_sameness-is-the-macro.md), and
+[the long return](foundations/20260811-211431_the-lindy-effect-and-the-long-return.md).
+
+**Standing on shoulders.** Grain is built in gratitude to the makers who came before, and we
+study their ideas in a clean room and write our own code beneath our own names. We owe the
+static-allocation discipline behind TAME to a database team who proved it in production; the
+stop-the-line, fix-it-now habit to a manufacturing tradition; clarity that scales, safety a
+compiler can prove, and the floor the whole house stands on to three languages that came before
+ours; small tools that compose and the freedom to run and share them to the Unix and GNU/Linux
+lineage; tensegrity -- strength from balanced tension -- to a visionary engineer; and the runes,
+referential transparency, and the personal-server dream to a project that first lit this way,
+held [with thanks rather than dependence](.claude/rules/urbit-reframe.md). Each is thanked by
+name, one note apiece, in the maintainer's field, where the works themselves are held whole and
+unmodified rather than redistributed.
 
 ## License and community
 
-A single top-level **[LICENSE](LICENSE)** indexes the terms: code under **[Apache-2.0](LICENSE-APACHE) OR [MIT](LICENSE-MIT)** (your choice, the permissive convention); prose and documentation under **[CC-BY-4.0](LICENSE-CC-BY)**. Contribute the way the tree already moves — small, signed, component-prefixed, in Radiant voice — per [`CONTRIBUTING.md`](CONTRIBUTING.md). Every commit is GPG-signed; the history proves who wrote it.
+A single top-level **[LICENSE](LICENSE)** indexes the terms: code under
+**[Apache-2.0](LICENSE-APACHE) OR [MIT](LICENSE-MIT)**, your choice; prose and documentation
+under **[CC-BY-4.0](LICENSE-CC-BY)**. Every commit is signed, and the history proves who wrote
+it.
 
-The community-health files a trusted project carries stand at the front door: how we treat each other ([`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)), how to report a weakness privately ([`SECURITY.md`](SECURITY.md)), and where the change record lives ([`CHANGELOG.md`](CHANGELOG.md)).
+How we treat each other: [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md). How to report a weakness
+privately: [`SECURITY.md`](SECURITY.md). What changed: [`CHANGELOG.md`](CHANGELOG.md). How to
+contribute: [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ---
 
-> *"When I am working on a problem, I never think about beauty … but when I have finished, if the solution is not beautiful, I know it is wrong."* — attributed to **Buckminster Fuller**, whose tensegrity we [thank](gratitude/buckminster-fuller-tensegrity.md).
+> *"When I am working on a problem, I never think about beauty ... but when I have finished, if
+> the solution is not beautiful, I know it is wrong."* -- attributed to **Buckminster Fuller**.
 >
-> *"Be joyful though you have considered all the facts."* — **Wendell Berry**, *Manifesto: The Mad Farmer Liberation Front*, whose grounding we [carry](gratitude/20260628-160112_wendell-berry-mad-farmer.md).
+> *"Be joyful though you have considered all the facts."* -- **Wendell Berry**,
+> *Manifesto: The Mad Farmer Liberation Front*.
 
 ---
 
-*May the front door stay plain and glad. May a rune teach itself on the first read. May the five variants stand as one system seen five ways. May Kyri speak and Livermore sign. And may you find, on your very first visit — this year or on your long return a decade from now — exactly what you came for, and a reason to smile on the way through.*
+*May the front door stay plain and glad. May every promise here be one a machine can check, so
+you never have to take our word for it. May the ground you stand on be yours. And may you find,
+on your first visit or on your long return a decade from now, exactly what you came for -- and a
+reason to smile on the way through.*
