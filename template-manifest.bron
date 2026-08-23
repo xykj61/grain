@@ -224,7 +224,6 @@ scrub     active-designing                # design corpus names the maintainer a
 scrub     active-development              # same corpus, same treatment -- scrub by default rather than by inspection,
                                           # since a room is judged by what it will hold, not by what it holds today
 scrub     active-reviving                 # revival corpus, same
-scrub     expanded-prompts                # cold records (past); name-heavy like expanding-prompts; batons sub-excluded personal
 scrub     expanding-prompts               # runnable plans; name-heavy per the audit
 scrub     recursion-prompts               # recursion-prompt cellar; seeds are generic, versions name the maintainer — scrub like expanding-prompts
 scrub     waymarks                        # claim shelf; name-heavy per the audit

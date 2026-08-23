@@ -1,0 +1,74 @@
+# tools/empty_document_witness.rish -- a tracked document says something, or it is not a document.
+#
+# WHY THIS RUNG. An empty file passes every guard this tree owns, by construction. A link guard is
+# satisfied because the path exists. A prose guard reads nothing and finds nothing wrong. A banner
+# guard finds no banner to disagree with. **Vacuous truth is the shape of the whole class**: a
+# check phrased as "nothing in this file is wrong" is answered perfectly by a file with nothing
+# in it.
+#
+# Found 20260823 by an audit for classes no rostered guard reads, the audit REDS %156 asked for
+# and REDS %159 sharpened by proving the roster blind to an entire KIND of tracked content. Two
+# documents stood at zero bytes: a session log INDEXED in session-logs/README.md, so the index
+# promised a reasoning record that did not exist, and a recursion prompt cited by name in two
+# later prompts. Both were born empty in commit 758d64e639 and stood so for twenty-three days
+# with every guard green (REDS %161).
+#
+# Neither was corrupted, and nothing was lost -- git proved it, since both blobs were zero at
+# their own seating commit. The laps they name recorded themselves in the waymark room instead,
+# whole. So both files are now filled with an honest pointer to where the record actually lives,
+# which is accretion rather than a rewrite: there was no content to preserve, and every inbound
+# citation keeps resolving, now to something true.
+#
+# WHAT IS PROVEN, on metal.
+#   No tracked `.md`, `.bron`, `.kyri`, or `.txt` is empty -- zero bytes or whitespace only,
+#   because a file holding one newline says exactly as much as a file holding none. 8,486
+#   documents read in one pass.
+#   Fourteen behaviors on throwaway repositories: the agreeing tree free and reading zero, a
+#   zero-byte document refused, counted, and named, whitespace refused, one character free, a
+#   session log and a Kyri record refused, a planted fixture free and uncounted, a `.gitkeep`
+#   free, and an extension this rung does not own left to its own guard.
+#
+# WHAT PASSES FREE, by named rule. `tools/fixtures/**` and `context/fixtures/**` are instrument
+# and never field -- a control that plants an empty file to prove a refusal is doing its job, and
+# a meter that reddens on its own proof is the lesson REDS %157 and %158 each paid for once. A
+# lantern that fires twice becomes a loom, so it is a rule here rather than a memory.
+#
+# WHAT IS NOT PROVEN. That a document says anything USEFUL -- only that it says something. A file
+# holding one honest sentence passes, and rightly: the fix for a thin document is a reader, not a
+# byte count.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/empty_document_witness.rish
+
+say "empty-document: Language EN -- a page with nothing on it answers every question correctly and tells you nothing."
+say "empty-document: Style Radiant -- the tree states what a document holds, and holding something is the first claim."
+say "empty-document: Lens TAME -- safety first: a check satisfied by absence is the one failure mode no other guard can see."
+
+let scan = run ["sh" "tools/fixtures/empty_document_scan.sh"]
+assert scan.ok else "empty-document: a tracked document holds nothing -- fill it or remove it"
+say scan.out
+assert scan.out contains "empty_documents=0" else "empty-document: every tracked document must say something"
+assert scan.out contains "verdict=ok" else "empty-document: the scan must balance before it is believed"
+say "field GREEN -- every tracked document holds at least one thing worth reading"
+
+let control = run ["sh" "tools/fixtures/empty_document_control.sh"]
+assert control.ok else "empty-document: the control must complete"
+say control.out
+assert control.out contains "agreeing_free=yes" else "empty-document: a tree whose documents all speak must pass free"
+assert control.out contains "clean_reads_zero=yes" else "empty-document: a clean tree must read zero rather than merely pass"
+assert control.out contains "documents_counted=yes" else "empty-document: the reading must count the documents it read"
+assert control.out contains "zero_byte_refused=yes" else "empty-document: a zero-byte tracked document must be refused"
+assert control.out contains "zero_byte_counted=yes" else "empty-document: the refusal must name a count, never only a verdict"
+assert control.out contains "zero_byte_named=yes" else "empty-document: the refusal must name the file, so the repair is one edit away"
+assert control.out contains "whitespace_refused=yes" else "empty-document: whitespace says exactly as much as nothing"
+assert control.out contains "one_character_free=yes" else "empty-document: one honest sentence is enough; this rung counts presence, never quality"
+assert control.out contains "bron_refused=yes" else "empty-document: a session log is a document"
+assert control.out contains "kyri_refused=yes" else "empty-document: a Kyri record is a document"
+assert control.out contains "fixture_free=yes" else "empty-document: a control planting an empty file is instrument, never field"
+assert control.out contains "fixture_not_counted=yes" else "empty-document: instrument must not even be counted"
+assert control.out contains "gitkeep_free=yes" else "empty-document: a placeholder meant to be empty must pass free"
+assert control.out contains "other_extension_free=yes" else "empty-document: an extension this rung does not own belongs to another guard"
+assert control.out contains "control_verdict=ok" else "empty-document: the control must agree with itself"
+say "RED and GREEN paths proven -- five refusals bitten, nine honest readings left free"
+
+say "GREEN: empty-document -- a tracked document says something, or it is not a document."

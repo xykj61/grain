@@ -117,7 +117,7 @@ claim that quietly rots.
 | Reading | Now |
 |---|---|
 | **Fascia** -- can a reader follow any thread home | **41** / 100 |
-| **Witnesses** running on metal | **1656** |
+| **Witnesses** running on metal | **1657** |
 | **Rye modules** they stand over | **1890** |
 | **Rooms grown past what a browser can list** | **0** |
 
