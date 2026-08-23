@@ -55,6 +55,10 @@ guard foundations_link
 path tools/foundations_link_witness.rish
 seated 20260821.230319
 
+guard generated_page_freshness
+path tools/generated_page_freshness_witness.rish
+seated 20260823.000512
+
 guard geode_libraries
 path tools/geode_libraries_witness.rish
 seated 20260821.203103
