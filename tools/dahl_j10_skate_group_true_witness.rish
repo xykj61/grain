@@ -2,7 +2,7 @@
 #
 # Rungs one through three fixed the quorum rule, signed each vote, and let a signed group travel — all
 # over groups seated in code. This closing rung carries the reader onto a real Skate group record a keeper
-# can open and count. pond/apps/skate_group_true.rye @embedFile-binds skate/fixtures/group.bron (a genuine
+# can open and count. pond/apps/skate_group_true.rye @embedFile-binds surf/fixtures/group.bron (a genuine
 # format skate-group-v1 record with real Ed25519 vote signatures — three founders at quorum 2, two votes
 # admit Bram, one one-sided vote for Cate holds) through a corpora symlink, parses it through rung three,
 # and reports the founder count, vote count, and admitted-by-quorum count. The crux is the cross-check:
@@ -49,7 +49,7 @@ assert selftest.out contains "refused BadFormat" else "dahl-j10r4: tamper refusa
 # The crux cross-check: the app's reading matches an independent awk reading of the same real bytes.
 let measure = run ["sh" "-c" "${bin} measure 2>&1"]
 assert measure.ok else "dahl-j10r4: measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/skate_group_truth.awk skate/fixtures/group.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/skate_group_truth.awk surf/fixtures/group.bron"]
 assert awk.ok else "dahl-j10r4: awk reading of the fixture failed"
 assert measure.out == awk.out else "dahl-j10r4: the app reading disagrees with the independent awk count of the same bytes"
 

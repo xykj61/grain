@@ -3,7 +3,7 @@
 # Rungs one through three fixed the succession rule, signed each of its two proofs, and let a signed
 # succession travel as Bron — all over estates seated in code. This closing rung carries the reader onto a
 # real succession record a keeper can open and count. pond/apps/data_dignity_true.rye @embedFile-binds
-# skate/fixtures/estate.bron (a genuine format data-dignity-v1 record with real Ed25519 directive and
+# surf/fixtures/estate.bron (a genuine format data-dignity-v1 record with real Ed25519 directive and
 # acceptance signatures — a keeper wills two holdings to the heir and rests one; produced reproducibly by
 # pond/apps/data_dignity_fixture_gen.rye, demo seeds only) through a pond/apps/corpora/ symlink, parses it
 # through rung three, and reports the bequeathed count, the rested count, and the heir-held count — the
@@ -37,7 +37,7 @@ assert selftest.out contains "refused BadFormat" else "dahl-j12r4: tamper refusa
 # The crux — two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "dahl-j12r4: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/data_dignity_truth.awk skate/fixtures/estate.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/data_dignity_truth.awk surf/fixtures/estate.bron"]
 assert awk.ok else "dahl-j12r4: awk truth read failed"
 assert app.out contains "2 1 2" else "dahl-j12r4: app triple not 2 1 2"
 assert awk.out contains "2 1 2" else "dahl-j12r4: awk triple not 2 1 2"

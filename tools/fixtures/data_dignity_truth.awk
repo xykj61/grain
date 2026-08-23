@@ -9,7 +9,7 @@
 # same heir-held figure by *actually running* the signed succession and resolving each item's holder, so
 # the two figures agreeing proves the succession machinery yields exactly the marks awk reads.
 #
-#   awk -f tools/fixtures/data_dignity_truth.awk skate/fixtures/estate.bron
+#   awk -f tools/fixtures/data_dignity_truth.awk surf/fixtures/estate.bron
 #   -> "<bequeathed> <rested> <heir_held>"
 
 /^hold / {

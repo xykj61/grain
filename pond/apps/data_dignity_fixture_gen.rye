@@ -1,4 +1,4 @@
-//! pond/apps/data_dignity_fixture_gen.rye — generate skate/fixtures/estate.bron with real Ed25519 succession proofs.
+//! pond/apps/data_dignity_fixture_gen.rye — generate surf/fixtures/estate.bron with real Ed25519 succession proofs.
 //!
 //! DAHL-J12r4 reads a real succession record true. This generator produces that fixture reproducibly: it
 //! builds a demo signed estate over the demo keeper and heir seeds and renders it through rung three's own
@@ -14,7 +14,7 @@
 //! The record prints on stderr (the tree's `std.debug.print` convention), so capture stderr, not stdout:
 //!
 //!   rye build pond/apps/data_dignity_fixture_gen.rye -femit-bin=pond/bin/data-dignity-fixture-gen
-//!   pond/bin/data-dignity-fixture-gen 2> skate/fixtures/estate.bron
+//!   pond/bin/data-dignity-fixture-gen 2> surf/fixtures/estate.bron
 
 const std = @import("std");
 const assert = std.debug.assert;

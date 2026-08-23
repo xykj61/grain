@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260823.094410
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Skate becomes Surf
+prompt Keaton granted the recommended order. Rename three of four -- Skate becomes Surf, and the social network is named Surf Social at the claimed domain surf-social.com.
+think Measured first and the raw number lied. A case-insensitive count of surf returned 11,506, which looked like a fatal collision until a word-boundary count returned 41 -- the rest was the word surface. The one Lexicon hit was surface census. Measuring the wrong thing confidently is how a rename goes wrong before it starts.
+think Then measured what actually carries the elder name and found this is not a directory rename at all. The skate/ room holds four fixture files; nineteen code files elsewhere are named skate_grid.rye, image_skate.rye and their kin, and dozens of Rye identifiers carry it -- skate_base, skate_cell, brush_skate_cols, image_skate_version.
+think Checked the tree's own law before choosing scope rather than after. The Comlink tendency says plainly that a module earns a new name by being re-grown beside its elder, born-named, and that it does not license churn. So a mass rename of nineteen files and dozens of symbols would have broken the very rule the rename is meant to serve.
+think Scoped it accordingly: seat the name, move the four-file room, repoint the living path, and leave the elder code to be renamed when it is re-grown module by module with witnesses green. Smaller than asked, and correct -- so it is named in the Lexicon entry and the checkpoint row rather than quietly done.
+obs Thirty-one dated filenames carry skate, the largest instance yet of the trap that reddened the last two rounds. Matching skate/ with a negative lookbehind for a letter or underscore left every one of them alone, and no dated-path red appeared this time.
+obs The one red was a class none of the three earlier renames produced: four TRACKED SYMLINKS under pond/apps/corpora/ pointed at ../../../skate/fixtures/*.bron and went dangling the moment the room moved. git mv moves files and leaves symlink targets exactly as written. Repointed all four; two keep their skate_ filenames on purpose, since renaming those is the code rename this round declined.
+obs Seated SURF on the waymark exclude roster, because it now names a module and must never draw as a ladder mark. It is in the four-letter corpus, unlike Skate, which never was -- so the exclusion is newly necessary rather than inherited.
+loom rename room_files=4 word_uses=2816 living_files=393 testimony_files=460 dated_filenames_protected=31 path_refs_repointed=36 living_touched=26 code_files_left=19 symlinks_repointed=4 guards_red=1
+file surf/ the room, renamed from skate/
+file context/LEXICON.md Surf seated with Surf Social and the domain, and the elder name kept where it still stands
+file tools/waymark_derive.rish SURF added to the exclude roster
+file pond/apps/corpora/ four tracked symlinks repointed at the new room
+recommend keep-going -- rename four of four is the name change, Keaton Livermore back to Keaton Dunsford, and it is a deep debride across every commit rather than a breach. It goes last by design so one history rewrite covers everything the renames touched. After it lands, the expanded prompt for the very large remainder.
