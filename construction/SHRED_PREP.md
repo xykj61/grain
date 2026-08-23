@@ -28,6 +28,7 @@
 | **A** | Fund-lineage elder anchors (MUR u89–u91) · held disclosed on fascia i8 | Content yes · cut no · hold not exclude |
 | **H** | Horizon **writing fossils** replaced by a **living mutant** | Prep only · shred RED |
 | **O** | Unreachable testimony — no file in the tree names it (basename floor) | Word-scope on **class/rooms** · cut still RED |
+| **W** | **Walked, cited, kept** — a named set examined against the shed conditions on a stamp and held, so a later pass reads the row rather than re-walking | Cut refused, with the measurement recorded |
 
 Class **H** is for Grep + Amphora later. It is **not** Class A.  
 Class **O** (`20260731.124815` · room home `20260731.135609` · **word-scope e128** `20260731.232004`): neither fund anchor nor writing fossil — simply never pointed at. Instrument: `tools/fixtures/shed_census_scan.sh`. Membership is a **measured property**; the census is authority. **Keaton's authorizing word is on the class and/or the rooms — not on each orphan filename.** `SAFE.md` refuses whole on any listed path. Paths stay unnamed here; rooms wait the opening word.
@@ -216,3 +217,29 @@ living Realidream also reaches:
 ---
 
 *Carry lightly. Prefer git nib. Shred stays RED until the opening word.*
+
+---
+
+## Class W -- walked, cited, kept
+
+*A Class W row records that a named set was measured against the shed conditions and held. It exists so a later molt pass reads a number instead of repeating a walk.*
+
+### W1 -- the thirty-nine of `active-designing/` (`20260823.182512`)
+
+Keaton pasted a browse of the public seed's `active-designing/` room -- twenty-eight day folders and **thirty-nine named documents** -- and asked whether the old ones can shed. Measured that stamp:
+
+| Reading | Count |
+| --- | --- |
+| Documents named | **39** |
+| Absent from the tree | **0** |
+| Cited by at least one other file | **39 of 39** |
+| Total citing files | **519** |
+| Citing files that are living rather than dated testimony | **148** |
+| Fewest citations on any one | **3** (`20260727-101510_the-acme-onboarding-walk.md`) |
+| Most | **46** (`20260706-023912_the-referential-namespace.md`) |
+
+**Held, on three conditions plus one.** A living mutant seats before a fossil joins Class H, and none of the thirty-nine has one. Class O wants a basename no file names, and the floor here is three. The cut itself stays RED until Keaton circles it. And all thirty-nine are **dated testimony**, resolved rather than rewritten -- the tier already holding 1,097 of the tree's 1,208 broken links by law.
+
+**Named for its own round, rather than started:** a fascia weave over the seven clusters these fall into (Open Asks 8, Steward/commerce 4, SLC ladder 6, Dimeroll 3, language and Glow 4, inference voices 2, foundational singles 12), shaped as a **living index page per cluster** in `active-designing/` rather than as cross-links edited into thirty-nine dated bodies.
+
+Record: [`../active-development/20260823-182512_the-thirty-nine-named-for-shed.md`](../active-development/20260823-182512_the-thirty-nine-named-for-shed.md).
