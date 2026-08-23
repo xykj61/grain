@@ -24,6 +24,14 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260822.234745` -- the standing roster leaves prose for a file
+
+**Walk-back nib:** `337c466fc7` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** two living cards. `crux/REMEMBER.md` gave up its **standing-equipment paragraph** -- the long prose chronicle that opened *"Seventeen stood green when this line was written"* and then named sixteen witnesses across the sentences after it, each with the stamp and story of its own seating -- replaced by a short line pointing at [`standing-equipment.kyri`](standing-equipment.kyri), which twenty machine-readable records now hold. The card's **Now** block moved from the banner-and-path lap to this one. And `crux/REDS.md` folded rows **%148** and **%149** to [`archive/REDS-the-banner-and-the-unrun-bound-rows-148-149.md`](archive/REDS-the-banner-and-the-unrun-bound-rows-148-149.md) as rows %150-%151 carried it past its 24,576-byte bound.
+
+**What waits there, worth recalling:** the departing paragraph is the only place each guard's **seating story** was ever written -- why `nib_honesty` was rewritten after two days red, why `radiant_negation` reports `foundations/` against a register of 0.40, why `rye_bridge_cycle` is the first guard ever pointed at our own compiler. The roster file keeps each guard's name, path, and seating stamp; it deliberately keeps no story, because a roster that carries prose becomes a paragraph again. Those stories live on in each guard's own header comment and in the dated session logs that seated them. `git show 337c466fc7:crux/REMEMBER.md` reads the departing card whole.
+
 ### `20260822.195336` -- the ledger folds two closed rows as the queue is ranked
 
 **Walk-back nib:** `d4b0e44248` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
