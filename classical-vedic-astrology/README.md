@@ -37,18 +37,19 @@ classical-vedic-astrology/
 │   ├── reading-themes/
 │   └── teaching/
 ├── templates/               composable reading skeleton (md + html + tokenized two-wheel)
-├── readings/                finished readings (placeholder names)
-│   ├── alice-sample-reading.md
-│   └── brooke/              complete two-wheel reading + 15 chapters (index: brooke/README.md)
-└── yonder/                  superseded drafts (index: yonder/README.md)
+├── readings/                finished readings -- WITHHELD from the public seed
+│   ├── alice-sample-reading.md      the demonstration, under a placeholder name
+│   └── <person>/            one folder per reading: a two-wheel cast and its chapters
+└── yonder/                  superseded drafts -- WITHHELD from the public seed
 ```
 
 ## Readings (newest first)
 
 | Stamp | Reading | Meaning |
 |-------|---------|---------|
-| 20260705.042512 | [Brooke — full reading](readings/brooke/20260705-020812_dharma-and-the-two-wheels.md) | Evening recast; D1 and D9; Makara sweep; fifteen chapters in `readings/brooke/` |
-| 20260701.232912 | [Alice — sample](readings/alice-sample-reading.md) | Demonstration under placeholder name |
+| 20260701.232912 | [Alice -- sample](readings/alice-sample-reading.md) | The demonstration reading, under a placeholder name. This is the one that ships. |
+
+*One complete two-wheel reading of fifteen chapters stands in the maintainer's field and is withheld from the public seed, along with the superseded drafts in `yonder/`. A natal chart carries a named person's birth date, time, and place, and the friends whose skies seeded this library asked that their privacy be kept. **The method ships; nobody's chart does.** The `readings/` and `yonder/` rooms are `sub_exclude`d in `template-manifest.bron` (`20260823.184309`), so the boundary is a declaration a program reads rather than a habit.*
 
 ## Templates
 

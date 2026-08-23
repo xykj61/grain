@@ -88,6 +88,7 @@ allow nixos-guide
 allow foundations   # the doctrine "why"; bio/dedications sub_excluded, residuals withheld
 # -- the disciplines (context, granular — identity/specs/keys withheld) --
 allow context/KYRI.md   # the standing voice, depersonalized 20260823.173634 so the seed ships it
+allow classical-vedic-astrology   # method, teachings, studies, templates and tooling; the readings are sub_excluded
 allow context/document-mirrors.brix   # which documents live in more than one room, proven identical
 allow ember/voices   # the voices room; its KYRI.md is a proven mirror of context/KYRI.md
 allow context/LEXICON.md
@@ -252,7 +253,11 @@ personal  construction                    # the live operator cards of one maint
 personal  nixos                           # the pier host NixOS config (hostname, disk, packages) -- host-specific, never public
 personal  press                           # personal announcements — name change, fund, ventures
 personal  saga                            # season-close narratives, one steward's arc
-personal  classical-vedic-astrology       # a personal-life study library, privacy-gated
+template  classical-vedic-astrology       # reclassified 20260823.184309 on Keaton's word: the METHOD ships
+                                          # (teachings, studies, templates, tooling); readings/ and yonder/ are
+                                          # sub_excluded, since a natal reading carries a named person's birth
+                                          # date, time, and place, and the room's own README records that those
+                                          # friends asked for privacy. Elder verdict was `personal` outright.
 personal  rye-learning-process            # a personal learning almanac
 personal  keys                            # identity QR cards and key material
 personal  twilight                        # the Twilight palette's private source poems — debrided from all history 20260823.072824 and untracked since; this row stays as defence in depth
@@ -303,6 +308,8 @@ sub_exclude foundations/20260729-231416_the-application-that-received-no-answer.
 sub_exclude expanding-prompts/date/20260810/20260810-025942_the-handoff-baton-vision-checkpoint.md
 sub_exclude expanding-prompts/date/20260810/20260810-044453_the-3x39-baton-passports-dividers-and-starseeding.md
 sub_exclude context/inspirations.kyri
+sub_exclude classical-vedic-astrology/readings   # natal readings for named private people -- birth date, time, and place
+sub_exclude classical-vedic-astrology/yonder     # superseded morning casts for the same named person
 sub_exclude context/council-names.kyri
 sub_exclude expanding-prompts/date/20260810/20260810-055147_next-season-build-plan.md
 sub_exclude expanding-prompts/date/20260810/20260810-065359_the-conflict-free-union-mantra-weave.md

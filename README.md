@@ -219,6 +219,14 @@ one reason: **thinking and building are filed separately, so each has space to b
 - **[`tools/`](tools/)** -- every witness. The proof, rather than the prose.
 - **[`waymarks/`](waymarks/)** and **[`context/specs/`](context/specs/)** -- the named plans and
   the settled rules.
+- **[`classical-vedic-astrology/`](classical-vedic-astrology/)** -- the calendar the seasons are
+  named from. This tree marks its rounds against a **rota** of element by modality, and the room
+  holds the method behind that: how a chart is cast
+  ([`cast_a_chart.rish`](classical-vedic-astrology/cast_a_chart.rish)), the 27 nakshatra seats
+  ([`seat_nakshatra.rye`](classical-vedic-astrology/seat_nakshatra.rye)), the studies, and the
+  teachings. The **readings themselves stay in the maintainer's field**, since a natal chart holds
+  a named person's birth date, time, and place, and the friends whose skies seeded the library
+  asked for privacy. What ships is the method, never anybody's chart.
 
 **The rooms kept in the maintainer's field**
 
@@ -227,7 +235,7 @@ named here so the tree reads as one whole, with the understanding that in this c
 simply nothing to click.
 
 *Session logs* keep a reasoning trace for every working round, so a later reader can follow how a
-decision was actually reached. *Crux* holds the live operator card: what is next, right now.
+decision was actually reached. *Construction* holds the live operator card, the reds ledger, and the checkpoints: what is next, right now, and what went wrong on the way.
 *Expanding-prompts* holds intent expanded into runnable plans. *Gratitude* is a reading library of
 the projects we learn from, held whole and unmodified, which is why we study it here and leave
 redistribution to its own authors. And *classical-vedic-astrology* is exactly what it sounds like:
