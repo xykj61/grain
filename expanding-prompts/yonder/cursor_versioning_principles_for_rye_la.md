@@ -3107,7 +3107,7 @@ That screenshot is the breakthrough — and it clears up the whole mystery. **Th
 
 I can't run these myself (my terminal is inside the jail, with its own empty keyring), so run them in that host terminal.
 
-## 1. Delete the old key (`Keaton Livermore`)
+## 1. Delete the old key (`Keaton Dunsford`)
 
 ```bash
 # optional safety copy first, OUTSIDE the project (not shared with the jail):
@@ -4086,7 +4086,7 @@ okay i ran the commands, also can we delete this old key:
 ---------------------------
 pub   ed25519 2026-05-05 [SC]
       119E6C2F3A0B7ACD40C7CBAB00EF0E0D461A5DC5
-uid           [ultimate] Keaton Livermore <reyklah@reyklah.com>
+uid           [ultimate] Keaton Dunsford <reyklah@reyklah.com>
 
 
 ```
@@ -4095,7 +4095,7 @@ uid           [ultimate] Keaton Livermore <reyklah@reyklah.com>
 
 **Cursor**
 
-Yes — that's a separate, older identity (`Keaton Livermore <reyklah@reyklah.com>`, fingerprint `119E6C2F…`, distinct from the one you cleared earlier), and it's fine to remove. On your host:
+Yes — that's a separate, older identity (`Keaton Dunsford <reyklah@reyklah.com>`, fingerprint `119E6C2F…`, distinct from the one you cleared earlier), and it's fine to remove. On your host:
 
 ```bash
 gpg --delete-secret-and-public-key 119E6C2F3A0B7ACD40C7CBAB00EF0E0D461A5DC5

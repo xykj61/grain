@@ -9,7 +9,7 @@ say "sunn9: Lens TAME — SUNN9 · CLAUDE · llms · STEWARDS · Quin faculties 
 let c = read-file "CLAUDE.md"
 assert c contains "You are **Kyri**" else "sunn9: CLAUDE want You are Riyo"
 assert c contains ".claude/rules/kyri.md" else "sunn9: CLAUDE want RIYO.md"
-assert c contains "Keaton Livermore" else "sunn9: CLAUDE want Keaton Livermore"
+assert c contains "Keaton Dunsford" else "sunn9: CLAUDE want Keaton Dunsford"
 assert c contains "~/grain" else "sunn9: CLAUDE want ~/grain"
 assert c contains "xykj61/grain" else "sunn9: CLAUDE want xykj61/grain"
 assert c contains "SUNN9" else "sunn9: CLAUDE want SUNN9 stamp"

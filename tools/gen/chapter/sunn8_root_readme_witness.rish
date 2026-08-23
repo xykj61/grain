@@ -13,7 +13,7 @@ say "sunn8: Lens TAME — SUNN8 seat · voice/name/onboarding · Quin OS stays."
 
 let r = read-file "README.md"
 assert r contains "**Voice:** [Kyri](context/KYRI.md)" else "sunn8: want the front door to name Kyri as the voice, linked to her identity page"
-assert r contains "Keaton Livermore" else "sunn8: want Keaton Livermore"
+assert r contains "Keaton Dunsford" else "sunn8: want Keaton Dunsford"
 assert r contains "xykj61/grain" else "sunn8: want xykj61/grain clone"
 assert r contains "SOURCE.md" else "sunn8: want SOURCE.md onboarding"
 assert r contains "context/KYRI.md" else "sunn8: want KYRI.md"

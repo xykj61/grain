@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260716.110152` (Glow warm-aura date atom — chronological, later-is-larger)
 **Style:** Radiant (see `context/RADIANT_STYLE.md`)
-**By:** Riyo, in the radiant voice, with **Keaton Livermore** as coauthor (Identity Remake `20260729.141658`; standing writing voice restored to Riyo `20260729.205200`)
+**By:** Riyo, in the radiant voice, with **Keaton Dunsford** as coauthor (Identity Remake `20260729.141658`; standing writing voice restored to Riyo `20260729.205200`)
 **Status:** Living guide — last touched `20260801.033305` (e149 — personal sync · gitignore · Dropbox overlay)
 **Waymark:** **SUNN** — `source-pier-papers-identity-refresh`
 

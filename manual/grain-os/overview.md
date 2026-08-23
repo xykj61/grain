@@ -20,7 +20,7 @@
 |---|---|---|---|
 | Language | **Glow** | the fused Rye-Hoon language, keeping Hoon's runes over TAME-bounded semantics | desk hops emit GREEN; full language still growing |
 | Interpreter | **Nock interpreter** | runs Glow's compiled forms | scoped (Nock 4K), not built |
-| Umbrella | **Grain** | the whole system, by **Keaton Livermore** / `xykj61` (dated Dunsford filing stays in elder stamps) | named; was Rye OS |
+| Umbrella | **Grain** | the whole system, by **Keaton Dunsford** / `xykj61` (dated Dunsford filing stays in elder stamps) | named; was Rye OS |
 | Variants | **Reya · Riyo · Trey · Triz · Quin** | five switchable OS builds, all in Glow | **five confirmed** (pairs `20260714.035600`; Quin fifth `20260717.162114`) |
 | Kernel spine | state as a pure fold over an append-only log of signed facts | the transition-function model | already this fork's stated spine |
 | Modules | Rishi, Mantra, Comlink, Caravan, Tally, Brix, Bron, Aurora, Pond, Scribble, and the rest | the running seeds | many green today under the prior name |
