@@ -30,7 +30,7 @@ set -eu
 
 # The shelves this tree files prose on, plus the two sub-shelves a room may carry.
 shelves="active-designing active-development active-reviving context counsel crux docs
-expanded-prompts expanding-prompts external-research foundations gratitude recursion-prompts
+expanding-prompts external-research foundations gratitude recursion-prompts
 research-silo session-logs waymarks yonder archive"
 
 named=0
