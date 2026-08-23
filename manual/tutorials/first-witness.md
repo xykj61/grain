@@ -26,7 +26,7 @@ You should see:
 GREEN: RW-3 — run record pins .ok, .code, .out, and .err for both outcomes.
 ```
 
-When the line appears, the witness passed. Should an `assert` fail, Rishi stops with a plain message on standard error and a nonzero exit.
+When the line appears, the witness passed. Where an `assert` finds its fact wanting, Rishi stops with a plain message on standard error and a nonzero exit.
 
 ## Step 2 — Read what it does
 
@@ -34,10 +34,10 @@ Open `tools/run_record_witness.rish`. The shape is the whole discipline:
 
 1. **`let`** — bind a name to a value (here, the result of `run`)
 2. **`run`** — execute an external command; receive a four-field record (`.ok`, `.code`, `.out`, `.err`)
-3. **`assert … else`** — stop loudly if the fact does not hold
+3. **`assert … else`** — stop loudly the moment the fact comes up short
 4. **`say`** — print a human line (the GREEN banner)
 
-Every witness checks `.ok` or `.code` before trusting output. RW-3 pins both a success path and a failure path in one script.
+Every witness checks `.ok` or `.code` before trusting output. RW-3 pins a success path and a fault path together in one script.
 
 ## Step 3 — The opening lines (for `.rye`, not `.rish`)
 

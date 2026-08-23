@@ -42,7 +42,7 @@ DOOR="README.md foundations/README.md foundations/20260823-034321_the-return-tha
 DOOR_MAX=20
 FIELD_MAX=30
 # The ratchet's ceiling only ever falls. Measured 20260823 across the teaching tier.
-ceiling=14   # 16 at seating; two swept 20260823.061415 -- it only falls
+ceiling=0    # 16 at seating; the whole teaching tier swept 20260823.070754 -- it only falls
 
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT INT TERM

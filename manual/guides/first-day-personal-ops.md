@@ -20,15 +20,15 @@ Use a **password manager you trust** — a paid monthly plan such as **1Password
 
 ## Apps this pier recommends (optional, paid)
 
-SOURCE Part One names a **paid Claude** subscription plus the **Claude iOS** and **Cursor iOS** apps when those help you. Cursor Android is not supported yet. Billing and App Store receipts stay in your vault — never in this repository.
+SOURCE Part One names a **paid Claude** subscription plus the **Claude iOS** and **Cursor iOS** apps when those help you. Cursor Android arrives in a later season. Billing and App Store receipts stay in your vault, which is the one place they belong.
 
 ## Extensions
 
-Useful extensions some people install from the Chrome Web Store (Brave can use that store) include OneTab, a password-manager companion, Vimium, Reader View, and Dark Reader. Treat that list as a menu, not a mandate. Enabling extensions in private or incognito windows is a **personal tradeoff** — convenience versus a smaller surface — that each person weighs for themselves. This pier does not require it.
+Useful extensions some people install from the Chrome Web Store (Brave can use that store) include OneTab, a password-manager companion, Vimium, Reader View, and Dark Reader. Treat that list as a menu to choose from. Enabling extensions in private or incognito windows is a **personal tradeoff** — convenience versus a smaller surface — that each person weighs for themselves. This pier runs happily without it.
 
 ## What stays out of pier papers
 
-This guide does **not** inventory financial accounts, payment apps, or wallet extensions. Those choices belong in a person-to-person conversation and in your own vault — never as a public checklist that ages into a phishing template.
+This guide does **not** inventory financial accounts, payment apps, or wallet extensions. Those choices belong in a person-to-person conversation and in your own vault, where a public checklist would age into a phishing template.
 
 ## Absolute line
 

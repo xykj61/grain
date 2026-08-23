@@ -15,9 +15,9 @@
 
 ## The game, in one breath
 
-Three pegs. A tower of rings on the first, each smaller than the one beneath. Move the whole tower to the third peg, one ring at a time, never resting a larger ring on a smaller. The classic teaching solves it recursively: *move n−1 aside, move the base, move n−1 back on top* — three lines of self-call, and the machine's hidden call stack does the bookkeeping.
+Three pegs. A tower of rings on the first, each smaller than the one beneath. Move the whole tower to the third peg, one ring at a time, each ring resting only on a larger one. The classic teaching solves it recursively: *move n−1 aside, move the base, move n−1 back on top* — three lines of self-call, and the machine's hidden call stack does the bookkeeping.
 
-Our root law reads differently: **control flow stays simple and explicit; recursion stays out.** The recursive telling is lovely, yet a hidden stack carries an unnamed depth, and an unnamed depth is a bound nobody wrote down. TAME asks *how large can this grow?* and asks it up front. So our tower keeps the same three-part insight and moves the bookkeeping into the open.
+Our root law reads differently: **control flow stays simple and explicit; recursion stays out.** The recursive telling is lovely, yet a hidden stack carries a depth the code leaves unnamed, and a named depth is what this tree asks for. TAME asks *how large can this grow?* and asks it up front. So our tower keeps the same three-part insight and moves the bookkeeping into the open.
 
 ## The bound, named before the machine runs
 
@@ -57,7 +57,7 @@ const Stack = struct {
 
 ## The loop that replaces the call
 
-The recursive body said: *solve(n−1, start→via), move one, solve(n−1, via→end).* Our loop pushes those same three tasks — **in reverse, so they pop in order** — and walks until the stack is empty. One `while`, bounded twice: by the frame ceiling and by the move count.
+The recursive body said: *solve(n−1, start→via), move one, solve(n−1, via→end).* Our loop pushes those same three tasks — **in reverse, so they pop in order** — and walks until the stack has run dry. One `while`, bounded twice: by the frame ceiling and by the move count.
 
 ```zig
 fn solve(rings: u32) void {

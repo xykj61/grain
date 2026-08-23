@@ -10,7 +10,7 @@
 
 ---
 
-Tutorial one introduced the witness shape. This room reaches deeper — into the **run record**, the four fields every gate trusts, and the **failure paths** RW-4 pins beside success.
+Tutorial one introduced the witness shape. This room reaches deeper — into the **run record**, the four fields every gate trusts, and the **fault paths** RW-4 pins beside the successful ones.
 
 ## Step 1 — The four fields
 
@@ -29,7 +29,7 @@ Run RW-3:
 rishi/bin/rishi run tools/run_record_witness.rish
 ```
 
-Open the script and read both branches: success captures stdout on `.out` with empty `.err`; failure preserves code `7` and places the message on `.err`.
+Open the script and read both branches: success captures stdout on `.out` with empty `.err`; a fault preserves code `7` and places the message on `.err`.
 
 ## Step 2 — Assert every field you rely on
 
@@ -42,11 +42,11 @@ assert ok_run.out contains "RW-3 stdout" else "stdout must carry the fact"
 assert ok_run.err == "" else "stderr must stay empty on success"
 ```
 
-On failure, flip the expectations: `(fail_run.ok == false)`, match `.code`, assert `.err contains` the friendly message.
+On a fault, flip the expectations: `(fail_run.ok == false)`, match `.code`, assert `.err contains` the friendly message.
 
 ## Step 3 — Friendly failures in the shell (RW-4)
 
-Shell meta-commands and CLI mistakes **survive** — the session continues, and stderr names the problem kindly:
+Shell meta-commands and CLI slips leave the session **running**, and stderr names what happened kindly:
 
 ```bash
 rishi/bin/rishi run tools/rw4_slc_failure_paths.rish

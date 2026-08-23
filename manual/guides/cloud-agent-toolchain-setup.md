@@ -11,9 +11,9 @@
 
 ## Why This Path Is Different
 
-A Cursor Cloud Agent (including sessions launched from Cursor for iOS) runs inside its own already-sandboxed VM -- no host `$HOME` to leak into, and ai-jail's whole purpose (carving a boundary out of a shared, persistent machine) has nothing to add here. The environment itself *is* the enclosure; a session that starts fresh, does its work, and ends leaves nothing behind to guard. Worth naming plainly rather than defaulting to jail tooling out of habit -- a fresh sandbox already meets the bar `--private-home` exists to build by hand on a shared host.
+A Cursor Cloud Agent (including sessions launched from Cursor for iOS) runs inside its own already-sandboxed VM, with an ephemeral `$HOME` of its own, and ai-jail's whole purpose -- carving a boundary out of a shared, persistent machine -- is already met by the platform. The environment itself *is* the enclosure: a session starts fresh, does its work, ends, and takes everything with it. Worth naming plainly rather than defaulting to jail tooling out of habit -- a fresh sandbox already meets the bar `--private-home` exists to build by hand on a shared host.
 
-Such a session still needs one thing: the same `rye`/`rishi` build chain every witness in this tree depends on. `vendor/zig-toolchain/` is gitignored and Mac-host-built in every dated session log so far, so a cloud session starts with none of it.
+Such a session still needs one thing: the same `rye`/`rishi` build chain every witness in this tree depends on. `vendor/zig-toolchain/` is gitignored and Mac-host-built in every dated session log so far, so a cloud session starts clean and builds its own.
 
 ## The Recipe (Confirmed Working, `20260715.054500`)
 
@@ -53,13 +53,13 @@ All three ran **GREEN** on this cloud host at `20260715.054500` -- the first tim
 
 ## The One Honest Trade-Off Named
 
-`rye/README.md`'s own building section fetches the official Zig 0.16.0 release tarball and verifies it against its published checksum before trusting a byte of it -- the discipline this whole tree holds everywhere else ("never trust an unverified toolchain," `GLOW_HOST.template.bron`'s own header comment). The `pip install ziglang` path instead trusts PyPI's own package signing and the `ziglang` maintainer's own re-packaging of the official release -- a real, different trust chain, not the same one merely taken by a shortcut.
+`rye/README.md`'s own building section fetches the official Zig 0.16.0 release tarball and verifies it against its published checksum before it trusts a single byte -- the discipline this whole tree holds everywhere else ("verify a toolchain before you trust it," `GLOW_HOST.template.bron`'s own header comment). The `pip install ziglang` path rests instead on PyPI's own package signing and the `ziglang` maintainer's re-packaging of the official release -- a real and genuinely different trust chain, chosen over the same one by a shortcut.
 
-This holds for a same-sitting cloud agent for the reasons named above (no persistent host to protect, no credential store nearby to leak, the whole VM discarded at session end), rather than standing in for the checksum-verified fetch on a persistent host that a session's own tooling and identity will live on for weeks. `GLOW_HOST.bron` stays the source of truth for a *persistent* host's pinned, verified toolchain path; this pip recipe is this guide's own, narrower thing -- a same-sitting convenience for an environment that is disposable by design.
+This holds for a same-sitting cloud agent for the reasons named above (an ephemeral host, a credential store elsewhere, and the whole VM discarded at session end), rather than standing in for the checksum-verified fetch on a persistent host that a session's own tooling and identity will live on for weeks. `GLOW_HOST.bron` stays the source of truth for a *persistent* host's pinned, verified toolchain path; this pip recipe is this guide's own, narrower thing -- a same-sitting convenience for an environment that is disposable by design.
 
 ## What This Does Not Set Up
 
-- **No ai-jail.** Unneeded here, per the reasoning above; this guide stands as the honest alternative to `context/specs/enclosure-editors.md` rather than an extension of it.
+- **ai-jail sits this one out.** The platform already provides the boundary, per the reasoning above; this guide stands as the honest alternative to `context/specs/enclosure-editors.md` rather than an extension of it.
 - **No Wayland.** This recipe installs neither `libwayland-dev` nor `libxkbcommon-dev`, so SLC-2a Lap 1's Brushstroke viewer witness (and anything downstream of it in `tools/parity_ch01.rish`'s full sequential run) still halts here -- the same named gap as the macOS-host runs, for a different underlying reason (missing dev headers on a minimal cloud image, rather than Wayland being Linux-only). A future pass could `apt-get install libwayland-dev libxkbcommon-dev` to close this specific gap on a cloud host; this guide's own witnessed run did not attempt it.
 - **No persistence across sessions.** Each fresh Cursor Cloud Agent VM starts over; this recipe is a same-sitting raise rather than a one-time setup. A future environment-config pass (via `cursor.com/onboard`) could bake this into the base image directly, if cloud-hosted witness runs become a standing need rather than an occasional one.
 
@@ -67,7 +67,7 @@ This holds for a same-sitting cloud agent for the reasons named above (no persis
 
 - [`20260731-014410_opus-bench-raise.md`](20260731-014410_opus-bench-raise.md) -- Opus-measured raise: symlink `lib/` plus a `zig` wrapper (why `rye/lib/*` needs that exact shape).
 - `../../rye/README.md` -- the persistent-host build path this recipe stands beside.
-- `../../context/specs/enclosure-editors.md` -- the ai-jail-enclosed persistent-host path this guide is not a replacement for.
+- `../../context/specs/enclosure-editors.md` -- the ai-jail-enclosed persistent-host path this guide stands beside.
 - `../../crux/archive/20260703-021412_counsel-and-confirmation-tests.md` -- the earlier Cursor for iOS round that first used this exact pip recipe, against a persistent ai-jail host rather than a disposable cloud VM.
 - `../../session-logs/date/20260715/20260715-062000_cloud-toolchain-raised-neth-green.bron` -- the session that confirmed this recipe fresh and ran the Neth witnesses GREEN on it.
 

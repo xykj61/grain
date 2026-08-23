@@ -81,9 +81,12 @@ When the word comes, the sweep runs in this order, highest reader-traffic first:
    outputs, found by re-running all four commands rather than trusting the page: `flat=59` had
    become **148** and `fascia=45` had become **41**. A register pass holds a claim exactly, so the
    drifted numbers were repaired as a separate factual fix and the page now says which two moved.
-2. The remaining **fourteen** teaching-tier documents above 30%, lowering the ratchet ceiling on
-   each. Re-run any command a page quotes while rewriting it -- the demos page proved a page's
-   outputs drift faster than its prose.
+2. The remaining **fourteen** teaching-tier documents above 30%. **LANDED `20260823.070754`** --
+   all fourteen swept and the ceiling lowered **16 to 0**, so the whole teaching tier now sits at
+   or under the Field target. The method was surgical: the guard's own regex located each
+   offending sentence, and only those were rewritten. The sangha pages looked arguable, since
+   refusal is genuinely their subject, and their own charter settled it -- *written for the reader
+   who arrives with nothing* -- so they were swept rather than reclassified.
 3. `CONTRIBUTING.md` (42%), `SOURCE.md`, `MAP.md`, and the root guides.
 4. The 848 seed-dead links of `%160`, repaired in the same pass as each document's rewrite, since
    both want a rewrite rather than a repoint.

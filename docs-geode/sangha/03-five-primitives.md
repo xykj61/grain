@@ -13,7 +13,7 @@
 
 ## Context
 
-A newcomer opens the tree and asks what the house is made of. The answer is five primitives — **keypair**, **signed event**, **append-only log**, **pure fold**, **capability** — a technical account of a moral posture: nothing is destroyed, every change is a fact, every fact is signed, and the past is not editable by whoever holds the present. Pattern one carries peers into contact. Pattern two folds value facts into a number. This page names the five as a set, so the posture is hearable aloud without hunting five selftests.
+A newcomer opens the tree and asks what the house is made of. The answer is five primitives — **keypair**, **signed event**, **append-only log**, **pure fold**, **capability** — a technical account of a moral posture: everything is kept, every change is a fact, every fact is signed, and the past is not editable by whoever holds the present. Pattern one carries peers into contact. Pattern two folds value facts into a number. This page names the five as a set, so the posture is hearable aloud in one place rather than across five selftests.
 
 ## Forces
 
@@ -21,7 +21,7 @@ A newcomer opens the tree and asks what the house is made of. The answer is five
 - **Event vs edit.** A signed event says what happened once; a correction is a new event, never a rewrite.
 - **Log vs ledger-of-now.** Append-only history refuses quiet deletion; the present is a fold, not a mutable cell.
 - **Fold vs authority.** Agreement comes from arithmetic over the same prefix, not from trusting a holder.
-- **Capability vs ambient power.** A seal at a seam grants a bounded right; over-bound and tamper refuse whole.
+- **Capability vs ambient power.** A seal at a seam grants a bounded right; over-bound and tamper turn away whole.
 
 ## The shape — five sections
 
@@ -140,11 +140,11 @@ rishi/bin/rishi run tools/sangha_five_primitives_page_witness.rish
 
 ## How It Composes
 
-Descriptor exchange (page one) finds peers. Facts travel as signed events on an append-only log. Each peer folds independently to the same supply. Capabilities seal proofs at seams without inventing ambient authority. The refusal storm proves the unwelcome path for each limb in one place. Accrete-never-break holds: elders stay; this page only names what already ran green.
+Descriptor exchange (page one) finds peers. Facts travel as signed events on an append-only log. Each peer folds independently to the same supply. Capabilities seal proofs at seams without inventing ambient authority. The turn-away storm proves the unwelcome path for each limb in one place. Accrete-never-break holds: elders stay; this page only names what already ran green.
 
 ## What This Page Never Decides
 
-Membership · join · departure · star release/expiry · SNS liveness hours · wallet · gas · deploy · season name. The five compute and refuse; they do not spend policy words.
+Membership · join · departure · star release/expiry · SNS liveness hours · wallet · gas · deploy · season name. The five compute and turn away, leaving every policy word to its owner.
 
 ## Trey's Note, on the Record
 

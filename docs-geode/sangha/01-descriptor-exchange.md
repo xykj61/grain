@@ -9,7 +9,7 @@
 
 ## Context
 
-A peer that wants neighbors says who it is without saying too much. The **descriptor exchange** — how Glow peers announce themselves and learn each other — carries a bounded self-description that travels, fans out under a named ceiling, lands in a bounded table, ages out on the one clock, and may arrive through a star introducer at a named hop depth. Mycelium stays untouched: discovery finds peers rather than ordering them.
+A peer that wants neighbors says exactly who it is, and stops there. The **descriptor exchange** — how Glow peers announce themselves and learn each other — carries a bounded self-description that travels, fans out under a named ceiling, lands in a bounded table, ages out on the one clock, and may arrive through a star introducer at a named hop depth. Mycelium stays untouched: discovery finds peers rather than ordering them.
 
 ## Forces
 
@@ -24,7 +24,7 @@ Four compositions, one exchange:
 
 1. **Descriptor** (`comlink/discovery/descriptor.rye`) — length-prefixed bytes inside `discovery_descriptor_max_bytes` **512**. Key, transport hints, freshness, lineage — nothing more.
 2. **Table** (`comlink/discovery/table.rye`) — peer slots over Tally stack + Region. Ceiling `discovery_max_peers` **256**. Age-out `discovery_staleness_max_seconds` **4096**. Free-list is LIFO; claim↔reach both ways.
-3. **Gossip** (`comlink/discovery/gossip.rye`) — exchange fold at `discovery_gossip_fanout` **8**. Malformed arrival refuses whole; never trim.
+3. **Gossip** (`comlink/discovery/gossip.rye`) — exchange fold at `discovery_gossip_fanout` **8**. A malformed arrival turns away whole, kept intact rather than trimmed.
 4. **Introduce** (`comlink/discovery/introduce.rye`) — star-as-introducer seam. `discovery_introduce_hops_max` **2**. Identity sealed through kumara; wrong shape turned away.
 
 Bounds live in `tools/gen/season/recursion_block.brix` (v27 · explicit_bounds). Builds inherit them; they do not invent ceilings.
