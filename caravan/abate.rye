@@ -4889,16 +4889,7 @@ pub fn seat_standing_appraisal(io: std.Io, held: u32, weighed_mask: u32) NoteErr
 /// while the run still holds the record that disproves it and read back before
 /// the repair seats a single phase on its strength.
 pub fn recant_note(io: std.Io, held: u32, taken_back_mask: u32) NoteError!void {
-    // invariant: a recant note never names more phases than one record holds
-    assert(held <= max_queue_len);
-    var glyphs: [max_queue_len]u8 = @splat('.');
-    var at: u32 = 0;
-    while (at < held) : (at += 1) {
-        if ((taken_back_mask & phase_bit(at)) != 0) glyphs[at] = 'r';
-    }
-    // invariant: every phase of the record was written, none skipped
-    assert(at == held);
-    try seat_note(io, plan_name, ".recant", glyphs[0..held]);
+    return ladder_checks.recant_note(@This(), io, held, taken_back_mask);
 }
 
 /// Reads back which standing judgments this run took back, straight off the wire.

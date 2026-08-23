@@ -10081,6 +10081,37 @@ pub fn appraisal_published(comptime rung: type, io: std.Io, held: u32) u32 {
     return found;
 }
 
+/// Publishes which of a plan's phases its author took back.
+///
+/// A recant note is a plan's author changing their mind on the record rather
+/// than in a conversation nobody kept. One glyph per phase, `r` where the
+/// author withdrew what that phase asked for, so a later run reads the
+/// withdrawal off the plan itself instead of inferring it from an absence.
+///
+/// Thirty-seven rungs held this body byte for byte, and it is the writing half
+/// of a pair whose reading half already stands lifted directly below: this
+/// seats the recant glyphs, `recant_published` reads them back. A pair that
+/// must agree on a spelling now agrees in one file.
+///
+/// Every symbol this body reaches already stood public in all thirty-seven
+/// rungs, so the lift widens nothing of any kind -- and that is why this row
+/// was taken ahead of the queue's own head, which returned six lines more at a
+/// price of sixty-eight openings. Measured rather than read:
+/// `REACH_OK family=recant_note folding=37 widens=0 stub=3 fall=324` from
+/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+pub fn recant_note(comptime rung: type, io: std.Io, held: u32, taken_back_mask: u32) rung.NoteError!void {
+    // invariant: a recant note never names more phases than one record holds
+    assert(held <= rung.max_queue_len);
+    var glyphs: [rung.max_queue_len]u8 = @splat('.');
+    var at: u32 = 0;
+    while (at < held) : (at += 1) {
+        if ((taken_back_mask & rung.phase_bit(at)) != 0) glyphs[at] = 'r';
+    }
+    // invariant: every phase of the record was written, none skipped
+    assert(at == held);
+    try rung.seat_note(io, rung.plan_name, ".recant", glyphs[0..held]);
+}
+
 pub fn recant_published(comptime rung: type, io: std.Io, held: u32) u32 {
     // invariant: a reading never names more phases than one record may hold
     assert(held <= rung.max_queue_len);
