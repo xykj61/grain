@@ -22,6 +22,6 @@ One dated file per reply, naming the memo it answers:
 
 Replies are dated artifacts — guard-protected, Radiant where prose flows, plain where tables serve. Future counsel reads a short reply rather than a season of session logs.
 
-**First-class reply topics** (seated `20260727.213740` · Sound bookmark `20260727.220947`): **checkpoint** · **bookmark** · **Radiant wave** · **closing line** · **Sound breach / validator report** — living bookmark [`../20260727-220947_the-sound-season-and-the-seated-breach.md`](../20260727-220947_the-sound-season-and-the-seated-breach.md); Radiant Lint measurement history [`../20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md`](../20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md).
+**First-class reply topics** (seated `20260727.213740` · Sound bookmark `20260727.220947`): **checkpoint** · **bookmark** · **Radiant wave** · **closing line** · **Sound breach / validator report** — living bookmark [`../20260727-220947_the-sound-season-and-the-seated-breach.md`](../date/20260727/20260727-220947_the-sound-season-and-the-seated-breach.md); Radiant Lint measurement history [`../20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md`](../date/20260727/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md).
 
-Counsel that seated this shelf: [`../20260724-135312_vanes-shelves-and-the-glow-ladder.md`](../20260724-135312_vanes-shelves-and-the-glow-ladder.md).
+Counsel that seated this shelf: [`../20260724-135312_vanes-shelves-and-the-glow-ladder.md`](../date/20260724/20260724-135312_vanes-shelves-and-the-glow-ladder.md).

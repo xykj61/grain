@@ -7,7 +7,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
 **Status:** Living — word seated; wire shape opened; first composition green still ahead on OA glass
-**Ground:** choice brief [`20260712-062656_giving-lane-t2-choice-brief.md`](../20260712-062656_giving-lane-t2-choice-brief.md) · T1 map [`20260712-054942_giving-lane-t1-open-asks-field-map.md`](../20260712-054942_giving-lane-t1-open-asks-field-map.md) · tip **430** OA civic sight (already shows `withheld=excluded`)
+**Ground:** choice brief [`20260712-062656_giving-lane-t2-choice-brief.md`](../date/20260712/20260712-062656_giving-lane-t2-choice-brief.md) · T1 map [`20260712-054942_giving-lane-t1-open-asks-field-map.md`](../date/20260712/20260712-054942_giving-lane-t1-open-asks-field-map.md) · tip **430** OA civic sight (already shows `withheld=excluded`)
 
 ---
 

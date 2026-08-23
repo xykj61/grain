@@ -7,7 +7,7 @@
 
 ---
 
-Per the [runes-scoping study](../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md)'s own proposal — *"every jet in Glow ships with a paired witness — a fixture proving the accelerated path and the pure Glow path produce identical output on the same input"* — this is Glow's first real jet: **`dec`**, decrement. The classic first example, since Nock has a native increment (opcode 4) but no native decrement at all — computing it purely in Nock means counting up from zero until you find the predecessor, an honestly slow, genuinely recursive computation.
+Per the [runes-scoping study](../../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md)'s own proposal — *"every jet in Glow ships with a paired witness — a fixture proving the accelerated path and the pure Glow path produce identical output on the same input"* — this is Glow's first real jet: **`dec`**, decrement. The classic first example, since Nock has a native increment (opcode 4) but no native decrement at all — computing it purely in Nock means counting up from zero until you find the predecessor, an honestly slow, genuinely recursive computation.
 
 ## The Three Pieces
 

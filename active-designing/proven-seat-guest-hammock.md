@@ -7,7 +7,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Rio 3
 **Status:** Living — **G0** GREEN · **G0-complete** `004012` · **`lane_kvm`** on-path GREEN `140403` · parity re-pin GREEN `193958` · **G1 opened** `195339` — crossing path named; serial verify-witness ahead
-**Ground:** ER [`../external-research/20260712-054342_proven-seat-guest-genode-sel4.md`](../external-research/20260712-054342_proven-seat-guest-genode-sel4.md) · counsel [`20260712-195155_proven-seat-g1-claude-opening-counsel.md`](20260712-195155_proven-seat-g1-claude-opening-counsel.md) · crossing pin [`20260712-195339_proven-seat-g1-crossing-pin.md`](20260712-195339_proven-seat-g1-crossing-pin.md) · product nib **430** · suite nib **432**
+**Ground:** ER [`../external-research/20260712-054342_proven-seat-guest-genode-sel4.md`](../external-research/20260712-054342_proven-seat-guest-genode-sel4.md) · counsel [`20260712-195155_proven-seat-g1-claude-opening-counsel.md`](date/20260712/20260712-195155_proven-seat-g1-claude-opening-counsel.md) · crossing pin [`20260712-195339_proven-seat-g1-crossing-pin.md`](date/20260712/20260712-195339_proven-seat-g1-crossing-pin.md) · product nib **430** · suite nib **432**
 **License (gratitude):** Genode/Sculpt images are AGPL-hosted teacher artifacts — held under `tools/.cache/proven-seat/` (gitignored); never linked into Rye ship binaries; Caravan keeps its name.
 
 ---
@@ -20,7 +20,7 @@
 | **Cursor session** | Inside **ai-jail** (`hostname ai-sandbox`) — GPU/Wayland passed; **`/dev/kvm` not passed** while `LANE_KVM=false` |
 | **Pond** | Horizon for superseding ai-jail with TAME-guided safety — **not yet** the daily enclosure |
 | **`lane_kvm`** | A-narrow gate in `tools/e/enclosure.conf` — **off by default**; `/dev/kvm` only; refuse `tools/l/lane_kvm_refuse.rish`; on-path `tools/p/proven_seat_g0_complete_jailed.rish` (`-display none` · `-nic none`) |
-| **Retired** | Host user D-Bus + systemd transient units as the KVM doorway — [`113900`](20260712-113900_lane-kvm-retire-dbus-escape.md) |
+| **Retired** | Host user D-Bus + systemd transient units as the KVM doorway — [`113900`](date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md) |
 
 Signing: Kaeden’s own keys on this host; lane key stays cloud; sandbox key stays ai-jail.
 
@@ -42,7 +42,7 @@ Kaeden: *“i grant my word for any recommendation.”* Treated as the seat word
 
 | Check | Result |
 |-------|--------|
-| Accel (legacy `004012`) | `-accel kvm -cpu host -machine q35 -m 4G` on the **host** via D-Bus/systemd — **retired** [`113900`](20260712-113900_lane-kvm-retire-dbus-escape.md) |
+| Accel (legacy `004012`) | `-accel kvm -cpu host -machine q35 -m 4G` on the **host** via D-Bus/systemd — **retired** [`113900`](date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md) |
 | Accel (living) | Same QEMU shape under **`lane_kvm`**: `-display none` · `-nic none` · QMP screendump — `tools/p/proven_seat_g0c_lane_kvm.sh` |
 | Glass (`004012`) | Screendump `g0c-leitzentrale-witness.png` — Sculpt **Components** graph with live **`leitzentrale`** node |
 | Serial floor | GRUB loading on COM1 |

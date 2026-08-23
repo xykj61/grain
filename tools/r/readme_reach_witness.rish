@@ -1,0 +1,53 @@
+# tools/r/readme_reach_witness.rish -- from the front door, every living door opens.
+#
+#   rishi/bin/rishi run tools/r/readme_reach_witness.rish
+#
+# WHY. Four guards already read links and each asks a different question: `tracked_link` about
+# symlinks landing inside the tracked tree, `seed_link` about surviving the public projection,
+# `foundations_link` about one room, `living_docs_lint` as a tree-wide advisory nobody gates on.
+# None asked the newcomer's question -- start at README.md, follow links, does every door open?
+#
+# Measured the first time on `20260823`: 1,389 documents reached fifteen levels deep, and 1,209
+# broken links. **1,097 of those stood in dated testimony**, which the mark law resolves rather than
+# rewrites, and **112 stood in 42 living files**, where a broken link is simply broken. The 112 are
+# repaired -- 97 by suffix-unique repoint, 205 index rows given their day-folded prefix, 87 rows
+# whose logs never landed in any commit delinked and marked, and 15 by hand -- and this holds the
+# living count at zero.
+#
+# WHAT IS GATED, hard, at zero. Broken relative links in LIVING files reachable from README.md,
+# where living means the basename carries no one-clock stamp -- the same rule the dated-path
+# repointer applies, so the two can never disagree about what testimony is.
+#
+# WHAT RATCHETS. Broken links in dated testimony, under a ceiling that only falls. These are
+# resolved rather than rewritten: `rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference>`.
+#
+# Pen: tools/fixtures/readme_reach_control.sh -- eight cases, a living break bitten and named, the
+# same break in testimony counted rather than gated, the ceiling proven to bite, an unreached
+# document out of scope, and an http target never followed. Run from the repository root.
+
+say "readme-reach: Language EN -- a newcomer follows links, and a door that fails to open is the tree's word breaking."
+say "readme-reach: Style Gauge -- the count is split by tier, because testimony is resolved and living prose is repaired."
+say "readme-reach: Lens TAME -- safety first: a link is a promise, and this rung is where the promise is checked."
+
+let scan = run ["sh" "tools/fixtures/readme_reach_scan.sh"]
+say scan.out
+assert scan.ok else "readme-reach: a living document reachable from the front door holds a broken link -- read the scan's own lines"
+assert scan.out contains "verdict=ok" else "readme-reach: the crawl must reach a clean verdict"
+assert scan.out contains "broken_in_living=0" else "readme-reach: living prose must hold no broken link"
+assert scan.out contains "living_files_affected=0" else "readme-reach: no living file may carry one"
+
+let control = run ["sh" "tools/fixtures/readme_reach_control.sh"]
+assert control.ok else "readme-reach: the control must complete"
+say control.out
+assert control.out contains "case=clean_free ok" else "readme-reach: a tree whose links resolve must pass"
+assert control.out contains "case=depth_walked ok" else "readme-reach: the crawl must follow links past one level"
+assert control.out contains "case=living_bitten ok" else "readme-reach: a broken link in a living file must be refused"
+assert control.out contains "case=living_named ok" else "readme-reach: the refusal must name the file and the target"
+assert control.out contains "case=testimony_ratchets ok" else "readme-reach: the same break in dated testimony is counted, never gated"
+assert control.out contains "case=ceiling_bitten ok" else "readme-reach: testimony over its ceiling must be refused, or the ratchet is decoration"
+assert control.out contains "case=unreached_free ok" else "readme-reach: a document the front door never reaches is out of scope"
+assert control.out contains "case=external_free ok" else "readme-reach: an http target is never followed and never counted"
+assert control.out contains "control=ok" else "readme-reach: the control must agree with itself"
+
+say "RED and GREEN paths proven -- a living break bitten and named, testimony ratcheted, the ceiling proven to bite"
+say "GREEN: readme-reach -- from the front door, every living door opens."

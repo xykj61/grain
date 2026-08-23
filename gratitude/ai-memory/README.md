@@ -11,4 +11,4 @@
 **Disposition (Claude `131200` · closed tonight):** study now, adopt nothing. The daemon stays parked until a pipeline round wants it as teacher for Mantra/Weave session-memory projection. When worded for silo: one rules-vs-facts classifier sentence may enter session-log rules — not tonight.
 
 - Source: <https://github.com/akitaonrails/ai-memory>
-- Sibling: [`../ai-jail/`](../ai-jail/) (seated teacher for Pond enclosure)
+- Sibling: `../ai-jail/` (`../ai-jail/` -- a study clone held on disk and never tracked) (seated teacher for Pond enclosure)

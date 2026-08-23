@@ -3,7 +3,7 @@
 **Stamp:** `20260814.111419` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
 **Status:** Living design capture — the self-approved round that opens Season C (Lotus)
 **Waymark:** ALES (`season-c-lotus-creative-suite-audio-wire-shape` → ALES, drawn `20260814`, seated in [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md))
-**Kin:** [`the Six-Season double-seat`](20260813-020035_double-seat-expansion-six-seasons.md) — Season C · [`Lotus, the DAW`](yonder/20260630-014012_lotus-the-daw.md) · idiom twins [`constel/wire.rye`](../constel/wire.rye) (FORA3) · [`mikrophone/wire.rye`](../mikrophone/wire.rye) (DREY1)
+**Kin:** [`the Six-Season double-seat`](date/20260813/20260813-020035_double-seat-expansion-six-seasons.md) — Season C · [`Lotus, the DAW`](yonder/20260630-014012_lotus-the-daw.md) · idiom twins [`constel/wire.rye`](../constel/wire.rye) (FORA3) · [`mikrophone/wire.rye`](../mikrophone/wire.rye) (DREY1)
 
 ---
 

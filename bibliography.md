@@ -44,9 +44,9 @@ Human orientation stays at [`MAP.md`](MAP.md). Filing law stays at [`ORGANIZING.
 
 **The Swiss Ephemeris** — pyswisseph, the Moshier flag, the Lahiri ayanamsa, and `seas_18.se1` for Chiron; the astronomical instrument beneath every chart the project casts.
 
-**Urbit** — Ames · Jael · identity-as-address study clone at [`gratitude/urbit/`](gratitude/urbit/); full ancestry at `old/`. Clean-room networking briefs in `external-research/`.
+**Urbit** — Ames · Jael · identity-as-address study clone at `gratitude/urbit/` (`gratitude/urbit/` -- a study clone held on disk and never tracked); full ancestry at `old/`. Clean-room networking briefs in `external-research/`.
 
-**Andrew Kelley / Zig** — language and toolchain ground for Rye ([`gratitude/zig/`](gratitude/zig/) · pin `vendor/zig-toolchain`).
+**Andrew Kelley / Zig** — language and toolchain ground for Rye (`gratitude/zig/` (`gratitude/zig/` -- a study clone held on disk and never tracked) · pin `vendor/zig-toolchain`).
 
 **Others on the shelf** — Monocypher (`vendor/monocypher`), SixOS, infuse.nix, Manyana, ai-jail, GrapheneOS, Sui, Opus/Ogg, Buckminster Fuller tensegrity, and more — catalogued living at [`gratitude/README.md`](gratitude/README.md). This root names the teachers the counsel seed carried; the shelf README remains the complete inventory.
 

@@ -3,7 +3,7 @@
 **Stamp:** `20260814` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
 **Status:** Living design — the reserved self-approved naming round, seated under the placeholder-ship-names law
 **Season:** the Six-Season double-seat, Season D/F thread (Kresfa & Mycelium · Surface & Namespace) · **Waymark:** FORA
-**Kin:** [`../.claude/rules/placeholder-ship-names.md`](../.claude/rules/placeholder-ship-names.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](20260813-020035_double-seat-expansion-six-seasons.md) · [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md) · [`../.claude/rules/comlink-tendency.md`](../.claude/rules/comlink-tendency.md)
+**Kin:** [`../.claude/rules/placeholder-ship-names.md`](../.claude/rules/placeholder-ship-names.md) · [`20260813-020035_double-seat-expansion-six-seasons.md`](date/20260813/20260813-020035_double-seat-expansion-six-seasons.md) · [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md) · [`../.claude/rules/comlink-tendency.md`](../.claude/rules/comlink-tendency.md)
 
 ---
 
