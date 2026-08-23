@@ -16,7 +16,7 @@ Welcome, traveler. Forty-some doors face you at this root, and every one is frie
 
 1. **[`README.md`](README.md)** — what Grain is, the five variants, and what actually runs today.
 2. **[`SOURCE.md`](SOURCE.md)** — from nothing to a signed, sandboxed home. Part One is your first day; keys come later.
-3. **[`manual/`](manual/glow-os/README.md)** — the guided rooms, including a welcome you can send a friend.
+3. **[`manual/`](manual/grain-os/README.md)** — the guided rooms, including a welcome you can send a friend.
 
 ## The Seven Rooms
 
@@ -46,7 +46,7 @@ Everything in [`context/`](context/README.md) is a promise we keep on purpose. [
 
 ### 5 · The Teaching
 
-[`docs/`](docs/README.md) holds the compressors — short pages that only say what witnesses have shown on real metal; [`TUBE.md`](docs/TUBE.md) is the app ladder to a signed APK on a physical Pixel, and [`COMPASS.md`](docs/COMPASS.md) is the one-page orientation. [`manual/`](manual/glow-os/README.md) is the four teaching rooms, [`edu/`](edu/README.md) the beginner's floor, [`docs-geode/`](docs-geode/) and [`nixos-guide/`](nixos-guide/) the deeper guides. When a page here says GREEN, a machine said it first.
+[`docs/`](docs/README.md) holds the compressors — short pages that only say what witnesses have shown on real metal; [`TUBE.md`](docs/TUBE.md) is the app ladder to a signed APK on a physical Pixel, and [`COMPASS.md`](docs/COMPASS.md) is the one-page orientation. [`manual/`](manual/grain-os/README.md) is the four teaching rooms, [`edu/`](edu/README.md) the beginner's floor, [`docs-geode/`](docs-geode/) and [`nixos-guide/`](nixos-guide/) the deeper guides. When a page here says GREEN, a machine said it first.
 
 ### 6 · The Workrooms (Mind the Sawdust)
 

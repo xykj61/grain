@@ -14,7 +14,7 @@ assert k contains "SUNN10" else "sunn10: keys want SUNN10 stamp"
 assert k contains "Keaton Dunsford" else "sunn10: keys want dated Dunsford testimony kept"
 assert (k contains "current identity** (`xykj61` / Keaton Dunsford") == false else "sunn10: keys must not keep Dunsford as current identity"
 
-let o = read-file "manual/glow-os/overview.md"
+let o = read-file "manual/grain-os/overview.md"
 assert o contains "Voice:** Kyri" else "sunn10: overview want Voice Riyo"
 assert o contains "Keaton Livermore" else "sunn10: overview want Keaton Livermore"
 assert o contains "SUNN10" else "sunn10: overview want SUNN10 stamp"
