@@ -47,7 +47,6 @@
 !/brix/
 !/pleac/
 !/foundations/
-!/twilight/
 !/saga/
 !/manual/
 !/docs/
@@ -324,3 +323,12 @@ nixos/*.bak-*
 /caravan/.forbears/
 /caravan/.minds/
 crux/standing-equipment-runs.kyri
+
+# Personal material, debrided from all history 20260823.072824 (REDS %162, third
+# resolution; cairn 20260823.072824). These live on disk for their author and stay
+# out of every repository -- the same posture as letters/, which the .gitignore
+# allowlist default already withholds.
+/foundations/20260730-022147_keaton-livermore-resume-draft.md
+/foundations/20260730-022147_personal-ontology.md
+/foundations/20260730-022147_cover-letter-co-authored.md
+/.debride-safe/

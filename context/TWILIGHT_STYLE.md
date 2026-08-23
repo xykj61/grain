@@ -30,9 +30,9 @@ Twilight prose swings between the two — a line that aims (names the essence, p
 
 ## The palette — the fifteen
 
-Twilight draws its imagery from **fifteen themes**, a nocturnal vocabulary the register returns to the way Radiant returns to the garden and the harvest. The themes and their fuller reading trace to a private source — the author's own poems, held whole in the withheld `twilight/` silo (the private field only); here they stand as **archetype**, free for any Twilight piece to reach for without reproducing the source or naming a person.
+Twilight draws its imagery from **fifteen themes**, a nocturnal vocabulary the register returns to the way Radiant returns to the garden and the harvest. The themes and their fuller reading trace to a private source — the author's own poems, held whole in the `twilight/` silo on the author's own disk, in **no repository at all** since the deep debride of `20260823.072824`; here they stand as **archetype**, free for any Twilight piece to reach for without reproducing the source or naming a person.
 
-The palette grew from **nine to fifteen** on Keaton's word (`20260811`) to match the **sky fractal** (`3·9·15·27` — the odd-quorum rungs of a loadable topology). The first nine are the original nocturne; the last six were drawn from a single poem in the withheld `twilight/` silo and lifted, as Twilight always lifts, from dark image to affirmative archetype — each tied to a value the tree already keeps.
+The palette grew from **nine to fifteen** on Keaton's word (`20260811`) to match the **sky fractal** (`3·9·15·27` — the odd-quorum rungs of a loadable topology). The first nine are the original nocturne; the last six were drawn from a single poem in that silo and lifted, as Twilight always lifts, from dark image to affirmative archetype — each tied to a value the tree already keeps.
 
 1. **the fertile black** — the ground that holds everything by staying dark; presence in apparent absence.
 2. **tar to turquoise** — the poison lifted to light; transformation without heat; the wound that learns to glow.
