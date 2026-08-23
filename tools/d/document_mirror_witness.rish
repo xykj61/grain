@@ -1,0 +1,47 @@
+# tools/d/document_mirror_witness.rish -- one document, several homes, the same bytes in each.
+#
+#   rishi/bin/rishi run tools/d/document_mirror_witness.rish
+#   sh tools/fixtures/document_mirror_scan.sh write     # after editing a canonical
+#
+# WHY. A document sometimes belongs in more than one room, and both usual answers are poor: moving
+# it breaks every inbound reference (153 point at `context/KYRI.md` alone), and copying it lets the
+# copies drift apart in the dark. Declaring the homes in `context/document-mirrors.brix` and proving
+# them byte-identical keeps both doors open and turns drift into a red on the lap it enters.
+#
+# This is Tablecloth's own idea reaching the document shelf -- a thing addressed by its content, so
+# sameness is a fact a machine checks rather than a promise a person keeps. Brix declares the
+# system; the scan reads the declaration; this rung holds the asserts.
+#
+# WHAT IS GATED, hard, at zero. Any `at` path differing from its `canonical`, and any declared path
+# absent from the tree. Nothing passes free: a mirror set is small and deliberate, so a ratchet here
+# would only say the declaration is aspirational, and an aspirational mirror is worse than none.
+#
+# Pen: tools/fixtures/document_mirror_control.sh -- eight cases, drift bitten and named, absence
+# told apart from drift, and `write` proven to repair. Run from the repository root.
+
+say "document-mirror: Language EN -- a document in two rooms is one document, or it is two documents."
+say "document-mirror: Style Gauge -- the homes are declared where a reader can see them, in Brix."
+say "document-mirror: Lens TAME -- a sameness guard proven only to say `same` reads nothing at all."
+
+let scan = run ["sh" "tools/fixtures/document_mirror_scan.sh"]
+say scan.out
+assert scan.ok else "document-mirror: a declared home differs from its canonical, or is absent -- read the scan's own lines"
+assert scan.out contains "verdict=ok" else "document-mirror: the scan must reach a clean verdict"
+assert scan.out contains "mirrors_drifted=0" else "document-mirror: every declared home must hold the canonical's bytes"
+assert scan.out contains "paths_absent=0" else "document-mirror: every declared path must stand in the tree"
+
+let control = run ["sh" "tools/fixtures/document_mirror_control.sh"]
+assert control.ok else "document-mirror: the control must complete"
+say control.out
+assert control.out contains "case=identical_free ok" else "document-mirror: identical homes must pass"
+assert control.out contains "case=drift_bitten ok" else "document-mirror: one byte of drift must be refused"
+assert control.out contains "case=drift_named ok" else "document-mirror: the refusal must name which home drifted"
+assert control.out contains "case=write_repairs ok" else "document-mirror: write must repair drift and then pass"
+assert control.out contains "case=absent_mirror ok" else "document-mirror: an absent home must be refused, apart from drift"
+assert control.out contains "case=absent_canonical ok" else "document-mirror: an absent canonical must be refused"
+assert control.out contains "case=comment_free ok" else "document-mirror: a commented path must declare nothing"
+assert control.out contains "case=two_sets_counted ok" else "document-mirror: two blocks must read as two sets"
+assert control.out contains "control=ok" else "document-mirror: the control must agree with itself"
+
+say "RED and GREEN paths proven -- drift bitten and named, absence told apart, write proven to repair"
+say "GREEN: document-mirror -- every declared home holds the same bytes, and Brix says which homes those are."
