@@ -24,6 +24,29 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260823.082418` -- the crux room becomes construction
+
+**Walk-back nib:** `06d7d487a3` -- pier and both remotes. This is a **breach** rather than a debride, so
+nothing is rewritten and the walk-back stays reachable everywhere. `git show 06d7d487a3:crux/REMEMBER.md`
+reads any departing file at its old path.
+
+**Swept:** the `crux/` room is renamed to `construction/` -- 109 tracked files, with 1,442 path
+occurrences across 620 files. The 144 **living** files are repointed; the 476 files of **dated
+testimony** keep every word they wrote and their references stand as written.
+
+**What waits there, worth recalling:** `crux` was itself the breach target of `20260815`, when
+`work-in-progress/` became `crux/`, and that breach cost two reds -- `REDS %153`, where an
+untracked `work-in-progress -> crux` compatibility symlink blinded a whole class of guard for
+eight days, and `REDS %155`, where 116 path literals inside tracked tool sources were found still
+reading the elder room a lap after the documents were swept. **Both lessons are applied here: no
+compatibility symlink is left behind, and the machinery is swept in the same pass as the prose.**
+
+**Why the name moves.** The **word** `crux` is a seated Lexicon term meaning the hardest solvable
+problem, and it stays exactly as it is in all 4,162 living uses. The **room** wanted a plainer
+name: `construction/` says what the room holds -- the live operator card, the ledgers, the work
+under way -- to a reader meeting it on their first day, which is what the Comlink tendency asks of
+every name. One word doing two jobs was the thing worth separating.
+
 ### `20260823.072824` -- the deep debride: personal material leaves the history
 
 **Walk-back nib:** `52393ae830` -- **and this one is different from every cairn above it.** This is
