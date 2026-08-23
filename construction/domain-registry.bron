@@ -1,0 +1,153 @@
+# construction/domain-registry.bron -- domains held, as a record a program can read.
+#
+# WHY THIS FILE. Naming decisions in this tree keep reaching for a domain, and a domain either is
+# held or is not. Recording them once means a naming round checks a file rather than a memory --
+# the same reason the standing-equipment roster stopped living in a paragraph. Several names this
+# tree already uses appear here, and a few names here have no module yet, which is the useful part.
+#
+# ROOM. `construction/` is withheld from the public seed by absence from the allowlist, which is
+# right for an ownership record: each name is public on its own, and the portfolio with terms and
+# intent is business material rather than documentation.
+#
+# ONE ENTRY IS NOT HELD. `199999999999.net` reads EXPIRED 20260710 in the account listing. It stays
+# in the record with its status rather than being dropped, because a registry that silently omits
+# what lapsed teaches a reader the wrong thing about what the account contains. `held` counts the
+# rest.
+#
+# SOURCE. Squarespace account domain list, 20260823, A-Z, given verbatim by Keaton as a Zig
+# payload of 126 entries. Held here in Bron, the tree's own data notation, so a Rishi tool reads it
+# without a parser of its own.
+
+format domain-registry-v1
+stamp 20260823.114751
+source squarespace account domain list 20260823 a-z
+listed 126
+expired 1
+held 125
+
+domain 199999999999.net           role EXPIRED 20260710 -- listed by the account, no longer held
+domain 4rb1tr4g3.com             
+domain 4rb1tr4g3.net             
+domain 4rb1tr4g3.org             
+domain 5-by-525.com              
+domain 5-x-525.com               
+domain 5by525.com                
+domain 5by525.net                
+domain 5by525.org                
+domain 5x525.net                 
+domain 5x525.org                 
+domain abyss-s.com               
+domain abysss.org                
+domain anticruel.com             
+domain anticruel.net             
+domain anticruel.org             
+domain auctionary.net            
+domain b122m.com                 
+domain b122m.net                 
+domain b122m.org                 
+domain bachtacodeal.org          
+domain bachtaroshee.org          
+domain chartcourse.io            
+domain constel.net                role Constel test-network naming (waymark FORA)
+domain constels.com               role Constel
+domain construction3x39.net      
+domain deemlow.com               
+domain dimeroll.com               role Dimeroll -- HR and accounting entities
+domain druidcatleo.com            role Druid -- the frontend style name
+domain gra1n.com                 
+domain gra1n.net                 
+domain gra1n.org                 
+domain grain.energy               role Grain Energy PBC (TACT equinox)
+domain grain12.com               
+domain grain12pbc.com            
+domain grainos.org                role the public seed, grain-os/grain
+domain groupproject36.com        
+domain groupproject36.net        
+domain groupproject36.org        
+domain herefirst.net             
+domain hulkbee.com               
+domain hulkbee.net               
+domain hulkbee.org               
+domain judedicaprio.com          
+domain kadsha.com                
+domain kae3g.com                 
+domain kae3g.net                 
+domain kae3g.org                 
+domain kaexvx9.com               
+domain keatondunsford.com         role the living name (20260823.100546)
+domain keatondunsford.net         role the living name
+domain keatondunsford.org         role the living name
+domain keatonlivermore.com        role elder name -- held, superseded 20260823.100546
+domain keatonlivermore.net        role elder name -- held, superseded
+domain keatonlivermore.org        role elder name -- held, superseded
+domain khresfa.com                role the kres/kresfa contract language season, alternate spelling
+domain kresfa.com                 role the kres/kresfa contract language season
+domain linengrow.ai              
+domain linengrow.com             
+domain linengrow.io              
+domain linengrow.net             
+domain linengrow.org             
+domain made-in-west.com          
+domain madeinwest.net            
+domain maiden-west.com           
+domain maidenwest.com            
+domain maidenwest.net            
+domain maidenwest.org            
+domain mala-murr.com             
+domain malamurr.com              
+domain malamurr.net              
+domain malamurr.org              
+domain mall-gala-merch.com       
+domain mall-gala.com             
+domain mallgala.com              
+domain mallgala.net              
+domain mallgala.org              
+domain mallgalamerch.com         
+domain mallgalamerch.net         
+domain mallgalamerch.org         
+domain mantrapod.com              role Mantrapod hardware surface
+domain mantrapod.net             
+domain mantrapod.org             
+domain nara.live                 
+domain notfocusing.com           
+domain platinumdoor.net          
+domain platinumdoor.org          
+domain radiance24.net            
+domain realidream.net             role Realidream surface
+domain reyklah.com               
+domain reyklah.net               
+domain reyklah.org               
+domain reyklah2.com              
+domain risc-love.com             
+domain risc.love                 
+domain risklove.net              
+domain ryeos.org                  role Rye
+domain serf-social.com            role redirect to surf-social.com
+domain serf.social                role redirect to surf-social.com (Keaton 20260823.114751)
+domain serfsocial.com             role redirect to surf-social.com
+domain siya.fund                  role Siya Fund LLC
+domain ska7e.com                 
+domain superboosted.net          
+domain surf-social.com            role live -- the Surf Social layer (context/LEXICON.md 20260823.094410)
+domain teamcarry11.com           
+domain tnsegral.com              
+domain tnsegral.net              
+domain tnsegral.org              
+domain totalness.net             
+domain vegan.financial           
+domain vegan.work                
+domain veganaccountant.net       
+domain veganaccountant.org       
+domain veganarchitect.net        
+domain veganarchitect.org        
+domain veganbookkeeper.com       
+domain veganbookkeeper.net       
+domain veganbookkeeper.org       
+domain vegancpa.net              
+domain vegancpa.org              
+domain vegankoi.com              
+domain vegankoi.net              
+domain vegankoi.org              
+domain vizmvm.com                
+domain weaveprint.net            
+domain xwb122m.com               
