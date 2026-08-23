@@ -130,7 +130,7 @@ goal itself here, rather than a compromise on the way to one.
 | **[Glow](glow/)** - **[Rye](rye/)** | The language people write, and the bounded systems language it lowers to. |
 | **[Kumara](kumara/)** | Identity you own -- a key in your hands, and yours for as long as you hold it. |
 | **[Aurora](aurora/)** | The dawn. The first code that wakes on bare hardware, before an operating system exists. |
-| **[Skate](skate/)** - **[Brushstroke](brushstroke/)** | The drawing surface, and the strokes made on it. |
+| **[Skate](surf/)** - **[Brushstroke](brushstroke/)** | The drawing surface, and the strokes made on it. |
 | **[Mycelium](mycelium/)** | The quiet network underneath, named for the thread that connects a forest. |
 
 Every seated term, with the date and the reason we chose it, lives in

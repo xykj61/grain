@@ -1,4 +1,4 @@
-//! pond/apps/skate_group_fixture_gen.rye — generate skate/fixtures/group.bron with real Ed25519 vote signatures.
+//! pond/apps/skate_group_fixture_gen.rye — generate surf/fixtures/group.bron with real Ed25519 vote signatures.
 //!
 //! DAHL-J10r4 reads a real Skate group record true. This generator produces that fixture reproducibly:
 //! it builds a demo signed group over the demo keeper seeds and renders it through rung three's own
@@ -14,7 +14,7 @@
 //! The record prints on stderr (the tree's `std.debug.print` convention), so capture stderr, not stdout:
 //!
 //!   rye build pond/apps/skate_group_fixture_gen.rye -femit-bin=pond/bin/skate-group-fixture-gen
-//!   pond/bin/skate-group-fixture-gen 2> skate/fixtures/group.bron
+//!   pond/bin/skate-group-fixture-gen 2> surf/fixtures/group.bron
 
 const std = @import("std");
 const assert = std.debug.assert;

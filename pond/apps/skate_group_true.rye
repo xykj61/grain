@@ -5,7 +5,7 @@
 //! group record a keeper can open and count, and proves the property the whole membership layer rests
 //! on: what the reader *reports* about a group is true to the bytes.
 //!
-//! The corpus is `skate/fixtures/group.bron`, a genuine `format skate-group-v1` record with real Ed25519
+//! The corpus is `surf/fixtures/group.bron`, a genuine `format skate-group-v1` record with real Ed25519
 //! vote signatures (three founders at quorum 2; two votes admit Bram, one one-sided vote for Cate holds),
 //! `@embedFile`-bound at compile time through a symlink in `pond/apps/corpora/` — no network, the bytes
 //! read are the tree's own. Two independent readings must agree: the app parses the record through rung

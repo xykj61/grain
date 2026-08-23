@@ -5,7 +5,7 @@
 //! a **real** succession record a keeper can open and count, and proves the property the whole
 //! data-dignity layer rests on: what the reader *reports* about a succession is true to the bytes.
 //!
-//! The corpus is `skate/fixtures/estate.bron`, a genuine `format data-dignity-v1` record with real Ed25519
+//! The corpus is `surf/fixtures/estate.bron`, a genuine `format data-dignity-v1` record with real Ed25519
 //! directive and acceptance signatures (a keeper wills two holdings to the heir and rests one; both proofs
 //! signed), `@embedFile`-bound at compile time through a symlink in `pond/apps/corpora/` — no network, the
 //! bytes read are the tree's own. Two independent readings must agree: the app parses the record through
