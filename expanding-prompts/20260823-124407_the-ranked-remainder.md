@@ -46,12 +46,42 @@ These compound every hour they exist and block nothing else from starting.
 cap, so the web view is already truncated for anyone browsing. The room sits **off** the enforced
 roster, which is exactly why no guard has said so in the eight days since the roster was seated.
 
-The fold wants a **first-sprig-letter** shape rather than the `date/YYYYMMDD/` one, because a tool
-is found by what it does rather than when it was written. That is a genuine design choice: a
-`tools/c/caravan_*.rish` shape reads plainly and puts 109 Caravan witnesses in one place, while a
-kind-based shape (`witness/`, `fixture/`, `gen/`) groups by role instead. **Decide the shape before
-moving one file**, and repoint the roughly fifty machinery readers in the same pass -- a guard that
-reads a moved fixture reports green while measuring nothing.
+### The shape, decided and measured -- `20260823.130056`
+
+Keaton chose **first sprig letter**, and measuring it produced one amendment and one reassurance.
+
+**The amendment.** A single letter leaves two rooms still over bound: `a` holds **289** files and
+`c` holds **330**, against a bound of 256. So the shape is *first sprig letter, with a second
+letter only where the first exceeds the bound* -- `tools/al/` at 241, `tools/ca/` at 117,
+`tools/cr/` at 107, `tools/co/` at 69. Twenty-one letter rooms and a handful of two-letter ones,
+every one under bound.
+
+**Why not group by first word**, which was the obvious alternative: it yields 296 rooms of which
+**205 hold one or two files**. That trades one unbrowsable room for two hundred near-empty ones,
+which serves a reader worse than the problem does.
+
+**The reassurance, and it is what makes the fold safe.** The `date/YYYYMMDD/` fold works because
+the basename carries the key to compute the new path, so a stale reference is *resolved* rather
+than rewritten. **A first-letter fold has exactly that property**: `caravan_x.rish` yields `c`
+yields `tools/c/caravan_x.rish`, computable from the basename alone, with no index. So
+`tools/dated_path_resolve.rish` gains a sibling and the 2,866 files of dated testimony keep every
+word they wrote.
+
+### The execution, sized
+
+| Piece | Count |
+|---|---|
+| Files moved | 1,891 |
+| Total `tools/<file>` references | 14,151 |
+| **Living** files to repoint | **2,442** |
+| Dated testimony, resolved rather than rewritten | 2,866 |
+| Machinery readers that must not break | roughly 50 |
+
+**This is ten times the crux rename**, which touched 1,442 references and reddened five guards. It
+wants its own round with a fresh context, in this order: checkpoint, write and prove the resolver
+*first*, move, repoint living, run the roster, and only then lower the bound roster to include
+`tools`. A guard that reads a moved fixture reports green while measuring nothing, so the roster
+run is the gate rather than the formality.
 
 ### 1.2 The 848 seed-dead links
 
