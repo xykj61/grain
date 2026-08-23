@@ -44,7 +44,7 @@ A beginner Glow-language textbook waits on a general parser. Until then, learn R
 | [`../docs/TUBE.md`](../docs/TUBE.md) | App-manifest + NativeActivity APK compressor | Checkable compress |
 | [`../docs/STOA.md`](../docs/STOA.md) | Glow language SLC compressor (STOA0–3) | Checkable compress |
 | [`../gratitude/grapheneos/`](../gratitude/grapheneos/) | Upstream GrapheneOS docs (MIT mirror) | Study library |
-| [`glow-os/`](glow-os/) | Glow OS onboarding hub (variants still scaffold) | Mixed — see Get Started for real vs proposed |
+| [`glow-os/`](grain-os/) | Glow OS onboarding hub (variants still scaffold) | Mixed — see Get Started for real vs proposed |
 
 Living ledger (full register): [`../context/specs/two-dev-environments-and-mobile-emulation.md`](../context/specs/two-dev-environments-and-mobile-emulation.md).
 
@@ -52,7 +52,7 @@ Living ledger (full register): [`../context/specs/two-dev-environments-and-mobil
 
 ## What Lives Here
 
-- **`glow-os/`** — Glow OS onboarding hub ([`glow-os/README.md`](glow-os/README.md)): overview, get-started, four-variant scaffold.
+- **`glow-os/`** — Glow OS onboarding hub ([`glow-os/README.md`](grain-os/README.md)): overview, get-started, four-variant scaffold.
 - **`reference/rishi-language.md`** — the Rishi language and command-line reference (version `20260702.184312`, parity **142**); §8 conditionals witnessed `20260702.205630`.
 - **`reference/caravan-capabilities.md`** — hosted capability table (witnessed behavior only).
 - **`reference/tally-gardens.md`** — named bounded memory regions (witnessed behavior only).

@@ -155,6 +155,10 @@ guard document_mirror
 path tools/d/document_mirror_witness.rish
 seated 20260823.173634
 
+guard readme_reach
+path tools/r/readme_reach_witness.rish
+seated 20260823.184309
+
 guard width_check
 path tools/w/width-check.rish
 seated 20260620.210812
