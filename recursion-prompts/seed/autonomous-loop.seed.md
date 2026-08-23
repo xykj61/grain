@@ -68,9 +68,9 @@ the new thing, hold the line -- with dual as the mediator between them.
 | | **Cardinal** -- opens | **Fixed** -- holds | **Dual** -- adapts |
 |---|---|---|---|
 | **Aether - Jupiter** *why the work exists* | `foundations/20260706-185112_follow-our-compass.md` | `foundations/20260811-211431_the-lindy-effect-and-the-long-return.md` | `foundations/20260702-184312_the-grain-and-the-crossing.md` |
-| **Air - Saturn** *law and boundary* | `context/TAME_CORE.md` | `foundations/20260618-182412_single-stranded.md` | `foundations/20260821-211423_conways-law-and-the-organization-that-forgets.md` |
+| **Air - Saturn** *law and boundary* | `context/TAME_CORE.md` | `foundations/20260618-182412_single-stranded.md` | `context/GAUGE_STYLE.md` |
 | **Fire - Mars** *cut and stop* | `foundations/20260816-214652_standfast-the-stopped-line.md` | `foundations/20260729-224828_reds-first-and-the-allocation.md` | `foundations/20260818-081438_the-three-depths-of-removal.md` |
-| **Water - Venus** *care and flow* | `foundations/20260821-211423_galls-law-and-the-grown-system.md` | `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` | `foundations/20260618-184912_growing-a-language.md` |
+| **Water - Venus** *care and flow* | `foundations/20260823-105651_the-shape-you-grew-and-the-shape-you-are.md` | `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` | `foundations/20260618-184912_growing-a-language.md` |
 | **Earth - Mercury** *the concrete* | `context/specs/20260627-102012_one-clock-naming-law.md` | `context/TWO_ROOMS.md` | `foundations/20260703-202312_the-marked-value.md` |
 
 **What the grid retired, and why each was a real cut.** The d27 rota mixed a 4 KB essay with a
@@ -96,8 +96,8 @@ twenty.
 *foundations graduation on Keaton's word* in their own headers since `20260703` and had waited
 forty-nine days; three more were already on the rota **from** `active-designing/`, which was itself
 the evidence they lived in the wrong room. Today's design-rooms test settled all six: each is worth
-reading with the code deleted. `foundations/20260821-211423_galls-law-and-the-grown-system.md` and
-`foundations/20260821-211423_conways-law-and-the-organization-that-forgets.md` were **written** the
+reading with the code deleted. `foundations/20260823-105651_the-shape-you-grew-and-the-shape-you-are.md` and
+`context/GAUGE_STYLE.md` were **written** the
 same day to fill two measured blind spots -- Gall's Law was cited in six documents and argued in
 none, and Conway's Law had zero mentions anywhere in the tree.
 
@@ -152,7 +152,7 @@ loop's generality meets the inner loop's specificity: the outer prompt reads it 
 and does what it says. So refreshing the card **is** steering the run, and a stale live edge is an
 instruction that will be followed. Conway's Law names why this works -- the channel between
 sessions is made of files, so editing the channel is architecture done in prose
-(`foundations/20260821-211423_conways-law-and-the-organization-that-forgets.md`).
+(`context/GAUGE_STYLE.md`).
 
 ## 4 -- Method: witness-first, red-then-green, in the same round
 

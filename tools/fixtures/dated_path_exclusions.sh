@@ -115,10 +115,16 @@ DP_EXCLUDE_PATHS="docs-geode/demos/README.md"
 #   references that still name them live in dated testimony, which keeps every word it wrote, so
 #   the honest reading is a path asserted absent rather than a reference gone stale -- the same
 #   shape REDS %139 chose for a path asserted absent and REDS %157 extended to a basename.
+#
+#   The last is FUSED rather than debrided: Conway's Law and Gall's Law became one page on
+#   20260823.105651, and Conway's separate telling left the tree while staying in history. A
+#   dated session log still names it, and testimony keeps every word it wrote, so the census
+#   reads the name as intent.
 DP_FIXTURE_BASENAMES="20260101-000000_a-dated-note.md \
 20260730-022147_keaton-livermore-resume-draft.md \
 20260730-022147_personal-ontology.md \
-20260730-022147_cover-letter-co-authored.md"
+20260730-022147_cover-letter-co-authored.md \
+20260821-211423_conways-law-and-the-organization-that-forgets.md"
 
 # Each helper REPLACES the positional parameters, so a caller captures its own arguments first.
 # Globbing is disabled while the list is expanded, because `dated_path_*` is a pattern meant for
