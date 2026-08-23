@@ -112,9 +112,9 @@ The placements for any given season are recorded in `session-logs/` -- what move
 
 ## The One Clock
 
-Every dated artifact names itself `YYYYMMDD-HHMMSS_short-slug.md`. Later is always larger. Living documents (`README.md`, `ROADMAP.md`, `TASKS.md`, the discipline files) carry **Last updated** and evolve in place. Full law: `context/specs/20260627-102012_one-clock-naming-law.md`.
+Every dated artifact names itself `YYYYMMDD-HHMMSS_short-sprig.md`. Later is always larger. Living documents (`README.md`, `ROADMAP.md`, `TASKS.md`, the discipline files) carry **Last updated** and evolve in place. Full law: `context/specs/20260627-102012_one-clock-naming-law.md`.
 
-This one stamp is Glow's **warm-aura date atom**, and it renders exactly three ways: a version string `YYYYMMDD.HHMMSS` (dot), a filename stamp `YYYYMMDD-HHMMSS_slug` (hyphen), and a **dated folder bare `YYYYMMDD`** (day precision -- the `session-logs/date/20260619/` pattern every fold matches, never slugged or counted). Naming and TAME framing: `context/specs/20260714-024800_warm-aura-date-atom-naming.md`.
+This one stamp is Glow's **warm-aura date atom**, and it renders exactly three ways: a version string `YYYYMMDD.HHMMSS` (dot), a filename stamp `YYYYMMDD-HHMMSS_sprig` (hyphen), and a **dated folder bare `YYYYMMDD`** (day precision -- the `session-logs/date/20260619/` pattern every fold matches, never slugged or counted). Naming and TAME framing: `context/specs/20260714-024800_warm-aura-date-atom-naming.md`.
 
 ---
 
@@ -136,9 +136,9 @@ The distinction matters: `yonder/` is a horizon, rather than a graveyard. A trul
 
 **Affirming a kept file does four small things in one touch:** strip its dead `NNN -` number prefix (the timestamp filename is the true name now), re-date its `Last updated`, add the reviewed-and-kept line, and lightly freshen the Radiant voice where it has drifted. No rename, no reference change. Vibrancy rides on this touch and on writing Radiant by default -- never on a sweeping restyle.
 
-**Titles.** A title carries no legacy `NNN -` number prefix; the timestamp filename is the identifier. The H1 leads with the concept its filename slug names, so file and title cohere at a glance, in the Radiant `Name -- clause` form. Living documents use their plain spoken name as the H1.
+**Titles.** A title carries no legacy `NNN -` number prefix; the timestamp filename is the identifier. The H1 leads with the concept its filename sprig names, so file and title cohere at a glance, in the Radiant `Name -- clause` form. Living documents use their plain spoken name as the H1.
 
-**Affirm-in-place titling:** when affirming, also strip the number prefix and align the H1 with the slug's concept -- all in the same touch, still with no rename and no reference change.
+**Affirm-in-place titling:** when affirming, also strip the number prefix and align the H1 with the sprig's concept -- all in the same touch, still with no rename and no reference change.
 
 A re-stamp that bubbles a file to the bottom suits an *ordinary, lightly-cited* document, where the sort cue helps and the few references are cheap to move. A *canonical reference* -- one many files cite -- keeps its stable name and is affirmed in place: its `Last updated` and a short affirmation line carry the signal, and its citation density already tells anyone it is load-bearing. Renaming what a hundred files depend on, to gain a sort cue nobody needed, trades a real promise away for a small convenience.
 

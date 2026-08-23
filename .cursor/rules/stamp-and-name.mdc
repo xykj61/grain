@@ -12,7 +12,7 @@ alwaysApply: true
 1. **Mark by stamp and name** -- `the standing movement (20260821-142939)`.
 2. **Never mint an ascending mark** -- no `Fold A -> Fold AH`, no `f0-f63`, no `X0/X1` rungs for planned work.
 3. **Count, never number** -- derive a total by measurement rather than carrying it inside a name.
-4. **Keep the whole stamp in every filename** -- `date/YYYYMMDD/YYYYMMDD-HHMMSS_slug.ext`.
+4. **Keep the whole stamp in every filename** -- `date/YYYYMMDD/YYYYMMDD-HHMMSS_sprig.ext`.
 
 **Why.** Four seated ladders announced a length and stopped short (`f0-f63` at f3, `u0-u127` at u91, `i0-i15` at i6, sixteen Geode rounds at two rooms of twelve), so each number was a forecast written where it can never be corrected. An ascending mark also implies a dependency that is not there, sorts wrong in every text-sorting tool (`Fold Z` before `Fold AA`), and collides across ladders. The commit subject already carries a stamp and a name, so the law is subtraction rather than substitution.
 
@@ -26,6 +26,6 @@ alwaysApply: true
 
 **A room earns ENFORCE by folding** -- `session-logs`, `counsel`, `active-designing`, `expanding-prompts`, `waymarks` (`20260821.171331`) -- or is **born enforced** if opened under the law, like `active-development` (`20260821.174047`), which has no backlog to grandfather. An enforced room is reported even at zero flat files, since a room that vanishes from a meter is not a room that passed it. Everything else stays advisory until its own fold. No fold ships without `tools/dated_path_witness.rish` green -- it gates the **lost**-reference count (a basename that exists nowhere, or one at two paths) with no slack, rather than the whole broken count, since a recovered reference is the expected steady state and rises whenever a room folds.
 
-**Illustrate with placeholders, cite only what exists.** An example path in prose is a shape -- `date/YYYYMMDD/YYYYMMDD-HHMMSS_slug.ext` -- never a concrete-looking path to a file that is not there, which reads as a real citation to every reader and every tool.
+**Illustrate with placeholders, cite only what exists.** An example path in prose is a shape -- `date/YYYYMMDD/YYYYMMDD-HHMMSS_sprig.ext` -- never a concrete-looking path to a file that is not there, which reads as a real citation to every reader and every tool.
 
 **Accrete-never-break.** Every dated log and commit that already wrote `Fold AI` or `f0-f63` keeps every letter. This governs what is marked from here forward.

@@ -36,7 +36,7 @@ const fixture_root = "tools/fixtures/session_logs_archive";
 /// The day a dated file folds into, or null when the name is not a one-clock stamp.
 ///
 /// The shape required is the WHOLE stamp -- `YYYYMMDD-HHMMSS_`, sixteen characters before the
-/// slug -- and that strictness is load-bearing rather than fussy. Three tools must agree on what
+/// sprig -- and that strictness is load-bearing rather than fussy. Three tools must agree on what
 /// a dated file is: this one moves them, `tools/dated_path_resolve.rish` recovers references to
 /// them from the stamp alone, and `tools/fixtures/room_bound_scan.sh` counts them against the
 /// bound. An older, looser test here accepted a day-only name like `20260814-fill-ales28-x.md`
@@ -44,7 +44,7 @@ const fixture_root = "tools/fixtures/session_logs_archive";
 /// since it needs the time to compute a home. A file a fold can move but a resolver cannot find
 /// is the one thing this whole arc exists to prevent, so the loose test is gone.
 pub fn day_from_log_fname(fname: []const u8) ?[]const u8 {
-    // YYYYMMDD-HHMMSS_ is 16 characters, and a slug has to follow it.
+    // YYYYMMDD-HHMMSS_ is 16 characters, and a sprig has to follow it.
     if (fname.len < 17) return null;
     if (fname[8] != '-') return null;
     if (fname[15] != '_') return null;

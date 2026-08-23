@@ -84,4 +84,4 @@ Each study distills one placement pattern in our own voice. Studies live in **to
 | `reading-themes/` | Cross-chart themes |
 | `teaching/` | Craft teaching, not one natal placement |
 
-New placements earn the next number, a topic folder, and a hyphenated slug — then a row in this table and in the reading template.
+New placements earn the next number, a topic folder, and a hyphenated sprig — then a row in this table and in the reading template.

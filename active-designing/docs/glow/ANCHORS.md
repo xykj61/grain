@@ -13,14 +13,14 @@ You asked for a weave where code comments point at documentation and documentati
 
 ## The Doc Side — Stable Anchors
 
-Every documented item carries an explicit HTML anchor on the line before its heading, because both forges auto-slug headings from their text, and auto-slugs shatter the moment a title is improved. An explicit anchor survives any retitle:
+Every documented item carries an explicit HTML anchor on the line before its heading, because both forges auto-sprig headings from their text, and auto-sprigs shatter the moment a title is improved. An explicit anchor survives any retitle:
 
 ```markdown
 <a id="g-bartis"></a>
 ### `|=` bartis — the gate
 ```
 
-**Naming the anchor.** Seated things take **semantic slugs**, because their names are promises: `g-<rune-name>` for runes (`g-bartis`, `g-cell`, `g-cast`), `gd-<slug>` for doctrine sections (`gd-truth`, `gd-auras`). Dated essays and briefs keep their **chronological stamps** as identity, exactly as the tree already does — the what3words-style middle ground you floated resolves this way: semantic where a name is seated, chronological where a moment is the identity, and never a third scheme.
+**Naming the anchor.** Seated things take **semantic sprigs**, because their names are promises: `g-<rune-name>` for runes (`g-bartis`, `g-cell`, `g-cast`), `gd-<sprig>` for doctrine sections (`gd-truth`, `gd-auras`). Dated essays and briefs keep their **chronological stamps** as identity, exactly as the tree already does — the what3words-style middle ground you floated resolves this way: semantic where a name is seated, chronological where a moment is the identity, and never a third scheme.
 
 ## The Code Side — One Greppable Line
 
@@ -48,7 +48,7 @@ The convention earns Checkable through `glow_book_anchor_witness` (Phase D lands
 
 ## What This Deliberately Refuses
 
-No numeric heading schemes (renumbering is the break we swore off). No auto-slug reliance. No anchors inside code beyond the one header line — the weave stays one thread per module, aparigraha-thin, so it can actually be kept.
+No numeric heading schemes (renumbering is the break we swore off). No auto-sprig reliance. No anchors inside code beyond the one header line — the weave stays one thread per module, aparigraha-thin, so it can actually be kept.
 
 ---
 

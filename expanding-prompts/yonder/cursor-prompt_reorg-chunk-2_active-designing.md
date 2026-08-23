@@ -65,14 +65,14 @@ Build a proposed old→new mapping and a list of proposed redirect stubs, and pr
 
 - **The foundation/anchor file** — the clearly-foundational doc (often the old high-number anchor) → propose `README.md` (living, no stamp).
 - **Any standing charter or strategy** → propose `STRATEGY.md` (living, no stamp). If a standing roadmap or lexicon lives here, propose `ROADMAP.md` / `LEXICON.md` likewise.
-- **Every remaining dated brief** → read the `YYYYMMDD.HHMMSS` stamp from its header and propose `YYYYMMDD-HHMMSS_<existing-slug>.md`, keeping the slug it already carries.
+- **Every remaining dated brief** → read the `YYYYMMDD.HHMMSS` stamp from its header and propose `YYYYMMDD-HHMMSS_<existing-sprig>.md`, keeping the sprig it already carries.
 - **Where a header carries no stamp**, derive the authored time from the first-add commit and note it as derived:
 
 ```bash
 git log --diff-filter=A --follow --date=format:%Y%m%d-%H%M%S --format=%ad -- <file> | tail -1
 ```
 
-- **Genuine duplicates.** The naming law named the pattern to watch — a recommended-architecture brief in two folders, a `998` in three. Within this folder, flag any brief that a later one clearly supersedes. For each superseded file, propose a **one-line redirect stub** rather than a second copy: keep its stamped name, replace its body with a single pointer line, for example `> Superseded — see 20260627-102012_<surviving-slug>.md`. Cross-folder duplicates wait until their other folder is reorganized; touch only what lives in `active-designing/` now.
+- **Genuine duplicates.** The naming law named the pattern to watch — a recommended-architecture brief in two folders, a `998` in three. Within this folder, flag any brief that a later one clearly supersedes. For each superseded file, propose a **one-line redirect stub** rather than a second copy: keep its stamped name, replace its body with a single pointer line, for example `> Superseded — see 20260627-102012_<surviving-sprig>.md`. Cross-folder duplicates wait until their other folder is reorganized; touch only what lives in `active-designing/` now.
 - Search with `git grep` / `git ls-files`, never plain `grep -r`.
 
 Print the full old→new mapping, the list of proposed stubs, and any derived stamps with their source. The header-derived names and the supersession calls are the only places real judgment enters — present those rows clearly so Kaeden can read them closely.

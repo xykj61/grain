@@ -24,7 +24,7 @@ It is a kindness to our future selves: memory for the *work*, the way Mantra is 
 
 ## How It Counts
 
-Dated artifacts carry `YYYYMMDD-HHMMSS_short-slug.md`; this README is the living foundation. The reverse-chronological index below reads newest first. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+Dated artifacts carry `YYYYMMDD-HHMMSS_short-sprig.md`; this README is the living foundation. The reverse-chronological index below reads newest first. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
 Each stock-taking once wrote a new **open-threads** snapshot stamped at the time of writing. Older snapshots graduate to [`archive/`](archive/) — out of the live folder, yet kept whole as an honest record of what was open, and when. The accreted `20260623-033012` snapshot archived `2026-06-29`, and a redirect stub at the old path points to the archive. **Going forward:** open questions live in [`TASKS.md`](TASKS.md); history accretes in [`../session-logs/`](../session-logs/).
 

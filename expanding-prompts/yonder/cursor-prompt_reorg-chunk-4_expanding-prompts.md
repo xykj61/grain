@@ -50,7 +50,7 @@ Build and print a complete old→new mapping, the `10010` resolution, the collis
 
 ### The dated briefs (23 with header stamps)
 
-For each brief carrying `**Version:** YYYYMMDD.HHMMSS`, propose `YYYYMMDD-HHMMSS_<existing-slug>.md`, keeping the slug it already holds. The head (`10000`–`10017`) is monotonic and simply confirms order. The tail re-sorts to true authoring time — surface this plainly so Kaeden sees it is the law correcting a small mis-numbering, not a flip:
+For each brief carrying `**Version:** YYYYMMDD.HHMMSS`, propose `YYYYMMDD-HHMMSS_<existing-sprig>.md`, keeping the sprig it already holds. The head (`10000`–`10017`) is monotonic and simply confirms order. The tail re-sorts to true authoring time — surface this plainly so Kaeden sees it is the law correcting a small mis-numbering, not a flip:
 
 - **Tablecloth cluster** by stamp becomes split → build → ladder-index → value-model → v1-seed:
   - `10018_tablecloth_ladder_index.md` → `20260620-044012_tablecloth-ladder-index.md`
@@ -58,7 +58,7 @@ For each brief carrying `**Version:** YYYYMMDD.HHMMSS`, propose `YYYYMMDD-HHMMSS
   - `10020_tablecloth_brix_build.md` → `20260620-043912_tablecloth-brix-build.md`
   - `10021_tablecloth_value_model.md` → `20260620-044012_tablecloth-value-model.md`
   - `10022_tablecloth_v1_seed.md` → `20260620-044112_tablecloth-v1-seed.md`
-- **Collision:** `10018` and `10021` share `20260620-044012`; the distinct slugs above resolve it. No other action.
+- **Collision:** `10018` and `10021` share `20260620-044012`; the distinct sprigs above resolve it. No other action.
 - **Inversion:** `10024_explicit_width_audit.md` (`20260620-210812`) sorts *before* `10023_main_track_rye_rishi_strengthening.md` (`20260621-051612`). Both map straight from their headers; the order simply corrects.
 
 ### The reserved-number marker — retire it into the README
@@ -73,7 +73,7 @@ Print the routing you intend to fold before removing, so Kaeden can confirm noth
 
 ### The redirect stubs (rename only, create nothing)
 
-`10013`, `10015`, `10025` each declare `Executed (…) · stub (051612)` and already point at where the work landed. Rename each into one-clock form using the stub-event moment, distinct `-redirect` slugs:
+`10013`, `10015`, `10025` each declare `Executed (…) · stub (051612)` and already point at where the work landed. Rename each into one-clock form using the stub-event moment, distinct `-redirect` sprigs:
 
 ```
 10013_what_we_mean_by_seed.md            → 20260621-051612_what-we-mean-by-seed-redirect.md
@@ -87,7 +87,7 @@ Confirm the `20260621` date against each stub's first-add commit before applying
 git log --diff-filter=A --follow --date=format:%Y%m%d-%H%M%S --format=%ad -- <stub> | tail -1
 ```
 
-Note that `9999`, `10023`, and the three stubs all carry the `051612` second — distinct slugs (and the README, which takes no stamp) keep them all unique.
+Note that `9999`, `10023`, and the three stubs all carry the `051612` second — distinct sprigs (and the README, which takes no stamp) keep them all unique.
 
 Print the full old→new mapping, the `10010` routing to be folded, the collision and inversion notes, the stub renames, and any derived stamps with their source.
 

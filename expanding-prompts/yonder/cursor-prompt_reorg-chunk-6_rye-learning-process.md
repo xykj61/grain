@@ -64,7 +64,7 @@ git mv 998_ALMANAC.md ALMANAC.md
 
 Then edit `README.md` (the former foundation) so it reads true under the clock:
 
-- Replace the "The Counting-Down Convention" section with a clock-aware one: future findings are dated artifacts named `YYYYMMDD-HHMMSS_<slug>.md`, ascending and self-dating, with the newest surfaced by a reverse-chronological index here; the **almanac remains the living aggregate** those findings feed, revised in place.
+- Replace the "The Counting-Down Convention" section with a clock-aware one: future findings are dated artifacts named `YYYYMMDD-HHMMSS_<sprig>.md`, ascending and self-dating, with the newest surfaced by a reverse-chronological index here; the **almanac remains the living aggregate** those findings feed, revised in place.
 - Add a short **reverse-chronological index** section. It currently lists the living documents — `ALMANAC.md` as the growing reference — and notes that dated findings will appear here as they are recorded, newest first. (No dated rows exist yet.)
 - Keep the "What This Folder Is," "What Sets It Apart," and "How To Add a Finding" prose intact, adjusting only the wording that assumed descending numbers.
 

@@ -47,7 +47,7 @@ Ideas flow one way across the boundary: a concept learned in external research, 
 
 ## One clock, one order
 
-Dated briefs carry `YYYYMMDD-HHMMSS_short-slug.md` filenames; this README is the living foundation and reverse-chron index. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+Dated briefs carry `YYYYMMDD-HHMMSS_short-sprig.md` filenames; this README is the living foundation and reverse-chron index. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
 ## Design briefs (newest first)
 

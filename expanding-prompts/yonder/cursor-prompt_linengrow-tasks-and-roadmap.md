@@ -25,7 +25,7 @@ Create `linengrow/` and place its README and the two vision documents:
 | `linengrow/20260628-124512_linengrow-business-model.md` | `# Transparent Social Commerce — The Business Model` |
 | `linengrow/20260628-124512_linengrow-venture-pitch.md` | `# Transparent Social Commerce — A Venture Pitch` |
 
-The two vision documents are dated artifacts; keep their `20260628.124512` content stamp intact, and note that the slug becomes `linengrow-*` because the folder names the design. If `.gitignore` needs a `!/linengrow/` allow line to mirror the other tracked folders, add it. Commit:
+The two vision documents are dated artifacts; keep their `20260628.124512` content stamp intact, and note that the sprig becomes `linengrow-*` because the folder names the design. If `.gitignore` needs a `!/linengrow/` allow line to mirror the other tracked folders, add it. Commit:
 
 ```
 linengrow: infuse the first whole built on Rye OS

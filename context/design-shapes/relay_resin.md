@@ -33,7 +33,7 @@ kind design_shape
 name relay_resin
 pattern amphora
 material counsel_artifacts
-# one bead — one dated artifact, addressed by its stamp and slug
+# one bead — one dated artifact, addressed by its stamp and sprig
 field bead
 # workshop | personal — workshop lands on relay, personal lands only on Keaton's word
 field class

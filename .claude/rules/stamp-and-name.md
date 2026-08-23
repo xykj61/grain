@@ -9,7 +9,7 @@
 1. **Mark by stamp and name.** `the standing movement (20260821-142939)`. The stamp comes from the one clock; the name says what the work was.
 2. **Never mint an ascending mark.** No `Fold A -> Fold AH -> Fold AI`, no `f0-f63`, no `X0/X1` rungs for planned work. A sequence label is a forecast written where it can never be corrected.
 3. **Count, never number.** A total is derived by measurement -- `git log --oneline --grep="caravan: fold" | wc -l` -- rather than carried inside a name where it will eventually be carried wrong.
-4. **Keep the whole stamp in every filename.** `date/YYYYMMDD/YYYYMMDD-HHMMSS_slug.ext`, never `date/YYYYMMDD/HHMMSS_slug.ext` -- no `date/` room stands yet, so the shape is written as a shape rather than as a path to a file that is not there. The repeated day is a check digit, and the reason is in *The path* below.
+4. **Keep the whole stamp in every filename.** `date/YYYYMMDD/YYYYMMDD-HHMMSS_sprig.ext`, never `date/YYYYMMDD/HHMMSS_sprig.ext` -- no `date/` room stands yet, so the shape is written as a shape rather than as a path to a file that is not there. The repeated day is a check digit, and the reason is in *The path* below.
 
 ## Why the ascending mark is retired
 
@@ -36,7 +36,7 @@
 A room folds when it outgrows a reader. The shape is:
 
 ```
-<room>/date/YYYYMMDD/YYYYMMDD-HHMMSS_slug.ext
+<room>/date/YYYYMMDD/YYYYMMDD-HHMMSS_sprig.ext
 ```
 
 **`date/`, not `archive/`.** `ORGANIZING.md` defines archive as *backward-pointing, finished-and-historical*. A log from nine days ago is neither; it is the live record. `date/` claims only *when*, which is the only thing that is true of every file in it.
@@ -57,17 +57,17 @@ rishi/bin/rishi run tools/dated_path_resolve.rish <reference> [<citing-file>]
 
 **A room earns ENFORCE by folding.** Once a room has been carried across, its references repointed and its resolver proven, letting it drift back over the bound is a choice rather than an inheritance -- so it moves from advisory to enforced, where crossing 256 is a red. Six rooms hold that seat: **`session-logs`, `counsel`, `active-designing`, `expanding-prompts`, `waymarks`** (`20260821.171331`), and **`active-development`**, which was **born enforced** on `20260821.174047` -- a room opened under the law never accumulated a backlog, so it has nothing to grandfather. An enforced room is **reported whether or not it holds anything** -- two of the five sit at zero flat files, and a discovery-only report dropped them entirely; a room that vanishes from a meter is not a room that passed it. Every other room stays advisory until its own fold.
 
-**The three tools must agree on what a dated file is.** The fold moves them, the resolver recovers references to them, and the census counts them -- and each disagreement cost a round: a fold looser than the resolver would have moved 33 files it could never find again, a census blind to the fold rule reported 82 recoveries as ambiguous, and a repointer whose regex did not anchor the extension silently missed 49 real references. One shape, `YYYYMMDD-HHMMSS_slug.ext`, checked the same way everywhere.
+**The three tools must agree on what a dated file is.** The fold moves them, the resolver recovers references to them, and the census counts them -- and each disagreement cost a round: a fold looser than the resolver would have moved 33 files it could never find again, a census blind to the fold rule reported 82 recoveries as ambiguous, and a repointer whose regex did not anchor the extension silently missed 49 real references. One shape, `YYYYMMDD-HHMMSS_sprig.ext`, checked the same way everywhere.
 
 **No fold ships without the witness green.** [`tools/dated_path_witness.rish`](../../tools/dated_path_witness.rish) proves the resolver's five verdicts on real cases, proves the fold rule on a room that has never folded, refuses three RED paths, and holds the **lost-reference** census under a ceiling with **no slack**. The gate is on what the resolver *cannot* recover -- a basename that exists nowhere, or one at two paths where no answer is safe -- rather than on the whole broken count, because a reference the resolver recovers is the expected steady state and rises whenever a room folds. Moving a file changes its path and never its basename, so a correct fold leaves the lost count exactly where it stood. Lower it when a repair lands; never raise it.
 
 ## Write an illustration as a shape
 
-An example path in prose is a **shape**, not a path: `date/YYYYMMDD/YYYYMMDD-HHMMSS_slug.ext`, with letter placeholders standing where the digits would go. Never build an example out of a real-looking stamp and a slug that names no file -- write the placeholders and the illustration stays honest. A fabricated path reads as a real citation to every reader and to every tool -- the census counted three of them as broken references on the day this law was written, in the law itself, in the resolver's witness, and in the research note that proposed it. A lantern that fires twice becomes a loom, so it is written here: **illustrate with placeholders, cite only what exists.**
+An example path in prose is a **shape**, not a path: `date/YYYYMMDD/YYYYMMDD-HHMMSS_sprig.ext`, with letter placeholders standing where the digits would go. Never build an example out of a real-looking stamp and a sprig that names no file -- write the placeholders and the illustration stays honest. A fabricated path reads as a real citation to every reader and to every tool -- the census counted three of them as broken references on the day this law was written, in the law itself, in the resolver's witness, and in the research note that proposed it. A lantern that fires twice becomes a loom, so it is written here: **illustrate with placeholders, cite only what exists.**
 
 ## One shape, every room -- amended `20260823.111029`
 
-The `YYYYMMDD-HHMMSS_slug.ext` name and its `date/YYYYMMDD/` fold are **the tree's one filing
+The `YYYYMMDD-HHMMSS_sprig.ext` name and its `date/YYYYMMDD/` fold are **the tree's one filing
 shape**, and they hold in every room that dates its work rather than only in `session-logs/`.
 Foundations, active-designing, active-development, expanding-prompts, counsel, waymarks, and
 context specs all carry it today; a room opened tomorrow carries it from its first file.

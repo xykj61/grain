@@ -47,7 +47,7 @@ Living law: [`../tally/README.md`](../tally/README.md) · TAME copy/garden rows 
 
 ## Placement
 
-New sagas land here as `YYYYMMDD-HHMMSS_short-slug.md`. Point the season bookmark at this shelf. Leave a short stub in `counsel/` only where an older counsel path must keep resolving.
+New sagas land here as `YYYYMMDD-HHMMSS_short-sprig.md`. Point the season bookmark at this shelf. Leave a short stub in `counsel/` only where an older counsel path must keep resolving.
 
 ---
 

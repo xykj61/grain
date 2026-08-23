@@ -18,7 +18,7 @@
 # SHELVED CLASSES (ruled once, standing KEEP):
 #   *recursion*.md — the season's per-round baton trail, 45 files, ~29 KB whole.
 #
-# DATED ARTIFACTS ONLY: the draw keeps names matching YYYYMMDD-HHMMSS_slug. Living
+# DATED ARTIFACTS ONLY: the draw keeps names matching YYYYMMDD-HHMMSS_sprig. Living
 # docs — README.md, the hammocks, steep.md — are indexes, workbenches and standing
 # name-seats, not finished pages, and none of the four verdicts belongs to them. Their
 # bare basenames also break the count: README matched 703 files tree-wide, measuring the
