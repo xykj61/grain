@@ -5078,14 +5078,7 @@ pub fn inherited_by(io: std.Io, domain: []const u8) u32 {
 /// word; an answer of *held* left standing would let a supervisor believe a
 /// successor grafted a word it never saw.
 pub fn reclaim_notes(io: std.Io, domain: []const u8) NoteError!void {
-    // invariant: a reclamation always names the domain it takes back from
-    assert(domain.len >= 1);
-    try seat_note(io, domain, ".words", "");
-    try seat_note(io, domain, ".given", &[_]u8{0});
-    try seat_note(io, domain, ".for", &[_]u8{0});
-    try seat_note(io, domain, ".held", &[_]u8{0});
-    try seat_note(io, domain, ".kept", &[_]u8{0});
-    try seat_note(io, domain, ".pruned", &[_]u8{0});
+    return ladder_checks.reclaim_notes(@This(), io, domain);
 }
 
 /// Records on the wire how much reach this domain's departed holder never served.
