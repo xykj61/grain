@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20260823.134057
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The resolver before the move
+prompt Autonomous loop -- read the voice and style canon, ITINERARY and the itineraries, the top log rows; Standfast on reds; take the next agent-doable lap Lindy-first crux-first; deep-read one council-rota row; send.
+think Ran the 27-guard roster before anything else. All green, so no red preempted and the constructive queue was open. Lap index by commit count: 3330 mod 5 = 0, rota row 0 -- Aether and Jupiter, why the work exists.
+think The rota row pointed straight at the lap. Lindy says a thing read thousands of times over years earns the hour; the compass says read the plan before the enthusiasm; the grain asks whether the cut is clean. The ranked remainder names the fold round's order explicitly -- checkpoint, WRITE AND PROVE THE RESOLVER FIRST, move, repoint, roster, then the bound. Step two is bounded, agent-doable, and nothing else in the fold is safe until it exists.
+think Wrote tools/tool_path_resolve.rish as a sibling of tools/dated_path_resolve.rish rather than a new design. Same five readings, same weakest-first verdict assignment, same refusal posture. The one new idea: the two-letter rooms are TRIED rather than looked up, so no table of which letters split can go stale -- if `m` ever crosses the bound this tool already resolves it unedited.
+obs The scan disagreed with my own earlier reading -- 1,892 against 1,915 -- and reading the gap rather than reconciling it by hand was the most valuable minute of the lap. The 23 were symlinks, which `find -type f` declines and a fold would move regardless. A scan that counts a different set than the fold moves measures the wrong room.
+obs That gap opened the real finding. tools/ holds 24 flat symlinks, every one reaching ../crypto/ or ../tally/. Moving one a directory deeper leaves `../crypto/x25519.rye` resolving to `tools/crypto/x25519.rye`, which is nowhere. Proved it by planting the exact shape and moving it. tracked_link gates dangling tracked symlinks at zero, so the fold as written would red it 24 times over -- and the waymarks fold already paid for exactly one of these (REDS %154).
+obs Not booked as a red. Nothing is wrong today: the symlinks resolve, every guard is green. This is a precondition found before it bit, which is the apparatus working rather than failing. Recorded in the card, the witness, and the scan's own output instead of in a ledger row.
+obs The roster reddened once mid-lap on geode_libraries. Root: that page counts witnesses BY REFERENCE, and the new witness cites amphora, crypto, rishi, and tally paths, so four tallies moved. The REDS %152 class exactly. Regenerated in the same round; 28 green after.
+obs Caught myself reciting. The witness's own prose said 1,916 while the scan printed 1,917 in the same run -- the room gained entries in the hour I worked. Cut every moving number out of the comment and let the scan print them, which is REDS %108's lesson applied to a file written the same day it was learned.
+obs Loosened two assertions I had written brittle. Pinning symlinks_up=24 and over_bound_letters=2 exactly would stop the line when someone adds a tool, and a guard that reds on ordinary growth is a false alarm rather than a wall. Three gates decide safety -- rooms under bound, no collision, basenames long enough to slice -- and the rest is reported free.
+loom room flat_files=1917 flat_regular=1893 flat_symlinks=24 symlinks_up=24 bound=256
+loom shape letters=22 over_bound_letters=2 rooms=37 rooms_over_bound=0 max_room=241 collisions=0
+loom roster guards=28 green=28 red=0 seated=tool_path
+file tools/tool_path_resolve.rish the resolver -- five readings, first hit winning, two-letter rooms tried rather than looked up
+file tools/fixtures/tool_path_scan.sh the fold shape measured rather than remembered, and the symlink warning it exists to raise
+file tools/fixtures/tool_path_control.sh four throwaway rooms proving each gated reading can rise, plus the scan's refusal
+file tools/tool_path_witness.rish the rung -- four verdicts, the letter rule on a never-folded room, four RED paths, preconditions from the scan
+file construction/standing-equipment.kyri tool_path seated as the 28th standing guard
+file construction/ITINERARY.md the Now block: step two landed, the symlink finding, and the four steps that remain
+file docs-geode/libraries/README.md regenerated in the commit that moved its four tallies
+recommend keep-going -- the fold round's step three is the move itself, and it now has one open question the resolver round handed it: leave the 24 crypto/tally symlinks flat, or deepen every target one level. Leaving them flat is the smaller cut and keeps `tools/x25519.rye` reading exactly as 24 files already cite it. Say which and the move is mechanical from there.
