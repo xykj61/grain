@@ -5,7 +5,7 @@
 **Kin:** [`debride.md`](debride.md) — debride removes; a checkpoint marks the way back first.
 **Cursor twin:** [`../../.cursor/rules/checkpoint.mdc`](../../.cursor/rules/checkpoint.mdc)
 
-A **checkpoint** is a stacked-stone trail marker. Before any **seated debride** that rewrites a living card — REMEMBER, THREADS, TASKS, ROADMAP, or any work-in-progress file whose old body may hold ideas worth recalling — record one row in `construction/CHECKPOINTS.md` so the departing card stays one `git show` away.
+A **checkpoint** is a stacked-stone trail marker. Before any **seated debride** that rewrites a living card — ITINERARY, THREADS, TASKS, ROADMAP, or any work-in-progress file whose old body may hold ideas worth recalling — record one row in `construction/CHECKPOINTS.md` so the departing card stays one `git show` away.
 
 ## What a checkpoint always records
 

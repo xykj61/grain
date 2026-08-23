@@ -36,8 +36,8 @@ plant() {
     git config user.name Control
     git config commit.gpgsign false
     mkdir -p construction docs
-    printf '# the living card\n' > construction/REMEMBER.md
-    printf '# a front door\n\nA good link: [card](../construction/REMEMBER.md)\n' > docs/FRONT.md
+    printf '# the living card\n' > construction/ITINERARY.md
+    printf '# a front door\n\nA good link: [card](../construction/ITINERARY.md)\n' > docs/FRONT.md
   )
 }
 

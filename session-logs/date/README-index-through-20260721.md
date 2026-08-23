@@ -81,7 +81,7 @@ This table reads **newest first** within the closed shelf. Living index: [`../RE
 - `20260721.010709` — [STOA162 sent · STOA163 shape-pair GREEN](archive/20260721/20260721-010709_stoa162-sent-stoa163-green.bron) — pier 471e0585c2; pair dual unsent
 - `20260721.010520` — [STOA161 sent · STOA162 shape-count GREEN](archive/20260721/20260721-010520_stoa161-sent-stoa162-green.bron) — pier c913bc9c82; count dual unsent
 - `20260721.010333` — [STOA161 lean A · shape-amount dual GREEN](archive/20260721/20260721-010333_stoa161-shape-amount-dual-green.bron) — inventary + dual desks; unsent
-- `20260721.005900` — [STOA160 pin · STOA161 check-in restated](archive/20260721/20260721-005900_stoa160-pin-checkin-restated.bron) — REMEMBER pin 3ac6464df6; await A/B/C
+- `20260721.005900` — [STOA160 pin · STOA161 check-in restated](archive/20260721/20260721-005900_stoa160-pin-checkin-restated.bron) — ITINERARY pin 3ac6464df6; await A/B/C
 - `20260721.005729` — [STOA160 send · STOA161 check-in](archive/20260721/20260721-005729_stoa160-send-stoa161-checkin.bron) — send nona-shape; rename/Sala check-in
 - `20260721.005350` — [STOA159 sent · STOA160 GREEN closes ladder](archive/20260721/20260721-005350_stoa159-sent-stoa160-green.bron) — pier 2e963fcd01; next rename/Sala
 - `20260721.005327` — [STOA160 nona-shape alias GREEN](archive/20260721/20260721-005327_stoa160-nona-shape-green.bron) — nona-shape ≡ nona-mold; ladder closed; unsent
@@ -322,7 +322,7 @@ This table reads **newest first** within the closed shelf. Living index: [`../RE
 - `20260720.040546` — [STOA100 send + STOA101 lean A approve](archive/20260720/20260720-040546_stoa100-send-stoa101-approve.bron) — main 7e5970f715; argv bartis PR await send
 - `20260720.040533` — [STOA101 bartis argv sample GREEN](archive/20260720/20260720-040533_stoa101-bartis-argv-green.bron) — generator gate-sample-u32; fixture stays baked; await send
 - `20260720.040050` — [STOA100 send complete](archive/20260720/20260720-040050_stoa100-send-complete.bron) — origin main at 7e5970f71529
-- `20260720.040025` — [STOA100 living docs close](archive/20260720/20260720-040025_stoa100-living-close.bron) — STOA.md · TASKS · REMEMBER · ROADMAP; await send
+- `20260720.040025` — [STOA100 living docs close](archive/20260720/20260720-040025_stoa100-living-close.bron) — STOA.md · TASKS · ITINERARY · ROADMAP; await send
 - `20260720.033852` — [STOA100 thin bartis implement GREEN](archive/20260720/20260720-033852_stoa100-bartis-implement.bron) — |= tokenized, identity gate lowers, baked sample 5 exits 0; all witnesses GREEN
 - `20260720.033500` — [STOA100 bartis first-lap survey](archive/20260720/20260720-033500_stoa100-bartis-first-lap-survey.bron) — tokens/dispatch/demo-gate/alphabet analysis; thinnest fixture-desk claim
 - `20260720.040025` — [STOA99 send complete](archive/20260720/20260720-040025_stoa99-send-complete.bron) — origin main at 2b5e5eb7da
@@ -487,7 +487,7 @@ This table reads **newest first** within the closed shelf. Living index: [`../RE
 - `20260719.143736` — [STOA38 check-in](archive/20260719/20260719-143736_stoa38-check-in.bron) — cue-of-jam shapes; send STOA37 first
 - `20260719.143329` — [STOA37 nest jam both GREEN](archive/20260719/20260719-143329_stoa37-nest-jam-both-green.bron) — both-mix seats; await send · STOA38 cue-of-jam
 - `20260719.140950` — [STOA37 check-in after rest](archive/20260719/20260719-140950_stoa37-check-in.bron) — lean A both-mix · then B round-trip
-- `20260719.010916` — [Rest handoff · morning continue](archive/20260719/20260719-010916_rest-handoff-morning-continue.bron) — REMEMBER dawn card; STOA37 A/B/C
+- `20260719.010916` — [Rest handoff · morning continue](archive/20260719/20260719-010916_rest-handoff-morning-continue.bron) — ITINERARY dawn card; STOA37 A/B/C
 - `20260719.010738` — [STOA34–36 nest jam send](archive/20260719/20260719-010738_stoa34-36-nest-jam-send.bron) — ship nest jam left/right; STOA37 check-in
 - `20260719.010610` — [STOA36 desk GREEN · kg pause](archive/20260719/20260719-010610_stoa36-desk-green-kg-pause.bron) — full desk suite GREEN; send / STOA37 check-in
 - `20260719.010409` — [STOA36 nest jam right GREEN](archive/20260719/20260719-010409_stoa36-nest-jam-right-green.bron) — jam right mix; await send with STOA34–35
@@ -620,7 +620,7 @@ This table reads **newest first** within the closed shelf. Living index: [`../RE
 - `20260718.122145` — [LULU · ZETA6 · Hearth align send](archive/20260718/20260718-122145_lulu-zeta6-hearth-align-send.bron) — waymark LULU; ret→newline design
 - `20260717.214340` — [JABS2 ret toggle vs cycle](archive/20260717/20260717-214340_jabs2-ret-toggle-vs-cycle.bron) — prefer cycle N; gesture check-in
 - `20260717.213745` — [JABS2 bare ret empty chat](archive/20260717/20260717-213745_jabs2-bare-ret-empty-chat.bron) — first-tap ret → chat ·
-- `20260717.213242` — [remember rule · Glow first code](archive/20260717/20260717-213242_remember-rule-save-glow-first.bron) — REMEMBER card · Acme open-runes note
+- `20260717.213242` — [remember rule · Glow first code](archive/20260717/20260717-213242_remember-rule-save-glow-first.bron) — ITINERARY card · Acme open-runes note
 - `20260717.213058` — [JABS2 finish-zone + mode round-trip](archive/20260717/20260717-213058_jabs2-finish-zone-mode-roundtrip.bron) — close row 13 only; TAME bans GREEN
 - `20260717.212257` — [kg JABS2 live chat face](archive/20260717/20260717-212257_kg-jabs2-live-chat-face.bron) — Dexter ret → chat · line; pack GREEN
 - `20260717.205837` — [adb empty — host terminal](archive/20260717/20260717-205837_adb-empty-host-terminal.bron) — jail has no /dev/bus/usb

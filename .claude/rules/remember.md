@@ -4,7 +4,7 @@ When Keaton says **"remember"** (or **"remember for us"**), restates the living 
 
 ## What "remember" does, in order
 
-1. **Read the living card** — `work-in-progress/REMEMBER.md`. If the card is stale against the current product nib / suite nib / install path, refresh it in the same turn (accrete-never-break: date the refresh; do not delete prior facts that still help).
+1. **Read the living card** — `construction/ITINERARY.md`. If the card is stale against the current product nib / suite nib / install path, refresh it in the same turn (accrete-never-break: date the refresh; do not delete prior facts that still help).
 2. **Restate seated waymarks** — from `.claude/rules/waymark-ladders.md` / Lexicon: **HAWM** · **TUBE** · **ZETA** · **JABS** · **LULU** · **STOA** (and any newer seated draw). Never invent a bare-letter ladder.
 3. **Restate outer-terminal instructions** — host shell only when the jail cannot see USB (`/dev/bus/usb` absent). Typical: `adb devices` → `install -r` the packed APK → `force-stop` → `am start` NativeActivity. Quote the paths from the living card, not from memory of an older pack.
 4. **Restate phone look** — what eyes should confirm on GrapheneOS / Pixel for the current product nib (mode keys, chat strip, close-hint row, etc.).
