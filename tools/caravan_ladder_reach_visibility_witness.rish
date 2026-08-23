@@ -52,21 +52,20 @@ assert red.out contains "RED_one_rule_read_as_one_family_across_two_visibilities
 assert red.out contains "RED_queue_blindness_refused_rather_than_empty" else "reach-visibility: a ladder where no two rungs write one body answered ok with an empty queue -- an empty list and a blindness read identically (REDS %97)"
 assert red.out contains "RED_queue_ranked_by_fall_where_carry_ordered_the_other_way" else "reach-visibility: the queue ordered by carry rather than by fall -- a carry list over-weights breadth and hides the deep families entirely (REDS %145)"
 
-# The family this lap lifted. mind_the_impasse folded this lap -- eight rungs
-# shedding a fifty-three-line body for a three-line stub -- and it is the
-# deepest shape the arc has lifted, four times the body length of the note
-# families before it. It is also the first row the ranked queue found rather
-# than a hand: the carry-seeded shortlist could not see a family this narrow.
-# caravan/mind.rye writes the same fifty-three lines reaching its report fields
-# directly where these eight reach them through mind_of, so it keeps its own
-# copy -- a rung whose report has no minding sub-record answers a different
-# shape rather than repeating this one. It widened nothing of any kind, since
-# every symbol the body reaches already stood public in all eight rungs. The
+# The family this lap lifted. suits_path folded this lap -- the sixth member of
+# the reader-box path family, standing directly beneath the found_path it pairs
+# with in the harness. Both name an address under the readers' own directory and
+# dress it in a short suffix, and a comptime assert inside each binds the two
+# suffixes to one width. That rule stood written once per rung until this lap,
+# which is what a family is: not a coincidence of shape, but one rule several
+# files may quietly come to disagree about. It widened nothing of any kind,
+# since every symbol the body reaches already stood public in every folding
+# rung, and the stubs keep the private visibility the bodies always had. The
 # scan reads the folded shape back -- no long body left to lift, so the widening
 # column now describes the stubs, which bind this harness into each rung.
-let folded = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "mind_the_impasse"]
+let folded = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "suits_path"]
 say folded.out
-assert folded.out contains "REACH_OK family=mind_the_impasse folding=8 widens=8 widens_fn=0 widens_import=8 widens_const=0 stub=3 fall=0" else "reach-visibility: want mind_the_impasse standing folded, with nothing left to lift"
+assert folded.out contains "REACH_OK family=suits_path folding=15 widens=15 widens_fn=0 widens_import=15 widens_const=0 stub=3 fall=0" else "reach-visibility: want suits_path standing folded, with nothing left to lift"
 assert folded.ok else "reach-visibility: the lifted family must still read cleanly"
 
 # The row that returns the most -- ranked off the whole ladder now, rather than
@@ -93,9 +92,8 @@ assert folded.ok else "reach-visibility: the lifted family must still read clean
 # all of them.
 let queue = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "queue"]
 say queue.out
-assert queue.out contains "QUEUE_OK head=suits_path fall=350 examined=47 families=700" else "reach-visibility: want the queue head ranked off every foldable family in the ladder, with the search bounded rather than sampled"
-assert queue.out contains "QUEUE_ROW family=suits_path fall=350 folding=15 lines=28 stub=3 widens=0 carry=392" else "reach-visibility: want suits_path standing at the head, the sibling of the found_path family the arc lifted three laps ago -- and the row that was tied with mind_the_impasse before that one was lifted"
-assert queue.out contains "QUEUE_ROW family=hold_the_matter fall=336 folding=7 lines=59 stub=3 widens=0 carry=354" else "reach-visibility: want the deepest body on the board standing third, seven rungs of fifty-nine lines"
+assert queue.out contains "QUEUE_OK head=hold_the_matter fall=336 examined=46 families=700" else "reach-visibility: want the queue head ranked off every foldable family in the ladder, with the search bounded rather than sampled"
+assert queue.out contains "QUEUE_ROW family=hold_the_matter fall=336 folding=7 lines=59 stub=3 widens=0 carry=354" else "reach-visibility: want the deepest body on the board standing at the head, a narrow family no carry-ordered list would have reached"
 assert queue.out contains "QUEUE_ROW family=answered_by fall=330 folding=34 lines=13 stub=3 widens=68 carry=429" else "reach-visibility: want the shortlist's own former head standing fourth, so the correction is readable as a demotion rather than a rewrite"
 assert queue.out contains "QUEUE_ROW family=bound_the_relay fall=312 folding=7 lines=55 stub=3 widens=0 carry=330" else "reach-visibility: want the row a best-fall bound would have truncated away, since a top-of-twelve is complete only when nothing unexamined could displace its twelfth"
 assert queue.ok else "reach-visibility: the ranked queue must read cleanly"
@@ -232,10 +230,10 @@ assert fourth.ok else "reach-visibility: the widest remaining family must read c
 # before it is opened.
 let sink = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "sink"]
 say sink.out
-assert sink.out contains "SINK_OK total=65420 below_fold_line=1140 above_fold_line=64280" else "reach-visibility: want the fold line's whole foreclosure measured against the foldable corpus, private bodies counted beside public ones"
+assert sink.out contains "SINK_OK total=65045 below_fold_line=1140 above_fold_line=63905" else "reach-visibility: want the fold line's whole foreclosure measured against the foldable corpus, private bodies counted beside public ones"
 assert sink.out contains "SINK_ABOVE rung=queue.rye holds=29" else "reach-visibility: want the queue store's holding read off disk rather than described"
 assert sink.out contains "SINK_ABOVE rung=serve.rye holds=38" else "reach-visibility: want the serve module's holding read off disk rather than described"
-assert sink.out contains "SINK_ABOVE rung=farewell.rye holds=3826" else "reach-visibility: want the widest holding above the line, so the spread is a measurement rather than a feeling"
+assert sink.out contains "SINK_ABOVE rung=farewell.rye holds=3801" else "reach-visibility: want the widest holding above the line, so the spread is a measurement rather than a feeling"
 assert sink.out contains "SINK_BELOW rung=entrust.rye holds=168" else "reach-visibility: want the largest holding already below the fold line named"
 assert sink.ok else "reach-visibility: the sink meter must read cleanly"
 
@@ -245,4 +243,4 @@ assert sibling.out contains "REACH_PRIVATE symbol=capabilities kind=import" else
 assert paired.out contains "REACH_PRIVATE symbol=hand_path kind=fn" else "reach-visibility: want a private function named as a function"
 assert paired.out contains "REACH_PRIVATE symbol=Dir kind=const" else "reach-visibility: want a private constant named as a constant, the column this lap answered from above"
 
-say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, the cost is counted by kind rather than summed across kinds, and the queue is ranked off every foldable family rather than chosen from a shortlist. The mind_the_impasse family lifted this lap: every folding rung shed one long shared body for a three-line stub, widening nothing of any kind. It is the deepest shape this arc has lifted, and the first family it took off a ranked queue rather than off a hand-kept list -- which is the whole point of the ordering correction the lap before it paid for, arriving one lap later as a family nobody would have reached. One rung stayed home and the reason is meaning rather than drift: caravan/mind.rye reaches its report fields directly where the folding rungs reach them through mind_of, so its report has no minding sub-record to name. Read after the fold the row prices the stubs own private imports of this harness, asserted above, which is what every folded family reads. The sink window fell with the lift: the fold line forecloses the same body lines it did before against a foldable corpus that shrank, both asserted above, because a lifted body leaves the rungs rather than the harness. A rung the harness imports still holds nearly five times what the arc believed before the keyword left the key, so the one-way door stays worth measuring twice before it is opened (REDS %130, %137, %144, %145)."
+say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, the cost is counted by kind rather than summed across kinds, and the queue is ranked off every foldable family rather than chosen from a shortlist. The suits_path family lifted this lap: every folding rung shed one shared body for a three-line stub, widening nothing of any kind, and it is the sixth member of the reader-box path family whose fifth stands lifted directly above it. What makes them one family is a comptime assert rather than a resemblance -- a word must land in the same box, at the same width, as the finding it answers -- and that rule now stands written once beside the path it constrains. It is also the second family in a row the ranked queue handed over rather than a hand-kept shortlist, which is what the ordering correction two laps back was for. Read after the fold the row prices the stubs own private imports of this harness, asserted above, which is what every folded family reads. The sink window fell with the lift: the fold line forecloses the same body lines it did before against a foldable corpus that shrank, both asserted above, because a lifted body leaves the rungs rather than the harness. A rung the harness imports still holds nearly five times what the arc believed before the keyword left the key, so the one-way door stays worth measuring twice before it is opened (REDS %130, %137, %144, %145)."
