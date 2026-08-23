@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260703.201612 UDT` (Kaeden's clock)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** TAME · SLC
-**Register:** active-designing — siloed; names only our own modules (foundations graduation on Kaeden's word)
+**Register:** foundations -- siloed; names only our own modules. Graduated from `active-designing/` on `20260821.211423` under the design-rooms test, having awaited the word since `20260703`.
 **Candidate:** Amphora (lap 1 seated at `amphora/` · `20260710.143500`)
 **Status:** Landed — checkable-room; Amphora laps 1–3 + Kumara vessel stamp + Amber AEAD seal seated at `amphora/` (lap 1 `20260710.143500`; lap 2 `20260710.143726`; lap 3 Comlink fetch hosted `20260710.144309` + device wire `20260710.144833`; stamp `20260710.145843`; seal `20260710.153745`); vessel duty has a module home; kitchen twin remains the plain reading.
 **Last updated:** 2026-07-10
