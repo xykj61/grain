@@ -3,23 +3,23 @@
 # and the reachability of each is named rather than assumed.
 #
 # The card advertises hashes in more than one voice. One is the Git nib, the
-# landed edge of the send; the others are CAIRNS -- walk-back nibs recorded
-# before a debride, whose whole promise (.claude/rules/cairn.md) is that the
+# landed edge of the send; the others are CHECKPOINTS -- walk-back nibs recorded
+# before a debride, whose whole promise (.claude/rules/checkpoint.md) is that the
 # departing card stays one git-show away. Those two voices obey different laws:
 #
 #   THE NIB     is HEAD, HEAD's pre-amend sibling, or HEAD's parent. That law
 #               belongs to tools/remember_git_nib_witness.rish, the loom booked
 #               after REDS %103 fired twice, and is NOT re-implemented here.
-#   A CAIRN     is OFF main by construction after a deep debride -- the rewrite
+#   A CHECKPOINT is OFF main by construction after a deep debride -- the rewrite
 #               is what makes the walk-back worth recording. Demanding that a
-#               cairn be an ancestor of HEAD is demanding it not be a cairn.
+#               checkpoint be an ancestor of HEAD is demanding it not be a checkpoint.
 #
 # So the one law this guard owns, over EVERY advertised hash alike:
 #
 #   HARD  -- every advertised hash RESOLVES to a real commit. A hash that
 #            resolves nowhere is a promise already broken, in any voice.
 #   SOFT  -- reachability is NAMED per hash: on-main, on-remote, or local-only.
-#            A local-only cairn is reported, never failed, because the repair is
+#            A local-only checkpoint is reported, never failed, because the repair is
 #            pushing a pre-debride branch -- a custody call that is Keaton's word,
 #            not a guard's. Naming it is the guard's whole job here.
 #
@@ -97,8 +97,8 @@ echo "card=$CARD"
 sweep "$CARD"
 
 # The Git nib field is read BY NAME, never as "the first hash in the file" -- the
-# fault this guard was rewritten to fix. Condensing the card moved a cairn row above
-# the nib line, so a first-match read had been grading a cairn against the nib's law.
+# fault this guard was rewritten to fix. Condensing the card moved a checkpoint row above
+# the nib line, so a first-match read had been grading a checkpoint against the nib's law.
 nib=$(grep -oE '^\*\*Git nib:\*\* .[0-9a-f]{10}' "$CARD" | grep -oE '[0-9a-f]{10}' | head -1 || true)
 if test -z "$nib"; then
   echo "git_nib=absent"
@@ -109,20 +109,20 @@ echo "git_nib=$nib"
 echo "git_nib_reach=$(reach_of "$nib")"
 echo "git_nib_state_law=tools/remember_git_nib_witness.rish"
 
-# Split the nib's own local-only from the cairns'. The pre-amend sibling hash is
+# Split the nib's own local-only from the checkpoints'. The pre-amend sibling hash is
 # unreachable by construction -- the seated pin-then-amend ritual pins the hash and
 # then the amend replaces it -- and remember_git_nib_witness names that convention
-# flaw in its own text. Counting it beside the cairns would report a known, accepted
+# flaw in its own text. Counting it beside the checkpoints would report a known, accepted
 # convention as if it were a broken walk-back.
 sweep_out=$(sweep "$CARD")
 gone=$(echo "$sweep_out" | sed -n 's/^gone=//p')
 local_only=$(echo "$sweep_out" | sed -n 's/^local_only=//p')
 nib_reach=$(reach_of "$nib")
 if test "$nib_reach" = "local-only"; then
-  echo "local_only_cairns=$((local_only - 1))"
+  echo "local_only_checkpoints=$((local_only - 1))"
   echo "nib_local_only=yes_expected_pre_amend_sibling"
 else
-  echo "local_only_cairns=$local_only"
+  echo "local_only_checkpoints=$local_only"
   echo "nib_local_only=no"
 fi
 

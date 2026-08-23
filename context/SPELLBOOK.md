@@ -23,7 +23,7 @@ A spell is a single word that names a whole, repeatable gesture. Where ordinary 
 | **molt** | prep a dated writing's fossil onto the shred list — opens no cut | `.claude/rules/molt.md` |
 | **shred** / **shed** | the authorized cut of a fossil that has a living mutant | `.claude/rules/molt.md` · SHRED_PREP |
 | **debride** | the sanctioned break of accrete-never-break — remove named dead history | `.claude/rules/debride.md` |
-| **cairn** | mark the way back before a debride rewrites a living card | `.claude/rules/cairn.md` |
+| **checkpoint** | mark the way back before a debride rewrites a living card | `.claude/rules/checkpoint.md` |
 | **baton** | write a handoff to disk so the vision survives a context reset | handoff batons in `expanding-prompts/` |
 | **recur** | pass the baton onward — cite the parent whole, fold in only the delta | this page · the baton chain |
 | **prin** | print the live loop view — scope, nib, sundial, matrix frame | `context/LEXICON.md` · `tools/prin.rish` |
@@ -41,7 +41,7 @@ A spell is a single word that names a whole, repeatable gesture. Where ordinary 
 ## Discipline the spellbook keeps
 
 - **A spell names a gesture; the rule holds the law.** Reading a spell here never replaces reading its home rule before a large or destructive act.
-- **The destructive spells are word-gated.** `shred` and `debride` run only on an explicit word naming *what* to remove, `cairn` first, and never as a default.
+- **The destructive spells are word-gated.** `shred` and `debride` run only on an explicit word naming *what* to remove, `checkpoint` first, and never as a default.
 - **kg ≠ send.** Keep going continues a lap; only `send` ships.
 
 ---

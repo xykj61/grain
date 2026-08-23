@@ -17,7 +17,7 @@
 #     reader of the front door ever meets one.
 #   FILE PATHS -- 169 tracked paths, including a `pond/apps/corpora/` room and dated filenames the
 #     one-clock law protects. Paths are out of scope for a prose rule.
-#   THE RECORD -- dated testimony, `construction/REDS.md` and `construction/CAIRNS.md` (append-only by their own
+#   THE RECORD -- dated testimony, `construction/REDS.md` and `construction/CHECKPOINTS.md` (append-only by their own
 #     laws), `*/archive/` and `*/yonder/`, and `context/LEXICON.md`, which SEATS the word and must
 #     be able to name it. A guard that makes the record of a decision unwritable was already hit
 #     twice this day; it is written into the roster here rather than rediscovered a third time.
@@ -44,7 +44,7 @@ enforce_roster() {
   ls .claude/rules/*.md .cursor/rules/*.mdc 2>/dev/null || true
   ls edu/*.md edu/*/*.md edu/*/*/*.md 2>/dev/null || true
   ls ./*.md 2>/dev/null | sed 's|^\./||' || true
-  ls construction/*.md 2>/dev/null | grep -vE '^construction/(REDS|CAIRNS)\.md$' || true
+  ls construction/*.md 2>/dev/null | grep -vE '^construction/(REDS|CHECKPOINTS)\.md$' || true
   # Module front doors that SHIP in the public seed. A newcomer browsing the repository meets
   # these, so they are held to the same plainness as the manual.
   ls caravan/README.md scribble/README.md 2>/dev/null || true

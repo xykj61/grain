@@ -109,11 +109,11 @@ Plan: `../active-designing/date/20260809/20260809-234413_loadable-topologies-and
 | --- | --- | --- | --- |
 | `.brix` @ pre-molt git nib (`146854ce76`) | `.brix` (name `grain`, v`20260810.145743`) | molt `20260810.145743` | in-place refresh; elder in git history; no tracked fossil (avoids re-introducing the `veganreyklah2` scrub term) |
 
-The eventual "shedding" of the elder descriptor would be a **deep git-history debride** — it stays **RED** and word-gated, needs a **cairn** first, and is not opened here. Molt is prep only.
+The eventual "shedding" of the elder descriptor would be a **deep git-history debride** — it stays **RED** and word-gated, needs a **checkpoint** first, and is not opened here. Molt is prep only.
 
 ### Shed complete — old-waymark session logs (waymark debride `20260818`)
 
-**Executed (`20260818`, Keaton's word — "do it all").** The waymark debride carried the dead elder marks out of the living tree, the dated session logs, and all git history (deep debride, custody gate %1). The ~80 old-waymark dated logs were removed rather than rewritten; the living ladders (DREY · FORA · WADE · LOWE) and the module **Dimeroll** carry only their standing names. Canonical naming truth is sealed and self-verifying in [`waymark-registry.bron`](waymark-registry.bron), so no waymark fact was lost. The REDS ledger and `construction/CAIRNS.md` walk-back rows stayed live — the reds record and recovery markers are not shed.
+**Executed (`20260818`, Keaton's word — "do it all").** The waymark debride carried the dead elder marks out of the living tree, the dated session logs, and all git history (deep debride, custody gate %1). The ~80 old-waymark dated logs were removed rather than rewritten; the living ladders (DREY · FORA · WADE · LOWE) and the module **Dimeroll** carry only their standing names. Canonical naming truth is sealed and self-verifying in [`waymark-registry.bron`](waymark-registry.bron), so no waymark fact was lost. The REDS ledger and `construction/CHECKPOINTS.md` walk-back rows stayed live — the reds record and recovery markers are not shed.
 
 ### Pending molt — Bron → Kyri (by molt, not rewrite · opens after JARL)
 

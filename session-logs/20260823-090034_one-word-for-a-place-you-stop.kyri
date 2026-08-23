@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260823.090034
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title One word for a place you stop
+prompt Keaton asked to rename cairn to checkpoint. I found checkpoint already seated and asked; he answered approve only all checkpoint, so the rename lands and the word carries both senses.
+think Measured before moving and found the collision rather than the empty space I expected. checkpoint already stood in the Lexicon as a named stop-before-cross gate with its own closing form check in (checkpoint) and 858 uses -- so this rename MERGES two senses rather than moving a name, the opposite of what crux to construction did an hour earlier.
+think Raised it once, because a rename that creates ambiguity is the thing the previous rename existed to remove. Keaton chose the merge, so the job was to make it a decision rather than a drift: the Lexicon now carries one entry reading a marked place where you stop, with both readings numbered under it and the reason they share that sense -- one stops you before you cross forward, the other so you can walk back.
+think Recorded the free alternative inside the entry and the checkpoint row. trailhead measured zero uses tree-wide on this date, so if the senses ever want separating the word is already found and the measurement is already taken.
+obs The rename left two guards red and both were the same trap in different clothes. A dated session log is named 20260809-025109_debride-old-marks-seat-cairn.bron, and the case-insensitive sweep rewrote living references to it as seat-checkpoint.bron, pointing at a file that cannot exist. This is the glow-os lesson arriving one round later: a rename must always ask which occurrences MEAN the thing being renamed.
+obs Three renames, three different answers to that question. crux: the seated word survives, the path moves. glow-os: the dated filename survives, the directory moves. cairn: the dated filename survives again, and this time the word itself is what moves. The shape repeats; the boundary never sits in the same place twice.
+obs A merged Lexicon entry beats two rows with one term. Two rows would have read as an oversight to the next reader and been silently re-split; one row that names the merge and dates it is a decision that stays decided.
+loom rename occurrences=821 files=255 living=28 testimony_untouched=227 lexicon_rows_merged=2 guards_red=2 guards_fixed=2 census_before=194 census_after=192 ceiling=192
+file construction/CHECKPOINTS.md the ledger, renamed from CAIRNS.md
+file .claude/rules/checkpoint.md the rule and its Cursor twin, renamed
+file context/LEXICON.md two rows merged into one entry carrying both senses, with trailhead named as the free word
+recommend keep-going -- rename three of four is Skate to Surf with Surf Social, then the name change as a deep debride last so one history rewrite covers everything. The very large remainder of the vision -- Druid Style for the frontend, the fundraising documents, the spellbook, Lotus and the magazine -- still wants one expanded prompt that ranks it, which is the round I would take after the renames land.

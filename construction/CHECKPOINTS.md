@@ -1,16 +1,16 @@
-# Cairns -- the walk-back markers before every debride
+# Checkpoints -- the walk-back markers before every debride
 
 **Language:** EN
 **Status:** Living ledger -- append-only
 **Voice:** Kyri
-**Rule:** [`../.claude/rules/cairn.md`](../.claude/rules/cairn.md) - [`../.cursor/rules/cairn.mdc`](../.cursor/rules/cairn.mdc)
-**Kin:** **debride** removes; a **cairn** marks the way back before it does.
+**Rule:** [`../.claude/rules/checkpoint.md`](../.claude/rules/checkpoint.md) - [`../.cursor/rules/checkpoint.mdc`](../.cursor/rules/checkpoint.mdc)
+**Kin:** **debride** removes; a **checkpoint** marks the way back before it does.
 
 ---
 
-A **cairn** is a stacked-stone trail marker. In this tree it is one row recorded **before a seated debride sweeps a living card** -- the git nib and the live stamp at that moment, plus one honest line naming what stood there. Where **remember** reprints the *current* card, a cairn pins the *departing* one, so a good idea folded into an old REMEMBER, THREADS, or work-in-progress file is never truly lost -- it waits at a named commit, one `git show` away.
+A **checkpoint** is a stacked-stone trail marker. In this tree it is one row recorded **before a seated debride sweeps a living card** -- the git nib and the live stamp at that moment, plus one honest line naming what stood there. Where **remember** reprints the *current* card, a checkpoint pins the *departing* one, so a good idea folded into an old REMEMBER, THREADS, or work-in-progress file is never truly lost -- it waits at a named commit, one `git show` away.
 
-**How to walk back to a cairn:**
+**How to walk back to a checkpoint:**
 
 ```
 git show <nib>:work-in-progress/REMEMBER.md      # read the whole departing card
@@ -23,6 +23,28 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 ---
 
 ## The ledger (newest first)
+
+### `20260823.090034` -- checkpoint becomes checkpoint, and one word carries both senses
+
+**Walk-back nib:** `560448ab11` -- pier and both remotes. A **breach**, so nothing is rewritten and
+`git show 560448ab11:construction/CHECKPOINTS.md` reads this ledger at its old name.
+
+**Swept:** `construction/CHECKPOINTS.md` becomes `construction/CHECKPOINTS.md`, `.claude/rules/checkpoint.md`
+becomes `checkpoint.md` with its Cursor twin, and 821 occurrences of the word across 255 files are
+repointed in the 28 **living** ones. The 227 files of **dated testimony** keep every word.
+
+**What waits there, worth recalling, and the honest note.** `checkpoint` was a good name -- a
+stacked-stone trail marker, plain and warm, and it did one job cleanly. It is retired on Keaton's
+word `20260823.090034`.
+
+The measurement worth keeping: **`checkpoint` was already seated** in `context/LEXICON.md` as *a
+named stop-before-cross gate*, with its own closing form `check in (checkpoint)` and 858 uses. So
+this rename **merges two senses into one word** rather than moving a name into empty space, which
+is the opposite of what `crux -> construction` did an hour earlier. That merge is a decision
+rather than a drift: both senses are **a marked place where you stop** -- one before you cross
+forward, one so you can walk back -- and the Lexicon entry now carries both readings side by side.
+If the two ever need separating again, `trailhead` measured zero uses in the whole tree on this
+date and is the free word waiting.
 
 ### `20260823.085309` -- the manual's onboarding room becomes grain-os
 
@@ -64,7 +86,7 @@ every name. One word doing two jobs was the thing worth separating.
 
 ### `20260823.072824` -- the deep debride: personal material leaves the history
 
-**Walk-back nib:** `52393ae830` -- **and this one is different from every cairn above it.** This is
+**Walk-back nib:** `52393ae830` -- **and this one is different from every checkpoint above it.** This is
 a *deep* debride, so after the force-push the walk-back commit is **unreachable on both remotes**.
 The pre-debride history survives in two places instead: a verified full bundle at
 `.debride-safe/pre-debride-52393ae830.bundle` (559 MB, untracked, on this pier), and any clone
@@ -180,7 +202,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **What waits there, worth recalling:** the flat room is the last look at what two months of daily logging looks like in one `ls` -- and the honest reason the fold happened, since GitHub's web listing stops at 1,000 entries and the room held 1,492. The elder `archive/` name waits here too; it retires because ORGANIZING defines archive as finished-and-historical while a log from nine days ago is the live record.
 
-**Why a cairn for a move rather than a debride:** the cairn rule asks for one before a *debride*, and this is not one -- nothing is destroyed. It is recorded anyway because it is the largest structural move the tree has made, and a walk-back to the room's departing shape costs one line and answers a question a future reader will certainly ask.
+**Why a checkpoint for a move rather than a debride:** the checkpoint rule asks for one before a *debride*, and this is not one -- nothing is destroyed. It is recorded anyway because it is the largest structural move the tree has made, and a walk-back to the room's departing shape costs one line and answers a question a future reader will certainly ask.
 
 ### `20260821.073606` -- the reply and edge live edges condense as fold N lands
 
@@ -335,7 +357,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **reweigh** rung, folded into the condensed pointer line beneath it, so the card leads with the rung that just landed rather than carrying a second copy of the log index.
 
-**What waits there, worth recalling:** the inline account of a run that inherits a reopened matter taking the look again -- the reopening having been permanent and ignorable at once, which is the most comfortable thing an open question can be; `ReweighUnsettled` refusing a second look to a run that has published no outcome of its own, since a supervisor with nothing to weigh the matter against would be filing a fresh answer over a question it never re-asked; the receipt naming the matter it looked at, because an older second look left standing beside a fresh matter closes a question nobody opened; the taking down being the act and the receipt only its record, so `plan.anew` lands first and `plan.again` comes down after; and looking again proven not to be deciding again, both runs settling `carried out whole`. Every word of it also rests in `caravan/README.md` and its own dated log `20260820-134309`; the cairn is the cheaper walk-back.
+**What waits there, worth recalling:** the inline account of a run that inherits a reopened matter taking the look again -- the reopening having been permanent and ignorable at once, which is the most comfortable thing an open question can be; `ReweighUnsettled` refusing a second look to a run that has published no outcome of its own, since a supervisor with nothing to weigh the matter against would be filing a fresh answer over a question it never re-asked; the receipt naming the matter it looked at, because an older second look left standing beside a fresh matter closes a question nobody opened; the taking down being the act and the receipt only its record, so `plan.anew` lands first and `plan.again` comes down after; and looking again proven not to be deciding again, both runs settling `carried out whole`. Every word of it also rests in `caravan/README.md` and its own dated log `20260820-134309`; the checkpoint is the cheaper walk-back.
 
 
 ### `20260820.134309` -- the reopen and ladder-copy live edges fold as the reweigh rung seats
@@ -344,7 +366,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullets for the **reopen** rung and for the **ladder-copy meter**, folded into one condensed line, so the card leads with the rung that just landed rather than carrying a second copy of the log index.
 
-**What waits there, worth recalling:** the inline account of a reader who says an answer falls short opening the matter again -- what the plan is told costing it a look it never chose to take, the first rung of its kind in the arc; `ReopenSettled` refusing to book a matter open against a satisfied reader, since doing so would punish a plan for asking and teach every supervisor never to ask at all; the note being the second in the arc addressed forward and the first whose every byte came from outside; and, beside it, the ladder-copy meter's measured numbers -- 88 rung modules, 914 check functions, 277 distinct bodies, 637 byte-identical copies over 46,014 lines, held under a named ceiling of 60,000. Every word of both also rests in `caravan/README.md`, `active-designing/date/20260820/20260820-131713_caravan-ladder-shared-harness.md`, and their own dated logs `20260820-130722` and `20260820-132327`; the cairn is the cheaper walk-back.
+**What waits there, worth recalling:** the inline account of a reader who says an answer falls short opening the matter again -- what the plan is told costing it a look it never chose to take, the first rung of its kind in the arc; `ReopenSettled` refusing to book a matter open against a satisfied reader, since doing so would punish a plan for asking and teach every supervisor never to ask at all; the note being the second in the arc addressed forward and the first whose every byte came from outside; and, beside it, the ladder-copy meter's measured numbers -- 88 rung modules, 914 check functions, 277 distinct bodies, 637 byte-identical copies over 46,014 lines, held under a named ceiling of 60,000. Every word of both also rests in `caravan/README.md`, `active-designing/date/20260820/20260820-131713_caravan-ladder-shared-harness.md`, and their own dated logs `20260820-130722` and `20260820-132327`; the checkpoint is the cheaper walk-back.
 
 
 ### `20260820.113447` -- the owe live edge folds as the meet rung seats
@@ -353,7 +375,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **owe** rung and the pointer bullet beneath it, folded into one condensed line naming owe, avow, deem, refer, swell, dwell, relent, heed, and endure, so the card leads with the rung that just landed rather than carrying a second copy of the log index.
 
-**What waits there, worth recalling:** the inline account of a concession reaching the run that comes after it -- the debt being the only note in the whole arc written for a run that has not started, and that forward address being exactly what makes an admission cost something; `OweUnconceded` refusing to book a debt against a dissent, since booking one would turn holding one's ground into an admission of fault and teach every supervisor to concede nothing; a debt carrying two bytes, the finding conceded and the outcome it was conceded under, because a plan that said `carried out whole` while conceding owes a different look than one already reporting itself short; booking proven not to be repairing; and a debt outliving a provisioning, since one swept every morning would let a plan concede at bedtime and wake owing nothing. Every word of it also rests in `caravan/README.md` and its own dated log `20260820-111803`; the cairn is the cheaper walk-back.
+**What waits there, worth recalling:** the inline account of a concession reaching the run that comes after it -- the debt being the only note in the whole arc written for a run that has not started, and that forward address being exactly what makes an admission cost something; `OweUnconceded` refusing to book a debt against a dissent, since booking one would turn holding one's ground into an admission of fault and teach every supervisor to concede nothing; a debt carrying two bytes, the finding conceded and the outcome it was conceded under, because a plan that said `carried out whole` while conceding owes a different look than one already reporting itself short; booking proven not to be repairing; and a debt outliving a provisioning, since one swept every morning would let a plan concede at bedtime and wake owing nothing. Every word of it also rests in `caravan/README.md` and its own dated log `20260820-111803`; the checkpoint is the cheaper walk-back.
 
 
 ### `20260820.111618` -- the avow live edge folds as the owe rung seats
@@ -362,7 +384,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **avow** rung and the pointer bullet beneath it, folded into one condensed line naming avow, deem, refer, swell, dwell, relent, heed, and endure, so the card leads with the rung that just landed rather than carrying a second copy of the log index.
 
-**What waits there, worth recalling:** the inline account of a plan being made to answer the finding it published -- a run writing this note and that being the whole rung, since every record the arc reaches outward for is written by a hand the plan does not own precisely so it can never grade the objection against it; `AvowMismatched` refusing a word about some older verdict, because a plan that answered this argument before may still hold its position on a younger one; an avowal carrying two bytes with the finding echoed back exactly; answering proven not to be yielding, with concede and dissent both honest on the wire; and the probe that taught the rung its own shape, where the first cut read the finding before consulting the refusal ladder and an unheard run refused `AvowUnfound` where the ladder promised `AvowUnheard`. Every word of it also rests in `caravan/README.md` and its own dated log `20260820-105456`; the cairn is the cheaper walk-back.
+**What waits there, worth recalling:** the inline account of a plan being made to answer the finding it published -- a run writing this note and that being the whole rung, since every record the arc reaches outward for is written by a hand the plan does not own precisely so it can never grade the objection against it; `AvowMismatched` refusing a word about some older verdict, because a plan that answered this argument before may still hold its position on a younger one; an avowal carrying two bytes with the finding echoed back exactly; answering proven not to be yielding, with concede and dissent both honest on the wire; and the probe that taught the rung its own shape, where the first cut read the finding before consulting the refusal ladder and an unheard run refused `AvowUnfound` where the ladder promised `AvowUnheard`. Every word of it also rests in `caravan/README.md` and its own dated log `20260820-105456`; the checkpoint is the cheaper walk-back.
 
 
 ### `20260820.105456` -- the deem live edge folds as the avow rung seats
@@ -371,7 +393,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **deem** rung and the pointer bullet beneath it, folded into one condensed line naming deem, refer, swell, dwell, relent, heed, and endure, so the card leads with the rung that just landed rather than carrying a second copy of the log index.
 
-**What waits there, worth recalling:** the inline account of the hand a case went to being read back and its finding published -- the finding read off the wire and never written by a run, since a supervisor able to author the word against it has graded its own objection; `DeemMismatched` refusing a verdict about some older argument, because a desk that has heard this argument before may still hold the answer to a younger quarrel; a finding carrying four bytes with the case echoed back exactly, so a verdict is answerable to a particular argument rather than to whatever quarrel a plan happens to hold; and a finding belonging to the hand that wrote it across a provisioning and across the plan clearing its own copy. Every word of it also rests in `caravan/README.md` and its own dated log `20260820-102945`; the cairn is the cheaper walk-back.
+**What waits there, worth recalling:** the inline account of the hand a case went to being read back and its finding published -- the finding read off the wire and never written by a run, since a supervisor able to author the word against it has graded its own objection; `DeemMismatched` refusing a verdict about some older argument, because a desk that has heard this argument before may still hold the answer to a younger quarrel; a finding carrying four bytes with the case echoed back exactly, so a verdict is answerable to a particular argument rather than to whatever quarrel a plan happens to hold; and a finding belonging to the hand that wrote it across a provisioning and across the plan clearing its own copy. Every word of it also rests in `caravan/README.md` and its own dated log `20260820-102945`; the checkpoint is the cheaper walk-back.
 
 
 ### `20260820.102945` -- the refer live edge folds as the deem rung seats
@@ -380,7 +402,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **refer** rung and the pointer bullet beneath it, folded into one condensed line naming refer, swell, dwell, relent, heed, and the endure-appeal-tidings-repose-lapse-abide rungs below them, so the card leads with the rung that just landed rather than carrying a second copy of the log index.
 
-**What waits there, worth recalling:** the inline account of a long-standing quarrel put before a hand that is neither party -- the forum read off the wire and never chosen by a run, `ReferParty` refusing a case into the box of the reader who raised it, the case copied rather than summarized because a summary is where a supervisor would shade the argument against itself, a case outliving the withdrawal of the quarrel it was built from, and the five refusals `ReferEarly`, `ReferUnaddressed`, `ReferParty`, `ReferMiscounted`, `ReferMisrecorded` each named to what it protects. Every word of it also rests in `caravan/README.md` and its own dated log `20260820-100737`; the cairn is the cheaper walk-back.
+**What waits there, worth recalling:** the inline account of a long-standing quarrel put before a hand that is neither party -- the forum read off the wire and never chosen by a run, `ReferParty` refusing a case into the box of the reader who raised it, the case copied rather than summarized because a summary is where a supervisor would shade the argument against itself, a case outliving the withdrawal of the quarrel it was built from, and the five refusals `ReferEarly`, `ReferUnaddressed`, `ReferParty`, `ReferMiscounted`, `ReferMisrecorded` each named to what it protects. Every word of it also rests in `caravan/README.md` and its own dated log `20260820-100737`; the checkpoint is the cheaper walk-back.
 
 
 ### `20260820.100546` -- the swell live edge folds as the refer rung seats
@@ -389,7 +411,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **swell** rung and the pointer bullet beneath it, folded into one condensed line naming swell, dwell, relent, heed, and the endure-appeal-tidings-repose-lapse-abide rungs below them, so the card leads with the rung that just landed rather than carrying a second copy of the log index.
 
-**What waits there, worth recalling:** the inline account of a long-standing quarrel published where the outcome is read -- the bound named in the module and movable by no run, the reading taken off the wire rather than off memory, the heralding as the last act of the run after the dating whose byte it reads, and the four refusals `SwellEarly`, `SwellUndated`, `SwellMiscounted`, `SwellMisrecorded` each named to what it protects. Every word of it also rests in `caravan/README.md` and its own dated log `20260820-094007`; the cairn is the cheaper walk-back.
+**What waits there, worth recalling:** the inline account of a long-standing quarrel published where the outcome is read -- the bound named in the module and movable by no run, the reading taken off the wire rather than off memory, the heralding as the last act of the run after the dating whose byte it reads, and the four refusals `SwellEarly`, `SwellUndated`, `SwellMiscounted`, `SwellMisrecorded` each named to what it protects. Every word of it also rests in `caravan/README.md` and its own dated log `20260820-094007`; the checkpoint is the cheaper walk-back.
 
 
 ### `20260820.094007` -- the dwell live edge folds as the swell rung seats
@@ -398,7 +420,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **dwell** rung and the pointer bullet beneath it, folded into one condensed line naming dwell, relent, heed, and the endure-appeal-tidings-repose-lapse-abide rungs below them, so the card leads with the rung that just landed rather than carrying a second copy of the log index.
 
-**What waits there, worth recalling:** the inline account of a standing quarrel finally saying how long it has stood -- the age surviving a provisioning beside the standing note and falling with the quarrel, an age that only ever climbs and holds at the bound of one byte rather than wrapping, the dating as the last act of the run mirroring the relenting's first, and the four refusals `DwellEarly`, `DwellForgotten`, `DwellMiscounted`, `DwellMisrecorded` each named to what it protects. Every word of it also rests in `caravan/README.md` and its own dated log; the cairn is the cheaper walk-back.
+**What waits there, worth recalling:** the inline account of a standing quarrel finally saying how long it has stood -- the age surviving a provisioning beside the standing note and falling with the quarrel, an age that only ever climbs and holds at the bound of one byte rather than wrapping, the dating as the last act of the run mirroring the relenting's first, and the four refusals `DwellEarly`, `DwellForgotten`, `DwellMiscounted`, `DwellMisrecorded` each named to what it protects. Every word of it also rests in `caravan/README.md` and its own dated log; the checkpoint is the cheaper walk-back.
 
 
 ### `20260820.085311` -- the heed and endure live edges fold as the relent rung seats
@@ -414,7 +436,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `581ade420e` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
 
-**Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **hear** rung, folded into the pointer line beside the courier, amend, and recant rungs the cairns below it swept, so the card leads with the record this lap seated rather than carrying a second copy of the log index.
+**Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **hear** rung, folded into the pointer line beside the courier, amend, and recant rungs the checkpoints below it swept, so the card leads with the record this lap seated rather than carrying a second copy of the log index.
 
 **What waits there, worth recalling:** the inline account of a correction finished when its reader answers -- the reader's box facing two ways, the plan writing `.told` and the reader writing `.said`, a run reading the second and never writing it, and an answer bound to the reading it answers so a hand naming any other reading is a different sentence. Its per-rung detail rests whole in `caravan/README.md`, `caravan/hear.rye`, and the dated log `20260820-054032`.
 
@@ -423,7 +445,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `c90bee22f7` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
 
-**Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **courier** rung, folded into the pointer line beside the amend and recant rungs the cairns below it swept, so the card leads with the hearing this lap proved rather than carrying a second copy of the log index.
+**Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **courier** rung, folded into the pointer line beside the amend and recant rungs the checkpoints below it swept, so the card leads with the hearing this lap proved rather than carrying a second copy of the log index.
 
 **What waits there, worth recalling:** the inline account of a correction carried to the reader who never comes back -- the address seated on the wire beside the reading, the delivery landing outside this plan's own wire in `caravan/.readers/desk.told`, the four refusals of the journey named one by one, and the price stated as nothing but the walk. Every word of it rests in `caravan/README.md` and in the dated log `20260820-052038_caravan-courier-a-correction-that-travels.kyri`; the departing card reads whole at `git show c90bee22f7:construction/REMEMBER.md`.
 
@@ -432,7 +454,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `ec5ee6de20` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
 
-**Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **amend** rung, folded into the pointer line beside the recant, appraise, and bear rungs the cairns below it swept, so the card leads with the delivery and carries one account of this arc rather than five.
+**Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **amend** rung, folded into the pointer line beside the recant, appraise, and bear rungs the checkpoints below it swept, so the card leads with the delivery and carries one account of this arc rather than five.
 
 **What waits there, worth recalling:** the inline account of a settlement an operator already read being corrected where they read it -- the standing reading named as the second note a run does not clear, the amendment written to a person rather than about a phase in two bytes an operator reads straight, and the honest naming of a wire that is entirely truthful while the belief in the room says otherwise. Every word of it also rests in `caravan/README.md` and its own dated log.
 
@@ -440,7 +462,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `38dd79aff9` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
 
-**Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **recant** rung, folded into the pointer line beside the appraise and bear rungs the cairn below it swept, so the card leads with the amendment and carries one account of this arc rather than four.
+**Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **recant** rung, folded into the pointer line beside the appraise and bear rungs the checkpoint below it swept, so the card leads with the amendment and carries one account of this arc rather than four.
 
 **What waits there, worth recalling:** the inline account of a judgment a run's own evidence disproves being taken back on the wire and repaired -- the standing appraisal named as the one note a run does not clear, the reversal riding one glyph per phase beside the judgment it undoes, and the honest price of a reversal stated as exactly one more dependent. The rung stands whole in `caravan/recant.rye`, its witness, its session log, and the Caravan README.
 
@@ -448,7 +470,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `c17b4bbcd6` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
 
-**Swept:** `construction/REMEMBER.md` INNER LOOP -- the *prior live edge* bullets for the **appraise** and **bear** rungs, folded into the pointer line the `20260820.014755` cairn opened, so the card leads with the recantation and carries one account of this arc rather than three.
+**Swept:** `construction/REMEMBER.md` INNER LOOP -- the *prior live edge* bullets for the **appraise** and **bear** rungs, folded into the pointer line the `20260820.014755` checkpoint opened, so the card leads with the recantation and carries one account of this arc rather than three.
 
 **What waits there, worth recalling:** the inline account of a plan naming the loss it would rather carry than repair -- `bear = true` beside the outcome an author already declares, the settlement gaining its third word because two were no longer honest -- and beside it the account of a loss its author left unmarked being weighed by what came home after it, the standard published at the plan and the evidence produced only by the run. Both rungs stand whole in `caravan/bear.rye` and `caravan/appraise.rye`, their witnesses, their session logs, and the Caravan README.
 
@@ -456,7 +478,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `43cb80dd7e` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
 
-**Swept:** `construction/REMEMBER.md` INNER LOOP -- the *prior live edge* bullet for the **mend** rung, folded into the pointer line the `20260820.014755` cairn opened, so the card leads with the appraisal and the bearing it stands on rather than three full accounts of one arc.
+**Swept:** `construction/REMEMBER.md` INNER LOOP -- the *prior live edge* bullet for the **mend** rung, folded into the pointer line the `20260820.014755` checkpoint opened, so the card leads with the appraisal and the bearing it stands on rather than three full accounts of one arc.
 
 **What waits there, worth recalling:** the inline account of a plan reported short being run again for exactly what it lost -- the loss note written glyph by glyph beside the verdict, the repair bounded by the loss and freed of the arrangement it was written for, the price asserted at exactly one more dependent, and four refusals by name. The rung itself stands whole in `caravan/mend.rye`, its witness, its session log, and the Caravan README.
 
@@ -464,7 +486,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `cf23958a35` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
 
-**Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **reckon** rung and the **REDS %95** closure bullet, folded into the pointer line the `20260820.014755` cairn opened, so the card leads with what is next rather than carrying a fourth copy of the arc's chronicle.
+**Swept:** `construction/REMEMBER.md` INNER LOOP -- the *live edge* bullet for the **reckon** rung and the **REDS %95** closure bullet, folded into the pointer line the `20260820.014755` checkpoint opened, so the card leads with what is next rather than carrying a fourth copy of the arc's chronicle.
 
 **What waits there, worth recalling:** the inline account of completion becoming a verdict a run earns -- `carried` against `short`, the plan-level note written to the wire after the last dependent is reaped and read back before the report believes it, the four refusals named, and the measurement where every number stands still while the completion claimed and never served falls from 1 to 0. Beside it, the harvest rung's own repair: readiness reaping the lowest-indexed ready dependent rather than the one whose going lets the head enter, and the honest second cause that made `idle_key_ready` the number the module can guarantee. Every word of both lives in `session-logs/date/20260820/20260820-024612_caravan-reckon-a-plan-that-lost-an-arc-is-short.kyri`, `session-logs/date/20260820/20260820-031500_harvest-reaps-the-slot-the-head-waits-on.kyri`, the **Reckon** and **Harvest** rows of `caravan/README.md`, and `construction/REDS.md`; the card kept a second copy, and that is what the fold removes. Read the departing card with `git show cf23958a35:construction/REMEMBER.md`.
 
@@ -472,7 +494,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `05311de906` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
 
-**Swept:** `construction/REMEMBER.md` INNER LOOP -- the *prior live edge* bullet for the **reclaim** rung, folded into the pointer line the `20260820.014755` cairn opened, so the card carries two live edges and one open red rather than a fifth copy of the arc's chronicle.
+**Swept:** `construction/REMEMBER.md` INNER LOOP -- the *prior live edge* bullet for the **reclaim** rung, folded into the pointer line the `20260820.014755` checkpoint opened, so the card carries two live edges and one open red rather than a fifth copy of the arc's chronicle.
 
 **What waits there, worth recalling:** the inline account of a conferral leaving with the dependent it was made to -- inherited reach at a successor's first breath falling from 1 to 0, the generation that made the count exact, and the rung finding its own first error by measuring. Every word of it also lives in `session-logs/date/20260820/20260820-014755_caravan-reclaim-a-conferral-leaves-with-its-holder.kyri` and in the **Reclaim** section of `caravan/README.md`; the card kept a second copy, and that is what the fold removes. Read the departing card with `git show 05311de906:construction/REMEMBER.md`.
 
@@ -600,7 +622,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 ### `20260818.225452` -- REMEMBER prior-nib comment wall folded to a pointer; Now reaimed at the roundness + Season G completion boundary
 
 **Walk-back nib:** `79ec36981c` -- reachable in normal history (a working-tree condense, not a history rewrite); the full departing card is one `git show` away.
-**Swept:** the ~38-line wall of dead `<!-- prior nib -->` HTML comments in REMEMBER's INNER LOOP (the whole roundness quest -- roundness_universal, roundness, hit_test, scene_manifest, euler_scene, euler_number, and every earlier shape descriptor back through regions -- each a former live edge stacked as a comment), plus the ~4,600-char roundness_universal Git-nib paragraph, folded to short single-stranded pointers naming only the newest rung and directing to `session-logs/` for the per-rung detail. The card had grown back to ~187 KB, over its advisory bound; this is the same condense the `20260818.101851` cairn recorded, one boundary later.
+**Swept:** the ~38-line wall of dead `<!-- prior nib -->` HTML comments in REMEMBER's INNER LOOP (the whole roundness quest -- roundness_universal, roundness, hit_test, scene_manifest, euler_scene, euler_number, and every earlier shape descriptor back through regions -- each a former live edge stacked as a comment), plus the ~4,600-char roundness_universal Git-nib paragraph, folded to short single-stranded pointers naming only the newest rung and directing to `session-logs/` for the per-rung detail. The card had grown back to ~187 KB, over its advisory bound; this is the same condense the `20260818.101851` checkpoint recorded, one boundary later.
 **What waits there, worth recalling:** at nib `79ec36981c` the REMEMBER card holds the complete per-nib prose for the entire roundness quest and the earlier shape-descriptor family inline -- `git show 79ec36981c:construction/REMEMBER.md`. No fact was lost: each rung's crux, bounds, and metal-GREEN account is preserved verbatim in its dated `.kyri` session log, and `image/README.md` carries the durable per-module entries. The condense keeps the operator card the live card of what is next, not a second copy of the log index.
 
 ### `20260818.101851` -- REMEMBER Now condensed: the giant per-nib live-edge and git-nib paragraphs folded to pointers
@@ -625,7 +647,7 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `d87f9d76b1` -- the last commit that still carried the elder waymark tissue whole, held **LOCALLY only** at the safety tag `pre-elder-debride-d87f9d76b1` until git GC. After the deep debride it is **no longer on the remotes** (origin + xykj61 force-pushed to the rewritten history).
 **Swept:** the dead tissue of five superseded waymarks and the retired module name, from the living tree (rules, LEXICON, REMEMBER, `waymark_derive.rish`, SHRED_PREP, the eight-season doc, the Cursor twin) and from **76 dead-mark session logs** (their dedicated logs and transitional records), which were **removed rather than rewritten** and then purged from **all git history** (path removal across every commit + full re-sign, force-push). The living ladders **DREY - FORA - WADE - LOWE** and the module **Dimeroll** carry only their standing names.
-**What waits there, worth recalling:** at nib `d87f9d76b1` (local safety tag only) the tree still labels every site with the superseded marks and holds all 76 dead-mark logs whole -- `git show d87f9d76b1:.claude/rules/waymark-ladders.md`, `git log --oneline d87f9d76b1`. **No canonical waymark fact was lost:** every mark ever drawn is sealed and re-derivable in [`waymark-registry.bron`](waymark-registry.bron) (witness `tools/waymark_registry_witness.rish` GREEN), which is exactly why the superseded marks were harmless before this cut. Counsel dated testimony, the REDS ledger, and the earlier CAIRNS walk-back rows were **kept** -- decision record, reds record, recovery markers. Recovery: `git reset --hard pre-elder-debride-d87f9d76b1` locally **before GC**, or re-clone from a machine that still holds the old history.
+**What waits there, worth recalling:** at nib `d87f9d76b1` (local safety tag only) the tree still labels every site with the superseded marks and holds all 76 dead-mark logs whole -- `git show d87f9d76b1:.claude/rules/waymark-ladders.md`, `git log --oneline d87f9d76b1`. **No canonical waymark fact was lost:** every mark ever drawn is sealed and re-derivable in [`waymark-registry.bron`](waymark-registry.bron) (witness `tools/waymark_registry_witness.rish` GREEN), which is exactly why the superseded marks were harmless before this cut. Counsel dated testimony, the REDS ledger, and the earlier CHECKPOINTS walk-back rows were **kept** -- decision record, reds record, recovery markers. Recovery: `git reset --hard pre-elder-debride-d87f9d76b1` locally **before GC**, or re-clone from a machine that still holds the old history.
 
 ### `20260817.215539` -- urbit lineage DROPPED: private history re-rooted at Grain's first commit (deep debride EXECUTED, force-pushed)
 
@@ -652,22 +674,22 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 **Swept:** the `## Today 20260811 -- a full arc` section of `construction/REMEMBER.md` (lines 228-306), a wall of ~160 dated done-work bullets -- 116 `LANDED`, 24 `OPENED`, 17 `COMPLETE`, 7 `CLOSED`, 5 `SEATED` -- condensed to a single lean pointer that names the big landed arcs and defers every detail to the session logs and git history. Done on Keaton's word so the operator card stays single-stranded: the live work-front, never a second copy of the log index. No other section touched; the INNER LOOP directives, the Compass Season table, Waymarks, gates, and open doors all stand.
 **What waits there, worth recalling:** at nib `bff58996b3` and every commit before it, the full arc reads whole -- `git show bff58996b3:construction/REMEMBER.md`. Every bullet it held (Mandate, the Acme DX season, CION labeling, the AHOY front door and WADE surface, the Singularity, the Twilight palette, BUHR's MCP surface, the 1,024-round itinerary, TACT Journeys 1/2/4, the recursion cellar, Season A / HUNK, Constel and Testament) is also recorded in `session-logs/` as its own dated `.bron`/`.kyri` log. Nothing landed is lost; the wall simply moved to where the record belongs.
 
-### `20260816.220634` -- work-in-progress -> crux rename EXECUTED (the breach the 20260815 cairn pre-planted)
+### `20260816.220634` -- work-in-progress -> crux rename EXECUTED (the breach the 20260815 checkpoint pre-planted)
 
 **Walk-back nib:** `947c592333`
-**Swept:** the `work-in-progress/` directory renamed to `construction/` via `git mv`, so the living pins (REMEMBER, REDS, CAIRNS, SHRED_PREP, ROADMAP, TASKS) now sort high alphabetically as Keaton seated. A back-compat symlink `work-in-progress -> crux` is committed so the 2,000+ dated session logs and counsel that cite `work-in-progress/...` still resolve unchanged -- accrete-never-break without rewriting one dated artifact. Only the loop paths (the seed and `tools/launch-claude-season.rish`) and the living rules that name the ledgers were repointed to `construction/`; the dated-bearing ledgers kept their historical `work-in-progress` wording and resolve through the symlink.
+**Swept:** the `work-in-progress/` directory renamed to `construction/` via `git mv`, so the living pins (REMEMBER, REDS, CHECKPOINTS, SHRED_PREP, ROADMAP, TASKS) now sort high alphabetically as Keaton seated. A back-compat symlink `work-in-progress -> crux` is committed so the 2,000+ dated session logs and counsel that cite `work-in-progress/...` still resolve unchanged -- accrete-never-break without rewriting one dated artifact. Only the loop paths (the seed and `tools/launch-claude-season.rish`) and the living rules that name the ledgers were repointed to `construction/`; the dated-bearing ledgers kept their historical `work-in-progress` wording and resolve through the symlink.
 **What waits there, worth recalling:** at nib `947c592333` and every commit before it, the tree still holds a real `work-in-progress/` directory -- every path in dated logs is literal there, not a symlink. A future full repoint of living references (dropping the symlink) would be its own ratchet round.
 
 ### `20260815.175524` -- Decision-wave breach queue: Bron->Kyri and work-in-progress->crux (prep, no cut yet)
 
 **Walk-back nib:** `00ff3c1d27`
 **Swept:** *nothing yet* -- planted **ahead** of two newly approved breaches so each keeps its walk-back before it cuts: **Bron -> Kyri** (unify the notation entirely under Kyri -- `.kyri` takes the responsibility of `.bron`; Kyri is voice - notation - *compressed receipts* - preferred Grain variant, named in gratitude after Kyrie Irving) and **`work-in-progress/` -> `construction/`** (a higher-sorting priority folder -- `construction/REMEMBER.md`, etc.; 902 files reference `work-in-progress/`, every one repointed in the rename round). Each executes as its own signed loop round; the dated `.bron` logs' deep rename stays a separate circled step under the one-clock law.
-**What waits there, worth recalling:** the whole tree under the elder folder name `work-in-progress/` and the elder notation name `.bron` -- every REMEMBER/CAIRNS/TASKS path, every `.bron` session log, and the pre-rename reference graph. Walk back with `git show 00ff3c1d27:work-in-progress/REMEMBER.md` or `git log --oneline 00ff3c1d27`. Decisions + flags: [`../active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md).
+**What waits there, worth recalling:** the whole tree under the elder folder name `work-in-progress/` and the elder notation name `.bron` -- every REMEMBER/CHECKPOINTS/TASKS path, every `.bron` session log, and the pre-rename reference graph. Walk back with `git show 00ff3c1d27:work-in-progress/REMEMBER.md` or `git log --oneline 00ff3c1d27`. Decisions + flags: [`../active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md).
 
 ### `20260813.020035` -- Double-seat expansion breach queue (prep, no cut yet)
 
 **Walk-back nib:** `0a074d5059`
-**Swept:** *nothing yet* -- this cairn is planted **ahead** of a queue of four approved breaches so each has its walk-back before it cuts: the module rename to **Dimeroll** (bought `dimeroll.com`), **`.myc` -> `.kres`** (Kresfa, supersedes `.myc` + Sui Move), **council sky -> constel sky** (bought `constel.net`), and the **deep debride + seed force-push** (*initial public seed*, again -- depersonalized, `twilight/` kept). The last rewrites history and loses its own walk-back, so this nib is where the whole pre-breach tree lives.
+**Swept:** *nothing yet* -- this checkpoint is planted **ahead** of a queue of four approved breaches so each has its walk-back before it cuts: the module rename to **Dimeroll** (bought `dimeroll.com`), **`.myc` -> `.kres`** (Kresfa, supersedes `.myc` + Sui Move), **council sky -> constel sky** (bought `constel.net`), and the **deep debride + seed force-push** (*initial public seed*, again -- depersonalized, `twilight/` kept). The last rewrites history and loses its own walk-back, so this nib is where the whole pre-breach tree lives.
 **What waits there, worth recalling:** every module, doc, and notation under its superseded name -- the pre-rename module dir, `.myc` contracts, "council sky" prose -- plus the whole signed commit history before any rewrite. Walk back with `git show 0a074d5059:<path>` or `git log --oneline 0a074d5059`. Queue + gate flags: [`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md).
 
 ### `20260810.160511` -- Expanding-prompts archive-fold (Option B, safe subset)
@@ -680,11 +702,11 @@ git show be94f7ab82:expanded-prompts/20260810-054332_green-witness-record-seed-r
 
 **Walk-back nib:** `bc90f7fdb0`
 **Swept:** `work-in-progress/REMEMBER.md` (471 -> ~75 lines), `THREADS.md`, `TASKS.md`, `ROADMAP.md` -- all rewritten from the elder Equinox-season e-number ladder to the four-equinox Compass Season.
-**What waits there, worth recalling:** the full e-number GREEN ladder (e7-e302), the Amphora CLI log (e140-e177), the twelve RESTED nested seasons with their pointers (Equinox - Fascia - Voice - Nona - Kiln - Surface - Generator - MUR - Inner Scope - Constellation - Keeh), the guide 0-2 walk detail, and the old Open-Doors GREEN table. Every green also stands in the code and in the dated counsel; this cairn is the fast path to the *shape* of the old cards.
+**What waits there, worth recalling:** the full e-number GREEN ladder (e7-e302), the Amphora CLI log (e140-e177), the twelve RESTED nested seasons with their pointers (Equinox - Fascia - Voice - Nona - Kiln - Surface - Generator - MUR - Inner Scope - Constellation - Keeh), the guide 0-2 walk detail, and the old Open-Doors GREEN table. Every green also stands in the code and in the dated counsel; this checkpoint is the fast path to the *shape* of the old cards.
 
 ### The Haunted Mound deep debride (recorded after the fact)
 
-**Walk-back nib:** *not preserved on the branch* -- this deep debride rewrote all 37,264 commits with `git-filter-repo` and force-pushed, so no pre-debride commit is reachable. **This is the lesson that seated the cairn pattern:** a deep debride that rewrites history must drop a cairn *first*, or the walk-back is gone. The tribute content itself was intentionally removed at Keaton's word; what a future cairn would have preserved is the surrounding season's card state, now readable only from local reflog if it survived (`git reflog` - dangling commits), not from the shared remotes.
+**Walk-back nib:** *not preserved on the branch* -- this deep debride rewrote all 37,264 commits with `git-filter-repo` and force-pushed, so no pre-debride commit is reachable. **This is the lesson that seated the checkpoint pattern:** a deep debride that rewrites history must drop a checkpoint *first*, or the walk-back is gone. The tribute content itself was intentionally removed at Keaton's word; what a future checkpoint would have preserved is the surrounding season's card state, now readable only from local reflog if it survived (`git reflog` - dangling commits), not from the shared remotes.
 
 ---
 
