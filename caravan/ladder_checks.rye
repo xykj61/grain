@@ -5291,6 +5291,56 @@ pub fn found_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address
     return buf[0..at];
 }
 
+/// Writes the path of the word one reader keeps about the answer they were
+/// carried.
+///
+/// Fifteen rungs held this body byte for byte -- the sixth member of the
+/// reader-box path family, beside `hand_path`, `tell_path`, `renew_path`,
+/// `ask_path`, and `found_path`, which stands lifted directly above it. All six
+/// name an address under the readers' own directory and dress it in a short
+/// suffix -- `.said`, `.outof`, `.still`, `.again`, `.found`, `.suits`; what
+/// differs is which box the note lands in and which companion it pairs with.
+/// This one is the word a reader keeps about the answer a run carried them.
+///
+/// The comptime assert travels with the body, and it is the reason this family
+/// reads as a family: a word lands in the same box, at the same width, as the
+/// finding it answers. Two suffixes that must stay the same length are a rule,
+/// and a rule written fifteen times is a rule fifteen files may quietly come to
+/// disagree about.
+///
+/// Every symbol this body reaches already stood public in all fifteen rungs, so
+/// the lift widens nothing of any kind. Measured rather than read: `REACH_OK
+/// family=suits_path folding=15 widens=0 stub=3 fall=350` from
+/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+pub fn suits_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: []const u8) rung.NoteError![]const u8 {
+    // invariant: a word is only ever sought at an address a run may reach
+    assert(rung.addressable(address));
+    const suffix = ".suits";
+    // invariant: a reader's word is kept in the same box every other word to and
+    // from this reader is kept in
+    comptime assert(suffix.len == ".found".len);
+    const total = rung.reader_dir.len + 1 + address.len + suffix.len;
+    if (total > rung.max_note_path_len) return error.NotePathTooLong;
+    var at: u32 = 0;
+    for (rung.reader_dir) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    buf[at] = '/';
+    at += 1;
+    for (address) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    for (suffix) |byte| {
+        buf[at] = byte;
+        at += 1;
+    }
+    // invariant: a word path is written exactly as long as it was measured
+    assert(at == total);
+    return buf[0..at];
+}
+
 /// Tells the reader who raised a quarrel how it came out.
 ///
 /// One byte, written where that reader is rather than where the record is kept:
