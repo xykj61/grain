@@ -9797,6 +9797,85 @@ pub fn redress_the_meeting(comptime rung: type, io: std.Io, redress: rung.Redres
     assert(rung.redress_of(report_out).hollow == 0);
 }
 
+/// Names the impasse this run opened holding, where the outcome is read.
+///
+/// **It runs before the forbearing beneath it, and it reads that rung's own
+/// note.** The forbearance a run inherits is on the wire the moment the run
+/// begins; this rung opens it, publishes what it says beside the settlement,
+/// and takes it down -- so the run may hand on a fresh impasse of its own
+/// afterward without an operator ever confusing the two.
+///
+/// **The naming is the act, and the taking down is only its close.** The mark
+/// lands first and `clear_forbear` comes after, so a run that falls between the
+/// two leaves an impasse standing for the next hand rather than one quietly
+/// gone.
+///
+/// Eight rungs held this body byte for byte -- the deepest shape this arc has
+/// lifted, at fifty-three lines against the twelve and twenty-eight of the
+/// note families before it. `caravan/mind.rye` writes the same fifty-three
+/// lines reaching its report's fields directly where these eight reach them
+/// through `mind_of`, so it keeps its own copy: a rung whose report has no
+/// minding sub-record is answering a different shape rather than repeating this
+/// one.
+///
+/// Every symbol this body reaches already stood public in all eight rungs, so
+/// the lift widens nothing of any kind. Measured rather than read:
+/// `REACH_OK family=mind_the_impasse folding=8 widens=0 stub=3 fall=350` from
+/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+pub fn mind_the_impasse(comptime rung: type, io: std.Io, mind: rung.Mind, report_out: *rung.Report) (rung.RunError || rung.NoteError)!void {
+    const handed = rung.hold_standing(io);
+    const word = rung.holds_rest(handed);
+    const inherited_count: u32 = if (word) |said| (if (said == .stands) @as(u32, 1) else 0) else 0;
+    if (inherited_count == 0) {
+        // invariant: a run opening holding nothing names no impasse
+        assert(rung.mind_of(report_out).minded == 0);
+        // invariant: a run opening holding nothing leaves no impasse unnamed
+        assert(rung.mind_of(report_out).unminded == 0);
+        return;
+    }
+
+    // The measurement this rung moves, weighed against the forbearance actually
+    // standing rather than against anything the plan asked for, so an impasse
+    // nobody names is counted rather than refused.
+    rung.mind_of(report_out).unminded = rung.unminded_impasses(inherited_count, mind);
+    const minded_count = rung.minded_in(inherited_count, mind);
+    const begun_count = rung.begun_in(inherited_count, mind);
+    if (mind == .begins) {
+        // invariant: a beginning run names nothing, however plainly it read
+        assert(minded_count == 0);
+        rung.mind_of(report_out).begun = begun_count;
+        return;
+    }
+
+    // The note before the word, and the word before the mark: all three reads
+    // supply the ladder rather than short-circuiting it, so every refusal below
+    // is reached by argument and named in its own order.
+    const hold = handed orelse return error.MindUninherited;
+    const stands = if (word) |said| said == .stands else false;
+    // The mark names the matter it is about, and the only honest source for
+    // that is the reader's own reply -- read where its writer left it, exactly
+    // as the forbearing beneath it reads.
+    var address_buf: [rung.max_address_len]u8 = @splat(0);
+    const where = rung.address_published(io, &address_buf) orelse "";
+    const reply = if (rung.addressable(where)) rung.rest_written(io, where) else null;
+    const matched = if (reply) |said| rung.holds_carries(handed, said) else false;
+    if (rung.mind_refusal(inherited_count, minded_count, begun_count, handed != null, stands, matched)) |why| return why;
+
+    // invariant: a minding run names the one impasse it opened holding
+    assert(minded_count == 1);
+    try rung.mind_note(io, hold);
+    // The wire before the memory, once more: the mark an operator will read is
+    // read back, and only then does the report believe an impasse was named.
+    if (!rung.mind_holds(rung.mind_published(io), rung.minds_bytes(hold))) return error.MindMisrecorded;
+    // And only then does the inheritance come down, since a mark that never
+    // landed would leave the next hand with neither the impasse nor the word.
+    rung.clear_forbear(io);
+    rung.mind_of(report_out).minded = minded_count;
+    rung.mind_of(report_out).begun = begun_count;
+    // invariant: a minding run leaves no impasse of its own unnamed
+    assert(rung.mind_of(report_out).unminded == 0);
+}
+
 pub fn lost_published(comptime rung: type, io: std.Io, held: u32) u32 {
     // invariant: a reading never names more phases than one record may hold
     assert(held <= rung.max_queue_len);
