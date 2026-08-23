@@ -1,0 +1,39 @@
+# tools/p/pond_display_gate_witness.rish -- a machine with no screen is a machine, never a red.
+#
+#   rishi/bin/rishi run tools/p/pond_display_gate_witness.rish
+#
+# WHY (REDS %173). Five witnesses in this tree link `-lwayland-client -lxkbcommon`, and this pier
+# is headless. Before this guard the absence read as a build failure, so a random draw of 86
+# witnesses reported a Wayland application on a screenless host as a genuine tree red beside one
+# that truly was. The build fixture asks the linker's own search path now and exits 3 when a seam
+# is absent, naming which -- the same move phantom_path made when it stopped guessing which rooms
+# are generated and asked git instead.
+#
+# WHAT IS PROVEN, both directions. A gate that always fires is a witness that never runs, so the
+# pen proves the open side as hard as the shut one: with stub seams on LIBRARY_PATH the build
+# proceeds into compile and its ordinary failure exits NON-3, which is what keeps the gate from
+# becoming a bypass.
+#
+# Pen: tools/fixtures/pond_display_gate_control.sh. Kin: tools/p/pond_ring_lantern_witness.rish and
+# tools/fixtures/pond_build_drawn_terminal.rish, both of which read the same exit code.
+# Run from the repository root.
+
+say "display-gate: Language EN -- a witness says whether it ran, and why, on the machine it ran on."
+say "display-gate: Style Gauge -- the gate names the absent library, so a reader can provision it."
+say "display-gate: Lens TAME -- safety first: a gate proven only shut is indistinguishable from a bypass."
+
+let control = run ["sh" "tools/fixtures/pond_display_gate_control.sh"]
+assert control.ok else "display-gate: the control must complete"
+say control.out
+assert control.out contains "case=gate_fires ok" else "display-gate: an absent seam must gate at exit 3"
+assert control.out contains "case=gate_names_verdict ok" else "display-gate: the gate must name a verdict, never only refuse"
+assert control.out contains "case=gate_names_libraries ok" else "display-gate: the gate must name WHICH seam is absent"
+assert control.out contains "case=gate_opens ok" else "display-gate: a present seam must open the gate"
+assert control.out contains "case=gate_yields_to_build ok" else "display-gate: an open gate must yield to the ordinary build"
+assert control.out contains "case=red_survives_gate ok" else "display-gate: a real build failure must survive the gate as NON-3"
+assert control.out contains "case=one_seam_still_gates ok" else "display-gate: one absent seam of two must still gate, naming only the absent one"
+assert control.out contains "case=rt_is_not_gated ok" else "display-gate: rt lives inside glibc and stays outside the check"
+assert control.out contains "control=ok" else "display-gate: the control must agree with itself"
+
+say "RED and GREEN paths proven -- the gate shuts on an absent seam and opens on a present one, and a real failure survives it"
+say "GREEN: display-gate -- a Wayland application on a headless host reports a machine fact, not a tree red."

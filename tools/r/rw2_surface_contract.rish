@@ -8,6 +8,13 @@
 let zig = "vendor/zig-toolchain/zig"
 let bin = "brushstroke/bin/brushstroke-wayland-seed"
 
+# A Wayland application on a headless pier is a machine fact, never a tree red (REDS %173).
+# One shared probe answers for six callers; it exits 3, and only 3, when a seam is absent.
+let seam = run ["sh" "-c" "sh tools/fixtures/display_seam_probe.sh >/dev/null 2>&1; test $? -eq 3"]
+if seam.ok then say "GATED: the RW-2 surface contract wants a host with a display -- no graphical link seam on this machine."
+if seam.ok then say "GATED: run it on a Wayland host, or provision the seams -- a NixOS rebuild, a hand's gate."
+if seam.ok then exit 0
+
 let build = run ["sh" "-c" "mkdir -p brushstroke/bin && env RYE_ZIG=${zig} rye/bin/rye build brushstroke/wayland_seed.rye brushstroke/xdg-shell-protocol.c -Ibrushstroke -lc -lwayland-client -lxkbcommon -lrt -femit-bin=${bin}"]
 assert build.ok else "wayland_seed build failed for RW-2 contract witness"
 

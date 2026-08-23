@@ -202,6 +202,9 @@
 /glow/nock/bin/
 /glow/bin/
 /glow/.cache/
+# The fold gave witnesses a second cache room; a build cache is never tracked, and this one
+# holds symlinks at pre-fold targets that dangle in any fresh clone (REDS %173).
+tools/glow/
 *.rye.zig
 # Rye build residue: `rye build` also emits <name>.zig beside each module it
 # compiles, and the `*.rye.zig` line above catches only the bridge files. Twenty-six
