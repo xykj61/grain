@@ -15,7 +15,7 @@
 | Remote | Forge |
 |--------|-------|
 | `origin` | GitHub `autoproject96/grain` |
-| `xykj61` | GitHub `xykj61/grain` |
+| `xykj61` | GitHub `xykj61/grain` -- **speeddial `xy`** (Lexicon, `20260823.173634`): say **xy** for the private field and **seed** for `grain-os/grain`, since both were being called *the grain repo* and they are opposite things |
 
 **Seed / public projection remote** (`20260817` — Keaton's word: grain-os is an xykj61 organization):
 
