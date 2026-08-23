@@ -16,7 +16,7 @@
 | the whole first day | [`../../SOURCE.md`](../../SOURCE.md) | keys, the enclosure, the signed forge home |
 | the reference, after | [`../api/rishi-language-reference.md`](../api/rishi-language-reference.md) | every form the shell understands, and its edges |
 
-The two first-hour pages are a **welcome** and a **path**, and they point at each other. Neither is the leftover of the other.
+The two first-hour pages are a **welcome** and a **path**, and they point at each other. Each earns its own shelf.
 
 ## The manual, room by room
 
@@ -28,7 +28,7 @@ The two first-hour pages are a **welcome** and a **path**, and they point at eac
 
 ## What this room is not
 
-It is not a second copy of the manual. A page enters here only when it **compresses** several sources into one surface a newcomer can finish in a sitting -- and when every command in it has been run before it was written down. That last rule is not decoration: the elder first-hour page told a reader for months that the tools *"came with the copy"* when a fresh clone carried neither (REDS %117).
+It stands beside the manual with its own job. A page enters here only when it **compresses** several sources into one surface a newcomer can finish in a sitting -- and when every command in it has been run before it was written down. That last rule is not decoration: the elder first-hour page told a reader for months that the tools *"came with the copy"* when a fresh clone carried neither (REDS %117).
 
 ---
 

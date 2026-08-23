@@ -13,9 +13,9 @@
 
 ## What This Pattern Holds
 
-A group of peers needs to agree on a number that changes — how much exists, who holds a place, what has been spent — while trusting each other only as far as signatures reach. The fact fold answers that need with a single discipline: **state is a pure fold over an append-only log of immutable signed facts.** No peer edits a total. Each peer appends a fact, and every peer computes the same total from the same facts, arriving at agreement through arithmetic rather than through authority.
+A group of peers needs to agree on a number that changes — how much exists, who holds a place, what has been spent — while trusting each other only as far as signatures reach. The fact fold answers that need with a single discipline: **state is a pure fold over an append-only log of immutable signed facts.** Every peer derives the total. Each peer appends a fact, and every peer computes the same total from the same facts, arriving at agreement through arithmetic rather than through authority.
 
-The pattern earns its place in the book because it composes rather than accumulates. Pattern one carries descriptors between peers; this pattern carries meaning. Once facts travel reliably and identity holds at the seam, the fold turns a stream of signed events into a number every participant can check alone, from the log, without asking anyone.
+The pattern earns its place in the book because it composes rather than accumulates. Pattern one carries descriptors between peers; this pattern carries meaning. Once facts travel reliably and identity holds at the seam, the fold turns a stream of signed events into a number every participant can check alone, from the log, on their own.
 
 ## The Shape
 
@@ -29,9 +29,9 @@ Three parts stand in the pattern, and each is simple by itself.
 
 ## The Invariant
 
-The fold's law reads plainly: **supply equals issued minus taxed**, and it holds at *every prefix* of the log rather than only at the end. The distinction matters more than it first appears. A law checked once at the end can pass while every intermediate state was nonsense. A law asserted at each step turns the fold into its own witness, and the first fact that breaks it stops the walk exactly where the fault lives.
+The fold's law reads plainly: **supply equals issued minus taxed**, and it holds at *every prefix* of the log rather than only at the end. The distinction matters more than it first appears. A law checked once at the end can pass while every intermediate state was nonsense. A law asserted at each step turns the fold into its own witness, and the first fact to violate it halts the walk exactly where the fault lives.
 
-Supply stays non-negative at every prefix. A tax that would carry supply below zero refuses the fold whole rather than clamping quietly to zero, because a clamp invents a number nobody signed. The refusal is loud, named, and testable.
+Supply stays non-negative at every prefix. A tax that would carry supply below zero turns away the fold whole rather than clamping quietly to zero, because a clamp would invent a number nobody signed. The turn-away is loud, named, and testable.
 
 ```
 // Invariant: supply == issued - taxed, at every prefix of the log.
@@ -40,15 +40,15 @@ Supply stays non-negative at every prefix. A tax that would carry supply below z
 
 ## Identity at the Seam
 
-Every fact verifies through the Kumara seam before the fold counts it. Identity lives in one module by law, so the fold reaches for that module rather than for a signature primitive of its own. A fact whose signature fails verification never enters the fold's arithmetic — refusal comes before counting, never after.
+Every fact verifies through the Kumara seam before the fold counts it. Identity lives in one module by law, so the fold reaches for that module rather than for a signature primitive of its own. A fact enters the fold's arithmetic once its signature verifies, so the check always comes before the counting.
 
-Metal: `kumara.verify_bytes(msg[0..n], fact.sig[0..], pk) catch return error.IdentityRefused` inside `fold_fact` — the public key is first rebuilt with `kumara.PublicKey.fromBytes(fact.signer_pk)`, and that path also returns `error.IdentityRefused` when the key bytes are not a key.
+Metal: `kumara.verify_bytes(msg[0..n], fact.sig[0..], pk) catch return error.IdentityRefused` inside `fold_fact` — the public key is first rebuilt with `kumara.PublicKey.fromBytes(fact.signer_pk)`, and that path returns `error.IdentityRefused` for key bytes that read as anything else.
 
 ## Refusal, Never Silence
 
-An unknown fact kind refuses the whole fold, loudly. This is the pattern's sharpest edge and its most important one. A fold that skips what it fails to understand produces a number that looks correct and is not, and no witness downstream can tell the difference. Refusing whole keeps a wrong answer from ever existing.
+An unfamiliar fact kind turns away the whole fold, loudly. This is the pattern's sharpest edge and its most important one. A fold that skipped what it could parse would produce a number that merely looks correct, and every witness downstream would read it as sound. Turning away whole means the only answers that exist are answers that hold.
 
-The same discipline governs malformed facts, oversized facts, and facts arriving with fields the kind does not name. Each refusal is a named error rather than a boolean, so a caller learns which fault it met.
+The same discipline governs facts that arrive malformed, oversized, or carrying fields beyond what their kind names. Each turn-away carries a named error rather than a boolean, so a caller learns exactly which fault it met.
 
 Metal — named errors from `fold_fact` / `fold_log` / `append_fact`: `IdentityRefused` · `UnknownKind` · `Overdraw` · `StarTaken` · `LogFull`.
 
@@ -60,7 +60,7 @@ Pairing the assertion on two paths follows the discipline the whole tree keeps: 
 
 ## Bounds, Each With Its Why
 
-Log length carries a named ceiling, because a fold that cannot state how long it might walk has not finished its design. Fact size carries a named ceiling, because a fact arriving larger than the reader's budget is a fault rather than a surprise. Arithmetic at persistence boundaries runs in `u64`, so a quantity means the same thing on every target that ever reads the log.
+Log length carries a named ceiling, because a fold states how long it might walk before its design is finished. Fact size carries a named ceiling, because a fact arriving larger than the reader's budget is a fault rather than a surprise. Arithmetic at persistence boundaries runs in `u64`, so a quantity means the same thing on every target that ever reads the log.
 
 Metal bounds from `mycelium/fold.rye` (checked equal in `mycelium/build_bounds.rye`):
 
@@ -74,7 +74,7 @@ Metal bounds from `mycelium/fold.rye` (checked equal in `mycelium/build_bounds.r
 
 ## The Witness
 
-The pattern's proof runs as a witness rather than resting in prose. It walks the log fresh and resumed and asserts equality. It asserts the invariant at every prefix, rather than at the end. It presents a fixture that would overdraw and asserts the whole fold refuses. It presents a fact of unknown kind and asserts the same. It presents a fact with a failing signature and asserts refusal before arithmetic. Each fixture bites — a fixture that cannot fail proves nothing.
+The pattern's proof runs as a witness rather than resting in prose. It walks the log fresh and resumed and asserts equality. It asserts the invariant at every prefix, rather than at the end. It presents a fixture that would overdraw and asserts the whole fold refuses. It presents a fact of unknown kind and asserts the same. It presents a fact with a failing signature and asserts refusal before arithmetic. Each fixture bites, which is what makes the green line worth reading.
 
 Metal witness: `mycelium/fold.rye` itself (`rye/bin/rye run mycelium/fold.rye`). Green line:
 
@@ -84,11 +84,11 @@ Metal witness: `mycelium/fold.rye` itself (`rye/bin/rye run mycelium/fold.rye`).
 
 The fold sits beneath the patterns that carry facts and above the modules that keep them. Pattern one's descriptor exchange brings peers into contact; facts then travel between them; and each peer folds independently to the same number. Because the fold consults nothing outside the log, two peers who hold the same prefix agree without negotiating, and a peer who holds a shorter prefix knows precisely how much of the story it is missing.
 
-Metal imports in `mycelium/fold.rye`: **Kumara** (`kumara.rye` — sign/verify) and **Tally** (`tally_copy.rye` — disjoint copy). No Weave, Mantra, Amphora, Mand, or Murr import appears in the fold file. Composition the tree already names in prose: Sangha pattern one (Comlink discovery) brings peers into contact; this pattern folds facts once they arrive. Pond surface is not named in the fold source.
+Metal imports in `mycelium/fold.rye`: **Kumara** (`kumara.rye` — sign/verify) and **Tally** (`tally_copy.rye` — disjoint copy). The fold file imports those two and stops there. Composition the tree already names in prose: Sangha pattern one (Comlink discovery) brings peers into contact; this pattern folds facts once they arrive. Pond surface is not named in the fold source.
 
 ## What This Page Never Decides
 
-Membership semantics stay outside the pattern entirely: who may join, what departure means, what a reservation's release or expiry implies, and every policy word touching value. The fold computes; it decides nothing. Those words are Keaton's alone, and no page invents them.
+Membership semantics stay outside the pattern entirely: who may join, what departure means, what a reservation's release or expiry implies, and every policy word touching value. The fold computes, and leaves every decision to its caller. Those words are Keaton's alone, and no page invents them.
 
 ## Trey's Note, on the Record
 

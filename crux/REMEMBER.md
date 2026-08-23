@@ -57,7 +57,15 @@ Keaton read a front door headed **Style: Radiant** and said it was the opposite 
 
 **Rewritten and measured:** README **46% to 15%**, the founding statement **54% to 11%**, both below Radiant's own baseline, every claim held exactly. **Meter:** `tools/prose_register_witness.rish` gates a named three-document Door roster at 20% and reports the teaching tier under a falling ceiling; nine behaviors proven on planted prose with the scan's own measure function lifted verbatim. Roster's **twenty-seventh** guard. **Status bar reads Gauge.** Eight rules repointed. Naming debt paid at `gratitude/galois-gauge-and-the-sheaf.md` -- Galois, gauge theory, and sheaves are why *a register may change while a claim never does*.
 
-**SWEEP RUNNING -- opened by Keaton's word `20260823.061415`. First lap landed.**
+**SWEEP COMPLETE -- the teaching tier reads zero over target.**
+
+All **fourteen** remaining documents swept `20260823.070754`, and the ratchet ceiling falls **16 to 0**. `CONTRIBUTING.md` **42% to 0%**, `run-record-and-failures` **50% to 12%**, `cloud-agent-toolchain-setup` **50% to 0%**, `macos-ai-jail-setup` **42% to 22%**, `02-fact-fold` **42% to 17%**, and the rest below them. Every teaching document in the tree now sits at or under the 30% Field target, the highest three at exactly 30%. The work was surgical rather than wholesale -- offending sentences located by the guard's own regex and rewritten one at a time, so everything else stayed byte-identical.
+
+**Where the sangha question was settled honestly:** those three pages are dense reference where refusal is genuinely the subject, so Field looked arguable. Their own charter decided it -- *"Acme-hand plain, every coined term named at first use... written for the reader who arrives with nothing."* Teaching tier by their own word, so they were swept rather than reclassified.
+
+**Gratitude seated:** `gratitude/andrew-kelley-zig.md` (no hidden control flow, the allocator as a parameter, patience with a small surface), `gratitude/galen-wolfe-pauly-urbit.md` (the personal server as a product, owned identity at the centre), and `gratitude/curtis-yarvin-hoon-and-nock.md` -- **narrow on Keaton's word**, scoped to the Nock and Hoon design with the scope line stated first and everything outside computing named as outside the note.
+
+**Elder note -- the sweep's first lap.**
 
 `docs-geode/tutorials/the-first-hour.md` **51% to 0%** and `docs-geode/demos/README.md` **62% to 15%**, measured by the guard's own function. Both **promoted onto the enforced Door roster**, which now holds five; teaching ceiling lowered **16 to 14**. Every one of the tutorial's 13 code blocks is byte-identical, its links identical, its numbers identical -- a register pass holds a claim exactly. The demos page carried **two stale outputs**, found by re-running all four commands rather than trusting the page: `flat=59` had become **148**, `fascia=45` had become **41**. Repaired as a separate factual fix, with the page now naming which two moved and why.
 

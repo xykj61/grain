@@ -13,7 +13,7 @@
 You are on macOS, and [`SOURCE.md`](../../SOURCE.md)'s Step 6 describes ai-jail. When this guide was first written, that was a Linux-only tool -- `bwrap`, namespaces, Landlock -- and macOS needed its own path. Two things are true now, and this guide covers both:
 
 1. **Upstream ai-jail itself now runs on macOS.** It grew a native `sandbox-exec` backend, and it is the right tool here for what it was always for: wrapping **terminal agents and shells** (`ai-jail claude`, `ai-jail bash`). Installed and witnessed on this host, v1.13.0.
-2. **This project's own launcher jails the Cursor GUI app** -- something upstream does not aim at. It is a Rish script generating a Seatbelt profile and launching Cursor.app inside it, with project-local state. The research behind the approach lives in [`external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md`](../../external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md); the gratitude note for upstream's macOS arrival is [`gratitude/20260714-070200_ai-jail-macos-backend.md`](../../gratitude/20260714-070200_ai-jail-macos-backend.md).
+2. **This project's own launcher jails the Cursor GUI app** -- something this launcher aims at on its own. It is a Rish script generating a Seatbelt profile and launching Cursor.app inside it, with project-local state. The research behind the approach lives in [`external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md`](../../external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md); the gratitude note for upstream's macOS arrival is [`gratitude/20260714-070200_ai-jail-macos-backend.md`](../../gratitude/20260714-070200_ai-jail-macos-backend.md).
 
 **The primary launcher and witness are written in Rish** -- [`tools/cursor_jail_macos.rish`](../../tools/cursor_jail_macos.rish) and [`tools/cursor_jail_macos_witness.rish`](../../tools/cursor_jail_macos_witness.rish). The witness now tests the launcher's own emitted profile (one source of truth, no drifting copy). The original bash pair, [`tools/cursor-jail-macos.sh`](../../tools/cursor-jail-macos.sh) and [`tools/cursor_jail_macos_witness.sh`](../../tools/cursor_jail_macos_witness.sh), stays as the elder -- same policy, for a host without Rishi built yet.
 
@@ -44,7 +44,7 @@ Cursor opens with its own state under `.cursor-state/`, and every write it or it
 rishi/bin/rishi run tools/cursor_jail_macos_witness.rish
 ```
 
-Two green lines: a write inside the project succeeding, and a write outside it (to your real `$HOME`) denied. Not simulated -- the kernel enforcing the actual profile the launcher emits.
+Two green lines: a write inside the project succeeding, and a write outside it (to your real `$HOME`) denied. The kernel itself enforcing the actual profile the launcher emits.
 
 **Deny network for a session** (a review pass with no reason to reach the internet):
 
@@ -66,7 +66,7 @@ rishi/bin/rishi run tools/cursor_jail_macos.rish --print-profile
 
 ## Denying the Real Credential Stores (`--harden-home`)
 
-Reads staying open everywhere (above) is a real trade-off, not a free one: combined with network allowed by default, an agent that reads your real `~/.ssh` or `~/.gnupg` and then reaches the network has an exfiltration path that needs no write at all. `--harden-home` closes exactly that path, without touching the general "reads stay open" trade-off for everything else:
+Reads staying open everywhere (above) is a real trade-off, priced honestly: combined with network allowed by default, an agent that reads your real `~/.ssh` or `~/.gnupg` and then reaches the network has an exfiltration path that needs no write at all. `--harden-home` closes exactly that path, leaving intact the general "reads stay open" trade-off for everything else:
 
 ```bash
 rishi/bin/rishi run tools/cursor_jail_macos.rish --harden-home
@@ -91,11 +91,11 @@ This makes a fresh SSH deploy key for **GitHub** (and, today, still a historical
 rishi/bin/rishi run tools/cursor_jail_macos_harden_witness.rish
 ```
 
-This is a real, named limit, not a convenience note: proven directly on this host, once a process is already `sandbox_apply`'d, a *second*, nested `sandbox_apply` carrying an explicit `(deny ...)` rule fails outright -- `sandbox-exec: sandbox_apply: Operation not permitted` -- even though the identical profile applies cleanly as a first, non-nested call, and even though an allow-only nested profile (the plain write-fence witness above) nests without issue. An agent already working inside a jailed window cannot fully self-certify `--harden-home` from within that same window; the witness says so plainly rather than reporting a false pass.
+This is a real limit, named and measured: proven directly on this host, once a process is already `sandbox_apply`'d, a *second*, nested `sandbox_apply` carrying an explicit `(deny ...)` rule fails outright -- `sandbox-exec: sandbox_apply: Operation not permitted` -- even though the identical profile applies cleanly as a first, non-nested call, and even though an allow-only nested profile (the plain write-fence witness above) nests without issue. An agent already working inside a jailed window reaches only partway toward self-certifying `--harden-home` from within that same window; the witness says so plainly rather than reporting a pass it has not earned.
 
 ## Using `gh` Inside the Hardened Jail
 
-`--harden-home` denies `~/.config/gh`, so the `gh` CLI cannot even start from inside -- it reads that config directory before anything else and gets `operation not permitted` rather than a clean "not found," so it hard-fails. That is the fence doing its job: `~/.config/gh` holds a broad-scope account token, exactly the kind of credential the hardening exists to keep out.
+`--harden-home` denies `~/.config/gh`, so the `gh` CLI stops before it starts from inside -- it reads that config directory before anything else and gets `operation not permitted` rather than a clean "not found," so it hard-fails. That is the fence doing its job: `~/.config/gh` holds a broad-scope account token, exactly the kind of credential the hardening exists to keep out.
 
 You keep `gh`, though -- you point it at jail-local state and a **scoped** token in place of your real one:
 
@@ -106,9 +106,9 @@ gh ssh-key add .ssh/id_ed25519_jail_github.pub --title "jail-only github"
 gh pr create --fill        # PRs, issues, CI checks, releases -- all work
 ```
 
-`GH_TOKEN` provides auth directly, so `gh` never touches the denied real config; `GH_CONFIG_DIR` gives it a jail-local place to keep its own settings. Create the token as a **fine-grained personal access token scoped to this one repository** with only the permissions the task needs (Contents and Administration read/write covers key uploads, pushes, and PRs), store it in the gitignored `tools/gh-token.secret`, and revoke it when the work is done. This keeps everything `--harden-home` bought: a compromised jail sees a single-repo, revocable token, never your whole GitHub account. Copying `~/.config/gh` wholesale still works, yet it drags your real broad token inside the fence -- the scoped `GH_TOKEN` is the better trade.
+`GH_TOKEN` provides auth directly, so `gh` reaches only the jail-local config; `GH_CONFIG_DIR` gives it a jail-local place to keep its own settings. Create the token as a **fine-grained personal access token scoped to this one repository** with only the permissions the task needs (Contents and Administration read/write covers key uploads, pushes, and PRs), store it in the gitignored `tools/gh-token.secret`, and revoke it when the work is done. This keeps everything `--harden-home` bought: a compromised jail sees a single-repo, revocable token, with your whole GitHub account out of its reach. Copying `~/.config/gh` wholesale still works, yet it drags your real broad token inside the fence -- the scoped `GH_TOKEN` is the better trade.
 
-What the scoped-token setup buys, when you skip it entirely: `gh`'s conveniences -- opening PRs, triaging issues, watching CI runs, cutting releases, managing keys -- all from the terminal. None of it is irreplaceable (the web UI and plain `git` cover the essentials, and key uploads are a one-time paste), so whether the scoped-token setup is worth it depends on how much of your workflow runs through `gh`. For a mostly-`git` workflow, manual key pastes and the web UI are enough; for heavy PR/issue work, the scoped token pays for itself quickly.
+What the scoped-token setup buys, when you skip it entirely: `gh`'s conveniences -- opening PRs, triaging issues, watching CI runs, cutting releases, managing keys -- all from the terminal. Every piece has a stand-in (the web UI and plain `git` cover the essentials, and key uploads are a one-time paste), so whether the scoped-token setup is worth it depends on how much of your workflow runs through `gh`. For a mostly-`git` workflow, manual key pastes and the web UI are enough; for heavy PR/issue work, the scoped token pays for itself quickly.
 
 ## A Full Private-`$HOME` (`--private-home`)
 
@@ -136,7 +136,7 @@ rishi/bin/rishi run tools/cursor_jail_macos_private_home_witness.rish
 
 ## Jail a Terminal Agent Instead (Upstream ai-jail)
 
-For CLI agents and shells -- the thing upstream ai-jail wraps natively -- install it and use it directly. The Homebrew tap needs no SSH key; the release binary is simplest:
+For CLI agents and shells -- the thing upstream ai-jail wraps natively -- install it and use it directly. The Homebrew tap runs without an SSH key, and the release binary is simplest:
 
 ```bash
 curl -fsSL https://github.com/akitaonrails/ai-jail/releases/latest/download/ai-jail-macos-aarch64.tar.gz | tar xz
@@ -153,15 +153,15 @@ Witnessed on this host: inside-write succeeded, `$HOME` write denied with `Opera
 
 Each of these cost a real debugging pass on this host (`20260714`, full trail in the session logs); they are why the launcher looks the way it does:
 
-1. **Exec the app binary, never the `cursor` CLI wrapper.** The wrapper (`ELECTRON_RUN_AS_NODE` + `cli.js`) spawns the real app in a detached dance that dies silently under Seatbelt -- `bootstrap_check_in ... Permission denied` -- while the wrapper itself exits 0. It looks like success and launches nothing.
-2. **Pass `--no-sandbox`.** Chromium's own internal sandbox cannot nest inside Seatbelt: the GPU and network helpers abort and take the whole app down ("GPU process isn't usable. Goodbye."). This is the same law `SOURCE.md` Step 9 names on Linux, where Chromium's sandbox cannot nest inside `bwrap` either. The real boundary is the outer jail.
+1. **Exec the app binary, never the `cursor` CLI wrapper.** The wrapper (`ELECTRON_RUN_AS_NODE` + `cli.js`) spawns the real app in a detached dance that dies silently under Seatbelt -- `bootstrap_check_in ... Permission denied` -- while the wrapper itself exits 0. It reports success while the app stays closed.
+2. **Pass `--no-sandbox`.** Chromium's own internal sandbox wants the outermost layer, so Seatbelt stays outside it: the GPU and network helpers abort and take the whole app down ("GPU process isn't usable. Goodbye."). This is the same law `SOURCE.md` Step 9 names on Linux, where Chromium's sandbox likewise wants the outermost layer, outside `bwrap` either. The real boundary is the outer jail.
 3. **Detach stdio.** A spawned child inherits pipes that die with the launching script, and Electron logs constantly -- the app boots, then takes a `SIGPIPE` seconds later and vanishes (alive at 12s, gone by 20s, observed). The launcher's one host seam (`nohup ... >/dev/null 2>&1 </dev/null`) makes the jailed app independent of both the script's lifetime and the terminal's.
 
 The profile's Mach/IPC/pty section follows the static section of upstream ai-jail's own macOS backend -- the proven minimum for an Electron app to boot at all under `(deny default)` -- with `mach-register` (Electron's `MachPortRendezvousServer` aborts without it) and `mach-task-name` (its codesign self-check) called out by name.
 
 ## Two Findings From a Live Jailed Agent Session
 
-A running Cursor agent, working from inside the jail on this repo's own git remotes, hit two rough edges worth naming plainly -- neither is a fence failure, both are ordinary tool behavior meeting a write-fenced `$HOME`.
+A running Cursor agent, working from inside the jail on this repo's own git remotes, hit two rough edges worth naming plainly -- both are ordinary tool behavior meeting a write-fenced `$HOME`.
 
 **SSH pushes fail with a wrong-key error, even though the right key exists.** If this Mac's `~/.ssh/config` already carries a `Host github.com` (or a retired `Host codeberg.org`) block from an earlier, unrelated project -- with `IdentitiesOnly yes` and a different `IdentityFile` -- that global block wins for *every* repo on the host, this one included, and the push fails with `Permission denied (publickey)` even with the correct key sitting in `~/.ssh/` and already loaded in the agent. The global file is unwritable from inside the jail by design (Step 6's write fence), so fix it per-repo instead, entirely inside the fence. A living GitHub-only shape:
 
@@ -176,7 +176,7 @@ EOF
 git config --local core.sshCommand "ssh -F $PWD/.git/ssh_config_grain"
 ```
 
-If the key generator already wrote `.git/ssh_config_urbit` for you, that historical name still works -- point `core.sshCommand` at whichever file is present. `.git/` is never tracked, so this file and this config change need no gitignore entry -- they simply never leave this one clone.
+If the key generator already wrote `.git/ssh_config_urbit` for you, that historical name still works -- point `core.sshCommand` at whichever file is present. `.git/` stays untracked, so this file and this config change stay local to this one clone with no gitignore entry needed.
 
 **`git log --show-signature` and `gpg --list-secret-keys` can hang or fail, even though signing itself works.** Both operations try to update `~/.gnupg/trustdb.gpg`, and the jail's write fence denies that -- sometimes as a fast `Operation not permitted`, sometimes as a hang waiting on `gpg-agent`. Plain `gpg --sign` and `git commit` do not hit the same path and complete normally; every signed commit made from inside this jail proves it. Guard any signature-inspecting command with `timeout` so a trustdb stall cannot block a session:
 
