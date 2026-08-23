@@ -4957,32 +4957,7 @@ pub fn clear_recount(io: std.Io, address: []const u8) void {
 /// Writes the path of the word one reader keeps about the answer they were
 /// carried.
 fn suits_path(buf: *[max_note_path_len]u8, address: []const u8) NoteError![]const u8 {
-    // invariant: a word is only ever sought at an address a run may reach
-    assert(addressable(address));
-    const suffix = ".suits";
-    // invariant: a reader's word is kept in the same box every other word to and
-    // from this reader is kept in
-    comptime assert(suffix.len == ".found".len);
-    const total = reader_dir.len + 1 + address.len + suffix.len;
-    if (total > max_note_path_len) return error.NotePathTooLong;
-    var at: u32 = 0;
-    for (reader_dir) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    buf[at] = '/';
-    at += 1;
-    for (address) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    for (suffix) |byte| {
-        buf[at] = byte;
-        at += 1;
-    }
-    // invariant: a word path is written exactly as long as it was measured
-    assert(at == total);
-    return buf[0..at];
+    return ladder_checks.suits_path(@This(), buf, address);
 }
 
 /// Writes one reader's own word about the answer they were carried.

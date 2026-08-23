@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260822.205431
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The sixth path, and the rule that was written inside it fifteen times
+prompt Autonomous loop -- take the next agent-doable lap Lindy-first crux-first, close reds first, send each finished increment as its own signed round
+think The ranked queue handed over suits_path at the head, tied at 350 with the mind_the_impasse lifted one lap earlier. Measured before cutting: declared=15 identical=15 lines=28 stub=3 fall=350 widens=0.
+think Read the family before lifting it. suits_path is the sixth member of the reader-box path family -- hand_path, tell_path, renew_path, ask_path, found_path, suits_path -- five of which already stand lifted in caravan/ladder_checks.rye, and found_path stands directly above where this one belongs.
+think The bodies are private fn rather than pub fn in all fifteen rungs, so the stubs keep that visibility and only the harness copy publishes. The lift widens nothing because every symbol the body reaches -- addressable, reader_dir, max_note_path_len, NoteError -- already stood public in all fifteen.
+think Lifted into caravan/ladder_checks.rye as pub fn suits_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: []const u8) rung.NoteError![]const u8, seated directly beneath found_path. All three asserts travelled, including the comptime assert(suffix.len == ".found".len).
+think Carry 60,160 -> 59,810, a fall of 350 -- the scan's predicted number to the digit, nine laps running. Lowered the ceiling in tools/caravan_ladder_carry_witness.rish and the scan default together; the choir caught the second one when only the first had moved, which is the bijection doing its job.
+think Rotated the pins: folded row to suits_path, queue head to hold_the_matter at 336, sink 65,420 -> 65,045 total and 64,280 -> 63,905 above the line, farewell holding 3,826 -> 3,801.
+obs The finding worth carrying is that this family is held together by an assert rather than by a resemblance. The comptime assert(suffix.len == ".found".len) says a reader's word must land in the same box, at the same width, as the finding it answers. That is a real rule about the wire, and it stood written fifteen times -- fifteen files free to drift apart on a constraint that binds all of them. The five siblings lifted before it each carried the same shape of assert, which is why the family reads as one rule rather than six similar functions.
+obs The second finding is smaller and worth naming anyway: two ceilings had to fall together, one in the witness and one in the scan default, and lowering only the witness left the scan blessing a number nobody had asserted. The suite caught it on the next run. A number written twice is a number that can disagree with itself, which is this whole arc's thesis pointed at its own meters.
+loom scan=ladder_reach_visibility family=suits_path declared=15 identical=15 lines=28 stub=3 fall=350 widens=0
+loom scan=caravan_ladder_carry carried_before=60160 carried_after=59810 fall=350 bodies=18197 modules=110
+loom scan=ladder_reach_visibility mode=sink total_before=65420 total_after=65045 above_before=64280 above_after=63905
+file caravan/ladder_checks.rye one published suits_path taking the rung as a comptime type parameter, seated directly beneath the found_path it pairs with
+file caravan/allay.rye three-line private stub calling the lifted body
+file caravan/abate.rye three-line private stub calling the lifted body
+file caravan/answer.rye three-line private stub calling the lifted body
+file caravan/beckon.rye three-line private stub calling the lifted body
+file caravan/conclude.rye three-line private stub calling the lifted body
+file caravan/desist.rye three-line private stub calling the lifted body
+file caravan/forbear.rye three-line private stub calling the lifted body
+file caravan/farewell.rye three-line private stub calling the lifted body
+file caravan/recount.rye three-line private stub calling the lifted body
+file caravan/refrain.rye three-line private stub calling the lifted body
+file caravan/mind.rye three-line private stub calling the lifted body
+file caravan/suffice.rye three-line private stub calling the lifted body
+file caravan/reopen.rye three-line private stub calling the lifted body
+file caravan/respect.rye three-line private stub calling the lifted body
+file caravan/reweigh.rye three-line private stub calling the lifted body
+file tools/caravan_ladder_carry_witness.rish ceiling lowered to 59810, body counts and narrative rotated to this lap
+file tools/fixtures/caravan_ladder_carry_scan.sh default ceiling lowered to 59810
+file tools/caravan_ladder_reach_visibility_witness.rish folded row, queue head, sink window, and farewell holding rotated to this lap
+file crux/REMEMBER.md Now refilled with the live edge and the git nib repinned
+recommend keep-going hold_the_matter leads the ranked queue at 336 over seven rungs of a fifty-nine-line body widening nothing -- the deepest body standing on the board, and the natural follow-on now that two deep narrow families have folded as cleanly as the twelve-line notes; bound_the_relay stands close behind at 312 over seven rungs of fifty-five and shares the movement-rung shape mind_the_impasse just proved
