@@ -16,7 +16,7 @@ CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 COUNSEL=counsel/date/20260801/20260801-000833_e131-timing-pin-manifest-limb.md
 LEXICON=context/LEXICON.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 REDS=construction/REDS.md
 MANIFEST=waymarks/20260731-234032_e129-first-bundle-send.manifest
 PRIN=tools/gen/season/prin_scope.rish
@@ -41,7 +41,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$COUNSEL" "$LEXICON" "$MAP" "$REMEMBER" "$REDS" "$MANIFEST" "$PRIN"; do
+for p in "$COUNSEL" "$LEXICON" "$MAP" "$ITINERARY" "$REDS" "$MANIFEST" "$PRIN"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
     echo "verdict=misread"
@@ -84,7 +84,7 @@ rg -q 'verified_rather_than_trusted' "$MANIFEST" || {
   echo "verdict=misread"
   exit 1
 }
-rg -qi 'living.doc|living_doc|verified rather than trusted|e121 wipe' "$COUNSEL" "$LEXICON" "$REMEMBER" || {
+rg -qi 'living.doc|living_doc|verified rather than trusted|e121 wipe' "$COUNSEL" "$LEXICON" "$ITINERARY" || {
   echo "manifest_limb=failed"
   echo "detail=want_living_doc_named_in_pins"
   echo "verdict=misread"
@@ -129,7 +129,7 @@ rg -qi 'does not circle shred|do not open|does not open' "$COUNSEL" || {
   echo "verdict=misread"
   exit 1
 }
-rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$REMEMBER" "$MAP" "$COUNSEL" || {
+rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$ITINERARY" "$MAP" "$COUNSEL" || {
   echo "shred_gate=failed"
   echo "verdict=misread"
   exit 1

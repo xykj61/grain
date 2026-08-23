@@ -25,7 +25,7 @@ entry = (
     "### 127. Equinox e123 living-pin guard: content guard for rostered living pins — "
     "non-empty · header present · tracked via git ls-files · bound enforce or "
     "hold_over disclose; planted emptied fixture must be caught (prove-red "
-    "RED_living_pin_emptied_caught); would have named the e121 REMEMBER wipe; "
+    "RED_living_pin_emptied_caught); would have named the e121 ITINERARY wipe; "
     "no git-history walk; e122 roots≠Bench kinds kept; seat 128 stays reserved; "
     "surface census six kept. Approve-all seated this lean; shred · SAFE · geode "
     "stay Keaton-gated.\n"

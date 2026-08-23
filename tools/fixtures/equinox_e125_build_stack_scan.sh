@@ -14,7 +14,7 @@ CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 LEXICON=context/LEXICON.md
 COUNSEL=counsel/date/20260731/20260731-230116_e125-build-stack.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/season/prin_scope.rish
 ELDER=tools/fixtures/equinox_e123_living_pin_guard_scan.sh
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
@@ -40,7 +40,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$LEXICON" "$COUNSEL" "$MAP" "$REMEMBER" "$PRIN" "$ELDER"; do
+for p in "$LEXICON" "$COUNSEL" "$MAP" "$ITINERARY" "$PRIN" "$ELDER"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
     echo "verdict=misread"
@@ -95,7 +95,7 @@ fi
 echo "stack=honored"
 echo "stack_order=sh>rish>glow_tend>docs-geode>aurora_caravan_tally>mantra_weave"
 
-rg -qi 'build stack|five refusals|not prioritizing rish over sh|layer order' "$COUNSEL" "$REMEMBER" "$MAP" || {
+rg -qi 'build stack|five refusals|not prioritizing rish over sh|layer order' "$COUNSEL" "$ITINERARY" "$MAP" || {
   echo "living=failed"
   echo "verdict=misread"
   exit 1

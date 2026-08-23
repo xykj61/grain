@@ -14,7 +14,7 @@ COUNSEL=counsel/date/20260801/20260801-011942_e137-cellar-amphora-unify-breach.m
 E138=counsel/date/20260801/20260801-012557_e138-cellar-retire-by-accretion.md
 LEXICON=context/LEXICON.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 CELLAR_README=cellar/README.md
@@ -38,7 +38,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$COUNSEL" "$E138" "$LEXICON" "$MAP" "$REMEMBER" "$CELLAR_README" "$PRIN"; do
+for p in "$COUNSEL" "$E138" "$LEXICON" "$MAP" "$ITINERARY" "$CELLAR_README" "$PRIN"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
     echo "verdict=misread"
@@ -60,7 +60,7 @@ echo "counsel=honored"
 echo "e137_counsel=dated_testimony_kept"
 
 # Living edge is e138 accretion
-rg -qi 'withdrawn' "$E138" "$LEXICON" "$REMEMBER" || {
+rg -qi 'withdrawn' "$E138" "$LEXICON" "$ITINERARY" || {
   echo "living=failed"
   echo "detail=want_e138_withdrawn"
   echo "verdict=misread"
@@ -86,7 +86,7 @@ echo "cellar_kept=honored"
 echo "cellar_tracked=${CELLAR_COUNT}"
 echo "cut=none_this_stamp"
 
-rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$REMEMBER" "$MAP" || {
+rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$ITINERARY" "$MAP" || {
   echo "shred_gate=failed"
   echo "verdict=misread"
   exit 1

@@ -14,7 +14,7 @@ CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 LEXICON=context/LEXICON.md
 COUNSEL=counsel/date/20260731/20260731-221131_e122-roots-bench-kinds.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 ELDER=tools/gen/season/equinox_e121_roots_bench_amend_witness.rish
@@ -42,7 +42,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$LEXICON" "$COUNSEL" "$MAP" "$REMEMBER" "$PRIN" "$ELDER"; do
+for p in "$LEXICON" "$COUNSEL" "$MAP" "$ITINERARY" "$PRIN" "$ELDER"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     if test -f "$p"; then
       echo "instrument=failed"
@@ -60,8 +60,8 @@ for p in "$LEXICON" "$COUNSEL" "$MAP" "$REMEMBER" "$PRIN" "$ELDER"; do
 done
 echo "instruments_tracked=honored"
 
-# REMEMBER must not be empty (e121 wipe lesson)
-REM_BYTES=$(wc -c < "$REMEMBER" | tr -d ' ')
+# ITINERARY must not be empty (e121 wipe lesson)
+REM_BYTES=$(wc -c < "$ITINERARY" | tr -d ' ')
 if test "$REM_BYTES" -lt 1000; then
   echo "remember=failed"
   echo "verdict=misread"
@@ -136,13 +136,13 @@ echo "kinds=honored"
 echo "roots_members=claude_web·claude_ios·cursor_appimage_desktop·cursor_ios"
 echo "law=name_the_bench_when_a_measurement_is_reported"
 
-rg -qi 'name the Bench|roots ≠ Bench|different kind|kinds restored|un-blur|refused' "$COUNSEL" "$REMEMBER" "$MAP" || {
+rg -qi 'name the Bench|roots ≠ Bench|different kind|kinds restored|un-blur|refused' "$COUNSEL" "$ITINERARY" "$MAP" || {
   echo "living=failed"
   echo "verdict=misread"
   exit 1
 }
 # Living pins must not keep e121 blur as current truth
-if rg -qi 'bench = raised root|bench equals raised root' "$REMEMBER" "$MAP" "$PRIN"; then
+if rg -qi 'bench = raised root|bench equals raised root' "$ITINERARY" "$MAP" "$PRIN"; then
   echo "living=failed"
   echo "verdict=misread"
   echo "detail=stale_e121_blur_still_standing"

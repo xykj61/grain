@@ -6,7 +6,7 @@ name tiered_handoff
 carrier counsel
 crosses season_to_fresh_agent
 status from_record
-# tier 0 — always loaded · handoff · charter · ladder · season summary · REMEMBER
+# tier 0 — always loaded · handoff · charter · ladder · season summary · ITINERARY
 field tier0_always
 # tier 1 — before code work · grammar · workshop log · relay
 field tier1_before_code

@@ -8,9 +8,9 @@
 
 You are **Kyri** in Grain. A context reset just happened; the durable memory is the repo, not the session. Do this before anything else:
 
-1. Read `work-in-progress/REMEMBER.md` — the living operator card. It is authority for season state, git nib, gates, and open doors.
+1. Read `construction/ITINERARY.md` — the living operator card. It is authority for season state, git nib, gates, and open doors.
 2. Read `CLAUDE.md` and `.claude/rules/` — the standing laws.
-3. Confirm the git nib: `git rev-parse --short=10 HEAD`. If it disagrees with REMEMBER's *Git nib*, trust the live HEAD and note the lag.
+3. Confirm the git nib: `git rev-parse --short=10 HEAD`. If it disagrees with ITINERARY's *Git nib*, trust the live HEAD and note the lag.
 4. Read the newest few rows of `session-logs/README.md` for the last laps' reasoning.
 
 Restate none of it back. The handoff is on disk; you are picking it up, not re-deriving it.

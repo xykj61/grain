@@ -18,7 +18,7 @@ CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 COUNSEL=counsel/date/20260731/20260731-234806_e130-seal-jam-cue-desk.md
 LEXICON=context/LEXICON.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 WORKER=tools/glow_run_worker.sh
@@ -43,7 +43,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$DESK" "$ELDER" "$LOWER" "$COUNSEL" "$LEXICON" "$MAP" "$REMEMBER" "$PRIN" "$WORKER"; do
+for p in "$DESK" "$ELDER" "$LOWER" "$COUNSEL" "$LEXICON" "$MAP" "$ITINERARY" "$PRIN" "$WORKER"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
     echo "verdict=misread"
@@ -162,7 +162,7 @@ echo "$SEVEN_OUT" | rg -qi 'too many Glow lines' || {
 echo "ceiling=honored"
 echo "ceiling_note=bound_refuses_author"
 
-rg -qi 'seal|max_lines|compose-bind-nest-seal|bound refuses' "$COUNSEL" "$REMEMBER" "$MAP" || {
+rg -qi 'seal|max_lines|compose-bind-nest-seal|bound refuses' "$COUNSEL" "$ITINERARY" "$MAP" || {
   echo "living=failed"
   echo "verdict=misread"
   exit 1
@@ -191,7 +191,7 @@ fi
 echo "almanac=honored"
 echo "no_content_seat_claimed=honored"
 
-rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$REMEMBER" "$MAP" "$COUNSEL" || {
+rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$ITINERARY" "$MAP" "$COUNSEL" || {
   echo "shred_gate=failed"
   echo "verdict=misread"
   exit 1

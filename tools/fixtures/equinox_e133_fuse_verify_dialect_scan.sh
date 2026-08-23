@@ -16,7 +16,7 @@ COUNSEL=counsel/date/20260801/20260801-003457_e133-fuse-verify-dialect-green.md
 ELDER=counsel/date/20260801/20260801-001244_e132-date-dialect-timestamp.md
 LEXICON=context/LEXICON.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 E111=tools/fixtures/equinox_e111_date_dialect_scan.sh
 DD=tools/fixtures/date_dialect_scan.sh
 PRIN=tools/gen/season/prin_scope.rish
@@ -41,7 +41,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$COUNSEL" "$ELDER" "$LEXICON" "$MAP" "$REMEMBER" "$E111" "$DD" "$PRIN"; do
+for p in "$COUNSEL" "$ELDER" "$LEXICON" "$MAP" "$ITINERARY" "$E111" "$DD" "$PRIN"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
     echo "verdict=misread"
@@ -118,7 +118,7 @@ echo "census=honored"
 echo "first_of_eleven=lexicon"
 echo "compact_roof=one"
 
-rg -qi 'first of eleven|already GREEN|already green|two precisions|one compact roof' "$COUNSEL" "$REMEMBER" || {
+rg -qi 'first of eleven|already GREEN|already green|two precisions|one compact roof' "$COUNSEL" "$ITINERARY" || {
   echo "living=failed"
   echo "verdict=misread"
   exit 1
@@ -126,7 +126,7 @@ rg -qi 'first of eleven|already GREEN|already green|two precisions|one compact r
 echo "living=honored"
 echo "no_second_fix=honored"
 
-rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$REMEMBER" "$MAP" "$COUNSEL" || {
+rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$ITINERARY" "$MAP" "$COUNSEL" || {
   echo "shred_gate=failed"
   echo "verdict=misread"
   exit 1

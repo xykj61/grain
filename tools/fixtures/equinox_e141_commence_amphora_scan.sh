@@ -16,7 +16,7 @@ BOW=counsel/date/20260801/20260801-024355_e141-q1-bow.md
 SEND=tools/gen/season/equinox_bundle_send.sh
 LEXICON=context/LEXICON.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 ROADMAP=construction/ROADMAP.md
 REDS=construction/REDS.md
 PRIN=tools/gen/season/prin_scope.rish
@@ -42,7 +42,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$COUNSEL" "$BOW" "$SEND" "$LEXICON" "$MAP" "$REMEMBER" \
+for p in "$COUNSEL" "$BOW" "$SEND" "$LEXICON" "$MAP" "$ITINERARY" \
   "$ROADMAP" "$REDS" "$BENCH" "$PRIN"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
@@ -102,7 +102,7 @@ test "$RYE_N" = "9" || {
   echo "verdict=misread"
   exit 1
 }
-rg -qi '10 tracked|9 .rye|nine .rye|10 \(9' "$COUNSEL" "$BOW" "$REMEMBER" || {
+rg -qi '10 tracked|9 .rye|nine .rye|10 \(9' "$COUNSEL" "$BOW" "$ITINERARY" || {
   echo "census=failed"
   echo "detail=want_census_named_in_pins"
   echo "verdict=misread"
@@ -126,7 +126,7 @@ rg -qi 'HELD' "$COUNSEL" "$BOW" || {
   echo "verdict=misread"
   exit 1
 }
-rg -qi 'commence|OPEN' "$COUNSEL" "$BOW" "$REMEMBER" || {
+rg -qi 'commence|OPEN' "$COUNSEL" "$BOW" "$ITINERARY" || {
   echo "charter=failed"
   echo "detail=want_commence_open"
   echo "verdict=misread"
@@ -189,7 +189,7 @@ echo "$SPAN_OUT" | rg -q 'rehearsal-span-' || {
 }
 echo "rehearsal=honored"
 
-rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$REMEMBER" "$MAP" "$COUNSEL" || {
+rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$ITINERARY" "$MAP" "$COUNSEL" || {
   echo "shred_gate=failed"
   echo "verdict=misread"
   exit 1

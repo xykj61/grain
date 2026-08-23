@@ -15,7 +15,7 @@ ELDER=counsel/date/20260801/20260801-024355_e141-amphora-cli-equinox-charter.md
 README=amphora/README.md
 LEXICON=context/LEXICON.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 REDS=construction/REDS.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
@@ -40,7 +40,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 echo "control_gate=honored"
 
 for p in "$COUNSEL" "$DUTY" "$ELDER" "$README" "$LEXICON" "$MAP" \
-  "$REMEMBER" "$REDS" "$PRIN"; do
+  "$ITINERARY" "$REDS" "$PRIN"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
     echo "verdict=misread"
@@ -68,7 +68,7 @@ echo "reds=honored"
 echo "reds_note=row_51_counsel_leans_never_seats"
 
 # Crossing lean · not seated as sole living name claim
-rg -qi 'Crossing Season' "$DUTY" "$COUNSEL" "$REMEMBER" "$README" || {
+rg -qi 'Crossing Season' "$DUTY" "$COUNSEL" "$ITINERARY" "$README" || {
   echo "lean=failed"
   echo "detail=want_crossing_lean"
   echo "verdict=misread"
@@ -84,7 +84,7 @@ echo "lean=honored"
 echo "lean_note=crossing_season_offered"
 
 # Handback slot
-rg -q 'return_deca_128' "$DUTY" "$COUNSEL" "$ELDER" "$REMEMBER" || {
+rg -q 'return_deca_128' "$DUTY" "$COUNSEL" "$ELDER" "$ITINERARY" || {
   echo "handback=failed"
   echo "detail=want_return_deca_128"
   echo "verdict=misread"
@@ -135,7 +135,7 @@ echo "census=honored"
 echo "amphora_tracked=10"
 echo "zero_code=honored"
 
-rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$REMEMBER" "$MAP" "$COUNSEL" || {
+rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$ITINERARY" "$MAP" "$COUNSEL" || {
   echo "shred_gate=failed"
   echo "verdict=misread"
   exit 1

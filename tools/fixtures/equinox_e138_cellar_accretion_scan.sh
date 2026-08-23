@@ -16,7 +16,7 @@ COUNSEL=counsel/date/20260801/20260801-012557_e138-cellar-retire-by-accretion.md
 ELDER=counsel/date/20260801/20260801-011942_e137-cellar-amphora-unify-breach.md
 LEXICON=context/LEXICON.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 REDS=construction/REDS.md
 SHRED=construction/SHRED_PREP.md
 ROADMAP=construction/ROADMAP.md
@@ -45,7 +45,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$COUNSEL" "$ELDER" "$LEXICON" "$MAP" "$REMEMBER" "$REDS" "$SHRED" \
+for p in "$COUNSEL" "$ELDER" "$LEXICON" "$MAP" "$ITINERARY" "$REDS" "$SHRED" \
   "$ROADMAP" "$CELLAR_README" "$CELLAR_WITNESS" "$PRIN"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
@@ -139,7 +139,7 @@ rg -qi 'Plan \| redact Cellar|shred `cellar/`' "$SHRED" && {
 echo "shred_prep=honored"
 
 # Living pins
-rg -qi 'accretion|breach withdrawn|retire by accretion' "$REMEMBER" "$MAP" "$ROADMAP" || {
+rg -qi 'accretion|breach withdrawn|retire by accretion' "$ITINERARY" "$MAP" "$ROADMAP" || {
   echo "living=failed"
   echo "verdict=misread"
   exit 1
@@ -178,7 +178,7 @@ echo "$WIT_OUT" | rg -qi 'GREEN: cellar first lap witness passed|GREEN: cellar f
 echo "cellar_witness=honored"
 echo "cellar_witness_note=parity_144_green"
 
-rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$REMEMBER" "$MAP" "$COUNSEL" "$SHRED" || {
+rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$ITINERARY" "$MAP" "$COUNSEL" "$SHRED" || {
   echo "shred_gate=failed"
   echo "verdict=misread"
   exit 1

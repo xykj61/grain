@@ -1,70 +1,26 @@
-# Tasks — living pin
+# Tasks -- fused into ITINERARY
 
 **Language:** EN
-**Last updated:** `20260811.012115` · voice Kyri
+**Status:** Pointer -- the living content moved to [`ITINERARY.md`](ITINERARY.md) on `20260823.103804`
 **Living pin bound:** `living_pin_max_bytes = 24576`
-**Operator card:** [`REMEMBER.md`](REMEMBER.md)
+**Operator card:** [`ITINERARY.md`](ITINERARY.md)
 **Ledger:** [`THREADS.md`](THREADS.md)
 
 ---
 
-## Now — The Breach · Move 1 Pond (`20260810.011514`)
+The live lap edge lives in **[`ITINERARY.md`](ITINERARY.md)**, under *Now* and *The laps*. A lap
+that lands folds into a *Prior lap* line there, and its detail stays in the session log that
+recorded it -- so one card carries what is next rather than two carrying halves of it.
 
-**Finishing edge:** the breach is **OPEN**. **Move 1 (Pond):** Pond seated as Grain's **application module**, Pool retired into it by molt. **Loadable skies, lap 1 landed** (`comlink/topology.rye`): the geometry is a `Sky` struct — the seated d12·d60 is `compass_sky`, a differently-shaped `council_sky` (15·3·9, d27, 405 inclusive) round-trips by the same law, and the free `decode`/`encode` delegate to `compass_sky` so nothing drifts; all six JARL witnesses stay GREEN. Next sky laps: a sky-computed `constellation_max`, a sky as a Bron/Brix descriptor Pond reads, the role tilak. Other breach moves (Bron→Kyri, Kyri the voice, the `.sol`/`.sui` reference — Keaton's hand) follow as their own rounds. How the breach relates to the Compass Season's remaining equinoxes (BUHR · TACT), and whether it names a season, is Keaton's to shape.
+This file stays as a pointer rather than leaving, because seventeen tracked files name it and
+several are **machinery** -- `compass_rose.rish` tests for it directly, and roughly thirty
+`equinox_e*_scan.sh` fixtures read one or another of these cards. A guard reading a file that is
+gone reports green while measuring nothing. Retiring the stub is its own later round.
 
-**Prior finishing edge (JARL settlement, complete):** the settlement constellation on Sui, all five transitions. Identity, network, and the fractal address space all stand; the ledger now moves. `settlement/constellation.rye` seats a galaxy and its d60 as owned records whose versions climb — **genesis** opens from a bind, **mint** spawns by `sow` capability, **transfer** by `hand`, **rotate** by `tend` while the keeper sits cold, and **escape** re-parents a child by its own word and the new sponsor's adoption (the number never moving). Every refusal held. **Scarcity reconciled `20260810`** — the d12·d60 fractal is the one source of tiers (`kumara/tilak.rye` reads `comlink/topology.rye`, Azimuth ceilings retired). **Shared surface shrunk `20260810`** — an owned Deed (136 B) + a shared Commitment (56 B, keys off the surface). **Human-name custody landed `20260810`** (`settlement/names.rye`) — the last door. **JARL's settlement doors all stand; six witnesses GREEN.** The next-season breach (Pond · skies · Kyri) is unblocked, opening on Keaton's word.
-**Prove:** `for w in kumara_tilak comlink_turn_route comlink_handshake_turn comlink_topology settlement_constellation settlement_names; do rishi/bin/rishi run tools/${w}_witness.rish; done`
-
-| Lap | Equinox | Status |
-|-----|---------|--------|
-| **Kumara identity template** — all five tilaks (point · bind · turn · cap×3 · sponsor), each signed by its authorizing party, Bron instance, witnessed | JARL | **LANDED** — the whole tilak shape |
-| Kumara settlement ledger (Sui or Grain-native) · final scarcity tiering · human-name custody | JARL | word-gated — Keaton's call |
-| **Comlink turn-route** — routing reads the turn tilak (verify · freshest-wins · replay/forgery refused), hands the wire the networking key | JARL | **LANDED** (`comlink/turn_route.rye`) |
-| **Comlink live handshake** — introduction gate admits + rotation gate keys the wire, independently | JARL | **LANDED** (`comlink/handshake_turn.rye`) |
-| **Descriptor carries the turn on the wire** — `handshake_wire` recovers it from 112 descriptor bytes (`turn_to_bytes`), loop closed | JARL | **LANDED** |
-| **d12·d60 fractal topology** — the address space (12·5·12, d60=60); **inclusive** like Azimuth (`20260810`): 720/universe, sponsor by mod, a galaxy wears every lower role as an outfit | JARL | **LANDED** (`comlink/topology.rye`) |
-| **Settlement constellation on Sui** — a galaxy's d60 as owned records; spawn/transfer/rotate by capability, versions climb, keys rotate cold, every refusal held | JARL | **LANDED** (`settlement/constellation.rye`) |
-| **Escape** — a child re-parents to a settled sponsor one tier up, by its own word + the new sponsor's adoption; number never moves; galaxy-root refused, forged request/adoption refused | JARL | **LANDED** (`settlement/constellation.rye`) |
-| **Scarcity reconcile** — keep d12·d60, retire the Azimuth ranks; `kumara/tilak.rye` reads its tier from `comlink/topology.rye` (no more `galaxy_ceiling`/`star_ceiling`), all five JARL witnesses GREEN | JARL | **LANDED** `20260810` (Keaton's call) |
-| **Shared-surface shrink** — split into an owned `Deed` (136 B, keys on the fast path) and a shared `Commitment` (56 B: point·tier·sponsor·version·digest); `verify` proves a current deed, refuses stale/tampered/ghost | JARL | **LANDED** `20260810` (`settlement/constellation.rye`) |
-| **Human-name custody** — a keeper claims + releases a globally-unique spoken name for a settled point, resolvable both ways; the shared registry is the one consensus surface; taken/already-named/non-owner/forged/wrongful-release/malformed all refuse | JARL | **LANDED** `20260810` (`settlement/names.rye`) |
-| **Generalize the constellation to loadable topologies** — a *sky* (proposed) loaded like a game; odd-quorum fractal 3·9·15·27, 5 elements, modality roles (initiator/sustainer/adapter) + role-dimensions (contend/solve/calling); topology.rye already separates geometry from ledger, so it's nearly free | JARL/BUHR | **studied + siloed** — build after JARL |
-| **Breach — Move 1 (Pond)** — Pond seated as Grain's **application module** (Gall's role + VM/sandbox lineage); **Pool retired into it** by molt (living `foundations/20260810-011514…`; Pool study bannered fossil, Class H seated); LEXICON + pond/README synced | breach | **OPEN + Pond seated** `20260810` |
-| **Breach — loadable skies, lap 1** — `topology.rye` parameterized into a `Sky` struct + two seated skies (`compass_sky` 12·5·12/720, `council_sky` 15·3·9/d27/405), **inclusive** like Azimuth (galaxy is star is planet, sponsor by mod, outfit roles); free `decode`/`encode` delegate to `compass_sky`; six JARL witnesses stay GREEN | breach | **LANDED** `20260810` (`comlink/topology.rye`) |
-| **Inclusive topology** — the number spaces nest like Azimuth (galaxy is star is planet, 720/universe, sponsor by mod, `plays` = the **outfit** test); consumers remapped down to the leaves (tilak/constellation/names), six witnesses GREEN | breach | **LANDED** `20260810` (`comlink/topology.rye`) |
-| **Kyri seated as the notation** — was Bron; new logs `.kyri`, session-logs rule + Bron spec bannered; 2,163 `.bron` fossils kept. Full living-ref sweep (378) + fold/align `.kyri` = own rounds | breach | **seated** `20260810` · sweep ahead |
-| **Skate → the general social network** — Instagram/TikTok of Grain; CLI + GUI; fuses Linengrow (a flavor) + Kumara; **outfits** (many profiles/genres/themes). Study + silo + build = own rounds | breach/next season | **decided** `20260810` (charter Move 5) |
-| **Mandate — the vector store** — Grain's turbopuffer (`mandate/store.rye`): upsert normalizes to unit vectors (query = dot product), k-nearest by cosine most-similar-first, **zero-copy**, tag filter, bounded + exact; witnessed | breach | **LANDED** `20260810` (`mandate/store.rye`) |
-| **Mandate — Kumara-keyed records** — `mandate/keyed.rye`: a vector belongs to a settled point; owner presents its Deed (verified) + signs the exact vector; search returns *who* (`place_of`→fractal place); non-owner/forged/tampered refused | breach | **LANDED** `20260810` (`mandate/keyed.rye`) |
-| **Mandate — profile-loaded dim · dim from a real Bron profile · approximate index · object-storage backing** — `snapshot`/`restore` serialize the whole store to one portable blob (a bucket-backed, serverless shape), proven on metal by a real file round-trip; corruption refused | breach | **LANDED** `20260810`–`20260811` (`mandate/store.rye`) |
-| Mandate next laps: Unsplash data source (consent) · a real bucket adapter (S3-style put/get) + write-ahead log · served over Comlink / resolved to a name | breach | own rounds |
-| **Twilight Style** — an alternate register of Radiant (calm · dark · gentle; aim-then-dissolve pendulum); palette is **the nine**, doubling as nine navamsa (D9) groups of three over the 27 nakshatras / council d27 | breach | **SEATED** `20260811` (`context/TWILIGHT_STYLE.md` + rules + Lexicon) |
-| **Kyri log — Loom metrics** — session-log rule + Cursor twin gain an optional `loom` field; auto-add performance metrics whenever a round produces a measurement | breach | **SEATED** `20260811` |
-| **Research silo — starseeding + the standing approval** — `research-silo/README.md`: the season's standing yes (seat every rec to completion, custody gates honored), the starseeding vision, the nine-over-27 navamsa calendar, and the itinerary | breach | **SEATED** `20260811` |
-| **Scribe — the Kyri reader, lap 1** — `scribe/reader.rye`: zero-copy `.kyri` parse (fields slice the source), dispatch by format (session-log-v1 vs baton-v1), get/count_key; bounded; witnessed | breach | **LANDED** `20260810` (`scribe/reader.rye`) |
-| Scribe next: settings/preferences dashboard · tilak-typed fields (own sitting) · `bat/` baton archetypes (original names, copyright-honoring) | breach | own rounds |
-| **Seated `20260810`**: baton (favorite word · `.kyri format baton-v1`) · "thank you everyone" (end-marker) · expanded-prompts/ (cold) vs expanding-prompts (hot) [unified into one room + date fold `20260823.041442`] · council-names roster (`context/council-names.kyri`, proposed) | breach | seated |
-| **Vault — the keeper of secrets, lap 1** — `vault/shard.rye`: Shamir GF(256) split/join (n-of-t, any t recombine, any t-1 reveal nothing), signed shard tilaks in location-classes, tamper/lost-location survived; custody-first (fake seed), main key never the older word; witnessed | breach | **LANDED** `20260810` (Vault, first of the three) |
-| **Loom** (proposed) — Scribe×Tally process/activity/memory monitor + orchestration (s6/nix-infuse/TigerBeetle style, RISC-V); **3x39 / Kumara passports / divider grammar**; **starseeding** build | next season | baton `20260810-044453` · Keaton's word |
-| Breach — sky next laps: `constellation_max` → sky-computed bound · a sky as a **Bron/Brix descriptor** Pond reads · the **role** tilak (mode + contend/solve/calling) · Pond `customs` admits a sky | breach | own rounds |
-| Breach — other moves: **Bron→Kyri** molt · **Kyri** the voice · `kyri.sol`/`kyri.sui` (Keaton's hand) | breach | charter-ready |
-| — study: `external-research/20260809-232015…` (topologies+Pond) · `…-233940…` (divisional roles D3/D5/D9 + modes) · silo: `active-designing/20260809-234413_…-silo-brief.md` · molt-prep: `SHRED_PREP.md` | — | reference |
-| **Bron → Kyri molt** — notation re-grows as Kyri; 2,163 `.bron` kept whole as fossils, new logs `.kyri`, 378 refs forward (never a rewrite); **Kyri** names **both** voice and notation (the logs are the voice's journal) | next season | **seat-approved `20260810`** — opens after JARL · charter: `expanding-prompts/20260810-000032_…-breach-charter.md` |
-| **Voice supersedes "variant"** — Kyri is the one voice; the variant concept retires (Quin + Reya·Riyo·Trey·Triz·Trya rest named in archive); `kyri.sol`/`kyri.sui` = Keaton's hand | next season | **seat-approved `20260810`** — opens after JARL |
-| Rishi rune heads — `^-` · `?!` · `?&` · `?|` landed | SOON | **LANDED** (four heads) |
-| Rishi **`matches`** + **`find`** pattern primitives — bounded NFA, `{n,m}` · `\b`, linear-time, 600+ cases vs Python re | SOON | **LANDED** — boolean-test and extract seams both unlocked |
-| Rishi `sort` · `unique` · `upper` · list `+` · lookbehind | SOON | **LANDED** |
-| **Fold `claim_preserve` to native Rishi** — extractor + modality, gate GREEN + python-free | SOON | **LANDED** — first complete seam fold (40/41 byte-identical) |
-| Rishi **`?:` conditional rune** (wutcol) — value-returning if; with `fold` folds census seams natively (proven on H1 count) | SOON | **LANDED** — accumulation solved (`fold` already threaded state) |
-| Rishi **user functions** (`fn name p: body`, recursion, calls in folds) | SOON | **LANDED** |
-| Fold census seams — `census_control` H1 folded native; `dated_classify` census proven native (3.9s) yet keeps bulk-`rg` (20×); `shed` mention scan bulk by measure | SOON | **census_control DONE** · dated_classify perf-kept |
-| Molt Python → Rishi — `dated_classify` fully ported (census·classify·health·shed, all byte-identical) · `census_control` de-Pythoned · runpy scans (`shed_census`·`fascia_health`) + divergence GREEN · `remember_pin` shredded · `lower` builtin | SOON | **dated subsystem Python-free** · ~10 more `.sh` embed python3 (next laps) |
-| `mold → shape` debride (82 files / 753) | SOON | proposed · own pass |
-| TAME core/shelf compression | SOON | proposed |
-| Brix + Brix-infuse | SOON j2 | proposed |
-| Two-grain seed publish to grain-os | SOON/TACT | awaiting Keaton's read of `seed/` |
-| Identity · Surface · World doors | JARL/BUHR/TACT | word-gated |
+Every landed lap row the elder card carried is one `git show` away:
+`git show <nib>:construction/TASKS.md`, with the nib recorded in
+[`CHECKPOINTS.md`](CHECKPOINTS.md) at `20260823.103804`.
 
 ---
 
-*May the first rune be the ground of the next.*
+*May each lap be complete in itself, and owe nothing to the lap before it.*

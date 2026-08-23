@@ -18,7 +18,7 @@ ELDER=counsel/date/20260801/20260801-012557_e138-cellar-retire-by-accretion.md
 ELDER_SCAN=tools/fixtures/equinox_e138_cellar_accretion_scan.sh
 LEXICON=context/LEXICON.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 REDS=construction/REDS.md
 SHRED=construction/SHRED_PREP.md
 PRIN=tools/gen/season/prin_scope.rish
@@ -45,7 +45,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$COUNSEL" "$ELDER" "$ELDER_SCAN" "$LEXICON" "$MAP" "$REMEMBER" \
+for p in "$COUNSEL" "$ELDER" "$ELDER_SCAN" "$LEXICON" "$MAP" "$ITINERARY" \
   "$REDS" "$SHRED" "$CELLAR_WITNESS" "$PRIN"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
@@ -118,7 +118,7 @@ rg -qi 'Silo template|silo template' "$COUNSEL" || {
   echo "verdict=misread"
   exit 1
 }
-rg -qi 'Silo template|silo template' "$LEXICON" "$REMEMBER" "$COUNSEL" || {
+rg -qi 'Silo template|silo template' "$LEXICON" "$ITINERARY" "$COUNSEL" || {
   echo "silo_template=failed"
   echo "detail=want_silo_kinship_named"
   echo "verdict=misread"
@@ -134,7 +134,7 @@ echo "silo_template=honored"
 echo "template=silo_174500"
 
 # Living pins — fuse verify · no second retirement
-rg -qi 'fuse verify|already GREEN|already green|Silo template' "$COUNSEL" "$REMEMBER" || {
+rg -qi 'fuse verify|already GREEN|already green|Silo template' "$COUNSEL" "$ITINERARY" || {
   echo "living=failed"
   echo "verdict=misread"
   exit 1
@@ -158,7 +158,7 @@ rg -q '^\| 48 \|' "$REDS" || {
 echo "reds=honored"
 echo "reds_note=row_48_retire_by_accretion"
 
-rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$REMEMBER" "$MAP" "$COUNSEL" || {
+rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$ITINERARY" "$MAP" "$COUNSEL" || {
   echo "shred_gate=failed"
   echo "verdict=misread"
   exit 1

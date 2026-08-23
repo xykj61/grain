@@ -16,7 +16,7 @@ CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 LEXICON=context/LEXICON.md
 COUNSEL=counsel/date/20260731/20260731-231509_e127-on-touch-never-campaign.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 REDS=construction/REDS.md
 PRIN=tools/gen/season/prin_scope.rish
 ELDER_START=tools/fixtures/equinox_e126_start_rung_scan.sh
@@ -44,7 +44,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$LEXICON" "$COUNSEL" "$MAP" "$REMEMBER" "$REDS" "$PRIN" "$ELDER_START" "$ELDER_STACK"; do
+for p in "$LEXICON" "$COUNSEL" "$MAP" "$ITINERARY" "$REDS" "$PRIN" "$ELDER_START" "$ELDER_STACK"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
     echo "verdict=misread"
@@ -82,7 +82,7 @@ echo "$ROW" | rg -qi 'start rung' || {
 echo "on_touch=honored"
 echo "on_touch_law=shell_ratchet_on_touch_never_campaign"
 
-rg -qi 'on-touch|never a campaign|sh is where work correctly begins|circled shred' "$COUNSEL" "$REMEMBER" "$MAP" || {
+rg -qi 'on-touch|never a campaign|sh is where work correctly begins|circled shred' "$COUNSEL" "$ITINERARY" "$MAP" || {
   echo "living=failed"
   echo "verdict=misread"
   exit 1
@@ -148,12 +148,12 @@ echo "seats_through=127"
 echo "no_content_seat_claimed=honored"
 
 # shred still RED — this sitting does not cut
-rg -qi 'shred.*RED|shred \*\*RED\*\*|circled shred yes' "$REMEMBER" "$MAP" "$COUNSEL" || {
+rg -qi 'shred.*RED|shred \*\*RED\*\*|circled shred yes' "$ITINERARY" "$MAP" "$COUNSEL" || {
   echo "shred_gate=failed"
   echo "verdict=misread"
   exit 1
 }
-if rg -qi 'shred=GREEN|shred YES circled|Amphora cut opened' "$REMEMBER" "$MAP"; then
+if rg -qi 'shred=GREEN|shred YES circled|Amphora cut opened' "$ITINERARY" "$MAP"; then
   echo "shred_gate=failed"
   echo "detail=shred_must_stay_red"
   echo "verdict=misread"

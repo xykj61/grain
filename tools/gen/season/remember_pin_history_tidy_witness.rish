@@ -1,9 +1,9 @@
-# tools/gen/season/remember_pin_history_tidy_witness.rish — REMEMBER pin habit tidy
+# tools/gen/season/remember_pin_history_tidy_witness.rish — ITINERARY pin habit tidy
 #
 #   rishi/bin/rishi run tools/gen/season/remember_pin_history_tidy_witness.rish
 #
 # Asserts pure nib follow-ups are gone from the first habit through HEAD.
-# Real sends that only mention pin REMEMBER in the subject may remain (few).
+# Real sends that only mention pin ITINERARY in the subject may remain (few).
 
 say "pin-tidy: Language EN — scroll history · same-commit git nib."
 say "pin-tidy: Style Radiant — measure habit follow-ups; keep real sends."
@@ -30,4 +30,4 @@ assert backup.ok else "pin-tidy: full backup branch missing"
 assert backup.out contains "BACKUP_OK" else "pin-tidy: backup/pre-pin-squash-full-a036851173 required"
 
 say "GREEN: pin-tidy — zero pure habit follow-ups · rules · counsel · backup"
-say "GREEN: pin-tidy — REMEMBER git nib rides in the work commit."
+say "GREEN: pin-tidy — ITINERARY git nib rides in the work commit."

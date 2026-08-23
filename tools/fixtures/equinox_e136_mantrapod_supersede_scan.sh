@@ -16,7 +16,7 @@ DATED_GUARD=tools/fixtures/dated_guard_scan.sh
 COUNSEL=counsel/date/20260801/20260801-005853_e136-mantrapod-supersede.md
 LEXICON=context/LEXICON.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 REDS=construction/REDS.md
 README=foundations/README.md
 ELDER=foundations/20260629-020012_mantrapod-venture-pitch.md
@@ -45,7 +45,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$COUNSEL" "$LEXICON" "$MAP" "$REMEMBER" "$REDS" "$README" \
+for p in "$COUNSEL" "$LEXICON" "$MAP" "$ITINERARY" "$REDS" "$README" \
   "$ELDER" "$KIN" "$NEW" "$DATED_GUARD" "$E135" "$PRIN"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
@@ -211,7 +211,7 @@ rg -qi 'dated|immutable|supersede' "$REDS" || {
 echo "reds=honored"
 echo "reds_note=row_47_dated_vision_in_place"
 
-rg -qi 'supersede|dated artifact|kept whole' "$COUNSEL" "$REMEMBER" || {
+rg -qi 'supersede|dated artifact|kept whole' "$COUNSEL" "$ITINERARY" || {
   echo "living=failed"
   echo "verdict=misread"
   exit 1
@@ -237,7 +237,7 @@ echo "$GUARD_OUT" | rg -q 'OK   dated-guard clean|OK   no staged MODIFIED dated 
 }
 echo "dated_guard=honored"
 
-rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$REMEMBER" "$MAP" "$COUNSEL" || {
+rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$ITINERARY" "$MAP" "$COUNSEL" || {
   echo "shred_gate=failed"
   echo "verdict=misread"
   exit 1

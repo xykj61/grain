@@ -17,7 +17,7 @@ HANDOFF=expanding-prompts/date/20260801/20260801-013831_claude-opus5-1m-max-amph
 REPLY=counsel/replies/20260801-013831_re-amphora-cli-equinox-claude-opus5.md
 LEXICON=context/LEXICON.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 ROADMAP=construction/ROADMAP.md
 REDS=construction/REDS.md
 TASKS=construction/TASKS.md
@@ -45,7 +45,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 echo "control_gate=honored"
 
 for p in "$COUNSEL" "$CATALOG" "$HANDOFF" "$REPLY" "$LEXICON" "$MAP" \
-  "$REMEMBER" "$ROADMAP" "$REDS" "$TASKS" "$AMPHORA" "$PRIN"; do
+  "$ITINERARY" "$ROADMAP" "$REDS" "$TASKS" "$AMPHORA" "$PRIN"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
     echo "verdict=misread"
@@ -83,7 +83,7 @@ echo "align=honored"
 echo "direction=amphora_glow_tend_tame_cli"
 
 # Commence gated · not spent
-rg -qi 'GATED|gated commence|commence' "$COUNSEL" "$REMEMBER" "$ROADMAP" || {
+rg -qi 'GATED|gated commence|commence' "$COUNSEL" "$ITINERARY" "$ROADMAP" || {
   echo "commence=failed"
   echo "detail=want_gated_commence"
   echo "verdict=misread"
@@ -108,9 +108,9 @@ rg -qi 'tier 0|tier0|balanced' "$HANDOFF" "$CATALOG" || {
 echo "claude_pack=honored"
 
 # No false claim that Amphora CLI already landed
-if rg -qi 'Amphora CLI.*(landed|GREEN|shipped)|CLI.*(landed|GREEN).*Amphora' "$ROADMAP" "$COUNSEL" "$REMEMBER"; then
+if rg -qi 'Amphora CLI.*(landed|GREEN|shipped)|CLI.*(landed|GREEN).*Amphora' "$ROADMAP" "$COUNSEL" "$ITINERARY"; then
   # allow "no CLI" / "not begun" / "horizon"
-  if ! rg -qi 'no .*CLI|CLI.*not begun|CLI.*horizon|CLI.*ABSENT|not begun' "$ROADMAP" "$COUNSEL" "$REMEMBER" "$HANDOFF"; then
+  if ! rg -qi 'no .*CLI|CLI.*not begun|CLI.*horizon|CLI.*ABSENT|not begun' "$ROADMAP" "$COUNSEL" "$ITINERARY" "$HANDOFF"; then
     echo "cli_claim=failed"
     echo "detail=must_not_claim_cli_landed"
     echo "verdict=misread"
@@ -153,7 +153,7 @@ rg -qi 'Amphora|e140|CLI' "$TASKS" || {
 }
 echo "tasks=honored"
 
-rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$REMEMBER" "$MAP" "$COUNSEL" || {
+rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$ITINERARY" "$MAP" "$COUNSEL" || {
   echo "shred_gate=failed"
   echo "verdict=misread"
   exit 1

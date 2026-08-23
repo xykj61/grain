@@ -15,7 +15,7 @@ CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 COUNSEL=counsel/date/20260801/20260801-003811_e134-surface-count-six.md
 LEXICON=context/LEXICON.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 REDS=construction/REDS.md
 SUITE=tools/fixtures/instrument_suite_scan.sh
 PRIN=tools/gen/season/prin_scope.rish
@@ -47,7 +47,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$COUNSEL" "$LEXICON" "$MAP" "$REMEMBER" "$REDS" "$SUITE" "$PRIN" \
+for p in "$COUNSEL" "$LEXICON" "$MAP" "$ITINERARY" "$REDS" "$SUITE" "$PRIN" \
   "$E112" "$E114" "$E115" "$E116" "$E117" "$E118" "$E119"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
@@ -146,14 +146,14 @@ rg -q '^\| 45 \|' "$REDS" || {
 echo "reds=honored"
 echo "reds_note=row_45_hardcoded_count_ages"
 
-rg -qi 'hardcodes a count|surface census six|elder chain' "$COUNSEL" "$REMEMBER" "$LEXICON" || {
+rg -qi 'hardcodes a count|surface census six|elder chain' "$COUNSEL" "$ITINERARY" "$LEXICON" || {
   echo "living=failed"
   echo "verdict=misread"
   exit 1
 }
 echo "living=honored"
 
-rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$REMEMBER" "$MAP" "$COUNSEL" || {
+rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$ITINERARY" "$MAP" "$COUNSEL" || {
   echo "shred_gate=failed"
   echo "verdict=misread"
   exit 1

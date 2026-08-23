@@ -14,7 +14,7 @@ CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 MUSEUM=tools/fixtures/baton_museum_census_scan.sh
 COUNSEL=counsel/date/20260731/20260731-170354_e117-fork-extend-breach-let-close.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 ELDER=tools/gen/season/equinox_e116_dated_one_definition_witness.rish
@@ -45,7 +45,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$COUNSEL" "$MAP" "$REMEMBER" "$PRIN" "$ELDER" "$CLASSIFY"; do
+for p in "$COUNSEL" "$MAP" "$ITINERARY" "$PRIN" "$ELDER" "$CLASSIFY"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     if test -f "$p"; then
       echo "instrument=failed"
@@ -107,7 +107,7 @@ if rg -q 'equinox_handback: return_surface_p59 CONSUMED' "$PRIN"; then
   echo "verdict=misread"
   exit 1
 fi
-rg -qi 'fork EXTEND|EXTEND \+128 seated|fork \*\*EXTEND' "$REMEMBER" "$MAP" "$PRIN" || {
+rg -qi 'fork EXTEND|EXTEND \+128 seated|fork \*\*EXTEND' "$ITINERARY" "$MAP" "$PRIN" || {
   echo "fork=failed"
   echo "verdict=misread"
   echo "detail=want_extend_in_living_pins"
@@ -124,7 +124,7 @@ rg -qi 'let close|closed unspent|closed_unspent' "$COUNSEL" || {
   echo "detail=want_let_close_in_counsel"
   exit 1
 }
-rg -qi 'closed unspent|breach.*let.close|census breach.*closed' "$REMEMBER" "$MAP" || {
+rg -qi 'closed unspent|breach.*let.close|census breach.*closed' "$ITINERARY" "$MAP" || {
   echo "breach=failed"
   echo "verdict=misread"
   echo "detail=want_closed_unspent_in_pins"
@@ -134,12 +134,12 @@ echo "breach=honored"
 echo "breach_word=let_close"
 echo "breach_status=closed_unspent"
 
-rg -qi 'APPROVED.*GATED|GATED' "$COUNSEL" "$REMEMBER" || {
+rg -qi 'APPROVED.*GATED|GATED' "$COUNSEL" "$ITINERARY" || {
   echo "geode=failed"
   echo "verdict=misread"
   exit 1
 }
-if rg -qi 'geode expedition.*BEGUN|expedition BEGIN' "$COUNSEL" "$REMEMBER"; then
+if rg -qi 'geode expedition.*BEGUN|expedition BEGIN' "$COUNSEL" "$ITINERARY"; then
   echo "geode=failed"
   echo "verdict=misread"
   echo "detail=geode_must_stay_gated"

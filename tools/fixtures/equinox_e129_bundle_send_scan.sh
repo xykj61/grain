@@ -19,7 +19,7 @@ TRACKED_MANIFEST=waymarks/20260731-234032_e129-first-bundle-send.manifest
 COUNSEL=counsel/date/20260731/20260731-234032_e129-bundle-send-rehearsal.md
 LEXICON=context/LEXICON.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 ELDER_E128=tools/fixtures/equinox_e128_class_o_word_scope_scan.sh
@@ -43,7 +43,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$SEND" "$MANIFEST_SH" "$ELDER_RISH" "$TRACKED_MANIFEST" "$COUNSEL" "$LEXICON" "$MAP" "$REMEMBER" "$PRIN" "$ELDER_E128"; do
+for p in "$SEND" "$MANIFEST_SH" "$ELDER_RISH" "$TRACKED_MANIFEST" "$COUNSEL" "$LEXICON" "$MAP" "$ITINERARY" "$PRIN" "$ELDER_E128"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
     echo "verdict=misread"
@@ -135,7 +135,7 @@ rg -qi 'bundle send' "$LEXICON" || {
 }
 echo "lexicon=honored"
 
-rg -qi 'bundle send|crossing mode|stamped manifest|first cut' "$COUNSEL" "$REMEMBER" "$MAP" || {
+rg -qi 'bundle send|crossing mode|stamped manifest|first cut' "$COUNSEL" "$ITINERARY" "$MAP" || {
   echo "living=failed"
   echo "verdict=misread"
   exit 1
@@ -172,7 +172,7 @@ fi
 echo "almanac=honored"
 echo "no_content_seat_claimed=honored"
 
-rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$REMEMBER" "$MAP" "$COUNSEL" || {
+rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$ITINERARY" "$MAP" "$COUNSEL" || {
   echo "shred_gate=failed"
   echo "verdict=misread"
   exit 1

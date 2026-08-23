@@ -4,13 +4,13 @@
 **Last updated:** `20260802.142508` (EDT) · Equinox J4 · A1–A4 · M1–M4 COMPLETE · standing voice Riyo
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Kyri
-**Status:** Foundation — living workbench; prefer **git nib** · see [`REMEMBER.md`](REMEMBER.md) · [`ROADMAP.md`](ROADMAP.md) · [`TASKS.md`](TASKS.md)
+**Status:** Foundation — living workbench; prefer **git nib** · see [`ITINERARY.md`](ITINERARY.md) · [`ROADMAP.md`](ROADMAP.md) · [`TASKS.md`](TASKS.md)
 
 **Finishing edge now:** Tend T1–T6 · C1–C4 · A1–A4 · M1–M4 GREEN · a1 gated on Keaton's kg · Q58 parked · Cursor-sole.
 **Habit:** full fusion baton each round → `expanding-prompts/`.
 **Ontology:** accrete-never-break along with accrete-sometimes-breach.
 
-**Health (this sitting):** `ROADMAP`/`TASKS` current. `REMEMBER.md` ~56 KiB **over** `living_pin_max_bytes` (24576) — fold debt. `ready-to-ask-claude.md` ~57 KiB Claude-era — archive on word. Collection-twin `.tsv` + dated baselines cold → `yonder/` on word. Hammock index below is **July-stale** — truth is REMEMBER + ROADMAP + TASKS + need queue.
+**Health (this sitting):** `ROADMAP`/`TASKS` current. `ITINERARY.md` ~56 KiB **over** `living_pin_max_bytes` (24576) — fold debt. `ready-to-ask-claude.md` ~57 KiB Claude-era — archive on word. Collection-twin `.tsv` + dated baselines cold → `yonder/` on word. Hammock index below is **July-stale** — truth is ITINERARY + ROADMAP + TASKS + need queue.
 
 ---
 

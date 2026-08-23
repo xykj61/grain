@@ -27,7 +27,7 @@
 #     `.gnupg-rye` -- because a dot names a generated or machine-local room.
 #   `construction/standing-equipment-runs.kyri`, the untracked run card the roster rewrites (%150).
 #   A `*_control.sh` fixture, because a control that proves a guard refuses must PLANT the thing
-#     it refuses -- this scan's own control writes `work-in-progress/REMEMBER.md` into a throwaway
+#     it refuses -- this scan's own control writes `construction/ITINERARY.md` into a throwaway
 #     repository on purpose, and counting it makes the meter rise as the proof gets stronger. The
 #     refusal stays proven: the pen names its planted tool `stale.sh`, so the exemption reaches the
 #     control and never the case it builds.

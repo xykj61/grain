@@ -18,7 +18,7 @@ LEXICON=context/LEXICON.md
 COUNSEL=counsel/date/20260731/20260731-232004_e128-class-o-word-scope.md
 PREP=construction/SHRED_PREP.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/season/prin_scope.rish
 ELDER=tools/fixtures/equinox_e127_on_touch_scan.sh
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
@@ -43,7 +43,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$LEXICON" "$COUNSEL" "$PREP" "$MAP" "$REMEMBER" "$PRIN" "$ELDER" "$SHED"; do
+for p in "$LEXICON" "$COUNSEL" "$PREP" "$MAP" "$ITINERARY" "$PRIN" "$ELDER" "$SHED"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
     echo "verdict=misread"
@@ -55,7 +55,7 @@ done
 echo "instruments_tracked=honored"
 
 # Living pins carry word-scope
-rg -qi 'word-scope|class and/or the rooms|class/rooms|not on each|not per-path|not on eight' "$COUNSEL" "$PREP" "$REMEMBER" "$MAP" || {
+rg -qi 'word-scope|class and/or the rooms|class/rooms|not on each|not per-path|not on eight' "$COUNSEL" "$PREP" "$ITINERARY" "$MAP" || {
   echo "word_scope=failed"
   echo "detail=want_class_room_framing"
   echo "verdict=misread"
@@ -71,7 +71,7 @@ echo "word_scope=honored"
 echo "word_scope_law=class_and_rooms_not_per_path"
 
 # Lexicon or living pins name the opening words / held cut
-rg -qi 'Class O yes|shred Class O|shed .*room|circled shred yes|opening word' "$COUNSEL" "$PREP" "$REMEMBER" || {
+rg -qi 'Class O yes|shred Class O|shed .*room|circled shred yes|opening word' "$COUNSEL" "$PREP" "$ITINERARY" || {
   echo "opening=failed"
   echo "verdict=misread"
   exit 1
@@ -114,12 +114,12 @@ echo "elder=honored"
 echo "elder_note=e127_on_touch_kept"
 
 # Cut still closed
-rg -qi 'shred \*\*RED\*\*|shred=RED|shred RED|Amphora cut not opened' "$PREP" "$REMEMBER" "$MAP" "$COUNSEL" || {
+rg -qi 'shred \*\*RED\*\*|shred=RED|shred RED|Amphora cut not opened' "$PREP" "$ITINERARY" "$MAP" "$COUNSEL" || {
   echo "shred_gate=failed"
   echo "verdict=misread"
   exit 1
 }
-if rg -qi 'shred=GREEN|Amphora cut opened|Class O cut LANDED' "$PREP" "$REMEMBER" "$MAP"; then
+if rg -qi 'shred=GREEN|Amphora cut opened|Class O cut LANDED' "$PREP" "$ITINERARY" "$MAP"; then
   echo "shred_gate=failed"
   echo "detail=cut_must_stay_closed"
   echo "verdict=misread"

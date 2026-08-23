@@ -1,20 +1,20 @@
 ---
-description: REMEMBER git nib rides in the same work commit — no follow-up pin commits
+description: ITINERARY git nib rides in the same work commit — no follow-up pin commits
 alwaysApply: true
 ---
 
-# REMEMBER Git Nib — Same Commit (seated `20260728.205029`)
+# ITINERARY Git Nib — Same Commit (seated `20260728.205029`)
 
-When a send updates `work-in-progress/REMEMBER.md` **Git nib**, that update lands **in the same work commit** as the round's work (and session log when possible).
+When a send updates `construction/ITINERARY.md` **Git nib**, that update lands **in the same work commit** as the round's work (and session log when possible).
 
 ## Refuse
 
-- A follow-up commit whose subject is only `work-in-progress: pin REMEMBER git nib` (or `wip: pin REMEMBER…`).
+- A follow-up commit whose subject is only `work-in-progress: pin ITINERARY git nib` (or `wip: pin ITINERARY…`).
 - Two-commit send pairs (work · then pin) for scroll noise.
 
 ## How
 
-1. Stage REMEMBER with the round's finishing-edge / bookmark updates in the **work** commit.  
+1. Stage ITINERARY with the round's finishing-edge / bookmark updates in the **work** commit.  
 2. After that signed commit, amend **at most once** so **Git nib** names `git rev-parse --short=10 HEAD`.  
 3. **Stop.** A second amend to chase a perfect fixed-point hash is refused — GPG trailers shift the hash, so the card may lag HEAD by one amend. Living HEAD is always `prin scope` / `git rev-parse`.  
 4. Never push a pin-only follow-up to close that lag.

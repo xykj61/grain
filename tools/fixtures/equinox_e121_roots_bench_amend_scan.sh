@@ -14,7 +14,7 @@ CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 LEXICON=context/LEXICON.md
 COUNSEL=counsel/date/20260731/20260731-220432_e121-roots-bench-amend.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 ELDER=tools/gen/season/equinox_e120_lexicon_roots_witness.rish
@@ -42,7 +42,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$LEXICON" "$COUNSEL" "$MAP" "$REMEMBER" "$PRIN" "$ELDER"; do
+for p in "$LEXICON" "$COUNSEL" "$MAP" "$ITINERARY" "$PRIN" "$ELDER"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     if test -f "$p"; then
       echo "instrument=failed"
@@ -109,7 +109,7 @@ echo "bench_kinship=honored"
 echo "roots_members=claude_web·claude_ios·cursor_appimage_desktop·cursor_ios·framework·counsel_container"
 echo "law=name_the_root_when_a_measurement_is_reported"
 
-rg -qi 'bench|raised root|roots amend' "$COUNSEL" "$REMEMBER" "$MAP" || {
+rg -qi 'bench|raised root|roots amend' "$COUNSEL" "$ITINERARY" "$MAP" || {
   echo "living=failed"
   echo "verdict=misread"
   exit 1

@@ -6,7 +6,7 @@
 //!
 //! Season: the Six-Season double-seat, Season G thread (Cryptography · Rye-native, parity-checked, audit-ready). This rung authors NO new
 //! cryptography: it composes stones already proven byte-for-byte on metal — SHA-256 and RIPEMD-160 (whose own witness already exercises HASH160),
-//! Base58Check (the version+checksum envelope), and Bech32 (the SegWit encoder) — into the two Bitcoin address forms the crypto wave's REMEMBER
+//! Base58Check (the version+checksum envelope), and Bech32 (the SegWit encoder) — into the two Bitcoin address forms the crypto wave's ITINERARY
 //! note named next: "a Bitcoin-side address composition over the GREEN HASH160." It is the Bitcoin sibling of crypto/eth_address.rye.
 //! Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md (Season G · the crypto parity wave).
 //! Kin: crypto/sha256.rye · crypto/ripemd160.rye (HASH160's two hashes, both GREEN) · encoding/base58check.rye (P2PKH envelope) ·

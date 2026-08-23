@@ -14,7 +14,7 @@ CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 LEXICON=context/LEXICON.md
 COUNSEL=counsel/date/20260731/20260731-215300_e120-lexicon-roots.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 ELDER=tools/gen/season/equinox_e119_close_seat_surfaces_witness.rish
@@ -42,7 +42,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$LEXICON" "$COUNSEL" "$MAP" "$REMEMBER" "$PRIN" "$ELDER"; do
+for p in "$LEXICON" "$COUNSEL" "$MAP" "$ITINERARY" "$PRIN" "$ELDER"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     if test -f "$p"; then
       echo "instrument=failed"
@@ -121,7 +121,7 @@ echo "roots_members=claude_web·claude_ios·cursor_appimage_desktop·cursor_ios"
 echo "roots_category=client_surfaces"
 echo "law=look_for_the_thing_not_the_name_of_the_thing"
 
-rg -qi 'roots' "$COUNSEL" "$REMEMBER" "$MAP" || {
+rg -qi 'roots' "$COUNSEL" "$ITINERARY" "$MAP" || {
   echo "living=failed"
   echo "verdict=misread"
   echo "detail=want_roots_in_living_pins"

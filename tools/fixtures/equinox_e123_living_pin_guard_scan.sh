@@ -22,7 +22,7 @@ C2=tools/fixtures/living_pin_control/whole_pin_control.md
 LEXICON=context/LEXICON.md
 COUNSEL=counsel/date/20260731/20260731-222426_e123-living-pin-guard.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 ELDER=tools/gen/season/equinox_e122_roots_bench_kinds_witness.rish
@@ -69,7 +69,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$ROSTER" "$EMPTIED" "$C1" "$C2" "$LEXICON" "$COUNSEL" "$MAP" "$REMEMBER" "$PRIN" "$ELDER"; do
+for p in "$ROSTER" "$EMPTIED" "$C1" "$C2" "$LEXICON" "$COUNSEL" "$MAP" "$ITINERARY" "$PRIN" "$ELDER"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     if test -f "$p"; then
       echo "instrument=failed"
@@ -227,7 +227,7 @@ echo "$BENCH" | rg -qi 'Name the \*\*Bench\*\* when a measurement|Name the Bench
   echo "detail=want_name_the_bench_law"
   exit 1
 }
-if rg -qi 'bench = raised root|bench equals raised root' "$REMEMBER" "$MAP" "$PRIN"; then
+if rg -qi 'bench = raised root|bench equals raised root' "$ITINERARY" "$MAP" "$PRIN"; then
   echo "kinds=failed"
   echo "verdict=misread"
   echo "detail=stale_e121_blur_still_standing"
@@ -236,7 +236,7 @@ fi
 echo "kinds=honored"
 echo "law=name_the_bench_when_a_measurement_is_reported"
 
-rg -qi 'living-pin|living pin guard|pin_empty|emptied|content guard' "$COUNSEL" "$REMEMBER" "$MAP" || {
+rg -qi 'living-pin|living pin guard|pin_empty|emptied|content guard' "$COUNSEL" "$ITINERARY" "$MAP" || {
   echo "living=failed"
   echo "verdict=misread"
   exit 1

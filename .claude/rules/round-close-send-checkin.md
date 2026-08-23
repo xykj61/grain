@@ -9,7 +9,7 @@ Canonical Cursor twin: `.cursor/rules/round-close-send-checkin.mdc`.
 After a kg / implement lap lands (witness GREEN when there is code, living pins seated):
 
 1. **Seat the check-in** for that lap (next STOA rung, or the area’s check-in shape) — leans named; next door sized toward the next constructive kg / survey / held door.
-2. **Send** in the same turn — GPG-signed commit(s), push `origin` and `codeberg` (and other remotes when the send-word multi-remote list applies). Update living REMEMBER **git nib** **in the same work commit** (seated `20260728.205029`) — never a pin-only follow-up.
+2. **Send** in the same turn — GPG-signed commit(s), push `origin` and `codeberg` (and other remotes when the send-word multi-remote list applies). Update living ITINERARY **git nib** **in the same work commit** (seated `20260728.205029`) — never a pin-only follow-up.
 3. **End the reply** on one closing line per `collaboration.md`: `kg` or a typed `check in (Cursor|Claude|checkpoint|either)` — not “say send when ready,” and **not** “recommend rest.”
 
 ## Rest — Keaton owns it

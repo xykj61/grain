@@ -15,7 +15,7 @@ CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 LEXICON=context/LEXICON.md
 COUNSEL=counsel/date/20260731/20260731-231123_e126-start-rung-sh-rish.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/season/prin_scope.rish
 ELDER_STACK=tools/fixtures/equinox_e125_build_stack_scan.sh
 RISH_ORCH=tools/fixtures/census_control_scan.rish
@@ -71,7 +71,7 @@ echo "$RED_OUT" | rg -q 'verdict=misread' || {
 }
 echo "prove_red=honored"
 
-for p in "$LEXICON" "$COUNSEL" "$MAP" "$REMEMBER" "$PRIN" "$ELDER_STACK" "$RISH_ORCH" "$DRIVE" "$H1_SEAM" "$MARKER_SEAM" "$TRACKED_SEAM" "$ENTRY"; do
+for p in "$LEXICON" "$COUNSEL" "$MAP" "$ITINERARY" "$PRIN" "$ELDER_STACK" "$RISH_ORCH" "$DRIVE" "$H1_SEAM" "$MARKER_SEAM" "$TRACKED_SEAM" "$ENTRY"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
     echo "verdict=misread"
@@ -153,7 +153,7 @@ fi
 echo "climb=honored"
 echo "climb_note=census_control_seams_plus_rish_orchestration"
 
-rg -qi 'start rung|sh.to.rish|sh→rish|foundations first' "$COUNSEL" "$REMEMBER" "$MAP" || {
+rg -qi 'start rung|sh.to.rish|sh→rish|foundations first' "$COUNSEL" "$ITINERARY" "$MAP" || {
   echo "living=failed"
   echo "verdict=misread"
   exit 1

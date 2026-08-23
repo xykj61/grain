@@ -13,7 +13,7 @@ MODE=${1:-}
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 COUNSEL=counsel/date/20260731/20260731-214426_e119-close-seat-surfaces.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 ELDER=tools/gen/season/equinox_e118_metal_corrections_witness.rish
@@ -45,7 +45,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$COUNSEL" "$MAP" "$REMEMBER" "$PRIN" "$ELDER" "$CH5" "$CH6" "$CH5_SCAN" "$CH6_SCAN"; do
+for p in "$COUNSEL" "$MAP" "$ITINERARY" "$PRIN" "$ELDER" "$CH5" "$CH6" "$CH5_SCAN" "$CH6_SCAN"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     if test -f "$p"; then
       echo "instrument=failed"
@@ -97,7 +97,7 @@ rg -qi 'close-seat|no seat of its own|park lifted|surfaces as tools' "$COUNSEL" 
   echo "detail=want_close_seat_answer_in_counsel"
   exit 1
 }
-rg -qi 'park lifted|close-seat answered|census finds six|surfaces as tools' "$REMEMBER" "$MAP" || {
+rg -qi 'park lifted|close-seat answered|census finds six|surfaces as tools' "$ITINERARY" "$MAP" || {
   echo "close_seat=failed"
   echo "verdict=misread"
   echo "detail=want_park_lifted_in_living_pins"

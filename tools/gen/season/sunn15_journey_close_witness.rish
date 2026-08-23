@@ -24,11 +24,11 @@ assert counsel contains "return_equinox_e50` **CONSUMED**" else "sunn15: counsel
 assert counsel contains "SUNN Journey** | **CLOSED**" else "sunn15: counsel want SUNN CLOSED"
 assert counsel contains "e50 next" else "sunn15: counsel want e50 next"
 
-let rem = read-file "construction/REMEMBER.md"
-assert rem contains "SUNN Journey** **CLOSED**" else "sunn15: REMEMBER want SUNN CLOSED"
-assert rem contains "return_equinox_e50` **CONSUMED**" else "sunn15: REMEMBER want handback CONSUMED"
-assert rem contains "Equinox Season (deca)** **OPEN**" else "sunn15: REMEMBER want Equinox OPEN"
-assert rem contains "e50 next" else "sunn15: REMEMBER want e50 next"
+let rem = read-file "construction/ITINERARY.md"
+assert rem contains "SUNN Journey** **CLOSED**" else "sunn15: ITINERARY want SUNN CLOSED"
+assert rem contains "return_equinox_e50` **CONSUMED**" else "sunn15: ITINERARY want handback CONSUMED"
+assert rem contains "Equinox Season (deca)** **OPEN**" else "sunn15: ITINERARY want Equinox OPEN"
+assert rem contains "e50 next" else "sunn15: ITINERARY want e50 next"
 
 let src = read-file "SOURCE.md"
 assert src contains "SUNN15" else "sunn15: SOURCE want SUNN15 stamp"

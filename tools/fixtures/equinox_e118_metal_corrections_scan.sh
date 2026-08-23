@@ -14,7 +14,7 @@ CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 DIVERGE=tools/fixtures/dated_roof_divergence_scan.sh
 COUNSEL=counsel/date/20260731/20260731-172902_e118-metal-corrections.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 ELDER=tools/gen/season/equinox_e117_fork_extend_breach_close_witness.rish
@@ -43,7 +43,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$COUNSEL" "$MAP" "$REMEMBER" "$PRIN" "$ELDER" "$CLASSIFY" "$DIVERGE"; do
+for p in "$COUNSEL" "$MAP" "$ITINERARY" "$PRIN" "$ELDER" "$CLASSIFY" "$DIVERGE"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     if test -f "$p"; then
       echo "instrument=failed"
@@ -99,14 +99,14 @@ rg -qi 're-cut|Cloud-blocked|stale|retire' "$COUNSEL" || {
   echo "detail=want_stale_blocked_retired"
   exit 1
 }
-rg -qi 'roofs.*CLOSED|CLOSED ·|roofs agree CLOSED|two jobs' "$REMEMBER" "$MAP" || {
+rg -qi 'roofs.*CLOSED|CLOSED ·|roofs agree CLOSED|two jobs' "$ITINERARY" "$MAP" || {
   echo "correction=failed"
   echo "verdict=misread"
   echo "detail=want_closed_in_living_pins"
   exit 1
 }
 # Living pins must not carry standing Cloud-blocked debt as current truth
-if rg -qi 'Cloud rishi limbs need zig/rye bootstrap' "$REMEMBER" "$PRIN"; then
+if rg -qi 'Cloud rishi limbs need zig/rye bootstrap' "$ITINERARY" "$PRIN"; then
   echo "correction=failed"
   echo "verdict=misread"
   echo "detail=stale_cloud_blocked_still_standing"

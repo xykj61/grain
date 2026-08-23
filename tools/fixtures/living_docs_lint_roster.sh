@@ -17,4 +17,4 @@ done
 echo "session-logs/README.md"
 echo "construction/TASKS.md"
 echo "construction/ROADMAP.md"
-echo "construction/REMEMBER.md"
+echo "construction/ITINERARY.md"

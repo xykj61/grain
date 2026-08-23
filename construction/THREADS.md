@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Last refreshed:** `20260809.024320` · voice Riyo · **The Compass Season OPEN** · pier `~/grain` · guides 0–2 CLOSED · agent-jail GREEN
-**Companion (orient pin):** [`REMEMBER.md`](REMEMBER.md) · [`../expanding-prompts/date/20260809/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/date/20260809/20260809-021406_the-compass-season-baton-four-equinoxes.md)
+**Companion (orient pin):** [`ITINERARY.md`](ITINERARY.md) · [`../expanding-prompts/date/20260809/20260809-021406_the-compass-season-baton-four-equinoxes.md`](../expanding-prompts/date/20260809/20260809-021406_the-compass-season-baton-four-equinoxes.md)
 **Law:** closes are append-only — living *Now* lines sweep, dated counsel and session logs never do · one named rung per fuse · name/keys/history seasons are word-only · RESTED reopens by fresh charter only. Debrided to the Compass Season `20260809.024320` — the twelve old nested seasons' e-number ledger is gone from this living card; every green it tracked lives on in the code and in the dated counsel.
 
 ---

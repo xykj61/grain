@@ -18,7 +18,7 @@ CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 COUNSEL=counsel/date/20260801/20260801-005200_e135-mantrapod-affordable-witness.md
 LEXICON=context/LEXICON.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 REDS=construction/REDS.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
@@ -45,7 +45,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$COUNSEL" "$LEXICON" "$MAP" "$REMEMBER" "$REDS" \
+for p in "$COUNSEL" "$LEXICON" "$MAP" "$ITINERARY" "$REDS" \
   "$PRIN" "$E112" "$E115" "$ELDER_PITCH"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
@@ -110,7 +110,7 @@ rg -qi 'afford to run|stops being run' "$REDS" || {
 echo "reds=honored"
 echo "reds_note=row_46_affordable_witness"
 
-rg -qi 'afford to run|affordable witness' "$COUNSEL" "$REMEMBER" || {
+rg -qi 'afford to run|affordable witness' "$COUNSEL" "$ITINERARY" || {
   echo "living=failed"
   echo "verdict=misread"
   exit 1
@@ -129,7 +129,7 @@ echo "e112_note=fast_elder_still_green"
 echo "e115=tracked_not_nested"
 echo "e115_note=too_slow_for_casual_seat"
 
-rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$REMEMBER" "$MAP" "$COUNSEL" || {
+rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$ITINERARY" "$MAP" "$COUNSEL" || {
   echo "shred_gate=failed"
   echo "verdict=misread"
   exit 1

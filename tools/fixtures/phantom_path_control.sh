@@ -32,9 +32,9 @@ build() {
   git config user.email pen@example.invalid
   git config user.name Pen
   git config commit.gpgsign false
-  printf 'living card\n' > construction/REMEMBER.md
+  printf 'living card\n' > construction/ITINERARY.md
   printf 'name pen\n' > .brix
-  printf '#!/bin/sh\nset -eu\ncat construction/REMEMBER.md\n' > tools/reader.sh
+  printf '#!/bin/sh\nset -eu\ncat construction/ITINERARY.md\n' > tools/reader.sh
   git add -A
   git commit -qm 'pen: the room and its reader'
 }
@@ -59,7 +59,7 @@ check clean_free ok "$(verdict_of)"
 # 2 -- a tool reading through an untracked compatibility symlink is refused and counted.
 build phantom
 ln -s construction work-in-progress
-printf '#!/bin/sh\nledger="work-in-progress/REMEMBER.md"\ncat "$ledger"\n' > tools/stale.sh
+printf '#!/bin/sh\nledger="work-in-progress/ITINERARY.md"\ncat "$ledger"\n' > tools/stale.sh
 git add tools/stale.sh; git commit -qm 'pen: a tool reading the elder room'
 check phantom_refused phantom_paths "$(verdict_of)"
 check phantom_counted 1 "$(count_of)"
@@ -68,7 +68,7 @@ check phantom_counted 1 "$(count_of)"
 #      it says, so a guard may always explain the breach that created it.
 build comment
 ln -s construction work-in-progress
-printf '#!/bin/sh\n# once this read work-in-progress/REMEMBER.md\ncat construction/REMEMBER.md\n' > tools/told.sh
+printf '#!/bin/sh\n# once this read work-in-progress/ITINERARY.md\ncat construction/ITINERARY.md\n' > tools/told.sh
 git add tools/told.sh; git commit -qm 'pen: a tool that only mentions the elder room'
 check comment_free ok "$(verdict_of)"
 
@@ -96,14 +96,14 @@ check nowhere_free ok "$(verdict_of)"
 build linked
 mkdir -p pond
 ln -s ../crux pond/cards
-printf '#!/bin/sh\ncat pond/cards/REMEMBER.md\n' > tools/via.sh
+printf '#!/bin/sh\ncat pond/cards/ITINERARY.md\n' > tools/via.sh
 git add -A; git commit -qm 'pen: a tracked link and a tool reading through it'
 check tracked_link_free ok "$(verdict_of)"
 
 # 8 -- the descriptor is in scope: a phantom brick is a phantom.
 build descriptor
 ln -s construction work-in-progress
-printf 'name pen\nfile work-in-progress/REMEMBER.md\n' > .brix
+printf 'name pen\nfile work-in-progress/ITINERARY.md\n' > .brix
 git add .brix; git commit -qm 'pen: a descriptor listing the elder room'
 check descriptor_refused phantom_paths "$(verdict_of)"
 

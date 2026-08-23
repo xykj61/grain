@@ -15,7 +15,7 @@ CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 COUNSEL=counsel/date/20260801/20260801-001244_e132-date-dialect-timestamp.md
 LEXICON=context/LEXICON.md
 MAP=construction/EQUINOX_SEAT_MAP.md
-REMEMBER=construction/REMEMBER.md
+ITINERARY=construction/ITINERARY.md
 REDS=construction/REDS.md
 SAFE=SAFE.md
 E111=tools/fixtures/equinox_e111_date_dialect_scan.sh
@@ -43,7 +43,7 @@ echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
 }
 echo "control_gate=honored"
 
-for p in "$COUNSEL" "$LEXICON" "$MAP" "$REMEMBER" "$REDS" "$SAFE" "$E111" "$DD" "$SUITE" "$PRIN"; do
+for p in "$COUNSEL" "$LEXICON" "$MAP" "$ITINERARY" "$REDS" "$SAFE" "$E111" "$DD" "$SUITE" "$PRIN"; do
   git ls-files --error-unmatch "$p" >/dev/null 2>&1 || {
     echo "instrument=failed"
     echo "verdict=misread"
@@ -135,13 +135,13 @@ rg -qi 'compact Last updated|date or full stamp|hardcodes a format' "$LEXICON" "
 echo "living=honored"
 
 # SAFE empty named as load-bearing
-rg -qi '0 of 64|Rows:\*\* 0|rows 0 of 64' "$SAFE" "$COUNSEL" "$REMEMBER" || {
+rg -qi '0 of 64|Rows:\*\* 0|rows 0 of 64' "$SAFE" "$COUNSEL" "$ITINERARY" || {
   echo "safe=failed"
   echo "detail=want_empty_safe_named"
   echo "verdict=misread"
   exit 1
 }
-rg -qi 'load-bearing|oldness census' "$COUNSEL" "$REMEMBER" || {
+rg -qi 'load-bearing|oldness census' "$COUNSEL" "$ITINERARY" || {
   echo "safe=failed"
   echo "detail=want_load_bearing_named"
   echo "verdict=misread"
@@ -151,7 +151,7 @@ echo "safe=honored"
 echo "safe_rows=0"
 echo "safe_note=empty_load_bearing_for_shred"
 
-rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$REMEMBER" "$MAP" "$COUNSEL" || {
+rg -qi 'shred \*\*RED\*\*|shred RED|shred=RED' "$ITINERARY" "$MAP" "$COUNSEL" || {
   echo "shred_gate=failed"
   echo "verdict=misread"
   exit 1
