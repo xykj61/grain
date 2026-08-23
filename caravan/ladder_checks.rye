@@ -11234,6 +11234,89 @@ pub fn hold_the_matter(comptime rung: type, io: std.Io, forbear: rung.Forbear, r
     assert(rung.forbear_of(report_out).unhanded == 0);
 }
 
+/// Bounds a matter this correspondence has carried twice without it moving.
+///
+/// The wire before the memory, at the tier where a run stops relaying: the mark
+/// is read out of the store rather than remembered, weighed against the mark the
+/// run before it left, and a matter that came round a second time unchanged is
+/// walled rather than handed on again. The wall is then read back off the wire
+/// before the report believes any boundary stands.
+///
+/// **A wall is a third answer, and it is a record.** A run that walls decides
+/// nothing about the matter itself -- it declines to relay a question that has
+/// already made one full round, and leaves that decline where the next run reads
+/// its inheritance. `hold_the_matter`, seated directly above, consults exactly
+/// the `walled` count this body writes.
+///
+/// Seven rungs declare this name and all seven hold the body byte for byte. One
+/// more declares it and keeps its own copy on its merits rather than on drift:
+/// `caravan/desist.rye` reads `walled`, `unbounded`, and `relayed` off its report
+/// directly where these seven reach them through `desist_of`, since its report
+/// *is* the desisting record and holds no sub-record to consult. The sub-record
+/// accessor names the shape a rung answers, so a difference there is meaning
+/// rather than duplication -- the fourth family of this arc to say so.
+///
+/// Every symbol this body reaches already stood public in all seven rungs, so
+/// the lift widens nothing of any kind. Measured rather than read: `QUEUE_ROW
+/// family=bound_the_relay fall=312 folding=7 lines=55 stub=3 widens=0
+/// widens_fn=0 widens_const=0` from
+/// `../tools/fixtures/ladder_reach_visibility_scan.sh`, read before the lift.
+pub fn bound_the_relay(comptime rung: type, io: std.Io, named_before: ?[rung.max_minds_bytes]u8, desist: rung.Desist, report_out: *rung.Report) (rung.RunError || rung.NoteError)!void {
+    const mark = rung.mind_published(io);
+    const named = rung.mind_of(report_out).minded >= 1 and mark != null;
+    if (!named) {
+        // invariant: a run that named no impasse bounds nothing
+        assert(rung.desist_of(report_out).walled == 0);
+        // invariant: a run that named no impasse leaves no relay unbounded
+        assert(rung.desist_of(report_out).unbounded == 0);
+        return;
+    }
+    const this_mark = mark orelse return error.DesistUnnamed;
+    const twice = rung.came_round_twice(named_before, this_mark);
+    const round_count: u32 = if (twice) 1 else 0;
+    if (round_count == 0) {
+        // The matter is on its first round, and the next run is owed its look.
+        // invariant: a matter on its first round is relayed rather than walled
+        assert(rung.desist_of(report_out).walled == 0);
+        // invariant: a first round leaves no twice-carried relay unbounded
+        assert(rung.desist_of(report_out).unbounded == 0);
+        return;
+    }
+
+    // The measurement this rung moves, weighed against the marks actually
+    // standing rather than against anything the plan asked for, so a matter
+    // nobody bounds is counted rather than refused.
+    rung.desist_of(report_out).unbounded = rung.unbounded_relays(round_count, desist);
+    const walled_count = rung.walled_in(round_count, desist);
+    const relayed_count = rung.relayed_in(round_count, desist);
+    if (desist == .relays) {
+        // invariant: a relaying run stands no wall, however plainly it read
+        assert(walled_count == 0);
+        rung.desist_of(report_out).relayed = relayed_count;
+        return;
+    }
+
+    // The mark before the elder, and the elder before the reader's own word:
+    // all three reads supply the ladder rather than short-circuiting it, so
+    // every refusal below is reached by argument and named in its own order.
+    var address_buf: [rung.max_address_len]u8 = @splat(0);
+    const where = rung.address_published(io, &address_buf) orelse "";
+    const reply = if (rung.addressable(where)) rung.rest_written(io, where) else null;
+    const matched = if (reply) |said| rung.minds_carries(this_mark, rung.holds_bytes(said)) else false;
+    if (rung.desist_refusal(round_count, walled_count, relayed_count, named, twice, matched)) |why| return why;
+
+    // invariant: a bounding run walls the one matter it named twice over
+    assert(walled_count == 1);
+    try rung.wall_note(io, this_mark);
+    // The wire before the memory, once more: the wall an operator will read is
+    // read back, and only then does the report believe a boundary stands.
+    if (!rung.desist_holds(rung.wall_standing(io), rung.walls_bytes(this_mark))) return error.DesistMisrecorded;
+    rung.desist_of(report_out).walled = walled_count;
+    rung.desist_of(report_out).relayed = relayed_count;
+    // invariant: a bounding run leaves no relay of its own unbounded
+    assert(rung.desist_of(report_out).unbounded == 0);
+}
+
 /// Reads back the question this reader was asked, or nothing at all.
 ///
 /// The wire before the memory, one tier further out again: a run learns that it
