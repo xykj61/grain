@@ -56,7 +56,7 @@ Full table: [`context/LEXICON.md`](../context/LEXICON.md) § Cursor loop.
 | Surface | Role |
 |---------|------|
 | [`cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md) | Stitched first-day path |
-| [`glow-os/get-started.md`](../manual/glow-os/get-started.md) | Language + device doors |
+| [`glow-os/get-started.md`](../manual/grain-os/get-started.md) | Language + device doors |
 | Markup pipeline silo | Scribble → Brix → Bron → Mantra → Seva |
 
 ## What this page refuses
