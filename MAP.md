@@ -27,7 +27,7 @@ Welcome, traveler. Forty-some doors face you at this root, and every one is frie
 | **3 · The Why** | The reasons beneath the work | `foundations/` · `saga/` |
 | **4 · The Language & the Machines** | Glow and the module ring | `glow/` (with `glow/nock/`) · `src/` · the ring |
 | **5 · The Teaching** | Pages that teach only what runs | `docs/` · `docs-geode/` · `manual/` · `edu/` · `nixos-guide/` |
-| **6 · The Workrooms** | Where the work is shaped and recorded | `active-designing/` · `active-reviving/` · `waymarks/` · `expanding-prompts/` · `work-in-progress/` · `counsel/` · `session-logs/` · `bron-resins/` · `tools/` |
+| **6 · The Workrooms** | Where the work is shaped and recorded | `active-designing/` · `active-reviving/` · `waymarks/` · `expanding-prompts/` · `crux/` · `counsel/` · `session-logs/` · `bron-resins/` · `tools/` |
 | **7 · The Reading Room** | The world, studied whole with thanks | `external-research/` · `gratitude/` · `vendor/` |
 
 Beside the seven stand **the private rooms** — one person's own record, withheld from the public seed by [`template-manifest.bron`](template-manifest.bron): `keys/` · `press/` · `classical-vedic-astrology/` · `rye-learning-process/`, and the identity cards (`PUBKEYS.md` · `SAFE.md` · `STEWARDS.md` · the filled `GLOW_*.bron`).
@@ -50,7 +50,7 @@ Everything in [`context/`](context/README.md) is a promise we keep on purpose. [
 
 ### 6 · The Workrooms (Mind the Sawdust)
 
-[`active-designing/`](active-designing/README.md) is the hot bench — briefs being shaped now, the horizon in its `yonder/`; [`active-reviving/`](active-reviving/README.md) is its sibling, re-growing elders into Glow beside them. [`waymarks/`](waymarks/) is the claim shelf and [`expanding-prompts/`](expanding-prompts/) the runnable plans. [`work-in-progress/`](work-in-progress/REMEMBER.md) holds the living instruments: **REMEMBER** is what is true right now, TASKS and ROADMAP are what is next, REDS is what we got wrong and what caught it. [`counsel/`](counsel/README.md) is the advice ledger; [`session-logs/`](session-logs/README.md) and [`bron-resins/`](bron-resins/) are the diary and its compressions. [`tools/`](tools/) is where the witnesses live — the little judges that make every GREEN in this tree mean something.
+[`active-designing/`](active-designing/README.md) is the hot bench — briefs being shaped now, the horizon in its `yonder/`; [`active-reviving/`](active-reviving/README.md) is its sibling, re-growing elders into Glow beside them. [`waymarks/`](waymarks/) is the claim shelf and [`expanding-prompts/`](expanding-prompts/) the runnable plans. [`crux/`](crux/REMEMBER.md) holds the living instruments: **REMEMBER** is what is true right now, TASKS and ROADMAP are what is next, REDS is what we got wrong and what caught it. [`counsel/`](counsel/README.md) is the advice ledger; [`session-logs/`](session-logs/README.md) and [`bron-resins/`](bron-resins/) are the diary and its compressions. [`tools/`](tools/) is where the witnesses live — the little judges that make every GREEN in this tree mean something.
 
 ### 7 · The Reading Room
 

@@ -170,7 +170,7 @@ alone (measurement beats memory). It then runs the **count guard**
 ([`crypto_count_guard_witness.rish`](../tools/crypto_count_guard_witness.rish)) — a
 bijection asserting the suite registers exactly the `crypto/*.rye` files on disk and
 printing the computed count, so the spelled number above can never silently drift
-from the files again (booked by [`REDS`](../work-in-progress/REDS.md) #80).
+from the files again (booked by [`REDS`](../crux/REDS.md) #80).
 
 To prove one rung alone, run its witness — for example:
 

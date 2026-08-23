@@ -1,0 +1,67 @@
+# tools/tracked_link_witness.rish -- a link resolves in the tracked tree, or it does not resolve.
+#
+# WHY THIS RUNG. The `work-in-progress -> crux` breach of 20260815 repointed 902 references and
+# missed twenty-six. Every guard stayed green for eight days, because an untracked compatibility
+# symlink `work-in-progress -> crux` stood at the root of this pier. The broken-link duty of
+# tools/living_docs_lint.rish tests a target with `[ -e ]`, and a symlink satisfies `-e`, so a
+# reference that breaks in every fresh clone read as a reference that works. The lint's own roster
+# named `work-in-progress/TASKS.md` -- the guard was reaching through the artifact blinding it.
+#
+# A filesystem answers "is this here, on this machine." A reader who clones asks "is this in the
+# repository." Only the second is a promise the tree makes, and *References are promises* is
+# already house law (.claude/rules/collaboration.md). This rung asks the second question.
+#
+# WHAT IS PROVEN, on metal.
+#   Every tracked symlink lands on a path the repository carries -- a tracked file, a tracked
+#   directory, or a declared submodule. The waymarks fold left one dangling and tracked, pointing
+#   at a path no clone has, and it stood for three days with every guard green.
+#   Every relative Markdown link in a LIVING document outside the two deferred yonder silos
+#   resolves in the tracked tree.
+#   Seven behaviors on throwaway repositories: the clean tree free, an untracked target refused
+#   and counted, a stray symlink refused and counted, a vendor symlink free, a link resolving
+#   nowhere free, dated testimony free, and the yonder ratchet counted under its ceiling and
+#   refused once over it.
+#
+# WHAT IS REPORTED RATHER THAN GATED. The same reading across `external-research/yonder/` and
+# `expanding-prompts/yonder/` -- 219 links into a room renamed a season ago. They sit under a
+# ceiling that only ever falls, repaired on touch, because a sweep across a deferred shelf costs
+# more than it earns and would bury the enforced zero in noise.
+#
+# WHAT IS NOT PROVEN. That a link points at the RIGHT file -- only that it points at a file the
+# repository carries. And a link resolving nowhere at all belongs to living_docs_lint, which is
+# why this rung reads only the narrower, more surprising case: resolves here, breaks there.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/tracked_link_witness.rish
+
+say "tracked-link: Language EN -- a reference is a promise, and a promise kept only on one machine is not kept."
+say "tracked-link: Style Radiant -- the tree states where a link lands, and the tracked index is what states it."
+say "tracked-link: Lens TAME -- safety first: a guard reaching through an untracked artifact reports on a tree nobody else has."
+
+let scan = run ["sh" "tools/fixtures/tracked_link_scan.sh"]
+assert scan.ok else "tracked-link: a link resolves on this machine and breaks in a fresh clone -- read the scan's own lines"
+say scan.out
+assert scan.out contains "symlinks_outside_tree=0" else "tracked-link: every tracked symlink must land inside the tracked tree"
+assert scan.out contains "living_links_outside_tree=0" else "tracked-link: a living document may only link to what the repository carries"
+assert scan.out contains "verdict=ok" else "tracked-link: the scan must balance before it is believed"
+say "field GREEN -- every tracked symlink and every living link lands on a path a fresh clone has"
+
+let control = run ["sh" "tools/fixtures/tracked_link_control.sh"]
+assert control.ok else "tracked-link: the control must complete"
+say control.out
+assert control.out contains "agreeing_free=yes" else "tracked-link: a tree whose links are all tracked must pass free"
+assert control.out contains "clean_reads_zero=yes" else "tracked-link: a clean tree must read zero rather than merely pass"
+assert control.out contains "untracked_target_refused=yes" else "tracked-link: a link resolving only through an untracked room must be refused"
+assert control.out contains "untracked_target_counted=yes" else "tracked-link: the refusal must name a count, never only a verdict"
+assert control.out contains "stray_symlink_refused=yes" else "tracked-link: a tracked symlink landing outside the tree must be refused"
+assert control.out contains "stray_symlink_counted=yes" else "tracked-link: the stray symlink must be counted as well as refused"
+assert control.out contains "vendor_symlink_free=yes" else "tracked-link: a symlink into provisioned vendor/ must pass free"
+assert control.out contains "nowhere_link_free=yes" else "tracked-link: a link resolving nowhere belongs to living_docs_lint, never to this rung"
+assert control.out contains "dated_testimony_free=yes" else "tracked-link: dated testimony keeps every reference it ever wrote"
+assert control.out contains "yonder_counted=yes" else "tracked-link: a deferred-silo link must be counted as a ratchet"
+assert control.out contains "yonder_under_ceiling_free=yes" else "tracked-link: a ratchet under its ceiling must pass free"
+assert control.out contains "yonder_over_ceiling_refused=yes" else "tracked-link: a ratchet over its ceiling must refuse"
+assert control.out contains "control_verdict=ok" else "tracked-link: the control must agree with itself"
+say "RED and GREEN paths proven -- four refusals bitten, five honest readings left free"
+
+say "GREEN: tracked-link -- a link resolves in the tracked tree, or it does not resolve."

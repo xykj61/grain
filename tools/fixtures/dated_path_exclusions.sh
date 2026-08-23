@@ -83,7 +83,7 @@ DP_READMIT_DIRS="recursion-prompts/seed"
 
 # Files whose dated paths are the instrument's own fixtures rather than citations of the field.
 # Matched by NAME, so an entry here excludes that filename wherever it sits.
-DP_EXCLUDE_NAMES="dated_path_* banner_room_control.sh room_bound_control.sh session_logs_archive.rye shipped_binary_claim_control.sh"
+DP_EXCLUDE_NAMES="dated_path_* banner_room_control.sh room_bound_control.sh session_logs_archive.rye shipped_binary_claim_control.sh tracked_link_control.sh"
 
 # The same test, applied to a file whose NAME cannot carry the exemption. `docs-geode/demos/`
 # demonstrates the resolver recovering a stale reference, which requires quoting one -- and the

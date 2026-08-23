@@ -12,6 +12,6 @@
 
 **Clean room:** We study public architecture docs and essays; we never copy rust-analyzer source into our modules. The Realidream lane's gratitude shelf seats this name formally per Kaeden's word (`20260708.174500`).
 
-**Cross-ref:** [`../work-in-progress/ROADMAP.md`](../work-in-progress/ROADMAP.md) — Visual Track · [`../external-research/20260708-021912_grain-sketchbook-realidream-mining.md`](../external-research/20260708-021912_grain-sketchbook-realidream-mining.md) · distilled teachings [`../external-research/20260712-093812_matklad-teachings-distilled.md`](../external-research/20260712-093812_matklad-teachings-distilled.md)
+**Cross-ref:** [`../crux/ROADMAP.md`](../crux/ROADMAP.md) — Visual Track · [`../external-research/20260708-021912_grain-sketchbook-realidream-mining.md`](../external-research/20260708-021912_grain-sketchbook-realidream-mining.md) · distilled teachings [`../external-research/20260712-093812_matklad-teachings-distilled.md`](../external-research/20260712-093812_matklad-teachings-distilled.md)
 
 **See also:** [`tigerbeetle/`](tigerbeetle/) — the same teacher walks us through TigerBeetle's own machinery across the IronBeetle series. Episodes 001, 002, 004, 005, 006, 008 through 015, 018 through 022, 025, 028, 030, 031½, and 032 through 038, 040, and 042 through 045 are written up; 003, 007, 016, 017, and 024 are still open. Own-voice silos (tracked; submodule stays unmodified): [`ironbeetle/`](ironbeetle/) (`20260712.092212`).

@@ -103,6 +103,10 @@ guard tame_style_check
 path tools/tame_style_check.rish
 seated 20260707.164612
 
+guard tracked_link
+path tools/tracked_link_witness.rish
+seated 20260823.002511
+
 guard vocabulary_collection
 path tools/vocabulary_collection_witness.rish
 seated 20260821.211943
