@@ -1,0 +1,59 @@
+# Gauge Style -- the working prose style of this tree
+
+**Full guide:** [`../../context/GAUGE_STYLE.md`](../../context/GAUGE_STYLE.md) - **Seated:** `20260823.045448` on Keaton's word - **Status:** Living
+**Inherits:** [`radiant-style`](radiant-style.md) (warmth) - `context/CIVIC_STYLE.md` (name what you reward) - [`tame-guidance`](tame-guidance.md) (bound every claim, say why)
+**Meter:** [`../../tools/prose_register_witness.rish`](../../tools/prose_register_witness.rish)
+
+Write documentation, analysis, forecasting, ecosystem description, and design essays in **Gauge
+Style** -- writing that carries measurements and stays worth reading. Radiant Style keeps its
+place as the warmest register and as the voice this tree writes in; Gauge is the working style
+that borrows that warmth and adds the discipline of a number that can be checked.
+
+## The first rule, before every other
+
+**Don't be too smart about it.** Write so the reader understands, rather than so the writer sounds
+impressive. When those two aims part, the reader wins, every time.
+
+> Write it the way you would say it to a friend who is smart, curious, and new here.
+
+Being too smart looks like: the specialist word where a common one carries the meaning; a
+paragraph compressed into an aphorism that lands as a riddle; a clever name instead of a
+descriptive one; the obvious step left out; three true asides stacked in one sentence; and
+explaining a thing in terms of another thing the reader also lacks.
+
+## The three settings
+
+One style, one dial, set by who is reading.
+
+| Setting | Where | Negative sentences | Grade | Cross-refs per 100 words |
+|---|---|---|---|---|
+| **Door** | READMEs, foundations, onboarding | at or under **20%** | at or under 9 | at or under 1 |
+| **Field** | documentation, analysis, forecasting, design essays | at or under **30%** | at or under 11 | at or under 3 |
+| **Meter** | ledger rows, witness headers, commit bodies | uncapped -- refusal is the subject | uncapped | uncapped |
+
+## What every setting keeps
+
+- **Lead with what is.** Active voice. *Rather than* over a heavy *not*, *yet* over *but*.
+- **Name a coined term's plain function on first use** -- and a coined **maxim's** too.
+- **Bound every claim.** Scope, period, assumptions, before the number.
+- **Every figure carries unit, date, and source.** A number without those three is a rumour with
+  a decimal point.
+- **Every projection carries horizon, assumptions, falsifier, and confidence in plain words.**
+- **Separate observation, inference, and projection** into their own sentences.
+- **Name what the thing rewards**, and whether that matches the outcome anyone wants.
+- **Say why** beside every surprising choice, threshold, or number.
+- **Honesty first, brevity second, delight third**, when they pull against each other.
+
+## Code comments
+
+The dial runs through the code. **Meter** at a bound or an assert, where the comment says why the
+number is that number. **Door** at the head of a module, where a reader arrives with no context
+and deserves a plain sentence about what the thing is for.
+
+## Standfast
+
+Moving the living documents into their right setting is a **standfast** awaiting Keaton's word,
+recorded at `crux/REDS.md` row `%163`. Dated testimony keeps every word it ever wrote. This rule
+governs what is written from here forward.
+
+Canonical Cursor twin: [`../../.cursor/rules/gauge-style.mdc`](../../.cursor/rules/gauge-style.mdc)

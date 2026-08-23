@@ -1,5 +1,7 @@
 # Radiant Wishes — end earned prose with a benediction
 
+**Carried into [Gauge Style](gauge-style.md)** (seated `20260823.045448`) at its **Door** setting, where a benediction is earned; Meter keeps its close plain.
+
 **Seated:** `20260811` on Keaton's word · **Status:** Living · **Kin:** [`radiant-style.md`](radiant-style.md) · [`kyri.md`](kyri.md)
 
 Radiant Style already spends the benediction where it is earned — devotional and foundational pieces, founding visions, README front doors, the close of a season. This rule makes that habit **standing**: end such prose with a short **radiant wish**, a closing line (or small stanza) that affirms the work and blesses the reader on their way.

@@ -1,0 +1,66 @@
+# tools/prose_register_witness.rish -- prose that measures, measured.
+#
+# WHY THIS RUNG. On 20260823 Keaton read a freshly written front door, labelled Radiant, and said
+# it was the opposite of the intention. Counting agreed: 46% of README sentences and 54% of a
+# founding statement's carried a negative, against 29% in RADIANT_STYLE.md itself -- a founding
+# statement twice as negative as the guide it claimed to follow. The reading grade sat inside
+# target the whole time, which is exactly why nobody caught it, and why a syllable count was never
+# going to.
+#
+# The meter that already stood, tools/fixtures/radiant_negation_scan.sh, counts NEGATION WORDS
+# across `.claude/rules/*.md` alone. Two honest gaps: the front door was never on its roster, and
+# negative FRAMING -- fails, broken, lost, refused, stale, problem -- went uncounted. The two
+# meters are siblings rather than rivals: one guards the rules, this one guards the door.
+#
+# Both documents were rewritten the same day, to 15% and 11%, and this rung keeps them there.
+#
+# WHAT IS PROVEN, on metal.
+#   Every document on the DOOR roster keeps its negative-sentence share at or under 20%. The
+#   roster is named rather than discovered, so a new file cannot join the enforced tier by
+#   accident and red on work it never agreed to cover.
+#   Nine behaviors on planted prose, using the scan's own measure function lifted verbatim so the
+#   control reads exactly what the guard reads: warm prose low, refusal-led prose high, the two
+#   discriminated, fenced code excluded, tables and headings read past, fragments under four words
+#   skipped, an empty page safe, and the live door roster clean.
+#
+# WHAT IS REPORTED, as a ratchet under a ceiling that only ever falls. The teaching tier --
+# docs-geode/, manual/, edu/, and the root guides -- counted as documents above the Field target of
+# 30%. Sixteen at seating, the beginner tutorial itself at 51% and the demos page at 62%. Repair is
+# a rewrite per document, so these fall on touch rather than in one sweep.
+#
+# WHAT IS NOT PROVEN. That the prose is GOOD. This counts negation density, one honest proxy among
+# several. A page can pass this meter and still fail a reader, so the second number to read is
+# always the prose itself.
+#
+# Style: context/GAUGE_STYLE.md - Rule: .claude/rules/gauge-style.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/prose_register_witness.rish
+
+say "prose-register: Language EN -- a style label nobody measures is a wish, and this tree wished for months."
+say "prose-register: Style Gauge -- the door setting, held at a number rather than at an intention."
+say "prose-register: Lens TAME -- safety first: the front door is what a stranger meets, and it was the least measured page we own."
+
+let scan = run ["sh" "tools/fixtures/prose_register_scan.sh"]
+assert scan.ok else "prose-register: a door document reads more negatively than the style it claims"
+say scan.out
+assert scan.out contains "door_over_ceiling=0" else "prose-register: every door document must hold at or under 20% negative sentences"
+assert scan.out contains "verdict=ok" else "prose-register: the scan must balance before it is believed"
+say "field GREEN -- the front door reads the way the style says it does"
+
+let control = run ["sh" "tools/fixtures/prose_register_control.sh"]
+assert control.ok else "prose-register: the control must complete"
+say control.out
+assert control.out contains "warm_reads_low=yes" else "prose-register: affirmative prose must measure low"
+assert control.out contains "cold_reads_high=yes" else "prose-register: refusal-led prose must measure high"
+assert control.out contains "reading_discriminates=yes" else "prose-register: the reading must tell the two apart, or it measures nothing"
+assert control.out contains "fence_excluded=yes" else "prose-register: a fenced code block is code, and must not colour the reading"
+assert control.out contains "table_excluded=yes" else "prose-register: tables and headings carry labels rather than sentences"
+assert control.out contains "fragments_skipped=yes" else "prose-register: a fragment under four words is no sentence"
+assert control.out contains "empty_safe=yes" else "prose-register: an empty page must read zero rather than divide by zero"
+assert control.out contains "live_door_clean=yes" else "prose-register: the live door roster must agree with the control's reading"
+assert control.out contains "live_verdict_ok=yes" else "prose-register: the scan must agree with itself"
+assert control.out contains "control_verdict=ok" else "prose-register: the control must agree with itself"
+say "the reading discriminates -- warm prose low, refusal-led prose high, and the edges read correctly"
+
+say "GREEN: prose-register -- prose that measures, measured."
