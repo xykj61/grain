@@ -25,7 +25,7 @@
 #   `seed/`, the depersonalized public projection, gitignored by design (`.claude/rules/git-signing.md`).
 #   Any path carrying a dot-segment -- `tools/.build`, `glow/.cache`, `crypto/bin/.cc_reg.txt`,
 #     `.gnupg-rye` -- because a dot names a generated or machine-local room.
-#   `crux/standing-equipment-runs.kyri`, the untracked run card the roster rewrites (%150).
+#   `construction/standing-equipment-runs.kyri`, the untracked run card the roster rewrites (%150).
 #   A `*_control.sh` fixture, because a control that proves a guard refuses must PLANT the thing
 #     it refuses -- this scan's own control writes `work-in-progress/REMEMBER.md` into a throwaway
 #     repository on purpose, and counting it makes the meter rise as the proof gets stronger. The
@@ -110,7 +110,7 @@ while IFS="$(printf '\t')" read -r src tok; do
   case "$tok" in
     vendor/*|seed/*) continue ;;
     .*|*/.*) continue ;;
-    crux/standing-equipment-runs.kyri) continue ;;
+    construction/standing-equipment-runs.kyri) continue ;;
   esac
   grep -qxF -- "$tok" "$work/known" && continue
   # Try again through the tracked symlinks before calling it a phantom.

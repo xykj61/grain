@@ -10,4 +10,4 @@
 
 **Clean room:** Concepts cross into active-designing stripped of borrowed filenames; implementations enter through our own modules only. No sketchbook tree under `gratitude/`.
 
-**Cross-ref:** [`../crux/ROADMAP.md`](../crux/ROADMAP.md) — Visual Track
+**Cross-ref:** [`../construction/ROADMAP.md`](../construction/ROADMAP.md) — Visual Track

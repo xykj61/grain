@@ -5,7 +5,7 @@
 **Folded:** `20260820.025944` from [`../REDS.md`](../REDS.md), the living pin, to bring it back under `living_pin_max_bytes` (24576) before row 96 was booked.
 **Voice:** Kyri
 
-*A fold moves nothing out of the record -- it moves it out of the pin. Every row below stood in `crux/REDS.md` and reads here exactly as it read there. Rows 88-95 all closed on metal; row 91 stands as written and its correction is row 93, since a row is never edited.*
+*A fold moves nothing out of the record -- it moves it out of the pin. Every row below stood in `construction/REDS.md` and reads here exactly as it read there. Rows 88-95 all closed on metal; row 91 stands as written and its correction is row 93, since a row is never edited.*
 
 ---
 

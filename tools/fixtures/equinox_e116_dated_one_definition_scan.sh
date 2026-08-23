@@ -14,8 +14,8 @@ DIVERGE=tools/fixtures/dated_roof_divergence_scan.sh
 CLASSIFY=tools/fixtures/dated_classify.py
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 PRIN=tools/gen/season/prin_scope.rish
-MAP=crux/EQUINOX_SEAT_MAP.md
-REDS=crux/REDS.md
+MAP=construction/EQUINOX_SEAT_MAP.md
+REDS=construction/REDS.md
 ELDER=tools/gen/season/equinox_e115_instrument_suite_witness.rish
 
 if ! test -f "$CONTROL_SCAN"; then

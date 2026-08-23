@@ -28,7 +28,7 @@ entry = (
     "**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e110_ch8_reserve_choir_witness.rish` · **Stamp:** `"
     + stamp
     + "` · **Witness:** `tools/gen/season/equinox_e110_ch8_reserve_witness.rish` · "
-    "scan `tools/fixtures/equinox_e110_ch8_reserve_scan.sh` · pin `crux/EQUINOX_SEAT_MAP.md`\n"
+    "scan `tools/fixtures/equinox_e110_ch8_reserve_scan.sh` · pin `construction/EQUINOX_SEAT_MAP.md`\n"
     "Expected control_gate · surface_count=4 · chapters 2,3,4,7 · ch5/ch6 absent · "
     "seat_128 reserved_close_choir · ch8 span 113–128 · fork not_consumed · "
     "shelf end ep045 · baton breach 0. "

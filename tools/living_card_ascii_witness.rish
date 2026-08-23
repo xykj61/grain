@@ -1,6 +1,6 @@
 # tools/living_card_ascii_witness.rish -- the operator card stays plain 7-bit ASCII (REDS %83).
 #
-# The prevention REDS %83 booked, now on metal. crux/REMEMBER.md triple-encoded itself into
+# The prevention REDS %83 booked, now on metal. construction/REMEMBER.md triple-encoded itself into
 # 2,797 runs of capital-A-tilde mojibake before a reader caught it (a tool read the UTF-8 card
 # as Latin-1 and rewrote it, each later edit re-encoding the mangled bytes another layer). The
 # fix was a byte-exact repair; the guard is how it never happens unseen again -- it catches the
@@ -22,8 +22,8 @@ say "living-card-ascii: Lens TAME -- measurement beats memory; the guard greps f
 let green = run ["sh" "tools/fixtures/living_card_ascii_scan.sh"]
 assert green.ok else "living-card-ascii: living scan must exit 0 -- ${green.out}"
 assert green.out contains "enforce=honored" else "living-card-ascii: want enforce honored"
-assert green.out contains "enforce_ok=crux/REMEMBER.md" else "living-card-ascii: want operator card enforced clean"
-assert green.out contains "enforce_ok=crux/REDS.md" else "living-card-ascii: want REDS ledger enforced clean"
+assert green.out contains "enforce_ok=construction/REMEMBER.md" else "living-card-ascii: want operator card enforced clean"
+assert green.out contains "enforce_ok=construction/REDS.md" else "living-card-ascii: want REDS ledger enforced clean"
 assert green.out contains "advisory=ratchet_report" else "living-card-ascii: want advisory ratchet reported"
 assert green.out contains "control_kept=honored" else "living-card-ascii: want the control kept non-ASCII"
 assert green.out contains "verdict=ok" else "living-card-ascii: want verdict ok"

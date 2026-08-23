@@ -1,14 +1,14 @@
 #!/bin/sh
 # tools/fixtures/standing_equipment_scan.sh -- the roster is real, and it says when each guard ran.
 #
-# WHY. The standing-equipment roster lived in one paragraph of crux/REMEMBER.md. A paragraph
+# WHY. The standing-equipment roster lived in one paragraph of construction/REMEMBER.md. A paragraph
 # can be trusted; it cannot be run, counted, or dated. REDS %147 found eight standing witnesses
 # each holding a count its source had moved past, and REDS %149 found the living-pin bound guard
 # unrun for four laps while the pin it measures sat 2,050 bytes over its bound. Both were found
 # by a hand that happened to run something, which is a lantern rather than a loom.
 #
 # WHAT IS GATED, hard.
-#   Every `path` in crux/standing-equipment.kyri names a file that exists on disk.
+#   Every `path` in construction/standing-equipment.kyri names a file that exists on disk.
 #   Every `guard` record carries exactly one `path`, so no row is half-written.
 #   Every `ran` line in the run card names a guard the roster actually seats.
 #   No run-card line records a red or an absent guard.
@@ -26,8 +26,8 @@
 
 set -eu
 
-roster="${STANDING_ROSTER:-crux/standing-equipment.kyri}"
-card="${STANDING_CARD:-crux/standing-equipment-runs.kyri}"
+roster="${STANDING_ROSTER:-construction/standing-equipment.kyri}"
+card="${STANDING_CARD:-construction/standing-equipment-runs.kyri}"
 
 [ -f "$roster" ] || { echo "verdict=no_roster"; echo "refused: no roster at $roster" >&2; exit 1; }
 

@@ -64,12 +64,12 @@ else
 fi
 if test "$RC" -ne 0 || test -z "$COMMITS_RAW"; then COMMITS=0; else COMMITS=$(printf %s "$COMMITS_RAW" | tr -d '[:space:]'); fi
 
-REDS_ROWS=$(rg -c '^\| [0-9]+ \|' crux/REDS.md 2>/dev/null || echo 0)
-REMEMBER_BYTES=$(wc -c < crux/REMEMBER.md | tr -d '[:space:]')
+REDS_ROWS=$(rg -c '^\| [0-9]+ \|' construction/REDS.md 2>/dev/null || echo 0)
+REMEMBER_BYTES=$(wc -c < construction/REMEMBER.md | tr -d '[:space:]')
 LEXICON_BYTES=$(wc -c < context/LEXICON.md | tr -d '[:space:]')
 SESSION_INDEX_LINES=$(wc -l < session-logs/README.md | tr -d '[:space:]')
 ALMANAC_BYTES=$(wc -c < rye-learning-process/GLOW_ALMANAC.md | tr -d '[:space:]')
-SEAT_MAP_BYTES=$(wc -c < crux/EQUINOX_SEAT_MAP.md | tr -d '[:space:]')
+SEAT_MAP_BYTES=$(wc -c < construction/EQUINOX_SEAT_MAP.md | tr -d '[:space:]')
 
 {
   echo "format equinox-bundle-manifest-v1"
@@ -100,12 +100,12 @@ SEAT_MAP_BYTES=$(wc -c < crux/EQUINOX_SEAT_MAP.md | tr -d '[:space:]')
   else
     echo "bundle_sha3 unavailable"
   fi
-  echo "living_doc crux/REDS.md rows=${REDS_ROWS}"
-  echo "living_doc crux/REMEMBER.md bytes=${REMEMBER_BYTES}"
+  echo "living_doc construction/REDS.md rows=${REDS_ROWS}"
+  echo "living_doc construction/REMEMBER.md bytes=${REMEMBER_BYTES}"
   echo "living_doc context/LEXICON.md bytes=${LEXICON_BYTES}"
   echo "living_doc session-logs/README.md lines=${SESSION_INDEX_LINES}"
   echo "living_doc rye-learning-process/GLOW_ALMANAC.md bytes=${ALMANAC_BYTES}"
-  echo "living_doc crux/EQUINOX_SEAT_MAP.md bytes=${SEAT_MAP_BYTES}"
+  echo "living_doc construction/EQUINOX_SEAT_MAP.md bytes=${SEAT_MAP_BYTES}"
   echo "restore verified_rather_than_trusted"
   echo "discipline counsel/replies/20260730-041405_bundle-discipline.md"
   echo "verdict ok"

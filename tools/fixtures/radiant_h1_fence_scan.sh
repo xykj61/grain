@@ -69,7 +69,7 @@ roster = [
     "context/THREATS.md", "context/OPEN_QUESTIONS.md", "context/REMOTE_ROSTER.md",
     "context/LEXICON.md", "context/TWO_ROOMS.md", "context/QUIN.md", "context/CIVIC_STYLE.md",
     "context/TAME_GUIDANCE.md", "context/SILO_TECHNIQUE.md", "context/SIMPLE_LOVABLE_COMPLETE.md",
-    "crux/REMEMBER.md", "crux/TASKS.md", "crux/ROADMAP.md",
+    "construction/REMEMBER.md", "construction/TASKS.md", "construction/ROADMAP.md",
     "foundations/README.md", "counsel/README.md", "session-logs/README.md", "waymarks/README.md",
     "docs/README.md", "docs/COMPASS.md",
     "foundations/20260724-220625_five-pillars-direction.md",

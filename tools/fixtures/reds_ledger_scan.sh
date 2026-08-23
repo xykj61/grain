@@ -41,7 +41,7 @@ if [ "${1:-}" = "prove-red" ]; then
   echo "verdict=prove_red_failed_to_refuse"
   exit 2
 fi
-f="${1:-crux/REDS.md}"
+f="${1:-construction/REDS.md}"
 [ -f "$f" ] || { echo "verdict=missing_ledger"; exit 2; }
 
 rows=0

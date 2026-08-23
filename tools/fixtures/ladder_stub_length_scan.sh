@@ -23,7 +23,7 @@
 #   goes stale on that lap rather than a season later.
 #
 #   CHECK: every living surface that names a stub length in words must name the
-#   measured one. The standing surface is crux/REMEMBER.md, the card that speaks
+#   measured one. The standing surface is construction/REMEMBER.md, the card that speaks
 #   as NOW. Dated testimony is out of scope by the line the tree already draws --
 #   a file whose own basename carries a one-clock stamp is testimony and is never
 #   rewritten (.claude/rules/stamp-and-name.md) -- and session-logs/README.md is
@@ -40,7 +40,7 @@
 set -eu
 
 src_dir="caravan"
-default_claims="crux/REMEMBER.md"
+default_claims="construction/REMEMBER.md"
 
 # prove-red: two generated controls, so both refusal paths are proven on metal
 # without ever mutating the living surfaces the guard protects.

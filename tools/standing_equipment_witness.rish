@@ -1,10 +1,10 @@
 # tools/standing_equipment_witness.rish -- the roster of standing guards is a list, not a sentence.
 #
-# WHY THIS RUNG. The standing-equipment roster lived in one paragraph of crux/REMEMBER.md. A
+# WHY THIS RUNG. The standing-equipment roster lived in one paragraph of construction/REMEMBER.md. A
 # paragraph can be read and it can be believed; it cannot be run, counted, or dated. The tree paid
 # for that twice in two consecutive rounds. REDS %147 found eight standing witnesses each holding a
 # count its source had moved past. REDS %149 found the living-pin bound guard unrun for four laps
-# while crux/REDS.md sat 2,050 bytes over the bound that guard exists to hold. Each was caught by a
+# while construction/REDS.md sat 2,050 bytes over the bound that guard exists to hold. Each was caught by a
 # hand that happened to run something, which is the definition of a lantern rather than a loom.
 #
 # The grain already seats the sibling strand: a guard that cannot red guards nothing (REDS row 59).
@@ -12,7 +12,7 @@
 # either -- so the roster becomes a file a program reads, and the running of it leaves a record.
 #
 # WHAT IS PROVEN, on metal.
-#   Every `path` in crux/standing-equipment.kyri names a file that exists on disk, so the roster
+#   Every `path` in construction/standing-equipment.kyri names a file that exists on disk, so the roster
 #   can never name equipment the tree has moved or renamed away from underneath it.
 #   Every `guard` record carries exactly one `path`, so a half-written row is refused rather than
 #   silently skipped by a runner reading the same file.

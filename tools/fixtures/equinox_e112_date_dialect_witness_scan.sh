@@ -13,7 +13,7 @@ CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 DIALECT_SCAN=tools/fixtures/date_dialect_scan.sh
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 PRIN=tools/gen/season/prin_scope.rish
-MAP=crux/EQUINOX_SEAT_MAP.md
+MAP=construction/EQUINOX_SEAT_MAP.md
 ELDER=tools/gen/season/equinox_e111_date_dialect_witness.rish
 
 if ! test -f "$CONTROL_SCAN"; then

@@ -25,7 +25,7 @@ assert rb contains "coords_e50 geode_expedition_breach GREEN 20260730.162222" el
 assert rb contains "extend_lean +128" else "e50: recursion want extend_lean +128"
 assert rb contains "geode_expedition_breach APPROVED_GATED" else "e50: recursion want breach pin"
 
-let rem = read-file "crux/REMEMBER.md"
+let rem = read-file "construction/REMEMBER.md"
 assert rem contains "e50 GREEN" else "e50: REMEMBER want e50 GREEN"
 assert rem contains "geode expedition" else "e50: REMEMBER want expedition"
 assert rem contains "APPROVED · GATED" else "e50: REMEMBER want APPROVED GATED"

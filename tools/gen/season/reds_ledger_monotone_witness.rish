@@ -29,11 +29,11 @@ say "reds-monotone: Lens TAME -- indices span every fold archive on disk and the
 # The shell expands the glob and hands the scan its files directly, so no captured output
 # ever rides inside a quoted word (REDS %85: a witness that interpolates what it captured
 # into a shell string is checking its own claim through a shell that may reshape it).
-let count = run ["sh" "-c" "ls crux/archive/REDS-*rows-*.md | wc -l | tr -d ' \n'"]
+let count = run ["sh" "-c" "ls construction/archive/REDS-*rows-*.md | wc -l | tr -d ' \n'"]
 assert count.ok else "reds-monotone: could not find the fold archives on disk"
 assert (trim count.out) != "0" else "reds-monotone: no fold archive stands on disk, yet the living pin is a folded ledger"
 
-let scan = run ["sh" "-c" "sh tools/fixtures/reds_ledger_monotone_scan.sh crux/archive/REDS-*rows-*.md crux/REDS.md"]
+let scan = run ["sh" "-c" "sh tools/fixtures/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md"]
 say scan.out
 assert scan.out contains "verdict=ok" else "reds-monotone: row indices are not 1..N monotone across the fold archives and the living pin"
 assert scan.ok else "reds-monotone: the verdict reads ok while the status fails -- they must agree"
@@ -49,7 +49,7 @@ assert scan.ok else "reds-monotone: the verdict reads ok while the status fails 
 # that stops reaching every row still refuses -- and welcomes the growth the ledger is for. Raise it
 # when a fold lands; it only ever goes up. The exact count is printed above by the scan, measured
 # rather than recited (REDS %110).
-let floor = run ["sh" "-c" "sh tools/fixtures/reds_ledger_monotone_scan.sh crux/archive/REDS-*rows-*.md crux/REDS.md | sed -n 's/^rows=//p' | { read n; test $n -ge 121; }"]
+let floor = run ["sh" "-c" "sh tools/fixtures/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md | sed -n 's/^rows=//p' | { read n; test $n -ge 121; }"]
 assert floor.ok else "reds-monotone: the spine reaches fewer rows than the floor it once reached -- a shrinking ledger is a red"
 
 # RED path one -- a gap. The control is generated rather than tracked, so it can never
@@ -88,9 +88,9 @@ assert empty.out contains "verdict=no_rows" else "reds-monotone: want the empty 
 # disagreement, since a number a human republishes is a number that will one day be
 # republished wrong. This is the happy zone's mirrored pair at the ledger's own seam: one
 # side counts, the other side publishes, and the contract check lives with the publisher.
-let measured = run ["sh" "-c" "sh tools/fixtures/reds_ledger_monotone_scan.sh crux/archive/REDS-*rows-*.md crux/REDS.md | sed -n 's/^rows=//p'"]
+let measured = run ["sh" "-c" "sh tools/fixtures/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md | sed -n 's/^rows=//p'"]
 assert measured.ok else "reds-monotone: could not measure the spine for the headline check"
-let headline = run ["sh" "-c" "sh tools/fixtures/reds_ledger_headline_scan.sh crux/REDS.md ${trim measured.out}"]
+let headline = run ["sh" "-c" "sh tools/fixtures/reds_ledger_headline_scan.sh construction/REDS.md ${trim measured.out}"]
 say headline.out
 assert headline.ok else "reds-monotone: the ledger's headline disagrees with its own measured spine"
 assert headline.out contains "verdict=ok" else "reds-monotone: want the headline agreeing with the measurement by name"

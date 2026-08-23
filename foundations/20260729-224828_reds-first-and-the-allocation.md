@@ -10,7 +10,7 @@
 **Status:** **Mixed** — Checkable for the mechanism and its witness; Proposal where a gate awaits Keaton's word
 **Priority:** Voice Season v10 · slot 10 · `sameness_as_compression`
 **Cited by:** `context/TAME_GUIDANCE.md` · `.claude/rules/reds-first.md` · `.cursor/rules/reds-first.mdc`
-**Ledger:** [`../work-in-progress/REDS.md`](../work-in-progress/REDS.md)
+**Ledger:** [`../construction/REDS.md`](../construction/REDS.md)
 **Gratitude:** [`../gratitude/toyota-production-system.md`](../gratitude/toyota-production-system.md)
 
 *Written together by Keaton and Riyo.*

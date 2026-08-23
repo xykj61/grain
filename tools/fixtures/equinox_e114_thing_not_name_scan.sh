@@ -12,8 +12,8 @@ CONTROL_SCAN=tools/fixtures/census_control_scan.sh
 THING_SCAN=tools/fixtures/thing_not_name_scan.sh
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 PRIN=tools/gen/season/prin_scope.rish
-MAP=crux/EQUINOX_SEAT_MAP.md
-REDS=crux/REDS.md
+MAP=construction/EQUINOX_SEAT_MAP.md
+REDS=construction/REDS.md
 ELDER=tools/gen/season/equinox_e113_fascia_health_witness.rish
 
 if ! test -f "$CONTROL_SCAN"; then

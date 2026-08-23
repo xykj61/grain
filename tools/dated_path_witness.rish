@@ -80,11 +80,11 @@ say "verdict one GREEN -- a path that still stands reads home"
 # The same reference, twice: with its citing file it resolves as written, without it the index
 # answers. Both are honest, and the difference is exactly the context a reader has.
 let relative_ref = "archive/20260618-155212_open-threads.md"
-let citer = "crux/THREADS.md"
+let citer = "construction/THREADS.md"
 let with_citer = run [bin "run" tool relative_ref citer]
 assert with_citer.ok else "dated-path: a reference relative to its citer must resolve"
 assert with_citer.out contains "verdict=home" else "dated-path: given its citing file, a relative reference must read home"
-assert with_citer.out contains "home=crux/archive/20260618-155212_open-threads.md" else "dated-path: the relative reading must resolve against the citer's own directory"
+assert with_citer.out contains "home=construction/archive/20260618-155212_open-threads.md" else "dated-path: the relative reading must resolve against the citer's own directory"
 say "verdict two GREEN -- a relative reference resolves from its citing file's directory"
 
 # The fold rule on a real folded log: computed from the basename, no index consulted. This
@@ -175,7 +175,7 @@ say "RED two GREEN -- a shared basename is never collapsed to one answer"
 
 # Every home named above must actually exist. A resolver that returns a path which is not there
 # would be worse than one that returns nothing, because it would be believed.
-let homes = [standing_ref "crux/archive/20260618-155212_open-threads.md" "session-logs/date/20260710/20260710-000045_one-clock-resins-plainly.md" "active-designing/yonder/20260710-230433_dimeroll-lap4-filters.md" "foundations/20260703-182612_sameness-is-the-macro.md" "external-research/20260703-182612_sameness-is-the-macro.md"]
+let homes = [standing_ref "construction/archive/20260618-155212_open-threads.md" "session-logs/date/20260710/20260710-000045_one-clock-resins-plainly.md" "active-designing/yonder/20260710-230433_dimeroll-lap4-filters.md" "foundations/20260703-182612_sameness-is-the-macro.md" "external-research/20260703-182612_sameness-is-the-macro.md"]
 let present = where homes as h: (run ["test" "-e" h]).ok
 assert (length present) == (length homes) else "dated-path: every home the resolver named must exist on disk"
 say "RED three GREEN -- every home the resolver named exists on disk"

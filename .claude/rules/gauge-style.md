@@ -55,7 +55,7 @@ and deserves a plain sentence about what the thing is for.
 ## Standfast
 
 Moving the living documents into their right setting is a **standfast** awaiting Keaton's word,
-recorded at `crux/REDS.md` row `%163`. Dated testimony keeps every word it ever wrote. This rule
+recorded at `construction/REDS.md` row `%163`. Dated testimony keeps every word it ever wrote. This rule
 governs what is written from here forward.
 
 Canonical Cursor twin: [`../../.cursor/rules/gauge-style.mdc`](../../.cursor/rules/gauge-style.mdc)

@@ -6,7 +6,7 @@
 # SHA3-512 seal over the sealed body, and re-derives every corpus-drawn row.
 set -eu
 
-REG=crux/waymark-registry.bron
+REG=construction/waymark-registry.bron
 CORP=tools/.cache/waymark/corpus.txt
 FIX=tools/fixtures/flw-four-letter.txt
 

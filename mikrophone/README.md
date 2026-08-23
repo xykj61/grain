@@ -3,7 +3,7 @@
 **Stamp:** `20260814.071500` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
 **Status:** Living front door — the Mikrophone firmware journey stands whole and witnessed (DREY0–DREY16)
 **Season:** A — Hardware & Right-to-Repair · **Waymark:** DREY · second journey **Mikrophone firmware**
-**Kin:** [`../foundations/20260801-005853_mantrapod-venture-pitch.md`](../foundations/20260801-005853_mantrapod-venture-pitch.md) · [`../crux/REMEMBER.md`](../crux/REMEMBER.md) · [`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md) · [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
+**Kin:** [`../foundations/20260801-005853_mantrapod-venture-pitch.md`](../foundations/20260801-005853_mantrapod-venture-pitch.md) · [`../construction/REMEMBER.md`](../construction/REMEMBER.md) · [`../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md`](../active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md) · [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
 
 ---
 

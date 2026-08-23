@@ -31,7 +31,7 @@ say "grad-seal: Style Radiant — semantic identity above, coords beneath; no ba
 say "grad-seal: Lens TAME — guard the living now-lines; a planted count-up must bite."
 
 # The living operator pins carry no bare count-up-from-0 identity.
-let pins = run ["sh" "tools/fixtures/labeling_law_scan.sh" "crux/REMEMBER.md" "crux/ROADMAP.md" "crux/THREADS.md"]
+let pins = run ["sh" "tools/fixtures/labeling_law_scan.sh" "construction/REMEMBER.md" "construction/ROADMAP.md" "construction/THREADS.md"]
 say pins.out
 assert pins.out contains "verdict=ok" else "grad-seal: a living pin carries a bare count-up-from-0 identity"
 # values_apart: the verdict key and the exit status must agree.

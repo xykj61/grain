@@ -5,10 +5,10 @@
 # No backtick characters. Presence tested with git ls-files.
 # Paths repointed work-in-progress -> crux (the git mv rename, REDS %84); headers matched
 # to the pins as they read now (REMEMBER and REDS swept ASCII-first to '--'; SEAT_MAP rested).
-crux/REMEMBER.md	1000	Living pin -- operator	advisory
-crux/ROADMAP.md	200	The Roadmap	enforce
-crux/TASKS.md	200	Tasks	enforce
-crux/EQUINOX_SEAT_MAP.md	200	Rested history	enforce
-crux/REDS.md	200	Living pin -- one row per red	enforce
-crux/SHRED_PREP.md	200	shred RED	enforce
+construction/REMEMBER.md	1000	Living pin -- operator	advisory
+construction/ROADMAP.md	200	The Roadmap	enforce
+construction/TASKS.md	200	Tasks	enforce
+construction/EQUINOX_SEAT_MAP.md	200	Rested history	enforce
+construction/REDS.md	200	Living pin -- one row per red	enforce
+construction/SHRED_PREP.md	200	shred RED	enforce
 tools/gen/season/prin_scope.rish	200	living pin	enforce

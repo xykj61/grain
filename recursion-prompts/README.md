@@ -52,7 +52,7 @@ A **seed** is a template with `{{fill}}` slots and its laws stated in full. A **
 
 ## Discipline the cellar keeps
 
-- **The gates are the fence, always.** Every seed carries the custody gates verbatim from [`../crux/REMEMBER.md`](../crux/REMEMBER.md) — the seed force-push, provisioning and paying, funds and keys, the maintainer's own Kumara instance, deep debride, a collaborator's domain. An autonomous run stops and surfaces at these; it never crosses them.
+- **The gates are the fence, always.** Every seed carries the custody gates verbatim from [`../construction/REMEMBER.md`](../construction/REMEMBER.md) — the seed force-push, provisioning and paying, funds and keys, the maintainer's own Kumara instance, deep debride, a collaborator's domain. An autonomous run stops and surfaces at these; it never crosses them.
 - **One clock, not one hand.** Every version stamp is read from the canonical `America/New_York` clock, never invented.
 - **Accrete, never break.** A filled version is dated testimony — kept, not rewritten. The seeds are Tier 3 and may be freshened; the versions are the record of what ran.
 - **Witness before narrative.** A prompt that claims a lap landed cites a green witness or names honestly why it could not run.

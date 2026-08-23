@@ -3,7 +3,7 @@
 # (Season G -- Cryptography -- Rye-native, audit-ready).
 #
 # WHY THIS RUNG EXISTS. Two good arguments pulled opposite ways and this witness is how both are kept.
-#   The seated argument (crux/REMEMBER.md, `20260815.185922`): Kumara v1 signs PURE HASH-BASED -- SLH-DSA-SHAKE-256s -- because
+#   The seated argument (construction/REMEMBER.md, `20260815.185922`): Kumara v1 signs PURE HASH-BASED -- SLH-DSA-SHAKE-256s -- because
 #   hashes carry no algebraic structure for the rising attacks to exploit, quantum is only a Grover quadratic dent a 256-bit output
 #   already covers, and it adds NO new assumption, since Grain already rests on the hash everywhere. Lattice is the family under
 #   active erosion, so the century-root does not anchor there.

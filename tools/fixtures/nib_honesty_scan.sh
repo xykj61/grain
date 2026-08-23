@@ -30,7 +30,7 @@
 set -eu
 
 MODE=${1:-}
-CARD=${CARD:-crux/REMEMBER.md}
+CARD=${CARD:-construction/REMEMBER.md}
 CONTROL=tools/fixtures/nib_honesty_control/floating_nib_control.md
 
 # Ten hex digits is the tree's own short-nib width (git rev-parse --short=10).

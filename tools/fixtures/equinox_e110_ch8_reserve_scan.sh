@@ -10,7 +10,7 @@
 set -eu
 
 CONTROL_SCAN=tools/fixtures/census_control_scan.sh
-MAP=crux/EQUINOX_SEAT_MAP.md
+MAP=construction/EQUINOX_SEAT_MAP.md
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 PRIN=tools/gen/season/prin_scope.rish
 

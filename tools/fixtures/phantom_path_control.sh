@@ -26,15 +26,15 @@ faults=0
 # Build a minimal repository: one real room, one tool, one descriptor.
 build() {
   d="$pen/$1"
-  rm -rf "$d"; mkdir -p "$d/crux" "$d/tools/fixtures" "$d/vendor"
+  rm -rf "$d"; mkdir -p "$d/construction" "$d/tools/fixtures" "$d/vendor"
   cd "$d"
   git init -q .
   git config user.email pen@example.invalid
   git config user.name Pen
   git config commit.gpgsign false
-  printf 'living card\n' > crux/REMEMBER.md
+  printf 'living card\n' > construction/REMEMBER.md
   printf 'name pen\n' > .brix
-  printf '#!/bin/sh\nset -eu\ncat crux/REMEMBER.md\n' > tools/reader.sh
+  printf '#!/bin/sh\nset -eu\ncat construction/REMEMBER.md\n' > tools/reader.sh
   git add -A
   git commit -qm 'pen: the room and its reader'
 }
@@ -58,7 +58,7 @@ check clean_free ok "$(verdict_of)"
 
 # 2 -- a tool reading through an untracked compatibility symlink is refused and counted.
 build phantom
-ln -s crux work-in-progress
+ln -s construction work-in-progress
 printf '#!/bin/sh\nledger="work-in-progress/REMEMBER.md"\ncat "$ledger"\n' > tools/stale.sh
 git add tools/stale.sh; git commit -qm 'pen: a tool reading the elder room'
 check phantom_refused phantom_paths "$(verdict_of)"
@@ -67,8 +67,8 @@ check phantom_counted 1 "$(count_of)"
 # 3 -- the same path inside a COMMENT stays free: the scan reads what a tool reads, never what
 #      it says, so a guard may always explain the breach that created it.
 build comment
-ln -s crux work-in-progress
-printf '#!/bin/sh\n# once this read work-in-progress/REMEMBER.md\ncat crux/REMEMBER.md\n' > tools/told.sh
+ln -s construction work-in-progress
+printf '#!/bin/sh\n# once this read work-in-progress/REMEMBER.md\ncat construction/REMEMBER.md\n' > tools/told.sh
 git add tools/told.sh; git commit -qm 'pen: a tool that only mentions the elder room'
 check comment_free ok "$(verdict_of)"
 
@@ -88,7 +88,7 @@ check dotroom_free ok "$(verdict_of)"
 
 # 6 -- a literal resolving NOWHERE is a plain dangling reference and belongs to another guard.
 build nowhere
-printf '#!/bin/sh\ncat crux/ABSENT.md\n' > tools/gone.sh
+printf '#!/bin/sh\ncat construction/ABSENT.md\n' > tools/gone.sh
 git add tools/gone.sh; git commit -qm 'pen: a tool naming nothing at all'
 check nowhere_free ok "$(verdict_of)"
 
@@ -102,7 +102,7 @@ check tracked_link_free ok "$(verdict_of)"
 
 # 8 -- the descriptor is in scope: a phantom brick is a phantom.
 build descriptor
-ln -s crux work-in-progress
+ln -s construction work-in-progress
 printf 'name pen\nfile work-in-progress/REMEMBER.md\n' > .brix
 git add .brix; git commit -qm 'pen: a descriptor listing the elder room'
 check descriptor_refused phantom_paths "$(verdict_of)"

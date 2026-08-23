@@ -10,7 +10,7 @@ Accrete-never-break is the **default**, not an absolute. The tree's fuller law i
 
 **This means no artifact's immutability can make a debride "self-defeating."** A debride is licensed to remake *anything*, precisely because remaking dead tissue is its whole purpose:
 
-- A **SHA3-sealed** file (e.g. `crux/waymark-registry.bron`): a debride may **remove the dead rows and re-seal** — the seal protects against *accidental* edits, not against a *circled* debride.
+- A **SHA3-sealed** file (e.g. `construction/waymark-registry.bron`): a debride may **remove the dead rows and re-seal** — the seal protects against *accidental* edits, not against a *circled* debride.
 - The **REDS ledger** ("rows are never edited or removed") and the **append-only CAIRNS**: a debride may rewrite or drop their dead-tissue rows — that law is the accrete *default*, which the debride word overrides.
 - **One-clock dated logs / testimony**: a debride may shed or rewrite them; the one-clock law protects them from *casual* edits, not from a named debride.
 
@@ -31,7 +31,7 @@ The correct reading is never "this is immutable, so we cannot debride it." It is
 
 ## Discipline
 
-- **Leave a cairn first.** Before a debride rewrites a living card, record a walk-back **cairn** — the git nib and stamp of HEAD before the debride's commit — in `crux/CAIRNS.md`, so the departing card stays one `git show` away. Mandatory before a deep debride, whose walk-back is otherwise lost with the rewrite. Rule: [`cairn.md`](cairn.md).
+- **Leave a cairn first.** Before a debride rewrites a living card, record a walk-back **cairn** — the git nib and stamp of HEAD before the debride's commit — in `construction/CAIRNS.md`, so the departing card stays one `git show` away. Mandatory before a deep debride, whose walk-back is otherwise lost with the rewrite. Rule: [`cairn.md`](cairn.md).
 - **Named target, explicit word.** debride is destructive by design and runs only on Keaton's word naming *what* to remove. Never a default; never a sweep beyond the named target.
 - **Deep debride force-pushes.** After the rewrite, both remotes are force-updated; the living REMEMBER git nib and any git-nib citations are refreshed after.
 - **Fascia is the point.** debride raises **fascia health** and **reattaches fascia** — the tree's connective references heal once the dead tissue is gone.

@@ -457,7 +457,7 @@ change, the same way a Radiant pass already holds them. A register may change; a
 
 It rewrites nothing that stands. Dated testimony keeps every word it wrote. Moving the living
 documents into their right setting is a **standfast** awaiting Keaton's word, recorded at
-`crux/REDS.md` row `%163`.
+`construction/REDS.md` row `%163`.
 
 ## Why the name
 

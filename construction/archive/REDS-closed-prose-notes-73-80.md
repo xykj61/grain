@@ -3,7 +3,7 @@
 **Language:** EN
 **Style:** Radiant (see [`../../context/RADIANT_STYLE.md`](../../context/RADIANT_STYLE.md))
 **Voice:** Kyri
-**Status:** Archive fold -- closed prose notes lifted from the living `crux/REDS.md` on `20260819` to bring the living pin back under `living_pin_max_bytes` (24576) after REDS #85's reopening note landed. Every byte kept; nothing removed.
+**Status:** Archive fold -- closed prose notes lifted from the living `construction/REDS.md` on `20260819` to bring the living pin back under `living_pin_max_bytes` (24576) after REDS #85's reopening note landed. Every byte kept; nothing removed.
 
 *Folded under the same discipline as the rows-1-24, 25-57, 58-73, and 74-79 folds before it: closed and released notes only, every byte preserved, the living ledger left holding the open work and the newest lessons.*
 

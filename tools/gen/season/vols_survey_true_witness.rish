@@ -33,7 +33,7 @@ assert live.out contains "readtrue=agree" else "vols-true: the live ledger disag
 assert live.ok else "vols-true: live read-true verdict and status disagree"
 
 # The seated pin exists, is a real cion-survey-v1 ledger, and parses.
-let pin = run ["sh" "tools/fixtures/vols_survey_parse.sh" "crux/vols-survey-ledger.bron"]
+let pin = run ["sh" "tools/fixtures/vols_survey_parse.sh" "construction/vols-survey-ledger.bron"]
 say pin.out
 assert pin.out contains "verdict=ok" else "vols-true: the seated survey ledger did not parse"
 assert pin.ok else "vols-true: the seated ledger verdict and status disagree"
@@ -41,8 +41,8 @@ assert pin.out contains "guarded_sites=0" else "vols-true: the seated ledger rep
 
 # The pin proves itself — the site lines it carries equal the site count it declares, no
 # number hardcoded here (so a future re-seat at a new stamp keeps this witness true).
-let selfcheck = run ["sh" "-c" "p=$(sh tools/fixtures/vols_survey_parse.sh crux/vols-survey-ledger.bron); s=$(printf '%s\\n' \"$p\" | sed -n 's/^sites=//p'); l=$(printf '%s\\n' \"$p\" | sed -n 's/^site_lines=//p'); if [ \"$s\" = \"$l\" ]; then echo consistent=yes; else echo consistent=no; fi"]
+let selfcheck = run ["sh" "-c" "p=$(sh tools/fixtures/vols_survey_parse.sh construction/vols-survey-ledger.bron); s=$(printf '%s\\n' \"$p\" | sed -n 's/^sites=//p'); l=$(printf '%s\\n' \"$p\" | sed -n 's/^site_lines=//p'); if [ \"$s\" = \"$l\" ]; then echo consistent=yes; else echo consistent=no; fi"]
 say selfcheck.out
 assert selfcheck.out contains "consistent=yes" else "vols-true: the seated ledger's declared site count disagrees with the site lines it carries"
 
-say "GREEN: vols-true — the survey ledger reads true against an independent measure (two tools, one answer), the seated living pin crux/vols-survey-ledger.bron proves itself self-consistent, and Journey 13 (Survey, VOLS) stands complete — the map LOWE relabels against is on metal"
+say "GREEN: vols-true — the survey ledger reads true against an independent measure (two tools, one answer), the seated living pin construction/vols-survey-ledger.bron proves itself self-consistent, and Journey 13 (Survey, VOLS) stands complete — the map LOWE relabels against is on metal"

@@ -28,7 +28,7 @@ entry = (
     "**Ran:** `rishi/bin/rishi run tools/gen/season/equinox_e108_ch7_close_choir_witness.rish` · **Stamp:** `"
     + stamp
     + "` · **Witness:** `tools/gen/season/equinox_e108_ch7_close_witness.rish` · "
-    "scan `tools/fixtures/equinox_e108_ch7_close_scan.sh` · pin `crux/EQUINOX_SEAT_MAP.md`\n"
+    "scan `tools/fixtures/equinox_e108_ch7_close_scan.sh` · pin `construction/EQUINOX_SEAT_MAP.md`\n"
     "Expected control_gate · seat_map 112 close choir this sitting · shred opens Chapter Eight · "
     "REDS rows=37 · expect_next=38 · M3/M4 kept · zero_view · fascia i9 hold 92 · "
     "fork not_consumed · seats 97–111 → 112 · shelf end ep045 · baton breach 0. "

@@ -7,7 +7,7 @@
 **Style:** Radiant (see `../RADIANT_STYLE.md`)
 **Status:** Living practice + tool
 **Voice:** Rio 3
-**Ground:** mudra soft-collision owned in `79a79ba` · seating [`20260712-061012_bud-and-mudra-names-seated.md`](20260712-061012_bud-and-mudra-names-seated.md) · RTAC [`../../crux/ready-to-ask-claude.md`](../../crux/ready-to-ask-claude.md)
+**Ground:** mudra soft-collision owned in `79a79ba` · seating [`20260712-061012_bud-and-mudra-names-seated.md`](20260712-061012_bud-and-mudra-names-seated.md) · RTAC [`../../construction/ready-to-ask-claude.md`](../../construction/ready-to-ask-claude.md)
 
 ---
 
@@ -21,7 +21,7 @@ Claude’s `061012` collision guard truncated its output and classified mudra’
 
 1. Search owned surfaces with `rg -n -C 2` (or `tools/collision_guard.rish NAME`) — never pipe through `head` / `tail` / a capped pager that drops hits.
 2. **Always** sweep these three surfaces explicitly, even when the tree-wide search looks clean:
-   - `crux/ready-to-ask-claude.md` (parks and alternates)
+   - `construction/ready-to-ask-claude.md` (parks and alternates)
    - `context/specs/reserved-vocabulary.md`
    - `context/LEXICON.md`
 3. Outside the named sweep, search the owned tree while excluding `gratitude/`, `external-research/`, `yonder/`, `vendor/`, and `archive/` unless the naming lap says otherwise.
