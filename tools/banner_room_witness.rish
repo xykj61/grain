@@ -1,0 +1,50 @@
+# tools/banner_room_witness.rish -- a banner that names a shelf names the shelf the file is on.
+#
+# WHY THIS RUNG. A living document's header sometimes names its own shelf in a field of its own --
+# `**Register:** active-designing -- siloed; names only our own modules`. That is a claim about
+# where the file lives, and files move. When six documents graduated to `foundations/` on
+# `20260821.211423` under the design-rooms test, three of them kept a Register line still naming
+# `active-designing`, so each told every future reader it lived in a room it had left.
+#
+# Nothing was broken, which is why nothing caught it: the links resolved, the prose read true, and
+# only the one line saying WHERE was wrong. Three consecutive laps found one of these by hand while
+# reading the council rota -- single-stranded, growing-a-language, the-marked-value. A lantern that
+# fires twice becomes a loom, so the third became this meter rather than a fourth reading.
+#
+# WHAT IS PROVEN, on metal.
+#   Every `Register` / `Room` / `Shelf` banner whose first word is a shelf this tree files on names
+#   a directory the file actually sits inside. Twenty-nine such banners stood at seating, all
+#   agreeing, so the gate is zero with no slack.
+#   The check REFUSES a banner naming a shelf the file has left, proven on a planted one.
+#   The two honest exemptions are proven rather than asserted -- a Two Rooms voice
+#   (`**Register:** Checkable`) and a kind-of-piece Status (`**Status:** Counsel`) both pass free.
+#
+# WHAT IS NOT PROVEN. That a banner's OTHER claims are current -- a Status may say `Living` on a
+# fossil, and this rung says nothing about it. This proves one sentence: where a file says it is,
+# and where it is, are the same place.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/banner_room_witness.rish
+
+say "banner-room: Language EN -- a header that names its own shelf makes a claim a reader trusts and a move can quietly falsify. This asks where the file says it is, and where it is."
+say "banner-room: Style Radiant -- every shelf-naming banner agrees with its directory, a voice or a kind of piece passes free, and the refusal is proven on a planted move."
+say "banner-room: Lens TAME -- docs and implementation stay synced; the failure was silent by construction, since only the line saying WHERE was wrong."
+
+let scan = run ["sh" "tools/fixtures/banner_room_scan.sh"]
+assert scan.ok else "banner-room: a banner names a shelf the file has left -- repoint it to where the file sits"
+say scan.out
+assert scan.out contains "banners_drifted=0" else "banner-room: every shelf-naming banner must name the shelf the file is on"
+assert scan.out contains "verdict=ok" else "banner-room: the scan must balance before it is believed"
+say "field GREEN -- every banner that names a shelf names the one its file sits on"
+
+let control = run ["sh" "tools/fixtures/banner_room_control.sh"]
+assert control.ok else "banner-room: the control must complete"
+say control.out
+assert control.out contains "drift_refused=yes" else "banner-room: a banner naming a shelf the file has left must be refused"
+assert control.out contains "agreeing_free=yes" else "banner-room: a banner naming its own shelf must pass"
+assert control.out contains "voice_free=yes" else "banner-room: a Two Rooms register names a voice, never a room, and must pass free"
+assert control.out contains "status_free=yes" else "banner-room: a Status names what a piece is, never where it lives, and must pass free"
+assert control.out contains "control_verdict=ok" else "banner-room: the control must agree with itself"
+say "RED and GREEN paths proven -- a moved banner refused, an agreeing one kept, a voice and a kind left free"
+
+say "GREEN: banner-room -- where a file says it lives and where it lives are the same shelf."
