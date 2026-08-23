@@ -29,7 +29,7 @@
 # so the spine is proven over every row the ledger actually holds.
 
 set -eu
-if [ "$#" -eq 0 ]; then set -- crux/REDS.md; fi
+if [ "$#" -eq 0 ]; then set -- construction/REDS.md; fi
 for f in "$@"; do
   [ -f "$f" ] || { echo "detail: absent ($f)"; echo "verdict=missing_ledger"; exit 2; }
 done

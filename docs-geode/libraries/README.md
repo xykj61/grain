@@ -22,7 +22,7 @@
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 0 |
 | [`comlink/`](../../comlink/README.md) | 72 | 7 |
 | [`constel/`](../../constel/README.md) | 31 | 33 |
-| [`crux/`](../../crux/README.md) | 1 | 9 |
+| [`construction/`](../../construction/README.md) | 1 | 9 |
 | [`crypto/`](../../crypto/README.md) | 82 | 113 |
 | [`dimeroll/`](../../dimeroll/README.md) | 2 | 2 |
 | [`edu/`](../../edu/README.md) | 2 | 6 |

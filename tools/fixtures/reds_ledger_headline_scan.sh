@@ -29,7 +29,7 @@ set -eu
 
 opening_census=20   # the 20 rows the ledger opened with on 20260729: 6 in-tree, 14 recovered.
 
-ledger=${1:-crux/REDS.md}
+ledger=${1:-construction/REDS.md}
 measured=${2:-}
 
 [ -f "$ledger" ] || { echo "detail: absent ($ledger)"; echo "verdict=missing_ledger"; exit 2; }

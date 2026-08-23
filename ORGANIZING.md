@@ -33,7 +33,7 @@ Read the sections below whenever you wonder where a new file belongs. When a sea
 
 **`linengrow/`** -- the civic-application track: Linengrow's README, business model, and venture pitch, sharing the one spine with the operating system. It graduates to its own repository once its first lap runs.
 
-**`work-in-progress/`** -- the workbench. The living roadmap (`ROADMAP.md`), the granular plan (`TASKS.md`), open threads, and dated artifacts for work still in motion. Finished scaffolding graduates to `archive/`.
+**`construction/`** -- the workbench (named `work-in-progress/` until `20260815`, then `crux/` until `20260823.082418`). The living roadmap (`ROADMAP.md`), the granular plan (`TASKS.md`), open threads, and dated artifacts for work still in motion. Finished scaffolding graduates to `archive/`.
 
 **`active-designing/`** -- design in motion. Our own module names, RISC-V-first, siloed from gratitude sources. Dated briefs; living README index. **Raw layer** for the docs compression shelf -- dated notes stay here; they are not yondered when `docs/` compresses them. High-level seats and naming rounds live here; **lap claims** (what just went green) land forward-only in **`waymarks/`** from `20260724.143155`.
 

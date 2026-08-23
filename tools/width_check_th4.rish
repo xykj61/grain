@@ -3,11 +3,11 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/width_check_th4.rish
 
-let roadmap = run ["sh" "-c" "grep -q '^file crux/ROADMAP.md$' .brix"]
-assert roadmap.ok else ".brix must track crux/ROADMAP.md"
+let roadmap = run ["sh" "-c" "grep -q '^file construction/ROADMAP.md$' .brix"]
+assert roadmap.ok else ".brix must track construction/ROADMAP.md"
 
-let tasks = run ["sh" "-c" "grep -q '^file crux/TASKS.md$' .brix"]
-assert tasks.ok else ".brix must track crux/TASKS.md"
+let tasks = run ["sh" "-c" "grep -q '^file construction/TASKS.md$' .brix"]
+assert tasks.ok else ".brix must track construction/TASKS.md"
 
 let stale = run ["sh" "-c" "grep -E '995_open_threads|996_roadmap' .brix || true"]
 assert trim stale.out == "" else ".brix must not reference retired WIP paths"

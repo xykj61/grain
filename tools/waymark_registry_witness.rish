@@ -2,7 +2,7 @@
 #
 #   rishi/bin/rishi run tools/waymark_registry_witness.rish
 #
-# The registry crux/waymark-registry.bron is the single, sealed, canonical source
+# The registry construction/waymark-registry.bron is the single, sealed, canonical source
 # of truth for every waymark ever drawn -- living, retired, abandoned, transient,
 # hand-seated. This witness proves two things on metal, so the registry can be
 # trusted without reading the mutable history that produced it:
@@ -18,8 +18,8 @@
 # lives in tools/fixtures/waymark_registry_verify.sh; this witness runs it and
 # asserts. Corpus pin: tools/fixtures/flw-four-letter.txt (naming-grade, SHA3-512).
 
-let reg = run ["test" "-f" "crux/waymark-registry.bron"]
-assert reg.ok else "crux/waymark-registry.bron not found -- run from the repo root"
+let reg = run ["test" "-f" "construction/waymark-registry.bron"]
+assert reg.ok else "construction/waymark-registry.bron not found -- run from the repo root"
 
 let verify = run ["sh" "tools/fixtures/waymark_registry_verify.sh"]
 assert verify.ok else "registry verification failed: ${verify.out}"

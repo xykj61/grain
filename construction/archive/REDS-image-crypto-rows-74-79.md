@@ -3,7 +3,7 @@
 **Language:** EN
 **Style:** Radiant (see [`../../context/RADIANT_STYLE.md`](../../context/RADIANT_STYLE.md))
 **Voice:** Kyri
-**Status:** Archive fold -- closed rows lifted from the living `crux/REDS.md` on `20260817` to bring the living pin back under `living_pin_max_bytes` (24576). Every byte kept; nothing removed.
+**Status:** Archive fold -- closed rows lifted from the living `construction/REDS.md` on `20260817` to bring the living pin back under `living_pin_max_bytes` (24576). Every byte kept; nothing removed.
 
 *Folded from the living ledger under the same discipline as the rows-1-24, 25-57, and 58-73 folds before it: a closed-range fold, every byte preserved, the living pin brought back under bound. The living ledger keeps rows 80, 83, 84, 85 and every prose note.*
 
