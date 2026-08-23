@@ -9899,6 +9899,38 @@ pub fn bearing_published(comptime rung: type, io: std.Io, held: u32) u32 {
     return found;
 }
 
+/// Publishes which of a plan's unmarked losses this run weighed as spent.
+///
+/// The bearing note above names what an author asked to carry; this names what
+/// the run judged the plan had got past. One glyph per phase, `w` where an
+/// unmarked loss was weighed spent, written while the run still holds the
+/// evidence and read back before the repair seats anything -- since a
+/// supervisor that appraised from memory would be applying a standard it
+/// believes in rather than the one its plan published.
+///
+/// Thirty-eight rungs held this body byte for byte, and it is the writing half
+/// of a pair whose reading half already stands lifted directly below: this
+/// seats the appraisal glyphs, `appraisal_published` reads them back. The
+/// spelling of a note now lives in one file where its writer and its only
+/// reader can never come to disagree about it.
+///
+/// Every symbol this body reaches already stood public in all thirty-eight
+/// rungs, so the lift widens nothing of any kind. Measured rather than read:
+/// `REACH_OK family=appraisal_note folding=38 widens=0 stub=3 fall=333` from
+/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+pub fn appraisal_note(comptime rung: type, io: std.Io, held: u32, weighed_mask: u32) rung.NoteError!void {
+    // invariant: an appraisal note never names more phases than one record holds
+    assert(held <= rung.max_queue_len);
+    var glyphs: [rung.max_queue_len]u8 = @splat('.');
+    var at: u32 = 0;
+    while (at < held) : (at += 1) {
+        if ((weighed_mask & rung.phase_bit(at)) != 0) glyphs[at] = 'w';
+    }
+    // invariant: every phase of the record was written, none skipped
+    assert(at == held);
+    try rung.seat_note(io, rung.plan_name, ".appraisal", glyphs[0..held]);
+}
+
 pub fn appraisal_published(comptime rung: type, io: std.Io, held: u32) u32 {
     // invariant: a reading never names more phases than one record may hold
     assert(held <= rung.max_queue_len);

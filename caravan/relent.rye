@@ -1914,16 +1914,7 @@ pub fn bearing_published(io: std.Io, held: u32) u32 {
 /// supervisor that appraised from memory would be applying a standard it
 /// believes in rather than the one its plan published.
 pub fn appraisal_note(io: std.Io, held: u32, weighed_mask: u32) NoteError!void {
-    // invariant: an appraisal note never names more phases than one record holds
-    assert(held <= max_queue_len);
-    var glyphs: [max_queue_len]u8 = @splat('.');
-    var at: u32 = 0;
-    while (at < held) : (at += 1) {
-        if ((weighed_mask & phase_bit(at)) != 0) glyphs[at] = 'w';
-    }
-    // invariant: every phase of the record was written, none skipped
-    assert(at == held);
-    try seat_note(io, plan_name, ".appraisal", glyphs[0..held]);
+    return ladder_checks.appraisal_note(@This(), io, held, weighed_mask);
 }
 
 /// Reads back which phases this run weighed as spent, straight off the wire.

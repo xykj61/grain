@@ -24,6 +24,14 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260822.195336` -- the ledger folds two closed rows as the queue is ranked
+
+**Walk-back nib:** `d4b0e44248` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere.
+
+**Swept:** two living cards. `crux/REDS.md` shed the four paragraphs of rows **%142** and **%143** -- the line-citation red and the spelled-number red, opened and closed -- to [`archive/REDS-line-citation-and-spelled-number-rows-142-143.md`](archive/REDS-line-citation-and-spelled-number-rows-142-143.md), because booking row **%145** pushed the living pin past its 24,576-byte bound and the e123 guard said so. Every byte is kept; the archive file holds the four paragraphs unchanged. And `crux/REMEMBER.md` replaced its **Now** block, the `bearing_note` lift giving way to the `appraisal_note` lift and the ranked queue that came with it.
+
+**What waits there, worth recalling:** row %142's own reasoning about why a **line citation** cannot survive its file -- the honest citation is the one that points at something still there after forty lines land above it -- and row %143's spelled-number reader with its bound at ten, where a spelled word below ten is a determiner rather than a measurement. Both lessons now stand as running guards rather than as prose, which is why the prose could fold. `git show d4b0e44248:crux/REDS.md` reads the ledger whole; `git show d4b0e44248:crux/REMEMBER.md` reads the departing card.
+
 ### `20260822.192044` -- three lift laps condense into one live row
 
 **Walk-back nib:** `ba5295fb99` -- pier and both remotes; nothing is rewritten, so this walk-back stays reachable everywhere. The card's **Now** block as it read after the `read_the_reply` lap stands whole at this nib, together with the two laps of prose that accreted beside it.
