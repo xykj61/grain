@@ -1,0 +1,66 @@
+# tools/standing_equipment_witness.rish -- the roster of standing guards is a list, not a sentence.
+#
+# WHY THIS RUNG. The standing-equipment roster lived in one paragraph of crux/REMEMBER.md. A
+# paragraph can be read and it can be believed; it cannot be run, counted, or dated. The tree paid
+# for that twice in two consecutive rounds. REDS %147 found eight standing witnesses each holding a
+# count its source had moved past. REDS %149 found the living-pin bound guard unrun for four laps
+# while crux/REDS.md sat 2,050 bytes over the bound that guard exists to hold. Each was caught by a
+# hand that happened to run something, which is the definition of a lantern rather than a loom.
+#
+# The grain already seats the sibling strand: a guard that cannot red guards nothing (REDS row 59).
+# Two rounds have now taught the strand beside it -- a guard that is never run guards nothing
+# either -- so the roster becomes a file a program reads, and the running of it leaves a record.
+#
+# WHAT IS PROVEN, on metal.
+#   Every `path` in crux/standing-equipment.kyri names a file that exists on disk, so the roster
+#   can never name equipment the tree has moved or renamed away from underneath it.
+#   Every `guard` record carries exactly one `path`, so a half-written row is refused rather than
+#   silently skipped by a runner reading the same file.
+#   Every `ran` line in the run card names a guard the roster actually seats.
+#   No run-card line records a red or an absent guard.
+#   All five refusals, and two free passes, are proven on throwaway rosters in a temporary pen.
+#
+# WHAT IS REPORTED RATHER THAN GATED. How many rostered guards have never run on this pier, and
+# the oldest recorded run. A fresh clone has genuinely run nothing, so `never run here` is an
+# honest reading rather than a defect, and gating it would red every clone on the day it lands.
+# The number is printed because a lap can act on a number it can see; the roster in prose offered
+# no number at all.
+#
+# WHAT IS NOT PROVEN. That the roster is COMPLETE -- a guard nobody adds here is a guard this rung
+# says nothing about. Completeness is a judgment, and this proves the mechanical half beneath it.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/standing_equipment_witness.rish
+#
+# To refresh the run card, which is untracked by design:
+#   sh tools/fixtures/standing_equipment_run.sh
+
+say "standing-equipment: Language EN -- the roster of what guards this tree stood in a paragraph, so nothing could run it, count it, or say when each guard last answered."
+say "standing-equipment: Style Radiant -- the roster is a file now, every path in it is real, and running it leaves a record on disk rather than in the memory of a round."
+say "standing-equipment: Lens TAME -- safety first: a guard that cannot red guards nothing, and a guard that is never run guards nothing either."
+
+let scan = run ["sh" "tools/fixtures/standing_equipment_scan.sh"]
+assert scan.ok else "standing-equipment: the roster names something the tree cannot honor -- read the scan's own lines"
+say scan.out
+assert scan.out contains "guards_path_missing=0" else "standing-equipment: every rostered path must name a file that exists"
+assert scan.out contains "guards_half_written=0" else "standing-equipment: every guard record must carry exactly one path"
+assert scan.out contains "runs_unrostered=0" else "standing-equipment: a run card may only name guards the roster seats"
+assert scan.out contains "runs_red=0" else "standing-equipment: a recorded red is a stopped line, never a passing roster"
+assert scan.out contains "verdict=ok" else "standing-equipment: the scan must balance before it is believed"
+say "field GREEN -- every rostered guard names a real file, and no recorded run is red"
+
+let control = run ["sh" "tools/fixtures/standing_equipment_control.sh"]
+assert control.ok else "standing-equipment: the control must complete"
+say control.out
+assert control.out contains "agreeing_free=yes" else "standing-equipment: a whole roster over real paths must pass free"
+assert control.out contains "absent_path_refused=yes" else "standing-equipment: a rostered path absent from disk must be refused"
+assert control.out contains "half_row_refused=yes" else "standing-equipment: a guard record with no path must be refused"
+assert control.out contains "unrostered_run_refused=yes" else "standing-equipment: a run naming an unrostered guard must be refused"
+assert control.out contains "recorded_red_refused=yes" else "standing-equipment: a recorded red verdict must be refused"
+assert control.out contains "absent_card_free=yes" else "standing-equipment: a pier that has run nothing yet is honest, never broken"
+assert control.out contains "never_run_counted=yes" else "standing-equipment: the never-run count must read what the card omits"
+assert control.out contains "recorded_run_counted=yes" else "standing-equipment: a recorded run must lower the never-run count"
+assert control.out contains "control_verdict=ok" else "standing-equipment: the control must agree with itself"
+say "RED and GREEN paths proven -- five refusals bitten, two honest readings left free"
+
+say "GREEN: standing-equipment -- the roster is a list a program reads, and running it writes down when."
