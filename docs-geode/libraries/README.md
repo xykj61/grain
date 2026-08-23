@@ -15,7 +15,7 @@
 
 | Room | Rye modules | Witnesses that reference it |
 |---|---:|---:|
-| [`amphora/`](../../amphora/README.md) | 7 | 8 |
+| [`amphora/`](../../amphora/README.md) | 7 | 9 |
 | [`aurora/`](../../aurora/README.md) | 7 | 6 |
 | [`brix/`](../../brix/README.md) | 1 | 2 |
 | [`caravan/`](../../caravan/README.md) | 110 | 108 |
@@ -23,7 +23,7 @@
 | [`comlink/`](../../comlink/README.md) | 72 | 7 |
 | [`constel/`](../../constel/README.md) | 31 | 33 |
 | [`construction/`](../../construction/README.md) | 1 | 9 |
-| [`crypto/`](../../crypto/README.md) | 82 | 113 |
+| [`crypto/`](../../crypto/README.md) | 82 | 114 |
 | [`dimeroll/`](../../dimeroll/README.md) | 2 | 2 |
 | [`edu/`](../../edu/README.md) | 2 | 6 |
 | [`ember/`](../../ember/README.md) | 2 | 0 |
@@ -45,13 +45,13 @@
 | [`mycelium/`](../../mycelium/README.md) | 95 | 81 |
 | [`pleac/`](../../pleac/README.md) | 3 | 5 |
 | [`pond/`](../../pond/README.md) | 151 | 149 |
-| [`rishi/`](../../rishi/README.md) | 2 | 1353 |
+| [`rishi/`](../../rishi/README.md) | 2 | 1354 |
 | [`rye/`](../../rye/README.md) | 117 | 1158 |
 | [`scribble/`](../../scribble/README.md) | 2 | 0 |
 | [`scribe/`](../../scribe/README.md) | 2 | 3 |
 | [`settlement/`](../../settlement/README.md) | 2 | 3 |
 | [`sundial/`](../../sundial/README.md) | 1 | 1 |
-| [`tally/`](../../tally/README.md) | 13 | 15 |
+| [`tally/`](../../tally/README.md) | 13 | 16 |
 | [`vault/`](../../vault/README.md) | 1 | 1 |
 
 ---
