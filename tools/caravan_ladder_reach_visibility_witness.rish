@@ -106,8 +106,17 @@ say queue.out
 assert queue.out contains "QUEUE_OK head=answered_by fall=330 free_head=confer_words free_fall=294 examined=45 families=700" else "reach-visibility: want both heads named -- the best fall, and the best fall that costs nothing"
 assert queue.out contains "QUEUE_ROW family=answered_by fall=330 folding=34 lines=13 stub=3 widens=68 widens_fn=34 widens_const=34 carry=429" else "reach-visibility: want the priced head carrying its price in its own row, split by kind, so a reader prices it without a second run"
 assert queue.out contains "QUEUE_ROW family=confer_words fall=294 folding=43 lines=10 stub=3 widens=43 widens_fn=0 widens_const=0 carry=420" else "reach-visibility: want the free head carrying its own kind of price -- forty-three rungs of a ten-line body, free by the two columns the meter prices and costing forty-three import re-exports, which every lift of this arc has measured as free"
-assert queue.out contains "QUEUE_ROW family=reclaim_notes fall=294 folding=43 lines=10 stub=3 widens=0 widens_fn=0 widens_const=0 carry=420" else "reach-visibility: want the row beneath the free head, at the same fall over the same forty-three rungs and costing nothing of any kind -- so a reader sees that free-by-the-columns and free-absolutely are two different readings the meter keeps side by side"
+assert queue.out contains "QUEUE_ROW family=rests_path fall=250 folding=11 lines=28 stub=3 widens=0 widens_fn=0 widens_const=0 carry=280" else "reach-visibility: want the best row costing nothing of any kind, not even an import re-export -- the free head prices forty-three of those, so free-by-the-columns and free-absolutely stay two readings the meter keeps side by side"
 assert queue.ok else "reach-visibility: the ranked queue must read cleanly"
+
+# The family this lap folded, and the first row of the arc that cost nothing at
+# all by either reading -- no function opened, no constant opened, and no import
+# re-exported, since every rung declaring it already imports this harness for the
+# stubs it holds beside it. Read after the fold it prices those same forty-three
+# imports, which is what every folded family reads.
+let this_fold = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "reclaim_notes"]
+assert this_fold.out contains "REACH_OK family=reclaim_notes folding=43 widens=43 widens_fn=0 widens_import=43 widens_const=0 stub=3 fall=0" else "reach-visibility: want reclaim_notes reading a fall of zero, its family already folded"
+assert this_fold.ok else "reach-visibility: this lap's folded family must read cleanly"
 
 # read_own_line folded this lap, so the same scan run against it now reads a
 # fall of zero -- which is how this meter tells the bench a door is already
@@ -215,15 +224,18 @@ assert plateau.ok else "reach-visibility: the twelve-line note must read cleanly
 
 # The widest family still standing, and the clearest reading of why breadth
 # alone orders badly. It spreads a ten-line body across forty-three rungs --
-# more rungs than any row above it -- and lands tenth, because a ten-line body
-# returns seven lines per rung where a fifty-three-line body returns fifty.
+# more rungs than any row above it -- and lands fourth, because a ten-line body
+# returns seven lines per rung where a fifty-three-line body returns fifty. It
+# also reads the split the visibility fix seated (REDS %144): forty-four rungs
+# declare the name and forty-three write one body, so one rung stands apart on
+# its own merits and the meter counts it separately rather than hiding it.
 # A number a meter recites and never asserts is a claim rather than a
 # measurement (REDS %110), so every family the GREEN line names stands
 # asserted, this one included.
-let fourth = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "reclaim_notes"]
+let fourth = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "confer_words"]
 say fourth.out
-assert fourth.out contains "REACH_FAMILY family=reclaim_notes declared=43 identical=43 lines=10" else "reach-visibility: want reclaim_notes standing as forty-three declarations holding forty-three identical bodies at ten lines"
-assert fourth.out contains "REACH_OK family=reclaim_notes folding=43 widens=0 widens_fn=0 widens_import=0 widens_const=0 stub=3 fall=294" else "reach-visibility: want the widest remaining family standing tenth by fall, since breadth alone orders badly"
+assert fourth.out contains "REACH_FAMILY family=confer_words declared=44 identical=43 lines=10" else "reach-visibility: want confer_words standing as forty-four declarations holding forty-three identical bodies at ten lines"
+assert fourth.out contains "REACH_OK family=confer_words folding=43 widens=43 widens_fn=0 widens_import=43 widens_const=0 stub=3 fall=294" else "reach-visibility: want the widest remaining family standing at the free head, priced at forty-three import re-exports and nothing else"
 assert fourth.ok else "reach-visibility: the widest remaining family must read cleanly"
 
 # The fold line priced, rather than described (REDS %137). A rung the harness
@@ -243,10 +255,10 @@ assert fourth.ok else "reach-visibility: the widest remaining family must read c
 # before it is opened.
 let sink = run ["sh" "tools/fixtures/ladder_reach_visibility_scan.sh" "sink"]
 say sink.out
-assert sink.out contains "SINK_OK total=63956 below_fold_line=1140 above_fold_line=62816" else "reach-visibility: want the fold line's whole foreclosure measured against the foldable corpus, private bodies counted beside public ones"
+assert sink.out contains "SINK_OK total=63655 below_fold_line=1140 above_fold_line=62515" else "reach-visibility: want the fold line's whole foreclosure measured against the foldable corpus, private bodies counted beside public ones"
 assert sink.out contains "SINK_ABOVE rung=queue.rye holds=29" else "reach-visibility: want the queue store's holding read off disk rather than described"
 assert sink.out contains "SINK_ABOVE rung=serve.rye holds=38" else "reach-visibility: want the serve module's holding read off disk rather than described"
-assert sink.out contains "SINK_ABOVE rung=farewell.rye holds=3684" else "reach-visibility: want the widest holding above the line, so the spread is a measurement rather than a feeling"
+assert sink.out contains "SINK_ABOVE rung=farewell.rye holds=3677" else "reach-visibility: want the widest holding above the line, so the spread is a measurement rather than a feeling"
 assert sink.out contains "SINK_BELOW rung=entrust.rye holds=168" else "reach-visibility: want the largest holding already below the fold line named"
 assert sink.ok else "reach-visibility: the sink meter must read cleanly"
 
@@ -256,4 +268,4 @@ assert sibling.out contains "REACH_PRIVATE symbol=capabilities kind=import" else
 assert paired.out contains "REACH_PRIVATE symbol=hand_path kind=fn" else "reach-visibility: want a private function named as a function"
 assert paired.out contains "REACH_PRIVATE symbol=Dir kind=const" else "reach-visibility: want a private constant named as a constant, the column this lap answered from above"
 
-say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, the cost is counted by kind rather than summed across kinds, and the queue is ranked off every foldable family and priced. The queue names two heads now, and that is this lap own correction. Ranking by return alone had led with answered_by for two laps at a price of sixty-eight openings, thirty-four private functions and thirty-four private constants that thirty-four rungs each chose to keep, and both laps the bench read that price and took the free row beneath it by hand. A meter whose recommendation the discipline steps past is REDS %145 shape one level deeper, so free_head stands beside head, naming the best fall among families that publish no function and no constant, both numbers printed rather than one chosen here (REDS %146). The recant_note family lifted on that reading: every folding rung shed its shared note body for a three-line stub, returning the fall asserted above for nothing, where the priced head offered a few lines more at a real cost. Read after the fold the row prices the stubs own private imports of this harness, asserted above, which is what every folded family reads. The sink window fell with the lift, both numbers asserted above, because a lifted body leaves the rungs rather than the harness. A rung the harness imports still holds nearly five times what the arc believed before the keyword left the key, so the one-way door stays worth measuring twice before it is opened (REDS %130, %137, %144, %145, %146)."
+say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, the cost is counted by kind rather than summed across kinds, and the queue is ranked off every foldable family and priced. The queue names two heads now, and that is this lap own correction. Ranking by return alone had led with answered_by for two laps at a price of sixty-eight openings, thirty-four private functions and thirty-four private constants that thirty-four rungs each chose to keep, and both laps the bench read that price and took the free row beneath it by hand. A meter whose recommendation the discipline steps past is REDS %145 shape one level deeper, so free_head stands beside head, naming the best fall among families that publish no function and no constant, both numbers printed rather than one chosen here (REDS %146). The reclaim_notes family lifted on that reading, and it is the first row of the arc free by both readings at once: every folding rung shed its shared reclamation body for a three-line stub, and the row published no function, opened no constant, and re-exported no import either, since every rung declaring it already imported this harness for the stubs beside it. The priced head offered a few lines more at a real cost and waits, still honestly named. Read after the fold the row prices the stubs own private imports of this harness, asserted above, which is what every folded family reads. The sink window fell with the lift, both numbers asserted above, because a lifted body leaves the rungs rather than the harness. A rung the harness imports still holds nearly five times what the arc believed before the keyword left the key, so the one-way door stays worth measuring twice before it is opened (REDS %130, %137, %144, %145, %146)."

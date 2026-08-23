@@ -7362,6 +7362,28 @@ pub fn stand_the_mark(
 /// Takes back the reach one standing dependent no longer needs, and records what
 /// came home.
 ///
+/// Returns a domain's whole conferral to the state it held before any word was
+/// grafted, so a reclamation leaves nothing standing that a later reader could
+/// mistake for a live grant.
+///
+/// The words, the count that makes them live, and every answer given about them
+/// return together. A count left standing would let a successor graft a word; an
+/// answer of *held* left standing would let a supervisor believe a successor
+/// grafted a word it never saw.
+///
+/// Every note is seated through the rung handed in, so one text reclaims into
+/// whichever rung's own directory called it.
+pub fn reclaim_notes(comptime rung: type, io: std.Io, domain: []const u8) rung.NoteError!void {
+    // invariant: a reclamation always names the domain it takes back from
+    assert(domain.len >= 1);
+    try rung.seat_note(io, domain, ".words", "");
+    try rung.seat_note(io, domain, ".given", &[_]u8{0});
+    try rung.seat_note(io, domain, ".for", &[_]u8{0});
+    try rung.seat_note(io, domain, ".held", &[_]u8{0});
+    try rung.seat_note(io, domain, ".kept", &[_]u8{0});
+    try rung.seat_note(io, domain, ".pruned", &[_]u8{0});
+}
+
 /// The smallest of the reap cluster, and the one the other two are built over: a
 /// reclamation names a row the table still holds, refuses by name where the
 /// conferral was never made or the reach never given, writes the notes that let
