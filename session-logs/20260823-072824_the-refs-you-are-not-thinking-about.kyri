@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260823.072824
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The refs you are not thinking about
+prompt Keaton said spend the debride. The banked deep debride from 20260823.045448 -- renames, reference repointing, commit-message rewriting, force push, reclone accepted.
+think A debride needs a named target by its own rule, so I surveyed before cutting rather than guessing what spend meant. Every filename came back honest, `context/RIYO.md` is a properly bannered fossil with eight live inbound references, the 847 `work-in-progress:` commit subjects were true when written, and the 2,783 elder logs are protected by the one-clock law.
+think That left exactly one target the survey supported -- the personal material, %162's third resolution -- and removing a person's own poems and resume from history is his call rather than my inference. Asked once, sharply, with the blast radius measured at 25 commits.
+think Made the walk-back durable before touching anything, because the Haunted Mound lesson was losing exactly that. A verified 559 MB bundle of the complete pre-debride history, then the cairn recorded AND pushed, so the pre-rewrite state reached both remotes one last time before the rewrite made it unreachable.
+think filter-repo balked on a marker left by the 20260817 lineage drop, asking whether to treat this as a continuation. Answered yes, which is what it is: a second independent filtering of an already-filtered repository.
+think Then the finding that mattered. Force-pushing main would have looked like success -- and 159 stale cursor branches on xykj61 still held the material on GitHub. Proved it rather than reasoned about it: fetched one into a throwaway repository and read three of the personal files present in its tree right now.
+think image-checker-paint on origin was worse at 38,355 commits, because it roots in the urbit lineage that 20260817 dropped from main and from main alone. So that debride had been incomplete in the identical way for six days, and nobody had looked.
+obs A history rewrite is scoped to the refs you name. filter-repo rewrote every local ref correctly; a rewritten local branch changes nothing on a remote until it is pushed or deleted, and 160 branches nobody had touched in three weeks were holding what the whole operation existed to remove.
+obs Stopped the image-checker-paint re-sign the moment its commit count printed 38,355. Signing and pushing it would have restored 35,486 deliberately dropped commits to origin -- the operation quietly undoing an elder decision while appearing to complete the current one.
+obs Proved that branch redundant rather than assuming it: checker_paint.rye, its witness, its README, and its session log all stand on main, the log folded to date/20260817/. Its only unique content was the dropped lineage.
+obs Verified in five ways before calling it done -- zero local refs hold any of the four paths, 3,315 of 3,315 commits verify G, the files stand on disk, git status cannot see them, and the bundle is intact. Each of those could have been asserted; each was run.
+obs The style docs claimed twilight/ was withheld from the seed while living in the private field. That became false the moment the debride landed, so both were corrected in the same commit rather than left to drift.
+think Two guards reddened after the push, and both were my own doing. nib_honesty found 42 dead hashes in the living card, because a rewrite moves every hash and the card cites them. dated_path rose 192 to 195, because references now name three files the tree deliberately no longer carries.
+think Repointed rather than deleted. filter-repo writes a commit-map of 54,734 entries, and the bundle holds every old commit's metadata -- so matching author-epoch plus subject against current main recovered 30 of the 42 exactly.
+think The other 12 turned out to be pre-amend siblings, hashes the REMEMBER git-nib rule deliberately lets the card lag by one amend. They only ever lived in the reflog, and I expired it during cleanup. Named them unreachable in the card rather than inventing a plausible hash.
+obs The dated_path repair used the tree's own precedent rather than a new idea: %139 subtracted a path asserted absent, %157 extended that to a basename, and the three debrided basenames are the same shape. Census returned to exactly 192 with the ceiling unmoved, which is the discipline -- a ceiling that rises to meet a number has stopped being a ceiling.
+obs Worth carrying forward: a deep debride costs more than a reclone. It invalidates every hash any living document cites, and the repair is only possible because the tooling keeps a map and the bundle keeps the metadata. Bundle before you cut, and bundle with the remotes included -- mine took heads and tags alone, which is why those 12 had no fallback.
+file crux/REMEMBER.md 30 nib citations repointed, 12 pre-amend orphans named honestly, git nib refreshed
+file crux/CAIRNS.md 29 nib citations repointed by the same map
+file tools/fixtures/dated_path_exclusions.sh the three debrided basenames subtracted as deliberately absent
+loom debride paths=4 commits_total=3314 commits_touched=25 filter_repo_seconds=33 resign_seconds=114 signed_after=3315/3315 bundle_mb=559
+loom nibs cited=42 repointed=30 pre_amend_orphans=12 cairns_repointed=29 census_before=195 census_after=192 ceiling=192
+loom refs branches_deleted=159 origin_branches_deleted=1 image_checker_paint_commits=38355 remotes_now=1_branch_each
+file crux/CAIRNS.md the walk-back that points outside git, recorded and pushed before the cut
+file .gitignore the twilight allow line removed; three foundations files and the safe copy named
+file context/TWILIGHT_STYLE.md the silo claim corrected -- no repository at all, rather than the private field
+file template-manifest.bron the personal and sub_exclude rows kept as defence in depth, comments telling the truth
+file crux/REDS.md %164 booked and closed -- the rewrite scoped to one branch
+recommend check-in (Keaton) -- the debride is spent and complete, and it found something bigger than itself: the 20260817 lineage drop had been incomplete for six days in the identical way, which is worth remembering the next time any rewrite runs. Both remotes now hold main alone and every downstream needs a fresh clone. What remains of %163 is the 848 seed-dead links and the seed republish, and the eight-season vision still wants one expanded prompt that ranks it.

@@ -103,7 +103,22 @@ DP_EXCLUDE_PATHS="docs-geode/demos/README.md"
 # So the exemption belongs to the planted NAME rather than to any file that mentions it. A basename
 # listed here is subtracted wherever it is quoted, which is safe precisely because these names are
 # constructed to match nothing: a stamp of all zeros names no lap this tree ever ran.
-DP_FIXTURE_BASENAMES="20260101-000000_a-dated-note.md"
+# Basenames a reference may name that the tree deliberately does NOT carry, so the census reads
+# them as intent rather than as breakage.
+#
+#   The first is planted by a control to match nothing -- a stamp of all zeros names no lap this
+#   tree ever ran (REDS %157).
+#
+#   The next three are DEBRIDED. The deep debride of 20260823.072824 removed a resume draft, a
+#   personal ontology, and a co-authored cover letter from all 3,314 commits on Keaton's word
+#   (REDS %162's third resolution). They stand on the author's disk and in no repository. The
+#   references that still name them live in dated testimony, which keeps every word it wrote, so
+#   the honest reading is a path asserted absent rather than a reference gone stale -- the same
+#   shape REDS %139 chose for a path asserted absent and REDS %157 extended to a basename.
+DP_FIXTURE_BASENAMES="20260101-000000_a-dated-note.md \
+20260730-022147_keaton-livermore-resume-draft.md \
+20260730-022147_personal-ontology.md \
+20260730-022147_cover-letter-co-authored.md"
 
 # Each helper REPLACES the positional parameters, so a caller captures its own arguments first.
 # Globbing is disabled while the list is expanded, because `dated_path_*` is a pattern meant for
