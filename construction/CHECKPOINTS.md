@@ -24,6 +24,33 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260823.100546` -- the name returns to Keaton Dunsford
+
+**Walk-back nib:** `18f88276a1` -- **a deep debride**, so after the force-push this commit is
+unreachable on both remotes. The pre-rewrite history survives in a verified 564 MB bundle at
+`.debride-safe/pre-name-debride-18f88276a1.bundle` and in any clone taken before
+`20260823.100546`.
+
+```
+git clone .debride-safe/pre-name-debride-18f88276a1.bundle recovered
+```
+
+**Swept:** the author and committer identity `Keaton Livermore <xykj61@gmail.com>` becomes
+`Keaton Dunsford <xykj61@gmail.com>` across every commit -- **2,656 as author and 3,011 as
+committer**. The email is unchanged. Every rewritten commit is re-signed in the same pass. The
+name is repointed in **19 living files**; **28 files of dated testimony keep every word**.
+
+**What is deliberately left alone.** The other three identities in the history keep their names
+exactly: `Cursor Agent`, `Riyo -- Claude counsel container`, and the `Quin` bench-sim. Keaton's
+word was to change his own name and keep all else the same.
+
+**One honest note about the signature.** The signing key's UID reads *Keaton Livermore (xykj61,
+jail-only Linux ai-jail)*. Verification is unaffected, because it binds to the **email**, which
+does not move -- yet a reader running `git log --show-signature` will see commits authored by
+Keaton Dunsford and signed by a key whose UID still says the elder name. Adding a UID to the key
+is a **custody-gated** act and waits for Keaton's hand; it is named here so the mismatch is a
+known cosmetic fact rather than a surprise.
+
 ### `20260823.094410` -- Skate becomes Surf, and the social layer is named Surf Social
 
 **Walk-back nib:** `06d7169f81` -- pier and both remotes. A **breach**, so nothing is rewritten.
