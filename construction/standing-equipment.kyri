@@ -151,6 +151,10 @@ guard pond_display_gate
 path tools/p/pond_display_gate_witness.rish
 seated 20260823.171000
 
+guard document_mirror
+path tools/d/document_mirror_witness.rish
+seated 20260823.173634
+
 guard width_check
 path tools/w/width-check.rish
 seated 20260620.210812

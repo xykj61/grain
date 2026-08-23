@@ -181,6 +181,48 @@ sessions is made of files, so editing the channel is architecture done in prose
 
 Name the proof before the work: {{witness path}} asserts {{invariant}}; green looks like {{green line}}. See the red before trusting the cure. Definition of done rides inside every rung, never as a closing exhortation.
 
+## 4b -- Eight habits this pier paid for, in the order they cost the most
+
+Each of these is a red already booked, compressed to the reflex it bought. Read them as method
+rather than as history.
+
+- **Stage first, then measure, then read what you staged.** A guard measures the tree it was run
+  against. Running the roster and *then* `git add -A` shipped a build cache with two dangling
+  symlinks to `main` while the run read 31 of 31 green (`%174`). Green before staging proves
+  nothing about the commit.
+- **Open a session by running the roster cold**, rather than trusting a staged tree or a previous
+  lap's word: `sh tools/fixtures/standing_equipment_run.sh`. Its first honest run found three reds
+  nobody knew about (`%151`), and later runs have opened two more laps the same way.
+- **Ask the system; never guess at it.** A scan guessing which rooms are generated reddened on a
+  sound tree until it asked `git check-ignore` (`%172`); a build guessing "assuming host link seams
+  on metal" discovered the truth at link time until it asked the linker's own search path (`%173`).
+  Where a tool can be asked, asking is cheaper than being right.
+- **A gated rung is a machine fact, never a tree red.** A Wayland application on a headless pier, a
+  macOS rung on Linux, a phone witness with no phone -- each reports on the machine. Gate it at the
+  phase where the requirement is *known* rather than where it is *discovered*, name what is absent
+  so a reader can provision it, and keep going.
+- **Prove a guard from both sides, or it may be reading nothing.** A refusal proven only in the
+  passing direction cannot be told from a bypass. `geode_libraries` stayed green over a page of
+  thirty-eight zeros for exactly this reason. Every `*_control.sh` plants the thing its guard must
+  bite *and* the honest case it must let through.
+- **A freshness guard proves agreement, never truth.** A page compared against its own generator
+  agrees with a broken generator perfectly. A generated page wants one reading a human or a second,
+  independently written tool would notice going to zero.
+- **A structural move retires every rule keyed on structure.** A fold changes depth, so a glob, a
+  `find -maxdepth 1`, a `$(dirname "$0")/..` climb, an anchored ignore pattern, and a symlink target
+  all go quiet while every text reference is repointed correctly (`%169`, `%166`).
+- **Say `xy` for the field and `seed` for the projection.** `xy` is `xykj61/grain`: private, full
+  history, every room. The seed is `grain-os/grain`: public, depersonalized, one Option-B commit,
+  and only the rooms `template-manifest.bron` allows. They were both being called *the grain repo*,
+  and they are opposite things.
+
+**Two settled questions, so a lap does not reopen them.** The `%NNN` REDS row pattern **stands** --
+a number that counts is a census rather than a forecast, and the gapless spine proves the record is
+whole where a stamp cannot (`.claude/rules/stamp-and-name.md`, *A census number keeps its place*).
+And a document belonging in two rooms is **declared** in `context/document-mirrors.brix` and proven
+byte-identical rather than moved or copied: **edit the canonical, run
+`sh tools/fixtures/document_mirror_scan.sh write`, commit both.** Never edit a mirror by hand.
+
 ## 5 -- Tripwires (park, name, continue)
 
 A tripwire is not a stop -- it is a design round you **approve for yourself** and make progress on, rather than panicking to check in. Book it, name it, keep going:

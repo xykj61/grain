@@ -111,7 +111,7 @@ the truth as the tree grows.
 | Reading | Now |
 |---|---|
 | **Fascia** -- can a reader follow any thread home | **48** / 100 |
-| **Witnesses** running on metal | **1661** |
+| **Witnesses** running on metal | **1662** |
 | **Rye modules** they stand over | **1890** |
 | **Rooms grown past what a browser can list** | **0** |
 
@@ -138,11 +138,38 @@ goal itself here, rather than a compromise on the way to one.
 | **[Glow](glow/)** - **[Rye](rye/)** | The language people write, and the bounded systems language it lowers to. |
 | **[Kumara](kumara/)** | Identity you own -- a key in your hands, and yours for as long as you hold it. |
 | **[Aurora](aurora/)** | The dawn. The first code that wakes on bare hardware, before an operating system exists. |
-| **[Skate](surf/)** - **[Brushstroke](brushstroke/)** | The drawing surface, and the strokes made on it. |
+| **[Surf](surf/)** - **[Brushstroke](brushstroke/)** | The drawing surface, and the strokes made on it. |
 | **[Mycelium](mycelium/)** | The quiet network underneath, named for the thread that connects a forest. |
+| **[Brix](brix/README.md)** | The declaring language. A `.brix` file says what a system is made of and how the parts fit, and evaluates to plain Bron a program can read. You declare the shape; the tree checks it holds. |
+| **Tablecloth** | Holds a thing by its content rather than by where you put it. Ask for the same bytes and you get the same bytes, from any room, forever. It runs through several rooms rather than sitting in one -- [`brushstroke/tablecloth.rye`](brushstroke/tablecloth.rye) is the nearest single file, and [`context/LEXICON.md`](context/LEXICON.md) carries the definition. |
 
 Every seated term, with the date and the reason we chose it, lives in
 [`context/LEXICON.md`](context/LEXICON.md).
+
+### Declare it, address it, then say it plainly
+
+Three of those names work together often enough to be worth reading as one idea, since it is the
+habit most of this tree runs on.
+
+**Brix declares.** A `.brix` file states what a system is made of, in one field per line with no
+punctuation to get wrong. It is a statement about how things should be, written where a reader and
+a program can both find it.
+
+**Tablecloth addresses by content.** A thing is named by the bytes it is made of, so the same
+request returns the same bytes from any room, and *sameness* becomes something a machine settles
+rather than something a person promises.
+
+**Gauge says it plainly.** [New Gauge Style](context/GAUGE_STYLE.md) is how the prose about all of
+it reads: bound every claim, give every figure a unit and a date, and above all **don't be too
+smart about it**.
+
+A small worked example ships in this repository, so the idea arrives as a working thing rather than
+a diagram. A document sometimes belongs in two rooms at once. Moving it breaks every reference that
+points at it; copying it lets the copies drift apart quietly. So
+[`context/document-mirrors.brix`](context/document-mirrors.brix) **declares** the homes,
+`tools/d/document_mirror_witness.rish` proves every home holds the **same bytes**, and this
+paragraph explains it once in plain words. Edit the canonical, run the write, and the rest follows.
+Should two homes ever disagree, a guard says so on the lap it happens.
 
 ## What we are building now
 

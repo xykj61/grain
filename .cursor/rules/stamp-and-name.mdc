@@ -32,4 +32,6 @@ alwaysApply: true
 
 **Illustrate with placeholders, cite only what exists.** An example path in prose is a shape -- `date/YYYYMMDD/YYYYMMDD-HHMMSS_sprig.ext` -- never a concrete-looking path to a file that is not there, which reads as a real citation to every reader and every tool.
 
+**A census number keeps its place** (amended `20260823.173634`). A number that predicts is a forecast; a number that counts is a census, and this law retires only the first. `construction/REDS.md` keeps its `%NNN` rows: each row already carries stamp and name beside the number, a gapless spine proves the record is whole where a stamp cannot (`1..N` with no gaps, held by `tools/gen/season/reds_ledger_monotone_witness.rish`), and of 2,519 citations measured `20260823.173634` some 532 sit in commit messages and 208 in dated testimony, both beyond any migration's reach. **The test:** could this number turn out to be wrong? Planned work, yes -- stamp and name it. Work already done, no, and a gap in it would mean a record has gone. Full argument: `active-designing/20260823-173634_the-census-number-keeps-its-place.md`.
+
 **Accrete-never-break.** Every dated log and commit that already wrote `Fold AI` or `f0-f63` keeps every letter. This governs what is marked from here forward.

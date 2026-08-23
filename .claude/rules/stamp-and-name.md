@@ -120,6 +120,38 @@ room by dated basenames and a letter-folded room by every flat entry, printing `
 the second. That distinction is why `tools/` reached **7.4x the bound with every guard green**: not
 one of its entries carried a stamp, so the dated count read zero for the room's whole life.
 
+## A census number keeps its place -- amended `20260823.173634`
+
+**A number that predicts is a forecast; a number that counts is a census, and this law retires only
+the first.** Read the four lines above again: every example is a plan that announced a length and
+stopped short. A number naming work that has already happened forecasts nothing and cannot come out
+wrong.
+
+**`construction/REDS.md` keeps its `%NNN` rows**, and the exemption is written here rather than left
+to be re-derived. Three reasons, each checkable:
+
+- **The row already carries the stamp and the name.** `**REDS %174 (`20260823.174500`) -- the roster
+  ran on one tree and the commit shipped another.**` -- all three marks stand. Dropping the number
+  removes something rather than adding chronology.
+- **A gapless spine proves the record is whole**, and a stamp cannot.
+  [`../../tools/gen/season/reds_ledger_monotone_witness.rish`](../../tools/gen/season/reds_ledger_monotone_witness.rish)
+  reads N off disk across the living pin and every fold archive and holds `1..N` with no gaps. Take
+  a stamped row away and the remainder still reads complete; take `%118` away and the guard reds.
+- **The citations reach further than any migration could.** Measured `20260823.173634`: **2,519**
+  across the tree, of which **532** sit in commit messages and **208** in dated testimony -- both
+  beyond reach, so a conversion would leave the majority pointing at a retired scheme.
+
+**The test, for the next sequence somebody wants to number:** *could this number turn out to be
+wrong?* Planned work, yes -- stamp and name it. Work already done, no -- and a gap in it would mean
+a record has gone, which is worth being able to see.
+
+The `%` sigil carries its own reason beside the GitHub one in [`git-signing`](git-signing.md): in
+Glow, as in the Hoon it descends from, `%` marks a **constant term**, a value that is exactly itself
+and never varies -- which is what an immutable ledger row number is.
+
+Full argument and the standfast declined: [`../../active-designing/20260823-173634_the-census-number-keeps-its-place.md`](../../active-designing/20260823-173634_the-census-number-keeps-its-place.md)
+and [`../../external-research/20260823-173634_when-a-number-is-honest.md`](../../external-research/20260823-173634_when-a-number-is-honest.md).
+
 ## Accrete-never-break
 
 Every dated log, counsel note, waymark, and commit that already wrote `Fold AI`, `f0-f63`, or `STOA178` **keeps every letter it wrote** -- the one-clock law and accrete-never-break protect them, and the marks stay readable forever. This law governs what is marked from here forward, and living *Now* lines may sweep to it as they are touched.
