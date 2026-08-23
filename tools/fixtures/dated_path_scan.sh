@@ -68,7 +68,7 @@ verb="${1:-census}"
 # stood. Set with no slack to the measured count: 199 when the resolver landed, lowered to 193, then 192
 # on `20260821` when the session-log fold surfaced six index rows pointing at files that were
 # never there and they were repaired. Lower it whenever a repair lands; never raise it.
-LOST_CEILING=192
+LOST_CEILING=187   # 192 until 20260823.124407, when *_control.sh became a glob exclusion
 
 # What is not the field -- read from ONE list that this tool and the repointer both source, since
 # a list kept in two places is two lists that happen to match today (REDS %121).
