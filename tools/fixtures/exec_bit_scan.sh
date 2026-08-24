@@ -33,9 +33,12 @@
 
 set -u
 
-# The ratchet's ceiling only ever falls. Measured 20260823: 58 tracked shebang files sit at
-# 100644 and nothing invokes any of them directly.
-ceiling=58
+# The ratchet's ceiling only ever falls. Measured 20260823: 58 tracked shebang files sat at
+# 100644 with nothing invoking any of them directly. Lowered to 57 on 20260824.112806, when a
+# round touching sow_project.sh gave it and its new control the bit -- which is what "they fall
+# on touch" means at birth as well: a fixture born at 100644 grows the population the ceiling
+# exists to shrink, so it is born with the bit instead.
+ceiling=57
 
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT INT TERM

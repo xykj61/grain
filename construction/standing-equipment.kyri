@@ -211,6 +211,14 @@ guard constel_module_roster
 path tools/co/constel_module_roster_witness.rish
 seated 20260824.104946
 
+guard sow_lock
+path tools/s/sow_lock_witness.rish
+seated 20260824.104946
+
+guard rule_twin
+path tools/r/rule_twin_witness.rish
+seated 20260824.112806
+
 guard width_check
 path tools/w/width-check.rish
 seated 20260620.210812
