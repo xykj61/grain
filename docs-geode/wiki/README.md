@@ -2,7 +2,7 @@
 
 *A wiki is not a pile of pages; it is the links between them. This is the geode's own crosslink map -- every shipped page, what it leads to, and what leads back.*
 
-**Language:** EN - **Style:** Radiant - **Voice:** Kyri
+**Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Written:** `20260821.190149` - **Status:** Living - **Kind:** the shelf's connective tissue
 
 ---

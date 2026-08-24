@@ -2,7 +2,7 @@
 
 *This room is an index rather than a shelf. The teaching in this tree is already written; it lives where it was written, and this page says which door leads where.*
 
-**Language:** EN - **Style:** Radiant - **Voice:** Kyri
+**Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Written:** `20260821.190149` - **Status:** Living - **Kind:** crushed index
 
 ---

@@ -5,7 +5,7 @@
 **Language:** EN  
 **Last updated:** 2026-07-28 (`235520` -- Kiln Season o1 path cut; module renamed Ember)  
 **Status:** Checkable-room module -- corpus catalog + query + Skate views green; LoRA and training remain horizon  
-**Style:** Radiant  -  **Lens:** TAME  -  SLC  -  Gall's Law
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 
 Ember names training and fine-tuning on our own corpus (the forge path, named **Anvil** and then **Kiln** before it). The catalog folds `.rye` / `.rish` chunks from **our tree** -- gratitude and vendor stay in their reading rooms. Query filters by kind and path prefix. Corpus views fold those hits onto Skate.
 

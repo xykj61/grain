@@ -1,8 +1,8 @@
 # The Rye Learning Process
 
 **Language:** EN
-**Last updated:** 2026-07-30 (`20260730.125750` — living twin points at GLOW_ALMANAC · ch1 16/16 · ch2 16/16 FULL · e26)
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+**Last updated:** 2026-07-30 (`20260730.125750` -- living twin points at GLOW_ALMANAC - ch1 16/16 - ch2 16/16 FULL - e26)
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Foundation
 
@@ -10,7 +10,7 @@
 
 ## What This Folder Is
 
-This is the workshop. The `rye-learning-process/` folder holds what we learn by actually building Rye — the practical discoveries about how the language and its toolchain behave when real code runs. Where the design stacks reason about what we want, this folder records what we found with our own hands, so the next builder inherits the knowledge rather than rediscovering it.
+This is the workshop. The `rye-learning-process/` folder holds what we learn by actually building Rye -- the practical discoveries about how the language and its toolchain behave when real code runs. Where the design stacks reason about what we want, this folder records what we found with our own hands, so the next builder inherits the knowledge rather than rediscovering it.
 
 This README is the foundation stone. It explains how the folder works, so anyone who opens it understands its shape at a glance.
 
@@ -18,9 +18,9 @@ This README is the foundation stone. It explains how the folder works, so anyone
 
 ## What Sets It Apart
 
-The two design-adjacent stacks have their own tempers: `external-research/` studies the wider world, and `active-designing/` keeps its clean room siloed to our own names and RISC-V. This folder is a third thing, and a humbler one — a builder's log.
+The two design-adjacent stacks have their own tempers: `external-research/` studies the wider world, and `active-designing/` keeps its clean room siloed to our own names and RISC-V. This folder is a third thing, and a humbler one -- a builder's log.
 
-Because it documents the real craft of growing Rye, it names the real tools we build upon: the Zig 0.16.0 toolchain, its standard library, its actual function signatures. That openness is the whole point. An honest record of how a thing truly works must call that thing by its name. So here we write down what compiled, what ran, what surprised us, and what the API actually is — earned by running code, never by guessing.
+Because it documents the real craft of growing Rye, it names the real tools we build upon: the Zig 0.16.0 toolchain, its standard library, its actual function signatures. That openness is the whole point. An honest record of how a thing truly works must call that thing by its name. So here we write down what compiled, what ran, what surprised us, and what the API actually is -- earned by running code, never by guessing.
 
 Every entry holds itself to one standard: a discovery is recorded only once real code has confirmed it. We lead with what works.
 
@@ -30,7 +30,7 @@ Every entry holds itself to one standard: a discovery is recorded only once real
 
 Dated findings carry `YYYYMMDD-HHMMSS_short-sprig.md`; this README is the living foundation. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
-Each confirmed discovery earns a stamped note when it is substantial enough to stand alone. The reverse-chronological index below surfaces the newest first. The living Glow aggregate is [`GLOW_ALMANAC.md`](GLOW_ALMANAC.md) — entry law: running code only. The elder Rye reference rests at [`archive/ALMANAC.md`](archive/ALMANAC.md) (breached `20260729.225900`) and is not the living twin.
+Each confirmed discovery earns a stamped note when it is substantial enough to stand alone. The reverse-chronological index below surfaces the newest first. The living Glow aggregate is [`GLOW_ALMANAC.md`](GLOW_ALMANAC.md) -- entry law: running code only. The elder Rye reference rests at [`archive/ALMANAC.md`](archive/ALMANAC.md) (breached `20260729.225900`) and is not the living twin.
 
 ```
 rye-learning-process/
@@ -40,7 +40,7 @@ rye-learning-process/
   YYYYMMDD-HHMMSS_*.md      <- dated findings, newest sorts first by stamp
 ```
 
-The Rye language itself lives elsewhere, in the `rye/` folder — the `rye` command, its source, and its tests. This folder is the prose companion to that code: the place where the lessons settle into words.
+The Rye language itself lives elsewhere, in the `rye/` folder -- the `rye` command, its source, and its tests. This folder is the prose companion to that code: the place where the lessons settle into words.
 
 ---
 
@@ -59,10 +59,10 @@ Recording a discovery is a small, glad ritual:
 
 | Kind | Document | Meaning |
 |------|----------|---------|
-| Living | [`GLOW_ALMANAC.md`](GLOW_ALMANAC.md) | Glow findings — earned by running code only |
-| Elder | [`archive/ALMANAC.md`](archive/ALMANAC.md) | Rye toolchain reference — historical aggregate |
-| — | *(no dated findings yet)* | Stamped notes appear here as they are recorded |
+| Living | [`GLOW_ALMANAC.md`](GLOW_ALMANAC.md) | Glow findings -- earned by running code only |
+| Elder | [`archive/ALMANAC.md`](archive/ALMANAC.md) | Rye toolchain reference -- historical aggregate |
+| -- | *(no dated findings yet)* | Stamped notes appear here as they are recorded |
 
 ---
 
-*May every lesson we earn be written down kindly. May the next builder find the path already lit. May Rye grow surely from the ground we test beneath our feet — one confirmed truth at a time, recorded with care.*
+*May every lesson we earn be written down kindly. May the next builder find the path already lit. May Rye grow surely from the ground we test beneath our feet -- one confirmed truth at a time, recorded with care.*

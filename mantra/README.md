@@ -1,15 +1,15 @@
-# Mantra — the Referential Namespace
+# Mantra -- the Referential Namespace
 
 **Language:** EN
 **Last updated:** 2026-07-07
-**Status:** Checkable — referential namespace front door
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+**Status:** Checkable -- referential namespace front door
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 
 ---
 
-Mantra is where names live. A name is **peer / bolt / revision / path**, and **recall** of a name returns the same bytes for all time — referential transparency held as a law, verified by digest on every read. Content is a **resin** at a SHA3-256 address; history accretes and never rewrites; a **Tilak** marks each leaf's layout. The full why rests in the namespace brief at [`../active-designing/date/20260706/20260706-023912_the-referential-namespace.md`](../active-designing/date/20260706/20260706-023912_the-referential-namespace.md); the normative surface rests in the reference spec at [`../context/specs/20260707-011412_mantra-referential-namespace-reference.md`](../context/specs/20260707-011412_mantra-referential-namespace-reference.md).
+Mantra is where names live. A name is **peer / bolt / revision / path**, and **recall** of a name returns the same bytes for all time -- referential transparency held as a law, verified by digest on every read. Content is a **resin** at a SHA3-256 address; history accretes and never rewrites; a **Tilak** marks each leaf's layout. The full why rests in the namespace brief at [`../active-designing/date/20260706/20260706-023912_the-referential-namespace.md`](../active-designing/date/20260706/20260706-023912_the-referential-namespace.md); the normative surface rests in the reference spec at [`../context/specs/20260707-011412_mantra-referential-namespace-reference.md`](../context/specs/20260707-011412_mantra-referential-namespace-reference.md).
 
-The module grew as one foundation and a family of compositions. `recall_lap1.rye` holds the catalog and its laws; every file after it **imports that foundation and edits nothing beneath itself** — a pattern that held across the entire arc, parity 159 through 185.
+The module grew as one foundation and a family of compositions. `recall_lap1.rye` holds the catalog and its laws; every file after it **imports that foundation and edits nothing beneath itself** -- a pattern that held across the entire arc, parity 159 through 185.
 
 ## The Family
 
@@ -28,7 +28,7 @@ The module grew as one foundation and a family of compositions. `recall_lap1.rye
 | `recall_catch_up.rye` (+`_delivery`, **38484/38485**) | Try the next unheld revision until one ask comes back empty | `tools/mantra_recall_catch_up*.rish` |
 | `recall_subscribe_poll.rye` (+`_delivery`, **38486/38487**) | Bounded repeat cycles over catch-up; host mirror is the same loop with a named pair list; `sleepIntervalNs` at cycle boundary | `tools/mantra_recall_subscribe_poll*.rish` |
 | `recall_tablecloth_query.rye` | Optional-field filter over the bounded catalog; every match returned in held order | `tools/m/mantra_recall_tablecloth_query.rish` |
-| `snapshot_export.rye` | I2 snapshot export: batch replay · horizon bundles · hosted wire per revision group | `tools/m/mantra_snapshot_replay.rish`, `tools/m/mantra_snapshot_horizon.rish`, `tools/m/mantra_snapshot_wire.rish` |
+| `snapshot_export.rye` | I2 snapshot export: batch replay - horizon bundles - hosted wire per revision group | `tools/m/mantra_snapshot_replay.rish`, `tools/m/mantra_snapshot_horizon.rish`, `tools/m/mantra_snapshot_wire.rish` |
 | `snapshot_export_delivery.rye` | Snapshot export delivery: source-loop + fetcher over batch wire, hosted **38490/38491**; device **15567/15568** | `tools/m/mantra_snapshot_wire.rish` |
 | `src/` | Mantra's own seed: `main.rye`, `diff.rye`, and the Weave aspect (`weave.rye`) beneath the namespace | SLC-1 witnesses |
 

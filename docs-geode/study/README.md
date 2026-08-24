@@ -2,7 +2,7 @@
 
 *Not a tour of the code. A short account of how the reading is meant to go, and which room answers which kind of question.*
 
-**Language:** EN - **Style:** Radiant - **Voice:** Kyri
+**Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Written:** `20260821.190149` - **Status:** Living - **Kind:** crushed study guide
 
 ---

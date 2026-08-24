@@ -1,21 +1,21 @@
-# Pond — the Application Module
+# Pond -- the Application Module
 
 **Language:** EN
-**Last updated:** `20260810.011514` (seated as Grain's full application module — breach opened, Pool retired in); prior: 2026-07-10 (Radiant pass `182821`; Granary weave view `163557`; customs first policy lap `161125`)
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Living — Grain's application module. Charter: [`../foundations/20260810-011514_pond-the-application-module.md`](../foundations/20260810-011514_pond-the-application-module.md)
+**Last updated:** `20260810.011514` (seated as Grain's full application module -- breach opened, Pool retired in); prior: 2026-07-10 (Radiant pass `182821`; Granary weave view `163557`; customs first policy lap `161125`)
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
+**Status:** Living -- Grain's application module. Charter: [`../foundations/20260810-011514_pond-the-application-module.md`](../foundations/20260810-011514_pond-the-application-module.md)
 
 ---
 
-**Pond is Grain's application module** — the floor where the OS modules below compose into a running whole a person opens, holds their work in, and trusts. It carries the applications-host role the tree once framed as "Pool the P-vane" (retired here `20260810`, the vane grid released), on our own ground, with the sandbox/VM isolation lineage thanked in the charter. The full declaration lives in [`../foundations/20260810-011514_pond-the-application-module.md`](../foundations/20260810-011514_pond-the-application-module.md); this page is the floor's own checkable record.
+**Pond is Grain's application module** -- the floor where the OS modules below compose into a running whole a person opens, holds their work in, and trusts. It carries the applications-host role the tree once framed as "Pool the P-vane" (retired here `20260810`, the vane grid released), on our own ground, with the sandbox/VM isolation lineage thanked in the charter. The full declaration lives in [`../foundations/20260810-011514_pond-the-application-module.md`](../foundations/20260810-011514_pond-the-application-module.md); this page is the floor's own checkable record.
 
-Pond holds **applications** that compose Rye OS modules above the kernel and compositor — where isolation policy meets a running whole a person can use. The `apps/` floor keeps enclosure code and application code each in its own place.
+Pond holds **applications** that compose Rye OS modules above the kernel and compositor -- where isolation policy meets a running whole a person can use. The `apps/` floor keeps enclosure code and application code each in its own place.
 
 **Pond clause:** Pond's enclosure aspect runs what Brix composes under policy.
 
-**Customs (landed `20260710.161125`):** [`customs.rye`](customs.rye) — first policy concept. At receipt, each Tilak mark earns **place**, **hold**, or **refuse**. Root allow-list: `plain-bytes` may be placed; `await-word` waits for a human word; unknown marks refuse whole. Amphora cold scrub calls `customs inspect` on the cellar manifest before restore. Witness: `tools/p/pond_customs.rish` (parity **230**).
+**Customs (landed `20260710.161125`):** [`customs.rye`](customs.rye) -- first policy concept. At receipt, each Tilak mark earns **place**, **hold**, or **refuse**. Root allow-list: `plain-bytes` may be placed; `await-word` waits for a human word; unknown marks refuse whole. Amphora cold scrub calls `customs inspect` on the cellar manifest before restore. Witness: `tools/p/pond_customs.rish` (parity **230**).
 
-**First application:** [`apps/drawn_terminal.rye`](apps/drawn_terminal.rye) — SLC-2a, the drawn terminal (Rishi session mirrored in a Brushstroke/Skate window). Granary weave view (`granaryviewtest`) folds resolve + Scribble onto Skate (parity **233**). Inference and commerce folds share that same glass.
+**First application:** [`apps/drawn_terminal.rye`](apps/drawn_terminal.rye) -- SLC-2a, the drawn terminal (Rishi session mirrored in a Brushstroke/Skate window). Granary weave view (`granaryviewtest`) folds resolve + Scribble onto Skate (parity **233**). Inference and commerce folds share that same glass.
 
 Policy-as-value horizon: `rishi/examples/pond.rish` and `external-research/20260618-180812_pond-foundation.md`.
 
@@ -35,14 +35,14 @@ These symlinks let `drawn_terminal.rye` import `rishi/main.rye` and `brushstroke
 
 ---
 
-## Build and run — drawn terminal
+## Build and run -- drawn terminal
 
-**Prefer `rishi run` for every hosted step** — build, witnesses, preflight, and parity slices. Rishi carries staged TAME output and asserts GREEN before the step completes. Run binaries directly for **live** interactive mode on GNOME Wayland alone.
+**Prefer `rishi run` for every hosted step** -- build, witnesses, preflight, and parity slices. Rishi carries staged TAME output and asserts GREEN before the step completes. Run binaries directly for **live** interactive mode on GNOME Wayland alone.
 
 From the repository root:
 
 ```bash
-# Build (prepare → compile → prove)
+# Build (prepare -> compile -> prove)
 rishi/bin/rishi run tools/fixtures/pond_build_drawn_terminal.rish
 ```
 
@@ -50,7 +50,7 @@ rishi/bin/rishi run tools/fixtures/pond_build_drawn_terminal.rish
 |------|---------|---------|
 | **Build** | `rishi/bin/rishi run tools/fixtures/pond_build_drawn_terminal.rish` | Staged compile; asserts prepare/compile/prove/GREEN |
 | **Witness (session mirror)** | `rishi/bin/rishi run tools/s/slc2a_ring3_session.rish` | Headless session mirror (build + `sessiontest`) |
-| **Witness (SLC-2b)** | `rishi/bin/rishi run tools/s/slc2b_keyboard.rish` | Dexter keyboard path (build + `keyboardtest`) — parity **145** |
+| **Witness (SLC-2b)** | `rishi/bin/rishi run tools/s/slc2b_keyboard.rish` | Dexter keyboard path (build + `keyboardtest`) -- parity **145** |
 | **Metalsmoke** | `rishi/bin/rishi run tools/s/slc2a_ring3_metal.rish` | Thin-lap Wayland slice (needs `WAYLAND_DISPLAY`) |
 | **Live** | `pond/bin/drawn-terminal` | Keyboard in the window; stdin still works for dev |
 
@@ -64,16 +64,16 @@ pond/bin/drawn-terminal
 
 Confirm each interactive step:
 
-1. **Build** — preflight or `pond_build_drawn_terminal.rish` via rishi above; binary at `pond/bin/drawn-terminal`
-2. **Type** — enter a few Rishi lines; frame updates in the window
-3. **Idle ~one minute** — leave the window focused; pong keeps the compositor honest
-4. **Ceiling** — fill past `max_transcript_bytes` (65536); status row still updates (invitation visible)
-5. **Exit** — `:quit` closes clean
+1. **Build** -- preflight or `pond_build_drawn_terminal.rish` via rishi above; binary at `pond/bin/drawn-terminal`
+2. **Type** -- enter a few Rishi lines; frame updates in the window
+3. **Idle ~one minute** -- leave the window focused; pong keeps the compositor honest
+4. **Ceiling** -- fill past `max_transcript_bytes` (65536); status row still updates (invitation visible)
+5. **Exit** -- `:quit` closes clean
 
 Witness and metalsmoke already **GREEN** through rishi; live mode is the hand confirmation only.
 
 <details>
-<summary>Manual compile (escape hatch — prefer rishi build witness)</summary>
+<summary>Manual compile (escape hatch -- prefer rishi build witness)</summary>
 
 ```bash
 mkdir -p pond/bin
