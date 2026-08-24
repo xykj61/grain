@@ -144,6 +144,12 @@ trustworthy.
   rests on them, so a reader can check the footing before following you up.
 - **Explicit widths.** Every figure carries its unit, its date, and where it came from. A number
   without those three is a rumour with a decimal point.
+- **A share carries a fourth thing: its denominator.** *Forty percent of what?* is the question a
+  reader cannot ask of a percentage, because the denominator is the one part a share does not
+  show. Name it in the sentence. Measured `20260824.170904`: one reading of the same 1,891 modules
+  gave a median of **14** against every comment line and **53** against ordinary comments alone --
+  same data, same day, opposite conclusions, because half of all comments were declaration docs
+  with no stake in the share they were diluting. Where two denominators are defensible, give both.
 - **Say why.** Beside every surprising choice, threshold, or projection, one sentence on the
   reason. This is TAME's own rule and the single highest-value habit in the whole guide.
 - **Safety first, performance second, joy third** becomes **honesty first, brevity second,
