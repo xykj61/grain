@@ -25,9 +25,10 @@
 # from `20260824.152800`, its 112 rows onto ten. Each front door was read line by line afterwards
 # -- which is what the seat means.
 #
-# WHAT RIDES A RATCHET. The same rows in every other room -- `waymarks` 41, alone on the ratchet
-# from `20260824.171500`, under a ceiling that only ever falls. `expanding-prompts` carried its 78
-# across that lap and joined the enforced roster at zero.
+# WHAT RIDES A RATCHET. Nothing, as of `20260824.172000`, and the ceiling reads **zero**. Every room
+# this tree folds has now been carried across by a hand and sits on the enforced roster -- 317 stale
+# rows at seating became 231, then 119, then 41, then none. The ratchet stays because it is the roof
+# a room opened tomorrow arrives under, before anyone has read its front door.
 # Folding a room's index also rewrites its front door, and four front doors written in a hurry is
 # how a fix becomes its own red; each gets its own round. The first round proved that in one lap:
 # the fold appended every kept row after all prose, correct only for a README whose table is the
@@ -73,7 +74,7 @@ assert control.out contains "2 free: a row whose day still has a flat log is lef
 assert control.out contains "3 free: a SPRIGLESS flat log holds its day open" else "index-fold: the sprig is optional, and a day held open by one must stay open"
 assert control.out contains "4 free: a table delimiter row names no day" else "index-fold: a delimiter row is punctuation, not a row"
 assert control.out contains "6 bitten: the elder list-shape row is read, not skipped" else "index-fold: both row shapes ever written here must be read"
-assert control.out contains "11 bitten: 42 ratchet rows cross the ceiling" else "index-fold: the ratchet ceiling must refuse from above"
+assert control.out contains "11 bitten: 1 ratchet row crosses the ceiling" else "index-fold: the ratchet ceiling must refuse from above"
 assert control.out contains "12 free: the enforced room is reported at zero" else "index-fold: a room that vanishes from a meter is a room nobody witnessed"
 
 say ""
