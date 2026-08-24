@@ -2,7 +2,7 @@
 
 *A design-research note on one small discipline added to the autonomous-loop recursion prompt: a Radiant (or Twilight) pass over the round's prose before every commit. It studies the craft -- what a recursion prompt rewards, and why a rule that is always-on for a hand still has to be named again for a loop -- and points at the tree's own technique note for the shape we adopted.*
 
-**Stamp:** `20260816.205019` - **Voice:** Kyri - **Style:** Radiant - **Status:** Research for understanding -- Living design-research
+**Stamp:** `20260816.205019` - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Kin:** [`20260703-013412_writing-recursion-prompts.md`](20260703-013412_writing-recursion-prompts.md) (the craft guide) - [`../recursion-prompts/README.md`](../recursion-prompts/README.md) (the cellar) - [`../active-designing/20260816-205019_style-sweep-and-lenses-by-reference.md`](../active-designing/20260816-205019_style-sweep-and-lenses-by-reference.md) (our own technique)
 
 ---

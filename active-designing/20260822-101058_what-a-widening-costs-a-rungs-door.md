@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260822.101058`
-**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Checkable -- every number below was measured on metal on `20260822`, by the scans named beside it
 **Room:** Checkable ([`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md))

@@ -1,17 +1,17 @@
-# Jul 9 Night Climb — Full Review Brief for Claude
+# Jul 9 Night Climb -- Full Review Brief for Claude
 
 **Stamp:** `20260709.203139`
 **Voice:** Rio 3
-**Editor:** Cursor · **Model:** Grok 4.5 High Fast
-**Register:** Decision briefing — MUR (was MALA) M1→M2b, SLC-L4 Sigma, WOV exit honesty, Realidream thin view; parity **197→202**
-**Status:** Checkable-room research — **replaced** for open questions by [`225159`](20260709-225159_claude-review-brief-jul9-late-night.md)
+**Editor:** Cursor - **Model:** Grok 4.5 High Fast
+**Register:** Decision briefing -- MUR (was MALA) M1->M2b, SLC-L4 Sigma, WOV exit honesty, Realidream thin view; parity **197->202**
+**Status:** Checkable-room research -- **replaced** for open questions by [`225159`](20260709-225159_claude-review-brief-jul9-late-night.md)
 **Ground:** tip **`c44f237`** at filing; later climb through dual D1 at `54014ce` / parity **205**; supersedes [`183326`](20260709-183326_claude-review-brief-jul9-evening-close.md)
 
 *Written for Claude counsel review after Kaeden's keep-going climb from evening close through thin view.*
 
-Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
-Radiant pass `20260728.054644` — entry/bin landed u49: `murr.rye` / `bin/murr`
-Radiant pass `20260728.053348` — tool paths landed u32: `murr_m*_witness` · `murr_m1_mint.bron` · `run_murr_wire_lab` (was mala_*); guests/module held
+Radiant pass `20260728.050219` -- living rename-forward: **MUR** (was MALA)
+Radiant pass `20260728.054644` -- entry/bin landed u49: `murr.rye` / `bin/murr`
+Radiant pass `20260728.053348` -- tool paths landed u32: `murr_m*_witness` - `murr_m1_mint.bron` - `run_murr_wire_lab` (was mala_*); guests/module held
 ---
 
 ## Executive Landscape
@@ -38,7 +38,7 @@ Since evening close (`183326`, parity **197**, MUR (was MALA) M1 lap-open only),
 
 ## What Landed (by domain)
 
-### MUR (was MALA) — own-issuer money
+### MUR (was MALA) -- own-issuer money
 
 | Lap | What | Ports / paths |
 |-----|------|---------------|
@@ -46,29 +46,29 @@ Since evening close (`183326`, parity **197**, MUR (was MALA) M1 lap-open only),
 | **M2** | Mint crosses Comlink; receipt back | hosted **38492**/**38493**; `mala_delivery.rye` |
 | **M2b** | Same bytes on virtio | device **15569**/**15570**; four guests; extends `murr_m2_witness` (was mala_*) |
 
-Seeds `0x61`/`0x62`. Memo prefixes `mala:mint` / `mala:send` / `mala:receipt` on the SLC-L1 envelope — living practice, not a separate `kind` field yet.
+Seeds `0x61`/`0x62`. Memo prefixes `mala:mint` / `mala:send` / `mala:receipt` on the SLC-L1 envelope -- living practice, not a separate `kind` field yet.
 
-### SLC-L4 — fixed-tier Sigma
+### SLC-L4 -- fixed-tier Sigma
 
-- `tally/pedersen.rye` — `amount·G + blinding·H`; pinned H
-- `linengrow/disclosure_core.rye` — Schnorr-style proof of knowledge of blinding for a **declared public** tier `{1000,5000,10000}`
+- `tally/pedersen.rye` -- `amount-G + blinding-H`; pinned H
+- `linengrow/disclosure_core.rye` -- Schnorr-style proof of knowledge of blinding for a **declared public** tier `{1000,5000,10000}`
 - Golden `tools/fixtures/slcl4_tier_proof.bron`; witness `tools/slcl4_sigma.rish`
 - Plain-language notes: [`194437`](20260709-194437_what-parity-is.md), [`200022`](20260709-200022_pedersen-and-sigma-plainly.md)
 
 **Honesty pin:** lap 1 does **not** hide which tier; it hides the blinding. OR-proof / arbitrary-range remain later.
 
-### WOV — exit honesty then lap 1
+### WOV -- exit honesty then lap 1
 
-- Spec [`context/specs/20260709-200443_wov-exit-honesty.md`](../context/specs/20260709-200443_wov-exit-honesty.md) — root facts, exit bundles, holder `wov:exit`
-- Lap 1 [`linengrow/wov_core.rye`](../linengrow/wov_core.rye) — **in-memory** book (no TigerBeetle client); golden bundle; prove; exit; refuse double/tamper
+- Spec [`context/specs/20260709-200443_wov-exit-honesty.md`](../context/specs/20260709-200443_wov-exit-honesty.md) -- root facts, exit bundles, holder `wov:exit`
+- Lap 1 [`linengrow/wov_core.rye`](../linengrow/wov_core.rye) -- **in-memory** book (no TigerBeetle client); golden bundle; prove; exit; refuse double/tamper
 - Gate: Kaeden keep-going treated as affirm after M2 cleared
 
 **Not yet:** live TB pin, dual monarch, hourly daemon.
 
 ### Realidream thin view
 
-- Counsel `021112` named chain-read → Skate; chain-read **deleted** `152612`
-- Re-scope [`202427`](../expanding-prompts/yonder/20260709-202427_realidream-thin-view-local-facts.md): local `murr_m1_mint.bron` (was mala_*) + `wov_exit_bundle_v1.bron` → five-line Skate frame via `drawn-terminal thinviewtest`
+- Counsel `021112` named chain-read -> Skate; chain-read **deleted** `152612`
+- Re-scope [`202427`](../expanding-prompts/yonder/20260709-202427_realidream-thin-view-local-facts.md): local `murr_m1_mint.bron` (was mala_*) + `wov_exit_bundle_v1.bron` -> five-line Skate frame via `drawn-terminal thinviewtest`
 - Stayed thin: no Pond, no Dexter, no new input, no network
 
 ### Hygiene
@@ -95,19 +95,19 @@ M2b extended the existing MUR (was MALA) M2 witness (no new slot). Suite GREEN a
 
 ## Questions for Claude Review
 
-1. **WOV TigerBeetle client next?** — **Answered by keep-going:** seam A host landed `223700` (parity **204**). Pin still has no Rye `@import`. Remaining: live REPL on metal (io_uring; SKIP in ai-jail), then seam B only if measured red demands it.
+1. **WOV TigerBeetle client next?** -- **Answered by keep-going:** seam A host landed `223700` (parity **204**). Pin still has no Rye `@import`. Remaining: live REPL on metal (io_uring; SKIP in ai-jail), then seam B only if measured red demands it.
 
-2. **Dual monarch timing** — **D1 landed** `224634` (parity **205**). D2 envelope remains later if needed.
+2. **Dual monarch timing** -- **D1 landed** `224634` (parity **205**). D2 envelope remains later if needed.
 
-3. **SLC-L4 lap 2 width** — **W0 cleared** [`224426`](../counsel/20260709-224426_grok-counsel-slcl4-w0-lap1-review.md). Remaining: affirm **W1** (OR-tiers) vs hold, and **W2** still later.
+3. **SLC-L4 lap 2 width** -- **W0 cleared** [`224426`](../counsel/20260709-224426_grok-counsel-slcl4-w0-lap1-review.md). Remaining: affirm **W1** (OR-tiers) vs hold, and **W2** still later.
 
-4. **Thin view as Dexter pressure** — **Answered** [`225343`](../context/specs/20260709-225343_thin-view-dexter-exception.md): stays exception; not Dexter's second consumer.
+4. **Thin view as Dexter pressure** -- **Answered** [`225343`](../context/specs/20260709-225343_thin-view-dexter-exception.md): stays exception; not Dexter's second consumer.
 
-5. **MUR (was MALA) `kind` field** — Design filed [`225159`](../context/specs/20260709-225159_mala-kind-field.md): **K0** memos through M3 vs **K1** dedicated field. Bench leans K0. Affirm?
+5. **MUR (was MALA) `kind` field** -- Design filed [`225159`](../context/specs/20260709-225159_mala-kind-field.md): **K0** memos through M3 vs **K1** dedicated field. Bench leans K0. Affirm?
 
-6. **Evening-close Q1–Q6** — **Cleared** [`225508`](../counsel/20260709-225508_grok-counsel-evening-close-leftovers.md) (+ metal answers for Q2–Q5).
+6. **Evening-close Q1-Q6** -- **Cleared** [`225508`](../counsel/20260709-225508_grok-counsel-evening-close-leftovers.md) (+ metal answers for Q2-Q5).
 
-7. **Next keep-going default** — **Cleared** [`225508`](../counsel/20260709-225508_grok-counsel-evening-close-leftovers.md): hygiene + design rulings; no W1/seam B/K1 code without affirm.
+7. **Next keep-going default** -- **Cleared** [`225508`](../counsel/20260709-225508_grok-counsel-evening-close-leftovers.md): hygiene + design rulings; no W1/seam B/K1 code without affirm.
 
 ---
 
@@ -117,10 +117,10 @@ M2b extended the existing MUR (was MALA) M2 witness (no new slot). Suite GREEN a
 |----------|------|------|
 | **A** | Claude answers above (esp. 1, 3, 7) | This brief |
 | **B** | WOV TB pin presence | **Landed** `203527` / parity **203** |
-| **B′** | WOV host seam A | **Landed** `223700` / parity **204** — live REPL on metal still optional |
+| **B'** | WOV host seam A | **Landed** `223700` / parity **204** -- live REPL on metal still optional |
 | **C** | SLC-L4 W0 review | **Cleared** [`224426`](../counsel/20260709-224426_grok-counsel-slcl4-w0-lap1-review.md); W1/W2 still gated |
 | **D** | WOV dual-monarch D1 | **Landed** `224634` / parity **205** |
-| — | Full Realidream / Pond / Dexter | Held |
+| -- | Full Realidream / Pond / Dexter | Held |
 
 ---
 
