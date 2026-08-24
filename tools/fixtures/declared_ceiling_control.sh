@@ -27,6 +27,18 @@
 #  13 free    -- an over-ceiling page and a holding page in one pen still refuse for the right
 #                reason, so one honest page cannot mask a drifted one
 #
+# AND THE BYTE-BOUND READING, added `20260824.130807`, the same shape one unit over:
+#
+#  14 free    -- a pin under its declared byte bound passes
+#  15 bitten  -- a pin over its declared byte bound counts, and refuses once past the ceiling
+#  16 free    -- the refusal names the pin and both numbers
+#  17 free    -- a `Bound:` header naming no measurable limit is counted as prose, never as a fault
+#  18 bitten  -- the prose form spreading past its ceiling refuses
+#  19 bitten  -- a pin spelling a number the seated law does not is gated at zero
+#  20 free    -- a corpus of byte declarations alone is a corpus, rather than empty
+#  21 free    -- dated testimony carrying a `Bound:` header passes free and is not counted
+#  22 free    -- the law's number is read from the spec rather than assumed
+#
 # Read-only toward the tree: the pen is a temporary directory, and DECLARED_CEILING_ROOT keeps
 # the scan inside it. Run from the repository root.
 set -eu
@@ -44,7 +56,22 @@ check() {
 D="$PEN/pages"
 run_scan() {
   DECLARED_CEILING_ROOT="$D" DECLARED_CEILING_GRADE_CEILING="${1:-1}" \
+  DECLARED_BOUND_OVER_CEILING="${2:-1}" DECLARED_BOUND_PROSE_CEILING="${3:-2}" \
     sh tools/fixtures/declared_ceiling_scan.sh census 2>&1 || true
+}
+
+# A pin of $2 bytes declaring the seated byte bound, written to $1. The optional $3 spells a
+# different number, which is the drift reading.
+pin() {
+  {
+    echo "# A living pin"
+    if [ -n "${3:-}" ]; then
+      echo "**Bound:** under \`living_pin_max_bytes\` ($3)"
+    else
+      echo "**Bound:** under \`living_pin_max_bytes\`"
+    fi
+  } > "$1"
+  while [ "$(wc -c < "$1" | tr -d ' ')" -lt "$2" ]; do echo "filler filler filler filler" >> "$1"; done
 }
 verdict() { printf '%s\n' "$1" | sed -n 's/^verdict=//p' | head -1; }
 field() { printf '%s\n' "$2" | sed -n "s/^$1=//p" | head -1; }
@@ -142,6 +169,69 @@ page "$D/drifted.md" 99 40
 out=$(run_scan)
 check "13 free: a holding page beside a drifted one still refuses for the right reason" "over_declared_ceiling" "$(verdict "$out")"
 check "13 free: the holding page is still counted as holding" "1" "$(field pages_holding "$out")"
+
+# ---- 14..16: the byte bound, shown from both sides -------------------------------------
+fresh
+pin "$D/small.md" 400
+out=$(run_scan)
+check "14 free: a pin under its declared byte bound passes" "ok" "$(verdict "$out")"
+check "14 free: it is counted as holding" "1" "$(field bounds_holding "$out")"
+
+fresh
+pin "$D/fat.md" 30000
+out=$(run_scan)
+check "15 free: a pin over its bound is counted rather than ignored" "1" "$(field bounds_over "$out")"
+check "15 free: it passes while the ceiling admits it" "ok" "$(verdict "$out")"
+out=$(run_scan 1 0)
+check "15 bitten: the same pin refuses once the ceiling falls to zero" "over_declared_bound" "$(verdict "$out")"
+named=$(printf '%s\n' "$out" | grep -c 'fat.md stands above the byte bound it declares' || true)
+check "16 free: the refusal names the pin" "1" "$named"
+both=$(printf '%s\n' "$out" | grep -c 'against_24576' || true)
+check "16 free: the refusal carries both numbers" "1" "$both"
+
+# ---- 17..18: a bound written in words is honest, and may not spread ---------------------
+fresh
+pin "$D/small.md" 400
+printf '# A page\n**Bound:** keep thin\nbody\n' > "$D/wordy.md"
+out=$(run_scan)
+check "17 free: a Bound header naming no measurable limit is counted as prose" "1" "$(field bounds_prose "$out")"
+check "17 free: prose is not a fault while under its ceiling" "ok" "$(verdict "$out")"
+printf '# Another page\n**Bound:** listings stay sentence-cheap\nbody\n' > "$D/wordy2.md"
+printf '# A third page\n**Bound:** as short as it wants to be\nbody\n' > "$D/wordy3.md"
+out=$(run_scan)
+check "18 bitten: the prose form spreading past its ceiling refuses" "bound_prose_spread" "$(verdict "$out")"
+check "18 bitten: all three are counted" "3" "$(field bounds_prose "$out")"
+
+# ---- 19: a declaration that disagrees with the law it cites ----------------------------
+fresh
+pin "$D/small.md" 400
+pin "$D/liberal.md" 400 99999
+out=$(run_scan)
+check "19 bitten: a pin spelling a number the law does not is gated at zero" "bound_disagrees_with_law" "$(verdict "$out")"
+named=$(printf '%s\n' "$out" | grep -c 'liberal.md spells a bound the seated law does not' || true)
+check "19 bitten: the refusal names the pin and both numbers" "1" "$named"
+
+# ---- 20: byte declarations alone are a corpus ------------------------------------------
+fresh
+pin "$D/small.md" 400
+out=$(run_scan)
+check "20 free: a corpus of byte declarations alone is a corpus" "ok" "$(verdict "$out")"
+check "20 free: no Ceiling declarations are counted" "0" "$(field pages_declaring "$out")"
+
+# ---- 21: dated testimony keeps every word it wrote, here too ---------------------------
+fresh
+pin "$D/small.md" 400
+pin "$D/20260812-171050_a-dated-pin.md" 30000
+out=$(run_scan 1 0)
+check "21 free: dated testimony over its own byte bound passes free" "ok" "$(verdict "$out")"
+check "21 free: testimony is not counted among the declarations" "1" "$(field bounds_declaring "$out")"
+
+# ---- 22: the number comes from the law rather than from a copy -------------------------
+fresh
+pin "$D/small.md" 400
+out=$(run_scan)
+spec_n=$(grep -m1 '^living_pin_max_bytes' context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md | sed -n 's/.*=[[:space:]]*\([0-9][0-9]*\).*/\1/p')
+check "22 free: the scan reports the number the seated law states" "$spec_n" "$(field living_pin_max_bytes "$out")"
 
 echo ""
 echo "control_pass=$PASS"
