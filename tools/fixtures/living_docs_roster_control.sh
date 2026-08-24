@@ -10,7 +10,7 @@
 # gate bite, which is the whole fault of REDS %187 in miniature. Case 7 leaves a README UNTRACKED
 # beside a tracked source and watches it pass free, which proves the tree is asked with git rather
 # than with a glob -- a glob would have manufactured a door out of a scratch file. And cases 12 and
-# 13 show the ratchet ceiling from both sides, seven over-bound pages free and eight bitten, so no
+# 13 show the ratchet ceiling from both sides, six over-bound pages free and seven bitten, so no
 # override exists and none is wanted.
 #
 # Each case prints one line naming what was planted and whether it was bitten or left free. The
@@ -126,22 +126,22 @@ check "a page exactly at the bound is under it, and passes free" k ok "over_boun
 # 12 -- the ratchet ceiling, from below.
 pen l; door l mod1 100; stage l; roster_add l mod1/README.md
 i=1
-while [ "$i" -le 7 ]; do
+while [ "$i" -le 6 ]; do
   mkdir -p "$PEN/l/big$i"; head -c 24577 /dev/zero | tr '\0' 'x' >"$PEN/l/big$i/README.md"
   roster_add l "big$i/README.md"; i=$((i + 1))
 done
 stage l
-check "seven over-bound pages sit at the ceiling and pass free" l ok "over_bound=7"
+check "six over-bound pages sit at the ceiling and pass free" l ok "over_bound=6"
 
 # 13 -- the ratchet ceiling, from above.
 pen m; door m mod1 100; stage m; roster_add m mod1/README.md
 i=1
-while [ "$i" -le 8 ]; do
+while [ "$i" -le 7 ]; do
   mkdir -p "$PEN/m/big$i"; head -c 24577 /dev/zero | tr '\0' 'x' >"$PEN/m/big$i/README.md"
   roster_add m "big$i/README.md"; i=$((i + 1))
 done
 stage m
-check "eight over-bound pages cross the ceiling and are bitten" m red "over_bound=8"
+check "seven over-bound pages cross the ceiling and are bitten" m red "over_bound=7"
 
 # 14 -- an over-bound page is named, never merely counted.
 pen o; door o mod1 100; stage o; roster_add o mod1/README.md
