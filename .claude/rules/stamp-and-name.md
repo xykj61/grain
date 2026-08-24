@@ -128,6 +128,23 @@ over 49 real references in silence. One shape, `YYYYMMDD-HHMMSS_sprig.ext`, chec
 and the stamp alone is what marks it, since the sprig is optional (REDS %175: 237 logs carry a stamp and
 no sprig, and a pattern requiring one read every last of them as living).
 
+**Agreement is now held by a meter rather than by care.** REDS %175 named eight scans still carrying
+the narrow pattern; a grep for the three spellings this tree writes stamps in found **nineteen sites
+across fifteen files** (REDS %178), so the remainder in that row was itself counted from memory. All
+nineteen read `[_.]`, `(_|\.)`, or `(_<sprig>)?\.` now, and
+[`../../tools/d/dated_spelling_witness.rish`](../../tools/d/dated_spelling_witness.rish) over
+[`../../tools/fixtures/dated_spelling_scan.sh`](../../tools/fixtures/dated_spelling_scan.sh) gates 4,705
+living tracked sources at zero, proven both ways on real git repositories in a throwaway pen. Two of
+the eleven unnamed sites carried a consequence past a miscount: the guard that refuses edits to dated
+artifacts could not see a sprigless log, and the repointer's map, candidate filter, and line matcher
+could none of them see a sprigless reference.
+
+**A reference begins at a boundary.** Widening the right side surfaced a looseness on the left that had
+stood the whole time: the census's reference pattern could match a stamp sitting inside a longer
+filename, and the retired countdown-prefix names (`99991_20260619-090912.md`) are exactly that shape --
+24 such substrings read as lost references. A lookbehind seats the boundary now. The census sees **239
+genuine references it was blind to**, and its lost count stands where it stood.
+
 **Every fold ships with the witness green.**
 [`../../tools/d/dated_path_witness.rish`](../../tools/d/dated_path_witness.rish) proves the resolver's
 five verdicts on real cases, proves the fold rule on a room that has never folded, refuses three RED

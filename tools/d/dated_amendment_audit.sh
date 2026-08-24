@@ -45,7 +45,7 @@ for roof in $ROOFS; do
   r_unmarked=0
 
   git log --diff-filter=M --name-only --pretty=format: -- "$roof/*.md" 2>/dev/null \
-    | grep -E "(^|/)[0-9]{8}-[0-9]{6}_" \
+    | grep -E "(^|/)[0-9]{8}-[0-9]{6}[_.]" \
     | sort -u > /tmp/.audit_$$ || true
 
   while read -r f; do

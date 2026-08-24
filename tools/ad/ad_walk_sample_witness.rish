@@ -17,7 +17,7 @@ assert drawn.out contains "inbound=" else "walk-witness: no inbound count in the
 assert drawn.out contains "age=" else "walk-witness: no age beside the count (e230 law)"
 
 say "walk-witness: every drawn line is a dated artifact..."
-let undated = run ["sh" "-c" "sh tools/ad/ad_walk_sample.sh 8 | grep -cvE '^[0-9]{8}-[0-9]{6}_' || true"]
+let undated = run ["sh" "-c" "sh tools/ad/ad_walk_sample.sh 8 | grep -cvE '^[0-9]{8}-[0-9]{6}[_.]' || true"]
 assert undated.ok else "walk-witness: dated-pattern scan failed"
 let undated_n = trim undated.out
 assert undated_n == "0" else "walk-witness: a living doc reached the draw — dated artifacts only"
@@ -29,7 +29,7 @@ let stubs_n = trim stubs.out
 assert stubs_n == "0" else "walk-witness: a shelved recursion stub was drawn"
 
 say "walk-witness: the guard can red — a living doc is refused by the same pattern..."
-let plant = run ["sh" "-c" "echo 'steep' | grep -cvE '^[0-9]{8}-[0-9]{6}_' || true"]
+let plant = run ["sh" "-c" "echo 'steep' | grep -cvE '^[0-9]{8}-[0-9]{6}[_.]' || true"]
 assert plant.ok else "walk-witness: plant scan failed"
 let plant_n = trim plant.out
 assert plant_n == "1" else "walk-witness: the dated pattern accepted a living name — the guard is vacuous"

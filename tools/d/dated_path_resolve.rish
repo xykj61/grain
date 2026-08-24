@@ -20,7 +20,7 @@
 # one home, 16 to more than one, and 183 to none. The recoverable count rises whenever a room
 # folds -- that is folding working, not damage -- so the living gate is on the other two.
 #
-# THE FIVE READINGS, first hit winning. The order is deliberate -- the two that cost nothing
+# THE SIX READINGS, first hit winning. The order is deliberate -- the two that cost nothing
 # come first, the pure computation before the index, and the index before giving up.
 #   1. as written, from the citing file's own directory -- the shell resolves it, so no path
 #      normalization is written here and none can be written wrongly
@@ -31,7 +31,12 @@
 #      read off the CITING file instead, since a bare reference was a sibling and a day fold is
 #      precisely what separates siblings.
 #   4. by basename across every tracked file -- recovers a move the fold rule cannot predict
-#   5. missing -- reported plainly, never invented
+#   5. BY STAMP, when the basename itself names nothing. The session-logs law makes the sprig
+#      OPTIONAL -- added only when two logs share a second -- so an elder reference may name
+#      `20260619-090912.md` where the tree now holds two files carrying that stamp and a sprig
+#      apiece. The stamp is what survived the rename, so it is what the reading turns on: one
+#      match recovers, several report ambiguous with all of them named (REDS %175).
+#   6. missing -- reported plainly, never invented
 #
 # WHAT IT NEVER DOES. It does not move a file, edit a reference, or guess. A basename living at
 # two paths is reported as ambiguous with both named, since choosing one silently is how a
@@ -101,10 +106,17 @@ if up_count != 1 then let rooted = up_pieces[up_last_index]
 let rooted_hit = (run ["test" "-e" rooted]).ok
 
 # READING THREE -- the fold rule, computed from the basename alone. A dated basename opens with
-# a fifteen-character stamp before its first underscore; that length is the whole shape test, so
-# nothing is sliced before its bound is known.
+# a fifteen-character stamp, and what follows it is the sprig or the extension: the session-logs
+# law adds `_short-sprig` only when two logs share a second, and 237 tracked logs carry none. So
+# the underscore is tried first and the dot second, and that length is the whole shape test, so
+# nothing is sliced before its bound is known. Reading the underscore alone left the fold rule
+# blind to every sprigless log -- the pure computation this tool leads with, silent for the one
+# class of name that most needs it (REDS %175).
 let stamp_pieces = split basename "_"
 let stamp_head = stamp_pieces[0]
+let stamp_head_length = length stamp_head
+if stamp_head_length != 15 then let stamp_pieces = split basename "."
+if stamp_head_length != 15 then let stamp_head = stamp_pieces[0]
 let stamp_head_length = length stamp_head
 let stamped = (stamp_head_length == 15)
 
@@ -141,12 +153,35 @@ let all_paths = lines tracked.out
 let by_basename = where all_paths as p: p ends-with "/${basename}"
 let match_count = length by_basename
 
+# READING FIVE -- by stamp, reached only where reading four named nothing, and only for a
+# reference that carries NO SPRIG. That bound is the whole shape of the reading: it exists to
+# answer an elder name written before a collision added the sprig, so a reference that already
+# carries a sprig is outside it -- its sprig is real information, and a stamp match against some
+# other file's sprig would be an invention. Proven the hard way on the lap it was written: the
+# witness's own missing-reference case names the stamp `20260101-000000`, which a fixture tree
+# also plants, and an unbounded reading answered a deliberately absent log with a fixture's file
+# (REDS %157's lesson, arriving somewhere new). A basename standing immediately after a slash is
+# the head of a filename, and a fifteen-character stamp there is the mark itself, so
+# `contains "/<stamp>"` is the candidate test.
+let sprigless = false
+if stamped then let sprigless = basename starts-with "${stamp_head}."
+let by_stamp = []
+if sprigless then let by_stamp = where all_paths as p: p contains "/${stamp_head}"
+let stamp_count = length by_stamp
+
+let stamp_verdict = "ambiguous-by-stamp"
+let stamp_home = join by_stamp " "
+if stamp_count == 0 then let stamp_verdict = "missing"
+if stamp_count == 0 then let stamp_home = "-"
+if stamp_count == 1 then let stamp_verdict = "recovered-by-stamp"
+if stamp_count == 1 then let stamp_home = by_stamp[0]
+
 # The verdict, written weakest first so each stronger reading simply overwrites it. Rishi holds
 # no ordering operator, so "more than one" is the standing case that zero and one correct.
 let verdict = "ambiguous"
 let home = join by_basename " "
-if match_count == 0 then let verdict = "missing"
-if match_count == 0 then let home = "-"
+if match_count == 0 then let verdict = stamp_verdict
+if match_count == 0 then let home = stamp_home
 if match_count == 1 then let verdict = "recovered-by-index"
 if match_count == 1 then let home = by_basename[0]
 if fold_archive_hit then let verdict = "recovered-by-fold-rule"

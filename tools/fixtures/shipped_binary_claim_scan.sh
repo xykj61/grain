@@ -65,7 +65,7 @@ printf '%s\n' "$PATTERNS" | while IFS= read -r pat; do
     --exclude-dir=.git --exclude-dir=seed --exclude-dir=vendor --exclude-dir=gratitude \
     --exclude=shipped_binary_claim_scan.sh \
     "$scope" 2>/dev/null \
-    | grep -vE '/[0-9]{8}-[0-9]{6}_[a-z]' \
+    | grep -vE '/[0-9]{8}-[0-9]{6}[_.][a-z]' \
     | grep -v 'shipped_binary_claim' \
     | grep -vF 'REDS %' \
     | grep -v '\*"' >> /tmp/sbc_hits.txt || true
@@ -89,7 +89,7 @@ rm -f /tmp/sbc_hits.txt
 # exempt for the same reason dated artifacts are -- they record what was true then.
 bare=0
 : > /tmp/sbc_bare.txt
-for f in $(git ls-files '*.md' 2>/dev/null | grep -vE '/[0-9]{8}-[0-9]{6}_' | grep -vE '^(session-logs|counsel|gratitude|vendor|seed)/' | grep -v '/archive/'); do
+for f in $(git ls-files '*.md' 2>/dev/null | grep -vE '/[0-9]{8}-[0-9]{6}[_.]' | grep -vE '^(session-logs|counsel|gratitude|vendor|seed)/' | grep -v '/archive/'); do
   awk '/^```(bash|sh)$/{n=1;next} /^```/{n=0} n && /^(rye|rishi) /{print FILENAME ":" FNR ": " $0}' "$f" 2>/dev/null >> /tmp/sbc_bare.txt || true
 done
 bare=$(wc -l < /tmp/sbc_bare.txt | tr -d ' ')

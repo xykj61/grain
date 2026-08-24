@@ -68,6 +68,14 @@ verb="${1:-census}"
 # stood. Set with no slack to the measured count: 199 when the resolver landed, lowered to 193, then 192
 # on `20260821` when the session-log fold surfaced six index rows pointing at files that were
 # never there and they were repaired. Lower it whenever a repair lands; never raise it.
+#
+# STILL 187 after the aperture widened on `20260824`, and that is the reading worth keeping. This
+# pattern required an underscore after the stamp, so it never saw a reference naming a sprigless
+# log (REDS %175). Widening it to accept the dot surfaced 488 more matches and 24 of them read as
+# lost -- then the boundary lookbehind above showed that 249 of the 488, including all 24, were
+# the stamp sitting inside a longer filename rather than a reference at all. What remains is
+# **239 genuine references** the census had never counted, every one of them landing. The number
+# a wider and tighter meter reports is the same number, which is the most one can ask of a repair.
 LOST_CEILING=187   # 192 until 20260823.124407, when *_control.sh became a glob exclusion
 
 # What is not the field -- read from ONE list that this tool and the repointer both source, since
@@ -90,8 +98,16 @@ git ls-files > "$work/all.txt"
 
 # Globbing stays off across the whole invocation: the exclusion words carry patterns meant for
 # grep -- `dated_path_*` above all -- and the shell must hand them over rather than resolve them.
+#
+# A REFERENCE BEGINS AT A BOUNDARY, which the lookbehind is here to say. Without it the stamp may
+# start in the middle of a longer filename, and the retired countdown-prefix names are exactly
+# that shape: `99991_20260619-090912.md` contains `20260619-090912.md`, and the rename mapping
+# that records those names quotes 251 of them. Measured `20260824`: 24 such substrings read as
+# lost references, every one of them inside a longer name that resolves perfectly well. The old
+# pattern hid this by requiring an underscore after the stamp -- the elder names put theirs
+# BEFORE it -- so widening the right side is what surfaced a looseness on the left.
 set -f
-grep -rIoE '(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}_[A-Za-z0-9._-]+\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
+grep -rIoP '(?<![A-Za-z0-9_.-])(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}(_[A-Za-z0-9._-]+)?\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
   --include=*.md --include=*.bron --include=*.kyri --include=*.rish \
   --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
   $DP_GREP_EXCLUDES \
@@ -102,7 +118,7 @@ grep -rIoE '(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}_[A-Za-z0-9._-]+\.(md|br
 # back in, so the corpus holds the room rather than silently omitting it (REDS %122).
 for _rd in $(dp_readmit_dirs); do
   [ -d "$_rd" ] || continue
-  grep -rIoE '(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}_[A-Za-z0-9._-]+\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
+  grep -rIoP '(?<![A-Za-z0-9_.-])(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}(_[A-Za-z0-9._-]+)?\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
     --include=*.md --include=*.bron --include=*.kyri --include=*.rish \
     --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
     "$_rd" 2>/dev/null | sed 's|^\./||' >> "$work/pairs.txt"
@@ -130,7 +146,7 @@ fi
 # standing immediately after `! -f` or `! -e`, with or without the leading `test`, is subtracted,
 # and it is subtracted for the citing file that wrote it rather than everywhere it appears.
 set -f
-grep -rIoE '! -[fe] +(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}_[A-Za-z0-9._-]+\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
+grep -rIoP '! -[fe] +(?<![A-Za-z0-9_.-])(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}(_[A-Za-z0-9._-]+)?\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
   --include=*.md --include=*.bron --include=*.kyri --include=*.rish \
   --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
   $DP_GREP_EXCLUDES \
@@ -155,7 +171,16 @@ done
 # Six fields out, so no later step has to guess which path a column holds:
 #   verdict, citing file, reference as written, reading one, reading two, recovered home
 awk -F: '
-NR==FNR { ex[$0] = 1; n = split($0, p, "/"); base = p[n]; cnt[base]++; where[base] = $0; next }
+NR==FNR {
+  ex[$0] = 1; n = split($0, p, "/"); base = p[n]; cnt[base]++; where[base] = $0
+  # The stamp index, beside the basename index. A sprig is added only when two logs share a
+  # second, so a reference written before the collision names the stamp and nothing else. The
+  # stamp is what survived the rename, so it is the key a stale reference can still be read by.
+  if (base ~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]/) {
+    st = substr(base, 1, 15); scnt[st]++; swhere[st] = $0
+  }
+  next
+}
 {
   file = $1; ref = $2
   key = file "\t" ref; if (seen[key]++) next
@@ -181,7 +206,7 @@ NR==FNR { ex[$0] = 1; n = split($0, p, "/"); base = p[n]; cnt[base]++; where[bas
   # reference naming its room is never called ambiguous on account of another rooms namesake.
   # (No apostrophes in here -- this comment lives inside a single-quoted awk program.)
   folded = ""
-  if (base ~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]_/) {
+  if (base ~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]/) {
     day = substr(base, 1, 8)
     room = substr(root, 1, length(root) - length(base) - 1)
     if (room != "") {
@@ -207,10 +232,25 @@ NR==FNR { ex[$0] = 1; n = split($0, p, "/"); base = p[n]; cnt[base]++; where[bas
     }
   }
 
+  # THE STAMP READING, reached only where the basename names nothing. It answers the same way
+  # tools/d/dated_path_resolve.rish does, because a census and the resolver that reads its rows
+  # disagreeing about one reference is how a reader stops trusting either (the mark law: the
+  # three tools must agree on what a dated file is).
+  # Only a reference with NO SPRIG is read this way. A reference carrying a sprig that names no
+  # file has told us something the stamp cannot overrule, so it stays gone rather than being
+  # handed the file of some namesake. (No apostrophes in here -- single-quoted awk program.)
+  stamp = ""
+  if (base ~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]\./) {
+    stamp = substr(base, 1, 15)
+  }
+
   if (rel in ex || root in ex) { verdict = "home" }
   else if (folded != "")       { verdict = "recoverable"; found = folded }
   else if (cnt[base] == 1)     { verdict = "recoverable" }
   else if (cnt[base] > 1)      { verdict = "ambiguous" }
+  else if (stamp == "")        { verdict = "gone" }
+  else if (scnt[stamp] == 1)   { verdict = "recoverable"; found = swhere[stamp] }
+  else if (scnt[stamp] > 1)    { verdict = "ambiguous" }
   else                         { verdict = "gone" }
 
   print verdict "\t" file "\t" ref "\t" rel "\t" root "\t" found

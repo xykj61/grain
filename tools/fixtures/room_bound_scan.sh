@@ -61,7 +61,7 @@ seen=""
 # A room is counted the same way everywhere: the whole one-clock stamp, matching what the fold
 # moves and what the resolver can recover. A day-only name is neither, so it is not counted here.
 count_flat() {
-  find "$1" -maxdepth 1 -type f -name '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]_*' 2>/dev/null | wc -l | tr -d ' '
+  find "$1" -maxdepth 1 -type f -name '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]*' 2>/dev/null | wc -l | tr -d ' '
 }
 
 # Every flat entry, files and symlinks alike, for a room that folds by letter rather than by day.

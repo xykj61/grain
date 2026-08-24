@@ -62,7 +62,7 @@ awk '{ $1=""; $2=""; $3=""; sub(/^   /, ""); print }' "$work/regular.tsv" > "$wo
 # Living files only. A file whose own basename carries a one-clock stamp is testimony, and
 # testimony keeps every reference it ever wrote (accrete-never-break). The same line the fold,
 # the resolver, and the repointer already draw.
-grep -vE '(^|/)[0-9]{8}-[0-9]{6}_' "$work/tracked.txt" > "$work/living.txt"
+grep -vE '(^|/)[0-9]{8}-[0-9]{6}[_.]' "$work/tracked.txt" > "$work/living.txt"
 
 # A path in COMMAND position, written the way a shell would run it. The word before the token
 # settles it: an interpreter named ahead of the path -- `sh ./x`, `bash ./x`, `rishi run ./x` --

@@ -94,7 +94,7 @@ grep '\.md$' "$work/files" | while IFS= read -r src; do
   base=${src##*/}
   # A basename carrying a one-clock stamp is dated testimony, which keeps every word it wrote.
   case "$base" in
-    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]_*) continue ;;
+    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]*) continue ;;
   esac
   dir=$(dirname "$src")
   grep -oE '\]\([^)]+\)' "$src" 2>/dev/null | sed 's/^](//; s/)$//; s/#.*$//' | while IFS= read -r target; do
