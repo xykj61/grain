@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260824.173816
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title the ratchet reaches its floor
+prompt Second of the two index folds Keaton named -- waymarks, 41 rows, its own round.
+think Read the pin first again. All 41 rows link into date/, so the depth rewrite had one shape rather than two, and the fold was simpler than the prompts room.
+think Both days had already folded into the room, so every row was stale and the living table would empty. Checked whether that is honest here rather than assuming: the one dated file still flat at the root is a bundle manifest, not a claim brief, so an empty claims table is the true reading.
+think With waymarks enforced, every room this tree folds sits on the ENFORCE list, which puts the ratchet at zero. Kept the ratchet rather than deleting it -- it is the roof a room opened tomorrow arrives under, before a hand has read its front door.
+obs 45 shelf links across two shelves, all resolving. Front door rewritten by hand: a shelf table holding the way in, then the living claims table with one plain line saying why it is empty.
+obs The control's planted counts moved 41/42 -> 0/1 and the witness assertions with them. Planting one row against a ceiling of zero is a sharper bite than planting 42 against 41, so the floor reads better than the ceiling did.
+obs The card crossed its declared bound by 155 bytes as the Now block grew, and declared_ceiling refused it rather than a hand noticing. Trimmed twice to 24,554. The guard doing the noticing is the whole point of REDS %197.
+loom room=waymarks days=2 rows_folded=41 rows_kept=0 pin_bytes=7656->2283 shelf_links=45 broken=0
+loom ratchet=index_fold before=41 after=0 enforced_rooms=5 arc=317->231->119->41->0
+file waymarks/README.md the shelf table, and the empty claims table explained
+file waymarks/SEASONS.md both shelves rostered with their counts
+file tools/fixtures/index_fold_scan.sh waymarks joins ENFORCE; ceiling 41 -> 0
+file tools/fixtures/index_fold_control.sh planted counts 41/42 -> 0/1
+file tools/i/index_fold_witness.rish assertions and header follow the floor
+file .claude/rules/stamp-and-name.md all four rooms carried across, ceiling at zero
+file construction/ITINERARY.md the fold arc recorded, card trimmed back under its bound
+recommend check-in (checkpoint) both folds are landed and green; session-logs/README.md is the one pin still over its bound and its fold runs on Keaton's word
