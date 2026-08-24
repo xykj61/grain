@@ -33,6 +33,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260824.170955` | [the denominator was the whole question](20260824-170955_the-denominator-was-the-whole-question.kyri) | Same 1,891 modules, two denominators, opposite verdicts -- and a seated law found running at 59.6%. |
 | `20260824.165609` | [the live prompt carries it too](20260824-165609_the-live-prompt-carries-it-too.kyri) | The seed held the new law and the launch recipe did not; both printed season prompts now carry the QA read. |
 | `20260824.165456` | [the dial booked before it is built](20260824-165456_the-dial-booked-before-it-is-built.kyri) | Two gaps booked with their falsifier named, and one cheap measurement scoped to answer it first. |
 | `20260824.164836` | [a path named in a commit body is a path that exists](20260824-164836_a-cited-path-exists.kyri) | A recalled stamp shipped a citation resolving nowhere; the commit-msg hook gains its fourth wall. |
