@@ -1,23 +1,23 @@
-# STOA244 — After Product-Authored Line Body · Check-In
+# STOA244 -- After Product-Authored Line Body - Check-In
 
-*An Acme Corporation employee reading this gets the fork after the product owns log-line format/parse: the first authored body from the vane inventory is GREEN, lit-desk→Pixel→face_lit stays closed, and the next door is either another authored body, shared-package face_lit, or a season Keaton names.*
+*An Acme Corporation employee reading this gets the fork after the product owns log-line format/parse: the first authored body from the vane inventory is GREEN, lit-desk->Pixel->face_lit stays closed, and the next door is either another authored body, shared-package face_lit, or a season Keaton names.*
 
 **Language:** EN  
-**Version:** `20260722.141029` (EDT · Framework host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260722.141029` (EDT - Framework host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send chosen with round-close · lean **B** became **STOA245** `20260722.141141`  
-**Register:** Checkable (Two Rooms) — STOA243 GREEN with this send; first authored line body closed  
+**Status:** Checkable -- lean **A** send chosen with round-close - lean **B** became **STOA245** `20260722.141141`  
+**Register:** Checkable (Two Rooms) -- STOA243 GREEN with this send; first authored line body closed  
 
-**Grounds in:** STOA243 line body · STOA200 vane inventory · STOA241–242 face_lit season
+**Grounds in:** STOA243 line body - STOA200 vane inventory - STOA241-242 face_lit season
 
-**dated_guard:** Do **not** reopen STOA243 as unfinished. Crypto jets · shared-package `face_lit` · JABS3 stay held until named.
+**dated_guard:** Do **not** reopen STOA243 as unfinished. Crypto jets - shared-package `face_lit` - JABS3 stay held until named.
 
 ---
 
 ## What just closed
 
-STOA243: product-authored `format_log_line` / `parse_log_line` · elder peer agree · honesty (no `rc.*` delegate).
+STOA243: product-authored `format_log_line` / `parse_log_line` - elder peer agree - honesty (no `rc.*` delegate).
 
 ---
 
@@ -25,10 +25,10 @@ STOA243: product-authored `format_log_line` / `parse_log_line` · elder peer agr
 
 | | Lean | What it opens |
 |---|---|---|
-| **A** | **Send STOA243** — **chosen** with round-close | pier carries authored body |
-| **B** | **Next authored body** — **recommended** | thin sign/verify body (over elder peer) · or digest body |
-| **C** | **Shared package / true `@import` face_lit** | thicker module-path seam — **held** until sized |
-| **D** | **JABS3** | inference · economics — **held**; explicit word only |
+| **A** | **Send STOA243** -- **chosen** with round-close | pier carries authored body |
+| **B** | **Next authored body** -- **recommended** | thin sign/verify body (over elder peer) - or digest body |
+| **C** | **Shared package / true `@import` face_lit** | thicker module-path seam -- **held** until sized |
+| **D** | **JABS3** | inference - economics -- **held**; explicit word only |
 
 ---
 

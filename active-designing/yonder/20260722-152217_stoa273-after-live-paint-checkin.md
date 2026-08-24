@@ -1,25 +1,25 @@
-# STOA273 — After Live-Root Skate Paint · Check-In
+# STOA273 -- After Live-Root Skate Paint - Check-In
 
-*An Acme Corporation employee reading this gets the fork after LIVE paints on glass beside the HAWM1 pin: the typed→Sala finishing edge now has file, wire, and Skate face. The next door is a held thicker season or a thin polish Keaton names — not another inventary deepen by default.*
+*An Acme Corporation employee reading this gets the fork after LIVE paints on glass beside the HAWM1 pin: the typed->Sala finishing edge now has file, wire, and Skate face. The next door is a held thicker season or a thin polish Keaton names -- not another inventary deepen by default.*
 
 **Language:** EN  
-**Version:** `20260722.152217` (EDT · Framework host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260722.152217` (EDT - Framework host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send done · lean **B** → STOA274 season check-in  
-**Register:** Checkable (Two Rooms) — STOA272 GREEN; Dexter→Sala live path closed; HAWM turn sized as STOA274  
+**Status:** Checkable -- lean **A** send done - lean **B** -> STOA274 season check-in  
+**Register:** Checkable (Two Rooms) -- STOA272 GREEN; Dexter->Sala live path closed; HAWM turn sized as STOA274  
 
-**Grounds in:** STOA272 LIVE paint · STOA270 live-root wire · humanity finishing edge · HAWM fleet check-in  
+**Grounds in:** STOA272 LIVE paint - STOA270 live-root wire - humanity finishing edge - HAWM fleet check-in  
 
-**dated_guard:** Do **not** reopen STOA270–272 as unfinished. Gold · shared-package · JABS3 · UDP stay held.
+**dated_guard:** Do **not** reopen STOA270-272 as unfinished. Gold - shared-package - JABS3 - UDP stay held.
 
 ---
 
 ## What just closed
 
-STOA272: `sala_live_root_glass` · `LIVE · N · hex8` on Skate row 5 · tip yields · pack + install still GREEN with both roots.
+STOA272: `sala_live_root_glass` - `LIVE - N - hex8` on Skate row 5 - tip yields - pack + install still GREEN with both roots.
 
-Together with STOA266–270, the finishing-edge loop is: typed memo → append → live root file → glass face, with HAWM1 pin honest beside it.
+Together with STOA266-270, the finishing-edge loop is: typed memo -> append -> live root file -> glass face, with HAWM1 pin honest beside it.
 
 ---
 
@@ -27,10 +27,10 @@ Together with STOA266–270, the finishing-edge loop is: typed memo → append �
 
 | | Lean | What it opens |
 |---|---|---|
-| **A** | **Send STOA272** — **chosen** with round-close | pier carries LIVE paint |
-| **B** | **HAWM 1A log-harvest inventary** — **chosen** → STOA274 | approved autonomy door · season turn |
+| **A** | **Send STOA272** -- **chosen** with round-close | pier carries LIVE paint |
+| **B** | **HAWM 1A log-harvest inventary** -- **chosen** -> STOA274 | approved autonomy door - season turn |
 | **C** | **Pixel screenshot / eyes note** | optional look record; not required for GREEN |
-| **D** | **Gold / shared-package / JABS3 / UDP** | thicker — **held** |
+| **D** | **Gold / shared-package / JABS3 / UDP** | thicker -- **held** |
 
 ---
 

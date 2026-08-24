@@ -1,17 +1,17 @@
-# STOA302 — Continue Glow Language · Check-In
+# STOA302 -- Continue Glow Language - Check-In
 
-*An Acme Corporation employee reading this gets the fork after Keaton asked to align and continue Glow: rest is declined, the language ladder sits GREEN through kind argv, and the next hand is a sized language door — not a silent reopen of gold or fleets.*
+*An Acme Corporation employee reading this gets the fork after Keaton asked to align and continue Glow: rest is declined, the language ladder sits GREEN through kind argv, and the next hand is a sized language door -- not a silent reopen of gold or fleets.*
 
 **Language:** EN  
-**Version:** `20260722.184311` (EDT · Framework host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260722.184311` (EDT - Framework host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Checkable — lean **A** approved → STOA303 GREEN  
-**Register:** Checkable (Two Rooms) — align seated; xact argv Checkable as STOA303  
+**Status:** Checkable -- lean **A** approved -> STOA303 GREEN  
+**Register:** Checkable (Two Rooms) -- align seated; xact argv Checkable as STOA303  
 
-**Grounds in:** align brief `20260722-184311_align-continue-glow-language.md` · STOA301 lean C · completeness survey `20260722.184015` · “align our direction and check in to continue developing Glow”  
+**Grounds in:** align brief `20260722-184311_align-continue-glow-language.md` - STOA301 lean C - completeness survey `20260722.184015` - "align our direction and check in to continue developing Glow"  
 
-**dated_guard:** Gold · face_lit package · fleets · HAWM2 · JABS3 · UDP · `deca-*` stay **held** unless explicitly chosen.
+**dated_guard:** Gold - face_lit package - fleets - HAWM2 - JABS3 - UDP - `deca-*` stay **held** unless explicitly chosen.
 
 ---
 
@@ -19,10 +19,10 @@
 
 | Arc | State |
 |---|---|
-| Flip emit (unit · payload) | GREEN · closed |
-| Kind unit-tag argv | GREEN · STOA300 |
+| Flip emit (unit - payload) | GREEN - closed |
+| Kind unit-tag argv | GREEN - STOA300 |
 | Xact / xfer / pair argv | refuse `SampleDoesNotNest` |
-| Completeness vs Hoon | surveyed · no % · families named |
+| Completeness vs Hoon | surveyed - no % - families named |
 | `.cursorignore` | seated |
 
 ---
@@ -31,17 +31,17 @@
 
 | | Lean | Size | What it opens |
 |---|---|---|---|
-| **A** | **Payload argv survey (xact first)** — **chosen** → STOA303 | survey → first code lap | tag + `amount` reader; xfer/pair stay refuse |
-| **B** | **Docs compressor** — Glow completeness page under `docs/` | thin prose | park the survey as living guide |
+| **A** | **Payload argv survey (xact first)** -- **chosen** -> STOA303 | survey -> first code lap | tag + `amount` reader; xfer/pair stay refuse |
+| **B** | **Docs compressor** -- Glow completeness page under `docs/` | thin prose | park the survey as living guide |
 | **C** | **Kind flip argv** | thin optional | call-body under kind + tag argv |
-| **D** | **Yonder old designing** | shelf hygiene | relevance `git mv` — not language metal |
-| **E** | **Gold · face_lit package · fleets · JABS3 · UDP** | thick | **held** |
+| **D** | **Yonder old designing** | shelf hygiene | relevance `git mv` -- not language metal |
+| **E** | **Gold - face_lit package - fleets - JABS3 - UDP** | thick | **held** |
 
-### Lean A — shape of the first kg
+### Lean A -- shape of the first kg
 
 1. Survey brief: pin xact argv refuse sites; name reader shape (`mint` / `send` + optional amount face).  
-2. Scope: one payload-argv family for **xact only** · do **not** open xfer/pair this lap · do **not** merge with u32 `parseInt` path.  
-3. First code lap: bartis (or both gates) · desk + worker stem · witness GREEN · twin next if split.
+2. Scope: one payload-argv family for **xact only** - do **not** open xfer/pair this lap - do **not** merge with u32 `parseInt` path.  
+3. First code lap: bartis (or both gates) - desk + worker stem - witness GREEN - twin next if split.
 
 ---
 

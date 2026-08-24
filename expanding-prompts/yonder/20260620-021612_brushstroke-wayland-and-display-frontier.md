@@ -1,12 +1,12 @@
-# 10012 · Brushstroke Wayland Seed and the Display Frontier
+# 10012 - Brushstroke Wayland Seed and the Display Frontier
 
 *Expanded at `021612` after push and Caravan twin: the hosted Brushstroke seed draws from values on stdout; Caravan now supervises two children with separate gardens; the display frontier is the next build thread that turns values into pixels on x86_64. This prompt orders autonomous work toward one native window without braiding Wayland study, thin client code, and roadmap hygiene into a single tangled push.*
 
 **Language:** EN
 **Version:** `20260620.021612` (Rye chronological stamp)
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Reya 2
-**Lens:** TAME — Gall's Law; `985` native interface; `986`/`988` Brushstroke; `995` single-stranded
+**Lens:** TAME -- Gall's Law; `985` native interface; `986`/`988` Brushstroke; `995` single-stranded
 
 ---
 
@@ -16,31 +16,31 @@
 
 ## The Mission
 
-Open the **display frontier** on x86_64: one Wayland client window, one static frame from values — the Gall-honest next step after `brushstroke/seed.rye`. Parallel near work stays **study and seam design** until the client connects and presents.
+Open the **display frontier** on x86_64: one Wayland client window, one static frame from values -- the Gall-honest next step after `brushstroke/seed.rye`. Parallel near work stays **study and seam design** until the client connects and presents.
 
 | Track | Milestone | Gall's test |
 |-------|-----------|-------------|
-| **A** | **Wayland client seed** — connect, create surface, attach buffer, commit once | Smallest window that shows our frame |
-| **B** | **Display seam doc** — narrow Rye wrappers for socket, registry, surface (`985` § display) | No OS pattern escapes wrappers |
-| **C** | **Roadmap / threads sync** — `996` 16 witnesses, hosted Brushstroke checked, twin checked | Docs match what runs |
+| **A** | **Wayland client seed** -- connect, create surface, attach buffer, commit once | Smallest window that shows our frame |
+| **B** | **Display seam doc** -- narrow Rye wrappers for socket, registry, surface (`985` section display) | No OS pattern escapes wrappers |
+| **C** | **Roadmap / threads sync** -- `996` 16 witnesses, hosted Brushstroke checked, twin checked | Docs match what runs |
 
 **Defer unless time remains:**
 
 | Track | Milestone | Why wait |
 |-------|-----------|----------|
-| **D** | **Device wire** — virtio-net datagram | Close-reading beside it (`10007` D) |
-| **E** | **Skate study** — Ghostty MIT embed path | After Brushstroke presents one frame |
+| **D** | **Device wire** -- virtio-net datagram | Close-reading beside it (`10007` D) |
+| **E** | **Skate study** -- Ghostty MIT embed path | After Brushstroke presents one frame |
 | **F** | **Pond GUI sketch** | Composes A + Mantra + Rishi (`10009`) |
 
 ## What Already Runs
 
-- `brushstroke/seed.rye` — Frame value → stdout redraw (`10011` A).
-- `caravan/twin.rye` — two children, separate budgets, independent restart (`10011` D).
+- `brushstroke/seed.rye` -- Frame value -> stdout redraw (`10011` A).
+- `caravan/twin.rye` -- two children, separate budgets, independent restart (`10011` D).
 - Design: `985`, `986`, `988`, `972` Wayland research; River public-spec study only.
 
-## Track A — Wayland Client Seed
+## Track A -- Wayland Client Seed
 
-**Deliverable:** `brushstroke/wayland_seed.rye` (or grow `seed.rye` behind a feature flag — prefer separate file until seam is clear).
+**Deliverable:** `brushstroke/wayland_seed.rye` (or grow `seed.rye` behind a feature flag -- prefer separate file until seam is clear).
 
 **Behavior:**
 
@@ -56,24 +56,24 @@ Open the **display frontier** on x86_64: one Wayland client window, one static f
 
 **Gratitude:** study `libwayland-client` API shape in docs only unless MIT wrapper already vendored; GPL River stays out of tree.
 
-## Track B — Display Seam
+## Track B -- Display Seam
 
-**Deliverable:** section in `active-designing/yonder/20260619-072600_brushstroke.md` or `985` addendum — three wrappers:
+**Deliverable:** section in `active-designing/yonder/20260619-072600_brushstroke.md` or `985` addendum -- three wrappers:
 
-- `Display.connect` — socket + registry roundtrip
-- `Display.Surface` — create, attach, commit lifecycle
-- `Display.Buffer` — SHM pool, stride, release
+- `Display.connect` -- socket + registry roundtrip
+- `Display.Surface` -- create, attach, commit lifecycle
+- `Display.Buffer` -- SHM pool, stride, release
 
 Each wrapper: assert at entry, typed errors, no raw fds in Brushstroke logic.
 
-## Track C — Doc Sync
+## Track C -- Doc Sync
 
 - `996_roadmap.md`: 16 witnesses, Caravan bounded + twin, hosted Brushstroke seed [x], Wayland seed [ ].
-- `995_open_threads.md`: twin landed; Wayland seed in progress → closed when A green.
+- `995_open_threads.md`: twin landed; Wayland seed in progress -> closed when A green.
 
 ## Discipline
 
-- **Gall:** one window, one frame — no Pond GUI in this pass.
+- **Gall:** one window, one frame -- no Pond GUI in this pass.
 - **Gates:** parity after `rye/lib/std` touches; build proof for Brushstroke.
 - **Session log** `99929_20260620-021612.md`; commit when twin + prompt land; push when asked.
 

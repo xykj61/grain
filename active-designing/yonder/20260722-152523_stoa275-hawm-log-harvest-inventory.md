@@ -1,15 +1,15 @@
-# STOA275 — HAWM Log-Harvest Inventary
+# STOA275 -- HAWM Log-Harvest Inventary
 
-*An Acme Corporation employee reading this gets the first HAWM deepen inventary after the Dexter→Sala finish: which host logs already exist, the agent-readable Bron harvest shape, and a device-free witness that folds meta (or a fixture) into `hawm-harvest.bron`. Multi-AVD fleets and GrapheneOS images stay held.*
+*An Acme Corporation employee reading this gets the first HAWM deepen inventary after the Dexter->Sala finish: which host logs already exist, the agent-readable Bron harvest shape, and a device-free witness that folds meta (or a fixture) into `hawm-harvest.bron`. Multi-AVD fleets and GrapheneOS images stay held.*
 
 **Language:** EN  
-**Version:** `20260722.152523` (EDT · Framework host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260722.152523` (EDT - Framework host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Checkable — GREEN `20260722.152622`  
-**Register:** Checkable (Two Rooms) — inventary + harvest shape GREEN; live boot harvest when meta has `device:`  
+**Status:** Checkable -- GREEN `20260722.152622`  
+**Register:** Checkable (Two Rooms) -- inventary + harvest shape GREEN; live boot harvest when meta has `device:`  
 
-**Grounds in:** STOA274 lean **A** approved · HAWM fleet check-in `20260722.143648` lean **1A** · `hawm0_boot_onpath_host` · `hawm1_sala_witness`  
+**Grounds in:** STOA274 lean **A** approved - HAWM fleet check-in `20260722.143648` lean **1A** - `hawm0_boot_onpath_host` - `hawm1_sala_witness`  
 
 **dated_guard:** Do **not** claim fleets or multi-AVD. Do **not** claim GrapheneOS under the emulator. Do **not** require `/dev/kvm` for the inventary witness itself.
 
@@ -19,7 +19,7 @@
 
 | Surface | Path / channel | Agent-readable today? |
 |---|---|---|
-| **Boot meta** | `tools/.cache/hawm0/hawm0-boot-meta.txt` | Yes — progress lines + `device: model=…` |
+| **Boot meta** | `tools/.cache/hawm0/hawm0-boot-meta.txt` | Yes -- progress lines + `device: model=...` |
 | **Emulator stdout** | `tools/.cache/hawm0/hawm0-emulator.log` | Noisy; kept as path pointer |
 | **Rish say** | terminal during `hawm0_boot_onpath_host` / `hawm1_sala_witness` | Ephemeral unless captured |
 | **adb logcat** | live on host | Not harvested this lap |
@@ -29,7 +29,7 @@ Jail truth: boot stays **host-onpath** (`/dev/kvm`). Inventary witness runs devi
 
 ---
 
-## Harvest shape — `hawm-harvest-v1`
+## Harvest shape -- `hawm-harvest-v1`
 
 Bron fields (one per line, no quotes):
 
@@ -41,10 +41,10 @@ rung HAWM0
 source meta|meta-fixture
 kvm present|absent
 boot_completed 0|1
-model …
-android …
-abi …
-qemu …
+model ...
+android ...
+abi ...
+qemu ...
 meta_path tools/.cache/hawm0/hawm0-boot-meta.txt
 emulator_log_path tools/.cache/hawm0/hawm0-emulator.log
 status GREEN
@@ -58,7 +58,7 @@ Output: `tools/.cache/hawm0/hawm-harvest.bron` (gitignored cache)
 
 ## Verdict (one breath)
 
-**HAWM_HARVEST_V1.** Inventary of meta · emulator log · ephemeral Rish · logcat-held. First GREEN folds meta/fixture into Bron.
+**HAWM_HARVEST_V1.** Inventary of meta - emulator log - ephemeral Rish - logcat-held. First GREEN folds meta/fixture into Bron.
 
 ---
 
@@ -75,4 +75,4 @@ rishi/bin/rishi run tools/hawm_log_harvest_witness.rish
 
 ## Hold
 
-Multi-AVD slots · fleet orchestration · HAWM2 GrapheneOS image · in-jail KVM · logcat stream harvest.
+Multi-AVD slots - fleet orchestration - HAWM2 GrapheneOS image - in-jail KVM - logcat stream harvest.

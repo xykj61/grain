@@ -1,7 +1,7 @@
 # The Developer Guide
 
 **Language:** EN
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Audience:** Acme Corporation employees - anyone contributing to this tree
 **Status:** Living -- describes what runs today; horizons named as horizons.
 

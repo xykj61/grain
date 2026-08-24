@@ -1,23 +1,23 @@
-# STOA328 — nest_type Table Collapse · Living Shape Params
+# STOA328 -- nest_type Table Collapse - Living Shape Params
 
-*An Acme Corporation employee reading this gets the nest/type allowlist and closed `$:` N-path collapsed to tables, with living parameters that say **shape** rather than mold — so one row teaches every closed name, and printouts match Glow OS speech.*
+*An Acme Corporation employee reading this gets the nest/type allowlist and closed `$:` N-path collapsed to tables, with living parameters that say **shape** rather than mold -- so one row teaches every closed name, and printouts match Glow OS speech.*
 
 **Language:** EN  
-**Version:** `20260722.203753` (EDT · Framework host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260722.203753` (EDT - Framework host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Checkable — collapse GREEN `20260722.203753`  
-**Register:** Checkable (Two Rooms) — nest_type + N-path shape locals; study `-mold` aliases kept  
+**Status:** Checkable -- collapse GREEN `20260722.203753`  
+**Register:** Checkable (Two Rooms) -- nest_type + N-path shape locals; study `-mold` aliases kept  
 
-**Grounds in:** STOA327 lean **C** · sameness [`../foundations/20260703-182612_sameness-is-the-macro.md`](../../foundations/20260703-182612_sameness-is-the-macro.md) · shape surface [`20260720-223226_glow-os-shape-not-mold.md`](../20260720-223226_glow-os-shape-not-mold.md)  
+**Grounds in:** STOA327 lean **C** - sameness [`../foundations/20260703-182612_sameness-is-the-macro.md`](../../foundations/20260703-182612_sameness-is-the-macro.md) - shape surface [`20260720-223226_glow-os-shape-not-mold.md`](../20260720-223226_glow-os-shape-not-mold.md)  
 
-**dated_guard:** Study `-mold` strings and `glow/gen/hoon-study/` stay. Do **not** rewrite dated STOA titles. Gold · fleets · JABS3 · deca stay held.
+**dated_guard:** Study `-mold` strings and `glow/gen/hoon-study/` stay. Do **not** rewrite dated STOA titles. Gold - fleets - JABS3 - deca stay held.
 
 ---
 
 ## Verdict (one breath)
 
-**NEST_TYPE_SHAPE_TABLE.** `closed_named_allowlist` · `closed_tuple_rows` · `closed_tuple_field_count` · `assert_n_field_shape_nests` on `nest_type` · lowers call that N helper · living params/locals say `shape_name` / `shape` · nest · bartis · barket witnesses GREEN.
+**NEST_TYPE_SHAPE_TABLE.** `closed_named_allowlist` - `closed_tuple_rows` - `closed_tuple_field_count` - `assert_n_field_shape_nests` on `nest_type` - lowers call that N helper - living params/locals say `shape_name` / `shape` - nest - bartis - barket witnesses GREEN.
 
 ---
 
@@ -28,7 +28,7 @@
 | Allowlist | twenty-six `if` equals | one `closed_named_allowlist` loop |
 | Tuple N | eight `is_*_named_shape` ladders in lowers | one `nest_type.closed_tuple_field_count` |
 | Assert N-field | eight `assert_*_shape_nests` bodies | one `assert_n_field_shape_nests` + thin wrappers |
-| Living speech | `mold_name` params · `mold` locals on N-path | `shape_name` · `shape` · `stated_shape` |
+| Living speech | `mold_name` params - `mold` locals on N-path | `shape_name` - `shape` - `stated_shape` |
 
 ---
 
@@ -36,9 +36,9 @@
 
 | Cleared | Still carries mold (named debt) |
 |---|---|
-| `nest_type` living params | `GateSpec.mold_name` · `mold_name_slice` · `max_mold_len` |
-| bartis/barket parse locals | `lower_face` · `rune_face` · cast / tokens |
-| N-path emit locals | study alias strings · hoon-study desks |
+| `nest_type` living params | `GateSpec.mold_name` - `mold_name_slice` - `max_mold_len` |
+| bartis/barket parse locals | `lower_face` - `rune_face` - cast / tokens |
+| N-path emit locals | study alias strings - hoon-study desks |
 
 ---
 

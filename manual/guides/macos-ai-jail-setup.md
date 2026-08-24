@@ -2,7 +2,7 @@
 
 **Language:** EN  
 **Version:** `20260730.145920` (EDT) - SUNN7  
-**Style:** Radiant (see `../../context/RADIANT_STYLE.md`)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Kyri  
 **Status:** Guide for the task -- witnessed on this fork's own macOS host, including a real jailed-GUI launch and a live write-fence probe from inside a running jailed agent window; the Rish scripts below are the primary path, with their bash elders kept beside them  
 **Sibling:** [`SOURCE.md`](../../SOURCE.md) Step 6 - [`enclosure-editors.md`](../../context/specs/enclosure-editors.md) - [`key-cards-setup.md`](key-cards-setup.md)  

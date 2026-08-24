@@ -1,7 +1,7 @@
 # Sandboxing and Getting Set Up
 
 **Language:** EN
-**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Audience:** an Acme Corporation employee setting up a safe place to work on this template -- beginner-welcome, developer-precise
 **Law:** [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md)

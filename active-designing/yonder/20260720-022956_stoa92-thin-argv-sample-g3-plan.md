@@ -1,14 +1,14 @@
-# STOA92 / G3 — Thin Parameterized Generator Plan
+# STOA92 / G3 -- Thin Parameterized Generator Plan
 
-*Keaton asked for the thinnest honest lap: one desk reads one `@u32` sample from Rishi argv; the matching fixture desk stays GREEN; Glow still does not tokenize `|=` (bartis). This brief is the implementable plan — not the GREEN close.*
+*Keaton asked for the thinnest honest lap: one desk reads one `@u32` sample from Rishi argv; the matching fixture desk stays GREEN; Glow still does not tokenize `|=` (bartis). This brief is the implementable plan -- not the GREEN close.*
 
 **Language:** EN  
-**Version:** `20260720.022956` (UTC · cloud host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260720.022956` (UTC - cloud host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Design — implementable plan; checkable once the witness below is GREEN  
-**Register:** Mixed (Two Rooms) — file paths and argv seam are **design** until the witness binds them  
-**Grounds in:** [`20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](../20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) G3 · [`../expanding-prompts/20260719-204001_glow-fixture-desks-and-parameterized-generators.md`](../../expanding-prompts/20260719-204001_glow-fixture-desks-and-parameterized-generators.md) · [`../tools/glow_run.rish`](../../tools/glow_run.rish) · [`../glow/glow_run.rye`](../../glow/glow_run.rye) · [`../glow/lower_cast.rye`](../../glow/lower_cast.rye) · [`../tools/glow_run_desk_witness.rish`](../../tools/glow_run_desk_witness.rish)
+**Status:** Design -- implementable plan; checkable once the witness below is GREEN  
+**Register:** Mixed (Two Rooms) -- file paths and argv seam are **design** until the witness binds them  
+**Grounds in:** [`20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md`](../20260719-204001_glow-rune-pronunciation-alphabet-riscv-and-generators.md) G3 - [`../expanding-prompts/20260719-204001_glow-fixture-desks-and-parameterized-generators.md`](../../expanding-prompts/20260719-204001_glow-fixture-desks-and-parameterized-generators.md) - [`../tools/glow_run.rish`](../../tools/glow_run.rish) - [`../glow/glow_run.rye`](../../glow/glow_run.rye) - [`../glow/lower_cast.rye`](../../glow/lower_cast.rye) - [`../tools/glow_run_desk_witness.rish`](../../tools/glow_run_desk_witness.rish)
 
 **dated_guard:** Do **not** edit the dated `20260719-204001_*` files. Seat G3 progress in living docs (`glow/README.md`, `context/TAME_GUIDANCE.md` Now lines, work-in-progress ledgers) and in *this* new dated brief.
 
@@ -26,7 +26,7 @@ Keep `glow/gen/cast-u32.glow` as the baked fixture. Add a twin generator desk wh
 
 | Path | Role |
 |------|------|
-| `glow/gen/sample-u32.glow` | Generator desk — same rune body as the cast fixture (`^-  @u32`); comments name G3, argv sample, fixture twin, bartis horizon |
+| `glow/gen/sample-u32.glow` | Generator desk -- same rune body as the cast fixture (`^-  @u32`); comments name G3, argv sample, fixture twin, bartis horizon |
 | `tools/glow_sample_argv_witness.rish` | Device-free witness for the argv path (fixture + generator + refuse) |
 | `active-designing/20260720-022956_stoa92-thin-argv-sample-g3-plan.md` | This plan (already seated) |
 
@@ -40,17 +40,17 @@ Keep `glow/gen/cast-u32.glow` as the baked fixture. Add a twin generator desk wh
 | `glow/lower_cast_witness.rye` | Assert argv emit contains `minimal.args` / `parseInt(u32` and still keeps baked welcome `raw: u64 = 42` |
 | `tools/glow_lower_cast_witness.rish` | Assert new GREEN substring for argv-sample emit |
 | `glow/README.md` | Living: G3 checkable; name fixture vs generator desks; link this brief |
-| `context/TAME_GUIDANCE.md` | Living Glow pin: "Argv sample remains G3" → G3 seated with witness path |
-| `work-in-progress/TASKS.md` · `ROADMAP.md` · `REMEMBER.md` | Living ledger: STOA92 G3 plan seated / GREEN when witness lands |
+| `context/TAME_GUIDANCE.md` | Living Glow pin: "Argv sample remains G3" -> G3 seated with witness path |
+| `work-in-progress/TASKS.md` - `ROADMAP.md` - `REMEMBER.md` | Living ledger: STOA92 G3 plan seated / GREEN when witness lands |
 
 ### Do not change
 
 | Path | Why |
 |------|-----|
-| `glow/gen/cast-u32.glow` | Matching fixture — baked welcome path unchanged |
+| `glow/gen/cast-u32.glow` | Matching fixture -- baked welcome path unchanged |
 | `tools/glow_run_desk_witness.rish` | Stays argv-free; continues to prove `cast-u32.glow` GREEN |
 | `glow/tokens.rye` | No `|=` / bartis this lap |
-| `active-designing/20260719-204001_*.md` · `expanding-prompts/20260719-204001_*.md` | dated_guard — cite only |
+| `active-designing/20260719-204001_*.md` - `expanding-prompts/20260719-204001_*.md` | dated_guard -- cite only |
 
 Optional later (not this lap): a thin Acme expanding-prompt *new* stamp restating the hand; never rewrite the `204001` prompt.
 
@@ -62,32 +62,32 @@ Optional later (not this lap): a thin Acme expanding-prompt *new* stamp restatin
 
 ```
 rishi run tools/glow_run.rish glow/gen/sample-u32.glow 42
-        │
-        ▼
-Rishi binds script args  →  args[0]=glow path  args[1]="42"
-        │
-        ▼
+        |
+        v
+Rishi binds script args  ->  args[0]=glow path  args[1]="42"
+        |
+        v
 glow_run.rish
   1. build glow/bin/glow_run  (driver)
   2. run: glow/bin/glow_run --sample-argv glow/gen/sample-u32.glow
-        → lower_cast.lower_line_argv_sample("^-  @u32")
-        → writes glow/.cache/sample-u32.rye  (main reads process argv)
-  3. rye build → glow/bin/sample-u32
+        -> lower_cast.lower_line_argv_sample("^-  @u32")
+        -> writes glow/.cache/sample-u32.rye  (main reads process argv)
+  3. rye build -> glow/bin/sample-u32
   4. run: glow/bin/sample-u32 42     ← sample is process argv[1]
-        → parseInt(u32) → checked cast boundary → exit 0
+        -> parseInt(u32) -> checked cast boundary -> exit 0
 ```
 
 | Layer | Does | Does not |
 |-------|------|----------|
 | **Rishi** (`glow_run.rish`) | Own orchestration; forward the decimal string; assert arity | Parse/validate `@u32` (binary owns that) |
 | **Glow lower** (`lower_cast` + `glow_run.rye --sample-argv`) | Emit `main` that reads `init.minimal.args` | Tokenize `|=`; invent bartis syntax |
-| **Rewrite** (inject literal into `.glow` then ordinary lower) | — | **Rejected** — binary never sees argv; not "desk reads sample" |
+| **Rewrite** (inject literal into `.glow` then ordinary lower) | -- | **Rejected** -- binary never sees argv; not "desk reads sample" |
 
 ### Fixture path (unchanged)
 
 ```
 rishi run tools/glow_run.rish glow/gen/cast-u32.glow
-  → glow_run (no --sample-argv) → lower_line_welcome → baked raw 42 → binary with no argv → EXIT:0
+  -> glow_run (no --sample-argv) -> lower_line_welcome -> baked raw 42 -> binary with no argv -> EXIT:0
 ```
 
 ### CLI contracts
@@ -117,7 +117,7 @@ Mirror today's cast welcome shape; replace baked `raw` with argv parse. Target t
 ```rye
 const std = @import("std");
 
-/// Lowered from Glow `^-  @u32` — sample from process argv (G3).
+/// Lowered from Glow `^-  @u32` -- sample from process argv (G3).
 pub fn main(init: std.process.Init) !u8 {
     const alloc = init.arena.allocator();
     const argv = try init.minimal.args.toSlice(alloc);
@@ -135,7 +135,7 @@ Bounds: `rye_buf` stays `[4096]u8`; this emit fits. Refuse non-`@u32` molds with
 
 ```
 ::  Thin parameterized generator (G3): one @u32 sample from Rishi argv.
-::  Matching fixture desk: cast-u32.glow (baked welcome). Not bartis — |= horizon.
+::  Matching fixture desk: cast-u32.glow (baked welcome). Not bartis -- |= horizon.
 ^-  @u32
 ```
 
@@ -161,21 +161,21 @@ Pattern after `glow_run_desk_witness.rish` / `glow_lower_cast_witness.rish`:
 
 1. **Fixture still argv-free**
    - `rishi run tools/glow_run.rish glow/gen/cast-u32.glow`
-   - assert `ok` · `GREEN` · `cast-u32.glow`
+   - assert `ok` - `GREEN` - `cast-u32.glow`
 
-2. **Generator welcome — sample 42** (matches fixture welcome constant)
+2. **Generator welcome -- sample 42** (matches fixture welcome constant)
    - `rishi run tools/glow_run.rish glow/gen/sample-u32.glow 42`
-   - assert `ok` · `GREEN` · `sample-u32.glow`
+   - assert `ok` - `GREEN` - `sample-u32.glow`
 
-3. **Generator welcome — different sample 7** (proves parameterization)
+3. **Generator welcome -- different sample 7** (proves parameterization)
    - `rishi run tools/glow_run.rish glow/gen/sample-u32.glow 7`
-   - assert `ok` · `GREEN`
+   - assert `ok` - `GREEN`
 
-4. **Arity refuse** — missing sample on generator desk
+4. **Arity refuse** -- missing sample on generator desk
    - `rishi run tools/glow_run.rish glow/gen/sample-u32.glow` with no second arg
    - assert **not** `ok` (Rishi `assert args.len == 2` for this stem)
 
-5. **Parse refuse** — bad decimal
+5. **Parse refuse** -- bad decimal
    - After a successful lower/build of `sample-u32` (or via a small `sh -c` run of the built bin): `glow/bin/sample-u32 not-a-u32`
    - assert exit **2** (usage / parse fail), not 0
 
@@ -186,10 +186,10 @@ Pattern after `glow_run_desk_witness.rish` / `glow_lower_cast_witness.rish`:
 Final say line:
 
 ```
-GREEN: glow sample argv G3 — fixture cast-u32; generator sample-u32 reads one @u32 from Rishi argv.
+GREEN: glow sample argv G3 -- fixture cast-u32; generator sample-u32 reads one @u32 from Rishi argv.
 ```
 
-No adb, no device, no Sala — host Rishi + rye only.
+No adb, no device, no Sala -- host Rishi + rye only.
 
 ---
 
@@ -200,7 +200,7 @@ No adb, no device, no Sala — host Rishi + rye only.
 | **Fixture desk** | `glow/gen/cast-u32.glow` | Baked in lower (`cast_welcome_raw = 42`) | `glow_run.rish` one arg; binary no argv |
 | **Generator desk** | `glow/gen/sample-u32.glow` | Process argv[1] decimal `@u32` | `glow_run.rish` two args; `--sample-argv` lower |
 
-Vocabulary (already seated G0): speak **fixture desk** / **generator** / **sample**; say **Glow gate** / **bartis** only as horizon — never claim this lap tokenizes `|=`.
+Vocabulary (already seated G0): speak **fixture desk** / **generator** / **sample**; say **Glow gate** / **bartis** only as horizon -- never claim this lap tokenizes `|=`.
 
 All other `glow/gen/*.glow` files remain fixture desks.
 
@@ -208,16 +208,16 @@ All other `glow/gen/*.glow` files remain fixture desks.
 
 ## 5. Risks / pitfalls
 
-1. **Rewriting the `.glow` with a baked literal** — looks GREEN, fails the G3 claim. Reject.
-2. **Tokenizing `|=` "while we are here"** — out of scope; breaks alphabet/token witnesses; park for a bartis lap.
-3. **Putting `sample-u32` into `glow_run_desk_witness.rish`** — that suite never passes argv; generator would fail or silently take the wrong emit path.
-4. **Changing default `^-` welcome emit to read argv** — breaks every cast fixture and `glow_lower_cast_witness`. Mode must be opt-in (`--sample-argv` only).
-5. **Stem-only magic without Rishi arity assert** — `sample-u32.glow` lowered as welcome would bake 42 and lie. Pair stem guard in `.rish` with `--sample-argv` in the driver.
-6. **`sh -c "${bin} ${sample}"` interpolation** — keep sample a bare decimal (witness uses `42` / `7`); do not pass free-form strings in the first witness.
-7. **`parseInt` vs Tally** — lowered emit may use `std.fmt.parseInt` to match existing cast emit style; do not drag `tally/parse_int.rye` into Glow emit this lap unless a style roster already requires it.
-8. **Editing dated `204001` briefs** — dated_guard refuses; update living README/TAME Now lines instead.
-9. **Claiming bartis / Glow gate is seated** — prose must say horizon; G3 is shell-sample + cast lower only.
-10. **Width / buffer** — keep emit inside the existing 4096-byte rye buffer; no unbounded argv copying beyond `toSlice` arena.
+1. **Rewriting the `.glow` with a baked literal** -- looks GREEN, fails the G3 claim. Reject.
+2. **Tokenizing `|=` "while we are here"** -- out of scope; breaks alphabet/token witnesses; park for a bartis lap.
+3. **Putting `sample-u32` into `glow_run_desk_witness.rish`** -- that suite never passes argv; generator would fail or silently take the wrong emit path.
+4. **Changing default `^-` welcome emit to read argv** -- breaks every cast fixture and `glow_lower_cast_witness`. Mode must be opt-in (`--sample-argv` only).
+5. **Stem-only magic without Rishi arity assert** -- `sample-u32.glow` lowered as welcome would bake 42 and lie. Pair stem guard in `.rish` with `--sample-argv` in the driver.
+6. **`sh -c "${bin} ${sample}"` interpolation** -- keep sample a bare decimal (witness uses `42` / `7`); do not pass free-form strings in the first witness.
+7. **`parseInt` vs Tally** -- lowered emit may use `std.fmt.parseInt` to match existing cast emit style; do not drag `tally/parse_int.rye` into Glow emit this lap unless a style roster already requires it.
+8. **Editing dated `204001` briefs** -- dated_guard refuses; update living README/TAME Now lines instead.
+9. **Claiming bartis / Glow gate is seated** -- prose must say horizon; G3 is shell-sample + cast lower only.
+10. **Width / buffer** -- keep emit inside the existing 4096-byte rye buffer; no unbounded argv copying beyond `toSlice` arena.
 
 ---
 
@@ -229,13 +229,13 @@ All other `glow/gen/*.glow` files remain fixture desks.
 4. Add `glow/gen/sample-u32.glow`.
 5. Extend cast lower witness; add `tools/glow_sample_argv_witness.rish`; run both GREEN.
 6. Sync living docs (`glow/README.md`, TAME Glow pin, TASKS/ROADMAP/REMEMBER Now lines).
-7. Session log + commit (component `glow:` / `tools:` — split if the diff is large).
+7. Session log + commit (component `glow:` / `tools:` -- split if the diff is large).
 
 ---
 
 ## Out of scope (STOA92 siblings)
 
-Token-driven lower · tidy `lower_mold` · Sala B0 — remain later check-ins. This plan is **G3 argv sample only**.
+Token-driven lower - tidy `lower_mold` - Sala B0 -- remain later check-ins. This plan is **G3 argv sample only**.
 
 ---
 

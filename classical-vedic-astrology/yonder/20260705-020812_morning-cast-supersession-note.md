@@ -1,6 +1,6 @@
 # The Morning-Cast Chapters Rest Here
 
-**Stamp:** `20260705.020812 UDT`  -  **Language:** EN  -  **Style:** Radiant
+**Stamp:** `20260705.020812 UDT`  -  **Language:** EN  -  **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 
 *Written together by Kaeden and Rio 3.*
 

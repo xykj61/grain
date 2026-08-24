@@ -1,6 +1,6 @@
-# Fidelity Softening — Instructions for the Thirteen Title-Drawn Studies
+# Fidelity Softening -- Instructions for the Thirteen Title-Drawn Studies
 
-**Stamp:** `20260705.195812 UDT` · **Style:** Radiant
+**Stamp:** `20260705.195812 UDT` - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Reya 2
 **For:** Cursor Composer, applying in the ai-jail sandbox, under Kaeden's supervision
 
@@ -10,7 +10,7 @@ This bundle carries the fidelity ruling into the shelf. Thirteen studies numbere
 
 ## What changes, and what holds
 
-Each of the thirteen files has only its gratitude section rewritten. The gratitude sentence becomes plain — gratitude to the teacher of the material, with a stated caveat that the study was drawn from the shape of that teaching ahead of its full transcript and awaits a transcript-true revision. The specific talk becomes a "Further listening" pointer rather than a cited source. Every other line — header, body, benediction — stays byte-identical.
+Each of the thirteen files has only its gratitude section rewritten. The gratitude sentence becomes plain -- gratitude to the teacher of the material, with a stated caveat that the study was drawn from the shape of that teaching ahead of its full transcript and awaits a transcript-true revision. The specific talk becomes a "Further listening" pointer rather than a cited source. Every other line -- header, body, benediction -- stays byte-identical.
 
 Chitra already carries its true, transcript-faithful revision and stays as it is. The studies from batches four, five, and six were genuinely distilled from transcripts read in full, so their citations are true and this bundle does not touch them.
 
@@ -24,11 +24,11 @@ Four of these thank Parisa Yazdi; the rest thank Vic DiCara.
 
 ## How to apply
 
-Work from the repository root. Extract this bundle over the tree, letting the thirteen files overwrite in place. Change nothing else. Before any commit, run the two guarded-name word-boundary greps that Kaeden holds across the whole tree, and proceed only when both return silent. Then Kaeden commits from the host and pushes to all four remotes — origin/Codeberg, github, gp36-codeberg, gp36-github — kept in sync.
+Work from the repository root. Extract this bundle over the tree, letting the thirteen files overwrite in place. Change nothing else. Before any commit, run the two guarded-name word-boundary greps that Kaeden holds across the whole tree, and proceed only when both return silent. Then Kaeden commits from the host and pushes to all four remotes -- origin/Codeberg, github, gp36-codeberg, gp36-github -- kept in sync.
 
 ## The forward path
 
-Softening is the honest floor, and revision is the fuller honesty. As each real transcript arrives, graduate that study to a transcript-true revision, restore its specific citation, and lift the caveat line — exactly as Chitra already shows. Honesty holds at every step, and it deepens over time.
+Softening is the honest floor, and revision is the fuller honesty. As each real transcript arrives, graduate that study to a transcript-true revision, restore its specific citation, and lift the caveat line -- exactly as Chitra already shows. Honesty holds at every step, and it deepens over time.
 
 ---
 

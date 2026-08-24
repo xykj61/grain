@@ -2,7 +2,7 @@
 
 *Rests in yonder as of 20260705.020812: written on the morning cast; see the supersession note. The Virgo and Aries sign-and-star teachings stand; the houses are superseded.*
 
-**Stamp:** `20260704.223112 UDT`  -  **Language:** EN  -  **Style:** Radiant (see `RADIANT_STYLE.md`)
+**Stamp:** `20260704.223112 UDT`  -  **Language:** EN  -  **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Subject:** Brooke  -  D1 Venus in Virgo, Purva Phalguni  -  D9 Venus in Aries, Revati (houses per the morning cast)
 
 *Written together by Kaeden and Rio 3.*

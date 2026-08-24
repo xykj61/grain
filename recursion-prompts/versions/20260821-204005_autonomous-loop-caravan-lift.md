@@ -1,6 +1,6 @@
 # Autonomous loop -- filled `20260821.204005`, pointed at the Caravan lift work
 
-**Stamp:** `20260821.204005` - **Voice:** Kyri - **Style:** Radiant - **Seed:** [`../seed/autonomous-loop.seed.md`](../seed/autonomous-loop.seed.md)
+**Stamp:** `20260821.204005` - **Voice:** Kyri - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **The day it wakes after:** [`../../external-research/20260821-152409_the-standfast-read-marks-rooms-and-the-vocabulary-pruning.md`](../../external-research/20260821-152409_the-standfast-read-marks-rooms-and-the-vocabulary-pruning.md) -- the Standfast read, and the four arcs that closed on it.
 
 ---

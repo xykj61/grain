@@ -1,14 +1,14 @@
-# Caravan Capability Table — Reference
+# Caravan Capability Table -- Reference
 
 **Language:** EN
 **Version:** `20260702.205630`
-**Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Rio 3
-**Witness:** `tools/ca/caravan_capabilities.rish` · parity **142**
+**Witness:** `tools/ca/caravan_capabilities.rish` - parity **142**
 
 ---
 
-This page documents only what the capability-table witness proves today — a bounded hosted policy table naming what each supervised dependent may do over named resources.
+This page documents only what the capability-table witness proves today -- a bounded hosted policy table naming what each supervised dependent may do over named resources.
 
 ## Build and run
 
@@ -26,11 +26,11 @@ GREEN: Caravan capability table witness passed.
 
 | Piece | Bound |
 |-------|-------|
-| Dependents per table | ≤ **4** (`max_dependents`) |
-| Capabilities per dependent | ≤ **8** (`max_caps_per_dependent`) |
-| Name length | ≤ **48** bytes |
+| Dependents per table | <= **4** (`max_dependents`) |
+| Capabilities per dependent | <= **8** (`max_caps_per_dependent`) |
+| Name length | <= **48** bytes |
 
-Each **capability** names a **resource** string and a **rights mask** (read, write, exec, net, device — combined with bitwise OR).
+Each **capability** names a **resource** string and a **rights mask** (read, write, exec, net, device -- combined with bitwise OR).
 
 ## Rights bits (witnessed)
 
@@ -50,15 +50,15 @@ The selftest constructs three dependents:
 
 | Dependent | Resources granted |
 |-------|-------------------|
-| `vfs` | `/usr` read · `/lib` read |
+| `vfs` | `/usr` read - `/lib` read |
 | `display` | `gpu0` read + device |
-| `repl` | project home read · `here` read + write |
+| `repl` | project home read - `here` read + write |
 
-Assertions prove allowed and denied paths — for example `repl` may write `here` yet may not write `/usr`.
+Assertions prove allowed and denied paths -- for example `repl` may write `here` yet may not write `/usr`.
 
 ## Chronological version
 
-`caravan_capabilities_version = "20260630.042012"` — reported by the seed; backend semver stays a named seam elsewhere.
+`caravan_capabilities_version = "20260630.042012"` -- reported by the seed; backend semver stays a named seam elsewhere.
 
 ---
 

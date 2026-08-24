@@ -1,13 +1,13 @@
-# Cursor Build — SLC-1 Step 2: Version, in `rishi/src/main.rye`
+# Cursor Build -- SLC-1 Step 2: Version, in `rishi/src/main.rye`
 
 *The implementation pass for one verb, gated step by step. The session gains two bounded structures and one meta-command that weaves it into Mantra's store. Grounded in the loop Step 1 already proved, built incrementally, typechecked at each turn, with the witness held for metal.*
 
 **Stamp:** `20260629.004912`
 **Voice:** Reya 2, with **Kaeden Reyklah** as coauthor
-**Style:** Radiant (see `context/RADIANT_STYLE.md`)
-**Discipline:** TAME (see `context/TAME_STYLE.md`) · SLC
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Discipline:** TAME (see `context/TAME_STYLE.md`) - SLC
 **For:** Cursor Composer 2.5, in the ai-jail sandbox
-**Grounding:** scope — [`active-designing/20260629-004912_slc-1-step-2-version.md`](../../active-designing/yonder/20260629-004912_slc-1-step-2-version.md) · runbook Phase 2 — [`expanding-prompts/20260629-004912_cursor-pass-slc1-version-recall-and-tame.md`](expanding-prompts/20260629-004912_cursor-pass-slc1-version-recall-and-tame.md)
+**Grounding:** scope -- [`active-designing/20260629-004912_slc-1-step-2-version.md`](../../active-designing/yonder/20260629-004912_slc-1-step-2-version.md) - runbook Phase 2 -- [`expanding-prompts/20260629-004912_cursor-pass-slc1-version-recall-and-tame.md`](expanding-prompts/20260629-004912_cursor-pass-slc1-version-recall-and-tame.md)
 
 *Written together by Kaeden and Reya 2.*
 
@@ -15,7 +15,7 @@
 
 ## How We Build This
 
-Propose, then apply — one substep at a time, in the order 2a → 2f. After each substep, typecheck `rishi/src/main.rye` against pristine std with the pinned toolchain the seed header documents, and show the result. Building the `rishi` binary and running the witness need Kaeden's metal; everything else is **[sandbox-verifiable]** by typecheck.
+Propose, then apply -- one substep at a time, in the order 2a -> 2f. After each substep, typecheck `rishi/src/main.rye` against pristine std with the pinned toolchain the seed header documents, and show the result. Building the `rishi` binary and running the witness need Kaeden's metal; everything else is **[sandbox-verifiable]** by typecheck.
 
 Build in TAME order. The new code is born clean: bounded structures with named ceilings, a `u32` count, two assertions a function on average, and the unqualified `assert` imported once. We add no width debt and no qualified asserts in anything we write here.
 
@@ -31,13 +31,13 @@ At the top of `rishi/src/main.rye`, beside the existing `const std = @import("st
 const assert = std.debug.assert;
 ```
 
-Optional, gated ratchet — since we are already in this file: convert the eighteen existing `std.debug.assert(` calls to bare `assert(`, leaving the file clean for the coming `tame-check`. Propose it; Kaeden's call whether it rides this pass or waits for the next touch. It is mechanical and safe, yet it is not Step 2's heart.
+Optional, gated ratchet -- since we are already in this file: convert the eighteen existing `std.debug.assert(` calls to bare `assert(`, leaving the file clean for the coming `tame-check`. Propose it; Kaeden's call whether it rides this pass or waits for the next touch. It is mechanical and safe, yet it is not Step 2's heart.
 
 ---
 
 ## The Two Bounds
 
-Near the other module constants, name the two ceilings the hammock spec drew — both first estimates the metal may revise:
+Near the other module constants, name the two ceilings the hammock spec drew -- both first estimates the metal may revise:
 
 ```zig
 const max_history: u32 = 50;             // recent input lines kept for :history and (Step 3) :recall
@@ -46,7 +46,7 @@ const max_transcript_bytes: u32 = 65536; // the session transcript's ceiling, in
 
 ---
 
-## Phase 2a — The Session Ring
+## Phase 2a -- The Session Ring
 
 A bounded ring of recent **input lines**, the cache for `:history` now and `:recall` in Step 3. It mirrors `Env`'s bounded shape, with a `u32` count.
 
@@ -73,7 +73,7 @@ const History = struct {
 };
 ```
 
-**Correctness — duplicate the line before storing it.** In `runRepl`, the trimmed `line` is a slice into the reader's reused `stdin_buffer`; the next read overwrites it. So before recording, copy the line into the season arena and store the copy:
+**Correctness -- duplicate the line before storing it.** In `runRepl`, the trimmed `line` is a slice into the reader's reused `stdin_buffer`; the next read overwrites it. So before recording, copy the line into the season arena and store the copy:
 
 ```zig
 const kept = try garden.dupe(u8, line);
@@ -84,7 +84,7 @@ A stored slice into `stdin_buffer` would dangle. The dupe into the arena lives f
 
 ---
 
-## Phase 2b — The Transcript
+## Phase 2b -- The Transcript
 
 A bounded, in-memory text record of prompt, input, and caught errors, held until `:version`. It owns its bytes, so it needs no dupe.
 
@@ -96,7 +96,7 @@ const Transcript = struct {
     bytes: [max_transcript_bytes]u8 = undefined,
     len: u32 = 0,
 
-    /// Append text if it fits. Returns false at the edge — the caller then
+    /// Append text if it fits. Returns false at the edge -- the caller then
     /// invites a :version to checkpoint, rather than wrapping in silence.
     fn append(self: *Transcript, text: []const u8) bool {
         assert(self.len <= max_transcript_bytes);
@@ -113,15 +113,15 @@ const Transcript = struct {
 };
 ```
 
-(The `usize` here is the inherited-std seam at the slice index — assert-and-cast, exactly the Tally pattern, permitted under the refined width-check.)
+(The `usize` here is the inherited-std seam at the slice index -- assert-and-cast, exactly the Tally pattern, permitted under the refined width-check.)
 
 A small helper keeps the record shape in one place: write `"rishi> "`, then the input line, then a newline; on a caught error, write `"  error: "`, the error name, and a newline. When `append` returns false, print a gentle line inviting `:version`, and continue.
 
 ---
 
-## Phase 2c — `:history`
+## Phase 2c -- `:history`
 
-In `runRepl`'s meta-command branch, add `:history` — print the ring entries, numbered from 1 across the current window:
+In `runRepl`'s meta-command branch, add `:history` -- print the ring entries, numbered from 1 across the current window:
 
 ```zig
 if (std.mem.eql(u8, line, ":history")) {
@@ -137,7 +137,7 @@ if (std.mem.eql(u8, line, ":history")) {
 
 ---
 
-## Phase 2d — The Lazy Store
+## Phase 2d -- The Lazy Store
 
 `:version` touches the store only when first asked. Carry a session flag in `runRepl`:
 
@@ -145,11 +145,11 @@ if (std.mem.eql(u8, line, ":history")) {
 var store_ready = false;
 ```
 
-On the first `:version`, ensure `.mantra/` exists — stat it, and run `mantra init` only when it is absent — then set `store_ready = true`, so repeated versions stay quiet.
+On the first `:version`, ensure `.mantra/` exists -- stat it, and run `mantra init` only when it is absent -- then set `store_ready = true`, so repeated versions stay quiet.
 
 ---
 
-## Phase 2e — `:version`
+## Phase 2e -- `:version`
 
 The verb itself. A small helper resolves the binary and runs Mantra, reusing the `std.process.run` path `doRun` already proves:
 
@@ -173,17 +173,17 @@ fn runMantra(allocator: std.mem.Allocator, io: std.Io, args: []const []const u8)
 On `:version`, in order:
 
 1. Ensure the store lazily (Phase 2d).
-2. Write the transcript whole to `.mantra/session.log` — `Dir.cwd().writeFile(io, .{ .sub_path = ".mantra/session.log", .data = transcript.bytes[0..transcript.len] })`.
-3. Weave it — `runMantra(garden, io, &.{ "add", ".mantra/session.log" })`.
+2. Write the transcript whole to `.mantra/session.log` -- `Dir.cwd().writeFile(io, .{ .sub_path = ".mantra/session.log", .data = transcript.bytes[0..transcript.len] })`.
+3. Weave it -- `runMantra(garden, io, &.{ "add", ".mantra/session.log" })`.
 4. Report the result: on a zero exit, print Mantra's stdout (the advanced HEAD line); otherwise print its stderr and the code, plainly.
 
 Composition holds throughout: Rishi calls the Mantra program and reads its result; Mantra's internals stay in Mantra.
 
 ---
 
-## Phase 2f — The Witness
+## Phase 2f -- The Witness
 
-`tools/slc1_version_step2.rish` with `tools/fixtures/slc1_version_step2.input`, in the Step 1 mould — a `.rish` witness wrapping an `sh -c`. **[metal-gated to run]**
+`tools/slc1_version_step2.rish` with `tools/fixtures/slc1_version_step2.input`, in the Step 1 mould -- a `.rish` witness wrapping an `sh -c`. **[metal-gated to run]**
 
 Fixture (input piped to `rishi repl`):
 
@@ -200,7 +200,7 @@ The shell prepares a clean temporary directory as cwd, puts `rishi/bin` and `man
 let result = run ["sh" "-c" "<setup, run, verify, echo GREEN>"]
 assert result.ok else "rishi repl version pass exited non-zero"
 assert result.out contains "GREEN: SLC-1 Step 2" else "version did not advance HEAD with a blob"
-say "GREEN: SLC-1 Step 2 — the session versions into Mantra."
+say "GREEN: SLC-1 Step 2 -- the session versions into Mantra."
 ```
 
 Register it in `tools/parity.rish` once it runs green on metal, beside `slc1_repl_step1.rish`.
@@ -210,9 +210,9 @@ Register it in `tools/parity.rish` once it runs green on metal, beside `slc1_rep
 ## The Gates
 
 - **Typecheck** `rishi/src/main.rye` against pristine std after each substep. **[sandbox-verifiable]**
-- **`width-check.rish`** — green on `rishi/src/main.rye` for everything we add (new counts are `u32`; the one transcript seam is asserted-and-cast). The file's pre-existing `usize` is its own later pass, not this build's. **[sandbox-verifiable]**
-- **`tame-check.rish`**, if present — the new code carries bare `assert` and no `Self = @This()`. **[sandbox-verifiable]**
-- **`parity.rish`** and **`slc1_version_step2.rish`** — green on metal. **[metal-gated]**
+- **`width-check.rish`** -- green on `rishi/src/main.rye` for everything we add (new counts are `u32`; the one transcript seam is asserted-and-cast). The file's pre-existing `usize` is its own later pass, not this build's. **[sandbox-verifiable]**
+- **`tame-check.rish`**, if present -- the new code carries bare `assert` and no `Self = @This()`. **[sandbox-verifiable]**
+- **`parity.rish`** and **`slc1_version_step2.rish`** -- green on metal. **[metal-gated]**
 
 State plainly at the end which gates ran by running and which await Kaeden's metal.
 
@@ -220,7 +220,7 @@ State plainly at the end which gates ran by running and which await Kaeden's met
 
 ## Commit, Push, Session Log
 
-Commit the build as one honest unit — the two structures, the meta-commands, the composition, the witness, and the fixture together. Write a session log at `session-logs/<filing-stamp>_slc1-step2-version-built.md`, coauthored, in Radiant voice: the thinking trace, the dangling-slice catch and how it was met, what typechecked in the sandbox, and what awaits metal. Push over HTTPS to the usual remotes from the host; Berry on the tip if it pleases you.
+Commit the build as one honest unit -- the two structures, the meta-commands, the composition, the witness, and the fixture together. Write a session log at `session-logs/<filing-stamp>_slc1-step2-version-built.md`, coauthored, in Radiant voice: the thinking trace, the dangling-slice catch and how it was met, what typechecked in the sandbox, and what awaits metal. Push over HTTPS to the usual remotes from the host; Berry on the tip if it pleases you.
 
 *(Kaeden: supply the filing stamp verbatim; `20260629.004912` is the pass mark, re-stamped for the moment this lands.)*
 
