@@ -1,24 +1,24 @@
-# Twin Keys and the Exit Bundle — Said Plainly
+# Twin Keys and the Exit Bundle -- Said Plainly
 
 *A checkable-room note for anyone who hears "dual monarch D1" and wants the picture without a consensus textbook: two signatures, one body, and a way to leave when the ledger goes quiet.*
 
 **Stamp:** `20260709.230414`
 **Voice:** Rio 3
-**Editor:** Cursor · **Model:** Grok 4.5
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Checkable-room research — explains living practice; cites `linengrow/wov_core.rye` dual path
-**Ground:** exit honesty [`200443`](../context/specs/20260709-200443_wov-exit-honesty.md) · dual design [`224531`](../context/specs/20260709-224531_wov-dual-monarch.md) · parity **205** · Pedersen plainly [`200022`](20260709-200022_pedersen-and-sigma-plainly.md) · compass [`185112`](../foundations/20260706-185112_follow-our-compass.md)
+**Editor:** Cursor - **Model:** Grok 4.5
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
+**Status:** Checkable-room research -- explains living practice; cites `linengrow/wov_core.rye` dual path
+**Ground:** exit honesty [`200443`](../context/specs/20260709-200443_wov-exit-honesty.md) - dual design [`224531`](../context/specs/20260709-224531_wov-dual-monarch.md) - parity **205** - Pedersen plainly [`200022`](20260709-200022_pedersen-and-sigma-plainly.md) - compass [`185112`](../foundations/20260706-185112_follow-our-compass.md)
 
-*Written by Kaeden and Rio 3 (Grok). Creative climb inside the jail — no TigerBeetle io_uring required.*
+*Written by Kaeden and Rio 3 (Grok). Creative climb inside the jail -- no TigerBeetle io_uring required.*
 
-Radiant pass `20260728.050219` — living rename-forward: **MUR** (was MALA)
+Radiant pass `20260728.050219` -- living rename-forward: **MUR** (was MALA)
 ---
 
 ## In One Breath
 
 A **WOV root** is a signed snapshot of who holds what inside the fast lane. An **exit bundle** is the public table of those balances, hashed into the root, so a holder can prove their row and walk back to MUR (was MALA) even if the monarch never answers again.
 
-**Dual monarch D1** means two named keys must both sign the **same** root fact bytes — twin log lines, one story — before the tree treats that root as current. One key alone is not enough once the instance is dual.
+**Dual monarch D1** means two named keys must both sign the **same** root fact bytes -- twin log lines, one story -- before the tree treats that root as current. One key alone is not enough once the instance is dual.
 
 ---
 
@@ -30,7 +30,7 @@ They also write a short diary line on the slow, honest log (MUR (was MALA)): "ro
 
 With **one monarch**, one signature on that diary line is enough.
 
-With **two monarchs (D1)**, the diary prints the **same sentence twice** — same from/to/memo/amount/stamp bytes — and each monarch signs their own copy. Verifiers accept the root only when **both** signatures check. A lone signature is refused. That is twin keys: two pens, one text.
+With **two monarchs (D1)**, the diary prints the **same sentence twice** -- same from/to/memo/amount/stamp bytes -- and each monarch signs their own copy. Verifiers accept the root only when **both** signatures check. A lone signature is refused. That is twin keys: two pens, one text.
 
 ---
 
@@ -40,9 +40,9 @@ With **two monarchs (D1)**, the diary prints the **same sentence twice** — sam
 |--------|----------------|
 | One monarch | Solo operator; lap 1 and seam A still valid |
 | Two monarchs (D1) | Both must attest; availability still rests on the published bundle |
-| Three+ | Not WOV — that door is Mycelium at M4 |
+| Three+ | Not WOV -- that door is Mycelium at M4 |
 
-Dual control is a **signing policy**, not a second ledger and not Byzantine agreement among strangers. The exit bundle grammar stays the same as lap 1. Conservation still reads: sum of balances = issued − redeemed.
+Dual control is a **signing policy**, not a second ledger and not Byzantine agreement among strangers. The exit bundle grammar stays the same as lap 1. Conservation still reads: sum of balances = issued - redeemed.
 
 ---
 
@@ -64,8 +64,8 @@ Silence after a published dual root still leaves facts, not hope.
 | `publish_root_dual` | Bundle + twin log lines |
 | `verify_latest_root_dual` | Both signatures or refuse |
 | `accept_exit_dual` | Exit against an accepted dual root |
-| `tools/wov_dual_monarch.rish` | Witness — parity **205** |
-| Seam A projection | TB-shaped balances → same bundle grammar (live REPL skips in jail) |
+| `tools/wov_dual_monarch.rish` | Witness -- parity **205** |
+| Seam A projection | TB-shaped balances -> same bundle grammar (live REPL skips in jail) |
 
 No new curve. No OR-proof. No Zig client into the pin. Creativity here is **clarity**: the same honesty story, told so a second key fits without inventing a third.
 

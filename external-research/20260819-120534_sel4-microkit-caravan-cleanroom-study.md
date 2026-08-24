@@ -1,6 +1,6 @@
 # seL4 and the seL4 Microkit -- a clean-room study for Caravan
 
-**Stamp:** `20260819.120534` · **Voice:** Kyri (Radiant) · **Status:** Research for understanding -- Living study
+**Stamp:** `20260819.120534` - **Voice:** Kyri (Radiant) - **Status:** Research for understanding -- Living study
 **Gratitude:** [`../gratitude/sel4-microkit.md`](../gratitude/sel4-microkit.md)
 **License discipline:** [`.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md) -- seL4 kernel is GPL-2.0, **never cloned**; Microkit and site docs read from the public web only.
 

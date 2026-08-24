@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260821.222916`
-**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Checkable -- every claim below is bound by `tools/caravan_mapping_witness.rish`, GREEN on metal
 **Season:** the Lindy-priority Microkernel Target double-seat, Equinox 1 -- Caravan on the microkernel

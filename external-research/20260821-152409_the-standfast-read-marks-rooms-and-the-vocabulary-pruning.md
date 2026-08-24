@@ -4,7 +4,7 @@
 
 **Stamp:** `20260821.152409`
 **Language:** EN
-**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Lens:** [Standfast](../foundations/20260816-214652_standfast-the-stopped-line.md) -- stop, root, prove -- and [Lindy-first, crux-first](../.claude/rules/lindy-first-crux.md)
 **Status:** Mixed -- research + recommendation. Nothing here is seated; every proposal waits on a word.

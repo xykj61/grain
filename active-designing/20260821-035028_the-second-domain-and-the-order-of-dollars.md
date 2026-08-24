@@ -1,6 +1,6 @@
 # The Second Domain and the Order of Dollars
 
-**Stamp:** `20260821.035028` - **Status:** Vision -- Living (design proposal; nothing seated) - **Voice:** Kyri - **Style:** Radiant
+**Stamp:** `20260821.035028` - **Status:** Vision -- Living (design proposal; nothing seated) - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Scope:** the Linengrow industrial pivot, financial leverage, and the go-slow-to-go-faster question
 **Kin:** [`Civic Style`](../context/CIVIC_STYLE.md) - [`money that stays close to home`](../foundations/20260629-014512_money-that-stays-close-to-home.md) - [`the heart in the work`](../foundations/20260628-121512_the-heart-in-the-work.md) - [`the merit ledger`](../foundations/20260727-113304_the-merit-ledger.md) - [`the design-over-build ratio and finishing`](../counsel/20260715-190000_the-design-over-build-ratio-and-finishing.md) - [`the bench measured`](../external-research/20260821-034037_the-bench-measured-and-the-standing-gauge-protocol.md)
 

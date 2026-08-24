@@ -1,6 +1,6 @@
 # The Bench, Measured -- and the Standing Gauge Protocol
 
-**Stamp:** `20260821.034037` - **Status:** Mixed -- Living (measurement record + booked protocol) - **Voice:** Kyri - **Style:** Radiant
+**Stamp:** `20260821.034037` - **Status:** Mixed -- Living (measurement record + booked protocol) - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Register:** Radiant - **Season:** the Microkernel Target double-seat (Caravan is its Equinox 1)
 **Kin:** [`the microkernel target and the OS parity question`](20260817-185851_microkernel-target-and-the-os-parity-question.md) - [`.claude/rules/reds-first.md`](../.claude/rules/reds-first.md) - [`.claude/rules/docs-implementation-sync.md`](../.claude/rules/docs-implementation-sync.md) - `GLOW_PROFILE.bron`
 

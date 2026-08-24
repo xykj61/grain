@@ -1,6 +1,6 @@
 # The One-Way Door, and the Price of Convenience
 
-**Stamp:** `20260822.111738` - **Language:** EN - **Voice:** Kyri - **Style:** Radiant
+**Stamp:** `20260822.111738` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Checkable -- every number below is printed by a meter that runs, and asserted by a witness that runs beside it
 **Meter:** [`../tools/fixtures/ladder_reach_visibility_scan.sh`](../tools/fixtures/ladder_reach_visibility_scan.sh) `sink` - **Witness:** [`../tools/caravan_ladder_reach_visibility_witness.rish`](../tools/caravan_ladder_reach_visibility_witness.rish)
 **Kin:** [`reds-first`](../.claude/rules/reds-first.md) - [`Two Rooms`](../context/TWO_ROOMS.md) - REDS %130 - REDS %137

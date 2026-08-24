@@ -1,16 +1,16 @@
-# The Road a Failure Carries — From Metalsmoke Toward a Trace
+# The Road a Failure Carries -- From Metalsmoke Toward a Trace
 
 *Kaeden asked whether metalsmoke should expand into Rye's general debugging and
 error-stacktrace organ. The recommendation keeps the word narrow and graduates the insight:
-metalsmoke stays exactly what its definition note made it — the thin edge of
-checks only the world can answer — while the insights beneath the question grow into a
+metalsmoke stays exactly what its definition note made it -- the thin edge of
+checks only the world can answer -- while the insights beneath the question grow into a
 designed organ of their own: the trace, the road a failure carries.*
 
 **Stamp:** `20260703.182612` (supplied verbatim by Kaeden)
-**Language:** EN · **Style:** Radiant · **Lens:** TAME
-**Status:** External research — study and recommendation; the trace's functional spec waits
+**Language:** EN - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
+**Status:** External research -- study and recommendation; the trace's functional spec waits
 for the open Edit-5 slot on Kaeden's word
-**Companions:** `../active-designing/20260703-013412_metalsmoke.md` · `../context/TAME_GUIDANCE.md` (named errors) · the second harvest's *every wait has a deadline*
+**Companions:** `../active-designing/20260703-013412_metalsmoke.md` - `../context/TAME_GUIDANCE.md` (named errors) - the second harvest's *every wait has a deadline*
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*
 
@@ -18,8 +18,8 @@ for the open Edit-5 slot on Kaeden's word
 
 ## Why the Word Stays Narrow
 
-Metalsmoke names a *category of witness* — the few honest checks where only real metal, a real
-compositor, a real drive can answer. A trace names a *property of failure* — what any error,
+Metalsmoke names a *category of witness* -- the few honest checks where only real metal, a real
+compositor, a real drive can answer. A trace names a *property of failure* -- what any error,
 anywhere, carries out with it. Folding the second into the first would blur two clean edges
 the tree just spent a season sharpening. One word, one meaning; the discipline that named
 season and bench holds here too.
@@ -27,24 +27,24 @@ season and bench holds here too.
 ## Three Teachers, Siloed
 
 A from-scratch functional OS lineage teaches that every crash should carry the whole road that
-led there — a nested chain of causes, printable, honest about depth. A modern systems
+led there -- a nested chain of causes, printable, honest about depth. A modern systems
 language's ecosystem teaches errors as small named values first and captured backtraces
 second, paid for only when wanted. And a Lisp-family contracts library teaches that a value
-failing a shape at a seam deserves an explanation of *why* — which part, which expectation —
+failing a shape at a seam deserves an explanation of *why* -- which part, which expectation --
 rather than a bare no. All three are thanked below; what crosses the doorway is the pattern.
 
 ## The Trace on Our Spine
 
 Our stack adds the piece none of the teachers had: state is a pure fold over an append-only
-log of signed facts. So a failure's road has two lanes. The **call road** — which scripts and
-stages were in flight — rishi already whispers today (`at line N`); its first lap is a frame
+log of signed facts. So a failure's road has two lanes. The **call road** -- which scripts and
+stages were in flight -- rishi already whispers today (`at line N`); its first lap is a frame
 stack of nested `run script` entries printed on any assert failure, oldest to newest. The
-**fact road** — the last few events the fold consumed before the world went wrong — is the
+**fact road** -- the last few events the fold consumed before the world went wrong -- is the
 lane only a log-shaped system can offer, and it turns a stack trace into a story: here are the
 facts, here is the stage, here is the shape that refused. Shape refusals at seams speak the
 contracts vocabulary: name the field, the bound, and the found value, exactly as the Brix
 door-checks already fail with named errors. And riding along from the second harvest: **every
-wait has a deadline** — an unbounded wait is unbounded allocation wearing a clock, so a trace
+wait has a deadline** -- an unbounded wait is unbounded allocation wearing a clock, so a trace
 that ends in a timeout names the deadline that expired.
 
 ## The first lap, When Its Season Opens
