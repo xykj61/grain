@@ -99,7 +99,10 @@ while read -r f; do
   [ -n "$f" ] || continue
   if [ -f "$f" ]; then
     bytes=$(wc -c <"$f" | tr -d ' ')
-    [ "$bytes" -gt "$MAX_BYTES" ] && printf '%s\t%s\n' "$bytes" "$f" >>"$TMP/over"
+    # Per page: one page may carry its own bound where the general one would refuse it for doing
+    # its job -- session-logs/README.md is an index read from the top (REDS %205).
+    page_max=$(sh "$(dirname "$0")/living_pin_max_bytes.sh" "$f" 2>/dev/null) || page_max="$MAX_BYTES"
+    [ "$bytes" -gt "$page_max" ] && printf '%s\t%s\n' "$bytes" "$f" >>"$TMP/over"
   else
     echo "$f" >>"$TMP/phantom"
   fi

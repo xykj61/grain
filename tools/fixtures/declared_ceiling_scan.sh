@@ -178,12 +178,19 @@ for f in $FILES; do
       bounds_declaring=$((bounds_declaring + 1))
       spelled=$(printf '%s' "$bline" \
         | sed -n 's/.*living_pin_max_bytes[^0-9]*\([0-9][0-9]*\).*/\1/p' | head -1)
-      bwant="$LIVING_PIN_MAX_BYTES"
+      # The law answers PER PAGE, because one page may carry its own bound where the general one
+      # would refuse it for doing its job -- session-logs/README.md is an index read from the top
+      # rather than a card read whole, so it holds 256 rows at 192 bytes each (REDS %205).
+      page_law="$LIVING_PIN_MAX_BYTES"
+      if [ -z "${DECLARED_BOUND_MAX_BYTES:-}" ]; then
+        page_law=$(sh "$(dirname "$0")/living_pin_max_bytes.sh" "$f" 2>/dev/null) || page_law="$LIVING_PIN_MAX_BYTES"
+      fi
+      bwant="$page_law"
       if [ -n "$spelled" ]; then
         bwant="$spelled"
-        if [ "$spelled" -ne "$LIVING_PIN_MAX_BYTES" ]; then
+        if [ "$spelled" -ne "$page_law" ]; then
           bounds_disagree=$((bounds_disagree + 1))
-          BOUNDS_DISAGREE="$BOUNDS_DISAGREE $f:${spelled}_against_${LIVING_PIN_MAX_BYTES}"
+          BOUNDS_DISAGREE="$BOUNDS_DISAGREE $f:${spelled}_against_${page_law}"
         fi
       fi
       bhave=$(wc -c < "$f" | tr -d ' ')

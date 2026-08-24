@@ -61,9 +61,10 @@ moved beneath `date/`, their rows onto shelves -- 3,415 shelf links, none broken
 held at **186** while recoverable rose 9,070 -> 9,246, a correct fold by the law's own test. Rows
 ran to 2,223 bytes, so on Keaton's word they shortened: **a row points, it does not summarise**, at
 or under **192 bytes** (`tools/in/index_row_bound_witness.rish`). The pin fell **291,781 -> 7,563**, and **not one living page now stands above the bound it declares** -- `declared_ceiling`'s byte ratchet falls 1 -> 0.
-**Open door (REDS %205): the 256-file room bound and the 24,576-byte pin bound cannot both hold** --
-a meaning-free row costs ~123, so 256 need ~31,500. 192 carries a median day (61 logs); 15 of 61
-days ran past the ~116 the pin holds, peak 223. Keaton's word.
+**REDS %205 closed on Keaton's word:** the 256-file room bound and the 24,576-byte pin bound could
+not both hold, so this one page got its own -- `living_pin_max_bytes[session-logs/README.md]` =
+**57,344**, being `256 x 192` rows plus 8,192 prose. Every other pin keeps 24,576, and
+`tools/fixtures/living_pin_max_bytes.sh` answers **per page** so no meter spells either number.
 
 **Landed, and the detail is in the logs**, one line each in *Prior laps* below. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`).
 

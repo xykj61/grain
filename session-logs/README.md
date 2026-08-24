@@ -4,11 +4,16 @@
 **Style:** Gauge, Meter setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
 **Status:** Living pin -- newest-first index of the logs still flat in this room
-**Bound:** under `living_pin_max_bytes` (24576)
+**Bound:** under `living_pin_max_bytes[session-logs/README.md]` (57344)
 **Seasons roster:** [`SEASONS.md`](SEASONS.md)
 
 Every session in this tree leaves a log, and this table is the way in. It reads **newest first**,
 and one row is one lap: when it happened, what it is called, and what it found.
+
+**This page carries its own byte bound** -- `living_pin_max_bytes[session-logs/README.md]` = **57,344**,
+which is `256 x 192` rows plus 8,192 for prose, so the index can hold a full room of 256 flat logs.
+Every other living pin keeps 24,576; the two serve different readings, since that number bounds a
+page an agent reads *whole* and this one is read from the *top* (REDS %205, Keaton's word `20260824`).
 
 **A row points; it does not summarise.** The log is the record, and the index is the way in, so a
 row stays **at or under 192 bytes** -- a stamp, a linked title, and one clause. The number is the
@@ -41,6 +46,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260824.183958` | [one reading two numbers](20260824-183958_one-reading-two-numbers.kyri) | The pin bound rises to 57,344 for one page, and the one reading answers per page. |
 | `20260824.182308` | [a row points](20260824-182308_a-row-points.kyri) | 36 rows rewritten as pointers, the pin 291,781 -> 7,563, and two seated bounds found incompatible. |
 | `20260824.180216` | [the room folds and two numbers meet](20260824-180216_the-room-folds-and-two-numbers-meet.kyri) | 169 logs and their rows carried across, the census unmoved. |
 | `20260824.173816` | [the ratchet reaches its floor](20260824-173816_the-ratchet-reaches-its-floor.kyri) | 41 rows across; every folding room enforced, ceiling zero. |

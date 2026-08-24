@@ -198,15 +198,17 @@ fi
 
 # --- duty 6 (wc -c) — past bound + near-bound fold advisory ---
 # Near = 90% of living_pin_max_bytes. Remedy: fold closed season → seasons roster.
-LIVING_PIN_NEAR_BYTES=$((LIVING_PIN_MAX_BYTES * 90 / 100))
+LIVING_PIN_NEAR_BYTES=$((LIVING_PIN_MAX_BYTES * 90 / 100))   # the general near line; a page
+                                                            # with its own bound is near ITS 90%
 : >"$TMP/d6"
 : >"$TMP/d6near"
 while IFS= read -r rel; do
   [ -n "$rel" ] && [ -f "$rel" ] || continue
   size=$(wc -c <"$rel" | tr -d ' ')
-  if [ "$size" -gt "$LIVING_PIN_MAX_BYTES" ]; then
-    echo "ADVISE duty6 living-pin-bytes ${rel}: ${size} > living_pin_max_bytes=${LIVING_PIN_MAX_BYTES}" >>"$TMP/d6"
-  elif [ "$size" -ge "$LIVING_PIN_NEAR_BYTES" ]; then
+  page_max=$(sh "$ROOT/tools/fixtures/living_pin_max_bytes.sh" "$rel" 2>/dev/null) || page_max="$LIVING_PIN_MAX_BYTES"
+  if [ "$size" -gt "$page_max" ]; then
+    echo "ADVISE duty6 living-pin-bytes ${rel}: ${size} > living_pin_max_bytes=${page_max}" >>"$TMP/d6"
+  elif [ "$size" -ge $((page_max * 90 / 100)) ]; then
     dir=$(dirname "$rel")
     roster="${dir}/SEASONS.md"
     if [ -f "$roster" ]; then

@@ -19,7 +19,31 @@ Named bound (TAME-style):
 
 ```
 living_pin_max_bytes = 24576  // ~6k tokens: a pin an agent reads in one breath beside its lap
+living_pin_max_bytes[session-logs/README.md] = 57344  // an index is read from the top, not whole
 ```
+
+## The one exception, and why it is one (accretion `20260824.190000`, Keaton's word)
+
+**`session-logs/README.md` carries 57,344 bytes rather than 24,576**, and the number is derived
+rather than granted. A room folds past **256 flat files**, the index must hold one row per flat
+file, and an index row is bounded at **192 bytes** (`.claude/rules/session-logs.md`). So the rows
+alone need `256 x 192 = 49,152`, and 8,192 for prose -- roughly three times the 2,678 the page
+carries today -- brings it to **57,344**, a clean multiple of 1024.
+
+**The general bound and this one serve different readings, which is the whole argument.** 24,576 is
+*~6k tokens: a pin an agent reads in one breath* -- it bounds a page read **whole**. An index is
+read from the **top**: the loop's own instruction is to open a lap on the newest rows and the
+newest log's `recommend` line, never on all of them. A bound written for a page read whole,
+applied to a lookup table, refuses the table for doing its job.
+
+**Before this accretion the two seated numbers could not both hold.** A meaning-free row still
+costs ~123 bytes, so 256 rows needed ~31,500 against a 24,576-byte pin, whatever a row said
+(REDS %205). Raising this one page is the resolution Keaton chose; lowering the room bound was the
+other, and it would have cost the room its own ceiling rather than the index its own.
+
+**One reading answers both.** [`../../tools/fixtures/living_pin_max_bytes.sh`](../../tools/fixtures/living_pin_max_bytes.sh)
+takes an optional page path and returns that page's bound, so no meter spells either number and no
+second reading exists to disagree with the first (REDS %199).
 
 Today’s healthiest working surface pin already passes: `glow/README.md` sits near 21 KB. Season ledgers that wore living names — `session-logs/README.md`, `work-in-progress/TASKS.md`, `work-in-progress/ROADMAP.md` — keep the current season in place and roll the rest onto dated archive shelves the index already ignores.
 
