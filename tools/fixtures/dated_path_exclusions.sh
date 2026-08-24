@@ -114,8 +114,28 @@ DP_EXCLUDE_PATHS="docs-geode/demos/README.md"
 # rising because the round explained itself well.
 #
 # So the exemption belongs to the planted NAME rather than to any file that mentions it. A basename
-# listed here is subtracted wherever it is quoted, which is safe precisely because these names are
-# constructed to match nothing: a stamp of all zeros names no lap this tree ever ran.
+# subtracted here is subtracted wherever it is quoted, which is safe precisely because these names
+# are constructed to match nothing: a stamp of all zeros names no lap this tree ever ran.
+#
+# THE NAMES COME FROM TWO PLACES, AND ONLY ONE OF THEM CAN BE DISCOVERED (`20260824.193000`,
+# REDS %203's named remainder, now counted). A hand-written roster reaches the names somebody
+# remembered, which is REDS %187's shape; the roster held 2 planted names and the tree held 47.
+#
+#   DISCOVERED -- a name an instrument plants. `dp_discovered_fixture_basenames` finds it by two
+#     conjuncts, and each closes one failure mode of the other:
+#       1. the basename appears in AUTHORED CODE -- .rye, .rish, .sh, .brix outside vendor and
+#          gratitude, and outside THIS FILE, since a roster that reads itself discovers everything
+#          it lists;
+#       2. its SPRIG names no file anywhere in the tree.
+#     Conjunct 2 alone reads 105 of 122 lost basenames, because a document that was deleted has an
+#     absent sprig too. Conjunct 1 alone reads real documents that merely MOVED -- the first attempt
+#     at this count returned `20260729-222500_reds-first-and-the-allocation.md`, whose sprig sits on
+#     disk under a different stamp. Together they read 47, and every one is a fixture by eye:
+#     `ghost`, `theta`, `moved`, `x.md`, `never-written`, `a-room-that-never-folded`.
+#
+#   LISTED -- a name the tree DELIBERATELY does not carry. A debride removed it, or a fusion
+#     retired it. No instrument plants it, so nothing can discover it, and it is a decision rather
+#     than a fact. Those four stay written below, and that is the right home for them.
 # Basenames a reference may name that the tree deliberately does NOT carry, so the census reads
 # them as intent rather than as breakage.
 #
@@ -138,9 +158,10 @@ DP_EXCLUDE_PATHS="docs-geode/demos/README.md"
 #   commit-msg hook refuses a body citing a path the tree does not hold (REDS %202). A stamp of
 #   20260101-010101 names no lap this tree ever ran, so the name matches nothing by construction --
 #   the same reasoning as the first entry, one control later.
-DP_FIXTURE_BASENAMES="20260101-000000_a-dated-note.md \
-20260101-010101_never-written.kyri \
-20260730-022147_keaton-livermore-resume-draft.md \
+# The LISTED half only. The two planted names that stood here -- `20260101-000000_a-dated-note.md`
+# and `20260101-010101_never-written.kyri` -- are found by discovery now, along with 45 more, so
+# listing them would be the duplication this round exists to end.
+DP_FIXTURE_BASENAMES="20260730-022147_keaton-livermore-resume-draft.md \
 20260730-022147_personal-ontology.md \
 20260730-022147_cover-letter-co-authored.md \
 20260821-211423_conways-law-and-the-organization-that-forgets.md"
@@ -210,10 +231,41 @@ dp_readmit_dirs() {
   printf '%s\n' "$@"
 }
 
-# The planted fixture basenames, emitted one per line for a consumer to subtract from its corpus.
+# The LISTED absences, emitted one per line for a consumer to subtract from its corpus.
 dp_fixture_basenames() {
   set -f
   set -- $DP_FIXTURE_BASENAMES
   set +f
   printf '%s\n' "$@"
+}
+
+# The DISCOVERED plantings, emitted one per line. Two passes and no roster:
+#
+#   1. every dated basename written into authored code, outside this file;
+#   2. minus every one whose sprig names a real file.
+#
+# The second pass is what keeps a moved document from being read as a planting, and the first is
+# what keeps a deleted one from being read as a planting. Neither conjunct is safe alone, which is
+# why the first attempt at this count was wrong and why both are spelled out here.
+#
+# Takes the repository root, so a caller that has cd'd into a pen still reads the tree it means to.
+dp_discovered_fixture_basenames() {
+  _dp_root=${1:-.}
+  ( cd "$_dp_root" 2>/dev/null || exit 0
+    git ls-files 2>/dev/null | while IFS= read -r _f; do
+      basename "$_f"
+    done | sed -n 's/^[0-9]\{8\}-[0-9]\{6\}[_.]//p' | sort -u > "$_dp_root/.dp_sprigs.$$" 2>/dev/null \
+      || return 0
+    git ls-files '*.rye' '*.rish' '*.sh' '*.brix' 2>/dev/null \
+      | grep -vE '^(vendor|gratitude|old)/' \
+      | grep -v '^tools/fixtures/dated_path_exclusions.sh$' \
+      | xargs grep -hoE '[0-9]{8}-[0-9]{6}[_.][A-Za-z0-9._-]+\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' 2>/dev/null \
+      | sort -u \
+      | while IFS= read -r _b; do
+          _sp=$(printf '%s' "$_b" | sed -n 's/^[0-9]\{8\}-[0-9]\{6\}[_.]//p')
+          [ -n "$_sp" ] || { printf '%s\n' "$_b"; continue; }
+          grep -qxF -- "$_sp" "$_dp_root/.dp_sprigs.$$" || printf '%s\n' "$_b"
+        done
+    rm -f "$_dp_root/.dp_sprigs.$$"
+  )
 }

@@ -76,9 +76,12 @@ verb="${1:-census}"
 # the stamp sitting inside a longer filename rather than a reference at all. What remains is
 # **239 genuine references** the census had never counted, every one of them landing. The number
 # a wider and tighter meter reports is the same number, which is the most one can ask of a repair.
-LOST_CEILING=186   # 192 until 20260823.124407, when *_control.sh became a glob exclusion; 187
+LOST_CEILING=177   # 192 until 20260823.124407, when *_control.sh became a glob exclusion; 187
                    # until 20260824.174500, when a citation swept by the Sala -> Seva rename was
-                   # repointed at the dated filename that correctly never followed it.
+                   # repointed at the dated filename that correctly never followed it; 186 until
+                   # 20260824.193000, when planted fixture names began being DISCOVERED rather than
+                   # listed -- 47 found against a roster of 2, of which nine had been counted here
+                   # as breakage (REDS %203's named remainder, closed).
 
 # What is not the field -- read from ONE list that this tool and the repointer both source, since
 # a list kept in two places is two lists that happen to match today (REDS %121).
@@ -164,11 +167,15 @@ fi
 # quotes it, and the log is testimony rather than instrument, so no name-match on the control can
 # reach the quotation. The list subtracts the planted basename wherever it is quoted, which is safe
 # because such a name is built to name nothing -- a stamp of all zeros names no lap this tree ran.
-for _fb in $(dp_fixture_basenames); do
+# Both halves: the names a debride or a fusion deliberately left absent, which only a hand can
+# know, and the names an instrument plants, which two passes can find (REDS %203's remainder,
+# counted 20260824.193000 at 47 against a roster of 2).
+{ dp_fixture_basenames; dp_discovered_fixture_basenames "."; } | sort -u > "$work/fixtures.txt"
+while IFS= read -r _fb; do
   [ -n "$_fb" ] || continue
   grep -v ":.*${_fb}\$" "$work/pairs.txt" > "$work/pairs.nofix" 2>/dev/null || : > "$work/pairs.nofix"
   mv "$work/pairs.nofix" "$work/pairs.txt"
-done
+done < "$work/fixtures.txt"
 
 # Six fields out, so no later step has to guess which path a column holds:
 #   verdict, citing file, reference as written, reading one, reading two, recovered home

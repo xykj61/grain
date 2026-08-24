@@ -41,6 +41,47 @@ planted=$(detect "$work/private.sh")
 echo "planted_hand_rolled=$planted"
 echo "private_copy_refused=$([ "$planted" -gt 0 ] && echo yes || echo no)"
 
+# --- discovery: a planted name is FOUND, and the two things it must never find are not ------------
+#
+# Each conjunct closes the other's failure mode, and the first attempt at this count proved it by
+# getting it wrong: matching on "named in code" alone returned real documents that had merely
+# MOVED, and matching on "sprig absent" alone returns every document that was ever DELETED.
+dpen=$(mktemp -d)
+mkdir -p "$dpen/tools/fixtures" "$dpen/foundations" "$dpen/vendor/x"
+cp "$root/tools/fixtures/dated_path_exclusions.sh" "$dpen/tools/fixtures/"
+
+# a real document, and a witness naming it at a DIFFERENT stamp -- a move, never a planting
+: > "$dpen/foundations/20260501-120000_a-real-page.md"
+printf 'see foundations/20260401-090000_a-real-page.md\n' > "$dpen/tools/fixtures/mover_scan.sh"
+# a name an instrument plants: written in code, and its sprig names nothing
+printf 'echo 20260101-000000_ghost.md\n' > "$dpen/tools/fixtures/planter_scan.sh"
+# a deleted document: sprig names nothing, and no code mentions it
+printf 'gone: 20260101-000000_deleted-page.md\n' > "$dpen/A-DOC.md"
+# a vendored mention is somebody else's fixture
+printf 'echo 20260101-000000_vendored.md\n' > "$dpen/vendor/x/v_scan.sh"
+
+( cd "$dpen" && git init -q . && git add -A \
+  && git -c user.email=p@p -c user.name=p commit -qm pen ) >/dev/null 2>&1
+
+d_out=$( cd "$dpen" && . tools/fixtures/dated_path_exclusions.sh && dp_discovered_fixture_basenames . )
+has() { printf '%s\n' "$d_out" | grep -qxF -- "$1"; }
+
+has 20260101-000000_ghost.md && echo "discovers_a_planting=yes" || echo "discovers_a_planting=no"
+has 20260401-090000_a-real-page.md && echo "moved_doc_free=no" || echo "moved_doc_free=yes"
+has 20260101-000000_deleted-page.md && echo "deleted_doc_free=no" || echo "deleted_doc_free=yes"
+has 20260101-000000_vendored.md && echo "vendored_free=no" || echo "vendored_free=yes"
+
+# the roster reading itself would discover everything it lists, so it is out of its own corpus
+printf 'DP_X="20260101-000000_listed-only.md"\n' >> "$dpen/tools/fixtures/dated_path_exclusions.sh"
+( cd "$dpen" && git add -A && git -c user.email=p@p -c user.name=p commit -qm add ) >/dev/null 2>&1
+d2=$( cd "$dpen" && . tools/fixtures/dated_path_exclusions.sh && dp_discovered_fixture_basenames . )
+printf '%s\n' "$d2" | grep -qxF -- 20260101-000000_listed-only.md \
+  && echo "roster_reads_itself=yes" || echo "roster_reads_itself=no"
+
+# and it leaves no scratch file behind in the tree it read
+ls "$dpen"/.dp_sprigs.* >/dev/null 2>&1 && echo "discovery_leaves_scratch=yes" || echo "discovery_leaves_scratch=no"
+rm -rf "$dpen"
+
 if [ "$real" -eq 0 ] && [ "$planted" -gt 0 ]; then
   echo "control_verdict=ok"
 else
