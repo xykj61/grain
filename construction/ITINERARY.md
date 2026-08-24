@@ -55,17 +55,14 @@ upward is a school grade -- 20% becomes **80, a B**.
 comment block, or design four ways: Register and Reach counted, Truth half counted and gating below
 60, Service judged against this card. **B stands; below B pushes one molt frame**, depth 2.
 
-**Every index has carried across, and `session-logs` folded on Keaton's word.** `expanding-prompts`
-(78 rows) and `waymarks` (41) joined ENFORCE; the ratchet fell **119 -> 41 -> 0**. Then 169 logs
-moved beneath `date/`, their rows onto shelves -- 3,415 shelf links, none broken, lost references
-held at **186** while recoverable rose 9,070 -> 9,246, a correct fold by the law's own test. Rows
-ran to 2,223 bytes, so on Keaton's word they shortened: **a row points, it does not summarise**, at
-or under **192 bytes** (`tools/in/index_row_bound_witness.rish`). The pin fell **291,781 -> 7,563**, and **not one living page now stands above the bound it declares** -- `declared_ceiling`'s byte ratchet falls 1 -> 0.
-**%205 closed on Keaton's word:** the 256-file room bound and the 24,576-byte pin bound could not
-both hold, so this page got its own -- `living_pin_max_bytes[session-logs/README.md]` = **57,344**
-(`256 x 192` + 8,192 prose); the reading answers **per page**. **%206:** the planted-name roster held
-**2** and the tree held **47**, nine counted as lost; discovery finds them by two conjuncts, neither
-safe alone. **Census 186 -> 177.**
+**%205-%206 closed:** the pin bound rose for one page to **57,344**, read per page; the planted-name
+roster held **2** where the tree held **47**, now discovered (census 186 -> 177). **%207:** the invariant figure this card carried, **13,235**, was **2.8x** the
+truth -- three promises sharing one denominator and 211 symlinks counted as modules. **The law runs
+at 79%**, the gap is **4,757** across 570 modules with a **median of 3**, and half sits in 50 files.
+**Coverage is a room property:** seven rooms above 87%, three below 12% (`lattice` at **0.0%**), and
+six rooms under 60% hold **61%** of the gap. **Open door -- a per-room sweep, not a tree-wide
+ratchet**, and the falsifier comes first: read twenty covered asserts in `caravan` to see whether
+92.8% is about reasons or about vocabulary.
 
 **Landed, and the detail is in the logs**, one line each in *Prior laps* below. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`).
 
@@ -228,6 +225,7 @@ account. Earlier rows are shelved at
 
 | Landed | Round | Log |
 |---|---|---|
+| `20260824.193815` | Five index rooms carried across and the log fold on Keaton's word; rows bounded at 192 bytes; no living page over its declared bound | [log](../session-logs/20260824-180216_the-room-folds-and-two-numbers-meet.kyri) |
 | `20260824.183000` | Shorter rows -- a row points, bounded 192 bytes; the two seated bounds found incompatible (%205) | [log](../session-logs/20260824-180216_the-room-folds-and-two-numbers-meet.kyri) |
 | `20260824.162940` | Model back to Opus 5, one reading over three sites (%201); commit-msg gains a fourth wall (%202); census 191 -> 186 (%203) | [log](../session-logs/20260824-162940_one-model-named-once.kyri) |
 | `20260824.154722` | Counsel's index across -- 112 rows onto ten shelves; ratchet 231 -> 119 | index_fold |
