@@ -107,8 +107,10 @@ echo "rows=$rows"
 echo "thin_rows=$thin"
 echo "vague_rows=$vague"
 echo "bytes=$bytes"
-echo "living_pin_max_bytes=24576"
-if [ "$bytes" -gt 24576 ]; then
+# The seated bound, read from the law rather than spelled here. One reading, one home (REDS %199).
+max_bytes=$(sh "$(dirname "$0")/living_pin_max_bytes.sh")
+echo "living_pin_max_bytes=$max_bytes"
+if [ "$bytes" -gt "$max_bytes" ]; then
   echo "detail: ledger past the living-pin bound; fold closed seasons to archive"
   echo "verdict=past_bound"; exit 1
 fi
