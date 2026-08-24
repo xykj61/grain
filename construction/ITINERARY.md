@@ -17,7 +17,7 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5** -- so the whole canon returns to awareness roughly once a working day. Seated `20260821.211423`, replacing the 27-doc rota.
-- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **49 guards** stand; the roster is `construction/standing-equipment.kyri`.
+- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **50 guards** stand; the roster is `construction/standing-equipment.kyri`.
 - **A lap ends at the commit, never at `git add`.** This tree's repair machinery is keyed to the commit: `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` whenever a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked, and the next lap's cold roster finds all of it. Measured `20260824.082144`: three guards red on the open, from a round that staged eleven paths and committed none (REDS %188). No guard can enforce this one, since it would have to run after the lap ends.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
 
@@ -42,9 +42,34 @@
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `ad5292f05a` (**The number that looked like a fault.** The seed cadence returned `copied=1644` against the **6,948** the card held -- a **76% shortfall** reading exactly like an allowlist gone stale. The manifest was fine; the standing roster was re-projecting underneath the measurement. **The misread is the cheap half**: every seed gate reads `seed/`, so **IDENT_CLEAN over a partial projection is a true statement about the wrong corpus**. `sow_project.sh` takes a lock that **refuses rather than queues**; `sow_lock` seats **48th** (REDS %193). Staging it turned `exec_bit` red -- a fixture born at `100644` grows the population the ceiling exists to shrink -- so the ceiling **fell 58 -> 57** and the control's planted counts moved with it. Updating the exec-bit rule then found its Cursor twin still saying 58: **40 rule pairs stand, 1 was registered, 36 drift**, and **both ways**. `rule_twin` seats **49th**. **REDS %194.** The 36-pair reconciliation is custody gate 7, uncrossed.)
+**Git nib:** `5cdba1278f` -- the lap that seated `declared_ceiling` 50th and compressed the crypto audit guide (REDS %195, %196). This line names the nib and one sentence; the account of a lap lives in its session log, and this card stays the live edge rather than a second copy of the index.
 
-**Now.** **The six-module front-door arc is closed.** Every page a reader enters a module by now stands at a Door page under the 24,576-byte living bound, with a standing guard holding it to its own directory: Caravan, Mycelium, Open Image, Lotus, Crypto, and -- this lap -- Constel, which fell from **69,979 bytes to 4,079** with `LADDER.md` and `MODULES.md` beside it (REDS %192). Constel is the one that taught the arc's last lesson: it read **31 of 31** modules and **31 of 31** witnesses before the split, so its guard is **the first roster guard in the tree seated as prevention rather than repair**, and the **fourth consumer of one scan** -- [`../tools/fixtures/module_roster_scan.sh`](../tools/fixtures/module_roster_scan.sh), which takes the directory as an argument. **47 guards** stand and `living_docs_lint` duty 6 now names **three** documents over the bound where it named seven. **Next, each its own round:** `docs/CRYPTO.md` **69,099**, the last one a split would serve, and it wants a drawn guard rather than a reused one, since a docs-shelf page has no `.rye` directory beside it; the **`Ceiling:` header nobody measures**, measured twice by this arc and left open, where one page declares a bound and drifted past it without a sound; the **index fold for four rooms** carrying 317 stale rows, each its own round since folding a room's index rewrites its front door; the ten pages `living_docs_lint` duty 4 names as wanting a Status line; and the doc-comment ASCII sweep at **21 `.rye` files in `image/` and all 240 in `lotus/`** (13,456 characters). `session-logs/README.md` **277,139** comes down by folding the logs rather than by splitting the page. The class all of this belongs to is named in [`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md): a meter reads only what a roster names it, and the **DOOR roster** now names 10 documents against 34 module front doors.
+**Now.** **Every living document past the bound a split would serve now stands under it,** and the
+class those splits kept finding has a guard. `docs/CRYPTO.md` closed the list this lap at **69,099
+-> 9,078 bytes** and **311 -> 150 lines**, by a different repair from the six module doors: its
+80-row rung table was a **subset copy** of `crypto/MODULES.md`, which holds all **87**, so the page
+routes now rather than reciting, and a compression-shelf page that copies the record it compresses
+is a roster that goes short in silence. Beside it, the reading this arc measured twice and left
+open twice is **closed**: thirteen pages on the docs shelf declare a `**Ceiling:** <=N lines` header
+and **none was both readable and honoured** -- twelve wrote the single-glyph form no parser reaches,
+and the thirteenth had its header rewritten into prose narrating its own drift. `declared_ceiling`
+seats **50th**, gating both readings at zero (REDS %195). The cold roster also opened the lap RED on
+a word the operator card had carried out of a session log, where it is exempt, into the card, where
+it is refused (REDS %196).
+
+**Next, each its own round:** the **index fold for four rooms** carrying 317 stale rows, each its
+own round since folding a room's index rewrites its front door; **`docs/STOA.md`** at **166 lines
+against the `<=80` it declares in its own title**, the one page riding the new guard's ratchet; the
+ten pages `living_docs_lint` duty 4 names as wanting a Status line; **this card itself**, which
+`living_docs_lint` duty 6 reads at **46,929 bytes** against the 24,576 bound -- condensed to 41,449
+on `20260824.060012` and grown back, so the condensing wants to become a habit with a measurement
+rather than an occasional sweep; and the doc-comment ASCII sweep
+at **21 `.rye` files in `image/` and all 240 in `lotus/`** (13,456 characters). `session-logs/README.md`
+comes down by folding the logs rather than by splitting the page. The class all of this belongs to is
+named in [`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md):
+a meter reads only what a roster names it -- and this lap added the sharper half, that a meter also
+reads only what it can *parse*, since a declaration in a form no tool reaches is invisible while
+looking exactly like a promise.
 
 **Landed, and the detail is in the logs.** Every round this block used to narrate now reads as one line in *Prior laps* below, or in *Landed arcs* beneath that. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`); `%162` and `%164` are closed; the teaching tier reads zero over target.
 
@@ -162,18 +187,21 @@ to its own directory -- Caravan `20260824.062207`, Mycelium `20260824.071500`, O
 Four of the six roster guards drive **one scan**, `tools/fixtures/module_roster_scan.sh`, which takes
 the directory as an argument. The detail of each is in its session log; this card keeps the edge.
 
-**One document past the living bound is still unsplit,** measured against the tree on
-`20260824.104946`:
-
-| Document | Bytes | What it wants |
-|---|---|---|
-| `docs/CRYPTO.md` | **69,099** | the audit guide on the docs shelf. Its four measured faults closed `20260824.095920` -- ASCII, the stale `tools/` witness pattern, a bare `base58check.rye`, and the counts, which now point at the guard that computes them. Its **size** is the open half, and it wants the same split its sibling took. It roster-guards differently from the six: a docs-shelf page has no `.rye` directory beside it, so the scan that serves the module doors reads nothing here |
+**Every living document past the bound a split would serve now stands under it.**
+`docs/CRYPTO.md` closed the list on `20260824.121445`, falling **69,099 -> 9,078 bytes** and
+**311 -> 150 lines**. It took a different repair from the six module doors, and the difference is
+the finding: its 80-row rung table was a **subset copy** of `crypto/MODULES.md`, which holds all
+**87**, so the page compresses and routes now rather than reciting. A compression-shelf page that
+copies the record it compresses is a roster that goes short in silence (REDS %195).
 
 **Two readings this arc measured and left open, named so a lap need not rediscover them.**
 
-- **No guard reads a `Ceiling:` header anywhere in the tree.** One page declares one, `docs/CRYPTO.md`
-  at `<=300 lines`, and it drifted to 307 without a sound. A declared bound nobody measures is a
-  promise waiting to break; either it becomes checkable or it stops being written (REDS %191).
+- **The `Ceiling:` reading is CLOSED `20260824.121445`** by the **50th** standing guard,
+  `tools/d/declared_ceiling_witness.rish`. Thirteen pages declared a ceiling and **none was both
+  readable and honoured** -- twelve wrote the single-glyph `<=` no parser reaches, and the
+  thirteenth narrated its own drift in prose. Both readings gate at zero now; `docs/STOA.md`, which
+  declares `<=80` in its title and stands at **166 lines**, rides a ceiling that only falls and
+  prints every roster pass (REDS %195).
 - **A split moves bulk rather than removing it.** `caravan/LADDER.md` stands at 366,216 bytes and
   `image/PHOTOS.md` at 261,894 -- correct for a reference page a reader reaches on purpose, and worth
   saying out loud rather than reading the door's new size as the whole story.
@@ -215,6 +243,7 @@ the account.
 
 | Landed | Round | Log |
 |---|---|---|
+| `20260824.121445` | A declared bound becomes a measured one -- 13 pages declared a ceiling and none was both readable and honoured; `declared_ceiling` seated 50th, `docs/CRYPTO.md` compressed 69,099 -> 9,078 bytes, and a word carried out of an exempt room into an enforced one repaired | REDS %195, %196 |
 | `20260824.104946` | The last door was already right -- Constel split at 31 of 31 with no miscount to repair, `constel_module_roster` seated 47th as the first prevention-only roster guard, and the six-door front-door arc closed | REDS %192 |
 | `20260824.095920` | The guard that was right and unheard -- crypto's own count guard RED and off the roster; both crypto doors repaired, `crypto_count_guard` and `crypto_module_roster` seated 45th and 46th | REDS %191 |
 | `20260824.091754` | The glob that was not a path -- Lotus's front door split, `lotus_module_roster` seated 44th | REDS %190 |

@@ -2,7 +2,7 @@
 
 **Status:** Checkable — witness habit index (self-deleting if canon)
 **Depth:** thin
-**Ceiling:** ≤120 lines
+**Ceiling:** <=120 lines
 **Last updated:** 2026-07-12
 **Fate:** The day this page starts mirroring [`context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) or [`external-research/TAME_GUIDANCE.md`](../external-research/TAME_GUIDANCE.md), it folds in as a supplement and **deletes itself** (blurman guard).
 **Compresses:** [`20260712-221600_docs-compression-layer-design.md`](../active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md) · witness headers across `tools/`

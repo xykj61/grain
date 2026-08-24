@@ -1,161 +1,54 @@
 # Crypto -- the Season G audit front door
 
-*A Rye-native, parity-checked cryptography library -- 87 modules stand in `crypto/`, and the primitive suite proves 81 of them GREEN on metal. Both numbers are computed by [`tools/cr/crypto_count_guard_witness.rish`](../tools/cr/crypto_count_guard_witness.rish) rather than typed here.*
-
-**Status:** Checkable -- Season G operator + auditor guide
+**Language:** EN - **Voice:** Kyri - **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
+**Status:** Checkable -- Season G operator and auditor guide
 **Depth:** guide
-**Ceiling:** the declared `<=300 lines` stands at **307** on `20260824.095920`, and the page is
-**68,632 bytes** against the 24,576-byte living bound. No guard reads either number today, which
-is why both drifted. The split -- a Door front page with its tables lifted beside it, the shape
-[`crypto/README.md`](../crypto/README.md) took this round -- is booked as its own round (REDS %191).
-**Last updated:** `20260824.095920` (ASCII sweep, stale witness pattern repointed, counts pointed
-at the guard that computes them)
-**Compresses:** [`crypto/README.md`](../crypto/README.md) - [`crypto/MODULES.md`](../crypto/MODULES.md) - [`crypto/LADDER.md`](../crypto/LADDER.md) - [`crypto/PARITY.md`](../crypto/PARITY.md) - [`crypto/CONSTANT_TIME.md`](../crypto/CONSTANT_TIME.md) - [`20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md) - the Season G `.bron` session logs (raw beneath)
+**Ceiling:** <=150 lines
+**Last updated:** `20260824.121500` -- compressed to route rather than recite, after this page's
+rung table measured as a subset copy of [`crypto/MODULES.md`](../crypto/MODULES.md): 80 modules
+named here against 87 standing in the directory (REDS %195)
+**Compresses:** [`crypto/README.md`](../crypto/README.md) - [`crypto/MODULES.md`](../crypto/MODULES.md) - [`crypto/LADDER.md`](../crypto/LADDER.md) - [`crypto/PARITY.md`](../crypto/PARITY.md) - [`crypto/CONSTANT_TIME.md`](../crypto/CONSTANT_TIME.md) - [`20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md`](../active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md) - the Season G session logs (raw beneath)
 
 ---
 
 ## Thesis -- cryptography written in the open, checked against the world
 
 Grain will face a security audit, and building our own cryptography in the open --
-disciplined, bounded, and parity-checked against published references -- is the
-honest way to earn it. Every primitive in [`crypto/`](../crypto/) is authored in
-pure **Rye**, calls **no `std.crypto`**, and is proven **byte-for-byte** against
-both a public RFC known-answer and Zig's own independent `std.crypto`. The
-library serves every module that will ever sign, verify, agree a key, or seal a
-message: **Kumara** identity, **Vault** sealed storage, **Comlink** sessions, and
-the **Lotus** signed carry.
+disciplined, bounded, and parity-checked against published references -- is the honest way
+to earn it. Every primitive in [`crypto/`](../crypto/) is authored in pure **Rye**, calls
+**no `std.crypto`**, and is proven **byte-for-byte** against both a public RFC known-answer
+and Zig's own independent `std.crypto`. The library serves every module that will ever sign,
+verify, agree a key, or seal a message: **Kumara** identity, **Vault** sealed storage,
+**Comlink** sessions, and the **Lotus** signed carry.
 
-**Rye-first (the priority spine):** the mathematics lands in green-witnessed Rye;
-any Glow surface stands on that witness, never ahead of it. This page compresses
-the record; it holds no load-bearing pins -- every version and vector is proven by
-the witness it cites, not trusted from this table.
+**Rye-first, the priority spine:** the mathematics lands in green-witnessed Rye, and any Glow
+surface stands on that witness rather than ahead of it.
 
-**Clean-room:** [`Monocypher`](../vendor/monocypher) (CC0/BSD-dual, vendored,
-unmodified) is the parity *target* we study through its public API and the RFC
-vectors -- never a copied line ([`gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md)).
+**Clean-room:** [`Monocypher`](../vendor/monocypher) (CC0/BSD-dual, vendored, unmodified) is the
+parity *target*, studied through its public API and the RFC vectors rather than copied
+([`gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md)).
 
 ---
 
-## Rung table -- every rung, in dependency order
+## Where the record lives -- this page routes, the directory holds
 
-Each rung stands on the GREEN rungs beneath it; none authors cryptography a lower
-rung had not already proven. Every file carries a per-file witness
-`tools/cr/crypto_<name>_witness.rish` asserting its own `GREEN crypto-<name>` line.
+This is the **compression shelf**, and its law is written at the top of
+[`README.md`](README.md): pages here distill, hold no load-bearing pins, and leave the raw record
+standing beneath them. So the rung-by-rung account lives in `crypto/`, beside the code, where a
+standing guard holds each page to the directory it describes.
 
-### Hashes
+| Question an auditor asks | The page that answers it | What keeps it true |
+|---|---|---|
+| What is in this library? | [`crypto/MODULES.md`](../crypto/MODULES.md) -- one row per module, in families | [`crypto_module_roster_witness.rish`](../tools/cr/crypto_module_roster_witness.rish) holds every row to the directory |
+| Why is it in this order? | [`crypto/LADDER.md`](../crypto/LADDER.md) -- each rung's reasoning, in dependency order | the suite runs the rungs in that order and names the first RED |
+| What was it checked against? | [`crypto/PARITY.md`](../crypto/PARITY.md) -- the vendored-Monocypher parity record | [`crypto_vendored_parity_suite.rish`](../tools/cr/crypto_vendored_parity_suite.rish) compiles the vendor fresh and diffs bytes |
+| What is *not* yet proven? | [`crypto/CONSTANT_TIME.md`](../crypto/CONSTANT_TIME.md) -- every file's posture toward a secret | a reading, kept honest by naming the horizon rather than claiming a measurement |
+| How many modules, and how many proven? | [`crypto_count_guard_witness.rish`](../tools/cr/crypto_count_guard_witness.rish) | a bijection between files on disk and witnesses the suite registers; it prints both counts |
 
-| File | What it is | Reference |
-|------|------------|-----------|
-| `sha512.rye` | SHA-512 -- the hash Ed25519 signs with | FIPS 180-4 - RFC 8032 |
-| `blake2b.rye` | BLAKE2b-512 -- Monocypher's hash - the key-derivation hash | RFC 7693 |
-| `sha3.rye` | SHA3-256 - SHA3-512 over Keccak-f[1600] -- the hash Aurora names content with | FIPS 202 |
-| `keccak256.rye` | Keccak-256 -- the Ethereum-family hash, the same Keccak-f[1600] sponge as SHA3-256 with the original 0x01 delimiter; composes over the GREEN `sha3.rye` | Keccak (pre-FIPS-202) |
-| `shake.rye` | SHAKE128 - SHAKE256 extendable-output functions over Keccak-f[1600] | FIPS 202 |
-| `sha256.rye` | SHA-256 -- the hash Tablecloth keys content with, and Mycelium places and seeds by | FIPS 180-4 |
-| `ripemd160.rye` | RIPEMD-160 -- the second half of Bitcoin's HASH160 = RIPEMD-160(SHA-256(x)), the address step Base58Check and Bech32 encode; composes over the GREEN `sha256.rye` | RIPEMD-160 (Dobbertin*Bosselaers*Preneel) |
-
-### Keyed hash and key derivation
-
-| File | What it is | Reference |
-|------|------------|-----------|
-| `hmac_sha512.rye` | HMAC-SHA-512 keyed authentication -- the HKDF / PRF stone | RFC 2104 - FIPS 198-1 - RFC 4231 |
-| `hmac_sha256.rye` | HMAC-SHA-256 keyed authentication -- TLS 1.3 PRF - JWT HS256 - TOTP - the Signal/Bitcoin HKDF stone | RFC 2104 - FIPS 198-1 - RFC 4231 |
-| `hkdf_sha512.rye` | HKDF-SHA-512 extract-then-expand -- the key schedule every handshake and vault stands on | RFC 5869 |
-| `hkdf_sha256.rye` | HKDF-SHA-256 extract-then-expand -- the schedule TLS 1.3 - Noise - Signal run, proven against RFC 5869's own SHA-256 vectors | RFC 5869 |
-| `argon2.rye` | Argon2d - Argon2i - Argon2id memory-hard password KDF -- the stone Vault stands on | RFC 9106 |
-| `pbkdf2_sha256.rye` | PBKDF2-HMAC-SHA-256 iteration-hard password KDF -- WPA2/WPA3 - LUKS - 1Password; Argon2's iteration-hard counterpart | RFC 8018 - RFC 7914 section 11 |
-| `pbkdf2_sha512.rye` | PBKDF2-HMAC-SHA-512 iteration-hard password KDF -- the SHA-512 PRF; the exact stretch BIP-39 folds a mnemonic and passphrase into a 512-bit wallet seed with (2048 rounds); the stone the coming BIP-39 rung stands on | RFC 8018 - BIP-39 |
-
-### The ChaCha / Poly line
-
-| File | What it is | Reference |
-|------|------------|-----------|
-| `chacha20.rye` | ChaCha20 stream cipher (IETF) | RFC 8439 |
-| `poly1305.rye` | Poly1305 one-time authenticator | RFC 8439 |
-| `aead.rye` | ChaCha20-Poly1305 authenticated encryption | RFC 8439 section 2.8 |
-| `xchacha20.rye` | HChaCha20 - XChaCha20-Poly1305 extended-nonce AEAD (safe random nonces) | draft-irtf-cfrg-xchacha-03 |
-| `verify.rye` | Constant-time byte-string equality (Monocypher's `crypto_verify16/32/64`) -- the compare every MAC, tag, and signature-equality check rests on, whose time never leaks where two strings first differ; the piece the HMAC modules named as an open horizon. Proven against Zig's `std.crypto.timing_safe.eql` across every single-bit difference and byte-for-byte against Monocypher | Monocypher `crypto_verify` - `std.crypto.timing_safe` |
-
-### The Curve25519 base field and the edwards25519 curve
-
-| File | What it is | Reference |
-|------|------------|-----------|
-| `fe25519.rye` | The base field GF(2^255-19), five 51-bit limbs | -- |
-| `ed25519_group.rye` | The edwards25519 group law (extended coordinates) | RFC 8032 section 5.1.4 |
-| `ed25519_decode.rye` | Point decompression | RFC 8032 section 5.1.2 |
-| `ed25519_scalar.rye` | Scalar arithmetic mod the group order L | RFC 8032 |
-| `ed25519_scalarmul.rye` | Scalar multiplication k*P (double-and-add) | RFC 8032 |
-| `ed25519_muladd.rye` | Scalar multiply-add (a*b + c) mod L | RFC 8032 |
-| `ed25519_verify.rye` | Ed25519 verification, [S]B = R + [k]A | RFC 8032 section 5.1.7 |
-| `ed25519_sign.rye` | Ed25519 signing -- the whole scheme, sign + verify | RFC 8032 section 5.1.6 |
-
-### Key agreement
-
-| File | What it is | Reference |
-|------|------------|-----------|
-| `x25519.rye` | X25519 ECDH (Montgomery ladder) | RFC 7748 |
-| `ed25519_to_x25519.rye` | The birational Edwards<->Montgomery key conversion -- one identity key both signs and agrees | RFC 7748 section 4.1 |
-| `elligator.rye` | Elligator 2 over Curve25519 -- hides an X25519 public key as a uniformly random 32-byte string and reads it back (the obfuscated-handshake primitive). `map` (254-bit representative -> u-coordinate) and `rev` (representable u-coordinate -> representative under a random tweak, failing for ~half of points), over one shared `invsqrt` and the GREEN `fe25519.rye`; parity is Monocypher's OWN Elligator vectors byte-for-byte plus the round-trip identity, the inverse map's representability test deliberately variable-time | Elligator 2 - Monocypher `crypto_elligator_map`/`rev` |
-| `x25519_dirty.rye` | The **dirty** X25519 public key -- makes the Elligator hiding above uniform. A clean X25519 key sits in the prime-order subgroup (structure an observer could spot); the dirty key leaves the cofactor component in, ranging over the whole curve, so its representative is indistinguishable from noise (the key `crypto_elligator_key_pair` and Comlink's obfuscated first packet reach for). Three steps over the GREEN Montgomery ladder: trim the scalar the EdDSA way, add the cofactor back as `(sk[0] mod 8)*L` mod 2^256 (`add_xl`, L derived from its RFC 8032 form), then run the full 256-bit ladder **unclamped** against an order-8*L base point. Zig ships none, so parity is doubled Monocypher-source: our `dirty_small` equals BOTH `crypto_x25519_dirty_small` AND `crypto_x25519_dirty_fast` byte-for-byte | Curve25519 - Monocypher `crypto_x25519_dirty_small`/`fast` |
-| `elligator_key_pair.rye` | The **hidden keypair** -- closes the key-hiding arc end to end. From a 32-byte seed it reproduces Monocypher's `crypto_elligator_key_pair` loop: seed the working buffer's high half, ChaCha-stream it keyed by that half (counter 0, zero nonce -- where our IETF `chacha20.rye` block coincides with Monocypher's DJB block), take the dirty X25519 key of the low half, and try to hide it with `elligator.rye`'s `rev`; a representable key ends the bounded loop, an unrepresentable one seeds the next try. Returns the X25519 secret key and a uniformly random 32-byte representative -- the key Comlink's obfuscated first packet carries. A composition over three GREEN rungs, no new arithmetic, the retry loop bounded and named. Selftest proves it **closed** (`map(hidden) = dirty_small(secret)`), deterministic, non-trivial; Zig ships none, so parity is Monocypher-source, byte-for-byte over sixteen seeds on both secret key and representative | Elligator 2 - Curve25519 - Monocypher `crypto_elligator_key_pair` |
-
-### The secp256k1 base field (the Bitcoin/Ethereum curve)
-
-| File | What it is | Reference |
-|------|------------|-----------|
-| `fe_secp256k1.rye` | The base field GF(2^256 - 2^32 - 977), eight 32-bit limbs -- the durable stone the whole secp256k1 tower (group law, ECDSA verify, public-key recovery) will stand on; the crux the address arc above (Keccak-256 - RIPEMD-160 - Base58Check - Bech32 - EIP-55) was climbing toward. Not in Monocypher, so parity is by-hand known-answers plus Zig's independent `std.crypto.ecc.Secp256k1.Fe` | secp256k1 (SEC 2) |
-| `secp256k1_group.rye` | The group law over the field above -- point add, double, negate in complete homogeneous projective coordinates (x = X/Z, y = Y/Z), exception-free for every pair; the composition a scalar-multiplication ladder repeats, the last step before ECDSA verify and public-key recovery. Parity is algebraic known-answers plus Zig's independent `std.crypto.ecc.Secp256k1` on affine coordinates | RCB eprint 2015/1060 (a = 0) |
-| `secp256k1_scalarmul.rye` | Scalar multiplication k*P over the group law -- the double-and-add ladder ECDSA repeats for Q = d*G and for u1*G + u2*Q on every verify; variable-time (a constant-time ladder for secret scalars is the named horizon). Parity is algebraic known-answers plus Zig's `std.crypto.ecc.Secp256k1.mul` on affine coordinates | double-and-add over RCB |
-| `secp256k1_scalar.rye` | Arithmetic modulo the group order n -- reduce, multiply, invert (Fermat a^(n-2)), and is_canonical, the second field ECDSA needs beside the base field: verification computes s^-1 mod n, then u1 = z*s^-1 and u2 = r*s^-1, and checks the affine x of u1*G + u2*Q reduced mod n against r. n = 2^256 - delta is built from its defining form, never a pasted limb. Parity is algebraic known-answers plus Zig's `std.crypto.ecc.Secp256k1.scalar` (reduce64 - mul - invert - rejectNonCanonical) | secp256k1 (SEC 2) - Fermat |
-| `secp256k1_ecdsa.rye` | ECDSA signature **verification** -- the assembly the whole secp256k1 tower was climbing toward, the scheme Bitcoin and Ethereum sign with. Given a public key Q = (Qx, Qy), a message hash z, and a signature (r, s), it refuses unless r, s in [1, n-1], folds z mod n, computes w = s^-1, u1 = z*w, u2 = r*w, forms R = u1*G + u2*Q, refuses infinity, and accepts iff the affine x of R reduced mod n equals r. The base point G is the SEC 2 generator parsed through the proven base field, never raw limbs; one strengthening beyond the reference is an on-curve check (y^2 = x^3 + 7) that refuses an off-curve key. Every value is public, so verification is the non-gated rung -- signing stays the custody gate. Parity is algebraic known-answers plus Zig's independent `std.crypto.sign.ecdsa.EcdsaSecp256k1Sha256`, true-for-true and false-for-false | SEC 1 - secp256k1 (SEC 2) |
-| `secp256k1_ecdsa_sign.rye` | ECDSA signature **signing** -- the rung that completes the scheme the verifier could only check. Given a private scalar d in [1, n-1] and a message, it derives a per-message nonce k **deterministically** from d and the raw SHA-256 hash (no randomness, so the same key and message always sign to the same bytes), forms R = k*G, takes r = affine x of R mod n (refusing r = 0), computes s = k^-1*(z + r*d) mod n (refusing s = 0), and emits (r, s) big-endian. The nonce reproduces Zig's null-noise "Deterministic ECDSA with Additional Randomness" DRBG -- RFC 6979's HMAC-DRBG with a 32-byte zero noise block and the raw digest -- so the whole signature is **byte-identical** to Zig's. Signing touches a secret, so it signs only with a caller-supplied **test** key: the maintainer's own identity key stays the custody gate (#3/#4), and constant-time signing arithmetic stays the named horizon. Parity is an algebraic round-trip through the GREEN verifier plus Zig's independent `EcdsaSecp256k1Sha256` signature byte-for-byte across a spread of deterministic key pairs and messages | RFC 6979 - SEC 1 - secp256k1 (SEC 2) |
-| `secp256k1_ecrecover.rye` | ECDSA public-key **recovery** -- the Ethereum `ecrecover` primitive (the EVM precompile at address `0x01`) that reads the **sender** back out of a signature: the operation behind every Sign-in-with-Ethereum, every EIP-191/712 authentication, and every transaction-sender derivation the account model rests on. Given (r, s), a recovery id of 0 or 1, and the hash z, it refuses r, s outside [1, n-1], takes R's x = r (r < n < p, always canonical -- the j = 1 overflow ids 2 and 3 are outside v = 27/28 and refused as the precompile refuses them), decompresses R by solving y^2 = x^3 + 7 for the root whose low bit matches the recovery id, and recovers Q = r^-1*(s*R - z*G). It adds exactly one new base-field arithmetic -- a square root sqrta = a^((p+1)/4), valid because p == 3 (mod 4), by the same ladder the base field's inverse walks over a public exponent. Recovery touches only public values, so it is non-gated -- it answers *who signed this?*, never *sign this*. Parity is an algebraic round-trip (each key recovers back from its own signature at exactly one recovery id, and the recovered key's Ethereum address matches) plus Zig's independent `std.crypto.ecc.Secp256k1.fromSec1` decompression byte-for-byte on R's recovered y | SEC 1 section 4.1.6 - secp256k1 (SEC 2) - EIP-191/712 |
-| `secp256k1_pubkey.rye` | SEC1 public-key **serialization** -- a public key is a curve point, and a curve point has two published dresses: the 33-byte COMPRESSED form (tag `0x02` even / `0x03` odd, then x -- the form BIP-32's `serP(point)` hashes) and the 65-byte UNCOMPRESSED form (tag `0x04`, then x||y -- Ethereum's expanded body). `compress_xy`/`uncompress_xy` write both from a point, `from_private_*` from a private scalar over the GREEN `derive_public`, and `parse` reads either back to (x, y), recovering a compressed key's y through the GREEN `ecrecover.decompress`; authors no new cryptography. Parity against Zig's own `std.crypto.ecc.Secp256k1`: for eight deterministic scalars our encodings equal `toCompressedSec1`/`toUncompressedSec1` byte-for-byte, and our parse recovers Zig's own affine coordinates. Edges `BadLength`/`BadTag` refuse | SEC 1 section 2.3.3 - derive_public - decompress |
-
-### Compositions (no new cryptography -- proven stones assembled)
-
-| File | What it answers | Composes |
-|------|-----------------|----------|
-| `signed_carry.rye` | *Who made this record?* -- a content-addressed, signed carry frame | BLAKE2b-512 - Ed25519 |
-| `sealed_session.rye` | *Only you can read this* -- a seal-to-a-public-key box | X25519 - BLAKE2b-512 - ChaCha20-Poly1305 |
-| `vault_seal.rye` | *Only your password can open this* -- a password-sealed box | Argon2id - XChaCha20-Poly1305 |
-| `eth_address.rye` | *What Ethereum address is this key?* -- the low 20 bytes of Keccak-256(pubkey), EIP-55 mixed-case checksum | Keccak-256 |
-| `bitcoin_address.rye` | *What Bitcoin address is this key?* -- HASH160 = RIPEMD-160(SHA-256(pubkey)) wrapped as a Base58Check "1..." address (P2PKH) or a SegWit v0 Bech32 "bc1..." address (P2WPKH). Parity: the canonical Bitcoin-wiki P2PKH worked example (its HASH160 the very payload `../encoding/base58check.rye`'s own known-answer wraps) and the BIP-173 P2WPKH vector, both round-tripping back to their HASH160 | SHA-256 - RIPEMD-160 - Base58Check - Bech32 |
-| `eth_personal_sign.rye` | *Who signed this message?* -- the EIP-191 `personal_sign` digest and `recover_signer`, reading the sender address out of a 65-byte `r||s||v` signature: "Sign in with Ethereum" | Keccak-256 - ecrecover - eth_address |
-| `eip712.rye` | *Who signed this typed message, for this app, on this chain?* -- the EIP-712 typed-structured-data digest a wallet shows before signing "typed data" (EIP-2612 permits, DeFi orders, gasless meta-transactions, typed Sign-in-with-Ethereum). Hashes a tree of typed fields (`type_hash`, `hash_struct`, `eip712_domain_separator`) into `keccak256(0x19 0x01 || domain_separator || struct_hash)`, so a signature for one contract on one chain never replays against another; `recover_typed_signer` reads the sender back out. Parity three ways: the EIP-712 spec's own canonical Ether Mail example recovered by the spec's own published signature to Cow's published wallet, an independent Zig-Keccak construction byte-for-byte, and a full TEST-key round-trip | Keccak-256 - ecrecover - eth_address |
-| `eip155_tx.rye` | *What does a key sign before every on-chain send, and who signed it?* -- the EIP-155 legacy Ethereum transaction digest `keccak256(rlp([nonce, gasPrice, gas, to, value, data, chainId, 0, 0]))`, the exact bytes a wallet signs. Hashes the flat nine-field transaction list (where `eip712` hashes a typed tree off-chain); the chain id folded into the preimage is replay protection, and `v = recovery_id + 2*chainId + 35` carries it back out, so `recover_sender` reads the twenty-byte sender out of the sighash and signature. Parity three ways: the EIP-155 spec's own canonical example hashes byte-for-byte to the spec's stated sighash `0xdaf5a779...4c8e53`, an independent Zig-Keccak construction over the same RLP gives the identical digest, and the spec's published `(v=37, r, s)` recovers to exactly the example's published sender `0x9d8a62f6...855a4f` | RLP - Keccak-256 - ecrecover - eth_address |
-| `eip1559_tx.rye` | *What does a key sign before every modern (type-2) send, and who signed it?* -- the EIP-1559 typed-transaction digest `keccak256(0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit, to, value, data, accessList]))`, the exact bytes a wallet signs since the London fork. Prepends the EIP-2718 type byte `0x02` and carries the dynamic-fee market (a tip ceiling and a fee ceiling in place of one gasPrice); the signed wire form appends `[yParity, r, s]` for twelve fields, the recovery bit a plain `yParity` because the chain id already lives in the signed list, so `recover_sender` reads the twenty-byte sender back out. Parity three ways with no fabricated constant: the example test key `0x4646...46` derives to exactly the address EIP-155 publishes, `0x9d8a62f6...855a4f`; an independent Zig-Keccak construction over the same type-prefixed RLP gives the identical digest; and deterministically signing then recovering returns exactly that derived address | RLP - Keccak-256 - ecdsa_sign - ecrecover - eth_address |
-| `bip32.rye` | *From one seed, the whole tree of a wallet's keys.* -- BIP-32 hierarchical-deterministic keys: a child private key is `(parse256(I_L) + k_par) mod n` where `I = HMAC-SHA-512(c_par, D)` splits into the offset `I_L` and the child chain code `I_R`; `D` is `0x00||ser256(k_par)||ser32(i)` for a hardened child or `serP(point(k_par))||ser32(i)` for a normal one. `master_from_seed` runs the fixed `"Bitcoin seed"` HMAC, `ckd_priv` derives both kinds, `neuter`/`ckd_pub` derive the public tree from an xpub alone (`K_child = point(I_L) + K_par` over the complete group law, a hardened index refused from a public parent), and `serialize_xprv`/`serialize_xpub`/`serialize_ext_pub` wrap any node in the 78-byte version||depth||fingerprint||index||chain-code||key body under Base58Check. The rung a wallet's whole account model stands on -- one backup phrase, one seed, the ladder of addresses beneath it, watch-only or spending. Parity against BIP-32's own published Test Vector 1: from the published seed `000102...0f`, all six chain nodes serialize to EXACTLY the spec's published xprv AND xpub strings, character for character; each node's neuter reproduces the same xpub, and every normal index reaches it through CKDpub from the neutered parent alone | HMAC-SHA-512 - secp256k1 pubkey - group law - scalar reduce - HASH160 - Base58Check |
-| `bip39_mnemonic.rye` | BIP-39 entropy<->mnemonic -- the wallet arc's other half: `from_entropy` makes the twelve-to-twenty-four English words a keeper writes down, `to_entropy` reads a phrase back to its entropy **and verifies the checksum**, catching a mistyped backup word. A `CS = ENT/32` checksum from the GREEN `sha256.rye` plus 11-bit bit-packing over BIP-39's fixed 2048-word list; the list is the canonical bitcoin/bips `english.txt`, embedded and proven authentic (SHA-256 = `2f5eed53...3b24dbda`). Proven against BIP-39's own Trezor vectors across ENT 128/192/256 both extremes, encode and decode byte-for-byte, a flipped word refused; entropy generation a named horizon | SHA-256 - BIP-39 |
-| `bip39_seed.rye` | BIP-39 mnemonic->seed -- the wallet arc's bridge from a human backup phrase to the 512-bit seed `bip32.rye` grows the HD tree from. One recipe over the GREEN `pbkdf2_sha512.rye`: `seed = PBKDF2-HMAC-SHA-512(mnemonic, "mnemonic"||passphrase, 2048, 64)`. Proven against BIP-39's own published Trezor vectors byte-for-byte; NFKD normalization a documented precondition, entropy->mnemonic a separate rung | PBKDF2-HMAC-SHA-512 - BIP-39 |
-| `bip44.rye` | BIP-44 account paths -- the convention giving `bip32.rye`'s HD tree its five-level shape `m/44'/coin_type'/account'/change/address_index`, so every wallet reaches the same address for the same phrase. `parse_path` reads the human path text (the `'`/`h`/`H` hardened marker, decimal indices bounded overflow-safe below 2^31) into the exact 32-bit index list; `derive_path`/`derive_bip44` walk `bip32.rye`'s `ckd_priv` down it to the account leaf. Authors no new cryptography. Parity against BIP-32's own Test Vector 1: all six nodes walked **by their human path strings** serialize to EXACTLY the spec's published xprv AND xpub, no external fetch; `m/44'/60'/0'/0/0` parses to the exact hardened index list, `derive_bip44` and `derive_path` agree byte-for-byte, malformed paths refused. TEST keys only; a real signature stays the custody gate | BIP-32 |
-| `slip10_ed25519.rye` | SLIP-0010 HD keys over the **ed25519** curve -- the identity arc's HD rung, the bridge from a BIP-39 seed to Grain's OWN ed25519 identity keys (Kumara signs with ed25519). BIP-32's additive child law does not fit ed25519, so SLIP-0010 takes the child key as `I_L` directly and derives **hardened-only**: `master_from_seed` runs the `"ed25519 seed"` HMAC; `ckd_priv` derives a hardened child via `I = HMAC-SHA-512(c_par, 0x00||ser256(k_par)||ser32(i))`; `public_key` emits `0x00||ed25519_public(I_L)`; `derive` walks a hardened index list. Authors no new cryptography -- composes the GREEN `hmac_sha512.rye` and `ed25519_sign.rye`. Parity against SLIP-0010's own ed25519 Test Vectors 1 and 2: every chain node's private key, chain code, AND 33-byte public key reproduce EXACTLY the spec's bytes; a non-hardened index refuses `NotHardened`, an over-deep path `DepthTooDeep`. TEST keys only; a real Kumara signature stays the custody gate | HMAC-SHA-512 - Ed25519 |
-| `kumara_path.rye` | The **Kumara identity path** -- the ed25519 sibling of `bip44.rye`: the convention giving `slip10_ed25519.rye`'s ed25519 HD tree its named shape `m/44'/coin_type'/account'/index'`, so a keeper's Kumara identity is reached the same way from the same phrase on any device. ed25519 admits only hardened derivation, so `parse_path` REQUIRES a `'`/`h`/`H` marker on every level (a bare index refused `NotHardened`); `derive_path`/`derive_identity` walk `slip10_ed25519.rye`'s `ckd_priv` down the all-hardened list. Authors no new cryptography. Parity against SLIP-0010's own ed25519 Test Vectors 1 and 2: all six nodes of each, walked **by their human path strings**, reproduce EXACTLY the spec's private key, chain code, AND 33-byte public key, no external fetch; `m/44'/0'/0'/0'` parses to `[44+H, 0+H, 0+H, 0+H]`, `derive_identity` and `derive_path` agree byte-for-byte, malformed paths refused. A registered Grain SLIP-44 coin type is a named horizon. TEST keys only; a real Kumara signature stays the custody gate | SLIP-0010 (Test Vectors 1*2) |
-| `kumara_identity.rye` | The **identity arc's front door** -- the one composition tying the arc into a single answer: `from_mnemonic` folds a mnemonic to a 512-bit seed through the GREEN `bip39_seed.rye`, walks `kumara_path.rye`'s `m/44'/coin'/account'/index'` over the GREEN `slip10_ed25519.rye` HD tree, and reads off the raw 32-byte ed25519 public key (Kumara's identity form -- the SLIP-0010 33-byte public with its `0x00` tag stripped); `sign`/`verify` are thin wrappers over `ed25519_sign.rye`+`ed25519_verify.rye` so a caller reaches identity through one door. The identity-arc sibling of `eth_address.rye`/`bitcoin_address.rye`: where those render a key to its address, this renders a phrase to the signing identity every module (Kumara, Vault, Comlink, Lotus) reaches through. Authors no new cryptography. Proven three ways: the bip39 half anchored to BIP-39's own Trezor vector seed byte-for-byte; the arc drift-free (`from_mnemonic` = hand-wiring `bip39_seed`->`kumara_path.derive_identity`, public key = slip10's public form = ed25519_sign's `derive_public`, all three agreeing, the ed25519 half proven one rung down); the derived key a real signing key by a sign->verify round-trip with three refusals (flipped message, flipped signature, wrong key). TEST identities only; a real Kumara identity and signature stays the custody gate | BIP-39 - SLIP-0010 - Ed25519 |
-| `kumara_carry.rye` | **Did THIS keeper make this record?** -- a record sealed AS a named Kumara identity, tying the identity front door to the signed carry so provenance answers not merely "is this a valid signature from someone" but "did this keeper make it." Authors no new cryptography and adds no new frame -- a Kumara carry IS a `signed_carry.rye` frame sealed under a `kumara_identity.rye`'s own secret seed; because the carry's signer field is `derive_public(seed)` and the identity's public key is `derive_public(that same seed)`, the sealed frame carries exactly that identity's public key as its signer, asserted equal by construction. The value it adds is the **binding**: `open_as` runs signed_carry's verify-before-trust and then refuses, with `UnexpectedSigner`, any frame whose verified signer is not the identity the reader named; `seal_from_mnemonic` folds phrase -> identity -> sealed record in one call. Proven three ways: bound to a real identity (the frame a keeper derived from BIP-39's Trezor vector mnemonic carries that identity's public key as its signer byte-for-byte, agreeing with an independent `signed_carry.open`); the binding refuses the wrong keeper (a valid carry sealed by a different identity, opened while expecting the first, fails `UnexpectedSigner` while the true keeper still opens it); the whole arc round-trips across seven payload lengths with determinism and the inherited `DigestMismatch`/`BadSignature` guards. TEST identities only; sealing a real record with the maintainer's own Kumara identity stays the custody gate | Kumara identity - signed carry |
-| `kumara_subkey.rye` | **One identity, a fresh key for each record it keeps.** -- a per-record subkey, the hardened child `m/44'/coin'/account'/index'/record'` of the identity node, so a keeper signs each record with a distinct key while every subkey descends deterministically from the one `kumara_identity.rye` (the reason that identity carries a chain code at its node). Authors no new cryptography and adds no new frame -- the step from identity node to hardened child is `slip10_ed25519.rye`'s own `ckd_priv`, already GREEN against SLIP-0010's ed25519 vectors; sealing AS a subkey writes a `signed_carry.rye` frame under the subkey's seed and reuses `kumara_carry.rye`'s binding. Proven three ways: anchored to the identity arc (the subkey at record `r` equals walking `ckd_priv` from the same identity node by hand, its public key equal to both slip10's public form tag-stripped and `ed25519_sign`'s independent `derive_public`); separation (same identity + record -> identical subkey, a different record -> a different subkey, every subkey differs from its parent); and a real working signing key (sign->verify round-trip, a flipped message byte and a flipped signature byte refused, and a sealed record `open_as` verifies as the subkey while refusing the parent identity and a sibling subkey with `UnexpectedSigner` across six payload lengths, a record at the hardened offset refusing `NotHardened`). The parent->subkey attestation is the named next rung. TEST identities only; deriving a real keeper's subkeys stays the custody gate | Kumara identity - SLIP-0010 - signed carry |
-| `kumara_attestation.rye` | **The identity vouches: this subkey is mine.** -- the parent->subkey **attestation**, a signed delegation that closes `kumara_subkey.rye`'s one honest boundary. ed25519/SLIP-0010 admits only hardened derivation, so a subkey's public key cannot be derived from the parent identity's public key alone; a verifier holding only the identity's public key cannot, on their own, prove a subkey descends from it. This rung closes that the one honest way: the identity **signs** a domain-separated statement -- "the subkey named here, at this record, is mine" -- and a verifier checks it against the identity's public key. Authors no new cryptography -- the signature is `ed25519_sign.rye`/`ed25519_verify.rye`; this module adds the **certificate** (`magic 'GKA1' || issuer || record(u64 BE) || subkey || Ed25519 signature-over-statement`) and the binding that refuses, with `UnexpectedIssuer`, any certificate whose issuer is not the identity the reader named, then chains to `kumara_carry.rye`'s `open_as` so `identity -> attested subkey -> sealed record` verifies end to end. Proven with no fabricated constant: anchored (an identity from BIP-39's Trezor vector attests its own subkey; `verify_attestation` returns exactly that subkey's public key at record 0, and an independent `ed25519_verify` over the reconstructed statement agrees); the whole point (the certificate delivers a subkey public key a public-only holder could not have derived); the binding (refuses the wrong issuer, a flipped statement byte, a flipped signature byte, bad magic, a bad length, an undersized out buffer, each by its own named error); the chain (a record sealed by the attested subkey opens, a sibling subkey's record refused `UnexpectedSigner`, a different identity's expectation refused `UnexpectedIssuer` before the frame is opened); a forged delegation refused `UnexpectedIssuer`; determinism and per-record distinctness. TEST identities only; issuing a real attestation with the maintainer's own identity stays the custody gate | Kumara subkey - Ed25519 sign/verify - Kumara carry |
-| `kumara_sealed.rye` | **Only THIS keeper can read this message.** -- a message sealed TO a named Kumara identity and opened AS that identity, the confidentiality sibling of `kumara_carry.rye`: where the carry answers *did this keeper make this record* (provenance the world reads), this rung answers *only this keeper can read this message* (a sealed box only the identity's holder opens) -- the Comlink private-message door. A sender who knows only a keeper's published Kumara identity (its 32-byte Ed25519 public key) seals a message only the holder of that identity's seed can open. Authors no new cryptography and adds no new frame -- a Kumara sealed message IS a `sealed_session.rye` frame addressed through the identity's X25519 keypair. The crux: a Kumara identity signs with Ed25519 yet a sealed box agrees with X25519, so `seal_to` converts the recipient's Ed25519 public key to the X25519 public it seals to (`eddsa_to_x25519`) and `open_as` converts the recipient's Ed25519 seed to the X25519 secret it opens with (`eddsa_secret_to_x25519`) -- two halves of ONE identity key, agreeing because `x25519_base(secret) = eddsa_to_x25519(public)`, the property `ed25519_to_x25519.rye` proves GREEN and this rung re-anchors on a REAL Kumara identity. Proven GREEN on the first metal pass with no fabricated constant: the crux re-anchored on a real identity; a round-trip across seven plaintext lengths (empty -> 64 KiB) sealed to the keeper and opened as the keeper; the ciphertext enciphered, not clear; a DIFFERENT identity refused `OpenFailed` while the true keeper still opens it; two ephemerals sealing fresh frames that both open; determinism given a fixed ephemeral; the inherited guards (a flipped ciphertext byte, a flipped ephemeral-key byte, a broken magic, an undersized out buffer) each refusing with the sealed session's own named error. TEST identities only; sealing to or opening as the maintainer's own Kumara identity stays the custody gate | Kumara identity - Ed25519->X25519 map - sealed session |
-| `mlkem_ring.rye` | **The ring every ML-KEM operation lives in.** -- the post-quantum arc's first rung: the base ring `R_q = Z_q[X]/(X^256 + 1)`, prime modulus `q = 3329`, the lattice counterpart to `fe25519.rye`. Authors modular add/sub/mul mod 3329, the forward and inverse **Number Theoretic Transform** (FIPS 203 Algorithms 9*10 -- seven Cooley-Tukey butterfly layers under the primitive 256th root `zeta = 17`), and the pointwise multiply in the NTT domain (Algorithm 11 over the Algorithm 12 base case, 128 degree-1 products under the `gamma_i` twiddles) -- the arithmetic the ML-KEM encode/sample/keygen/encaps rungs compose next. Twiddle tables `zetas[k] = zeta^BitRev7(k)` and `gammas[i] = zeta^(2*BitRev7(i)+1)` are computed at compile time from the field, never a pasted limb. **Honest parity boundary:** FIPS specifies standard-domain arithmetic while Zig's `std.crypto` computes internally in Montgomery domain, so byte-for-byte parity against Zig is taken at the encoded boundary at the keygen rung; here correctness is proven by **self-consistency** -- the primitive-root anchors (`zeta^256 = 1`, `zeta^128 = -1`, `128*3303 = 1 mod q`), the NTT round-trip `inv_ntt(ntt(f)) = f` over 64 non-trivial polynomials, and the decisive one, `inv_ntt(ntt(f) .* ntt(g))` equal to schoolbook negacyclic convolution `f (*) g` in `R_q` over 64 pairs (the pattern `elligator.rye`'s round-trip stood on where Zig shipped nothing to diff). Purely local -- no key, no network, no funds, no device; constant-time timing-safety the named horizon | ML-KEM / CRYSTALS-Kyber (NIST FIPS 203) |
-| `mlkem_encode.rye` | **The serialization every ML-KEM key, ciphertext, and message crosses.** -- the post-quantum arc's second rung, standing on `mlkem_ring.rye`. Authors **ByteEncode/ByteDecode** (FIPS 203 Algorithms 5*6 -- the LSB-first bit-packing between 256 `d`-bit coefficients and `32*d` bytes, reducing mod `q` at the raw width `d = 12`) and **Compress/Decompress** (FIPS 203 section 4.2.1 -- the lossy rounding `round(2^d*x/q)` that shortens a ciphertext and the round `round(q*y/2^d)` that lifts it back into `[0, q)`). Serialization is its own inverse, proven by **self-consistency**: a fixed LSB-first bit-packing known-answer (`[0xABC, 0xDEF]` at `d = 12` gives `BC FA DE`), the encode/decode round-trip `ByteDecode_d(ByteEncode_d(F)) = F` over every width `1..12`, the message-width known-answers (`Decompress_1(1) = 1665`), the exact identity `Compress_d(Decompress_d(y)) = y` over every compression domain (1, 4, 5, 10, 11), and the FIPS 203 section 4.2.1 compression bound `round(q/2^(d+1))` over the whole field. Purely local -- no key, no network, no funds, no device; constant-time timing-safety the named horizon | ML-KEM / CRYSTALS-Kyber (NIST FIPS 203) |
-| `mlkem_sample.rye` | **The step that turns a short seed into ML-KEM's ring elements.** -- the third rung, on `mlkem_ring.rye` and the GREEN `shake.rye`. Authors **SampleNTT** (FIPS 203 Algorithm 7 -- the uniform rejection-sampler drawing the public matrix `A_hat` from a SHAKE128 stream, keeping each 12-bit value below `q`) and **SamplePolyCBD** (Algorithm 8 -- the centered-binomial noise sampler for the secret and error vectors, `eta in {2, 3}`). Proven by **self-consistency**: SampleNTT matches an independent bit-reader over the same GREEN stream byte-for-byte, SamplePolyCBD carries the CBD known-answers and its centered range, each deterministic; byte-boundary parity against Zig arrives at the keygen rung. Purely local -- no key, no network, no funds, no device; constant-time timing-safety the named horizon | ML-KEM / CRYSTALS-Kyber (NIST FIPS 203) |
-| `mlkem_keygen.rye` | **The whole encapsulation keypair, and the ML-KEM arc's first doubled oracle.** -- the fourth rung, composing ring - encode - sample - `shake.rye`. Authors **K-PKE.KeyGen wrapped by ML-KEM.KeyGen** (FIPS 203): expand a 32-byte seed through SHA3-512 into `(rho, sigma)`, draw `A_hat` and the secret/error vectors, form `t_hat = A_hat .* s_hat + e_hat`, and serialize `ek`/`dk`. Proven by a **doubled oracle** -- byte-for-byte against Zig's `std.crypto` ML-KEM `generateDeterministic(seed) -> toBytes` at all three sets (512/768/1024) over 8 seeds each, and the FIPS-203 boundary. Purely local -- every seed a public test vector, no key held, no network, no funds, no device; the maintainer's own key stays the custody gate | ML-KEM / CRYSTALS-Kyber (NIST FIPS 203) |
-| `mlkem_encaps.rye` | **Seal a shared secret to a public key.** -- the fifth rung: **ML-KEM.Encaps** (FIPS 203), the Fujisaki-Okamoto encapsulation drawing a fresh secret, deriving the shared key and coins by SHA3, and forming the ciphertext `c` over the recipient's `ek`. Proven byte-for-byte against Zig's `std.crypto` at all three sets and the FIPS-203 boundary, deterministic given the message seed. Purely local -- no key held, no network, no funds, no device; constant-time timing-safety the named horizon | ML-KEM / CRYSTALS-Kyber (NIST FIPS 203) |
-| `mlkem_decaps.rye` | **Recover the shared secret, or a hidden reject.** -- the sixth rung completing the KEM: **ML-KEM.Decaps** (FIPS 203), decrypting `c` to a candidate message, re-encapsulating, and returning the real shared key on a match or the implicit-reject key on mismatch -- the FO transform's constant-time refusal. Proven by the encaps->decaps round-trip and byte-for-byte against Zig at all three sets. With it, the post-quantum sealed-session sibling of `kumara_sealed.rye` becomes buildable. Purely local -- no key held, no network, no funds, no device | ML-KEM / CRYSTALS-Kyber (NIST FIPS 203) |
-| `mldsa_ring.rye` | **The ring every ML-DSA operation lives in -- the signature ladder opens.** -- the base ring `R_q = Z_q[X]/(X^256 + 1)`, prime `q = 8380417`, the post-quantum counterpart to `ed25519_*.rye`. Authors modular arithmetic mod 8380417 (`mul_mod` widening to `u64`), the forward and inverse **NTT** (FIPS 204 Algorithms 41*42 -- eight butterfly layers under `zeta = 1753`, the complete transform whose domain multiply is plain coefficient-wise), the twiddle table computed at compile time. Proven by **self-consistency** -- the primitive-root anchors, the NTT round-trip over 64 polynomials, and `inv_ntt(ntt(f) .* ntt(g)) = f (*) g` in `R_q`. Purely local -- no key, no network, no funds, no device; constant-time timing-safety the named horizon | ML-DSA / CRYSTALS-Dilithium (NIST FIPS 204) |
-| `mldsa_encode.rye` | **The serialization and rounding every ML-DSA key and signature crosses.** -- the second rung, on `mldsa_ring.rye`. Bundles the **bit-packing** (FIPS 204 Algorithms 16-19 -- SimpleBitPack/BitPack, up to 20 bits for `z` at `gamma_1 = 2^19`) and the **coefficient rounding** (Algorithms 35-40 -- Power2Round, Decompose/HighBits/LowBits, MakeHint/UseHint). Proven by **self-consistency** -- a fixed LSB-first known-answer, the pack round-trips over every width, the Power2Round exact reconstruction, the Decompose reconstruction mod `q` at both `gamma_2`, and the hint round-trip `UseHint(MakeHint(z,r),r) = HighBits(r+z)`. Purely local -- no key, no network, no funds, no device | ML-DSA / CRYSTALS-Dilithium (NIST FIPS 204) |
-| `mldsa_sample.rye` | **The step that turns a short seed into ML-DSA's ring elements.** -- the third rung, on `mldsa_ring.rye` and `shake.rye`. Authors **RejNTTPoly** (Algorithm 30 -- the uniform matrix sampler), **RejBoundedPoly** (Algorithm 31 -- the small-secret sampler, `eta in {2,4}`), and **SampleInBall** (Algorithm 29 -- the sparse +/-1 challenge, `tau in {39,49,60}`). Proven by **self-consistency** -- RejNTTPoly against an independent bit-reader byte-for-byte, RejBoundedPoly's known-answers and range, SampleInBall's exact `tau`-weight; byte-boundary parity against Zig arrives at the keygen rung. Purely local -- no key, no network, no funds, no device | ML-DSA / CRYSTALS-Dilithium (NIST FIPS 204) |
-| `mldsa_keygen.rye` | **The whole signing keypair, and the signature ladder's first external witness.** -- the fourth rung and its **first doubled oracle**, composing ring - encode - sample - `shake.rye`, the post-quantum successor to Kumara's Ed25519 identity keypair. Authors **ML-DSA.KeyGen_internal** (FIPS 204 Algorithm 6): expand `xi` through SHAKE256 into `(rho, rho', K)`, draw `A_hat`, `s1`, `s2`, form `t = InvNTT(A_hat .* NTT(s1)) + s2`, split with Power2Round, serialize `pk`/`sk` with `tr = H(pk)`. Proven by a **doubled oracle** -- byte-for-byte against Zig's `newKeyFromSeed(seed) -> toBytes` at all three sets (44/65/87) over 8 seeds each, a trivial key refused. Purely local -- every seed a public test vector, no key held, no network, no funds, no device; the maintainer's own key stays the custody gate | ML-DSA / CRYSTALS-Dilithium (NIST FIPS 204) |
-| `mldsa_sign.rye` | **The signature itself -- the ladder's crux, the door a Kumara name signs through once the curves fall.** -- the fifth rung, composing every GREEN rung beneath it and the keygen rung's secret key. Authors **ML-DSA.Sign_internal** (FIPS 204 Algorithm 7): decode `sk`, compute `mu = H(tr || 0x00 || 0x00 || M)` and `rho'' = H(K || rnd || mu)` with `rnd = 0` (the deterministic variant), and run the rejection loop -- mask `y = ExpandMask(rho'', kappa)`, `w = InvNTT(A_hat .* NTT(y))`, commit `c~ = H(mu || w1Encode(HighBits(w)))`, challenge `c = SampleInBall(c~)`, answer `z = y + c*s1`, emitting `sigma = c~ || BitPack(z) || HintBitPack(h)` only when the `z`, `r0`, `ct0`, and hint-weight bounds all hold. Proven by a **doubled oracle**, and deterministic signing makes the whole rejection walk diffable -- byte-for-byte against Zig's `sk.signer(null) -> finalize -> toBytes` at all three sets (44/65/87) over 6 seeds and 2 messages each, a trivial signature refused. Purely local -- every seed and message a public test vector, no key held, no network, no funds, no device; signing with the maintainer's own key stays the custody gate | ML-DSA / CRYSTALS-Dilithium (NIST FIPS 204) |
-| `mldsa_verify.rye` | **The verdict -- the ladder's closing stone, the door a peer reads a Kumara name through once the curves fall.** -- the sixth and final rung, composing every GREEN rung beneath it (ring - encode - sample - `shake.rye`). Authors **ML-DSA.Verify_internal** (FIPS 204 Algorithm 8): decode `pk = rho || SimpleBitPack(t1)` and `sigma = c~ || BitPack(z) || HintBitPack(h)`, refusing a malformed hint or an over-large `z` before any arithmetic; recompute `tr = H(pk)` and `mu = H(tr || 0x00 || 0x00 || M)`; draw `c = SampleInBall(c~)`; rebuild `w'_approx = A*z - c*t1*2^d`; recover `w1' = UseHint(h, w'_approx)`; accept **iff** `||z||infinity < gamma1-beta` **and** `c~' = H(mu || w1Encode(w1'))` equals the signature's `c~`. Proven by a **doubled oracle** -- a verifier's answer is a boolean, so parity is agreement on the verdict: our verify **accepts** the exact signature Zig's deterministic signer produced and **rejects** every single-byte mutation of the commitment, response, hint, message, and public key, with Zig's own `Signature.verify` agreeing, at all three sets (44/65/87) over 5 seeds and 2 messages each. Purely local -- every seed, message, and signature a public test vector, no key held, no network, no funds, no device; the maintainer's own key stays the custody gate. **The ML-DSA ladder -- ring - encode - sample - keygen - sign - verify -- is complete end to end** | ML-DSA / CRYSTALS-Dilithium (NIST FIPS 204) |
-| `mldsa_identity.rye` | **From a seed, a keeper's whole post-quantum signing identity.** -- the **post-quantum identity front door**, the ML-DSA sibling of `kumara_identity.rye` tying the whole ML-DSA ladder into a single answer: `from_seed` composes `mldsa_keygen.rye`'s ML-DSA.KeyGen_internal to grow a 32-byte seed into a keypair, while `sign`/`verify` are thin wrappers over `mldsa_sign.rye`+`mldsa_verify.rye` so a caller reaches a quantum-resistant identity through one door -- seed -> keypair -> signature -> verdict. Each parameter set is a `Params` value (ML-DSA-44, **ML-DSA-65 the default**, ML-DSA-87), widths computed from FIPS 204. Where `kumara_identity.rye` renders a phrase to today's Ed25519 identity, this renders a seed to the ML-DSA identity a keeper's name wants on the morning the old curves fall. Authors no new cryptography. Proven four ways over every set and four seeds with two messages each: **no drift** (`from_seed`'s keys = `keygen`'s output byte-for-byte); **determinism** (same seed -> identical identity, changed seed -> different key); **a real signing key** (sign->verify accepts, a flipped message byte, a flipped signature byte, and a different identity's key each refuse); **the doubled oracle** (the public key = Zig's `newKeyFromSeed` public key byte-for-byte, and Zig's `Signature.verify` accepts this door's signature). TEST identities only; a real post-quantum identity stays the custody gate | ML-DSA keygen - sign - verify (NIST FIPS 204) |
-| `mlkem_sealed.rye` | **Only you can read this -- and no quantum computer will change that.** -- the **post-quantum sealed session**, the ML-KEM sibling of `sealed_session.rye` and the confidentiality counterpart of `mldsa_identity.rye`: where the classical box agrees its one-message secret with X25519, this agrees it with ML-KEM (FIPS 203) -- a KEM, not a Diffie-Hellman -- so an adversary who records the frame today and builds a quantum computer tomorrow still cannot read it. Composes only GREEN rungs (ML-KEM keygen/encaps/decaps, SHA3-256, BLAKE2b-512, ChaCha20-Poly1305), authoring no new cryptography. The recipient holds a long-term ML-KEM keypair `(ek, dk)`; the sender draws a fresh 32-byte KEM message `m`, encapsulates `(K, kem_ct) = ML-KEM.Encaps(ek, m)`, and derives a session key + nonce from one BLAKE2b-512 over `K || H(ek)`, binding `H(ek)` as AEAD authenticated data. The frame is `GPQ1 || kem-ciphertext || cipher-len(u64 BE) || ciphertext || tag`; `open` recovers `K` from `dk`, returning plaintext only when the tag verifies. Each set is a `Params` value (ML-KEM-512, **ML-KEM-768 the default**, ML-KEM-1024). Proven at all three: round-trip across seven lengths, confidentiality, sealed-box freshness, determinism, five refusals (wrong recipient, tampered KEM ciphertext, tampered ciphertext, tampered tag, bad magic + truncation), and **the doubled oracle** -- Zig's `std.crypto` decapsulates the very KEM ciphertext this seal embeds back to the same shared secret. TEST keypairs only; a real session stays the custody gate | ML-KEM - SHA3-256 - BLAKE2b - ChaCha20-Poly1305 |
-| `kumara_pq_identity.rye` | **One phrase, two keys -- both directions guarded at once.** -- the **post-quantum identity front door**, the dual-key sibling of `kumara_identity.rye`: where that renders a phrase to the ONE Ed25519 key the classical world both signs and agrees with, this renders a phrase to the TWO lattice keys a quantum-resistant identity must carry -- an ML-DSA signing key AND an ML-KEM key-agreement key -- because the lattice schemes share no curve for one key to do both jobs (the learned discovery of `active-designing/20260816-192400`). Composes only GREEN rungs: the signing half is `mldsa_identity.rye`, the agreement half is `mlkem_sealed.rye`'s own keypair, and the one-phrase-to-two-keys derivation folds `bip39_seed.rye` with `hkdf_sha512.rye` (RFC 5869) -- one HKDF extract over the 512-bit BIP-39 seed, three domain-separated expansions carving the ML-DSA seed xi and the ML-KEM seeds d and z, so a keeper remembers ONE phrase yet holds two independent keys. Each tier is a `PqParams` value pairing the halves (small ML-DSA-44/ML-KEM-512, **default** ML-DSA-65/ML-KEM-768, large ML-DSA-87/ML-KEM-1024); an identity plugs straight into the post-quantum sealed door. Proven over every tier: the bip39 half anchored to BIP-39's Trezor vector seed byte-for-byte; **no drift** (`from_mnemonic` = hand-deriving the three seeds then composing the halves); **the two keys distinct** (xi, d, z pairwise different); **a real signing half** (sign->verify accepts, three refusals); **a sealing-ready agreement half** (sealed to the ML-KEM half opens with dk, a different identity fails `OpenFailed`); **both halves at once** (a frame sealed for confidentiality and signed for provenance, a tamper breaking the signature); determinism and distinctness closing it. Each half is doubly-oracle-proven one rung down. TEST identities only; a real post-quantum identity stays the custody gate | ML-DSA identity - ML-KEM keypair - BIP-39 - HKDF-SHA-512 |
-| `kumara_pq_sealed.rye` | **Only THIS keeper can read this -- and only from THAT keeper.** -- the **post-quantum sealed-to-identity door**, the sibling of `kumara_sealed.rye`: a message sealed TO a named post-quantum identity AND signed BY a named post-quantum identity, so one frame carries both confidentiality and provenance. Where the classical door seals to an Ed25519 identity through the Ed25519->X25519 map, this seals to the identity's ML-KEM half with `mlkem_sealed.rye` and signs a BLAKE2b-512 digest of the sealed frame with the sender's ML-DSA half through `kumara_pq_identity.rye` -- the two lattice keys the dual-key identity carries. Where the classical sealed box is anonymous, this door adds a message only the named recipient can read, provably from the named sender. Authors no new cryptography -- the envelope is `magic GQS1 || sender ML-DSA public key || sender ML-DSA signature || inner mlkem_sealed frame`, opened **verify-before-trust**: the signature is checked and refused unless it is the sender the reader named, before the ciphertext is ever decapsulated (mirroring `kumara_carry.rye`'s binding). Signing a fixed 64-byte digest keeps the signed message within ML-DSA's bound at every plaintext length. Proven at every tier (small ML-DSA-44/ML-KEM-512, **default** ML-DSA-65/ML-KEM-768, large ML-DSA-87/ML-KEM-1024): a confidential-and-authenticated round-trip across five plaintext lengths recovering both the plaintext and the verified sender, the message not the plaintext, and four refusals -- a wrong recipient (`OpenFailed`), a wrong expected sender (`UnexpectedSigner`), a tampered ciphertext (`BadSignature`), a tampered signature (`BadSignature`) -- plus bad magic and truncation. Each composed half is doubly-oracle-proven one rung down. TEST identities only; sealing to or signing as the maintainer's own post-quantum identity stays the custody gate | ML-KEM sealed - ML-DSA identity - BLAKE2b |
-| `hybrid_identity.rye` | **One phrase, both worlds -- a name that falls only when both families fall.** -- the **hybrid identity**, the safe-by-default identity for the transition years: one backup phrase grown into all THREE keys -- the classical Ed25519 signing key AND the two lattice keys a post-quantum identity carries (ML-DSA signing, ML-KEM agreement). During the years between *the curves are fine* and *a quantum computer broke the curves*, the strongest identity carries both families, so a break in either still leaves the identity standing on the other. Authors no new cryptography and no new derivation: the classical half is `kumara_identity.rye` (phrase -> Ed25519 through BIP-39 + SLIP-0010), the post-quantum half is `kumara_pq_identity.rye` (the same phrase -> the two lattice keys through BIP-39 + HKDF) -- the same mnemonic, two independent derivations, three keys from one remembered phrase. The hybrid signature carries both an Ed25519 and an ML-DSA signature and verifies iff both verify, so a forger must break both families. Proven at every tier: **no drift** (each half equals its own single-family door byte-for-byte); **three distinct keys** (Ed25519 public, ML-DSA public, ML-KEM ek pairwise different); **the hybrid signature requires both** (a valid-Ed25519/tampered-ML-DSA signature rejected, a valid-ML-DSA/tampered-Ed25519 signature rejected, a flipped message refused); with determinism and distinctness. Each half is proven one rung down. TEST identities only; a real hybrid identity stays the custody gate | Kumara identity - Kumara PQ identity |
-| `hybrid_sealed.rye` | **One message, both worlds -- a box that opens only when both families are broken.** -- the **hybrid sealed-to-identity door**, the confidentiality sibling of `hybrid_identity.rye`: a message sealed TO a hybrid identity so its confidentiality survives a break in either family -- the classical X25519 agreement beside the post-quantum ML-KEM agreement. Where the hybrid signature is genuine only when both families verify, this message is readable only when both agreements open. Authors no new cryptography and adds no new primitive -- confidentiality is an **onion** of two GREEN doors: the inner layer is `kumara_sealed.rye` (the classical X25519 box), the outer layer is `mlkem_sealed.rye` (the post-quantum ML-KEM box); `seal` wraps the plaintext in the classical box then that whole frame in the post-quantum box, and `open` peels the post-quantum layer then the classical one, so to read the plaintext an adversary must break both. Proven at every tier (small ML-KEM-512, **default** ML-KEM-768, large ML-KEM-1024): a confidential round-trip across six plaintext lengths (empty -> 4 KiB), the frame body not the plaintext, and **break-one-is-not-enough** -- a classical-only holder fails `OuterOpenFailed`, an ML-KEM-only holder peels the outer layer yet fails `InnerOpenFailed`, while the true keeper opens it -- plus a flipped-byte refusal, a stranger refused, and determinism. Each layer is proven one rung down. TEST identities only; both the X25519 ephemeral and the ML-KEM message must be fresh randomness in real use; sealing to or opening as the maintainer's own hybrid identity stays the custody gate | Kumara sealed - ML-KEM sealed |
-| `hybrid_signed_sealed.rye` | **One frame -- who sent it, hidden from everyone else, falling only when both worlds fall.** -- the **hybrid sealed-AND-signed door**: a message sealed TO a hybrid identity AND signed BY a hybrid identity, so one frame carries both confidentiality and provenance hardened on both families at once -- the classical Ed25519/X25519 world beside the post-quantum ML-DSA/ML-KEM world. It completes the hybrid surface (the hybrid identity signs on both families, `hybrid_sealed.rye` hides on both, this door does both in one frame) and is the hybrid analog of `kumara_pq_sealed.rye`. Authors no new cryptography -- confidentiality is `hybrid_sealed.rye`'s onion, provenance is `hybrid_identity.rye`'s hybrid signature (Ed25519 beside ML-DSA, genuine only when both verify); this module contributes only the signed envelope (`magic GHS1 || sender Ed25519 public || sender ML-DSA public || Ed25519 signature || ML-DSA signature || inner hybrid_sealed frame`) opened **verify-before-trust**: the sender's two public keys are checked and the hybrid signature verified over a BLAKE2b-512 digest of the sealed frame, before either agreement is opened. Proven at every tier (small ML-DSA-44/ML-KEM-512, **default** ML-DSA-65/ML-KEM-768, large ML-DSA-87/ML-KEM-1024): a confidential-and-authenticated round-trip across five plaintext lengths recovering the plaintext and both verified sender keys, and six refusals -- a wrong recipient (`OpenFailed`), a wrong expected sender (`UnexpectedSigner`), a tampered inner ciphertext (`BadSignature`), a tampered Ed25519 signature (`BadSignature` -- a classical-only forger caught), a tampered ML-DSA signature (`BadSignature` -- a post-quantum-only forger caught), plus bad magic and truncation. Each composed half is proven one rung down. TEST identities only; sealing to or signing as the maintainer's own hybrid identity stays the custody gate | Hybrid sealed - Hybrid identity - BLAKE2b |
-| `hybrid_signed_carry.rye` | **One public word -- signed on both worlds, read by anyone, still named on the morning the curves fall.** -- the **hybrid signed carry**, the **open** corner of the hybrid surface: the exact shape of `signed_carry.rye` (a self-describing, content-addressed, signed frame whose payload stays **public** on purpose) with the single Ed25519 signature replaced by a **hybrid signature** (Ed25519 beside ML-DSA, genuine only when both verify), so a published record's authorship survives a break in either family. Where `hybrid_sealed.rye` hides a message on both families and `hybrid_signed_sealed.rye` both hides and proves one, this door proves a message everyone is meant to read -- the post-quantum successor of the classical signed carry, the Lotus *who made this record* unblock and Season 2's content-addressed chain of custody, hardened for the quantum day. Authors no new cryptography -- the content address is `blake2b.rye`'s BLAKE2b-512, the signature is `hybrid_identity.rye`'s hybrid signature; this module contributes only the frame (`magic GHC1 || signer Ed25519 public || signer ML-DSA public || paylen(u64 BE) || payload || BLAKE2b-512 digest || Ed25519 signature || ML-DSA signature`) opened **verify-before-trust**: magic, then declared length, then a recomputed content address (a byte moved anywhere upstream is refused **here**), then the hybrid signature, before one zero-copy payload byte leaves the door alongside both verified signer keys. Proven at every tier (small ML-DSA-44/ML-KEM-512, **default** ML-DSA-65/ML-KEM-768, large ML-DSA-87/ML-KEM-1024): a content-addressed round-trip across six payload lengths (empty -> 64 KiB) recovering both signer keys and the payload, byte-identical determinism, and refusals each caught by its own named error -- a tampered payload, a swapped signer key, and a tampered digest all fail `DigestMismatch`, a flipped Ed25519 or ML-DSA signature byte each fails `BadSignature` (a one-family forger caught), plus bad magic, two truncations, and an undersized buffer. This round also closed a **reds-first** find the carry surfaced -- the ML-DSA `decompose` primitive admitted only `r0 in (-gamma_2, gamma_2]`, yet FIPS 204's top-step borrow reaches `r0 = -gamma_2` exactly at `r = q - gamma_2`, a residue the random spread missed and this carry's digest found. TEST identities only; signing a record with the maintainer's own hybrid identity stays the custody gate | Signed carry - Hybrid identity - BLAKE2b |
+**No count is typed on this page,** and that is deliberate. This page carried a table of 80
+modules while 87 stood in the directory, and a subset copy of a roster goes short more quietly
+than a short roster does -- a reader sees rows rather than the set they were drawn from. The
+count guard computes both numbers on demand (REDS %80, %105, %191, %195).
 
 ---
 
@@ -166,133 +59,80 @@ rishi/bin/rishi run tools/cr/crypto_suite_witness.rish
 ```
 
 [`crypto_suite_witness.rish`](../tools/cr/crypto_suite_witness.rish) rebuilds each
-`crypto/<name>.rye` fresh from source to the gitignored `crypto/bin/` and runs every
-per-file witness in the dependency order above, naming the exact file the moment one
-goes RED. A GREEN suite means every claim here is re-provable by tooling rather than
-trusted from a commit message -- measurement beats memory. It then runs the **count
-guard** ([`crypto_count_guard_witness.rish`](../tools/cr/crypto_count_guard_witness.rish)),
-a bijection between the files on disk and the witnesses the suite registers, which
-prints both counts so this page never has to guess one (REDS %80, %105, %191). The
-roster a reader checks completeness against is [`crypto/MODULES.md`](../crypto/MODULES.md),
-held to the directory by [`crypto_module_roster_witness.rish`](../tools/cr/crypto_module_roster_witness.rish).
+`crypto/<name>.rye` fresh from source into the gitignored `crypto/bin/`, runs every per-file
+witness in dependency order, and names the exact file the moment one goes RED. A GREEN suite
+means every claim here is re-provable by tooling rather than trusted from a commit message --
+measurement beats memory. It then runs the count guard above.
 
-To prove one rung alone, run its witness -- for example:
+To prove one rung alone, run its witness:
 
 ```bash
 rishi/bin/rishi run tools/cr/crypto_ed25519_sign_witness.rish
 rishi/bin/rishi run tools/cr/crypto_vault_seal_witness.rish
 ```
 
-Each witness asserts its `GREEN crypto-<name>` line against the RFC known-answer
-**and** a cross-check against Zig's independent `std.crypto`, so parity is proven
-against two witnesses at once -- the published vector and a second implementation.
+Each witness asserts its `GREEN crypto-<name>` line against the RFC known-answer **and** a
+cross-check against Zig's independent `std.crypto`, so parity is proven against two witnesses
+at once: the published vector, and a second implementation that reached the same bytes without
+seeing our code.
 
 ---
 
 ## Constant-time posture -- a scoped horizon, named honestly
 
-Correctness is settled; **timing-safety is not a settled claim -- it is a scoped
-horizon.** A timing claim is a measurement, never a boast, and this library claims
-no measurement yet. [`crypto/CONSTANT_TIME.md`](../crypto/CONSTANT_TIME.md) draws
-the full map, file by file, with line citations. In one screen, every primitive
-sits in exactly one posture toward a secret:
+Correctness is settled; **timing-safety is a scoped horizon rather than a settled claim.** A
+timing claim is a measurement, and this library claims no measurement yet.
+[`crypto/CONSTANT_TIME.md`](../crypto/CONSTANT_TIME.md) draws the full map, file by file, with
+line citations. In one screen, every primitive sits in exactly one posture toward a secret:
 
-- **public-only** -- reads only public values (verify, decode, group law, the
- Edwards<->Montgomery conversion of a *public* key). Variable-time here leaks no
- secret, because there is no secret in the operation.
-- **data-independent by construction** -- touches a secret, yet control flow and
- memory access are fixed regardless of the secret's value: the ChaCha/Poly
- arithmetic, the AEAD tag compare (accumulates the byte difference and tests
- once, never early-returning), the `fe25519` reduction and inversion ladder, and
- **X25519's Montgomery ladder** (a fixed step count with a branchless masked
- conditional swap). The strongest posture pure Rye can assert without a
- measurement -- and it still awaits one, since a compiler may undo branchless
- source.
-- **deliberately variable-time** -- `ed25519_scalarmul.rye` (double-and-add
- branches on the secret scalar's bits) and `ed25519_sign.rye` (composes it).
- Correct and parity-GREEN, **not yet timing-safe** -- named, not hidden; the
- sharpest horizon in the library. A future measurement round puts these on metal
- before any timing claim is earned.
+- **public-only** -- reads only public values (verify, decode, the group law, the
+  Edwards<->Montgomery conversion of a *public* key). Variable time here leaks no secret,
+  because the operation holds none.
+- **data-independent by construction** -- touches a secret, and keeps control flow and memory
+  access fixed regardless of its value: the ChaCha/Poly arithmetic, the AEAD tag compare
+  (which accumulates the byte difference and tests once), the `fe25519` reduction and inversion
+  ladder, and **X25519's Montgomery ladder** (a fixed step count with a branchless masked
+  conditional swap). This is the strongest posture pure Rye asserts without a measurement, and
+  it still awaits one, since a compiler may undo branchless source.
+- **deliberately variable-time** -- `ed25519_scalarmul.rye` (double-and-add branches on the
+  secret scalar's bits) and `ed25519_sign.rye`, which composes it. Correct and parity-GREEN,
+  and **timing-safe only once measured** -- named here rather than hidden, and the sharpest
+  horizon in the library. A future measurement round puts these on metal before any timing
+  claim is earned.
 
 ---
 
 ## The custody gate -- the library builds and verifies; it never holds a key
 
-Every witness runs over **TEST** keys and the RFC's public vectors -- no real
-identity key, no network, no funds, no real device. Signing a record, or agreeing
-a session, with the maintainer's **own** identity key stays a **custody gate**
-(gate %3/%4): the agent builds and proves the mathematics; the key stays Keaton's
-hand. `ed25519_sign.rye`'s `derive_public(seed)` and `sign(seed, msg)` take a
-caller-supplied seed -- a test seed is not the maintainer's identity key.
+Every witness runs over **test** keys and the RFC's public vectors: no real identity key, no
+network, no funds, no real device. Signing a record, or agreeing a session, with the
+maintainer's **own** identity key stays a **custody gate** (gate %3 / %4) -- the agent builds
+and proves the mathematics, and the key stays Keaton's hand. `ed25519_sign.rye`'s
+`derive_public(seed)` and `sign(seed, msg)` take a caller-supplied seed, and a test seed is not
+the maintainer's identity key.
 
-**Monocypher-source parity is landed:** the vendored `vendor/monocypher`
-(CC0/BSD-dual, unmodified) is compiled fresh and diffed byte-for-byte against our
-authored Rye over the published vectors -- seventeen rungs GREEN (BLAKE2b, X25519,
-Ed25519, the ChaCha20-Poly1305 AEAD, Argon2 across all three modes, the
-XChaCha20-Poly1305 flagship `crypto_aead_lock`, the Edwards<->Montgomery
-conversion `crypto_eddsa_to_x25519` / `crypto_x25519_to_eddsa` that unifies one
-identity key for signing and agreement, the standalone Poly1305
-authenticator `crypto_poly1305` -- the MAC every sealed carry rests on, proven in
-its own right rather than only embedded in the AEAD -- the standalone ChaCha20
-stream cipher `crypto_chacha20_ietf`, the keystream the whole ChaCha/Poly line
-enciphers against, likewise proven standalone, the standalone SHA-512 hash
-`crypto_sha512` -- the hash Ed25519 signs with and the hash every HMAC-SHA512,
-HKDF-SHA512, and BIP32 seed derivation folds through, proven in its own right
-rather than only embedded in Ed25519 signing, HMAC-SHA-512
-`crypto_sha512_hmac` -- the keyed MAC HKDF-SHA512 and BIP32 key derivation are
-built on, anchored to RFC 4231's published tags, and the standalone HChaCha20
-`crypto_chacha20_h` -- the XChaCha nonce-extension core every random-nonce sealed
-message folds through, proven in its own right rather than only inside the
-XChaCha20-Poly1305 flagship, anchored to draft-irtf-cfrg-xchacha-03 section 2.2.1's
-published subkey, and the standalone variable-length BLAKE2b `crypto_blake2b` at
-output lengths below 64 -- the length-parameterized hash core the first BLAKE2b
-rung never exercised, proving `blake2b.rye`'s `hash_var` at 16/20/28/32/48 bytes,
-the mode Argon2's `blake2b_long` chain and RFC 9106 key derivation lean on,
-anchored by its 64-byte case to RFC 7693's published BLAKE2b-512("abc"), and the
-keyed BLAKE2b MAC `crypto_blake2b_keyed` -- the message authenticator no one
-without the key can forge, proving `blake2b.rye`'s `hash_keyed` over six
-(output-length, key, message) triples under keys of 1..64 bytes, the mode Grain's
-per-record authentication and key derivation reach for, its oracle three
-independent implementations agreeing byte-for-byte since RFC 7693 publishes only
-the unkeyed answer), the constant-time equality primitive
-`crypto_verify16/32/64` -- the compare every MAC, tag, and signature-equality
-check rests on, proving `verify.rye`'s verdict against the vendored Monocypher
-over equal, one-bit-differing, and all-differing inputs at all three widths under
-Monocypher's 0-for-equal / -1-for-differing contract, the constant-time corner of
-the timing-safety horizon correct by structure rather than measurement, and
-HKDF-SHA-512 `crypto_sha512_hkdf` -- the extract-then-expand key-derivation
-function the sealed session, the per-record subkey, and every future vault key
-ladder fold their shared secret through, proving `hkdf_sha512.rye` over RFC
-5869's Test Case 1, 2, and 3 input structures plus a two-block-crossing request,
-its oracle a second real implementation agreeing byte-for-byte since RFC 5869
-publishes no SHA-512 known-answer, the key-derivation counterpart to the
-HMAC-SHA-512 rung beneath it), and Elligator 2
-`crypto_elligator_map` / `crypto_elligator_rev` -- the map that hides an X25519
-public key as a uniformly random 32-byte string and reads it back, proving
-`elligator.rye` over sixteen direct representative->u-coordinate answers and sixteen
-inverse point+tweak->representative-or-fail answers, the first rung for a primitive
-Zig's `std.crypto` does not ship (so the vendored Monocypher agreeing, beside the
-round-trip identity and Monocypher's own `elligator_dir`/`elligator_inv` vectors, is
-the anchor)), each also
-anchored to its RFC or published known-answer. One horizon stays honest beside it:
-**constant-time** waits on measurement as above (the inverse map's one representability
-test is deliberately variable-time by design, keys tried at random).
+**Monocypher-source parity is landed** -- the vendored `vendor/monocypher` is compiled fresh
+and diffed byte-for-byte against our authored Rye over the published vectors, rung by rung.
+[`crypto/PARITY.md`](../crypto/PARITY.md) names which rungs stand and what each one anchors to;
+that page moved the record word for word out of `crypto/README.md` when it split, and it is the
+one place the parity account lives.
 
 ---
 
 ## How to add a rung
 
-1. **Name the claim** in `active-designing/` (dated, raw layer first) and pick the
-  published reference it will be parity-checked against.
-2. **Author in pure Rye**, under TAME Guidance -- bound everything, >=2 asserts per
-  function, `// invariant:` on each, no `std.crypto`, no copied Monocypher line.
-3. **Write the witness** `tools/cr/crypto_<name>_witness.rish` -- assert the RFC
-  known-answer **and** a cross-check against Zig's `std.crypto`.
-4. **Register it** in `crypto_suite_witness.rish` in dependency order, and run the
-  whole suite GREEN.
-5. **Record its posture** in [`crypto/CONSTANT_TIME.md`](../crypto/CONSTANT_TIME.md),
-  its row in [`crypto/MODULES.md`](../crypto/MODULES.md) -- which a guard holds to the
-  directory -- and its row here. This page compresses; it holds no load-bearing pin.
+1. **Name the claim** in `active-designing/` (dated, raw layer first) and pick the published
+   reference it will be parity-checked against.
+2. **Author in pure Rye**, under TAME Guidance -- bound everything, two or more asserts per
+   function, `// invariant:` on each, no `std.crypto`, no copied Monocypher line.
+3. **Write the witness** `tools/cr/crypto_<name>_witness.rish`, asserting the RFC known-answer
+   **and** a cross-check against Zig's `std.crypto`.
+4. **Register it** in `crypto_suite_witness.rish` in dependency order, and run the whole suite
+   GREEN.
+5. **Record its row** in [`crypto/MODULES.md`](../crypto/MODULES.md), its reasoning in
+   [`crypto/LADDER.md`](../crypto/LADDER.md), and its posture in
+   [`crypto/CONSTANT_TIME.md`](../crypto/CONSTANT_TIME.md). This page compresses, so it needs no
+   edit: it routes to those three, and each is held to the directory by its own guard.
 
 ---
 
@@ -300,12 +140,11 @@ test is deliberately variable-time by design, keys tried at random).
 
 | Teacher | Role |
 |---------|------|
-| **Monocypher** (Loup Vaillant) | Parity target -- public API + RFC vectors; CC0/BSD-dual, vendored, unmodified |
-| **Zig `std.crypto`** | Independent second implementation cross-checked inside every witness |
+| **Monocypher** (Loup Vaillant) | Parity target -- public API and RFC vectors; CC0/BSD-dual, vendored, unmodified |
+| **Zig `std.crypto`** | Independent second implementation, cross-checked inside every witness |
 | **The RFC / FIPS authors** | The published known-answer vectors every rung is proven against |
 
 ---
 
-*May this crypto, written in the open and checked against the world, be worthy of
-the trust a hand places in it -- and may every keeper who reaches for it find a
-door they can read all the way down.*
+*May this crypto, written in the open and checked against the world, be worthy of the trust a
+hand places in it -- and may every keeper who reaches for it find a door they can read all the way down.*

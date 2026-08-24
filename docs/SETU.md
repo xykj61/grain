@@ -4,7 +4,7 @@
 
 **Status:** Checkable — operator compressor (SETU0–SETU6.5 · HOLD* · live-sent GREEN)  
 **Depth:** guide  
-**Ceiling:** ≤80 lines  
+**Ceiling:** <=80 lines  
 **Last updated:** 2026-07-20 (live-sent on Pixel `enx*` CDC-NCM)  
 **Compresses:** [`LULU.md`](LULU.md) · [`../active-designing/date/20260718/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md`](../active-designing/date/20260718/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md) · season [`../active-designing/20260718-185147_desk-hearth-hold-season.md`](../active-designing/yonder/20260718-185147_desk-hearth-hold-season.md) · SETU6.5 [`../active-designing/date/20260718/20260718-201601_setu65-lab-tx-gate.md`](../active-designing/date/20260718/20260718-201601_setu65-lab-tx-gate.md) · compose [`../active-designing/date/20260718/20260718-133455_glass-desk-compose-amber-amphora-revive.md`](../active-designing/date/20260718/20260718-133455_glass-desk-compose-amber-amphora-revive.md)
 

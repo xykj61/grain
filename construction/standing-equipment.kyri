@@ -222,3 +222,7 @@ seated 20260824.112806
 guard width_check
 path tools/w/width-check.rish
 seated 20260620.210812
+
+guard declared_ceiling
+path tools/d/declared_ceiling_witness.rish
+seated 20260824.121445

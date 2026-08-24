@@ -4,7 +4,7 @@
 
 **Status:** Checkable — proven-seat operator guide
 **Depth:** guide
-**Ceiling:** ≤300 lines
+**Ceiling:** <=300 lines
 **Last updated:** 2026-07-12
 **Compresses:** [`proven-seat-guest-hammock.md`](../active-designing/proven-seat-guest-hammock.md) · [`20260712-195339_proven-seat-g1-crossing-pin.md`](../active-designing/date/20260712/20260712-195339_proven-seat-g1-crossing-pin.md) · [`20260712-204549_proven-seat-g1-claude-close.md`](../active-designing/date/20260712/20260712-204549_proven-seat-g1-claude-close.md) · [`20260712-214200_proven-seat-signed-kumara-monocypher.md`](../active-designing/date/20260712/20260712-214200_proven-seat-signed-kumara-monocypher.md) · [`20260712-214900_signed-kumara-monocypher-pin.md`](../active-designing/date/20260712/20260712-214900_signed-kumara-monocypher-pin.md) · [`20260712-220400_proven-seat-seam-c-and-rye-body.md`](../active-designing/date/20260712/20260712-220400_proven-seat-seam-c-and-rye-body.md) · [`20260712-113900_lane-kvm-retire-dbus-escape.md`](../active-designing/date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md)
 

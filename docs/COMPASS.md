@@ -4,7 +4,7 @@
 
 **Status:** Checkable — operator compressor
 **Depth:** guide
-**Ceiling:** ≤120 lines
+**Ceiling:** <=120 lines
 **Last updated:** 2026-07-27 (Voice / **Radiant** on the rose · check-in loop words)
 **Compresses:** [`foundations/README.md`](../foundations/README.md) · [`follow-our-compass`](../foundations/20260706-185112_follow-our-compass.md) · [`TWO_ROOMS`](../context/TWO_ROOMS.md) · [`RADIANT_STYLE.md`](../context/RADIANT_STYLE.md) · [`LEXICON` loop](../context/LEXICON.md) · witness-habitat study · Cursor tutorial
 

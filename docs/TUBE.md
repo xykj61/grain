@@ -4,7 +4,7 @@
 
 **Status:** Checkable — operator compressor (TUBE0 / TUBE0.5 / TUBE1–5 / TUBE7 GREEN; Resource Scope · Network · Sensors Grants GREEN; TUBE6 horizon)
 **Depth:** guide
-**Ceiling:** ≤150 lines
+**Ceiling:** <=150 lines
 **Last updated:** 2026-07-18 (JABS living names · Mantra-rev tip wording)
 **Compresses:** [`20260716-142818_glow-application-framework-and-publishing.md`](../expanding-prompts/yonder/20260716-142818_glow-application-framework-and-publishing.md) · [`20260717-014522_native-activity-shim-and-slc-packaging.md`](../active-designing/date/20260717/20260717-014522_native-activity-shim-and-slc-packaging.md) · [`JABS.md`](JABS.md)
 
