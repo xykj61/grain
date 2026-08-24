@@ -1,0 +1,42 @@
+format session-log-v1
+stamp 20260824.071500
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The rule that reached 95 of 98, and the door nobody measured
+prompt Autonomous loop -- roster cold first, Standfast on reds, next agent-doable lap Lindy-first crux-first, rota row N mod 5, send each finished increment
+think Cold roster before touching anything: 40 of 40 green, every row in construction/REDS.md reads CLOSED, and both remotes sit at HEAD. The line is clear, so the lap is constructive.
+think Commit count 3363, so the rota reads row 3363 mod 5 = 3 -- Water, Venus, care and flow. Gall-and-Conway fused, the happy zone and the thin edge, and how we grow a language. The first shaped the round: an organization of one durable person and forgetful agents communicates through written artifacts alone, so a front page is not decoration, it is the channel.
+think The running thread from `20260824.062207` named Mycelium the standing half of the Tier 1 crux -- 98 modules, 80 witnesses, and it said no front page. Measurement disagreed: mycelium/README.md has stood since `20260813` at 12,789 bytes, under the pin bound, and it is good. Measurement beats memory, so the lap became read what is actually there rather than build what was predicted.
+think Read what shape its roster takes, since that is what REDS %184 was about one directory over. Mycelium answers the same problem a better way: rather than listing 98 modules it names 31 bases across nine families and publishes a SUFFIX TABLE -- _bron, _true, _knot, _fixture_gen, _bench -- so a companion is reachable by rule. That reaches 95 of 98 on its own, which is how the page stayed a map instead of a catalogue.
+think Three modules stood outside both the map and its rule: parse_int.rye and tally_copy.rye, seam symlinks into ../tally/, and puddle_fleet_fixture_gen.rye, whose name promises a base module nobody wrote. Small next to Caravan's 37 of 110, and quieter, which is the whole finding.
+think Wrote the guard to read the suffix rule FROM the README rather than reciting a copy in the scan. The rule belongs to the page, so the guard asks the page what the rule is; add a suffix row and its companions are honored on the next run, drop one and every module wearing it reads unreachable, loudly.
+think Then ran the register scan on the page, which had never been on the DOOR roster. It read 46% negative sentences against a 20% ceiling -- the exact number that founded Gauge Style on `20260823`. That turned out to be the larger half of the lap.
+obs The transferable rule, and it is why %185 is worth a row beside %184: a rule-shaped roster goes short more quietly than a list-shaped one. A short list looks short. A rule looks complete, because a reader sees the rule rather than the set it covers, and a module whose name wears no seated suffix is invisible to the map and the rule at once. Caravan's fault was visible to anyone who counted; this one was visible to nobody, including me until I wrote the awk.
+obs The second lesson has a number on both sides. Caravan's README joined the DOOR roster one lap ago and reads 5%. This one had never been on it and read 46%. A page joins the meter on the lap it is written, or it is measured by nobody -- and the four documents the pin law already prints over bound are the same lantern REDS %182 named, one layer over.
+obs The guard bit my own edit on the lap it entered. Naming the two Tally seam symlinks, I wrote "beside [`kumara.rye`](kumara.rye) above" and the scan read duplicate_entries=1, since two entries for one module may come to disagree. Dropped to a plain code span. A guard that catches its author the same hour is the cheapest possible proof it is reading something.
+obs Case 15 of the control misread on first run -- I expected unused_suffix=1 over a pen holding one module and two suffix rows, and the honest answer was 2, since `cord` alone wears neither. Corrected the case rather than the scan: my expectation was wrong, the reading was right.
+obs Derivation stays ONE suffix deep on purpose and it costs nothing, since cord_knot_bench.rye resolves through cord_knot.rye, which is itself a named base. A chain that had to be walked would let an unnamed middle link hide behind a named end -- control case 12 plants exactly that and watches it bite.
+obs Six sentences turned affirmative-first with every claim held exactly: "No node writes a balance" became "A balance is read rather than written", "never *arbitrated* by an authority; it is *resolved* by the order" became resolution-first with "rather than" carrying the contrast. Two negatives stay, and they earn it -- the lawful no-op and named refusal a contest produces, and the custody line naming no real key, no funds, no network. Refusal is the subject in both.
+obs The hot roster paid for itself on this lap. Cold read 40 of 40 green; after `git add` three guards answered red -- `readme_metrics` and `geode_libraries`, because two generated indexes count tracked files and the new witness had just become one, and `readme_reach`, because the REDS row I folded to `construction/archive/` carried the pin's `../tools/...` links one directory down. REDS %183 taught that three hours earlier about index shelves, and the lesson had reached no further than the room it was learned in. Booked %186.
+obs Then the repair over-applied in the same shape %183's patch did: a regex rewriting every `](../` also caught the header's `](../REDS.md)`, which the archive destination had already written correctly. Fixing that, I checked the SECOND fold file before staging rather than after, and found the identical fault waiting in it. The order is the whole lesson -- a fold moves depth, and a blanket rewrite moves what was already right.
+loom reds pin_bytes=23174 bound=24576 rows_folded=2 spine=186
+loom page=mycelium/README.md bytes_before=12789 bytes_after=13375 non_ascii_before=87 non_ascii_after=0
+loom map_roster modules_on_disk=98 bases_named_before=31 bases_named_after=34 suffixes_seated=5 unreachable_before=3 unreachable_after=0
+loom door_register file=mycelium/README.md pct_before=46 pct_after=13 ceiling=20 sentences=15
+loom control cases=15 bitten=8 free=7 misread_first_run=1 fail=0
+loom roster guards_before=40 guards_after=41 cold_run=40/40_green
+file mycelium/README.md the three unreachable modules named, six sentences turned affirmative-first with claims held exactly, and 87 non-ASCII characters swept -- it was seated `20260813`, three days before ASCII-first
+file tools/m/mycelium_map_roster_witness.rish the 41st standing guard -- four readings gated at zero, both directions proven, the suffix rule read from the page rather than recited
+file tools/fixtures/mycelium_map_roster_scan.sh reads bases, suffixes and modules from the tree; counts symlinks, since a seam symlink is a module a reader meets in `ls`; publishes corpus size beside the verdict
+file tools/fixtures/mycelium_map_roster_control.sh fifteen behaviors on real directories in a throwaway pen -- eight refusals bitten, seven honest readings free, a dropped suffix row and an unnamed middle both proven
+file tools/fixtures/prose_register_scan.sh mycelium/README.md joins the DOOR roster, which is what surfaced the 46%
+file construction/REDS.md rows %185 and %186 booked and closed; rows %180 and %181 folded to archive as the pin passed its bound twice; the headline span read 186 by measurement
+file construction/archive/REDS-the-rule-written-as-arithmetic-rows-180.md the folded row, whole, its body links repointed for the deeper room and the header's left as written
+file construction/archive/REDS-the-citation-that-named-nothing-rows-181.md the second folded row, checked for the same depth fault BEFORE staging, which found it
+file docs-geode/libraries/README.md regenerated -- 38 rows, the new guard counted
+file README.md the generated metrics block regenerated -- 1,669 witnesses over 1,891 modules
+file construction/standing-equipment.kyri mycelium_map_roster seated 41st
+file construction/ITINERARY.md Tier 1 closed on both doors; the live roster directive corrected from 39 guards to 41; next is docs/CRYPTO.md
+recommend keep-going docs/CRYPTO.md at 68,547 bytes is the next front door, and the first question is the one this lap answered by measuring rather than assuming -- whether it is a door a reader enters by or a reference a reader consults, since the two want opposite repairs
