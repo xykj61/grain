@@ -1,0 +1,62 @@
+# tools/l/log_has_a_row_witness.rish -- every flat log has a way in.
+#
+# WHY THIS RUNG. The session-logs law says a log gets a row in `session-logs/README.md`, so the room
+# and its index describe one set. On `20260824` the new 192-byte row bound refused a row three
+# times, correctly, and **twice the commit shipped anyway** -- the row-writing step and the commit
+# were separate commands, so a refusal in the first did not stop the second. A log with no row is a
+# record nobody reaches from the front door, and nothing in this tree could see one.
+#
+# The row bound was doing its job every time. This rung is the other half: a refusal has to stop the
+# lap rather than merely decline to write. A lantern that fires twice becomes a loom, and this one
+# fired three times in four commits.
+#
+# WHAT IS PROVEN, on metal. Every `.kyri` and `.bron` log sitting flat in `session-logs/` is named by
+# a link in the pin -- 41 of 41 at seating, zero missing. Twelve behaviors on planted rooms in a
+# throwaway pen: a row present passing free, a row absent bitten and named and counted, one missing
+# among three found rather than a majority carrying the room, a `.bron` counted beside a `.kyri`, a
+# FOLDED log free and uncounted because its row is on its day's immutable shelf, a substring refused
+# so `_one.kyri` cannot answer for `_one-more.kyri`, an empty room read as honest rather than as an
+# error, and an absent pin refused rather than read as zero logs and called clean.
+#
+# WHAT PASSES FREE, by named rule. A folded log. Its row moved to `date/README-index-YYYYMMDD.md`
+# when its file moved, and `tools/i/index_fold_witness.rish` holds that pairing. This watches the
+# flat room, which is the one a lap appends to.
+#
+# WHAT IS NOT PROVEN. That a row says anything useful about its log. Presence is the check, and the
+# 192-byte row bound is what keeps the presence from becoming a paragraph.
+#
+# Style: context/GAUGE_STYLE.md - Rule: .claude/rules/session-logs.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/l/log_has_a_row_witness.rish
+
+say "log-has-a-row: Language EN -- a record nobody can reach from the front door is a record nobody has."
+say "log-has-a-row: Style Gauge -- the room and its index describe one set, and this counts the halves."
+say "log-has-a-row: Lens TAME -- a refusal must stop the lap, rather than quietly decline to write."
+
+let scan = run ["sh" "tools/fixtures/log_has_a_row_scan.sh"]
+assert scan.ok else "log-has-a-row: a log sits flat in the room with no row in the index that promises to hold it"
+say scan.out
+assert scan.out contains "logs_without_a_row=0" else "log-has-a-row: every flat log must be named by the pin"
+assert scan.out contains "verdict=ok" else "log-has-a-row: the scan must balance before it is believed"
+say "field GREEN -- every flat log is reachable from the front door"
+
+let control = run ["sh" "tools/fixtures/log_has_a_row_control.sh"]
+assert control.ok else "log-has-a-row: the control must complete"
+say control.out
+assert control.out contains "row_present_free=yes" else "log-has-a-row: a log with its row must pass free"
+assert control.out contains "log_counted=yes" else "log-has-a-row: a flat log must be counted"
+assert control.out contains "no_row_bitten=yes" else "log-has-a-row: a log with no row must red"
+assert control.out contains "no_row_counted=yes" else "log-has-a-row: the count must name how many logs stand unreachable"
+assert control.out contains "no_row_named=yes" else "log-has-a-row: an unreachable log must be named, so its row can be written"
+assert control.out contains "one_of_three_found=yes" else "log-has-a-row: one missing among three must be found, never carried by a majority"
+assert control.out contains "bron_counted=yes" else "log-has-a-row: a .bron log counts beside a .kyri one"
+assert control.out contains "folded_free=yes" else "log-has-a-row: a folded log keeps its row on its day's shelf and needs none here"
+assert control.out contains "folded_uncounted=yes" else "log-has-a-row: a folded log must not be counted against the flat room"
+assert control.out contains "substring_refused=yes" else "log-has-a-row: a substring must never answer for a filename"
+assert control.out contains "empty_room_free=yes" else "log-has-a-row: an empty room is honest rather than an error"
+assert control.out contains "absent_pin_refused=yes" else "log-has-a-row: an absent pin must refuse rather than read zero logs and call it clean"
+assert control.out contains "control_verdict=ok" else "log-has-a-row: the control must agree with itself"
+say "twelve behaviors proven on planted rooms, both sides of every refusal"
+
+say "GREEN: log-has-a-row -- every flat log has a way in."

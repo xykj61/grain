@@ -46,6 +46,8 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260824.195807` | [a refusal that must stop the lap](20260824-195807_a-refusal-that-must-stop-the-lap.kyri) | Refused three times; twice the commit shipped anyway. Now a guard. |
+| `20260824.195429` | [the sweep target that was a test](20260824-195429_the-sweep-target-that-was-a-test.kyri) | The caravan falsifier does not fire; lattice was a selftest. |
 | `20260824.194605` | [a number without its bins](20260824-194605_a-number-without-its-bins.kyri) | The figure was 2.8x the truth; the law runs at 79%, and coverage is a room property. |
 | `20260824.192810` | [two weak tests one strong one](20260824-192810_two-weak-tests-one-strong-one.kyri) | The planted-name roster held 2 and the tree held 47; census 186 -> 177. |
 | `20260824.183958` | [one reading two numbers](20260824-183958_one-reading-two-numbers.kyri) | The pin bound rises to 57,344 for one page, and the one reading answers per page. |
