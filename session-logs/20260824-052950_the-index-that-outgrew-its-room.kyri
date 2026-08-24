@@ -1,0 +1,42 @@
+format session-log-v1
+stamp 20260824.052950
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The index that outgrew its room, and the depth a patch forgot
+prompt Autonomous loop -- roster cold first, Standfast on reds, next agent-doable lap Lindy-first crux-first, rota row N mod 5, send each finished increment
+think Went looking for the Tier 1 crux the ranked remainder names -- a Door front page for Caravan -- and ran `wc -c` over every tracked README on the way. `session-logs/README.md` read 2,895,849 bytes. The room beside it holds 181 flat files against a bound of 256, green.
+think The fold moves files and repoints their links; it moves no rows. So every fold for a month shrank the room and left the index whole. 2,373 rows across 30 days, of which four days still had a file flat.
+obs Three faults were visible once the size was, and all three are what an unbounded file looks like from a reader's side. The title stood at line 1,881 beneath 1,880 rows, because prepend means line 1. Not one of the 1,658 pipe rows sat under a delimiter, so by the GFM spec the file held no table at all. And two row shapes were interleaved, 1,658 table rows against 714 list items.
+obs I first read the file as unrostered and corrected that against the tree. It IS on `tools/fixtures/living_docs_lint_roster.sh`, and duty 6 has printed `2895849 > living_pin_max_bytes=24576` on every single run, beside three more documents. The witness is advisory by design and never fails. The finding is not the missing measurement; it is that printing and stopping are different things.
+think The design answer is not a second byte ceiling. The room and the index describe ONE set, so they want ONE rule: a day's index rows fold the moment that day's logs do. The byte bound then stops being a promise and becomes a consequence -- fold the room to today and the pin holds one day of rows.
+think Ordering is files-first because a shelf is immutable. A folded day's row reads `](date/YYYYMMDD/name)`, which becomes `](YYYYMMDD/name)` from one directory down -- one answer, correct forever. A still-flat day's row carries a bare filename whose right target would change again the moment the room folded, so that row waits.
+think The gate is the row rule rather than a byte ceiling, because a byte ceiling would red on the next lap that writes a log, and everyone would learn to raise it. A row goes stale only when its logs fold, and one tool folds both, so the guard is silent through ordinary work.
+obs Considered putting each day's rows inside its own day room, at `date/YYYYMMDD/README.md`, which would render above the file listing on a forge. It lost on precedent -- three shelves already stand at `date/README-index-YYYYMMDD.md` from `20260725.040520` -- and a second shape for one job is what the mark law exists to prevent.
+obs The shelf template first shipped with no table header, which would have replicated the delimiter fault 26 times. Caught by reading the first shelf. Reverted, taught the tool to write a header only for a day whose rows are table rows, and re-ran; the elder list-shape days correctly get none.
+obs Two new fixture scripts came out 100644 from a heredoc and pushed the exec-bit ratchet from 58 to 60. Repaired with chmod plus `git update-index --chmod=+x`, which is the rule's own line. Recent fixture scripts are all 100755, so the convention was there to read.
+obs The roster after `git add` found four reds. Two were generated pages the new guard had moved -- regenerated. One was `radiant_negation`: my rule edit read 1.47 against a baseline of 1.43, and the two phrases costing it were `no delimiter at all` and `held no table`. Rewrote them to say what holds -- the row goes under the delimiter, and GFM reads the rest as plain text -- and the file came down to 1.30.
+obs The fourth was `readme_reach`, and it found real work: `shelf_row` rewrote `](date/` and left every other target alone, so **62** links reaching past the room with `../` broke the moment their rows moved one directory deeper. The REDS fold in the same round carried it too. That is REDS %166-%170's own sentence recurring -- a repointer moves text while a fold moves depth -- and the loom for it already existed and fired, which is the system working rather than a gap.
+obs Then a second fault, mine, worth more than the first: I repaired the 26 already-written shelves with a script, and it over-applied -- deepening each shelf HEADER's `../SEASONS.md`, which the tool writes correctly for that depth, and reaching two elder shelves that had been right since `20260725.040520`. A patch over generated output re-derives what the generator already knew and gets some of it wrong. Restored the pin from HEAD, deleted all 26, fixed `shelf_row` to apply one rule to every relative target, and re-ran from clean. REDS %183.
+loom roster=standing_equipment guards=38 green=38 red=0 cold=true
+loom roster=standing_equipment guards=39 green=35 red=4 after_git_add=true reds=geode_libraries,radiant_negation,readme_metrics,readme_reach
+loom negation=.claude/rules/session-logs.md before=1.47 baseline=1.43 after=1.30
+loom index_pin=session-logs/README.md bytes_before=2895849 bytes_after=266790 rows_before=2373 rows_after=180 shelves=26 rows_folded=2193
+loom scan=index_fold rooms=5 stale_gated=0 stale_ratchet=317 ceiling=317
+loom control=index_fold cases=15 pass=15 fail=0
+file tools/rye/session_logs_archive.rye `fold_index`, `day_from_index_row`, `day_is_folded` and `shelf_row` added, reached by the `index-preview` and `index-fold` subcommands; the selftest proves the shelf, its delimiter, the link rewrite and idempotency
+file tools/fixtures/index_fold_scan.sh new -- an index folds with its room, gated at zero in `session-logs` and ratcheted at 317 elsewhere
+file tools/fixtures/index_fold_control.sh new -- fifteen behaviors on real directory trees, the ceiling proven by planting 317 rows and then 318
+file tools/i/index_fold_witness.rish new -- the 39th standing guard
+file session-logs/README.md 2,193 rows folded away; the head rewritten with the title first and the delimiter it never had
+file session-logs/SEASONS.md 26 shelf rows, the fold trigger restated, three elder `archive/` display texts repaired
+file construction/standing-equipment.kyri seats `index_fold` 39th
+file construction/REDS.md books %182 and %183; rows 177-178 fold to archive to keep the pin under bound
+file tools/fixtures/session_logs_archive/20260703-130000_zeta.md new -- a log whose index row reaches out of the room, so the depth rule is proven rather than believed
+file construction/archive/REDS-the-printed-command-and-the-counted-remainder-rows-177-178.md new -- rows 177-178, their six links deepened for the archive shelf
+file construction/CHECKPOINTS.md walk-back row at `4b166d337e` before the index fold
+file .claude/rules/stamp-and-name.md the mark law gains the index-folds-with-its-room amendment, with the Cursor twin
+file .claude/rules/session-logs.md the index section names the fold and says where a new row goes, with the Cursor twin
+file active-designing/20260824-052950_two-surfaces-one-set-one-rule.md new -- the essay, filed by the durability test
+recommend keep-going `caravan/README.md` stands at 497,531 bytes over 2,694 lines, and the ranked remainder already calls its legibility the Tier 1 crux -- a Door front page for the tree's largest module, with the ladder table moved to its own reference page

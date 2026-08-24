@@ -1,0 +1,155 @@
+# session-logs season index -- 20260730
+
+**Language:** EN
+**Status:** Season index -- immutable once folded
+**Season:** `20260730`
+**Folded:** `20260824.052329` from the living pin
+
+Closed rows for `20260730`, in the order the pin held them. Roster:
+[`../SEASONS.md`](../SEASONS.md) - living pin: [`../README.md`](../README.md).
+
+- `20260730.235319` — [e86 IronBeetle ep036 GREEN](20260730/20260730-235319_e86-ironbeetle-ep036-green.bron) — seat 91 · ch6 11/16 · e87 next
+- `20260730.233337` — [e85 IronBeetle ep035 GREEN](20260730/20260730-233337_e85-ironbeetle-ep035-green.bron) — seat 90 · ch6 10/16 · e86 next
+- `20260730.232631` — [e84 IronBeetle ep034 GREEN](20260730/20260730-232631_e84-ironbeetle-ep034-green.bron) — seat 89 · ch6 9/16 · e85 next
+- `20260730.232243` — [e83 IronBeetle ep033 GREEN](20260730/20260730-232243_e83-ironbeetle-ep033-green.bron) — seat 88 · ch6 8/16 · e84 next
+- `20260730.225955` — [e82 IronBeetle ep032 GREEN](20260730/20260730-225955_e82-ironbeetle-ep032-green.bron) — seat 87 · ch6 7/16 · e83 next
+- `20260730.225826` — [e81 IronBeetle ep031.5 GREEN](20260730/20260730-225826_e81-ironbeetle-ep031-green.bron) — seat 86 · ch6 6/16 · e82 next
+- `20260730.224932` — [e80 IronBeetle ep030 GREEN](20260730/20260730-224932_e80-ironbeetle-ep030-green.bron) — seat 85 · ch6 5/16 · e81 next
+- `20260730.224645` — [e79 IronBeetle ep028 GREEN](20260730/20260730-224645_e79-ironbeetle-ep028-green.bron) — seat 84 · ch6 4/16 · e80 next
+- `20260730.223644` — [e78 IronBeetle ep025 GREEN](20260730/20260730-223644_e78-ironbeetle-ep025-green.bron) — seat 83 · ch6 3/16 · e79 next
+- `20260730.222615` — [e77 IronBeetle ep022 GREEN](20260730/20260730-222615_e77-ironbeetle-ep022-green.bron) — seat 82 · ch6 2/16 · e78 next
+- `20260730.220543` — [e76 IronBeetle ep021 ch6 open GREEN](20260730/20260730-220543_e76-ironbeetle-ep021-ch6-open-green.bron) — seat 81 · ch6 1/16 · e77 next
+- `20260730.215259` — [e75 IronBeetle ep020 GREEN](20260730/20260730-215259_e75-ironbeetle-ep020-green.bron) — seat 80 · ch5 FULL · e76 next
+- `20260730.212920` — [e74 IronBeetle ep019 GREEN](20260730/20260730-212920_e74-ironbeetle-ep019-green.bron) — seat 79 · ch5 15/16 · e75 next
+- `20260730.212637` — [e73 IronBeetle ep018 GREEN](20260730/20260730-212637_e73-ironbeetle-ep018-green.bron) — seat 78 · ch5 14/16 · e74 next
+- `20260730.211417` — [e72 IronBeetle ep015 GREEN](20260730/20260730-211417_e72-ironbeetle-ep015-green.bron) — seat 77 · ch5 13/16 · e73 next
+- `20260730.210447` — [e71 IronBeetle ep014 GREEN](20260730/20260730-210447_e71-ironbeetle-ep014-green.bron) — seat 76 · ch5 12/16 · e72 next
+- `20260730.205720` — [e70 IronBeetle ep013 GREEN](20260730/20260730-205720_e70-ironbeetle-ep013-green.bron) — seat 75 · ch5 11/16 · e71 next
+- `20260730.205510` — [e69 IronBeetle ep012 GREEN](20260730/20260730-205510_e69-ironbeetle-ep012-green.bron) — seat 74 · ch5 10/16 · e70 next
+- `20260730.205130` — [e68 IronBeetle ep011 GREEN](20260730/20260730-205130_e68-ironbeetle-ep011-green.bron) — seat 73 · ch5 9/16 · e69 next
+- `20260730.204939` — [e67 IronBeetle ep010 GREEN](20260730/20260730-204939_e67-ironbeetle-ep010-green.bron) — seat 72 · ch5 8/16 · e68 next
+- `20260730.204730` — [e66 IronBeetle ep009 GREEN](20260730/20260730-204730_e66-ironbeetle-ep009-green.bron) — seat 71 · ch5 7/16 · e67 next
+- `20260730.204539` — [e65 IronBeetle ep008 GREEN](20260730/20260730-204539_e65-ironbeetle-ep008-green.bron) — seat 70 · ch5 6/16 · e66 next
+- `20260730.204306` — [e64 IronBeetle ep006 GREEN](20260730/20260730-204306_e64-ironbeetle-ep006-green.bron) — seat 69 · ch5 5/16 · e65 next
+- `20260730.203917` — [e63 IronBeetle ep005 GREEN](20260730/20260730-203917_e63-ironbeetle-ep005-green.bron) — seat 68 · ch5 4/16 · e64 next
+- `20260730.192532` — [e62 IronBeetle ep004 GREEN](20260730/20260730-192532_e62-ironbeetle-ep004-green.bron) — seat 67 · ch5 3/16 · e63 next
+- `20260730.191731` — [e61 IronBeetle ep002 GREEN](20260730/20260730-191731_e61-ironbeetle-ep002-green.bron) — seat 66 · ch5 2/16 · e62 next
+- `20260730.191221` — [e60 IronBeetle ep001 ch5 open GREEN](20260730/20260730-191221_e60-ironbeetle-ep001-ch5-open-green.bron) — seat 65 · ch5 1/16 · e61 next
+- `20260730.190640` — [e59 almanac coords pin](20260730/20260730-190640_e59-almanac-coords-pin.bron) — ch4 FULL living · seat 64 · e60 waits metal
+- `20260730.190447` — [e59 chapter-four surface close GREEN](20260730/20260730-190447_e59-ch4-surface-close-green.bron) — seat 64 · ch4 FULL · e60 next
+- `20260730.190140` — [e58 TB surfaces-hold GREEN](20260730/20260730-190140_e58-tb-surfaces-hold-green.bron) — ironbeetle · seat 63 · ch4 15/16 · e59 next
+- `20260730.185703` — [e57 TB mid-surface GREEN](20260730/20260730-185703_e57-tb-mid-surface-green.bron) — seat 62 · ch4 14/16 · e58 next
+- `20260730.185100` — [e56 TB DX surface GREEN](20260730/20260730-185100_e56-tb-dx-surface-green.bron) — seat 61 · ch4 13/16 · e57 next
+- `20260730.170649` — [e55 TB style surface GREEN](20260730/20260730-170649_e55-tb-style-surface-green.bron) — seat 60 · ch4 12/16 · e56 next
+- `20260730.170309` — [e54 TB last-stage GREEN](20260730/20260730-170309_e54-tb-last-stage-green.bron) — seat 59 · ch4 11/16 · e55 next
+- `20260730.165750` — [e53 TB tooling GREEN](20260730/20260730-165750_e53-tb-tooling-green.bron) — seat 58 · ch4 10/16 · e54 next
+- `20260730.164244` — [e52 TB dependencies GREEN](20260730/20260730-164244_e52-tb-dependencies-green.bron) — seat 57 · ch4 9/16 · e53 next
+- `20260730.162755` — [e51 TB style-by-the-numbers GREEN](20260730/20260730-162755_e51-tb-style-by-the-numbers-green.bron) — seat 56 · ch4 8/16 · e52 next
+- `20260730.161404` — [SUNN14 ITINERARY pin after heredoc miss](20260730/20260730-161404_sunn14-remember-pin.bron) — pin dc2d6ed79f · living d4e2a5c3d6
+- `20260730.160653` — [SUNN13 ITINERARY bookmark season pin complete](20260730/20260730-160653_sunn13-remember-pin-complete.bron) — pin 7c438bbbcb · living 6028275905
+- `20260730.154456` — [SUNN11 witness drop pier-local APPLY](20260730/20260730-154456_sunn11-apply-ignore-red-fix.bron) — tracked leaves · dual-push on SOURCE
+- `20260730.162222` — [e50 dual-equinox geode expedition breach seated](20260730/20260730-162222_e50-dual-equinox-geode-expedition-seated.bron) — APPROVED GATED · Lexicon geode · extend +128 · e51 next
+- `20260730.161633` — [SUNN15 journey close handback Equinox e50](20260730/20260730-161633_sunn15-handback-equinox-e50.bron) — SUNN CLOSED · Equinox OPEN · e50 next
+- `20260730.161004` — [SUNN14 witness choir thin SOURCE refuse GREEN](20260730/20260730-161004_sunn14-witness-choir-green.bron) — limbs 5–13 · census GREEN · SUNN15 next
+- `20260730.160405` — [SUNN13 root survey PUBKEYS MAP licenses GREEN](20260730/20260730-160405_sunn13-root-survey-green.bron) — Livermore · Riyo · LICENSE hold · SUNN14 next
+- `20260730.154600` — [SUNN12 living writing voice Riyo GREEN](20260730/20260730-154600_sunn12-riyo-writing-voice-green.bron) — style·commit·session · Quin hats held · SUNN13 next
+- `20260730.154230` — [SUNN11 xykj61 onboarding surfaces GREEN](20260730/20260730-154230_sunn11-xykj61-onboarding-green.bron) — APPLY dual · roster origin kept · SUNN12 next
+- `20260730.153642` — [SUNN10 keys glow-os overview GREEN](20260730/20260730-153642_sunn10-keys-glow-os-green.bron) — Livermore · Dunsford dated · SUNN11 next
+- `20260730.153327` — [SUNN9 CLAUDE llms STEWARDS GREEN](20260730/20260730-153327_sunn9-claude-llms-stewards-green.bron) — Riyo · RIYO.md priority · SUNN10 next
+- `20260730.152953` — [SUNN8 root README GREEN](20260730/20260730-152953_sunn8-root-readme-green.bron) — Riyo · Livermore · xykj61 · SUNN9 next
+- `20260730.151451` — [Framework Cursor handoff after POLE](20260730/20260730-151451_framework-cursor-handoff.bron) — sync origin · return_sunn_sunn8
+- `20260730.150702` — [POLE GREEN · DJINN Bozo · Keaton Murr](20260730/20260730-150702_pole-bozo-murr-hats.bron) — Capricorn 10 · SUNN PAUSED · return_sunn_sunn8
+- `20260730.145920` — [SUNN7 GREEN · macos · enclosure leaves](20260730/20260730-145920_sunn7-macos-enclosure.bron) — ~/grain · Ubuntu 26.04 · SUNN8 next
+- `20260730.145723` — [SUNN6 GREEN · key-cards ops · FP_SSH_SECOND](20260730/20260730-145723_sunn6-key-cards-ops.bron) — GitHub·Second·OpenPGP · SUNN7 next
+- `20260730.145124` — [SUNN5 GREEN · personalize Brix family · first season 256](20260730/20260730-145124_sunn5-personalize-brix-family.bron) — PERSONALIZE.brix · j0·j1 · SUNN6 next
+- `20260730.144054` — [SUNN4 GREEN · SOURCE Steps 2–4 GitHub-living](20260730/20260730-144054_sunn4-source-steps-github-living.bron) — SSH·GPG·key-card · SUNN5 next
+- `20260730.143736` — [SUNN0–3 GREEN · waymark · SOURCE Livermore · apps](20260730/20260730-143736_sunn0-3-waymark-source-breach.bron) — SUNN seated · Equinox PAUSED · SUNN4 next
+- `20260730.142650` — [E49 TB off-by-one GREEN · almanac 55 · ch4 7/16](20260730/20260730-142650_e49-tb-off-by-one-green.bron) — index·count·size · e50 next
+- `20260730.142304` — [E48 TB cache-surface GREEN · almanac 54 · ch4 6/16](20260730/20260730-142304_e48-tb-cache-surface-green.bron) — inplace·shrink·bleeds · e49 next
+- `20260730.141743` — [E47 TB buffer-bleeds GREEN · almanac 53 · ch4 5/16](20260730/20260730-141743_e47-tb-buffer-bleeds-green.bron) — alloc·defer · e48 next
+- `20260730.141330` — [E46 TB shrink-scope GREEN · almanac 52 · ch4 4/16](20260730/20260730-141330_e46-tb-shrink-scope-green.bron) — POCPOU · e47 next
+- `20260730.141038` — [E45 TB cache-inplace GREEN · almanac 51 · ch4 3/16](20260730/20260730-141038_e45-tb-cache-inplace-green.bron) — no-dup·inplace · e46 next
+- `20260730.140756` — [E44 TB say-how GREEN · almanac 50 · ch4 2/16](20260730/20260730-140756_e44-tb-say-how-green.bron) — goal·method · e45 next
+- `20260730.140442` — [E43 TB say-why GREEN · almanac 49 · ch4 open](20260730/20260730-140442_e43-tb-say-why-ch4-open-green.bron) — comments as prose · e44 next
+- `20260730.140147` — [E42 ch3 surface close GREEN · almanac 48 · ch3 FULL](20260730/20260730-140147_e42-ch3-surface-close-green.bron) — wing·safety·perf·naming · e43 next
+- `20260730.135900` — [Equinox TB arc explained · fresh fusion baton](20260730/20260730-135900_equinox-tb-arc-explain-counsel.bron) — clean-room study · e42 closes ch3
+- `20260730.135422` — [E41 TB naming GREEN · almanac 47 · ch3 15/16](20260730/20260730-135422_e41-tb-naming-green.bron) — nouns·units last · e42 next
+- `20260730.135023` — [E40 TB performance surface GREEN · almanac 46 · ch3 14/16](20260730/20260730-135023_e40-tb-perf-surface-green.bron) — sized·batching·explicit · e41 next
+- `20260730.134747` — [E39 TB be-explicit GREEN · almanac 45 · ch3 13/16](20260730/20260730-134747_e39-tb-be-explicit-green.bron) — hot loops · lean lightly · e40 next
+- `20260730.134336` — [E38 TB batching GREEN · almanac 44 · ch3 12/16](20260730/20260730-134336_e38-tb-batching-green.bron) — amortize · sprinter · e39 next
+- `20260730.134034` — [E37 TB sized-types GREEN · almanac 43 · ch3 11/16](20260730/20260730-134034_e37-tb-sized-types-green.bron) — exact widths · usize at seam · e38 next
+- `20260730.133808` — [E36 TB safety surface GREEN · almanac 42 · ch3 10/16](20260730/20260730-133808_e36-tb-safety-surface-green.bron) — static·seventy·flow · e37 next
+- `20260730.133534` — [E35 TB control-flow GREEN · almanac 41 · ch3 9/16](20260730/20260730-133534_e35-tb-control-flow-green.bron) — no recursion · e36 next
+- `20260730.133248` — [E34 TB seventy-line GREEN · almanac 40 · ch3 8/16](20260730/20260730-133248_e34-tb-seventy-line-green.bron) — tidy ratchet · e35 next
+- `20260730.132954` — [E33 TB static-alloc GREEN · almanac 39 · ch3 7/16](20260730/20260730-132954_e33-tb-static-alloc-green.bron) — guide·TAME·density · e34 next
+- `20260730.132258` — [E32 design-shapes surface GREEN · almanac 38 · ch3 6/16](20260730/20260730-132258_e32-design-shapes-surface-green.bron) — wing·bounds·resin·fold·tend · e33 next
+- `20260730.132032` — [E31 tend-hygiene GREEN · almanac 37 · ch3 5/16](20260730/20260730-132032_e31-tend-hygiene-green.bron) — zero-code · three tends · e32 next
+- `20260730.131633` — [E30 fact-fold design GREEN · almanac 36 · ch3 4/16](20260730/20260730-131633_e30-fact-fold-design-green.bron) — three pairs · fold purity · e31 next
+- `20260730.131415` — [E29 relay-resin limb GREEN · almanac 35 · ch3 3/16](20260730/20260730-131415_e29-relay-resin-limb-green.bron) — max 12 · over_bound refuse · e30 next
+- `20260730.131214` — [E28 bounds-home inherit GREEN · almanac 34 · ch3 2/16](20260730/20260730-131214_e28-bounds-home-inherit-green.bron) — ten pairs · build_bounds metal · missing_shape refuse · e29 next
+- `20260730.130733` — [E27 design-shapes choir GREEN · almanac 33 · ch3 open](20260730/20260730-130733_e27-design-shapes-ch3-open-green.bron) — four halls · breach 0 · missing_wing refuse · e28 next
+- `20260730.125750` — [E26 ch2 surface choir GREEN · almanac 32](20260730/20260730-125750_e26-ch2-surface-choir-green.bron) — SAFE·reds·voice·baton · ch2 FULL · e27 next
+- `20260730.125244` — [E25 baton census choir GREEN · almanac 31](20260730/20260730-125244_e25-baton-census-choir-green.bron) — 13 halls · breach 0 · seat 31 · e26 next
+- `20260730.124935` — [E24 voice roster choir GREEN · almanac 30](20260730/20260730-124935_e24-voice-roster-choir-green.bron) — sites=6 · refuse Nobody · seat 30 · e25 next
+- `20260730.124325` — [E23 reds choir GREEN · almanac 29](20260730/20260730-124325_e23-reds-choir-green.bron) — complete·monotone·refuse · seat 29 · e24 next
+- `20260730.124128` — [E22 SAFE list GREEN · almanac 28](20260730/20260730-124128_e22-safe-list-green.bron) — empty under bound 64 · shred RED · e23 next
+- `20260730.123827` — [E21 TB golden rule GREEN · almanac 27](20260730/20260730-123827_e21-tb-golden-rule-green.bron) — positive·negative·maybe · seat 27 · e22 next
+- `20260730.123451` — [E20 TB control/data plane GREEN · almanac 26](20260730/20260730-123451_e20-tb-control-plane-green.bron) — GUIDE·ARCH·verify · seat 26 · e21 next
+- `20260730.122901` — [E19 TB assert census GREEN · almanac 25](20260730/20260730-122901_e19-tb-assert-census-green.bron) — assert·maybe·verify · seat 25 · e20 next
+- `20260730.122332` — [E18 TB void census GREEN · almanac 24](20260730/20260730-122332_e18-tb-void-census-green.bron) — submodule · total_voidish 2192 · e19 next
+- `20260730.121626` — [E17 tigerstyle void GREEN · almanac 23](20260730/20260730-121626_e17-tigerstyle-void-green.bron) — void trumps bool · clone ABSENT · e18 next
+- `20260730.121155` — [E16 copy-sameness almanac GREEN · fusion](20260730/20260730-121155_e16-copy-sameness-almanac-green.bron) — seat 22 · ch2 6/16 · e17 next
+- `20260730.120905` — [E15 tower frame bite GREEN · almanac 21](20260730/20260730-120905_e15-tower-frame-bite-green.bron) — overpush EXIT=1 · ch2 5/16 · e16 next
+- `20260730.120714` — [E14 houseplant glossary GREEN · almanac 20](20260730/20260730-120714_e14-houseplant-glossary-green.bron) — ship owner tree · ch2 4/16 · e15 next
+- `20260730.120531` — [E13 bounded tower GREEN · almanac 19](20260730/20260730-120531_e13-bounded-tower-green.bron) — tutorial metal · ch2 3/16 · e14 next
+- `20260730.120317` — [E12 priority fold almanac GREEN · seat 18](20260730/20260730-120317_e12-priority-fold-almanac-green.bron) — ch2 2/16 · e13 next
+- `20260730.115628` — [E11 East pack opens almanac ch2 · seat 17](20260730/20260730-115628_e11-equinox-east-pack-almanac-green.bron) — ch2 1/16 · e12 next
+- `20260730.115101` — [E10 equinox surface choir GREEN · almanac 16](20260730/20260730-115101_e10-equinox-surface-choir-green.bron) — ch1 full · e11 next
+- `20260730.114840` — [E9 equinox create-prep GREEN · e10 next](20260730/20260730-114840_e9-equinox-create-prep-green.bron) — H10 SLC packet · extend lean
+- `20260730.114356` — [E9 equinox create-prep CHARTERED · long recursion](20260730/20260730-114356_e9-equinox-create-prep-chartered.bron) — H10 SLC packet · kg create next
+- `20260730.113930` — [E8 equinox foundations Brix GREEN · almanac 15](20260730/20260730-113930_e8-equinox-foundations-green.bron) — join map flanks · e9 next
+- `20260730.113507` — [E7 equinox map Brix GREEN · almanac 14](20260730/20260730-113507_e7-equinox-map-green.bron) — H10-north reason · e8 next
+- `20260730.111804` — [Voice handback return_equinox_e7 · Equinox OPEN](20260730/20260730-111804_voice-handback-return-equinox-e7.bron) — deca true deepest · e7 next
+- `20260730.111639` — [Door 15 discovery wire GREEN · almanac 13](20260730/20260730-111639_door-15-discovery-wire-green.bron) — both-sides · fold parity · next return or name
+- `20260730.110806` — [Door 15 discovery wire round-trip chartered](20260730/20260730-110806_door-15-discovery-wire-chartered.bron) — peers 2 · converge 8 · kg create next
+- `20260730.110403` — [Door 14 create prep GREEN · Build queue closed](20260730/20260730-110403_door-14-create-prep-green.bron) — seat 16 DONE · next elder wire
+- `20260730.105636` — [Door 14 create prep chartered](20260730/20260730-105636_door-14-create-prep-chartered.bron) — Build handback packet · kg create next
+- `20260730.104053` — [Door 13 edu discovery walk GREEN · almanac 12](20260730/20260730-104053_door-13-edu-discovery-walk-green.bron) — five steps · next create prep or wire
+- `20260730.103638` — [Door 13 edu discovery walk chartered](20260730/20260730-103638_door-13-edu-discovery-walk-chartered.bron) — edu walk · kg create next
+- `20260730.103002` — [Door 12 five primitives reference GREEN · almanac 11](20260730/20260730-103002_door-12-five-primitives-reference-green.bron) — sangha/03 · next edu demo or discovery
+- `20260730.102700` — [Door 12 five primitives reference chartered](20260730/20260730-102700_door-12-five-primitives-reference-chartered.bron) — sangha/03 · kg create next
+- `20260730.102430` — [Tend three fascia delta · recursion reprint](20260730/20260730-102430_tend-three-fascia-delta.bron) — 90→90 Δ0 · next charter reference page
+- `20260730.101622` — [Door 11 performance pin GREEN · almanac 10](20260730/20260730-101622_door-11-performance-pin-green.bron) — S0 baselines · next tend three or discovery
+- `20260730.101101` — [Door 11 performance pin chartered](20260730/20260730-101101_door-11-performance-pin-chartered.bron) — S0 baselines · min_rows 5 · kg create next
+- `20260730.100218` — [Door 10 refusal storm GREEN · almanac 9](20260730/20260730-100218_door-10-refusal-storm-green.bron) — five refuse limbs · next charter performance pin
+- `20260730.095331` — [Fascia handback · Voice J4 resumes](20260730/20260730-095331_fascia-handback-voice-j4.bron) — return_voice_j4_d10 · door 10 create next
+- `20260730.093412` — [Fascia Equinox f3 harden](20260730/20260730-093412_fascia-equinox-f3-harden.bron) — 90 hold · choir green · handback available
+- `20260730.093112` — [Fascia Equinox f2 exit bar met](20260730/20260730-093112_fascia-equinox-f2-exit-bar-met.bron) — 80→90 · handback available
+- `20260730.091805` — [Fascia Equinox f1 ratchet clear](20260730/20260730-091805_fascia-equinox-f1-ratchet-clear.bron) — 69→80 Δ+11 · ratchet 0 · class-A held
+- `20260730.090926` — [Fascia Equinox duodeca opened](20260730/20260730-090926_fascia-equinox-duodeca-opened.bron) — Voice paused · exit bar 90 · f0/f1
+- `20260730.090650` — [Sundial meaning · fascia equinox ask](20260730/20260730-090650_sundial-fascia-equinox-ask.bron) — sundial ≠ fascia · equinox lean unseated
+- `20260730.090221` — [Door 10 refusal storm chartered](20260730/20260730-090221_door-10-refusal-storm-chartered.bron) — min_cases 5 · path refusal_storm.rye · kg create next
+- `20260730.085938` — [Cursor Grok J4 fresh-agent handoff](20260730/20260730-085938_cursor-grok-j4-handoff.bron) — handoff packet · door 10 charter next
+- `20260730.085559` — [Tend two fascia delta · recursion reprint](20260730/20260730-085559_tend-two-fascia-delta.bron) — 69→69 Δ0 · waters agree · next charter
+- `20260730.085312` — [Door 9 fold_persist GREEN · recursion reprint](20260730/20260730-085312_door-9-fold-persist-green.bron) — sleep·wake · almanac 8/16 · prompt habit
+- `20260730.084042` — [Door 9 persistence proof chartered](20260730/20260730-084042_door-9-persistence-chartered.bron) — lean A · fold_persist · bound 4096
+- `20260730.083821` — [Door 8 green · recursion prompt print](20260730/20260730-083821_door-8-green-recursion-print.bron) — fact_fold shape · j4 paste block
+- `20260730.083457` — [J3 close · flank arrows · J4 open](20260730/20260730-083457_j3-close-flank-arrows-j4-open.bron) — 2nd→1st→12th · h4 Accrete-never-break · door 8 next
+- `20260730.082808` — [Equinox Map Correction Journey em0-em15](20260730/20260730-082808_equinox-map-correction-journey.bron) — dawn H1 · noon H10 · dusk H7 · midnight H4 · j3 r12 next
+- `20260730.072710` — [send · print Claude relay](20260730/20260730-072710_send-claude-relay-print.bron) — home-sync paste · door 8 · tend r11
+- `20260730.072425` — [bundle prep · cell hall 13](20260730/20260730-072425_bundle-prep-cell-hall13.bron) — packet · discipline · census named · hall 13
+- `20260730.041405` — [design-shapes wing · door 7](20260730/20260730-041405_design-shapes-door7.bron) — wing SEATED · build_bounds GREEN · round-recos yes
+- `20260730.041039` — [J3 cell · tend · door 6](20260730/20260730-041039_j3-cell-tend-door6.bron) — roster · hall 12 · ship_sol GREEN · tend Δ0
+- `20260730.034932` — [r8 check-in · charter queue empty](20260730/20260730-034932_r8-charter-queue-empty.bron) — four doors done · fascia 69 · next door needs charter
+- `20260730.034527` — [Glow almanac ch1 · five entries](20260730/20260730-034527_glow-almanac-ch1-five.bron) — metal stamp · merge-here · ch1 5/16
+- `20260730.034319` — [J2 Check GREEN · Sangha Act](20260730/20260730-034319_j2-check-sangha-act.bron) — primitives hold · pattern one from discovery · almanac next
+- `20260730.034136` — [Option 2 seat · merge PR 2](20260730/20260730-034136_option2-seat-merge-pr2.bron) — Keaton word · Option 2 SEATED · merge + kg to Check/Act
+- `20260730.033648` — [red 32 auth-refused · myc fold](20260730/20260730-033648_red32-auth-refused-myc-fold.bron) — row 32 · 403 guard · fold GREEN · pier Option 2 parked
+- `20260730.033024` — [lexicon limbs · bibliography · introduce](20260730/20260730-033024_lexicon-limbs-bibliography-introduce.bron) — nine limbs · bibliography root · introduce GREEN · myc next
+- `20260730.032517` — [remember shape · table Check · gossip](20260730/20260730-032517_remember-shape-table-gossip-check.bron) — affection · Check shapes · gossip GREEN · introduce next
+- `20260730.032348` — [baton J2 table single-file](20260730/20260730-032348_baton-j2-table-single.bron) — waters agree · red 31 · ls-remote guard · table.rye GREEN
+- `20260730.082011` — [Resin wheel-a early crossing land](20260730/20260730-082011_resin-wheel-a-early-crossing-land.bron) — 15 beads · LEXICON append · fact-fold · fascia 69
+- `20260730.031352` — [xykj61/grain first push](20260730/20260730-031352_xykj61-grain-first-push.bron) — empty repo · dual send proven · tip a9090a4ec5
+- `20260730.030901` — [Baton museum · 256 open · dual remotes](20260730/20260730-030901_baton-museum-256-open-bench.bron) — museum · census zero · descriptor · origin+xykj61
+- `20260730.022147` — [Journey 2 CLOSED FINAL Cursor land](20260730/20260730-022147_journey2-closed-final-cursor-land.bron) — FINAL bundle · pack green · REDS 30 · Build v32 next
+- `20260730.001315` — [Press create relay Cursor land](20260730/20260730-001315_press-create-relay-cursor-land.bron) — press · REDS 27 · sundial POSIX

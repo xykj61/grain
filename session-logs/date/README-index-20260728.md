@@ -1,0 +1,233 @@
+# session-logs season index -- 20260728
+
+**Language:** EN
+**Status:** Season index -- immutable once folded
+**Season:** `20260728`
+**Folded:** `20260824.052329` from the living pin
+
+Closed rows for `20260728`, in the order the pin held them. Roster:
+[`../SEASONS.md`](../SEASONS.md) - living pin: [`../README.md`](../README.md).
+
+- `20260728.235951` — [Kiln Season o2 residual tidy](20260728/20260728-235951_oven-season-o2-residual-tidy.bron) — STEWARDS · homes · yonder links
+- `20260728.235520` — [Kiln Season o1 path cut](20260728/20260728-235520_oven-season-o1-path-cut.bron) — kiln/ LIVE · anvil/ gone
+- `20260728.235338` — [Kiln waymark o1 ready](20260728/20260728-235338_oven-waymark-o1-ready.bron) — pier matches · cut waits
+- `20260728.235255` — [Waymark form clarified](20260728/20260728-235255_waymark-form-clarified.bron) — short waymark not long paste
+- `20260728.235121` — [Recursion printout habit restored](20260728/20260728-235121_recursion-printout-habit.bron) — full fenced block in chat
+- `20260728.234817` — [Kiln Season recursion slate received](20260728/20260728-234817_oven-season-recursion-slate-received.bron) — pier matches · o1 cut waits
+- `20260728.234419` — [Kiln Season o0 bow Surface paused](20260728/20260728-234419_oven-season-o0-bow-surface-paused.bron) — oct OPEN · return_surface_p39
+- `20260728.233638` — [Surface Season p38 anvil path survey](20260728/20260728-233638_surface-season-p38-anvil-path-survey.bron) — kiln/ sized · anvil/ not cut
+- `20260728.233053` — [Surface Season p37 sur rows + recursion](20260728/20260728-233053_surface-season-p37-sur-rows-recursion.bron) — sur×5 rows=8 · seven-scope printout
+- `20260728.232511` — [Surface Season p36 Kiln seated](20260728/20260728-232511_surface-season-p36-kiln-seated.bron) — living Kiln · anvil/ path held
+- `20260728.232415` — [Anvil forge to Kiln name lean](20260728/20260728-232415_anvil-forge-to-kiln-name-lean.bron) — prefer Kiln · breach wait seat
+- `20260728.231955` — [Surface Season p35 check-in](20260728/20260728-231955_surface-season-p35-check-in.bron) — state report · dated batch or pedestals
+- `20260728.225638` — [Surface Season p34 transitive writing crawl](20260728/20260728-225638_surface-season-p34-transitive-writing-crawl.bron) — wafer 9-node closure · Ford-shaped habit
+- `20260728.225239` — [Surface Season p33 wafer thin](20260728/20260728-225239_surface-season-p33-wafer-thin.bron) — living wafer · Class H four · deps held
+- `20260728.224716` — [Surface Season p32 living mutant shred prep](20260728/20260728-224716_surface-season-p32-living-mutant-shred-prep.bron) — Class H list · habit · wafer held
+- `20260728.221253` — [Surface Season p31 horizon stack thin](20260728/20260728-221253_surface-season-p31-horizon-stack-thin.bron) — graph+lantern living · p32 next
+- `20260728.221139` — [Horizon stack mutant cluster ask](20260728/20260728-221139_horizon-stack-mutant-cluster-ask.bron) — thin graph+lantern · hold plain-text/anywhere
+- `20260728.220728` — [Surface Season p30 sur brush skate cols](20260728/20260728-220728_surface-season-p30-sur-brush-skate-cols.bron) — sur×4 cols=40 · p31 next
+- `20260728.220203` — [Surface Season p29 Realidream mutant](20260728/20260728-220203_surface-season-p29-realidream-mutant.bron) — living foundation · breach · p30 next
+- `20260728.215923` — [Realidream mutant foundation ask](20260728/20260728-215923_realidream-mutant-season-ask.bron) — yes mutant+breach · no new innermost · seat held
+- `20260728.215608` — [Surface Season p28 brush skate grid](20260728/20260728-215608_surface-season-p28-brush-skate-grid.bron) — BrushFrame→skate_grid · p29 next
+- `20260728.215052` — [Surface Season p27 brush stdout redraw](20260728/20260728-215052_surface-season-p27-brush-stdout-redraw.bron) — Skate lean · p28 next
+- `20260728.213917` — [Skate Realidream lean seated](20260728/20260728-213917_skate-realidream-lean-seated.bron) — lexicon rewritten · p27 next
+- `20260728.213740` — [Skate Pond GUI target · Realidream brand](20260728/20260728-213740_skate-pond-gui-target-and-realidream-brand.bron) — proposed lean · seat yes held
+- `20260728.213205` — [Surface Season p26 brush Frame lower](20260728/20260728-213205_surface-season-p26-brush-frame-lower.bron) — BrushFrame from .brush · p27 next
+- `20260728.212855` — [Surface Season p25 brush refuse suite](20260728/20260728-212855_surface-season-p25-brush-refuse-suite.bron) — every ParseError named · p26 next
+- `20260728.212328` — [Surface Season p24 brush parse TAME tidy](20260728/20260728-212328_surface-season-p24-brush-parse-tame-tidy.bron) — invariants visible · p25 next
+- `20260728.211918` — [Surface Season p23 brush parser begun](20260728/20260728-211918_surface-season-p23-brush-parser-begun.bron) — pins only · p24 next
+- `20260728.211640` — [Surface Season p22 sec mand-ring-count](20260728/20260728-211640_surface-season-p22-sec-mand-ring-count.bron) — Mand three rings · p23 next
+- `20260728.211321` — [Surface Season p21 sec grant-family-count](20260728/20260728-211321_surface-season-p21-sec-grant-family-count.bron) — first sec furniture · p22 next
+- `20260728.210859` — [Surface Season p20 sur frame-seed-line-count](20260728/20260728-210859_surface-season-p20-sur-frame-seed-line-count.bron) — seed Frame three lines · p21 next
+- `20260728.205833` — [History tidy · full ITINERARY pin habit](20260728/20260728-205833_history-tidy-remember-pin-squash-full.bron) — 331 dropped · p20 next
+- `20260728.205029` — [Surface history tidy · ITINERARY pin squash](20260728/20260728-205029_surface-season-history-tidy-remember-pin-squash.bron) — same-commit nib · p20 next
+- `20260728.204647` — [Surface Season p19 app tube0-manifest-fields](20260728/20260728-204647_surface-season-p19-app-tube0-manifest-fields.bron) — four fields · packaging held · p20 next
+- `20260728.204222` — [Surface Season p18 til manifest-field-count](20260728/20260728-204222_surface-season-p18-til-manifest-field-count.bron) — three fields · %tile held · p19 next
+- `20260728.203606` — [Surface Season p17 graph redraw spine](20260728/20260728-203606_surface-season-p17-graph-redraw-spine.bron) — paper+redrawtest · p18 next
+- `20260728.203321` — [Surface Season p16 Pond GUI spine](20260728/20260728-203321_surface-season-p16-pond-gui-spine.bron) — constructive fold · live-five hand · p17 next
+- `20260728.202928` — [Surface Season p15 sur frame-max-lines](20260728/20260728-202928_surface-season-p15-sur-frame-max-lines.bron) — Frame bound · p16 next
+- `20260728.202752` — [Surface Season p14 connector harden](20260728/20260728-202752_surface-season-p14-connector-harden.bron) — hops 1-5 pinned · p15 next
+- `20260728.202548` — [Surface Season p13 app first resident](20260728/20260728-202548_surface-season-p13-app-first-resident.bron) — Pool slot · p14 next
+- `20260728.201911` — [Surface Season p12 thin .brush fixture](20260728/20260728-201911_surface-season-p12-thin-brush-fixture.bron) — seed-frame · parser held · p13 next
+- `20260728.201630` — [Surface Season p11 til first resident](20260728/20260728-201630_surface-season-p11-til-first-resident.bron) — tilak roots · %tile held · p12 next
+- `20260728.201349` — [Surface Season p10 sur first resident](20260728/20260728-201349_surface-season-p10-sur-first-resident.bron) — placard pedestal · p11 next
+- `20260728.200807` — [Surface Season p9 first resident seated](20260728/20260728-200807_surface-season-p9-first-resident-seated.bron) — lexicon · inc desk · p10 next
+- `20260728.200431` — [Surface Season p9 vocab vegan-dogfood easter egg](20260728/20260728-200431_surface-season-p9-vocab-vegan-dogfood-easter-egg.bron) — slate · routine term awaits
+- `20260728.200159` — [Surface Season p8 one-graph DAG redraw paper](20260728/20260728-200159_surface-season-p8-one-graph-dag-redraw-paper.bron) — Weave edges · Frame fold · p9 next
+- `20260728.195942` — [Surface Season p7 study choir residual](20260728/20260728-195942_surface-season-p7-study-choir-residual.bron) — p2–p6 fold · p8 DAG next
+- `20260728.195629` — [Surface Season p6 Pond Brushstroke frame](20260728/20260728-195629_surface-season-p6-pond-brushstroke-frame.bron) — redrawtest+metalsmoke · p7 next
+- `20260728.195456` — [Surface Season p5 Glow connector seam sketch](20260728/20260728-195456_surface-season-p5-glow-connector-seam-sketch.bron) — Frame glass contract · p6 next
+- `20260728.195228` — [Surface Season p4 River Zig Wayland study ledger](20260728/20260728-195228_surface-season-p4-river-zig-wayland-study-ledger.bron) — GPL clean-room · zig-wayland MIT · p5 next
+- `20260728.195039` — [Surface Season p3 src vegan-dogfood](20260728/20260728-195039_surface-season-p3-src-vegan-dogfood.bron) — src/lib gate · prep spine done · p4 next
+- `20260728.194738` — [Surface Season p2 glow hygiene pin](20260728/20260728-194738_surface-season-p2-glow-hygiene-pin.bron) — happy-zone floor · p3 next
+- `20260728.194334` — [Surface Season p1 anvil family home](20260728/20260728-194334_surface-season-p1-anvil-family-home.bron) — tools/gen/anvil LIVE · p2 next
+- `20260728.193914` — [Surface Season p0 bow recommendations seated](20260728/20260728-193914_surface-season-p0-bow-recommendations-seated.bron) — Shape B · sept open · src/sec
+- `20260728.193730` — [Generator Season check-in s8](20260728/20260728-193730_generator-season-check-in-s8.bron) — vegan-dogfood · A·B·C open
+- `20260728.193602` — [Glow quality prep before GUI season](20260728/20260728-193602_glow-quality-prep-before-gui-season.bron) — dep spine · vegan-dogfood · OS park
+- `20260728.193058` — [Generator Season s8 Pond GUI season evaluation](20260728/20260728-193058_generator-season-s8-pond-gui-season-evaluation.bron) — like aim · push nested-128+OS · A·B·C
+- `20260728.192321` — [Generator Season s7 amphora family home](20260728/20260728-192321_generator-season-s7-amphora-family-home.bron) — tools/gen/amphora LIVE · s8 next
+- `20260728.191859` — [Generator Season s6 taxonomy fusion draft](20260728/20260728-191859_generator-season-s6-taxonomy-fusion-draft.bron) — two gens · os/tes parked · s7 next
+- `20260728.191327` — [Generator Season s5 fund gen home](20260728/20260728-191327_generator-season-s5-fund-gen-home.bron) — tools/gen/fund LIVE · s6 next
+- `20260728.190251` — [Generator Season s4 season gen home](20260728/20260728-190251_generator-season-s4-season-gen-home.bron) — tools/gen/season LIVE · s5 next
+- `20260728.190017` — [Generator Season s3 f4 first-home rehearsal](20260728/20260728-190017_generator-season-s3-f4-first-home-rehearsal.bron) — tools/gen/season · no mv · s4 next
+- `20260728.185825` — [Generator Season s2 generators dual census](20260728/20260728-185825_generator-season-s2-generators-dual-census.bron) — Glow 317 · Rishi 610 · s3 next
+- `20260728.184313` — [Generator Season s1 prin_scope to rish](20260728/20260728-184313_generator-season-s1-prin-scope-rish.bron) — living pin .rish · s2 next
+- `20260728.183510` — [Generator Season s0 open sext nest](20260728/20260728-183510_generator-season-s0-open.bron) — MUR paused · fuse reminder · s1 next
+- `20260728.182641` — [innermost three files intuition](20260728/20260728-182641_innermost-three-files-intuition.bron) — charter · recursion · prin_scope
+- `20260728.181548` — [fascia shred slow walkthrough](20260728/20260728-181548_fascia-shred-walkthrough.bron) — hand-holding companion canvas
+- `20260728.181415` — [safest next move after shred readiness](20260728/20260728-181415_safest-next-move-shred.bron) — leave circle or i7 paper draft
+- `20260728.181016` — [MUR Season u91 shred readiness](20260728/20260728-181016_mur-season-u91-shred-readiness.bron) — Class A content-ready · cut not · u92 next
+- `20260728.180806` — [MUR Season check-in at u90](20260728/20260728-180806_mur-season-check-in-u90.bron) — queue empty · fascia 86 · u91 next
+- `20260728.180509` — [MUR Season u89 fascia prune class-a paper](20260728/20260728-180509_mur-season-u89-fascia-prune-class-a-paper.bron) — Class-A paper · fascia 86 · u90 next
+- `20260728.180319` — [MUR Season u88 fascia prune pair-hits clear](20260728/20260728-180319_mur-season-u88-fascia-prune-pair-hits-clear.bron) — pair-hits 0 · fascia 86 · u89 next
+- `20260728.175928` — [MUR Season u87 fascia prune paper tidy](20260728/20260728-175928_mur-season-u87-fascia-prune-paper-tidy.bron) — paper tidy · fascia 73 · u88 next
+- `20260728.175446` — [MUR Season u86 fascia prune commerce goldens](20260728/20260728-175446_mur-season-u86-fascia-prune-commerce-goldens.bron) — commerce GREEN · fascia 66 · u87 next
+- `20260728.173732` — [MUR Season u85 fascia prune over70 clear](20260728/20260728-173732_mur-season-u85-fascia-prune-over70-clear.bron) — over70 0 · fascia 66 · u86 next
+- `20260728.172202` — [MUR Season u84 fascia prune over70 on-touch](20260728/20260728-172202_mur-season-u84-fascia-prune-over70-on-touch.bron) — over70 14→6 · fascia 60 · u85 next
+- `20260728.171525` — [MUR Season u83 fascia prune TUBE mala yonder](20260728/20260728-171525_mur-season-u83-fascia-prune-tube-mala-yonder.bron) — TUBE plan · MUR M1–M2b · u84 next
+- `20260728.171319` — [MUR Season u82 fascia prune glow SLC yonder](20260728/20260728-171319_mur-season-u82-fascia-prune-glow-slc-yonder.bron) — glow-glass · first-code · SLC · harvest held · u83 next
+- `20260728.171011` — [MUR Season u81 fascia prune silo workshop yonder](20260728/20260728-171011_mur-season-u81-fascia-prune-silo-workshop-yonder.bron) — silo · workshop · SLC-2b · kernel · u82 next
+- `20260728.161501` — [MUR Season u80 fascia prune college counsel yonder](20260728/20260728-161501_mur-season-u80-fascia-prune-college-counsel-yonder.bron) — college · jail · zero-copy · zip42 · u81 next
+- `20260728.161205` — [MUR Season u79 fascia prune pool gated yonder](20260728/20260728-161205_mur-season-u79-fascia-prune-pool-gated-yonder.bron) — pool · strata · sala · vanes braid · u80 next
+- `20260728.160951` — [MUR Season u78 fascia prune yonder class-A paper](20260728/20260728-160951_mur-season-u78-fascia-prune-yonder-class-a-paper.bron) — inference/bench/grep/ojjo · Class-A paper · u79 next
+- `20260728.160618` — [MUR Season u77 fascia prune record yonder](20260728/20260728-160618_mur-season-u77-fascia-prune-record-yonder.bron) — firehose · rhyz · realidream-lane · archiving · u78 next
+- `20260728.160355` — [MUR Season u76 fascia prune landed yonder](20260728/20260728-160355_mur-season-u76-fascia-prune-landed-yonder.bron) — dimeroll3 · realidream · zip58 · Twin · u77 next
+- `20260728.160144` — [MUR Season u75 fascia prune apply yonder](20260728/20260728-160144_mur-season-u75-fascia-prune-apply-yonder.bron) — apply/oal3/dimeroll lap1 yonder · u76 next
+- `20260728.155418` — [MUR Season u74 fascia prune parseInt WOV](20260728/20260728-155418_mur-season-u74-fascia-prune-parseint-wov.bron) — emit exclusion · WOV yonder · fascia 52 · u75 next
+- `20260728.154949` — [MUR Season u73 fascia prune yonder closed](20260728/20260728-154949_mur-season-u73-fascia-prune-yonder-closed.bron) — tensegral/constellation/silo yonder · u74 next
+- `20260728.153843` — [MUR Season u72 fascia prune yonder setu](20260728/20260728-153843_mur-season-u72-fascia-prune-yonder-setu.bron) — archival yonder · setu parseInt · u73 next
+- `20260728.153133` — [MUR Season u71 fascia prune memcpy ratchet](20260728/20260728-153133_mur-season-u71-fascia-prune-memcpy-ratchet.bron) — memcpy_app 0 · fascia 49 · u72 next
+- `20260728.152117` — [MUR Season u70 fascia prune yonder wave](20260728/20260728-152117_mur-season-u70-fascia-prune-yonder-wave.bron) — v3→yonder · fascia 47 · u71 next
+- `20260728.064546` — [MUR Season u69 fascia prune without shred](20260728/20260728-064546_mur-season-u69-fascia-prune-without-shred.bron) — prune OPEN · shred RED · u70 next
+- `20260728.064402` — [MUR Season check-in at u68](20260728/20260728-064402_mur-season-check-in-u68.bron) — living CLEAR · queue empty · u69 next
+- `20260728.064221` — [MUR Season u67 filename residual map](20260728/20260728-064221_mur-season-u67-filename-residual-map.bron) — living CLEAR · fossils HOLD · u68 next
+- `20260728.063848` — [MUR Season u66 filename rename breach](20260728/20260728-063848_mur-season-u66-filename-rename-breach.bron) — git mv + path re-points approved · u67 next
+- `20260728.063003` — [MUR Season check-in at u65](20260728/20260728-063003_mur-season-check-in-u65.bron) — queue empty · doors named · u66 next
+- `20260728.062656` — [MUR Season check-in at u64](20260728/20260728-062656_mur-season-check-in-u64.bron) — unify queue empty · doors named · u65 next
+- `20260728.062451` — [MUR Season u63 WOV unify choir](20260728/20260728-062451_mur-season-u63-wov-unify-choir.bron) — murr+wov GREEN · design 0–5 done · u64 next
+- `20260728.062201` — [MUR Season u62 exit honesty names](20260728/20260728-062201_mur-season-u62-exit-honesty-names.bron) — book-root aliases · wov:* held · u63 next
+- `20260728.062029` — [MUR Season u61 settle dual-digest](20260728/20260728-062029_mur-season-u61-settle-dual-digest.bron) — keep-both seated · u62 exit names next
+- `20260728.061801` — [MUR Season u60 WOV unify brief](20260728/20260728-061801_mur-season-u60-wov-unify-brief.bron) — jobs/non-goals seated · u61 dual-digest next
+- `20260728.061551` — [MUR Season u59 WOV unify design opener](20260728/20260728-061551_mur-season-u59-wov-unify-design-opener.bron) — design block OPEN early · u60 brief next
+- `20260728.061323` — [MUR Season check-in at u58](20260728/20260728-061323_mur-season-check-in-u58.bron) — rename spines done · doors named · no urge
+- `20260728.060902` — [MUR Season u58 module-wave harden](20260728/20260728-060902_mur-season-u58-module-wave-harden.bron) — spine HARDENED · rename done · u59 next
+- `20260728.060656` — [MUR Season u57 module-wave residual](20260728/20260728-060656_mur-season-u57-module-wave-residual.bron) — living indexes clear · spine COMPLETE · u58 next
+- `20260728.060424` — [MUR Season u56 say-lines currency wire](20260728/20260728-060424_mur-season-u56-say-lines-currency-wire.bron) — currency/say LIVE · spine 1–9 · u57 next
+- `20260728.060038` — [MUR Season u55 guest murr rename](20260728/20260728-060038_mur-season-u55-guest-murr-rename.bron) — guest_murr · M2 device GREEN · u56 next
+- `20260728.055837` — [MUR Season u54 zig twin sync](20260728/20260728-055837_mur-season-u54-zig-twin-sync.bron) — emit discipline GREEN · u55 next
+- `20260728.055536` — [MUR Season u53 tube pool cluster choir](20260728/20260728-055536_mur-season-u53-tube-pool-cluster-choir.bron) — tube/pool choir GREEN · u54 next
+- `20260728.055351` — [MUR Season u52 seva glow cluster choir](20260728/20260728-055351_mur-season-u52-seva-glow-cluster-choir.bron) — seva/glow/dexter choir GREEN · u53 next
+- `20260728.055039` — [MUR Season u51 fold_murr_log live](20260728/20260728-055039_mur-season-u51-fold-murr-log-live.bron) — fold symbol · M1/M2/neth GREEN · u52 next
+- `20260728.054844` — [MUR Season u50 delivery memos live](20260728/20260728-054844_mur-season-u50-module-delivery-memos-live.bron) — murr_delivery · murr:* · M1/M2 GREEN · u51 next
+- `20260728.054644` — [MUR Season u49 module entry bin live](20260728/20260728-054644_mur-season-u49-module-entry-bin-live.bron) — murr.rye/bin · M1/M2 GREEN · u50 next
+- `20260728.053811` — [MUR Season u48 module core live](20260728/20260728-053811_mur-season-u48-module-core-live.bron) — murr_core · imports+symlinks · M1/M2 GREEN · u49 next
+- `20260728.053735` — [MUR Season check-in at u34](20260728/20260728-053735_mur-season-check-in-u34.bron) — tool spine complete · prefer kg u48 · doors named
+- `20260728.053632` — [MUR Season u34 tool-wave harden](20260728/20260728-053632_mur-season-u34-tool-wave-harden.bron) — spine complete · witnesses re-GREEN · prefer kg u48
+- `20260728.053348` — [MUR Season u33 tool-wave residual](20260728/20260728-053348_mur-season-u33-tool-wave-residual.bron) — twin-fold + living cites · residual clear · u34 next
+- `20260728.053112` — [MUR Season u32 tool-wave live](20260728/20260728-053112_mur-season-u32-tool-wave-live.bron) — steps 1–4 GREEN · murr_* witnesses/lab/fixture · u33 next
+- `20260728.053003` — [MUR Season check-in at u26](20260728/20260728-053003_mur-season-check-in-u26.bron) — waiting empty · tool GO ready · doors named
+- `20260728.052625` — [MUR Season u26 waiting queue empty](20260728/20260728-052625_mur-season-u26-waiting-queue-empty.bron) — ungated waiting empty · prefer kg u32
+- `20260728.052441` — [MUR Season u25 waiting harden hammocks](20260728/20260728-052441_mur-season-u25-waiting-harden-hammocks.bron) — hammock forwards · residual clear · prefer kg u32 · u26 next
+- `20260728.052308` — [MUR Season u24 waiting harden SPECs](20260728/20260728-052308_mur-season-u24-waiting-harden-specs.bron) — mala-kind · thin-view · WOV · surfaces · prefer kg u32 · u25 next
+- `20260728.052149` — [MUR Season u23 waiting harden citations](20260728/20260728-052149_mur-season-u23-waiting-harden-citations.bron) — expanding-prompt forwards · holds card · prefer kg u32 · u24 next
+- `20260728.051844` — [MUR Season u22 module-wave opener rehearsal](20260728/20260728-051844_mur-season-u22-module-wave-opener-rehearsal.bron) — mala_core import surface · prefer kg u32 · u23 next
+- `20260728.051741` — [MUR Season u21 tool-wave go-nogo](20260728/20260728-051741_mur-season-u21-tool-wave-go-nogo.bron) — GO on kg u32 · steps 1–4 rehearsed · u22 next
+- `20260728.051629` — [MUR Season u20 fixture dry-run](20260728/20260728-051629_mur-season-u20-fixture-dry-run.bron) — rye-coupled · memo held · steps 1–4 rehearsed · u21 next
+- `20260728.051443` — [MUR Season u19 wire-lab opener rehearsal](20260728/20260728-051443_mur-season-u19-wire-lab-opener-rehearsal.bron) — step-3 checklist · guests held · no renames · u20 next
+- `20260728.051309` — [MUR Season u18 parity announce rehearsal](20260728/20260728-051309_mur-season-u18-parity-announce-rehearsal.bron) — parity_ch01 M1/M2 map · no renames · u19 next
+- `20260728.051150` — [MUR Season u17 tool-wave opener rehearsal](20260728/20260728-051150_mur-season-u17-tool-wave-opener-rehearsal.bron) — u32 step-1 checklist · M1 GREEN · no renames · u18 next
+- `20260728.050946` — [MUR Season u16 dual-wave readiness](20260728/20260728-050946_mur-season-u16-dual-wave-readiness.bron) — tools+modules READY · Lexicon pin · no renames · u17 next
+- `20260728.050833` — [MUR Season u15 module-wave prep](20260728/20260728-050833_mur-season-u15-module-wave-prep.bron) — u48 cluster order seated · no renames · u16 next
+- `20260728.050720` — [MUR Season u14 tool-wave prep](20260728/20260728-050720_mur-season-u14-tool-wave-prep.bron) — u32 entry order seated · no renames · u15 next
+- `20260728.050601` — [MUR Season u13 living pins](20260728/20260728-050601_mur-season-u13-living-pins-harden.bron) — prin_scope current · prose status · u14 next
+- `20260728.050430` — [MUR Season u12 prose residual](20260728/20260728-050430_mur-season-u12-prose-residual.bron) — replies · ER cleared · holds named · u13 next
+- `20260728.050219` — [MUR Season u11 prose residual](20260728/20260728-050219_mur-season-u11-prose-residual.bron) — constellation m0–m4 · ER briefs · tools held · u12 next
+- `20260728.050004` — [MUR Season u10 living doors](20260728/20260728-050004_mur-season-u10-living-doors-prose.bron) — SPEC · Dimeroll · JABS · mala-wov · u11 next
+- `20260728.045705` — [MUR Season u9 counsel fossils](20260728/20260728-045705_mur-season-u9-counsel-fossils-prose.bron) — constellation m2/m3 · ER · fossils → MUR · u10 next
+- `20260728.045509` — [MUR Season u8 design hammocks](20260728/20260728-045509_mur-season-u8-design-hammocks-prose.bron) — mailable-money home · hammocks → MUR · u9 next
+- `20260728.045124` — [MUR Season u7 module prompts](20260728/20260728-045124_mur-season-u7-module-prompts-prose.bron) — M1/M2/Neth/Pool → MUR · u8 next
+- `20260728.044738` — [MUR Season u6 wave map](20260728/20260728-044738_mur-season-u6-tool-module-wave-map.bron) — tool·module map · prose light · u7 next
+- `20260728.044443` — [MUR Season u5 gratitude](20260728/20260728-044443_mur-season-u5-gratitude-residual.bron) — Kamala historical · residual OK · u6 next
+- `20260728.044228` — [MUR Season u4 tool say-lines](20260728/20260728-044228_mur-season-u4-tool-saylines.bron) — commerce GREEN → MUR · u5 next
+- `20260728.044002` — [MUR Season u3 prose](20260728/20260728-044002_mur-season-u3-prose-wave.bron) — WOV·settle·index → MUR · u4 next
+- `20260728.043811` — [MUR Season u2 prose](20260728/20260728-043811_mur-season-u2-prose-wave.bron) — edu·seating → MUR · u3 next
+- `20260728.043539` — [MUR u1 remember residual](20260728/20260728-043539_mur-u1-remember-residual.bron) — breach rename · gen_mala ABSENT · u2 next
+- `20260728.043220` — [Gren handback · MUR u0](20260728/20260728-043220_gren-handback-mur-u0.bron) — return_mur_u0 · u0 bow · u1 next
+- `20260728.043010` — [Gren extend-length check-in](20260728/20260728-043010_gren-extend-length-checkin.bron) — rec return_mur_u0 · blank held
+- `20260728.042644` — [Gren Season g15 horizon warn](20260728/20260728-042644_gren-season-g15-horizon-warn.bron) — lean-16 CLOSED · await extend_or_return
+- `20260728.042314` — [Gren Season g14 horizon warn](20260728/20260728-042314_gren-season-g14-horizon-warn.bron) — extend 32·64·return MUR · g15 next
+- `20260728.042216` — [Gren Season g13 harden](20260728/20260728-042216_gren-season-g13-harden.bron) — harden CLOSED · g14 horizon next
+- `20260728.042110` — [Gren Season g12 harden](20260728/20260728-042110_gren-season-g12-harden.bron) — gen trio GREEN · deploy RED · g13 next
+- `20260728.042009` — [Gren Season g11 residual close](20260728/20260728-042009_gren-season-g11-residual-close.bron) — residual CLOSED · g12 harden next
+- `20260728.041904` — [Gren Season g10 residual](20260728/20260728-041904_gren-season-g10-residual.bron) — residual empty×3 · g11 next
+- `20260728.041353` — [Gren Season g9 residual](20260728/20260728-041353_gren-season-g9-residual.bron) — residual empty×2 · g10 next
+- `20260728.041234` — [Gren Season g8 residual](20260728/20260728-041234_gren-season-g8-residual.bron) — residual OPEN · empty×1 · g9 next
+- `20260728.041118` — [Gren Season g7 spotcheck](20260728/20260728-041118_gren-season-g7-spotcheck.bron) — empty×4 · spot block CLOSED · g8 next
+- `20260728.040951` — [Gren Season g6 spotcheck](20260728/20260728-040951_gren-season-g6-spotcheck.bron) — empty×3 · g7 next
+- `20260728.040802` — [Gren Season g5 spotcheck](20260728/20260728-040802_gren-season-g5-spotcheck.bron) — empty×2 · g6 next
+- `20260728.040656` — [Gren Season g4 spotcheck](20260728/20260728-040656_gren-season-g4-spotcheck.bron) — empty×1 · g5 next
+- `20260728.040437` — [Gren Season g3 overwrite cleared](20260728/20260728-040437_gren-season-g3-overwrite.bron) — triad living · overwrite CLEARED · g4 next
+- `20260728.040237` — [Gren Season g2 overwrite](20260728/20260728-040237_gren-season-g2-overwrite.bron) — Inner charter Gren · printouts · g3 next
+- `20260728.035740` — [Gren Season g1 residual map](20260728/20260728-035740_gren-season-g1-residual-map.bron) — bare Djin ads CLEARED · g2 next
+- `20260728.035441` — [Handback Gren g0 bow](20260728/20260728-035441_handback-gren-g0.bron) — return_gren_g0 · Keeh CLOSED · g1 next
+- `20260728.035329` — [Check-in extend or return](20260728/20260728-035329_checkin-extend-or-return.bron) — lean-16 CLOSED · doors A–E
+- `20260728.035025` — [Helen sundial align](20260728/20260728-035025_helen-sundial-align.bron) — Linn→Helen · sundial 69→100 · align
+- `20260728.034317` — [Keeh q15 and Linn Capricorn](20260728/20260728-034317_keeh-q15-linn-capricorn.bron) — Linn 10 · lean-16 CLOSED · extend held
+- `20260728.034122` — [Keeh Season q14 horizon warn](20260728/20260728-034122_keeh-season-q14-horizon-warn.bron) — warn1 · extend_or_return held · q15 next
+- `20260728.033933` — [Keeh q13 harden and Shyu Hyundai](20260728/20260728-033933_keeh-q13-shyu-hyundai.bron) — Hyundai sponsor · harden CLOSED · q14 next
+- `20260728.033658` — [Keeh Season q12 harden](20260728/20260728-033658_keeh-season-q12-harden.bron) — gen trio GREEN · q13 next
+- `20260728.033612` — [Keeh Season q11 residual close](20260728/20260728-033612_keeh-season-q11-residual-close.bron) — residual CLOSED · q12 harden
+- `20260728.033404` — [Shyu Wayne Hsiung and Keeh q10](20260728/20260728-033404_shyu-wayne-and-keeh-q10.bron) — Libra 7 · spot empty×3 · q11 next
+- `20260728.033136` — [Keeh Season q9 spotcheck](20260728/20260728-033136_keeh-season-q9-spotcheck.bron) — residual empty×2 · q10 next
+- `20260728.033017` — [Keeh Season q8 spotcheck](20260728/20260728-033017_keeh-season-q8-spotcheck.bron) — residual empty · q9 next
+- `20260728.032900` — [Keeh Season q7 affirm](20260728/20260728-032900_keeh-season-q7-affirm.bron) — overwrite AFFIRMED CLOSED · q8 next
+- `20260728.032745` — [Keeh Season q6 residual close](20260728/20260728-032745_keeh-season-q6-residual-close.bron) — overwrite CLEARED · q7 next
+- `20260728.032606` — [Keeh Season q5 polish](20260728/20260728-032606_keeh-season-q5-polish.bron) — charter Kia spine · q6 next
+- `20260728.032134` — [Keeh Kia sponsor q4](20260728/20260728-032134_keeh-kia-sponsor-q4.bron) — Kia honor sponsor · used lean · q5 next
+- `20260728.031722` — [docs-geode year wave crush q3](20260728/20260728-031722_docs-geode-year-wave-crush-q3.bron) — docs-geode · crush=compile · q4 next
+- `20260728.031252` — [Keeh q2 and year Cloud reply](20260728/20260728-031252_keeh-q2-and-year-cloud-reply.bron) — year iOS paste · i0 Keeh · q3 next
+- `20260728.031050` — [Keeh Season q1 residual](20260728/20260728-031050_keeh-season-q1-residual.bron) — fund11 Keeh Radiant-pass · q2 next
+- `20260728.030850` — [Keeh Season q0 bow](20260728/20260728-030850_keeh-season-q0-bow.bron) — five pauses · residual map · q1 next
+- `20260728.030310` — [Keeh Season quint prep Ketu rename](20260728/20260728-030310_keeh-season-quint-prep.bron) — Keeh·Keaton · q0 next · five scopes
+- `20260728.025634` — [Gren Season core prep Djin revert](20260728/20260728-025634_gren-season-core-prep.bron) — Gren·DJINN→Murr · g0 next
+- `20260728.025220` — [MUR Season innermost prep 128](20260728/20260728-025220_mur-season-innermost-prep.bron) — Murr/Kyler · MALA→MUR · u0 next
+- `20260728.024417` — [Inner Scope checkpoint Trya Ariana](20260728/20260728-024417_inner-scope-checkpoint-trya-ariana.bron) — Virgo 6 · sixth voice · fascia paused
+- `20260728.023941` — [Inner Scope i6 Amphora stack fold](20260728/20260728-023941_inner-scope-i6-amphora-stack.bron) — laps1-3 · metric_rev=i6 · fascia≈49
+- `20260728.023555` — [Inner Scope i5 fascia metric tighten](20260728/20260728-023555_inner-scope-i5-fascia-tighten.bron) — weights·window·Amphora · fascia≈49
+- `20260728.023240` — [Inner Scope i4 fascia metric v0](20260728/20260728-023240_inner-scope-i4-fascia-metric.bron) — four signals · fascia=19 · shred RED
+- `20260728.022949` — [Inner Scope i3 rename-polish close](20260728/20260728-022949_inner-scope-i3-rename-close.bron) — i1–i3 CLOSED · i4 fascia metric next
+- `20260728.022218` — [Inner Scope i2 Djin prose polish](20260728/20260728-022218_inner-scope-i2-djin-prose.bron) — replies·check-ins Djin · gen_djin GREEN
+- `20260728.021508` — [Eyva Avanti dedication](20260728/20260728-021508_eyva-avanti-dedication.bron) — Cancer 4 · executive · she/her · privacy-first
+- `20260728.021252` — [Gwoh Sarah Guo dedication](20260728/20260728-021252_gwoh-sarah-guo-dedication.bron) — Leo 5 · Conviction honor · foundations
+- `20260728.020948` — [Inner Scope i1 Twah residual](20260728/20260728-020948_inner-scope-i1-twah-residual.bron) — gen_twah ABSENT · gen_djin GREEN
+- `20260728.020837` — [Inner Scope i0 bow](20260728/20260728-020837_inner-scope-i0-bow.bron) — measure · outer pause · fascia resume map
+- `20260728.020607` — [Ketu Mala Kamala fund executives](20260728/20260728-020607_ketu-mala-kamala-executives.bron) — Aquarius 11 · dedication · Sara·DJINN·Keaton
+- `20260728.015541` — [Inner Scope Djin outer pause](20260728/20260728-015541_inner-scope-djin-pause.bron) — Twah→Djin · scope·outer·inner · i0–i15
+- `20260728.015058` — [Constellation m8 Twah arc close](20260728/20260728-015058_constellation-m8-twah-close.bron) — refuse-walk · m5–m8 CLOSED
+- `20260728.014918` — [Constellation m7 Twah phonebook Comlink](20260728/20260728-014918_constellation-m7-twah-phonebook.bron) — steps 4–5 · mints nothing · knock
+- `20260728.014737` — [Constellation m6 Twah steps 1-3](20260728/20260728-014737_constellation-m6-twah-steps.bron) — four-letter · .fund · Taurus witnessed
+- `20260728.014523` — [Constellation m5 Twah fund prep](20260728/20260728-014523_constellation-m5-twah.bron) — gen_twah · edu page-one stub
+- `20260728.014057` — [Constellation m4 Mala Aurora close](20260728/20260728-014057_constellation-m4-mala-aurora-close.bron) — AppImage lane · Mala m1–m4 closed
+- `20260728.013859` — [Constellation m3 Mala maintains MALA](20260728/20260728-013859_constellation-m3-mala-maintainer.bron) — maintainer · n-of-12 plan · Glow door
+- `20260728.013722` — [Constellation m2 Mala through Amphora](20260728/20260728-013722_constellation-m2-mala-amphora.bron) — Amphora door · lap 1 GREEN
+- `20260728.013140` — [Constellation m1 Mala fund prep](20260728/20260728-013140_constellation-m1-mala.bron) — gen_mala GREEN · deploy RED
+- `20260728.012906` — [Constellation m0 bow](20260728/20260728-012906_constellation-m0-bow.bron) — choir 17 GREEN · triad affirmed
+- `20260728.012725` — [Constellation Season prep · Mala Twah Siya triad](20260728/20260728-012725_constellation-season-prep.bron) — 32-round prep · fund order seated
+- `20260728.012123` — [Fascia f0 verify · f1 Graal twin audit](20260728/20260728-012123_fascia-f0-verify-f1.bron) — choir 17 GREEN · f1 twin witness
+- `20260728.010425` — [Tensegral saga seat send](20260728/20260728-010425_tensegral-saga-seat-send.bron) — origin · codeberg shipped
+- `20260728.010302` — [Tensegral saga seat · prep for send](20260728/20260728-010302_tensegral-saga-seat.bron) — season closed · push held
+- `20260728.010054` — [Tensegral r15 saga · season close draft](20260728/20260728-010054_tensegral-r15-saga.bron) — Arc II/IV reaffirm · final draft
+- `20260728.005605` — [Tensegral r14 Realidream · Pond close note](20260728/20260728-005605_tensegral-r14-realidream-pond.bron) — preflight + thin view GREEN
+- `20260728.005110` — [Tensegral r13 Integrated · thin metalsmoke](20260728/20260728-005110_tensegral-r13-integrated.bron) — slc2a_ring3_metal GREEN
+- `20260728.004954` — [Tensegral r12 Happy zone · Arc IV exit](20260728/20260728-004954_tensegral-r12-happy-zone.bron) — tensegral_arc_iv_witness GREEN
+- `20260728.004750` — [Tensegral r11 Arc IV Unify](20260728/20260728-004750_tensegral-r11-unify.bron) — Tally caller map canon
+- `20260728.004116` — [Tensegral r10 Arc IV Tighten](20260728/20260728-004116_tensegral-r10-tighten.bron) — tally gardens bounds pinned
+- `20260728.003902` — [Tensegral r9 Consolidate · Arc III exit](20260728/20260728-003902_tensegral-r9-consolidate.bron) — TH-4→alias · resin homes
+- `20260728.003735` — [Tensegral r8 Arc III TAME](20260728/20260728-003735_tensegral-r8-tame.bron) — bans GREEN · chunk rish tidied
+- `20260728.003623` — [Tensegral r7 Arc III Radiant](20260728/20260728-003623_tensegral-r7-radiant.bron) — lint GREEN · on-touch charter
+- `20260728.003317` — [Tensegral r6 Sameness · Arc II exit](20260728/20260728-003317_tensegral-r6-sameness.bron) — tensegral_arc_ii_witness GREEN
+- `20260728.002920` — [Tensegral r5 Arc II Glow](20260728/20260728-002920_tensegral-r5-glow.bron) — text floor · digraph · truth · tokens
+- `20260728.002049` — [Tensegral r4 Arc II Resin](20260728/20260728-002049_tensegral-r4-resin.bron) — resin_unit_witness GREEN
+- `20260728.000659` — [Tensegral r3 Amphora · Arc I exit](20260728/20260728-000659_tensegral-r3-amphora.bron) — laps 1–3 · seal · chunk GREEN
+- `20260728.000528` — [Tensegral r2 Arc I Amber](20260728/20260728-000528_tensegral-r2-amber.bron) — first ring · Tilak GREEN
+- `20260728.000056` — [Tensegral r1 Arc I Brix](20260728/20260728-000056_tensegral-r1-brix.bron) — bricks-exist · alias resolve · home held
