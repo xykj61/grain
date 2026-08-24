@@ -4,7 +4,7 @@
 
 **Status:** Checkable — operator compressor
 **Depth:** guide
-**Ceiling:** ≤120 lines
+**Ceiling:** <=120 lines
 **Last updated:** 2026-07-18 (JABS living name beside Seva fold modules)
 **Compresses:** [`two-dev-environments-and-mobile-emulation.md`](../context/specs/two-dev-environments-and-mobile-emulation.md) · [`20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md`](../context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md) · [`pixel-10a-grapheneos-setup.md`](../manual/guides/pixel-10a-grapheneos-setup.md) · [`JABS.md`](JABS.md)
 

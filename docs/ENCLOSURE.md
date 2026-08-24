@@ -4,7 +4,7 @@
 
 **Status:** Checkable — enclosure and Pond supersede guide
 **Depth:** guide
-**Ceiling:** ≤300 lines
+**Ceiling:** <=300 lines
 **Last updated:** 2026-07-12
 **Compresses:** [`counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) · [`20260712-210800_pond-enclosure-scorecard-two-column.md`](../active-designing/date/20260712/20260712-210800_pond-enclosure-scorecard-two-column.md) · [`20260712-210800_pond-supersede-exit-criteria.md`](../active-designing/date/20260712/20260712-210800_pond-supersede-exit-criteria.md) · [`20260712-212412_pond-scorecard-claude-second-walk.md`](../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md) · [`20260712-213600_pond-freeze-affirm-master-seal.md`](../active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md) · [`20260712-113900_lane-kvm-retire-dbus-escape.md`](../active-designing/date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md) · [`context/specs/enclosure-editors.md`](../context/specs/enclosure-editors.md)
 
