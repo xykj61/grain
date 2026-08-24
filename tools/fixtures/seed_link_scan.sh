@@ -94,7 +94,7 @@ awk -v allowf="$work/allow" -v denyf="$work/deny" -v front="$FRONT_DOOR" '
     shipped++
     # Dated testimony keeps every reference it ever wrote.
     base = f; sub(/^.*\//, "", base)
-    testimony = (base ~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]_/)
+    testimony = (base ~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]/)
     dir = f; if (dir ~ /\//) sub(/\/[^\/]*$/, "", dir); else dir = ""
     while ((getline line < f) > 0) {
       rest = line

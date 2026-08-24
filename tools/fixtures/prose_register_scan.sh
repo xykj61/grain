@@ -97,7 +97,7 @@ done
 
 # The teaching tier: what a newcomer opens after the front door.
 git ls-files 'docs-geode/*.md' 'manual/*.md' 'edu/*.md' CONTRIBUTING.md SOURCE.md ORGANIZING.md MAP.md 2>/dev/null \
-  | grep -vE '(^|/)[0-9]{8}-[0-9]{6}_' > "$work/teaching.txt"
+  | grep -vE '(^|/)[0-9]{8}-[0-9]{6}[_.]' > "$work/teaching.txt"
 
 teaching_over=0
 : > "$work/teaching_over.txt"

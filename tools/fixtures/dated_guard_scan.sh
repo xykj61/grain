@@ -73,7 +73,7 @@ while IFS= read -r path; do
   fi
 done <"$TMP/staged"
 
-grep -E '(^|/)2026[0-9]{4}-[0-9]{6}_[^/]+$' "$TMP/staged" >"$TMP/candidates" || true
+grep -E '(^|/)2026[0-9]{4}-[0-9]{6}[_.][^/]*$' "$TMP/staged" >"$TMP/candidates" || true
 if [ ! -s "$TMP/candidates" ] && [ "$reds" -eq 0 ]; then
   echo "OK   no staged MODIFIED freeze/Tier-1 dated paths; clean"
   exit 0

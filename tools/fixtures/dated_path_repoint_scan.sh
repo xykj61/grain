@@ -65,7 +65,7 @@ find . -type d \( $DP_FIND_PRUNE \) -prune -o \
   | sed 's|^\./||' \
   | awk -F/ '{
       base = $NF
-      if (base !~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]_/) next
+      if (base !~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]/) next
       room = ""
       for (i = 1; i <= NF - 3; i++) room = room (i > 1 ? "/" : "") $i
       if (room == "") next
@@ -101,7 +101,7 @@ set +f
 
 echo "living_files_considered=$(wc -l < "$work/living.txt" | tr -d ' ')"
 
-xargs -a "$work/living.txt" -d '\n' grep -lIE '[0-9]{8}-[0-9]{6}_' 2>/dev/null \
+xargs -a "$work/living.txt" -d '\n' grep -lIE '[0-9]{8}-[0-9]{6}[_.]' 2>/dev/null \
   > "$work/candidates.txt" || true
 echo "candidates_holding_a_dated_path=$(wc -l < "$work/candidates.txt" | tr -d ' ')"
 
@@ -123,7 +123,7 @@ if [ -s "$work/candidates.txt" ]; then
       }
       {
         line = $0; out = ""
-        while (match(line, /(\.\.\/)*([A-Za-z0-9_.-]+\/)+[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]_[A-Za-z0-9._-]+\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh|txt)/)) {
+        while (match(line, /(\.\.\/)*([A-Za-z0-9_.-]+\/)+[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9](_[A-Za-z0-9._-]+)?\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh|txt)/)) {
           pre = substr(line, 1, RSTART - 1)
           m = substr(line, RSTART, RLENGTH)
           line = substr(line, RSTART + RLENGTH)

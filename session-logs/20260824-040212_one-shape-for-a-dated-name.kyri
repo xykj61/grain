@@ -1,0 +1,68 @@
+format session-log-v1
+stamp 20260824.040212
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title one shape for a dated name -- nineteen sites, a resolver that can read a stamp, and the loom
+prompt the standing autonomous-loop prompt -- reds-first standfast, then the next agent-doable lap Lindy-first crux-first
+think Opened the lap by running tools/fixtures/standing_equipment_run.sh cold. 36 of 36 green, so the baseline was clean and any red found afterward would be mine.
+think The running thread from the last log's recommend named REDS %175's open remainder: eight read-only scans still requiring an underscore after the stamp, where the session-logs law makes the sprig optional and 237 tracked logs carry none.
+think Council rota row 3 by 3358 mod 5 -- Fire, Mars, cut and stop. Read standfast-the-stopped-line, reds-first-and-the-allocation, and the-three-depths-of-removal. The first named this lap's shape exactly: a lantern that fires twice becomes a loom.
+think Widened the reference regex in tools/fixtures/dated_path_scan.sh to accept a sprig or the extension directly, and the census jumped from 21,678 references to 22,183 with refs_lost rising 187 to 235. Then read the new rows rather than accepting the number.
+think Two faults surfaced in my own edit. A perl replacement had swallowed a backslash, turning the escaped dot into any-character and producing truncated matches like the-worksh. Fixed and re-measured at 211.
+think The 24 newly-lost references were then read one by one. Every last one is a substring inside a longer filename -- 99991_20260619-090912.md and TASKS-20260702-194512.md, the retired countdown-prefix names -- so the census reference pattern had no LEFT boundary and never had. Widening the right side is what exposed it.
+think Seated the boundary as a PCRE lookbehind at the three reference greps, since grep -P is already an established dependency here at six sites across three tracked scans. refs_lost returned to exactly 187 while refs_total rose to 21,917 -- 239 genuine references the census had been blind to, every one of them landing.
+think Repaired tools/d/dated_path_resolve.rish, whose stamp head came from splitting the basename on underscore alone, so stamped read false for every sprigless log and the fold rule -- the pure computation the tool leads with -- never fired for the one class of name that most needs it. It reads the dot as a second separator now.
+think Added a sixth reading, by stamp, for a reference the basename index cannot answer. An elder name a collision split into two sprigged files now reports both rather than missing.
+think The witness caught that reading being too loose on its first run: its own missing-reference case names 20260101-000000, a stamp a fixture tree also plants, and the unbounded reading answered a deliberately absent log with the fixture's file. Bounded the reading to references carrying NO sprig, which is what it exists for -- a sprig that names no file is information rather than noise.
+think Writing the loom meant enumerating the class, and the enumeration disagreed with the row. A grep for the three spellings this tree writes stamps in found nineteen sites across fifteen files, not eight. The row recording a fault about working from memory had named its own remainder from memory.
+think Two of the eleven unnamed sites carry a consequence past a miscount. tools/fixtures/dated_guard_scan.sh is the guard that refuses edits to dated artifacts, so all 237 sprigless logs stood outside the protection it exists to give; and three sites inside dated_path_repoint_scan.sh mean its map, its candidate filter, and its line matcher could none of them see a sprigless reference.
+think Seated the loom: tools/fixtures/dated_pattern_scan.sh reads 4,705 living tracked sources for a stamp shape followed by a bare underscore and gates at zero. Its control builds real git repositories in a throwaway pen and proves twelve behaviors, three refusals bitten and nine honest readings free.
+think One of those free cases matters more than the rest -- a SPRIGLESS dated basename read as testimony. A guard that recognised testimony only when it wore a sprig would carry the very fault it exists to catch.
+think The control's eight-fold explicit case went RED on its first run, because my alternation escaped the interval braces and matched literal text where it needed a repeat. Proving the refusal is what found it; a guard proven only in the passing direction would have shipped reading two spellings of three.
+think Staging caught a red of my own before the commit. git status reported tools/fixtures/dated_pattern_scan.sh as MODIFIED where a file I believed I had just created should have read untracked -- the heredoc had written straight over a tracked guard that already held that name, one proving the shared classifier agrees with the law on two planted controls.
+think Restored the elder byte-for-byte from HEAD, re-ran it GREEN, and renamed mine to dated_spelling across scan, control, witness, every internal reference, and the roster row. What mine reads is how every tool SPELLS the shape; what the elder reads is whether one classifier ANSWERS correctly. Two jobs, two names, and the elder's own header carries the sentence I should have checked it under.
+think The elder's witness stood off the roster, which is why nothing would have run it and said so. Seated it as dated_pattern; the roster stands at 38. Booked the whole of it as REDS %179.
+think Condensed construction/ITINERARY.md behind a checkpoint at nib fc153c2c78 -- 162 lines of landed-round narrative became a thirteen-row Prior laps table naming each round and where its numbers live, and the seed cadence's two sections fused into one. 435 lines to 340.
+obs A named remainder is a measurement and belongs to a script rather than to a sentence. The row that taught working-from-memory named its own leftovers from memory, and the count was off by eleven.
+obs Widening a pattern on one side is how you find what was loose on the other. The left boundary had been absent since the census was written and nothing could see it, because the narrow right side happened to exclude every case that would have shown it.
+obs The apostrophe fault from REDS %177, one lap old, arrived again in my own hand -- a comment I wrote inside a single-quoted awk program carried namesake's and broke the program. The file's own comment three lines above says no apostrophes in here.
+obs A wider and tighter meter reporting the same number is the strongest form the repair could take. refs_lost stands at 187 exactly where it stood, with 239 more references in view.
+obs A name is taken until the tree says otherwise, and the tree answers in one command. git ls-files on the path would have cost nothing and I never ran it. The discipline already written for deletion -- look at the target first -- reaches one step further to overwriting.
+obs Reading git status before staging is what caught it, and the tell was a single letter: M where ?? belonged.
+obs Both generated pages went stale on the same new witness -- docs-geode/libraries/README.md and the README metrics block. The pre-commit hook renders them at commit time; running them ahead cost one command and kept the roster honest.
+loom census=dated_path refs_total_before=21678 refs_total_after=21917 refs_lost_before=187 refs_lost_after=187 recoverable=9066 ambiguous=16 gone=171
+loom guard=dated_pattern files_considered=4705 narrow_patterns=0 control_cases=12 refusals=3
+file tools/fixtures/dated_path_scan.sh reference regex accepts a sprigless name, a lookbehind seats the left boundary, and a stamp reading answers where the basename index cannot
+file tools/d/dated_path_resolve.rish reads the stamp before the extension as well as before the sprig, and gains a by-stamp reading bounded to sprigless references
+file tools/d/dated_path_witness.rish a seventh verdict case on a real sprigless log and an eighth refusal proving the stamp reading declines a sprigged reference
+file tools/fixtures/dated_spelling_scan.sh new -- one shape for a dated name, gated at zero over 4,705 living tracked sources, its header naming the elder it stands beside
+file tools/fixtures/dated_spelling_control.sh new -- twelve behaviors on real git repositories, three spellings bitten and nine readings free
+file tools/d/dated_spelling_witness.rish new -- the 37th standing guard
+file tools/fixtures/dated_pattern_scan.sh restored byte-for-byte after a heredoc overwrote it (REDS %179)
+file tools/fixtures/one_clock_shape_scan.sh the shape test accepts a whole stamp with no sprig, and its header says so
+file tools/fixtures/tracked_link_scan.sh testimony case glob reads either separator
+file tools/fixtures/exec_bit_scan.sh living filter reads either separator
+file tools/fixtures/room_bound_scan.sh the flat-count find glob reads either separator
+file tools/fixtures/prose_register_scan.sh teaching-tier testimony filter reads either separator
+file tools/fixtures/seed_link_scan.sh awk testimony test reads either separator
+file tools/fixtures/tool_path_repoint_scan.sh awk living split reads either separator
+file tools/fixtures/dated_path_repoint_scan.sh map, candidate filter, and line matcher all see a sprigless reference now
+file tools/fixtures/dated_guard_scan.sh the dated-artifact guard now protects the 237 sprigless logs it could not see
+file tools/fixtures/oldness_census_scan.sh python dated_re reads either separator
+file tools/fixtures/radiant_lint_scan.sh is-dated helper reads either separator
+file tools/fixtures/shipped_binary_claim_scan.sh two testimony filters read either separator
+file tools/ad/ad_walk_sample.sh sample pattern reads either separator
+file tools/ad/ad_walk_sample_witness.rish shape assertion reads either separator
+file tools/d/dated_amendment_audit.sh audit pattern reads either separator
+file construction/standing-equipment.kyri seats dated_spelling 37th and the elder dated_pattern 38th, the latter having stood off the roster
+file construction/REDS.md books %178 -- the open remainder counted from memory, and the boundary it exposed -- and %179, a heredoc written over a guard that already had the name
+file construction/CHECKPOINTS.md walk-back row at fc153c2c78 before the ITINERARY condense
+file construction/ITINERARY.md 162 lines of landed narrative condensed to a Prior laps table; the cadence fused into one section
+file .claude/rules/stamp-and-name.md the mark law records that agreement is held by a meter now, and that a reference begins at a boundary
+file active-designing/20260824-041200_the-remainder-a-sentence-cannot-hold.md new -- the round's two portable findings, filed by the durability test
+file active-designing/README.md indexes the essay newest-first
+file docs-geode/libraries/README.md regenerated -- the new witness moved a count
+file README.md metrics block regenerated -- 1,666 witnesses
+recommend keep-going the fascia weave over the thirty-nine browsed active-designing documents, shaped as a living index page per cluster -- the named open door with the shortest path to a reader

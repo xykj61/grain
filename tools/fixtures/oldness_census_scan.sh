@@ -107,7 +107,7 @@ SPLIT=$(python3 <<'PY'
 import re, subprocess
 from pathlib import Path
 files = subprocess.check_output(["git", "ls-files", "*.md"], text=True).splitlines()
-dated_re = re.compile(r"(^|/)2026[0-9]{4}-[0-9]{6}_[^/]+$")
+dated_re = re.compile(r"(^|/)2026[0-9]{4}-[0-9]{6}[_.][^/]*$")
 
 def living_header(path: str) -> bool:
     try:

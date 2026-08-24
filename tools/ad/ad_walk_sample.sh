@@ -34,7 +34,7 @@ COUNT="${1:-4}"
 cd "$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)"
 
 ls active-designing/*.md \
-  | grep -E '/[0-9]{8}-[0-9]{6}_' \
+  | grep -E '/[0-9]{8}-[0-9]{6}[_.]' \
   | grep -v 'recursion' \
   | awk 'BEGIN{srand()} {print rand() "\t" $0}' \
   | sort -n \

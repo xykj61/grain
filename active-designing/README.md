@@ -59,6 +59,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-sprig.md` filenames; this README is th
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
+| `20260824.041200` | [The remainder a sentence cannot hold](20260824-041200_the-remainder-a-sentence-cannot-hold.md) | a partly-closed fix records what is left, and a sentence holds a list where a script holds a class -- the tell is the word *more*; with the companion finding that two constraints can hide each other, so the rows a widened filter newly matches are read individually rather than only counted |
 | `20260812.053742` | [BUHR -- an exploration of Surface & Intelligence](date/20260812/20260812-053742_buhr-exploration-surface-and-intelligence.md) | the equinox's real state in the two rooms -- **Quin's four voices** (Lattice-Scribble-Lantern-Ember all witnessed GREEN) are the crux, Realidream a far-horizon composition on real substrate, MCP-in-Bron greenfield; the first door composes Lattice+Lantern into a bounded inference query Pond app |
 | `20260812.000456` | [WADE1 -- the `.brush` surface-bridge seam](date/20260812/20260812-000456_wade1-brush-surface-bridge-seam.md) | the styling cascade a design system targets over Brushstroke-Skate-Realidream, in the owned tongue -- token sheet - **infuse as cascade** (`brix/infuse` reused) - lowering to Skate grid; never a CSS rail; `tokens.rye` awaits the word |
 | `20260718.201232` | [SETU6 -- device-wire lab harness](yonder/20260718-201232_setu6-device-wire-lab.md) | Lab card - stand-in/armed; live TX = SETU6.5 |

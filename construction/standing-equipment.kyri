@@ -167,6 +167,14 @@ guard loop_prompt_parse
 path tools/l/loop_prompt_parse_witness.rish
 seated 20260824.025704
 
+guard dated_spelling
+path tools/d/dated_spelling_witness.rish
+seated 20260824.035758
+
+guard dated_pattern
+path tools/gen/season/dated_pattern_witness.rish
+seated 20260824.040502
+
 guard width_check
 path tools/w/width-check.rish
 seated 20260620.210812

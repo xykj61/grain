@@ -227,165 +227,67 @@ The whole outstanding vision is ranked in
 [`../expanding-prompts/20260823-124407_the-ranked-remainder.md`](../expanding-prompts/20260823-124407_the-ranked-remainder.md),
 Lindy-first and crux-first, with costs, gates, and falsifiers.
 
-**The crux moved, and a measurement moved it.** Caravan stands at **110 modules with 109
-witnesses** and Mycelium at **98 with 80** -- both far past sketch. So the bottleneck is no longer
-building; it is that a reader arriving today cannot say what either one does, while the tools room
-holding their proofs sits **7.4x over its bound**. Tier 1 is legibility: the tools fold, the 848
-seed-dead links, and a Door-setting front page for each of the two big modules.
+**The crux, and the measurement that moved it.** Caravan stands at **110 modules with 109
+witnesses** and Mycelium at **98 with 80**, so the bottleneck is legibility rather than building:
+a reader arriving today cannot say what either one does. Tier 1 is a Door-setting front page for
+each of the two big modules, and the seed-dead links beneath them.
 
-**BOOKED `20260823.184309` -- the organization rename, the astrology room, and four doors named.**
+**Four doors booked `20260823.184309`, in Lindy order.**
 
-- **`autoproject96` -> `groupproject405`, living half done.** `origin` repoints to
-  `git@github.com:groupproject405/grain.git`; **32 occurrences swept across 16 living files**; both
-  names sit on the seed's IDENT roster and both scrub to `acme-owner`, since dated testimony keeps
-  every elder name it wrote. The **deep debride is granted and booked as a STANDFAST** rather than
-  run -- 199 occurrences tree-wide, 83 dated files, and **only 11 inside commit messages**, which is
-  the whole of what a rewrite reaches, against every downstream re-cloning. GitHub keeps a redirect
-  from the elder name, so nothing is broken today. Row in `REDS.md`.
-- **`classical-vedic-astrology/` ships its METHOD.** Reclassified in `template-manifest.bron` from
-  `personal` to `template`, with `readings/` and `yonder/` **sub_excluded** -- a natal chart carries
-  a named person's birth date, time, and place, and the room's own README records that those friends
-  asked for privacy. What ships is how a chart is cast, the 27 nakshatra seats, the studies, and the
-  teachings; the rota the seasons are named from now has its method in the open. `sow_witness` reads
-  IDENT_CLEAN and NO_PERSONAL, and the projection carries no named person. Woven into the root README
-  beside the rooms that ship, where *Crux* also became **Construction**, five days after the rename.
-
-**Four doors booked `20260823.184309`, in Lindy order:**
-
-1. **`SOURCE.md` molt into Gauge - Civic - TAME.** The onboarding page is the seed's second-most-read
-   document and it predates all three registers. A molt seats a living mutant at a fresh stamp; the
-   fossil stays. Agent-doable.
+1. **`SOURCE.md` molt into Gauge - Civic - TAME.** LANDED `20260824.014209`.
 2. **The MOX constellation on SUI, with `xykj61` as the maintainer's planet.** Seven of fifteen
-   instantiations are named (MOX, EBB, EBBB, dETH, dSOL, dSUI, SIYA); this seats the topology --
-   which instantiation answers for which point, and how a planet resolves to a Mycelium store. Design
-   is agent-doable; **anything touching a real chain is a gate.**
-3. **Kumara seed-key derivation -- ONE seed phrase, every live key.** The design is agent-doable and
-   the generation is **not**. Shape: a single high-entropy seed, backed up in Vault, from which both
-   the **Comlink X25519/Ed25519** keys and the **post-quantum SLH-DSA-SHAKE-256s** keys derive by
-   domain-separated SHAKE-256, so one phrase restores everything and no key is ever stored twice.
-   Algorithm agility is already seated, so the derivation path carries a scheme tag and a version.
-   **CUSTODY GATE, uncrossed:** generating the maintainer's real seed, writing it to Vault, or signing
-   with it stays a hand's work. An agent may write and witness the derivation library against test
-   vectors and fake constel identities, and stops there.
+   instantiations named (MOX, EBB, EBBB, dETH, dSOL, dSUI, SIYA); this seats the topology -- which
+   instantiation answers for which point, and how a planet resolves to a Mycelium store. Design is
+   agent-doable; **anything touching a real chain is a gate.**
+3. **Kumara seed-key derivation -- ONE seed phrase, every live key.** A single high-entropy seed in
+   Vault, from which both the **Comlink X25519/Ed25519** keys and the **post-quantum
+   SLH-DSA-SHAKE-256s** keys derive by domain-separated SHAKE-256, the derivation path carrying a
+   scheme tag and a version. **CUSTODY GATE, uncrossed:** generating the real seed, writing it to
+   Vault, or signing with it stays a hand's work. An agent may write and witness the derivation
+   library against test vectors and fake constel identities, and stops there.
 4. **Atthowe ecological / biocyclic-vegan, Dimeroll, and Mycelium** carry forward as the standing
    why beneath all three.
 
-**The voice ships, a document may have two homes, and the shed list came back empty (`20260823.182512`).**
-`context/KYRI.md` is depersonalized and on the seed's allow list, so the standing voice reaches the
-public projection; `sow_witness` reads IDENT_CLEAN and NO_PERSONAL over 6,800 copied files.
-`context/document-mirrors.brix` declares which documents live in more than one room and
-`tools/d/document_mirror_witness.rish` proves each home holds the same bytes -- eight control cases,
-drift bitten and named, `write` proven to repair -- so `ember/voices/KYRI.md` stands beside the
-canonical without moving a file 153 references point at. **Roster's 33rd guard.** The root README
-gains Brix and Tablecloth rows and a section tying Brix declares - Tablecloth addresses by content -
-Gauge says it plainly, with the mirror as the worked example; the seed-link guard caught a phantom
-`tablecloth/` link before it shipped, and the `Skate` label beside the `surf/` link became **Surf**.
-`docs-geode/tutorials/SHOPPING.md` is a new Gauge guide to buying a model, a forge, and byte storage,
-ordered safety - performance - joy, naming no winner so it keeps.
+**Open, named, and waiting on its own lap.** The **fascia weave** over the thirty-nine browsed
+`active-designing/` documents -- Class W, walked and cited and kept, so none sheds -- shaped as a
+living index page per cluster rather than edits into dated bodies. And the **112 living broken
+links** across 42 files that the README crawl found, of 1,209 total, the rest being testimony
+resolved by law.
 
-**Two questions answered so a lap need not reopen them.** The `%NNN` REDS pattern **stands** and the
-standfast is **declined** -- a number that counts is a census rather than a forecast, and the gapless
-spine proves the record is whole where a stamp cannot; 2,519 citations measured, 532 of them inside
-commit messages. Written into `.claude/rules/stamp-and-name.md` and its Cursor twin as *A census
-number keeps its place*. And the thirty-nine `active-designing/` documents Keaton browsed are
-**Class W -- walked, cited, kept**: all 39 present, all 39 cited, floor 3 and ceiling 46, so none is
-shed-ready and the cut stays RED. The fascia weave over their seven clusters is named for its own
-round, shaped as a living index page per cluster rather than edits into dated bodies.
+**Two questions answered so a lap need not reopen them.** The `%NNN` REDS pattern **stands** and
+its standfast is **declined** -- a number that counts is a census rather than a forecast, and the
+gapless spine proves the record whole where a stamp cannot. And the `autoproject96` ->
+`groupproject405` deep debride is **granted and booked as a STANDFAST** rather than run: 199
+occurrences tree-wide, only 11 inside commit messages, against every downstream re-cloning, with
+GitHub's redirect from the elder name holding meanwhile.
 
-**A crawl from the root README** reaches **1,389 documents 15 levels deep** and finds **1,209 broken
-links** -- **1,097 in dated testimony**, resolved by law, against **112 across 42 living files**,
-which is the actionable set and the next front-door lap. `xy` is seated in the Lexicon as the
-speeddial for `xykj61/grain`, since it and the `grain-os/grain` seed were both being called *the
-grain repo*. The loop seed gains section 4b, eight habits this pier paid reds for, and both one-line
-prompts carry the same clauses.
+## Prior laps -- landed, with the detail in the log that recorded it
 
-**The loop's own paths follow the fold, and the roster's run made the roster red (`20260823.162138`).**
-The recursion loop reads two entries and both are correct at the new depth: `tools/l/launch-claude.rish`
-calls `bash tools/ag/agent-jail.sh claude`, and `tools/l/launch-claude-season.rish` prints the
-outer-shell loop naming `./tools/ag/agent-jail.sh` with `tools/s/stream_render.jq` on the render.
-`agent-jail.sh` climbs `$(dirname "$0")/../..`, two levels, which is right at `tools/ag/`. Repaired
-this lap: `SOURCE.md` (7 sites), `context/specs/enclosure-editors.md` (9), both launcher `.example`
-headers, `tools/p/pond_exit_bron_master_seal.sh`, and `ember/README.md`, which also carried the elder
-module name `Kiln` and ten non-ASCII lines. **REDS %172** -- `phantom_path` answered red on a sound
-tree, naming a symlink two witnesses **create while they run** and `.gitignore` names; the scan asks
-`git check-ignore -q` now rather than guessing which rooms are generated, with a control pair
-building the same shape once with the ignore rule and once with it lifted. All **31** guards green.
-The round's own synthesis stands two ways -- outward at
-[`../external-research/20260823-162138_the-instruments-that-were-never-pointed-inward.md`](../external-research/20260823-162138_the-instruments-that-were-never-pointed-inward.md)
-and inward at
-[`../active-development/20260823-162138_one-chmod-that-became-the-self-description-round.md`](../active-development/20260823-162138_one-chmod-that-became-the-self-description-round.md).
+Each line names a round and where its numbers live. This card keeps the live edge; the logs keep
+the account.
 
-**Tier 1.1 LANDED `20260823.144100` -- the tools room folded, and three reds rode along.**
-1,917 flat entries moved into 35 rooms: a `.rish`, `.sh`, or data file into `tools/<first sprig
-letter>/`, with `a` and `c` splitting one letter deeper because each stood over bound alone, and
-every `.rye` source into `tools/rye/` beside the 24 crypto shims and the `enrich/` room those
-sources import. **The open question was answered by measurement rather than by choice:** Zig
-refuses an import that escapes the root file's directory (*import of file outside module path*,
-proven on metal), so a bare-name `@import` is a directory relationship the language enforces and
-the whole Rye closure of `tools/` is one room by the compiler's own rule. Each shim target
-deepened one level to `../../crypto/`; `tracked_link` stands green.
+| Landed | Round | Log |
+|---|---|---|
+| `20260824.040212` | One spelling for a dated name -- nineteen sites widened, a left boundary seated, the resolver reads a stamp; `dated_spelling` 37th and the elder `dated_pattern` 38th | REDS %178, %179 |
+| `20260824.030821` | The recipe that would not parse -- a lone apostrophe, `loop_prompt_parse` seated 36th | REDS %177 |
+| `20260824.021623` | The Gauge standfast completes -- 490 files swept, zero living documents reference Style Radiant | REDS %163 closed |
+| `20260823.204456` | Krittika leads the nakshatra roster; 102 astrology files turn ASCII; the sprig found optional | REDS %175 |
+| `20260823.184309` | From the front door every living door opens -- 112 broken links to zero, `readme_reach` seated | |
+| `20260823.162138` | The loop's paths follow the fold; `phantom_path` asks `git check-ignore` | REDS %172 |
+| `20260823.144100` | The tools room folds by letter -- 1,917 entries into 35 rooms, 8,502 references repointed | REDS %166-%170 |
+| `20260823.142302` | The seed cadence finds a red on its first cycle; `sow` seated | REDS %165 |
+| `20260823.111029` | The seed ships every fifth round -- the cadence seated | |
+| `20260823.103804` | REMEMBER becomes ITINERARY; three cards fuse into one | |
+| `20260823.045448` | The register gets its true name -- **Gauge Style** seated with three settings and a meter | REDS %163 |
+| `20260823.025333` | A mode is tracked content -- thirty-nine exec bits restored, `exec_bit` seated | |
+| `20260822.235157` | The roster of standing guards leaves prose for a file a program reads | REDS %150-%151 |
 
-**8,502 living references repointed** by `tools/t/tool_path_repoint.rish` over
-`tools/fixtures/tool_path_repoint_scan.sh`, proven by nine behaviors on a throwaway git repository
--- a living file repointed, a dated-basename file left byte-identical, an untracked file untouched,
-another tree's path untouched, a `$ROOT/`-prefixed path repointed with its prefix carried through,
-and idempotence. Dated testimony keeps every word it wrote and is resolved instead:
-`rishi/bin/rishi run tools/t/tool_path_resolve.rish <reference> [<citing-file>]`, whose letter rule
-now reaches the `../tools/x.rish` shape 204 of this tree's own references wear. **`tools` is on the
-enforced bound roster**, and the roster's 30th guard is `tool_path_repoint`.
-
-**Six reds booked, five closed.** **%166** -- `.gitignore` withheld six personal files by anchored
-path, the fold moved one a directory deeper, and the next `git add -A` staged one person's host
-configuration; caught by reading the staged list, nothing committed, and the six names now match at
-any depth. **%167** -- the repointer borrowed the dated-path exclusion list wholesale, which
-protected a live invocation along with a deliberately stale citation; caught by the roster, four
-guards red. **%168** -- the bound meter counts dated basenames, and not one of the 1,917 entries
-carried a stamp, so `tools/` would have read **zero** even on the enforced roster; two counting
-rules now, with `counts=all` printed beside the second. **%170** -- REDS %83's own ASCII prevention
-guard was off the roster, and the card it protects had carried four non-ASCII lines since the
-ROADMAP fusion; swept, and the guard seated as the **31st**.
-
-**%169 is the one worth carrying furthest.** A repointer moves text; a fold moves **depth**. Four
-kinds of reference fail silently and none of them is text: a shell glob (`tools/*.rish`) matches
-nothing, a `find -maxdepth 1` matches nothing, thirty-three scripts computing the repository root
-as `$(dirname "$0")/..` land inside `tools/`, and two tracked symlinks point at flat paths no text
-rewriter can see. The sharpest instance: `docs-geode/libraries/README.md` regenerated with a
-witness count of **zero for all thirty-eight rooms** and its freshness guard passed **green**,
-because page and fresh render are computed by the same broken glob. **A freshness guard proves a
-page agrees with its generator, never that the generator is right.**
-
-**%171 -- the roster is a sample, and this lap drew a wider one.** Three witnesses from each of the
-29 letter rooms, 86 run: **12 red**, of which five are device or OS gated and correct to refuse
-here, three want a binary this pier never built, two were not reds, and **two are genuine and
-older than this fold** -- `pool_isolation_witness` calls a member `linengrow/capabilities.rye` has
-not had since **2026-07-15**, and `pond_ring_lantern_witness` fails its terminal build. Both are
-**open and named** for the next lap. 31 rostered guards over roughly 1,800 witnesses is a gate with
-a wide door beside it, which is REDS %156's open question answered by measurement.
-
-## The seed cadence -- projected and gated `20260823.142302`
-
-The rota closed its cycle this lap (commit count 3330, `N mod 5 == 0`), so the cadence applied.
-**The projection ran and all four gates read green** -- `SOW_OK copied=6789 scrubbed=1048
-withheld=122`, `IDENT_CLEAN`, `NO_PERSONAL`, `M1_OK`, and `seed_link` GREEN. **The force-push
-itself waits for Keaton's word**, since the same instruction that grants the cadence also names
-the seed force-push among the custody gates; an autonomous lap surfaces that rather than reading
-it in its own favour. Say **ship the seed** and `bash ~/grain/publish-seed.sh` carries it.
-
-**The cadence earned its seat on its first cycle.** It found **REDS %165** -- three renames and a
-debride had left `template-manifest.bron` classifying `crux` and `skate`, rooms the tree no longer
-has, while `construction` and `surf` stood in the tree with no verdict at all. The `Skate -> Surf`
-commit `32d5bc0e45` is the whole lesson in one diff: it changed `allow skate` to `allow surf` and
-walked past `template skate` **in the same file**, because a sweep matches path-shaped rows and a
-classification row's second field is a bare room name. Nothing leaked and nothing was wrongly
-withheld -- the 94 `allow` rows drive the projector and were correct throughout, so the damage was
-to the audit record rather than to the boundary. Closed with the manifest repointed, the cover
-check reshaped so a `personal` row for a debrided path is permitted and reported while a shipping
-row for an absent path stays gated, and **`sow` seated as the roster's 29th guard**, since the
-guard standing over the public boundary had been off the roster that gets run.
+Walk back to any of them with `git log --oneline` and the session log of the same stamp. Earlier
+arcs are condensed above under *Landed arcs*.
 
 ## Next, named rather than started
 
-Three directions are seated by name `20260823.122619` and want their own rounds rather than a
+Two directions are seated by name `20260823.122619` and want their own rounds rather than a
 tail-end start:
 
 **The `constels/` room.** Kumara live implementations derived from **kres** and **brix** templates,
@@ -394,16 +296,19 @@ written in Kyri and Bron, at `constels.com` and `constel.net` -- both already in
 holds the **Mercury / air / Gemini dual** galaxy seat, the same seat Siya sits in as seat 3 of the
 twelve.
 
-**The tools room folded `20260823.144100`** -- 1,891 flat files had stood against a bound of 256,
-past GitHub's 1,000-entry listing cap. Landed above.
-
 **The kres / kresfa contract language season**, the `.{extension}` macro languages fusing Glow
-runes with Lisp macros, and the GUI module named from a held domain. All three are design rounds.
+runes with Lisp macros, and the GUI module named from a held domain. Both are design rounds.
 
 ## The cadence -- the seed ships every fifth round
 
 Seated `20260823.111029`. On the lap the council rota closes its cycle (`N mod 5 == 0`), project
-and force-push the public seed with `bash ~/grain/publish-seed.sh`. One count serves the rota and
+and force-push the public seed with `bash ~/grain/publish-seed.sh`.
+
+**Where it stands.** The projection has run and **all four gates read green** -- `SOW_OK
+copied=6789 scrubbed=1048 withheld=122`, `IDENT_CLEAN`, `NO_PERSONAL`, `M1_OK`, and `seed_link`
+GREEN. **The force-push waits for Keaton's word**, since the same instruction that grants the
+cadence names the seed force-push among the custody gates, and an autonomous lap surfaces that
+rather than reading it in its own favour. Say **ship the seed** and the script carries it. One count serves the rota and
 the seed together. All four gates hold every time -- `IDENT_CLEAN` or no push, the commit anonymous
 and unsigned, the message wall re-armed by the script, and `seed_link` green so the front door
 reads whole in both repositories. Reds come first: a stopped line stays stopped, and the seed ships
