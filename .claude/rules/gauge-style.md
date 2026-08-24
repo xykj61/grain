@@ -51,6 +51,29 @@ One style, one dial, set by who is reading.
 - **Say why** beside every surprising choice, threshold, or number.
 - **Honesty first, brevity second, delight third**, when they pull against each other.
 
+## Quality assurance -- the report card
+
+**Touch it, read it, grade it.** Four readings of one artifact, meaned into one grade on a plain
+school scale, and a door at **B**.
+
+| Reading | Asks | How |
+|---|---|---|
+| **Register** | Does it lead with what is? | counted -- 100 minus the negative-sentence share |
+| **Reach** | Can the reader follow it? | counted -- grade and cross-refs against the setting's budget |
+| **Truth** | Are its claims still true? | half counted -- every cited path resolves; the rest is judged |
+| **Service** | Does it help the work in front of us? | judged, against `construction/ITINERARY.md` |
+
+**97-100 A+ - 96-90 A - 89-85 B+ - 84-80 B - 79-75 C+ - 74-70 C - 69-65 D+ - 64-60 D - under 60 F.**
+No minus grades. **B is 80**, which is the Door register ceiling of 20% flipped, so the seated law
+and this door are one number. **Truth gates:** below 60 the card reads **F** whatever else it scored.
+
+```
+sh tools/fixtures/qa_report_card.sh <path> [--setting door|field|meter] [--service N]
+```
+
+A reading below B **pushes a bounded molt frame** onto the round's stack -- the discipline is
+[`quality-assurance`](quality-assurance.md), and the four readings are argued in full in the guide.
+
 ## Code comments
 
 The dial runs through the code. **Meter** at a bound or an assert, where the comment says why the

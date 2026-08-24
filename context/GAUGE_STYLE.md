@@ -310,6 +310,109 @@ syllable count sees neither.
 Held by [`../tools/p/prose_register_witness.rish`](../tools/p/prose_register_witness.rish), which
 gates the Door tier and reports the rest.
 
+---
+
+## Quality assurance -- the report card
+
+*Seated `20260824.161948` on Keaton's word.*
+
+The table above is true and it is also backwards. A writer told to hold *20% negative* is aiming at
+a ceiling, which is a thing you stay under rather than a thing you reach for, and a reader handed
+that number has been told what the page managed to avoid. Read the same measurement the other way
+up -- **100 minus that share** -- and 20% becomes **80, a B**: a grade a person has known since
+school and can aim at without translating.
+
+That flip is the whole idea, and once it is made the grade generalizes past prose. A **report card**
+is four readings of one artifact, each 0 to 100, meaned into one grade and one letter. It reads a
+document, a module's comments, or a design, and it answers one question in a form anyone can hold:
+**how effectively and helpfully does this thing serve the work?**
+
+### The four readings
+
+| Reading | Asks | How it is taken |
+|---|---|---|
+| **Register** | Does it lead with what is? | **Counted.** 100 minus the share of sentences carrying a negative -- the same reading the register meter gates, lifted from that scan rather than spelled beside it. |
+| **Reach** | Can the intended reader follow it? | **Counted.** Flesch-Kincaid grade and cross-references per hundred words, against the budget the setting carries. Ten points per whole unit over. |
+| **Truth** | Are its claims still honestly true? | **Half counted.** Counted: every relative path it cites, resolved as written, root-relative, or by the fold rule. Judged: whether a behavioral claim still holds, which only reading or running can say. |
+| **Service** | Does it help the work in front of us? | **Judged.** Read against the live card, `construction/ITINERARY.md`. The tool prints the inputs and stops there. |
+
+**Truth is a gate rather than a quarter.** Below 60 the whole card reads **F**, whatever the other
+three say. A page whose claims have gone false costs a reader more than an absent page, so
+*honesty first* is written into the arithmetic rather than left to a habit.
+
+### Service, in four questions
+
+Service is the reading Keaton asked for by name, and it is judged because only a reader can take it.
+Four questions, twenty-five points each, so the judgement is repeatable rather than a mood:
+
+1. **Named.** Does a live line on the card, a standing law, or a roster reach this artifact?
+2. **Reached.** Does someone arriving at the live work actually pass through it, rather than around it?
+3. **Current.** Does it describe the tree as it stands today, rather than a season that has closed?
+4. **Carried.** Which side does it serve -- the public projection `grain-os/grain`, the working
+   repository `xy`, or both -- and is that the right side for what it holds?
+
+The fourth question generalizes cleanly past this tree. Any organization has a published face and a
+working one, and an artifact that serves neither is the one worth finding. An employee at Acme
+Corporation reading this substitutes *the shipped product* for the first and *the working
+repository* for the second, and the question is the same question.
+
+### The scale
+
+A plain school scale, and **no minus grades** -- so a writer reads a B and knows what to do.
+
+| Score | Letter | | Score | Letter |
+|---|---|---|---|---|
+| 97-100 | **A+** | | 74-70 | **C** |
+| 96-90 | **A** | | 69-65 | **D+** |
+| 89-85 | **B+** | | 64-60 | **D** |
+| 84-80 | **B** | | under 60 | **F** |
+| 79-75 | **C+** | | | |
+
+**B is the door, and B is 80 on purpose.** The Door setting's register ceiling of 20% negative
+*is* 80 flipped, so the seated law and the new standard are one number rather than two that can
+drift apart. A tree that spells a constant twice has already booked that lesson five times.
+
+### Reading the three kinds of artifact
+
+**A document** takes all four readings as written above.
+
+**A module's comments** take the same dial the code section describes. Register and Reach run over
+the comment text; the module's opening comment is read at **Door** and a comment beside a bound at
+**Meter**. Service asks whether a reader arriving cold can say what the module is for. A module
+whose every comment sits at Meter is precise and hard to enter, and that shows up here as a low
+Service against a high Register, which is exactly the shape *"kind of an obscure assembly"* names.
+
+**A design** puts most of its weight on Service and Truth: does this shape serve a live line, and
+does what it claims still hold. Register and Reach read the essay carrying it. A design that reads
+beautifully and serves nothing on the card is a B on two readings and a D on the two that matter.
+
+### The tool, and what it refuses to invent
+
+```
+sh tools/fixtures/qa_report_card.sh <path> [--setting door|field|meter] [--service N] [--truth N]
+sh tools/fixtures/qa_report_card.sh --letter <0-100>
+```
+
+Without `--service` it prints what it counted, prints the inputs a judge needs -- living citers,
+whether the live card names it, whether the seed manifest carries its room -- and says
+`composite=judged`. **A number nobody measured is worth less than a blank**, so the tool leaves the
+blank.
+
+Held by [`../tools/q/qa_report_card_witness.rish`](../tools/q/qa_report_card_witness.rish), which
+proves the scale at every one of its nine boundaries from both sides, proves the register reading is
+the flip of the register scan's own number rather than a second measurement, and reports the door
+roster as a ratchet under a ceiling that only falls.
+
+**A grade is not a gate**, and the witness holds that line. The register share keeps its wall where
+it already stands; the card aims a writer rather than refusing their work. What a low grade books is
+a **molt**, and that discipline lives in
+[`../.claude/rules/quality-assurance.md`](../.claude/rules/quality-assurance.md).
+
+**What this does not prove** is that an A page is a good page. Four honest proxies, two of them
+counted, and the second thing to read is always the artifact itself.
+
+---
+
 ## Softening -- reach for the warmer word
 
 Softening is the small, repeatable craft of the style: keep the meaning whole and let the sentence

@@ -1,0 +1,96 @@
+# tools/q/qa_report_card_witness.rish -- quality assurance, as a grade a writer can aim at.
+#
+# WHY THIS RUNG. This tree measured its prose one way: the share of sentences carrying a negative,
+# held at or under 20% for a Door document. That number is true and it is also backwards. A reader
+# told to hold "20% negative" is being told what the page failed to avoid, and a writer aiming at it
+# is aiming at a ceiling rather than at a standard. Read the same measurement the other way up --
+# 100 minus that share -- and 20% becomes 80, a B, which is a grade a person has known since school
+# and can aim at without translating. Keaton asked for exactly that flip on 20260824, and for the
+# grade to reach past prose to code comments and to design.
+#
+# WHAT A REPORT CARD IS. Four readings of one artifact, each 0 to 100, meaned into one grade.
+#   Register  counted   100 minus the negative-sentence share, the same reading prose_register
+#                       gates, lifted from that scan rather than copied beside it.
+#   Reach     counted   Flesch-Kincaid grade and cross-references per hundred words, against the
+#                       budget its setting carries.
+#   Truth     half      counted: every relative link resolved as written, root-relative, or by the
+#                       fold rule. Judged: whether a behavioral claim is still honestly true.
+#   Service   judged    whether the artifact helps the work actually in front of us, read against
+#                       construction/ITINERARY.md. The tool prints the inputs and stops there.
+#
+# Truth is a gate rather than a quarter: below 60 the whole card reads F, because a page whose
+# claims have gone false costs a reader more than an absent page. Honesty first, written into the
+# arithmetic rather than left to a habit.
+#
+# WHAT IS PROVEN, on metal. Twenty-seven behaviors in a throwaway pen. The scale at every one of its
+# nine boundaries from both sides, and no minus grade anywhere. The register flip proven to BE the
+# register scan's own number rather than a second measurement -- and proven load-bearing, since
+# removing measure() from that scan makes the card refuse. Reach falling when a page reaches past
+# its reader. Meter carrying no register or reach budget, because refusal-first prose is the subject
+# there. Truth counting a link that resolves nowhere, leaving a resolving one alone, resolving a
+# dated reference by the fold rule, and reading past an http link it was never able to check. The
+# composite as the mean of four, and the truth gate held at 60 and bitten at 59. The card refusing
+# to invent a Service it did not measure, refusing an absent path, and refusing an unknown setting.
+#
+# WHAT IS REPORTED, as a ratchet under a ceiling that only ever falls. The twelve-document door
+# roster, read as report cards, counted where the COUNTED half alone puts a page below B. One at
+# seating: docs/README.md, two sentences of prose carrying eleven links, which is an index page
+# rather than a fault -- reported rather than exempted, because a reader deciding that is worth more
+# than a rule guessing it.
+#
+# WHAT IS NOT GATED, and why. A grade is not a gate. The register share already has its wall at
+# tools/p/prose_register_witness.rish, and a second hard ceiling on the same pages would red the
+# tree on readings it never agreed to hold. The card exists to aim a writer; a ratchet aims without
+# refusing.
+#
+# WHAT IS NOT PROVEN. That an A page is a good page. Four honest proxies, two counted, and the
+# second thing to read is always the artifact itself.
+#
+# Style: context/GAUGE_STYLE.md - Rule: .claude/rules/quality-assurance.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/q/qa_report_card_witness.rish
+
+say "qa-report-card: Language EN -- a ceiling tells a writer what to avoid; a grade tells them what to reach for."
+say "qa-report-card: Style Gauge -- the same measurement read the other way up, and two more beside it."
+say "qa-report-card: Lens TAME -- honesty first: a page whose claims have gone false reads F whatever else it scores."
+
+let scan = run ["sh" "tools/fixtures/qa_report_card_scan.sh"]
+assert scan.ok else "qa-report-card: more door documents sit below B on their counted half than the ceiling allows"
+say scan.out
+assert scan.out contains "verdict=ok" else "qa-report-card: the roster reading must balance before it is believed"
+say "field GREEN -- every front door read as a report card, and the ratchet holds"
+
+let control = run ["sh" "tools/fixtures/qa_report_card_control.sh"]
+assert control.ok else "qa-report-card: the control must complete"
+say control.out
+assert control.out contains "scale_exact=yes" else "qa-report-card: the scale must read exactly at all nine boundaries, from both sides"
+assert control.out contains "no_minus_grades=yes" else "qa-report-card: this scale carries no minus grades, by Keaton's word"
+assert control.out contains "warm_register_high=yes" else "qa-report-card: affirmative prose must grade high"
+assert control.out contains "cold_register_low=yes" else "qa-report-card: refusal-led prose must grade low"
+assert control.out contains "register_discriminates=yes" else "qa-report-card: the register reading must tell the two apart"
+assert control.out contains "register_is_the_flip=yes" else "qa-report-card: register is 100 minus the register scan's own number, never a second measurement"
+assert control.out contains "register_source_load_bearing=yes" else "qa-report-card: the register reading is cited, so losing its source must refuse rather than guess"
+assert control.out contains "reach_falls_on_links=yes" else "qa-report-card: a page reaching past its reader must lose reach"
+assert control.out contains "reach_under_full=yes" else "qa-report-card: reach over budget must read under 100"
+assert control.out contains "meter_register_free=yes" else "qa-report-card: Meter carries no register budget -- refusal is its subject"
+assert control.out contains "meter_reach_free=yes" else "qa-report-card: Meter carries no reach budget either"
+assert control.out contains "resolving_link_free=yes" else "qa-report-card: a link that lands must cost nothing"
+assert control.out contains "unresolved_link_counted=yes" else "qa-report-card: a link that lands nowhere must cost twenty points"
+assert control.out contains "unresolved_named=yes" else "qa-report-card: an unresolved link must be named, so it can be repaired"
+assert control.out contains "fold_rule_resolves=yes" else "qa-report-card: a dated reference whose room folded is resolved, never counted as gone"
+assert control.out contains "web_link_free=yes" else "qa-report-card: an http link is not a path this tree can resolve"
+assert control.out contains "composite_is_mean=yes" else "qa-report-card: four hundreds must mean to a hundred"
+assert control.out contains "mean_of_four_reads=yes" else "qa-report-card: the composite must be the mean of the four readings"
+assert control.out contains "gate_holds_at_60=yes" else "qa-report-card: the truth gate must hold at sixty"
+assert control.out contains "gate_bites_at_59=yes" else "qa-report-card: the truth gate must bite at fifty-nine, so no override exists"
+assert control.out contains "gate_reads_F=yes" else "qa-report-card: a gated card reads F whatever else it scored"
+assert control.out contains "service_left_judged=yes" else "qa-report-card: Service is supplied by a reader, never invented by the tool"
+assert control.out contains "composite_left_judged=yes" else "qa-report-card: an unjudged card must print judged rather than a number"
+assert control.out contains "service_inputs_reported=yes" else "qa-report-card: the tool must hand the judge the inputs it counted"
+assert control.out contains "absent_path_refused=yes" else "qa-report-card: an absent artifact must refuse rather than read zero"
+assert control.out contains "unknown_setting_refused=yes" else "qa-report-card: an unknown setting must refuse rather than default"
+assert control.out contains "control_verdict=ok" else "qa-report-card: the control must agree with itself"
+say "twenty-seven behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
+
+say "GREEN: qa-report-card -- quality assurance, as a grade a writer can aim at."
