@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20260824.162940
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title one model, named once, agreed everywhere
+prompt Keaton returned this clone to Opus 5 keeping max effort, and asked for the profiles to follow.
+think Read every living site naming a model id before editing the two anybody remembers. Four sites, two disagreeing.
+think .claude/settings.json and GLOW_PROFILE.template.bron read claude-opus-5; the autonomous-loop seed read claude-opus-4-6; the personal GLOW_PROFILE.bron carried claude-opus-4-6 beneath its own comment saying Model is Opus 5.
+think The declared source of truth per session-logs.md is GLOW_PROFILE.bron, which is gitignored -- so the named authority is the one file no guard on a fresh clone can open.
+think Chose the driver as the reading: .claude/settings.json is what Claude Code actually loads, and a description agrees with the thing it describes.
+think Wrote tools/fixtures/declared_model.sh as the single reading, resolving its settings path from its own location so a scan that cd'd into a pen still reads the real tree.
+think Gate reads presence of the current id rather than absence of every other, so session-logs.md keeps its true account of Fable 5, Opus 4.8, and Opus 4.6.
+obs The first drift pattern claude-[a-z0-9-]* returned 71 files -- claude-code, .claude-state, launch-claude-season.rish. A model id is a family and a number; narrowed to claude-(opus|sonnet|haiku|fable)-[0-9] and it reads 1.
+obs Two folded index shelves under session-logs/date/ read as drift, their basenames carrying a day rather than a full stamp. Widening the basename pattern would put this scan at odds with the resolver, repointer, and census (REDS %175), so the scan reads the directory instead.
+obs Rows %199-%200 folded to archive as %201 carried the living pin past 24,576 bytes; the pin now reads 19,352 and the monotone spine is green at 201 with no gaps.
+loom witness=declared_model_witness behaviors=16 declaring_sites=3 drift_candidates=1 drift_ceiling=1
+file GLOW_PROFILE.bron model field to claude-opus-5, effort held at max, checked stamp refreshed
+file recursion-prompts/seed/autonomous-loop.seed.md section 0 names claude-opus-5 and points at the new reading
+file tools/fixtures/declared_model.sh the one reading, refusing with a named reason rather than defaulting
+file tools/fixtures/declared_model_scan.sh named declaring roster gated at zero, living drift ratcheted at 1
+file tools/fixtures/declared_model_control.sh sixteen behaviors on real git repositories in a throwaway pen
+file tools/m/declared_model_witness.rish the standing guard
+file construction/REDS.md row %201 booked, headline re-derived, rows %199-%200 folded
+file construction/standing-equipment.kyri declared_model seated; the roster stands at 51
+file construction/ITINERARY.md guard count 50 -> 51
+recommend keep-going the Quality Assurance report card in Gauge Style -- the grade scale, the four readings, and the counted half

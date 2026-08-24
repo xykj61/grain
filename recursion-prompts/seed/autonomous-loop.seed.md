@@ -18,9 +18,11 @@ of the day it saved.
 
 **Where it is set, so a fresh clone inherits it:**
 
-- `.claude/settings.json` -- `"effortLevel": "max"` beside `"model": "claude-opus-4-6"`. This file is
+- `.claude/settings.json` -- `"effortLevel": "max"` beside `"model": "claude-opus-5"`. This file is
   tracked and lives inside `~/grain`, which matters: ai-jail resets host `$HOME` on exit, so a
-  setting written to `~/.claude/settings.json` leaves with the jail.
+  setting written to `~/.claude/settings.json` leaves with the jail. **It is the reading**: the file
+  that actually drives the model is what every other site agrees with, held by
+  [`../../tools/m/declared_model_witness.rish`](../../tools/m/declared_model_witness.rish).
 - `GLOW_PROFILE.bron` and its template -- `effort max` beside `model`, so the clone records how its
   work was actually produced and a session log can say so honestly.
 - Every `claude` invocation in `tools/l/launch-claude-season.rish` carries `--effort max` explicitly,
