@@ -30,15 +30,19 @@
 # module's own `//!` head comment, and no grep reads whether that comment still describes the code.
 # The module's own witness proves the module; this proves the roster.
 #
-# Pen: tools/fixtures/image_module_roster_control.sh -- fifteen behaviors on real directories in a
-# throwaway pen, nine refusals bitten and six honest readings left free, so no override exists and
+# ONE SCAN, TWO DIRECTORIES. tools/fixtures/module_roster_scan.sh takes the directory as an
+# argument, so image/ and lotus/ are held by one rule rather than by two copies of it. This witness
+# reads image/; tools/l/lotus_module_roster_witness.rish reads lotus/ through the same scan.
+#
+# Pen: tools/fixtures/module_roster_control.sh -- sixteen behaviors on real directories in a
+# throwaway pen, nine refusals bitten and seven honest readings left free, so no override exists and
 # none is wanted. Run from the repository root.
 
 say "image-module-roster: Language EN -- the page a reader learns this directory from names every module in it, both directions, so a landed module cannot go unlisted."
 say "image-module-roster: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
 say "image-module-roster: Lens TAME -- a bijection rather than a tally, and the corpus size published beside the verdict so a reading over nothing can never report clean."
 
-let scan = run ["sh" "tools/fixtures/image_module_roster_scan.sh"]
+let scan = run ["sh" "tools/fixtures/module_roster_scan.sh"]
 say scan.out
 assert scan.ok else "image-module-roster: the scan must complete -- a module has landed without a row, or a row outlived its module"
 assert scan.out contains "unrostered=0" else "image-module-roster: every image/*.rye carries a row in image/MODULES.md"
@@ -50,7 +54,7 @@ assert scan.out contains "bijection=yes" else "image-module-roster: the table an
 # A meter reading no modules finds no fault and would report clean while measuring nothing.
 assert (scan.out contains "modules_on_disk=0" == false) else "image-module-roster: a zero-module reading would report clean over an empty directory"
 
-let control = run ["sh" "tools/fixtures/image_module_roster_control.sh"]
+let control = run ["sh" "tools/fixtures/module_roster_control.sh"]
 say control.out
 assert control.ok else "image-module-roster: the control must complete"
 assert control.out contains "control_fail=0" else "image-module-roster: every planted behavior must read as written"
@@ -68,6 +72,7 @@ assert control.out contains "7 free: a module name carrying digits binds its row
 assert control.out contains "8 free: a seam symlink counts as a module and its row rosters it" else "image-module-roster: a rostered seam symlink must pass free"
 assert control.out contains "10 free: a row in a second table on the page rosters its module" else "image-module-roster: the family tables must roster the same way"
 assert control.out contains "14 free: a module and its row leaving together read clean at two" else "image-module-roster: an honest removal must pass free"
+assert control.out contains "16 free: a row whose description carries an escaped pipe rosters its module" else "image-module-roster: a cell writing a literal pipe must still bind its row"
 
 say ""
 say "GREEN: image-module-roster -- the module roster and the image directory are one set, gated at zero in four readings and proven both ways on real directories."

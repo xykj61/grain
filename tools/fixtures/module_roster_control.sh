@@ -1,5 +1,10 @@
 #!/bin/sh
-# tools/fixtures/image_module_roster_control.sh -- the image-roster guard, proven from both sides.
+# tools/fixtures/module_roster_control.sh -- the module-roster guard, proven from both sides.
+#
+# ONE PEN, ANY DIRECTORY. This proves tools/fixtures/module_roster_scan.sh, which reads
+# <DIR>/MODULES.md against the .rye files in <DIR>. Both witnesses that drive that scan --
+# tools/i/image_module_roster_witness.rish and tools/l/lotus_module_roster_witness.rish -- assert
+# on this one tally, since one mechanism wants one proof rather than one per directory.
 #
 # WHY. A refusal proven only in the passing direction cannot be told from a bypass. This pen builds
 # real directories holding real .rye files and a real MODULES.md, plants one fault at a time, and
@@ -7,12 +12,12 @@
 # passing free.
 #
 # Each case prints one line naming what was planted and whether it was bitten or left free. The
-# tally at the end is what tools/i/image_module_roster_witness.rish asserts on.
+# tally at the end is what both roster witnesses assert on.
 #
-# Run from the repository root:  sh tools/fixtures/image_module_roster_control.sh
+# Run from the repository root:  sh tools/fixtures/module_roster_control.sh
 set -eu
 
-SCAN=tools/fixtures/image_module_roster_scan.sh
+SCAN=tools/fixtures/module_roster_scan.sh
 PEN=$(mktemp -d)
 trap 'rm -rf "$PEN"' EXIT INT TERM
 
@@ -146,6 +151,15 @@ check "a module and its row leaving together read clean at two" shrunk ok "modul
 #       image/README.md read on 20260824, and the count is what makes the gap visible.
 build half "a1 a2 a3 a4 a5 a6 a7 a8" "a1 a2 a3 a4"
 check "a page naming half its directory counts every absentee" half red "unrostered=4"
+
+# 16 -- a description carrying an escaped pipe still rosters its module. Ten lotus rows write an
+#       absolute value as `y = \|x\|`, which is the correct Markdown for a literal pipe inside a
+#       table cell, and a reading that stopped at the first pipe would call every one of them a
+#       mismatch. The row regex anchors on the Module column's prefix, so the cell's own text is
+#       read past -- proven here rather than assumed.
+build piped "rectify" ""
+printf '| [`rectify.rye`](rectify.rye) | the full-wave rectifier -- y = \\|x\\|, the plainest EVEN-harmonic generator |\n' >> "$PEN/piped/MODULES.md"
+check "a row whose description carries an escaped pipe rosters its module" piped ok "bijection=yes"
 
 echo "control_cases=$n"
 echo "control_fail=$fail"

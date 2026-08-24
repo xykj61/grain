@@ -1,5 +1,14 @@
 #!/bin/sh
-# tools/fixtures/image_module_roster_scan.sh -- the module roster names every module beside it.
+# tools/fixtures/module_roster_scan.sh -- the module roster names every module beside it.
+#
+# ONE SCAN, ANY DIRECTORY. This reads `<DIR>/MODULES.md` against the `.rye` files in `<DIR>`, and
+# the directory is an argument rather than a name baked into the file. It was called
+# image_module_roster_scan.sh until 20260824.091754, when lotus/ became the second directory to
+# want it; the rule is written once here rather than copied per directory, since a rule written
+# twice is a rule two files may quietly come to disagree about. Directories held today:
+#
+#   image  -- 227 modules, driven by tools/i/image_module_roster_witness.rish
+#   lotus  -- 240 modules, driven by tools/l/lotus_module_roster_witness.rish
 #
 # WHY. image/README.md stood at 400,042 bytes on 20260824 -- the largest page in the tree -- and a
 # reader entering the module used it as the roster of what is here. It named 112 of the 227 .rye
@@ -30,9 +39,10 @@
 # This guard proves the roster is whole and stops there; the module's own witness proves the module.
 #
 # USAGE
-#   sh tools/fixtures/image_module_roster_scan.sh              # census -- key=value lines
-#   sh tools/fixtures/image_module_roster_scan.sh list         # every fault, one per line
-#   sh tools/fixtures/image_module_roster_scan.sh census DIR   # read DIR rather than image/
+#   sh tools/fixtures/module_roster_scan.sh                 # census over image/ -- key=value lines
+#   sh tools/fixtures/module_roster_scan.sh list            # every fault in image/, one per line
+#   sh tools/fixtures/module_roster_scan.sh census lotus    # census over lotus/
+#   sh tools/fixtures/module_roster_scan.sh list lotus      # every fault in lotus/
 #
 # Driven by tools/i/image_module_roster_witness.rish. Proven both ways by
 # image_module_roster_control.sh, which builds real directories in a throwaway pen.

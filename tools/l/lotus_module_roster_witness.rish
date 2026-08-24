@@ -1,0 +1,83 @@
+# tools/l/lotus_module_roster_witness.rish -- the module roster names every module beside it.
+#
+#   rishi/bin/rishi run tools/l/lotus_module_roster_witness.rish
+#
+# WHY. lotus/README.md stood at 297,878 bytes on 20260824 and a reader entering the creative suite
+# used it as the roster of what is here. It named 83 of the 240 .rye modules in the directory, and
+# one of those 83 -- channel.rye -- names a file that stands in constel/ and pond/apps/ rather than
+# here. So 157 modules had landed with nobody adding a line, and the page read exactly like a full
+# account (REDS %190).
+#
+# This is the third firing of one shape in a day: a ladder table naming 73 of 110 rungs (%184), a
+# page naming 112 of 227 modules (%189), and now 83 of 240. A roster that lists what a PROGRAM runs
+# gets checked, because a missing entry breaks a run; a roster that lists what a READER should find
+# gets checked by nobody, because a missing entry breaks only understanding, and understanding
+# fails quietly. The page split three ways in that round, and the roster moved to lotus/MODULES.md
+# where a program can hold it.
+#
+# ONE SCAN, TWO DIRECTORIES. tools/fixtures/module_roster_scan.sh takes the directory as an
+# argument, so image/ and lotus/ are held by one rule rather than by two copies of it. The scan
+# was named image_module_roster_scan.sh until lotus/ became its second reader; a rule written twice
+# is a rule two files may quietly come to disagree about.
+#
+# WHAT IS GATED, hard, at zero, in four readings:
+#
+#   unrostered      -- a lotus/*.rye on disk with no row in lotus/MODULES.md
+#   phantom         -- a row naming a module that is absent from the directory
+#   duplicate_rows  -- one module wearing two rows, which may come to disagree
+#   mismatched_rows -- a row whose display text and link target name different modules
+#
+# WHAT PASSES FREE. A seam symlink, which is a module a reader finds in this directory and expects
+# the page to explain -- parse_int.rye and tally_copy.rye point into ../tally/. A row in a second
+# table on the page, which is how twelve families are rostered. A description carrying an escaped
+# pipe, which ten rows here do, since an absolute value is written `y = \|x\|` in a table cell. And
+# a module cited in prose, which is read past on purpose: LADDER.md beside this roster cites its
+# own modules constantly, and a reading that counted those would call a short table complete.
+#
+# WHAT IT DOES NOT REACH, said plainly. Whether a row's sentence is true. Each was written from its
+# module's own `//!` head comment, and no grep reads whether that comment still describes the code.
+# The rung's own witness proves the rung -- 239 of them stand in tools/al/ -- and this proves the
+# roster.
+#
+# Pen: tools/fixtures/module_roster_control.sh -- sixteen behaviors on real directories in a
+# throwaway pen, nine refusals bitten and seven honest readings left free, so no override exists
+# and none is wanted. Run from the repository root.
+
+say "lotus-module-roster: Language EN -- the page a reader learns this directory from names every module in it, both directions, so a landed rung cannot go unlisted."
+say "lotus-module-roster: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
+say "lotus-module-roster: Lens TAME -- a bijection rather than a tally, and the corpus size published beside the verdict so a reading over nothing can never report clean."
+
+let scan = run ["sh" "tools/fixtures/module_roster_scan.sh" "census" "lotus"]
+say scan.out
+assert scan.ok else "lotus-module-roster: the scan must complete -- a module has landed without a row, or a row outlived its module"
+assert scan.out contains "page=lotus/MODULES.md" else "lotus-module-roster: the scan must read the lotus roster rather than another directory's"
+assert scan.out contains "unrostered=0" else "lotus-module-roster: every lotus/*.rye carries a row in lotus/MODULES.md"
+assert scan.out contains "phantom=0" else "lotus-module-roster: every row in lotus/MODULES.md names a module that exists in this directory"
+assert scan.out contains "duplicate_rows=0" else "lotus-module-roster: one module wears one row, since two rows may come to disagree"
+assert scan.out contains "mismatched_rows=0" else "lotus-module-roster: a row's display text and its link target name one module"
+assert scan.out contains "bijection=yes" else "lotus-module-roster: the table and the directory must be the same set"
+
+# A meter reading no modules finds no fault and would report clean while measuring nothing.
+assert (scan.out contains "modules_on_disk=0" == false) else "lotus-module-roster: a zero-module reading would report clean over an empty directory"
+
+let control = run ["sh" "tools/fixtures/module_roster_control.sh"]
+say control.out
+assert control.ok else "lotus-module-roster: the control must complete"
+assert control.out contains "control_fail=0" else "lotus-module-roster: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "lotus-module-roster: the control must agree with itself"
+assert control.out contains "2 bitten: a module on disk with no row counts against the gate" else "lotus-module-roster: the gate that names this guard must bite"
+assert control.out contains "3 bitten: a row naming a module absent from this directory counts against the gate" else "lotus-module-roster: the channel.rye phantom the departing page carried must bite"
+assert control.out contains "4 bitten: one module wearing two rows counts against the gate" else "lotus-module-roster: two rows for one module must bite"
+assert control.out contains "5 bitten: a row whose text and target disagree counts against the gate" else "lotus-module-roster: a row naming two modules must bite"
+assert control.out contains "6 bitten: a module cited only in prose beneath the table stays unrostered" else "lotus-module-roster: prose citations must be read past, or a short table reads complete"
+assert control.out contains "9 bitten: a seam symlink with no row counts against the gate" else "lotus-module-roster: parse_int.rye and tally_copy.rye are modules here and want their rows"
+assert control.out contains "12 bitten: an empty directory reads as an empty corpus rather than clean" else "lotus-module-roster: a meter over nothing must say so"
+assert control.out contains "15 bitten: a page naming half its directory counts every absentee" else "lotus-module-roster: the departing shape at scale must bite"
+assert control.out contains "1 free: an exact bijection over three modules reads clean" else "lotus-module-roster: the honest shape must pass free"
+assert control.out contains "8 free: a seam symlink counts as a module and its row rosters it" else "lotus-module-roster: a rostered seam symlink must pass free"
+assert control.out contains "10 free: a row in a second table on the page rosters its module" else "lotus-module-roster: the twelve family tables must roster the same way"
+assert control.out contains "14 free: a module and its row leaving together read clean at two" else "lotus-module-roster: an honest removal must pass free"
+assert control.out contains "16 free: a row whose description carries an escaped pipe rosters its module" else "lotus-module-roster: ten rows here write an absolute value as an escaped pipe and must still bind"
+
+say ""
+say "GREEN: lotus-module-roster -- the module roster and the lotus directory are one set, 240 rows against 240 modules, gated at zero in four readings and proven both ways on real directories."
