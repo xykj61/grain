@@ -1,0 +1,51 @@
+# tools/k/kyri_receipt_witness.rish -- Kyri 6: a receipt names its payload by the payload's own bytes.
+#
+#   rishi/bin/rishi run tools/k/kyri_receipt_witness.rish
+#
+# WHAT IT IS. Kyri has carried session logs since `format session-log-v1`, and a session is one kind of
+# thing worth receipting among many. Kyri 6 generalizes the notation to any subject -- a build, a fetch,
+# a reading, a payment, a lap of an unattended loop -- while keeping the property the notation exists
+# for: a human reads it with no tool, a program parses it with no grammar.
+#
+# WHY 6. The voice this tree writes in is the sixth -- Reya, Reya 2, Rio 3, Quin, Riyo, Kyri. The number
+# counts a lineage that already happened, which is the census reading of `.claude/rules/stamp-and-name.md`:
+# a number that counts is a fact about the past, and only a number that predicts can come out wrong.
+#
+# WHAT IS PROVEN, ten claims on metal, five of them refusals.
+#   the same bytes always name themselves the same way
+#   one byte different is a different name
+#   the rendered receipt opens with its format line and carries every field
+#   an unsigned receipt writes no signer at all, rather than an empty one
+#   a truncated content address is refused -- a short name is a different name
+#   an empty kind is refused: a receipt about nothing
+#   a malformed stamp is refused before a byte is written
+#   a subject past its bound is refused rather than truncated
+#   a buffer too small refuses rather than writing part of a receipt
+#   a codec name round-trips, and an unknown one is named rather than guessed
+#
+# HONEST SCOPE. The module builds, renders, and content-addresses. It signs nothing and verifies nothing:
+# `signer` and `sig` are carried as opaque text, and the Kumara key that would fill them is a custody
+# gate a hand opens. It reaches no network and no store; `store` names where a payload lives without
+# going there. Run from the repository root.
+
+say "kyri-receipt: Language EN -- a receipt says this happened, here is what, and here is the name of the bytes."
+say "kyri-receipt: Style Gauge -- the shape is one field per line, so a reader needs no tool and a parser needs no grammar."
+say "kyri-receipt: Lens TAME -- every field names a bound, every refusal has a name, and a short address is refused rather than padded."
+
+let zig = "vendor/zig-toolchain/zig"
+
+let build = run ["sh" "-c" "mkdir -p kyri/bin && env RYE_ZIG=${zig} rye/bin/rye build kyri/receipt.rye -femit-bin=kyri/bin/receipt"]
+assert build.ok else "kyri-receipt: the module must build"
+
+let out = run ["sh" "-c" "kyri/bin/receipt 2>&1"]
+assert out.ok else "kyri-receipt: the selftest must exit zero"
+say out.out
+
+assert out.out contains "GREEN: Kyri 6" else "kyri-receipt: the selftest must reach GREEN"
+assert out.out contains "ten claims held" else "kyri-receipt: all ten claims must hold"
+assert out.out contains "format kyri-receipt-v6" else "kyri-receipt: the rendered receipt must open with its format line"
+assert out.out contains "store MOX" else "kyri-receipt: the store tag names which Mycelium instantiation holds the payload"
+assert out.out contains "codec raw" else "kyri-receipt: the codec says whether the payload travels compressed"
+assert out.out contains "bytes 25" else "kyri-receipt: the byte count must be the payload's own length"
+
+say "GREEN: kyri-receipt -- Kyri 6 renders, content-addresses, and refuses five ways on metal."

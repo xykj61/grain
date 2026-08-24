@@ -90,7 +90,7 @@ allow foundations   # the doctrine "why"; bio/dedications sub_excluded, residual
 allow context/KYRI.md   # the standing voice, depersonalized 20260823.173634 so the seed ships it
 allow classical-vedic-astrology   # method, teachings, studies, templates and tooling; the readings are sub_excluded
 allow context/document-mirrors.brix   # which documents live in more than one room, proven identical
-allow ember/voices   # the voices room; its KYRI.md is a proven mirror of context/KYRI.md
+allow ember-voices   # the voices room at depth 1; its KYRI.md is a proven mirror of context/KYRI.md
 allow context/LEXICON.md
 allow context/TAME_GUIDANCE.md
 allow context/RADIANT_STYLE.md
@@ -197,6 +197,8 @@ template  mand                            # authority
 template  mandate                         # vector store (turbopuffer) — clean code, no name; fake example vectors
 template  mandi                           # module
 template  mantra                          # versions
+template  kyri                            # the Kyri 6 receipt module -- notation, not identity
+template  ember-voices                    # the voices room at depth 1; a proven mirror of context/KYRI.md
 template  mycelium                        # module
 template  ember                           # module
 template  pond                            # enclosure
