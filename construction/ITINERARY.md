@@ -46,34 +46,27 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `5971facfc0` -- the lap the index fold learned to keep its rows in place, and active-designing's 86 rows moved onto 21 shelves (REDS %200). This line names the nib and one sentence; the account of a lap lives in its session log.
+**Git nib:** `ba9fd68070` -- the lap counsel's index carried across, its closed-room pin holding the way in rather than the rows. This line names the nib and one sentence; the account of a lap lives in its session log.
 
-**Now.** **A tool proven on one instance of a shape has been proven on that instance, rather than
-on the shape.** `fold_index` in
-[`../tools/rye/session_logs_archive.rye`](../tools/rye/session_logs_archive.rye) collected the index
-rows it kept and appended them after all prose -- the repair `session-logs/README.md` needed once,
-when its title stood at line 1,881 beneath 1,880 rows (REDS %182). **That room's table is the last
-block in its file**, so appending at the end and keeping in place are the same write there, and the
-selftest fixture was shaped the same way. Folding `active-designing` put its two kept rows **below
-the redirect-stubs section, below the width-law paragraph, and below the closing line** -- outside
-any table, which GitHub-Flavored Markdown renders as literal pipes. REDS %182's own fault,
-reintroduced by the tool built to fix it (REDS %200).
+**Now.** **Two of the four rooms have carried their index across, and the tool that carries them is
+proven on a shape rather than on one instance of it.** `fold_index` in
+[`../tools/rye/session_logs_archive.rye`](../tools/rye/session_logs_archive.rye) now writes each kept
+row where it was read, restores the blank line a fold consumes keyed off a **leading pipe** (what
+GFM itself reads), and asks the room whether it keeps a seasons roster before naming one. Four
+selftest legs hold it, each proven by restoring the elder behavior and watching its named error fire
+(REDS %200).
 
-**Two more the repair itself found.** Restoring the blank line a fold consumes, keyed off *whether
-the fold could date a row*, put a blank **between two table rows** -- a table also holds header
-rows, delimiter rows, `living` rows carrying no stamp, and day-only rows, and a blank inside a table
-ends it. **A worse fault than the cosmetic one it was fixing**, caught in the pen before it reached
-a room; the test is a **leading pipe**, which is what GFM itself reads. And the shelf header named
-`../SEASONS.md` unconditionally, where **one room keeps that page**, so the first fold wrote **21
-shelves each carrying a link to a file that was never there** -- in files immutable once written.
-The room is asked now. Four selftest legs, each proven on metal by putting the elder behavior back
-and watching its named error fire.
+**`active-designing`** folded 86 rows onto 21 shelves, front door **30,748 -> 8,565 bytes**.
+**`counsel`** folded **112 rows onto ten shelves**, front door **22,671 -> 4,620 bytes**. Counsel is a
+closed room, so every day folded and the pin holds **the way in rather than the rows** -- a shelf
+table with its per-day counts, and [`SEASONS.md`](../counsel/SEASONS.md) refreshed beside it, which
+had still read *no closed season folded yet*. Both rooms join `session-logs` on the **ENFORCE**
+roster at zero stale rows, and the ratchet ceiling falls **317 -> 231 -> 119**.
 
-**Landed with it.** `active-designing`'s index folded -- **86 rows onto 21 shelves**, front door
-**30,748 -> 8,565 bytes**, every shelf link resolving, the room joining `session-logs` on the
-**ENFORCE** roster at zero, and the ratchet ceiling falling **317 -> 231** with the control's
-planted counts moving with it. **Three rooms remain**, each its own round: `counsel` 112,
-`expanding-prompts` 78, `waymarks` 41.
+**Two rooms remain, each its own round.** `expanding-prompts` **78** stale rows, sitting **27 bytes
+over** the bound it declares, which one fold brings under; `waymarks` **41**. Folding a room's index
+also rewrites its front door, and the first round proved why that wants a hand: the fold left two
+kept rows below a closing benediction, and a closed room's table came out with a header and no rows.
 
 **The one page still over, and its remedy is word-gated.** `session-logs/README.md` stands above the
 24,576 it declares because 192 flat logs across four days each carry a row averaging 1,459 bytes.
@@ -228,11 +221,11 @@ account. Earlier rows are shelved at
 
 | Landed | Round | Log |
 |---|---|---|
+| `20260824.154722` | Counsel's index carried across -- 112 rows onto ten shelves, the closed room's pin holding the way in rather than the rows, its seasons roster refreshed, and the ratchet ceiling falling 231 -> 119 | index_fold |
 | `20260824.145109` | A tool proven on one shape -- the index fold kept its rows in place rather than appending them past the prose, the blank it consumes keyed off a leading pipe, the shelf roster link asked of the room, and active-designing's 86 rows carried onto 21 shelves | REDS %200 |
 | `20260824.140523` | The number with six homes -- `living_pin_max_bytes` read from the law by one script instead of spelled by five meters across six sites, and `declared_ceiling` gained a fourth reading gating a deciding copy at zero | REDS %199 |
 | `20260824.130807` | A bound with two meters and no wall -- ITINERARY condensed 47,213 -> 22,647 bytes and moved advisory -> enforce, `declared_ceiling` taught the `**Bound:**` form, and five orphan UTF-8 bytes repaired with validity gated at zero | REDS %197, %198 |
 | `20260824.121445` | A declared bound becomes a measured one -- 13 pages declared a ceiling and none was both readable and honoured; `declared_ceiling` seated 50th | REDS %195, %196 |
-| `20260824.104946` | The last door was already right -- Constel split at 31 of 31, `constel_module_roster` seated 47th, the six-door front-door arc closed | REDS %192 |
 
 Walk back to any of them with `git log --oneline` and the session log of the same stamp.
 

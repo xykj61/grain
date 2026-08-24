@@ -10,11 +10,11 @@
 #   BITTEN                                        FREE
 #   1  a stale row in the enforced room           1  a row whose day still has flat logs
 #   2  a stale row when its whole day has folded  2  a row whose day has a SPRIGLESS flat log
-#   3  232 stale rows against a ceiling of 231    3  a table delimiter row (opens "|-")
+#   3  120 stale rows against a ceiling of 119    3  a table delimiter row (opens "|-")
 #   4  an elder list-shape stale row              4  a prose line opening "- " with no stamp
 #   5  a stale row beside a free one              5  a room with no date/ fold at all
 #                                                 6  a room with no README.md at all
-#                                                 7  231 ratchet rows, exactly at the ceiling
+#                                                 7  119 ratchet rows, exactly at the ceiling
 #
 # USAGE
 #   sh tools/fixtures/index_fold_control.sh
@@ -145,14 +145,14 @@ build_ratchet() {
   } >"$PEN/otherroom/README.md"
 }
 
-build_ratchet 231
+build_ratchet 119
 out=$(census)
-echo "$out" | grep -q '^ratchet_under_ceiling=yes$' && note ok "10 free: 231 ratchet rows sit exactly at the ceiling and pass" || note no "10 free: 231 ratchet rows sit exactly at the ceiling and pass"
+echo "$out" | grep -q '^ratchet_under_ceiling=yes$' && note ok "10 free: 119 ratchet rows sit exactly at the ceiling and pass" || note no "10 free: 119 ratchet rows sit exactly at the ceiling and pass"
 echo "$out" | grep -q '^verdict=ok$' && note ok "10 free: the verdict holds at the ceiling" || note no "10 free: the verdict holds at the ceiling"
 
-build_ratchet 232
+build_ratchet 120
 out=$(census)
-echo "$out" | grep -q '^ratchet_under_ceiling=no$' && note ok "11 bitten: 232 ratchet rows cross the ceiling" || note no "11 bitten: 232 ratchet rows cross the ceiling"
+echo "$out" | grep -q '^ratchet_under_ceiling=no$' && note ok "11 bitten: 120 ratchet rows cross the ceiling" || note no "11 bitten: 120 ratchet rows cross the ceiling"
 echo "$out" | grep -q '^verdict=stale_index_rows$' && note ok "11 bitten: the verdict refuses over the ceiling" || note no "11 bitten: the verdict refuses over the ceiling"
 
 # --- 12. the enforced room is reported even when it is clean ----------------------------------

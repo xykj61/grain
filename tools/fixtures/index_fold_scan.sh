@@ -46,14 +46,16 @@ MODE="${1:-census}"
 MAX_BYTES=$(sh "$(dirname "$0")/living_pin_max_bytes.sh")
 
 # Rooms whose index has been folded once by a hand, front door and all. Zero stale rows here.
-# active-designing joined on 20260824.144912, its 86 rows carried onto 21 shelves and its front
-# door read line by line afterwards -- which is what the seat means, and why each room's fold is
-# its own round rather than four in a hurry.
-ENFORCE="session-logs active-designing"
+# active-designing joined on 20260824.144912, its 86 rows carried onto 21 shelves; counsel joined
+# on 20260824.152800, its 112 rows onto ten. Each front door was read line by line afterwards --
+# which is what the seat means, and why each room's fold is its own round rather than four in a
+# hurry. counsel is a closed room, so every one of its days folded and its pin now holds the way
+# in rather than the rows: a shelf table with its counts, and its seasons roster beside it.
+ENFORCE="session-logs active-designing counsel"
 
-# Every other room's stale rows: counsel 112, expanding-prompts 78, waymarks 41. Measured
-# 20260824.144912, down from 317 when active-designing was among them. Allowed only to fall.
-RATCHET_CEILING=231
+# Every other room's stale rows: expanding-prompts 78, waymarks 41. Measured 20260824.152800,
+# down from 317 when active-designing and counsel were among them. Allowed only to fall.
+RATCHET_CEILING=119
 
 TMP=$(mktemp -d "${TMPDIR:-/tmp}/index-fold.XXXXXX")
 trap 'rm -rf "$TMP"' EXIT

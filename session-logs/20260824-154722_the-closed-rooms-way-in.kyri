@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260824.154722
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The closed room's way in
+prompt Autonomous loop, third increment -- carry the next index-fold room across now that the tool is proven on the shape rather than on one instance of it
+think counsel is the largest of the three remaining rooms at 112 stale rows, and it is a closed room, so its fold is pure carry with no future growth to plan for. Lindy-first among equals: a closed room's front door is read for years and never rewritten again, so getting it right once is worth more here than anywhere else on the list.
+think The preview read days_seen=10, days_folded=10, rows_folded=112, rows_kept=0. Every day folded, because the room closed on 20260821.174047 and its files folded to date/YYYYMMDD/ three days before that.
+think rows_kept=0 has a consequence the tool cannot write its way out of: the pin came out with a table header and a delimiter and no rows beneath them. A heading promising Counsel (newest first) over an empty table is a front door that reads as an error. This is exactly the hand-work the index-fold law reserves a round for, rather than a fault to book.
+think So the section became what a closed room's index actually is -- the way in rather than the rows. A ten-row table of day, count, and shelf, then the honest gap named: 112 pieces are indexed and 764 stand in the room, so a piece the index never carried is found by tools/d/dated_path_resolve.rish computing its home from the stamp in its own name.
+think counsel/SEASONS.md was the second half of the same reading. It still said No closed season folded yet and quoted the pin at 12,738 bytes, while ten shelves stood beside it and the pin read 3,097. The shelf headers link to that page, so a roster contradicting the shelves that cite it is a doc claim the code had already outrun.
+obs Both branches of the new roster conditional are now proven on the real tree rather than only in the pen: active-designing has no SEASONS.md and its 21 shelf headers name only the living pin, counsel has one and its ten headers carry the roster link. Every link in both rooms checked against disk, 0 missing.
+obs Row counts per shelf were taken by grep rather than from the tool's total: the delimiter row opens with a pipe and a hyphen, so a count of lines opening with a pipe and a space is the header plus the rows. 3, 1, 24, 1, 6, 3, 14, 46, 13, 1 sums to 112, which is the tool's own rows_folded -- two readings agreeing, rather than one recited.
+obs No red this increment. The empty table is the expected shape of a closed room whose every day folded, and the law already assigns that page to a hand.
+loom fold=counsel rows_folded=112 rows_kept=0 shelves=10 days_seen=10 days_folded=10 pin_bytes_before=22671 pin_bytes_after=3097 front_door_after=4620
+loom guard=index_fold ratchet_before=231 ratchet_after=119 enforced_rooms=3 gated_stale=0
+file counsel/README.md the closed room's index section rewritten as the way in -- ten shelves with counts, and the 112-of-764 gap named with the resolver that closes it
+file counsel/SEASONS.md the roster refreshed from no closed season folded yet to ten shelves with their counts
+file tools/fixtures/index_fold_scan.sh counsel enforced, ratchet ceiling 231 -> 119
+file tools/fixtures/index_fold_control.sh planted counts follow the ceiling, 119 and 120
+file tools/i/index_fold_witness.rish the third enforced room and the new ratchet
+file construction/ITINERARY.md Now refilled, one Prior laps row added and the oldest dropped
+recommend keep-going two rooms remain and each is its own round -- expanding-prompts 78 stale rows and waymarks 41, 119 together under a ceiling that only falls. expanding-prompts is the crux of the two: it sits 27 bytes over the bound its own header declares, so one fold both carries its index across and brings the page under its promise, and it is a living room rather than a closed one, so its kept rows will exercise the in-place write on a page that keeps growing. Beside them, measured rather than remembered: the REDS headline is one sentence that grows a clause per fold and now narrates seventeen, a hand-written list of what is on disk -- the roster shape %199 booked for the fifth time, and reading it from the archive filenames would retire the sentence.
