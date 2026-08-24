@@ -131,80 +131,9 @@ Grep helpers: `living mutant` · `fossil — living path` · paths in this table
 
 ---
 
-## Seam fossils — folded to native Rishi (`20260809`)
+## Elder sections, folded
 
-The `claim_preserve` subsystem folded to native Rishi (match/find/sort/unique). Their elder seams are fossils, kept until a circled shred:
-
-| Fossil | Living mutant | Notes |
-| --- | --- | --- |
-| `tools/fixtures/claim_preserve_extract.sh` (perl) | `claim_preserve_extract.rish` | 40/41 files byte-identical; one non-ASCII edge |
-| `tools/fixtures/claim_preserve_modality.sh` (python) | `claim_preserve_modality.rish` | modal-word counts byte-identical |
-| `tools/fixtures/census_control_h1_seam.sh` (awk) | `census_control_h1_seam.rish` | fence-count via `fold` + `?:` record accumulator; `true=1 naive=4` identical |
-
-## Python → Rishi molt (seated `20260809.030635` · prep only)
-
-All authored Python molts to **Rishi**. Census and order: [`../active-designing/date/20260809/20260809-030635_python-to-rishi-molt-seating.md`](../active-designing/date/20260809/20260809-030635_python-to-rishi-molt-seating.md). Each `.py` becomes a Class H fossil row **only once its Rishi mutant runs green** — no rows yet, since this seats the intent and opens no cut.
-
-| `.py` file | Verdict | Standing |
-| --- | --- | --- |
-| `tools/fixtures/dated_classify.py` | **ported** — Rishi mutant `dated_classify.rish` seated `20260809` with `census`·`classify`·`health`·`shed` commands, all byte-identical, witness GREEN | **all living consumers migrated** (`dated_pattern`·`fascia_health`·`shed_census`·`divergence` now call the rish) · py kept only for dated equinox e116/e117/e118 existence checks |
-| `expanding-prompts/yonder/remember_pin_habit_count.py` | **shredded** `20260809` (circled) — regex-gated · solved-problem one-shot | gone from tree · kept in git history |
-| `classical-vedic-astrology/cast_a_chart.py` | **seam-gated** | a Rye/Zig Swiss-Ephemeris binding |
-| `tools/comlink_r1_dual_bind_probe.py` | **shred, not port** (REDS 64) | a circled shred word — R1 is cut |
-| `context/fixtures/tools_py_ban_tree/tools/planted.py` | **keep as fixture** | never — the ban needs it |
-
----
-
-## Habit (before every living mutant)
-
-Ford-shaped **transitive writing crawl** — same spirit as elder Ford Fusion research: follow the graph until no new edges appear.
-
-1. **BFS** outbound relative `.md` links starting at the essay to mutate (and its draft).  
-2. **Scope:** walk all of `foundations/` to leaves; **record** one-hop outside (`external-research/` · `active-designing/` · …) without auto-BFS into the whole tree.  
-3. **Report** the full closure + dated (not-yet-mutated) candidates — do **not** auto-edit deps.  
-4. **Wait** Keaton’s seat yes / thin / hold **per candidate** (or a named batch).  
-5. Seat living mutant · fossil banner (fossil → living only) · living breach · **Class H row**.  
-6. Living Status: bare **living mutant** — **no** markdown link back to the fossil.
-
----
-
-## Wafer closure (crawled `20260728.225638`)
-
-Transitive `foundations/` graph from living wafer — **9 nodes** · closed (no new foundation links).
-
-```text
-living wafer
-  ├─ money-that-stays-close-to-home          [dated · leaf in foundations]
-  │     └─ (outside) taler-giving-lane · giving-lane-t1 field map
-  ├─ living Ember (was Kiln, was Anvil) ⇄ living Realidream ⇄ living graph ⇄ living wafer
-  ├─ the-device-that-forgets                 [dated]
-  │     └─ mantrapod-venture-pitch          [dated · leaf]
-  └─ mantrapod-venture-pitch                [dated · leaf]
-
-living Realidream also reaches:
-  ├─ a-home-in-plain-text                    [dated · leaf]
-  └─ anywhere-we-are-found                   [dated]
-        └─ money-that-stays-close-to-home
-```
-
-### Dated candidates (wait seat — not auto-edited)
-
-| Candidate | Role in closure | Lean |
-| --- | --- | --- |
-| `foundations/20260629-014512_money-that-stays-close-to-home.md` | wafer · anywhere | hold / thin? |
-| `foundations/20260628-133212_the-device-that-forgets.md` | wafer | hold / thin? |
-| `foundations/20260629-020012_mantrapod-venture-pitch.md` | wafer · device | hold / thin? |
-| `foundations/20260628-133212_a-home-in-plain-text.md` | Realidream | held (p31) |
-| `foundations/20260628-124512_anywhere-we-are-found.md` | Realidream → money | held (currency seat) |
-
-### Outside one-hop (recorded · not BFS’d)
-
-| Path | From |
-| --- | --- |
-| `external-research/20260712-054521_taler-giving-lane-asymmetry.md` | money |
-| `active-designing/date/20260712/20260712-054942_giving-lane-t1-open-asks-field-map.md` | money |
-
----
+*The seam fossils (`20260809`), the Python-to-Rishi molt (`20260809.030635`), the habit checklist, and the wafer closure (`20260728.225638`) folded to [`archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md`](archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md) on `20260823.234815`, when the class-Q close-out carried this pin past its 24,576-byte bound. All four are closed records awaiting no decision.*
 
 ## Hard lines
 
@@ -296,5 +225,16 @@ Every claim, module name, and argument carries over. The elder is the record of 
 | `foundations/20260811-211431_the-lindy-effect-and-the-long-return.md` | measured on molt | The foundation that orders every allocation in this tree -- most durable first, then hardest-solvable. It is cited by the rule that carries it into daily use, so its register reaches every round. **A dated writing, so this one molts into a mutant at a fresh stamp and leaves a fossil**, rather than in place like the three above. |
 
 **The measurement runs at molt time rather than now**, on purpose: a citation count taken today and acted on next week is the drift this tree keeps booking. Each row gets its numbers in the same pass that seats its mutant.
+
+**CLOSED `20260823.234815` -- and the measurement changed the plan, which is the point of taking it at molt time.**
+
+| Document | Measured at molt | Outcome |
+| --- | --- | --- |
+| `.claude/rules/stamp-and-name.md` | **42%** negative sentences, 2,584 words, 23 living citers | **MOLTED in place** under checkpoint `1d5ade54b7`. Now **27%**. Zero numbers and zero paths dropped, proven by diffing both sets; the four dated amendments fold into one argument keeping every stamp inline. Cursor twin brought along. |
+| `active-designing/README.md` | **2%** negative, 14 living citers | **No molt.** Already well inside the Door target. A register pass here would spend a checkpoint to change nothing worth changing. |
+| `foundations/README.md` | **0%** negative, 28 living citers | **No molt.** Same reading, stronger. |
+| `foundations/20260811-211431_the-lindy-effect-and-the-long-return.md` | **19%** negative, 878 words, 6 living citers | **No molt.** Already under the Door ceiling of 20%. |
+
+**Three of four queued documents needed nothing**, and only measurement could have said so. Queuing them was still right: the queue is what caused the reading to be taken. **A queue row is a question, and closing one with a number is a legitimate answer** -- the alternative is four cosmetic rewrites, three of which would have spent a checkpoint and a set of citations to move a figure that was already good.
 
 **None of the four is a candidate for a cut**, and two different molts are named here. The three living paths molt *in place under a checkpoint* -- the W2 rule above -- because a living path with inbound references keeps its name. The dated foundation molts the other way: a mutant seats at a fresh stamp, the fossil stays banner-marked, and living citers repoint, which is the M1 shape. The queue row exists so each molt is remembered rather than rediscovered, and so the right one is used.
