@@ -1,8 +1,7 @@
 # The Four Seasons of a Life -- Goals and Stages
 
-**For:** Alice -- natal chart study (foundation source file)
 **Language:** EN
-**Style:** Radiant (see RADIANT_STYLE.md)
+**Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teachers named with gratitude below (see SILO_TECHNIQUE.md)
 **Stamped:** 20260629.182512 UDT
 
@@ -40,9 +39,9 @@ The **renunciate** season -- *sannyasa* -- devoted to liberation and the open sk
 
 One common reckoning gives each season about twenty-five years. Another, gentler to the body of a real human life, gives each the length of one return of Saturn -- close to twenty-nine and a half years, the time it takes that slow teacher to circle back to where it stood at birth. Either way, the seasons unfold in turn, and each prepares the next.
 
-## Where Alice stands
+## Where the native stands
 
-Alice is twenty-one. By both reckonings, she lives squarely in the **student season** -- and will for a few years yet, whether we mark the threshold at twenty-five or wait for her first complete Saturn return near twenty-nine. This is the season of *brahmacharya*: learning, gathering capability, choosing teachers well, and tending character with a light and steady discipline.
+The native is twenty-one. By both reckonings, she lives squarely in the **student season** -- and will for a few years yet, whether we mark the threshold at twenty-five or wait for her first complete Saturn return near twenty-nine. This is the season of *brahmacharya*: learning, gathering capability, choosing teachers well, and tending character with a light and steady discipline.
 
 Her chart leans into the air -- quick, curious, communicative, drawn to exchange and ideas. Her Venus in Gemini, which we explore in its own file, is the bright center of this. So *kama*, the art of joy and connection, sits very naturally as the worthy aim of these years for her. She is built to learn through conversation, delight, friendship, and play. That is a gift, and it deserves to be enjoyed.
 

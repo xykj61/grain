@@ -1,12 +1,11 @@
 # Venus in the 8th House -- Love That Goes to the Depths
 
-**For:** Alice -- natal chart study (placement source file)
 **Language:** EN
-**Style:** Radiant (see RADIANT_STYLE.md)
+**Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teacher named with gratitude below
 **Stamped:** 20260629.182512 UDT
 
-**In Alice's chart:** Venus occupies the 8th house -- the deep, hidden, regenerative house. This is the *where* of her Venus, the realm her love operates within. Read it alongside the Venus-in-Gemini file, which gives the *how*.
+**In the example chart:** Venus occupies the 8th house -- the deep, hidden, regenerative house. This is the *where* of her Venus, the realm her love operates within. Read it alongside the Venus-in-Gemini file, which gives the *how*.
 
 ---
 
@@ -16,7 +15,7 @@ The 8th house is the deep house -- the place of intimacy, life-force, and renewa
 
 When Venus -- the planet of love and union -- settles here, love becomes deep, intense, and intimate. This is a placement of passionate, private devotion: love that does not stay on the bright surface but goes all the way down, into the regenerative depths where two people truly merge and are changed by the meeting. It carries a gift for profound bonding, for transformation through intimacy, for a love that renews. The 8th house asks for full presence and rewards it with depth few other houses can offer.
 
-## A beautiful tension in Alice's chart
+## A beautiful tension in the native's chart
 
 Notice what the chart is doing. Her Venus *wants* to play on the light, bright surface of conversation -- that is Gemini's nature, airy and curious and ever-moving. Yet the house it lives in keeps drawing it down into depth, intimacy, and transformation. The placement holds a built-in tension: the lightness of the sign and the depth of the house, in one Venus.
 
@@ -24,7 +23,7 @@ This is not a problem; it is a teaching written twice. The very soul lessons her
 
 ## Holding this gently, in the student season
 
-A word of warmth, fitting for where Alice stands. She is twenty-one, living in the student season of her life, and the 8th house is a realm that *ripens with time and trust*. Its intensity is not meant to be rushed. In these years, the most beautiful work of an 8th-house Venus is to learn the *art* of depth -- discernment about whom to trust, patience to let intimacy unfold slowly, and the wisdom that the deepest bonds are built rather than seized.
+A word of warmth, fitting for where the native stands. She is twenty-one, living in the student season of her life, and the 8th house is a realm that *ripens with time and trust*. Its intensity is not meant to be rushed. In these years, the most beautiful work of an 8th-house Venus is to learn the *art* of depth -- discernment about whom to trust, patience to let intimacy unfold slowly, and the wisdom that the deepest bonds are built rather than seized.
 
 This sits in perfect harmony with the temperance of the student season and with her Gemini Venus's own lessons. The 8th house rewards maturity, trust, and the willingness to go slowly; her brightest path here is to let connection deepen at its own unhurried pace, under wise guidance, so that when the profound bonds of later seasons arrive, they rest on a foundation of trust and self-knowledge. The depth is a gift she grows into. There is no hurry, and the unhurriedness is itself the wisdom.
 

@@ -1,8 +1,7 @@
 # Government as Planetary Spectrum -- and Why Democracy Alone Falters
 
-**For:** Alice -- natal chart study (teaching source file)
 **Language:** EN
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+**Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teacher named with gratitude below
 **Stamped:** 20260702.202612 UDT
 

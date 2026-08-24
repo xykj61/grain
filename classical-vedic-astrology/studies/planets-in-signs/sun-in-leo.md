@@ -1,12 +1,11 @@
 # The Sun in Leo -- The Self at Home in Its Own Light
 
-**For:** Alice -- natal chart study (placement source file)
 **Language:** EN
-**Style:** Radiant (see RADIANT_STYLE.md)
+**Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teacher named with gratitude below
 **Stamped:** 20260629.213612 UDT
 
-**In Alice's chart:** The Sun sits in Leo -- its own sign, the throne it rules -- in the star of Ashlesha, in the 10th house. This file gives the *who* of her Sun, its core nature. Read it alongside the Ashlesha file, which gives the deeper star that colors its light, and the Sun-in-the-10th-house file, which gives the public arena where it acts.
+**In the example chart:** The Sun sits in Leo -- its own sign, the throne it rules -- in the star of Ashlesha, in the 10th house. This file gives the *who* of her Sun, its core nature. Read it alongside the Ashlesha file, which gives the deeper star that colors its light, and the Sun-in-the-10th-house file, which gives the public arena where it acts.
 
 ---
 
@@ -16,7 +15,7 @@ The Sun rules Leo, and a ruler is at ease in the house he himself has built. Her
 
 ## The gift: confidence that quietly draws others
 
-Confidence is the first gift, and it is quieter than it sounds. Confidence here means self-direction -- Alice knows her own mind without waiting to be told. It means self-assurance -- she can rest in herself without the gnawing of doubt. This is what makes a Leo Sun magnetic: not a particular beauty, but the ease of a person at home in herself. People are drawn to that ease.
+Confidence is the first gift, and it is quieter than it sounds. Confidence here means self-direction -- the native knows her own mind without waiting to be told. It means self-assurance -- she can rest in herself without the gnawing of doubt. This is what makes a Leo Sun magnetic: not a particular beauty, but the ease of a person at home in herself. People are drawn to that ease.
 
 From self-assurance flows decisiveness, and from decisiveness, the capacity to lead. Leadership, at root, is simply the willingness to decide -- to carry the weight of choosing when others would rather be carried. A Leo Sun can hold that weight, and others come to rely on it.
 
@@ -26,11 +25,11 @@ Leo is a fixed sign, and the Sun is the most faithful body in the sky -- rising 
 
 ## The deeper note: a self that can know itself
 
-The Sun is the self, and Leo is the self's own kingdom, so Alice's whole life carries a strong interest in the self. Held lightly, this becomes self-knowledge -- consciousness turned toward its own source, the lamp that lights its own standing place. With devotion and study alongside it, that same light can open inward toward the Self the Bhagavata Purana points to, the soul behind the soul. The work of these years is to keep the flame warm rather than proud, so that strength serves rather than displays.
+The Sun is the self, and Leo is the self's own kingdom, so the native's whole life carries a strong interest in the self. Held lightly, this becomes self-knowledge -- consciousness turned toward its own source, the lamp that lights its own standing place. With devotion and study alongside it, that same light can open inward toward the Self the Bhagavata Purana points to, the soul behind the soul. The work of these years is to keep the flame warm rather than proud, so that strength serves rather than displays.
 
 ## An honest note on the shadow
 
-Every brightness has its quiet cost, and honesty serves Alice better than flattery. A Sun pressed too hard can grow domineering, slow to follow, impatient with others' small faults, quick to over-commit. These are not her fate; they are simply the places to keep a little humility. The medicine is gentle -- temperance, and the memory that even the king kneels.
+Every brightness has its quiet cost, and honesty serves the native better than flattery. A Sun pressed too hard can grow domineering, slow to follow, impatient with others' small faults, quick to over-commit. These are not her fate; they are simply the places to keep a little humility. The medicine is gentle -- temperance, and the memory that even the king kneels.
 
 ## With Gratitude
 
@@ -38,4 +37,4 @@ The teaching distilled here -- the deep resonance of the Sun in its own sign, co
 
 ---
 
-*May Alice rest in her own light without needing to be seen by it. May her confidence serve those around her. And may the lamp that lights her own standing place turn, in time, toward the Self that lights all, season after season.*
+*May the native rest in her own light without needing to be seen by it. May her confidence serve those around her. And may the lamp that lights her own standing place turn, in time, toward the Self that lights all, season after season.*

@@ -1,12 +1,11 @@
 # Mercury in Virgo, in the 11th House -- A Bright, Well-Connected Mind
 
-**For:** Alice -- natal chart study (placement source file)
 **Language:** EN
-**Style:** Radiant (see RADIANT_STYLE.md)
+**Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teacher named with gratitude below
 **Stamped:** 20260629.193612 UDT
 
-**In Alice's chart:** Mercury sits in Virgo -- its sign of exaltation -- in Purva Phalguni, in the 11th house of community and gains. The planet of intellect rests at its very best, set among friends and networks.
+**In the example chart:** Mercury sits in Virgo -- its sign of exaltation -- in Purva Phalguni, in the 11th house of community and gains. The planet of intellect rests at its very best, set among friends and networks.
 
 ---
 
@@ -32,7 +31,7 @@ The 11th house is the place where the wider world opens to us and gives back. It
 
 Set the bright, organized, articulate Virgo mind into this sociable house of community and gain, and a clear picture forms. Mercury is the planet of interaction, and here it lives in the house of socializing -- so this is a person who is **well-connected**, with good contacts and an easy way among networks. Mercury is the planet of skill and expression in the house of talent -- so this is someone **genuinely talented, communicative, expressive, and intelligent**, with a gift for words. Mercury is the planet of recreation in the house of pleasure -- so this is **pleasant, enjoyable company**, someone who knows how to relax and to help others relax, who brightens a gathering. And Mercury is the planet of exchange in the house of exchange -- so this points toward **effectiveness at trade and communication**, a knack for gaining through skill rather than struggle.
 
-For Alice, this is a wonderful signature: a sharp, well-prepared, articulate mind that does its finest work *among people* -- in community, in network, in the warm exchange of ideas and talents -- and that gains, materially and socially, through exactly that brightness. And because this Mercury sits in Purva Phalguni under Aryaman, its brilliance is also a *devoted* brilliance: trustworthy, reliable, and given to forming real bonds, not merely clever connections.
+For the native, this is a wonderful signature: a sharp, well-prepared, articulate mind that does its finest work *among people* -- in community, in network, in the warm exchange of ideas and talents -- and that gains, materially and socially, through exactly that brightness. And because this Mercury sits in Purva Phalguni under Aryaman, its brilliance is also a *devoted* brilliance: trustworthy, reliable, and given to forming real bonds, not merely clever connections.
 
 ## With Gratitude
 

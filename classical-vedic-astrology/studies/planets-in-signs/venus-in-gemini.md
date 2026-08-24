@@ -1,12 +1,11 @@
 # Venus in Gemini -- Love as Conversation
 
-**For:** Alice -- natal chart study (placement source file)
 **Language:** EN
-**Style:** Radiant (see RADIANT_STYLE.md)
+**Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teacher named with gratitude below
 **Stamped:** 20260629.182512 UDT
 
-**In Alice's chart:** Venus sits in Gemini, at the very last degree (29 deg52'), in the star of Mrigashirsha, in the 8th house. This is the bright, communicative center of her airy chart -- and, fittingly for Gemini, it stands right at a threshold.
+**In the example chart:** Venus sits in Gemini, at the very last degree (29 deg52'), in the star of Mrigashirsha, in the 8th house. This is the bright, communicative center of her airy chart -- and, fittingly for Gemini, it stands right at a threshold.
 
 ---
 
@@ -42,7 +41,7 @@ In one breath: slow the speed of connection, drop a little deeper, stay a little
 
 ## The Mrigashirsha thread, and a Venus at the threshold
 
-Alice's Venus rests in Mrigashirsha, the star of the searching deer -- gentle, curious, forever seeking the sweetest thing just ahead. That seeking quality blends naturally with Gemini's curiosity; together they make a Venus that goes looking for beauty, lightly and tenderly, scenting the air for what delights.
+The native's Venus rests in Mrigashirsha, the star of the searching deer -- gentle, curious, forever seeking the sweetest thing just ahead. That seeking quality blends naturally with Gemini's curiosity; together they make a Venus that goes looking for beauty, lightly and tenderly, scenting the air for what delights.
 
 And her Venus stands at the very last degree of Gemini -- right at the doorway. This is wonderfully fitting, since Gemini *is* the sign of thresholds, and the searching deer is always at the edge of the next clearing. It is a Venus poised at a meeting point, which is exactly where this placement is most itself.
 

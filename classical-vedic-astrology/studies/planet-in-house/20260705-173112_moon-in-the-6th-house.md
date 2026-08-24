@@ -1,6 +1,6 @@
 # Moon in the Sixth House -- The Heart That Meets the Fight
 
-**Stamp:** `20260705.173112 UDT`  -  **Style:** Radiant, gentle register
+**Stamp:** `20260705.173112 UDT`  -  **Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teacher named with gratitude below
 
 ---

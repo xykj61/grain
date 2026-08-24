@@ -19,7 +19,7 @@
 
 **Third, compose from the silos.** Each placement points at one or more numbered studies. The silo carries the depth; the reading carries the person. Weave, rather than paste -- the studies are understanding to draw on, never text to copy.
 
-**Fourth, keep the name apart.** Working drafts carry a placeholder such as Alice. The true name enters only the final copy given to the person, and gratitude to teachers lives in its own honored space rather than inside the reading.
+**Fourth, keep the name apart.** Working drafts carry the term **the native** (standard Jyotish). The true name enters only the final copy given to the person, and gratitude to teachers lives in its own honored space rather than inside the reading.
 
 ---
 

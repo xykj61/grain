@@ -1,6 +1,6 @@
 # Chitra -- The Architect's Star
 
-**Stamp:** `20260705.160712 UDT`  -  **Revised:** `20260705.190812 UDT`  -  **Style:** Radiant, gentle register
+**Stamp:** `20260705.160712 UDT`  -  **Revised:** `20260705.190812 UDT`  -  **Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Re-distilled against the real transcript; teacher named with gratitude below
 
 ---

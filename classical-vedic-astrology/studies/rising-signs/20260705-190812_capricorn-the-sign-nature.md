@@ -1,6 +1,6 @@
 # Capricorn -- Tenacity and Realism, the Sign's Two Roots
 
-**Stamp:** `20260705.190812 UDT`  -  **Style:** Radiant, gentle register
+**Stamp:** `20260705.190812 UDT`  -  **Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teacher named with gratitude below
 **Placement:** Gated -- awaiting the rising-sign folder name before it seats
 

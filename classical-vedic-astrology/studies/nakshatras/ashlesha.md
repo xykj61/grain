@@ -1,12 +1,11 @@
 # Ashlesha -- The Serpent's Embrace
 
-**For:** Alice -- natal chart study (placement source file)
 **Language:** EN
-**Style:** Radiant (see RADIANT_STYLE.md)
+**Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teacher named with gratitude below
 **Stamped:** 20260629.213612 UDT
 
-**In Alice's chart:** Her Sun shines through Ashlesha, the star of the coiled serpent, in Leo, in the 10th house. This file gives the *deeper flavor* of her Sun -- the star-quality that colors its light. Read it alongside the Sun-in-Leo file (the sign) and the Sun-in-the-10th-house file (the arena).
+**In the example chart:** Her Sun shines through Ashlesha, the star of the coiled serpent, in Leo, in the 10th house. This file gives the *deeper flavor* of her Sun -- the star-quality that colors its light. Read it alongside the Sun-in-Leo file (the sign) and the Sun-in-the-10th-house file (the arena).
 
 ---
 
@@ -14,7 +13,7 @@
 
 Ashlesha is the nakshatra of the Nagas, the divine serpents -- the dragons of the deep -- and its symbol is the coiled snake. To meet this star is to meet a paradox held in a single coil: an immense power to embrace, and the choice of what to do with that embrace.
 
-The word Ashlesha means intimate contact -- entwining, adhering, clinging, holding close. A serpent wraps itself around what it loves. So this star gives the capacity to love with depth and endurance, to hold a person or a purpose with one's whole length, to carry great responsibility for the sake of those one loves. It gives charisma, charm, a certain mystique -- a magnetism others feel before they can name it. These are real gifts, and they are Alice's.
+The word Ashlesha means intimate contact -- entwining, adhering, clinging, holding close. A serpent wraps itself around what it loves. So this star gives the capacity to love with depth and endurance, to hold a person or a purpose with one's whole length, to carry great responsibility for the sake of those one loves. It gives charisma, charm, a certain mystique -- a magnetism others feel before they can name it. These are real gifts, and they are the native's.
 
 ## The two coils: which way one winds
 
@@ -32,7 +31,7 @@ There is a teaching here, too, about charm and influence, for this star knows ho
 
 ## Holding this gently, in the student season
 
-A word of warmth for where Alice stands. The passion in this star is genuine and strong. She need not spend it loosely, nor fear it. Held with temperance, allowed to ripen, the embrace can aim upward -- toward the Divine, toward true friends, toward a love worthy of so much loyalty. Ahimsa is the serpent's quiet vow: the power to hold, never to harm; to shelter, never to poison.
+A word of warmth for where the native stands. The passion in this star is genuine and strong. She need not spend it loosely, nor fear it. Held with temperance, allowed to ripen, the embrace can aim upward -- toward the Divine, toward true friends, toward a love worthy of so much loyalty. Ahimsa is the serpent's quiet vow: the power to hold, never to harm; to shelter, never to poison.
 
 ## With Gratitude
 
@@ -40,4 +39,4 @@ The principles distilled here -- Ashlesha's serpentine embrace, its charm and my
 
 ---
 
-*May Alice's embrace be wide and her loyalty deep. May her charm draw others toward their own joy. And may the serpent in her star become, like Ananta, a resting place for the love of God, season after season.*
+*May the native's embrace be wide and her loyalty deep. May her charm draw others toward their own joy. And may the serpent in her star become, like Ananta, a resting place for the love of God, season after season.*

@@ -1,7 +1,7 @@
 # Kali Yuga, the Brahmana in Grihastha, and What Glow OS Can Carry Underneath
 
 **Language:** EN
-**Style:** Radiant (see `../../../context/RADIANT_STYLE.md`), gentle register
+**Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teachers named with gratitude below
 **Stamped:** `20260715.160000` (Pacific)
 **Companion:** [`life-frame/four-asramas-and-goals-of-life.md`](../life-frame/four-asramas-and-goals-of-life.md) (the four aims and four seasons), [`20260705-180812_the-four-directions-and-the-four-aims.md`](20260705-180812_the-four-directions-and-the-four-aims.md) (artha as earth's own aim), [`government-as-planetary-spectrum.md`](government-as-planetary-spectrum.md) (the four-sector varnashrama model this study builds directly on)
