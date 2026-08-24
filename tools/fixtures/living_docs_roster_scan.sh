@@ -59,7 +59,9 @@ set -eu
 
 MODE="${1:-census}"
 ROOT="${2:-.}"
-MAX_BYTES=24576
+# The seated bound, read from the law rather than spelled here -- and read BEFORE the cd below,
+# so a census run against a pen still measures against the real tree's law (REDS %199).
+MAX_BYTES=$(sh "$(dirname "$0")/living_pin_max_bytes.sh")
 
 # Rostered pages past the bound, allowed only to fall. Seven at 20260824.075500; six from
 # 20260824.082436, when image/README.md split four ways and fell from 400,042 bytes to under

@@ -42,7 +42,8 @@
 set -eu
 
 MODE="${1:-census}"
-MAX_BYTES=24576
+# The seated bound, read from the law rather than spelled here. One reading, one home (REDS %199).
+MAX_BYTES=$(sh "$(dirname "$0")/living_pin_max_bytes.sh")
 
 # Rooms whose index has been folded once by a hand, front door and all. Zero stale rows here.
 ENFORCE="session-logs"

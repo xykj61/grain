@@ -129,21 +129,22 @@ bound_over_ceiling="${DECLARED_BOUND_OVER_CEILING:-1}"
 # Honest human bounds this guard does not reach. Measured 20260824.130807: two pages.
 bound_prose_ceiling="${DECLARED_BOUND_PROSE_CEILING:-2}"
 
-# The seated law, read from the spec that holds it rather than copied a fourth time. Three scripts
-# already carry their own 24576; a number repeated is a number that can quietly disagree with
-# itself, which is the fault this whole guard was written for.
-LAW_SPEC="context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md"
+# Tool sources that write the bound down without deciding with it -- a comment, a witness assert
+# that pins the law's value on purpose, a control's planted pen page. Measured 20260824.140523:
+# six lines across six files. A ceiling that only ever falls, so the habit may shrink and may not
+# spread.
+law_recite_ceiling="${DECLARED_LAW_RECITE_CEILING:-6}"
+
+# The seated law, read from the one script that reads it. This block held its own copy of the
+# reading idiom until `20260824.140523`, and its comment said three scripts carried their own
+# number where the tree held five -- so the reading moved into
+# tools/fixtures/living_pin_max_bytes.sh and every meter now calls it (REDS %199).
+# The helper names its own reason on stderr -- law missing, or law stating no readable number --
+# so the refusal carries the reason rather than a generic verdict.
 LIVING_PIN_MAX_BYTES="${DECLARED_BOUND_MAX_BYTES:-}"
 if [ -z "$LIVING_PIN_MAX_BYTES" ]; then
-  if [ ! -f "$LAW_SPEC" ]; then
-    echo "detail: the seated bound law is missing at $LAW_SPEC"
-    echo "verdict=law_absent"
-    exit 1
-  fi
-  LIVING_PIN_MAX_BYTES=$(grep -a -m1 '^living_pin_max_bytes' "$LAW_SPEC" \
-    | sed -n 's/.*=[[:space:]]*\([0-9][0-9]*\).*/\1/p' | head -1)
-  if [ -z "$LIVING_PIN_MAX_BYTES" ]; then
-    echo "detail: $LAW_SPEC states no readable living_pin_max_bytes"
+  if ! LIVING_PIN_MAX_BYTES=$(sh "$(dirname "$0")/living_pin_max_bytes.sh" 2>&1); then
+    echo "detail: $LIVING_PIN_MAX_BYTES"
     echo "verdict=law_unreadable"
     exit 1
   fi
@@ -254,6 +255,60 @@ for b in $BOUNDS_PROSE; do
   echo "bound-prose: $b declares a bound in words rather than in a form a tool reads"
 done
 
+# THE FOURTH READING, seated `20260824.140523`. A page declaring the bound is one half of the law;
+# the other half is the meters that measure against it, and until this lap five of them spelled the
+# number themselves. `tools/fixtures/living_pin_max_bytes.sh` is the one reading now, and this
+# reading is the wall that keeps it one.
+#
+# TWO FORMS, because they carry different weight. A meter that ASSIGNS the number to a variable or
+# COMPARES against it as a literal is DECIDING with a copy, and a copy that decides is a guard that
+# can disagree with the law while reporting green -- gated at zero. A file that merely writes the
+# number down in a comment, an assert string, or planted pen data is RECITING it, which is honest
+# where the number is the subject; those ride a ceiling that only ever falls.
+#
+# A WITNESS ASSERTS AND A CONTROL PLANTS; A SCAN DECIDES. So `*_witness.rish` and `*_control.sh` sit
+# outside the gated reading by their file role rather than by name -- `declared_ceiling_witness.rish`
+# pins the law's own value in an assert deliberately, and that assert is the check that the law
+# has not moved without anyone noticing. Naming the two roles is what keeps this from becoming a remembered
+# exemption list, which is the shape this tree has now booked five times (REDS %187, %190, %192,
+# %197, %199).
+#
+# SCOPE IS `tools/`, asked of git rather than of a glob. The law's meters all live there. Three
+# `.rye` sources elsewhere reach the same value as ordinary arithmetic -- an image dimension
+# ceiling times three, a filter coefficient -- and they are a different subject entirely.
+decide_re="(^|[^A-Za-z0-9_])[A-Za-z_][A-Za-z0-9_]*=$LIVING_PIN_MAX_BYTES([^0-9]|$)"
+decide_re="$decide_re|-(gt|ge|lt|le|eq|ne)[[:space:]]+\"?$LIVING_PIN_MAX_BYTES"
+recite_re="(^|[^0-9])$LIVING_PIN_MAX_BYTES([^0-9]|$)"
+
+# ONE PASS, rather than two greps per file. A per-file loop over the 2,046 tracked sources under
+# tools/ cost 39 seconds of the roster's wall clock; batched through xargs it costs under two.
+# Every deciding line also spells the number, so the deciding set is a filter over the reciting
+# set rather than a second walk of the tree.
+LAW_TMP=$(mktemp -d "${TMPDIR:-/tmp}/declared-ceiling-law.XXXXXX")
+trap 'rm -rf "$LAW_TMP"' EXIT INT TERM
+
+# DECLARED_LAW_ROOT lets the control point this reading at a real git repository in a throwaway
+# pen, so both refusals are proven every roster pass rather than once by a hand.
+LAW_ROOT="${DECLARED_LAW_ROOT:-.}"
+( cd "$LAW_ROOT" && git ls-files 'tools/*' 2>/dev/null ) > "$LAW_TMP/files" || : > "$LAW_TMP/files"
+: > "$LAW_TMP/recite"
+if [ -s "$LAW_TMP/files" ]; then
+  ( cd "$LAW_ROOT" && xargs grep -aHnE "$recite_re" < "$LAW_TMP/files" ) > "$LAW_TMP/recite" 2>/dev/null || true
+fi
+law_recite=$(wc -l < "$LAW_TMP/recite" | tr -d ' ')
+
+# A witness asserts and a control plants, so both sit outside the gated reading; a comment recites,
+# so only a live line decides.
+grep -vE '^[^:]*(_witness\.rish|_control\.sh):' "$LAW_TMP/recite" 2>/dev/null \
+  | grep -vE '^[^:]*:[0-9]+:[[:space:]]*#' 2>/dev/null \
+  | grep -E "$decide_re" > "$LAW_TMP/decide" 2>/dev/null || : > "$LAW_TMP/decide"
+law_decide=$(wc -l < "$LAW_TMP/decide" | tr -d ' ')
+LAW_DECIDE_SITES=$(cut -d: -f1 < "$LAW_TMP/decide" | sort | uniq -c | awk '{print $2 ":" $1}')
+
+for d in $LAW_DECIDE_SITES; do
+  echo "law-copy: ${d%%:*} decides with its own copy of the bound on ${d#*:} line(s)"
+done
+
 echo "pages_declaring=$declaring"
 echo "pages_holding=$holding"
 echo "pages_over=$over"
@@ -268,6 +323,9 @@ echo "bounds_over_ceiling=$bound_over_ceiling"
 echo "bounds_prose=$bounds_prose"
 echo "bounds_prose_ceiling=$bound_prose_ceiling"
 echo "bounds_disagree=$bounds_disagree"
+echo "law_copies_deciding=$law_decide"
+echo "law_copies_reciting=$law_recite"
+echo "law_recite_ceiling=$law_recite_ceiling"
 
 # A reading over no declarations finds no drift and would report clean while measuring nothing.
 if [ "$declaring" -eq 0 ] && [ "$bounds_declaring" -eq 0 ]; then
@@ -311,6 +369,21 @@ fi
 if [ "$bounds_prose" -gt "$bound_prose_ceiling" ]; then
   echo "detail: the prose-bound form stands on $bounds_prose pages against a ceiling of $bound_prose_ceiling, which only ever falls"
   echo "verdict=bound_prose_spread"
+  exit 1
+fi
+
+# A meter deciding with its own copy of the bound is the fault this whole guard was written for,
+# arriving one layer down: the pages are measured, and the thing measuring them held the number
+# five ways (REDS %199). Held at zero.
+if [ "$law_decide" -gt 0 ]; then
+  echo "detail: $law_decide tool line(s) decide with a copy of the bound rather than reading tools/fixtures/living_pin_max_bytes.sh"
+  echo "verdict=law_number_copied"
+  exit 1
+fi
+
+if [ "$law_recite" -gt "$law_recite_ceiling" ]; then
+  echo "detail: the bound is written down in $law_recite tool line(s) against a ceiling of $law_recite_ceiling, which only ever falls"
+  echo "verdict=law_recitation_spread"
   exit 1
 fi
 
