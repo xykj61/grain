@@ -100,6 +100,16 @@ Every Radiant move holds here without exception.
 
 - **Lead with what is.** State the capability, the reading, the finding. A reader absorbs the
   first words of a sentence most strongly, so put the substance there.
+- **Compare by what keeps, never by what decays.** When two things are weighed against each other,
+  name the one that lasts and let the other follow. *A method keeps longer than an answer*, rather
+  than *a named winner rots faster than the guide around it*. Both sentences carry the same
+  finding; only the second asks the reader to picture decay before they reach the point. The verbs
+  to watch are **rots, decays, withers, rusts, dies, goes stale, falls apart** -- each is honest
+  about the world and wrong as a sentence's first move, and each is doubly tempting because it
+  sounds like wisdom. Seated `20260823.201533` on Keaton's word, after exactly that sentence
+  shipped in a Door-setting guide. `rot`, `rots`, and `stale` are already counted by
+  `tools/fixtures/prose_register_scan.sh`; this line names the *construction* the count alone
+  cannot see.
 - **Active voice by default.** Reserve the passive for when the actor genuinely does not matter.
 - **Affirmative contrast.** Prefer *rather than* to a heavy *not*, and *yet* to *but*.
 - **8th grade through collegiate.** Conversational and eloquent together. Read it aloud; if it

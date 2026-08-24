@@ -1,4 +1,4 @@
-# cast_a_chart.rish — dual-zodiac natal caster witness.
+# cast_a_chart.rish -- dual-zodiac natal caster witness.
 #
 # Tropical signs for dignity; sidereal Lahiri for nakshatra and pada; whole-sign houses.
 # Edit birth constants at the head of cast_a_chart.py before casting a new sky.
@@ -9,7 +9,7 @@
 # Hosted POSIX seam: classical-vedic-astrology/cast_a_chart_host.sh
 # Ephemeris implementation: classical-vedic-astrology/cast_a_chart.py (pyswisseph)
 
-say "cast: witness — dual-zodiac natal chart"
+say "cast: witness -- dual-zodiac natal chart"
 
 let cast = run ["sh" "classical-vedic-astrology/cast_a_chart_host.sh"]
 

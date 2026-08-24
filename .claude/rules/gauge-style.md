@@ -36,6 +36,11 @@ One style, one dial, set by who is reading.
 ## What every setting keeps
 
 - **Lead with what is.** Active voice. *Rather than* over a heavy *not*, *yet* over *but*.
+- **Compare by what keeps, never by what decays** (seated `20260823.201533`). *A method keeps longer
+  than an answer*, rather than *a named winner rots faster than the guide around it* -- same finding,
+  and only the second makes a reader picture decay before reaching the point. Watch **rots, decays,
+  withers, rusts, dies, goes stale**: each is honest about the world, wrong as a sentence's first
+  move, and doubly tempting because it sounds like wisdom.
 - **Name a coined term's plain function on first use** -- and a coined **maxim's** too.
 - **Bound every claim.** Scope, period, assumptions, before the number.
 - **Every figure carries unit, date, and source.** A number without those three is a rumour with

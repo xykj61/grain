@@ -1,14 +1,14 @@
 ---
 
-# Brooke — A Complete Two-Wheel Reading
+# Brooke -- A Complete Two-Wheel Reading
 
-**Stamp:** `20260705.031812 UDT` · **Language:** EN · **Style:** Radiant (see `../../../context/RADIANT_STYLE.md`), gentle register
+**Stamp:** `20260705.031812 UDT`  -  **Language:** EN  -  **Style:** Radiant (see `../../../context/RADIANT_STYLE.md`), gentle register
 
-This shelf holds a complete classical reading and its fifteen chapters — anonymized to **Brooke** by consent, corrected for the evening birth (20:13), cast in tropical signs and sidereal nakshatras with D1 and D9 together. Read in order below; the silo map lives in [`../templates/reading-template.md`](../templates/reading-template.md).
+This shelf holds a complete classical reading and its fifteen chapters -- anonymized to **Brooke** by consent, corrected for the evening birth (20:13), cast in tropical signs and sidereal nakshatras with D1 and D9 together. Read in order below; the silo map lives in [`../templates/reading-template.md`](../templates/reading-template.md).
 
 | # | Title | File |
 |---|-------|------|
-| 00 | Dharma and the Two Wheels — The Whole Reading | [`20260705-020812_dharma-and-the-two-wheels.md`](20260705-020812_dharma-and-the-two-wheels.md) |
+| 00 | Dharma and the Two Wheels -- The Whole Reading | [`20260705-020812_dharma-and-the-two-wheels.md`](20260705-020812_dharma-and-the-two-wheels.md) |
 | 01 | The Season and the Three Paths | [`20260705-020812_the-season-and-the-three-paths.md`](20260705-020812_the-season-and-the-three-paths.md) |
 | 02 | The Placements at a Glance | [`20260705-020812_the-placements-at-a-glance.md`](20260705-020812_the-placements-at-a-glance.md) |
 | 03 | The Ninth Chart and the Shape of Dharma | [`20260705-020812_the-ninth-chart-and-the-shape-of-dharma.md`](20260705-020812_the-ninth-chart-and-the-shape-of-dharma.md) |
