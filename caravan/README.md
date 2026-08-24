@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Last updated:** `20260820.201710` (the refrain rung -- a named ending finally changes what the plan does next)
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Checkable -- process supervision ladder
 
 **Caravan supervises.** It watches a dependent process, restarts it when it falls, and grows -- one accretion at a time -- toward the fuller shape a real service needs: bounded memory per dependent, more than one dependent, ordered startup, a named capability table, and a real exit-code vocabulary that tells restart-on-fall apart from an ordinary cycle and a deliberate stop.

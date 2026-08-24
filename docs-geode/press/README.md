@@ -2,7 +2,7 @@
 
 *Three announcements stand, each written once and kept exactly as filed. This page is their index and their honest scope.*
 
-**Language:** EN - **Style:** Radiant - **Voice:** Kyri
+**Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Written:** `20260821.190149` - **Status:** Living - **Kind:** crushed index of [`../../press/`](../../press/)
 
 ---

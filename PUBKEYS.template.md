@@ -1,11 +1,11 @@
-# Public Keys — Fork Template
+# Public Keys -- Fork Template
 
 **Language:** EN
-**Style:** Radiant (see `context/RADIANT_STYLE.md`)
+**Style:** Gauge (see `context/GAUGE_STYLE.md`)
 
 ---
 
-A fork begins here. Copy this file to `PUBKEYS.md` at the repository root and replace every placeholder with your own four public fingerprints — two SSH (forge authentication) and two OpenPGP (signing). The keeper's canonical record in this repository lives at `context/PUBKEYS.md`; a keeper may also place `PUBKEYS.md` at the root for local override.
+A fork begins here. Copy this file to `PUBKEYS.md` at the repository root and replace every placeholder with your own four public fingerprints -- two SSH (forge authentication) and two OpenPGP (signing). The keeper's canonical record in this repository lives at `context/PUBKEYS.md`; a keeper may also place `PUBKEYS.md` at the root for local override.
 
 Run `rishi/bin/rishi run tools/i/identity_check.rish` from the repository root to prove the shape.
 
@@ -15,32 +15,32 @@ Run `rishi/bin/rishi run tools/i/identity_check.rish` from the repository root t
 
 Replace the handle and email with your own.
 
-- **Handle** — @your-handle
-- **Email** — you@example.com
+- **Handle** -- @your-handle
+- **Email** -- you@example.com
 
 ---
 
 ## The Keys
 
-**Codeberg · SSH**
+**Codeberg - SSH**
 
 ```
 SHA256:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
-**GitHub · SSH**
+**GitHub - SSH**
 
 ```
 SHA256:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
-**OpenPGP · signing** (master identity key)
+**OpenPGP - signing** (master identity key)
 
 ```
 XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX
 ```
 
-**OpenPGP · sandbox signing** (optional dedicated agent key)
+**OpenPGP - sandbox signing** (optional dedicated agent key)
 
 ```
 XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX
