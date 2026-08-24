@@ -1,0 +1,14 @@
+format session-log-v1
+stamp 20260824.014209
+editor Claude Code
+model claude-opus-4-6
+voice Kyri
+title SOURCE.md Gauge molt and ASCII conversion
+prompt kg -- molt SOURCE.md into Gauge/Civic/TAME
+think SOURCE.md is 574 lines at 9% negative -- already under the Door ceiling (20%)
+think the header carried three stale references: Style Radiant, By Riyo, and a dated Status line
+think 103 lines carried non-ASCII characters: em-dashes, en-dashes, arrows, middle dots, section signs
+think the five-reads section was already updated to Gauge on 20260823 -- the body needed only the header and ASCII pass
+obs the register was already gentle and instructional -- the molt is header alignment, ASCII-first, and depersonalization of the By: line
+file SOURCE.md header updated (Style Gauge Door, Voice Kyri, Status molted), 103 non-ASCII lines converted to plain ASCII
+recommend kg -- standing roster 35/35 green; next Lindy-first item from the pending queue
