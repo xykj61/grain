@@ -1,0 +1,71 @@
+# tools/m/declared_model_witness.rish -- one model, named once, agreed everywhere.
+#
+# WHY THIS RUNG. On 20260824 Keaton asked to return this clone to Opus 5 and found the tree already
+# disagreed with itself about which model it ran. `.claude/settings.json` and
+# GLOW_PROFILE.template.bron read claude-opus-5; recursion-prompts/seed/autonomous-loop.seed.md read
+# claude-opus-4-6; and the personal GLOW_PROFILE.bron carried claude-opus-4-6 in its field directly
+# beneath a comment of its own that said `Model is Opus 5`. A file disagreeing with itself is the
+# clearest form the fault takes, and nothing in the tree could see any of it. REDS %201.
+#
+# This is the fifth time this shape has been booked -- REDS %187, %190, %192, %199 -- so it stops
+# being a habit and becomes a reading: tools/fixtures/declared_model.sh answers the question once,
+# from .claude/settings.json, the file that actually drives which model Claude Code loads. A
+# description agrees with the thing it describes, so the driver is the source.
+#
+# WHAT IS PROVEN, on metal.
+#   Every site on the declaring roster names the model the driver names. Three stand there as of
+#   20260824.161948: the profile template a fresh clone copies, the autonomous-loop seed an
+#   unattended run reads, and the session-logs law that tells a log what to record.
+#   Sixteen behaviors on real git repositories in a throwaway pen, every refusal shown from both
+#   sides: agreement free, a stale site bitten and counted, an absent site bitten, a page recounting
+#   old models beside the current one free, dated testimony free by basename and by date/ room, a
+#   living drifted file counted, the ratchet ceiling proven from both sides, `claude-code` and
+#   `.claude-state` read as the ordinary words they are, the reading refusing rather than defaulting
+#   twice over, and the reading anchored to its own location rather than the caller's cwd.
+#
+# WHAT IS REPORTED, as a ratchet under a ceiling that only ever falls. Living tracked files naming
+# some model id and never the current one -- one at seating, a lineage page recording the model that
+# generated it. Honest testimony wearing no stamp, which only a reader can tell from real drift.
+#
+# WHAT IS NOT PROVEN. That the model named is the model the API actually served. This reads what the
+# tree says about itself, and agreement is the whole of the claim.
+#
+# Style: context/GAUGE_STYLE.md - Rule: .claude/rules/session-logs.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/declared_model_witness.rish
+
+say "declared-model: Language EN -- a constant spelled four ways is a constant that can disagree with itself."
+say "declared-model: Style Gauge -- the driver is the reading, and every description agrees with it."
+say "declared-model: Lens TAME -- say why, once, in one place, and let the rest of the tree cite it."
+
+let scan = run ["sh" "tools/fixtures/declared_model_scan.sh"]
+assert scan.ok else "declared-model: a site that states which model this clone runs disagrees with the driver"
+say scan.out
+assert scan.out contains "declaring_over=0" else "declared-model: every declaring site must name the model the driver names"
+assert scan.out contains "verdict=ok" else "declared-model: the scan must balance before it is believed"
+say "field GREEN -- one model, named once, agreed everywhere it is described"
+
+let control = run ["sh" "tools/fixtures/declared_model_control.sh"]
+assert control.ok else "declared-model: the control must complete"
+say control.out
+assert control.out contains "agreement_free=yes" else "declared-model: a tree whose sites agree must pass free"
+assert control.out contains "reading_reported=yes" else "declared-model: the scan must print the reading it measured against"
+assert control.out contains "stale_site_bitten=yes" else "declared-model: a declaring site naming another model must red"
+assert control.out contains "stale_site_counted=yes" else "declared-model: the count must name how many sites disagreed"
+assert control.out contains "absent_site_bitten=yes" else "declared-model: a roster path that has gone missing must red rather than be skipped"
+assert control.out contains "history_free=yes" else "declared-model: a page recounting old models beside the current one must pass free"
+assert control.out contains "dated_free=yes" else "declared-model: dated testimony keeps every word it wrote"
+assert control.out contains "dated_verdict_ok=yes" else "declared-model: dated testimony must leave the verdict green"
+assert control.out contains "living_drift_counted=yes" else "declared-model: a living file naming another model must be counted"
+assert control.out contains "at_ceiling_free=yes" else "declared-model: the ratchet must pass at its ceiling"
+assert control.out contains "over_ceiling_counted=yes" else "declared-model: the ratchet must count what stands above it"
+assert control.out contains "over_ceiling_bitten=yes" else "declared-model: one above the ceiling must red, so no override exists"
+assert control.out contains "claude_word_free=yes" else "declared-model: claude-code and .claude-state are ordinary words, never model ids"
+assert control.out contains "absent_settings_refused=yes" else "declared-model: an unreadable driver must refuse rather than default"
+assert control.out contains "missing_key_refused=yes" else "declared-model: a driver naming no model must refuse rather than default"
+assert control.out contains "reading_root_anchored=yes" else "declared-model: the reading resolves from its own location, never the caller's cwd"
+assert control.out contains "control_verdict=ok" else "declared-model: the control must agree with itself"
+say "sixteen behaviors proven on real git repositories, every refusal shown from both sides"
+
+say "GREEN: declared-model -- one model, named once, agreed everywhere."

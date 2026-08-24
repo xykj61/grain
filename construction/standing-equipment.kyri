@@ -22,7 +22,7 @@
 # Add a guard by adding a record here; the meter counts the file rather than a sentence.
 
 format standing-equipment-v1
-stamp 20260823.144100
+stamp 20260824.161948
 voice Kyri
 runner tools/fixtures/standing_equipment_run.sh
 card construction/standing-equipment-runs.kyri
@@ -226,3 +226,7 @@ seated 20260620.210812
 guard declared_ceiling
 path tools/d/declared_ceiling_witness.rish
 seated 20260824.121445
+
+guard declared_model
+path tools/m/declared_model_witness.rish
+seated 20260824.161948
