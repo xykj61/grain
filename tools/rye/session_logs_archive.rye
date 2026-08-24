@@ -391,12 +391,21 @@ pub fn fold_index(
     }
     report.days_seen = day_n;
 
-    // Pass two rebuilds the pin and each shelf in one walk. Prose keeps its order and rises to
-    // the top, because every row below it is either kept in order or folded away.
+    // Pass two rebuilds the pin and each shelf in one walk. EVERY LINE KEEPS ITS PLACE: prose
+    // stays where it stands and a kept row stays where it stands, so the pin comes out as the
+    // pin went in minus the rows that left.
+    //
+    // This collected the kept rows and appended them after all prose until `20260824.145200`,
+    // which lifted a buried header to the top -- the repair session-logs needed once, when its
+    // title stood at line 1,881 beneath 1,880 rows (REDS %182). That room's table is the last
+    // thing in its file, so appending at the end and keeping in place are the same write there,
+    // and the selftest fixture was shaped the same way. Every other room's README continues
+    // past its table: active-designing/README.md carries a redirect-stubs section, a width-law
+    // paragraph, and a closing line, so the appended rows landed BELOW all of it, outside any
+    // table, which GitHub-Flavored Markdown renders as literal pipes -- REDS %182's own fault
+    // reintroduced by the tool built to fix it (REDS %200).
     var pin = std.ArrayListUnmanaged(u8).empty;
     defer pin.deinit(a);
-    var kept_rows = std.ArrayListUnmanaged(u8).empty;
-    defer kept_rows.deinit(a);
 
     var shelves: [max_index_days]std.ArrayListUnmanaged(u8) = undefined;
     var si: u32 = 0;
@@ -406,6 +415,19 @@ pub fn fold_index(
         while (d < day_n) : (d += 1) shelves[d].deinit(a);
     }
 
+    // A fold removes the rows between the table and whatever follows it, which can leave a
+    // heading abutting the last surviving row. GitHub-Flavored Markdown reads that correctly and
+    // a reader does not, so the blank line the fold consumed is put back.
+    //
+    // THE TEST IS A LEADING PIPE, rather than whether the fold could date the row. Those are
+    // different questions: a table holds header rows, delimiter rows, `living` rows carrying no
+    // stamp, and day-only rows -- all of them table rows this fold reads as prose, correctly,
+    // since it has no day to file them under. Keying the blank line off the date instead put one
+    // BETWEEN two table rows in the fixture, which ends a table in GFM -- a worse fault than the
+    // cosmetic one it was fixing, caught by the selftest before it reached a room (REDS %200).
+    //
+    // Firing only on pipe -> non-blank-non-pipe makes a second fold over the same pin a no-op.
+    var last_was_row = false;
     lines = std.mem.splitScalar(u8, readme, '\n');
     while (lines.next()) |line| {
         if (day_from_index_row(line)) |day| {
@@ -420,17 +442,21 @@ pub fn fold_index(
                 try shelves[k].append(a, '\n');
                 report.rows_folded += 1;
             } else {
-                try kept_rows.appendSlice(a, line);
-                try kept_rows.append(a, '\n');
+                // A kept row is written where it was read, so the table it belongs to keeps it.
+                last_was_row = line.len != 0 and line[0] == '|';
+                try pin.appendSlice(a, line);
+                try pin.append(a, '\n');
                 report.rows_kept += 1;
             }
             continue;
         }
+        const is_row = line.len != 0 and line[0] == '|';
+        if (last_was_row and line.len != 0 and !is_row) try pin.append(a, '\n');
+        last_was_row = is_row;
         try pin.appendSlice(a, line);
         try pin.append(a, '\n');
     }
 
-    try pin.appendSlice(a, kept_rows.items);
     report.pin_bytes = @intCast(pin.items.len);
 
     if (dry_run) {
@@ -444,6 +470,19 @@ pub fn fold_index(
     const date_dir = try std.fs.path.join(a, &.{ logs_dir, "date" });
     defer a.free(date_dir);
     try cwd.createDirPath(io, date_dir);
+
+    // A shelf header pointed at `../SEASONS.md` unconditionally, and exactly one room in this
+    // tree has that page. Folding active-designing therefore wrote 21 shelves each carrying one
+    // link to a file that was never there (REDS %200). A shelf is immutable once written, so a
+    // header naming a page that does not exist is a broken link nobody may later repair in
+    // place -- the room is asked instead, and a room that grows a roster later gets it in the
+    // shelves written from then on.
+    const roster_path = try std.fs.path.join(a, &.{ logs_dir, "SEASONS.md" });
+    defer a.free(roster_path);
+    const roster_line = if (path_exists(io, roster_path))
+        "Roster: [`../SEASONS.md`](../SEASONS.md) - living pin: [`../README.md`](../README.md)."
+    else
+        "Living pin: [`../README.md`](../README.md).";
 
     var d: u32 = 0;
     while (d < day_n) : (d += 1) {
@@ -471,11 +510,11 @@ pub fn fold_index(
                 \\**Season:** `{s}`
                 \\**Folded:** `{s}` from the living pin
                 \\
-                \\Closed rows for `{s}`, in the order the pin held them. Roster:
-                \\[`../SEASONS.md`](../SEASONS.md) - living pin: [`../README.md`](../README.md).
+                \\Closed rows for `{s}`, in the order the pin held them.
+                \\{s}
                 \\
                 \\
-            , .{ room, days[d], days[d], stamp, days[d] });
+            , .{ room, days[d], days[d], stamp, days[d], roster_line });
             defer a.free(head);
             try body.appendSlice(a, head);
         }
@@ -623,9 +662,56 @@ fn run_selftest(a: std.mem.Allocator, io: std.Io, root: []const u8) !void {
     // Beta's logs are still flat, so beta's row stays in the pin -- the index describes exactly
     // the set the room holds flat, which is what makes both bounds one bound.
     if (std.mem.indexOf(u8, pin1, "](20260704-100000_beta.md)") == null) return error.SelftestPinLostFlatRow;
+    // And it stays WHERE it stood, inside the table, rather than being appended after every line
+    // of prose. The fixture README now carries a closing line beneath its table, so a kept row
+    // landing below that line is caught here rather than in a room (REDS %200).
+    const kept_at = std.mem.indexOf(u8, pin1, "](20260704-100000_beta.md)") orelse return error.SelftestPinLostFlatRow;
+    const closing_at = std.mem.indexOf(u8, pin1, "*A closing line beneath the table.") orelse return error.SelftestFixtureClosingLine;
+    if (kept_at > closing_at) return error.SelftestKeptRowLeftItsTable;
+    // The fold removes the rows between the table and what follows it, so the blank line it
+    // consumed is put back: the fixture writes `---` directly beneath its last row, and the pin
+    // must read a blank line between them (REDS %200).
+    // And no blank may land BETWEEN two table rows, which would end the table where it stands.
+    // The day-only epsilon row carries no time, so the fold reads it as prose and would have
+    // split the table here had the test been the date rather than the pipe.
+    if (std.mem.indexOf(u8, pin1, "stays flat |\n\n| 20260814") != null) return error.SelftestBlankSplitTheTable;
+    // The fixture writes `---` directly beneath its last table row, and the pin must read a blank
+    // line between them -- the blank the fold consumed, put back (REDS %200).
+    if (std.mem.indexOf(u8, pin1, "whole stamp |\n\n---\n") == null) return error.SelftestHeadingAbutsTable;
 
     const idx2 = try fold_index(a, io, sandbox, "session-logs", "20260704.130000", false);
     if (idx2.rows_folded != 0) return error.SelftestIndexNotIdempotent;
+
+    // A shelf header links to the room's seasons roster when the room keeps one, and names only
+    // the living pin when it does not. The fixture room keeps one, which is what the assertion
+    // above proves; this leg takes it away and folds a day the room has no flat log for, so the
+    // header written next carries no link to a page that is not there (REDS %200).
+    const roster_path = try std.fs.path.join(a, &.{ logs, "SEASONS.md" });
+    defer a.free(roster_path);
+    try cwd.deleteFile(io, roster_path);
+    const pin_now = try cwd.readFileAlloc(io, readme_path, a, .unlimited);
+    defer a.free(pin_now);
+    // The planted row names a log that really sits under date/20260702/, so the shelf link it
+    // becomes resolves. A pen reference that resolves nowhere raises the tree's own lost-reference
+    // census, since tools/fixtures/dated_path_scan.sh reads the filesystem rather than the index,
+    // and a sandbox left behind by a selftest is on that filesystem (REDS %200).
+    const theta_dir = try std.fs.path.join(a, &.{ logs, "date", "20260702" });
+    defer a.free(theta_dir);
+    try cwd.createDirPath(io, theta_dir);
+    const theta_path = try std.fs.path.join(a, &.{ theta_dir, "20260702-090000_theta.md" });
+    defer a.free(theta_path);
+    try cwd.writeFile(io, .{ .sub_path = theta_path, .data = "theta\n" });
+    const with_row = try std.fmt.allocPrint(a, "{s}| 20260702.090000 | [theta](date/20260702/20260702-090000_theta.md) | a day already folded out of the room |\n", .{pin_now});
+    defer a.free(with_row);
+    try cwd.writeFile(io, .{ .sub_path = readme_path, .data = with_row });
+    const idx3 = try fold_index(a, io, sandbox, "session-logs", "20260704.140000", false);
+    if (idx3.rows_folded != 1) return error.SelftestRosterlessFoldCount;
+    const shelf3_path = try std.fs.path.join(a, &.{ logs, "date", "README-index-20260702.md" });
+    defer a.free(shelf3_path);
+    const shelf3 = try cwd.readFileAlloc(io, shelf3_path, a, .unlimited);
+    defer a.free(shelf3);
+    if (std.mem.indexOf(u8, shelf3, "](../SEASONS.md)") != null) return error.SelftestShelfNamesAbsentRoster;
+    if (std.mem.indexOf(u8, shelf3, "Living pin: [`../README.md`](../README.md).") == null) return error.SelftestShelfLostItsPinLink;
     const shelf2 = try cwd.readFileAlloc(io, shelf_path, a, .unlimited);
     defer a.free(shelf2);
     if (!std.mem.eql(u8, shelf1, shelf2)) return error.SelftestShelfDrift;

@@ -46,41 +46,39 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `cafd4526c1` -- the lap the seated bound got one reading, and a deciding copy of it joined the declared-limit guard at zero (REDS %199). This line names the nib and one sentence; the account of a lap lives in its session log.
+**Git nib:** `5971facfc0` -- the lap the index fold learned to keep its rows in place, and active-designing's 86 rows moved onto 21 shelves (REDS %200). This line names the nib and one sentence; the account of a lap lives in its session log.
 
-**Now.** **The law that states the bound had six meters, and five of them spelled the number
-themselves.** `living_pin_max_bytes` is written once, at
-[`../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md`](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md).
-Six meters measure against it; five carried their own copy across **six sites**. The lap before this
-one seated the sixth to read the law, named the remainder as **"three scripts"** in its own row and
-in the scan's comment, and left. **A grep found five** (REDS %199). A constant written six ways can
-quietly disagree with itself: move the law and five meters keep measuring against yesterday, each
-green about the number it happens to hold.
+**Now.** **A tool proven on one instance of a shape has been proven on that instance, rather than
+on the shape.** `fold_index` in
+[`../tools/rye/session_logs_archive.rye`](../tools/rye/session_logs_archive.rye) collected the index
+rows it kept and appended them after all prose -- the repair `session-logs/README.md` needed once,
+when its title stood at line 1,881 beneath 1,880 rows (REDS %182). **That room's table is the last
+block in its file**, so appending at the end and keeping in place are the same write there, and the
+selftest fixture was shaped the same way. Folding `active-designing` put its two kept rows **below
+the redirect-stubs section, below the width-law paragraph, and below the closing line** -- outside
+any table, which GitHub-Flavored Markdown renders as literal pipes. REDS %182's own fault,
+reintroduced by the tool built to fix it (REDS %200).
 
-**One reading now, and a wall that keeps it one.**
-[`../tools/fixtures/living_pin_max_bytes.sh`](../tools/fixtures/living_pin_max_bytes.sh) resolves the
-law from its own location rather than the caller's working directory, so a scan that later `cd`s
-into a pen still reads the real tree's law, and it refuses with a named reason rather than
-defaulting. `declared_ceiling` gains a fourth reading over **2,046 tracked sources under `tools/`**:
-a meter that **assigns** the number or **compares** against it as a literal is deciding with a copy,
-**gated at zero**; a comment, an assert string, or planted pen data **recites** it, honest where the
-number is the subject, **six lines across six files** under a ceiling that only falls. **A witness
-asserts and a control plants; a scan decides** -- so the two roles sit outside the gate by *role*
-rather than by *name*, which is what keeps an exemption from becoming the roster this row is about.
-Proven across **twenty-seven behaviors and fifty assertions**, five new ones on real git
-repositories in a pen.
+**Two more the repair itself found.** Restoring the blank line a fold consumes, keyed off *whether
+the fold could date a row*, put a blank **between two table rows** -- a table also holds header
+rows, delimiter rows, `living` rows carrying no stamp, and day-only rows, and a blank inside a table
+ends it. **A worse fault than the cosmetic one it was fixing**, caught in the pen before it reached
+a room; the test is a **leading pipe**, which is what GFM itself reads. And the shelf header named
+`../SEASONS.md` unconditionally, where **one room keeps that page**, so the first fold wrote **21
+shelves each carrying a link to a file that was never there** -- in files immutable once written.
+The room is asked now. Four selftest legs, each proven on metal by putting the elder behavior back
+and watching its named error fire.
 
-**Two owned in the same breath.** The new reading's first run refused the tree at **8 recitations
-against a ceiling of 6** -- both extra lines written by this round, inside the comment explaining the
-guard. They came out rather than the ceiling going up. And the opening cold roster ran in the
-background while the lap edited the tree, so `declared_ceiling` was measured *after* its own repair:
-**a 29-minute cold roster is cold only if the tree holds still**, and the hot roster after `git add`
-is what proves the shipped tree.
+**Landed with it.** `active-designing`'s index folded -- **86 rows onto 21 shelves**, front door
+**30,748 -> 8,565 bytes**, every shelf link resolving, the room joining `session-logs` on the
+**ENFORCE** roster at zero, and the ratchet ceiling falling **317 -> 231** with the control's
+planted counts moving with it. **Three rooms remain**, each its own round: `counsel` 112,
+`expanding-prompts` 78, `waymarks` 41.
 
-**The one page still over, and its remedy is word-gated.** `session-logs/README.md` stands at
-**282,139 bytes** against the 24,576 it declares -- 11.4x -- because 192 flat logs across four days
-each carry a row averaging 1,459 bytes. Its rows fold when its logs fold, and **the log fold runs on
-Keaton's word**. It rides a ratchet that only falls; the fold is a door in the table below.
+**The one page still over, and its remedy is word-gated.** `session-logs/README.md` stands above the
+24,576 it declares because 192 flat logs across four days each carry a row averaging 1,459 bytes.
+Its rows fold when its logs fold, and **the log fold runs on Keaton's word**. It rides a ratchet
+that only falls; the fold is a door in the table below.
 
 **Landed, and the detail is in the logs.** Every round this block used to narrate reads as one line in *Prior laps* below, or in *Landed arcs* beneath that. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`); the teaching tier reads zero over target.
 
@@ -230,11 +228,11 @@ account. Earlier rows are shelved at
 
 | Landed | Round | Log |
 |---|---|---|
+| `20260824.145109` | A tool proven on one shape -- the index fold kept its rows in place rather than appending them past the prose, the blank it consumes keyed off a leading pipe, the shelf roster link asked of the room, and active-designing's 86 rows carried onto 21 shelves | REDS %200 |
 | `20260824.140523` | The number with six homes -- `living_pin_max_bytes` read from the law by one script instead of spelled by five meters across six sites, and `declared_ceiling` gained a fourth reading gating a deciding copy at zero | REDS %199 |
 | `20260824.130807` | A bound with two meters and no wall -- ITINERARY condensed 47,213 -> 22,647 bytes and moved advisory -> enforce, `declared_ceiling` taught the `**Bound:**` form, and five orphan UTF-8 bytes repaired with validity gated at zero | REDS %197, %198 |
 | `20260824.121445` | A declared bound becomes a measured one -- 13 pages declared a ceiling and none was both readable and honoured; `declared_ceiling` seated 50th | REDS %195, %196 |
 | `20260824.104946` | The last door was already right -- Constel split at 31 of 31, `constel_module_roster` seated 47th, the six-door front-door arc closed | REDS %192 |
-| `20260824.095920` | The guard that was right and unheard -- crypto's own count guard RED and off the roster; both crypto doors repaired | REDS %191 |
 
 Walk back to any of them with `git log --oneline` and the session log of the same stamp.
 
