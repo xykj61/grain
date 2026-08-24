@@ -22,12 +22,18 @@
 
 mirror kyri-voice
 canonical context/KYRI.md
-at ember/voices/KYRI.md
+at ember-voices/KYRI.md
 
-# A NAMING NOTE, recorded rather than silently accepted. `ember/voices/` is where Keaton asked the
-# voices to live, and Ember is the inference module that hosts them -- so the room reads correctly
-# from that side. From the other side it inverts: **Ember is also one of the four voices Kyri
-# carries** (Lattice, Scribble, Lantern, Ember), so `ember/voices/` is a room named after one of
-# its own contents. The mirror mechanism makes the question cheap either way, since a home is a
-# declaration here rather than a move, and the canonical stays in `context/` where 153 references
-# already point. If a standalone `voices/` room is ever wanted, it is one `at` line.
+# A NAMING NOTE, and a fault this descriptor was built with. Keaton offered two homes for the
+# voices: `ember/voices/` and `ember-voices/`. The first was tried and is wrong for a reason that
+# has nothing to do with taste: **a mirror is byte-identical, and a relative link is depth-dependent**,
+# so `../foundations/x.md` resolves from `context/` (depth 1) and lands on `ember/foundations/x.md`
+# from `ember/voices/` (depth 2). Eight links broke the moment the canonical gained them. `ember-voices/`
+# stands at depth 1 beside `context/`, so every relative link resolves identically from both homes.
+#
+# The rule that follows, and the guard now proves it: **every home of a mirrored document must sit at
+# the same depth**, or the copies cannot be byte-identical and correct at once. Recorded as REDS %176.
+#
+# It also settles a second thing the elder note raised. `ember/voices/` read as a room named after one
+# of its own contents, since **Ember is one of the four voices Kyri carries**. At the root the name is
+# a compound rather than a containment, and the inversion goes away.
