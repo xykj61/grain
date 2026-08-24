@@ -2,7 +2,7 @@
 
 *Every form the shell understands, each with a line that was run before it was written down -- and the edges, which are the part a reference usually leaves out.*
 
-**Language:** EN - **Style:** Radiant - **Voice:** Kyri
+**Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Written:** `20260821.185852` - **Status:** Living - **Kind:** crushed API surface
 **Source it compresses:** [`../../rishi/README.md`](../../rishi/README.md) (the tour) and `rishi/tests/*.rish` (the proofs). This page is the *reference*: what to reach for, what it returns, and where it refuses.
 

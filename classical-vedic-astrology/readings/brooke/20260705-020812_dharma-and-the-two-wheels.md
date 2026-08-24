@@ -1,6 +1,6 @@
 # Brooke -- Dharma and the Two Wheels: A Classical Reading
 
-**Stamp:** `20260705.195800 UDT`  -  recomposed from enriched shelf (Movement 2-3)  -  **Language:** EN  -  **Style:** Radiant (see `RADIANT_STYLE.md`)
+**Stamp:** `20260705.195800 UDT`  -  recomposed from enriched shelf (Movement 2-3)  -  **Language:** EN  -  **Style:** Gauge (see `../../../context/GAUGE_STYLE.md`)
 **Subject:** Brooke (placeholder by consent, after Alice)  -  born July 22, 1994  -  8:13 in the evening  -  middle Georgia, USA
 **Frame:** tropical signs, houses, and dignities  -  sidereal nakshatras (Lahiri)  -  whole-sign houses  -  D1 and D9
 

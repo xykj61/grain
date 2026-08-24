@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Version:** `20260715.054500` (Pacific)
-**Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Status:** Living guide
 **Builds on:** `../../rye/README.md`, `../../rye/bootstrap.sh`, `../../GLOW_HOST.template.bron`
 **Companion:** `../../context/specs/enclosure-editors.md` covers the persistent-host, ai-jail-enclosed path (Ubuntu/NixOS/macOS, an editor you keep open for days). This guide covers the opposite case -- an ephemeral **Cursor Cloud Agent** or **Cursor for iOS** session, ai-jail-free by construction, that needs `rye`/`rishi` for the length of one sitting.

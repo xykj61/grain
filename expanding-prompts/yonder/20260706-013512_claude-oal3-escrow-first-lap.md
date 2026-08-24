@@ -1,6 +1,6 @@
-# Claude OA-L3 Escrow First Lap — Runnable Bench
+# Claude OA-L3 Escrow First Lap -- Runnable Bench
 
-**Stamp:** `20260706.013512 UDT` · **Style:** Radiant for logs and scope updates · **Base:** tip `2272dbe` (parity **157** on metal)
+**Stamp:** `20260706.013512 UDT` - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Counsel:** [`../active-designing/20260706-013012_open-asks-escrow-hammock.md`](../../active-designing/20260706-013012_open-asks-escrow-hammock.md)
 **Handoff summary:** [`../session-logs/archive/20260706/20260706-013512_claude-oal3-escrow-handoff-summary.md`](../session-logs/archive/20260706/20260706-013512_claude-oal3-escrow-handoff-summary.md)
 
@@ -12,15 +12,15 @@
 
 **One clock.** Body stamps use Kaeden's supplied stamp verbatim. This prompt rides `20260706.013512`.
 
-**Vocabulary gate — before any code.** Kaeden pastes the vocabulary block (below) and affirms the three seated recommendations. Without that block, write counsel only — do not implement.
+**Vocabulary gate -- before any code.** Kaeden pastes the vocabulary block (below) and affirms the three seated recommendations. Without that block, write counsel only -- do not implement.
 
 **Value model.** Escrow touches the money fold. State the invariants in the session log before describing the algorithm. Red-then-green: unwelcome paths must fail before welcome path is declared GREEN.
 
 **TAME.** Safety first (invariants, bounded amounts, no negative balances), performance second, joy third. Width surface: add changed `.rye` files to `tools/width-check.rish`.
 
-**Git.** GPG-sign every commit (`.claude/rules/git-signing.md` — never `--no-gpg-sign`, never `--no-verify`). Exclude `linengrow/bin/` and `comlink/.build/` (now in `.gitignore`). Ship the session log in the **same commit** as the work.
+**Git.** GPG-sign every commit (`.claude/rules/git-signing.md` -- never `--no-gpg-sign`, never `--no-verify`). Exclude `linengrow/bin/` and `comlink/.build/` (now in `.gitignore`). Ship the session log in the **same commit** as the work.
 
-**Stop-and-park.** Lap 1 only — local log, one witness, parity **158**. No OA-L3 device wire (lap 2), no MUR module home (was MALA), no external chain, no sourcing-discipline canon unless Kaeden asks separately.
+**Stop-and-park.** Lap 1 only -- local log, one witness, parity **158**. No OA-L3 device wire (lap 2), no MUR module home (was MALA), no external chain, no sourcing-discipline canon unless Kaeden asks separately.
 
 ---
 
@@ -28,12 +28,12 @@
 
 | Item | State |
 |------|--------|
-| **Parity** | **157** GREEN — OA-L1 + OA-L2 (hosted + device wire) |
-| **OA-L3** | Counsel seated — [`20260706-013012_open-asks-escrow-hammock.md`](../../active-designing/20260706-013012_open-asks-escrow-hammock.md) |
+| **Parity** | **157** GREEN -- OA-L1 + OA-L2 (hosted + device wire) |
+| **OA-L3** | Counsel seated -- [`20260706-013012_open-asks-escrow-hammock.md`](../../active-designing/20260706-013012_open-asks-escrow-hammock.md) |
 | **Settlement** | Sui seated; two-lane witness proposed (softenings landed) |
-| **Seeds** | Poster `0x51`, applicant `0x52` — same as OA-L1/L2 |
+| **Seeds** | Poster `0x51`, applicant `0x52` -- same as OA-L1/L2 |
 | **Fixture** | `tools/fixtures/open_asks_request.bron` |
-| **Receipt spine** | `linengrow/receipt_core.rye` — reuse fact shape |
+| **Receipt spine** | `linengrow/receipt_core.rye` -- reuse fact shape |
 
 ---
 
@@ -42,7 +42,7 @@
 Kaeden fills this table and affirms the line below it:
 
 ```
-## Vocabulary — Kaeden's word
+## Vocabulary -- Kaeden's word
 
 | Role | Word / prefix |
 |------|----------------|
@@ -54,24 +54,24 @@ Affirm seated recommendations:
 - [ ] Reuse receipt-core fact with memo prefix (wire does not fork)
 - [ ] Grow inline in linengrow/open_asks.rye (Gall's Law from running seed)
 - [ ] Hold = M1 commitment, release = M2 delivery
-- [ ] Proceed to lap 1 implementation → parity 158
+- [ ] Proceed to lap 1 implementation -> parity 158
 ```
 
 If Kaeden changes the memo prefixes or escrow account name, use his words exactly in code and fixtures.
 
 ---
 
-## Seated recommendations (already counsel — implement unless Kaeden overrides)
+## Seated recommendations (already counsel -- implement unless Kaeden overrides)
 
-1. **Encoding** — Reuse `receipt_core` transaction fact (`from`, `to`, `amount`, `memo`, `stamp`). Distinguish role by **memo prefix** on the canonical fact bytes. Hold and release both poster-signed; `from` = poster, `to` = applicant (or escrow account name for hold leg — match brief's conservation story).
+1. **Encoding** -- Reuse `receipt_core` transaction fact (`from`, `to`, `amount`, `memo`, `stamp`). Distinguish role by **memo prefix** on the canonical fact bytes. Hold and release both poster-signed; `from` = poster, `to` = applicant (or escrow account name for hold leg -- match brief's conservation story).
 
-2. **Home** — Extend [`linengrow/open_asks.rye`](../../linengrow/open_asks.rye) inline. No new top-level module; no `mala/` until second consumer (graduation rule).
+2. **Home** -- Extend [`linengrow/open_asks.rye`](../../linengrow/open_asks.rye) inline. No new top-level module; no `mala/` until second consumer (graduation rule).
 
-3. **Ladder** — Hold is M1 (committed, not yet mailable to applicant as payout); release is M2 (delivered to applicant). Document in scope note status when landed.
+3. **Ladder** -- Hold is M1 (committed, not yet mailable to applicant as payout); release is M2 (delivered to applicant). Document in scope note status when landed.
 
 ---
 
-## Invariants (witness must bind — from counsel brief)
+## Invariants (witness must bind -- from counsel brief)
 
 State these in the session log, then implement the fold to enforce them:
 
@@ -81,16 +81,16 @@ State these in the session log, then implement the fold to enforce them:
 - Release requires prior matching hold; hold requires prior **acceptance**
 - No double-hold, no double-release on same `request_ref`
 - Every escrow fact poster-signed; amounts within `receipt_core` bounds
-- **Internal only** — test units, own log, own keys; no chain
+- **Internal only** -- test units, own log, own keys; no chain
 
 ---
 
-## Lap 1 — pipeline to implement
+## Lap 1 -- pipeline to implement
 
 Extend OA-L1 loop:
 
 ```
-post → apply → accept → HOLD → RELEASE → verify (fold: held, released, completed; escrow_balance = 0)
+post -> apply -> accept -> HOLD -> RELEASE -> verify (fold: held, released, completed; escrow_balance = 0)
 ```
 
 | Step | Actor | Fact |
@@ -108,14 +108,14 @@ post → apply → accept → HOLD → RELEASE → verify (fold: held, released,
 ## Welcome path (selftest)
 
 1. Load fixture request; run full loop with deterministic keys
-2. Fold → `held`, `released`, `completed` (or equivalent flags); `escrow_balance == 0`; stipend conserved
-3. Print `GREEN: OA-L3 escrow — hold, release, verify on one log.`
+2. Fold -> `held`, `released`, `completed` (or equivalent flags); `escrow_balance == 0`; stipend conserved
+3. Print `GREEN: OA-L3 escrow -- hold, release, verify on one log.`
 
 Mirror [`tools/open_asks_lap1.rish`](../../tools/open_asks_lap1.rish) witness shape.
 
 ---
 
-## Unwelcome paths (selftest — each must refuse)
+## Unwelcome paths (selftest -- each must refuse)
 
 Exercise at least these; witness may rely on selftest output:
 
@@ -133,13 +133,13 @@ Each unwelcome path prints a clear refusal line; selftest exits 0 only after all
 
 | # | Deliverable |
 |---|-------------|
-| 1 | Extend `linengrow/open_asks.rye` — hold/release parsing, fold with invariants, selftest welcome + unwelcome |
-| 2 | `tools/open_asks_lap3.rish` — build + selftest witness |
-| 3 | `tools/parity.rish` — one block after OA-L2 → parity **158** |
-| 4 | `tools/width-check.rish` — if file list changed |
-| 5 | Update [`20260706-013012_open-asks-escrow-hammock.md`](../../active-designing/20260706-013012_open-asks-escrow-hammock.md) status → landed parity **158** |
-| 6 | `work-in-progress/ROADMAP.md` · `work-in-progress/TASKS.md` · `linengrow/README.md` — parity **158**, OA-L3 lap 1 checked |
-| 7 | `active-designing/README.md` — OA-L3 row → **landed** when wired |
+| 1 | Extend `linengrow/open_asks.rye` -- hold/release parsing, fold with invariants, selftest welcome + unwelcome |
+| 2 | `tools/open_asks_lap3.rish` -- build + selftest witness |
+| 3 | `tools/parity.rish` -- one block after OA-L2 -> parity **158** |
+| 4 | `tools/width-check.rish` -- if file list changed |
+| 5 | Update [`20260706-013012_open-asks-escrow-hammock.md`](../../active-designing/20260706-013012_open-asks-escrow-hammock.md) status -> landed parity **158** |
+| 6 | `work-in-progress/ROADMAP.md` - `work-in-progress/TASKS.md` - `linengrow/README.md` -- parity **158**, OA-L3 lap 1 checked |
+| 7 | `active-designing/README.md` -- OA-L3 row -> **landed** when wired |
 | 8 | Session log + `session-logs/README.md` index row |
 | 9 | `rishi/bin/rishi run tools/parity.rish` GREEN on metal (~70s) |
 
@@ -150,7 +150,7 @@ Each unwelcome path prints a clear refusal line; selftest exits 0 only after all
 One commit when lap 1 is GREEN:
 
 ```
-Land parity 158 — OA-L3 escrow hold and release on one log.
+Land parity 158 -- OA-L3 escrow hold and release on one log.
 
 Hold at acceptance and release at completion reuse receipt-core memo prefixes; invariants bound in fold and witness; internal test units only.
 ```
@@ -180,8 +180,8 @@ rishi/bin/rishi run tools/two_rooms_doorway.rish
 
 ## Horizon (do not build in this bench)
 
-- OA-L3 lap 2 — escrow facts over Comlink device wire
-- OA-L4 — reputation fold
+- OA-L3 lap 2 -- escrow facts over Comlink device wire
+- OA-L4 -- reputation fold
 - SLC-L3 settlement rail
 - MUR module graduation (was MALA)
 - Sourcing-discipline `context/` note

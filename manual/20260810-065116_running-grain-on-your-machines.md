@@ -1,7 +1,7 @@
 # Running Grain on Your Machines
 
 **Language:** EN
-**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Audience:** an Acme Corporation employee bringing Grain to the machines they already own
 **Law:** [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md)

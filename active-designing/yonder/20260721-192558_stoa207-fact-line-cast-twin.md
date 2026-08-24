@@ -1,15 +1,15 @@
-# STOA207 — Fact-Line Cast Twin
+# STOA207 -- Fact-Line Cast Twin
 
 *An Acme Corporation employee reading this gets the same-desk named-cast twin for `fact-line-shape`: `sig` and `fact` as `@t` under one `^-`.*
 
 **Language:** EN  
-**Version:** `20260721.192558` (UDT · Framework host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260721.192558` (UDT - Framework host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Checkable — GREEN `20260721.192558`  
-**Register:** Checkable (Two Rooms) — cast twin GREEN; mold twin held; `@t` fact capacity debt stays  
+**Status:** Checkable -- GREEN `20260721.192558`  
+**Register:** Checkable (Two Rooms) -- cast twin GREEN; mold twin held; `@t` fact capacity debt stays  
 
-**Grounds in:** [`20260721-191254_stoa206-fact-line-shape-desk.md`](20260721-191254_stoa206-fact-line-shape-desk.md) · STOA186 sala-event cast pattern
+**Grounds in:** [`20260721-191254_stoa206-fact-line-shape-desk.md`](20260721-191254_stoa206-fact-line-shape-desk.md) - STOA186 sala-event cast pattern
 
 **dated_guard:** Do **not** claim mold twin, real hex literals, or wire into `glow_sala_b0_line`. JABS3 held.
 
@@ -17,7 +17,7 @@
 
 ## Verdict (one breath)
 
-**FACT_LINE_CAST.** `glow/gen/cast-named-fact-line.glow` — `+$ fact-line-shape` then `^- fact-line-shape`. `glow_run` GREEN; desk suite pin seated.
+**FACT_LINE_CAST.** `glow/gen/cast-named-fact-line.glow` -- `+$ fact-line-shape` then `^- fact-line-shape`. `glow_run` GREEN; desk suite pin seated.
 
 ---
 

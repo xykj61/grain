@@ -1,14 +1,14 @@
-# STOA164 — Shape-Kind Dual Desk
+# STOA164 -- Shape-Kind Dual Desk
 
 *An Acme Corporation employee reading this gets the first unit `$%` forward dual on the Glow OS shape rename itinerary: `shape-kind` beside `mold-kind`, with cast twins that lead with `kind-shape`.*
 
 **Language:** EN  
-**Version:** `20260721.010739` (UDT · Framework host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260721.010739` (UDT - Framework host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Checkable — bound by `glow_run` desks  
-**Register:** Checkable (Two Rooms) — `shape-kind` dual GREEN · mold twin kept  
-**Grounds in:** [`20260721-010610_stoa163-shape-pair-dual-desk.md`](../20260721-010610_stoa163-shape-pair-dual-desk.md) · [`20260721-000743_stoa151-kind-shape-alias.md`](20260721-000743_stoa151-kind-shape-alias.md)
+**Status:** Checkable -- bound by `glow_run` desks  
+**Register:** Checkable (Two Rooms) -- `shape-kind` dual GREEN - mold twin kept  
+**Grounds in:** [`20260721-010610_stoa163-shape-pair-dual-desk.md`](../20260721-010610_stoa163-shape-pair-dual-desk.md) - [`20260721-000743_stoa151-kind-shape-alias.md`](20260721-000743_stoa151-kind-shape-alias.md)
 
 **dated_guard:** Do **not** rewrite dated mold briefs. Do **not** delete `mold-kind`. No whole-tree sed.
 
@@ -24,10 +24,10 @@
 
 | Item | Proof |
 |------|-------|
-| `shape-kind.glow` → `+$ kind-shape` | `glow_run` |
+| `shape-kind.glow` -> `+$ kind-shape` | `glow_run` |
 | `cast-named-kind-shape.glow` | `glow_run` |
 | `cast-import-kind-shape.glow` `/+ shape-kind` | `glow_run` |
-| `mold-kind` · mold cast twins kept | desks unchanged |
+| `mold-kind` - mold cast twins kept | desks unchanged |
 
 Lower emits `KindShape` parallel to `KindMold`.
 
@@ -38,7 +38,7 @@ Lower emits `KindShape` parallel to `KindMold`.
 | Item | Why |
 |------|-----|
 | **STOA165** `shape-xact` dual (+ cast twins) | inventary |
-| Multi-field `$:` duals · multi-field named-cast | itinerary |
+| Multi-field `$:` duals - multi-field named-cast | itinerary |
 | Sala B0 | behind rename finishing edge |
 
 ---

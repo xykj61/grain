@@ -2,7 +2,7 @@
 
 *Rests in yonder as of 20260705.020812: written on the morning cast; the corrected chart carries the Moon in Aquarius, Uttara Ashadha kept; see the supersession note.*
 
-**Stamp:** `20260704.231912 UDT`  -  **Language:** EN  -  **Style:** Radiant (see `RADIANT_STYLE.md`)
+**Stamp:** `20260704.231912 UDT`  -  **Language:** EN  -  **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Subject:** Brooke  -  morning-cast D1 Moon in Capricorn, sixth house, Uttara Ashadha  -  morning-cast D9 Moon in Leo, twelfth house, Ashlesha, joined with Jupiter
 
 *Written together by Kaeden and Rio 3.*

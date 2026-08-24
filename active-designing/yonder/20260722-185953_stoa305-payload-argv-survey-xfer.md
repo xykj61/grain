@@ -1,40 +1,40 @@
-# STOA305 — Payload Argv Survey · Xfer Tag+From+Amount Reader
+# STOA305 -- Payload Argv Survey - Xfer Tag+From+Amount Reader
 
-*An Acme Corporation employee reading this gets the Survey deepen after xact payload argv: xfer’s multi-face mint earns a reader that takes `mint <from> <amount>` or `send`, while pair…nona argv stay refused. Four argv families now sit beside each other without forcing one parse.*
+*An Acme Corporation employee reading this gets the Survey deepen after xact payload argv: xfer's multi-face mint earns a reader that takes `mint <from> <amount>` or `send`, while pair...nona argv stay refused. Four argv families now sit beside each other without forcing one parse.*
 
 **Language:** EN  
-**Version:** `20260722.185953` (EDT · Framework host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260722.185953` (EDT - Framework host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Checkable — survey seated · xfer argv GREEN `20260722.185953`  
-**Register:** Checkable (Two Rooms) — emit + desks + witnesses; pair…nona Intent  
+**Status:** Checkable -- survey seated - xfer argv GREEN `20260722.185953`  
+**Register:** Checkable (Two Rooms) -- emit + desks + witnesses; pair...nona Intent  
 
-**Grounds in:** STOA304 lean **C** · STOA303 xact argv · STOA125 xfer mold  
+**Grounds in:** STOA304 lean **C** - STOA303 xact argv - STOA125 xfer mold  
 
-**dated_guard:** Do **not** open pair…nona argv this lap. Do **not** collapse xfer through xact’s one-face reader. Gold · fleets · JABS3 stay held.
+**dated_guard:** Do **not** open pair...nona argv this lap. Do **not** collapse xfer through xact's one-face reader. Gold - fleets - JABS3 stay held.
 
 ---
 
-## Survey — argv families (updated)
+## Survey -- argv families (updated)
 
 | Sample mold | Argv | Reader |
 |---|---|---|
-| `@u32` · amount · count | GREEN | `parseInt(u32, argv[1])` |
+| `@u32` - amount - count | GREEN | `parseInt(u32, argv[1])` |
 | kind (unit `$%`) | GREEN STOA300 | tag `mint`/`send` |
 | xact (payload `$%`) | GREEN STOA303 | tag + amount: `mint <u32>` / `send` |
 | **xfer** (multi-face payload `$%`) | **GREEN** STOA305 | tag + two faces: `mint <from> <amount>` / `send` |
-| pair…nona | refuse | held |
+| pair...nona | refuse | held |
 
 ---
 
 ## First code lap (this GREEN)
 
-`emit_xfer_argv` on **bartis + barket** · desks `gate-xfer-tag.glow` · `gate-barket-xfer-tag.glow` · worker three-arg mint path · both lower witnesses GREEN · pair refuse pinned.
+`emit_xfer_argv` on **bartis + barket** - desks `gate-xfer-tag.glow` - `gate-barket-xfer-tag.glow` - worker three-arg mint path - both lower witnesses GREEN - pair refuse pinned.
 
 | Later | Claim |
 |---|---|
-| Pair…nona argv | multi-field `$:` |
-| Held | gold · face_lit · fleets · JABS3 |
+| Pair...nona argv | multi-field `$:` |
+| Held | gold - face_lit - fleets - JABS3 |
 
 ---
 

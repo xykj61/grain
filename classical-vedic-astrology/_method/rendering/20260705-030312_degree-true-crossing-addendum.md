@@ -3,7 +3,7 @@
 **File:** `_method/rendering/20260705-030312_degree-true-crossing-addendum.md`
 **Stamp:** `20260705.030312 UDT` (Kaeden's clock, verbatim)
 **Companion to:** [`SILO_DIURNAL_WHEEL.md`](SILO_DIURNAL_WHEEL.md)
-**Style:** Radiant
+**Style:** Gauge (see `../../../context/GAUGE_STYLE.md`)
 
 *Written together by Kaeden and Claude (Fable 5), in the fresh bench's Radiant voice -- voice-name awaiting Kaeden's word.*
 

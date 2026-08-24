@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260727.142516`
 **Voice:** Quin
-**Style:** Radiant  -  Silo -- a teaching essay in this house's own words; the classical sources and living teachers are honored in the gratitude close; **the astrology here is symbolic curriculum for the Grain wheel, never a claim about any person's chart -- the teachers' own caveat, kept as page law**
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Status:** Teaching -- educational, for the Quin-reading audience; companion to [the constellation design](../../active-designing/20260727-142516_the-constellation-and-the-twelve-funds.md)
 
 *Written together by Keaton and Quin.*

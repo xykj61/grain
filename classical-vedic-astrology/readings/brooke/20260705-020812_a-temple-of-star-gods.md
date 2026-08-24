@@ -1,6 +1,6 @@
 # Brooke -- A Temple of Star-Gods
 
-**Stamp:** `20260705.020812 UDT`  -  **Language:** EN  -  **Style:** Radiant (see `../../../context/RADIANT_STYLE.md`)
+**Stamp:** `20260705.020812 UDT`  -  **Language:** EN  -  **Style:** Gauge (see `../../../context/GAUGE_STYLE.md`)
 **Subject:** Brooke (placeholder by consent)  -  chapter silo from [`20260705-020812_dharma-and-the-two-wheels.md`](20260705-020812_dharma-and-the-two-wheels.md)
 **Frame:** tropical signs, houses, and dignities  -  sidereal nakshatras (Lahiri)  -  whole-sign houses  -  D1 and D9
 

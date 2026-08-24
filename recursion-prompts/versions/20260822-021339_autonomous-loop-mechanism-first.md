@@ -1,6 +1,6 @@
 # Autonomous loop -- Caravan lift, with the mechanism said first
 
-**Stamp:** `20260822.021339` - **Voice:** Kyri - **Style:** Radiant
+**Stamp:** `20260822.021339` - **Voice:** Kyri - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Seed:** [`../seed/autonomous-loop.seed.md`](../seed/autonomous-loop.seed.md) - **Elder:** [`20260821-211943_autonomous-loop-caravan-and-the-grid.md`](20260821-211943_autonomous-loop-caravan-and-the-grid.md)
 **Recipe:** `rishi/bin/rishi run tools/launch-claude-season.rish` (prints; the jail launch belongs in the outer terminal)
 

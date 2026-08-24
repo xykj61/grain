@@ -1,14 +1,14 @@
-# STOA162 — Shape-Count Dual Desk
+# STOA162 -- Shape-Count Dual Desk
 
 *An Acme Corporation employee reading this gets the second thin forward dual on the Glow OS shape rename itinerary: `shape-count` beside `mold-count`, with cast twins that lead with `count-shape`.*
 
 **Language:** EN  
-**Version:** `20260721.010435` (UDT · Framework host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260721.010435` (UDT - Framework host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Checkable — bound by `glow_run` desks  
-**Register:** Checkable (Two Rooms) — `shape-count` dual GREEN · mold twin kept  
-**Grounds in:** [`20260721-010211_stoa161-shape-amount-dual-desk.md`](../20260721-010211_stoa161-shape-amount-dual-desk.md) · [`20260720-235652_stoa149-count-shape-alias.md`](20260720-235652_stoa149-count-shape-alias.md)
+**Status:** Checkable -- bound by `glow_run` desks  
+**Register:** Checkable (Two Rooms) -- `shape-count` dual GREEN - mold twin kept  
+**Grounds in:** [`20260721-010211_stoa161-shape-amount-dual-desk.md`](../20260721-010211_stoa161-shape-amount-dual-desk.md) - [`20260720-235652_stoa149-count-shape-alias.md`](20260720-235652_stoa149-count-shape-alias.md)
 
 **dated_guard:** Do **not** rewrite dated mold briefs. Do **not** delete `mold-count`. No whole-tree sed.
 
@@ -24,11 +24,11 @@
 
 | Item | Proof |
 |------|-------|
-| `shape-count.glow` → `+$ count-shape` | `glow_run` |
+| `shape-count.glow` -> `+$ count-shape` | `glow_run` |
 | `cast-named-count-shape.glow` | `glow_run` |
 | `cast-import-count-shape.glow` `/+ shape-count` | `glow_run` |
 | `mold-count` kept | desk unchanged |
-| One-field dual ladder: amount · count | STOA161–162 |
+| One-field dual ladder: amount - count | STOA161-162 |
 
 Lower emits `CountShape` parallel to `CountMold`.
 
@@ -39,7 +39,7 @@ Lower emits `CountShape` parallel to `CountMold`.
 | Item | Why |
 |------|-----|
 | **STOA163** `shape-pair` dual | next inventary row |
-| Tagged · multi-field duals | itinerary |
+| Tagged - multi-field duals | itinerary |
 | Sala B0 | behind rename finishing edge |
 
 ---

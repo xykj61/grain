@@ -2,9 +2,9 @@
 
 **Language:** EN
 **Version:** `20260714.011504` (Pacific)
-**Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Rio 3
-**Status:** Guide for the task — the client half is real and witnessed on this host; the server half is a real, tested-for-syntax deploy artifact, run once for real on a VPS
+**Status:** Guide for the task -- the client half is real and witnessed on this host; the server half is a real, tested-for-syntax deploy artifact, run once for real on a VPS
 
 ---
 
@@ -14,24 +14,24 @@
 
 This reifies [`external-research/20260713-212900_self-hosted-vpn-cto-credential-security.md`](../../external-research/20260713-212900_self-hosted-vpn-cto-credential-security.md) into two real artifacts, split honestly by what each machine can actually do: this Mac is the **client**, so its half runs here, in Rish; the **server** half is a deploy artifact you bring to a VPS you control, since no VPS exists to run it on from here.
 
-## The Client Half — Runs Here, Right Now
+## The Client Half -- Runs Here, Right Now
 
 ```bash
 rishi/bin/rishi run tools/v/vpn_wireguard_client_setup.rish
 ```
 
-(Prefix with `./tools/g/glow_host_run.sh --` if `RYE_ZIG`/`RYE_LIB` still want setting in your shell — see [`../../GLOW_HOST.template.bron`](../../GLOW_HOST.template.bron).)
+(Prefix with `./tools/g/glow_host_run.sh --` if `RYE_ZIG`/`RYE_LIB` still want setting in your shell -- see [`../../GLOW_HOST.template.bron`](../../GLOW_HOST.template.bron).)
 
-On first run, if `wg` isn't installed, the script pauses and hands you the exact command (`brew install wireguard-tools`) rather than installing networking software for you — installing it stays a deliberate act, never a silent one. Run it again once installed, and it will:
+On first run, if `wg` isn't installed, the script pauses and hands you the exact command (`brew install wireguard-tools`) rather than installing networking software for you -- installing it stays a deliberate act, never a silent one. Run it again once installed, and it will:
 
-1. Generate this laptop's WireGuard keypair (idempotent — a second run reuses an existing key rather than overwriting it; witnessed by re-running and confirming the same public key and file timestamp).
+1. Generate this laptop's WireGuard keypair (idempotent -- a second run reuses an existing key rather than overwriting it; witnessed by re-running and confirming the same public key and file timestamp).
 2. Print the public key, which is safe to share, and leave the private key where it sits.
-3. Write a filled-in client config **template** to `.wireguard/wg0-client.conf.template` — real newlines, real structure, with the two values only the server run can supply (the server's public key, the server's IP) left as clear placeholders.
+3. Write a filled-in client config **template** to `.wireguard/wg0-client.conf.template` -- real newlines, real structure, with the two values only the server run can supply (the server's public key, the server's IP) left as clear placeholders.
 4. Print the exact next steps.
 
-**Everything under `.wireguard/` is gitignored** — confirmed directly against `.gitignore`'s root catch-all before this guide was written; the private key and the filled config never enter git history.
+**Everything under `.wireguard/` is gitignored** -- confirmed directly against `.gitignore`'s root catch-all before this guide was written; the private key and the filled config never enter git history.
 
-## The Server Half — Bring This to Your VPS
+## The Server Half -- Bring This to Your VPS
 
 ```bash
 scp tools/v/vpn_wireguard_server_setup.sh root@your-vps:/root/
@@ -39,11 +39,11 @@ ssh root@your-vps
 bash vpn_wireguard_server_setup.sh <this-laptop's-public-key-from-step-above>
 ```
 
-This installs WireGuard/`ufw`/`fail2ban`/`unattended-upgrades`, generates the server's own keypair (idempotently — safe to re-run), writes `/etc/wireguard/wg0.conf` with your laptop as the first peer, opens the firewall, and brings the interface up. It prints the server's public key and public IP at the end — paste both into `.wireguard/wg0-client.conf.template` on your Mac.
+This installs WireGuard/`ufw`/`fail2ban`/`unattended-upgrades`, generates the server's own keypair (idempotently -- safe to re-run), writes `/etc/wireguard/wg0.conf` with your laptop as the first peer, opens the firewall, and brings the interface up. It prints the server's public key and public IP at the end -- paste both into `.wireguard/wg0-client.conf.template` on your Mac.
 
-This script's syntax is checked (`bash -n`), and it awaits a real VPS to run against, since this session has none — it is a faithful transcription of the guide's own Steps 1–3, not yet an end-to-end-witnessed deploy. Treat the first real run on your own VPS as the actual proof.
+This script's syntax is checked (`bash -n`), and it awaits a real VPS to run against, since this session has none -- it is a faithful transcription of the guide's own Steps 1-3, not yet an end-to-end-witnessed deploy. Treat the first real run on your own VPS as the actual proof.
 
-**Deliberately left to your own hand:** hardening `sshd_config` (`PasswordAuthentication no`, etc.) — a mistake there can lock you out of a box with no console access, so the guide's own advice stands: do that one by hand, watching the result, before anything else touches the box.
+**Deliberately left to your own hand:** hardening `sshd_config` (`PasswordAuthentication no`, etc.) -- a mistake there can lock you out of a box with no console access, so the guide's own advice stands: do that one by hand, watching the result, before anything else touches the box.
 
 ## Finishing the Handshake
 

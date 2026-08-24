@@ -1,8 +1,8 @@
-# Silo — The Toroidal Hardware Proposal, Stated Plainly
+# Silo -- The Toroidal Hardware Proposal, Stated Plainly
 
 **Language:** EN
 **Version:** `20260713.232506` (Pacific)
-**Style:** Radiant · secular silo
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Original (held whole):** [`../../gratitude/grain-lineage/silicon_torus_hpc_hardware_proposal_whitepaper.md`](../../gratitude/grain-lineage/silicon_torus_hpc_hardware_proposal_whitepaper.md)
 
 ---
@@ -19,11 +19,11 @@ These claims stand on ordinary geometry and do not require any contested physics
 - **Bounded, known distances.** The farthest any two points sit apart is fixed and knowable before the machine runs. That is exactly the kind of stated, compile-time bound TAME Guidance already asks for everywhere else.
 - **Memory is compute is storage.** The proposal follows Cerebras's wafer-scale idea (put the memory on the same die as the cores, no separate DRAM/bus) and extends it to three dimensions. If it holds, the classic "processor waits for data to arrive from memory" bottleneck largely disappears, because the data is already where the computation happens.
 - **More surface per volume for cooling**, and heat that can leave through three dimensions rather than one plane.
-- **A natural address scheme.** A memory cell's coordinate on the torus (major angle, minor angle, radial depth) *is* its address — no page tables, no translation layer. This is a clean idea independent of any physics framing.
+- **A natural address scheme.** A memory cell's coordinate on the torus (major angle, minor angle, radial depth) *is* its address -- no page tables, no translation layer. This is a clean idea independent of any physics framing.
 
 ## What the Aether Framing Costs (the part to hold at arm's length)
 
-The original grounds much of its language in "aether-theoretic field interactions" (Wheeler, Dollard) — a contested, non-mainstream physics framework. Stated plainly for a general reviewer: **the toroidal geometry's advantages above do not depend on aether theory being correct.** Uniform topology, bounded distance, on-die memory, and coordinate-addressing are geometry and engineering; they survive intact if the aether language is removed entirely. A PR proposal to a skeptical audience should lead with the geometry and treat the field-theoretic register as the author's inspiration, not as a load-bearing premise. Keeping the two separate is the honest move, and it makes the strong parts stronger by not tying them to the contested parts.
+The original grounds much of its language in "aether-theoretic field interactions" (Wheeler, Dollard) -- a contested, non-mainstream physics framework. Stated plainly for a general reviewer: **the toroidal geometry's advantages above do not depend on aether theory being correct.** Uniform topology, bounded distance, on-die memory, and coordinate-addressing are geometry and engineering; they survive intact if the aether language is removed entirely. A PR proposal to a skeptical audience should lead with the geometry and treat the field-theoretic register as the author's inspiration, not as a load-bearing premise. Keeping the two separate is the honest move, and it makes the strong parts stronger by not tying them to the contested parts.
 
 ## What Stays Genuinely Speculative
 
@@ -33,11 +33,11 @@ The original grounds much of its language in "aether-theoretic field interaction
 ## What This Actually Gives This Fork
 
 - A concrete, testable version of Rye OS's own stated RISC-V-and-beyond hardware horizon: the "no edge, bounded distance, uniform neighborhood" property is a real design target even on ordinary hardware (it argues for ring/torus network topologies in Comlink and Caravan, which need no exotic silicon).
-- The coordinate-is-the-address idea rhymes directly with Mantra's content-addressing and Bron's one-value model — worth citing when those seams are next revisited.
+- The coordinate-is-the-address idea rhymes directly with Mantra's content-addressing and Bron's one-value model -- worth citing when those seams are next revisited.
 - A clean example, for the Glow kernel variants, of "bound everything and know the maximum before you run," which is TAME's own root rule expressed as hardware.
 
 ## Galaxy Pitch
 
 For: hardware-curious galaxy holders weighing long-horizon sovereign-compute directions.
 Ask: none; informational silo of a prior-lineage proposal.
-Scope: reading only — no lap opened, no fabrication implied.
+Scope: reading only -- no lap opened, no fabrication implied.

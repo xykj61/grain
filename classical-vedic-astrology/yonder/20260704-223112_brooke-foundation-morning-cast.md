@@ -2,7 +2,7 @@
 
 *Rests in yonder as of 20260705.020812: written on the morning cast; see the supersession note.*
 
-**Stamp:** `20260704.223112 UDT`  -  **Language:** EN  -  **Style:** Radiant (see `RADIANT_STYLE.md`)
+**Stamp:** `20260704.223112 UDT`  -  **Language:** EN  -  **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Subject:** Brooke  -  July 22, 1994  -  middle Georgia, USA
 **Frame:** tropical signs, houses, and dignities  -  sidereal nakshatras (Lahiri)  -  whole-sign houses  -  D1 and D9
 

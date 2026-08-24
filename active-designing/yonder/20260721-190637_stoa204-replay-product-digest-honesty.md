@@ -1,17 +1,17 @@
-# STOA204 — Replay Product Digest Honesty
+# STOA204 -- Replay Product Digest Honesty
 
 *An Acme Corporation employee reading this gets the Glow replay claim path that digests the demo log through the product digest surface after elder replay, and refuses unless those roots agree.*
 
 **Language:** EN  
-**Version:** `20260721.190637` (UDT · Framework host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260721.190637` (UDT - Framework host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Checkable — GREEN `20260721.190637`  
-**Register:** Checkable (Two Rooms) — product digest on claim path GREEN; elder `replay` body still owns verify · order · inner digest  
+**Status:** Checkable -- GREEN `20260721.190637`  
+**Register:** Checkable (Two Rooms) -- product digest on claim path GREEN; elder `replay` body still owns verify - order - inner digest  
 
-**Grounds in:** Hold in [`20260721-190527_stoa203-append-sign-line-compose.md`](20260721-190527_stoa203-append-sign-line-compose.md) · STOA194 digest · STOA196 replay
+**Grounds in:** Hold in [`20260721-190527_stoa203-append-sign-line-compose.md`](20260721-190527_stoa203-append-sign-line-compose.md) - STOA194 digest - STOA196 replay
 
-**dated_guard:** Do **not** claim a Glow-authored replay vane (parse · verify · order). Elder `sala.replay` still runs. Product `claim_digest_log` is an honesty assert over the same log bytes. JABS3 held.
+**dated_guard:** Do **not** claim a Glow-authored replay vane (parse - verify - order). Elder `sala.replay` still runs. Product `claim_digest_log` is an honesty assert over the same log bytes. JABS3 held.
 
 ---
 
@@ -33,7 +33,7 @@ rishi/bin/rishi run tools/glow_sala_b0_fold_witness.rish
 
 ## Hold
 
-Rest · B3 desk deepen · Glow-rune crypto / replay body rewrite. JABS3.
+Rest - B3 desk deepen - Glow-rune crypto / replay body rewrite. JABS3.
 
 ---
 

@@ -1,16 +1,16 @@
-# STOA187 — Thin `$%` Payload `@t` / `@ux` (Lean B)
+# STOA187 -- Thin `$%` Payload `@t` / `@ux` (Lean B)
 
 *An Acme Corporation employee reading this gets the tagged-mold aura door that `$:` already earned: `$%` payload faces may be `@t` or `@ux` at parse, while payload emit stays held for the next lap.*
 
 **Language:** EN  
-**Version:** `20260721.180520` (UDT · Framework host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260721.180520` (UDT - Framework host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Checkable — bound by `rune_mold` · `lower_mold` · `lower_named_cast` witnesses  
-**Register:** Checkable (Two Rooms) — thin `$%` payload auras GREEN; emit held; NativeActivity claim wire stays product  
-**Grounds in:** [`20260721-180008_stoa186-after-claim-shell-checkin.md`](20260721-180008_stoa186-after-claim-shell-checkin.md) · [`20260721-174747_stoa183-ux-hex-aura-thin.md`](20260721-174747_stoa183-ux-hex-aura-thin.md)
+**Status:** Checkable -- bound by `rune_mold` - `lower_mold` - `lower_named_cast` witnesses  
+**Register:** Checkable (Two Rooms) -- thin `$%` payload auras GREEN; emit held; NativeActivity claim wire stays product  
+**Grounds in:** [`20260721-180008_stoa186-after-claim-shell-checkin.md`](20260721-180008_stoa186-after-claim-shell-checkin.md) - [`20260721-174747_stoa183-ux-hex-aura-thin.md`](20260721-174747_stoa183-ux-hex-aura-thin.md)
 
-**dated_guard:** Do **not** claim `$%` `@t`/`@ux` faces lower yet. Prefer **send** of STOA186–187 when the pier should match the hand. JABS3 held.
+**dated_guard:** Do **not** claim `$%` `@t`/`@ux` faces lower yet. Prefer **send** of STOA186-187 when the pier should match the hand. JABS3 held.
 
 ---
 

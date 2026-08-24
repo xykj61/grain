@@ -2,7 +2,7 @@
 
 *Rests in yonder as of 20260705.020812: written on the morning cast; the corrected chart keeps the Sun in Cancer under Pushya, angular in the seventh; see the supersession note.*
 
-**Stamp:** `20260704.231912 UDT`  -  **Language:** EN  -  **Style:** Radiant (see `RADIANT_STYLE.md`)
+**Stamp:** `20260704.231912 UDT`  -  **Language:** EN  -  **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Subject:** Brooke  -  morning-cast D1 Sun in Cancer, twelfth house, Pushya  -  morning-cast D9 Sun in Pisces, seventh house, Purva Bhadrapada
 
 *Written together by Kaeden and Rio 3.*

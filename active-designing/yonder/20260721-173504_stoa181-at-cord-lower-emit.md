@@ -1,14 +1,14 @@
-# STOA181 — `@t` Cord Lower Emit
+# STOA181 -- `@t` Cord Lower Emit
 
 *An Acme Corporation employee reading this gets the lap that turns thin `@t` into a bounded Zig field: `$:` cord faces lower to `[aura_t_max_bytes]u8`, and `sala-event-shape` text faces retire their `@u32` stand-ins.*
 
 **Language:** EN  
-**Version:** `20260721.173504` (UDT · Framework host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260721.173504` (UDT - Framework host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Checkable — bound by `glow_lower_mold_witness` · `glow_run` `shape-sala-event` · TAME bans  
-**Register:** Checkable (Two Rooms) — cord emit GREEN; amount stays `@u32`; cast twin held; JABS3 held  
-**Grounds in:** [`20260721-171800_stoa180-at-cord-aura-thin.md`](../20260721-171800_stoa180-at-cord-aura-thin.md) · [`20260721-170403_stoa179-sala-event-shape-desk.md`](20260721-170403_stoa179-sala-event-shape-desk.md)
+**Status:** Checkable -- bound by `glow_lower_mold_witness` - `glow_run` `shape-sala-event` - TAME bans  
+**Register:** Checkable (Two Rooms) -- cord emit GREEN; amount stays `@u32`; cast twin held; JABS3 held  
+**Grounds in:** [`20260721-171800_stoa180-at-cord-aura-thin.md`](../20260721-171800_stoa180-at-cord-aura-thin.md) - [`20260721-170403_stoa179-sala-event-shape-desk.md`](20260721-170403_stoa179-sala-event-shape-desk.md)
 
 **dated_guard:** Do **not** rewrite STOA180's dated "lower held" claims. Do **not** claim `$%` payload `@t` or named-cast cord demos. Elder Rye `sala_b0_fold` stays until Glow earns the product root. `MoldSpec` / Zig `*Mold` rename stays a separate seam.
 
@@ -16,7 +16,7 @@
 
 ## Verdict (one breath)
 
-**CORD_LOWER_EMIT.** Seat `$:` `@t` → `[256]u8` (from `nest_type.aura_t_max_bytes`) with face-name demo cords via `glow_demo_cord`. Retire `CordAuraNotYetLowered`. Update `sala-event-shape`: `from` · `to` · `memo` · `stamp` as `@t`; `amount` stays `@u32`.
+**CORD_LOWER_EMIT.** Seat `$:` `@t` -> `[256]u8` (from `nest_type.aura_t_max_bytes`) with face-name demo cords via `glow_demo_cord`. Retire `CordAuraNotYetLowered`. Update `sala-event-shape`: `from` - `to` - `memo` - `stamp` as `@t`; `amount` stays `@u32`.
 
 ---
 
@@ -24,7 +24,7 @@
 
 | Item | Proof |
 |------|-------|
-| `@t` tuple field emit | `glow_lower_mold_witness` · MemoShape |
+| `@t` tuple field emit | `glow_lower_mold_witness` - MemoShape |
 | Demo binary exit 0 | `mold_memo_welcome` |
 | Mixed sala-event lower | `glow_run` `shape-sala-event.glow` |
 | TAME bans clean | `tame_style_scan_bans` (no memcpy in lower_mold) |

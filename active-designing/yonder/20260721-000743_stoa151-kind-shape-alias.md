@@ -1,14 +1,14 @@
-# STOA151 — Kind-Shape Alias (Glow OS Shape Language)
+# STOA151 -- Kind-Shape Alias (Glow OS Shape Language)
 
-*An Acme Corporation employee reading this gets the first unit `$%` Glow OS shape-language lap: closed allowlist alias `kind-shape` ≡ `kind-mold` (KindMold enum lower), after the one-field twins and the multi-field pair-shape.*
+*An Acme Corporation employee reading this gets the first unit `$%` Glow OS shape-language lap: closed allowlist alias `kind-shape` == `kind-mold` (KindMold enum lower), after the one-field twins and the multi-field pair-shape.*
 
 **Language:** EN  
-**Version:** `20260721.000743` (UDT · Framework host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260721.000743` (UDT - Framework host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Checkable — bound by `tools/glow_nest_type_witness.rish` · bartis/barket desks  
-**Register:** Checkable (Two Rooms) — shape alias accept · KindMold lower · capacity freeze held  
-**Grounds in:** [`20260721-000234_stoa150-pair-shape-alias.md`](20260721-000234_stoa150-pair-shape-alias.md) · [`20260720-223226_glow-os-shape-not-mold.md`](../20260720-223226_glow-os-shape-not-mold.md)
+**Status:** Checkable -- bound by `tools/glow_nest_type_witness.rish` - bartis/barket desks  
+**Register:** Checkable (Two Rooms) -- shape alias accept - KindMold lower - capacity freeze held  
+**Grounds in:** [`20260721-000234_stoa150-pair-shape-alias.md`](20260721-000234_stoa150-pair-shape-alias.md) - [`20260720-223226_glow-os-shape-not-mold.md`](../20260720-223226_glow-os-shape-not-mold.md)
 
 **dated_guard:** Do **not** rewrite dated mold briefs. Seat this lap in *this* brief and living pins. Hoon desk suffixes (`kind-mold`) stay the study word.
 
@@ -27,9 +27,9 @@
 | `bartis_named_shape_kind = "kind-shape"` | `nest_type.rye` |
 | `is_kind_named_mold` accepts `kind-shape` | lower KindMold path |
 | `assert_bartis_named_mold("kind-shape")` accepts | nest_type witness |
-| Bartis lower `sample=kind-shape` → KindMold | nest_type · lower |
-| Barket parse `sample=kind-shape` | nest_type · barket |
-| Desks `gate-kind-shape` · `gate-barket-kind-shape` | glow_run |
+| Bartis lower `sample=kind-shape` -> KindMold | nest_type - lower |
+| Barket parse `sample=kind-shape` | nest_type - barket |
+| Desks `gate-kind-shape` - `gate-barket-kind-shape` | glow_run |
 | Capacity freeze at 9 held | no `max_fields` widen |
 
 ---
@@ -38,10 +38,10 @@
 
 | Item | Why held |
 |------|----------|
-| Wholesale `-mold` → `-shape` desk rename | Explicit rename itinerary later |
+| Wholesale `-mold` -> `-shape` desk rename | Explicit rename itinerary later |
 | Further `$%` aliases (`xact-shape`, `xfer-shape`) | One tagged unit proves the door |
-| Further multi-field aliases (`triple-shape`, …) | Separate `$:` widen of the shape surface |
-| Ambient gold · Sala B0 | Framework / product season |
+| Further multi-field aliases (`triple-shape`, ...) | Separate `$:` widen of the shape surface |
+| Ambient gold - Sala B0 | Framework / product season |
 
 ---
 

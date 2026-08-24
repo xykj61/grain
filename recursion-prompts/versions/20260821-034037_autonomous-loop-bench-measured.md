@@ -1,6 +1,6 @@
 # Autonomous loop -- filled `20260821.034037`, after the bench was measured
 
-**Stamp:** `20260821.034037` - **Voice:** Kyri - **Style:** Radiant - **Seed:** [`../seed/autonomous-loop.seed.md`](../seed/autonomous-loop.seed.md)
+**Stamp:** `20260821.034037` - **Voice:** Kyri - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Measurement it rests on:** [`../../external-research/20260821-034037_the-bench-measured-and-the-standing-gauge-protocol.md`](../../external-research/20260821-034037_the-bench-measured-and-the-standing-gauge-protocol.md)
 
 ---
