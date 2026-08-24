@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>A Birth-Chart Reading — Composable Template</title>
+<title>A Birth-Chart Reading -- Composable Template</title>
 <!--
-  A Birth-Chart Reading — the composable HTML template.
-  Stamp 20260701.232912 · Radiant Style · gentle register.
+  A Birth-Chart Reading -- the composable HTML template.
+  Stamp 20260701.232912  -  Radiant Style  -  gentle register.
   Written together by Kaeden and Reya 2; shaped with the outside
   reading (Fable 5) at Kaeden's direction.
 
@@ -17,7 +17,7 @@
   them from the numbered study silos, in your own voice.
 -->
 <style>
-  /* Warm gold over deep indigo — a night sky that welcomes. */
+  /* Warm gold over deep indigo -- a night sky that welcomes. */
   :root {
     --ink: #2a2440; --gold: #b8860b; --gold-soft: #d4af37;
     --paper: #fdf9f0; --line: #e5dcc8; --accent: #5b4a8a;
@@ -52,10 +52,10 @@
   <header>
     <h1 id="title"></h1>
     <p class="meta">
-      <strong>For:</strong> <span id="who"></span> ·
+      <strong>For:</strong> <span id="who"></span>  - 
       <strong>Born:</strong> <span id="born"></span><br>
-      <strong>System:</strong> tropical zodiac signs · sidereal nakshatras
-      (Lahiri) · whole-sign houses ·
+      <strong>System:</strong> tropical zodiac signs  -  sidereal nakshatras
+      (Lahiri)  -  whole-sign houses  - 
       <strong>Stamp:</strong> <span id="stamp"></span>
     </p>
   </header>
@@ -65,7 +65,7 @@
     <svg id="wheel" viewBox="0 0 560 560" width="100%"
          xmlns="http://www.w3.org/2000/svg" aria-label="natal chart wheel">
     </svg>
-    <figcaption class="meta">The whole-sign wheel — the ascendant's sign
+    <figcaption class="meta">The whole-sign wheel -- the ascendant's sign
       opens the first house at the left, and every house follows.</figcaption>
   </figure>
 
@@ -76,15 +76,15 @@
     <tbody></tbody>
   </table>
 
-  <h2>The first lens — the rising sign and its star</h2>
+  <h2>The first lens -- the rising sign and its star</h2>
   <div class="slot">Compose here from the ascendant's silos: the rising
     sign, its nakshatra, and any light standing in the first house.</div>
 
-  <h2>The second lens — the Moon, the steady heart</h2>
+  <h2>The second lens -- the Moon, the steady heart</h2>
   <div class="slot">Compose here from the Moon-sign silo, the birth-star
     silo, and the lunar-day weave.</div>
 
-  <h2>The rest of the sky — the other lights, one at a time</h2>
+  <h2>The rest of the sky -- the other lights, one at a time</h2>
   <div class="slot">One warm paragraph per placement, each drawing its
     depth from the matching numbered study. Weave, rather than paste.</div>
 
@@ -102,43 +102,43 @@
 ---------------------------------------------------------------- */
 const CHART = {
   who: "Alice",
-  born: "7 August 2004 · 1:11 PM (IST) · 23°02'N 72°35'E",
+  born: "7 August 2004  -  1:11 PM (IST)  -  23 deg02'N 72 deg35'E",
   stamp: "20260701.232912",
-  ascSign: 7, // Scorpio rises; house one begins at 0° of this sign
+  ascSign: 7, // Scorpio rises; house one begins at 0 deg of this sign
   bodies: [
     { name:"Asc",     glyph:"As", lon:228.80, nak:"Vishakha",       pada:2 },
-    { name:"Sun",     glyph:"☉",  lon:135.13, nak:"Ashlesha",       pada:2 },
-    { name:"Moon",    glyph:"☽",  lon: 38.40, nak:"Bharani",        pada:1 },
-    { name:"Mercury", glyph:"☿",  lon:158.47, nak:"Purva Phalguni", pada:1 },
-    { name:"Venus",   glyph:"♀",  lon: 89.88, nak:"Mrigashirsha",   pada:4 },
-    { name:"Mars",    glyph:"♂",  lon:148.03, nak:"Magha",          pada:2 },
-    { name:"Jupiter", glyph:"♃",  lon:169.77, nak:"Purva Phalguni", pada:4 },
-    { name:"Saturn",  glyph:"♄",  lon:110.60, nak:"Punarvasu",      pada:3 },
-    { name:"Rahu",    glyph:"☊",  lon: 35.82, nak:"Ashvini",        pada:4, retro:true },
-    { name:"Ketu",    glyph:"☋",  lon:215.82, nak:"Swati",          pada:2, retro:true },
+    { name:"Sun",     glyph:"&#9737;",  lon:135.13, nak:"Ashlesha",       pada:2 },
+    { name:"Moon",    glyph:"&#9789;",  lon: 38.40, nak:"Bharani",        pada:1 },
+    { name:"Mercury", glyph:"&#9791;",  lon:158.47, nak:"Purva Phalguni", pada:1 },
+    { name:"Venus",   glyph:"&#9792;",  lon: 89.88, nak:"Mrigashirsha",   pada:4 },
+    { name:"Mars",    glyph:"&#9794;",  lon:148.03, nak:"Magha",          pada:2 },
+    { name:"Jupiter", glyph:"&#9795;",  lon:169.77, nak:"Purva Phalguni", pada:4 },
+    { name:"Saturn",  glyph:"&#9796;",  lon:110.60, nak:"Punarvasu",      pada:3 },
+    { name:"Rahu",    glyph:"&#9738;",  lon: 35.82, nak:"Ashvini",        pada:4, retro:true },
+    { name:"Ketu",    glyph:"&#9739;",  lon:215.82, nak:"Swati",          pada:2, retro:true },
   ],
   blessing: "May this sky be read with kindness. May every star become " +
             "a lamp rather than a label. And may the one who wears this " +
             "chart walk their houses in joy, all the way home.",
 };
 
-/* The craft's fixed vocabulary — twelve signs, kept in order. */
+/* The craft's fixed vocabulary -- twelve signs, kept in order. */
 const SIGNS = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra",
   "Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
-const GLYPHS = ["♈","♉","♊","♋","♌","♍","♎","♏","♐","♑","♒","♓"];
+const GLYPHS = ["&#9800;","&#9801;","&#9802;","&#9803;","&#9804;","&#9805;","&#9806;","&#9807;","&#9808;","&#9809;","&#9810;","&#9811;"];
 
 /* Degrees within a sign, written the classical way. */
 const dms = lon => {
   const inSign = lon % 30, d = Math.floor(inSign);
   const m = Math.round((inSign - d) * 60);
-  return m === 60 ? `${d+1}°00'` : `${d}°${String(m).padStart(2,"0")}'`;
+  return m === 60 ? `${d+1} deg00'` : `${d} deg${String(m).padStart(2,"0")}'`;
 };
 const houseOf = lon =>
   ((Math.floor(lon/30) - CHART.ascSign + 12) % 12) + 1;
 
 /* The header speaks first. */
 document.getElementById("title").textContent =
-  `${CHART.who}'s Sky — A Friendly Reading of Your Birth Chart`;
+  `${CHART.who}'s Sky -- A Friendly Reading of Your Birth Chart`;
 document.getElementById("who").textContent   = CHART.who;
 document.getElementById("born").textContent  = CHART.born;
 document.getElementById("stamp").textContent = CHART.stamp;
@@ -148,7 +148,7 @@ document.getElementById("blessing").textContent = CHART.blessing;
 const tbody = document.querySelector("#grid tbody");
 for (const b of CHART.bodies) {
   const row = tbody.insertRow();
-  const sign = SIGNS[Math.floor(b.lon/30)] + (b.retro ? " ℞" : "");
+  const sign = SIGNS[Math.floor(b.lon/30)] + (b.retro ? " Rx" : "");
   for (const cell of [b.name, sign, dms(b.lon), b.nak, b.pada, houseOf(b.lon)])
     row.insertCell().textContent = cell;
 }

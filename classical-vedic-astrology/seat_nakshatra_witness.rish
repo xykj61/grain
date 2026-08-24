@@ -1,4 +1,4 @@
-# seat_nakshatra_witness.rish — the private seat → nakshatra tool.
+# seat_nakshatra_witness.rish -- the private seat -> nakshatra tool.
 #
 # Lives in the silo (classical-vedic-astrology/, withheld from the public seed), beside
 # the tool it proves, so no broken witness ever ships in the OS template. Proves a
@@ -10,7 +10,7 @@
 #   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build classical-vedic-astrology/seat_nakshatra.rye -femit-bin=classical-vedic-astrology/bin/seat_nakshatra
 #   rishi/bin/rishi run classical-vedic-astrology/seat_nakshatra_witness.rish
 
-# The tool's own selftest — first/last mansions, past-universe none, the example seat.
+# The tool's own selftest -- first/last mansions, past-universe none, the example seat.
 let st = run ["classical-vedic-astrology/bin/seat_nakshatra" "selftest"]
 assert st.ok else "seat_nakshatra selftest must exit 0"
 assert (st.err contains "GREEN") else "selftest must report GREEN"
@@ -22,4 +22,4 @@ assert p.ok else "seat_nakshatra must resolve a point"
 assert (p.out contains "seat 23") else "point 267 sits in seat 23"
 assert (p.out contains "nakshatra Shatabhishak") else "point 267 wears Shatabhishak"
 
-say "GREEN: seat nakshatra witness — a point's public d27 seat named as its nakshatra outfit."
+say "GREEN: seat nakshatra witness -- a point's public d27 seat named as its nakshatra outfit."

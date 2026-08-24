@@ -3,14 +3,14 @@
   Two-wheel reading template, derived 20260705.020812 from the standalone report of its round.
   Tokens: {{NAME}} {{READING_TITLE}} {{BIRTH_LINE}} {{STAMP}} {{VOICE}} {{OPENING}} {{D1_CAPTION}} {{D9_CAPTION}}
           {{CHAPTERS}} {{GRATITUDE}} {{BENEDICTION}} {{BIRTH_PLACE}} {{BIRTH_DATE}} {{SUNRISE}} {{SUNSET}}
-          {{DAY_HOURS}} {{DAY_LABEL}} {{NIGHT_LABEL}} {{D1_ASC}} {{D9_ASC}} {{D1_PLANETS}} {{D9_PLANETS}} {{D1_CUSPS}} {{D1_HOUSE_NUMS}} {{D9_CUSPS}} {{D9_HOUSE_NUMS}} — per-chart, from the degree-true walk; planet entries are {ab, gl, dg, a} with a precomputed: a = ccwCusp(house) − deg/30 × width(house), hand-flanked where labels crowd; cusps in this file are baked for this birth-day and are re-walked per chart by the caster
+          {{DAY_HOURS}} {{DAY_LABEL}} {{NIGHT_LABEL}} {{D1_ASC}} {{D9_ASC}} {{D1_PLANETS}} {{D9_PLANETS}} {{D1_CUSPS}} {{D1_HOUSE_NUMS}} {{D9_CUSPS}} {{D9_HOUSE_NUMS}} -- per-chart, from the degree-true walk; planet entries are {ab, gl, dg, a} with a precomputed: a = ccwCusp(house) - deg/30 x width(house), hand-flanked where labels crowd; cusps in this file are baked for this birth-day and are re-walked per chart by the caster
   The wheel renderer stays intact: ascendant pinned due east, day and night arcs swept from the true hours.
 -->
 
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>{{NAME}} — {{READING_TITLE}}</title>
+<title>{{NAME}} -- {{READING_TITLE}}</title>
 <style>
   :root{--ink:#e9dcc2;--gold:#d9af66;--cream:#181310;--card:#211a13;--night:#2e3a5c;--day:#f3d98b;--soft:#a08b6a;}
   body{background:var(--cream);color:var(--ink);font-family:Georgia,'Times New Roman',serif;line-height:1.75;margin:0;padding:0;}
@@ -55,18 +55,18 @@
 <body>
 <div class="page">
 
-<h1>{{NAME}} — {{READING_TITLE}}</h1>
+<h1>{{NAME}} -- {{READING_TITLE}}</h1>
 <div class="sub">{{BIRTH_LINE}}</div>
-<div class="sub">Tropical signs, houses, and dignities · sidereal nakshatras by the Lahiri ayanamsa · whole-sign houses · main chart and ninth chart</div>
-<div class="stampline">Stamp {{STAMP}} · Written together by Kaeden and {{VOICE}} · Style: Radiant</div>
+<div class="sub">Tropical signs, houses, and dignities  -  sidereal nakshatras by the Lahiri ayanamsa  -  whole-sign houses  -  main chart and ninth chart</div>
+<div class="stampline">Stamp {{STAMP}}  -  Written together by Kaeden and {{VOICE}}  -  Style: Radiant</div>
 
 {{OPENING}}
 
 <h2>The Two Wheels</h2>
 <div class="wheelwrap">
-  <h3>The Visible Chart — Rasi (D1)</h3>
+  <h3>The Visible Chart -- Rasi (D1)</h3>
   <div id="wheel-d1" style="text-align:center"></div>
-  <p class="wheel-key">As Ascendant · Mc Midheaven · Ds Descendant · Ic Imum Coeli — Su Sun · Mo Moon · Me Mercury · Ve Venus · Ma Mars · Ju Jupiter · Sa Saturn · Ra Rāhu · Ke Ketu</p>
+  <p class="wheel-key">As Ascendant  -  Mc Midheaven  -  Ds Descendant  -  Ic Imum Coeli -- Su Sun  -  Mo Moon  -  Me Mercury  -  Ve Venus  -  Ma Mars  -  Ju Jupiter  -  Sa Saturn  -  Ra Rahu  -  Ke Ketu</p>
   <p class="cap">{{D9_CAPTION}}</p>
 </div>
 
@@ -88,7 +88,7 @@
 
     function P(r,th){ var a=th*Math.PI/180; return [(cx+r*Math.cos(a)).toFixed(2),(cy-r*Math.sin(a)).toFixed(2)]; }
 
-    // house cusp boundaries (degrees, math convention: 0=right, 90=top) — silo walk, this birth-day's hours
+    // house cusp boundaries (degrees, math convention: 0=right, 90=top) -- silo walk, this birth-day's hours
     
 
     // house number positions at sector midpoints

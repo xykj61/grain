@@ -1,4 +1,4 @@
-"""POSIX seam implementation for cast_a_chart.rish — pyswisseph / Swiss Ephemeris.
+"""POSIX seam implementation for cast_a_chart.rish -- pyswisseph / Swiss Ephemeris.
 
 Canonical entry: rishi/bin/rishi run classical-vedic-astrology/cast_a_chart.rish
 Hosted by: cast_a_chart_host.sh
@@ -14,7 +14,7 @@ import swisseph as swe
 YEAR, MONTH, DAY = 2004, 8, 7
 LOCAL_H, LOCAL_M = 13, 11          # 1:11 PM, Indian Standard Time
 TZ_OFFSET = 5.5                     # IST stands 5h30m ahead of UT
-LAT, LON = 23.0333, 72.5833         # the birthplace, held as coordinates (23°02'N 72°35'E)
+LAT, LON = 23.0333, 72.5833         # the birthplace, held as coordinates (23 deg02'N 72 deg35'E)
 
 swe.set_sid_mode(swe.SIDM_LAHIRI)   # the Lahiri ayanamsa for the stars
 FLAGS = swe.FLG_MOSEPH | swe.FLG_SPEED
@@ -34,7 +34,7 @@ NAKS = ["Ashvini","Bharani","Krittika","Rohini","Mrigashirsha","Ardra",
 def dms(lon_in_sign):
     d = int(lon_in_sign); m = int(round((lon_in_sign - d) * 60))
     if m == 60: d, m = d + 1, 0
-    return f"{d}°{m:02d}'"
+    return f"{d} deg{m:02d}'"
 
 def describe(name, trop, sid, asc_sign_index):
     sign_i = int(trop // 30)
@@ -51,7 +51,7 @@ _, ascmc_sid = swe.houses_ex(jd, LAT, LON, b'W', FLAGS | swe.FLG_SIDEREAL)
 asc_sid = ascmc_sid[0]
 asc_sign = int(asc_trop // 30)
 print(f"Ayanamsa (Lahiri): {dms(swe.get_ayanamsa_ut(jd) % 30)} "
-      f"({swe.get_ayanamsa_ut(jd):.4f}°)")
+      f"({swe.get_ayanamsa_ut(jd):.4f} deg)")
 describe("Asc", asc_trop, asc_sid, asc_sign)
 
 BODIES = [("Sun", swe.SUN), ("Moon", swe.MOON), ("Mercury", swe.MERCURY),

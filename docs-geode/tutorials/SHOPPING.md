@@ -13,13 +13,14 @@ what each purchase actually has to do. It deliberately names no winner and quote
 
 ## Why no winner, and no prices
 
-**A named winner rots faster than the guide around it.** Model rankings turn over in weeks, storage
-prices move quarterly, and a forge can change its terms in an afternoon. A recommendation written
-today would be read a year from now by someone with no way to tell it had gone stale.
+**A method keeps longer than an answer.** The questions below were as good five years ago as they
+are now, and asking them takes about twenty minutes per purchase. So this guide teaches the asking
+and leaves the answering to you, on the day you buy -- which is the day the answer is true.
 
-**A method keeps.** The questions below were as good five years ago as they are now, and asking them
-takes about twenty minutes per purchase. So this guide teaches the asking, and leaves the answering
-to you, on the day you buy.
+**An answer keeps for about as long as its market holds still.** Model rankings turn over in weeks,
+storage prices move quarterly, and a forge can change its terms in an afternoon. A reader a year
+from now would have every reason to trust a recommendation written today, and no way to check
+whether it still held.
 
 Where a fact does appear, it carries its date and its source, and you should re-check it.
 
