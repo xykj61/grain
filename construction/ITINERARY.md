@@ -49,26 +49,27 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 **Git nib:** `24c3eac172` -- the report card seated, the model returned to Opus 5, and the comment dial booked before it is built. This line names the nib and one sentence; the account of a lap lives in its session log.
 
-**Now.** **Quality assurance has a grade, and the grade has a stack.** The negative-share ceiling
-read the other way up is a school grade -- 20% becomes **80, a B** -- and
-[`../tools/fixtures/qa_report_card.sh`](../tools/fixtures/qa_report_card.sh) takes four readings of
-any document, comment block, or design: **Register** and **Reach** counted, **Truth** half counted
-and gating below 60, **Service** judged against this card in four questions. **B or better stands;
-below B pushes one molt frame**, bounded at depth 2. Twenty-seven behaviors proven, the scale read at
-all nine boundaries from both sides.
+**Now.** **Quality assurance has a grade, and the grade has a stack.** The negative-share ceiling read
+the other way up is a school grade -- 20% becomes **80, a B**.
+[`../tools/fixtures/qa_report_card.sh`](../tools/fixtures/qa_report_card.sh) reads any document,
+comment block, or design four ways: **Register** and **Reach** counted, **Truth** half counted and
+gating below 60, **Service** judged against this card. **B stands; below B pushes one molt frame**,
+depth 2.
 
-**The model returned to `claude-opus-5` at `effort max`** -- REDS %201, now one reading with a guard
-over three declaring sites. **REDS %202:** a commit body cited a log by a recalled stamp, so
-[`../tools/hooks/commit-msg`](../tools/hooks/commit-msg) gained a fourth wall -- a path named in a
-body is a path that exists.
+**Model back to `claude-opus-5` at `effort max`** -- REDS %201, one reading with a guard over three
+declaring sites. **%202:** a commit body cited a log by a recalled stamp, so
+[`../tools/hooks/commit-msg`](../tools/hooks/commit-msg) gained a fourth wall. **%203:** four rounds
+each left a reference resolving nowhere; the census fell 191 -> 186 on repair.
 
-**Every room that folds has carried its index across; the ratchet reads zero.**
-`expanding-prompts` (78 rows, 21 shelves, **24,603 -> 9,797**) and `waymarks` (41 rows, two shelves,
-**7,656 -> 2,283**) joined the ENFORCE roster; the ceiling fell **119 -> 41 -> 0**, so a stale row
-anywhere reds. `session-logs/README.md` alone stands above its bound -- 196 flat logs, 196 rows --
-and **the log fold runs on Keaton's word**.
+**Every room has carried its index across, and `session-logs` folded on Keaton's word.**
+`expanding-prompts` (78 rows) and `waymarks` (41) joined the ENFORCE roster; the ratchet fell
+**119 -> 41 -> 0**. Then 169 logs moved beneath `date/`, their rows onto shelves, and the pin fell
+**291,781 -> 29,997** -- 3,415 shelf links, none broken, lost references held at **186** while
+recoverable rose 9,070 -> 9,246, which is a correct fold by the law's own test. **Open door -- the
+pin still stands 5,421 over its bound**, 35 rows in a day against the ~28 it holds (**REDS %204**):
+shorter rows, an intra-day fold, or a bound wrong for this room. Keaton's choice.
 
-**Landed, and the detail is in the logs.** Every round this block used to narrate reads as one line in *Prior laps* below, or in *Landed arcs* beneath that. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`); the teaching tier reads zero over target.
+**Landed, and the detail is in the logs**, one line each in *Prior laps* below. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`).
 
 ---
 ## Landed arcs
