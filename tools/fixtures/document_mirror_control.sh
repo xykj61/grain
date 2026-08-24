@@ -91,6 +91,32 @@ EOF
 out=$(sh "$SCAN" report "$pen/pair.brix" 2>&1)
 case "$out" in *"mirror_sets=2"*) check two_sets_counted ok ok ;; *) check two_sets_counted ok miscounted ;; esac
 
+# 7 -- a link that resolves from the canonical and fails from a deeper home is refused. The bytes are
+#      identical throughout, which is exactly why the drift check cannot see this and a second reading
+#      must. This is the fault the descriptor itself shipped with (REDS %176).
+mkdir -p "$pen/deep/two" "$pen/room"
+printf 'x\n' > "$pen/room/target.md"
+printf '# doc\n[t](../room/target.md)\n' > "$pen/a/depth.md"
+cp "$pen/a/depth.md" "$pen/deep/two/depth.md"
+cat > "$pen/depth.brix" <<EOF
+mirror depth
+canonical $pen/a/depth.md
+at $pen/deep/two/depth.md
+EOF
+out=$(sh "$SCAN" report "$pen/depth.brix" 2>&1)
+check depth_link_bitten link_unresolved_from_a_home "$(verdict_of "$out")"
+
+# 8 -- the same document mirrored at a home where the link does resolve passes free.
+mkdir -p "$pen/peer"
+cp "$pen/a/depth.md" "$pen/peer/depth.md"
+cat > "$pen/peer.brix" <<EOF
+mirror peer
+canonical $pen/a/depth.md
+at $pen/peer/depth.md
+EOF
+out=$(sh "$SCAN" report "$pen/peer.brix" 2>&1)
+check room_link_free ok "$(verdict_of "$out")"
+
 if [ "$faults" -eq 0 ]; then echo "control=ok"; exit 0; fi
 echo "control=faults faults=$faults"
 exit 2

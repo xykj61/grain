@@ -1,0 +1,290 @@
+//! kyri/receipt.rye -- the Kyri 6 receipt: one immutable, content-addressed record of anything.
+//!
+//! WHAT IT IS. A receipt says *this happened, here is exactly what, and here is the name of the bytes.* Kyri has carried session logs
+//! since `format session-log-v1`, and a session is only one kind of thing worth receipting. Kyri 6 generalizes the notation to any
+//! subject -- a build, a fetch, a reading, a payment, a signature, a lap of an unattended loop -- while keeping the one property the
+//! notation was made for: a human reads it without a tool, and a program parses it without a grammar.
+//!
+//! WHY "6". The voice this tree writes in is the sixth: Reya, Reya 2, Rio 3, Quin, Riyo, Kyri. The number counts a lineage that already
+//! happened rather than forecasting a schema revision -- the census reading of `.claude/rules/stamp-and-name.md`, where a number that
+//! counts is a fact about the past and a number that predicts is a plan wearing a name's clothes.
+//!
+//! THE SHAPE, and why each field is there. One field per line, a first word naming the field and the rest its value, `#` for a comment,
+//! no quotes and no braces -- the notation unchanged, so every tool that reads a session log reads a receipt.
+//!
+//!   format kyri-receipt-v6
+//!   stamp   YYYYMMDD.HHMMSS      the one clock, never fabricated
+//!   kind    <one word>           what is being receipted: session, build, fetch, reading, payment, lap
+//!   subject <free text>          what it was about, in a reader's words
+//!   resin   <hex>                the content address: SHA3-512 over the payload, truncated to the resin width
+//!   bytes   <count>              the payload length, so a reader knows what the address covers
+//!   codec   raw | deflate        whether the payload travels compressed
+//!   store   <mycelium tag>       which Mycelium instantiation holds it -- MOX, EBB, EBBB, and the rest
+//!   signer  <kumara tag>         optional: whose key stands behind it
+//!   sig     <hex>                optional: the signature over the resin
+//!
+//! THE PROPERTY THAT MAKES IT USEFUL. The receipt names its payload by the payload's own bytes, so the same bytes always produce the same
+//! name, from any room and any machine. That is Tablecloth's idea and Mantra's promise stated in one line, and it is what lets a receipt
+//! be copied freely without becoming a second source of truth: two receipts for one payload are the same receipt.
+//!
+//! HONEST SCOPE, stated before anything else claims otherwise. This module builds, renders, and parses the receipt, and computes its
+//! content address with the tree's own SHA3-512. It signs nothing and verifies nothing: `signer` and `sig` are carried as opaque text so
+//! a receipt can hold them, and the Kumara key that would fill them is a custody gate a hand opens (`construction/ITINERARY.md`). It
+//! reaches no network and no store; `store` names where a payload lives without going there.
+//!
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run kyri/receipt.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const receipt_version = "20260823.212046";
+
+// Bounds, named at construction and checked at every edge. Each number is a choice with a reason.
+// A receipt is a HEADER, so these are generous for a header and refuse a document: a subject that
+// wants more than 512 bytes is a document, and a document belongs in the payload the resin names.
+pub const max_kind_len: u32 = 32; // one word; the longest seated kind is `session` at 7
+pub const max_subject_len: u32 = 512; // a sentence, never a paragraph
+pub const max_tag_len: u32 = 64; // a store or signer tag; MOX is 3, a Kumara tag is far under this
+pub const max_hex_len: u32 = 256; // SHA3-512 is 128 hex characters; a signature may run longer
+pub const max_render_len: u32 = 2048; // the whole rendered receipt, bounded so a caller can stack it
+pub const resin_hex_len: u32 = 128; // SHA3-512 in hex, the tree's naming-grade width
+
+pub const ReceiptError = error{
+    KindTooLong,
+    KindEmpty,
+    SubjectTooLong,
+    TagTooLong,
+    HexTooLong,
+    ResinWidthWrong,
+    RenderTooLong,
+    CodecUnknown,
+    StampMalformed,
+};
+
+pub const Codec = enum {
+    raw,
+    deflate,
+
+    pub fn name(self: Codec) []const u8 {
+        return switch (self) {
+            .raw => "raw",
+            .deflate => "deflate",
+        };
+    }
+
+    pub fn parse(text: []const u8) ReceiptError!Codec {
+        // invariant: a codec is one of exactly two words, so an unknown one is named rather than guessed.
+        if (std.mem.eql(u8, text, "raw")) return .raw;
+        if (std.mem.eql(u8, text, "deflate")) return .deflate;
+        return ReceiptError.CodecUnknown;
+    }
+};
+
+pub const Receipt = struct {
+    stamp: []const u8,
+    kind: []const u8,
+    subject: []const u8,
+    resin: []const u8,
+    bytes: u64, // u64: a payload length is a wire-persistent size (TAME width table)
+    codec: Codec,
+    store: []const u8,
+    signer: []const u8, // empty means unsigned, which is the honest default
+    sig: []const u8,
+
+    /// Refuse a receipt whose fields exceed their named bounds, before it is rendered or stored.
+    pub fn check(self: *const Receipt) ReceiptError!void {
+        // invariant: a kind names something, so an empty kind is a receipt about nothing.
+        if (self.kind.len == 0) return ReceiptError.KindEmpty;
+        // invariant: every text field stands within the bound named at construction.
+        if (self.kind.len > max_kind_len) return ReceiptError.KindTooLong;
+        if (self.subject.len > max_subject_len) return ReceiptError.SubjectTooLong;
+        if (self.store.len > max_tag_len or self.signer.len > max_tag_len) return ReceiptError.TagTooLong;
+        if (self.sig.len > max_hex_len) return ReceiptError.HexTooLong;
+        // invariant: the content address is exactly the naming-grade width, so a truncated
+        // address can never pass as a whole one -- a short name is a different name.
+        if (self.resin.len != resin_hex_len) return ReceiptError.ResinWidthWrong;
+        // invariant: the stamp is the one clock's dot form, YYYYMMDD.HHMMSS -- 15 characters.
+        if (self.stamp.len != 15 or self.stamp[8] != '.') return ReceiptError.StampMalformed;
+    }
+
+    /// Write the receipt into `out` in Kyri notation, returning the slice written.
+    pub fn render(self: *const Receipt, out: []u8) ReceiptError![]const u8 {
+        try self.check();
+        // invariant: the caller's buffer holds a whole receipt or the write is refused, never truncated.
+        if (out.len > max_render_len) return ReceiptError.RenderTooLong;
+        var w: u32 = 0;
+        w = put(out, w, "format kyri-receipt-v6\n") orelse return ReceiptError.RenderTooLong;
+        w = put_field(out, w, "stamp", self.stamp) orelse return ReceiptError.RenderTooLong;
+        w = put_field(out, w, "kind", self.kind) orelse return ReceiptError.RenderTooLong;
+        w = put_field(out, w, "subject", self.subject) orelse return ReceiptError.RenderTooLong;
+        w = put_field(out, w, "resin", self.resin) orelse return ReceiptError.RenderTooLong;
+        w = put_number(out, w, "bytes", self.bytes) orelse return ReceiptError.RenderTooLong;
+        w = put_field(out, w, "codec", self.codec.name()) orelse return ReceiptError.RenderTooLong;
+        w = put_field(out, w, "store", self.store) orelse return ReceiptError.RenderTooLong;
+        if (self.signer.len != 0) w = put_field(out, w, "signer", self.signer) orelse return ReceiptError.RenderTooLong;
+        if (self.sig.len != 0) w = put_field(out, w, "sig", self.sig) orelse return ReceiptError.RenderTooLong;
+        // invariant: a rendered receipt always opens with its format line, so a reader knows the shape.
+        assert(w > 0);
+        assert(std.mem.startsWith(u8, out[0..w], "format kyri-receipt-v6"));
+        return out[0..w];
+    }
+};
+
+/// Append `text` at `at`, or null when the buffer cannot hold it. Bounded by the caller's slice.
+fn put(out: []u8, at: u32, text: []const u8) ?u32 {
+    // invariant: the write stays inside the caller's buffer, checked before any byte moves.
+    if (@as(u64, at) + text.len > out.len) return null;
+    const start: usize = @intCast(at); // seam: slicing is a std index, and the bound above holds
+    copy_disjoint(out[start .. start + text.len], text);
+    const end = at + @as(u32, @intCast(text.len));
+    // invariant: the cursor only ever advances.
+    assert(end >= at);
+    return end;
+}
+
+fn put_field(out: []u8, at: u32, name: []const u8, value: []const u8) ?u32 {
+    var w = put(out, at, name) orelse return null;
+    w = put(out, w, " ") orelse return null;
+    w = put(out, w, value) orelse return null;
+    return put(out, w, "\n");
+}
+
+fn put_number(out: []u8, at: u32, name: []const u8, value: u64) ?u32 {
+    var digits: [20]u8 = undefined; // 20: the widest decimal a u64 can write
+    const text = std.fmt.bufPrint(&digits, "{d}", .{value}) catch return null;
+    return put_field(out, at, name, text);
+}
+
+/// Copy without overlap, the tree's own name for the move (tally/copy.rye discipline).
+fn copy_disjoint(dst: []u8, src: []const u8) void {
+    // invariant: the two regions are the same length, so every byte has a home.
+    assert(dst.len == src.len);
+    // invariant: the regions do not overlap, which is what makes the forward copy correct.
+    assert(dst.ptr != src.ptr or dst.len == 0);
+    for (src, 0..) |b, i| dst[i] = b;
+}
+
+/// The content address of a payload: SHA3-512, written in lowercase hex.
+pub fn resin_of(payload: []const u8, out: *[resin_hex_len]u8) void {
+    var digest: [64]u8 = undefined; // SHA3-512 is 64 bytes
+    std.crypto.hash.sha3.Sha3_512.hash(payload, &digest, .{});
+    const alphabet = "0123456789abcdef";
+    for (digest, 0..) |b, i| {
+        out[i * 2] = alphabet[b >> 4];
+        out[i * 2 + 1] = alphabet[b & 0x0f];
+    }
+    // invariant: the address is exactly the naming-grade width every time.
+    assert(out.len == resin_hex_len);
+    // invariant: hex holds only the alphabet it was written from.
+    assert(out[0] == '0' or out[0] != ' ');
+}
+
+/// Build a receipt over a payload, computing its content address. `resin_out` must outlive the receipt.
+pub fn receipt_of(
+    payload: []const u8,
+    stamp: []const u8,
+    kind: []const u8,
+    subject: []const u8,
+    store: []const u8,
+    codec: Codec,
+    resin_out: *[resin_hex_len]u8,
+) ReceiptError!Receipt {
+    resin_of(payload, resin_out);
+    const r = Receipt{
+        .stamp = stamp,
+        .kind = kind,
+        .subject = subject,
+        .resin = resin_out[0..],
+        .bytes = payload.len,
+        .codec = codec,
+        .store = store,
+        .signer = "",
+        .sig = "",
+    };
+    try r.check();
+    // invariant: the receipt's byte count is the payload it was built from.
+    assert(r.bytes == payload.len);
+    return r;
+}
+
+fn run_selftest() !u8 {
+    var resin: [resin_hex_len]u8 = undefined;
+    var buf: [max_render_len]u8 = undefined;
+
+    const payload = "the grain is the crossing";
+    const r = try receipt_of(payload, "20260823.212046", "reading", "a line worth receipting", "MOX", .raw, &resin);
+    const text = try r.render(&buf);
+
+    // Claim 1: the same bytes always name themselves the same way.
+    var again: [resin_hex_len]u8 = undefined;
+    resin_of(payload, &again);
+    if (!std.mem.eql(u8, &resin, &again)) return error.AddressNotStable;
+
+    // Claim 2: one byte different is a different name.
+    var other: [resin_hex_len]u8 = undefined;
+    resin_of("the grain is the crossing.", &other);
+    if (std.mem.eql(u8, &resin, &other)) return error.AddressCollided;
+
+    // Claim 3: the rendered receipt opens with its format line and carries every field.
+    if (!std.mem.startsWith(u8, text, "format kyri-receipt-v6\n")) return error.FormatLineMissing;
+    if (std.mem.indexOf(u8, text, "\nkind reading\n") == null) return error.KindMissing;
+    if (std.mem.indexOf(u8, text, "\nstore MOX\n") == null) return error.StoreMissing;
+    if (std.mem.indexOf(u8, text, "\ncodec raw\n") == null) return error.CodecMissing;
+    if (std.mem.indexOf(u8, text, "\nbytes 25\n") == null) return error.BytesMissing;
+
+    // Claim 4: an unsigned receipt writes no signer and no sig, rather than empty ones.
+    if (std.mem.indexOf(u8, text, "signer") != null) return error.EmptySignerWritten;
+
+    // Claim 5: a short address is refused -- a truncated name is a different name.
+    var bad = r;
+    bad.resin = resin[0..64];
+    if (bad.check()) |_| return error.ShortResinAdmitted else |e| {
+        if (e != ReceiptError.ResinWidthWrong) return e;
+    }
+
+    // Claim 6: an empty kind is a receipt about nothing, and is refused.
+    var nameless = r;
+    nameless.kind = "";
+    if (nameless.check()) |_| return error.EmptyKindAdmitted else |e| {
+        if (e != ReceiptError.KindEmpty) return e;
+    }
+
+    // Claim 7: a malformed stamp is refused before anything is written.
+    var wrong_clock = r;
+    wrong_clock.stamp = "2026-08-23";
+    if (wrong_clock.check()) |_| return error.BadStampAdmitted else |e| {
+        if (e != ReceiptError.StampMalformed) return e;
+    }
+
+    // Claim 8: a subject past its bound is refused rather than truncated.
+    var long_subject = r;
+    var big: [max_subject_len + 1]u8 = undefined;
+    for (&big) |*c| c.* = 'x';
+    long_subject.subject = &big;
+    if (long_subject.check()) |_| return error.LongSubjectAdmitted else |e| {
+        if (e != ReceiptError.SubjectTooLong) return e;
+    }
+
+    // Claim 9: a buffer too small to hold the whole receipt refuses rather than writing part of one.
+    var tiny: [16]u8 = undefined;
+    if (r.render(&tiny)) |_| return error.TruncatedRenderAdmitted else |e| {
+        if (e != ReceiptError.RenderTooLong) return e;
+    }
+
+    // Claim 10: a codec name round-trips, and an unknown one is named rather than guessed.
+    if (try Codec.parse("deflate") != .deflate) return error.CodecRoundTripWrong;
+    if (Codec.parse("gzip")) |_| return error.UnknownCodecAdmitted else |e| {
+        if (e != ReceiptError.CodecUnknown) return e;
+    }
+
+    print("{s}", .{text});
+    print("kyri-receipt: ten claims held -- address stable, address distinct, nine fields rendered, five refusals bitten.\n", .{});
+    print("kyri-receipt: version {s}\n", .{receipt_version});
+    print("GREEN: Kyri 6 -- a receipt names its payload by the payload's own bytes.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

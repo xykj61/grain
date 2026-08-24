@@ -45,8 +45,8 @@
 | [`mycelium/`](../../mycelium/README.md) | 95 | 83 |
 | [`pleac/`](../../pleac/README.md) | 3 | 5 |
 | [`pond/`](../../pond/README.md) | 151 | 151 |
-| [`rishi/`](../../rishi/README.md) | 2 | 1658 |
-| [`rye/`](../../rye/README.md) | 117 | 1220 |
+| [`rishi/`](../../rishi/README.md) | 2 | 1659 |
+| [`rye/`](../../rye/README.md) | 117 | 1221 |
 | [`scribble/`](../../scribble/README.md) | 2 | 2 |
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |
 | [`settlement/`](../../settlement/README.md) | 2 | 3 |
