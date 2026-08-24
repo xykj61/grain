@@ -21,7 +21,7 @@
 | [`caravan/`](../../caravan/README.md) | 110 | 112 |
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 0 |
 | [`comlink/`](../../comlink/README.md) | 72 | 8 |
-| [`constel/`](../../constel/README.md) | 31 | 34 |
+| [`constel/`](../../constel/README.md) | 31 | 35 |
 | [`construction/`](../../construction/README.md) | 1 | 15 |
 | [`crypto/`](../../crypto/README.md) | 82 | 115 |
 | [`dimeroll/`](../../dimeroll/README.md) | 2 | 3 |
@@ -30,12 +30,12 @@
 | [`encoding/`](../../encoding/README.md) | 8 | 15 |
 | [`glow/`](../../glow/README.md) | 174 | 105 |
 | [`granary/`](../../granary/README.md) | 7 | 1 |
-| [`image/`](../../image/README.md) | 225 | 248 |
+| [`image/`](../../image/README.md) | 225 | 249 |
 | [`kumara/`](../../kumara/README.md) | 2 | 3 |
 | [`lantern/`](../../lantern/README.md) | 2 | 1 |
 | [`lattice/`](../../lattice/README.md) | 3 | 2 |
 | [`linengrow/`](../../linengrow/README.md) | 155 | 81 |
-| [`lotus/`](../../lotus/README.md) | 238 | 240 |
+| [`lotus/`](../../lotus/README.md) | 238 | 242 |
 | [`mand/`](../../mand/README.md) | 8 | 5 |
 | [`mandate/`](../../mandate/README.md) | 7 | 10 |
 | [`mandi/`](../../mandi/README.md) | 5 | 1 |
@@ -44,14 +44,14 @@
 | [`mikrophone/`](../../mikrophone/README.md) | 16 | 18 |
 | [`mycelium/`](../../mycelium/README.md) | 95 | 84 |
 | [`pleac/`](../../pleac/README.md) | 3 | 5 |
-| [`pond/`](../../pond/README.md) | 151 | 152 |
-| [`rishi/`](../../rishi/README.md) | 2 | 1666 |
+| [`pond/`](../../pond/README.md) | 151 | 153 |
+| [`rishi/`](../../rishi/README.md) | 2 | 1667 |
 | [`rye/`](../../rye/README.md) | 117 | 1222 |
 | [`scribble/`](../../scribble/README.md) | 2 | 2 |
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |
 | [`settlement/`](../../settlement/README.md) | 2 | 3 |
 | [`sundial/`](../../sundial/README.md) | 1 | 1 |
-| [`tally/`](../../tally/README.md) | 13 | 19 |
+| [`tally/`](../../tally/README.md) | 13 | 20 |
 | [`vault/`](../../vault/README.md) | 1 | 2 |
 
 ---
