@@ -4,7 +4,7 @@
 
 **Stamp:** `20260821.175723`
 **Language:** EN
-**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Foundation -- the definitional half of the Standfast restrategizing, arc three
 **Kin:** [`../.claude/rules/stamp-and-name.md`](../.claude/rules/stamp-and-name.md) (how work is marked) - [`../context/LEXICON.md`](../context/LEXICON.md) (every seated term, with its date) - [`20260816-214652_standfast-the-stopped-line.md`](20260816-214652_standfast-the-stopped-line.md)

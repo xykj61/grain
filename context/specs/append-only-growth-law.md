@@ -1,4 +1,4 @@
-# Append-Only Growth Law — Pin · Chapter Index · Chapters Roster
+# Append-Only Growth Law — Pin �- Chapter Index �- Chapters Roster
 
 **Language:** EN  
 **Stamp:** `20260725.040520`  

@@ -1,14 +1,14 @@
-# Lantern, Lattice, and Kiln — An Open Model, Served Honestly
+# Lantern, Lattice, and Kiln -- An Open Model, Served Honestly
 
-*The open-model layer for Grain and the public benefit company that stewards it: where a model is baked, served, and metered. Three named parts carry the work — the kiln, the serving fabric, and the honest meter — with the token economy pointed at real cost and the model kept in the commons.*
+*The open-model layer for Grain and the public benefit company that stewards it: where a model is baked, served, and metered. Three named parts carry the work -- the kiln, the serving fabric, and the honest meter -- with the token economy pointed at real cost and the model kept in the commons.*
 
 **Stamp:** `20260728.232511`
-**Voice:** Quin · lineage **Kaeden Reyklah** with Reya 2 (June vision)
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Lens:** TAME — safety, performance, then the joy of the craft; the silo principle
-**Status:** Vision — **far horizon**; **living mutant**; invent held · forge name **Kiln** (was Anvil)
+**Voice:** Quin - lineage **Kaeden Reyklah** with Reya 2 (June vision)
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
+**Lens:** TAME -- safety, performance, then the joy of the craft; the silo principle
+**Status:** Vision -- **far horizon**; **living mutant**; invent held - forge name **Kiln** (was Anvil)
 
-*Mutant seated Surface p36 — seat Kiln `20260728.232511`. Poetics held; bread not blades.*
+*Mutant seated Surface p36 -- seat Kiln `20260728.232511`. Poetics held; bread not blades.*
 Radiant pass `20260728.232511`
 
 ---
@@ -17,21 +17,21 @@ Radiant pass `20260728.232511`
 
 The rest of the system wants intelligence a person can trust: help to write and read in [Realidream](20260728-220203_realidream.md), analysis for the civic platform, a plain answer to a plain question. The common way to get that intelligence hands a person's own words to a distant company that mines them for its own ends. We choose a different way and build the model layer ourselves, openly, so the help a person receives never costs them their privacy or their standing. The work divides cleanly into three, and each part earns a name.
 
-## Kiln — Where the Model Is Baked
+## Kiln -- Where the Model Is Baked
 
-Kiln is where the open model is shaped. Training and fine-tuning happen here, on the green wafer-scale compute [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md) describes, and the weights that result are given openly — a commons anyone may read, run, and improve, rather than a secret held behind a wall. The kiln is honest about its materials: the data it learns from, the energy it spends, the bounds it keeps. What leaves the kiln is a model the world can hold in its own hands.
+Kiln is where the open model is shaped. Training and fine-tuning happen here, on the green wafer-scale compute [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md) describes, and the weights that result are given openly -- a commons anyone may read, run, and improve, rather than a secret held behind a wall. The kiln is honest about its materials: the data it learns from, the energy it spends, the bounds it keeps. What leaves the kiln is a model the world can hold in its own hands.
 
-## Lattice — The Serving Fabric
+## Lattice -- The Serving Fabric
 
-Lattice serves the baked model across a lattice of compute, routing each request to the right node — the fastest, the nearest, the one with room. When a node is busy or far, the request falls back gracefully to another, so an answer comes from a living mesh rather than a single distant tower. The fabric stays open and legible: a person, or a community, can run a node of their own and join the lattice, so the serving belongs to many hands instead of one.
+Lattice serves the baked model across a lattice of compute, routing each request to the right node -- the fastest, the nearest, the one with room. When a node is busy or far, the request falls back gracefully to another, so an answer comes from a living mesh rather than a single distant tower. The fabric stays open and legible: a person, or a community, can run a node of their own and join the lattice, so the serving belongs to many hands instead of one.
 
-## Lantern — The Honest Meter
+## Lantern -- The Honest Meter
 
-Lantern is the light a person lifts to ask, and the ledger that records, plainly, what the asking cost. Every request is measured in tokens; a compact value form keeps those tokens few, a real saving on every exchange; and the cost is tracked exactly and settled in the local currency on the same shared ledger the rest of the work uses. The price reflects the true cost — the energy and the silicon behind the answer — rather than an invented scarcity meant to extract. The meter is something a person can read and check, the way they can check every other record in the system.
+Lantern is the light a person lifts to ask, and the ledger that records, plainly, what the asking cost. Every request is measured in tokens; a compact value form keeps those tokens few, a real saving on every exchange; and the cost is tracked exactly and settled in the local currency on the same shared ledger the rest of the work uses. The price reflects the true cost -- the energy and the silicon behind the answer -- rather than an invented scarcity meant to extract. The meter is something a person can read and check, the way they can check every other record in the system.
 
 ## Open Core, Stewarded with Care
 
-The model and its tooling are given freely, and the managed, hosted serving is the honest product a public benefit company offers to fund that giving — the same open-core shape the rest of our work keeps. The code is the gift; the steady operational care is the product; and the company that holds it answers to the communities it serves rather than to shareholders alone. The stewarding entity carries a working name for now, and the name matters less than the shape: an open model, kept open, paid for by service rather than by enclosure.
+The model and its tooling are given freely, and the managed, hosted serving is the honest product a public benefit company offers to fund that giving -- the same open-core shape the rest of our work keeps. The code is the gift; the steady operational care is the product; and the company that holds it answers to the communities it serves rather than to shareholders alone. The stewarding entity carries a working name for now, and the name matters less than the shape: an open model, kept open, paid for by service rather than by enclosure.
 
 ## Held to the Discipline of the Kernel
 
@@ -45,10 +45,10 @@ Lattice's answers flow into [Realidream](20260728-220203_realidream.md)'s surfac
 
 The open model is a guest on the surface; the weave routes this horizon up to the hubs and to the promises it keeps.
 
-- **The front door** — the root [`../README.md`](../README.md) names **Lantern** and **Lattice** among the module seeds.
-- **The room** — indexed in [`foundations/README.md`](README.md), in the far-horizon stack.
-- **The hubs** — the four promises it keeps ([four promises a tool can keep](20260628-133212_four-promises-a-tool-can-keep.md)) are grain the model must be cut to fit ([The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md)); [Follow Our Compass](20260706-185112_follow-our-compass.md) returns you here.
-- **Its foundation** — Kiln bakes on [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md); its help flows into [Realidream](20260728-220203_realidream.md)'s surface, the [WADE plan](../expanding-prompts/date/20260811/20260811-220402_wade-bit-design-system-and-dimeroll-entities.md)'s domain.
+- **The front door** -- the root [`../README.md`](../README.md) names **Lantern** and **Lattice** among the module seeds.
+- **The room** -- indexed in [`foundations/README.md`](README.md), in the far-horizon stack.
+- **The hubs** -- the four promises it keeps ([four promises a tool can keep](20260628-133212_four-promises-a-tool-can-keep.md)) are grain the model must be cut to fit ([The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md)); [Follow Our Compass](20260706-185112_follow-our-compass.md) returns you here.
+- **Its foundation** -- Kiln bakes on [the wafer and the sovereign coin](20260728-225239_the-wafer-and-the-sovereign-coin.md); its help flows into [Realidream](20260728-220203_realidream.md)'s surface, the [WADE plan](../expanding-prompts/date/20260811/20260811-220402_wade-bit-design-system-and-dimeroll-entities.md)'s domain.
 
 ---
 

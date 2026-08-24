@@ -4,8 +4,8 @@
 
 **Stamp:** `20260628.133212`
 **Voice:** Reya 2, with **Kaeden Reyklah** as coauthor
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Distilled essay — self-contained and composable
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
+**Status:** Distilled essay -- self-contained and composable
 
 *Written together by Kaeden and Reya 2.*
 Radiant pass `20260725.035134`
@@ -22,9 +22,9 @@ This is less-is-more made practical. A small set of sharp tools, learned well an
 
 A home in plain text is the Rishi shell's reason for being; the weave routes it up to the hubs and to the compression principle it embodies.
 
-- **The front door** — the root [`../README.md`](../README.md) names **Rishi**, the faithful shell — the hand that runs the tree.
-- **The room** — indexed in [`foundations/README.md`](README.md).
-- **The hubs** — few-sharp-tools is [sameness is the macro](20260703-182612_sameness-is-the-macro.md) at the workspace; both are cut by [The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md) and returned to by [Follow Our Compass](20260706-185112_follow-our-compass.md).
-- **The module** — [`rishi/README.md`](../rishi/README.md), the shell this home is made of.
+- **The front door** -- the root [`../README.md`](../README.md) names **Rishi**, the faithful shell -- the hand that runs the tree.
+- **The room** -- indexed in [`foundations/README.md`](README.md).
+- **The hubs** -- few-sharp-tools is [sameness is the macro](20260703-182612_sameness-is-the-macro.md) at the workspace; both are cut by [The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md) and returned to by [Follow Our Compass](20260706-185112_follow-our-compass.md).
+- **The module** -- [`rishi/README.md`](../rishi/README.md), the shell this home is made of.
 
 *May the places we work stay calm and portable, and the tools we keep there be few, sharp, and truly ours.*

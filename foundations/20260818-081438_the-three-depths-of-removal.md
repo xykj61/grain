@@ -1,6 +1,6 @@
 # The Three Depths of Removal
 
-**Stamp:** `20260818.081438` - **Style:** Radiant - **Voice:** Kyri - **Status:** Living
+**Stamp:** `20260818.081438` - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Kin:** [The Breach](20260726-020537_the-breach.md) - [`../.claude/rules/molt.md`](../.claude/rules/molt.md) - [`../.claude/rules/debride.md`](../.claude/rules/debride.md) - [`../.claude/rules/checkpoint.md`](../.claude/rules/checkpoint.md)
 **Kitchen twin:** [`../external-research/20260818-081438_the-craft-of-deep-removal.md`](../external-research/20260818-081438_the-craft-of-deep-removal.md)
 
