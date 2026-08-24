@@ -232,6 +232,16 @@ witnesses** and Mycelium at **98 with 80**, so the bottleneck is legibility rath
 a reader arriving today cannot say what either one does. Tier 1 is a Door-setting front page for
 each of the two big modules, and the seed-dead links beneath them.
 
+**The front doors, measured `20260824.052950`.** Four living documents stand over the 24,576-byte
+bound the pin law declares, and each wants a different repair:
+
+| Document | Bytes | What it wants |
+|---|---|---|
+| `caravan/README.md` | 497,531 | **the Tier 1 crux** -- a Door front page, the 110-rung ladder table moved to its own reference page |
+| `construction/ITINERARY.md` | 76,439 | this card -- condense on touch, which is what a refresh lap does |
+| `docs/CRYPTO.md` | 68,547 | a compression shelf page; read whether it is a door or a reference |
+| `session-logs/README.md` | 266,790 | **repaired** `20260824.052950` -- 2,193 rows folded to 26 shelves; the remainder needs **fold the logs** |
+
 **Four doors booked `20260823.184309`, in Lindy order.**
 
 1. **`SOURCE.md` molt into Gauge - Civic - TAME.** LANDED `20260824.014209`.
@@ -250,9 +260,10 @@ each of the two big modules, and the seed-dead links beneath them.
 
 **Open, named, and waiting on its own lap.** The **fascia weave** over the thirty-nine browsed
 `active-designing/` documents -- Class W, walked and cited and kept, so none sheds -- shaped as a
-living index page per cluster rather than edits into dated bodies. And the **112 living broken
-links** across 42 files that the README crawl found, of 1,209 total, the rest being testimony
-resolved by law.
+living index page per cluster rather than edits into dated bodies. And the **index fold for the
+four remaining rooms** -- `active-designing` 86 stale rows, `counsel` 112, `expanding-prompts` 78,
+`waymarks` 41, **317** together under a ceiling that only falls -- each its own round, since
+folding a room's index also rewrites its front door.
 
 **Two questions answered so a lap need not reopen them.** The `%NNN` REDS pattern **stands** and
 its standfast is **declined** -- a number that counts is a census rather than a forecast, and the
@@ -268,6 +279,8 @@ the account.
 
 | Landed | Round | Log |
 |---|---|---|
+| `20260824.052950` | The index that outgrew its room -- 2,193 rows onto 26 shelves, the pin 2,895,849 -> 266,790, `index_fold` seated 39th | REDS %182 |
+| `20260824.043930` | The rule written as arithmetic -- the fold reads a stamp with no sprig; a fabricated citation caught by the census | REDS %180, %181 |
 | `20260824.040212` | One spelling for a dated name -- nineteen sites widened, a left boundary seated, the resolver reads a stamp; `dated_spelling` 37th and the elder `dated_pattern` 38th | REDS %178, %179 |
 | `20260824.030821` | The recipe that would not parse -- a lone apostrophe, `loop_prompt_parse` seated 36th | REDS %177 |
 | `20260824.021623` | The Gauge standfast completes -- 490 files swept, zero living documents reference Style Radiant | REDS %163 closed |

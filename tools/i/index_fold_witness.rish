@@ -1,0 +1,73 @@
+# tools/i/index_fold_witness.rish -- an index folds with the room it describes.
+#
+#   rishi/bin/rishi run tools/i/index_fold_witness.rish
+#
+# WHY. A room folds its files by day into `date/YYYYMMDD/` and its `README.md` indexes them. The
+# fold moved the files and left every row standing, so the index alone grew without a ceiling.
+# `session-logs/README.md` reached 2,895,849 bytes against the 24,576 its own header declares --
+# 117 times over -- with 1,880 rows above its title and no table delimiter under any of them, so
+# by the GitHub-Flavored Markdown spec it held no table at all. The room beside it sat at 181 flat
+# files against a bound of 256, green the whole time (REDS %182).
+#
+# WHY THE GATE IS A ROW RULE RATHER THAN A BYTE COUNT. A byte ceiling would refuse ordinary work,
+# since every lap writes a row, and a guard that reds on the ordinary is a guard someone turns
+# off. The row rule refuses nothing ordinary: a row goes stale only when its logs fold, and one
+# tool folds both --
+#
+#   rye run tools/rye/session_logs_archive.rye index-fold [--room NAME]
+#
+# The byte bound then follows without being asked for. Fold the room to today and the pin holds
+# one day of rows, which is a few kilobytes.
+#
+# WHAT IS GATED, hard, at zero. An index row in an ENFORCED room naming a day whose logs have all
+# folded out of that room's flat level. `session-logs` holds that seat from `20260824.052329`.
+#
+# WHAT RIDES A RATCHET. The same rows in every other room -- `active-designing` 86, `counsel` 112,
+# `expanding-prompts` 78, `waymarks` 41 on the day this was written, 317 together, under a ceiling
+# that only ever falls. Folding a room's index also rewrites its front door, and four front doors
+# written in a hurry is how a fix becomes its own red; each gets its own round.
+#
+# WHAT PASSES FREE. A row whose day still holds a flat log, sprig or no sprig. A table delimiter
+# row, which opens `|-` and names no day. A prose bullet carrying no stamp. A room with no `date/`
+# fold, or no `README.md`, which is not this guard's subject at all.
+#
+# WHAT IT DOES NOT REACH, said plainly. Whether a row's prose is true, whether its link resolves
+# (`tools/d/dated_path_witness.rish` reads that), and whether a pin under the row rule is also
+# under its byte bound -- reported here, gated nowhere, because a pin cannot reach bound while its
+# room holds days flat, and folding the room is Keaton's word.
+#
+# Pen: tools/fixtures/index_fold_control.sh -- fifteen behaviors on real directory trees in a
+# throwaway pen, five refusals bitten and ten honest readings left free, the ratchet ceiling
+# proven from both sides by planting 317 rows and then 318, so no override exists and none is
+# wanted. Run from the repository root.
+
+say "index-fold: Language EN -- a room and its index describe one set, so they are bounded by one rule rather than by two numbers that happen to agree."
+say "index-fold: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
+say "index-fold: Lens TAME -- bound everything: the fold gives the index the ceiling the room already had, and the pin's bytes become a consequence rather than a promise."
+
+let scan = run ["sh" "tools/fixtures/index_fold_scan.sh"]
+say scan.out
+assert scan.ok else "index-fold: the scan must complete"
+assert scan.out contains "stale_rows_gated=0" else "index-fold: an enforced room holds no row for a day it has already folded -- run the index fold"
+assert scan.out contains "ratchet_under_ceiling=yes" else "index-fold: the ratchet has risen -- a room's index has fallen further behind its fold"
+assert scan.out contains "index_follows_room=yes" else "index-fold: the index must describe the set the room holds flat"
+assert scan.out contains "room=session-logs stale=0 roster=enforce" else "index-fold: the enforced room is reported at every count, empty or full"
+
+# A meter reading no rooms reports clean while measuring nothing, so the corpus is measured too.
+assert (scan.out contains "rooms_measured=0" == false) else "index-fold: a zero-room reading would report clean over an empty tree"
+
+let control = run ["sh" "tools/fixtures/index_fold_control.sh"]
+say control.out
+assert control.ok else "index-fold: the control must complete"
+assert control.out contains "control_fail=0" else "index-fold: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "index-fold: the control must agree with itself"
+assert control.out contains "1 bitten: a stale row in the enforced room counts against the gate" else "index-fold: the gate must bite"
+assert control.out contains "2 free: a row whose day still has a flat log is left alone" else "index-fold: a living row must pass free"
+assert control.out contains "3 free: a SPRIGLESS flat log holds its day open" else "index-fold: the sprig is optional, and a day held open by one must stay open"
+assert control.out contains "4 free: a table delimiter row names no day" else "index-fold: a delimiter row is punctuation, not a row"
+assert control.out contains "6 bitten: the elder list-shape row is read, not skipped" else "index-fold: both row shapes ever written here must be read"
+assert control.out contains "11 bitten: 318 ratchet rows cross the ceiling" else "index-fold: the ratchet ceiling must refuse from above"
+assert control.out contains "12 free: the enforced room is reported at zero" else "index-fold: a room that vanishes from a meter is a room nobody witnessed"
+
+say ""
+say "GREEN: index-fold -- the index folds with the room, gated at zero where a hand has carried a room across and ratcheted everywhere else, proven both ways on real directory trees."
