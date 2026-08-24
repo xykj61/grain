@@ -1,0 +1,48 @@
+# tools/l/loop_prompt_parse_witness.rish -- a command this tree prints for a hand to paste must
+# parse as a shell command.
+#
+#   rishi/bin/rishi run tools/l/loop_prompt_parse_witness.rish
+#
+# WHY. tools/l/launch-claude-season.rish prints the unattended-loop recipe, and the recipe's whole
+# purpose is to be copied into an outer terminal and run. Its prompts are long single-quoted shell
+# strings, where a literal apostrophe must be written '' -- and one written as a lone ' flips every
+# character after it out of quoting, silently. On 20260824 the recipe carried exactly one, in the
+# words "the linker's own search path". Both printed launch lines died on the first later
+# parenthesis with `syntax error near unexpected token (`, the season loop could not start, and no
+# guard said a word, because a printed string is not code any compiler reads.
+#
+# WHAT IS GATED, hard, at zero. Every printed line the reader is told to run -- the jail elder or
+# the outer loop's opening assignment -- that fails `bash -n`.
+#
+# WHAT PASSES FREE. The narration around the commands. Its apostrophes are correct English, and a
+# guard that measured them would be reading prose as code, which is the mirror of the fault.
+#
+# Pen: tools/fixtures/loop_prompt_parse_control.sh -- eight cases, the lone apostrophe bitten and
+# its line named, prose left free, the outer loop measured beside the jail elder, and an empty or
+# absent printout told apart from a failing one. Run from the repository root.
+
+say "loop-prompt-parse: Language EN -- a recipe that cannot be run is a recipe in name only."
+say "loop-prompt-parse: Style Gauge -- the reading is a parse, so the number is checkable by anyone."
+say "loop-prompt-parse: Lens TAME -- printed text is untested code until something tests it."
+
+let scan = run ["sh" "tools/fixtures/loop_prompt_parse_scan.sh"]
+say scan.out
+assert scan.ok else "loop-prompt-parse: a printed command does not parse -- read the scan's own detail lines"
+assert scan.out contains "verdict=every_printed_line_parses" else "loop-prompt-parse: the scan must reach the clean verdict"
+assert scan.out contains "lines_that_do_not_parse=0" else "loop-prompt-parse: no printed command may fail to parse"
+
+let control = run ["sh" "tools/fixtures/loop_prompt_parse_control.sh"]
+say control.out
+assert control.ok else "loop-prompt-parse: the control must complete"
+assert control.out contains "case=clean_free ok" else "loop-prompt-parse: a correctly doubled apostrophe must pass"
+assert control.out contains "case=narration_unmeasured ok" else "loop-prompt-parse: narration must not be counted as a command"
+assert control.out contains "case=lone_apostrophe_bitten ok" else "loop-prompt-parse: a lone apostrophe must be refused"
+assert control.out contains "case=offender_named ok" else "loop-prompt-parse: the refusal must name the line that failed"
+assert control.out contains "case=prose_apostrophe_free ok" else "loop-prompt-parse: prose apostrophes must stay free"
+assert control.out contains "case=outer_loop_measured ok" else "loop-prompt-parse: the outer loop line must be measured too"
+assert control.out contains "case=empty_told_apart ok" else "loop-prompt-parse: a printout with no command must read distinctly"
+assert control.out contains "case=absent_told_apart ok" else "loop-prompt-parse: an absent printout must read distinctly"
+assert control.out contains "control=ok" else "loop-prompt-parse: the control must agree with itself"
+
+say ""
+say "GREEN: loop-prompt-parse -- every printed command parses, and a lone apostrophe is refused on the lap it enters."

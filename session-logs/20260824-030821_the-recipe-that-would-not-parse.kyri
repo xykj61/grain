@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20260824.030821
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title the recipe that would not parse -- a lone apostrophe, and the guard that reads printed commands
+prompt did you fix the unexpected token parsing error of the outer prompt and possibly inner prompt? then kg
+think Keaton pasted the season loop and bash answered syntax error near unexpected token open-paren. Reproduced rather than reasoned about it -- wrote the pasted command to a file and ran bash -n, which parsed clean.
+think That ruled out the paste text as recorded, so the next question was what the tree itself prints. Ran tools/l/launch-claude-season.rish, cut each printed line to its own file, bash -n on each: both launch lines failed with the identical error.
+think Located the offender by collapsing every correctly-doubled apostrophe to a marker and grepping what remained -- exactly one, linker's, in the words the linker's own search path, added by the lap that seated the ask-the-system discipline.
+think A lone apostrophe inside a single-quoted shell string closes the string, so every character after it leaves quoting and the first later parenthesis reaches bash as syntax. The mechanism explains why the error names a paren the writer never typed as code.
+think Fixed the root at tools/l/launch-claude-season.rish lines 66 and 84, changing linker's to linker''s in both say strings. All six printed runnable lines then parsed.
+think Prevention, because a printed command is untested code until something parses it: tools/fixtures/loop_prompt_parse_scan.sh runs the recipe tool and bash -n's every printed line the reader is told to run -- the jail elder or the outer loop's own opening assignment -- gating failures at zero and leaving narration free.
+think Proved it from both sides in tools/fixtures/loop_prompt_parse_control.sh: eight cases in a temporary pen, the lone apostrophe refused and its line named, a doubled one passed, prose apostrophes untouched, the outer loop measured beside the jail elder, empty and absent printouts told apart from failing ones.
+think Seated as the 36th standing guard, tools/l/loop_prompt_parse_witness.rish, GREEN on metal.
+think Booking REDS %177 carried construction/REDS.md to 24,900 bytes against its 24,576 bound. Folded row %176 to archive, still over. Measured the pin and found 45 fold pointers holding 17,810 of its bytes -- 72 percent -- so consolidated the oldest 37 into construction/archive/REDS-fold-index-rows-1-172.md behind one pointer line. Pin now 10,265 bytes with every path resolvable.
+think The spine witness then caught the headline lagging in two places, span and remainder. Corrected both to 177 and 157 from the measurement rather than from arithmetic in my head, and reds-monotone went GREEN.
+think Reds-first on the roster found three standing before this round: geode_libraries, tracked_link, document_mirror. tracked_link read GREEN on its own and was transient -- the roster had measured an unstaged tree, the REDS %174 class again. geode_libraries was a generated index my new files had moved past; regenerated. document_mirror was the REDS %176 class recurring -- context/SPELLBOOK.md carried a bare sibling link GAUGE_STYLE.md and a later commit hand-repaired the mirror instead of the canonical. Repaired at the canonical as ../context/GAUGE_STYLE.md, which resolves from both homes, then ran the scan's own write.
+obs The guard class this opens is wider than quoting. Every guard on the roster read files the tree executes; nothing read the one thing a person is told to execute. Install lines on the operator card and any copyable one-liner carry the same exposure.
+obs Reproducing the failure before theorising about it was what found the root in three steps. The reconstruction parsing clean was the useful negative result -- it moved the question from the paste to the printer.
+obs Root fascia rewitnessed at 48 of 100, GREEN, level with its window_min baseline. Signals unchanged: superseded 34, parseint ratchet 25, target class A 5, functions past 70 lines 13.
+file tools/l/launch-claude-season.rish two say strings escaped so both printed launch lines parse
+file tools/fixtures/loop_prompt_parse_scan.sh new -- bash -n over every printed runnable line, gated at zero
+file tools/fixtures/loop_prompt_parse_control.sh new -- eight cases proving the refusal and the welcome
+file tools/l/loop_prompt_parse_witness.rish new -- the 36th standing guard
+file construction/standing-equipment.kyri seats loop_prompt_parse at 20260824.025704
+file construction/REDS.md books %177, folds %176, consolidates 37 pointers, headline corrected to the measurement
+file construction/archive/REDS-fold-index-rows-1-172.md new -- the folded pointers, gathered whole
+file construction/archive/REDS-the-mirror-that-matched-perfectly-rows-176.md new -- row %176 folded closed
+file context/SPELLBOOK.md bare sibling link written room-qualified so it resolves from every home
+file docs-geode/libraries/README.md regenerated to equal a fresh reading of the tree
+recommend keep-going the next lap is the eight read-only scans still carrying the narrow dated pattern, REDS %175's named open remainder
