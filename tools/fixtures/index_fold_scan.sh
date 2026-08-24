@@ -50,12 +50,16 @@ MAX_BYTES=$(sh "$(dirname "$0")/living_pin_max_bytes.sh")
 # on 20260824.152800, its 112 rows onto ten. Each front door was read line by line afterwards --
 # which is what the seat means, and why each room's fold is its own round rather than four in a
 # hurry. counsel is a closed room, so every one of its days folded and its pin now holds the way
-# in rather than the rows: a shelf table with its counts, and its seasons roster beside it.
-ENFORCE="session-logs active-designing counsel"
+# in rather than the rows: a shelf table with its counts, and its seasons roster beside it. expanding-prompts
+# joined them on 20260824.171500, its 78 rows onto 21 shelves and its pin 24,603 -> 9,797 bytes,
+# under the bound its own header declares for the first time. It is a LIVING room, so its pin keeps
+# a table for the rows whose prompts are still flat -- two of them -- beneath the shelf table that
+# holds the way in.
+ENFORCE="session-logs active-designing counsel expanding-prompts"
 
-# Every other room's stale rows: expanding-prompts 78, waymarks 41. Measured 20260824.152800,
-# down from 317 when active-designing and counsel were among them. Allowed only to fall.
-RATCHET_CEILING=119
+# Every other room's stale rows: waymarks 41. Measured 20260824.171500, down from 317 when
+# active-designing, counsel, and expanding-prompts were among them. Allowed only to fall.
+RATCHET_CEILING=41
 
 TMP=$(mktemp -d "${TMPDIR:-/tmp}/index-fold.XXXXXX")
 trap 'rm -rf "$TMP"' EXIT
