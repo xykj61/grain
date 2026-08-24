@@ -17,7 +17,7 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5** -- so the whole canon returns to awareness roughly once a working day. Seated `20260821.211423`, replacing the 27-doc rota.
-- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **39 guards** stand; the roster is `construction/standing-equipment.kyri`.
+- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **41 guards** stand; the roster is `construction/standing-equipment.kyri`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
 
 ### Seated, and still live
@@ -41,9 +41,9 @@
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `ae46d33e23` (**The ladder table that named 73 of 110.** `caravan/README.md` stood at **497,531 bytes** over 2,694 lines and was the Tier 1 legibility crux. It splits three ways in the same directory -- a **7,221-byte Door page**, `caravan/LADDER.md` for the rungs, `caravan/HARNESS.md` for the carry -- with all 125 headings and every non-blank body line carried across, and the depth unchanged so each relative link still resolves. Counting the rows to write the split found the red beneath it: the table headed *The Ladder* held **73 rows** while **110** modules stood in the directory, 33 proven rungs having landed while nobody added the row. A roster a program runs gets checked, because a missing entry breaks a run; a roster a reader uses gets checked by nobody. Table completed to **110 of 110**, and `caravan_ladder_roster` seats **40th** -- four readings at zero, proven RED on the departing table at `unrostered=37` and both ways over twelve planted behaviors. **REDS %184. 40 of 40 green.**)
+**Git nib:** `be70f6d4f2` (**The rule that reached 95 of 98, and the door nobody measured.** `mycelium/README.md` answers the roster problem better than a table -- 34 bases across nine families plus a published **suffix rule**, so a companion is reached by rule rather than by row. The rule reached **95 of 98**: two Tally seam symlinks and one generator naming a base nobody wrote stood outside it, and a rule goes short more quietly than a list, because a reader sees the rule rather than the set it covers. `mycelium_map_roster` seats **41st**, reading the suffix rule from the README itself. Adding the page to the DOOR roster found the larger half: **46 percent negative against a 20 percent ceiling**, swept to **13 percent** with every claim held exactly, and 87 non-ASCII characters cleared. Then the roster run after `git add` caught a REDS row I had folded carrying the pin's links one directory down. **REDS %185, %186. 41 of 41 green.**)
 
-**Now.** The front doors, one down. `caravan/README.md` is a **7,221-byte Door page** as of `20260824.062207`, its rung record at `caravan/LADDER.md` and its harness record at `caravan/HARNESS.md` -- and the ladder table, found naming **73 rungs while 110 modules stood beside it**, is complete and held there by the **40th** standing guard (REDS %184). Next: `docs/CRYPTO.md` (68,547) -- read whether it is a door or a reference -- then this card itself, and the index fold for the four rooms still carrying 317 stale rows.
+**Now.** The Tier 1 legibility crux is closed -- both big modules have a front door a reader can enter by, and a guard holding each page to the directory beneath it. `caravan/README.md` is a **7,221-byte Door page** with its rungs at `caravan/LADDER.md` and its carry at `caravan/HARNESS.md` (REDS %184). `mycelium/README.md` already published a **naming rule** rather than a list, which reaches further than a table ever did -- 34 bases across nine families plus five seated suffixes -- and the rule reached **95 of 98**, read **46% negative against a 20% Door ceiling**, and stood off the DOOR roster entirely. All three repaired, and the **41st** standing guard reads the suffix rule from the README itself (REDS %185). Next: `docs/CRYPTO.md` (68,547) -- read whether it is a door or a reference -- then this card itself, and the index fold for the four rooms still carrying 317 stale rows.
 
 **Landed, and the detail is in the logs.** Every round this block used to narrate now reads as one line in *Prior laps* below, or in *Landed arcs* beneath that. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`); `%162` and `%164` are closed; the teaching tier reads zero over target.
 
@@ -152,8 +152,8 @@ Lindy-first and crux-first, with costs, gates, and falsifiers.
 **The crux, and the measurement that moved it.** Caravan stands at **110 modules with 109
 witnesses** and Mycelium at **98 with 80**, so the bottleneck is legibility rather than building:
 a reader arriving today cannot say what either one does. Tier 1 is a Door-setting front page for
-each of the two big modules, and the seed-dead links beneath them. **Caravan's landed
-`20260824.062207`**; Mycelium's is the standing half.
+each of the two big modules, and the seed-dead links beneath them. **Both landed** -- Caravan
+`20260824.062207`, Mycelium `20260824.071500` -- each held to its directory by a standing guard.
 
 **The front doors, measured `20260824.052950`, one repaired since.** Four living documents stood
 over the 24,576-byte bound the pin law declares, and each wanted a different repair:
@@ -163,6 +163,7 @@ over the 24,576-byte bound the pin law declares, and each wanted a different rep
 | `caravan/README.md` | **7,221** | **landed** `20260824.062207` -- a Door front page; `LADDER.md` holds the rungs, `HARNESS.md` the carry, and a guard holds the table to the directory |
 | `construction/ITINERARY.md` | 41,203 | **condensed** `20260824.060012` -- the INNER LOOP block 50,477 -> 14,092; still over bound, and condensing on touch is what a refresh lap does |
 | `docs/CRYPTO.md` | 68,547 | a compression shelf page; read whether it is a door or a reference |
+| `mycelium/README.md` | 13,375 | **landed** `20260824.071500` -- under bound the whole time, and 46% negative against a 20% Door ceiling because no meter read it; swept to 13% and seated on the DOOR roster |
 | `session-logs/README.md` | 266,790 | **repaired** `20260824.052950` -- 2,193 rows folded to 26 shelves; the remainder needs **fold the logs** |
 
 **Four doors booked `20260823.184309`, in Lindy order.**

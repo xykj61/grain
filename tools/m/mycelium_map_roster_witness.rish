@@ -1,0 +1,82 @@
+# tools/m/mycelium_map_roster_witness.rish -- the map a reader enters Mycelium by reaches every module.
+#
+#   rishi/bin/rishi run tools/m/mycelium_map_roster_witness.rish
+#
+# WHY. One directory over, caravan/LADDER.md named 73 modules while 110 stood beside it, and the
+# lesson written that lap was general: a roster listing what a PROGRAM runs gets checked, because a
+# missing entry breaks a run; a roster listing what a READER should find gets checked by nobody,
+# because a missing entry breaks only understanding, and understanding fails quietly (REDS %184).
+#
+# Mycelium answers the same problem a better way, and that is what this guard is shaped around.
+# Rather than listing all 98 modules, mycelium/README.md names 34 bases across nine families and
+# publishes a SUFFIX TABLE -- `_bron`, `_true`, `_knot`, `_fixture_gen`, `_bench` -- so a companion
+# is reachable by rule instead of by row. Sixty-four of the 98 are reached that way, which is how
+# the page stays a map rather than a catalogue.
+#
+# A rule goes short more quietly than a list does, and the measurement said so: three modules stood
+# outside it -- two seam symlinks into ../tally/ and one generator whose name promises a base module
+# that was never written. All three are named on the page now, and this holds it that way.
+#
+# WHAT IS GATED, hard, at zero, in four readings:
+#
+#   unreachable        -- a mycelium/*.rye that is neither a named base nor <named base><suffix>
+#   phantom            -- a map entry naming a module absent from the directory
+#   duplicate_entries  -- one module named twice, since two descriptions may come to disagree
+#   mismatched_entries -- an entry whose display text and link target name different modules
+#
+# WHAT PASSES FREE. A companion never named directly, which is the rule working. A cross-directory
+# citation like ../tally/kumara.rye, read past because it names another room. A seated suffix no
+# module wears yet, reported and left free, since a rule may be written before its first companion.
+#
+# WHAT IT DOES NOT REACH, said plainly. Whether an entry's description is TRUE -- that sentence is
+# prose and no grep reads it. The module's own witness proves the module; this proves the map
+# reaches it.
+#
+# Pen: tools/fixtures/mycelium_map_roster_control.sh -- fifteen behaviors on real directories in a
+# throwaway pen, eight refusals bitten and seven honest readings left free. Two carry the load: a
+# suffix DROPPED from the page must leave its companions unreachable, which is what proves the rule
+# is read from the README rather than recited in the scan; and a two-suffix name over an unnamed
+# middle must bite, which is what proves derivation stays one deep. Run from the repository root.
+
+say "mycelium-map-roster: Language EN -- the map a reader enters Mycelium by reaches all 98 modules, by name or by the rule the page itself publishes."
+say "mycelium-map-roster: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
+say "mycelium-map-roster: Lens TAME -- the rule is read from the README, so the guard cannot drift from the page it guards; corpus size published beside the verdict."
+
+let scan = run ["sh" "tools/fixtures/mycelium_map_roster_scan.sh"]
+say scan.out
+assert scan.ok else "mycelium-map-roster: the scan must complete -- a module stands outside the map and its rule, or an entry outlived its module"
+assert scan.out contains "unreachable=0" else "mycelium-map-roster: every mycelium/*.rye is named in the map or reached by a seated suffix"
+assert scan.out contains "phantom=0" else "mycelium-map-roster: every map entry names a module that exists"
+assert scan.out contains "duplicate_entries=0" else "mycelium-map-roster: one module wears one entry, since two descriptions may come to disagree"
+assert scan.out contains "mismatched_entries=0" else "mycelium-map-roster: an entry's display text and its link target name one module"
+assert scan.out contains "reaches_all=yes" else "mycelium-map-roster: the map and the directory must cover the same set"
+
+# A meter reading no modules finds no fault and would report clean while measuring nothing.
+assert (scan.out contains "modules_on_disk=0" == false) else "mycelium-map-roster: a zero-module reading would report clean over an empty directory"
+
+# The rule is what makes the page short enough to read, so its presence is asserted rather than assumed.
+assert (scan.out contains "suffixes_seated=0" == false) else "mycelium-map-roster: the suffix table must seat at least one rule, or every companion reads unreachable"
+
+let control = run ["sh" "tools/fixtures/mycelium_map_roster_control.sh"]
+say control.out
+assert control.ok else "mycelium-map-roster: the control must complete"
+assert control.out contains "control_fail=0" else "mycelium-map-roster: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "mycelium-map-roster: the control must agree with itself"
+assert control.out contains "2 bitten: a module reachable by neither name nor suffix counts against the gate" else "mycelium-map-roster: the gate that names this guard must bite"
+assert control.out contains "3 bitten: a map entry naming an absent module counts against the gate" else "mycelium-map-roster: the mirror gate must bite"
+assert control.out contains "4 bitten: one module named by two map entries counts against the gate" else "mycelium-map-roster: two entries for one module must bite"
+assert control.out contains "5 bitten: an entry whose text and target disagree counts against the gate" else "mycelium-map-roster: an entry naming two modules must bite"
+assert control.out contains "7 bitten: a suffix dropped from the table leaves its companions unreachable" else "mycelium-map-roster: the rule must be read from the page, or a dropped row would pass unnoticed"
+assert control.out contains "9 bitten: a cross-directory link is read past and rosters nothing" else "mycelium-map-roster: a citation of another room must not roster a module"
+assert control.out contains "10 bitten: an empty directory reads as an empty corpus rather than clean" else "mycelium-map-roster: a meter over nothing must say so"
+assert control.out contains "12 bitten: a two-suffix name over an unnamed middle counts against the gate" else "mycelium-map-roster: derivation must stay one deep, or a gap hides behind a named end"
+assert control.out contains "14 bitten: a symlinked module nobody named counts against the gate" else "mycelium-map-roster: a seam symlink is a module a reader meets and must be counted"
+assert control.out contains "1 free: a map naming two bases, one companion reached by rule, reads clean at three" else "mycelium-map-roster: the honest shape must pass free"
+assert control.out contains "6 free: five companions reached by rule alone, none named, read clean" else "mycelium-map-roster: the rule doing its work must pass free"
+assert control.out contains "8 free: a suffix added to the table honors its companions with no scan change" else "mycelium-map-roster: a page teaching a new shape must be honored"
+assert control.out contains "11 free: a two-suffix name resolves when its middle is itself a named base" else "mycelium-map-roster: a named intermediate must resolve"
+assert control.out contains "13 free: a symlinked module named in the map reads clean" else "mycelium-map-roster: a named seam symlink must pass free"
+assert control.out contains "15 free: a seated suffix no module wears is reported and left free" else "mycelium-map-roster: a rule ahead of its first companion is reported, never gated"
+
+say ""
+say "GREEN: mycelium-map-roster -- the nine-family map and its suffix rule reach all 98 modules, gated at zero in four readings and proven both ways over fifteen planted behaviors."
