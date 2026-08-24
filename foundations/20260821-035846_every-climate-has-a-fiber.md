@@ -11,7 +11,7 @@
 
 **Stamp:** `20260821.035846`
 **Voice:** Kyri
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Lens:** Civic Style -- name the outcome, name the reward, keep them aligned
 **Status:** Vision -- generalized and place-neutral; nothing seated, no program proposed for any specific jurisdiction
 **Kin:** [`money that stays close to home`](20260629-014512_money-that-stays-close-to-home.md) - [`Civic Style`](../context/CIVIC_STYLE.md) - [`the roots beneath the work`](20260628-140812_the-roots-beneath-the-work.md) - [`the heart in the work`](20260628-121512_the-heart-in-the-work.md) - [`the receipt, not the material`](../active-designing/20260821-035028_the-second-domain-and-the-order-of-dollars.md)

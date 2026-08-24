@@ -1,14 +1,14 @@
-# Mandi Listing Settle — Seated
+# Mandi Listing Settle -- Seated
 
 **Stamp:** `20260710.171202` (Kaeden: keep going on the best recommended path)
 **Language:** EN
-**Style:** Radiant (see `../RADIANT_STYLE.md`)
-**Status:** Seated — Mandi lap 3 in-process settle; parity **242**
-**Ground:** Mandi seating [`20260710-165634_mandi-name-seated.md`](20260710-165634_mandi-name-seated.md) · MUR M1 (was MALA) · WOV exit honesty
+**Style:** Gauge (see `../GAUGE_STYLE.md`)
+**Status:** Seated -- Mandi lap 3 in-process settle; parity **242**
+**Ground:** Mandi seating [`20260710-165634_mandi-name-seated.md`](20260710-165634_mandi-name-seated.md) - MUR M1 (was MALA) - WOV exit honesty
 
 *Written by Kaeden and Rio 3.*
 Radiant pass `20260725.035955`  
-Radiant pass `20260728.044002` — living L1 rename-forward: **MUR** (was MALA)
+Radiant pass `20260728.044002` -- living L1 rename-forward: **MUR** (was MALA)
 
 ---
 
@@ -16,8 +16,8 @@ Radiant pass `20260728.044002` — living L1 rename-forward: **MUR** (was MALA)
 
 A Mandi vessel listing may close with a signed `vessel-settle-v1` slip that binds:
 
-1. **listing_receipt** — digest of the identity-free listing body
-2. **payment** — digest of `vessel-payment-v1` (amount + MUR send digest + WOV transfer digest; was MALA)
+1. **listing_receipt** -- digest of the identity-free listing body
+2. **payment** -- digest of `vessel-payment-v1` (amount + MUR send digest + WOV transfer digest; was MALA)
 
 Kumara seed `0x68`. No buyer/seller fields. Amphora carriage stays separate. Live TigerBeetle and Granary weave settle wait their own gates.
 

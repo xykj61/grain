@@ -7,7 +7,7 @@ never opened a terminal.*
 **Stamp:** `20260823.034321`
 **Last updated:** `20260823.045448` (Radiant pass -- register only; every claim, count, and path held exactly)
 **Language:** EN
-**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Lens:** TAME -- safety, performance, joy - Civic (see [`../context/CIVIC_STYLE.md`](../context/CIVIC_STYLE.md))
 **Status:** Canon -- a founding statement. Every claim about running software marks itself
 proven or proposed, per [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md).

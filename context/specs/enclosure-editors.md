@@ -1,9 +1,9 @@
-# Spec: Two Editors in One Enclosure — Cursor, Zed, ai-jail, and a Cloneable Template
+# Spec: Two Editors in One Enclosure -- Cursor, Zed, ai-jail, and a Cloneable Template
 
 **Language:** EN  
-**Version:** `20260730.145920` (EDT) · SUNN7  
+**Version:** `20260730.145920` (EDT) - SUNN7  
 **Last updated:** `20260730.145920`  
-**Style:** Radiant (see `../RADIANT_STYLE.md`)  
+**Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Voice:** Kyri  
 **Status:** Living guide  
 **Builds on:** `../../SOURCE.md`, `../../gratitude/ai-jail/README.md`, `../../tools/e/enclosure.conf.example`  
@@ -13,7 +13,7 @@
 
 ## What This Is
 
-This spec answers a practical question: how do you run **Zed** inside **ai-jail** from your project folder, with **Claude Code** (Anthropic API billing), while **Cursor** keeps working — and how does anyone who clones the repository do the same for their own username?
+This spec answers a practical question: how do you run **Zed** inside **ai-jail** from your project folder, with **Claude Code** (Anthropic API billing), while **Cursor** keeps working -- and how does anyone who clones the repository do the same for their own username?
 
 The pattern matches `tools/key-card.conf`: copy the `.example`, fill in your values, run the launch script. Sensitive paths and keys stay gitignored; the template ships in git. Clone from **`https://github.com/xykj61/grain.git`** into `~/grain` unless your pier chooses another path (see [`SOURCE.md`](../../SOURCE.md)).
 
@@ -21,7 +21,7 @@ The pattern matches `tools/key-card.conf`: copy the `.example`, fill in your val
 
 ## Where We Stand on the Host OS
 
-**Recommended target:** the latest **NixOS stable** release (check [nixos.org/download](https://nixos.org/download.html) at install time — as of mid-2026 that is the **26.05** series; newer stables appear on a six-month rhythm).
+**Recommended target:** the latest **NixOS stable** release (check [nixos.org/download](https://nixos.org/download.html) at install time -- as of mid-2026 that is the **26.05** series; newer stables appear on a six-month rhythm).
 
 NixOS gives bubblewrap, ai-jail, and editors as declarative packages, without the Ubuntu AppArmor userns workaround. ai-jail ships a Nix flake:
 
@@ -30,7 +30,7 @@ nix profile install github:akitaonrails/ai-jail
 # or: nix run github:akitaonrails/ai-jail -- --help
 ```
 
-**Pier-proven daily host:** this Framework pier develops on **Ubuntu 26.04 LTS** (GNOME Wayland). Ubuntu paths below stay first for that witness; a short NixOS section at the end maps the same ideas. Older notes that still say Ubuntu 24.04 name a prior host season — prefer 26.04 for new installs.
+**Pier-proven daily host:** this Framework pier develops on **Ubuntu 26.04 LTS** (GNOME Wayland). Ubuntu paths below stay first for that witness; a short NixOS section at the end maps the same ideas. Older notes that still say Ubuntu 24.04 name a prior host season -- prefer 26.04 for new installs.
 
 ---
 
@@ -40,11 +40,11 @@ Two editors share one repository as long as each keeps **its own state directory
 
 | Setup | Cursor | Zed | Notes |
 |--------|--------|-----|--------|
-| **A — mixed** | Host (normal install) | ai-jail sandbox | Simplest for trying Zed; Cursor stays as you use it today. |
-| **B — both enclosed** | ai-jail + `.cursor-state/` | ai-jail + `.zed-state/` | Strongest symmetry; two terminal tabs, two ai-jail processes. |
-| **C — Cursor enclosed only** | ai-jail | Host Zed | Rare; use when Zed needs full desktop integration. |
+| **A -- mixed** | Host (normal install) | ai-jail sandbox | Simplest for trying Zed; Cursor stays as you use it today. |
+| **B -- both enclosed** | ai-jail + `.cursor-state/` | ai-jail + `.zed-state/` | Strongest symmetry; two terminal tabs, two ai-jail processes. |
+| **C -- Cursor enclosed only** | ai-jail | Host Zed | Rare; use when Zed needs full desktop integration. |
 
-**API billing stays separate.** Cursor Pro/Ultra covers Cursor's agent. Zed's **Claude Agent** (ACP) uses **Anthropic API** credentials — an `ANTHROPIC_API_KEY`, or login via `/login` in a Claude thread. Each key configures its own editor; one never stands in for the other.
+**API billing stays separate.** Cursor Pro/Ultra covers Cursor's agent. Zed's **Claude Agent** (ACP) uses **Anthropic API** credentials -- an `ANTHROPIC_API_KEY`, or login via `/login` in a Claude thread. Each key configures its own editor; one never stands in for the other.
 
 **Git courtesy:** two agents committing at once can contend for `.git/index.lock`. Let one editor own pushes, or serialize commits.
 
@@ -54,8 +54,8 @@ Two editors share one repository as long as each keeps **its own state directory
 
 ### All Linux hosts
 
-- **bubblewrap** (`bwrap`) — namespaces for the sandbox.
-- **ai-jail** — install per `gratitude/ai-jail/README.md` (`cargo install ai-jail`, GitHub release binary, Homebrew, or Nix flake).
+- **bubblewrap** (`bwrap`) -- namespaces for the sandbox.
+- **ai-jail** -- install per `gratitude/ai-jail/README.md` (`cargo install ai-jail`, GitHub release binary, Homebrew, or Nix flake).
 
 ### Ubuntu 26.04 LTS (pier-proven Framework host)
 
@@ -66,7 +66,7 @@ cargo install ai-jail
 # or download from https://github.com/akitaonrails/ai-jail/releases
 
 # If ai-jail fails with "setting up uid map: Permission denied":
-# see gratitude/ai-jail/README.md — sysctl or AppArmor profile for bwrap
+# see gratitude/ai-jail/README.md -- sysctl or AppArmor profile for bwrap
 sysctl kernel.apparmor_restrict_unprivileged_userns
 # 0 = relaxed (works on this machine); 1 = needs the README workaround
 ```
@@ -82,11 +82,11 @@ zed --version
 
 ### Cursor (AppImage in the project)
 
-Documented in `SOURCE.md` Step 6–9. From the repo root on **Ubuntu 26.04 LTS · GNOME Wayland (Framework)**:
+Documented in `SOURCE.md` Step 6-9. From the repo root on **Ubuntu 26.04 LTS - GNOME Wayland (Framework)**:
 
 ```bash
 chmod +x ./Cursor-3.13.10-x86_64.AppImage
-# Rishi door (preferred) — --cursor takes the AppImage path; --gpu for Wayland:
+# Rishi door (preferred) -- --cursor takes the AppImage path; --gpu for Wayland:
 rishi/bin/rishi run tools/l/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
 # Later launches (already extracted):
 rishi/bin/rishi run tools/l/launch-cursor.rish --gpu
@@ -118,13 +118,13 @@ chmod +x tools/cu/cursor-jail.sh tools/l/launch-zed.sh
 
 `tools/e/enclosure.conf` is gitignored. Only the `.example` files are tracked.
 
-### `LANE_KVM` (A-narrow · counsel `20260712.090512`)
+### `LANE_KVM` (A-narrow - counsel `20260712.090512`)
 
-`LANE_KVM=false` by default. When true, our gate (`tools/l/lane_kvm.sh`) authorizes **`/dev/kvm` only** — no D-Bus, no systemd host units, no session buses. Teacher **ai-jail stays unmodified** (no `--kvm` flag — confirmed through release **v1.12.0**). Daily editor sessions keep the lane off; proven-seat one-shots use `tools/r/run_with_lane_kvm.sh` on a host that already has `/dev/kvm`. Refuse witness: `rishi/bin/rishi run tools/l/lane_kvm_refuse.rish`. On-path: `tools/p/proven_seat_g0_complete_jailed.rish`. Retirement of the D-Bus escape: `active-designing/date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md`. Pond customs graduate the same fact at supersede.
+`LANE_KVM=false` by default. When true, our gate (`tools/l/lane_kvm.sh`) authorizes **`/dev/kvm` only** -- no D-Bus, no systemd host units, no session buses. Teacher **ai-jail stays unmodified** (no `--kvm` flag -- confirmed through release **v1.12.0**). Daily editor sessions keep the lane off; proven-seat one-shots use `tools/r/run_with_lane_kvm.sh` on a host that already has `/dev/kvm`. Refuse witness: `rishi/bin/rishi run tools/l/lane_kvm_refuse.rish`. On-path: `tools/p/proven_seat_g0_complete_jailed.rish`. Retirement of the D-Bus escape: `active-designing/date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md`. Pond customs graduate the same fact at supersede.
 
-### `ENCLOSURE` (retreat flag · Claude `20260712.212412` · master-seal `213600`)
+### `ENCLOSURE` (retreat flag - Claude `20260712.212412` - master-seal `213600`)
 
-`ENCLOSURE=ai-jail` by default in `tools/e/enclosure.conf.example`. Wrappers (`cursor-jail.sh` · `launch-zed.sh`) honor it. `ENCLOSURE=pond` **refuses** unless `bron-resins/pond-supersede-exit.bron` is present-with-content **and** detached `pond-supersede-exit.bron.asc` verifies against master `0646 2132…` alone (`tools/p/pond_exit_bron_master_seal.sh` · keyring holds only `context/keys/gpg_signing_06462132.pub.asc`). Season-closed is measured by bron and `.asc` absent. Both `ENCLOSURE` values stay live one full season past the flip.
+`ENCLOSURE=ai-jail` by default in `tools/e/enclosure.conf.example`. Wrappers (`cursor-jail.sh` - `launch-zed.sh`) honor it. `ENCLOSURE=pond` **refuses** unless `bron-resins/pond-supersede-exit.bron` is present-with-content **and** detached `pond-supersede-exit.bron.asc` verifies against master `0646 2132...` alone (`tools/p/pond_exit_bron_master_seal.sh` - keyring holds only `context/keys/gpg_signing_06462132.pub.asc`). Season-closed is measured by bron and `.asc` absent. Both `ENCLOSURE` values stay live one full season past the flip.
 
 **Pinned teacher binary (`20260712.131200`):** release **v1.12.0** under gitignored `tools/.cache/bin/ai-jail` (tarball sha256 `91458f153c7b0a87d79aae9014b558a0cfc4b160b7e390008a00c1adfc3edc21`). Set `AIJAIL_BIN="$REPO/tools/.cache/bin/ai-jail"` in personal `enclosure.conf`. Takes effect on the next `./tools/cu/cursor-jail.sh` launch. Study submodule `gratitude/ai-jail` tracks tag `v1.12.0`. Route one stays closed; Route two nest still on word.
 
@@ -139,11 +139,11 @@ chmod 600 tools/secrets.env
 ./tools/l/launch-zed.sh
 ```
 
-Create a key at [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys) → **Create Key** → copy the `sk-ant-...` value once.
+Create a key at [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys) -> **Create Key** -> copy the `sk-ant-...` value once.
 
 **Shell export persists only where you write it down.** Put the key in `tools/secrets.env` or your shell profile, and it carries across new terminals and Zed relaunches; a one-time `export` in yesterday's terminal is gone today.
 
-**Alternative:** `/login` in a Claude Agent thread (OAuth). Tokens land under `.zed-state/` (also gitignored). If `/login` loops or fails, stale OAuth can conflict with an empty API key — try `/logout`, then either log in again or use `tools/secrets.env` only (not both at once until auth is clean).
+**Alternative:** `/login` in a Claude Agent thread (OAuth). Tokens land under `.zed-state/` (also gitignored). If `/login` loops or fails, stale OAuth can conflict with an empty API key -- try `/logout`, then either log in again or use `tools/secrets.env` only (not both at once until auth is clean).
 
 **Inside ai-jail:** the whole project mount is visible to agents. Use a dedicated Anthropic key with spend limits; rotate if exposed.
 
@@ -151,21 +151,21 @@ Inside Zed you can also set Claude Agent env in **Agent settings** (`agent_serve
 
 ---
 
-## Project Rules — Cursor vs Claude in Zed
+## Project Rules -- Cursor vs Claude in Zed
 
 Two editors, two rule surfaces, one **`context/`** home.
 
 | Editor | Agent | Rules location | Loaded by |
 |--------|-------|----------------|-----------|
 | **Cursor** | Cursor Agent | `.cursor/rules/*.mdc` | Cursor (`alwaysApply` frontmatter) |
-| **Zed** | **Claude Agent** (ACP / Claude Code) | `CLAUDE.md`, `.claude/rules/*.md` | Claude Code natively — Zed does **not** forward Cursor rules |
-| **Zed** | **Zed Agent** (first-party) | `.rules`, `AGENTS.md`, Skills | Zed Agent only — separate from Claude Agent |
+| **Zed** | **Claude Agent** (ACP / Claude Code) | `CLAUDE.md`, `.claude/rules/*.md` | Claude Code natively -- Zed does **not** forward Cursor rules |
+| **Zed** | **Zed Agent** (first-party) | `.rules`, `AGENTS.md`, Skills | Zed Agent only -- separate from Claude Agent |
 
 **This repository ships both:**
 
-- `.cursor/rules/` — Riyo (standing voice), Radiant Style, TAME Guidance, session logs (for Cursor).
-- `.claude/rules/` — same disciplines for Claude Code (Zed).
-- `CLAUDE.md` + `.claude/rules/` — the same themes for Claude in Zed; standing voice **Kyri** (`context/KYRI.md`, molted from Riyo `20260810`).
+- `.cursor/rules/` -- Riyo (standing voice), Radiant Style, TAME Guidance, session logs (for Cursor).
+- `.claude/rules/` -- same disciplines for Claude Code (Zed).
+- `CLAUDE.md` + `.claude/rules/` -- the same themes for Claude in Zed; standing voice **Kyri** (`context/KYRI.md`, molted from Riyo `20260810`).
 
 Keep long-form guidance in `context/` (`KYRI.md`, `QUIN.md` for OS variant + Q-vane, `RADIANT_STYLE.md`, specs). Editor rule files stay thin pointers so Cursor and Zed stay aligned.
 
@@ -181,13 +181,13 @@ Zed offers two different Claude experiences:
 
 | UI | Kind | When to use |
 |----|------|-------------|
-| **Agent Panel** + **Threads Sidebar** (`Ctrl+Alt+J`) | **Claude Agent** (External Agent / ACP) | Rich sidebar feed — tool cards, edits, thread history (closest to Cursor's agent chat) |
+| **Agent Panel** + **Threads Sidebar** (`Ctrl+Alt+J`) | **Claude Agent** (External Agent / ACP) | Rich sidebar feed -- tool cards, edits, thread history (closest to Cursor's agent chat) |
 | **Bottom terminal panel** | **Terminal Thread** or integrated terminal | Raw `claude` CLI / TUI scrollback |
 
 **For the sidebar feed:**
 
-1. Command Palette → `agent: open panel` (or the workspace agent icon).
-2. Agent selector → **Claude** / **Claude Agent** (install from ACP Registry if missing: `agent: open settings` → Add Agent → Install from Registry).
+1. Command Palette -> `agent: open panel` (or the workspace agent icon).
+2. Agent selector -> **Claude** / **Claude Agent** (install from ACP Registry if missing: `agent: open settings` -> Add Agent -> Install from Registry).
 3. New thread: `Ctrl+N` in the panel, or `Ctrl+Alt+Shift+N` for the new-thread menu.
 4. Optional keybinding: `agent: new external agent thread` for Claude specifically.
 
@@ -197,7 +197,7 @@ Expanded prompt: `expanding-prompts/yonder/20260619-090512_zed-claude-rules-and-
 
 ---
 
-## Launch — Zed in ai-jail (Wayland)
+## Launch -- Zed in ai-jail (Wayland)
 
 From the repo root, with `tools/e/enclosure.conf` filled in:
 
@@ -219,11 +219,11 @@ ai-jail --private-home --no-docker -- \
   zed "$REPO"
 ```
 
-- **`--private-home`** — host `~/.config`, `~/.cache`, and Cursor's host state stay outside the jail.
-- **`--no-docker`** — Docker socket stays closed (same as `SOURCE.md`).
-- **XDG_* under `.zed-state/`** — Zed's config, cache, and Claude Agent state survive in the project.
-- **Display** — ai-jail passes `WAYLAND_DISPLAY` and `XDG_RUNTIME_DIR` on GNOME Wayland; the window appears on your session.
-- **`--gpu`** — add to the ai-jail invocation if you want GPU acceleration (may add EGL noise in the terminal; omit for quieter software rendering).
+- **`--private-home`** -- host `~/.config`, `~/.cache`, and Cursor's host state stay outside the jail.
+- **`--no-docker`** -- Docker socket stays closed (same as `SOURCE.md`).
+- **XDG_* under `.zed-state/`** -- Zed's config, cache, and Claude Agent state survive in the project.
+- **Display** -- ai-jail passes `WAYLAND_DISPLAY` and `XDG_RUNTIME_DIR` on GNOME Wayland; the window appears on your session.
+- **`--gpu`** -- add to the ai-jail invocation if you want GPU acceleration (may add EGL noise in the terminal; omit for quieter software rendering).
 
 Dry-run without starting Zed:
 
@@ -233,9 +233,9 @@ ai-jail --dry-run --private-home --no-docker -- zed --version
 
 ---
 
-## Launch — CLI agents in ai-jail (keeper pier / Linux)
+## Launch -- CLI agents in ai-jail (keeper pier / Linux)
 
-Headless CLIs use the same `--private-home` law without an AppImage. Tracked elder: [`tools/ag/agent-jail.sh`](../../tools/ag/agent-jail.sh). Rish entries: [`tools/l/launch-claude.rish`](../../tools/l/launch-claude.rish) · [`tools/l/launch-cursor-agent.rish`](../../tools/l/launch-cursor-agent.rish). Witness: [`tools/ag/agent_jail_witness.rish`](../../tools/ag/agent_jail_witness.rish). Auth persists under gitignored `.claude-state/` · `.cursor-agent-state/` (including `xdg-config/` → `~/.config/cursor` for OAuth `auth.json`) · `.gh/`. On NixOS, install ai-jail via `nix profile install github:akitaonrails/ai-jail` (release tarballs hit stub-ld). Full pier walk: [`nixos-guide/20260808-041912_3-cli-agents-in-ai-jail.md`](../../nixos-guide/20260808-041912_3-cli-agents-in-ai-jail.md).
+Headless CLIs use the same `--private-home` law without an AppImage. Tracked elder: [`tools/ag/agent-jail.sh`](../../tools/ag/agent-jail.sh). Rish entries: [`tools/l/launch-claude.rish`](../../tools/l/launch-claude.rish) - [`tools/l/launch-cursor-agent.rish`](../../tools/l/launch-cursor-agent.rish). Witness: [`tools/ag/agent_jail_witness.rish`](../../tools/ag/agent_jail_witness.rish). Auth persists under gitignored `.claude-state/` - `.cursor-agent-state/` (including `xdg-config/` -> `~/.config/cursor` for OAuth `auth.json`) - `.gh/`. On NixOS, install ai-jail via `nix profile install github:akitaonrails/ai-jail` (release tarballs hit stub-ld). Full pier walk: [`nixos-guide/20260808-041912_3-cli-agents-in-ai-jail.md`](../../nixos-guide/20260808-041912_3-cli-agents-in-ai-jail.md).
 
 ```bash
 ./tools/ag/agent-jail.sh claude
@@ -243,7 +243,7 @@ Headless CLIs use the same `--private-home` law without an AppImage. Tracked eld
 ./tools/ag/agent_jail_witness.sh
 ```
 
-## Launch — Cursor in ai-jail (same project, different state)
+## Launch -- Cursor in ai-jail (same project, different state)
 
 ```bash
 ./tools/cu/cursor-jail.sh
@@ -292,7 +292,7 @@ Each process has its own ai-jail tmpfs `$HOME`; only `.cursor-state/`, `.zed-sta
 On NixOS stable, prefer declarative packages:
 
 ```nix
-# configuration.nix excerpt — versions follow your channel
+# configuration.nix excerpt -- versions follow your channel
 environment.systemPackages = with pkgs; [
   bubblewrap
   ai-jail
@@ -309,9 +309,9 @@ nix profile install github:akitaonrails/ai-jail
 
 User namespaces and bwrap behave as expected on NixOS; skip the Ubuntu AppArmor sysctl section. Wayland on GNOME is the same: launch scripts from the project root unchanged.
 
-### Cursor on NixOS — extracted AppRun in ai-jail
+### Cursor on NixOS -- extracted AppRun in ai-jail
 
-The tracked launcher runs **`squashfs-root/AppRun`** after extract, rather than the raw `.AppImage` — so FUSE stays out of the jail path. System config still benefits from:
+The tracked launcher runs **`squashfs-root/AppRun`** after extract, rather than the raw `.AppImage` -- so FUSE stays out of the jail path. System config still benefits from:
 
 ```nix
 programs.appimage.enable = true;
@@ -321,13 +321,13 @@ programs.appimage.binfmt = true;   # NixOS 24.05+
 Binfmt registration applies to `.AppImage` files. The **extracted `AppRun`** is a dynamically linked binary; if it fails with loader or library errors inside ai-jail, wrap the launch with an FHS environment from nixpkgs:
 
 ```bash
-./Cursor-3.9.16-x86_64.AppImage --appimage-extract    # once → squashfs-root/
+./Cursor-3.9.16-x86_64.AppImage --appimage-extract    # once -> squashfs-root/
 ./tools/cu/cursor-jail.sh                               # tested on Framework NixOS
 # if AppRun fails with loader errors:
 steam-run ./tools/cu/cursor-jail.sh
 ```
 
-`--appimage` on `cursor-jail.sh` expects the extracted **`AppRun`**, not a `.AppImage` path — use **`--extract`** for a fresh download.
+`--appimage` on `cursor-jail.sh` expects the extracted **`AppRun`**, not a `.AppImage` path -- use **`--extract`** for a fresh download.
 
 ---
 
@@ -337,7 +337,7 @@ steam-run ./tools/cu/cursor-jail.sh
 |---------|----------------|-------------|
 | `bwrap: uid map: Permission denied` | Ubuntu AppArmor userns | `gratitude/ai-jail/README.md` Option A or B |
 | Zed window does not appear | Display not passed | Confirm `echo $WAYLAND_DISPLAY`; run from a graphical terminal |
-| Landlock enforced, then instant return to shell (no window) | GPU off — Zed cannot init Vulkan/WebGPU | Set `USE_GPU=true` in `tools/e/enclosure.conf` (default for Zed); confirm `~/.local/zed.app` is `--map`ped (launch script does this automatically) |
+| Landlock enforced, then instant return to shell (no window) | GPU off -- Zed cannot init Vulkan/WebGPU | Set `USE_GPU=true` in `tools/e/enclosure.conf` (default for Zed); confirm `~/.local/zed.app` is `--map`ped (launch script does this automatically) |
 | Claude Agent: auth loop | Stale credentials | Clear `.zed-state/data` Claude paths; use `ANTHROPIC_API_KEY` or `/login` again |
 | `unknown option: --ro-map` | Wrong flag name | ai-jail uses `--map` for read-only mounts, `--rw-map` for read-write |
 | `env: 'zed': No such file or directory` | Zed not installed, or not visible in jail | `curl -f https://zed.dev/install.sh \| sh`; re-run `./tools/l/launch-zed.sh` (script resolves absolute path + `--map` for `zed.app`) |
@@ -349,9 +349,9 @@ steam-run ./tools/cu/cursor-jail.sh
 
 ## Related
 
-- **`SOURCE.md`** — SSH, GPG, signing inside the sandbox, full Cursor launch.
-- **`external-research/20260618-180812_pond-foundation.md`** — Pond re-grows ai-jail in Rye.
-- **`tools/e/enclosure.conf.example`** — fill-in template for this spec.
+- **`SOURCE.md`** -- SSH, GPG, signing inside the sandbox, full Cursor launch.
+- **`external-research/20260618-180812_pond-foundation.md`** -- Pond re-grows ai-jail in Rye.
+- **`tools/e/enclosure.conf.example`** -- fill-in template for this spec.
 
 ---
 

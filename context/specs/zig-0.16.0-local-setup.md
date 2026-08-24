@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Last updated:** 2026-06-16
-**Style:** Radiant (see `../RADIANT_STYLE.md`)
+**Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Done
 
 ---
@@ -19,7 +19,7 @@ This makes the answer clear and affirmative: anything we want to keep belongs in
 
 ## The Decision
 
-We keep the Zig source inside the workspace, under `vendor/`. The name `vendor/` marks it plainly as third-party code we hold locally and leave unmodified — a familiar convention that separates outside source from our own work. Zig itself rests at `vendor/zig`.
+We keep the Zig source inside the workspace, under `vendor/`. The name `vendor/` marks it plainly as third-party code we hold locally and leave unmodified -- a familiar convention that separates outside source from our own work. Zig itself rests at `vendor/zig`.
 
 We cloned the exact stable tag rather than the full history. A shallow clone at `0.16.0` gives the precise released source, lean and ready, and keeps the footprint small. A single fetch can deepen the history later, whenever a need arises.
 

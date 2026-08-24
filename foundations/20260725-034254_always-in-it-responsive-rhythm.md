@@ -1,13 +1,13 @@
-# Always in it — the responsive rhythm
+# Always in it -- the responsive rhythm
 
 *Seasons ongoing, attention over calendar, undivided over unbounded. Being gathers; doing forms. The study shelves, the gratitude library, and the open questions are where the gathering deposits what it finds.*
 
 **Stamp:** `20260725.034254`  
 **Language:** EN  
-**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))  
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Foundations — operator rhythm seated; answers OPEN_QUESTIONS #5  
-**Silo:** Full — teachers named only in the gratitude close  
+**Status:** Foundations -- operator rhythm seated; answers OPEN_QUESTIONS #5  
+**Silo:** Full -- teachers named only in the gratitude close  
 **Counsel:** [`../counsel/date/20260725/20260725-034254_always-in-it.md`](../counsel/date/20260725/20260725-034254_always-in-it.md)
 
 *Written together by Keaton and Quin; seated on Keaton's word.*
@@ -32,10 +32,10 @@ The two halves feed each other in one direction: **being gathers, doing forms.**
 
 | Deposit | What it holds |
 |---------|----------------|
-| Study shelves (`external-research/` · `gratitude/` · kin) | What the world taught, held for reading |
+| Study shelves (`external-research/` - `gratitude/` - kin) | What the world taught, held for reading |
 | Gratitude library | Sources honored without being copied into our modules |
 | Open questions (`context/OPEN_QUESTIONS.md`) | Living concerns waiting their own season |
-| Design sittings (`active-designing/` · `counsel/`) | Gatherings shaped toward a decision |
+| Design sittings (`active-designing/` - `counsel/`) | Gatherings shaped toward a decision |
 
 Those are not overhead. They are where the work of being deposits what it found.
 
@@ -63,7 +63,7 @@ Standing practice also lives in the collaboration rule and in [`../context/QUIN.
 
 ## Gratitude close
 
-With warmth and respect we thank **Rick Rubin**, whose pages on the artist's two kinds of work — and on staying awake to what arrives — gave this direction its spine; read closely, carried in our own words, never copied. We thank **Hyakujo**, whose answer about hunger and tiredness is the whole of the discipline in a few plain words, and **Basho**, whose haiku showed that where prose fails, a picture in words may still arrive. We thank **Osho**, whose commentary on that exchange drew out the distinction between the same act done wholly and done divided. The teaching remains theirs; the rhythm we draw from it is ours to keep honest.
+With warmth and respect we thank **Rick Rubin**, whose pages on the artist's two kinds of work -- and on staying awake to what arrives -- gave this direction its spine; read closely, carried in our own words, never copied. We thank **Hyakujo**, whose answer about hunger and tiredness is the whole of the discipline in a few plain words, and **Basho**, whose haiku showed that where prose fails, a picture in words may still arrive. We thank **Osho**, whose commentary on that exchange drew out the distinction between the same act done wholly and done divided. The teaching remains theirs; the rhythm we draw from it is ours to keep honest.
 
 ---
 

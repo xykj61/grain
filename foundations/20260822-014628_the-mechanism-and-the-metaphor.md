@@ -1,9 +1,9 @@
 # The Mechanism and the Metaphor
 
-**Stamp:** `20260822.014628` · seated on Keaton's word
-**Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260822.014628` - seated on Keaton's word
+**Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living foundation
-**Kin:** [`../.claude/rules/mechanism-sentence.md`](../.claude/rules/mechanism-sentence.md) (the law) · [`20260811-211431_the-lindy-effect-and-the-long-return.md`](20260811-211431_the-lindy-effect-and-the-long-return.md) · [`20260821-175723_the-words-a-round-uses.md`](20260821-175723_the-words-a-round-uses.md) · [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md)
+**Kin:** [`../.claude/rules/mechanism-sentence.md`](../.claude/rules/mechanism-sentence.md) (the law) - [`20260811-211431_the-lindy-effect-and-the-long-return.md`](20260811-211431_the-lindy-effect-and-the-long-return.md) - [`20260821-175723_the-words-a-round-uses.md`](20260821-175723_the-words-a-round-uses.md) - [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md)
 
 ---
 

@@ -1,11 +1,11 @@
-# Handoff — SLC-1 lap closed, bench for the next session
+# Handoff -- SLC-1 lap closed, bench for the next session
 
 *A continuity letter for the next Reya 2 session after the first Simple, Lovable, Complete lap seals on metal.*
 
 **Stamp:** `20260629.031512`
 **Voice:** Reya 2, with **Kaeden Reyklah** as coauthor
-**Style:** Radiant (see `RADIANT_STYLE.md`)
-**Git tip at close:** `06de97f` — `tools: Cursor in ai-jail launcher — cursor-jail.sh and launch-cursor.rish.`
+**Style:** Gauge (see `../GAUGE_STYLE.md`)
+**Git tip at close:** `06de97f` -- `tools: Cursor in ai-jail launcher -- cursor-jail.sh and launch-cursor.rish.`
 
 Radiant pass `20260725.035645`
 
@@ -13,7 +13,7 @@ Radiant pass `20260725.035645`
 
 ## What Is True Now
 
-**SLC-1 is done** on its functional promise. A person can open a terminal in this repository, type Rishi at a `rishi> ` prompt, run lines in-process, weave the session into Mantra with `:version`, and recall a prior line with `:recall <n>` or `!<n>`. The four verbs compose in one acceptance pass. Parity carries **120 witnesses** (116 `rye run` + four SLC-1). The central spine claim — state as a fold over an append-only log — is **shipped as a thing used**, not only argued.
+**SLC-1 is done** on its functional promise. A person can open a terminal in this repository, type Rishi at a `rishi> ` prompt, run lines in-process, weave the session into Mantra with `:version`, and recall a prior line with `:recall <n>` or `!<n>`. The four verbs compose in one acceptance pass. Parity carries **120 witnesses** (116 `rye run` + four SLC-1). The central spine claim -- state as a fold over an append-only log -- is **shipped as a thing used**, not only argued.
 
 The dev-loop scaffold is landed: `./tools/cursor-jail.sh` (POSIX flags today) and `tools/launch-cursor.rish` (editable `apprun` let). `squashfs-root/`, `.cursor-state/`, and `Cursor-*.AppImage` stay gitignored; the scripts are tracked.
 
@@ -29,7 +29,7 @@ The dev-loop scaffold is landed: `./tools/cursor-jail.sh` (POSIX flags today) an
 | All four together | `tools/slc1_accept.rish` |
 | Suite | `rishi/bin/rishi run tools/parity.rish` |
 
-**Implementation home:** `rishi/src/main.rye` — `History`, `Transcript`, `runInputLine`, `recallByIndex`, `doVersion`, `runMantra` via `std.process.run`, `RISHI_MANTRA` override.
+**Implementation home:** `rishi/src/main.rye` -- `History`, `Transcript`, `runInputLine`, `recallByIndex`, `doVersion`, `runMantra` via `std.process.run`, `RISHI_MANTRA` override.
 
 **Settled rulings carried in code:** transcript v1 = prompt + input + caught errors (stdout horizon); lazy `.mantra/` on first `:version`; stdin lines **duped into the arena** before the history lap stores them.
 
@@ -40,18 +40,18 @@ The dev-loop scaffold is landed: `./tools/cursor-jail.sh` (POSIX flags today) an
 SLC-1 closed on the **four-verb loop**, not on full TAME width hygiene:
 
 - `width-check.rish` is still the **unrefined** substring gate (ruling #1 refinement not built).
-- `mantra/*` Phase 1b width migration, `rishi/*` width pass, first `tame-check` lints, `.brix` dead-path mend — all named as the **TAME-hardening milestone** in `work-in-progress/TASKS.md` and `ROADMAP.md`.
+- `mantra/*` Phase 1b width migration, `rishi/*` width pass, first `tame-check` lints, `.brix` dead-path mend -- all named as the **TAME-hardening milestone** in `work-in-progress/TASKS.md` and `ROADMAP.md`.
 - Do not mistake a finished loop for a finished width pass on every touched seed.
 
 ---
 
 ## The Bench (honest order)
 
-1. **Rishi script arguments** — `runFile` reads only `args[2]` today; expose `args[3..]` to `.rish` scripts as an `args` list; witness a flag-reading script; then a parse helper. **First beneficiary:** `launch-cursor.rish` takes `--appimage`; `cursor-jail.sh` flag layer graduates out of POSIX shell.
-2. **TAME hardening** — width-check refinement (ruling #1), then `mantra/*`, then `rishi/*`, then `tame-check`, then `.brix` mend. Travels with script arguments because both live in Rishi.
-3. **SLC-2 (Pond GUI)** — after **Skate text rendering**; same four verbs in a window.
-4. **Foundations visions** — filed (`foundations/`); stablecoin law and Mantrapod investor hardening **deferred** until Kaeden reopens them.
-5. **SLC-L1 (Linengrow)** — scope note still open on the bench.
+1. **Rishi script arguments** -- `runFile` reads only `args[2]` today; expose `args[3..]` to `.rish` scripts as an `args` list; witness a flag-reading script; then a parse helper. **First beneficiary:** `launch-cursor.rish` takes `--appimage`; `cursor-jail.sh` flag layer graduates out of POSIX shell.
+2. **TAME hardening** -- width-check refinement (ruling #1), then `mantra/*`, then `rishi/*`, then `tame-check`, then `.brix` mend. Travels with script arguments because both live in Rishi.
+3. **SLC-2 (Pond GUI)** -- after **Skate text rendering**; same four verbs in a window.
+4. **Foundations visions** -- filed (`foundations/`); stablecoin law and Mantrapod investor hardening **deferred** until Kaeden reopens them.
+5. **SLC-L1 (Linengrow)** -- scope note still open on the bench.
 
 ---
 
@@ -70,16 +70,16 @@ rishi/bin/rishi run tools/parity-selftest.rish
 # additive-gate.rish only when rye/lib/ changes in HEAD
 ```
 
-Host `/home/xy` tmpfs is full — keep `HOME` and caches on project disk.
+Host `/home/xy` tmpfs is full -- keep `HOME` and caches on project disk.
 
 ---
 
 ## Pitfalls the Last Passes Proved
 
-1. **Rishi string literals do not unescape `\"`** — nested quotes in `run ["sh" "-c" "..."]` reach the shell with literal backslashes. Use a **fixture shell script** (Step 2 / acceptance pattern) or keep quoting out of `.rish` strings.
-2. **REPL stdin buffer** — trimmed lines are slices into reused memory; **dupe into the arena** before `history.record`.
-3. **Witness `split`** — surface is `split text sep`, not `split text by sep`.
-4. **`say` writes stdout** — subprocess witnesses read markers from `result.out`.
+1. **Rishi string literals do not unescape `\"`** -- nested quotes in `run ["sh" "-c" "..."]` reach the shell with literal backslashes. Use a **fixture shell script** (Step 2 / acceptance pattern) or keep quoting out of `.rish` strings.
+2. **REPL stdin buffer** -- trimmed lines are slices into reused memory; **dupe into the arena** before `history.record`.
+3. **Witness `split`** -- surface is `split text sep`, not `split text by sep`.
+4. **`say` writes stdout** -- subprocess witnesses read markers from `result.out`.
 
 ---
 
