@@ -1,23 +1,23 @@
-# SOURCE — From Nothing to a Signed, Sandboxed Home
+# SOURCE -- From Nothing to a Signed, Sandboxed Home
 
 **Language:** EN
-**Version:** `20260716.110152` (Glow warm-aura date atom — chronological, later-is-larger)
-**Style:** Radiant (see `context/RADIANT_STYLE.md`)
-**By:** Riyo, in the radiant voice, with **Keaton Dunsford** as coauthor (Identity Remake `20260729.141658`; standing writing voice restored to Riyo `20260729.205200`)
-**Status:** Living guide — last touched `20260801.033305` (e149 — personal sync · gitignore · Dropbox overlay)
-**Waymark:** **SUNN** — `source-pier-papers-identity-refresh`
+**Version:** `20260716.110152` (Glow warm-aura date atom -- chronological, later-is-larger)
+**Style:** Gauge Door (see `context/GAUGE_STYLE.md`)
+**Voice:** Kyri (molted from Riyo `20260810`)
+**Status:** Living guide -- last molted `20260824.014209`
+**Waymark:** **SUNN** -- `source-pier-papers-identity-refresh`
 
 ---
 
 ## What This Is
 
-This is the whole path, start to finish, for someone brand new to coding who wants to stand where we stand: a living forge home for your code, a key to knock with, a seal that signs their name, an editor with a thoughtful AI at its side, and a gentle sandbox where that AI can work — and even sign commits — without ever touching the rest of the machine.
+This is the whole path, start to finish, for someone brand new to coding who wants to stand where we stand: a living forge home for your code, a key to knock with, a seal that signs their name, an editor with a thoughtful AI at its side, and a gentle sandbox where that AI can work -- and even sign commits -- without ever touching the rest of the machine.
 
-You do not need prior experience. Each step says what to do, and why it matters, so the shape of the thing makes sense as you build it. Wherever you see a placeholder like `youruser` or `you@example.com` or an `EXAMPLE…` fingerprint, put your own value in its place.
+You do not need prior experience. Each step says what to do, and why it matters, so the shape of the thing makes sense as you build it. Wherever you see a placeholder like `youruser` or `you@example.com` or an `EXAMPLE...` fingerprint, put your own value in its place.
 
-**Part One** ends with a working, jailed Cursor on your machine. **Part Two** builds the signed forge home. A warm letter for a friend starting out lives at [`manual/guides/apprentice-welcome.md`](manual/guides/apprentice-welcome.md). When you are ready to make the pier yours — find/replace map, first 256-round season, four equinoxes — walk [`manual/guides/first-season-personalize.md`](manual/guides/first-season-personalize.md) and copy [`tools/gen/season/personalize.template.brix`](tools/gen/season/personalize.template.brix) to gitignored `PERSONALIZE.brix`. Sync those gitignored identity files with Dropbox / Syncthing / iCloud / Nextcloud as a **personal overlay** (never put the whole git tree inside Dropbox) — see that guide’s § “Sync personal files without git” and the shipping index [`docs-geode/templates/README.md`](docs-geode/templates/README.md). This pier’s standing writing voice is **Kyri** ([`context/KYRI.md`](context/KYRI.md), molted from Riyo `20260810`); **Quin** keeps the fifth OS variant and the inference Q-vane ([`context/QUIN.md`](context/QUIN.md)).
+**Part One** ends with a working, jailed Cursor on your machine. **Part Two** builds the signed forge home. A warm letter for a friend starting out lives at [`manual/guides/apprentice-welcome.md`](manual/guides/apprentice-welcome.md). When you are ready to make the pier yours -- find/replace map, first 256-round season, four equinoxes -- walk [`manual/guides/first-season-personalize.md`](manual/guides/first-season-personalize.md) and copy [`tools/gen/season/personalize.template.brix`](tools/gen/season/personalize.template.brix) to gitignored `PERSONALIZE.brix`. Sync those gitignored identity files with Dropbox / Syncthing / iCloud / Nextcloud as a **personal overlay** (never put the whole git tree inside Dropbox) -- see that guide's section "Sync personal files without git" and the shipping index [`docs-geode/templates/README.md`](docs-geode/templates/README.md). This pier's standing writing voice is **Kyri** ([`context/KYRI.md`](context/KYRI.md), molted from Riyo `20260810`); **Quin** keeps the fifth OS variant and the inference Q-vane ([`context/QUIN.md`](context/QUIN.md)).
 
-By the end you will have a repository that an AI agent can grow and **commit to, signed and verified, entirely from inside the sandbox** — nothing to sign by hand, nothing leaking out.
+By the end you will have a repository that an AI agent can grow and **commit to, signed and verified, entirely from inside the sandbox** -- nothing to sign by hand, nothing leaking out.
 
 ---
 
@@ -42,23 +42,23 @@ its Door or Field setting, which means plain words first and a measurement behin
 Then **[your first hour](docs-geode/tutorials/the-first-hour.md)**: clone, run one witness, read the
 green line, write five lines of your own. One page, one path.
 
-## Part One — The First Day
+## Part One -- The First Day
 
-A first day that ends with Cursor open inside the enclosure — before any forge keys. Short moves here; depth lives in Part Two (Steps 5, 6, and 9).
+A first day that ends with Cursor open inside the enclosure -- before any forge keys. Short moves here; depth lives in Part Two (Steps 5, 6, and 9).
 
-### C0 — Choose a host (if you still need one)
+### C0 -- Choose a host (if you still need one)
 
 We recommend hosts in this order:
 
-1. **NixOS 26.05** — the best enclosure and reproducible-host story for Grain.  
-2. **Ubuntu 26.04 LTS** — the path this Framework pier proves day to day.  
-3. **macOS** — supported with Seatbelt (no AppImage, no `bwrap`); more traps, still workable.
+1. **NixOS 26.05** -- the best enclosure and reproducible-host story for Grain.  
+2. **Ubuntu 26.04 LTS** -- the path this Framework pier proves day to day.  
+3. **macOS** -- supported with Seatbelt (no AppImage, no `bwrap`); more traps, still workable.
 
-Other Linux distros and **Windows** are honest **less preferred** — not shame, just fewer witnessed paths in this tree. If you are coming from Windows: back up everything you care about; you may need one or two USB flash drives; you will have a way better time on Linux. NixOS will give you the best experience.
+Other Linux distros and **Windows** are honest **less preferred** -- not shame, just fewer witnessed paths in this tree. If you are coming from Windows: back up everything you care about; you may need one or two USB flash drives; you will have a way better time on Linux. NixOS will give you the best experience.
 
-### C1 — Install git (outer terminal, before Cursor)
+### C1 -- Install git (outer terminal, before Cursor)
 
-A clone over **HTTPS needs no separate `curl`** — the distro `git` package already carries what HTTPS needs. One move per host:
+A clone over **HTTPS needs no separate `curl`** -- the distro `git` package already carries what HTTPS needs. One move per host:
 
 | Host | First-day command | Notes |
 |------|-------------------|--------|
@@ -66,26 +66,26 @@ A clone over **HTTPS needs no separate `curl`** — the distro `git` package alr
 | **Ubuntu** | `sudo apt update && sudo apt install -y git` | **Pier-proven** on this Framework host. |
 | **macOS** | `xcode-select --install` | Stated-pending on-metal witness. Ships git; Homebrew arrives later in Part Two (key cards). |
 
-Run these in an **ordinary outer terminal** — outside Cursor, outside ai-jail.
+Run these in an **ordinary outer terminal** -- outside Cursor, outside ai-jail.
 
-### C2 — Clone Grain
+### C2 -- Clone Grain
 
 ```bash
 git clone https://github.com/xykj61/grain.git ~/grain
 cd ~/grain
 ```
 
-Public HTTPS, no fork, no keys yet. This pier’s living public clone is **`xykj61/grain`**. A second GitHub remote, `groupproject405/grain`, may exist as the agentic research lane (`origin` on this pier) — see [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md). Living Cursor sends **dual-push** both remotes when both exist. **Codeberg is retired** from living push (Terms July 2026) until a new second forge is chosen.
+Public HTTPS, no fork, no keys yet. This pier's living public clone is **`xykj61/grain`**. A second GitHub remote, `groupproject405/grain`, may exist as the agentic research lane (`origin` on this pier) -- see [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md). Living Cursor sends **dual-push** both remotes when both exist. **Codeberg is retired** from living push (Terms July 2026) until a new second forge is chosen.
 
 Forks arrive naturally in Part Two, once forge accounts exist.
 
-### C3 — Place the Cursor AppImage (and the phone apps)
+### C3 -- Place the Cursor AppImage (and the phone apps)
 
 Go to **<https://cursor.com/download>**. Prefer the **AppImage** for your platform:
 
-- **x86_64** — most PC laptops, Framework AMD/Intel, older Intel Apple machines under Linux.  
-- **ARM64** — newer Apple Silicon (and ARM Linux when that path is witnessed).  
-- **macOS** — there is no AppImage; Cursor ships as **`Cursor.app`** (see Step 6 / the macOS jail guide).
+- **x86_64** -- most PC laptops, Framework AMD/Intel, older Intel Apple machines under Linux.  
+- **ARM64** -- newer Apple Silicon (and ARM Linux when that path is witnessed).  
+- **macOS** -- there is no AppImage; Cursor ships as **`Cursor.app`** (see Step 6 / the macOS jail guide).
 
 ```bash
 chmod +x ./Cursor-<version>-x86_64.AppImage
@@ -94,15 +94,15 @@ chmod +x ./Cursor-<version>-x86_64.AppImage
 
 **Subscriptions and phone apps (recommended):**
 
-1. **Cursor** — a **paid Cursor plan that includes Agent mode** (Pro or Ultra).  
-2. **Claude** — a **paid Claude subscription** (Claude Pro or Max) so you can work with Claude on the web and in the apps, independent of Cursor’s own model billing.  
-3. **Claude iOS** — install Anthropic’s **Claude** app from the App Store for counsel on the phone.  
-4. **Cursor iOS** — install the **Cursor** iOS app for Cloud Agents and on-the-go pier work.  
-5. **Cursor Android** — **not supported yet**; do not plan the first day around an Android Cursor client.
+1. **Cursor** -- a **paid Cursor plan that includes Agent mode** (Pro or Ultra).  
+2. **Claude** -- a **paid Claude subscription** (Claude Pro or Max) so you can work with Claude on the web and in the apps, independent of Cursor's own model billing.  
+3. **Claude iOS** -- install Anthropic's **Claude** app from the App Store for counsel on the phone.  
+4. **Cursor iOS** -- install the **Cursor** iOS app for Cloud Agents and on-the-go pier work.  
+5. **Cursor Android** -- **not supported yet**; do not plan the first day around an Android Cursor client.
 
 Depth on extract and enclosure: Steps 5 and 6.
 
-### C4 — Launch jailed Cursor
+### C4 -- Launch jailed Cursor
 
 From `~/grain`, still in the outer terminal (Ubuntu / Framework form):
 
@@ -112,7 +112,7 @@ rishi/bin/rishi run tools/l/launch-cursor.rish --cursor ./Cursor-<version>-x86_6
 
 Full launch options and the macOS twin: Step 9.
 
-### C5 — Sign in
+### C5 -- Sign in
 
 Cursor opens inside ai-jail and asks you to sign in through the browser. Use a real password manager, sign in through the browser window the jailed app opens, and keep every credential outside this tree. Fuller browser and vault hygiene: [`manual/guides/first-day-personal-ops.md`](manual/guides/first-day-personal-ops.md). Confirm the running Cursor window shows a successful session.
 
@@ -120,30 +120,30 @@ When that lands, Part One is done. Part Two builds the signed home.
 
 ---
 
-## Part Two — The Signed Home
+## Part Two -- The Signed Home
 
 ## The Shape of the Destination
 
 Eight pieces fit together:
 
-1. **Forge account(s)** — GitHub as the living home; a second forge later when chosen.
-2. **SSH key(s)** — one per living forge, for authenticating pushes.
-3. **One GPG key** — your signing seal, trusted by each living forge.
-4. **Fingerprint QR codes** — your keys turned into shareable art.
-5. **Cursor + Claude** — the editor in Agent mode, plus a paid Claude subscription and the iOS apps.
-6. **ai-jail** — the sandbox (becoming **Pond**, our TAME-style reimplementation in Rye).
-7. **gitconfig + ssh config** — teaching the tools who you are.
-8. **In-sandbox signing** — the quiet machinery that lets the agent sign for you.
+1. **Forge account(s)** -- GitHub as the living home; a second forge later when chosen.
+2. **SSH key(s)** -- one per living forge, for authenticating pushes.
+3. **One GPG key** -- your signing seal, trusted by each living forge.
+4. **Fingerprint QR codes** -- your keys turned into shareable art.
+5. **Cursor + Claude** -- the editor in Agent mode, plus a paid Claude subscription and the iOS apps.
+6. **ai-jail** -- the sandbox (becoming **Pond**, our TAME-style reimplementation in Rye).
+7. **gitconfig + ssh config** -- teaching the tools who you are.
+8. **In-sandbox signing** -- the quiet machinery that lets the agent sign for you.
 
 Take them in order. Each rests on the one before.
 
 ---
 
-## Step 1 — A Living Home for Your Code
+## Step 1 -- A Living Home for Your Code
 
-Make a **GitHub** account — <https://github.com> — free, and the living forge for Grain today.
+Make a **GitHub** account -- <https://github.com> -- free, and the living forge for Grain today.
 
-Pick a handle you can keep — for example, `youruser`. Verify your email; the Verified badge later depends on it.
+Pick a handle you can keep -- for example, `youruser`. Verify your email; the Verified badge later depends on it.
 
 **This pier** uses GitHub `xykj61/grain` as the public clone you just fetched, and may also carry `groupproject405/grain` as a second remote for agentic research. Canonical remote count: [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md).
 
@@ -151,7 +151,7 @@ Pick a handle you can keep — for example, `youruser`. Verify your email; the V
 
 ---
 
-## Step 2 — A Key to Knock With (SSH)
+## Step 2 -- A Key to Knock With (SSH)
 
 An SSH key is how a forge knows it is really you pushing code. You make a **pair**: a private half that stays secret on your machine, and a public half you hand to the forge.
 
@@ -161,7 +161,7 @@ For the living GitHub home, one pair is enough to begin:
 ssh-keygen -t ed25519 -C "you@example.com github" -f ~/.ssh/id_ed25519_github
 ```
 
-Press Enter to accept the location; set a passphrase if you like (an agent can remember it for you). Read the **public** half and add it under GitHub *Settings → SSH and GPG keys → New SSH key*:
+Press Enter to accept the location; set a passphrase if you like (an agent can remember it for you). Read the **public** half and add it under GitHub *Settings -> SSH and GPG keys -> New SSH key*:
 
 ```bash
 cat ~/.ssh/id_ed25519_github.pub     # paste into GitHub
@@ -174,20 +174,20 @@ ssh-keygen -lf ~/.ssh/id_ed25519_github.pub
 # SHA256:EXAMPLEgithubFINGERPRINTexampleEXAMPLEexample0000
 ```
 
-If this pier later carries a **second GitHub remote** (for example `groupproject405/grain` beside `xykj61/grain`), make a **second** SSH pair with its own filename and comment so each remote can rotate alone — same shape, second file. Do **not** mint a Codeberg key for Part Two while Codeberg stays retired from living push.
+If this pier later carries a **second GitHub remote** (for example `groupproject405/grain` beside `xykj61/grain`), make a **second** SSH pair with its own filename and comment so each remote can rotate alone -- same shape, second file. Do **not** mint a Codeberg key for Part Two while Codeberg stays retired from living push.
 
 ---
 
-## Step 3 — One Seal for Your Name (GPG)
+## Step 3 -- One Seal for Your Name (GPG)
 
-Where an SSH key proves *you may push*, a GPG key proves *you wrote this* — it signs your commits so each one carries your name with cryptographic weight. One signing key serves every living forge you upload it to.
+Where an SSH key proves *you may push*, a GPG key proves *you wrote this* -- it signs your commits so each one carries your name with cryptographic weight. One signing key serves every living forge you upload it to.
 
 ```bash
 gpg --quick-generate-key "Your Name <you@example.com>" ed25519 sign 2y
 gpg --list-secret-keys --keyid-format=long      # note the 40-character fingerprint
 ```
 
-Export the **public** half and add it to GitHub’s **GPG Keys** section (*Settings → SSH and GPG keys*):
+Export the **public** half and add it to GitHub's **GPG Keys** section (*Settings -> SSH and GPG keys*):
 
 ```bash
 gpg --armor --export EXAMPLEGPGFINGERPRINT0000000000000000000000
@@ -203,9 +203,9 @@ The private half never leaves your keeping. The public half travels freely. When
 
 ---
 
-## Step 4 — Fingerprints as Art (QR Codes)
+## Step 4 -- Fingerprints as Art (QR Codes)
 
-A fingerprint is meant to be shared and checked. It is also, quietly, beautiful — so this repository carries a small tool that turns yours into a card: QR codes for your **GitHub SSH** fingerprint and your **OpenPGP** signing key (and, when you have one, a second SSH identity) — gathered under your name in the typeface that loves code, rendered once tall and once wide.
+A fingerprint is meant to be shared and checked. It is also, quietly, beautiful -- so this repository carries a small tool that turns yours into a card: QR codes for your **GitHub SSH** fingerprint and your **OpenPGP** signing key (and, when you have one, a second SSH identity) -- gathered under your name in the typeface that loves code, rendered once tall and once wide.
 
 The tool reads your details from a config file, so it works for anyone. Copy the template, fill in your own values, and run it:
 
@@ -217,44 +217,44 @@ rishi/bin/rishi run tools/m/make_key_card.rish
 ./tools/m/make-key-card.sh
 ```
 
-Your `tools/key-card.conf` holds only **public** information — your name, your forge handle, your email, and the fingerprints from Steps 2 and 3. Even so, it stays out of git (the committed `.example` is the only version tracked). Living slots are **`FP_SSH_GITHUB`**, **`FP_SSH_SECOND`**, and **`FP_OPENPGP`** (SUNN6). For a GitHub-only pier, fill GitHub + OpenPGP and leave Second as the example placeholder (skip its audit path), or use Second for a second GitHub key when you keep dual remotes. Generators still accept the legacy name `FP_SSH_CODEBERG` as an alias for Second. To read your living fingerprints back at any time:
+Your `tools/key-card.conf` holds only **public** information -- your name, your forge handle, your email, and the fingerprints from Steps 2 and 3. Even so, it stays out of git (the committed `.example` is the only version tracked). Living slots are **`FP_SSH_GITHUB`**, **`FP_SSH_SECOND`**, and **`FP_OPENPGP`** (SUNN6). For a GitHub-only pier, fill GitHub + OpenPGP and leave Second as the example placeholder (skip its audit path), or use Second for a second GitHub key when you keep dual remotes. Generators still accept the legacy name `FP_SSH_CODEBERG` as an alias for Second. To read your living fingerprints back at any time:
 
 ```bash
 ssh-keygen -lf ~/.ssh/id_ed25519_github.pub
 gpg --fingerprint you@example.com                 # the spaced 40-hex string
 ```
 
-On **macOS**, the Rish orchestrator ([`tools/m/make_key_card.rish`](tools/m/make_key_card.rish)) is the recommended path: it first audits every declared fingerprint against the real key on your host (so a card can never ship a wrong fingerprint), renders the cards with Homebrew's `qrencode` and ImageMagick, then audits the output PNGs — a green run proves the whole chain. Install its two dependencies once with `brew install qrencode imagemagick`; the font is **Menlo**, pinned — it ships on every Mac, so there is no font-install step at all. On **Linux**, `./tools/m/make-key-card.sh` builds `qrencode` from the vendored `gratitude/libqrencode` submodule and uses `apt`-installed Fira Code (`sudo apt install gcc libpng-dev pkg-config imagemagick fonts-firacode`) — the two hosts keep their own settled font choice.
+On **macOS**, the Rish orchestrator ([`tools/m/make_key_card.rish`](tools/m/make_key_card.rish)) is the recommended path: it first audits every declared fingerprint against the real key on your host (so a card can never ship a wrong fingerprint), renders the cards with Homebrew's `qrencode` and ImageMagick, then audits the output PNGs -- a green run proves the whole chain. Install its two dependencies once with `brew install qrencode imagemagick`; the font is **Menlo**, pinned -- it ships on every Mac, so there is no font-install step at all. On **Linux**, `./tools/m/make-key-card.sh` builds `qrencode` from the vendored `gratitude/libqrencode` submodule and uses `apt`-installed Fira Code (`sudo apt install gcc libpng-dev pkg-config imagemagick fonts-firacode`) -- the two hosts keep their own settled font choice.
 
-The result is two images at the repository root, `keys_<font>_<yourhandle>_landscape.png` and `…_portrait.png`, in a **plain white-background, black-text palette** that prints cleanly and scans reliably (override `BG`/`FG` in the config for a themed card). Pin them to a profile, print them, keep them: they prove your identity to anyone who scans. The full walkthrough, written for any contributor, is [`manual/guides/key-cards-setup.md`](manual/guides/key-cards-setup.md).
+The result is two images at the repository root, `keys_<font>_<yourhandle>_landscape.png` and `..._portrait.png`, in a **plain white-background, black-text palette** that prints cleanly and scans reliably (override `BG`/`FG` in the config for a themed card). Pin them to a profile, print them, keep them: they prove your identity to anyone who scans. The full walkthrough, written for any contributor, is [`manual/guides/key-cards-setup.md`](manual/guides/key-cards-setup.md).
 
-Alongside the composited PNG card, `rishi/bin/rishi run tools/m/make_key_qr_svg.rish` writes each QR code again as a small, standalone **SVG** — fully textual, diffable, no binary blob, since `qrencode` emits SVG directly for free. The PNG card stays the one to print; the SVGs exist for anywhere a checkable, text-native form fits better.
+Alongside the composited PNG card, `rishi/bin/rishi run tools/m/make_key_qr_svg.rish` writes each QR code again as a small, standalone **SVG** -- fully textual, diffable, no binary blob, since `qrencode` emits SVG directly for free. The PNG card stays the one to print; the SVGs exist for anywhere a checkable, text-native form fits better.
 
-If Cursor is already set up (Step 5), you can simply ask the agent to do all of this for you — *"fill in my key-card config and render my cards"* — and it will, entirely from inside the sandbox.
+If Cursor is already set up (Step 5), you can simply ask the agent to do all of this for you -- *"fill in my key-card config and render my cards"* -- and it will, entirely from inside the sandbox.
 
-> A note on the horizon: both halves of this tool lean on others' work we are grateful for — `libqrencode` for the codes, ImageMagick for the composition. In time, both are candidates to be re-grown in Rye, our own language, the same way **Pond** re-grows the sandbox.
-
----
-
-## Step 5 — Your Hands and Eyes (Cursor + Claude)
-
-Go to **<https://cursor.com/download>**, choose **Linux**, and download the **x86_64 AppImage** — the right build for **Framework** laptops, whether Intel or AMD, on both NixOS and Ubuntu. A `.deb` is offered too, yet the sandbox launcher runs the AppImage, so the AppImage is the one to fetch. Save it into the project folder (or into `~/Downloads` and move it in), since Step 6 extracts it there.
-
-Subscribe to **Cursor Pro** or **Cursor Ultra** — the plans that give you generous access to the strongest models and Agent mode.
-
-Separately, subscribe to a **paid Claude plan** (Claude Pro or Max) at **<https://claude.ai>**. Cursor’s Claude models and Anthropic’s own subscription are different bills; both earn their keep on this pier — Cursor for the jailed agent bench, Claude for counsel threads and the phone.
-
-Install the **Claude iOS** app and the **Cursor iOS** app from the App Store. Use Claude iOS for reading and asking on the go; use Cursor iOS for Cloud Agents against this repository. **Cursor Android is not supported yet** — stay on iOS or desktop until that client ships.
-
-Open Cursor, enter **Agent mode**, and choose a **Claude** model (the Opus and Sonnet families are excellent partners for this kind of work). Agent mode lets the model read your project, run commands, and make changes with your blessing — which is exactly what the rest of this guide leans on. On this pier the standing writing voice is **Kyri**.
+> A note on the horizon: both halves of this tool lean on others' work we are grateful for -- `libqrencode` for the codes, ImageMagick for the composition. In time, both are candidates to be re-grown in Rye, our own language, the same way **Pond** re-grows the sandbox.
 
 ---
 
-## Step 6 — A Gentle Enclosure (ai-jail, becoming Pond)
+## Step 5 -- Your Hands and Eyes (Cursor + Claude)
 
-We run the editor and its agent inside a sandbox, so they touch only the project folder — never your wider home, your keys, or your secrets. The tool is **ai-jail**.
+Go to **<https://cursor.com/download>**, choose **Linux**, and download the **x86_64 AppImage** -- the right build for **Framework** laptops, whether Intel or AMD, on both NixOS and Ubuntu. A `.deb` is offered too, yet the sandbox launcher runs the AppImage, so the AppImage is the one to fetch. Save it into the project folder (or into `~/Downloads` and move it in), since Step 6 extracts it there.
 
-> A note on the horizon: ai-jail is a Rust project we are grateful for, and our work in progress is **Pond** — a TAME-style reimplementation in our own language, Rye. A pond is a bounded, living enclosure rather than a cell: water held kindly within clear edges, where work can flourish in safety. Until Pond is ready, ai-jail is the enclosure.
+Subscribe to **Cursor Pro** or **Cursor Ultra** -- the plans that give you generous access to the strongest models and Agent mode.
+
+Separately, subscribe to a **paid Claude plan** (Claude Pro or Max) at **<https://claude.ai>**. Cursor's Claude models and Anthropic's own subscription are different bills; both earn their keep on this pier -- Cursor for the jailed agent bench, Claude for counsel threads and the phone.
+
+Install the **Claude iOS** app and the **Cursor iOS** app from the App Store. Use Claude iOS for reading and asking on the go; use Cursor iOS for Cloud Agents against this repository. **Cursor Android is not supported yet** -- stay on iOS or desktop until that client ships.
+
+Open Cursor, enter **Agent mode**, and choose a **Claude** model (the Opus and Sonnet families are excellent partners for this kind of work). Agent mode lets the model read your project, run commands, and make changes with your blessing -- which is exactly what the rest of this guide leans on. On this pier the standing writing voice is **Kyri**.
+
+---
+
+## Step 6 -- A Gentle Enclosure (ai-jail, becoming Pond)
+
+We run the editor and its agent inside a sandbox, so they touch only the project folder -- never your wider home, your keys, or your secrets. The tool is **ai-jail**.
+
+> A note on the horizon: ai-jail is a Rust project we are grateful for, and our work in progress is **Pond** -- a TAME-style reimplementation in our own language, Rye. A pond is a bounded, living enclosure rather than a cell: water held kindly within clear edges, where work can flourish in safety. Until Pond is ready, ai-jail is the enclosure.
 
 Install ai-jail (it uses `bwrap` on Linux):
 
@@ -262,30 +262,30 @@ Install ai-jail (it uses `bwrap` on Linux):
 cargo install ai-jail            # or build from source; see github.com/akitaonrails/ai-jail
 ```
 
-> **Host OS:** we recommend the **latest stable NixOS** for new setups — bubblewrap and ai-jail install cleanly via nixpkgs or the project's Nix flake (`nix profile install github:akitaonrails/ai-jail`). This Framework pier proves **Ubuntu 26.04 LTS** day to day; see `context/specs/enclosure-editors.md` for the NixOS map and dual-editor templates.
+> **Host OS:** we recommend the **latest stable NixOS** for new setups -- bubblewrap and ai-jail install cleanly via nixpkgs or the project's Nix flake (`nix profile install github:akitaonrails/ai-jail`). This Framework pier proves **Ubuntu 26.04 LTS** day to day; see `context/specs/enclosure-editors.md` for the NixOS map and dual-editor templates.
 
-Cursor ships as an AppImage; unpack it once in the project folder so the sandbox can launch it. The launcher runs the **extracted `AppRun`**, not the raw `.AppImage` file — a kind choice, because a raw AppImage mounts through FUSE, while `--appimage-extract` unpacks into `squashfs-root/` and the launcher runs `AppRun` directly, with no FUSE in the path.
+Cursor ships as an AppImage; unpack it once in the project folder so the sandbox can launch it. The launcher runs the **extracted `AppRun`**, not the raw `.AppImage` file -- a kind choice, because a raw AppImage mounts through FUSE, while `--appimage-extract` unpacks into `squashfs-root/` and the launcher runs `AppRun` directly, with no FUSE in the path.
 
 ```bash
 cd ~/yourrepo
-./Cursor-3.9.16-x86_64.AppImage --appimage-extract   # once → squashfs-root/
+./Cursor-3.9.16-x86_64.AppImage --appimage-extract   # once -> squashfs-root/
 ```
 
-When you upgrade Cursor, `chmod +x` the new download, then pass it with **`--cursor`** (preferred) so the launcher extracts into `squashfs-root/` and starts the jail in one step. The AppImage and `squashfs-root/` stay in the project directory and are not committed — only the launch scripts ship in git.
+When you upgrade Cursor, `chmod +x` the new download, then pass it with **`--cursor`** (preferred) so the launcher extracts into `squashfs-root/` and starts the jail in one step. The AppImage and `squashfs-root/` stay in the project directory and are not committed -- only the launch scripts ship in git.
 
-**Ubuntu (26.04 LTS · Framework · GNOME Wayland).** The extract path needs nothing extra. Pass **`--gpu`** so ai-jail can use the Wayland/WebGPU path. Only if someone runs the `.AppImage` *directly* would they need FUSE — and that package is **`libfuse2t64`** (not `fuse`, not the old `libfuse2`). Since the jail path extracts, this stays a footnote. (Ubuntu 24.04 LTS hosts follow the same extract law.)
+**Ubuntu (26.04 LTS - Framework - GNOME Wayland).** The extract path needs nothing extra. Pass **`--gpu`** so ai-jail can use the Wayland/WebGPU path. Only if someone runs the `.AppImage` *directly* would they need FUSE -- and that package is **`libfuse2t64`** (not `fuse`, not the old `libfuse2`). Since the jail path extracts, this stays a footnote. (Ubuntu 24.04 LTS hosts follow the same extract law.)
 
-**NixOS (Framework and similar).** NixOS does not run generic dynamically linked executables out of the box — and that holds for the extracted `AppRun` as much as for the `.AppImage`. Enable AppImage support in system config with `programs.appimage.enable = true;` and `programs.appimage.binfmt = true;` (NixOS 24.05 and later), which lets a `.AppImage` run directly when you choose that path; the older route is `appimage-run` from nixpkgs. Because binfmt registration acts on the `.AppImage` file, the launcher's **extracted-`AppRun`** path may additionally want an FHS wrapper — `steam-run` or `nix-ld` — to supply the dynamic loader and libraries. On a tested Framework host, extract once, then `./tools/cu/cursor-jail.sh` from the repo root is the working form; if `AppRun` fails with loader errors, wrap the launch with `steam-run` from nixpkgs. The full NixOS map lives in **`context/specs/enclosure-editors.md`**.
+**NixOS (Framework and similar).** NixOS does not run generic dynamically linked executables out of the box -- and that holds for the extracted `AppRun` as much as for the `.AppImage`. Enable AppImage support in system config with `programs.appimage.enable = true;` and `programs.appimage.binfmt = true;` (NixOS 24.05 and later), which lets a `.AppImage` run directly when you choose that path; the older route is `appimage-run` from nixpkgs. Because binfmt registration acts on the `.AppImage` file, the launcher's **extracted-`AppRun`** path may additionally want an FHS wrapper -- `steam-run` or `nix-ld` -- to supply the dynamic loader and libraries. On a tested Framework host, extract once, then `./tools/cu/cursor-jail.sh` from the repo root is the working form; if `AppRun` fails with loader errors, wrap the launch with `steam-run` from nixpkgs. The full NixOS map lives in **`context/specs/enclosure-editors.md`**.
 
-**macOS.** There is no AppImage and no `bwrap` here; Cursor already ships as `Cursor.app`, and the enclosure is Apple's own Seatbelt (`sandbox-exec`), driven by this project's own launcher rather than `cargo install ai-jail`. Two tools share the work: upstream **ai-jail** grew a native macOS backend and is the right choice for jailing a **terminal agent or shell** (`ai-jail bash`, `ai-jail claude`); this project's own [`tools/cu/cursor_jail_macos.rish`](tools/cu/cursor_jail_macos.rish) (Rish-native) and [`tools/cu/cursor-jail-macos.sh`](tools/cu/cursor-jail-macos.sh) (bash elder) jail the **Cursor GUI app itself**, which upstream does not aim at. Both are witnessed live — a write inside the project succeeds, a write to the real `$HOME` is denied by the kernel, proven from inside a running jailed window, not just by a scripted witness. The full walkthrough, including three hard-won launch traps (never exec the `cursor` CLI wrapper; pass `--no-sandbox` since Chromium cannot nest inside Seatbelt any more than inside `bwrap`; detach stdio with `nohup` so the app survives the launching script exiting) is [`manual/guides/macos-ai-jail-setup.md`](manual/guides/macos-ai-jail-setup.md). One named gap carries forward from Linux's `--private-home`: the macOS GUI launcher has no private-`$HOME` substitute yet, so your real home directory stays *readable* inside the jail even though it stays *unwritable* — Steps 7 and 8 below say what that means in practice.
+**macOS.** There is no AppImage and no `bwrap` here; Cursor already ships as `Cursor.app`, and the enclosure is Apple's own Seatbelt (`sandbox-exec`), driven by this project's own launcher rather than `cargo install ai-jail`. Two tools share the work: upstream **ai-jail** grew a native macOS backend and is the right choice for jailing a **terminal agent or shell** (`ai-jail bash`, `ai-jail claude`); this project's own [`tools/cu/cursor_jail_macos.rish`](tools/cu/cursor_jail_macos.rish) (Rish-native) and [`tools/cu/cursor-jail-macos.sh`](tools/cu/cursor-jail-macos.sh) (bash elder) jail the **Cursor GUI app itself**, which upstream does not aim at. Both are witnessed live -- a write inside the project succeeds, a write to the real `$HOME` is denied by the kernel, proven from inside a running jailed window, not just by a scripted witness. The full walkthrough, including three hard-won launch traps (never exec the `cursor` CLI wrapper; pass `--no-sandbox` since Chromium cannot nest inside Seatbelt any more than inside `bwrap`; detach stdio with `nohup` so the app survives the launching script exiting) is [`manual/guides/macos-ai-jail-setup.md`](manual/guides/macos-ai-jail-setup.md). One named gap carries forward from Linux's `--private-home`: the macOS GUI launcher has no private-`$HOME` substitute yet, so your real home directory stays *readable* inside the jail even though it stays *unwritable* -- Steps 7 and 8 below say what that means in practice.
 
 ---
 
-## Step 7 — Teaching the Tools Who You Are
+## Step 7 -- Teaching the Tools Who You Are
 
 Two small config files tie your identity to your work. On your **host** machine:
 
-**`~/.ssh/config`** — which key opens which forge:
+**`~/.ssh/config`** -- which key opens which forge:
 
 ```
 Host github.com
@@ -301,7 +301,7 @@ Host codeberg.org
     IdentitiesOnly yes
 ```
 
-**`~/.gitconfig`** — your name, your email, and your signing seal:
+**`~/.gitconfig`** -- your name, your email, and your signing seal:
 
 ```
 [user]
@@ -318,7 +318,7 @@ Host codeberg.org
 
 With these in place, every commit you make on the host signs itself, and pushes find the right key.
 
-**macOS, when one host holds more than one Codeberg or GitHub identity.** `~/.ssh/config`'s `Host github.com` block matches by hostname alone, so if this same Mac already has a *different* `IdentityFile` set for `github.com` (an older personal key, say) from some earlier project, `IdentitiesOnly yes` forces that wrong key for this repo too — the push fails with `Permission denied (publickey)` even though the right key sits right there in `~/.ssh/`, already loaded in the agent. Since the macOS jail's write fence keeps `~/.ssh/config` unwritable from inside a jailed window (Step 6's named gap), fix it with a **repo-local override** instead of editing the global file — this lives in `.git/`, which git never tracks, so it needs no gitignore entry at all:
+**macOS, when one host holds more than one Codeberg or GitHub identity.** `~/.ssh/config`'s `Host github.com` block matches by hostname alone, so if this same Mac already has a *different* `IdentityFile` set for `github.com` (an older personal key, say) from some earlier project, `IdentitiesOnly yes` forces that wrong key for this repo too -- the push fails with `Permission denied (publickey)` even though the right key sits right there in `~/.ssh/`, already loaded in the agent. Since the macOS jail's write fence keeps `~/.ssh/config` unwritable from inside a jailed window (Step 6's named gap), fix it with a **repo-local override** instead of editing the global file -- this lives in `.git/`, which git never tracks, so it needs no gitignore entry at all:
 
 ```bash
 cat > .git/ssh_config_urbit <<'EOF'
@@ -341,7 +341,7 @@ ssh -F .git/ssh_config_urbit -T git@codeberg.org
 
 `core.sshCommand` is per-repo (stored in `.git/config`, itself untracked), so this touches nothing global and nothing another project on the same Mac relies on.
 
-**Linux, when this host already runs another project's own identity.** The same collision can happen on a shared Ubuntu or NixOS machine: if this host already has a `~/.ssh/config` `Host github.com` / `Host codeberg.org` block pinned to an older project's own key, that block wins for every repo on the host, this one included. Linux's own answer is simpler than macOS's, though, because `tools/cu/cursor-jail.sh` already defaults to `ai-jail --private-home` — real kernel user-namespaces give the jailed Cursor session a genuinely separate `$HOME`, so the *other* project's real `~/.ssh` and `~/.gnupg` are already invisible from inside any jailed session here, with no enumeration workaround needed at all (unlike macOS's Seatbelt, which has no namespace-level private-home primitive and must deny each real `$HOME` entry by name). What Linux still wants, the same as macOS, is a *working* identity of its own inside that private, empty jailed `$HOME` — generated the same way as Step 8b/8c below, run from an ordinary terminal outside any jail:
+**Linux, when this host already runs another project's own identity.** The same collision can happen on a shared Ubuntu or NixOS machine: if this host already has a `~/.ssh/config` `Host github.com` / `Host codeberg.org` block pinned to an older project's own key, that block wins for every repo on the host, this one included. Linux's own answer is simpler than macOS's, though, because `tools/cu/cursor-jail.sh` already defaults to `ai-jail --private-home` -- real kernel user-namespaces give the jailed Cursor session a genuinely separate `$HOME`, so the *other* project's real `~/.ssh` and `~/.gnupg` are already invisible from inside any jailed session here, with no enumeration workaround needed at all (unlike macOS's Seatbelt, which has no namespace-level private-home primitive and must deny each real `$HOME` entry by name). What Linux still wants, the same as macOS, is a *working* identity of its own inside that private, empty jailed `$HOME` -- generated the same way as Step 8b/8c below, run from an ordinary terminal outside any jail:
 
 ```bash
 rishi/bin/rishi run tools/g/generate_jail_local_keys_linux.rish
@@ -352,28 +352,28 @@ This mirrors the macOS jail-local generator directly: identity from `GLOW_PROFIL
 
 ---
 
-## Step 8 — Signing Without Hands, Inside the Sandbox
+## Step 8 -- Signing Without Hands, Inside the Sandbox
 
-Here is the heart of it. The sandbox is sealed: with a private home, it cannot see your host's `~/.gnupg`, `~/.ssh`, or `~/.config/gh`. So to let the agent push and sign from **inside**, we keep a small, deliberate set of project-local materials — each one gitignored, each one safe.
+Here is the heart of it. The sandbox is sealed: with a private home, it cannot see your host's `~/.gnupg`, `~/.ssh`, or `~/.config/gh`. So to let the agent push and sign from **inside**, we keep a small, deliberate set of project-local materials -- each one gitignored, each one safe.
 
-**macOS now has a real answer to this step, not just a gap.** Reading your real `~/.ssh` and `~/.gnupg` from inside the jail is convenient, yet it is also the weaker posture: with reads open and network allowed by default (Step 6), a compromised agent could exfiltrate your real master identity without ever needing a write. `tools/cu/cursor_jail_macos.rish --harden-home` (and the bash elder, `tools/cu/cursor-jail-macos.sh --harden-home`) closes exactly that hole — it denies reads to the real credential stores under `$HOME` (`~/.ssh`, `~/.gnupg`, `~/.aws`, `~/.config/gh`, and the rest of the named list in the launcher itself), while everything else stays open, unchanged. Apple's Seatbelt resolves an overlapping allow/deny pair to **deny, regardless of order or specificity** — proven on this host — so the launcher denies only the specific credential-store paths themselves rather than attempting a blanket dotfile deny with an allow-back (that shape silently loses the allow-back here).
+**macOS now has a real answer to this step, not just a gap.** Reading your real `~/.ssh` and `~/.gnupg` from inside the jail is convenient, yet it is also the weaker posture: with reads open and network allowed by default (Step 6), a compromised agent could exfiltrate your real master identity without ever needing a write. `tools/cu/cursor_jail_macos.rish --harden-home` (and the bash elder, `tools/cu/cursor-jail-macos.sh --harden-home`) closes exactly that hole -- it denies reads to the real credential stores under `$HOME` (`~/.ssh`, `~/.gnupg`, `~/.aws`, `~/.config/gh`, and the rest of the named list in the launcher itself), while everything else stays open, unchanged. Apple's Seatbelt resolves an overlapping allow/deny pair to **deny, regardless of order or specificity** -- proven on this host -- so the launcher denies only the specific credential-store paths themselves rather than attempting a blanket dotfile deny with an allow-back (that shape silently loses the allow-back here).
 
-Before your first `--harden-home` launch, generate dedicated, jail-only keys and register them with both forges — from an **ordinary terminal, outside any jail**, on purpose: a "dedicated, revocable" key is a weaker promise if the same agent that will use it also generated it.
+Before your first `--harden-home` launch, generate dedicated, jail-only keys and register them with both forges -- from an **ordinary terminal, outside any jail**, on purpose: a "dedicated, revocable" key is a weaker promise if the same agent that will use it also generated it.
 
 ```bash
 rishi/bin/rishi run tools/g/generate_jail_local_keys_macos.rish
 # paste the printed SSH and GPG public keys into GitHub and Codeberg
 ```
 
-This mirrors **8b**–**8c** exactly, just generated by your own hands rather than copied from an already-shared real key: a dedicated SSH deploy key per forge, a jail-local `known_hosts` (fetched via `ssh-keyscan`, since `--harden-home` denies the real one too), and a passphrase-free, signing-only GPG key, all living under this project's own gitignored `.ssh/` and `.gnupg-rye/`. The generator reads your name, forge handle, and email from `GLOW_PROFILE.bron` (the tree's one gitignored identity source — copy `GLOW_PROFILE.template.bron` and fill it first), so the GPG key's UID and the SSH key comments carry your real identity. The GPG **email in particular is load-bearing**: a forge shows a signature as *Verified* only when the signing key's email matches a verified address on the account and the commit's committer email, so it must be your real forge email, not a placeholder. The script also wires git itself — `core.sshCommand`, `gpg.program`, and `user.signingkey` all point at the new files before it finishes, nothing left to configure by hand — so the next `--harden-home` launch can no longer read your real identity at all, read or write.
+This mirrors **8b**-**8c** exactly, just generated by your own hands rather than copied from an already-shared real key: a dedicated SSH deploy key per forge, a jail-local `known_hosts` (fetched via `ssh-keyscan`, since `--harden-home` denies the real one too), and a passphrase-free, signing-only GPG key, all living under this project's own gitignored `.ssh/` and `.gnupg-rye/`. The generator reads your name, forge handle, and email from `GLOW_PROFILE.bron` (the tree's one gitignored identity source -- copy `GLOW_PROFILE.template.bron` and fill it first), so the GPG key's UID and the SSH key comments carry your real identity. The GPG **email in particular is load-bearing**: a forge shows a signature as *Verified* only when the signing key's email matches a verified address on the account and the commit's committer email, so it must be your real forge email, not a placeholder. The script also wires git itself -- `core.sshCommand`, `gpg.program`, and `user.signingkey` all point at the new files before it finishes, nothing left to configure by hand -- so the next `--harden-home` launch can no longer read your real identity at all, read or write.
 
-The GPG trustdb quirk named below still applies either way — `git log --show-signature` and `gpg --list-secret-keys` can hang against a write-denied trust cache, real or jail-local, so guard signature inspection with `timeout`:
+The GPG trustdb quirk named below still applies either way -- `git log --show-signature` and `gpg --list-secret-keys` can hang against a write-denied trust cache, real or jail-local, so guard signature inspection with `timeout`:
 
 ```bash
 timeout 10 git --no-pager log --show-signature -1 | cat
 ```
 
-**A real, honest limit on self-testing.** `tools/cu/cursor_jail_macos_harden_witness.rish` proves `--harden-home`'s read-deny logic, yet only when run from a terminal that is not already inside a jail. Proven on this host: a *nested* `sandbox_apply` carrying an explicit `(deny ...)` rule fails outright, even though the identical profile applies cleanly as a first, non-nested call, and even though an allow-only nested profile (the plain write-fence witness) nests just fine. An agent already working inside a jailed window cannot fully self-certify `--harden-home` from within that same window — run its witness from Terminal.app instead.
+**A real, honest limit on self-testing.** `tools/cu/cursor_jail_macos_harden_witness.rish` proves `--harden-home`'s read-deny logic, yet only when run from a terminal that is not already inside a jail. Proven on this host: a *nested* `sandbox_apply` carrying an explicit `(deny ...)` rule fails outright, even though the identical profile applies cleanly as a first, non-nested call, and even though an allow-only nested profile (the plain write-fence witness) nests just fine. An agent already working inside a jailed window cannot fully self-certify `--harden-home` from within that same window -- run its witness from Terminal.app instead.
 
 **8a. An allow-listing `.gitignore`.** When a repo lives inside a sandbox home shared with the editor and your files, ignore everything by default and allow back only the project. This guarantees keys and tokens can never be committed by accident:
 
@@ -391,7 +391,7 @@ timeout 10 git --no-pager log --show-signature -1 | cat
 .zig-cache/
 ```
 
-**8b. SSH keys the sandbox can reach.** Place a copy of your forge SSH keys in a gitignored project folder (e.g. `.ssh/`), and point git at them — so pushes work from inside without your host keys:
+**8b. SSH keys the sandbox can reach.** Place a copy of your forge SSH keys in a gitignored project folder (e.g. `.ssh/`), and point git at them -- so pushes work from inside without your host keys:
 
 ```bash
 git config --local core.sshCommand \
@@ -400,7 +400,7 @@ git remote add origin git@codeberg.org:youruser/yourrepo.git
 git remote add github git@github.com:youruser/yourrepo.git
 ```
 
-**8c. A dedicated, passphrase-free signing key — never your master.** Generate a small signing key that lives only in a gitignored sandbox keyring, so the agent can sign unattended. Your real master key stays on your host, untouched:
+**8c. A dedicated, passphrase-free signing key -- never your master.** Generate a small signing key that lives only in a gitignored sandbox keyring, so the agent can sign unattended. Your real master key stays on your host, untouched:
 
 ```bash
 export GNUPGHOME="$PWD/.gnupg-rye"; mkdir -p "$GNUPGHOME"; chmod 700 "$GNUPGHOME"
@@ -423,21 +423,21 @@ git config --local gpg.program "$PWD/.gnupg-rye/gpg.sh"
 
 Upload that sandbox key's **public** half to both forges' GPG Keys, and your in-sandbox commits will read **Verified** under your name.
 
-**8d. The forge CLI, when you want it.** `gh` reads its token from `~/.config/gh`, which the sandbox cannot see — and on macOS, `--harden-home` denies that path outright, so `gh` fails to even start (`failed to read configuration: … operation not permitted`) rather than merely running unauthenticated. Two env vars unblock it without ever copying your real, broad-scope token into the jail:
+**8d. The forge CLI, when you want it.** `gh` reads its token from `~/.config/gh`, which the sandbox cannot see -- and on macOS, `--harden-home` denies that path outright, so `gh` fails to even start (`failed to read configuration: ... operation not permitted`) rather than merely running unauthenticated. Two env vars unblock it without ever copying your real, broad-scope token into the jail:
 
 ```bash
 # A jail-local config dir gh CAN read, plus a minimal-scope token from a
-# gitignored secret — never a copy of your real ~/.config/gh.
+# gitignored secret -- never a copy of your real ~/.config/gh.
 export GH_CONFIG_DIR="$PWD/.gh"                  # gitignored; gh reads/writes only here
 export GH_TOKEN="$(cat tools/gh-token.secret)"   # a fine-grained PAT, gitignored
 gh ssh-key add .ssh/id_ed25519_jail_github.pub --title "jail-only github"
 ```
 
-`GH_TOKEN` supplies auth directly, so `gh` never needs the real config at all; scope the token to just this repository and just the permissions the task needs (a "Contents + Administration: read/write" fine-grained PAT covers key management and pushes), and revoke it when done. This keeps the whole point of `--harden-home` intact: no full-account credential ever enters the jail. Copying `~/.config/gh` wholesale (`cp -r ~/.config/gh ./.gh`) also works, yet it drags your real broad token inside the fence — prefer the scoped `GH_TOKEN`.
+`GH_TOKEN` supplies auth directly, so `gh` never needs the real config at all; scope the token to just this repository and just the permissions the task needs (a "Contents + Administration: read/write" fine-grained PAT covers key management and pushes), and revoke it when done. This keeps the whole point of `--harden-home` intact: no full-account credential ever enters the jail. Copying `~/.config/gh` wholesale (`cp -r ~/.config/gh ./.gh`) also works, yet it drags your real broad token inside the fence -- prefer the scoped `GH_TOKEN`.
 
 ---
 
-## Step 9 — The Launch
+## Step 9 -- The Launch
 
 From inside your project folder, start Cursor in the sandbox. This grants the editor only the current directory, closes the Docker socket, and keeps the GPU and your wider home out:
 
@@ -457,10 +457,10 @@ ai-jail --private-home --no-docker --gpu -- ./squashfs-root/AppRun --no-sandbox 
   --extensions-dir="$PWD/.cursor-state/extensions" "$PWD"
 ```
 
-**Options.** **`--cursor PATH`** is the preferred flag: a `.AppImage` path extracts into `squashfs-root/` then launches; any other path is treated as the extracted `AppRun`. Legacy **`--extract`** / **`--appimage`** (AppRun only) still work. A raw `.AppImage` must not be exec'd inside the jail — FUSE fails there — so the launcher always runs the extracted form.
+**Options.** **`--cursor PATH`** is the preferred flag: a `.AppImage` path extracts into `squashfs-root/` then launches; any other path is treated as the extracted `AppRun`. Legacy **`--extract`** / **`--appimage`** (AppRun only) still work. A raw `.AppImage` must not be exec'd inside the jail -- FUSE fails there -- so the launcher always runs the extracted form.
 
 ```bash
-# Preferred (Rish) — fresh download
+# Preferred (Rish) -- fresh download
 rishi/bin/rishi run tools/l/launch-cursor.rish --cursor ./Cursor-3.13.10-x86_64.AppImage --gpu
 # Already extracted
 rishi/bin/rishi run tools/l/launch-cursor.rish --gpu
@@ -470,7 +470,7 @@ rishi/bin/rishi run tools/l/launch-cursor.rish --gpu
 ./tools/cu/cursor-jail.sh --appimage /path/to/squashfs-root/AppRun    # legacy AppRun
 ```
 
-**macOS** — pass the app bundle (or binary) the same way:
+**macOS** -- pass the app bundle (or binary) the same way:
 
 ```bash
 rishi/bin/rishi run tools/cu/cursor_jail_macos.rish --cursor /Applications/Cursor.app
@@ -501,13 +501,13 @@ When Cursor first opens inside the jail, two messages may appear. Both are safe,
 
 **Inline diffs suppressed.** When the agent makes many edits at once, the editor may say it has *suppressed inline diffs because there are too many to display.* The changes are all intact; only the per-line highlighting is paused. *Don't Show Again* dismisses it for good. It is purely cosmetic.
 
-**A read-only `.ai-jail`.** The editor may report that it *failed to save `.ai-jail` — read-only file system (EROFS)*. This is expected and safe. `.ai-jail` is the enclosure's own configuration: the launcher passes `--no-save-config` so it is never written, and inside the sandbox it is read-only by design, since the editor working behind the wall should not be able to rewrite the wall. The notice appears only because the editor opened that file and tried to autosave it. Choose **Revert** — not *Save As*, which would leave a stray copy, and not *Retry*, which only fails again — then close the tab. The repository itself stays fully writable, as every commit proves, and `.ai-jail` is already gitignored by the allow-list, so it never travels. To stop the notice from returning, exclude `.ai-jail` from the workspace in Cursor settings, or add a tracked `.vscode/settings.json` with `files.exclude` — propose that change when you want it shared with every clone.
+**A read-only `.ai-jail`.** The editor may report that it *failed to save `.ai-jail` -- read-only file system (EROFS)*. This is expected and safe. `.ai-jail` is the enclosure's own configuration: the launcher passes `--no-save-config` so it is never written, and inside the sandbox it is read-only by design, since the editor working behind the wall should not be able to rewrite the wall. The notice appears only because the editor opened that file and tried to autosave it. Choose **Revert** -- not *Save As*, which would leave a stray copy, and not *Retry*, which only fails again -- then close the tab. The repository itself stays fully writable, as every commit proves, and `.ai-jail` is already gitignored by the allow-list, so it never travels. To stop the notice from returning, exclude `.ai-jail` from the workspace in Cursor settings, or add a tracked `.vscode/settings.json` with `files.exclude` -- propose that change when you want it shared with every clone.
 
 ---
 
-## Step 9b — A Second Editor (Zed + Claude, alongside Cursor)
+## Step 9b -- A Second Editor (Zed + Claude, alongside Cursor)
 
-You can run **Zed** in its own ai-jail enclosure while **Cursor** stays open — on the host or in a second sandbox — sharing the same repository. Each editor keeps **separate state** under `.zed-state/` and `.cursor-state/` so settings and agent credentials do not collide.
+You can run **Zed** in its own ai-jail enclosure while **Cursor** stays open -- on the host or in a second sandbox -- sharing the same repository. Each editor keeps **separate state** under `.zed-state/` and `.cursor-state/` so settings and agent credentials do not collide.
 
 Zed's **Claude Agent** bills through **Anthropic's API** (export `ANTHROPIC_API_KEY` before launch, or use `/login` in a Claude thread). That is independent of Cursor's subscription.
 
@@ -522,18 +522,18 @@ On **GNOME Wayland** (Ubuntu 26.04 LTS on this Framework pier), ai-jail passes t
 
 ---
 
-## Step 9c — Hardening the Host (FileVault + Firewall)
+## Step 9c -- Hardening the Host (FileVault + Firewall)
 
-The sandbox in Steps 6–9 protects the *project* from the agent. This step protects the *machine* — the disk itself, and the network — since a work laptop holding real SSH keys, a real GPG signing key, and forge tokens deserves both, not just the enclosure. Two settings, both in **System Settings**, both worth doing before you treat this machine as a real work machine.
+The sandbox in Steps 6-9 protects the *project* from the agent. This step protects the *machine* -- the disk itself, and the network -- since a work laptop holding real SSH keys, a real GPG signing key, and forge tokens deserves both, not just the enclosure. Two settings, both in **System Settings**, both worth doing before you treat this machine as a real work machine.
 
-**Turn on FileVault (disk encryption).** Without it, anyone who gets the physical drive can read every private key on it directly, bypassing your login password entirely. **System Settings → Privacy & Security → FileVault → Turn On…** — choose **Create a recovery key and do not use my iCloud account** for the stricter, no-third-party-holds-a-copy choice, and save that recovery key to a password manager's secure note the moment it appears (never a plain file on the same disk). The full walkthrough, step by step, is [`manual/guides/filevault-setup.md`](manual/guides/filevault-setup.md). Confirm it took:
+**Turn on FileVault (disk encryption).** Without it, anyone who gets the physical drive can read every private key on it directly, bypassing your login password entirely. **System Settings -> Privacy & Security -> FileVault -> Turn On...** -- choose **Create a recovery key and do not use my iCloud account** for the stricter, no-third-party-holds-a-copy choice, and save that recovery key to a password manager's secure note the moment it appears (never a plain file on the same disk). The full walkthrough, step by step, is [`manual/guides/filevault-setup.md`](manual/guides/filevault-setup.md). Confirm it took:
 
 ```bash
 fdesetup status
 # FileVault is On.
 ```
 
-**Turn on the Application Firewall, with Block all incoming connections.** **System Settings → Network → Firewall** — toggle it on, then **Options… → Block all incoming connections**. If this machine only ever runs as a client (reaching out to forges, a VPN, an API) and never deliberately hosts an inbound service, block-all is the strictest, cleanest choice — it overrides any app-specific "allow" entry that might already be listed, permitting nothing beyond basic network services like DHCP. Consider **Enable stealth mode** too, so the machine does not even acknowledge a ping. Confirm from the shell:
+**Turn on the Application Firewall, with Block all incoming connections.** **System Settings -> Network -> Firewall** -- toggle it on, then **Options... -> Block all incoming connections**. If this machine only ever runs as a client (reaching out to forges, a VPN, an API) and never deliberately hosts an inbound service, block-all is the strictest, cleanest choice -- it overrides any app-specific "allow" entry that might already be listed, permitting nothing beyond basic network services like DHCP. Consider **Enable stealth mode** too, so the machine does not even acknowledge a ping. Confirm from the shell:
 
 ```bash
 /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate
@@ -542,7 +542,7 @@ fdesetup status
 # Firewall stealth mode is on
 ```
 
-Neither setting needs a password stored anywhere in this repository — both are your own hands, your own Touch ID or login password, done once. A living record of this host's own security posture, kept honestly (what was checked, what was found, what was fixed) lives at [`context/specs/20260713-211800_local-host-system-hardware-anonymized.md`](context/specs/20260713-211800_local-host-system-hardware-anonymized.md).
+Neither setting needs a password stored anywhere in this repository -- both are your own hands, your own Touch ID or login password, done once. A living record of this host's own security posture, kept honestly (what was checked, what was found, what was fixed) lives at [`context/specs/20260713-211800_local-host-system-hardware-anonymized.md`](context/specs/20260713-211800_local-host-system-hardware-anonymized.md).
 
 ---
 
@@ -553,7 +553,7 @@ Inside the sandbox, ask your agent to make a small commit, then look:
 ```bash
 git log --show-signature -1     # expect: "Good signature from Your Name"
                                  # on macOS, prefer: timeout 10 git --no-pager log --show-signature -1 | cat
-                                 # (Step 8's trustdb note — a hang here is cosmetic, not a signing failure)
+                                 # (Step 8's trustdb note -- a hang here is cosmetic, not a signing failure)
 git push origin main            # to Codeberg
 git push github main            # to GitHub
 ```
@@ -571,4 +571,4 @@ Open the commit on each forge. When the green **Verified** appears, every piece 
 
 ---
 
-*May your keys hold steady. May each commit carry your name in good faith. May the enclosure keep you free — bounded, alive, and entirely your own.*
+*May your keys hold steady. May each commit carry your name in good faith. May the enclosure keep you free -- bounded, alive, and entirely your own.*
