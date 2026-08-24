@@ -24,6 +24,21 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260824.040004` -- ITINERARY condensed, the landed rounds folded to their logs
+
+**Walk-back nib:** `fc153c2c78` -- read the whole departing card with
+`git show fc153c2c78:construction/ITINERARY.md`.
+
+**Swept:** `construction/ITINERARY.md` only. Roughly 150 lines of landed-round detail -- the
+tools fold, the seed cadence's first cycle, the organization rename, the four booked doors, the
+crawl counts, the reds each round closed -- condensed into short Prior-lap lines that name the
+round and point at the session log holding its detail.
+
+**What waits there, worth recalling:** every number and citation in those blocks, written at the
+time and unabridged. The card had grown into a second copy of the log index, which is the one
+thing its own habits section says it must never be; what it keeps now is the live edge.
+
+
 ### `20260823.143835` -- the tools room folds, 1,917 flat entries into 38 rooms
 
 **Walk-back nib:** `0d87a51fcd` -- pier and both remotes. A **working-tree move**, so every

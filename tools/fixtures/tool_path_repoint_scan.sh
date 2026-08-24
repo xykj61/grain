@@ -113,7 +113,7 @@ living_rooms_re=$(printf '%s' "$LIVING_DATED_ROOMS" | tr ' ' '|')
 git ls-files 2>/dev/null \
   | grep -E '\.(md|mdc|rish|rye|sh|bron|kyri|brix|txt|json|awk|jq|example|conf)$|(^|/)(\.gitignore|pre-commit|commit-msg)$' \
   | awk -F/ -v living="^($living_rooms_re)/" \
-      '$0 ~ living || $NF !~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]_/' \
+      '$0 ~ living || $NF !~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]/' \
   | while IFS= read -r f; do
       base="${f##*/}"
       skip=no

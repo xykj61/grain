@@ -1,0 +1,67 @@
+# tools/d/dated_spelling_witness.rish -- a dated name has one shape, and every tool spells it
+# the same way.
+#
+#   rishi/bin/rishi run tools/d/dated_spelling_witness.rish
+#
+# WHY. A dated name is `YYYYMMDD-HHMMSS` followed by the sprig or, when there is no sprig, by the
+# extension. The session-logs law makes the sprig optional -- it is added when two logs share a
+# second -- and 237 tracked logs carry none. A pattern that requires the underscore reads all 237
+# as living, and the tool then moves in whichever wrong direction it was built to move: a
+# repointer opens testimony for writing, a bound meter undercounts a room, a census cannot see a
+# reference, and the guard protecting dated artifacts from rewrite does not protect them.
+#
+# WHY IT IS A GUARD RATHER THAN A FIX. The narrow pattern has been found three times. Once at the
+# canonical seam and the repointer's write set (REDS %175, closed there). Once in eight further
+# scans, which that row named and left open. Once in eleven more sites across seven files, which
+# nobody had named at all -- the open remainder was itself counted from memory, and that is the
+# original fault standing one level up. A lantern that fires twice becomes a loom.
+#
+# WHAT IS GATED, hard, at zero. A living tracked tool holding a stamp shape followed immediately
+# by a bare underscore, in any of the three spellings this tree writes stamps in.
+#
+# WHAT PASSES FREE. Dated testimony, in both its spellings, since a guard that recognised
+# testimony only when it wore a sprig would carry the fault it exists to catch. The instrument --
+# this file, the scan, and the control -- named by basename rather than by address. And a stamp
+# with no underscore after it, which is a date format rather than a classification test.
+#
+# WHAT IT DOES NOT REACH, said plainly. A test written in code rather than in a pattern is
+# invisible to a grep. The resolver's own reading is proven instead by tools/d/dated_path_witness.rish,
+# on a real sprigless case.
+#
+# Pen: tools/fixtures/dated_spelling_control.sh -- twelve behaviors on real git repositories in a
+# throwaway pen, three refusals bitten and nine honest readings left free. Run from the
+# repository root.
+
+say "dated-spelling: Language EN -- a rule with an optional part is a rule two readers will implement differently, and the one most likely to differ is the one working from memory."
+say "dated-spelling: Style Gauge, Meter -- the reading is a grep over the tracked corpus, so anyone may check the number."
+say "dated-spelling: Lens TAME -- one value model, one shape, one spelling; a classification kept in twenty places is twenty classifications that happen to agree today."
+
+let scan = run ["sh" "tools/fixtures/dated_spelling_scan.sh"]
+say scan.out
+assert scan.ok else "dated-spelling: a living tool still requires the sprig -- read the scan's own detail lines"
+assert scan.out contains "verdict=one_shape_everywhere" else "dated-spelling: the scan must reach the clean verdict"
+assert scan.out contains "narrow_dated_patterns=0" else "dated-spelling: no living tool may require the sprig"
+
+# A meter reading an empty corpus reports zero and proves nothing, so the corpus is measured too.
+assert (scan.out contains "files_considered=0" == false) else "dated-spelling: a zero-file corpus would report clean while reading nothing at all"
+
+let control = run ["sh" "tools/fixtures/dated_spelling_control.sh"]
+say control.out
+assert control.ok else "dated-spelling: the control must complete"
+assert control.out contains "case=interval_form_bitten ok" else "dated-spelling: the interval spelling must be refused"
+assert control.out contains "case=year_form_bitten ok" else "dated-spelling: the year-anchored spelling must be refused"
+assert control.out contains "case=explicit_form_bitten ok" else "dated-spelling: the eight-fold explicit spelling must be refused"
+assert control.out contains "case=offender_named ok" else "dated-spelling: a refusal must name the file it refused"
+assert control.out contains "case=class_spelling_free ok" else "dated-spelling: the [_.] class is the repair and must pass"
+assert control.out contains "case=alternation_spelling_free ok" else "dated-spelling: the (_|.) alternation is the repair and must pass"
+assert control.out contains "case=optional_sprig_free ok" else "dated-spelling: the optional-sprig form is the repair and must pass"
+assert control.out contains "case=testimony_free ok" else "dated-spelling: dated testimony keeps every word it wrote"
+assert control.out contains "case=sprigless_testimony_free ok" else "dated-spelling: a sprigless dated basename is testimony too, which is the whole point"
+assert control.out contains "case=bare_stamp_free ok" else "dated-spelling: a date format is not a classification test"
+assert control.out contains "case=untracked_free ok" else "dated-spelling: the corpus is what the tree tracks"
+assert control.out contains "case=prose_free ok" else "dated-spelling: prose is read by a person and runs nothing"
+assert control.out contains "case=no_tree_told_apart ok" else "dated-spelling: a directory with no git tree must read distinctly from a clean one"
+assert control.out contains "control=ok" else "dated-spelling: the control must agree with itself"
+
+say ""
+say "GREEN: dated-spelling -- one shape for a dated name, spelled the same way in every living tool, with three narrow spellings refused on real repositories and nine honest ones left free."
