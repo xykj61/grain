@@ -8,3 +8,8 @@
 | 20260703.130000 | [zeta](20260703-130000_zeta.md) reaching [out of the room](../ORGANIZING.md) | prior day, a link past the room -- proves a fold moves depth (REDS %183) |
 | 20260704.100000 | [beta](20260704-100000_beta.md) | today, `.md` -- stays flat |
 | 20260814 | [epsilon](20260814-fill-epsilon-x.md) | day only, no time -- never folds, since a resolver needs the whole stamp |
+---
+
+*A closing line beneath the table. A room whose README continues past its index is the ordinary
+case; session-logs, whose table is the last thing in its file, is the exception the fold was first
+proven on (REDS %200).*

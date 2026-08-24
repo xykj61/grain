@@ -20,12 +20,17 @@
 # one day of rows, which is a few kilobytes.
 #
 # WHAT IS GATED, hard, at zero. An index row in an ENFORCED room naming a day whose logs have all
-# folded out of that room's flat level. `session-logs` holds that seat from `20260824.052329`.
+# folded out of that room's flat level. `session-logs` holds that seat from `20260824.052329` and
+# `active-designing` from `20260824.144912`, its 86 rows carried onto 21 shelves and its front door
+# read line by line afterwards -- which is what the seat means.
 #
-# WHAT RIDES A RATCHET. The same rows in every other room -- `active-designing` 86, `counsel` 112,
-# `expanding-prompts` 78, `waymarks` 41 on the day this was written, 317 together, under a ceiling
-# that only ever falls. Folding a room's index also rewrites its front door, and four front doors
-# written in a hurry is how a fix becomes its own red; each gets its own round.
+# WHAT RIDES A RATCHET. The same rows in every other room -- `counsel` 112, `expanding-prompts` 78,
+# and `waymarks` 41, 231 together from `20260824.144912`, under a ceiling that only ever falls.
+# Folding a room's index also rewrites its front door, and four front doors written in a hurry is
+# how a fix becomes its own red; each gets its own round. The first round proved that in one lap:
+# the fold appended every kept row after all prose, correct only for a README whose table is the
+# last thing in it, and active-designing's two kept rows landed below its closing line, outside any
+# table (REDS %200).
 #
 # WHAT PASSES FREE. A row whose day still holds a flat log, sprig or no sprig. A table delimiter
 # row, which opens `|-` and names no day. A prose bullet carrying no stamp. A room with no `date/`
@@ -38,7 +43,7 @@
 #
 # Pen: tools/fixtures/index_fold_control.sh -- fifteen behaviors on real directory trees in a
 # throwaway pen, five refusals bitten and ten honest readings left free, the ratchet ceiling
-# proven from both sides by planting 317 rows and then 318, so no override exists and none is
+# proven from both sides by planting 231 rows and then 232, so no override exists and none is
 # wanted. Run from the repository root.
 
 say "index-fold: Language EN -- a room and its index describe one set, so they are bounded by one rule rather than by two numbers that happen to agree."
@@ -66,7 +71,7 @@ assert control.out contains "2 free: a row whose day still has a flat log is lef
 assert control.out contains "3 free: a SPRIGLESS flat log holds its day open" else "index-fold: the sprig is optional, and a day held open by one must stay open"
 assert control.out contains "4 free: a table delimiter row names no day" else "index-fold: a delimiter row is punctuation, not a row"
 assert control.out contains "6 bitten: the elder list-shape row is read, not skipped" else "index-fold: both row shapes ever written here must be read"
-assert control.out contains "11 bitten: 318 ratchet rows cross the ceiling" else "index-fold: the ratchet ceiling must refuse from above"
+assert control.out contains "11 bitten: 232 ratchet rows cross the ceiling" else "index-fold: the ratchet ceiling must refuse from above"
 assert control.out contains "12 free: the enforced room is reported at zero" else "index-fold: a room that vanishes from a meter is a room nobody witnessed"
 
 say ""
