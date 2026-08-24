@@ -1,0 +1,10 @@
+format session-log-v1
+stamp 20260703.120000
+editor fixture
+model fixture
+voice Kyri
+title delta -- a prior-day log carrying no sprig
+prompt fold a dated name whose stamp runs straight into its extension
+think The session-logs law makes the sprig optional, so this basename is a dated artifact.
+obs Requiring the underscore at character 15 left 237 such logs unfoldable (REDS %180).
+recommend keep-going the fold moves this file and repoints its index link

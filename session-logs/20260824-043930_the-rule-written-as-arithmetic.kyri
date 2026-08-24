@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20260824.043930
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The rule written as arithmetic, and the citation that named nothing
+prompt Autonomous loop -- roster cold first, Standfast on reds, next agent-doable lap Lindy-first crux-first, rota row N mod 5, send each finished increment
+think Opened the lap by running the roster COLD before touching anything. 38 of 38 green, so nothing preempted. The staged tree held the prior lap's whole round -- 32 files, REDS %178 and %179, the dated_spelling guard -- committed and never shipped. Shipped it first as its own signed round to origin and xykj61, since a finished increment sitting in the index is progress nobody can follow.
+think Commit count 3359 after that push, so the council rota reads row 3359 mod 5 = 4 -- Earth and Mercury, the concrete. Read the one-clock naming law, TWO_ROOMS, and the marked value. The naming law is the one that bore: a stamp is unique across the whole tree forever, and every tool that reads one has to agree on its shape.
+think Went looking in session-logs for the next crux and read the fold core on the way. `day_from_log_fname` in tools/rye/session_logs_archive.rye reads `if (fname[15] != '_') return null;` -- the narrow rule REDS %175 and %178 widened at nineteen other sites, written here as a byte comparison rather than as a regex.
+obs The new dated_spelling guard scans .rye and passed truthfully over this file. It greps for regex SPELLINGS of the dated pattern, and there is no regex here to find. A guard that reads spellings sees only the places where the rule is spelled; a rule expressed as control flow is invisible to it, and the invisibility reads exactly like coverage.
+obs Measured before repairing: zero files in any of the six enforced rooms stand flat by the narrow rule -- all 237 sprigless logs folded before the strictness landed. So this is prevention rather than repair, and the round says so rather than claiming a rescue.
+think The meter for a rule's second form is a behavior test on metal, not a wider grep. Put the proof in the selftest the witness already runs: a sprigless .bron that must fold with its link repointed, and a day-only name that must stay exactly where it stands. One preview count of three proves the acceptance and the refusal together.
+think Proved it from both sides -- restored the narrow line, watched the witness fail, restored the fix, watched it pass. A refusal proven only in the passing direction cannot be told from a bypass.
+think Staged the round and ran the roster again, and this time one guard answered red: dated_path, refs_lost=188 against a ceiling of 187. The two new lost references were mine -- a full-digit `YYYYMMDD-HHMMSS.bron` and a `YYYYMMDD-HHMMSS.kyri`, plausible sprigless names I reached for in a unit case and a ledger row, neither of them a file in this tree. This line writes them as placeholders on purpose; spelling the digits out here would make the citations a third time.
+obs The mark law wrote this exact warning one lap ago -- illustrate with placeholders, cite only what exists -- and naming the fault did not prevent me repeating it. The meter did. That is REDS %181, and the transferable form is that an example is either a placeholder with letters where the digits go, or a real path, never a realistic-looking third thing -- inside a test string as much as in prose, since none of the three is invisible to a grep.
+obs Found the two lines by diffing the scan's `list` output against a stashed tree rather than by rereading my own diff. A census that names every broken reference makes the question mechanical.
+loom roster=standing_equipment guards=38 green=38 red=0 cold=true
+loom roster=standing_equipment guards=38 green=37 red=1 after_git_add=true guard=dated_path refs_lost=188 ceiling=187
+loom census=dated_path refs_lost=187 ceiling=187 under_ceiling=yes after_repair=true
+file tools/rye/session_logs_archive.rye character 15 accepts the extension dot as well as the sprig underscore; three Zig unit cases added, two accepting a sprigless stamp and one refusing a countdown-prefix name
+file tools/fixtures/session_logs_archive/20260703-120000.bron new -- a prior-day log carrying no sprig, which must fold
+file tools/fixtures/session_logs_archive/20260814-fill-epsilon-x.md new -- a day-only name, which must never fold, since a resolver needs the whole stamp to compute a home
+file tools/fixtures/session_logs_archive/README.md the fixture index names all five shapes and what each proves
+file construction/REDS.md books %180 and %181, and the headline recounts to 181 rows
+recommend keep-going the session-logs index stands at 2,895,041 bytes against the 24,576 its own header declares, because the living-pin roster never listed it -- the fold, the head repair, and a guard that reads a bound from the document rather than from a roster

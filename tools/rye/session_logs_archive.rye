@@ -35,19 +35,25 @@ const fixture_root = "tools/fixtures/session_logs_archive";
 
 /// The day a dated file folds into, or null when the name is not a one-clock stamp.
 ///
-/// The shape required is the WHOLE stamp -- `YYYYMMDD-HHMMSS_`, sixteen characters before the
-/// sprig -- and that strictness is load-bearing rather than fussy. Three tools must agree on what
-/// a dated file is: this one moves them, `tools/d/dated_path_resolve.rish` recovers references to
-/// them from the stamp alone, and `tools/fixtures/room_bound_scan.sh` counts them against the
-/// bound. An older, looser test here accepted a day-only name like `20260814-fill-ales28-x.md`
-/// and would have folded 33 such files in `active-designing` that the resolver cannot recover,
-/// since it needs the time to compute a home. A file a fold can move but a resolver cannot find
-/// is the one thing this whole arc exists to prevent, so the loose test is gone.
+/// The shape required is the WHOLE stamp -- `YYYYMMDD-HHMMSS`, fifteen characters -- and that
+/// strictness is load-bearing rather than fussy. Three tools must agree on what a dated file is:
+/// this one moves them, `tools/d/dated_path_resolve.rish` recovers references to them from the
+/// stamp alone, and `tools/fixtures/room_bound_scan.sh` counts them against the bound. An older,
+/// looser test here accepted a day-only name like `20260814-fill-ales28-x.md` and would have
+/// folded 33 such files in `active-designing` that the resolver cannot recover, since it needs
+/// the time to compute a home. A file a fold can move but a resolver cannot find is the one thing
+/// this whole arc exists to prevent, so the loose test is gone.
+///
+/// **The sprig is optional**, so character 15 may be the `_` that opens a sprig or the `.` that
+/// opens the extension. Requiring the underscore left 237 sprigless logs unfoldable and their
+/// index links unrepointed -- REDS %180, the same class as REDS %178 one language further in,
+/// where the rule is written as index arithmetic rather than as a regex a scan could read.
 pub fn day_from_log_fname(fname: []const u8) ?[]const u8 {
-    // YYYYMMDD-HHMMSS_ is 16 characters, and a sprig has to follow it.
+    // YYYYMMDD-HHMMSS is 15 characters. Character 15 opens either a sprig (`_`) or the
+    // extension (`.`); the law makes the sprig optional, so both spellings are one shape.
     if (fname.len < 17) return null;
     if (fname[8] != '-') return null;
-    if (fname[15] != '_') return null;
+    if (fname[15] != '_' and fname[15] != '.') return null;
     for (fname[0..8]) |c| if (c < '0' or c > '9') return null;
     for (fname[9..15]) |c| if (c < '0' or c > '9') return null;
     return fname[0..8];
@@ -264,16 +270,18 @@ fn run_selftest(a: std.mem.Allocator, io: std.Io, root: []const u8) !void {
 
     const today = "20260704";
 
-    // Two prior-day files now: alpha (.md) and gamma (.kyri). The count is the whole proof
-    // that the new extension is folded rather than merely accepted by the filter.
+    // Three prior-day files now: alpha (.md, sprig), gamma (.kyri, sprig), delta (.bron, no
+    // sprig). The count is the whole proof that each shape is folded rather than merely
+    // accepted by the filter -- and epsilon, a day-only name, is the fourth prior-day file on
+    // disk and must NOT appear in it, so the same number proves the refusal too.
     const preview_count = try fold_session_logs(a, io, sandbox, "session-logs", today, true);
-    if (preview_count != 2) return error.SelftestPreviewCount;
+    if (preview_count != 3) return error.SelftestPreviewCount;
     const alpha_flat = try std.fs.path.join(a, &.{ logs, "20260703-100000_alpha.md" });
     defer a.free(alpha_flat);
     if (!path_exists(io, alpha_flat)) return error.SelftestPreviewMutated;
 
     const moved1 = try fold_session_logs(a, io, sandbox, "session-logs", today, false);
-    if (moved1 != 2) return error.SelftestMovedCount;
+    if (moved1 != 3) return error.SelftestMovedCount;
 
     const alpha_arch = try std.fs.path.join(a, &.{ logs, "date", "20260703", "20260703-100000_alpha.md" });
     defer a.free(alpha_arch);
@@ -281,9 +289,19 @@ fn run_selftest(a: std.mem.Allocator, io: std.Io, root: []const u8) !void {
     defer a.free(beta_flat);
     const gamma_dated = try std.fs.path.join(a, &.{ logs, "date", "20260703", "20260703-110000_gamma.kyri" });
     defer a.free(gamma_dated);
+    // A prior-day log whose stamp runs straight into its extension folds like any other. The
+    // sprig is optional by the session-logs law, and 237 such logs stood in the tree while the
+    // fold could not see one of them (REDS %180).
+    const delta_dated = try std.fs.path.join(a, &.{ logs, "date", "20260703", "20260703-120000.bron" });
+    defer a.free(delta_dated);
+    // A day-only name carries no time, so no resolver could compute its home again. It stays.
+    const epsilon_flat = try std.fs.path.join(a, &.{ logs, "20260814-fill-epsilon-x.md" });
+    defer a.free(epsilon_flat);
     if (!path_exists(io, alpha_arch)) return error.SelftestAlphaNotFolded;
     if (!path_exists(io, gamma_dated)) return error.SelftestKyriNotFolded;
+    if (!path_exists(io, delta_dated)) return error.SelftestSpriglessNotFolded;
     if (!path_exists(io, beta_flat)) return error.SelftestBetaNotFlat;
+    if (!path_exists(io, epsilon_flat)) return error.SelftestDayOnlyMoved;
 
     const readme_path = try std.fs.path.join(a, &.{ logs, "README.md" });
     defer a.free(readme_path);
@@ -291,6 +309,9 @@ fn run_selftest(a: std.mem.Allocator, io: std.Io, root: []const u8) !void {
     defer a.free(readme1);
     if (std.mem.indexOf(u8, readme1, "](date/20260703/20260703-100000_alpha.md)") == null) return error.SelftestReadmeLink;
     if (std.mem.indexOf(u8, readme1, "](date/20260703/20260703-110000_gamma.kyri)") == null) return error.SelftestKyriReadmeLink;
+    if (std.mem.indexOf(u8, readme1, "](date/20260703/20260703-120000.bron)") == null) return error.SelftestSpriglessReadmeLink;
+    // The day-only name never moved, so its link must still read as it was written.
+    if (std.mem.indexOf(u8, readme1, "](20260814-fill-epsilon-x.md)") == null) return error.SelftestDayOnlyLinkMoved;
     // Today's log did not move, so its link must not move either. The single-pass rewrite would
     // happily repoint it if it were not told which day stays flat.
     if (std.mem.indexOf(u8, readme1, "](20260704-100000_beta.md)") == null) return error.SelftestTodayLinkMoved;
@@ -302,7 +323,7 @@ fn run_selftest(a: std.mem.Allocator, io: std.Io, root: []const u8) !void {
     defer a.free(readme2);
     if (!std.mem.eql(u8, readme1, readme2)) return error.SelftestReadmeDrift;
 
-    std.debug.print("GREEN: session_logs_archive selftest — preview, fold of .md and .kyri, link rewrite, idempotency.\n", .{});
+    std.debug.print("GREEN: session_logs_archive selftest -- preview, fold of .md, .kyri and a sprigless .bron, a day-only name refused, link rewrite, idempotency.\n", .{});
 }
 
 fn parse_today_arg(a: std.mem.Allocator, args: []const []const u8, start: usize) !?[]const u8 {
@@ -368,6 +389,16 @@ test "day_from_log_fname parses stamp prefix" {
     // these and they stay flat.
     try std.testing.expect(day_from_log_fname("20260814-fill-ales28-lotus-insert.md") == null);
     try std.testing.expect(day_from_log_fname("20260703-100000-alpha.md") == null);
+    // The sprig is optional: character 15 may open the extension instead (REDS %180). Both
+    // names below are real files in this tree, since a real-looking stamp over a file that
+    // exists nowhere reads as a citation to every reader and every census (the mark law's
+    // "illustrate with placeholders, cite only what exists" -- and REDS %181, which is this
+    // guard catching that mistake in this very test on the lap it was written).
+    try std.testing.expectEqualStrings("20260619", day_from_log_fname("20260619-072600.md").?);
+    try std.testing.expectEqualStrings("20260703", day_from_log_fname("20260703-120000.bron").?);
+    // A retired countdown-prefix name carries a stamp that does not begin the filename, so the
+    // stamp has to start at character zero for this to be a dated name at all.
+    try std.testing.expect(day_from_log_fname("99991_20260619-072600.md") == null);
     try std.testing.expectEqualStrings("20260717", day_from_log_fname("20260717-125858_skate-seen-on-pixel.bron").?);
     try std.testing.expect(day_from_log_fname("README.md") == null);
 }
