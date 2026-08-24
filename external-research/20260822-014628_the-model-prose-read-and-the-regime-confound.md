@@ -1,9 +1,9 @@
 # The Model Prose Read, and the Regime Confound
 
-**Stamp:** `20260822.014628` · read on Keaton's word
-**Language:** EN · **Voice:** Kyri · **Style:** Radiant
+**Stamp:** `20260822.014628` - read on Keaton's word
+**Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Research for understanding -- a dated read, accurate as of the stamp; model behavior and vendor tooling both move
-**Kin:** [`../foundations/20260822-014628_the-mechanism-and-the-metaphor.md`](../foundations/20260822-014628_the-mechanism-and-the-metaphor.md) (what we did about it) · [`../.claude/rules/mechanism-sentence.md`](../.claude/rules/mechanism-sentence.md)
+**Kin:** [`../foundations/20260822-014628_the-mechanism-and-the-metaphor.md`](../foundations/20260822-014628_the-mechanism-and-the-metaphor.md) (what we did about it) - [`../.claude/rules/mechanism-sentence.md`](../.claude/rules/mechanism-sentence.md)
 
 ---
 

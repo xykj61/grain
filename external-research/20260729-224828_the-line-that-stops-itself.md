@@ -1,8 +1,8 @@
-# The Line That Stops Itself — Toyota's Jidoka and Andon, Studied
+# The Line That Stops Itself -- Toyota's Jidoka and Andon, Studied
 
 **Stamp:** `20260729.224828`
-**Kind:** external research · named world · sources cited
-**Status:** **Research for understanding** — orients; seats no fact of ours
+**Kind:** external research - named world - sources cited
+**Status:** **Research for understanding** -- orients; seats no fact of ours
 **Silo:** [`../foundations/20260729-224828_reds-first-and-the-allocation.md`](../foundations/20260729-224828_reds-first-and-the-allocation.md)
 **Gratitude:** [`../gratitude/toyota-production-system.md`](../gratitude/toyota-production-system.md)
 
@@ -20,7 +20,7 @@ history of the andon cord, and John Willis's essay on the cord and Toyota Kata.
 
 ## The sequence, as the sources give it
 
-Sakichi Toyoda's loom-halting devices came first — a weft-halting device stopping
+Sakichi Toyoda's loom-halting devices came first -- a weft-halting device stopping
 the loom when the horizontal thread broke, a warp-halting device for the vertical.
 Dates vary across sources between 1896 and 1924; the Type G Automatic Loom of
 1924 is consistently named as the masterwork, combining automatic shuttle changing
@@ -40,8 +40,8 @@ value-creating. In English: automation with a human touch. A machine senses its
 own abnormality and stops rather than producing defective output.
 
 **Andon** is the Japanese word for paper lantern, and names the light showing that
-a cord has been pulled. Any worker could pull it, and — the sources are emphatic
-on this — the pull *stopped the line* rather than requesting permission to stop it.
+a cord has been pulled. Any worker could pull it, and -- the sources are emphatic
+on this -- the pull *stopped the line* rather than requesting permission to stop it.
 
 **Poka-yoke** is mistake-proofing: design that prevents, corrects, or highlights
 an error as it occurs, rather than discouraging it.
@@ -50,7 +50,7 @@ an error as it occurs, rather than discouraging it.
 
 Art of Lean's entry draws a line the other sources blur. An operator pulling the
 andon cord is related to jidoka yet is **not full-blown jidoka by Toyota's own
-internal standards** — it is the human backup for when machine-level detection is
+internal standards** -- it is the human backup for when machine-level detection is
 not yet in place. True jidoka is the machine sensing and stopping by itself.
 
 That distinction is the whole reason this study crossed into our tree. It sorts a
@@ -62,7 +62,7 @@ that stop without anyone watching, and the ones that depend on someone noticing.
 Multiple sources record Sakichi Toyoda's motivation for the automatic loom: to
 make the work easier for his mother, who operated a manual loom late into the
 night. The purpose named at the origin was a person's relief rather than a
-machine's throughput — which is why the word carries its humane sense at all, and
+machine's throughput -- which is why the word carries its humane sense at all, and
 why *automation with a human touch* is a translation rather than a slogan.
 
 ## What did not cross
@@ -74,7 +74,7 @@ study was opened to answer.
 
 ## Sources
 
-- Toyota Motor Corporation, *75 Years of Toyota* — Part 1, Ch. 1, Sec. 1, Item 4
+- Toyota Motor Corporation, *75 Years of Toyota* -- Part 1, Ch. 1, Sec. 1, Item 4
 - Lean Enterprise Institute, lexicon entry: jidoka
 - Art of Lean, TPS Encyclopedia: jidoka
 - Vorne, *Andons in Lean Manufacturing*

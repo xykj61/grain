@@ -1,6 +1,6 @@
-# 992 · The Recommended Path — Redirect
+# 992 - The Recommended Path -- Redirect
 
-**Status:** Deprecated (`051612`) — replaced by the active-designing brief.
+**Status:** Deprecated (`051612`) -- replaced by the active-designing brief.
 
 The clean-room architecture for our core modules now lives in the design stack, revised as Rye, Brix, and the family grew.
 
