@@ -38,7 +38,7 @@
 
 set -u
 
-DOOR="README.md foundations/README.md foundations/20260823-034321_the-return-that-feeds-everyone.md docs-geode/tutorials/the-first-hour.md docs-geode/demos/README.md caravan/README.md mycelium/README.md image/README.md lotus/README.md crypto/README.md"
+DOOR="README.md foundations/README.md foundations/20260823-034321_the-return-that-feeds-everyone.md docs-geode/tutorials/the-first-hour.md docs-geode/demos/README.md caravan/README.md mycelium/README.md image/README.md lotus/README.md crypto/README.md constel/README.md"
 DOOR_MAX=20
 FIELD_MAX=30
 # The ratchet's ceiling only ever falls. Measured 20260823 across the teaching tier.
