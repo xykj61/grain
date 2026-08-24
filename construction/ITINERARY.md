@@ -41,9 +41,9 @@
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `7754ccf272` (**The index that outgrew its room.** `session-logs/README.md` stood at **2,895,849 bytes** against the **24,576** its own header declares, because a room fold moves files and leaves rows. **2,193 rows** fold onto 26 dated shelves and the pin falls to **267,655**; `index_fold` seats **39th**, gating this room at zero stale rows and ratcheting four more at 317. The honest half: the lint had printed the over-bound line on every run for a month and never failed -- a measurement that only prints is a number rather than a bound. Two more reds rode along: the fold's dated test still required a sprig, and a shelf one directory deeper broke 62 links a patch then over-corrected. **REDS %180-%183. 39 of 39 green.**)
+**Git nib:** `ae46d33e23` (**The ladder table that named 73 of 110.** `caravan/README.md` stood at **497,531 bytes** over 2,694 lines and was the Tier 1 legibility crux. It splits three ways in the same directory -- a **7,221-byte Door page**, `caravan/LADDER.md` for the rungs, `caravan/HARNESS.md` for the carry -- with all 125 headings and every non-blank body line carried across, and the depth unchanged so each relative link still resolves. Counting the rows to write the split found the red beneath it: the table headed *The Ladder* held **73 rows** while **110** modules stood in the directory, 33 proven rungs having landed while nobody added the row. A roster a program runs gets checked, because a missing entry breaks a run; a roster a reader uses gets checked by nobody. Table completed to **110 of 110**, and `caravan_ladder_roster` seats **40th** -- four readings at zero, proven RED on the departing table at `unrostered=37` and both ways over twelve planted behaviors. **REDS %184. 40 of 40 green.**)
 
-**Now.** The front doors. `caravan/README.md` stands at **497,531 bytes** over 2,694 lines, and the ranked remainder already calls its legibility the **Tier 1 crux** -- a Door page for the tree's largest module with the 110-rung ladder table lifted to its own reference page. Then `docs/CRYPTO.md` (68,547) and this card itself, and the index fold for the four rooms still carrying 317 stale rows.
+**Now.** The front doors, one down. `caravan/README.md` is a **7,221-byte Door page** as of `20260824.062207`, its rung record at `caravan/LADDER.md` and its harness record at `caravan/HARNESS.md` -- and the ladder table, found naming **73 rungs while 110 modules stood beside it**, is complete and held there by the **40th** standing guard (REDS %184). Next: `docs/CRYPTO.md` (68,547) -- read whether it is a door or a reference -- then this card itself, and the index fold for the four rooms still carrying 317 stale rows.
 
 **Landed, and the detail is in the logs.** Every round this block used to narrate now reads as one line in *Prior laps* below, or in *Landed arcs* beneath that. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`); `%162` and `%164` are closed; the teaching tier reads zero over target.
 
@@ -152,14 +152,15 @@ Lindy-first and crux-first, with costs, gates, and falsifiers.
 **The crux, and the measurement that moved it.** Caravan stands at **110 modules with 109
 witnesses** and Mycelium at **98 with 80**, so the bottleneck is legibility rather than building:
 a reader arriving today cannot say what either one does. Tier 1 is a Door-setting front page for
-each of the two big modules, and the seed-dead links beneath them.
+each of the two big modules, and the seed-dead links beneath them. **Caravan's landed
+`20260824.062207`**; Mycelium's is the standing half.
 
-**The front doors, measured `20260824.052950`.** Four living documents stand over the 24,576-byte
-bound the pin law declares, and each wants a different repair:
+**The front doors, measured `20260824.052950`, one repaired since.** Four living documents stood
+over the 24,576-byte bound the pin law declares, and each wanted a different repair:
 
 | Document | Bytes | What it wants |
 |---|---|---|
-| `caravan/README.md` | 497,531 | **the Tier 1 crux** -- a Door front page, the 110-rung ladder table moved to its own reference page |
+| `caravan/README.md` | **7,221** | **landed** `20260824.062207` -- a Door front page; `LADDER.md` holds the rungs, `HARNESS.md` the carry, and a guard holds the table to the directory |
 | `construction/ITINERARY.md` | 41,203 | **condensed** `20260824.060012` -- the INNER LOOP block 50,477 -> 14,092; still over bound, and condensing on touch is what a refresh lap does |
 | `docs/CRYPTO.md` | 68,547 | a compression shelf page; read whether it is a door or a reference |
 | `session-logs/README.md` | 266,790 | **repaired** `20260824.052950` -- 2,193 rows folded to 26 shelves; the remainder needs **fold the logs** |
@@ -201,6 +202,7 @@ the account.
 
 | Landed | Round | Log |
 |---|---|---|
+| `20260824.062207` | The ladder table that named 73 of 110 -- Caravan's front door split into a Door page, a ladder record, and a harness record; `caravan_ladder_roster` seated 40th | REDS %184 |
 | `20260824.060012` | The operator card condensed -- INNER LOOP 50,477 -> 14,092 bytes, fifteen landed narratives moved to their logs | checkpoint `7754ccf272` |
 | `20260824.052950` | The index that outgrew its room -- 2,193 rows onto 26 shelves, the pin 2,895,849 -> 267,655, `index_fold` seated 39th | REDS %182, %183 |
 | `20260824.043930` | The rule written as arithmetic -- the fold reads a stamp with no sprig; a fabricated citation caught by the census | REDS %180, %181 |

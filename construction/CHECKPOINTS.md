@@ -24,6 +24,23 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260824.062207` -- the Caravan front door split into a Door page, a ladder record, and a harness record
+
+**Walk-back nib:** `e5d4097ef1` -- read the whole departing page with
+`git show e5d4097ef1:caravan/README.md`.
+
+**Swept:** `caravan/README.md`, which stood at **497,531 bytes over 2,694 lines** -- one file
+holding a front door, a 73-row ladder table, the rung-by-rung design record of 106 rungs, the
+shared-harness meter, and the lap-by-lap record of the carry that built it. The Door page keeps
+about 7 KB; the rung record moves to `caravan/LADDER.md` and the harness record to
+`caravan/HARNESS.md`, both in the same directory, so every relative link inside them stays true.
+
+**What waits there, worth recalling:** the departing page is the single continuous reading of the
+whole arc, front matter through `## Held`, in the order it was written. Its 96 sections are all
+carried forward byte for byte across the two new pages; what the walk-back holds that the new pages
+do not is the *order they stood in as one document*, and the head paragraphs the Door page restates
+in plainer words.
+
 ### `20260824.060012` -- the INNER LOOP block condensed, 50,477 bytes of directives and records to directives
 
 **Walk-back nib:** `7754ccf272` -- read the whole departing card with
