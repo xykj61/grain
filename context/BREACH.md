@@ -1,9 +1,9 @@
 # Breach
 
 **Language:** EN
-**Last updated:** `20260726` (`20260726.020605` — seated on Keaton's word)
-**Style:** Radiant (see `RADIANT_STYLE.md`)
-**Status:** Living — the condensed law; the reasoning lives in [`../foundations/20260726-020537_the-breach.md`](../foundations/20260726-020537_the-breach.md)
+**Last updated:** `20260726` (`20260726.020605` -- seated on Keaton's word)
+**Style:** Gauge (see `GAUGE_STYLE.md`)
+**Status:** Living -- the condensed law; the reasoning lives in [`../foundations/20260726-020537_the-breach.md`](../foundations/20260726-020537_the-breach.md)
 
 ---
 
@@ -17,18 +17,18 @@
 
 ## The six promises
 
-1. **Declared first** — scope, reason, and far-side shape written before the first file moves.
-2. **Every byte preserved** — relocate and re-point; never rewrite.
-3. **Finished inside its scope** — every reference turned in the same motion; a half-moved tree is a break.
-4. **Witnessed both sides** — the instrument exists first, red before and green after. No instrument, no breach.
-5. **Measurably better** — count before, state the target, count after, publish all three.
-6. **Stands alone** — its own commits, nothing riding along, undoable in one gesture until sent.
+1. **Declared first** -- scope, reason, and far-side shape written before the first file moves.
+2. **Every byte preserved** -- relocate and re-point; never rewrite.
+3. **Finished inside its scope** -- every reference turned in the same motion; a half-moved tree is a break.
+4. **Witnessed both sides** -- the instrument exists first, red before and green after. No instrument, no breach.
+5. **Measurably better** -- count before, state the target, count after, publish all three.
+6. **Stands alone** -- its own commits, nothing riding along, undoable in one gesture until sent.
 
 ---
 
 ## The window
 
-The breach window closes at the **first outside consumer of a path** — a fork, a published link, an apprentice with a clone. Until then the whole cost is internal and mechanical. After then a breach owes migration and someone else's trust, and the law reverts to accrete-never-break, migrate-when-you-must.
+The breach window closes at the **first outside consumer of a path** -- a fork, a published link, an apprentice with a clone. Until then the whole cost is internal and mechanical. After then a breach owes migration and someone else's trust, and the law reverts to accrete-never-break, migrate-when-you-must.
 
 Design is cheapest before the hands move. This pier has running witnesses and no dependents, which is a rare and temporary hour.
 
