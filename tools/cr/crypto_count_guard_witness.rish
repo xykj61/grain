@@ -24,8 +24,50 @@ assert mk.ok else "crypto-count-guard: could not make crypto/bin — ${mk.err}"
 # The crypto/<name>.rye source names, one per line, sorted. Real files only (-type f): a cross-directory composition like
 # crypto/bitcoin_address.rye imports encoding/ modules through flat-named symlink shims that live in crypto/ (rye resolves nested
 # imports relative to the importing path), and those shims are not primitives the suite proves — counting them would break the bijection.
-let list_files = run ["sh" "-c" "find crypto -maxdepth 1 -name '*.rye' -type f | sed 's:.*/::; s:.rye$::' | sort > crypto/bin/.cc_files.txt"]
-assert list_files.ok else "crypto-count-guard: could not list crypto/*.rye — ${list_files.err}"
+let list_all = run ["sh" "-c" "find crypto -maxdepth 1 -name '*.rye' -type f | sed 's:.*/::; s:.rye$::' | sort > crypto/bin/.cc_all.txt"]
+assert list_all.ok else "crypto-count-guard: could not list crypto/*.rye — ${list_all.err}"
+
+# THE SECOND CLASS, and the fault that taught it (REDS %191). The bijection above assumes every regular crypto/*.rye is a primitive the
+# suite can build and read a `GREEN crypto-<name>` line from. crypto/sha3_digest.rye is a command-line program that prints a hex digest,
+# so the suite has no GREEN line to read from it, and this guard read RED while standing off the standing roster -- unrun, so nobody heard
+# it, while both front doors went on reciting a count it would have corrected. It cannot simply move: rye resolves a nested import relative
+# to the importing file's own directory, so a module importing sha3.rye by bare name stands beside it by the language's rule.
+#
+# So the tool class is DECLARED, in tools/fixtures/crypto_tool_modules.txt, and a row is a REDIRECT rather than an excuse. Three assertions
+# below make it one: the declared file exists, the witness that proves it exists, and that witness stands on the standing roster. A redirect
+# pointing nowhere reds exactly like an unproven file, which is what keeps this from being a bypass with a comment over it.
+let tools_decl = "tools/fixtures/crypto_tool_modules.txt"
+let have_decl = run ["sh" "-c" "test -f ${tools_decl} && echo yes || echo no"]
+assert (trim have_decl.out) == "yes" else "crypto-count-guard: the tool declaration is missing at ${tools_decl}; without it this guard cannot tell a tool from an unproven primitive"
+
+let list_tools = run ["sh" "-c" "grep -vE '^[[:space:]]*(#|$)' ${tools_decl} | awk '{print $1}' | sort -u > crypto/bin/.cc_tools.txt"]
+assert list_tools.ok else "crypto-count-guard: could not read the tool declaration — ${list_tools.err}"
+
+# The three assertions, run by tools/fixtures/crypto_tool_declaration_scan.sh so the loop lives where a shell variable is a shell
+# variable. Each is gated at zero: a declared module with no file on disk, a redirect to a witness that is not a file, and -- the one
+# this round exists for -- a redirect to a guard the standing roster does not name. An unrun guard guards nothing, so a tool excused
+# from the suite must name a proof a lap actually runs, or the declaration would launder an unproven file into a green count.
+let decl = run ["sh" "tools/fixtures/crypto_tool_declaration_scan.sh"]
+assert decl.ok else "crypto-count-guard: the tool-declaration scan must complete -- see stderr"
+say decl.out
+assert decl.out contains "malformed=0" else "crypto-count-guard: a tool declaration row does not carry exactly three fields (module, witness, roster guard)"
+assert decl.out contains "ghost_module=0" else "crypto-count-guard: the tool declaration names a crypto/<name>.rye that does not stand on disk"
+assert decl.out contains "missing_witness=0" else "crypto-count-guard: a declared tool redirects to a proving witness that is not a file"
+assert decl.out contains "unrostered=0" else "crypto-count-guard: a declared tool is proven by a guard the standing roster does not name, so nothing runs it"
+assert decl.out contains "verdict=ok" else "crypto-count-guard: the tool declaration must be sound before its rows are believed"
+
+# And the declaration's own refusals proven on metal, since a reading that only ever passes cannot be told from one that reads nothing.
+# Fourteen behaviors on real trees in a throwaway pen: nine refusals bitten -- a module nobody wrote, a redirect to no file, a guard the
+# roster does not name, a two-field row, a four-field row, a guard name one letter short, a guard name that is only a prefix of a real
+# one, three faults at once, and an absent declaration -- and five honest readings left free.
+let decl_control = run ["sh" "tools/fixtures/crypto_tool_declaration_control.sh"]
+assert decl_control.ok else "crypto-count-guard: the tool-declaration control must complete -- see stderr"
+assert decl_control.out contains "cases_fail=0" else "crypto-count-guard: a planted declaration case did not behave -- ${decl_control.out}"
+assert decl_control.out contains "control_verdict=ok" else "crypto-count-guard: the declaration control must agree with itself before its exemptions are believed"
+
+# The primitives are what remains once the declared tools step aside, and that is the set the bijection reads.
+let list_files = run ["sh" "-c" "grep -Fxv -f crypto/bin/.cc_tools.txt crypto/bin/.cc_all.txt > crypto/bin/.cc_files.txt || true"]
+assert list_files.ok else "crypto-count-guard: could not separate primitives from tools — ${list_files.err}"
 
 # The per-file witnesses the suite registers, one name per line, sorted, excluding the suite and this guard.
 let list_reg = run ["sh" "-c" "grep -oE 'crypto_[a-z0-9_]+_witness' tools/cr/crypto_suite_witness.rish | grep -vE 'suite|count_guard' | sed 's:^crypto_::; s:_witness$::' | sort -u > crypto/bin/.cc_reg.txt"]
@@ -50,6 +92,18 @@ let reg_c = run ["sh" "-c" "wc -l < crypto/bin/.cc_reg.txt | tr -d ' \n'"]
 assert reg_c.ok else "crypto-count-guard: could not count registrations — ${reg_c.err}"
 let n_reg = trim reg_c.out
 
+# The three numbers the front doors quote, computed here so no page has to guess again. `n_all` counts regular files only, which is why it
+# reads 82 while `ls crypto/*.rye` reads 87: five of the eighty-seven are seam symlinks into encoding/, and a symlink is a module a READER
+# finds in this directory rather than a primitive this suite proves. crypto/MODULES.md carries all 87 and is held to the directory by
+# tools/cr/crypto_module_roster_witness.rish; this guard holds the 82 the suite is responsible for.
+let all_c = run ["sh" "-c" "wc -l < crypto/bin/.cc_all.txt | tr -d ' \n'"]
+assert all_c.ok else "crypto-count-guard: could not count regular files — ${all_c.err}"
+let n_all = trim all_c.out
+
+let tool_c = run ["sh" "-c" "wc -l < crypto/bin/.cc_tools.txt | tr -d ' \n'"]
+assert tool_c.ok else "crypto-count-guard: could not count declared tools — ${tool_c.err}"
+let n_tools = trim tool_c.out
+
 assert n_files == n_reg else "crypto-count-guard: crypto/*.rye files (${n_files}) != per-file witnesses the suite registers (${n_reg})"
 
 # THE THIRD FIRING BECAME A WIDER LOOM (REDS %105). The bijection above catches a file that is not registered; it did NOT catch the suite
@@ -61,4 +115,4 @@ let recite = run ["sh" "-c" "grep -nEi '(one|two|three|four|five|six|seven|eight
 assert recite.ok else "crypto-count-guard: could not scan the suite for a recited count -- ${recite.err}"
 assert (trim recite.out) == "" else "crypto-count-guard: the suite RECITES a file count in its own prose, which is exactly what drifted three times -- remove the number and point at this guard instead. Offending lines: ${recite.out}"
 
-say "GREEN crypto-count-guard — ${n_files} crypto/*.rye files, each registered in the suite and registering a real file; the library's file count is ${n_files}, and the suite recites no count of its own so none can drift (REDS %105)"
+say "GREEN crypto-count-guard — ${n_all} regular crypto/*.rye files: ${n_files} primitives, each registered in the suite and registering a real file, and ${n_tools} declared tool(s) whose proving witness exists and stands on the standing roster. The suite recites no count of its own so none can drift (REDS %105), and a declared tool is a redirect rather than an excuse (REDS %191)."

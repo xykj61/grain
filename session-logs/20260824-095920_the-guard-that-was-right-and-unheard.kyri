@@ -1,0 +1,45 @@
+format session-log-v1
+stamp 20260824.095920
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The guard that was right and unheard
+prompt Autonomous loop -- roster cold first, Standfast on reds, next agent-doable lap Lindy-first crux-first, rota row N mod 5, send each finished increment
+think Roster cold before touching anything: 44 guards, 44 green, 0 red, and every living row in construction/REDS.md closed. Standfast did not preempt, so the constructive queue was open.
+think Council rota row 4 by 3369 mod 5 -- Water and Venus, care and flow. Read the shape-you-grew-and-the-shape-you-are, the happy-zone-and-the-thin-edge, and growing-a-language. The middle one governed this lap directly: gather the pure checkable center and press the unruly world outward. It is why I built one bounded declaration scan rather than a tree-wide grep over every string in every file.
+think The previous recommend named crypto/README.md at 88,205 bytes and docs/CRYPTO.md at 68,547 as one round, since they carry one rung table between them. comm between ls crypto/*.rye and every name.rye the pages cite read 80 named against 87 standing.
+think Then the pages named a count guard in their own prose, so I ran it before writing anything. tools/cr/crypto_count_guard_witness.rish went RED at line 37 -- crypto/sha3_digest.rye stands on disk and tools/cr/crypto_suite_witness.rish registers no witness for it. Booked by REDS %80 for exactly this drift, naming itself "a source of truth for the spelled numbers in crypto/README.md and docs/CRYPTO.md."
+think Then I asked whether the roster names it, and construction/standing-equipment.kyri did not. So a guard built to catch this had been red for an unknown span while nobody ran it. That is the lap's real root, and it reframed the round: three earlier firings of this shape (%184, %189, %190) were pages with no guard; this one is a guard with no roster.
+think The repair had to be a redirect rather than an exemption. crypto/sha3_digest.rye is a command-line program that prints a hex digest, so the suite has no GREEN line to read from it, and it cannot move -- rye resolves a nested import relative to the importing file's own directory, so a module importing sha3.rye by bare name stands beside it by the language's rule. tools/fixtures/crypto_tool_modules.txt declares module, proving witness, and that witness's roster name, and all three are asserted.
+think The third assertion is the one this round exists for. A declared tool must name a guard the standing roster carries, so the declaration cannot launder an unproven file into a green count. Without it the fix would reproduce the fault it repairs.
+obs A first pass wrote the loop inline in the witness and rishi read $w and $m as its own variables. Moved to tools/fixtures/crypto_tool_declaration_scan.sh, which is the tree's own idiom and put the loop where a shell variable is a shell variable.
+obs My own phantom count was wrong and I caught it before it shipped. comm reported base58check.rye and bech32.rye as named-but-absent, and my extraction regex had been stripping the ../encoding/ prefix off correct citations. Reading the actual context showed crypto/README.md pathed both correctly every time, and exactly ONE bare citation stands, in docs/CRYPTO.md. Corrected the claim in the witness comment, in crypto/MODULES.md, and in the REDS row before any of them was staged.
+obs The five unnamed symlinks are a subtler gap than the count suggests. Both pages discuss their TARGETS under ../encoding/ names, so a reader running ls crypto/ meets encoding_bech32.rye and finds no page saying those are one file. Named as its own kind in the roster page rather than folded into the seven.
+obs The capital-A-circumflex in docs/CRYPTO.md looked exactly like the REDS %83 mojibake signature and is not. It is FIPS 203's NTT-domain matrix, deliberate mathematical notation, now A_hat. Six characters that would have been "repaired" into nonsense by a sweep that trusted the pattern.
+obs The middle dot needed two answers and a blanket substitution got it wrong on the first attempt -- spaced it separates a list, unspaced it multiplies. My first pass turned zeta^128 = -1 into a subtraction. Redid the whole sweep from the pristine original with the spacing rule rather than patching the patch.
+obs Multi-digit superscripts split into X^2^5^6 on the first pass because each character was substituted independently. Collapsed by regex to X^256 and every exponent in the file read back against its source.
+obs The Door meter read my own new front door at 25% against its 20% ceiling and it swept to 4%, every claim held exactly. The five sites were "None of them calls", "no GREEN line", "the file that stopped it", "no real identity key, no network, no funds, no device", and "Not a line of it is copied". Each has an affirmative form carrying the identical fact.
+obs The hot roster after git add read 46 guards, 43 green, 3 red, and all three were this round's own wake -- geode_libraries and readme_metrics stale because the round adds a witness, tracked_link refusing links to files not yet added. REDS %188's class exactly, caught by the directive it wrote. Ran both writers by hand so the staged tree is true rather than leaving the hook to find it.
+obs Appending row %191 carried construction/REDS.md to 27,535 bytes against its 24,576 bound, so rows %188 and %189 folded. The depth rewrite was verified by undoing it and demanding the original back byte for byte -- %186's lesson, which its own fold reproduced one lap later.
+obs Named and left for its own round, both measured this lap: docs/CRYPTO.md stands at 69,099 bytes and wants the split its sibling just took, and no guard anywhere in the tree reads a Ceiling: header -- one page declares one, and it drifted six lines in silence.
+loom witness=crypto_count_guard modules_regular=82 primitives=81 tools_declared=1
+loom witness=crypto_module_roster modules_on_disk=87 rows=87 unrostered=0 phantom=0
+loom control=crypto_tool_declaration cases=14 refusals=9 free=5 fail=0
+loom meter=prose_register door=crypto/README.md before_pct=25 after_pct=4 ceiling=20
+loom roster=standing_equipment guards=46 green=46 red=0
+file tools/fixtures/crypto_tool_modules.txt declares the tool class -- module, proving witness, roster guard -- so an exemption is a redirect
+file tools/fixtures/crypto_tool_declaration_scan.sh gates the declaration in three directions at zero, roster membership among them
+file tools/fixtures/crypto_tool_declaration_control.sh fourteen behaviors on real trees, nine refusals bitten and five readings free
+file tools/cr/crypto_count_guard_witness.rish learns the second class and prints all three counts; RED path proven twice on metal
+file tools/cr/crypto_module_roster_witness.rish the 46th guard, third consumer of module_roster_scan.sh rather than a third copy of it
+file construction/standing-equipment.kyri seats crypto_count_guard 45th and crypto_module_roster 46th
+file crypto/README.md 88,205 -> 4,444 bytes, Door setting, 4% negative against a 20% ceiling
+file crypto/MODULES.md 87 rows in fifteen families, each sentence from that module's own //! head
+file crypto/LADDER.md the rung tables word for word with their published references
+file crypto/PARITY.md the seventeen Monocypher rungs, the timing horizon, and the custody gate
+file docs/CRYPTO.md 596 non-ASCII to zero, the stale tools/ witness pattern repointed, counts pointed at the guard
+file tools/fixtures/prose_register_scan.sh crypto/README.md joins the DOOR roster so a meter reads it
+file construction/REDS.md row %191, and rows %188-%189 folded to keep the pin under bound
+file construction/ITINERARY.md landed rounds condensed out of Next; the live edge is constel/README.md and docs/CRYPTO.md's size
+recommend keep-going constel/README.md at 69,979 bytes is the last unsplit module front door and its 31 .rye sources make it the smallest of the five splits -- the scan already serves three directories, so its guard is a witness file rather than a fourth copy of a rule; take the named-against-standing count first, as the last two laps did
