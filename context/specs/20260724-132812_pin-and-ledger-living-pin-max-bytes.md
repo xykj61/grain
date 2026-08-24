@@ -41,7 +41,7 @@ Fold when the pin nears its bound â€” measured, matching the responsive rhythm.
 
 ## Sources
 
-Counsel: [`../../counsel/20260724-132812_the-workshop-and-the-warehouse.md`](../../counsel/20260724-132812_the-workshop-and-the-warehouse.md) Â- Expanding prompt: [`../../expanding-prompts/yonder/20260724-132812_workshop-and-warehouse-context-economy.md`](../../expanding-prompts/yonder/20260724-132812_workshop-and-warehouse-context-economy.md)
+Counsel: [`../../counsel/20260724-132812_the-workshop-and-the-warehouse.md`](../../counsel/20260724-132812_the-workshop-and-the-warehouse.md) - Expanding prompt: [`../../expanding-prompts/yonder/20260724-132812_workshop-and-warehouse-context-economy.md`](../../expanding-prompts/yonder/20260724-132812_workshop-and-warehouse-context-economy.md)
 
 ---
 

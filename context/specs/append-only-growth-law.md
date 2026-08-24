@@ -1,4 +1,4 @@
-# Append-Only Growth Law â€” Pin Â- Season Index Â- Seasons Roster
+# Append-Only Growth Law â€” Pin - Season Index - Seasons Roster
 
 **Language:** EN  
 **Stamp:** `20260725.040520`  

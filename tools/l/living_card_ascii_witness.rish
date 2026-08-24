@@ -12,6 +12,17 @@
 # A distinct roof from the e123 living-pin content guard (empty/bound); byte-encoding is its own
 # concern. No network, no key, no funds.
 #
+# A THIRD READING joined 20260824.130807 (REDS %198), gated at zero across every tracked text file:
+# the file must be a valid UTF-8 byte sequence. Four specs carried a lone orphan lead byte -- a
+# middot whose continuation byte an earlier ASCII sweep replaced with '-' -- and two of them were
+# living, one the growth law the room folds rest on. Measured both ways rather than assumed: GNU
+# grep 3.12, which every script here runs, reads such a file correctly and no guard was blinded;
+# ugrep, which a hand at this bench runs, classifies it binary and returns silence. So the gate is
+# on the byte sequence rather than on either tool's verdict, since the corruption is real whichever
+# grep is installed and a gate written against a tool moves when the tool moves. The probe proves
+# itself from both sides on planted files in a throwaway pen before it reads the tree, because a
+# probe that can only pass cannot be told apart from one that reads nothing.
+#
 # Run from the repository root:
 #   rishi/bin/rishi run tools/l/living_card_ascii_witness.rish
 
@@ -26,10 +37,14 @@ assert green.out contains "enforce_ok=construction/ITINERARY.md" else "living-ca
 assert green.out contains "enforce_ok=construction/REDS.md" else "living-card-ascii: want REDS ledger enforced clean"
 assert green.out contains "advisory=ratchet_report" else "living-card-ascii: want advisory ratchet reported"
 assert green.out contains "control_kept=honored" else "living-card-ascii: want the control kept non-ASCII"
+assert green.out contains "utf8_probe=proven_both_ways" else "living-card-ascii: the validity probe must refuse a planted orphan byte and pass a clean file before it reads the tree"
+assert green.out contains "text_files_invalid_utf8=0" else "living-card-ascii: a tracked text file carrying an invalid byte sequence is corruption, whichever grep is installed"
+assert green.out contains "utf8=honored" else "living-card-ascii: want every tracked text file a valid UTF-8 byte sequence"
+assert (green.out contains "text_files_scanned=0" == false) else "living-card-ascii: a validity reading over no files would report clean while measuring nothing"
 assert green.out contains "verdict=ok" else "living-card-ascii: want verdict ok"
 
 let red = run ["sh" "tools/fixtures/living_card_ascii_scan.sh" "prove-red"]
 assert (red.ok == false) else "living-card-ascii: prove-red must refuse"
 assert red.out contains "RED_living_card_non_ascii_caught" else "living-card-ascii: prove-red want the mojibake control caught"
 
-say "GREEN: living-card-ascii -- operator card pure ASCII, REDS pure ASCII, legacy pins ratcheted, mojibake control caught (REDS %83 prevention on metal)."
+say "GREEN: living-card-ascii -- operator card pure ASCII, REDS pure ASCII, legacy pins ratcheted, mojibake control caught, and every tracked text file a valid UTF-8 byte sequence with the probe proven from both sides (REDS %83, %198)."

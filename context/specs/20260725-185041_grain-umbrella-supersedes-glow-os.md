@@ -5,7 +5,7 @@
 **Voice:** Quin  
 **Status:** Living pin â€” propose-then-seat pending Claude counsel; living prose uses **Grain** from this stamp  
 **Room:** Checkable once LEXICON + front door cite this pin  
-**Supersedes living speech of:** [`20260713-235455_keaton-name-and-glow-os-umbrella.md`](20260713-235455_keaton-name-and-glow-os-umbrella.md) Âsection2 (â€œThe umbrella is Glow OSâ€) â€” that seal stays readable as history; living *Now* lines say **Grain**
+**Supersedes living speech of:** [`20260713-235455_keaton-name-and-glow-os-umbrella.md`](20260713-235455_keaton-name-and-glow-os-umbrella.md) section 2 (â€œThe umbrella is Glow OSâ€) â€” that seal stays readable as history; living *Now* lines say **Grain**
 
 ---
 
@@ -13,9 +13,9 @@
 
 | Layer | Name | Note |
 |-------|------|------|
-| The language | **Glow** | unchanged â€” runes Â- desks Â- `glow/` |
+| The language | **Glow** | unchanged â€” runes - desks - `glow/` |
 | The project / OS umbrella | **Grain** | sketchbook name restored; â€œGrain OSâ€ optional |
-| OS variants | **Reya Â- Riyo Â- Trey Â- Triz Â- Quin Â- Trya** | Trya accreted `20260728.024417` |
+| OS variants | **Reya - Riyo - Trey - Triz - Quin - Trya** | Trya accreted `20260728.024417` |
 | Style / law | **TAME Guidance** | governs Grain |
 
 ## Why

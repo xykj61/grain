@@ -14,10 +14,11 @@
 # its own drift. Underneath the unreadable declarations, two pages stood over their number:
 # docs/README.md at 43 lines against 40, and docs/CRYPTO.md at 311 against 300.
 #
-# THE TWO GATES, both at zero:
+# THE THREE GATES, all at zero:
 #
 #   1. a page standing above its own declared ceiling
 #   2. a declaration a tool cannot read
+#   3. a pin whose declared byte bound spells a number the seated law does not
 #
 # The second gate is the one worth arguing for. A `Ceiling:` header nobody can parse is
 # indistinguishable from no ceiling at all, so a page carrying one can drift forever while
@@ -31,13 +32,32 @@
 # remembered, because a guard reading 13 of 14 declarations in silence is the roster-reaching-6-
 # of-34 shape this tree has booked three times already (REDS %187, %190, %192).
 #
-# WHAT IT DOES NOT REACH. Whether a ceiling is the RIGHT number -- that is a judgement, and this
-# is a count. And the separate 24,576-byte living bound, which `tools/l/living_docs_lint.rish`
-# already measures across all 34 module front doors; a page may hold 300 short lines and 300,000
-# bytes, and the two readings answer different questions.
+# THE BYTE-BOUND READING, added 20260824.130807. A living pin declares its size the same way, in
+# bytes rather than lines: `**Bound:** under \`living_pin_max_bytes\` (24576)`. Fourteen tracked
+# pages carry it, and until this lap the only guard that REFUSED on it read a hand-written roster
+# of seven paths -- with construction/ITINERARY.md, the pin the unattended loop reads first, marked
+# `advisory` on that roster, and session-logs/README.md absent from it altogether.
+# `tools/l/living_docs_lint.rish` duty 6 discovers sixty pages and never blocks. Two meters, no
+# wall, and the card grew past its bound twice: 47,213 bytes against 24,576 (REDS %197).
 #
-# Pen: tools/fixtures/declared_ceiling_control.sh -- thirteen behaviors on real pages in a
-# throwaway pen, five refusals bitten and the rest left free, both ceilings shown from both
+# It joins this roof rather than raising a third, because it is the same sentence one unit over --
+# a page declares its own limit and something measures it. A `**Bound:**` header that names
+# `living_pin_max_bytes` is measured; one that names no measurable limit is an honest human bound
+# this guard does not reach, counted under a ceiling that only falls rather than called a fault.
+# The number is read from the seated law at
+# context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md rather than copied a fourth
+# time, and a pin spelling a different number is gated at zero.
+#
+# One pin stands over its bound: session-logs/README.md at 280,142 bytes, because 192 flat logs
+# across four days each carry an index row averaging 1,459 bytes. Its rows fold when its logs fold
+# and the log fold runs on Keaton's word, so it rides a ceiling that only ever falls rather than
+# a gate that would refuse a remedy no agent may take.
+#
+# WHAT IT DOES NOT REACH. Whether a declared number is the RIGHT number -- that is a judgement, and
+# this is a count. And any bound written in prose rather than in a form a parser reaches.
+#
+# Pen: tools/fixtures/declared_ceiling_control.sh -- twenty-two behaviors across thirty-seven
+# assertions on real pages in a throwaway pen, both ceilings and both bounds shown from both
 # sides. Run from the repository root.
 
 say "declared-ceiling: Language EN -- a page that writes down how long it will stay is held to it."
@@ -52,6 +72,9 @@ assert scan.out contains "pages_over=0" else "declared-ceiling: a page over its 
 assert scan.out contains "pages_unreadable=0" else "declared-ceiling: a declaration no tool can read is the same as no declaration"
 assert (scan.out contains "pages_declaring=0" == false) else "declared-ceiling: a reading over no declarations would report clean while measuring nothing"
 assert (scan.out contains "verdict=empty_corpus" == false) else "declared-ceiling: a meter over nothing must say so rather than pass"
+assert scan.out contains "bounds_disagree=0" else "declared-ceiling: a pin citing the seated law and spelling a different number is the drift this guard exists for"
+assert (scan.out contains "bounds_declaring=0" == false) else "declared-ceiling: the byte-bound reading over no declarations would report clean while measuring nothing"
+assert scan.out contains "living_pin_max_bytes=24576" else "declared-ceiling: the number must come from the seated law, and the law states 24576"
 
 let control = run ["sh" "tools/fixtures/declared_ceiling_control.sh"]
 say control.out
@@ -71,6 +94,16 @@ assert control.out contains "9 free: a Ceiling word mid-prose is not read as a d
 assert control.out contains "10 free: a bound in the H1 title is counted rather than ignored -- ok" else "declared-ceiling: the third reading must be counted, or this guard reads 13 of 14 in silence"
 assert control.out contains "12 bitten: the title-grade form spreading past its ceiling refuses -- ok" else "declared-ceiling: the elder form may shrink and may not spread"
 assert control.out contains "13 free: a holding page beside a drifted one still refuses for the right reason -- ok" else "declared-ceiling: one honest page must never mask a drifted one"
+assert control.out contains "14 free: a pin under its declared byte bound passes -- ok" else "declared-ceiling: an honest pin must pass free"
+assert control.out contains "15 bitten: the same pin refuses once the ceiling falls to zero -- ok" else "declared-ceiling: the byte bound must bite from above, or the ratchet is a bypass"
+assert control.out contains "16 free: the refusal names the pin -- ok" else "declared-ceiling: a refusal that names no pin leaves the reader to search"
+assert control.out contains "16 free: the refusal carries both numbers -- ok" else "declared-ceiling: a reader wants the measurement beside the promise"
+assert control.out contains "17 free: a Bound header naming no measurable limit is counted as prose -- ok" else "declared-ceiling: a bound written in words is honest and must not read as a fault"
+assert control.out contains "18 bitten: the prose form spreading past its ceiling refuses -- ok" else "declared-ceiling: the prose form may shrink and may not spread"
+assert control.out contains "19 bitten: a pin spelling a number the law does not is gated at zero -- ok" else "declared-ceiling: a declaration disagreeing with the law it cites is the drift itself"
+assert control.out contains "20 free: a corpus of byte declarations alone is a corpus -- ok" else "declared-ceiling: either reading alone is a real corpus"
+assert control.out contains "21 free: dated testimony over its own byte bound passes free -- ok" else "declared-ceiling: testimony keeps every word it wrote, in bytes as in lines"
+assert control.out contains "22 free: the scan reports the number the seated law states -- ok" else "declared-ceiling: the law is read rather than assumed"
 
 say ""
-say "GREEN: declared-ceiling -- every living page that declares its own length is measured against it, the declaration is held readable as well as honoured, the one page declaring in the elder form is counted in the open, and both readings are proven from both sides across thirteen planted behaviors."
+say "GREEN: declared-ceiling -- every living page that declares its own limit is measured against it, in lines and in bytes alike, the declaration is held readable as well as honoured, the number comes from the seated law rather than a copy, the two readings this cannot gate are counted in the open, and every reading is proven from both sides across twenty-two planted behaviors."

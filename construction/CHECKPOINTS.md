@@ -24,6 +24,24 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260824.130807` -- the operator card condensed under the bound it now declares
+
+**Walk-back nib:** `d6c02f92cc` -- read the whole departing card with
+`git show d6c02f92cc:construction/ITINERARY.md`.
+
+**Swept:** `construction/ITINERARY.md`, **47,213 -> 21,859 bytes** (54% away). The card had been
+condensed to 41,449 on `20260824.060012` and grown back past its own bound, so this pass is the
+second condense of the same page in five laps -- which is why the same round made the bound a wall
+rather than a report (REDS %197).
+
+**What waits there, worth recalling:** every block this pass released is also held word for word at
+[`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md),
+so the walk-back is a convenience rather than the only copy. The shelf holds the four crypto-spine
+decision paragraphs from `20260815`, the Compass Season's full SOON cell and JARL account and
+next-season-breach paragraph, four resolved Open-doors rows, the custody gate %1 paragraph, the
+ranked-remainder's settled prose, the Landed-arcs roster, and eighteen Prior-lap rows.
+
+
 ### `20260824.091754` -- the Lotus front door split, and the roster scan renamed directory-neutral
 
 **Walk-back nib:** `7cc0b62b56` -- read the whole departing page with
