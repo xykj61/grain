@@ -1,8 +1,7 @@
 # The Star-Gods: The Shining Twins and the Fair Judge
 
-**For:** Alice -- natal chart study (backstory source file)
 **Language:** EN
-**Style:** Radiant, gentle register (see RADIANT_STYLE.md)
+**Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- retold in our own words from the Vedic and Puranic tradition; sources named with gratitude below
 **Stamped:** 20260629.182512 UDT
 
@@ -10,7 +9,7 @@
 
 ## Two brothers, children of the Sun
 
-Alice's birth day belongs to two neighboring stars, and the gods of those two stars are brothers -- sons of the Sun. The first star belongs to the shining twins. The second belongs to the fair judge. Their stories sit side by side, and so do their gifts.
+The native's birth day belongs to two neighboring stars, and the gods of those two stars are brothers -- sons of the Sun. The first star belongs to the shining twins. The second belongs to the fair judge. Their stories sit side by side, and so do their gifts.
 
 ## The shining twins
 
@@ -36,7 +35,7 @@ His discipline always serves something tender. A loving parent who says *put on 
 
 ## Two gifts, side by side
 
-The shining twins give vitality, beauty, swiftness, and the warm gift of drawing people together. The fair judge gives discipline, fairness, fortitude, and the strength to carry real weight. Alice's day opened under the first and matured into the second -- and in the file on her lunar day and birth-star, we follow how beautifully those two gifts pass the baton, one to the next.
+The shining twins give vitality, beauty, swiftness, and the warm gift of drawing people together. The fair judge gives discipline, fairness, fortitude, and the strength to carry real weight. the native's day opened under the first and matured into the second -- and in the file on her lunar day and birth-star, we follow how beautifully those two gifts pass the baton, one to the next.
 
 ## With Gratitude
 

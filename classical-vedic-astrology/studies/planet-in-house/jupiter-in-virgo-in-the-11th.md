@@ -1,12 +1,11 @@
 # Jupiter in Virgo, in the 11th House -- Practical Wisdom Among People
 
-**For:** Alice -- natal chart study (placement source file)
 **Language:** EN
-**Style:** Radiant (see RADIANT_STYLE.md)
+**Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teacher named with gratitude below
 **Stamped:** 20260629.193612 UDT
 
-**In Alice's chart:** Jupiter sits in Virgo, in Purva Phalguni, in the 11th house -- the very same sign, star, and house as her Mercury. The planet of wisdom and the planet of intellect stand side by side. (Their meeting together has its own file; here we read Jupiter on its own terms.)
+**In the example chart:** Jupiter sits in Virgo, in Purva Phalguni, in the 11th house -- the very same sign, star, and house as her Mercury. The planet of wisdom and the planet of intellect stand side by side. (Their meeting together has its own file; here we read Jupiter on its own terms.)
 
 ---
 
@@ -40,7 +39,7 @@ In the 11th house -- community, networks, gains, performance, talent, and shared
 
 And there is a quietly artistic signature folded in. With Virgo standing in the 11th, Jupiter's own houses of knowledge and creativity come to rest here as well -- so knowledge, creative expression, and the stage of talent all gather in one place. This is a recipe for being **intelligent, expressive, and creatively gifted**, especially with words: the studious, detail-loving mind that nonetheless makes real art, and gains through it among its community.
 
-For Alice, this is a warm and able signature: a wise, ethically grounded, practically intelligent mind that flourishes *among people* -- generous, well-spoken, creatively talented, and inclined to improve the systems it meets rather than merely accept them. And because this Jupiter rests in Purva Phalguni under Aryaman, its wisdom is a *faithful* wisdom -- rooted in honesty, kept promises, and the moral foundation that lets trust and creativity grow together.
+For the native, this is a warm and able signature: a wise, ethically grounded, practically intelligent mind that flourishes *among people* -- generous, well-spoken, creatively talented, and inclined to improve the systems it meets rather than merely accept them. And because this Jupiter rests in Purva Phalguni under Aryaman, its wisdom is a *faithful* wisdom -- rooted in honesty, kept promises, and the moral foundation that lets trust and creativity grow together.
 
 ## With Gratitude
 

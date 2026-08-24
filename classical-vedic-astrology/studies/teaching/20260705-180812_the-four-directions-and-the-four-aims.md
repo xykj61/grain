@@ -1,6 +1,6 @@
 # The Four Directions and the Four Aims
 
-**Stamp:** `20260705.180812 UDT`  -  **Style:** Radiant, gentle register
+**Stamp:** `20260705.180812 UDT`  -  **Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teacher named with gratitude below
 
 ---

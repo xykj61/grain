@@ -3,7 +3,7 @@
 **Language:** EN
 **Stamp:** `20260727.121631`
 **Voice:** Quin
-**Style:** Radiant  -  Silo -- a teacher's spoken lesson studied whole and restated in our own words; nothing reproduced verbatim; the teacher honored by name in the gratitude close
+**Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Status:** Study -- the house dual-frame method applied, positions computed this sitting (pyswisseph  -  Moshier  -  mean nodes  -  Lahiri); **the teacher's own caveat is kept as law here: nothing below predicts any one life -- whole-chart context, houses, and periods decide that, and this page refuses to pretend otherwise**
 **Ground:** the ingress day the teacher names -- July 28, 2026 -- with roughly eighteen and a half months of nodal residence to follow
 

@@ -1,12 +1,11 @@
 # Saturn in the 9th House -- The Patient Student, the Long Dharma
 
-**For:** Alice -- natal chart study (placement source file)
 **Language:** EN
-**Style:** Radiant (see RADIANT_STYLE.md)
+**Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teacher named with gratitude below
 **Stamped:** 20260629.213612 UDT
 
-**In Alice's chart:** Saturn occupies the 9th house -- the house of wisdom, dharma, and teachers. This is the *where* of her Saturn, the arena it works within. Read it alongside the Saturn-in-Cancer file (the sign), and notice the quiet architecture: this 9th house holds up the 10th, where her Sun and Mars shine.
+**In the example chart:** Saturn occupies the 9th house -- the house of wisdom, dharma, and teachers. This is the *where* of her Saturn, the arena it works within. Read it alongside the Saturn-in-Cancer file (the sign), and notice the quiet architecture: this 9th house holds up the 10th, where her Sun and Mars shine.
 
 ---
 
@@ -16,7 +15,7 @@ The 9th house asks a single large question: how do we give back to the world? It
 
 ## Saturn's slow and serious devotion
 
-Saturn loves this work, in its slow and serious way. Saturn carries a long memory and a respect for what is tested and true; it honors tradition, discipline, and the patient mastery of a thing done properly, without shortcuts. In the 9th house this makes Alice something lovely -- a student for life. Her learning does not rush. It deepens across years, and it is meant, in the end, for use: rather than knowledge hoarded for its own shine, wisdom gathered to serve. Saturn here leans toward the humble, grounded forms of service -- for the everyday person, for those who are overlooked -- rather than toward prestige. It would rather help where help is genuinely needed.
+Saturn loves this work, in its slow and serious way. Saturn carries a long memory and a respect for what is tested and true; it honors tradition, discipline, and the patient mastery of a thing done properly, without shortcuts. In the 9th house this makes the native something lovely -- a student for life. Her learning does not rush. It deepens across years, and it is meant, in the end, for use: rather than knowledge hoarded for its own shine, wisdom gathered to serve. Saturn here leans toward the humble, grounded forms of service -- for the everyday person, for those who are overlooked -- rather than toward prestige. It would rather help where help is genuinely needed.
 
 ## The blessing hidden in the delay
 
@@ -24,7 +23,7 @@ There is an apparent puzzle in this placement, and its resolution is a quiet ble
 
 ## The season she is in
 
-This speaks directly to the season Alice is in. These are her years of study and patient wholeness -- the first ashrama, when the heart is formed under the guidance of a good and disciplined teacher, one who lives by ahimsa and devotion, by stillness and sacred learning. Saturn in her 9th house blesses exactly this: take the time, build the foundation well, learn from those who have walked further. And here is the quiet architecture of her chart -- the 9th house holds up the 10th. The dharma she builds now, in study and in service, becomes the very thing she is later known for in the public light of her 10th-house Sun. The patient years are not a delay before her life. They are the foundation her life will stand upon.
+This speaks directly to the season the native is in. These are her years of study and patient wholeness -- the first ashrama, when the heart is formed under the guidance of a good and disciplined teacher, one who lives by ahimsa and devotion, by stillness and sacred learning. Saturn in her 9th house blesses exactly this: take the time, build the foundation well, learn from those who have walked further. And here is the quiet architecture of her chart -- the 9th house holds up the 10th. The dharma she builds now, in study and in service, becomes the very thing she is later known for in the public light of her 10th-house Sun. The patient years are not a delay before her life. They are the foundation her life will stand upon.
 
 ## With Gratitude
 
@@ -32,4 +31,4 @@ The teaching distilled here -- the 9th house as the home of wisdom, dharma, and 
 
 ---
 
-*May Alice's learning be slow and her understanding deep. May the road be long and the shrine be real. And may all she gathers quietly now become, in time, a gift the world can lean on, season after season.*
+*May the native's learning be slow and her understanding deep. May the road be long and the shrine be real. And may all she gathers quietly now become, in time, a gift the world can lean on, season after season.*

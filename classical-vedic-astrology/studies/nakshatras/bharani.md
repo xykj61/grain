@@ -1,12 +1,11 @@
 # Bharani -- The Star of the Sacred Bearer
 
-**For:** Alice -- natal chart study (nakshatra source file)
 **Language:** EN
-**Style:** Radiant (see RADIANT_STYLE.md)
+**Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teachers named with gratitude below
 **Stamped:** 20260629.182512 UDT
 
-**In Alice's chart:** Bharani is her Moon's star -- the star her mind and heart are born into. Her Moon rests here, in the 7th house. This is the deeper, maturing tone beneath the bright morning.
+**In the example chart:** Bharani is her Moon's star -- the star her mind and heart are born into. Her Moon rests here, in the 7th house. This is the deeper, maturing tone beneath the bright morning.
 
 ---
 
@@ -26,9 +25,9 @@ His discipline is never harshness for its own sake. It always guards something t
 
 This points to how the star can lose its balance, and how it finds it again. Out of balance, Bharani grows heavy -- all restriction and no delivery, rules pressing down until life feels like a cell. The cure is written into the star itself: *deliver the precious thing*. Bring the child, the work, the beautiful creation into the world. The discipline was always for the sake of that. And beneath every wise rule runs the supreme law, which is love. Where love truly leads, the discipline is felt as care rather than weight.
 
-## Alice's Moon in Bharani
+## The native's Moon in Bharani
 
-The Moon in Bharani gives a mind that is determined, disciplined, and direct -- eyes on the goal, steady against distraction, strong in its aim. Set in Alice's 7th house, the house of partnership and the deep other, this gives her heart both a clear sense of direction and a serious, devoted capacity to carry what relationship asks of her. She bears love responsibly. And because this same Moon is exalted by sign -- a matter we explore in its own file -- that disciplined aim rests on a ground of remarkable inner steadiness and contentment. Discipline above, security below: a strong and graceful combination.
+The Moon in Bharani gives a mind that is determined, disciplined, and direct -- eyes on the goal, steady against distraction, strong in its aim. Set in the native's 7th house, the house of partnership and the deep other, this gives her heart both a clear sense of direction and a serious, devoted capacity to carry what relationship asks of her. She bears love responsibly. And because this same Moon is exalted by sign -- a matter we explore in its own file -- that disciplined aim rests on a ground of remarkable inner steadiness and contentment. Discipline above, security below: a strong and graceful combination.
 
 ## The classical note, gently distilled
 
