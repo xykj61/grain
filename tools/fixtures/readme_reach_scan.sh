@@ -16,10 +16,20 @@
 # README.md. A file is living when its own basename carries no one-clock stamp -- the same rule
 # tools/d/dated_path_repoint.rish applies, so the two can never disagree about what testimony is.
 #
-# WHAT IS REPORTED, as a ratchet under a ceiling that only ever falls. Broken links in dated
-# testimony reachable from the front door. These are resolved rather than rewritten
-# (`rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference>`), so the count falls when a
-# room folds correctly or a citation is recovered, and it never gates.
+# WHAT IS REPORTED, and deliberately NOT ratcheted. Broken links in dated testimony reachable from
+# the front door. A ceiling here was tried and removed on the lap it was written (`20260823.201533`),
+# because it measured the wrong thing: adding ONE index page reached five more documents and the
+# testimony count rose with them, so the ratchet would have punished the tree for opening a door.
+# The count is a function of REACH as much as of repair.
+#
+# The duty it looked like it was doing is already owned, and owned better.
+# `tools/d/dated_path_witness.rish` gates the LOST count -- a basename that exists nowhere, or one at
+# two paths where no answer is safe -- with no slack, and its own header explains why it gates that
+# rather than the whole broken count: a recovered reference is the expected steady state and rises
+# whenever a room folds. A second meter over the same quantity is the trap this tree already names
+# (the three dated-path tools must agree on what a dated file is), so this one reports and stops.
+# Testimony is resolved rather than rewritten:
+# `rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference>`.
 #
 # WHAT PASSES FREE, by named rule.
 #   http, https, and mailto targets -- this scan reads the tree, never the network.
@@ -39,7 +49,6 @@
 set -u
 
 root_file=${1:-README.md}
-ceiling=1108   # measured 20260823.184309 -- it only ever falls
 
 if [ ! -f "$root_file" ]; then
   echo "verdict=no_root"
@@ -49,12 +58,11 @@ fi
 
 command -v python3 >/dev/null 2>&1 || { echo "verdict=no_python"; echo "refused: this crawl wants python3" >&2; exit 1; }
 
-python3 - "$root_file" "$ceiling" <<'PY'
+python3 - "$root_file" <<'PY'
 import os, re, sys, collections
 
 root = os.getcwd()
 start = sys.argv[1]
-ceiling = int(sys.argv[2])
 LINK = re.compile(r'\[[^\]]*\]\(([^)\s]+)')
 STAMP = re.compile(r'^\d{8}-\d{6}_')
 
@@ -98,7 +106,6 @@ print("broken_total=%d" % len(broken))
 print("broken_in_living=%d" % len(living))
 print("living_files_affected=%d" % len(set(b[0] for b in living)))
 print("broken_in_testimony=%d" % dated)
-print("testimony_ceiling=%d" % ceiling)
 
 for f, t in living[:40]:
     print("living: %s -> %s" % (f, t))
@@ -106,8 +113,5 @@ for f, t in living[:40]:
 if living:
     print("verdict=living_link_broken")
     sys.exit(2)
-if dated > ceiling:
-    print("verdict=testimony_over_ceiling")
-    sys.exit(3)
 print("verdict=ok")
 PY

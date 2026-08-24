@@ -1,5 +1,11 @@
 # The Active-Designing Stack
 
+> **Start here:** [`20260823-201533_the-design-rooms-walking-index.md`](20260823-201533_the-design-rooms-walking-index.md)
+> groups thirty-nine of this room's documents by what they are about -- Open Asks, Steward, the SLC
+> ladder, Dimeroll, the language, the inference voices, and the singles that hold the rest up -- so a
+> reader has somewhere to begin other than a directory listing.
+
+
 **Language:** EN
 **Last updated:** 2026-07-27 (`20260727.083402` — the workshop era named; roster refreshed; the Book and the season lanes mapped)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)

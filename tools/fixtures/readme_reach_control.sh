@@ -9,7 +9,7 @@
 #   living_bitten       -- a broken link in a LIVING file is refused
 #   living_named        -- and the refusal names the file and the target
 #   testimony_ratchets  -- the same break inside a DATED file is counted, never gated
-#   ceiling_bitten      -- testimony over its ceiling is refused, so the ratchet is real
+#   testimony_never_gates -- however high the testimony count climbs, it is reported and never refused
 #   unreached_free      -- a break in a document README does not reach is out of scope
 #   external_free       -- an http target is never followed or counted
 #   depth_walked        -- the crawl follows links through several levels, not just one
@@ -66,12 +66,24 @@ else
   check testimony_ratchets ok "$(verdict_of "$out")/$(value_of "$out" broken_in_testimony)"
 fi
 
-# 4 -- and the ratchet is real: over its ceiling, testimony is refused too.
-out=$(sh "$SCAN" README.md 2>&1)   # default ceiling is the tree's, far above 1
-# force a ceiling of zero by running the scan body with the pen's own ceiling
-sed 's/^ceiling=.*/ceiling=0   # pen/' "$SCAN" > "$pen/zero.sh"
-out=$(sh "$pen/zero.sh" 2>&1)
-check ceiling_bitten testimony_over_ceiling "$(verdict_of "$out")"
+# 4 -- testimony never gates, however much of it there is. Three dated files, three breaks apiece:
+#      the count rises to nine and the verdict stays ok, because the LOST-reference duty belongs to
+#      tools/d/dated_path_witness.rish and a second meter over one quantity is how two meters
+#      come to disagree.
+build
+printf '# root\n[a](20260101-010101_a.md)\n[b](20260101-010102_b.md)\n[c](20260101-010103_c.md)\n' > README.md
+for n in 1 2 3; do
+  printf '# log\n[x](missing1.md)\n[y](missing2.md)\n[z](missing3.md)\n' > "2026010${n}-01010${n}_$(printf '%s' abc | cut -c${n}).md" 2>/dev/null || true
+done
+printf '# log\n[x](m1.md)\n[y](m2.md)\n[z](m3.md)\n' > 20260101-010101_a.md
+printf '# log\n[x](m1.md)\n[y](m2.md)\n[z](m3.md)\n' > 20260101-010102_b.md
+printf '# log\n[x](m1.md)\n[y](m2.md)\n[z](m3.md)\n' > 20260101-010103_c.md
+out=$(sh "$SCAN" 2>&1)
+if [ "$(verdict_of "$out")" = "ok" ] && [ "$(value_of "$out" broken_in_testimony)" = "9" ]; then
+  check testimony_never_gates ok ok
+else
+  check testimony_never_gates ok "$(verdict_of "$out")/$(value_of "$out" broken_in_testimony)"
+fi
 
 # 5 -- a break in a document README never reaches is out of scope.
 build
