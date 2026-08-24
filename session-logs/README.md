@@ -33,6 +33,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260824.165456` | [the dial booked before it is built](20260824-165456_the-dial-booked-before-it-is-built.kyri) | Two gaps booked with their falsifier named, and one cheap measurement scoped to answer it first. |
 | `20260824.164836` | [a path named in a commit body is a path that exists](20260824-164836_a-cited-path-exists.kyri) | A recalled stamp shipped a citation resolving nowhere; the commit-msg hook gains its fourth wall. |
 | `20260824.164559` | [quality assurance, as a grade a writer can aim at](20260824-164559_the-grade-a-writer-can-aim-at.kyri) | The negative-share ceiling read the other way up becomes a school grade, and a reading below B pushes one bounded molt frame. |
 | `20260824.162940` | [one model, named once, agreed everywhere](20260824-162940_one-model-named-once.kyri) | The model id was written four ways and two disagreed; one reading now answers it and a guard holds the rest to it. |

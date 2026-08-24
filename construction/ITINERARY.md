@@ -49,30 +49,23 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 **Git nib:** `ba9fd68070` -- the lap counsel's index carried across, its closed-room pin holding the way in rather than the rows. This line names the nib and one sentence; the account of a lap lives in its session log.
 
-**Now.** **Two of the four rooms have carried their index across, and the tool that carries them is
-proven on a shape rather than on one instance of it.** `fold_index` in
-[`../tools/rye/session_logs_archive.rye`](../tools/rye/session_logs_archive.rye) now writes each kept
-row where it was read, restores the blank line a fold consumes keyed off a **leading pipe** (what
-GFM itself reads), and asks the room whether it keeps a seasons roster before naming one. Four
-selftest legs hold it, each proven by restoring the elder behavior and watching its named error fire
-(REDS %200).
+**Now.** **Quality assurance has a grade, and the grade has a stack.** The negative-share ceiling
+read the other way up is a school grade -- 20% becomes **80, a B** -- and
+[`../tools/fixtures/qa_report_card.sh`](../tools/fixtures/qa_report_card.sh) takes four readings of
+any document, comment block, or design: **Register** and **Reach** counted, **Truth** half counted
+and gating below 60, **Service** judged against this card in four questions. **B or better stands;
+below B pushes one molt frame**, bounded at depth 2. Twenty-seven behaviors proven, the scale read at
+all nine boundaries from both sides.
 
-**`active-designing`** folded 86 rows onto 21 shelves, front door **30,748 -> 8,565 bytes**.
-**`counsel`** folded **112 rows onto ten shelves**, front door **22,671 -> 4,620 bytes**. Counsel is a
-closed room, so every day folded and the pin holds **the way in rather than the rows** -- a shelf
-table with its per-day counts, and [`SEASONS.md`](../counsel/SEASONS.md) refreshed beside it, which
-had still read *no closed season folded yet*. Both rooms join `session-logs` on the **ENFORCE**
-roster at zero stale rows, and the ratchet ceiling falls **317 -> 231 -> 119**.
+**The model returned to `claude-opus-5` at `effort max`,** and the tree had disagreed with itself
+about which it ran -- REDS %201, now one reading with a guard over three declaring sites. **REDS
+%202** rode in on the same round: a commit body cited a session log by a recalled stamp, so
+[`../tools/hooks/commit-msg`](../tools/hooks/commit-msg) gained its fourth wall -- a path named in a
+body is a path that exists.
 
-**Two rooms remain, each its own round.** `expanding-prompts` **78** stale rows, sitting **27 bytes
-over** the bound it declares, which one fold brings under; `waymarks` **41**. Folding a room's index
-also rewrites its front door, and the first round proved why that wants a hand: the fold left two
-kept rows below a closing benediction, and a closed room's table came out with a header and no rows.
-
-**The one page still over, and its remedy is word-gated.** `session-logs/README.md` stands above the
-24,576 it declares because 192 flat logs across four days each carry a row averaging 1,459 bytes.
-Its rows fold when its logs fold, and **the log fold runs on Keaton's word**. It rides a ratchet
-that only falls; the fold is a door in the table below.
+**Two rooms still hold stale index rows,** each its own round: `expanding-prompts` **78**,
+`waymarks` **41**; ratchet ceiling **119**. `session-logs/README.md` sits above its declared bound
+because 196 flat logs each carry a row, and **the log fold runs on Keaton's word**.
 
 **Landed, and the detail is in the logs.** Every round this block used to narrate reads as one line in *Prior laps* below, or in *Landed arcs* beneath that. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`); the teaching tier reads zero over target.
 
@@ -207,6 +200,17 @@ names as wanting a Status line. The doc-comment ASCII sweep at **21 `.rye` files
 `caravan/LADDER.md` stands at 366,216 bytes and `image/PHOTOS.md` at 261,894, correct for a
 reference page a reader reaches on purpose. The class is named in
 [`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md).
+
+**Booked `20260824.165130` -- the comment dial, argued twice and unmeasured.** The report card
+grades prose; the same dial runs through the code and has never been read. One cheap round comes
+first, scoped at [`../active-development/20260824-165130_measure-the-comment-histogram-first.md`](../active-development/20260824-165130_measure-the-comment-histogram-first.md):
+classify every authored `.rye` comment as Door, Meter, or loose, and read the spread. **A uniform
+spread falsifies the design and closes it**, which is why the measurement runs before the third
+piece. Arguments: [`../external-research/20260824-165010_what-a-comment-is-worth-and-what-of-it-counts.md`](../external-research/20260824-165010_what-a-comment-is-worth-and-what-of-it-counts.md)
+and [`../active-designing/20260824-165036_the-dial-that-runs-through-the-code.md`](../active-designing/20260824-165036_the-dial-that-runs-through-the-code.md).
+Beside it, **half of Service may be countable** -- named and reached from the citation graph,
+current and carried left judged -- argued with its own trap named at
+[`../active-designing/20260824-165106_what-part-of-service-can-be-counted.md`](../active-designing/20260824-165106_what-part-of-service-can-be-counted.md).
 
 **Two directions seated by name `20260823.122619`**, each wanting its own design round: the
 **`constels/` room** -- Kumara live implementations from **kres** and **brix** templates, in Kyri
