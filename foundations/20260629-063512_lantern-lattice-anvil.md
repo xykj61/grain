@@ -1,12 +1,12 @@
-# Lantern, Lattice, and Anvil — An Open Model, Served Honestly
+# Lantern, Lattice, and Anvil -- An Open Model, Served Honestly
 
-*The open-model layer for Rye OS and the public benefit company that stewards it: where a model is forged, served, and metered. Three named parts carry the work — the forge, the serving fabric, and the honest meter — with the token economy pointed at real cost and the model kept in the commons.*
+*The open-model layer for Rye OS and the public benefit company that stewards it: where a model is forged, served, and metered. Three named parts carry the work -- the forge, the serving fabric, and the honest meter -- with the token economy pointed at real cost and the model kept in the commons.*
 
 **Stamp:** `20260629.063512`
 **Voice:** Reya 2, with **Kaeden Reyklah** as coauthor
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Lens:** TAME — safety, performance, then the joy of the craft; the silo principle
-**Status:** Vision — **far horizon** · **fossil** — living path [`20260728-232511_lantern-lattice-kiln.md`](20260728-232511_lantern-lattice-kiln.md) · Kiln seat `20260728.232511` · prior living [`20260728-221253_lantern-lattice-anvil.md`](20260728-221253_lantern-lattice-anvil.md)
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
+**Lens:** TAME -- safety, performance, then the joy of the craft; the silo principle
+**Status:** Vision -- **far horizon** - **fossil** -- living path [`20260728-232511_lantern-lattice-kiln.md`](20260728-232511_lantern-lattice-kiln.md) - Kiln seat `20260728.232511` - prior living [`20260728-221253_lantern-lattice-anvil.md`](20260728-221253_lantern-lattice-anvil.md)
 
 *Written together by Kaeden and Reya 2. Body held; living stack words live in the mutant.*
 Radiant pass `20260725.035453`
@@ -17,21 +17,21 @@ Radiant pass `20260725.035453`
 
 The rest of the system wants intelligence a person can trust: help to write and read in [Realidream](20260728-220203_realidream.md), analysis for the civic platform, a plain answer to a plain question. The common way to get that intelligence hands a person's own words to a distant company that mines them for its own ends. We choose a different way and build the model layer ourselves, openly, so the help a person receives never costs them their privacy or their standing. The work divides cleanly into three, and each part earns a name.
 
-## Anvil — The Forge
+## Anvil -- The Forge
 
-Anvil is where the open model is shaped. Training and fine-tuning happen here, on the green wafer-scale compute [the wafer and the sovereign coin](20260629-063512_the-wafer-and-the-sovereign-coin.md) describes, and the weights that result are given openly — a commons anyone may read, run, and improve, rather than a secret held behind a wall. The forge is honest about its materials: the data it learns from, the energy it spends, the bounds it keeps. What leaves the anvil is a model the world can hold in its own hands.
+Anvil is where the open model is shaped. Training and fine-tuning happen here, on the green wafer-scale compute [the wafer and the sovereign coin](20260629-063512_the-wafer-and-the-sovereign-coin.md) describes, and the weights that result are given openly -- a commons anyone may read, run, and improve, rather than a secret held behind a wall. The forge is honest about its materials: the data it learns from, the energy it spends, the bounds it keeps. What leaves the anvil is a model the world can hold in its own hands.
 
-## Lattice — The Serving Fabric
+## Lattice -- The Serving Fabric
 
-Lattice serves the forged model across a lattice of compute, routing each request to the right node — the fastest, the nearest, the one with room. When a node is busy or far, the request falls back gracefully to another, so an answer comes from a living mesh rather than a single distant tower. The fabric stays open and legible: a person, or a community, can run a node of their own and join the lattice, so the serving belongs to many hands instead of one.
+Lattice serves the forged model across a lattice of compute, routing each request to the right node -- the fastest, the nearest, the one with room. When a node is busy or far, the request falls back gracefully to another, so an answer comes from a living mesh rather than a single distant tower. The fabric stays open and legible: a person, or a community, can run a node of their own and join the lattice, so the serving belongs to many hands instead of one.
 
-## Lantern — The Honest Meter
+## Lantern -- The Honest Meter
 
-Lantern is the light a person lifts to ask, and the ledger that records, plainly, what the asking cost. Every request is measured in tokens; a compact value form keeps those tokens few, a real saving on every exchange; and the cost is tracked exactly and settled in the local currency on the same shared ledger the rest of the work uses. The price reflects the true cost — the energy and the silicon behind the answer — rather than an invented scarcity meant to extract. The meter is something a person can read and check, the way they can check every other record in the system.
+Lantern is the light a person lifts to ask, and the ledger that records, plainly, what the asking cost. Every request is measured in tokens; a compact value form keeps those tokens few, a real saving on every exchange; and the cost is tracked exactly and settled in the local currency on the same shared ledger the rest of the work uses. The price reflects the true cost -- the energy and the silicon behind the answer -- rather than an invented scarcity meant to extract. The meter is something a person can read and check, the way they can check every other record in the system.
 
 ## Open Core, Stewarded with Care
 
-The model and its tooling are given freely, and the managed, hosted serving is the honest product a public benefit company offers to fund that giving — the same open-core shape the rest of our work keeps. The code is the gift; the steady operational care is the product; and the company that holds it answers to the communities it serves rather than to shareholders alone. The stewarding entity carries a working name for now, and the name matters less than the shape: an open model, kept open, paid for by service rather than by enclosure.
+The model and its tooling are given freely, and the managed, hosted serving is the honest product a public benefit company offers to fund that giving -- the same open-core shape the rest of our work keeps. The code is the gift; the steady operational care is the product; and the company that holds it answers to the communities it serves rather than to shareholders alone. The stewarding entity carries a working name for now, and the name matters less than the shape: an open model, kept open, paid for by service rather than by enclosure.
 
 ## Held to the Discipline of the Kernel
 

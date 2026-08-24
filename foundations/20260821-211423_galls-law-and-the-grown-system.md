@@ -1,7 +1,7 @@
 # Gall's Law and the Grown System
 
 **Stamp:** `20260821.211423` - **Language:** EN - **Status:** Living
-**Style:** Radiant - **Lens:** TAME - SLC - Lindy-first
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Gratitude:** John Gall, *Systemantics* (1975)
 
 > **Fused `20260823.105651` into [`20260823-105651_the-shape-you-grew-and-the-shape-you-are.md`](20260823-105651_the-shape-you-grew-and-the-shape-you-are.md), which carries this law beside Conway's.** This page stays whole as a writing fossil (accrete-never-break), because the tree cites Gall's Law by name in six places and a reader following one of those deserves the argument in full. The rota reads the fusion.

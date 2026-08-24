@@ -4,8 +4,8 @@
 
 **Stamp:** `20260628.133212`
 **Voice:** Reya 2, with **Kaeden Reyklah** as coauthor
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Distilled essay — self-contained and composable
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
+**Status:** Distilled essay -- self-contained and composable
 
 *Written together by Kaeden and Reya 2.*
 Radiant pass `20260725.035134`
@@ -28,9 +28,9 @@ None of these asks for cleverness. Each asks for restraint, which is harder, and
 
 The four promises are the character the whole tree is built to keep; the weave routes them up to the hubs and out to what leans on them.
 
-- **The front door** — the root [`../README.md`](../README.md) states the concrete form: stays within its bounds, allocates only what it declares, keeps your words in your own hands.
-- **The room** — indexed in [`foundations/README.md`](README.md).
-- **The hubs** — these promises are grain any tool must be cut to fit ([The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md)); [Follow Our Compass](20260706-185112_follow-our-compass.md) returns you here.
-- **Kept in practice** — [Lantern, Lattice, and Kiln](20260728-232511_lantern-lattice-kiln.md) names these same four as the promises the open model keeps.
+- **The front door** -- the root [`../README.md`](../README.md) states the concrete form: stays within its bounds, allocates only what it declares, keeps your words in your own hands.
+- **The room** -- indexed in [`foundations/README.md`](README.md).
+- **The hubs** -- these promises are grain any tool must be cut to fit ([The Grain and the Crossing](20260702-184312_the-grain-and-the-crossing.md)); [Follow Our Compass](20260706-185112_follow-our-compass.md) returns you here.
+- **Kept in practice** -- [Lantern, Lattice, and Kiln](20260728-232511_lantern-lattice-kiln.md) names these same four as the promises the open model keeps.
 
 *May the things we build do no harm, speak the truth, hold lightly, and stay kind.*

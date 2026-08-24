@@ -4,8 +4,8 @@
 
 **Stamp:** `20260628.133212`
 **Voice:** Reya 2, with **Kaeden Reyklah** as coauthor
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
-**Status:** Distilled essay — self-contained and composable
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
+**Status:** Distilled essay -- self-contained and composable
 
 *Written together by Kaeden and Reya 2.*
 Radiant pass `20260725.035134`
