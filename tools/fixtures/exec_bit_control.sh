@@ -82,18 +82,20 @@ echo "$out" | grep -q 'worktree_index_disagreements=1' && echo "worktree_drift_c
 echo "$out" | grep -q 'verdict=exec_bit_lost' && echo "worktree_drift_refused=yes" || echo "worktree_drift_refused=no"
 
 # 8. The ratchet: shebang files at 100644 that nothing invokes. Counted, free under the ceiling,
-#    refused once over it -- proven by planting fifty-nine against a ceiling of fifty-eight.
+#    refused once over it -- proven by planting fifty-eight against a ceiling of fifty-seven.
+#    The planted counts track the live ceiling: lower the ceiling and these two move with it, or
+#    the control proves a ceiling the tree no longer holds.
 d=$(build ratchet_under 755 './tools/thing.sh')
-( cd "$d" && i=1; while [ "$i" -le 58 ]; do printf '#!/bin/sh\necho %s\n' "$i" > "tools/spare$i.sh"; i=$((i + 1)); done
+( cd "$d" && i=1; while [ "$i" -le 57 ]; do printf '#!/bin/sh\necho %s\n' "$i" > "tools/spare$i.sh"; i=$((i + 1)); done
   chmod 644 tools/spare*.sh && git add -A && git commit -qm 'pen: fifty-eight uninvoked scans' ) >/dev/null 2>&1
 out=$(verdict_of "$d")
-echo "$out" | grep -q 'plain_shebang_ratchet=58' && echo "ratchet_counted=yes" || echo "ratchet_counted=no"
+echo "$out" | grep -q 'plain_shebang_ratchet=57' && echo "ratchet_counted=yes" || echo "ratchet_counted=no"
 echo "$out" | grep -q 'verdict=ok' && echo "ratchet_under_ceiling_free=yes" || echo "ratchet_under_ceiling_free=no"
 
-( cd "$d" && printf '#!/bin/sh\necho 59\n' > tools/spare59.sh && chmod 644 tools/spare59.sh \
+( cd "$d" && printf '#!/bin/sh\necho 58\n' > tools/spare58.sh && chmod 644 tools/spare58.sh \
   && git add -A && git commit -qm 'pen: one over the ceiling' ) >/dev/null 2>&1
 out=$(verdict_of "$d")
-echo "$out" | grep -q 'plain_shebang_ratchet=59' && echo "ratchet_over_counted=yes" || echo "ratchet_over_counted=no"
+echo "$out" | grep -q 'plain_shebang_ratchet=58' && echo "ratchet_over_counted=yes" || echo "ratchet_over_counted=no"
 echo "$out" | grep -q 'verdict=exec_bit_lost' && echo "ratchet_over_ceiling_refused=yes" || echo "ratchet_over_ceiling_refused=no"
 
 echo "control_verdict=ok"

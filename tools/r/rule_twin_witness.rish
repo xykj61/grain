@@ -1,0 +1,66 @@
+# tools/r/rule_twin_witness.rish -- a rule and its editor twin say the same thing.
+#
+#   rishi/bin/rishi run tools/r/rule_twin_witness.rish
+#
+# WHY. This tree writes each standing rule twice: `.claude/rules/<name>.md` for Zed and Claude
+# Code, `.cursor/rules/<name>.mdc` for Cursor. Both are read as law by whichever editor drives
+# the session, so a pair that disagrees means the tree holds two laws under one name and which
+# one governs depends on who opened the editor. Measured 20260824.112806: **40 pairs stand,
+# 4 agree, 36 drift** (REDS %194).
+#
+# `context/document-mirrors.brix` was built for this and cannot hold these pairs. It proves homes
+# BYTE-IDENTICAL, and a `.mdc` twin is a transform rather than a copy -- frontmatter on top, local
+# links rewritten, and a closing cross-pointer each file aims at the other on purpose. One pair was
+# named in that descriptor; registering the other 39 would red every one of them forever. So the
+# transform is declared in the scan and checked, rather than assumed.
+#
+# WHY THIS RATCHETS RATHER THAN GATES, which is the honest part. **The drift runs in BOTH
+# directions.** `.cursor/rules/reds-first.mdc` names `work-in-progress/REDS.md`, a path that moved
+# to `construction/`, so that twin is behind. `.cursor/rules/send-word.mdc` carries an `ls-remote`
+# pre-push guard and a two-remote push discipline that `.claude/rules/send-word.md` has never
+# held, so that twin is AHEAD. Reconciling a pair means reading both and deciding which sentence
+# is the law, and a bulk merge in either direction would silently delete a live safety rule. That
+# is Keaton's word, surfaced as a gate rather than crossed. This meter keeps the count honest in
+# the meantime, and its ceiling only ever falls -- each pair reconciled lowers it by one.
+#
+# WHAT IS GATED, hard, even so: the ceiling itself. Drift above 36 refuses, so the tree can only
+# get closer to agreement from here. An empty corpus refuses too, since a reading over no pairs
+# finds no drift and would report clean while measuring nothing.
+#
+# WHAT IT DOES NOT REACH. Which side of a drifted pair is RIGHT. That is a reading, and this is a
+# count. `sh tools/fixtures/rule_twin_scan.sh diff <name>` prints what one pair disagrees about.
+#
+# Pen: tools/fixtures/rule_twin_control.sh -- twelve behaviors on real directories in a throwaway
+# pen, five refusals bitten and seven honest readings left free, the ceiling proven from both
+# sides. Run from the repository root.
+
+say "rule-twin: Language EN -- a rule written twice is read as law twice, so both copies must say one thing."
+say "rule-twin: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
+say "rule-twin: Lens TAME -- the transform is declared rather than assumed, the corpus size is published beside the verdict, and the reconciliation this cannot make is named as a gate rather than attempted."
+
+let scan = run ["sh" "tools/fixtures/rule_twin_scan.sh" "census"]
+say scan.out
+assert scan.ok else "rule-twin: drift stands above a ceiling that only ever falls -- read the scan's own lines"
+assert scan.out contains "verdict=ok" else "rule-twin: the census must agree with itself"
+assert (scan.out contains "rule_pairs=0" == false) else "rule-twin: a zero-pair reading would report clean over an empty roster"
+assert (scan.out contains "verdict=empty_corpus" == false) else "rule-twin: a meter over nothing must say so rather than pass"
+
+let control = run ["sh" "tools/fixtures/rule_twin_control.sh"]
+say control.out
+assert control.ok else "rule-twin: the control must complete"
+assert control.out contains "control_fail=0" else "rule-twin: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "rule-twin: the control must agree with itself"
+assert control.out contains "1 free: a pair identical but for Cursor frontmatter reads as agreeing -- ok" else "rule-twin: frontmatter is the twin's own shape and must pass free"
+assert control.out contains "2 free: a link written .mdc in the twin reads as agreeing -- ok" else "rule-twin: a rewritten link target must pass free"
+assert control.out contains "4 free: the closing cross-pointer is dropped from both rather than demanded equal -- ok" else "rule-twin: each file names the other there, so agreeing would make them wrong"
+assert control.out contains "5 free: a blank-line reflow reads as agreeing -- ok" else "rule-twin: formatting must never be called drift"
+assert control.out contains "6 bitten: one changed word in the body counts as drift -- ok" else "rule-twin: a transform too generous to see one word is worse than no meter"
+assert control.out contains "7 bitten: a whole paragraph present on one side only counts as drift -- ok" else "rule-twin: the send-word shape, a rule on one side only, must bite"
+assert control.out contains "8 bitten: a stale path on the twin counts as drift -- ok" else "rule-twin: the reds-first shape, a path that moved, must bite"
+assert control.out contains "9 bitten: drift above the ceiling refuses -- ok" else "rule-twin: the ceiling must bite from above"
+assert control.out contains "10 free: drift at exactly the ceiling passes free -- ok" else "rule-twin: the ceiling must pass free from below, or it is not a ceiling"
+assert control.out contains "11 bitten: an empty corpus reads as empty rather than clean -- ok" else "rule-twin: a meter over nothing must say so"
+assert control.out contains "12 free: a Cursor rule with no Claude canonical is counted rather than ignored -- ok" else "rule-twin: an orphan twin must be counted, since it is law with no canonical"
+
+say ""
+say "GREEN: rule-twin -- 40 rule pairs measured under a declared transform, drift held under a ceiling that only falls, proven both ways across twelve behaviors, and the reconciliation itself surfaced as a gate rather than attempted."

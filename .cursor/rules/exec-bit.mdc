@@ -43,12 +43,16 @@ readings at zero and reports a third:
 |---|---|---|
 | Directly invoked, carrying a shebang, at `100644` | **zero, enforced** | 0 of 18 |
 | Working-tree exec bit disagreeing with the index | **zero, enforced** | 0 of 13,650 |
-| Uninvoked shebang files at `100644` | ratchet under a ceiling that only falls | 58 |
+| Uninvoked shebang files at `100644` | ratchet under a ceiling that only falls | 57 (was 58 at seating) |
 
 **Directly invoked** means a living tracked file writes `./path` in command position -- the promise
 `./tools/ag/agent-jail.sh` makes to whoever clones. A path with its interpreter named ahead of it
-(`sh ./x`, `rishi run ./x`) needs no exec bit and passes free, which is why the 58 fixture scans
+(`sh ./x`, `rishi run ./x`) needs no exec bit and passes free, which is why the fixture scans
 sit in the ratchet rather than the gate: every witness runs them as `run ["sh" "tools/..."]`.
+**They fall on touch, and that reaches birth as well** -- a fixture written today is written with
+the bit, since a new file at `100644` grows the population the ceiling exists to shrink. The
+ceiling fell 58 -> 57 on `20260824.112806` for exactly that reason, and the control's planted
+counts moved with it.
 
 The second reading is the early one. A mode that has drifted in the working tree is a mode about
 to be committed by accident, and the working tree is where repair costs one `chmod`. It makes a
@@ -57,7 +61,7 @@ deliberate mode change loud, which is the point rather than a cost.
 [`../../tools/fixtures/exec_bit_control.sh`](../../tools/fixtures/exec_bit_control.sh) builds real
 git repositories in a temporary pen and proves sixteen behaviors -- five refusals bitten and
 eleven honest readings left free, the ratchet ceiling proven from both sides by planting
-fifty-nine files against a ceiling of fifty-eight, so no override exists and none is wanted.
+fifty-eight files against a ceiling of fifty-seven, so no override exists and none is wanted.
 
 ## What this does not reach
 
