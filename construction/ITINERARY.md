@@ -17,7 +17,7 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5** -- so the whole canon returns to awareness roughly once a working day. Seated `20260821.211423`, replacing the 27-doc rota.
-- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **46 guards** stand; the roster is `construction/standing-equipment.kyri`.
+- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **47 guards** stand; the roster is `construction/standing-equipment.kyri`.
 - **A lap ends at the commit, never at `git add`.** This tree's repair machinery is keyed to the commit: `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` whenever a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked, and the next lap's cold roster finds all of it. Measured `20260824.082144`: three guards red on the open, from a round that staged eleven paths and committed none (REDS %188). No guard can enforce this one, since it would have to run after the lap ends.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
 
@@ -42,9 +42,9 @@
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `daf5b05944` (**The guard that was right and unheard.** Both crypto front doors said the library holds **eighty files** while **87** stand in `crypto/`. The library already had the guard for exactly that -- `crypto_count_guard_witness.rish`, booked by REDS %80 -- and it was **RED on metal** with `construction/standing-equipment.kyri` never naming it, so no lap ran it. Three earlier firings of this shape were pages with no guard; this one is a guard with no roster. The guard learns a declared **tool** class as a **redirect rather than an excuse** -- module, proving witness, and that witness's roster membership all three asserted, proven across fourteen behaviors in a throwaway pen. `crypto/README.md` split **88,205 -> 4,444 bytes** with `LADDER.md`, `PARITY.md`, and `MODULES.md` (87 rows, fifteen families) beside it; `docs/CRYPTO.md` turned plain ASCII across **596** characters. `crypto_count_guard` and `crypto_module_roster` seat **45th and 46th**. **REDS %191.** 46 of 46 green.)
+**Git nib:** `a8e5a3f365` (**The door that was already right.** `constel/README.md` stood at **69,979 bytes** over 109 lines as the last unsplit module front door -- and counted against its directory it read **31 of 31**: every module named, every `tools/f/fora_*_witness.rish` path correct, and the highest rung cited (FORA30) matching disk. **No miscount to repair**, so the fault was length alone: one **9,848-byte** sentence accreted `and now...` across thirty rungs, and a **4,558-byte** kin chain. That makes `constel_module_roster` the **first roster guard in the tree seated as prevention rather than repair**, and the **fourth consumer of one scan** -- a witness file adding no scan of its own. Split into a **4,079-byte Door page**, `LADDER.md` word for word, and `MODULES.md` with **31 rows in eleven families**. The DOOR meter read the new page at **47% against 20%** -- the highest opening of the five, since this module's whole subject is a refusal -- and it swept to **5%** with every claim held. Then a red of my own: folding row `%190` moved its text without its depth, and `readme_reach` named all five broken links. **REDS %192.** The six-door front-door arc closes.)
 
-**Now.** The two largest pages in the tree are doors again. `lotus/README.md` fell from **297,878** bytes to **3,977**, and the 157 modules it never named now carry rows in [`../lotus/MODULES.md`](../lotus/MODULES.md) -- **240 of 240**, in twelve families, held to the directory by the 44th standing guard; the rung reasoning moved word for word into [`../lotus/LADDER.md`](../lotus/LADDER.md) (REDS %190). The same round found the front door telling readers to run `tools/ales_*_witness.rish`, a glob matching nothing since `tools/` folded to letter rooms -- **a repointer rewrites paths, and a glob is not a path.** One scan now serves both directories: `image_module_roster_scan.sh` became [`../tools/fixtures/module_roster_scan.sh`](../tools/fixtures/module_roster_scan.sh), checkpoint `7cc0b62b56`. **Next, in size order, each its own round:** `crypto/README.md` **88,205** and `docs/CRYPTO.md` **68,547**, which carry one rung table between them and want reading together rather than apart; then `constel/README.md` **69,979** over 31 sources. `session-logs/README.md` **273,241** comes down by folding the logs rather than by splitting the page. **Standing beside them:** the index fold for the four rooms carrying 317 stale rows, each its own round since folding a room's index rewrites its front door; the ten pages `living_docs_lint` duty 4 names as wanting a Status line; and the doc-comment ASCII sweep, now measured at **21 `.rye` files in `image/` and all 240 in `lotus/`** (13,456 characters), which is a mechanical round of its own. The class all of this belongs to is named in [`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md): the **DOOR roster** now names 9 documents against 34 module front doors, and the standing roster names 44 guards while the front door counts **1,672** witnesses running on metal.
+**Now.** **The six-module front-door arc is closed.** Every page a reader enters a module by now stands at a Door page under the 24,576-byte living bound, with a standing guard holding it to its own directory: Caravan, Mycelium, Open Image, Lotus, Crypto, and -- this lap -- Constel, which fell from **69,979 bytes to 4,079** with `LADDER.md` and `MODULES.md` beside it (REDS %192). Constel is the one that taught the arc's last lesson: it read **31 of 31** modules and **31 of 31** witnesses before the split, so its guard is **the first roster guard in the tree seated as prevention rather than repair**, and the **fourth consumer of one scan** -- [`../tools/fixtures/module_roster_scan.sh`](../tools/fixtures/module_roster_scan.sh), which takes the directory as an argument. **47 guards** stand and `living_docs_lint` duty 6 now names **three** documents over the bound where it named seven. **Next, each its own round:** `docs/CRYPTO.md` **69,099**, the last one a split would serve, and it wants a drawn guard rather than a reused one, since a docs-shelf page has no `.rye` directory beside it; the **`Ceiling:` header nobody measures**, measured twice by this arc and left open, where one page declares a bound and drifted past it without a sound; the **index fold for four rooms** carrying 317 stale rows, each its own round since folding a room's index rewrites its front door; the ten pages `living_docs_lint` duty 4 names as wanting a Status line; and the doc-comment ASCII sweep at **21 `.rye` files in `image/` and all 240 in `lotus/`** (13,456 characters). `session-logs/README.md` **277,139** comes down by folding the logs rather than by splitting the page. The class all of this belongs to is named in [`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md): a meter reads only what a roster names it, and the **DOOR roster** now names 10 documents against 34 module front doors.
 
 **Landed, and the detail is in the logs.** Every round this block used to narrate now reads as one line in *Prior laps* below, or in *Landed arcs* beneath that. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`); `%162` and `%164` are closed; the teaching tier reads zero over target.
 
@@ -152,18 +152,20 @@ The whole outstanding vision is ranked in
 [`../expanding-prompts/20260823-124407_the-ranked-remainder.md`](../expanding-prompts/20260823-124407_the-ranked-remainder.md),
 Lindy-first and crux-first, with costs, gates, and falsifiers.
 
-**The front-door arc, and where it now stands.** Five module front doors were the Tier 1 legibility
-crux, each a page a reader enters a module by that had grown past anyone's willingness to check it.
-Four have landed with a standing guard holding each page to its own directory -- Caravan
-`20260824.062207`, Mycelium `20260824.071500`, Open Image `20260824.084007`, Lotus `20260824.091754`,
-and Crypto `20260824.095920`. The detail of each is in its session log; this card keeps the edge.
+**The front-door arc is CLOSED `20260824.104946`.** Six module front doors were the Tier 1
+legibility crux, each a page a reader enters a module by that had grown past anyone's willingness to
+check it. All six stand at a Door page under the living bound with a standing guard holding the page
+to its own directory -- Caravan `20260824.062207`, Mycelium `20260824.071500`, Open Image
+`20260824.084007`, Lotus `20260824.091754`, Crypto `20260824.095920`, Constel `20260824.104946`.
+Four of the six roster guards drive **one scan**, `tools/fixtures/module_roster_scan.sh`, which takes
+the directory as an argument. The detail of each is in its session log; this card keeps the edge.
 
-**One module front door is still unsplit,** measured against the tree on `20260824.095920`:
+**One document past the living bound is still unsplit,** measured against the tree on
+`20260824.104946`:
 
 | Document | Bytes | What it wants |
 |---|---|---|
-| `constel/README.md` | **69,979** | the split its four siblings took -- a Door front page, its tables lifted beside it in the same directory so every relative link stays true, and a roster guard driving [`../tools/fixtures/module_roster_scan.sh`](../tools/fixtures/module_roster_scan.sh) over its 31 `.rye` sources. That scan already serves three directories, so the guard is a witness file rather than a fourth copy of a rule |
-| `docs/CRYPTO.md` | **69,099** | the audit guide on the docs shelf. Its four measured faults closed `20260824.095920` -- ASCII, the stale `tools/` witness pattern, a bare `base58check.rye`, and the counts, which now point at the guard that computes them. Its **size** is the open half, and it wants the same split its sibling just took |
+| `docs/CRYPTO.md` | **69,099** | the audit guide on the docs shelf. Its four measured faults closed `20260824.095920` -- ASCII, the stale `tools/` witness pattern, a bare `base58check.rye`, and the counts, which now point at the guard that computes them. Its **size** is the open half, and it wants the same split its sibling took. It roster-guards differently from the six: a docs-shelf page has no `.rye` directory beside it, so the scan that serves the module doors reads nothing here |
 
 **Two readings this arc measured and left open, named so a lap need not rediscover them.**
 
@@ -204,20 +206,6 @@ GitHub's redirect from the elder name holding meanwhile.
 4. **Atthowe ecological / biocyclic-vegan, Dimeroll, and Mycelium** carry forward as the standing
    why beneath all three.
 
-**Open, named, and waiting on its own lap.** The **fascia weave** over the thirty-nine browsed
-`active-designing/` documents -- Class W, walked and cited and kept, so none sheds -- shaped as a
-living index page per cluster rather than edits into dated bodies. And the **index fold for the
-four remaining rooms** -- `active-designing` 86 stale rows, `counsel` 112, `expanding-prompts` 78,
-`waymarks` 41, **317** together under a ceiling that only falls -- each its own round, since
-folding a room's index also rewrites its front door.
-
-**Two questions answered so a lap need not reopen them.** The `%NNN` REDS pattern **stands** and
-its standfast is **declined** -- a number that counts is a census rather than a forecast, and the
-gapless spine proves the record whole where a stamp cannot. And the `autoproject96` ->
-`groupproject405` deep debride is **granted and booked as a STANDFAST** rather than run: 199
-occurrences tree-wide, only 11 inside commit messages, against every downstream re-cloning, with
-GitHub's redirect from the elder name holding meanwhile.
-
 ## Prior laps -- landed, with the detail in the log that recorded it
 
 Each line names a round and where its numbers live. This card keeps the live edge; the logs keep
@@ -225,6 +213,7 @@ the account.
 
 | Landed | Round | Log |
 |---|---|---|
+| `20260824.104946` | The last door was already right -- Constel split at 31 of 31 with no miscount to repair, `constel_module_roster` seated 47th as the first prevention-only roster guard, and the six-door front-door arc closed | REDS %192 |
 | `20260824.095920` | The guard that was right and unheard -- crypto's own count guard RED and off the roster; both crypto doors repaired, `crypto_count_guard` and `crypto_module_roster` seated 45th and 46th | REDS %191 |
 | `20260824.091754` | The glob that was not a path -- Lotus's front door split, `lotus_module_roster` seated 44th | REDS %190 |
 | `20260824.084007` | The page that named half its directory -- Open Image split, `image_module_roster` seated 43rd | REDS %189 |
