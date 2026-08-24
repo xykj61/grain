@@ -5,7 +5,7 @@
 # No backtick characters. Presence tested with git ls-files.
 # Paths repointed work-in-progress -> crux (the git mv rename, REDS %84); headers matched
 # to the pins as they read now (ITINERARY and REDS swept ASCII-first to '--'; SEAT_MAP rested).
-construction/ITINERARY.md	1000	Living pin -- operator	advisory
+construction/ITINERARY.md	1000	Living pin -- operator	enforce
 construction/ROADMAP.md	200	The Roadmap	enforce
 construction/TASKS.md	200	Tasks	enforce
 construction/EQUINOX_SEAT_MAP.md	200	Rested history	enforce

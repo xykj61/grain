@@ -1,10 +1,10 @@
 # The Oldness Cycle â€” A Safe List, and How a File Shows It Is Still True
 
 **Stamp:** `20260730.072710` â€” carried; restamp on Keaton's word.
-**Voice:** Kyri Â- **Coords:** equinox A Â- journey 3 (h3 Radiant Style) Â- round 10/256
+**Voice:** Kyri - **Coords:** equinox A - journey 3 (h3 Radiant Style) - round 10/256
 **Destination proposal:** `context/specs/oldness-cycle.md`, with the list itself at root as `SAFE.md`
 **Status:** Proposal â€” designed at Keaton's word this pass, seated on his word and the bench's
-**Companion to:** `context/specs/living-vs-dated.md` Â- `context/BREACH.md` Â- the custody-first principle
+**Companion to:** `context/specs/living-vs-dated.md` - `context/BREACH.md` - the custody-first principle
 
 *Written together by Keaton and Riyo.*
 
