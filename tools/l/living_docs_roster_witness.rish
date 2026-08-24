@@ -1,0 +1,83 @@
+# tools/l/living_docs_roster_witness.rish -- the meter's own roster is a roster.
+#
+#   rishi/bin/rishi run tools/l/living_docs_roster_witness.rish
+#
+# WHY. tools/fixtures/living_docs_lint_roster.sh decides which living pages the docs meter reads,
+# and for its whole life it was a hand-written list of nine module READMEs. The tree holds
+# thirty-four module front doors, so the meter read six of them and reported green over the rest.
+# The four largest documents anywhere in the tree were among the unread -- image/README.md at
+# 400,042 bytes over 227 .rye sources, lotus/README.md at 297,878 over 240, crypto/README.md at
+# 88,205 over 87, constel/README.md at 69,979 over 31 -- every one past the 24,576 the
+# pin-and-ledger law declares, and none of them ever measured. Two rostered hammocks named files
+# that had folded to yonder/ and were never repointed (REDS %187).
+#
+# The arithmetic of the blind spot, read from both sides on metal: against the departing roster
+# the scan reads over_bound=3, and against the tree it reads over_bound=7. Four over-bound
+# documents were invisible to the meter that exists to find them.
+#
+# THE LANTERN, THIRD FIRING. A ladder table named 73 of 110 rungs (REDS %184). A map's suffix rule
+# reached 95 of 98 modules while the page itself stood off the register meter (REDS %185). Here a
+# meter's roster reaches 6 of 34. index_fold_scan.sh had already written the answer into its own
+# body four hours earlier -- discovery rather than a roster, so a room that folds tomorrow is
+# measured the same way -- and the lesson reached no further than the room it was learned in, which
+# is REDS %186's finding arriving again. So it is written here, where the next hand will read it:
+# A ROSTER THAT DECIDES WHAT A METER READS WANTS THE BIJECTION MOST, because everything downstream
+# inherits its blind spot.
+#
+# WHAT IS GATED, hard, at zero. A module front door the roster misses, and a rostered path naming
+# no file on disk. Both refuse nothing ordinary: the roster discovers now, so adding a module costs
+# zero lines, and a path that names nothing was already a fault.
+#
+# WHAT RIDES A RATCHET. Rostered pages past living_pin_max_bytes -- seven on the day this was
+# written, under a ceiling that only ever falls. Splitting a 400,042-byte front door is a round of
+# its own; caravan's took a whole lap and found a red beneath it. The honest cost, named:
+# glow/README.md sits at 96% of bound, so ordinary growth will carry it over and raise the ratchet.
+# That is the pin law doing what it says -- fold when the pin nears its bound -- and the repair is
+# the fold the law already names.
+#
+# WHAT PASSES FREE. A README with no .rye beside it, which indexes a room rather than opening a
+# module. A planted corpus under tools/fixtures/. A source directory carrying no README yet. An
+# UNTRACKED README beside a tracked source, because the tree is asked with git ls-files rather than
+# with a glob, and a glob would manufacture a door out of a scratch file.
+#
+# WHAT IT DOES NOT REACH, said plainly. Whether a front door is any good, whether its prose reads
+# at its register (tools/p/prose_register_witness.rish measures that), and whether its links
+# resolve (living_docs_lint duty 2). This guard proves only that the meter can see the page, which
+# is the one thing every other reading depends on.
+#
+# Pen: tools/fixtures/living_docs_roster_control.sh -- sixteen behaviors on real git repositories
+# in a throwaway pen, five refusals bitten and eleven honest readings left free, the ratchet
+# ceiling proven from both sides by planting seven over-bound pages and then eight, so no override
+# exists and none is wanted. Run from the repository root.
+
+say "living-docs-roster: Language EN -- a meter reads the pages its roster names, so the roster is the first thing that has to be complete."
+say "living-docs-roster: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
+say "living-docs-roster: Lens TAME -- say why: the rule asks git for the tree rather than globbing it, so a scratch file never becomes a door and a generated corpus never becomes a duty."
+
+let scan = run ["sh" "tools/fixtures/living_docs_roster_scan.sh"]
+say scan.out
+assert scan.ok else "living-docs-roster: the scan must complete -- a front door stands off the meter, or the roster names a file that is gone"
+assert scan.out contains "unrostered=0" else "living-docs-roster: every module front door must be on the roster the meter reads"
+assert scan.out contains "phantom=0" else "living-docs-roster: a rostered path must name a file that exists"
+assert scan.out contains "roster_reaches_tree=yes" else "living-docs-roster: the roster and the tree must describe one set"
+assert scan.out contains "ratchet_under_ceiling=yes" else "living-docs-roster: the over-bound ratchet has risen -- a living page has crossed its pin bound"
+assert scan.out contains "verdict=ok" else "living-docs-roster: the scan must agree with itself"
+
+# A meter reading no doors reports clean while measuring nothing, so the corpus is measured too.
+assert (scan.out contains "front_doors=0" == false) else "living-docs-roster: a zero-door reading would report clean over an empty tree"
+
+let control = run ["sh" "tools/fixtures/living_docs_roster_control.sh"]
+say control.out
+assert control.ok else "living-docs-roster: the control must complete"
+assert control.out contains "control_fail=0" else "living-docs-roster: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "living-docs-roster: the control must agree with itself"
+assert control.out contains "2 bitten: a front door missing from the roster counts against the gate" else "living-docs-roster: the gate must bite"
+assert control.out contains "3 bitten: a rostered path naming no file counts against the gate" else "living-docs-roster: a roster naming an absent file must bite"
+assert control.out contains "7 free: an UNTRACKED README beside a tracked source is invisible to the rule" else "living-docs-roster: the tree is asked with git, never with a glob"
+assert control.out contains "10 free: an empty tree publishes front_doors=0 rather than hiding it" else "living-docs-roster: the corpus size must be published beside the verdict"
+assert control.out contains "12 free: seven over-bound pages sit at the ceiling and pass free" else "living-docs-roster: the ratchet must welcome the count it was seated at"
+assert control.out contains "13 bitten: eight over-bound pages cross the ceiling and are bitten" else "living-docs-roster: the ratchet ceiling must refuse from above"
+assert control.out contains "15 bitten: a roster regressed to a hand list of two over six doors is bitten" else "living-docs-roster: a roster that returns to a hand list must red"
+
+say ""
+say "GREEN: living-docs-roster -- the roster the docs meter reads describes the tree it measures, gated at zero for coverage and ratcheted for the pages still over bound, proven both ways on real git repositories."
