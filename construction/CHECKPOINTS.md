@@ -835,3 +835,5 @@ git show 6e9c381f4c:expanded-prompts/20260810-054332_green-witness-record-seed-r
 ---
 
 *Leave a stone before you cut. The trail you mark today is the one you can walk back tomorrow.*
+
+**Checkpoint `20260823.200008` -- walk-back nib `c12f679701`.** *Swept:* `context/KYRI.md`, the standing voice note, rewritten into Gauge at its Door setting and molted from Radiant. Roughly the whole body moves; the mirror at `ember/voices/KYRI.md` follows it by declaration. *What waits there, worth recalling:* the departing body carried the four-voice descriptions in their original Radiant phrasing (Lattice the arithmetic voice, Scribble the reading voice, Lantern the asking voice, Ember the bake voice), the molt-from-Riyo paragraph as first written, and the closing wish about the four voices staying in tune. Each is a phrasing rather than a fact, and every fact carries forward. Depersonalized earlier the same day at `20260823.173634`, which the elder commits also hold.
