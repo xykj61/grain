@@ -1,6 +1,6 @@
 # The Neighboring Yogas of the Sun and the Ascendant -- The Same Formula, Two More Lights
 
-**Stamp:** `20260705.190812 UDT`  -  **Style:** Radiant, gentle register
+**Stamp:** `20260705.190812 UDT`  -  **Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teacher named with gratitude below
 
 ---

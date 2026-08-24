@@ -1,21 +1,21 @@
 # Classical Vedic Astrology -- The Reading Craft
 
 **Language:** EN
-**Last updated:** 2026-07-10 (Radiant Style pass round 3  -  Movement 2 begun)
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`), gentle register
+**Last updated:** 2026-08-24 (Gauge molt -- studies depersonalized, style updated)
+**Style:** Gauge Field (see `../context/GAUGE_STYLE.md`), gentle register
 **Stamp of founding:** `20260702.010412`
 
 ---
 
-This folder holds the reading craft whole: a siloed study library, composable reading templates, one demonstration reading, and the caster that computes a sky. Everything here serves one purpose -- that a friend's birth chart can be read with depth, written with warmth, and given with a whole heart.
+This folder holds the reading craft whole: a siloed study library, composable reading templates, one demonstration reading, and the caster that computes a sky. Everything here serves one purpose -- that a chart can be read with depth, written with warmth, and given with a whole heart.
 
 The method is the classical hybrid this project keeps: **tropical zodiac signs** carry each planet's dignity, **sidereal nakshatras** under the Lahiri ayanamsa carry the stars and their padas, and **whole-sign houses** rise from the ascendant. Every chart is cast twice -- once with [`cast_a_chart.rish`](cast_a_chart.rish) (hosted pyswisseph seam), once with an independent tool -- and the writing begins only when the two oracles agree, placement for placement. The same discipline that keeps the code honest keeps the sky honest.
 
 ---
 
-## Privacy, Kept by Consent
+## Privacy, Kept by Design
 
-The friends whose skies seeded this library asked that privacy be kept, and it is. Demonstration readings carry the placeholder **Alice**; the Brooke reading carries **Brooke** by consent. A whole-tree privacy gate confirms the guarded names appear nowhere in the repository; birthplaces rest as region or coordinates alone. The true-name HTML for Brooke stays in Kaeden's private keeping until her approval. Working drafts for any future reading follow the same rule: the placeholder does the work, and the true name enters only the final copy handed to its person.
+The studies that once named a specific person now speak of **the native** -- the standard Jyotish term for the chart holder. Study files ship in the public seed as teaching material; natal readings carry a named person's birth date, time, and place and are withheld. Working drafts for any future reading follow the same rule: the generic term does the teaching work, and the true name enters only the final copy handed to its person.
 
 ---
 
@@ -47,9 +47,9 @@ classical-vedic-astrology/
 
 | Stamp | Reading | Meaning |
 |-------|---------|---------|
-| 20260701.232912 | [Alice -- sample](readings/alice-sample-reading.md) | The demonstration reading, under a placeholder name. This is the one that ships. |
+| 20260701.232912 | [Sample reading](readings/alice-sample-reading.md) | The demonstration reading, under a placeholder name. This is the one that ships. |
 
-*One complete two-wheel reading of fifteen chapters stands in the maintainer's field and is withheld from the public seed, along with the superseded drafts in `yonder/`. A natal chart carries a named person's birth date, time, and place, and the friends whose skies seeded this library asked that their privacy be kept. **The method ships; nobody's chart does.** The `readings/` and `yonder/` rooms are `sub_exclude`d in `template-manifest.bron` (`20260823.184309`), so the boundary is a declaration a program reads rather than a habit.*
+*One complete two-wheel reading of fifteen chapters stands in the maintainer's field and is withheld from the public seed, along with the superseded drafts in `yonder/`. A natal chart carries a named person's birth date, time, and place, and privacy is kept by design. **The method ships; the chart stays private.** The `readings/` and `yonder/` rooms are `sub_exclude`d in `template-manifest.bron` (`20260823.184309`), so the boundary is a declaration a program reads rather than a habit.*
 
 ## Templates
 
@@ -57,7 +57,7 @@ classical-vedic-astrology/
 |-------|------|---------|
 | 20260705.020812 | [Two-wheel HTML template](templates/20260705-020812_reading-template.html) | Tokenized D1/D9 renderer -- `{{NAME}}`, wheels, chapters |
 | 20260701.232912 | [Reading template (md)](templates/reading-template.md) | Composable skeleton and silo map |
-| 20260701.232912 | [Reading template (html)](templates/reading-template.html) | Single-wheel demo (Alice) |
+| 20260701.232912 | [Reading template (html)](templates/reading-template.html) | Single-wheel demonstration |
 
 ## Yonder
 
@@ -65,9 +65,9 @@ classical-vedic-astrology/
 |-------|-------|---------|
 | -- | [yonder/README.md](yonder/README.md) | Morning-cast drafts superseded by the evening recast |
 
-- **`studies/`** -- numbered silo library `00`-`20` and growing. Each study lives in a **topic folder** (`nakshatras/`, `planets-in-signs/`, `planet-in-house/`, ...) with a hyphenated sprig. The master index is [`studies/README.md`](studies/README.md); the composable map lives in [`templates/reading-template.md`](templates/reading-template.md).
+- **`studies/`** -- silo library `00`-`58` and growing. Each study lives in a **topic folder** (`nakshatras/`, `planets-in-signs/`, `planet-in-house/`, ...) with a hyphenated sprig. The master index is [`studies/README.md`](studies/README.md); the composable map lives in [`templates/reading-template.md`](templates/reading-template.md).
 - **`templates/reading-template.md`** -- how a reading is made, section by section, silo by silo.
-- **`templates/reading-template.html`** -- the Alice demonstration as a self-drawing page.
+- **`templates/reading-template.html`** -- the demonstration as a self-drawing page.
 - **`templates/20260705-020812_reading-template.html`** -- tokenized two-wheel template for full classical readings.
 - **`readings/`** -- finished readings and per-chapter silos; placeholder names only.
 - **`cast_a_chart.rish`** -- dual-zodiac caster witness. Edit birth constants in `cast_a_chart.py`, then run from repo root: `rishi/bin/rishi run classical-vedic-astrology/cast_a_chart.rish`.
@@ -76,7 +76,7 @@ classical-vedic-astrology/
 
 ## How a New Reading Grows
 
-Receive the birth moment verbatim and honor it exactly -- the one-clock rule, applied to a life. Cast the sky twice and compare until the oracles agree. Compose each section from the matching studies, weaving rather than pasting, in Radiant voice and the gentle register. Where a placement has no study yet, write the new silo first -- choose the topic folder, assign the next number, add a row to `studies/README.md` -- and keep the person's name apart until the final copy.
+Receive the birth moment verbatim and honor it exactly -- the one-clock rule, applied to a life. Cast the sky twice and compare until the oracles agree. Compose each section from the matching studies, weaving rather than pasting, in Gauge voice and the gentle register. Where a placement has no study yet, write the new silo first -- choose the topic folder, add a row to `studies/README.md` -- and keep the person's name apart until the final copy.
 
 ---
 

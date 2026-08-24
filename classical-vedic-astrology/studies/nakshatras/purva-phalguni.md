@@ -1,12 +1,11 @@
 # Purva Phalguni -- The Fruit-Bearer and the Foundation of Trust
 
-**For:** Alice -- natal chart study (nakshatra source file)
 **Language:** EN
-**Style:** Radiant (see RADIANT_STYLE.md)
+**Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teacher named with gratitude below
 **Stamped:** 20260629.193612 UDT
 
-**In Alice's chart:** Purva Phalguni is the star where both her Mercury *and* her Jupiter rest -- her mind and her wisdom share one nakshatra, in Virgo, in the 11th house. This is a strong, repeated note, so it deserves a full reading.
+**In the example chart:** Purva Phalguni is the star where both her Mercury *and* her Jupiter rest -- her mind and her wisdom share one nakshatra, in Virgo, in the 11th house. This is a strong, repeated note, so it deserves a full reading.
 
 ---
 
@@ -26,9 +25,9 @@ There is a strength to each. Purva is *ugra* -- fierce, brave, full of initiativ
 
 ## The Phalguni switcheroo, and why we lead with Aryaman
 
-Here is a subtlety worth naming plainly, because it shapes how we read Alice's chart. Two old and trustworthy sources assign the gods of these stars differently. The older ritual tradition places Bhaga -- the god of pleasure and treasured things -- in Purva, and Aryaman -- the god of promises and devotion -- in Uttara. The nakshatra teaching we follow reverses this, placing Aryaman in Purva and Bhaga in Uttara. This is no error; both orderings are deliberate.
+Here is a subtlety worth naming plainly, because it shapes how we read the native's chart. Two old and trustworthy sources assign the gods of these stars differently. The older ritual tradition places Bhaga -- the god of pleasure and treasured things -- in Purva, and Aryaman -- the god of promises and devotion -- in Uttara. The nakshatra teaching we follow reverses this, placing Aryaman in Purva and Bhaga in Uttara. This is no error; both orderings are deliberate.
 
-The practical resolution is elegant: for matters of ritual and timing, follow the older tradition; for *interpretation* -- for reading what a placement means in a life -- take Aryaman's qualities into Purva Phalguni, and Bhaga's into Uttara. So for Alice's Mercury and Jupiter here, we lead with **Aryaman**. This is the teaching we most want to draw out anyway, because it offers the truest guidance for a young person building toward devoted partnership.
+The practical resolution is elegant: for matters of ritual and timing, follow the older tradition; for *interpretation* -- for reading what a placement means in a life -- take Aryaman's qualities into Purva Phalguni, and Bhaga's into Uttara. So for the native's Mercury and Jupiter here, we lead with **Aryaman**. This is the teaching we most want to draw out anyway, because it offers the truest guidance for a young person building toward devoted partnership.
 
 ## Aryaman -- promises, fidelity, and friendship as the ground of love
 
@@ -38,13 +37,13 @@ And here is the heart of his teaching, the one most worth carrying. Trust comes 
 
 This is why the tradition honors Aryaman as the most trusted of guides, the one whose promise we are willing to follow even through the hardest passages. His affection is praised as the supreme happiness -- so supreme that it brings sweetness even into difficulty, the way two people can smile together even in a hard hour. Affection, the old verse says, makes every path walkable and smooths every obstacle. The secret of an enduring bond is not how smooth the road begins, but how much affection two people bring to walking it together. And affection, finally, is named the essence of beauty itself -- for love is what makes a thing beautiful.
 
-So the lesson Alice's Mercury and Jupiter carry, sitting here, is a beautiful and steadying one: **fidelity, truthfulness, devotion, and patience** -- the keeping of one's word, the building of trust before depth, the friendship that underlies all lasting love. Her mind and her wisdom are seated in the star of the promise kept.
+So the lesson the native's Mercury and Jupiter carry, sitting here, is a beautiful and steadying one: **fidelity, truthfulness, devotion, and patience** -- the keeping of one's word, the building of trust before depth, the friendship that underlies all lasting love. Her mind and her wisdom are seated in the star of the promise kept.
 
 ## Bhaga and the fruition it leads toward
 
 The pair's other half names what all that trust grows *toward*. Bhaga is the god of treasured, prized, delightful things -- the wish-fulfilling abundance of love, the pleasure and the flowering. Where Aryaman is the foundation of trust, Bhaga is the harvest of joy that the foundation makes safe. Uttara Phalguni, his star, speaks of the long, settled happiness of devoted partnership -- the felicity that radiates outward and gladdens a whole household. The two belong together and are never truly separate: the commitment of love and the pleasure of love, each incomplete without the other.
 
-## Alice's Mercury and Jupiter in Purva Phalguni
+## The native's Mercury and Jupiter in Purva Phalguni
 
 Both her intellect (Mercury) and her wisdom (Jupiter) are seated in the fruit-bearer's star, under Aryaman's sign. This doubles the theme. It gives her a genuinely creative mind and a gift for bringing ideas into beautiful, perceivable form -- a maker's intelligence. And it grounds that brightness in fidelity: a mind and a wisdom that value the kept promise, the trustworthy bond, the patient building of trust before depth. She is built to *lead into* connection -- to spark it, to give it form -- and to do so on the honest foundation that lets it last.
 

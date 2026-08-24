@@ -1,6 +1,6 @@
 # The Hybrid Lunar Day -- When the Visible and Essence Stars Differ
 
-**Stamp:** `20260705.195800 UDT`  -  **Style:** Radiant, gentle register
+**Stamp:** `20260705.195800 UDT`  -  **Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- pattern distilled from this lane's readings; no person carried
 
 ---

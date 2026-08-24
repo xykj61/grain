@@ -1,6 +1,6 @@
 # Dharma -- The Essence of a Thing
 
-**Stamp:** `20260705.171012 UDT`  -  **Style:** Radiant, gentle register
+**Stamp:** `20260705.171012 UDT`  -  **Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teacher named with gratitude below
 
 ---

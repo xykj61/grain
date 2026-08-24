@@ -1,12 +1,11 @@
 # Ashvini -- The Star of the Swift Horsemen
 
-**For:** Alice -- natal chart study (nakshatra source file)
 **Language:** EN
-**Style:** Radiant (see RADIANT_STYLE.md)
+**Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teachers named with gratitude below
 **Stamped:** 20260629.182512 UDT
 
-**In Alice's chart:** Ashvini is the star her day opened under at sunrise, and the star where her Rahu sits (in the 7th house). It sets the bright morning tone of her birth.
+**In the example chart:** Ashvini is the star her day opened under at sunrise, and the star where her Rahu sits (in the 7th house). It sets the bright morning tone of her birth.
 
 ---
 
@@ -42,9 +41,9 @@ Each planet expresses Ashvini through what it cares about most:
 - **Saturn** turns the intelligence sober, logical, and systematically efficient, with enduring strength, yet brings a feeling of slowness or restriction.
 - **Ketu** gives a penetrating, inventive intelligence and an almost mystical quickness, with its own pull away from limits.
 
-## Alice's Rahu in Ashvini
+## The native's Rahu in Ashvini
 
-Rahu works like a magnifying glass: whatever it touches grows large in the mind and asks to be learned. In Ashvini, in Alice's house of partnership and the other, Rahu magnifies the longing for vitality, freedom, recognition, and the bright life -- a real hunger to be seen and to move quickly toward what she wants. This is a strong and creative pull. It steadies beautifully against the rest of her chart: her exalted Moon (file on the Taurus Moon) gives the inner ground that keeps the hunger from running away with her, and the discipline of her birth-star (file on Bharani) gives it patience and aim. Held that way, the swift longing becomes a swift learner.
+Rahu works like a magnifying glass: whatever it touches grows large in the mind and asks to be learned. In Ashvini, in the native's house of partnership and the other, Rahu magnifies the longing for vitality, freedom, recognition, and the bright life -- a real hunger to be seen and to move quickly toward what she wants. This is a strong and creative pull. It steadies beautifully against the rest of her chart: her exalted Moon (file on the Taurus Moon) gives the inner ground that keeps the hunger from running away with her, and the discipline of her birth-star (file on Bharani) gives it patience and aim. Held that way, the swift longing becomes a swift learner.
 
 ## The classical note
 

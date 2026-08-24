@@ -1,6 +1,6 @@
 # Occupation as a Lens on a Star's Essence -- Reading the Nakshatras Through Their Suggested Work
 
-**Stamp:** `20260705.190812 UDT`  -  **Style:** Radiant, gentle register
+**Stamp:** `20260705.190812 UDT`  -  **Style:** Gauge Field (see `../../../context/GAUGE_STYLE.md`)
 **Method:** Siloed -- distilled in our own voice; teachers named with gratitude below
 
 ---
