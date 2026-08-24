@@ -130,7 +130,7 @@ goal itself here, rather than a compromise on the way to one.
 |---|---|
 | **[Caravan](caravan/)** | A group that travels together and arrives together. It starts every other part in the right order, watches each one, and brings back anything that stumbles, all inside limits fixed before it begins. |
 | **[Tally](tally/)** | Keeps the books on memory. Every allocation is counted against a declared ceiling, so the system can show you it stayed inside its promise. |
-| **[Mantra](mantra/)** | Names things so a name stays true. Ask for a name and you get exactly the bytes you got last time, forever. That is what makes a build reproducible. |
+| **[Mantra](mantra/)** | Names things so a name stays true. Ask for a name and you get exactly the bytes you got last time, forever. That is what makes a build reproducible. [Beginner door](foundations/20260823-222018_what-mantra-is.md). |
 | **[Comlink](comlink/)** | Carries sealed messages between machines. It moves bytes without reading them, and what arrives is bit-for-bit what left. |
 | **[Pond](pond/)** | A fence around a running program: this much memory, these files, this network. A program works inside exactly the boundary it was handed. |
 | **[Amphora](amphora/)** | A sealed vessel for something crossing a boundary, opened by whoever it was addressed to. |
@@ -140,8 +140,8 @@ goal itself here, rather than a compromise on the way to one.
 | **[Aurora](aurora/)** | The dawn. The first code that wakes on bare hardware, before an operating system exists. |
 | **[Surf](surf/)** - **[Brushstroke](brushstroke/)** | The drawing surface, and the strokes made on it. |
 | **[Mycelium](mycelium/)** | The quiet network underneath, named for the thread that connects a forest. |
-| **[Brix](brix/README.md)** | The declaring language. A `.brix` file says what a system is made of and how the parts fit, and evaluates to plain Bron a program can read. You declare the shape; the tree checks it holds. |
-| **Tablecloth** | Holds a thing by its content rather than by where you put it. Ask for the same bytes and you get the same bytes, from any room, forever. It runs through several rooms rather than sitting in one -- [`brushstroke/tablecloth.rye`](brushstroke/tablecloth.rye) is the nearest single file, and [`context/LEXICON.md`](context/LEXICON.md) carries the definition. |
+| **[Brix](brix/README.md)** - [beginner door](foundations/20260823-222019_what-brix-infuse-is.md) | The declaring language. A `.brix` file says what a system is made of and how the parts fit, and evaluates to plain Bron a program can read. You declare the shape; the tree checks it holds. |
+| **Tablecloth** | Holds a thing by its content rather than by where you put it. Ask for the same bytes and you get the same bytes, from any room, forever. [Beginner door](foundations/20260823-222020_what-tablecloth-is.md); it runs through several rooms rather than sitting in one, and [`brushstroke/tablecloth.rye`](brushstroke/tablecloth.rye) is the nearest single file. |
 
 Every seated term, with the date and the reason we chose it, lives in
 [`context/LEXICON.md`](context/LEXICON.md).
@@ -158,6 +158,12 @@ a program can both find it.
 **Tablecloth addresses by content.** A thing is named by the bytes it is made of, so the same
 request returns the same bytes from any room, and *sameness* becomes something a machine settles
 rather than something a person promises.
+
+Each of the three has a page written for someone meeting it for the first time --
+[Mantra](foundations/20260823-222018_what-mantra-is.md),
+[Brix infuse](foundations/20260823-222019_what-brix-infuse-is.md), and
+[Tablecloth](foundations/20260823-222020_what-tablecloth-is.md) -- and each of those carries the
+operation written as a **chemical formula**: what goes in, what comes out, and what stays conserved.
 
 **Gauge says it plainly.** [New Gauge Style](context/GAUGE_STYLE.md) is how the prose about all of
 it reads: bound every claim, give every figure a unit and a date, and above all **don't be too

@@ -8,6 +8,11 @@ is a map you will want **after** this hour.*
 **Status:** Living - the beginner path
 **You will need:** a Linux or macOS terminal with `git`, `curl`, and `tar`, and about an hour.
 
+> Three names appear in this hour and each has a page for someone meeting it for the first time:
+> [Mantra](../../foundations/20260823-222018_what-mantra-is.md) hands out names that stay true,
+> [Brix infuse](../../foundations/20260823-222019_what-brix-infuse-is.md) declares what a system is made of,
+> and [Tablecloth](../../foundations/20260823-222020_what-tablecloth-is.md) holds a thing by its content.
+
 > Still choosing the three things this hour rests on -- a language model, a source forge, and somewhere to keep bytes? [`SHOPPING.md`](SHOPPING.md) is how to shop for them, ordered safety, performance, joy.
 
 ---
