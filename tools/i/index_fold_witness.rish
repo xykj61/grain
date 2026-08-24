@@ -25,8 +25,9 @@
 # from `20260824.152800`, its 112 rows onto ten. Each front door was read line by line afterwards
 # -- which is what the seat means.
 #
-# WHAT RIDES A RATCHET. The same rows in every other room -- `expanding-prompts` 78 and
-# `waymarks` 41, 119 together from `20260824.152800`, under a ceiling that only ever falls.
+# WHAT RIDES A RATCHET. The same rows in every other room -- `waymarks` 41, alone on the ratchet
+# from `20260824.171500`, under a ceiling that only ever falls. `expanding-prompts` carried its 78
+# across that lap and joined the enforced roster at zero.
 # Folding a room's index also rewrites its front door, and four front doors written in a hurry is
 # how a fix becomes its own red; each gets its own round. The first round proved that in one lap:
 # the fold appended every kept row after all prose, correct only for a README whose table is the
@@ -44,7 +45,7 @@
 #
 # Pen: tools/fixtures/index_fold_control.sh -- fifteen behaviors on real directory trees in a
 # throwaway pen, five refusals bitten and ten honest readings left free, the ratchet ceiling
-# proven from both sides by planting 119 rows and then 120, so no override exists and none is
+# proven from both sides by planting 41 rows and then 42, so no override exists and none is
 # wanted. Run from the repository root.
 
 say "index-fold: Language EN -- a room and its index describe one set, so they are bounded by one rule rather than by two numbers that happen to agree."
@@ -72,7 +73,7 @@ assert control.out contains "2 free: a row whose day still has a flat log is lef
 assert control.out contains "3 free: a SPRIGLESS flat log holds its day open" else "index-fold: the sprig is optional, and a day held open by one must stay open"
 assert control.out contains "4 free: a table delimiter row names no day" else "index-fold: a delimiter row is punctuation, not a row"
 assert control.out contains "6 bitten: the elder list-shape row is read, not skipped" else "index-fold: both row shapes ever written here must be read"
-assert control.out contains "11 bitten: 120 ratchet rows cross the ceiling" else "index-fold: the ratchet ceiling must refuse from above"
+assert control.out contains "11 bitten: 42 ratchet rows cross the ceiling" else "index-fold: the ratchet ceiling must refuse from above"
 assert control.out contains "12 free: the enforced room is reported at zero" else "index-fold: a room that vanishes from a meter is a room nobody witnessed"
 
 say ""

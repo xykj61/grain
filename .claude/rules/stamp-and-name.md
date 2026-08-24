@@ -289,12 +289,15 @@ rows.
 [`../../tools/fixtures/index_fold_scan.sh`](../../tools/fixtures/index_fold_scan.sh) holds
 **`session-logs` at zero** stale rows -- the room a hand has carried across, front door and all --
 and ratchets the rest under a ceiling that only falls: `active-designing` 86, `counsel` 112,
-`expanding-prompts` 78, `waymarks` 41, **317** together on the day it was seated. Folding a room's
+`expanding-prompts` 78, `waymarks` 41, **317** together on the day it was seated. Three of those
+four have since been carried across and joined the enforced roster at zero -- `active-designing`
+and `counsel` on `20260824.152800`, `expanding-prompts` on `20260824.171500` -- so the ceiling
+reads **41**, `waymarks` alone. Folding a room's
 index also rewrites its front door, and four front doors written in a hurry is how a fix becomes its
 own red, so each room gets its own round.
 [`../../tools/fixtures/index_fold_control.sh`](../../tools/fixtures/index_fold_control.sh) proves
 fifteen behaviors on real directory trees in a throwaway pen, the ceiling shown from both sides by
-planting 317 rows and then 318, so no override exists and none is wanted.
+planting 41 rows and then 42, so no override exists and none is wanted.
 
 ## Accrete-never-break
 
