@@ -91,6 +91,10 @@ allow context/KYRI.md   # the standing voice, depersonalized 20260823.173634 so 
 allow classical-vedic-astrology   # method, teachings, studies, templates and tooling; the readings are sub_excluded
 allow context/document-mirrors.brix   # which documents live in more than one room, proven identical
 allow ember-voices   # the voices room at depth 1; its KYRI.md is a proven mirror of context/KYRI.md
+allow spellbook      # the command words at depth 1, mirrored from context/SPELLBOOK.md
+allow biochemistry   # the operation formulas at depth 1, mirrored from context/CHEMICAL_FORMULAS.md
+allow press          # the press room, scrubbed; three personal announcements sub_excluded
+allow context/CHEMICAL_FORMULAS.md   # this tree's operations written as reactions
 allow context/LEXICON.md
 allow context/TAME_GUIDANCE.md
 allow context/RADIANT_STYLE.md
@@ -199,6 +203,8 @@ template  mandi                           # module
 template  mantra                          # versions
 template  kyri                            # the Kyri 6 receipt module -- notation, not identity
 template  ember-voices                    # the voices room at depth 1; a proven mirror of context/KYRI.md
+template  spellbook                       # the command words, a proven mirror of context/SPELLBOOK.md
+template  biochemistry                    # the operation formulas, a proven mirror of context/CHEMICAL_FORMULAS.md
 template  mycelium                        # module
 template  ember                           # module
 template  pond                            # enclosure
@@ -253,7 +259,10 @@ personal  counsel                         # decision records — "on the maintai
 personal  bron-resins                     # compressed personal reasoning trails
 personal  construction                    # the live operator cards of one maintainer (renamed work-in-progress -> crux 20260816, crux -> construction 20260823.082418)
 personal  nixos                           # the pier host NixOS config (hostname, disk, packages) -- host-specific, never public
-personal  press                           # personal announcements — name change, fund, ventures
+template  press                           # reclassified 20260823.223157 on Keaton's word: the press room ships
+                                          # SCRUBBED, with the three personal announcements sub_excluded below.
+                                          # Scrubbing works where a name is incidental; a name-change announcement
+                                          # is ABOUT the name, so `acme-owner` mangles it rather than anonymizing it.
 personal  saga                            # season-close narratives, one steward's arc
 template  classical-vedic-astrology       # reclassified 20260823.184309 on Keaton's word: the METHOD ships
                                           # (teachings, studies, templates, tooling); readings/ and yonder/ are
@@ -311,6 +320,9 @@ sub_exclude expanding-prompts/date/20260810/20260810-025942_the-handoff-baton-vi
 sub_exclude expanding-prompts/date/20260810/20260810-044453_the-3x39-baton-passports-dividers-and-starseeding.md
 sub_exclude context/inspirations.kyri
 sub_exclude classical-vedic-astrology/readings   # natal readings for named private people -- birth date, time, and place
+sub_exclude press/20260727-141213_the-livermore-name-announcement.md   # the subject IS a person's name
+sub_exclude press/20260727-135351_seva-fund-founding-announcement.md   # a named person's fund
+sub_exclude press/20260301-000000_aspiring-oregon-radiance-statewide-press-release.md   # a named person's venture
 sub_exclude classical-vedic-astrology/yonder     # superseded morning casts for the same named person
 sub_exclude context/council-names.kyri
 sub_exclude expanding-prompts/date/20260810/20260810-055147_next-season-build-plan.md
