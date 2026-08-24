@@ -24,6 +24,26 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260824.060012` -- the INNER LOOP block condensed, 50,477 bytes of directives and records to directives
+
+**Walk-back nib:** `7754ccf272` -- read the whole departing card with
+`git show 7754ccf272:construction/ITINERARY.md`.
+
+**Swept:** the `## INNER LOOP` section of `construction/ITINERARY.md` only, lines 7-128. The block
+is headed *live directives the running loop applies each lap* and its own instruction says to move
+settled items down into the body. It had grown to **50,477 bytes -- 65% of the whole card** --
+holding fifteen landed-round narratives among five actual directives, plus a stack of
+`Now --` / `Prior lap --` / `Elder note --` blocks describing rounds that closed days ago. That is
+the second copy of the log index the card's own habits section forbids.
+
+**What waits there, worth recalling:** every landed narrative in full, written at the time, with
+its numbers, checkpoints and reds -- the Standfast day, the compiler segfault guard, the
+address-space split, the seL4 object-type reading, the ten-fold and Caravan ladder condensations,
+the prose-register standfast as it was declared, the deep debride as it was spent, the teaching-tier
+sweep in three stages, and the roster audit's six tested classes. Each also has its own session log
+at its own stamp, which is where the detail properly lives; the walk-back is the fastest way to read
+them as one arc.
+
 ### `20260824.052329` -- the session-log index folds, 2,193 rows onto 26 dated shelves
 
 **Walk-back nib:** `4b166d337e` -- read the whole departing index with
