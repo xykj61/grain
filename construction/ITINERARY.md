@@ -18,7 +18,7 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5**, so the whole canon returns to awareness roughly once a working day.
-- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **52 guards** stand; the roster is `construction/standing-equipment.kyri`.
+- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **53 guards** stand; the roster is `construction/standing-equipment.kyri`.
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked, and the next lap's cold roster finds all of it (REDS %188). No guard can enforce this one, since it would have to run after the lap ends.
 - **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
@@ -50,24 +50,20 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 **Git nib:** `24c3eac172` -- the report card seated, the model returned to Opus 5, and the comment dial booked before it is built. This line names the nib and one sentence; the account of a lap lives in its session log.
 
 **Now.** **Quality assurance has a grade, and the grade has a stack.** The negative-share ceiling read
-the other way up is a school grade -- 20% becomes **80, a B**.
+upward is a school grade -- 20% becomes **80, a B**.
 [`../tools/fixtures/qa_report_card.sh`](../tools/fixtures/qa_report_card.sh) reads any document,
-comment block, or design four ways: **Register** and **Reach** counted, **Truth** half counted and
-gating below 60, **Service** judged against this card. **B stands; below B pushes one molt frame**,
-depth 2.
+comment block, or design four ways: Register and Reach counted, Truth half counted and gating below
+60, Service judged against this card. **B stands; below B pushes one molt frame**, depth 2.
 
-**Model back to `claude-opus-5` at `effort max`** -- REDS %201, one reading with a guard over three
-declaring sites. **%202:** a commit body cited a log by a recalled stamp, so
-[`../tools/hooks/commit-msg`](../tools/hooks/commit-msg) gained a fourth wall. **%203:** four rounds
-each left a reference resolving nowhere; the census fell 191 -> 186 on repair.
-
-**Every room has carried its index across, and `session-logs` folded on Keaton's word.**
-`expanding-prompts` (78 rows) and `waymarks` (41) joined the ENFORCE roster; the ratchet fell
-**119 -> 41 -> 0**. Then 169 logs moved beneath `date/`, their rows onto shelves, and the pin fell
-**291,781 -> 29,997** -- 3,415 shelf links, none broken, lost references held at **186** while
-recoverable rose 9,070 -> 9,246, which is a correct fold by the law's own test. **Open door -- the
-pin still stands 5,421 over its bound**, 35 rows in a day against the ~28 it holds (**REDS %204**):
-shorter rows, an intra-day fold, or a bound wrong for this room. Keaton's choice.
+**Every index has carried across, and `session-logs` folded on Keaton's word.** `expanding-prompts`
+(78 rows) and `waymarks` (41) joined ENFORCE; the ratchet fell **119 -> 41 -> 0**. Then 169 logs
+moved beneath `date/`, their rows onto shelves -- 3,415 shelf links, none broken, lost references
+held at **186** while recoverable rose 9,070 -> 9,246, a correct fold by the law's own test. Rows
+ran to 2,223 bytes, so on Keaton's word they shortened: **a row points, it does not summarise**, at
+or under **192 bytes** (`tools/in/index_row_bound_witness.rish`). The pin fell **291,781 -> 7,563**, and **not one living page now stands above the bound it declares** -- `declared_ceiling`'s byte ratchet falls 1 -> 0.
+**Open door (REDS %205): the 256-file room bound and the 24,576-byte pin bound cannot both hold** --
+a meaning-free row costs ~123, so 256 need ~31,500. 192 carries a median day (61 logs); 15 of 61
+days ran past the ~116 the pin holds, peak 223. Keaton's word.
 
 **Landed, and the detail is in the logs**, one line each in *Prior laps* below. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`).
 
@@ -230,11 +226,13 @@ account. Earlier rows are shelved at
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260824.154722` | Counsel's index carried across -- 112 rows onto ten shelves, the closed room's pin holding the way in rather than the rows, its seasons roster refreshed, and the ratchet ceiling falling 231 -> 119 | index_fold |
-| `20260824.145109` | A tool proven on one shape -- the index fold kept its rows in place rather than appending them past the prose, the blank it consumes keyed off a leading pipe, the shelf roster link asked of the room, and active-designing's 86 rows carried onto 21 shelves | REDS %200 |
-| `20260824.140523` | The number with six homes -- `living_pin_max_bytes` read from the law by one script instead of spelled by five meters across six sites, and `declared_ceiling` gained a fourth reading gating a deciding copy at zero | REDS %199 |
-| `20260824.130807` | A bound with two meters and no wall -- ITINERARY condensed 47,213 -> 22,647 bytes and moved advisory -> enforce, `declared_ceiling` taught the `**Bound:**` form, and five orphan UTF-8 bytes repaired with validity gated at zero | REDS %197, %198 |
-| `20260824.121445` | A declared bound becomes a measured one -- 13 pages declared a ceiling and none was both readable and honoured; `declared_ceiling` seated 50th | REDS %195, %196 |
+| `20260824.183000` | Shorter rows -- a row points, bounded 192 bytes; the two seated bounds found incompatible (%205) | [log](../session-logs/20260824-180216_the-room-folds-and-two-numbers-meet.kyri) |
+| `20260824.162940` | Model back to Opus 5, one reading over three sites (%201); commit-msg gains a fourth wall (%202); census 191 -> 186 (%203) | [log](../session-logs/20260824-162940_one-model-named-once.kyri) |
+| `20260824.154722` | Counsel's index across -- 112 rows onto ten shelves; ratchet 231 -> 119 | index_fold |
+| `20260824.145109` | A tool proven on one shape -- the fold keeps rows in place; active-designing's 86 across | REDS %200 |
+| `20260824.140523` | The number with six homes -- one script reads the law, five meters stop spelling it | REDS %199 |
+| `20260824.130807` | A bound with two meters and no wall -- the card 47,213 -> 22,647 and moved to enforce | REDS %197, %198 |
+| `20260824.121445` | A declared bound becomes a measured one -- 13 pages, none both readable and honoured | REDS %195, %196 |
 
 Walk back to any of them with `git log --oneline` and the session log of the same stamp.
 
