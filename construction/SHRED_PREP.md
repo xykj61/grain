@@ -283,3 +283,18 @@ The standing voice note was rewritten from Radiant into **Gauge at its Door sett
 Every claim, module name, and argument carries over. The elder is the record of how the finding read in Radiant on `20260618.182412`; the mutant is how it reads now.
 
 **One red rode along and is worth reading beside this row.** Repointing the living citers by hand used the pattern `^\d{8}-\d{6}_` to tell testimony from living prose, which requires a sprig the session-logs law makes optional -- so two dated logs were rewritten and reverted. The tree's own canonical seam carried the same error, leaving 237 logs classified as living and open to the dated-path repointer. **REDS %175.**
+
+### Q -- the molt queue, added `20260823.223157`
+
+*Four documents named for a Gauge molt -- three living, one dated. **Queued, not molted** -- this is the `add to molt queue` operation from [`../context/CHEMICAL_FORMULAS.md`](../context/CHEMICAL_FORMULAS.md), whose whole formula is `document + measurement -> queue row`: prep only, no file moved and no cut opened.*
+
+| Document | Inbound citations (living / dated) | Why it is queued |
+| --- | --- | --- |
+| `active-designing/README.md` | measured on molt | The room's front door, written before the design-rooms split and before Gauge. It is the page a reader meets after the root README, so its register carries further than most. |
+| `foundations/README.md` | measured on molt | The index to the room this tree keeps its *why* in. Same reasoning, one shelf up. |
+| `.claude/rules/stamp-and-name.md` | measured on molt | The mark law. It has accreted four amendments in three days -- the fold shape, the room-by-what-it-is-found-by rule, the census-number exemption -- and a law that grows by amendment wants one pass that reads as a single argument again. |
+| `foundations/20260811-211431_the-lindy-effect-and-the-long-return.md` | measured on molt | The foundation that orders every allocation in this tree -- most durable first, then hardest-solvable. It is cited by the rule that carries it into daily use, so its register reaches every round. **A dated writing, so this one molts into a mutant at a fresh stamp and leaves a fossil**, rather than in place like the three above. |
+
+**The measurement runs at molt time rather than now**, on purpose: a citation count taken today and acted on next week is the drift this tree keeps booking. Each row gets its numbers in the same pass that seats its mutant.
+
+**None of the four is a candidate for a cut**, and two different molts are named here. The three living paths molt *in place under a checkpoint* -- the W2 rule above -- because a living path with inbound references keeps its name. The dated foundation molts the other way: a mutant seats at a fresh stamp, the fossil stays banner-marked, and living citers repoint, which is the M1 shape. The queue row exists so each molt is remembered rather than rediscovered, and so the right one is used.

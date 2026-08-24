@@ -24,6 +24,14 @@ mirror kyri-voice
 canonical context/KYRI.md
 at ember-voices/KYRI.md
 
+mirror spellbook
+canonical context/SPELLBOOK.md
+at spellbook/README.md
+
+mirror chemical-formulas
+canonical context/CHEMICAL_FORMULAS.md
+at biochemistry/README.md
+
 # A NAMING NOTE, and a fault this descriptor was built with. Keaton offered two homes for the
 # voices: `ember/voices/` and `ember-voices/`. The first was tried and is wrong for a reason that
 # has nothing to do with taste: **a mirror is byte-identical, and a relative link is depth-dependent**,
