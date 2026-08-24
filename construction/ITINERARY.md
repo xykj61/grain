@@ -17,7 +17,7 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5** -- so the whole canon returns to awareness roughly once a working day. Seated `20260821.211423`, replacing the 27-doc rota.
-- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **41 guards** stand; the roster is `construction/standing-equipment.kyri`.
+- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **42 guards** stand; the roster is `construction/standing-equipment.kyri`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
 
 ### Seated, and still live
@@ -43,7 +43,7 @@
 
 **Git nib:** `be70f6d4f2` (**The rule that reached 95 of 98, and the door nobody measured.** `mycelium/README.md` answers the roster problem better than a table -- 34 bases across nine families plus a published **suffix rule**, so a companion is reached by rule rather than by row. The rule reached **95 of 98**: two Tally seam symlinks and one generator naming a base nobody wrote stood outside it, and a rule goes short more quietly than a list, because a reader sees the rule rather than the set it covers. `mycelium_map_roster` seats **41st**, reading the suffix rule from the README itself. Adding the page to the DOOR roster found the larger half: **46 percent negative against a 20 percent ceiling**, swept to **13 percent** with every claim held exactly, and 87 non-ASCII characters cleared. Then the roster run after `git add` caught a REDS row I had folded carrying the pin's links one directory down. **REDS %185, %186. 41 of 41 green.**)
 
-**Now.** The Tier 1 legibility crux is closed -- both big modules have a front door a reader can enter by, and a guard holding each page to the directory beneath it. `caravan/README.md` is a **7,221-byte Door page** with its rungs at `caravan/LADDER.md` and its carry at `caravan/HARNESS.md` (REDS %184). `mycelium/README.md` already published a **naming rule** rather than a list, which reaches further than a table ever did -- 34 bases across nine families plus five seated suffixes -- and the rule reached **95 of 98**, read **46% negative against a 20% Door ceiling**, and stood off the DOOR roster entirely. All three repaired, and the **41st** standing guard reads the suffix rule from the README itself (REDS %185). Next: `docs/CRYPTO.md` (68,547) -- read whether it is a door or a reference -- then this card itself, and the index fold for the four rooms still carrying 317 stale rows.
+**Now.** The meter that reads this tree's living pages could see **6 of its 34 module front doors**, and the four largest documents anywhere in the tree stood outside every reading it feeds: `image/README.md` at **400,042** bytes over 227 `.rye` sources, `lotus/README.md` at **297,878** over 240, `crypto/README.md` at **88,205** over 87, `constel/README.md` at **69,979** over 31. `tools/fixtures/living_docs_lint_roster.sh` was a hand-written list of 32 entries; it **discovers** now, asking `git ls-files` for every directory holding a tracked source, and reads 60 entries reaching all 34 doors with nothing dropped. `living_docs_lint` duty 6 names **seven** pages over the 24,576-byte bound where it named three, and duty 2 reads clean over all 28 newly-measured doors (REDS %187). **Next, in size order, each its own round:** `image/README.md` and `lotus/README.md` -- the two biggest pages in the tree, each wanting the Caravan split (a Door front page, its reference tables lifted beside it, a guard holding the table to the directory); then `crypto/README.md` **88,205** and `docs/CRYPTO.md` **68,547**, which carry one rung table between them and want reading together rather than apart; then `constel/README.md` **69,979**. The class this belongs to is named in [`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md), which leaves two tier-3 rosters measured and open: the **DOOR roster** names 7 documents against 34 module front doors, and the standing roster names 42 guards while 1,670 `*_witness.rish` files stand on disk, most reached by suite bijections and the remainder unread. Standing beside them: the index fold for the four rooms carrying 317 stale rows, and the ten pages duty 4 now names as wanting a Status line that says which room they speak from.
 
 **Landed, and the detail is in the logs.** Every round this block used to narrate now reads as one line in *Prior laps* below, or in *Landed arcs* beneath that. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`); `%162` and `%164` are closed; the teaching tier reads zero over target.
 
@@ -155,16 +155,23 @@ a reader arriving today cannot say what either one does. Tier 1 is a Door-settin
 each of the two big modules, and the seed-dead links beneath them. **Both landed** -- Caravan
 `20260824.062207`, Mycelium `20260824.071500` -- each held to its directory by a standing guard.
 
-**The front doors, measured `20260824.052950`, one repaired since.** Four living documents stood
-over the 24,576-byte bound the pin law declares, and each wanted a different repair:
+**The front doors, re-measured `20260824.075409` against the tree rather than against a roster.**
+The four-document reading below came from `living_docs_lint`'s own roster, which reached 6 of the tree's
+34 module front doors -- so it named the pages it could see. Asked of the tree, **seven** living documents
+stand over the 24,576-byte bound, and the three the meter had never read are the two largest pages
+anywhere in it (REDS %187). Each wants a different repair:
 
 | Document | Bytes | What it wants |
 |---|---|---|
 | `caravan/README.md` | **7,221** | **landed** `20260824.062207` -- a Door front page; `LADDER.md` holds the rungs, `HARNESS.md` the carry, and a guard holds the table to the directory |
-| `construction/ITINERARY.md` | 41,203 | **condensed** `20260824.060012` -- the INNER LOOP block 50,477 -> 14,092; still over bound, and condensing on touch is what a refresh lap does |
-| `docs/CRYPTO.md` | 68,547 | a compression shelf page; read whether it is a door or a reference |
+| `construction/ITINERARY.md` | 43,275 | **condensed** `20260824.060012` -- the INNER LOOP block 50,477 -> 14,092; still over bound, and condensing on touch is what a refresh lap does |
+| `docs/CRYPTO.md` | 68,547 | **measured `20260824.075409`, repair still open** -- 306 lines against the `<=300` its own header declares, **596** non-ASCII characters from a `2026-08-16` seating, and a rung table naming **80 of the 87** `.rye` files in `crypto/`: five absentees are seam symlinks into `encoding/`, and two are real modules -- `sha3_digest.rye` and `slhdsa_thash.rye`, the 21,812-byte first rung of the SLH-DSA ladder |
 | `mycelium/README.md` | 13,375 | **landed** `20260824.071500` -- under bound the whole time, and 46% negative against a 20% Door ceiling because no meter read it; swept to 13% and seated on the DOOR roster |
 | `session-logs/README.md` | 266,790 | **repaired** `20260824.052950` -- 2,193 rows folded to 26 shelves; the remainder needs **fold the logs** |
+| `image/README.md` | **400,042** | the largest page in the tree, over 227 `.rye` sources, never measured -- the Caravan split: a Door front page, its tables lifted beside it, a guard holding the table to the directory |
+| `lotus/README.md` | **297,878** | second largest, over 240 `.rye` sources, never measured -- the same split |
+| `crypto/README.md` | **88,205** | never measured; carries the same rung table as `docs/CRYPTO.md`, so the two want reading together rather than apart |
+| `constel/README.md` | **69,979** | never measured; 31 `.rye` sources behind it |
 
 **Four doors booked `20260823.184309`, in Lindy order.**
 

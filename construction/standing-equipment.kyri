@@ -187,6 +187,10 @@ guard mycelium_map_roster
 path tools/m/mycelium_map_roster_witness.rish
 seated 20260824.071500
 
+guard living_docs_roster
+path tools/l/living_docs_roster_witness.rish
+seated 20260824.075409
+
 guard width_check
 path tools/w/width-check.rish
 seated 20260620.210812
