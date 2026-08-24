@@ -74,7 +74,11 @@ find . -type d \( $DP_FIND_PRUNE \) -prune -o \
 
 echo "folded_files_mapped=$(wc -l < "$work/map.tsv" | tr -d ' ')"
 
-# Living files only -- a dated basename is testimony and is never opened for writing here. The
+# Living files only -- a dated basename is testimony and is never opened for writing here.
+# The stamp alone marks it: the sprig is OPTIONAL (session-logs adds one only when two logs share
+# a second), so 237 logs are named `YYYYMMDD-HHMMSS.ext`. Requiring an underscore read every one
+# of them as living and open for writing -- REDS %175, found when a hand-written sweep with the
+# same too-narrow pattern rewrote two of them. The
 # candidate list is narrowed by one grep first, so awk is spawned only for files that could
 # possibly hold a dated reference.
 # THE INSTRUMENT'S OWN FIXTURES ARE NOT THE FIELD, and this cost a real red to learn (%121).
@@ -91,7 +95,7 @@ find . -type d \( $DP_FIND_PRUNE \) -prune -o -type f \
   \( -name '*.md' -o -name '*.mdc' -o -name '*.rish' -o -name '*.rye' -o -name '*.sh' \
      -o -name '*.bron' -o -name '*.kyri' -o -name '*.brix' -o -name '*.txt' \) -print 2>/dev/null \
   | sed 's|^\./||' \
-  | awk -F/ '$NF !~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]_/' \
+  | awk -F/ '$NF !~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]/' \
   > "$work/living.txt"
 set +f
 
