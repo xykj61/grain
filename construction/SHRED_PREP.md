@@ -190,6 +190,8 @@ The standing voice note was rewritten from Radiant into **Gauge at its Door sett
 
 *Mitra is the deity of Anuradha in the roster this tree keeps time by, and the gloss is **the friendship kept in order**. A mitra shed prep treats a fossil as a friend being seen off rather than a weed being pulled: the living mutant seats first, the living citers repoint, the fossil gets a banner naming where the reading moved, and **the fossil stays on disk unchanged**. The cut stays RED until Keaton circles it, and it may never come -- a well-prepped fossil costs a directory entry and keeps a season readable.*
 
+*From `20260824.161948`, Class M rows also arrive by **grade**. The QA stack reads every artifact a sweep touches, and a report card below **B** pushes a molt frame; when the artifact is a dated writing, the frame lands here as a Class M row carrying the grade before and after. Rule: [`../.claude/rules/quality-assurance.md`](../.claude/rules/quality-assurance.md) - scale and readings: [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md).*
+
 **The four things a mitra prep completes**, all before any cut is discussed:
 
 1. **The mutant is seated** at a fresh one-clock stamp and reads as the living page.
