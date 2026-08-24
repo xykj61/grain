@@ -56,13 +56,15 @@ comment block, or design four ways: Register and Reach counted, Truth half count
 60, Service judged against this card. **B stands; below B pushes one molt frame**, depth 2.
 
 **%205-%206 closed:** the pin bound rose for one page to **57,344**, read per page; the planted-name
-roster held **2** where the tree held **47**, now discovered (census 186 -> 177). **%207:** the invariant figure this card carried, **13,235**, was **2.8x** the
-truth -- three promises sharing one denominator and 211 symlinks counted as modules. **The law runs
-at 79%**, the gap is **4,757** across 570 modules with a **median of 3**, and half sits in 50 files.
-**Coverage is a room property:** seven rooms above 87%, three below 12% (`lattice` at **0.0%**), and
-six rooms under 60% hold **61%** of the gap. **Open door -- a per-room sweep, not a tree-wide
-ratchet**, and the falsifier comes first: read twenty covered asserts in `caravan` to see whether
-92.8% is about reasons or about vocabulary.
+roster held **2** where the tree held **47**, now discovered (census 186 -> 177). **%207-%208:** the invariant figure this card carried, **13,235**, was **3.1x** the truth -- three
+promises sharing one denominator, 211 symlinks counted as modules, and 289 asserts in two files that
+declare themselves selftests in their own first lines. **The law runs at 80%**, gap **4,242** across
+546 modules, **median 3**, half of it in 50 files. **The `caravan` falsifier was read and does not
+fire** -- 16 or 17 of 20 sampled invariant lines name a reason the assert does not carry, though all
+of them in Caravan's own coined vocabulary. **Coverage is a room property:** seven rooms above 87%;
+**`pond` holds 1,820 of the gap -- 43% in one room** -- led by `pond/apps/drawn_terminal.rye` at
+**312, none covered**. `glow` 3.4% of 205, `amphora` 0.0% of 93. **Open door -- a per-room sweep,
+starting where Keaton says.**
 
 **Landed, and the detail is in the logs**, one line each in *Prior laps* below. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`).
 

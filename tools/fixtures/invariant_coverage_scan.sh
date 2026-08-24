@@ -22,7 +22,12 @@
 #   witness   an assert inside a `*_witness.rye` file is proving a claim about the tree, and its
 #             reason is the witness header rather than a line above the call.
 #   selftest  an assert inside a function whose name carries `selftest`, or inside `main`, is a
-#             proof that runs, sitting in the same file as the code it proves.
+#             proof that runs, sitting in the same file as the code it proves. So is EVERY assert
+#             in a file whose own `//!` header declares it one -- `lattice/lattice.rye` opens
+#             `Lattice selftest`, builds to `lattice/bin/lattice selftest`, and names its 199
+#             functions `welcome_add`, `welcome_matmul`, `welcome_reshape`. Binning by function
+#             NAME alone read all 199 as contracts and reported the room at 0.0% coverage, which
+#             sent a sweep at a file that is entirely test (found while starting that sweep).
 #   contract  everything else -- an assert inside an ordinary function, which is exactly what the
 #             seated law is about.
 #
@@ -72,9 +77,13 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
     }
     return 0
   }
-  function flush(   i, fn, kind, iswit) {
+  function flush(   i, fn, kind, iswit, isself) {
     if (name == "") return
     iswit = (name ~ /_witness\.rye$/)
+    # A file that calls itself a selftest in its own module doc is one, whatever its functions are
+    # named. Read the head only, so a mention deep in the body cannot reclassify a real module.
+    isself = 0
+    for (i = 1; i <= n_lines && i <= 6; i++) if (lines[i] ~ /^\/\/!/ && tolower(lines[i]) ~ /selftest/) isself = 1
     c = cc = s = sc = w = wc = 0
     fn = ""
     for (i = 1; i <= n_lines; i++) {
@@ -86,9 +95,9 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
       if (lines[i] !~ /assert\(/) continue
       if (lines[i] ~ /^[ \t]*\/\//) continue
       k = covered(i)
-      if (iswit)                                   { w++;  wc += k }
-      else if (fn == "main" || fn ~ /selftest/)    { s++;  sc += k }
-      else                                         { c++;  cc += k }
+      if (iswit)                                        { w++;  wc += k }
+      else if (isself || fn == "main" || fn ~ /selftest/) { s++;  sc += k }
+      else                                              { c++;  cc += k }
     }
     printf "%s %d %d %d %d %d %d\n", name, c, cc, s, sc, w, wc
     n_lines = 0
