@@ -1,0 +1,32 @@
+# tools/fixtures/crypto_tool_modules.txt -- the crypto/ files that are TOOLS rather than primitives.
+#
+# WHY THIS FILE EXISTS. tools/cr/crypto_count_guard_witness.rish holds a bijection: every regular
+# crypto/*.rye is registered in tools/cr/crypto_suite_witness.rish, and every suite registration has
+# its file. That bijection assumes one thing about the directory -- that everything in it is a
+# primitive the suite can build and read a `GREEN crypto-<name>` line from.
+#
+# crypto/sha3_digest.rye is not. It is a command-line program that prints a hex digest, so the suite
+# has no GREEN line to read from it, and the bijection went RED on 20260824 with the guard itself
+# standing off the roster, unrun (REDS %191).
+#
+# WHY IT CANNOT SIMPLY MOVE. Rye resolves a nested import relative to the importing file's own
+# directory, so a module that imports `sha3.rye` by bare name has to stand beside it. The directory
+# relationship is the language's, not a filing preference, and the same rule seats tools/rye/ in the
+# stamp-and-name law. So the tool stays in crypto/ and the guard learns the second class.
+#
+# WHAT A ROW PROMISES, and what the guard asserts about it. Three fields, whitespace separated:
+#
+#   <module>          the crypto/<module>.rye that is a tool -- asserted to actually stand on disk,
+#                     so an exemption can never name a file nobody wrote
+#   <witness>         the path that proves it on metal -- asserted to exist
+#   <roster-guard>    that witness's `guard` name in construction/standing-equipment.kyri --
+#                     asserted present, so the proof is one a lap actually runs
+#
+# A row is a REDIRECT rather than an excuse: it says "this file is proven THERE," and all three
+# assertions exist so that a redirect pointing nowhere reds exactly like an unproven file. An
+# exemption proven only in the passing direction cannot be told from a bypass, so
+# tools/fixtures/crypto_count_guard_control.sh plants each failure on real trees.
+#
+# Seated 20260824.095920.
+
+sha3_digest tools/s/sha3_file_witness.rish sha3_file

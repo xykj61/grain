@@ -199,6 +199,14 @@ guard lotus_module_roster
 path tools/l/lotus_module_roster_witness.rish
 seated 20260824.091754
 
+guard crypto_count_guard
+path tools/cr/crypto_count_guard_witness.rish
+seated 20260824.095920
+
+guard crypto_module_roster
+path tools/cr/crypto_module_roster_witness.rish
+seated 20260824.095920
+
 guard width_check
 path tools/w/width-check.rish
 seated 20260620.210812

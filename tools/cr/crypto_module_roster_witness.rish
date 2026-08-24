@@ -1,0 +1,91 @@
+# tools/cr/crypto_module_roster_witness.rish -- the module roster names every module beside it.
+#
+#   rishi/bin/rishi run tools/cr/crypto_module_roster_witness.rish
+#
+# WHY. crypto/README.md stood at 88,205 bytes on 20260824 and docs/CRYPTO.md at 68,547, and a
+# reader entering the cryptography library used one of them as the roster of what is here. Both said
+# "the eighty files" while 87 stand in the directory, and the seven absentees split two ways. Two are
+# real modules nobody listed: sha3_digest.rye, and slhdsa_thash.rye at 21,812 bytes -- the whole first
+# rung of the SLH-DSA ladder. Five are seam symlinks, and their gap is subtler: the pages discuss
+# their TARGETS under ../encoding/ names while a reader running `ls crypto/` sees encoding_bech32.rye
+# and finds no page that says those are the same file. One further citation in docs/CRYPTO.md names
+# `base58check.rye` bare, so it reads as local (REDS %191).
+#
+# This is the fourth firing of one shape: a ladder table naming 73 of 110 rungs (%184), a page
+# naming 112 of 227 modules (%189), one naming 83 of 240 (%190), and now two pages naming 80 of 87.
+# A roster a PROGRAM runs gets checked, because a missing entry breaks a run; a roster a READER uses
+# gets checked by nobody, because a missing entry breaks only understanding, and understanding fails
+# quietly.
+#
+# WHAT MADE THIS ONE DIFFERENT, and it is the finding worth carrying. This library ALREADY had a
+# count guard -- tools/cr/crypto_count_guard_witness.rish, booked by REDS %80 for exactly this, and
+# named in its own prose as "a source of truth for the spelled numbers in crypto/README.md and
+# docs/CRYPTO.md." It was RED on metal, and it stood OFF the standing roster, so no lap ran it. The
+# prevention had been built and never wired to anything that runs. Both are repaired in this round.
+#
+# ONE SCAN, THREE DIRECTORIES. tools/fixtures/module_roster_scan.sh takes the directory as an
+# argument, so image/, lotus/, and crypto/ are held by one rule rather than three copies of it.
+#
+# WHAT IS GATED, hard, at zero, in four readings:
+#
+#   unrostered      -- a crypto/*.rye on disk with no row in crypto/MODULES.md
+#   phantom         -- a row naming a module that is absent from the directory
+#   duplicate_rows  -- one module wearing two rows, which may come to disagree
+#   mismatched_rows -- a row whose display text and link target name different modules
+#
+# WHAT PASSES FREE. A seam symlink, which is a module a reader finds in this directory and expects
+# the page to explain -- five of the 87 point into ../encoding/, and their absence from the primitive
+# suite is a different question from their absence from the page. A command-line tool that is not a
+# primitive: crypto/sha3_digest.rye stands here because rye resolves a nested import relative to the
+# importing file's directory, and it wants a row like anything else a reader finds. A row in a second
+# table, which is how fifteen families are rostered. And a module cited in prose, read past on purpose.
+#
+# WHAT IT DOES NOT REACH, said plainly. Whether a row's sentence is true, and whether a module is
+# PROVEN. Each sentence was written from that module's own `//!` head comment, and no grep reads
+# whether that comment still describes the code. Proof is the count guard's duty and the suite's:
+# tools/cr/crypto_count_guard_witness.rish holds the bijection between the 81 primitives and the
+# per-file witnesses tools/cr/crypto_suite_witness.rish registers, and both now stand on the roster.
+# This guard proves the roster is whole and stops there. Two duties, two guards, so neither can
+# quietly cover for the other -- which is precisely how the count guard came to be red and unheard.
+#
+# Pen: tools/fixtures/module_roster_control.sh -- sixteen behaviors on real directories in a
+# throwaway pen, nine refusals bitten and seven honest readings left free, so no override exists and
+# none is wanted. Run from the repository root.
+
+say "crypto-module-roster: Language EN -- the page a reader learns this library from names every module in it, both directions, so a landed rung cannot go unlisted."
+say "crypto-module-roster: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
+say "crypto-module-roster: Lens TAME -- a bijection rather than a tally, and the corpus size published beside the verdict so a reading over nothing can never report clean."
+
+let scan = run ["sh" "tools/fixtures/module_roster_scan.sh" "census" "crypto"]
+say scan.out
+assert scan.ok else "crypto-module-roster: the scan must complete -- a module has landed without a row, or a row outlived its module"
+assert scan.out contains "page=crypto/MODULES.md" else "crypto-module-roster: the scan must read the crypto roster rather than another directory's"
+assert scan.out contains "unrostered=0" else "crypto-module-roster: every crypto/*.rye carries a row in crypto/MODULES.md"
+assert scan.out contains "phantom=0" else "crypto-module-roster: every row in crypto/MODULES.md names a module that exists in this directory"
+assert scan.out contains "duplicate_rows=0" else "crypto-module-roster: one module wears one row, since two rows may come to disagree"
+assert scan.out contains "mismatched_rows=0" else "crypto-module-roster: a row's display text and its link target name one module"
+assert scan.out contains "bijection=yes" else "crypto-module-roster: the table and the directory must be the same set"
+
+# A meter reading no modules finds no fault and would report clean while measuring nothing.
+assert (scan.out contains "modules_on_disk=0" == false) else "crypto-module-roster: a zero-module reading would report clean over an empty directory"
+
+let control = run ["sh" "tools/fixtures/module_roster_control.sh"]
+say control.out
+assert control.ok else "crypto-module-roster: the control must complete"
+assert control.out contains "control_fail=0" else "crypto-module-roster: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "crypto-module-roster: the control must agree with itself"
+assert control.out contains "2 bitten: a module on disk with no row counts against the gate" else "crypto-module-roster: the gate that names this guard must bite -- seven modules stood unlisted here"
+assert control.out contains "3 bitten: a row naming a module absent from this directory counts against the gate" else "crypto-module-roster: the bare base58check.rye citation the departing page carried must bite as a row"
+assert control.out contains "4 bitten: one module wearing two rows counts against the gate" else "crypto-module-roster: two rows for one module must bite"
+assert control.out contains "5 bitten: a row whose text and target disagree counts against the gate" else "crypto-module-roster: a row naming two modules must bite"
+assert control.out contains "6 bitten: a module cited only in prose beneath the table stays unrostered" else "crypto-module-roster: prose citations must be read past, or a short table reads complete"
+assert control.out contains "9 bitten: a seam symlink with no row counts against the gate" else "crypto-module-roster: the five ../encoding/ seam symlinks are modules here and want their rows"
+assert control.out contains "12 bitten: an empty directory reads as an empty corpus rather than clean" else "crypto-module-roster: a meter over nothing must say so"
+assert control.out contains "15 bitten: a page naming half its directory counts every absentee" else "crypto-module-roster: the departing shape at scale must bite"
+assert control.out contains "1 free: an exact bijection over three modules reads clean" else "crypto-module-roster: the honest shape must pass free"
+assert control.out contains "8 free: a seam symlink counts as a module and its row rosters it" else "crypto-module-roster: a rostered seam symlink must pass free"
+assert control.out contains "10 free: a row in a second table on the page rosters its module" else "crypto-module-roster: the fifteen family tables must roster the same way"
+assert control.out contains "14 free: a module and its row leaving together read clean at two" else "crypto-module-roster: an honest removal must pass free"
+
+say ""
+say "GREEN: crypto-module-roster -- the module roster and the crypto directory are one set, 87 rows against 87 modules, gated at zero in four readings and proven both ways on real directories."
