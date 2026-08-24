@@ -1,0 +1,17 @@
+format session-log-v1
+stamp 20260824.165609
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title the live prompt carries it too
+prompt Close the round -- the loop infusion has to reach the prompt the loop actually runs, not only the fillable seed.
+think The seed under recursion-prompts/ is the template a run is copied from; tools/l/launch-claude-season.rish prints the prompts an unattended season actually pastes. Infusing one and not the other leaves the law written where nobody reads it at run time.
+think Both printed prompts already name the two prose meters, so the QA read belongs in the same clause -- one place a reader of either prompt already looks.
+think Avoided every apostrophe in the added clause, since these strings escape a literal quote as a doubled one and a lone apostrophe is exactly what loop_prompt_parse refuses.
+obs launch-claude-season.rish carries --effort max explicitly on every invocation and names no model id, so it inherits the settings.json reading and needs no entry on the declaring roster. Checked rather than assumed.
+obs The card's Git nib had stood four commits stale across this round. Pinned in this work commit rather than in a pin-only follow-up.
+loom prompts_infused=2 parse_witness=loop_prompt_parse card_bytes=24521 card_bound=24576
+file tools/l/launch-claude-season.rish the QA read in both printed season prompts
+file construction/ITINERARY.md Git nib pinned in the work commit
+recommend keep-going run the comment histogram scoped at active-development/20260824-165130_measure-the-comment-histogram-first.md -- one scan, then read the spread

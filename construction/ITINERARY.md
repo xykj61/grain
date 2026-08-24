@@ -47,7 +47,7 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `ba9fd68070` -- the lap counsel's index carried across, its closed-room pin holding the way in rather than the rows. This line names the nib and one sentence; the account of a lap lives in its session log.
+**Git nib:** `24c3eac172` -- the report card seated, the model returned to Opus 5, and the comment dial booked before it is built. This line names the nib and one sentence; the account of a lap lives in its session log.
 
 **Now.** **Quality assurance has a grade, and the grade has a stack.** The negative-share ceiling
 read the other way up is a school grade -- 20% becomes **80, a B** -- and
