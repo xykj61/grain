@@ -18,7 +18,7 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5**, so the whole canon returns to awareness roughly once a working day.
-- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **50 guards** stand; the roster is `construction/standing-equipment.kyri`.
+- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **51 guards** stand; the roster is `construction/standing-equipment.kyri`.
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked, and the next lap's cold roster finds all of it (REDS %188). No guard can enforce this one, since it would have to run after the lap ends.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
 
