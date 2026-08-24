@@ -22,6 +22,8 @@ When two logs share a second, add `_short-sprig` from `title` (or from `prompt` 
 
 After each new log, prepend a newest-first row to `session-logs/README.md` **directly below the table's delimiter row**: stamp, linked title, and one line of meaning drawn from `title` / `obs`. The title and the delimiter both live at the top, and a row goes under them, so the table keeps rendering and the title keeps its place. Writing above them costs both, and on `20260824` both were being paid: the title stood at line 1,881 beneath 1,880 rows, and 1,658 pipe rows stood above the delimiter, which GitHub-Flavored Markdown reads as plain text with pipes in it (REDS %182).
 
+**A row points; it does not summarise.** The log is the record and the index is the way in, so an index row stays **at or under 192 bytes** -- a stamp, a linked title, and one clause. That number is the pin's own arithmetic: a row costs ~123 bytes before it says anything, the pin's prose takes ~2,100, and 192 leaves room for ~116 rows inside the 24,576 the page declares. Rows once ran to **2,223 bytes** apiece, which made the index a second copy of the logs (REDS %204, resolved on Keaton's word `20260824`). Gated by `rishi/bin/rishi run tools/in/index_row_bound_witness.rish`; shelved rows keep every byte they wrote.
+
 **The index folds with the room.** A day's rows move onto `session-logs/date/README-index-YYYYMMDD.md` the moment that day's logs fold, so the living pin holds exactly the rows whose logs are still flat. One tool does both:
 
 ```
@@ -29,7 +31,7 @@ rye run tools/rye/session_logs_archive.rye index-preview   # count, change nothi
 rye run tools/rye/session_logs_archive.rye index-fold      # shelve the closed days
 ```
 
-`rishi/bin/rishi run tools/i/index_fold_witness.rish` gates this room at zero stale rows and ratchets the other four. The pin's byte bound then follows for free: fold the room to today and the index holds one day of rows. Shelves are listed in `session-logs/SEASONS.md` and are immutable once written.
+`rishi/bin/rishi run tools/i/index_fold_witness.rish` gates this room at zero stale rows, and since `20260824.172000` it gates all five folding rooms -- the ratchet reads zero. The byte bound then follows from the fold **and the row bound together**: folding alone left this pin 5,421 over, since the rows were paragraphs (REDS %204). Shelves are listed in `session-logs/SEASONS.md` and are immutable once written.
 
 Batch hygiene for **archived Markdown** only: `rye run tools/rye/align_session_logs.rye`. Living Kyri logs are indexed by hand (or a future Kyri-aware aligner).
 

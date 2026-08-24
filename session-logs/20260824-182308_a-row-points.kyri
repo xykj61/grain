@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20260824.182308
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title a row points, it does not summarise
+prompt Keaton chose shorter rows as the answer to REDS %204.
+think Measured before choosing a number. Rows averaged 783 bytes with the meaning column carrying 655 of them, and the longest ran 2,223 -- the session log's own abstract copied into the index.
+think That reframed the fix. It is not a byte problem but the single-strandedness the tree already keeps: the logs are the record, the index is the way in. An index that restates its logs is a second copy of them.
+think Derived the bound rather than picking one. A row costs ~123 bytes before it says anything, the pin's prose takes ~2,100, so 192 -- a power of two beside the 256-file room bound and the 24,576-byte pin bound -- leaves ~116 rows and ~69 characters of meaning.
+think Wrote the scan first and watched it red on all 36 rows, mine included, before compressing anything.
+obs The compression rule wrote itself: 28 of 36 rows already opened with their own bolded headline and then restated the log, so keeping the headline and dropping the paragraph is a register change that holds every claim. The other 8 were mine and got hand-written clauses.
+obs Three overrides missed because I keyed them by recalled stamps -- 170904 for 170955, 165810 for 165609, 165330 for 165456. REDS %202's own lesson, inside the round repairing its consequences. Re-keyed by title read from the file.
+obs Deriving the bound tested the bounds it came from, and they failed. A meaning-free row costs ~123 bytes, so the 256 flat files a room may hold need ~31,500 against a 24,576-byte pin. The two seated ceilings cannot both hold, by arithmetic rather than by neglect. Booked as REDS %205 with the choice left to Keaton.
+obs The card then took session-logs' slot on the byte ratchet -- one page under, one page over, ceiling unchanged at 1. A swap is not a fall, so the card's own Prior-laps rows got the same rule, 250-294 bytes down to ~150. bounds_over now reads 0 and the ratchet falls 1 -> 0.
+loom pin bytes_before=291781 after_fold=30224 after_rows=7563 bound=24576 rows=36 longest=188 row_max=192
+loom day_rate days=61 median=61 mean=75 p75=107 p90=165 max=223 rows_pin_holds=116 days_over=15
+loom witness=index_row_bound behaviors=17 guards=53
+file tools/fixtures/index_row_bound_scan.sh the bound, derived from the pin's own arithmetic
+file tools/fixtures/index_row_bound_control.sh seventeen behaviors, the bound free at 192 and bitten at 193
+file tools/in/index_row_bound_witness.rish the standing guard, 53rd on the roster
+file session-logs/README.md 36 rows rewritten as pointers; the row rule seated in its header
+file .claude/rules/session-logs.md the row rule, and the claim REDS %204 disproved corrected
+file .claude/rules/stamp-and-name.md the byte bound follows from the fold AND the row, and the two-bound incompatibility named
+file tools/fixtures/declared_ceiling_scan.sh byte ratchet 1 -> 0; no living page stands over its bound
+file construction/REDS.md row %205 booked
+recommend check-in (checkpoint) REDS %205 wants Keaton's word -- raise the pin bound for this one room, or lower the room bound, since 192 bytes carries a median day and 15 of 61 days ran past what the pin holds

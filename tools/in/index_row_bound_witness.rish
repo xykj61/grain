@@ -1,0 +1,77 @@
+# tools/in/index_row_bound_witness.rish -- an index row points; it does not summarise.
+#
+# WHY THIS RUNG. REDS %204: `session-logs/README.md` folded correctly and still stood 5,421 bytes
+# above the 24,576 it declares. The fold was never the problem. The rows were -- 36 of them
+# averaging 783 bytes, the longest 2,223, with the meaning column carrying 655 of the 783. That is
+# the session log's own abstract copied into the index, a second copy of a record the tree already
+# keeps single-stranded: THE LOGS ARE THE RECORD, THE INDEX IS THE WAY IN.
+#
+# Keaton chose shorter rows on `20260824`. This rung is the number that makes the choice checkable.
+#
+# THE BOUND, derived rather than chosen. A row costs about 123 bytes before it says anything: 21 for
+# the stamp cell, roughly 97 for the title-and-filename link, 5 for the pipes. The pin's own bound is
+# 24,576 and its prose takes about 2,100, leaving roughly 22,400 for rows. At **192 bytes** -- a
+# power of two beside the 256-file room bound and the 24,576-byte pin bound -- the pin holds about
+# 116 rows and a meaning gets ~69 characters, which is a clause that points rather than a paragraph
+# that restates.
+#
+# WHAT IS PROVEN, on metal.
+#   Every row of the living pin stays at or under 192 bytes. Measured after the sweep: 36 rows,
+#   longest 188, pin **7,563 bytes** -- from 291,781 before the fold and 30,224 after it.
+#   Seventeen behaviors on planted pins in a throwaway pen: the bound free at exactly 192 and bitten
+#   at exactly 193, short rows free, one long row among three found and named, the longest reported,
+#   a header row and a delimiter row and prose carrying pipes all read past, a hyphen-form stamp
+#   read past because that shape is a filename rather than a row's first cell, an immutable shelf
+#   left uncounted however long its rows, an absent pin refused rather than read as zero rows and
+#   called clean, and the bound itself readable so a control can plant against it.
+#
+# WHAT PASSES FREE, by named rule. A shelf at `<room>/date/README-index-YYYYMMDD.md` is immutable
+# once written and keeps every byte (accrete-never-break). This gates the one file a lap appends to.
+#
+# WHAT THIS DOES NOT FIX, and it is the honest half. The room bound is 256 flat files and a
+# meaning-free row still costs ~123 bytes, so 256 rows need ~31,500 -- above the pin's 24,576
+# whatever a row says. **The two seated bounds cannot both hold at the room's own ceiling**
+# (REDS %205). This bound carries a median day comfortably: across 61 measured days the median is
+# 61 logs and the mean 75, while 15 of those days ran past 116 and the peak reached 223. On such a
+# day the pin exceeds again, and the remedy is a fold rather than a shorter sentence.
+#
+# Style: context/GAUGE_STYLE.md - Rule: .claude/rules/session-logs.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/in/index_row_bound_witness.rish
+
+say "index-row-bound: Language EN -- an index is the way in, and the log is the record."
+say "index-row-bound: Style Gauge -- the bound comes from the pin's own arithmetic rather than from taste."
+say "index-row-bound: Lens TAME -- bound everything, and say where the number came from."
+
+let scan = run ["sh" "tools/fixtures/index_row_bound_scan.sh"]
+assert scan.ok else "index-row-bound: a living index row stands above the 192 bytes an index row is given"
+say scan.out
+assert scan.out contains "rows_over=0" else "index-row-bound: every living index row must point rather than restate"
+assert scan.out contains "verdict=ok" else "index-row-bound: the scan must balance before it is believed"
+say "field GREEN -- the pin holds one day of pointers rather than one day of abstracts"
+
+let control = run ["sh" "tools/fixtures/index_row_bound_control.sh"]
+assert control.ok else "index-row-bound: the control must complete"
+say control.out
+assert control.out contains "at_bound_free=yes" else "index-row-bound: a row of exactly 192 bytes must pass free"
+assert control.out contains "at_bound_measured=yes" else "index-row-bound: the scan must measure the planted length exactly"
+assert control.out contains "over_bound_bitten=yes" else "index-row-bound: a row of 193 bytes must red, so no override exists"
+assert control.out contains "over_bound_counted=yes" else "index-row-bound: the count must name how many rows stand over"
+assert control.out contains "rows_counted=yes" else "index-row-bound: the row count must be the count of rows"
+assert control.out contains "short_rows_free=yes" else "index-row-bound: short rows must pass free"
+assert control.out contains "one_of_three_found=yes" else "index-row-bound: one long row among short ones must be found"
+assert control.out contains "over_row_named=yes" else "index-row-bound: an over-bound row must be named, so it can be shortened"
+assert control.out contains "longest_reported=yes" else "index-row-bound: the longest row must be reported at every pass"
+assert control.out contains "non_rows_read_past=yes" else "index-row-bound: a header, a delimiter, and prose with pipes are not rows"
+assert control.out contains "non_rows_free=yes" else "index-row-bound: reading past a non-row must leave the verdict green"
+assert control.out contains "hyphen_stamp_read_past=yes" else "index-row-bound: a hyphen-form stamp is a filename, never a row's first cell"
+assert control.out contains "shelf_free=yes" else "index-row-bound: an immutable shelf keeps every byte it wrote"
+assert control.out contains "shelf_uncounted=yes" else "index-row-bound: a shelf row must not be counted against the living bound"
+assert control.out contains "absent_pin_refused=yes" else "index-row-bound: an absent pin must refuse rather than read zero rows and call it clean"
+assert control.out contains "bound_readable=yes" else "index-row-bound: the bound must be readable, so a control can plant against it"
+assert control.out contains "bound_applies=yes" else "index-row-bound: the bound read must be the bound applied"
+assert control.out contains "control_verdict=ok" else "index-row-bound: the control must agree with itself"
+say "seventeen behaviors proven on planted pins, the bound shown at 192 and at 193"
+
+say "GREEN: index-row-bound -- an index row points; it does not summarise."
