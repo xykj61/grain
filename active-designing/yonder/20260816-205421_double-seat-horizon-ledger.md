@@ -2,7 +2,7 @@
 
 *A durable record of the strategic ideas raised in one wide-ranging session, so none is lost while none is seated by accident. Each is ordered Lindy-first, crux-first, and tagged with its fit, its proper home, and one honest recommendation. This is a **yonder** file: forward-pointing, deferred yet alive. Seating any row is Keaton's word, not this ledger's.*
 
-**Stamp:** `20260816.205421` - **Voice:** Kyri - **Style:** Radiant - **Status:** Living horizon ledger
+**Stamp:** `20260816.205421` - **Voice:** Kyri - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Kin:** [`../../recursion-prompts/README.md`](../../recursion-prompts/README.md) (the balance compass that frames double-seating) - [`../../.claude/rules/lindy-first-crux.md`](../../.claude/rules/lindy-first-crux.md) - [`../../.claude/rules/urbit-reframe.md`](../../.claude/rules/urbit-reframe.md) (the values check) - [`../../.claude/rules/waymark-ladders.md`](../../.claude/rules/waymark-ladders.md) (HUNK/ALES, the open-media family already seated)
 
 ---

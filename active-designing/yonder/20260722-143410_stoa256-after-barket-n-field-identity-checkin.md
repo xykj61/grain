@@ -1,23 +1,23 @@
-# STOA256 — After Barket N-Field Identity Emit · Check-In
+# STOA256 -- After Barket N-Field Identity Emit - Check-In
 
-*An Acme Corporation employee reading this gets the fork after barket identity emit collapsed: the language-return identity pair (bartis · barket) is GREEN, and the next door is flip call-body collapse through the same table — not gold, not shared-package.*
+*An Acme Corporation employee reading this gets the fork after barket identity emit collapsed: the language-return identity pair (bartis - barket) is GREEN, and the next door is flip call-body collapse through the same table -- not gold, not shared-package.*
 
 **Language:** EN  
-**Version:** `20260722.143410` (EDT · Framework host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260722.143410` (EDT - Framework host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Checkable — lean **A** send chosen with round-close · lean **B** flip call-body collapse  
-**Register:** Checkable (Two Rooms) — STOA255 GREEN with this send; flip still per-N  
+**Status:** Checkable -- lean **A** send chosen with round-close - lean **B** flip call-body collapse  
+**Register:** Checkable (Two Rooms) -- STOA255 GREEN with this send; flip still per-N  
 
-**Grounds in:** STOA255 barket N-field identity · STOA253 bartis twin · STOA251 inventary  
+**Grounds in:** STOA255 barket N-field identity - STOA253 bartis twin - STOA251 inventary  
 
-**dated_guard:** Do **not** reopen STOA255 as unfinished. Ambient gold · shared-package · JABS3 stay held until named.
+**dated_guard:** Do **not** reopen STOA255 as unfinished. Ambient gold - shared-package - JABS3 stay held until named.
 
 ---
 
 ## What just closed
 
-STOA255: `emit_n_field_identity` on barket · eight wrappers · pair…nona identity GREEN · mold_name_slice keeps source spelling · TAME bans scan rides shell greps past the 256-list ceiling · flip emitters kept.
+STOA255: `emit_n_field_identity` on barket - eight wrappers - pair...nona identity GREEN - mold_name_slice keeps source spelling - TAME bans scan rides shell greps past the 256-list ceiling - flip emitters kept.
 
 ---
 
@@ -25,9 +25,9 @@ STOA255: `emit_n_field_identity` on barket · eight wrappers · pair…nona iden
 
 | | Lean | What it opens |
 |---|---|---|
-| **A** | **Send STOA255** — **chosen** with round-close | pier carries barket identity emit |
-| **B** | **Flip call-body collapse** — **recommended** | same table, second deepen · bartis then barket or both in one helper shape |
-| **C** | **Ambient gold / shared-package / JABS3** | thicker — **held**; explicit word only |
+| **A** | **Send STOA255** -- **chosen** with round-close | pier carries barket identity emit |
+| **B** | **Flip call-body collapse** -- **recommended** | same table, second deepen - bartis then barket or both in one helper shape |
+| **C** | **Ambient gold / shared-package / JABS3** | thicker -- **held**; explicit word only |
 
 ---
 

@@ -1,15 +1,15 @@
-# 968 · The Compiler Fork — Rye Becomes Its Own Language
+# 968 - The Compiler Fork -- Rye Becomes Its Own Language
 
-> **Yondered `20260702.185912`** — early brief, consumed into the living records; the stamp above endures as the moment it was written. Index: `../README.md`.
+> **Yondered `20260702.185912`** -- early brief, consumed into the living records; the stamp above endures as the moment it was written. Index: `../README.md`.
 
-*A siloed design brief for the moment Rye stops being a derivative and starts compiling its own types. The fork replaces the inherited slice type with one that carries a bounded, explicitly-sized length. The compiler rejects architecture-specific widths in authored source. The standard library surfaces are rewritten module by module, each proven by the gate. The bridge to the inherited toolchain becomes optional — a guest lane, not the host.*
+*A siloed design brief for the moment Rye stops being a derivative and starts compiling its own types. The fork replaces the inherited slice type with one that carries a bounded, explicitly-sized length. The compiler rejects architecture-specific widths in authored source. The standard library surfaces are rewritten module by module, each proven by the gate. The bridge to the inherited toolchain becomes optional -- a guest lane, not the host.*
 
 **Language:** EN
 **Version:** `20260621.070712` (Rye chronological stamp)
 **Last updated:** 2026-06-21
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Reya 2
-**Lens:** TAME — safety first; explicit widths as language law
+**Lens:** TAME -- safety first; explicit widths as language law
 **Status:** Active Design (siloed)
 
 ---
@@ -31,7 +31,7 @@ Every length, index, count, and offset uses an explicitly-sized width:
 | **`u32`** | Bounded in-memory lengths, indices, counts, offsets. Named maximum at init or compile time. |
 | **`u64`** | Wire-persistent sizes, timestamps, MMIO addresses, content offsets. Same meaning on every target. |
 
-No other integer width carries a length or an index in Rye. The compiler enforces this — a source file that uses a banned width token does not compile.
+No other integer width carries a length or an index in Rye. The compiler enforces this -- a source file that uses a banned width token does not compile.
 
 ---
 
@@ -43,7 +43,7 @@ The inherited slice type carries a length whose width varies by target. Rye repl
 Rye slice: { ptr: [*]T, len: u32 }
 ```
 
-- `len` is `u32` — four billion elements, larger than any garden
+- `len` is `u32` -- four billion elements, larger than any garden
 - Indexing uses `u32`; bounds check against `len` before access
 - Subslicing returns a new slice with `u32` length
 - Where `u64` length is required (wire formats, store offsets), a separate type is used
@@ -62,7 +62,7 @@ The invariant: **a value's size means the same thing on every machine Rye target
 | **4** | The bridge to the inherited toolchain becomes optional | `rye run` compiles `.rye` directly |
 | **5** | The inherited toolchain runs as a guest | Interop lane documented |
 
-Each step is proven by the gate before the next begins. The fork is an accretion — the same method the strengthening series uses.
+Each step is proven by the gate before the next begins. The fork is an accretion -- the same method the strengthening series uses.
 
 ---
 
@@ -78,13 +78,13 @@ The 90 witnesses are the specification. Each witness exercises one standard libr
 
 ## The Standard Library, Module by Module
 
-The rewrite follows the strengthening series — one surface at a time, each through the gate:
+The rewrite follows the strengthening series -- one surface at a time, each through the gate:
 
-1. **Memory** — `mem.eql`, `mem.copy`, `mem.find`, `mem.split`, `mem.replace`, `mem.reverse`, etc. 60+ witnesses already cover these.
-2. **Formatting** — `fmt.allocPrint`, `fmt.bufPrint`. Witnesses exist.
-3. **Filesystem** — `Dir.readFileAlloc`, `Dir.writeFile`, `Dir.iterate`. Witnesses exist.
-4. **Crypto** — `sha3`, `ed25519`, `x25519`, `chacha20_poly1305`. Witnesses exist.
-5. **Process** — `process.run`, `process.spawn`. Witnesses exist.
+1. **Memory** -- `mem.eql`, `mem.copy`, `mem.find`, `mem.split`, `mem.replace`, `mem.reverse`, etc. 60+ witnesses already cover these.
+2. **Formatting** -- `fmt.allocPrint`, `fmt.bufPrint`. Witnesses exist.
+3. **Filesystem** -- `Dir.readFileAlloc`, `Dir.writeFile`, `Dir.iterate`. Witnesses exist.
+4. **Crypto** -- `sha3`, `ed25519`, `x25519`, `chacha20_poly1305`. Witnesses exist.
+5. **Process** -- `process.run`, `process.spawn`. Witnesses exist.
 
 Each module is rewritten: public `fn` signatures change from architecture-specific width to `u32`/`u64`. Internal implementation adapts. The witness proves behavior is preserved.
 
@@ -94,11 +94,11 @@ Each module is rewritten: public `fn` signatures change from architecture-specif
 
 Two tools compile on the forked compiler to prove it works:
 
-1. **`tools/width-check.rish`** — the gate that enforces the ban. Runs in Rishi, which is built by `rye build`.
-2. **`tools/parity.rish`** — the parity gate. Runs in Rishi, proves every witness.
+1. **`tools/width-check.rish`** -- the gate that enforces the ban. Runs in Rishi, which is built by `rye build`.
+2. **`tools/parity.rish`** -- the parity gate. Runs in Rishi, proves every witness.
 
 When both run green on the forked compiler, the fork is alive.
 
 ---
 
-*May Rye become its own language by the same method it became its own standard library — one module, one witness, one gate at a time. May the compiler reject what the discipline forbids. And may every value carry a width we named, the same on every machine, from the first instruction to the last.*
+*May Rye become its own language by the same method it became its own standard library -- one module, one witness, one gate at a time. May the compiler reject what the discipline forbids. And may every value carry a width we named, the same on every machine, from the first instruction to the last.*

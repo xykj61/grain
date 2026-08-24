@@ -1,14 +1,14 @@
-# STOA171 — Shape-Hepta Dual Desk
+# STOA171 -- Shape-Hepta Dual Desk
 
 *An Acme Corporation employee reading this gets the seven-field `$:` forward dual on the Glow OS shape rename itinerary: `shape-hepta` beside `mold-hepta`. Cast twins stay held.*
 
 **Language:** EN  
-**Version:** `20260721.012229` (UDT · Framework host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260721.012229` (UDT - Framework host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Checkable — bound by `glow_run`  
-**Register:** Checkable (Two Rooms) — `shape-hepta` dual GREEN · mold twin kept · cast held  
-**Grounds in:** [`20260721-012029_stoa170-shape-hexa-dual-desk.md`](20260721-012029_stoa170-shape-hexa-dual-desk.md) · [`20260721-004523_stoa158-hepta-shape-alias.md`](20260721-004523_stoa158-hepta-shape-alias.md)
+**Status:** Checkable -- bound by `glow_run`  
+**Register:** Checkable (Two Rooms) -- `shape-hepta` dual GREEN - mold twin kept - cast held  
+**Grounds in:** [`20260721-012029_stoa170-shape-hexa-dual-desk.md`](20260721-012029_stoa170-shape-hexa-dual-desk.md) - [`20260721-004523_stoa158-hepta-shape-alias.md`](20260721-004523_stoa158-hepta-shape-alias.md)
 
 **dated_guard:** Do **not** rewrite dated mold briefs. Do **not** delete `mold-hepta`. No whole-tree sed.
 
@@ -24,7 +24,7 @@
 
 | Item | Proof |
 |------|-------|
-| `shape-hepta.glow` → `+$ hepta-shape` | `glow_run` |
+| `shape-hepta.glow` -> `+$ hepta-shape` | `glow_run` |
 | `mold-hepta` kept | desk unchanged |
 
 Lower emits `HeptaShape` parallel to `HeptaMold`.
@@ -36,7 +36,7 @@ Lower emits `HeptaShape` parallel to `HeptaMold`.
 | Item | Why |
 |------|-----|
 | **STOA172** `shape-octa` dual | inventary |
-| Multi-field named-cast | lower widen — separate |
+| Multi-field named-cast | lower widen -- separate |
 | Sala B0 | behind rename finishing edge |
 
 ---

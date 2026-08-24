@@ -1,15 +1,15 @@
-# STOA208 — Fact-Line Cast Import
+# STOA208 -- Fact-Line Cast Import
 
 *An Acme Corporation employee reading this gets the cross-desk named-cast that imports `shape-fact-line` and casts `^- fact-line-shape`.*
 
 **Language:** EN  
-**Version:** `20260721.192700` (UDT · Framework host)  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Version:** `20260721.192700` (UDT - Framework host)  
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Checkable — GREEN `20260721.192700`  
-**Register:** Checkable (Two Rooms) — import cast GREEN; `@t` fact capacity debt stays  
+**Status:** Checkable -- GREEN `20260721.192700`  
+**Register:** Checkable (Two Rooms) -- import cast GREEN; `@t` fact capacity debt stays  
 
-**Grounds in:** [`20260721-192558_stoa207-fact-line-cast-twin.md`](20260721-192558_stoa207-fact-line-cast-twin.md) · STOA175/176 import-cast pattern
+**Grounds in:** [`20260721-192558_stoa207-fact-line-cast-twin.md`](20260721-192558_stoa207-fact-line-cast-twin.md) - STOA175/176 import-cast pattern
 
 **dated_guard:** Do **not** claim mold twin, real hex literals, or wire into `glow_sala_b0_line`. JABS3 held.
 
@@ -17,7 +17,7 @@
 
 ## Verdict (one breath)
 
-**FACT_LINE_IMPORT.** `glow/gen/cast-import-fact-line.glow` — `/+ shape-fact-line` then `^- fact-line-shape`. `glow_run` GREEN; desk suite pin seated.
+**FACT_LINE_IMPORT.** `glow/gen/cast-import-fact-line.glow` -- `/+ shape-fact-line` then `^- fact-line-shape`. `glow_run` GREEN; desk suite pin seated.
 
 ---
 

@@ -2,15 +2,15 @@
 
 **Language:** EN
 **Last updated:** 2026-08-03
-**Style:** Radiant (see `RADIANT_STYLE.md`)
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Riyo
-**Status:** Living — witnessed once, end to end, on a Seattle instance; reached and driven from a Daylight DC-1 tablet via Termux, Cursor CLI signed in (Keaton, 20260803)
-**Home:** `nixos-guide/` — seated by Keaton's word, guide 0 of the series
+**Status:** Living -- witnessed once, end to end, on a Seattle instance; reached and driven from a Daylight DC-1 tablet via Termux, Cursor CLI signed in (Keaton, 20260803)
+**Home:** `nixos-guide/` -- seated by Keaton's word, guide 0 of the series
 **Gratitude:** first drafted whole by a sibling counsel session; reworked here with thanks
 
 ---
 
-A pier is a small public machine that belongs entirely to its keeper: declared in a handful of files, reachable from anywhere, and rebuildable in minutes because its whole character lives in text rather than in the accumulated history of a disk. This guide stands one such pier from a tablet alone — no laptop within reach, no desk, no second machine. A terminal in one hand, a browser in the other, and a road walked in ten movements.
+A pier is a small public machine that belongs entirely to its keeper: declared in a handful of files, reachable from anywhere, and rebuildable in minutes because its whole character lives in text rather than in the accumulated history of a disk. This guide stands one such pier from a tablet alone -- no laptop within reach, no desk, no second machine. A terminal in one hand, a browser in the other, and a road walked in ten movements.
 
 The finished machine runs NixOS from a flake of about sixty lines, answers over both IPv4 and IPv6, greets a roaming terminal through a session that survives sleep, and carries an agent that keeps thinking while the tablet rests. The whole road takes something near an hour, and the metered cost of the instance while it is walked comes to roughly forty cents.
 
@@ -24,11 +24,11 @@ First we prepare the hands: a key born on the tablet, a public half carried to t
 
 Then we raise a springboard. The cloud panel offers Ubuntu, so we take a well-witnessed release and use it for exactly one purpose: to fetch a NixOS installer that runs entirely from memory and to leap into it. The springboard's own filesystem never matters, because the disk beneath it is about to be shaped fresh.
 
-Finally, from inside that memory-held installer, we declare the machine we actually want, partition the disk to match, and write the whole system down. The pier reboots into its own name, and everything we asked for — the firewall lane, the packages, the keys — arrives already true, because the flake said so before the system ever booted.
+Finally, from inside that memory-held installer, we declare the machine we actually want, partition the disk to match, and write the whole system down. The pier reboots into its own name, and everything we asked for -- the firewall lane, the packages, the keys -- arrives already true, because the flake said so before the system ever booted.
 
 ---
 
-## Movement 1 — The Key at Home
+## Movement 1 -- The Key at Home
 
 The key is born on the tablet and stays there. Only its public half ever travels.
 
@@ -40,19 +40,19 @@ ssh-keygen -lf ~/.ssh/id_ed25519_dc1.pub
 
 The ed25519 family gives short keys with strong guarantees; the hundred rounds harden the passphrase that protects the private half; the comment names which hand holds it, which matters the day three keys share one server.
 
-That third line prints the fingerprint — a short witness, safe to send through any channel, useful later for confirming the right key landed. The cloud panel, however, asks for the key itself:
+That third line prints the fingerprint -- a short witness, safe to send through any channel, useful later for confirming the right key landed. The cloud panel, however, asks for the key itself:
 
 ```
 cat ~/.ssh/id_ed25519_dc1.pub
 ```
 
-One line beginning `ssh-ed25519 AAAA…` and ending with the comment. That line is what gets pasted into the account, under SSH Keys, where every future instance can draw from it.
+One line beginning `ssh-ed25519 AAAA...` and ending with the comment. That line is what gets pasted into the account, under SSH Keys, where every future instance can draw from it.
 
 ---
 
-## Movement 2 — The Instance
+## Movement 2 -- The Instance
 
-The deploy form asks a dozen questions, and for this mission most of them want the quiet answer. A shared-CPU plan with two cores and four gigabytes of memory clears every floor the install asks for, with headroom. The operating system is Ubuntu at a mature long-term release — the springboard's only task is to hold still for a single leap, so an elder release beats a fresh one. Select every SSH key that should reach the machine.
+The deploy form asks a dozen questions, and for this mission most of them want the quiet answer. A shared-CPU plan with two cores and four gigabytes of memory clears every floor the install asks for, with headroom. The operating system is Ubuntu at a mature long-term release -- the springboard's only task is to hold still for a single leap, so an elder release beats a fresh one. Select every SSH key that should reach the machine.
 
 Startup Script stays empty and Firewall Group stays unselected, and this pair deserves a sentence. With no firewall group attached, the provider places no filter in front of the instance, which leaves the SSH port open for the install and the roaming-terminal lane open afterward. The guard returns later as configuration you can read, declared in the flake, brought up by the new system itself.
 
@@ -62,7 +62,7 @@ The hostname field can rest empty, since it dies at the wipe and the flake decla
 
 ---
 
-## Movement 3 — First Knock, and the Agent That Remembers
+## Movement 3 -- First Knock, and the Agent That Remembers
 
 Two small pieces of configuration on the tablet turn every later knock into silence. First, names for the pier, in `~/.ssh/config`:
 
@@ -94,7 +94,7 @@ if [ $? -eq 2 ]; then
 fi
 ```
 
-The shape is deliberate: every session exports one fixed socket, asks the agent whether it lives, and starts a new one only when the answer is truly *unreachable* — exit code two, captured before anything else touches it. An agent already running with an empty keyring answers one and is left in peace.
+The shape is deliberate: every session exports one fixed socket, asks the agent whether it lives, and starts a new one only when the answer is truly *unreachable* -- exit code two, captured before anything else touches it. An agent already running with an empty keyring answers one and is left in peace.
 
 Seat it, then speak the passphrase once for the whole run:
 
@@ -114,7 +114,7 @@ A note for the roaming terminal, should you want it on the springboard as well: 
 
 ---
 
-## Movement 4 — The Leap
+## Movement 4 -- The Leap
 
 The installer we want runs from memory and touches no disk, which is exactly why it can shape the disk beneath it. Three commands on the springboard:
 
@@ -126,7 +126,7 @@ tar -xzf /root/kexec.tar.gz -C /root
 
 The last one replaces the running kernel with the installer's, carrying the network settings and the authorized keys across on its own.
 
-Expect one small illusion here. The old kernel vanishes mid-flight without sending a farewell, so the terminal keeps holding a socket with no one on the other end — a prompt that looks alive and is a ghost. Close it deliberately with **Enter**, then **`~`**, then **`.`**, wait a minute, and knock again. The host key is newborn, so retire the old one first:
+Expect one small illusion here. The old kernel vanishes mid-flight without sending a farewell, so the terminal keeps holding a socket with no one on the other end -- a prompt that looks alive and is a ghost. Close it deliberately with **Enter**, then **`~`**, then **`.`**, wait a minute, and knock again. The host key is newborn, so retire the old one first:
 
 ```
 ssh-keygen -R <instance-ip>
@@ -138,7 +138,7 @@ The prompt will claim to be the installer; ask the machine anyway. `nixos-instal
 
 ---
 
-## Movement 5 — The Guard
+## Movement 5 -- The Guard
 
 Before any work at all, raise a session that outlives the connection. A tablet sleeps, a network roams, and a long install has no business dying for either.
 
@@ -157,9 +157,9 @@ One habit belongs beside the guard, and it saves more time than it costs: **one 
 
 ---
 
-## Movement 6 — The Three Files
+## Movement 6 -- The Three Files
 
-Here the machine gets described. Three files, written once, and then the directory is left alone — a point Movement 7 explains.
+Here the machine gets described. Three files, written once, and then the directory is left alone -- a point Movement 7 explains.
 
 ```
 mkdir -p /root/pier && cd /root/pier
@@ -186,7 +186,7 @@ cat > flake.nix << 'EOF'
 EOF
 ```
 
-The disk layout aims at the virtio device these instances present, and it carries seats for both firmware styles — a one-megabyte partition for legacy boot beside a five-hundred-megabyte EFI partition — so the same file boots whichever firmware the host offers:
+The disk layout aims at the virtio device these instances present, and it carries seats for both firmware styles -- a one-megabyte partition for legacy boot beside a five-hundred-megabyte EFI partition -- so the same file boots whichever firmware the host offers:
 
 ```
 cat > disk-config.nix << 'EOF'
@@ -255,7 +255,7 @@ Four lines in that file carry more weight than their length suggests. The guest 
 
 ---
 
-## Movement 7 — Partition and Mount
+## Movement 7 -- Partition and Mount
 
 One command shapes the disk and mounts it where the installer expects:
 
@@ -277,11 +277,11 @@ One line follows, and it earns its own paragraph:
 rm -rf /root/.cache/nix
 ```
 
-The command above wrote a lock file into `/root/pier`, and a flake directory's contents are part of its identity — so the hash remembered from the moment *before* the lock existed no longer matches the directory that now holds it. Clearing that memory lets the next command read the flake as it truly is. This single line replaces a whole evening of confusion, and it costs nothing.
+The command above wrote a lock file into `/root/pier`, and a flake directory's contents are part of its identity -- so the hash remembered from the moment *before* the lock existed no longer matches the directory that now holds it. Clearing that memory lets the next command read the flake as it truly is. This single line replaces a whole evening of confusion, and it costs nothing.
 
 ---
 
-## Movement 8 — Room to Build
+## Movement 8 -- Room to Build
 
 The installer lives in memory, and so does its package store until the disk is mounted. Give the build real room before asking it to work. First reclaim whatever the fetching has already consumed:
 
@@ -304,7 +304,7 @@ Four gigabytes of memory with four of swap beside it turns a wall into a corrido
 
 ---
 
-## Movement 9 — The Install, and the Law of the Witnessed Zero
+## Movement 9 -- The Install, and the Law of the Witnessed Zero
 
 Point the build's scratch space at the real disk, so every byte it fetches lands on the platter rather than in memory:
 
@@ -334,7 +334,7 @@ reboot
 
 ---
 
-## Movement 10 — The Pier Answers
+## Movement 10 -- The Pier Answers
 
 The host key is reborn one last time, so retire the old one and knock:
 
@@ -381,7 +381,7 @@ Ten movements, and beneath them a handful of disciplines that generalize far pas
 
 **Keep an out-of-band eye.** The provider's console window shows the machine's actual screen with no network involved, which turns every dark moment from a guess into a plain reading.
 
-**Nothing precious aboard means every branch ends well.** A machine whose whole character lives in three files can be wiped and rebuilt without hesitation, so the honest response to a deep failure is often the rebuild rather than the surgery — minutes rather than an evening, and the flake makes that trade sound.
+**Nothing precious aboard means every branch ends well.** A machine whose whole character lives in three files can be wiped and rebuilt without hesitation, so the honest response to a deep failure is often the rebuild rather than the surgery -- minutes rather than an evening, and the flake makes that trade sound.
 
 ---
 

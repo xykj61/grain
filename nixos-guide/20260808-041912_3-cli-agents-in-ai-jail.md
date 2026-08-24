@@ -1,17 +1,17 @@
-# CLI Agents in ai-jail — cursor-agent and claude on the Keeper Pier
+# CLI Agents in ai-jail -- cursor-agent and claude on the Keeper Pier
 
 **Language:** EN  
 **Stamp:** `20260808.041912`  
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)  
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Riyo  
-**Status:** Witnessed on the Vultr SEA pier `20260808.041912` — `./tools/agent_jail_witness.sh` GREEN · jailed `claude -p pong` GREEN · auth persist GREEN `20260808.062123` (`~/.config/cursor` → `.cursor-agent-state/xdg-config/`)  
+**Status:** Witnessed on the Vultr SEA pier `20260808.041912` -- `./tools/agent_jail_witness.sh` GREEN - jailed `claude -p pong` GREEN - auth persist GREEN `20260808.062123` (`~/.config/cursor` -> `.cursor-agent-state/xdg-config/`)  
 **Follows:** guide 2, `20260803-165931_2-github-hands-and-a-thinking-pier.md`
 
 *Written together by Keaton and Riyo.*
 
 ---
 
-Guide 2 left `gh` and Claude Code on the steward's PATH. This note wraps those CLI agents — and Cursor's `cursor-agent` — in the same **ai-jail** posture the house already uses for the Cursor GUI: `--private-home`, project-local auth, jail-local git keys under `~/grain`.
+Guide 2 left `gh` and Claude Code on the steward's PATH. This note wraps those CLI agents -- and Cursor's `cursor-agent` -- in the same **ai-jail** posture the house already uses for the Cursor GUI: `--private-home`, project-local auth, jail-local git keys under `~/grain`.
 
 ## Why a separate launcher
 
@@ -61,9 +61,9 @@ Witness (ordinary host shell, not already jailed):
 | `~/.config/cursor` (OAuth `auth.json`) | `.cursor-agent-state/xdg-config/` |
 | `GH_CONFIG_DIR` | `.gh/` |
 
-**Browser login every launch is not the steady state.** `cursor-agent` keeps the session token in `~/.config/cursor/auth.json`. Under `--private-home` that path is tmpfs unless mapped — the launcher maps it to `.cursor-agent-state/xdg-config/` and, when that store is empty, seeds once from the host’s `~/.config/cursor/` if present. After one successful login (jailed or host-seeded), later `./tools/agent-jail.sh agent` / `--resume=…` starts should stay signed in. Never commit those state dirs.
+**Browser login every launch is not the steady state.** `cursor-agent` keeps the session token in `~/.config/cursor/auth.json`. Under `--private-home` that path is tmpfs unless mapped -- the launcher maps it to `.cursor-agent-state/xdg-config/` and, when that store is empty, seeds once from the host's `~/.config/cursor/` if present. After one successful login (jailed or host-seeded), later `./tools/agent-jail.sh agent` / `--resume=...` starts should stay signed in. Never commit those state dirs.
 
-Jail-local git identity stays under `.ssh/` and `.gnupg-rye/` — already inside the project mount.
+Jail-local git identity stays under `.ssh/` and `.gnupg-rye/` -- already inside the project mount.
 
 ## NixOS path note
 

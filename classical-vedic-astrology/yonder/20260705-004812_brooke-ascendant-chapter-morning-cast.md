@@ -2,7 +2,7 @@
 
 *Rests in yonder as of 20260705.020812: written on the morning cast; the corrected chart raises Capricorn without and Leo within, and these portraits now serve the essence door; see the supersession note.*
 
-**Stamp:** `20260705.004812 UDT`  -  **Language:** EN  -  **Style:** Radiant (see `RADIANT_STYLE.md`)
+**Stamp:** `20260705.004812 UDT`  -  **Language:** EN  -  **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Subject:** Brooke  -  morning-cast D1 ascendant Leo 18 deg03', Ashlesha  -  morning-cast D9 ascendant Virgo 12 deg34', Purva Phalguni
 
 *Written together by Kaeden and Rio 3.*

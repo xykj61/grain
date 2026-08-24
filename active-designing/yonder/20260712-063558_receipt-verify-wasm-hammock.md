@@ -1,13 +1,13 @@
-# Component Compile Lap — receipt-verify under Wasmtime
+# Component Compile Lap -- receipt-verify under Wasmtime
 
-*First portable seam green: `receipt_core`’s pinned verify path as a `wasm32-freestanding` guest under Wasmtime. WIT world `receipt-verify` is the contract; core ABI exports are isomorphic for lap one. Full component packaging accretes later.*
+*First portable seam green: `receipt_core`'s pinned verify path as a `wasm32-freestanding` guest under Wasmtime. WIT world `receipt-verify` is the contract; core ABI exports are isomorphic for lap one. Full component packaging accretes later.*
 
 **Stamp:** `20260712.063558`
 **Language:** EN
-**Style:** Radiant (see `../context/RADIANT_STYLE.md`)
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Rio 3
-**Status:** Checkable-room — tip **432** · witness `tools/receipt_verify_wasm.rish`
-**Ground:** ER [`../external-research/20260712-054135_component-model-one-seed.md`](../../external-research/20260712-054135_component-model-one-seed.md) · `linengrow/receipt_core.rye` · Door 3 tip **431**
+**Status:** Checkable-room -- tip **432** - witness `tools/receipt_verify_wasm.rish`
+**Ground:** ER [`../external-research/20260712-054135_component-model-one-seed.md`](../../external-research/20260712-054135_component-model-one-seed.md) - `linengrow/receipt_core.rye` - Door 3 tip **431**
 
 ---
 

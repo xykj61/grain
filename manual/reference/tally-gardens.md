@@ -1,14 +1,14 @@
-# Tally Gardens — Reference
+# Tally Gardens -- Reference
 
 **Language:** EN
 **Version:** `20260702.205630`
-**Style:** Radiant (see `../../context/RADIANT_STYLE.md`)
+**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Rio 3
-**Witness:** `rye/tests/tally_gardens_test.rye` (via parity) · `tools/f/foundation_seeds.rish` · parity **142**
+**Witness:** `rye/tests/tally_gardens_test.rye` (via parity) - `tools/f/foundation_seeds.rish` - parity **142**
 
 ---
 
-This page documents only what the gardens witness and foundation-seed gate prove — named bounded memory regions for hosted modules.
+This page documents only what the gardens witness and foundation-seed gate prove -- named bounded memory regions for hosted modules.
 
 ## Witness paths
 
@@ -27,8 +27,8 @@ Expect `tally gardens: all facts held` in output when `tally/bin/tally-gardens` 
 A **Region** is bump allocation inside a fixed byte buffer:
 
 - `alloc(n)` advances `pos`; returns a slice
-- Past the edge → **`OutOfBounds`** (named error, not silent corruption)
-- `clear()` resets `pos` to zero — the season ends, the same backing store may begin again
+- Past the edge -> **`OutOfBounds`** (named error, not silent corruption)
+- `clear()` resets `pos` to zero -- the season ends, the same backing store may begin again
 - **Invariant:** `pos <= buf.len` at every mutation
 
 ## Gardens (witnessed)
@@ -38,7 +38,7 @@ A **Gardens** holds up to **8** named regions (`max_gardens`):
 | Rule | Witnessed |
 |------|-----------|
 | Every garden has a non-empty name | yes |
-| Name length ≤ **32** | yes |
+| Name length <= **32** | yes |
 | No duplicate names | asserted at add |
 | Lookup by name | returns region or absent |
 
@@ -50,11 +50,11 @@ A **Gardens** holds up to **8** named regions (`max_gardens`):
 | `diff` | line buffer for LCS diff |
 | `frame` | Brushstroke widget tree per redraw |
 
-The witness exercises add/get/clear/overflow — not every production name in every build path.
+The witness exercises add/get/clear/overflow -- not every production name in every build path.
 
 ## Chronological version
 
-`tally_gardens_version = "20260620.211712"` — carried in the seed source.
+`tally_gardens_version = "20260620.211712"` -- carried in the seed source.
 
 ---
 
