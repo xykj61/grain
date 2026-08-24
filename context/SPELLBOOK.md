@@ -22,6 +22,7 @@ A spell is a single word that names a whole, repeatable gesture. Where ordinary 
 | **align** | reconcile the plan with what is actually true, then fix the plan | `.claude/rules/align.md` |
 | **molt** | prep a dated writing's fossil onto the shred list — opens no cut | `.claude/rules/molt.md` |
 | **shred** / **shed** | the authorized cut of a fossil that has a living mutant | `.claude/rules/molt.md` · SHRED_PREP |
+| **mitra shed prep** | a fossil seen off like a friend -- mutant seated, living citers repointed, banner on its face, row written -- and the cut still RED | `construction/SHRED_PREP.md` Class M |
 | **debride** | the sanctioned break of accrete-never-break — remove named dead history | `.claude/rules/debride.md` |
 | **checkpoint** | mark the way back before a debride rewrites a living card | `.claude/rules/checkpoint.md` |
 | **baton** | write a handoff to disk so the vision survives a context reset | handoff batons in `expanding-prompts/` |

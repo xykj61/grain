@@ -28,6 +28,7 @@
 | **A** | Fund-lineage elder anchors (MUR u89–u91) · held disclosed on fascia i8 | Content yes · cut no · hold not exclude |
 | **H** | Horizon **writing fossils** replaced by a **living mutant** | Prep only · shred RED |
 | **O** | Unreachable testimony — no file in the tree names it (basename floor) | Word-scope on **class/rooms** · cut still RED |
+| **M** | **Mitra shed prep** — a fossil with a living mutant seated, its living citers repointed, and a banner on its face. Prepared like a friend rather than cut like a weed: the elder stays readable and every reference still lands. | Prep complete · cut still RED |
 | **W** | **Walked, cited, kept** — a named set examined against the shed conditions on a stamp and held, so a later pass reads the row rather than re-walking | Cut refused, with the measurement recorded |
 
 Class **H** is for Grep + Amphora later. It is **not** Class A.  
@@ -253,3 +254,32 @@ The standing voice note was rewritten from Radiant into **Gauge at its Door sett
 **Nothing enters the shred queue from this molt.** Recorded here so a later pass reads the decision instead of hunting for a fossil that was never made.
 
 *A living path molts in place under a checkpoint; a dated writing molts into a mutant and leaves a fossil. The two are different moves, and this row exists to keep them from being confused.*
+
+---
+
+## Class M -- mitra shed prep
+
+*Mitra is the deity of Anuradha in the roster this tree keeps time by, and the gloss is **the friendship kept in order**. A mitra shed prep treats a fossil as a friend being seen off rather than a weed being pulled: the living mutant seats first, the living citers repoint, the fossil gets a banner naming where the reading moved, and **the fossil stays on disk unchanged**. The cut stays RED until Keaton circles it, and it may never come -- a well-prepped fossil costs a directory entry and keeps a season readable.*
+
+**The four things a mitra prep completes**, all before any cut is discussed:
+
+1. **The mutant is seated** at a fresh one-clock stamp and reads as the living page.
+2. **Living citers are repointed** at the mutant; dated testimony keeps every word it wrote.
+3. **The fossil wears a banner** at the top naming the living page and what changed.
+4. **The row is written here**, with the measurement, so a later pass reads rather than re-walks.
+
+### M1 -- `foundations/20260618-182412_single-stranded.md` (`20260823.204456`)
+
+| Reading | Value |
+| --- | --- |
+| Living mutant | [`../foundations/20260823-204456_single-stranded.md`](../foundations/20260823-204456_single-stranded.md) |
+| Register | Radiant **23%** negative sentences -> Gauge Door **9%** |
+| Citing files, total | 29 |
+| Living citers repointed | **6** |
+| Dated citers left as written | 23 |
+| Fossil banner | seated |
+| Cut | **RED** -- awaiting Keaton's word |
+
+Every claim, module name, and argument carries over. The elder is the record of how the finding read in Radiant on `20260618.182412`; the mutant is how it reads now.
+
+**One red rode along and is worth reading beside this row.** Repointing the living citers by hand used the pattern `^\d{8}-\d{6}_` to tell testimony from living prose, which requires a sprig the session-logs law makes optional -- so two dated logs were rewritten and reverted. The tree's own canonical seam carried the same error, leaving 237 logs classified as living and open to the dated-path repointer. **REDS %175.**

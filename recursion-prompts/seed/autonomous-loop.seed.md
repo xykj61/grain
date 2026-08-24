@@ -91,7 +91,7 @@ the new thing, hold the line -- with dual as the mediator between them.
 | | **Cardinal** -- opens | **Fixed** -- holds | **Dual** -- adapts |
 |---|---|---|---|
 | **Aether - Jupiter** *why the work exists* | `foundations/20260706-185112_follow-our-compass.md` | `foundations/20260811-211431_the-lindy-effect-and-the-long-return.md` | `foundations/20260702-184312_the-grain-and-the-crossing.md` |
-| **Air - Saturn** *law and boundary* | `context/TAME_CORE.md` | `foundations/20260618-182412_single-stranded.md` | `context/GAUGE_STYLE.md` |
+| **Air - Saturn** *law and boundary* | `context/TAME_CORE.md` | `foundations/20260823-204456_single-stranded.md` | `context/GAUGE_STYLE.md` |
 | **Fire - Mars** *cut and stop* | `foundations/20260816-214652_standfast-the-stopped-line.md` | `foundations/20260729-224828_reds-first-and-the-allocation.md` | `foundations/20260818-081438_the-three-depths-of-removal.md` |
 | **Water - Venus** *care and flow* | `foundations/20260823-105651_the-shape-you-grew-and-the-shape-you-are.md` | `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` | `foundations/20260618-184912_growing-a-language.md` |
 | **Earth - Mercury** *the concrete* | `context/specs/20260627-102012_one-clock-naming-law.md` | `context/TWO_ROOMS.md` | `foundations/20260703-202312_the-marked-value.md` |
@@ -247,7 +247,7 @@ A tripwire is not a stop -- it is a design round you **approve for yourself** an
 
 A `.bron`/`.kyri` session log per round (`session-logs/`), a newest-first row in `session-logs/README.md`, and ITINERARY's Now refreshed. The round summary is the agent's account in Kyri's voice. The log's `recommend` line names the next concrete rung -- it is the baton the next lap reads first (section 1, *Running thread*), so write it as a clear handoff, not a closing flourish.
 
-**Single strand each.** The **logs are the record of what was done**; **ITINERARY is the live card of what is next**. Keep them single-stranded (`foundations/20260618-182412_single-stranded.md`) -- never let ITINERARY swell into a second copy of the log index. A round refreshes ITINERARY's *Now* to point at live work; it does not re-list into ITINERARY the finished laps the logs already hold.
+**Single strand each.** The **logs are the record of what was done**; **ITINERARY is the live card of what is next**. Keep them single-stranded (`foundations/20260823-204456_single-stranded.md`) -- never let ITINERARY swell into a second copy of the log index. A round refreshes ITINERARY's *Now* to point at live work; it does not re-list into ITINERARY the finished laps the logs already hold.
 
 **Boundary condense-and-reaim.** When a set completes -- a round-set, quest, journey, equinox, or season -- and the scope's crux to-do items are all hit, run one condense pass before opening the next set:
 

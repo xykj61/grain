@@ -147,7 +147,7 @@ Dated briefs carry `YYYYMMDD-HHMMSS_short-sprig.md` filenames; this README is th
 | `20260618-224612` | [Rooted Identity — One Root, a Derived Tree](yonder/20260618-224612_rooted-identity.md) | Horizon — unified identity kin; in `yonder/` |
 | `20260618-184912` | [996 · How We Grow a Language — Rishi on Rye, and One Style for the Family](../foundations/20260618-184912_growing-a-language.md) | We have grown one language already, Rye, and the way we did it is a method we can reuse. This brief draws that method out plainly, applies i |
 | `20260618-184912` | [997 · The Recommended Path for the Core Names](yonder/20260618-184912_recommended-architecture.md) | A clean-room architecture brief for our core modules — TAME, Rye, Brix, Tablecloth, Tally, Caravan, and Aurora — reasoning the recommended d |
-| `20260618-182412` | [995 · Single-Stranded — The Enclosure and the Family, Read for What Stands Free](../foundations/20260618-182412_single-stranded.md) | We hold a distinction worth keeping close: the **simple** and the **easy** are different things. This brief takes the architecture we have b |
+| `20260618-182412` | [995 · Single-Stranded — The Enclosure and the Family, Read for What Stands Free](../foundations/20260823-204456_single-stranded.md) | We hold a distinction worth keeping close: the **simple** and the **easy** are different things. This brief takes the architecture we have b |
 | `20260618-085812` | [998 · A Strategy for Strengthening Rye, and the Next Step to Take](yonder/20260618-085812_strengthening-strategy.md) | The standing strategy for our strengthening work. Gates realized; effort dormant in `yonder/`. |
 ## Redirect stubs
 
