@@ -134,6 +134,37 @@ if test "$mech_found" -lt "$mech_need"; then
   echo "            Rule: .claude/rules/mechanism-sentence.md"
 fi
 
+# --- Rule four: a path named in the body is a path that exists ----------------------------------
+#
+# WHY. On 20260824 a commit body cited `session-logs/20260824-165520_the-grade-a-writer-can-aim-at.kyri`
+# and the log on disk was `20260824-164559_...`. The stamp was written from memory rather than read,
+# in the round that seated Truth as the gate of a report card. A commit message is permanent
+# testimony, so a path invented there stays wrong forever and no other guard reaches it:
+# tracked_link_scan.sh reads links inside FILES, and a commit body is not a file in the tree.
+#
+# WHAT IS CHECKED. Every path in the body that looks like one of this tree's own -- a slash, and an
+# extension this tree writes -- must exist in the working tree. Nothing else: a path inside a fenced
+# block, a URL, and a bare word are all read past, because the fault this closes is a fabricated
+# citation rather than a typo anywhere.
+paths=$(printf '%s\n' "$body" | sed -e 's/`/ /g' -e 's/[(),;]/ /g' \
+  | tr ' ' '\n' \
+  | grep -E '^[A-Za-z0-9._-]+/[A-Za-z0-9._/-]+\.(md|mdc|kyri|bron|rish|rye|brix|sh|json|txt)$' \
+  | sort -u)
+missing=""
+for pth in $paths; do
+  test -e "$pth" || missing="$missing $pth"
+done
+if test -n "$missing"; then
+  fail=1
+  echo "commit-msg: REFUSED -- the body cites a path that is not in the tree."
+  echo
+  for pth in $missing; do echo "              $pth"; done
+  echo
+  echo "            Read the path rather than recalling it. A commit message is permanent"
+  echo "            testimony, so a citation invented here stays wrong forever."
+  echo "            Rule: .claude/rules/mechanism-sentence.md -- References are promises."
+fi
+
 if test "$fail" -ne 0; then
   echo
   echo "commit-msg: the message is unchanged on disk -- edit it and commit again."

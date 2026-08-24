@@ -66,6 +66,17 @@ check accept url-at          'docs: see https://user@example.com/path for the no
 check accept git-comments    'context: a subject\n\n# Please enter the commit message.\n# On branch main'
 check accept verbose-diff    'context: a subject\n\n# ------------------------ >8 ------------------------\ndiff --git a/x b/x\n+let n = arr[#3]'
 
+# --- a cited path is a path that exists -------------------------------------------
+# Added 20260824 with REDS %202. A commit body cited a session log by a stamp written from
+# memory, the log on disk carried a different one, and nothing reached it: tracked_link_scan.sh
+# reads links inside FILES, and a commit body is not a file in the tree. Both directions matter --
+# the real paths below are the cases a careless check would refuse.
+check refuse invented-log   'context: a subject\n\nThe file session-logs/20260101-010101_never-written.kyri holds the function parameter change.'
+check refuse invented-tool  'tools: a subject\n\nThe script tools/z/no_such_witness.rish calls the new function with one parameter.'
+check accept real-path      'context: a subject\n\nThe file README.md gained one function parameter in the module.'
+check accept real-nested    'tools: a subject\n\nThe script tools/hooks/commit-msg gained one function reading a parameter.'
+check accept bare-word      'context: a subject\n\nThe caravan module gained one function parameter and one import.'
+
 # --- the mechanism sentence: a body says what changed before what it means ---------
 # Added 20260822 with `.claude/rules/mechanism-sentence.md`. Proven in depth by
 # `tools/m/mechanism_sentence_witness.rish`; the two cases here keep this roster honest about
