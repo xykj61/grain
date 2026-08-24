@@ -1,0 +1,60 @@
+# tools/s/sow_lock_witness.rish -- one projection at a time, so no gate reads a half-built seed.
+#
+#   rishi/bin/rishi run tools/s/sow_lock_witness.rish
+#
+# WHY. tools/fixtures/sow_project.sh clears seed/ and rebuilds it, so while it runs the
+# directory is a partial tree. On 20260824 a projection run beside the standing roster --
+# whose own `sow` guard re-projects -- reported `copied=1644` where the same tree alone
+# gives 6,961, a 76% shortfall that reads exactly like an allowlist that stopped matching
+# after a fold. It took knowing the expected number to tell a race from a regression, and
+# a number nobody can tell apart from a real fault is a false red waiting to be booked.
+#
+# The misread is the cheap half. seed/ is the PUBLIC face: sow_leak_scan.sh, sow_witness.rish,
+# and publish-seed.sh all gate on what stands in that directory, and a gate that reads a tree
+# still being written has examined a set nobody chose. IDENT_CLEAN over a partial projection
+# is a true statement about the wrong corpus, and it is the one direction the seed's whole
+# discipline exists to make impossible. REDS %193.
+#
+# WHAT IS GATED. The lock refuses rather than queues: a second projection exits 3 and names
+# the holding pid, because a queued run would still hand its reader a number from a tree that
+# changed underneath them. The lock is a DIRECTORY, since mkdir is atomic on every POSIX
+# filesystem where a two-step test-then-create is not, and a lock left behind by a killed run
+# names its dead pid so the next run clears it rather than wedging forever.
+#
+# WHY THIS RUNS THE CONTROL IN `fast` MODE, said plainly rather than left as a silent cap.
+# The full control proves six behaviors and takes 171 seconds, because release-on-exit is only
+# true if the script reaches its exit, and reaching it means one real projection. The four
+# refusals it runs here take about a second. Release-on-exit is NOT left unproven by that
+# choice: tools/s/sow_witness.rish runs the projection on every roster pass, so a lock leaked
+# by an earlier run makes that projection refuse with exit 3 and turns `sow` red. Two guards,
+# one property, and the expensive half runs on demand:
+#
+#   sh tools/fixtures/sow_lock_control.sh          # all six, 171s
+#
+# WHAT IT DOES NOT REACH. Whether the projection's OUTPUT is correct -- `sow` proves that,
+# and the leak scan proves it carries no identity. This proves only that two of them cannot
+# run at once over one directory.
+
+say "sow-lock: Language EN -- one projection at a time, so a gate never reads a tree that is still being written."
+say "sow-lock: Style Gauge, Meter -- every count below is the control's own output, read from a run rather than recited here."
+say "sow-lock: Lens TAME -- safety first: the refusal is proven on metal, and the one behavior this fast pass skips is named and gated by another guard rather than left silent."
+
+let control = run ["sh" "tools/fixtures/sow_lock_control.sh" "fast"]
+say control.out
+assert control.ok else "sow-lock: the control must complete"
+assert control.out contains "control_mode=fast" else "sow-lock: the fast pass must be the one that ran, so the timing claim above stays true"
+assert control.out contains "control_fail=0" else "sow-lock: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "sow-lock: the control must agree with itself"
+assert control.out contains "1 bitten: a second projection refuses while a live holder has the lock -- ok" else "sow-lock: a concurrent projection must be refused, or seed/ is built twice at once"
+assert control.out contains "2 bitten: the refusal names the holding pid -- ok" else "sow-lock: the refusal must name who holds the lock, so a reader knows what to look for"
+assert control.out contains "3 bitten: the refusal exits 3 rather than 0 or 1 -- ok" else "sow-lock: a refusal must be distinguishable from a projection that merely failed"
+assert control.out contains "4 bitten: the refusal leaves the holder's lock standing -- ok" else "sow-lock: a refused run must never steal the lock it was refused by"
+
+# The lock must be released: a lock standing with no projection running would refuse every
+# future run, including publish-seed.sh. Read from the tree rather than from the control.
+let stale = run ["sh" "-c" "test -d seed.projection.lock && echo held || echo free"]
+say stale.out
+assert stale.out contains "free" else "sow-lock: a projection lock stands with no projection running -- clear seed.projection.lock"
+
+say ""
+say "GREEN: sow-lock -- two projections cannot build seed/ at once, the refusal is proven on metal in four readings, the real lock stands clear, and release-on-exit is gated by sow on every roster pass."

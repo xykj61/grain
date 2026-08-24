@@ -1,5 +1,5 @@
 #!/bin/sh
-# sow_project.sh — project the clean public seed from the private field.
+# sow_project.sh -- project the clean public seed from the private field.
 #
 # POSIX seam (cp / sed / git-ls-files) per ORGANIZING's .sh boundary; driven by
 # tools/s/sow.rish, which reads template-manifest.bron. The mechanism named in
@@ -21,9 +21,47 @@
 #     gitignored bin/.cache dirs never reaches the seed.
 #
 # NOTE: the witness this feeds proves no identity STRING and no personal PATH
-# survive. It does not prove a full editorial privacy review — that is the
+# survive. It does not prove a full editorial privacy review -- that is the
 # human read that gates M4 (publish), never this mechanism alone.
+#
+# ONE PROJECTION AT A TIME (seated 20260824.104946, REDS %193). This script clears
+# seed/ and rebuilds it, so while it runs the directory is a partial tree. Anything
+# else reading seed/ in that window reads a half-answer: on 20260824 a projection run
+# beside the standing roster -- whose own `sow` guard re-projects -- reported
+# `copied=1644` against the 6,948 the same tree gives alone, a 76% shortfall that
+# reads exactly like an allowlist that stopped matching. The measurement was the only
+# thing wrong, and it took knowing the expected number to notice.
+#
+# The reading is the cheap half of the cost. The expensive half is that seed/ is the
+# PUBLIC face: sow_leak_scan.sh, sow_witness.rish, and publish-seed.sh all gate on
+# what stands in that directory, and a gate that reads a tree still being written has
+# examined a set nobody chose. IDENT_CLEAN over a partial projection is a true
+# statement about the wrong corpus.
+#
+# So the lock is a refusal rather than a wait: a second projection exits non-zero and
+# says who holds it, because a queued run would still hand the reader a number from a
+# tree that changed under them. Held in a directory rather than a file, since mkdir is
+# atomic on every POSIX filesystem where a two-step test-then-create is not. Released
+# on EXIT, INT, and TERM, and a lock left by a killed run names its dead pid so the
+# next run can clear it rather than wedge forever.
 set -eu
+
+LOCK="${SEED_LOCK_DIR:-seed.projection.lock}"
+if ! mkdir "$LOCK" 2>/dev/null; then
+  holder=$(cat "$LOCK/pid" 2>/dev/null || echo unknown)
+  if [ "$holder" != unknown ] && ! kill -0 "$holder" 2>/dev/null; then
+    # The holder is gone -- a killed run left the lock behind. Clear it and take it.
+    echo "sow: clearing a lock left by dead pid $holder" >&2
+    rm -rf "$LOCK"
+    mkdir "$LOCK" 2>/dev/null || { echo "sow: cannot take the projection lock" >&2; exit 3; }
+  else
+    echo "sow: a projection is already running (pid $holder) -- refusing to build seed/ twice at once" >&2
+    echo "sow: seed/ is rebuilt in place, so a second run would hand both readers a partial tree" >&2
+    exit 3
+  fi
+fi
+printf '%s\n' "$$" > "$LOCK/pid"
+trap 'rm -rf "$LOCK"' EXIT INT TERM
 
 MANIFEST="template-manifest.bron"
 SEED="seed"
@@ -64,13 +102,13 @@ for p in $PATHS; do
   is_subex "$p" && continue   # whole-path exclusion (e.g. linengrow)
   for f in $(git ls-files -- "$p"); do
     [ -f "$f" ] || continue
-    # File-granular exclusion — deliberate personal withhold inside a shared dir
+    # File-granular exclusion -- deliberate personal withhold inside a shared dir
     # (a foundations biography essay); the doctrine beside it still ships.
     if is_subex "$f"; then
       printf '%s\n' "$f" >> "$SEED/.sow-excluded.log"; continue
     fi
     dest="$SEED/$f"
-    # Key-material guard — refuse anything shaped like a key or a fingerprint
+    # Key-material guard -- refuse anything shaped like a key or a fingerprint
     # roster, whatever its verdict. context/PUBKEYS.md is the canonical committed
     # fingerprint file and lives inside a scrub dir; a name-scrub cannot catch a
     # fingerprint, so this basename guard is what withholds it. PUBKEYS.template.md
@@ -79,7 +117,7 @@ for p in $PATHS; do
       PUBKEYS.md|keys_*|*.pem|*.key|*.asc|*.gpg|*.sec|*.secret)
         printf '%s\n' "$f" >> "$SEED/.sow-withheld.log"; continue;;
     esac
-    # Embedded key material — a real pubkey or PGP block in any file, whatever
+    # Embedded key material -- a real pubkey or PGP block in any file, whatever
     # its name. Withheld for the M3 pass, which swaps real keys for placeholders.
     if grep -IqE 'ssh-(ed25519|rsa) AAAA|BEGIN (OPENSSH|PGP|RSA|EC) (PRIVATE|PUBLIC) KEY' "$f" 2>/dev/null; then
       printf '%s\n' "$f" >> "$SEED/.sow-withheld.log"; continue
