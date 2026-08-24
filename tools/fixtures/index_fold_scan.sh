@@ -135,8 +135,10 @@ echo "rooms_measured=$rooms"
 for pin in $pins; do
   room=${pin%%=*}
   bytes=${pin#*=}
-  if [ "$bytes" -gt "$MAX_BYTES" ]; then
-    echo "pin_over_bound=$room bytes=$bytes max=$MAX_BYTES"
+  # Per page, since one index may carry its own bound -- see REDS %205 and the law's exception.
+  page_max=$(sh "$(dirname "$0")/living_pin_max_bytes.sh" "$room/README.md" 2>/dev/null) || page_max="$MAX_BYTES"
+  if [ "$bytes" -gt "$page_max" ]; then
+    echo "pin_over_bound=$room bytes=$bytes max=$page_max"
   else
     echo "pin_ok=$room bytes=$bytes"
   fi

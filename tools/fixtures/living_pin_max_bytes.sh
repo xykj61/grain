@@ -9,7 +9,14 @@
 #
 # USAGE. From any caller, whatever its working directory:
 #
-#   MAX_BYTES=$(sh "$(dirname "$0")/living_pin_max_bytes.sh")
+#   MAX_BYTES=$(sh "$(dirname "$0")/living_pin_max_bytes.sh")                       # the general bound
+#   MAX_BYTES=$(sh "$(dirname "$0")/living_pin_max_bytes.sh session-logs/README.md) # that page's bound
+#
+# ONE READING, TWO NUMBERS. A page may carry its own bound where the general one would refuse it for
+# doing its job. The law states an exception as `living_pin_max_bytes[<path>] = <n>` beside the
+# general assignment, and this script answers per page so no meter spells either number and no
+# second reading exists to disagree with the first. Asked about a page the law names no exception
+# for, it answers the general bound, which is what every caller wants by default.
 #
 # The path resolves from this file's own location rather than from the caller's cwd, so a scan
 # that later cd's into a pen still reads the real tree's law.
@@ -38,8 +45,20 @@ fi
 #   living_pin_max_bytes = <n>  // ~6k tokens: a pin an agent reads in one breath
 # and this script writes no copy of <n>, which is the whole point of it existing.
 # `grep -a` so the answer is the same whichever grep is installed (REDS %198).
-VALUE=$(grep -a -m1 '^living_pin_max_bytes' "$LAW" \
-  | sed -n 's/.*=[[:space:]]*\([0-9][0-9]*\).*/\1/p' | head -1)
+PAGE=${1:-}
+
+VALUE=""
+if [ -n "$PAGE" ]; then
+  # An exception is anchored on the whole bracketed path, so `a/README.md` can never answer for
+  # `b/a/README.md` and a partial match can never stand in for a stated one.
+  VALUE=$(grep -aF -m1 "living_pin_max_bytes[$PAGE]" "$LAW" \
+    | sed -n 's/.*=[[:space:]]*\([0-9][0-9]*\).*/\1/p' | head -1)
+fi
+
+if [ -z "$VALUE" ]; then
+  VALUE=$(grep -a -m1 '^living_pin_max_bytes[[:space:]]*=' "$LAW" \
+    | sed -n 's/.*=[[:space:]]*\([0-9][0-9]*\).*/\1/p' | head -1)
+fi
 
 if [ -z "$VALUE" ]; then
   echo "living_pin_max_bytes: the law at $LAW states no readable number" >&2
