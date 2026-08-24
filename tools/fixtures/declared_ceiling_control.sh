@@ -293,6 +293,35 @@ check "27 free: a recitation under its ceiling passes" "ok" "$(verdict "$out")"
 out=$(law_scan 0)
 check "27 bitten: the recitation form spreading past its ceiling refuses" "law_recitation_spread" "$(verdict "$out")"
 
+# --- 28. the one reading answers PER PAGE, proven from both sides -------------------------------
+# A page may carry its own bound where the general one would refuse it for doing its job. The law
+# states an exception as `living_pin_max_bytes[<path>] = <n>`, and the reading must answer it
+# without ever letting a partial path stand in for a stated one.
+reading=tools/fixtures/living_pin_max_bytes.sh
+rp=$(mktemp -d)
+mkdir -p "$rp/context/specs" "$rp/tools/fixtures"
+cp "$reading" "$rp/tools/fixtures/"
+cat > "$rp/context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md" <<'LAW'
+# pen law
+```
+living_pin_max_bytes = 1000
+living_pin_max_bytes[a/README.md] = 4000
+```
+LAW
+r() { sh "$rp/tools/fixtures/living_pin_max_bytes.sh" "$@" 2>/dev/null; }
+check "28 free: no argument answers the general bound" "1000" "$(r)"
+check "28 free: a named page answers its own bound" "4000" "$(r a/README.md)"
+check "28 free: an unnamed page answers the general bound" "1000" "$(r b/README.md)"
+check "28 free: a longer path never borrows a shorter page's bound" "1000" "$(r x/a/README.md)"
+check "28 free: a shorter path never borrows a longer page's bound" "1000" "$(r README.md)"
+rm -f "$rp/context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md"
+if r a/README.md >/dev/null 2>&1; then rr=no; else rr=yes; fi
+check "28 bitten: an absent law refuses rather than defaulting" "yes" "$rr"
+printf '# pen law with no number\n' > "$rp/context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md"
+if r >/dev/null 2>&1; then rn=no; else rn=yes; fi
+check "28 bitten: a law stating no number refuses rather than defaulting" "yes" "$rn"
+rm -rf "$rp"
+
 echo ""
 echo "control_pass=$PASS"
 echo "control_fail=$FAIL"

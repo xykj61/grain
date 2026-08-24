@@ -290,11 +290,15 @@ Keaton's word the rows shortened: **a row points, it does not summarise**, at or
 bytes**, and the pin reads **7,563**. Gated by
 [`../../tools/in/index_row_bound_witness.rish`](../../tools/in/index_row_bound_witness.rish).
 
-**And the two bounds still cannot both hold at the room's ceiling.** A meaning-free row costs ~123
-bytes, so the 256 flat files a room is allowed need ~31,500 -- above 24,576 whatever a row says
-(REDS %205). The row bound carries a median day, measured at **61 logs** across 61 days; **15** of
-those days ran past the ~116 rows the pin holds, the peak at **223**. On such a day the remedy is a
-fold rather than a shorter sentence.
+**And the two bounds could not both hold at the room's ceiling, so one page got its own.** A
+meaning-free row costs ~123 bytes, so the 256 flat files a room is allowed need ~31,500 -- above
+24,576 whatever a row says (REDS %205). On Keaton's word `20260824` the pin bound was **raised for
+that one page**: `living_pin_max_bytes[session-logs/README.md] = 57344`, derived as `256 x 192`
+rows plus 8,192 for prose. **The general bound is unchanged at 24,576 for every other pin**, and
+the argument for the exception is that the two serve different readings -- 24,576 bounds a page an
+agent reads **whole**, while an index is read from the **top**, which is what a lap is instructed
+to do. [`../../tools/fixtures/living_pin_max_bytes.sh`](../../tools/fixtures/living_pin_max_bytes.sh)
+answers per page, so no meter spells either number.
 
 [`../../tools/i/index_fold_witness.rish`](../../tools/i/index_fold_witness.rish) over
 [`../../tools/fixtures/index_fold_scan.sh`](../../tools/fixtures/index_fold_scan.sh) holds

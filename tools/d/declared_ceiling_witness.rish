@@ -107,6 +107,10 @@ let control = run ["sh" "tools/fixtures/declared_ceiling_control.sh"]
 say control.out
 assert control.ok else "declared-ceiling: the control must complete"
 assert control.out contains "control_fail=0" else "declared-ceiling: every planted behavior must read as written"
+assert control.out contains "28 free: a named page answers its own bound" else "declared-ceiling: the one reading must answer a page the law names an exception for"
+assert control.out contains "28 free: an unnamed page answers the general bound" else "declared-ceiling: a page with no exception must get the general bound"
+assert control.out contains "28 free: a longer path never borrows a shorter page's bound" else "declared-ceiling: an exception is anchored on the whole path, never a substring"
+assert control.out contains "28 bitten: an absent law refuses rather than defaulting" else "declared-ceiling: an unreadable law must refuse rather than default"
 assert control.out contains "control_verdict=ok" else "declared-ceiling: the control must agree with itself"
 assert control.out contains "1 free: a page under its declared ceiling passes -- ok" else "declared-ceiling: an honest page must pass free"
 assert control.out contains "2 free: a page at exactly its ceiling passes free -- ok" else "declared-ceiling: a ceiling must pass free from below, or it is not a ceiling"
@@ -139,4 +143,4 @@ assert control.out contains "26 free: a witness pinning the value is a role, not
 assert control.out contains "27 bitten: the recitation form spreading past its ceiling refuses -- ok" else "declared-ceiling: the recitation ceiling may fall and may not rise"
 
 say ""
-say "GREEN: declared-ceiling -- every living page that declares its own limit is measured against it, in lines and in bytes alike, the declaration is held readable as well as honoured, the number comes from the seated law rather than a copy in the pages or in the meters, the two readings this cannot gate are counted in the open, and every reading is proven from both sides across twenty-seven planted behaviors."
+say "GREEN: declared-ceiling -- every living page that declares its own limit is measured against it, in lines and in bytes alike, the declaration is held readable as well as honoured, the number comes from the seated law rather than a copy in the pages or in the meters, the two readings this cannot gate are counted in the open, and every reading is proven from both sides across fifty-seven planted checks."
