@@ -3,7 +3,7 @@
 > **Mirrored at `spellbook/README.md`**, declared in [`../context/document-mirrors.brix`](../context/document-mirrors.brix) and proven byte-identical. Every link here is written `../<room>/<file>` so it resolves from both homes (REDS %176).
 
 **Language:** EN
-**Seated:** `20260810.145033` on Keaton's word - **Style:** Gauge (see `GAUGE_STYLE.md`)
+**Seated:** `20260810.145033` on Keaton's word - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Purpose:** Gather the one-word gestures that steer this workspace, so a hand on any client -- phone, terminal, fresh agent -- can read the whole vocabulary in one place.
 
 ---
