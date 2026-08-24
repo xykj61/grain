@@ -57,15 +57,16 @@ and gating below 60, **Service** judged against this card in four questions. **B
 below B pushes one molt frame**, bounded at depth 2. Twenty-seven behaviors proven, the scale read at
 all nine boundaries from both sides.
 
-**The model returned to `claude-opus-5` at `effort max`,** and the tree had disagreed with itself
-about which it ran -- REDS %201, now one reading with a guard over three declaring sites. **REDS
-%202** rode in on the same round: a commit body cited a session log by a recalled stamp, so
-[`../tools/hooks/commit-msg`](../tools/hooks/commit-msg) gained its fourth wall -- a path named in a
+**The model returned to `claude-opus-5` at `effort max`** -- REDS %201, now one reading with a guard
+over three declaring sites. **REDS %202:** a commit body cited a log by a recalled stamp, so
+[`../tools/hooks/commit-msg`](../tools/hooks/commit-msg) gained a fourth wall -- a path named in a
 body is a path that exists.
 
-**Two rooms still hold stale index rows,** each its own round: `expanding-prompts` **78**,
-`waymarks` **41**; ratchet ceiling **119**. `session-logs/README.md` sits above its declared bound
-because 196 flat logs each carry a row, and **the log fold runs on Keaton's word**.
+**Every room that folds has carried its index across; the ratchet reads zero.**
+`expanding-prompts` (78 rows, 21 shelves, **24,603 -> 9,797**) and `waymarks` (41 rows, two shelves,
+**7,656 -> 2,283**) joined the ENFORCE roster; the ceiling fell **119 -> 41 -> 0**, so a stale row
+anywhere reds. `session-logs/README.md` alone stands above its bound -- 196 flat logs, 196 rows --
+and **the log fold runs on Keaton's word**.
 
 **Landed, and the detail is in the logs.** Every round this block used to narrate reads as one line in *Prior laps* below, or in *Landed arcs* beneath that. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`); the teaching tier reads zero over target.
 

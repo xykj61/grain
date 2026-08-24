@@ -54,12 +54,17 @@ MAX_BYTES=$(sh "$(dirname "$0")/living_pin_max_bytes.sh")
 # joined them on 20260824.171500, its 78 rows onto 21 shelves and its pin 24,603 -> 9,797 bytes,
 # under the bound its own header declares for the first time. It is a LIVING room, so its pin keeps
 # a table for the rows whose prompts are still flat -- two of them -- beneath the shelf table that
-# holds the way in.
-ENFORCE="session-logs active-designing counsel expanding-prompts"
+# holds the way in. waymarks followed on `20260824.172000`, 41 rows onto two
+# shelves, its pin 7,656 -> 2,283 bytes, and no claim flat today -- the one dated file still at its
+# root is a bundle manifest rather than a claim, which is why its living table is honestly empty.
+ENFORCE="session-logs active-designing counsel expanding-prompts waymarks"
 
-# Every other room's stale rows: waymarks 41. Measured 20260824.171500, down from 317 when
-# active-designing, counsel, and expanding-prompts were among them. Allowed only to fall.
-RATCHET_CEILING=41
+# Every other room's stale rows. Measured 20260824.172000: ZERO, down from 317 when
+# active-designing, counsel, expanding-prompts, and waymarks were all among them. Allowed only to
+# fall, and it has reached its floor -- every room this tree folds is now on the ENFORCE list above,
+# so a stale row anywhere reds rather than counts. The ratchet stays, and it is the roof a room
+# opened tomorrow arrives under before a hand has carried it across.
+RATCHET_CEILING=0
 
 TMP=$(mktemp -d "${TMPDIR:-/tmp}/index-fold.XXXXXX")
 trap 'rm -rf "$TMP"' EXIT
