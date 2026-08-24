@@ -238,3 +238,20 @@ Every claim, module name, and argument carries over. The elder is the record of 
 **Three of four queued documents needed nothing**, and only measurement could have said so. Queuing them was still right: the queue is what caused the reading to be taken. **A queue row is a question, and closing one with a number is a legitimate answer** -- the alternative is four cosmetic rewrites, three of which would have spent a checkpoint and a set of citations to move a figure that was already good.
 
 **None of the four is a candidate for a cut**, and two different molts are named here. The three living paths molt *in place under a checkpoint* -- the W2 rule above -- because a living path with inbound references keeps its name. The dated foundation molts the other way: a mutant seats at a fresh stamp, the fossil stays banner-marked, and living citers repoint, which is the M1 shape. The queue row exists so each molt is remembered rather than rediscovered, and so the right one is used.
+
+### M2 -- `foundations/20260821-035846_every-climate-has-a-fiber.md` (`20260824.003828`)
+
+| Reading | Value |
+| --- | --- |
+| Living mutant | [`../foundations/20260824-003828_every-climate-has-a-fiber.md`](../foundations/20260824-003828_every-climate-has-a-fiber.md) |
+| Register | Radiant **40%** negative sentences -> Gauge Door **17%** |
+| Length | 2,441 words, unchanged in substance |
+| Living citers repointed | **1** |
+| Fossil banner | seated |
+| Cut | **RED** -- awaiting Keaton's word |
+
+**The three water refusals become the three practices they are** -- plant-raised fertility, field retting, closed-loop finishing -- with each refusal named once inside its practice rather than standing as the heading. That is the *state what holds, then name the exception once* move, applied to the section that carried most of the elder's negation.
+
+**Claim preservation was checked rather than assumed**, and the check caught a real loss. Diffing the crop set between fossil and mutant showed **cotton had gone**: the elder names it explicitly among the fibres this project declines, and a rewrite that merely listed the three it prefers dropped a load-bearing exclusion. Restored, stated positively, with cotton and the synthetics named. The climate table's seven rows, every number, and the four limits carry over intact.
+
+*A register pass is proven by diffing the sets it must not change -- numbers, paths, and here the crops. The one it dropped is the one no reader would have missed until the policy mattered.*

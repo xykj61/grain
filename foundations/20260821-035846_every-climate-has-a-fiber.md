@@ -1,5 +1,12 @@
 # Every Climate Has a Fiber
 
+> **FOSSIL -- the living page is [`20260824-003828_every-climate-has-a-fiber.md`](20260824-003828_every-climate-has-a-fiber.md).**
+> Molted `20260824.003828`: reimagined at Gauge's Door setting, **40% negative sentences down to 17%**, with the
+> three water refusals restated as the three practices they are. Every claim, the climate table, the four limits,
+> and the cotton exclusion carry over -- proven by diffing the number set and the crop set. This copy stays on disk
+> unchanged, because a dated writing keeps every word it wrote. Queued under **mitra shed prep** in
+> `construction/SHRED_PREP.md` (a live operator card the public seed withholds) -- prep only, no cut opened.
+
 *A vision document, generalized and place-neutral: buildings grown rather than extracted, fertility raised without animals, waters left cleaner than we found them -- funded by public money pointed at the public good, and proven by receipts anyone can check without trusting whoever wrote them. The materials companion to the money that stays close to home.*
 
 **Stamp:** `20260821.035846`
