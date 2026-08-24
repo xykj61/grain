@@ -64,7 +64,7 @@ import os, re, sys, collections
 root = os.getcwd()
 start = sys.argv[1]
 LINK = re.compile(r'\[[^\]]*\]\(([^)\s]+)')
-STAMP = re.compile(r'^\d{8}-\d{6}_')
+STAMP = re.compile(r'^\d{8}-\d{6}[_.]')   # the sprig is optional (REDS %175)
 
 def rel(p):
     return os.path.relpath(os.path.normpath(p), root)

@@ -14,7 +14,12 @@
 #   sh dated_classify_seam.sh census
 set -eu
 
-DATED_RE='(^|/)[0-9]{8}-[0-9]{6}_'
+# WIDENED 20260823.204456 (REDS %175). The sprig is OPTIONAL by the session-logs law -- it is
+# added only when two logs share a second -- so 237 tracked logs are named `YYYYMMDD-HHMMSS.ext`
+# with no underscore at all. Requiring one classified every last of them as LIVING, which left
+# them open for writing to the dated-path repointer. The stamp alone marks testimony; what may
+# follow it is an underscore-sprig or the extension directly.
+DATED_RE='(^|/)[0-9]{8}-[0-9]{6}(_|\.)'
 HDR_RE='(?i)(\*\*Stamp:\*\* *living ledger|living ledger *\(born)'
 SKIP_RE='\.(png|jpg|jpeg|gif|webp|ico|pdf|woff|woff2|ttf|otf|zip|gz|xz|wasm|so|o|a|bin|mp4|webm)$'
 
