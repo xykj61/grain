@@ -201,13 +201,15 @@ names as wanting a Status line. The doc-comment ASCII sweep at **21 `.rye` files
 reference page a reader reaches on purpose. The class is named in
 [`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md).
 
-**Booked `20260824.165130` -- the comment dial, argued twice and unmeasured.** The report card
-grades prose; the same dial runs through the code and has never been read. One cheap round comes
-first, scoped at [`../active-development/20260824-165130_measure-the-comment-histogram-first.md`](../active-development/20260824-165130_measure-the-comment-histogram-first.md):
-classify every authored `.rye` comment as Door, Meter, or loose, and read the spread. **A uniform
-spread falsifies the design and closes it**, which is why the measurement runs before the third
-piece. Arguments: [`../external-research/20260824-165010_what-a-comment-is-worth-and-what-of-it-counts.md`](../external-research/20260824-165010_what-a-comment-is-worth-and-what-of-it-counts.md)
-and [`../active-designing/20260824-165036_the-dial-that-runs-through-the-code.md`](../active-designing/20260824-165036_the-dial-that-runs-through-the-code.md).
+**Measured `20260824.170904` -- the comment dial answered, and it wants a wall Keaton sets.**
+[`../tools/fixtures/comment_dial_scan.sh`](../tools/fixtures/comment_dial_scan.sh) read all **1,891**
+authored modules. **Door coverage is closed** at 99.6%, so that reading is never built. **The
+setting histogram lives** once `///` declaration docs leave the denominator -- median 14 becomes 53,
+the spread 21 points becomes 42. **And the strongest reading is one nobody proposed:** the seated
+`// invariant:` law runs at **59.6%**, leaving **13,235 asserts with no stated reason** across 485
+modules that say nothing in any contract vocabulary. **Open door -- a wall wants a ceiling, and
+13,235 is Keaton's number to set**, so no ratchet was seated. Verdict:
+[`../active-development/20260824-170904_the-denominator-was-the-whole-question.md`](../active-development/20260824-170904_the-denominator-was-the-whole-question.md).
 Beside it, **half of Service may be countable** -- named and reached from the citation graph,
 current and carried left judged -- argued with its own trap named at
 [`../active-designing/20260824-165106_what-part-of-service-can-be-counted.md`](../active-designing/20260824-165106_what-part-of-service-can-be-counted.md).
