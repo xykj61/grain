@@ -243,3 +243,13 @@ Keaton pasted a browse of the public seed's `active-designing/` room -- twenty-e
 **Named for its own round, rather than started:** a fascia weave over the seven clusters these fall into (Open Asks 8, Steward/commerce 4, SLC ladder 6, Dimeroll 3, language and Glow 4, inference voices 2, foundational singles 12), shaped as a **living index page per cluster** in `active-designing/` rather than as cross-links edited into thirty-nine dated bodies.
 
 Record: [`../active-development/20260823-182512_the-thirty-nine-named-for-shed.md`](../active-development/20260823-182512_the-thirty-nine-named-for-shed.md).
+
+### W2 -- `context/KYRI.md`, molted into Gauge (`20260823.200008`)
+
+The standing voice note was rewritten from Radiant into **Gauge at its Door setting**, measured 10% negative sentences before and 14% after across a body that grew from 19 sentences to 28 -- the register held while the content gained the four-voice table, the *own a red* line, and the gate list under *propose, never seat*.
+
+**No fossil file, and that is the correct outcome rather than an omission.** `context/KYRI.md` is a living path with **153 inbound references**, not a dated writing, so a molt here has nothing to leave behind: seating a mutant at a fresh stamp would break every one of those references to preserve a phrasing. The departing body waits at **checkpoint `20260823.200008`, walk-back nib `c12f679701`**, one `git show` away, and the checkpoint row names what stood there.
+
+**Nothing enters the shred queue from this molt.** Recorded here so a later pass reads the decision instead of hunting for a fossil that was never made.
+
+*A living path molts in place under a checkpoint; a dated writing molts into a mutant and leaves a fossil. The two are different moves, and this row exists to keep them from being confused.*
