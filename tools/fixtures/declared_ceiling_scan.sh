@@ -123,7 +123,13 @@ grade_ceiling="${DECLARED_CEILING_GRADE_CEILING:-1}"
 # A living pin past its declared byte bound. Measured 20260824.130807: one page,
 # session-logs/README.md, whose rows fold when its logs fold and whose log fold runs on Keaton's
 # word. A ceiling that only ever falls, rather than a gate that would refuse a word-gated remedy.
-bound_over_ceiling="${DECLARED_BOUND_OVER_CEILING:-1}"
+#
+# ZERO from 20260824.183000. The word came, the room folded, and the rows shortened to the 192
+# bytes an index row is given -- 291,781 -> 7,563 bytes. Not one living page in this tree now
+# stands above the bound it declares. Held as a ratchet rather than promoted to a gate, because
+# the remedy for the next page over may again be word-gated, and a wall that refuses a remedy
+# somebody has to wait for is a wall somebody turns off.
+bound_over_ceiling="${DECLARED_BOUND_OVER_CEILING:-0}"
 
 # A `**Bound:**` header naming no measurable limit -- `keep thin`, `listings stay sentence-cheap`.
 # Honest human bounds this guard does not reach. Measured 20260824.130807: two pages.

@@ -282,8 +282,19 @@ both, so the rule refuses nothing anyone does on purpose:
 rye run tools/rye/session_logs_archive.rye index-fold [--room NAME]
 ```
 
-The byte bound follows without being asked for. Fold a room to today and its index holds one day of
-rows.
+The byte bound follows from the fold **and from the row**, and the second half was learned by
+measuring. Folding `session-logs` to today on `20260824` brought its pin from **291,781 to 29,997
+bytes** and left it **5,421 above** the 24,576 it declares, because 36 rows averaged **783 bytes**
+and the longest ran **2,223** -- the log's own abstract copied into the index (REDS %204). On
+Keaton's word the rows shortened: **a row points, it does not summarise**, at or under **192
+bytes**, and the pin reads **7,563**. Gated by
+[`../../tools/in/index_row_bound_witness.rish`](../../tools/in/index_row_bound_witness.rish).
+
+**And the two bounds still cannot both hold at the room's ceiling.** A meaning-free row costs ~123
+bytes, so the 256 flat files a room is allowed need ~31,500 -- above 24,576 whatever a row says
+(REDS %205). The row bound carries a median day, measured at **61 logs** across 61 days; **15** of
+those days ran past the ~116 rows the pin holds, the peak at **223**. On such a day the remedy is a
+fold rather than a shorter sentence.
 
 [`../../tools/i/index_fold_witness.rish`](../../tools/i/index_fold_witness.rish) over
 [`../../tools/fixtures/index_fold_scan.sh`](../../tools/fixtures/index_fold_scan.sh) holds
