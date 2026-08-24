@@ -1,0 +1,37 @@
+format session-log-v1
+stamp 20260824.084007
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The page that named half its directory
+prompt Autonomous loop -- roster cold first, Standfast on reds, next agent-doable lap Lindy-first crux-first, rota row N mod 5, send each finished increment
+think Standfast closed first: three guards red on the cold open, all three repaired and shipped as 9c59a9a852 with REDS %188. The line reopened, and the crux two laps have pointed at was image/README.md at 400,042 bytes.
+think Measured before splitting rather than after. comm between ls image/*.rye and every `name.rye` the page cites read 112 named against 227 on disk, and two of the 112 -- dexter_line.rye and scooter_compose.rye -- name files that stand in pond/apps/, cited by bare name beside local ones so they read as if they lived here. So 117 modules had landed with nobody adding a line.
+think The 117 are one arc rather than a scatter: threshold, label, regions, contour, chain_code, polygon, moments, hu_moments, skeleton, thin, zhang_suen, branch, endpoints, prune, medial_axis, distance, watershed, the convex family, the nine click_ gestures, the four lasso_ gestures, fourteen cluster_ modules and thirteen line_ modules. All of Season G's shape analysis, selection, and scene structure. Every one has a witness -- 248 *_witness.rish files across the tool rooms name a path under image/, 247 before this round's own -- so not one was unproven, only unlisted.
+think This is REDS %184 at three and a half times the scale, in the directory %187's own ratchet had pointed at. The new half is a corollary: a page that names some of a directory is read as naming all of it, and the larger the page the more completely it is believed. At 400,042 bytes nobody was going to count.
+think Took the Caravan shape rather than inventing one. The page splits into a Door front page and four pages beside it in the SAME directory, so every relative link inside the lifted prose stays true byte for byte -- which is why the lift is a move rather than a rewrite. The three sections came out at their original line ranges, their `###` headings demoted to `##`, and each new page carries a header naming what it is and where it came from.
+think MODULES.md is the new writing. 227 rows in twelve families, each row `| [`name.rye`](name.rye) | what it does |`, and every sentence extracted from that module's own `//!` head comment rather than composed -- so the page says what the code says. The extraction handled two forms of doc head (`--` and the elder em-dash), stripped the `HUNKnn:` prefix, cut at the first clause boundary, dropped a fragment opened by an unmatched paren, and lowercased emphasis capitals while keeping RGBA, CSS, WCAG, HSL and the proper names Freeman, Sobel, Andrew, Zhang-Suen, Douglas-Peucker.
+think The guard matches the Module column rather than any `.rye` link, which is the load-bearing choice Caravan's scan already paid for: the arc pages cite their own modules in prose constantly, and a reading that counted those would call a short table complete. Two readings are new here -- a name carrying digits binds its row, since forty-eight font5x7_ modules do, and a seam symlink counts as a module, since parse_int.rye and tally_copy.rye are what a reader finds in this directory.
+think Proved the RED path on the real page rather than only in the pen: deleted the watershed.rye row and the scan read unrostered=1 verdict=roster_incomplete, naming the file; restored and it read bijection=yes at 227 of 227.
+obs The meter bit my own repair on the lap it was written. The new Door page joined tools/fixtures/prose_register_scan.sh's DOOR roster and read 27% negative sentences against the 20% ceiling -- so I swept it to 13% with every claim held exactly: no-network-no-key became what a picture already has on your machine, the road not taken became one line undo and redo run along, never moved became moving money stays a hand's work, and never from the reference C became that spec is the whole of what we read. That is %185's rule working the first time it was given the chance, on the page it was written for.
+obs The over-bound ratchet falls 7 to 6, and its control now plants six free and seven bitten rather than seven and eight. A ceiling that only falls is only true if the lap that earns the fall takes it.
+obs Booking %189 carried the pin past its bound again, so row %185 folded to construction/archive/ with its three ../tools/ links deepened and the header's own left alone. Second fold of the day, same rule, no rediscovery.
+obs Named and left for its own round: 21 .rye files in image/ carry non-ASCII in their doc comments, from before ASCII-first was seated. A mechanical sweep, and not this lap's work.
+loom page_bytes_before=400042 page_bytes_after=6928 modules_on_disk=227 rows_in_table=227 named_before=112 phantoms_before=2 families=12 control_cases=15 bitten=9 free=6 door_percent_before=27 door_percent_after=13
+file image/README.md rewritten as a 6,928-byte Door page -- what a picture is here, the four arcs in a paragraph each, the invariants, and a table pointing at the four pages beside it
+file image/MODULES.md new -- 227 rows in twelve families, every module in the directory, each sentence from its own //! head
+file image/PHOTOS.md new -- the gesture arc lifted whole from the front door, headings demoted, links unchanged because the page stayed in the directory
+file image/MARKETPLACE.md new -- the catalog, its honest facts, and the boolean query algebra, lifted the same way
+file image/PRIMITIVES.md new -- the Season G color and type floor, lifted, with three pond/apps citations repointed from bare names
+file tools/fixtures/image_module_roster_scan.sh new -- the bijection between image/*.rye and MODULES.md, four readings gated at zero, empty corpus refused
+file tools/i/image_module_roster_witness.rish new -- the 43rd standing guard
+file tools/fixtures/image_module_roster_control.sh new -- fifteen behaviors on real directories in a throwaway pen, nine bitten and six free
+file tools/fixtures/prose_register_scan.sh image/README.md added to the DOOR roster, which is what read it at 27%
+file tools/fixtures/living_docs_roster_scan.sh over-bound ceiling 7 -> 6, with the reason written beside the constant
+file tools/fixtures/living_docs_roster_control.sh ceiling cases replanted at six free and seven bitten
+file tools/l/living_docs_roster_witness.rish its two ceiling assertions follow the control
+file construction/REDS.md row %189 booked; row %185 folded to archive; headline census 188 -> 189
+file construction/standing-equipment.kyri image_module_roster seated 43rd at 20260824.084007
+file construction/ITINERARY.md Now refilled with the size-ordered remainder; guard count 42 -> 43
+recommend keep-going lotus/README.md at 297,878 bytes over 240 .rye sources is the same shape one directory over and the next round -- measure the named-against-standing count first, since that number is what decides whether the split is a lift or a rewrite

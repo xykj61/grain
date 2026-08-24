@@ -47,7 +47,7 @@
 #
 # Pen: tools/fixtures/living_docs_roster_control.sh -- sixteen behaviors on real git repositories
 # in a throwaway pen, five refusals bitten and eleven honest readings left free, the ratchet
-# ceiling proven from both sides by planting seven over-bound pages and then eight, so no override
+# ceiling proven from both sides by planting six over-bound pages and then seven, so no override
 # exists and none is wanted. Run from the repository root.
 
 say "living-docs-roster: Language EN -- a meter reads the pages its roster names, so the roster is the first thing that has to be complete."
@@ -75,8 +75,8 @@ assert control.out contains "2 bitten: a front door missing from the roster coun
 assert control.out contains "3 bitten: a rostered path naming no file counts against the gate" else "living-docs-roster: a roster naming an absent file must bite"
 assert control.out contains "7 free: an UNTRACKED README beside a tracked source is invisible to the rule" else "living-docs-roster: the tree is asked with git, never with a glob"
 assert control.out contains "10 free: an empty tree publishes front_doors=0 rather than hiding it" else "living-docs-roster: the corpus size must be published beside the verdict"
-assert control.out contains "12 free: seven over-bound pages sit at the ceiling and pass free" else "living-docs-roster: the ratchet must welcome the count it was seated at"
-assert control.out contains "13 bitten: eight over-bound pages cross the ceiling and are bitten" else "living-docs-roster: the ratchet ceiling must refuse from above"
+assert control.out contains "12 free: six over-bound pages sit at the ceiling and pass free" else "living-docs-roster: the ratchet must welcome the count it stands at"
+assert control.out contains "13 bitten: seven over-bound pages cross the ceiling and are bitten" else "living-docs-roster: the ratchet ceiling must refuse from above"
 assert control.out contains "15 bitten: a roster regressed to a hand list of two over six doors is bitten" else "living-docs-roster: a roster that returns to a hand list must red"
 
 say ""

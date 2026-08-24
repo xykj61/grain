@@ -1,0 +1,73 @@
+# tools/i/image_module_roster_witness.rish -- the module roster names every module beside it.
+#
+#   rishi/bin/rishi run tools/i/image_module_roster_witness.rish
+#
+# WHY. image/README.md was the largest page in this tree -- 400,042 bytes on 20260824 -- and a
+# reader entering the module used it as the roster of what is here. It named 112 of the 227 .rye
+# modules in the directory, and two of those 112 named files that stand in pond/apps/. So 117
+# modules had landed with nobody adding a line, and the page read exactly like a full account.
+#
+# This is the same shape as REDS %184 one directory over, and REDS %188 booked it here: a roster
+# that lists what a PROGRAM runs gets checked, because a missing entry breaks a run; a roster that
+# lists what a READER should find gets checked by nobody, because a missing entry breaks only
+# understanding, and understanding fails quietly. The page split four ways in that round, and the
+# roster moved to image/MODULES.md where a program can hold it.
+#
+# WHAT IS GATED, hard, at zero, in four readings:
+#
+#   unrostered      -- an image/*.rye on disk with no row in image/MODULES.md
+#   phantom         -- a row naming a module that is absent from the directory
+#   duplicate_rows  -- one module wearing two rows, which may come to disagree
+#   mismatched_rows -- a row whose display text and link target name different modules
+#
+# WHAT PASSES FREE. A module name carrying digits, since forty-eight of them do (font5x7_currency).
+# A seam symlink, which is a module a reader finds in this directory and expects the page to
+# explain. A row in a second table on the page, which is how twelve families are rostered. And a
+# module cited in prose, which is read past on purpose: the arc pages beside this roster cite their
+# own modules constantly, and a reading that counted those would call a short table complete.
+#
+# WHAT IT DOES NOT REACH, said plainly. Whether a row's sentence is true. Each was written from its
+# module's own `//!` head comment, and no grep reads whether that comment still describes the code.
+# The module's own witness proves the module; this proves the roster.
+#
+# Pen: tools/fixtures/image_module_roster_control.sh -- fifteen behaviors on real directories in a
+# throwaway pen, nine refusals bitten and six honest readings left free, so no override exists and
+# none is wanted. Run from the repository root.
+
+say "image-module-roster: Language EN -- the page a reader learns this directory from names every module in it, both directions, so a landed module cannot go unlisted."
+say "image-module-roster: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
+say "image-module-roster: Lens TAME -- a bijection rather than a tally, and the corpus size published beside the verdict so a reading over nothing can never report clean."
+
+let scan = run ["sh" "tools/fixtures/image_module_roster_scan.sh"]
+say scan.out
+assert scan.ok else "image-module-roster: the scan must complete -- a module has landed without a row, or a row outlived its module"
+assert scan.out contains "unrostered=0" else "image-module-roster: every image/*.rye carries a row in image/MODULES.md"
+assert scan.out contains "phantom=0" else "image-module-roster: every row in image/MODULES.md names a module that exists in this directory"
+assert scan.out contains "duplicate_rows=0" else "image-module-roster: one module wears one row, since two rows may come to disagree"
+assert scan.out contains "mismatched_rows=0" else "image-module-roster: a row's display text and its link target name one module"
+assert scan.out contains "bijection=yes" else "image-module-roster: the table and the directory must be the same set"
+
+# A meter reading no modules finds no fault and would report clean while measuring nothing.
+assert (scan.out contains "modules_on_disk=0" == false) else "image-module-roster: a zero-module reading would report clean over an empty directory"
+
+let control = run ["sh" "tools/fixtures/image_module_roster_control.sh"]
+say control.out
+assert control.ok else "image-module-roster: the control must complete"
+assert control.out contains "control_fail=0" else "image-module-roster: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "image-module-roster: the control must agree with itself"
+assert control.out contains "2 bitten: a module on disk with no row counts against the gate" else "image-module-roster: the gate that names this guard must bite"
+assert control.out contains "3 bitten: a row naming a module absent from this directory counts against the gate" else "image-module-roster: the phantom the departing page carried must bite"
+assert control.out contains "4 bitten: one module wearing two rows counts against the gate" else "image-module-roster: two rows for one module must bite"
+assert control.out contains "5 bitten: a row whose text and target disagree counts against the gate" else "image-module-roster: a row naming two modules must bite"
+assert control.out contains "6 bitten: a module cited only in prose beneath the table stays unrostered" else "image-module-roster: prose citations must be read past, or a short table reads complete"
+assert control.out contains "9 bitten: a seam symlink with no row counts against the gate" else "image-module-roster: a seam symlink is a module here and wants its row"
+assert control.out contains "12 bitten: an empty directory reads as an empty corpus rather than clean" else "image-module-roster: a meter over nothing must say so"
+assert control.out contains "15 bitten: a page naming half its directory counts every absentee" else "image-module-roster: the departing shape at scale must bite"
+assert control.out contains "1 free: an exact bijection over three modules reads clean" else "image-module-roster: the honest shape must pass free"
+assert control.out contains "7 free: a module name carrying digits binds its row" else "image-module-roster: forty-eight modules carry digits and must bind"
+assert control.out contains "8 free: a seam symlink counts as a module and its row rosters it" else "image-module-roster: a rostered seam symlink must pass free"
+assert control.out contains "10 free: a row in a second table on the page rosters its module" else "image-module-roster: the family tables must roster the same way"
+assert control.out contains "14 free: a module and its row leaving together read clean at two" else "image-module-roster: an honest removal must pass free"
+
+say ""
+say "GREEN: image-module-roster -- the module roster and the image directory are one set, gated at zero in four readings and proven both ways on real directories."

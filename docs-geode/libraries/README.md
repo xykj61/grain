@@ -30,7 +30,7 @@
 | [`encoding/`](../../encoding/README.md) | 8 | 15 |
 | [`glow/`](../../glow/README.md) | 174 | 105 |
 | [`granary/`](../../granary/README.md) | 7 | 1 |
-| [`image/`](../../image/README.md) | 225 | 247 |
+| [`image/`](../../image/README.md) | 225 | 248 |
 | [`kumara/`](../../kumara/README.md) | 2 | 3 |
 | [`lantern/`](../../lantern/README.md) | 2 | 1 |
 | [`lattice/`](../../lattice/README.md) | 3 | 2 |
@@ -44,8 +44,8 @@
 | [`mikrophone/`](../../mikrophone/README.md) | 16 | 18 |
 | [`mycelium/`](../../mycelium/README.md) | 95 | 84 |
 | [`pleac/`](../../pleac/README.md) | 3 | 5 |
-| [`pond/`](../../pond/README.md) | 151 | 151 |
-| [`rishi/`](../../rishi/README.md) | 2 | 1665 |
+| [`pond/`](../../pond/README.md) | 151 | 152 |
+| [`rishi/`](../../rishi/README.md) | 2 | 1666 |
 | [`rye/`](../../rye/README.md) | 117 | 1222 |
 | [`scribble/`](../../scribble/README.md) | 2 | 2 |
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |
