@@ -191,6 +191,10 @@ guard living_docs_roster
 path tools/l/living_docs_roster_witness.rish
 seated 20260824.075409
 
+guard image_module_roster
+path tools/i/image_module_roster_witness.rish
+seated 20260824.082436
+
 guard width_check
 path tools/w/width-check.rish
 seated 20260620.210812

@@ -61,8 +61,10 @@ MODE="${1:-census}"
 ROOT="${2:-.}"
 MAX_BYTES=24576
 
-# Rostered pages past the bound, measured 20260824.075500, allowed only to fall.
-OVER_BOUND_CEILING=7
+# Rostered pages past the bound, allowed only to fall. Seven at 20260824.075500; six from
+# 20260824.082436, when image/README.md split four ways and fell from 400,042 bytes to under
+# the bound. The ceiling follows each repair down and never back up.
+OVER_BOUND_CEILING=6
 
 cd "$ROOT"
 
