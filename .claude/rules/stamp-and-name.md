@@ -247,6 +247,55 @@ Full argument and the standfast declined:
 [`../../active-designing/20260823-173634_the-census-number-keeps-its-place.md`](../../active-designing/20260823-173634_the-census-number-keeps-its-place.md)
 and [`../../external-research/20260823-173634_when-a-number-is-honest.md`](../../external-research/20260823-173634_when-a-number-is-honest.md).
 
+## An index folds with the room it describes -- amended `20260824.052329`
+
+**A room's fold moves its files; its index has to move with them, or it becomes the one file in
+the room growing without a ceiling.** `session-logs/README.md` reached **2,895,849 bytes** against
+the **24,576** its own header declared -- 117 times over -- while the room beside it sat at 181
+flat files against a bound of 256, green the whole time. Every fold moved logs down and left every
+row in place.
+
+Three faults rode along, and each is what an unbounded file looks like from a reader's side. The
+title `# Session logs` stood at **line 1,881**, beneath 1,880 rows, because *prepend a newest-first
+row* means line 1 and the header had nowhere to go. **Not one of the 1,658 table rows sat under a
+delimiter row**, so by the GitHub-Flavored Markdown spec the file held no table -- 1,658 lines of
+literal pipes. And two row shapes were interleaved, 1,658 table rows and 714 list items, from eras
+nobody had reconciled.
+
+**The rule, in one line:** a day's index rows fold the moment that day's logs do, onto
+`<room>/date/README-index-YYYYMMDD.md`, one shelf per closed day, each shelf immutable once
+written. The pin then holds exactly the rows whose logs are still flat, so the index and the room
+describe one set and are bounded by one rule.
+
+**Why the ordering matters.** A row for a folded day already reads `](date/YYYYMMDD/name)`, which
+becomes `](YYYYMMDD/name)` from a shelf one directory down -- a rewrite with exactly one answer,
+correct forever. A row for a day still flat carries a bare filename whose right target would change
+again the moment the room folded, and a shelf is immutable, so that row waits. Following the files
+is what keeps every shelf link true.
+
+**The gate is the row rule rather than the byte count**, and the reason is worth saying: a byte
+ceiling would refuse ordinary work, since every lap writes a row, and a guard that reds on the
+ordinary is a guard someone turns off. A row goes stale only when its logs fold, and one tool folds
+both, so the rule refuses nothing anyone does on purpose:
+
+```
+rye run tools/rye/session_logs_archive.rye index-fold [--room NAME]
+```
+
+The byte bound follows without being asked for. Fold a room to today and its index holds one day of
+rows.
+
+[`../../tools/i/index_fold_witness.rish`](../../tools/i/index_fold_witness.rish) over
+[`../../tools/fixtures/index_fold_scan.sh`](../../tools/fixtures/index_fold_scan.sh) holds
+**`session-logs` at zero** stale rows -- the room a hand has carried across, front door and all --
+and ratchets the rest under a ceiling that only falls: `active-designing` 86, `counsel` 112,
+`expanding-prompts` 78, `waymarks` 41, **317** together on the day it was seated. Folding a room's
+index also rewrites its front door, and four front doors written in a hurry is how a fix becomes its
+own red, so each room gets its own round.
+[`../../tools/fixtures/index_fold_control.sh`](../../tools/fixtures/index_fold_control.sh) proves
+fifteen behaviors on real directory trees in a throwaway pen, the ceiling shown from both sides by
+planting 317 rows and then 318, so no override exists and none is wanted.
+
 ## Accrete-never-break
 
 Every dated log, counsel note, waymark, and commit that already wrote `Fold AI`, `f0-f63`, or `STOA178`

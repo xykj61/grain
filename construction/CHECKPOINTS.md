@@ -24,6 +24,24 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260824.052329` -- the session-log index folds, 2,193 rows onto 26 dated shelves
+
+**Walk-back nib:** `4b166d337e` -- read the whole departing index with
+`git show 4b166d337e:session-logs/README.md`.
+
+**Swept:** `session-logs/README.md` only. **2,193 of its 2,373 rows** move onto
+`session-logs/date/README-index-YYYYMMDD.md`, one shelf per closed day, with each row's
+`](date/YYYYMMDD/name)` link becoming `](YYYYMMDD/name)` from one directory down. The pin falls
+from **2,895,849 bytes to 266,274** and keeps exactly the rows whose logs are still flat in the
+room. Its sunken header rises to the top and the table gains the delimiter row it never had.
+
+**What waits there, worth recalling:** nothing is lost -- every folded row stands on its shelf,
+byte for byte, in the order the pin held it, and the shelves are tracked in the same commit. What
+the walk-back holds that the shelves do not is the **arrangement**: 1,880 rows standing above the
+title, two row formats interleaved, and the file's own header declaring a bound it exceeded by a
+factor of 118. That arrangement is the evidence for REDS %182, and reading it is the fastest way
+to see how a living pin grows past a meter that only ever prints.
+
 ### `20260824.040004` -- ITINERARY condensed, the landed rounds folded to their logs
 
 **Walk-back nib:** `fc153c2c78` -- read the whole departing card with
