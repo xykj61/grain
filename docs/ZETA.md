@@ -4,7 +4,7 @@
 
 **Status:** Checkable — operator compressor
 **Depth:** guide
-**Ceiling:** ≤80 lines
+**Ceiling:** <=80 lines
 **Last updated:** 2026-07-18 (ZETA6 send design seated)
 **Compresses:** [`20260717-175220_dexter-english-qwerty-glass-keyboard.md`](../active-designing/date/20260717/20260717-175220_dexter-english-qwerty-glass-keyboard.md) · study [`20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md`](../external-research/20260717-175220_glow-english-qwerty-glass-keyboard-ios-inspired.md) · send [`20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md`](../active-designing/date/20260718/20260718-122145_hearth-lulu-display-presets-short-home-and-zeta6-send.md)
 

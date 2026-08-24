@@ -4,7 +4,7 @@
 
 **Status:** Checkable — operator compressor
 **Depth:** guide
-**Ceiling:** ≤80 lines
+**Ceiling:** <=80 lines
 **Last updated:** 2026-07-17
 **Compresses:** [`20260715-181500_sala-broadcast-live-session-fold.md`](../external-research/20260715-181500_sala-broadcast-live-session-fold.md)
 

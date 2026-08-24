@@ -1,0 +1,76 @@
+# tools/d/declared_ceiling_witness.rish -- a page that declares its own ceiling is measured
+# against it.
+#
+#   rishi/bin/rishi run tools/d/declared_ceiling_witness.rish
+#
+# WHY. Thirteen living pages on the docs shelf carry a `**Ceiling:** <=N lines` header. It is the
+# page's own promise about how long it will stay, written by whoever made the page and read by
+# whoever comes to it next. Measured 20260824.121500, no guard in this tree read a single one of
+# them, and the reading had already been named twice and left open both times (REDS %191).
+#
+# What the first measurement found: **13 pages declared a ceiling and none of them was both
+# readable and honoured.** Twelve wrote the single-glyph form, which no parser here reaches, and
+# the thirteenth -- docs/CRYPTO.md -- had its header rewritten into a paragraph of prose narrating
+# its own drift. Underneath the unreadable declarations, two pages stood over their number:
+# docs/README.md at 43 lines against 40, and docs/CRYPTO.md at 311 against 300.
+#
+# THE TWO GATES, both at zero:
+#
+#   1. a page standing above its own declared ceiling
+#   2. a declaration a tool cannot read
+#
+# The second gate is the one worth arguing for. A `Ceiling:` header nobody can parse is
+# indistinguishable from no ceiling at all, so a page carrying one can drift forever while
+# appearing to have promised something. Gate one alone would have read this shelf as clean, since
+# a declaration it cannot parse is a page it never measures.
+#
+# THE THIRD READING, counted rather than gated. docs/STOA.md declares `<=80` in its H1 title, in
+# the grade notation the shelf index uses, and stands at 166 lines. Gating it would force a page
+# split into the round that seated this guard, so it is held under a ceiling that only ever
+# falls: the form may shrink and may not spread. It is printed at every roster pass rather than
+# remembered, because a guard reading 13 of 14 declarations in silence is the roster-reaching-6-
+# of-34 shape this tree has booked three times already (REDS %187, %190, %192).
+#
+# WHAT IT DOES NOT REACH. Whether a ceiling is the RIGHT number -- that is a judgement, and this
+# is a count. And the separate 24,576-byte living bound, which `tools/l/living_docs_lint.rish`
+# already measures across all 34 module front doors; a page may hold 300 short lines and 300,000
+# bytes, and the two readings answer different questions.
+#
+# Pen: tools/fixtures/declared_ceiling_control.sh -- thirteen behaviors on real pages in a
+# throwaway pen, five refusals bitten and the rest left free, both ceilings shown from both
+# sides. Run from the repository root.
+
+say "declared-ceiling: Language EN -- a page that writes down how long it will stay is held to it."
+say "declared-ceiling: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
+say "declared-ceiling: Lens TAME -- the declaration is spelled exactly so it stays checkable, the corpus is discovered rather than listed, and the reading this cannot gate is counted in the open."
+
+let scan = run ["sh" "tools/fixtures/declared_ceiling_scan.sh" "census"]
+say scan.out
+assert scan.ok else "declared-ceiling: a page stands above the ceiling it declares, or declares one no tool can read -- read the scan's own lines"
+assert scan.out contains "verdict=ok" else "declared-ceiling: the census must agree with itself"
+assert scan.out contains "pages_over=0" else "declared-ceiling: a page over its own declared ceiling is a promise already broken"
+assert scan.out contains "pages_unreadable=0" else "declared-ceiling: a declaration no tool can read is the same as no declaration"
+assert (scan.out contains "pages_declaring=0" == false) else "declared-ceiling: a reading over no declarations would report clean while measuring nothing"
+assert (scan.out contains "verdict=empty_corpus" == false) else "declared-ceiling: a meter over nothing must say so rather than pass"
+
+let control = run ["sh" "tools/fixtures/declared_ceiling_control.sh"]
+say control.out
+assert control.ok else "declared-ceiling: the control must complete"
+assert control.out contains "control_fail=0" else "declared-ceiling: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "declared-ceiling: the control must agree with itself"
+assert control.out contains "1 free: a page under its declared ceiling passes -- ok" else "declared-ceiling: an honest page must pass free"
+assert control.out contains "2 free: a page at exactly its ceiling passes free -- ok" else "declared-ceiling: a ceiling must pass free from below, or it is not a ceiling"
+assert control.out contains "3 bitten: a page one line over its ceiling refuses -- ok" else "declared-ceiling: the ceiling must bite from above"
+assert control.out contains "3 bitten: the refusal names the page that drifted -- ok" else "declared-ceiling: a refusal that names no page leaves the reader to search"
+assert control.out contains "4 bitten: the single-glyph form reads as unreadable -- ok" else "declared-ceiling: the glyph form is what hid two real breaches, and it must bite"
+assert control.out contains "5 bitten: a header carrying no number reads as unreadable -- ok" else "declared-ceiling: prose about a ceiling is not a ceiling"
+assert control.out contains "6 free: a page declaring nothing is not counted -- ok" else "declared-ceiling: silence is not a declaration, and a page owes this guard nothing"
+assert control.out contains "7 free: dated testimony over its own ceiling passes free -- ok" else "declared-ceiling: testimony keeps every word it wrote"
+assert control.out contains "8 bitten: an empty corpus reads as empty rather than clean -- ok" else "declared-ceiling: a meter over nothing must say so"
+assert control.out contains "9 free: a Ceiling word mid-prose is not read as a declaration -- ok" else "declared-ceiling: the pattern is anchored to a line start on purpose"
+assert control.out contains "10 free: a bound in the H1 title is counted rather than ignored -- ok" else "declared-ceiling: the third reading must be counted, or this guard reads 13 of 14 in silence"
+assert control.out contains "12 bitten: the title-grade form spreading past its ceiling refuses -- ok" else "declared-ceiling: the elder form may shrink and may not spread"
+assert control.out contains "13 free: a holding page beside a drifted one still refuses for the right reason -- ok" else "declared-ceiling: one honest page must never mask a drifted one"
+
+say ""
+say "GREEN: declared-ceiling -- every living page that declares its own length is measured against it, the declaration is held readable as well as honoured, the one page declaring in the elder form is counted in the open, and both readings are proven from both sides across thirteen planted behaviors."
