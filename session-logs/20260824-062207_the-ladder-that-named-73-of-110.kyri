@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260824.062207
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title The ladder table that named 73 of 110
+prompt Autonomous loop -- roster cold first, Standfast on reds, next agent-doable lap Lindy-first crux-first, rota row N mod 5, send each finished increment
+think Cold roster before touching anything: 39 of 39 green, and every row in construction/REDS.md reads CLOSED. The line is clear, so the lap is constructive rather than corrective.
+think Commit count 3362, so the council rota reads row 3362 mod 5 = 2 -- Fire, Mars, cut and stop. Read Standfast, reds-first, and the three depths of removal. The third one shaped the round: this is a molt-depth move, growing new pages beside an old one, so nothing is cut and no debride word is wanted.
+think The running thread from `20260824.060012` names the crux plainly: `caravan/README.md` at 497,531 bytes over 2,694 lines, a Door page wanted with the ladder table lifted to its own reference page. The ranked remainder ranks the same thing Tier 1.3 and gives the falsifier -- a newcomer describing Caravan's job in one sentence within an hour of cloning.
+think Measured the page before splitting it. 96 `##` sections over four natural bodies: a 2,897-byte head, a 19,289-byte ladder table, 312,276 bytes of rung records, 42,671 bytes of shared-harness meter, 26,975 bytes of seL4 rungs, 92,608 bytes of lap-by-lap carry records, and an 815-byte `## Held`. Two seams rather than one, so three pages rather than two.
+think Counting the table's rows to write the split found the red. `grep -c '^| '` over lines 18-92 read 74 where 111 was expected. `comm` against `ls caravan/*.rye` named 37 absentees: 33 rungs each carrying its own witness in `tools/ca/`, and 4 helpers. The table had stopped growing at `heed` while `relent` through `farewell` and the whole seL4 arc landed beside it.
+think Thirteen of the 33 already had their own `##` section further down the same file, which is the tell that the table alone had gone stale rather than the record. Wrote the 33 rows from each module's own `//!` doc comment rather than from the section prose, so each Proves line says what the module says about itself.
+obs The transferable rule, and it is why the guard is worth its lines: a roster listing what a PROGRAM runs gets checked, because a missing entry breaks a run. A roster listing what a READER should find gets checked by nobody, because a missing entry breaks only understanding, and understanding fails quietly. `tools/ca/caravan_suite_witness.rish` already holds a bijection between witnesses on disk and its own roster, so not one of the 33 rungs could go unheard by the machine. The same module carried two rosters, one bound and one free, and the free one was the one a person reads.
+obs The scan matches the table's File column -- `| <ring> | [`<name>.rye`](<name>.rye) | ... |` -- rather than any `.rye` link on the page. That is the load-bearing choice: the rung sections cite their own modules in prose constantly, and a reading that counted those would have called the short table complete. Control case 6 plants exactly that shape and proves it stays unrostered.
+obs Both new pages sit in `caravan/`, the same directory as the page they came from, so every relative target inside them -- `(seed.rye)`, `../tools/...`, `../counsel/...` -- stays true with no repointing at all. REDS %183 was one lap ago and its lesson was that a fold moves depth; keeping the depth is how this round pays nothing for it.
+obs Booking %184 carried the living pin to 25,131 bytes, past its 24,576 bound, so row %179 folded to `construction/archive/` by the ledger's own habit and the headline's three numbers were corrected -- the monotone witness caught the drift by name before I did.
+loom page=caravan/README.md bytes_before=497531 bytes_after=7221 lines_before=2694
+loom split ladder_bytes=365841 harness_bytes=136298 sections_carried=96
+loom ladder_table rows_before=73 rows_after=110 modules_on_disk=110 unrostered_before=37 unrostered_after=0
+loom door_register file=caravan/README.md negative_sentences=2 of 37 pct=5 ceiling=20
+loom roster guards_before=39 guards_after=40 cold_run=39/39_green
+file caravan/README.md a 7,221-byte Door page -- what Caravan is, the five words a system is written in, a real declaration read whole, the three answers an exit code carries, and how to run it
+file caravan/LADDER.md the table of all 110 modules and the rung-by-rung record, lifted whole; the 33 missing rows written and the 4 helpers rostered in a second table
+file caravan/HARNESS.md the shared-check carry, lap by lap, and the meter that keeps it
+file tools/ca/caravan_ladder_roster_witness.rish the 40th standing guard -- four readings gated at zero, both directions proven
+file tools/fixtures/caravan_ladder_roster_scan.sh reads the File column against the directory; publishes the corpus size beside the verdict so an empty read can never say clean
+file tools/fixtures/caravan_ladder_roster_control.sh twelve behaviors on real directories in a throwaway pen -- six refusals bitten, six honest readings free
+file construction/REDS.md row %184 booked and closed; row %179 folded to archive as the pin passed its bound; the headline's three numbers corrected
+file construction/standing-equipment.kyri caravan_ladder_roster seated 40th
+file construction/CHECKPOINTS.md walk-back `e5d4097ef1` recorded before the split
+file construction/ITINERARY.md Now moves to `docs/CRYPTO.md`; the front-door table and the crux paragraph read the landed state
+file tools/fixtures/prose_register_scan.sh `caravan/README.md` joins the DOOR roster, reading 5% against a 20% ceiling
+file tools/ca/caravan_suite_witness.rish its comment repointed from README.md to LADDER.md, since that is where the rung-by-rung record now lives
+recommend keep-going Mycelium is the standing half of the same crux -- 98 modules with 80 witnesses and no front page -- and its README wants the same three questions answered: what is this for, what are its words, and how do I run it

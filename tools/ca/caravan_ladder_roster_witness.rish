@@ -1,0 +1,71 @@
+# tools/ca/caravan_ladder_roster_witness.rish -- the ladder table names every module beside it.
+#
+#   rishi/bin/rishi run tools/ca/caravan_ladder_roster_witness.rish
+#
+# WHY. caravan/ is the largest module in this tree, and a reader enters it through a table headed
+# "The Ladder". On 20260824 that table held 73 rows while 110 .rye modules stood in the directory:
+# 33 rungs, each carrying its own witness, had landed over days when nobody added the row (REDS
+# %184). Every one of those rungs was proven -- tools/ca/caravan_suite_witness.rish holds a
+# bijection between the witnesses on disk and its own roster, so no rung could go unheard. What
+# nothing held was the DOCUMENT against the directory, so the page a newcomer arrives by could
+# stand a third short and read exactly like a full account.
+#
+# THE GENERAL FORM, and it is why this guard is worth its lines. A roster that lists what a
+# program runs gets checked, because a missing entry breaks a run. A roster that lists what a
+# reader should find gets checked by nobody, because a missing entry breaks only understanding --
+# and understanding fails quietly. Both are rosters; only one had a meter.
+#
+# WHAT IS GATED, hard, at zero, in four readings:
+#
+#   unrostered      -- a caravan/*.rye on disk with no row in caravan/LADDER.md
+#   phantom         -- a row naming a module that is absent from the directory
+#   duplicate_rows  -- one module wearing two rows, which may come to disagree
+#   mismatched_rows -- a row whose display text and link target name different modules
+#
+# WHAT PASSES FREE. A ring name that differs from its filename (`ipc buffer` names ipc_buffer.rye,
+# and both spellings are right where they stand). A row in a second table on the page, which is how
+# the four helpers are rostered. A module cited in prose, which is read past on purpose: the rung
+# sections cite their own modules constantly, and a reading that counted those would call a short
+# table complete.
+#
+# WHAT IT DOES NOT REACH, said plainly. Whether a row's Proves column is true. That sentence is
+# prose and no grep reads it; the rung's own witness proves the rung, and this proves the roster.
+#
+# Pen: tools/fixtures/caravan_ladder_roster_control.sh -- twelve behaviors on real directories in a
+# throwaway pen, six refusals bitten and six honest readings left free, so no override exists and
+# none is wanted. Run from the repository root.
+
+say "caravan-ladder-roster: Language EN -- the table a reader enters Caravan by names every module beside it, both directions, so a landed rung cannot go unlisted."
+say "caravan-ladder-roster: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
+say "caravan-ladder-roster: Lens TAME -- a bijection rather than a tally, and the corpus size published beside the verdict so a reading over nothing can never report clean."
+
+let scan = run ["sh" "tools/fixtures/caravan_ladder_roster_scan.sh"]
+say scan.out
+assert scan.ok else "caravan-ladder-roster: the scan must complete -- a module has landed without a row, or a row outlived its module"
+assert scan.out contains "unrostered=0" else "caravan-ladder-roster: every caravan/*.rye carries a row in caravan/LADDER.md"
+assert scan.out contains "phantom=0" else "caravan-ladder-roster: every row in caravan/LADDER.md names a module that exists"
+assert scan.out contains "duplicate_rows=0" else "caravan-ladder-roster: one module wears one row, since two rows may come to disagree"
+assert scan.out contains "mismatched_rows=0" else "caravan-ladder-roster: a row's display text and its link target name one module"
+assert scan.out contains "bijection=yes" else "caravan-ladder-roster: the table and the directory must be the same set"
+
+# A meter reading no modules finds no fault and would report clean while measuring nothing.
+assert (scan.out contains "modules_on_disk=0" == false) else "caravan-ladder-roster: a zero-module reading would report clean over an empty directory"
+
+let control = run ["sh" "tools/fixtures/caravan_ladder_roster_control.sh"]
+say control.out
+assert control.ok else "caravan-ladder-roster: the control must complete"
+assert control.out contains "control_fail=0" else "caravan-ladder-roster: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "caravan-ladder-roster: the control must agree with itself"
+assert control.out contains "2 bitten: a module on disk with no row counts against the gate" else "caravan-ladder-roster: the gate that names this guard must bite"
+assert control.out contains "3 bitten: a row naming an absent module counts against the gate" else "caravan-ladder-roster: the mirror gate must bite"
+assert control.out contains "4 bitten: one module wearing two rows counts against the gate" else "caravan-ladder-roster: two rows for one module must bite"
+assert control.out contains "5 bitten: a row whose text and target disagree counts against the gate" else "caravan-ladder-roster: a row naming two modules must bite"
+assert control.out contains "6 bitten: a module cited only in prose beneath the table stays unrostered" else "caravan-ladder-roster: prose citations must be read past, or a short table reads complete"
+assert control.out contains "10 bitten: an empty directory reads as an empty corpus rather than clean" else "caravan-ladder-roster: a meter over nothing must say so"
+assert control.out contains "1 free: an exact bijection over three modules reads clean" else "caravan-ladder-roster: the honest shape must pass free"
+assert control.out contains "7 free: a ring name carrying a space still binds its module" else "caravan-ladder-roster: a ring name is prose and must not narrow the reading"
+assert control.out contains "8 free: a row in a second table on the page rosters its module" else "caravan-ladder-roster: the helpers table must roster the same way"
+assert control.out contains "12 free: a module and its row leaving together read clean at two" else "caravan-ladder-roster: an honest removal must pass free"
+
+say ""
+say "GREEN: caravan-ladder-roster -- the ladder table and the caravan directory are one set, gated at zero in four readings and proven both ways on real directories."
