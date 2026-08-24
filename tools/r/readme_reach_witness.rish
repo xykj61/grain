@@ -18,8 +18,12 @@
 # where living means the basename carries no one-clock stamp -- the same rule the dated-path
 # repointer applies, so the two can never disagree about what testimony is.
 #
-# WHAT RATCHETS. Broken links in dated testimony, under a ceiling that only falls. These are
-# resolved rather than rewritten: `rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference>`.
+# WHAT IS REPORTED, and deliberately NOT ratcheted. Broken links in dated testimony. A ceiling was
+# tried here and removed on the lap it was written: adding ONE index page reached five more documents
+# and the testimony count rose with them, so the ratchet punished the tree for opening a door. The
+# LOST-reference duty is already owned with no slack by `tools/d/dated_path_witness.rish`, and a
+# second meter over one quantity is how two meters come to disagree. Testimony is resolved rather
+# than rewritten: `rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference>`.
 #
 # Pen: tools/fixtures/readme_reach_control.sh -- eight cases, a living break bitten and named, the
 # same break in testimony counted rather than gated, the ceiling proven to bite, an unreached
@@ -44,10 +48,10 @@ assert control.out contains "case=depth_walked ok" else "readme-reach: the crawl
 assert control.out contains "case=living_bitten ok" else "readme-reach: a broken link in a living file must be refused"
 assert control.out contains "case=living_named ok" else "readme-reach: the refusal must name the file and the target"
 assert control.out contains "case=testimony_ratchets ok" else "readme-reach: the same break in dated testimony is counted, never gated"
-assert control.out contains "case=ceiling_bitten ok" else "readme-reach: testimony over its ceiling must be refused, or the ratchet is decoration"
+assert control.out contains "case=testimony_never_gates ok" else "readme-reach: testimony must be reported and never refused -- the LOST duty belongs to dated_path_witness"
 assert control.out contains "case=unreached_free ok" else "readme-reach: a document the front door never reaches is out of scope"
 assert control.out contains "case=external_free ok" else "readme-reach: an http target is never followed and never counted"
 assert control.out contains "control=ok" else "readme-reach: the control must agree with itself"
 
-say "RED and GREEN paths proven -- a living break bitten and named, testimony ratcheted, the ceiling proven to bite"
+say "RED and GREEN paths proven -- a living break bitten and named, testimony reported and never gated"
 say "GREEN: readme-reach -- from the front door, every living door opens."
