@@ -1,18 +1,19 @@
-# living_docs_lint.rish — ratchet-advisory living-docs lint (eight duties).
+# living_docs_lint.rish -- ratchet-advisory living-docs lint (eight duties).
 #
-# Kaeden seated the name 20260712.222800 · Claude counsel at bench 4fa8363.
+# Kaeden seated the name 20260712.222800 - Claude counsel at bench 4fa8363.
 # Print every parity run; never fail. Hardening horizon: link-breaks may earn
 # a gate once the docs shelf proves stable.
 #
-# Duties (fixtures/living_docs_lint_scan.rish · .sh body via run seam):
+# Duties (fixtures/living_docs_lint_scan.rish - .sh body via run seam):
 #   1. retired LEXICON words in living-voice lines (word-boundary; keeps.txt exemptions)
 #   2. broken relative links on roster
 #   3. orphan roster pages (no inbound from roster + docs/README)
 #   4. Status rooms on rostered living pages
-#   5. docs/ pin-strings byte-match canon (PUBKEYS · master-seal · exit card)
-#   6. living pin size ≤ living_pin_max_bytes (24576); near-bound (≥90%) names fold + SEASONS roster
-#   7. tools/**/*.py count — target zero (Python-at-seam law)
-#   8. shell bodies (>40 lines) beneath .rish wrappers — harvest ratchet (only falls)
+#   5. docs/ pin-strings byte-match canon (PUBKEYS - master-seal - exit card)
+#   6. living pin size <= living_pin_max_bytes, read from the seated law by
+#      tools/fixtures/living_pin_max_bytes.sh; near-bound (>=90%) names fold + SEASONS roster
+#   7. tools/**/*.py count -- target zero (Python-at-seam law)
+#   8. shell bodies (>40 lines) beneath .rish wrappers -- harvest ratchet (only falls)
 #
 # First-lap roster: tools/fixtures/living_docs_lint_roster.sh
 # Design: active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md
@@ -21,7 +22,7 @@
 # Python law: context/specs/20260724-143155_python-at-the-seam-law.md
 # Shell harvest: counsel/date/20260725/20260725-040247_what-the-shell-remembers.md
 #
-# Missing Rishi verb (this wrapper's body): accumulate · filter chained · read bounded
+# Missing Rishi verb (this wrapper's body): accumulate - filter chained - read bounded
 #
 #   rishi/bin/rishi run tools/l/living_docs_lint.rish
 

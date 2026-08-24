@@ -53,12 +53,36 @@
 # and the log fold runs on Keaton's word, so it rides a ceiling that only ever falls rather than
 # a gate that would refuse a remedy no agent may take.
 #
+# THE METER'S OWN COPY, added 20260824.140523. A page declaring the bound is one half of the law.
+# The other half is the meters measuring against it, and five of them spelled the number themselves:
+# equinox_e123_living_pin_guard_scan.sh, index_fold_scan.sh, living_docs_lint_scan.sh,
+# living_docs_roster_scan.sh, and reds_ledger_scan.sh, six sites in all. The lap before this one
+# named three of the five from memory and left them; the tree held five, measured (REDS %199).
+#
+# tools/fixtures/living_pin_max_bytes.sh is the one reading now. It resolves the law from its own
+# location rather than the caller's working directory, so a scan that later cd's into a pen still
+# reads the real tree's law, and it refuses with a named reason rather than defaulting -- a meter
+# whose bound silently defaults reports green over an unmeasured tree.
+#
+# TWO FORMS, because they carry different weight. A meter that ASSIGNS the number or COMPARES
+# against it as a literal is DECIDING with a copy, and a copy that decides can disagree with the
+# law while reporting green -- gated at zero. A file that writes the number into a comment, an
+# assert string, or planted pen data is RECITING it, which is honest where the number is the
+# subject; those ride a ceiling that only ever falls, six lines across six files at seating.
+#
+# A WITNESS ASSERTS AND A CONTROL PLANTS; A SCAN DECIDES. `*_witness.rish` and `*_control.sh` sit
+# outside the gated reading by their file role rather than by name, so the exemption is a rule
+# rather than a remembered list -- the shape this tree has now booked five times (REDS %187, %190,
+# %192, %197, %199). The assert three lines below this file's own scan block is exactly such a pin,
+# and it is the check that the law has not moved without anyone noticing.
+#
 # WHAT IT DOES NOT REACH. Whether a declared number is the RIGHT number -- that is a judgement, and
 # this is a count. And any bound written in prose rather than in a form a parser reaches.
 #
-# Pen: tools/fixtures/declared_ceiling_control.sh -- twenty-two behaviors across thirty-seven
-# assertions on real pages in a throwaway pen, both ceilings and both bounds shown from both
-# sides. Run from the repository root.
+# Pen: tools/fixtures/declared_ceiling_control.sh -- twenty-seven behaviors across fifty
+# assertions on real pages and real git repositories in a throwaway pen, both ceilings, both
+# bounds, and both halves of the meter-copy reading shown from both sides. Run from the
+# repository root.
 
 say "declared-ceiling: Language EN -- a page that writes down how long it will stay is held to it."
 say "declared-ceiling: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
@@ -75,6 +99,9 @@ assert (scan.out contains "verdict=empty_corpus" == false) else "declared-ceilin
 assert scan.out contains "bounds_disagree=0" else "declared-ceiling: a pin citing the seated law and spelling a different number is the drift this guard exists for"
 assert (scan.out contains "bounds_declaring=0" == false) else "declared-ceiling: the byte-bound reading over no declarations would report clean while measuring nothing"
 assert scan.out contains "living_pin_max_bytes=24576" else "declared-ceiling: the number must come from the seated law, and the law states 24576"
+assert scan.out contains "law_copies_deciding=0" else "declared-ceiling: a meter deciding with its own copy of the bound can disagree with the law while reporting green"
+assert (scan.out contains "verdict=law_number_copied" == false) else "declared-ceiling: the one reading is tools/fixtures/living_pin_max_bytes.sh, and every meter calls it"
+assert (scan.out contains "verdict=law_recitation_spread" == false) else "declared-ceiling: the number may be written down in fewer places than yesterday, never more"
 
 let control = run ["sh" "tools/fixtures/declared_ceiling_control.sh"]
 say control.out
@@ -104,6 +131,12 @@ assert control.out contains "19 bitten: a pin spelling a number the law does not
 assert control.out contains "20 free: a corpus of byte declarations alone is a corpus -- ok" else "declared-ceiling: either reading alone is a real corpus"
 assert control.out contains "21 free: dated testimony over its own byte bound passes free -- ok" else "declared-ceiling: testimony keeps every word it wrote, in bytes as in lines"
 assert control.out contains "22 free: the scan reports the number the seated law states -- ok" else "declared-ceiling: the law is read rather than assumed"
+assert control.out contains "23 free: a meter reading the law rather than spelling it passes -- ok" else "declared-ceiling: a meter that reads the law must pass free"
+assert control.out contains "24 bitten: a meter assigning its own copy of the bound refuses -- ok" else "declared-ceiling: the copy that decides must bite"
+assert control.out contains "24 bitten: the refusal names the meter -- ok" else "declared-ceiling: a refusal that names no file leaves the reader to search"
+assert control.out contains "25 bitten: a meter comparing against a literal copy refuses -- ok" else "declared-ceiling: a comparison is a decision, the same as an assignment"
+assert control.out contains "26 free: a witness pinning the value is a role, not a fault -- ok" else "declared-ceiling: a witness asserts and a control plants; only a scan decides"
+assert control.out contains "27 bitten: the recitation form spreading past its ceiling refuses -- ok" else "declared-ceiling: the recitation ceiling may fall and may not rise"
 
 say ""
-say "GREEN: declared-ceiling -- every living page that declares its own limit is measured against it, in lines and in bytes alike, the declaration is held readable as well as honoured, the number comes from the seated law rather than a copy, the two readings this cannot gate are counted in the open, and every reading is proven from both sides across twenty-two planted behaviors."
+say "GREEN: declared-ceiling -- every living page that declares its own limit is measured against it, in lines and in bytes alike, the declaration is held readable as well as honoured, the number comes from the seated law rather than a copy in the pages or in the meters, the two readings this cannot gate are counted in the open, and every reading is proven from both sides across twenty-seven planted behaviors."

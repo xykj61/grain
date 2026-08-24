@@ -46,30 +46,41 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `6411026234` -- the lap the operator card came under the bound it now declares, and the byte-bound reading joined the declared-limit guard (REDS %197, %198). This line names the nib and one sentence; the account of a lap lives in its session log.
+**Git nib:** `cafd4526c1` -- the lap the seated bound got one reading, and a deciding copy of it joined the declared-limit guard at zero (REDS %199). This line names the nib and one sentence; the account of a lap lives in its session log.
 
-**Now.** **This card is the pin the loop reads first, and it was the pin furthest past its own
-bound** -- **47,213 bytes** against `living_pin_max_bytes` (24,576), condensed to 41,449 four laps
-earlier and grown back. Two guards read that law and neither refused this page:
-`equinox_e123_living_pin_guard` gates a **hand-written roster of seven** and carried this card as
-**advisory**, while `living_docs_lint` duty 6 discovers sixty and never blocks. **Thirteen living
-pages declare `**Bound:** under living_pin_max_bytes` in their own header, and one sat on the gating
-roster** -- REDS %187's shape a fourth time. `declared_ceiling` reads the `**Bound:**` form now
-beside the `**Ceiling:**` form, one roof for a declared limit whatever its unit, and this card moves
-to **enforce**.
+**Now.** **The law that states the bound had six meters, and five of them spelled the number
+themselves.** `living_pin_max_bytes` is written once, at
+[`../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md`](../context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md).
+Six meters measure against it; five carried their own copy across **six sites**. The lap before this
+one seated the sixth to read the law, named the remainder as **"three scripts"** in its own row and
+in the scan's comment, and left. **A grep found five** (REDS %199). A constant written six ways can
+quietly disagree with itself: move the law and five meters keep measuring against yesterday, each
+green about the number it happens to hold.
 
-**And a second red the first one found.** Five tracked specs carried a lone orphan UTF-8 lead byte
--- a middot whose continuation byte an earlier ASCII sweep replaced -- and two are living, one of
-them `context/specs/append-only-growth-law.md`, the growth law every room fold rests on. Measured
-both ways rather than assumed: GNU grep, which every script here runs, reads them fine; ugrep, which
-this bench's shell resolves `grep` to, reads them as binary silence. So the guards were never blind
-and a hand searching the tree was. All five repaired byte-exact, and `living_card_ascii` gains a
-third reading gating **invalid UTF-8 at zero across 13,509 tracked text files** (REDS %198).
+**One reading now, and a wall that keeps it one.**
+[`../tools/fixtures/living_pin_max_bytes.sh`](../tools/fixtures/living_pin_max_bytes.sh) resolves the
+law from its own location rather than the caller's working directory, so a scan that later `cd`s
+into a pen still reads the real tree's law, and it refuses with a named reason rather than
+defaulting. `declared_ceiling` gains a fourth reading over **2,046 tracked sources under `tools/`**:
+a meter that **assigns** the number or **compares** against it as a literal is deciding with a copy,
+**gated at zero**; a comment, an assert string, or planted pen data **recites** it, honest where the
+number is the subject, **six lines across six files** under a ceiling that only falls. **A witness
+asserts and a control plants; a scan decides** -- so the two roles sit outside the gate by *role*
+rather than by *name*, which is what keeps an exemption from becoming the roster this row is about.
+Proven across **twenty-seven behaviors and fifty assertions**, five new ones on real git
+repositories in a pen.
+
+**Two owned in the same breath.** The new reading's first run refused the tree at **8 recitations
+against a ceiling of 6** -- both extra lines written by this round, inside the comment explaining the
+guard. They came out rather than the ceiling going up. And the opening cold roster ran in the
+background while the lap edited the tree, so `declared_ceiling` was measured *after* its own repair:
+**a 29-minute cold roster is cold only if the tree holds still**, and the hot roster after `git add`
+is what proves the shipped tree.
 
 **The one page still over, and its remedy is word-gated.** `session-logs/README.md` stands at
-**282,139 bytes** against the same 24,576 it declares -- 11.4x -- because 192 flat logs across four
-days each carry a row averaging 1,459 bytes. Its rows fold when its logs fold, and **the log fold
-runs on Keaton's word**. It rides a ratchet that only falls; the fold is a door in the table below.
+**282,139 bytes** against the 24,576 it declares -- 11.4x -- because 192 flat logs across four days
+each carry a row averaging 1,459 bytes. Its rows fold when its logs fold, and **the log fold runs on
+Keaton's word**. It rides a ratchet that only falls; the fold is a door in the table below.
 
 **Landed, and the detail is in the logs.** Every round this block used to narrate reads as one line in *Prior laps* below, or in *Landed arcs* beneath that. The prose-register standfast closed `20260824.021623` (REDS %163); the deep debride is spent and both remotes hold one clean history (`20260823.072824`); the teaching tier reads zero over target.
 
@@ -219,11 +230,11 @@ account. Earlier rows are shelved at
 
 | Landed | Round | Log |
 |---|---|---|
+| `20260824.140523` | The number with six homes -- `living_pin_max_bytes` read from the law by one script instead of spelled by five meters across six sites, and `declared_ceiling` gained a fourth reading gating a deciding copy at zero | REDS %199 |
 | `20260824.130807` | A bound with two meters and no wall -- ITINERARY condensed 47,213 -> 22,647 bytes and moved advisory -> enforce, `declared_ceiling` taught the `**Bound:**` form, and five orphan UTF-8 bytes repaired with validity gated at zero | REDS %197, %198 |
 | `20260824.121445` | A declared bound becomes a measured one -- 13 pages declared a ceiling and none was both readable and honoured; `declared_ceiling` seated 50th | REDS %195, %196 |
 | `20260824.104946` | The last door was already right -- Constel split at 31 of 31, `constel_module_roster` seated 47th, the six-door front-door arc closed | REDS %192 |
 | `20260824.095920` | The guard that was right and unheard -- crypto's own count guard RED and off the roster; both crypto doors repaired | REDS %191 |
-| `20260824.091754` | The glob that was not a path -- Lotus's front door split, `lotus_module_roster` seated 44th | REDS %190 |
 
 Walk back to any of them with `git log --oneline` and the session log of the same stamp.
 

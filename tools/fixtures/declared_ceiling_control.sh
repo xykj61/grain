@@ -231,7 +231,67 @@ fresh
 pin "$D/small.md" 400
 out=$(run_scan)
 spec_n=$(grep -m1 '^living_pin_max_bytes' context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md | sed -n 's/.*=[[:space:]]*\([0-9][0-9]*\).*/\1/p')
+spec_bound="$spec_n"
 check "22 free: the scan reports the number the seated law states" "$spec_n" "$(field living_pin_max_bytes "$out")"
+
+# ---- 23..27: the meter's own copy of the bound ------------------------------------------
+# The pages are one half of the law; the meters measuring them are the other, and until
+# `20260824.140523` five of those meters spelled the number themselves. These behaviors prove the
+# wall that keeps the reading in one place, on real git repositories in the pen rather than on the
+# tree, so both refusals stand at every roster pass.
+L="$PEN/lawpen"
+law_pen() {
+  rm -rf "$L"
+  mkdir -p "$L/tools/fixtures" "$L/tools/d"
+  ( cd "$L" && git init -q . )
+  printf '#!/bin/sh\nMAX_BYTES=$(sh "$(dirname "$0")/living_pin_max_bytes.sh")\n' > "$L/tools/fixtures/honest_scan.sh"
+}
+law_stage() { ( cd "$L" && git add -A . >/dev/null 2>&1 ) || true; }
+law_scan() {
+  DECLARED_CEILING_ROOT="$D" DECLARED_LAW_ROOT="$L" \
+  DECLARED_LAW_RECITE_CEILING="${1:-0}" \
+    sh tools/fixtures/declared_ceiling_scan.sh census 2>&1 || true
+}
+
+fresh
+pin "$D/small.md" 400
+law_pen; law_stage
+out=$(law_scan 0)
+check "23 free: a meter reading the law rather than spelling it passes" "ok" "$(verdict "$out")"
+check "23 free: nothing decides with a copy" "0" "$(field law_copies_deciding "$out")"
+check "23 free: nothing writes the number down" "0" "$(field law_copies_reciting "$out")"
+
+law_pen
+printf '#!/bin/sh\nMAX_BYTES=%s\n' "$spec_bound" > "$L/tools/fixtures/copy_scan.sh"
+law_stage
+out=$(law_scan 9)
+check "24 bitten: a meter assigning its own copy of the bound refuses" "law_number_copied" "$(verdict "$out")"
+check "24 bitten: the copy is counted" "1" "$(field law_copies_deciding "$out")"
+named=$(printf '%s\n' "$out" | grep -c 'copy_scan.sh decides with its own copy of the bound' || true)
+check "24 bitten: the refusal names the meter" "1" "$named"
+
+law_pen
+printf '#!/bin/sh\nif [ "$b" -gt %s ]; then :; fi\n' "$spec_bound" > "$L/tools/fixtures/cmp_scan.sh"
+law_stage
+out=$(law_scan 9)
+check "25 bitten: a meter comparing against a literal copy refuses" "law_number_copied" "$(verdict "$out")"
+
+law_pen
+printf '# a witness pins the law value on purpose\nMAX_BYTES=%s\n' "$spec_bound" > "$L/tools/d/some_witness.rish"
+law_stage
+out=$(law_scan 9)
+check "26 free: a witness pinning the value is a role, not a fault" "ok" "$(verdict "$out")"
+check "26 free: it does not read as deciding" "0" "$(field law_copies_deciding "$out")"
+check "26 free: it is counted as writing the number down" "1" "$(field law_copies_reciting "$out")"
+
+law_pen
+printf '#!/bin/sh\n# the seated bound is %s\n' "$spec_bound" > "$L/tools/fixtures/comment_scan.sh"
+law_stage
+out=$(law_scan 1)
+check "27 free: a comment recites rather than decides" "0" "$(field law_copies_deciding "$out")"
+check "27 free: a recitation under its ceiling passes" "ok" "$(verdict "$out")"
+out=$(law_scan 0)
+check "27 bitten: the recitation form spreading past its ceiling refuses" "law_recitation_spread" "$(verdict "$out")"
 
 echo ""
 echo "control_pass=$PASS"

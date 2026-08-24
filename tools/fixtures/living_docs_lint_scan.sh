@@ -12,7 +12,9 @@ set -eu
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
 cd "$ROOT"
 
-LIVING_PIN_MAX_BYTES=24576
+# The seated bound, read from the law rather than spelled here. One reading, one home:
+# five meters each held their own copy until 20260824 (REDS %199).
+LIVING_PIN_MAX_BYTES=$(sh "$ROOT/tools/fixtures/living_pin_max_bytes.sh")
 KEEPS="tools/fixtures/living_docs_lint_keeps.txt"
 TMP=$(mktemp -d "${TMPDIR:-/tmp}/living-docs-scan.XXXXXX")
 trap 'rm -rf "$TMP"' EXIT

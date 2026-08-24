@@ -26,7 +26,8 @@ ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/season/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 ELDER=tools/gen/season/equinox_e122_roots_bench_kinds_witness.rish
-MAX_BYTES=24576
+# The seated bound, read from the law rather than spelled here. One reading, one home (REDS %199).
+MAX_BYTES=$(sh "$(dirname "$0")/living_pin_max_bytes.sh")
 
 if test "$MODE" = "prove-red"; then
   # Prefer C1 zero-byte control; fall back to thin emptied fixture.
