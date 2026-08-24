@@ -1,13 +1,13 @@
 # Toyota Production System — jidoka, andon, and the loom that stopped itself
 
 *Kept whole and unaltered in the gratitude room, as the silo technique asks. The
-siloed law lives at `foundations/20260729-222500_reds-first-and-the-allocation.md`
+siloed law lives at `foundations/20260729-224828_reds-first-and-the-allocation.md`
 in our own vocabulary; the teachers are named here, warmly, and nowhere else.*
 
 **Stamp:** `20260729.222500`
 **Kind:** gratitude · named teachers
-**Silo:** `foundations/20260729-222500_reds-first-and-the-allocation.md`
-**Study:** `external-research/20260729-222500_the-line-that-stops-itself.md`
+**Silo:** `foundations/20260729-224828_reds-first-and-the-allocation.md`
+**Study:** `external-research/20260729-224828_the-line-that-stops-itself.md`
 
 ---
 

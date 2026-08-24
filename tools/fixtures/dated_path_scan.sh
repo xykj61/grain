@@ -76,7 +76,9 @@ verb="${1:-census}"
 # the stamp sitting inside a longer filename rather than a reference at all. What remains is
 # **239 genuine references** the census had never counted, every one of them landing. The number
 # a wider and tighter meter reports is the same number, which is the most one can ask of a repair.
-LOST_CEILING=187   # 192 until 20260823.124407, when *_control.sh became a glob exclusion
+LOST_CEILING=186   # 192 until 20260823.124407, when *_control.sh became a glob exclusion; 187
+                   # until 20260824.174500, when a citation swept by the Sala -> Seva rename was
+                   # repointed at the dated filename that correctly never followed it.
 
 # What is not the field -- read from ONE list that this tool and the repointer both source, since
 # a list kept in two places is two lists that happen to match today (REDS %121).

@@ -133,7 +133,13 @@ DP_EXCLUDE_PATHS="docs-geode/demos/README.md"
 #   20260823.105651, and Conway's separate telling left the tree while staying in history. A
 #   dated session log still names it, and testimony keeps every word it wrote, so the census
 #   reads the name as intent.
+#
+#   The sixth is planted by `commit_message_guard_scan.sh` on 20260824.172500, to prove the
+#   commit-msg hook refuses a body citing a path the tree does not hold (REDS %202). A stamp of
+#   20260101-010101 names no lap this tree ever ran, so the name matches nothing by construction --
+#   the same reasoning as the first entry, one control later.
 DP_FIXTURE_BASENAMES="20260101-000000_a-dated-note.md \
+20260101-010101_never-written.kyri \
 20260730-022147_keaton-livermore-resume-draft.md \
 20260730-022147_personal-ontology.md \
 20260730-022147_cover-letter-co-authored.md \
