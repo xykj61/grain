@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Opened:** `20260821.174047`
-**Style:** Radiant (see [`../context/RADIANT_STYLE.md`](../context/RADIANT_STYLE.md))
+**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Living -- new room, bounded at 256 flat files from birth
 **Sibling:** [`../active-designing/README.md`](../active-designing/README.md) -- the room that thinks in essays

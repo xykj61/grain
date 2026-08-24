@@ -4,7 +4,7 @@
 
 **Language:** EN
 **Last updated:** 2026-08-02 (`20260802.183244` -- e237 valve - narrowing spend returned - session-logs fold stands)
-**Style:** Radiant (see `context/RADIANT_STYLE.md`)
+**Style:** Gauge (see `context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 
 *The root gathering of sources now lives at [`bibliography.md`](bibliography.md). The baton museum and its design-shapes sibling wing live under [`context/baton-museum/`](context/baton-museum/) and [`context/design-shapes/`](context/design-shapes/).*

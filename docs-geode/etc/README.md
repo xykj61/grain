@@ -1,6 +1,6 @@
 # Etc -- the room for a genre that does not exist yet
 
-**Language:** EN - **Style:** Radiant - **Voice:** Kyri
+**Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Written:** `20260821.190149` - **Status:** Living - **Kind:** named entry criterion
 
 ---

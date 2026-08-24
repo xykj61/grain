@@ -1,6 +1,6 @@
 # Pier flake templates
 
-**Language:** EN · **Style:** Radiant · **Voice:** Kyri
+**Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 
 The tracked shape for a declared pier. Copy into the living machine directory, fill the keys, and rebuild.
 
@@ -8,7 +8,7 @@ The tracked shape for a declared pier. Copy into the living machine directory, f
 |------|------|
 | `flake.nix` | Flake inputs and `nixosConfigurations.pier` |
 | `disk-config.nix` | disko GPT layout for `/dev/vda` |
-| `configuration.nix.example` | Host character — **placeholders only**; rename to `configuration.nix` after fill |
+| `configuration.nix.example` | Host character -- **placeholders only**; rename to `configuration.nix` after fill |
 
 ## Living vs tracked
 
