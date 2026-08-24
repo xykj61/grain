@@ -2,7 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Status:** Checkable -- **227 modules** stand in this directory on `20260824.082436`, and every one of them has a row below.
-**Held to the directory by** [`../tools/i/image_module_roster_witness.rish`](../tools/i/image_module_roster_witness.rish) over [`../tools/fixtures/image_module_roster_scan.sh`](../tools/fixtures/image_module_roster_scan.sh), which gates `unrostered`, `phantom`, `duplicate_rows`, and `mismatched_rows` at zero.
+**Held to the directory by** [`../tools/i/image_module_roster_witness.rish`](../tools/i/image_module_roster_witness.rish) over [`../tools/fixtures/module_roster_scan.sh`](../tools/fixtures/module_roster_scan.sh), which gates `unrostered`, `phantom`, `duplicate_rows`, and `mismatched_rows` at zero.
 
 This page exists because the front door could not hold it honestly. On `20260824` `README.md` stood at **400,042 bytes** -- the largest page in the tree -- and named **112** of the 227 modules beside it, so a reader used it as the roster and came away with half. A table a reader uses is a roster, and it wants the same bijection the program's own roster already has (REDS %184).
 

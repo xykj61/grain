@@ -24,6 +24,25 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260824.091754` -- the Lotus front door split, and the roster scan renamed directory-neutral
+
+**Walk-back nib:** `7cc0b62b56` -- read the whole departing page with
+`git show 7cc0b62b56:lotus/README.md`, and the departing scan name with
+`git show 7cc0b62b56:tools/fixtures/image_module_roster_scan.sh`.
+
+**Swept.** `lotus/README.md` fell from **297,878 bytes** to a Door front page; its rung index, its
+rung sections, and its road-on narrative moved whole into `lotus/LADDER.md`, and a new
+`lotus/MODULES.md` rosters all 240 modules. In the same round
+`tools/fixtures/image_module_roster_scan.sh` was renamed **`tools/fixtures/module_roster_scan.sh`**,
+since the scan already took the directory as an argument and a second directory was about to use it.
+Four living references repointed: the image witness, the image control, `image/MODULES.md`, and the
+scan's own body.
+
+**What waits there, worth recalling.** The departing README carried the ALES rung reasoning inline
+at 297,878 bytes -- every word of it moved into `LADDER.md` rather than being cut, so the walk-back
+matters mainly for the page's own arrangement. The departing scan name is one `git mv` away and its
+behavior is unchanged.
+
 ### `20260824.062207` -- the Caravan front door split into a Door page, a ladder record, and a harness record
 
 **Walk-back nib:** `e5d4097ef1` -- read the whole departing page with
