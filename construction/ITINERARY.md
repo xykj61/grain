@@ -18,7 +18,7 @@
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
 - **Style sweep before every send** -- Radiant pass over the round's prose (Twilight for a night piece), register only never a claim. Seed section 6.
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- element by modality, three documents per lap, **lap N reads row N mod 5**, so the whole canon returns to awareness roughly once a working day.
-- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **54 guards** stand; the roster is `construction/standing-equipment.kyri`.
+- **Roster cold, then hot.** Open the lap with `sh tools/fixtures/standing_equipment_run.sh` before touching anything, and run it again after `git add` so the green measures the tree the commit ships (REDS %174). **57 guards** stand, counted from the roster's own run rather than recited; the roster is `construction/standing-equipment.kyri`.
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked, and the next lap's cold roster finds all of it (REDS %188). No guard can enforce this one, since it would have to run after the lap ends.
 - **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
@@ -47,25 +47,34 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `4b0b2b3e95` -- `Region` folded into `tally/`, `rye` and `rishi` each taught a second way to be asked, every room given a way home, and Rye's comments swept to ASCII. Suite 109 green.
+**Git nib:** `4b0b2b3e95` -- four reds from two roots: a sweep that edited two mirrors and a declared ceiling, and a library index counting a gitignored build cache as tree content.
 
-**Now.** **Quality assurance has a grade, and the grade has a stack.** The negative-share ceiling read
-upward is a school grade -- 20% becomes **80, a B**.
-[`../tools/fixtures/qa_report_card.sh`](../tools/fixtures/qa_report_card.sh) reads any document,
-comment block, or design four ways. **B stands; below B pushes one molt frame**, depth 2.
+**Now.** **Four reds from two roots, both closed on metal.** The cold roster opened `guards_red=4`.
+`document_mirror` and `declared_ceiling` traced to one sweep -- `e9582afd36` gave 110 room READMEs a
+three-line way home, and two of those paths were **mirrors** while a third carried a **declared
+ceiling** (REDS %217). `geode_libraries` and `generated_page_freshness` traced to the other: the
+library index counted modules with `find`, so the `glow` row published **238** where the tree keeps
+**130**, the other 108 being a gitignored build cache. The count asks `git check-ignore` now, and a
+new control proves it on real repositories four ways -- pointed at the old rule it **refuses three
+and passes the one that should** (REDS %216).
 
-**%207-%213 -- the invariant arc, corrected ten times.** The **13,235** this card carried fell to
-**4,242**, **1,385** on **reachability**, **853** on the label pattern, **400** once reachability
-crossed files. crypto was never 57.5% -- **483 lines carry a qualified label** the meter read as absent (**%212**).
-**The unlabelled-456 sweep was refused** -- 361 of 377 were test narration inside `pub fn` proof
-functions (**%213**). **Cross-file reachability then landed:** the spread reaches a `pub fn` only
-when no other module qualified-calls it **and** it returns `void`; **24 behaviors** prove it. **`caravan` swept to 37**, and **20 stay uncovered on
-purpose** -- `bounded`, `chain` and `twin` hold a **byte-identical** region body, so a comment costs
-triple and the zero-slack carry ratchet reds. **The fold is the answer and wants its own round.**
-Carry falls **58,544 -> 58,540**; the suite sings **GREEN across 109 rungs**. **Every room but one now reads 100%** -- 197 blocks across
-`image`, `lotus`, `brushstroke` and the tail. **Tree 99%, gap 37, all of it caravan:** 20
-fold-blocked and 17 proof. The bin also learned that a file under `fixtures/` is a planted artifact
-(a drift copy, an intentional ban violation) and an `assert(` inside a string is prose.
+**The next door, measured rather than swept.** The report card's **Reach** reading has no honest
+denominator on a page that is mostly a table. It strips tables and bullets, correctly, then divides
+links by whatever prose survives: `docs/README.md` scores **0** from **one line** carrying 5 links
+and 10 words, and `docs-geode/libraries/README.md` -- generated, and proven GREEN by its own witness
+this lap -- reads **F** on 13 words. Of **130 living pages read, 63 carry under 100 words**, so half
+the population has a per-hundred rate extrapolated from under one unit of its own denominator; **11
+score exactly zero**, `docs/ZETA.md` on 2 words. The door roster's below-B ceiling of **1** is that
+artifact and nothing else. **A meter that instructs a repair which would make the artifact worse is
+the thing to fix**, and this one is ten corrections deep, so it takes its own round with a control
+planted both ways rather than a patch at a long lap's end (the %213 precedent).
+Its **Truth** half misreads a second blessed construction: `CHECKPOINTS.md` sits at **60**, one
+point off the F gate, because two *placeholder shapes* -- `date/YYYYMMDD/name` -- count as broken
+links, and the stamp-and-name law seats that spelling. Two readings, one round.
+
+**Still open:** **20 caravan blocks stay uncovered on purpose** -- `bounded`, `chain`, and `twin`
+share a byte-identical region body, so a comment costs triple against a zero-slack ratchet, and the
+fold wants its own round. The invariant arc walks back at checkpoint `20260825.031305`.
 
 **Landed, and the detail is in the logs**, one line each in *Prior laps* below.
 
@@ -232,10 +241,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260824.193815` | Five index rooms carried across and the log fold on Keaton's word; rows bounded at 192 bytes; no living page over its declared bound | [log](../session-logs/20260824-180216_the-room-folds-and-two-numbers-meet.kyri) |
-| `20260824.183000` | Shorter rows -- a row points, bounded 192 bytes; the two seated bounds found incompatible (%205) | [log](../session-logs/20260824-180216_the-room-folds-and-two-numbers-meet.kyri) |
-| `20260824.162940` | Model back to Opus 5, one reading over three sites (%201); commit-msg gains a fourth wall (%202); census 191 -> 186 (%203) | [log](../session-logs/20260824-162940_one-model-named-once.kyri) |
-| `20260824.154722` | Counsel's index across -- 112 rows onto ten shelves; ratchet 231 -> 119 | index_fold |
+| `20260825.031428` | Four reds, two roots -- a sweep that edited two mirrors and a declared ceiling; an index counting a build cache (%216, %217) | [log](../session-logs/20260825-031428_four-reds-from-two-roots.kyri) |
 
 Walk back to any of them with `git log --oneline` and the session log of the same stamp.
 

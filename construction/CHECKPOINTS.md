@@ -24,6 +24,25 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ## The ledger (newest first)
 
+### `20260825.031305` -- the invariant arc condensed off the card, ten corrections deep
+
+**Walk-back nib:** `8fe50f50f2` -- read the whole departing card with
+`git show 8fe50f50f2:construction/ITINERARY.md`.
+
+**Swept:** the *Now* block of [`ITINERARY.md`](ITINERARY.md), roughly 1,700 bytes carrying the
+invariant arc of REDS %207 to %213 -- the 13,235 that fell to 400 across reachability, the
+qualified-label correction, the refused unlabelled-456 sweep, and the caravan fold that three
+byte-identical region bodies still block. The card stood at 24,398 bytes against the 24,576 it
+declares, so the arc had to leave for live work to fit.
+
+**What waits there, worth recalling:** every figure in that block is held twice over -- in the
+REDS fold archives for rows %207 to %214, and in the session logs of the laps that measured them.
+The one line worth carrying forward is the unclosed part: **20 caravan blocks stay uncovered on
+purpose**, because `bounded`, `chain`, and `twin` hold a byte-identical region body and a comment
+there costs triple against a zero-slack carry ratchet. The fold is the answer and wants its own
+round. That sentence is kept live on the card rather than left here.
+
+
 ### `20260824.130807` -- the operator card condensed under the bound it now declares
 
 **Walk-back nib:** `d6c02f92cc` -- read the whole departing card with
