@@ -19,3 +19,4 @@ Immutable once written.*
 | `20260825.034444` | The report card reads an index as one and a placeholder as an illustration; door ceiling 1 -> 0 | [log](../../session-logs/20260825-034444_a-declaration-is-not-an-exemption.kyri) |
 | `20260825.041416` | The register floor the card was dropping -- one number cited once; 27 pages under it, six reading 100% off one sentence | [log](../../session-logs/20260825-041416_a-share-needs-a-denominator.kyri) |
 | `20260825.051936` | A fold repoints what it can see -- 4 broken comment citations, 11 symlink near-misses, a new guard at zero (%218) | [log](../../session-logs/20260825-051936_a-citation-is-a-promise-wherever-written.kyri) |
+| `20260825.061552` | Caravan allowances -- Microkit's seven bounds for one protection domain, and Caravan inside all four it shares | [log](../../session-logs/20260825-061552_bounded-for-our-own-reasons.kyri) |

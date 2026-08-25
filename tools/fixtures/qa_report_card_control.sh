@@ -304,4 +304,18 @@ o=$(run heading.md)
 [ "$(val "$o" truth_source)" = "prose" ] && echo "prose_cites_everywhere=yes" || echo "prose_cites_everywhere=no"
 [ "$(val "$o" truth_counted)" -eq 80 ] && echo "heading_link_still_counted=yes" || echo "heading_link_still_counted=no ($(val "$o" truth_counted))"
 
+# 17 -- a page QUOTING link syntax inside backticks yields no citation. The link grep matches `](`
+# straight through a backtick span, so a REDS row explaining a fold produced a "target" made of the
+# prose between two spans. Zero tracked paths in this tree carry a backtick, so the rule is safe.
+printf 'A regex rewriting every `](../` also caught the header %s `](../REDS.md)` in that row.\n' '' > "$pen/quoted.md"
+o=$(run quoted.md)
+[ "$(val "$o" truth_counted)" -eq 100 ] && echo "quoted_syntax_free=yes" || echo "quoted_syntax_free=no ($(val "$o" truth_counted))"
+echo "$o" | grep -q 'of 0 cited paths' && echo "quoted_syntax_not_cited=yes" || echo "quoted_syntax_not_cited=no"
+
+# And a real broken link on the same page still counts, so quoting is not a way to stop being read.
+printf 'A regex rewriting every `](../` also caught `](../REDS.md)`, and [a departed page](gone-for-good.md) besides.\n' > "$pen/quoted_and_real.md"
+o=$(run quoted_and_real.md)
+[ "$(val "$o" truth_counted)" -eq 80 ] && echo "real_link_beside_quote_counted=yes" || echo "real_link_beside_quote_counted=no ($(val "$o" truth_counted))"
+echo "$o" | grep -q 'unresolved: gone-for-good.md' && echo "real_link_beside_quote_named=yes" || echo "real_link_beside_quote_named=no"
+
 echo "control_verdict=ok"

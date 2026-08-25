@@ -332,6 +332,15 @@ while IFS= read -r target; do
       *) continue ;;
     esac
   fi
+  # A target carrying a backtick is not a path. The link grep matches `](` through a backtick span,
+  # so a page quoting link syntax inside code marks -- `](../REDS.md)` in a REDS row explaining a
+  # fold -- yields a "target" made of the prose between two spans. Zero tracked paths in this tree
+  # contain a backtick, so this can never swallow a real one. Measured 20260825: it is the only such
+  # artifact in the whole living non-yonder population, which is why a full fenced-block rule was
+  # left alone -- it would touch 20+ documents to repair one reading.
+  case "$target" in
+    *'`'*) continue ;;
+  esac
   cited=$((cited + 1))
   [ -e "$dir/$target" ] && continue
   [ -e "$root/$target" ] && continue
