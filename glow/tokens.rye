@@ -78,10 +78,15 @@ pub const Token = struct {
 };
 
 pub fn slice_of(src: []const u8, tok: Token) []const u8 {
-    assert(src.len <= max_src_len); // precondition: hosted desk bound
+    // invariant: the length casts to u32 on the next line, so a source past the hosted desk
+    // bound would wrap rather than refuse
+    assert(src.len <= max_src_len);
     const src_len: u32 = @intCast(src.len);
-    assert(tok.start <= src_len); // invariant: start in range
-    assert(tok.len <= src_len - tok.start); // invariant: span fits
+    // invariant: the slice below is taken without a bounds check, so a token whose span leaves
+    // the source would read past it; the subtraction sits on the right so start plus len cannot
+    // wrap before the comparison
+    assert(tok.start <= src_len);
+    assert(tok.len <= src_len - tok.start);
     const lo: usize = @as(usize, @intCast(tok.start));
     const hi: usize = @as(usize, @intCast(tok.start + tok.len));
     return src[lo..hi];
@@ -111,8 +116,10 @@ fn is_hex_digit(c: u8) bool {
 }
 
 fn starts_with(src: []const u8, i: u32, lit: []const u8) bool {
-    assert(lit.len >= 1); // precondition: literal non-empty
-    assert(lit.len <= 2); // precondition: rune/literal heads are 1–2 bytes
+    // invariant: every caller passes a Glow rune or literal head and those are one or two
+    // bytes, so a longer literal here means a caller has confused a head for a word
+    assert(lit.len >= 1);
+    assert(lit.len <= 2);
     const i_usz: usize = @as(usize, @intCast(i));
     if (i_usz + lit.len > src.len) return false;
     return std.mem.eql(u8, src[i_usz .. i_usz + lit.len], lit);
@@ -126,7 +133,9 @@ fn match_rune2(src: []const u8, i: u32) ?u32 {
     };
     for (pairs) |p| {
         if (starts_with(src, i, p)) {
-            assert(p.len == 2); // invariant: rune2 table is two-byte heads
+            // invariant: the match width returned below is the constant 2, so a table entry of
+            // any other length would hand back a span that does not fit it
+            assert(p.len == 2);
             return 2;
         }
     }
@@ -134,10 +143,14 @@ fn match_rune2(src: []const u8, i: u32) ?u32 {
 }
 
 fn push(out: []Token, used: *u32, kind: Kind, start: u32, len: u32) TokenError!void {
-    assert(len >= 1); // precondition: every token spans at least one byte
+    // invariant: a zero-length token would leave the caller's cursor where it was, and the
+    // lexing loop would never end
+    assert(len >= 1);
     const cap: u32 = @intCast(out.len);
     if (used.* >= cap) return error.TooManyTokens;
-    assert(used.* < cap); // invariant: slot free inside caller buffer
+    // invariant: the write below is unchecked, and the early return above is what makes the
+    // slot free -- this states what that return bought
+    assert(used.* < cap);
     out[used.*] = .{ .kind = kind, .start = start, .len = len };
     used.* += 1;
 }
@@ -158,7 +171,9 @@ fn skip_space(src: []const u8, i: u32) u32 {
 
 /// `::` comment eats the whole line, including the newline.
 fn skip_comment_line(src: []const u8, i: u32) u32 {
-    assert(starts_with(src, i, "::")); // precondition: caller saw comment open
+    // invariant: this skips to the end of the line unconditionally, so entering it anywhere but
+    // a comment open would swallow real source
+    assert(starts_with(src, i, "::"));
     var at = i + 2;
     const src_len: u32 = @intCast(src.len);
     while (at < src_len and src[@as(usize, @intCast(at))] != '\n') : (at += 1) {}
@@ -168,8 +183,10 @@ fn skip_comment_line(src: []const u8, i: u32) u32 {
 
 fn scan_ident_span(src: []const u8, start: u32) TokenError!u32 {
     const src_len: u32 = @intCast(src.len);
-    assert(start < src_len); // precondition
-    assert(is_ident_start(src[@as(usize, @intCast(start))])); // precondition
+    // invariant: the scan reads src[start] before testing anything, so both the bound and the
+    // starting kind are the caller's to have checked
+    assert(start < src_len);
+    assert(is_ident_start(src[@as(usize, @intCast(start))]));
     var at = start + 1;
     while (at < src_len and is_ident_char(src[@as(usize, @intCast(at))])) : (at += 1) {}
     const n = at - start;
@@ -179,8 +196,10 @@ fn scan_ident_span(src: []const u8, start: u32) TokenError!u32 {
 
 fn scan_digits(src: []const u8, start: u32) TokenError!u32 {
     const src_len: u32 = @intCast(src.len);
-    assert(start < src_len); // precondition
-    assert(is_digit(src[@as(usize, @intCast(start))])); // precondition
+    // invariant: the scan reads src[start] before testing anything, so both the bound and the
+    // leading digit are the caller's to have checked
+    assert(start < src_len);
+    assert(is_digit(src[@as(usize, @intCast(start))]));
     var at = start + 1;
     while (at < src_len and is_digit(src[@as(usize, @intCast(at))])) : (at += 1) {}
     return at - start;
@@ -210,6 +229,8 @@ fn lex_percent_tag(src: []const u8, i: u32, out: []Token, used: *u32) TokenError
 /// Single-quoted cord literal `'…'` — span includes quotes; no escapes; no newlines.
 fn lex_cord_lit(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
     const src_len: u32 = @intCast(src.len);
+    // invariant: the span this builds includes the opening quote and the scan starts one past
+    // it, so entering elsewhere would wrap a token around a byte that is not a quote
     assert(i < src_len);
     assert(src[@as(usize, @intCast(i))] == '\'');
     var at = i + 1;
@@ -232,6 +253,8 @@ fn lex_cord_lit(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u3
 
 /// Interior bytes of a cord_lit token (quotes stripped).
 pub fn cord_lit_interior(src: []const u8, tok: Token) []const u8 {
+    // invariant: the interior is taken by stripping one byte from each end, so a shorter token
+    // or another kind would return a slice of something else
     assert(tok.kind == .cord_lit);
     assert(tok.len >= 2);
     const full = slice_of(src, tok);
@@ -240,8 +263,10 @@ pub fn cord_lit_interior(src: []const u8, tok: Token) []const u8 {
 
 /// Hex digits of a hex_lit token (`@ux` prefix stripped).
 pub fn hex_lit_digits(src: []const u8, tok: Token) []const u8 {
+    // invariant: the digits are taken by stripping the three-byte @ux prefix, and the lexer
+    // emits no hex_lit shorter than that prefix plus two digits
     assert(tok.kind == .hex_lit);
-    assert(tok.len >= 5); // `@ux` + at least two hex digits
+    assert(tok.len >= 5);
     const full = slice_of(src, tok);
     return full[3..];
 }
@@ -249,6 +274,8 @@ pub fn hex_lit_digits(src: []const u8, tok: Token) []const u8 {
 /// `@ux` + even hex digits (1–32 bytes). Bare `@ux` stays aura (STOA183).
 fn lex_hex_lit(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
     const src_len: u32 = @intCast(src.len);
+    // invariant: the scan starts at i + 3 without re-reading the prefix, so the caller's
+    // dispatch on @ux and one hex digit is what makes that offset safe
     assert(i + 3 < src_len);
     assert(src[@as(usize, @intCast(i))] == '@');
     assert(src[@as(usize, @intCast(i + 1))] == 'u');
@@ -297,7 +324,9 @@ fn lex_aura(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
 /// Lex one token at `i` (caller already skipped space). Returns next index.
 fn lex_one(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
     const src_len: u32 = @intCast(src.len);
-    assert(i < src_len); // precondition: not at EOF
+    // invariant: this reads src[i] to choose a lexer, so the caller's loop is what keeps the
+    // cursor short of the end
+    assert(i < src_len);
     const c = src[@as(usize, @intCast(i))];
 
     if (c == '\n') {
@@ -340,11 +369,15 @@ fn lex_one(src: []const u8, i: u32, out: []Token, used: *u32) TokenError!u32 {
 
 /// Lex `src` into `out`. Returns the number of tokens written.
 pub fn tokenize(src: []const u8, out: []Token) TokenError!u32 {
-    assert(out.len >= 1); // precondition: caller supplies a buffer
-    assert(out.len <= max_tokens); // precondition: buffer within budget
+    // invariant: push writes into this buffer and the budget below is measured against
+    // max_tokens, so a buffer outside that range would be bounded by the wrong number
+    assert(out.len >= 1);
+    assert(out.len <= max_tokens);
     if (src.len == 0) return error.EmptySource;
     if (src.len > max_src_len) return error.BadToken;
-    assert(src.len <= max_src_len); // invariant: accepted source bound
+    // invariant: the two refusals above are what make this true, and the cast to u32 on the
+    // next line is what needs it
+    assert(src.len <= max_src_len);
 
     const src_len: u32 = @intCast(src.len);
     var i: u32 = 0;
@@ -353,8 +386,10 @@ pub fn tokenize(src: []const u8, out: []Token) TokenError!u32 {
         i = skip_space(src, i);
         if (i >= src_len) break;
         i = try lex_one(src, i, out, &used);
-        assert(i <= src_len); // invariant: cursor never past end
-        assert(used <= max_tokens); // invariant: count within budget
+        // invariant: each step advances the cursor and may push one token, so these two hold
+        // the loop's own promises: it ends, and it stays inside the budget
+        assert(i <= src_len);
+        assert(used <= max_tokens);
     }
     return used;
 }
@@ -414,7 +449,9 @@ pub const NamedCastParts = struct {
 pub fn named_cast_parts(src: []const u8) ?NamedCastParts {
     var buf: [max_tokens]Token = undefined;
     const n = tokenize(src, &buf) catch return null;
-    assert(n <= max_tokens); // postcondition: tokenize bound
+    // invariant: tokenize returns a count it has already bounded, and the reads below index the
+    // buffer by it
+    assert(n <= max_tokens);
     const toks = buf[0..n];
     const lines = glow_line_count(toks);
     if (lines < 4 or lines > 12) return null;
@@ -426,7 +463,9 @@ pub fn named_cast_parts(src: []const u8) ?NamedCastParts {
     if (end == 0) return null;
     var line_start = end;
     while (line_start > 0 and toks[line_start - 1].kind != .newline) : (line_start -= 1) {}
-    assert(line_start < end); // invariant: last line has content
+    // invariant: the last line is sliced from here to end, so an empty span would name a line
+    // with nothing in it
+    assert(line_start < end);
     if (!rune2_is(src, toks[line_start], "^-")) return null;
     if (line_start + 1 >= end) return null;
     const cast_mold = toks[line_start + 1];
@@ -437,7 +476,9 @@ pub fn named_cast_parts(src: []const u8) ?NamedCastParts {
     }
     const mold_len = toks[line_start].start;
     if (mold_len == 0) return null;
-    assert(mold_len <= @as(u32, @intCast(src.len))); // span inside src
+    // invariant: the mold is returned as a span of src, so a length past its end would hand
+    // back bytes the source never held
+    assert(mold_len <= @as(u32, @intCast(src.len)));
     return .{
         .mold_start = 0,
         .mold_len = mold_len,
@@ -461,7 +502,9 @@ pub const CrossDeskParts = struct {
 pub fn cross_desk_parts(src: []const u8) ?CrossDeskParts {
     var buf: [max_tokens]Token = undefined;
     const n = tokenize(src, &buf) catch return null;
-    assert(n <= max_tokens); // postcondition: tokenize bound
+    // invariant: tokenize returns a count it has already bounded, and the reads below index the
+    // buffer by it
+    assert(n <= max_tokens);
     const toks = buf[0..n];
     if (glow_line_count(toks) != 2) return null;
 
@@ -499,7 +542,9 @@ pub fn looks_like_cross_desk(src: []const u8) bool {
 pub fn looks_like_shape_only(src: []const u8) bool {
     var buf: [max_tokens]Token = undefined;
     const n = tokenize(src, &buf) catch return false;
-    assert(n <= max_tokens); // postcondition: tokenize bound
+    // invariant: tokenize returns a count it has already bounded, and the reads below index the
+    // buffer by it
+    assert(n <= max_tokens);
     const toks = buf[0..n];
     const lines = glow_line_count(toks);
     if (lines < 3 or lines > 11) return false;
@@ -511,7 +556,9 @@ pub fn looks_like_shape_only(src: []const u8) bool {
     if (end == 0) return false;
     var line_start = end;
     while (line_start > 0 and toks[line_start - 1].kind != .newline) : (line_start -= 1) {}
-    assert(line_start < end); // invariant: last line has content
+    // invariant: the last line is sliced from here to end, so an empty span would name a line
+    // with nothing in it
+    assert(line_start < end);
     if (rune2_is(src, toks[line_start], "^-")) return false;
     return true;
 }
