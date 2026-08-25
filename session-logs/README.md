@@ -46,6 +46,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260824.213203` | [a room that really was empty](20260824-213203_a-room-that-really-was-empty.kyri) | linengrow 41.6% to 62.6% -- the first room in eight whose number held. |
 | `20260824.211134` | [a check that shared the bug](20260824-211134_a-check-that-shared-the-bug.kyri) | crypto was 89.8%, not 57.5%; 483 lines carried a label the meter could not read. |
 | `20260824.205510` | [the ring that destroys by name](20260824-205510_the-ring-that-destroys-by-name.kyri) | mand 0% to 100% -- custody code, where a reason is worth most. |
 | `20260824.205156` | [glow reads its own reasons](20260824-205156_glow-reads-its-own-reasons.kyri) | glow 3.4% to 100%, and a sixth measurement fault owned. |

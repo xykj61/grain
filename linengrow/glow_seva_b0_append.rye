@@ -33,7 +33,11 @@ pub const append_version = "20260722.151008";
 pub const AppendError = seva.SessionError || digest.DigestError || sign.SignError || line.LineError;
 
 fn seq_string(seq: i64, buf: *[24]u8) []const u8 {
+    // invariant: the field is written at a fixed 24-byte width, so any other length would lay
+    // the next field over this one
     assert(buf.len == 24);
+    // invariant: a sequence number counts forward from zero, so a negative would order an event
+    // before the log began
     assert(seq >= 0);
     return std.fmt.bufPrint(buf, "{d}", .{seq}) catch unreachable;
 }
@@ -48,6 +52,8 @@ pub fn append_event(
     actor_hex: *const [mc.pubkey_hex_len]u8,
     signer: kumara.KeyPair,
 ) AppendError!u32 {
+    // invariant: the used length sits inside the buffer it was written into, and the buffer
+    // inside the elder log bound the format fixes
     assert(log_len <= log.len);
     assert(log.len <= rc.max_log_len);
 
@@ -86,6 +92,8 @@ pub fn append_typed_memo(
     actor_hex: *const [mc.pubkey_hex_len]u8,
     signer: kumara.KeyPair,
 ) AppendError!u32 {
+    // invariant: the memo is what the event carries, so an empty one would append a record
+    // saying nothing
     assert(memo.len > 0);
     return append_event(log, log_len, seq, stamp, memo, actor_hex, signer);
 }
@@ -118,6 +126,8 @@ pub fn append_demo_log(log_buf: *[rc.max_log_len]u8) AppendError!u32 {
     const n3 = try line.format_demo_line3_from_pins(line_buf[0..]);
     len = try append_pin_line(log_buf, len, n3, line_buf[0..n3]);
 
+    // invariant: the format wrote something, so a zero length would append an empty line the
+    // replay would read as a missing event
     assert(len > 0);
     return len;
 }
@@ -136,6 +146,8 @@ pub fn append_demo_log_from_desk(desk_src: []const u8, log_buf: *[rc.max_log_len
     const n3 = try line.format_demo_line3_from_desk(desk_src, line_buf[0..]);
     len = try append_pin_line(log_buf, len, n3, line_buf[0..n3]);
 
+    // invariant: the format wrote something, so a zero length would append an empty line the
+    // replay would read as a missing event
     assert(len > 0);
     return len;
 }
