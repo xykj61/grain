@@ -69,9 +69,9 @@ const zig_backend_version_chrono = "20260413.181917";
 const rye_lib_relative_to_exe = "../lib";
 
 comptime {
-    // The template stays relative on purpose: resolved against the binary's
-    // real location, it bakes in no absolute path and assumes nothing about
-    // the current directory.
+    // invariant: the template stays relative on purpose -- resolved against the binary's real
+    // location, it bakes in no absolute path and assumes nothing about the current directory, so an
+    // empty template or one beginning at root would tie this build to one machine's filesystem.
     assert(rye_lib_relative_to_exe.len != 0);
     assert(rye_lib_relative_to_exe[0] != '/');
 }
