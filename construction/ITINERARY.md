@@ -47,31 +47,31 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `7730ae2e2f` -- a fold repoints the paths it can see, and a citation in a comment was not one (REDS %218).
+**Git nib:** `01ef729a19` -- Caravan bounded itself for its own reasons and landed inside a verified framework's numbers, four for four.
 
-**Now.** **A red the meter found while being repaired, closed on metal (REDS %218).** Teaching the
-report card that **a program cites in its comments** turned it on the tree and it found **four
-relative citations naming paths that have never existed**. `tools/rye/session_logs_archive.rye` went
-one directory deeper in the `tools/` fold of `20260823.144100` and kept the depth its citations were
-written at; two more broke when a design note folded into `active-designing/yonder/`. Nothing
-standing could have caught them: two repointers move **path literals in code**, one link guard reads
-links inside **`.md`**, and a Markdown link inside a `.rye` comment falls between all three.
-**The near-miss is the larger half.** The first reading said **15 broken across 11 files**, and
-eleven were `pond/apps/**` at mode `120000` -- symlinks onto bodies whose citations resolve exactly
-right **at the body**. Repairing them would have written through the links and broken six correct
-files at their real homes. The card resolves a link now and reads the citation from where it was
-written, naming that it did. **New standing guard, gated at zero:**
-[`../tools/co/comment_citation_witness.rish`](../tools/co/comment_citation_witness.rish) over
-[`../tools/fixtures/comment_citation_scan.sh`](../tools/fixtures/comment_citation_scan.sh) -- **89
-programs, 0 broken**, in 15 seconds, reading **through** the card rather than spelling the rule
-again. **58 guards** stand. The control proves **14 behaviors** on real git repositories, five
-blessed shapes left free and the refusal bitten; the card's own control now proves **63**.
+**Now.** **The Microkernel Target's third rung, GREEN on metal.**
+[`caravan/allowances.rye`](../caravan/allowances.rye) states the **seven** numbers seL4 Microkit
+declares for one protection domain -- read from the vendored BSD-2-Clause header, never recited --
+beside `refusals.rye`'s eleven errors and `objects.rye`'s nine object types. **The finding, which
+the accounting found rather than sought:** four of the seven have a Caravan counterpart and **every
+one of the four sits inside** -- cspace **32 inside 64**, rights **32 inside 128**, channels **16
+inside 62**, name **48 inside 64**. All four were chosen for Caravan's own reasons years before
+anyone here read that header. **Second finding:** only **four of the seven are independent** -- the
+root cspace size is the bits shifted, the highest channel id is the count less one, the highest
+ioport id is the count itself. A verified framework spelling each governing number once is REDS
+%199 and %201's law, arrived at independently.
+**The assert is load-bearing rather than decorative.** The module *imports* `channels.rye`,
+`capabilities.rye` and `derivation.rye` and compares their real constants, and
+[`../tools/fixtures/caravan_allowance_widen_control.sh`](../tools/fixtures/caravan_allowance_widen_control.sh)
+proves it by widening `max_channels` to 64 in a pen until the self-test aborts on that assert --
+with the unwidened pen proven to build and pass first, so a broken pen cannot read as a proof. Four
+more RED paths bite: a value moved by one (which moves the **two derived from it**, so three
+mismatch), a renamed symbol, a **re-sourced derivation** -- the reading a value-only check cannot
+make -- and an absent header.
 
 **The next doors.** A **fenced-block asymmetry in prose Truth** -- Reach skips fenced code and
-backtick spans where Truth does not -- reaches **20+ documents** and wants its own measurement round
-rather than riding along. `.rish` and `.sh` **comments sit outside the ASCII guard**, which reads
-`*.rye` alone; `session_logs_index_prepend.rish` was swept on touch and the rest are unswept.
-
+backtick spans where Truth does not -- reaches **20+ documents** and wants its own measurement round.
+`.rish` and `.sh` **comments sit outside the ASCII guard**, which reads `*.rye` alone.
 **Still open:** **20 caravan blocks stay uncovered on purpose** -- `bounded`, `chain`, and `twin`
 share a byte-identical region body, so a comment costs triple against a zero-slack ratchet, and the
 fold wants its own round. The invariant arc walks back at checkpoint `20260825.031305`.
@@ -239,7 +239,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260825.051936` | A fold repoints what it can see -- 4 broken comment citations, 11 symlink near-misses, a new guard at zero (%218) | [log](../session-logs/20260825-051936_a-citation-is-a-promise-wherever-written.kyri) |
+| `20260825.061552` | Caravan allowances -- Microkits seven bounds for one protection domain, and Caravan inside all four it shares | [log](../session-logs/20260825-061552_bounded-for-our-own-reasons.kyri) |
 
 Walk back to any of them with `git log --oneline` and the session log of the same stamp.
 

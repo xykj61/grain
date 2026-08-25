@@ -1,0 +1,35 @@
+format session-log-v1
+stamp 20260825.061552
+editor Claude Code
+model claude-opus-5
+voice Kyri
+host Vultr SEA NixOS VPS ai-jail pier (Daylight DC-1 hand) -- Eastern (EDT)
+title Bounded for our own reasons, and inside a verified framework's numbers four times out of four
+prompt Autonomous loop -- roster cold first, Standfast on reds, next agent-doable lap Lindy-first crux-first, rota row N mod 5, condense ITINERARY and refill Now, send each finished increment
+think Lap index from git log --oneline | wc -l = 3423 at the open, so the council rota reads row 3423 mod 5 = 3 -- Water and Venus, care and flow: the shape you grew and the shape you are, the happy zone and the thin edge, growing a language. The Venus row named this lap before it started: the whole finding is about a shape Caravan grew for its own reasons turning out to be the shape it needed.
+think Three rounds on the report card meter was enough on one instrument, and the prompt names the Microkernel Target double-seat as the Lindy priority. So I took the rung a lap two days ago had scoped and set down for Standfast: Microkit's protection-domain vocabulary as a third caravan rung beside refusals.rye and objects.rye.
+think Chose the subject by measuring rather than by taste. Microkit's public header declares seven numbers bounding one protection domain, and TAME's first rule is bound everything -- so the rung writes itself if, and only if, Caravan's own bounds make a real accounting rather than a transcription. Checked before writing a line.
+think They do. Four of the seven have a Caravan counterpart and every one sits inside: derivation.max_slots 32 inside a root cspace of 64, capabilities.max_dependents times max_caps_per_dependent 32 inside 128, channels.max_channels 16 inside 62, channels.max_name_len 48 inside 64. Every one of those four was chosen for its own written reason -- derivation.rye says a supervisor's cspace is a fixed allotment -- long before anyone here read this header.
+think Verified the one mapping I was least sure of before claiming it. derivation.max_slots looked like a cspace counterpart and I read its own doc comment to check rather than assuming; it says exactly that. A wrong mapping here would have been a red wearing a finding's clothes.
+think The second finding came out of the header's own shape: only four of the seven are independent. PD_ROOT_CAP_SIZE is the bits shifted, MICROKIT_MAX_CHANNEL_ID is the count less one, MICROKIT_MAX_IOPORT_ID is the count itself. A formally verified framework spells each governing number once and derives the rest, which is the law this tree booked the hard way as REDS %199 and %201.
+think Made the invariant load-bearing rather than decorative by importing channels.rye, capabilities.rye and derivation.rye and comparing their actual constants. A copied number would have made the assert a sentence; an imported one makes widening a bound red on the lap that widens it rather than on the day of a port.
+obs Built and self-tested GREEN on the first run, which is worth naming because it was not luck -- the numbers were all measured beforehand and the module only had to state what the measurement already said.
+obs The symbol scan checks values as well as names, because here the numbers ARE the subject. refusals.rye once carried the right eleven names with two meanings swapped inside a parity check that looked only at names (REDS %107), and a names-only check would have been checking the least of this rung.
+obs Made the scan resolve each derived value from the SOURCE the header names rather than reading its text as a number. That turned out to be the strongest reading: re-sourcing MICROKIT_MAX_CHANNEL_ID to a different constant drops derived_resolved from three to two, which a value-only check would read as agreement whenever the two values happened to coincide.
+obs And moving MICROKIT_MAX_CHANNELS by one produces three mismatches rather than one, because the two derived numbers move with it. That is the derivation resolution proving itself live.
+obs Then caught the vacuous plant, for the third time this session, and this one had already gone GREEN. The load-bearing test built the widened module in a /tmp pen, and rye resolves bare-name imports against the repository it runs from, so the build crashed, the binary never existed, and the assert on a non-zero exit passed on a missing file rather than on a refused invariant.
+obs Rebuilt it honestly: a pen inside tools/.build with the whole import closure copied in, tally_copy.rye symlink included. The widened self-test now aborts with a named assertion failure at the invariant line, exit 134. And the control proves the WELCOME first -- the same pen with the bound left alone builds and passes -- so a broken pen can never read as a proof. That second half is the part I would have skipped an hour ago.
+obs Three vacuous plants caught in one session, all of the same shape: a check that passes while testing nothing. Each was found by asking what would have to be true for the pass to mean something, rather than by rerunning it. Worth carrying: a green that arrives on the first try deserves the question more than a red does.
+obs The caravan ladder roster caught the new module with no row, which is its job, and the row went in beside objects.
+obs The hot roster reds readme_metrics and geode_libraries, which is the ordinary cost of adding a module and a witness in one round -- both pages count them and the pre-commit hook regenerates at commit. Regenerated by hand so the green measures the tree the commit ships: 1,685 witnesses to 1,686, 1,894 modules to 1,895, 39 library rows unchanged.
+loom allowances declared=7 independent=4 derived=3 caravan_counterparts=4 all_inside=yes
+loom holdings cspace=32of64 rights=32of128 channels=16of62 name=48of64
+loom red_paths value_moved=3mismatch symbol_renamed=6of7 derivation_resourced=2of3 header_absent=refused widen=exit134
+loom grades allowances=A+ witness=A+ scan=A+ control=A+
+file caravan/allowances.rye the seven bounds, four chosen and three recomputed from their sources, with the finding asserted
+file tools/fixtures/caravan_allowance_symbol_scan.sh names and values read from the header, derived values resolved from the source it names
+file tools/fixtures/caravan_allowance_widen_control.sh the invariant proven load-bearing, welcome before refusal, in a pen inside the tree
+file tools/ca/caravan_allowances_witness.rish four RED paths and the widen control, GREEN on metal
+file caravan/LADDER.md the row the roster guard asked for, beside objects
+file construction/ITINERARY.md Now refilled with the rung; one lap row shelved
+recommend keep-going the fourth microkernel rung is the address space -- objects.rye names four mapping objects as one debt wearing four sizes and allowances.rye now names the cspace that holds them, so the next rung states what a protection domain's address space is made of and which Caravan module owes each part; measure regions.rye and mapping.rye against Microkit's memory-region vocabulary first, and let the accounting decide whether there is a finding or only a transcription
