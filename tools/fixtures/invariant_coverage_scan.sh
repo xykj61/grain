@@ -21,12 +21,16 @@
 #
 #   witness   an assert inside a `*_witness.rye` file is proving a claim about the tree, and its
 #             reason is the witness header rather than a line above the call.
-#   selftest  an assert inside a function whose name carries one of three ROLE WORDS -- `main`,
-#             `selftest`, `witness` -- is a proof that runs, sitting in the same file as the code it
-#             proves. The three are a vocabulary rather than a list patched one name at a time,
-#             which is how `witness` came to be missing: `pond/apps/drawn_terminal.rye` reported 312
-#             uncovered contracts and **255 of them sit in functions named `run_*_witness`**, found
-#             on opening the file to sweep it. So is EVERY assert
+#   selftest  an assert inside a proof that runs. A ROLE WORD in the function's name -- `main`,
+#             `selftest`, `witness` -- says so, and so does REACHABILITY: a private function called
+#             only from those entry points, directly or through other such functions, is proof
+#             whatever it is called. The name vocabulary failed three times in three rounds
+#             (REDS %207, %208, %210), each caught by a hand opening a file, and reachability is
+#             what retires it: `image/photos.rye` names its proofs `run_hue_turn` and `run_bilinear`
+#             and no vocabulary would ever have reached them, yet **200 of its 244 asserts** sit in
+#             14 functions the selftest alone calls. A helper called from a `pub` function as well
+#             stays a contract, which is what keeps reachability from swallowing real code.
+#             So is EVERY assert
 #             in a file whose own `//!` header declares it one -- `lattice/lattice.rye` opens
 #             `Lattice selftest`, builds to `lattice/bin/lattice selftest`, and names its 199
 #             functions `welcome_add`, `welcome_matmul`, `welcome_reshape`. Binning by function
@@ -43,7 +47,13 @@
 # exactly like a line naming the failure the bound exists to prevent. Presence is the check; a
 # reason a reader can use is the standard.
 #
-# THIS SEATS NOTHING. No ratchet, no ceiling, no roster entry. A measurement taken to answer a
+# PROVEN, because this bin moved the tree's reading by an order of magnitude.
+# tools/fixtures/invariant_coverage_control.sh runs 15 behaviors on planted modules in a throwaway
+# git pen, including the two failure modes that broke drafts of this rule: a `pub` function
+# swallowed by the reachability spread, and a shared helper that must withdraw to contract when a
+# `pub` function calls it too.
+#
+# THIS SEATS NOTHING ELSE. No ratchet, no ceiling, no roster entry. A measurement taken to answer a
 # question is finished when the question is answered.
 #
 # USAGE
@@ -81,6 +91,58 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
     }
     return 0
   }
+  # Which functions are proofs? Name says one thing, the call graph says the rest.
+  function mark_proofs(   i, j, fname, ispub, a, b, body, n2, moved, pass) {
+    nf = 0
+    delete fstart; delete fend; delete fname_of; delete fpub; delete isproof; delete outside
+    for (i = 1; i <= n_lines; i++) {
+      if (lines[i] ~ /^(pub[ \t]+)?(export[ \t]+)?fn[ \t]+[A-Za-z_]/) {
+        if (nf > 0) fend[nf] = i - 1
+        nf++
+        fpub[nf] = (lines[i] ~ /^pub[ \t]/)
+        fname = lines[i]
+        sub(/^(pub[ \t]+)?(export[ \t]+)?fn[ \t]+/, "", fname); sub(/[ \t(].*$/, "", fname)
+        fname_of[nf] = fname; fstart[nf] = i
+      }
+    }
+    if (nf > 0) fend[nf] = n_lines
+    # seed: the entry points a role word names
+    for (i = 1; i <= nf; i++)
+      isproof[i] = (fname_of[i] == "main" || fname_of[i] ~ /selftest/ || fname_of[i] ~ /witness/)
+    # spread: called from a proof, to a fixed point
+    for (pass = 1; pass <= 8; pass++) {
+      moved = 0
+      for (i = 1; i <= nf; i++) {
+        if (!isproof[i]) continue
+        body = ""
+        for (j = fstart[i]; j <= fend[i]; j++) body = body "\n" lines[j]
+        for (j = 1; j <= nf; j++) {
+          if (j == i || isproof[j]) continue
+          # A `pub` function is NEVER reached into as a proof, whatever calls it: it is exported for
+          # callers this file cannot see, and a selftest calling the real API is exactly what a
+          # selftest is for. Without this the spread swallowed the API it was written to exercise --
+          # 22,017 contract asserts read as 10,285 on the first run of this rule.
+          if (fpub[j]) continue
+          if (body ~ ("[^A-Za-z0-9_]" fname_of[j] "[ \t]*\\(")) { isproof[j] = 1; moved = 1 }
+        }
+      }
+      if (!moved) break
+    }
+    # withdraw: anything a NON-proof function also calls is shared code, so it is a contract again
+    for (i = 1; i <= nf; i++) {
+      if (isproof[i]) continue
+      body = ""
+      for (j = fstart[i]; j <= fend[i]; j++) body = body "\n" lines[j]
+      for (j = 1; j <= nf; j++)
+        if (isproof[j] && fname_of[j] != "main" && fname_of[j] !~ /selftest/ && fname_of[j] !~ /witness/ &&
+            body ~ ("[^A-Za-z0-9_]" fname_of[j] "[ \t]*\\(")) outside[j] = 1
+    }
+    for (i = 1; i <= nf; i++) if (outside[i]) isproof[i] = 0
+  }
+  function proof_at(ln,   i) {
+    for (i = 1; i <= nf; i++) if (ln >= fstart[i] && ln <= fend[i]) return isproof[i]
+    return 0
+  }
   function flush(   i, fn, kind, iswit, isself) {
     if (name == "") return
     iswit = (name ~ /_witness\.rye$/)
@@ -88,6 +150,7 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
     # named. Read the head only, so a mention deep in the body cannot reclassify a real module.
     isself = 0
     for (i = 1; i <= n_lines && i <= 6; i++) if (lines[i] ~ /^\/\/!/ && tolower(lines[i]) ~ /selftest/) isself = 1
+    mark_proofs()
     c = cc = s = sc = w = wc = 0
     fn = ""
     for (i = 1; i <= n_lines; i++) {
@@ -100,7 +163,7 @@ count=$(wc -l < "$work/files.txt" | tr -d ' ')
       if (lines[i] ~ /^[ \t]*\/\//) continue
       k = covered(i)
       if (iswit)                                        { w++;  wc += k }
-      else if (isself || fn == "main" || fn ~ /selftest/ || fn ~ /witness/) { s++;  sc += k }
+      else if (isself || proof_at(i))                   { s++;  sc += k }
       else                                              { c++;  cc += k }
     }
     printf "%s %d %d %d %d %d %d\n", name, c, cc, s, sc, w, wc
