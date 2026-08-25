@@ -46,6 +46,7 @@ order rather than by stamp; they rest on the `20260724` and `20260725` shelves. 
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260825.004749` | [the short way and the way home](20260825-004749_the-short-way-and-the-way-home.kyri) | rishi takes a bare .rish path; 108 room READMEs measured with no way home. |
 | `20260824.235724` | [a second reading](20260824-235724_a-second-reading.kyri) | rye finds its std by argv[0] where /proc is absent; the region body folded. |
 | `20260824.233615` | [the last hundred and twenty one](20260824-233615_the-last-hundred-and-twenty-one.kyri) | Every room but caravan reads 100%; the last 37 are blocked or proof. |
 | `20260824.232726` | [three rooms to ninety nine](20260824-232726_three-rooms-to-ninety-nine.kyri) | image, lotus and brushstroke to 100%; the tree reads 99%. |
