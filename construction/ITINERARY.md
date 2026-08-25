@@ -189,30 +189,31 @@ on Keaton's word** -- one line, `bash ~/grain/publish-seed.sh`, and it ships.
 Ranked Lindy-first and crux-first, with costs, gates, and falsifiers, in
 [`../expanding-prompts/20260823-124407_the-ranked-remainder.md`](../expanding-prompts/20260823-124407_the-ranked-remainder.md).
 
-**Open, named, and waiting on its own lap.** The **fascia weave** over the
-thirty-nine browsed `active-designing/` documents, shaped as a living index page per cluster.
-**`docs/STOA.md`** at **166 lines against the `<=80` its own title declares**. The ten pages duty 4
-names as wanting a Status line. The doc-comment ASCII sweep at **21 `.rye` files in `image/` and all
-240 in `lotus/`** (13,456 characters). And **a split moves bulk rather than removing it**:
-`caravan/LADDER.md` stands at 366,216 bytes and `image/PHOTOS.md` at 261,894, correct for a
-reference page a reader reaches on purpose. The class is named in
+**Open, named, and waiting on its own lap.** The **fascia weave** over thirty-nine browsed
+`active-designing/` documents, as a living index page per cluster. **`docs/STOA.md`** at **166 lines
+against the `<=80` its own title declares**. The ten pages duty 4 names as wanting a Status line.
+The doc-comment ASCII sweep at **21 `.rye` files in `image/` and all 240 in `lotus/`** (13,456
+characters). And **a split moves bulk rather than removing it**: `caravan/LADDER.md` at 366,389
+bytes and `image/PHOTOS.md` at 261,894 are right for a page reached on purpose. The class is in
 [`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md).
 
 **Measured `20260824.170904` -- the comment dial answered.**
 [`../tools/fixtures/comment_dial_scan.sh`](../tools/fixtures/comment_dial_scan.sh) read all **1,891**
-authored modules. **Door coverage is closed** at 99.6%. **The setting histogram lives** once `///`
-declaration docs leave the denominator -- median 14 becomes 53. **The `// invariant:` law read 59.6%
-there and reads 99% now (`20260825`)**, gap 17, all `pub fn check_*` proof functions -- the figure
-moved because the meter got honest, ten corrections deep (REDS %207-%213). **A ceiling is Keaton's
-number to set**, so no ratchet is seated. Verdict:
+authored modules; door coverage is closed at 99.6%, and the histogram lives once `///` docs leave
+the denominator (median 14 -> 53). **The `// invariant:` law read 59.6% there and reads 99% now
+(`20260825`)**, gap 17, all `pub fn check_*` proofs -- it moved because the meter got honest, ten
+corrections deep (REDS %207-%213). **A ceiling is Keaton's number**, so none is seated. Verdict:
 [`../active-development/20260824-170904_the-denominator-was-the-whole-question.md`](../active-development/20260824-170904_the-denominator-was-the-whole-question.md).
-Beside it, **half of Service may be countable** -- named and reached from the citation graph,
-current and carried left judged -- argued with its own trap named at
+Beside it, **half of Service may be countable** -- named and reached counted, current and carried
+judged -- with its own trap named at
 [`../active-designing/20260824-165106_what-part-of-service-can-be-counted.md`](../active-designing/20260824-165106_what-part-of-service-can-be-counted.md).
 
+**Three `Region` bodies** stand in `caravan/region.rye`, `tally/seed.rye` and `tally/gardens.rye`,
+one assert and one `divide` apart, so a symlink cannot fold them (REDS %215).
+
 **Booked `20260825.000640` -- proving a host we do not have.** All 54 guards run on this Linux
-pier, so a claim true only elsewhere is unprovable here; REDS %214 cost a first macOS
-build. Four answers, and the measurement that decides:
+pier, so a claim true only elsewhere is unprovable here; REDS %214 cost a first macOS build. Four
+answers, and the measurement that decides:
 [`../external-research/20260825-000640_proving-a-host-you-do-not-have.md`](../external-research/20260825-000640_proving-a-host-you-do-not-have.md).
 
 **Two directions seated by name `20260823.122619`**, each wanting its own design round: the
@@ -225,7 +226,8 @@ feeding the **Growthcircle** integration -- and the **kres / kresfa contract lan
 
 Each line names a round and where its numbers live. This card keeps the live edge; the logs keep the
 account. Earlier rows are shelved at
-[`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md).
+[`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md)
+and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210_itinerary-landed-laps.md).
 
 | Landed | Round | Log |
 |---|---|---|
@@ -233,10 +235,6 @@ account. Earlier rows are shelved at
 | `20260824.183000` | Shorter rows -- a row points, bounded 192 bytes; the two seated bounds found incompatible (%205) | [log](../session-logs/20260824-180216_the-room-folds-and-two-numbers-meet.kyri) |
 | `20260824.162940` | Model back to Opus 5, one reading over three sites (%201); commit-msg gains a fourth wall (%202); census 191 -> 186 (%203) | [log](../session-logs/20260824-162940_one-model-named-once.kyri) |
 | `20260824.154722` | Counsel's index across -- 112 rows onto ten shelves; ratchet 231 -> 119 | index_fold |
-| `20260824.145109` | A tool proven on one shape -- the fold keeps rows in place; active-designing's 86 across | REDS %200 |
-| `20260824.140523` | The number with six homes -- one script reads the law, five meters stop spelling it | REDS %199 |
-| `20260824.130807` | A bound with two meters and no wall -- the card 47,213 -> 22,647 and moved to enforce | REDS %197, %198 |
-| `20260824.121445` | A declared bound becomes a measured one -- 13 pages, none both readable and honoured | REDS %195, %196 |
 
 Walk back to any of them with `git log --oneline` and the session log of the same stamp.
 
