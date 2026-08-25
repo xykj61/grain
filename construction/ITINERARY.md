@@ -155,10 +155,11 @@ For any self-paced or outer-jail loop: recur through all agent-doable work, yet 
 
 Everything else -- design, code, witnesses, docs, weaves, seed *projection* (not push), reds -- is agent-doable and does not wait.
 
-**Seed cadence, standing at the gate `20260825.073555`.** The projection is current and its four
-gates hold on metal, each read alone rather than beside a running roster: `sow_project.sh` copied
-**7,038** files, scrubbed **1,080**, withheld **122**; `sow_leak_scan.sh` reads **IDENT_CLEAN**;
-`tools/s/sow_witness.rish` reads **NO_PERSONAL**; `tools/s/seed_link_witness.rish` is GREEN. *Read
+**Seed cadence, standing at the gate `20260825.110922`.** Lap 3,430 closes the rota cycle, so the
+projection ran and its four gates hold on metal, each read alone rather than beside a running
+roster: `sow_project.sh` copied **7,051** files, scrubbed **1,082**, withheld **122**;
+`sow_leak_scan.sh` reads **IDENT_CLEAN**; `tools/s/sow_witness.rish` reads **NO_PERSONAL**;
+`tools/s/seed_link_witness.rish` is GREEN. *Read
 alone* is enforced rather than remembered -- `sow_project.sh` takes a lock and a second projection
 exits 3 (REDS %193). Last published projection `fdaf8e3`. **The force-push to `grain-os/grain` waits
 on Keaton's word** -- one line, `bash ~/grain/publish-seed.sh`, and it ships.
