@@ -105,6 +105,8 @@ pub fn run_demo_surface() SurfaceError!seva_surf.Surface {
     try surf.add("ask", r_ask);
     try surf.add("receipt", r_receipt);
     try surf.add("reputation", r_rep);
+    // invariant: the surface carries exactly three panels, pinned so a layout that gained one
+    // without the demo noticing names itself here
     assert(surf.count == 3);
     return surf;
 }

@@ -16,9 +16,13 @@ pub fn run_demo_carriage(out_line: *[carriage_line_max]u8, out_len: *u32) bool {
     assert(out_line.len == carriage_line_max);
     assert(carriage_line_max > 0);
     const lens = core.run_welcome_carriage() catch return false;
+    // invariant: the carriage draws one line per event, and the count is compared against the
+    // core's own so the two are proven to read the same run
     assert(lens.events == core.event_count);
     const line = std.fmt.bufPrint(out_line, "JABS1 carriage · {d} ev", .{lens.events}) catch return false;
     out_len.* = @intCast(line.len);
+    // invariant: the line was formatted into a fixed buffer, so a length of zero leaves nothing
+    // to draw and one past the bound would run past its row
     assert(out_len.* <= carriage_line_max);
     assert(out_len.* > 0);
     return true;

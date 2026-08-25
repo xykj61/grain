@@ -107,6 +107,8 @@ pub fn claim_demo_fields() FieldsError!rc.FactFields {
     if (!std.mem.eql(u8, fields.stamp, fixture.stamp1)) return error.FieldsMismatch;
     const seq = try parse_amount_signed(fields.amount);
     if (seq != 1) return error.FieldsMismatch;
+    // invariant: a sequence counts from one, so a zero would read fields from a line before the
+    // log opened
     assert(seq == 1);
     return fields;
 }

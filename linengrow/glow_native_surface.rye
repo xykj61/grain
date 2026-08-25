@@ -59,6 +59,8 @@ fn put_line_centered(grid: *skate.Grid, row: u32, text: []const u8) void {
     }
     var line: [64]u8 = [_]u8{' '} ** 64;
     const cols: usize = @intCast(grid.cols);
+    // invariant: the text is centred inside the line by writing at an offset, so a line shorter
+    // than its column count or text wider than the columns would be written past the row
     assert(cols <= line.len);
     assert(text.len <= cols);
     const start = (cols - text.len) / 2;
@@ -223,6 +225,8 @@ fn blit_grid_centered(
     origin_x: i32,
     origin_y: i32,
 ) void {
+    // invariant: the grid's two dimensions divide into the blit offset below, so a zero in
+    // either would divide by zero rather than centre anything
     assert(grid_w > 0);
     assert(grid_h > 0);
     var gy: i32 = 0;
@@ -400,6 +404,8 @@ fn paint_locked_session(
     const w = buf.width;
     const h = buf.height;
     const stride_px = buf.stride;
+    // invariant: the session paints into a surface of these dimensions, so a zero in either
+    // would paint nothing at whatever scale the display asked for
     assert(w > 0);
     assert(h > 0);
     const grid_rows: u32 = jabs2_glass.grid_rows;

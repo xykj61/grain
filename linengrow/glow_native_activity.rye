@@ -194,6 +194,8 @@ fn refresh_live_paint_line() void {
 fn record_live_root(root: *const [32]u8) void {
     var hex: [64]u8 = undefined;
     glow_fold.root_to_hex(root, &hex);
+    // invariant: a root is recorded as 64 hex characters, so any other length would record a
+    // digest of something else
     assert(hex.len == 64);
     tally_copy.copy_disjoint(u8, glow_last_live_root_hex[0..64], &hex);
     glow_last_live_root_hex[64] = 0;
@@ -350,6 +352,9 @@ fn load_hearth_preference() void {
 fn apply_default_hearth() void {
     if (hearth.parse_bron(default_hearth_bron)) |h| {
         apply_hearth_record(h);
+        // invariant: the default hearth is the home this build ships with, pinned so a change
+        // to the preset table surfaces here rather than as a different home appearing on the
+        // glass
         assert(std.mem.eql(u8, surface.active_home_id[0..], "kd"));
     } else |_| {
         surface.active_preset = .scaled_540;
@@ -513,6 +518,8 @@ fn apply_dexter_action(action: dexter.Action) void {
             tally_copy.copy_disjoint(u8, g_dexter_held[0..prompt.len], prompt);
         }
         g_dexter_held_len = @intCast(prompt.len);
+        // invariant: the held length and the prompt agree, so the editor and the action are
+        // proven to be looking at the same line
         assert(g_dexter_held_len == prompt.len);
         // STOA270: signed live append beside HAWM1 pin (empty submit skips).
         commit_live_typed_memo(prompt);
@@ -849,6 +856,8 @@ export fn ANativeActivity_onCreate(
     // Expect 5. Seva B0 hex fold below stays the painted / file-proof root.
     const glow_core = glow_session.Core{};
     const product_root = glow_core.session_root();
+    // invariant: the product root is pinned where the callbacks are wired, so a version change
+    // surfaces here rather than as a surface talking to the wrong root
     assert(product_root == 5);
     glow_last_product_session_root = product_root;
     write_product_root_file(product_root);

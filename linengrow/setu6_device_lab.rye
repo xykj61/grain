@@ -69,6 +69,8 @@ pub fn format_lab_line(s: LabStatus, out: *[status_line_max]u8) ?[]const u8 {
         "lab · payload {s} · {d}b · iface {s} · {s}",
         .{ ready, s.payload_len, s.iface_slice(), s.mode.name() },
     ) catch return null;
+    // invariant: the line was formatted into a fixed row buffer, so a longer one would be drawn
+    // past the row it belongs to
     assert(line.len <= status_line_max);
     return line;
 }
@@ -93,6 +95,8 @@ pub fn format_lab_bron(s: LabStatus, out: *[max_lab_bron_len]u8) ?u32 {
             waymark,
         },
     ) catch return null;
+    // invariant: the line was formatted into a fixed row buffer, so a longer one would be drawn
+    // past the row it belongs to
     assert(text.len <= max_lab_bron_len);
     return @intCast(text.len);
 }
@@ -122,5 +126,8 @@ pub fn fixture_armed_when_iface() bool {
 
 comptime {
     _ = print;
+    // invariant: the fixture names the ladder it belongs to, so one carried into another
+    // ladder's suite names itself here rather than passing as though it had proved something
+    // about that ladder
     assert(std.mem.eql(u8, waymark, "SETU"));
 }

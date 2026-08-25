@@ -43,6 +43,8 @@ pub fn fetch_published_sealed(
     digest_hex: []const u8,
     out_bytes: *[vfw.max_resin_bytes]u8,
 ) FetchError!u32 {
+    // invariant: a digest is 64 hex characters, so any other length would fetch by an address
+    // naming something else
     assert(digest_hex.len == 64);
 
     var req: vfw.FetchRequest = .{ .digest_hex = undefined };

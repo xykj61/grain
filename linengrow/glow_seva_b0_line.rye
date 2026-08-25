@@ -80,6 +80,8 @@ pub const ParsedLine = struct {
 };
 
 fn buf_len_u32(buf: []const u8) u32 {
+    // invariant: the length casts to u32 on the next line, so a buffer past that ceiling would
+    // wrap rather than refuse
     assert(buf.len <= std.math.maxInt(u32));
     return @intCast(buf.len);
 }
@@ -169,6 +171,8 @@ pub fn claim_demo_line_seq(
     memo: []const u8,
     line_out: *[rc.max_line_len]u8,
 ) LineError!u32 {
+    // invariant: a sequence number counts from one, so a zero would claim a line before the log
+    // opened
     assert(seq >= 1);
     const actor_kp = kumara.keypair_from_seed(&mc.issuer_seed);
     var actor_hex: [mc.pubkey_hex_len]u8 = undefined;
@@ -186,6 +190,8 @@ pub fn claim_demo_line_seq(
     const signed = try sign.sign_fact(fields, actor_kp);
     const fact = signed.canonical[0..signed.canonical_len];
     const line_len = try format_log_line(signed.sig, fact, line_out[0..]);
+    // invariant: the format wrote something, so a zero length would claim a line with nothing
+    // on it
     assert(line_len > 0);
 
     var sig_buf: [kumara.signature_length]u8 = undefined;
@@ -255,6 +261,8 @@ fn clause_present(src: []const u8, comptime face: []const u8, comptime lit: []co
 
 /// True when Glow lit-desk text carries demo event 1–3 sig/fact as face=lit clauses.
 pub fn lit_desk_binds_pins(src: []const u8) bool {
+    // invariant: the source is what the pins are read out of, so an empty one would bind every
+    // pin to nothing
     assert(src.len >= 1);
     if (!clause_present(src, "sig", demo_sig_hex)) return false;
     if (!clause_present(src, "fact", demo_fact_hex)) return false;
@@ -306,6 +314,8 @@ pub fn extract_face_lit_cord(src: []const u8, face: []const u8) LineError![]cons
 
 /// STOA233 name kept as alias of the product face_lit extract (STOA241).
 pub fn extract_desk_cord(src: []const u8, face: []const u8) LineError![]const u8 {
+    // invariant: the face is what the cord is named by, so an empty one would extract a cord
+    // nothing can address
     assert(face.len >= 1);
     var line_start: usize = 0;
     while (line_start <= src.len) {

@@ -67,11 +67,15 @@ pub fn format_home_line(
             "home · {c}{c}",
             .{ draft.chars[0], draft.chars[1] },
         ) catch return null;
+        // invariant: the line was formatted into a fixed row buffer, so a longer one would be
+        // drawn past the row it belongs to
         assert(line.len <= home_line_max);
         return line;
     }
     hearth.validate_home_id(home_id) catch return null;
     const line = std.fmt.bufPrint(out, "home · {s}", .{home_id}) catch return null;
+    // invariant: the line was formatted into a fixed row buffer, so a longer one would be drawn
+    // past the row it belongs to
     assert(line.len <= home_line_max);
     return line;
 }
@@ -83,6 +87,8 @@ pub fn join_home_pointer(
 ) hearth.HearthError!u32 {
     if (files_root.len == 0) return error.PathTooLong;
     const path = std.fmt.bufPrint(out, "{s}/{s}", .{ files_root, pointer_name }) catch return error.PathTooLong;
+    // invariant: the pointer is copied into a fixed buffer of max_abs_path_len, so a longer
+    // path would arrive truncated and point somewhere else
     assert(path.len <= hearth.max_abs_path_len);
     return @intCast(path.len);
 }
@@ -112,6 +118,8 @@ pub fn pointer_path_honest() bool {
 
 comptime {
     _ = print;
+    // invariant: the preset pins the row it draws on and the ladder it belongs to, so a layout
+    // change surfaces here rather than as a home line drawn over its neighbour
     assert(home_row == 8);
     assert(std.mem.eql(u8, waymark, "LULU"));
 }

@@ -102,6 +102,9 @@ pub fn run_welcome_carriage() !CarriageLens {
     if (follower.events != src.events) return error.EventCountMismatch;
     if (follower.last_seq != src.last_seq) return error.SeqMismatch;
     if (!std.mem.eql(u8, &follower.root, &src.root)) return error.RootMismatch;
+    // invariant: the follower reaches the same event count and the same last sequence as the
+    // source, which is the whole promise a carriage makes -- a follower behind by one is a fold
+    // nobody would notice
     assert(follower.events == src.events);
     assert(follower.last_seq == src.last_seq);
     return .{ .events = follower.events, .root = follower.root };

@@ -31,6 +31,8 @@ fn write_canonical_fact(fields: rc.FactFields, out: []u8) SignError!u32 {
         "from {s}\nto {s}\namount {s}\nmemo {s}\nstamp {s}\n",
         .{ fields.from, fields.to, fields.amount, fields.memo, fields.stamp },
     ) catch return error.Overflow;
+    // invariant: the canonical length casts to u32 on the next line, so a fact past that
+    // ceiling would wrap rather than refuse
     assert(written.len <= std.math.maxInt(u32));
     return @intCast(written.len);
 }
@@ -91,6 +93,8 @@ pub fn claim_demo_sign() SignError!SignedFact {
 
     const fields = demo_event1_fields(actor_hex[0..]);
     const signed = try sign_fact(fields, actor_kp);
+    // invariant: the canonical bytes are what the signature covers, so a zero length would sign
+    // nothing and verify against anything
     assert(signed.canonical_len > 0);
     const fact = signed.canonical[0..signed.canonical_len];
     const sig_bytes = signed.sig.toBytes();

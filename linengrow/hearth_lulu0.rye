@@ -224,6 +224,8 @@ pub fn join_files_home_dir(
     try validate_home_id(home_id);
     if (files_root.len == 0) return error.PathTooLong;
     const path = std.fmt.bufPrint(out, "{s}/{s}", .{ files_root, home_id }) catch return error.PathTooLong;
+    // invariant: the path is copied into a fixed buffer of max_abs_path_len, so a longer one
+    // would arrive truncated and name a different directory
     assert(path.len <= max_abs_path_len);
     return @intCast(path.len);
 }
@@ -362,6 +364,8 @@ pub fn refuses_bad_home_ids() bool {
 pub fn preset_sizes_are_honest() bool {
     // invariant: panel max matches seated Pixel 10a public numbers
     const max = DisplayPreset.panel_max.logical_size();
+    // invariant: the preset pins the pixel size it was drawn for, so a display change surfaces
+    // here rather than as a layout that no longer fits the glass
     assert(max.w == 1080);
     assert(max.h == 2424);
     if (!DisplayPreset.panel_max.keeps_panel_aspect()) return false;
@@ -406,6 +410,8 @@ pub fn preset_next_cycles_closed() bool {
 
 comptime {
     _ = print;
+    // invariant: the home id is two bytes and the preset belongs to this ladder, both pinned so
+    // a cycle carried elsewhere names itself
     assert(home_id_len == 2);
     assert(std.mem.eql(u8, waymark, "LULU"));
 }

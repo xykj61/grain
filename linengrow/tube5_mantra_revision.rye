@@ -27,6 +27,8 @@ pub fn append_app_revision(
 ) RevisionError!u32 {
     var body: [tube.max_canonical_bytes]u8 = undefined;
     const body_len = try tube.write_canonical(manifest, &body);
+    // invariant: the body is stored as one resin, so a longer one would be truncated into a
+    // revision that no longer digests to what it claims
     assert(body_len <= mantra.max_resin_bytes);
     try catalog.append_leaf(demo_peer, demo_bolt, revision, demo_path, body[0..body_len], demo_tilak);
     return body_len;

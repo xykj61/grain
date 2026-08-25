@@ -76,6 +76,8 @@ pub fn format_hold_line(s: HoldStatus, out: *[status_line_max]u8) ?[]const u8 {
         "hold · {s} · {s} · {s} · ping {s} · frame {d}",
         .{ s.home_id_slice(), s.preset.name(), s.wire.name(), ping, s.frame_len },
     ) catch return null;
+    // invariant: the line was formatted into a fixed row buffer, so a longer one would be drawn
+    // past the row it belongs to
     assert(line.len <= status_line_max);
     return line;
 }
@@ -143,6 +145,9 @@ pub fn fixture_local_ignores_stale_bins() bool {
 
 comptime {
     _ = print;
+    // invariant: the fixture names the ladder it belongs to, so one carried into another
+    // ladder's suite names itself here rather than passing as though it had proved something
+    // about that ladder
     assert(std.mem.eql(u8, waymark, "SETU"));
     assert(std.mem.eql(u8, season, "desk-hearth-hold"));
 }
