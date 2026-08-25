@@ -1,0 +1,107 @@
+//! tally/region.rye -- the bounded region, one body for every module that carves memory.
+//!
+//! A region hands out slices of one buffer it never grows, moving a cursor forward and refusing by
+//! name when the next request would pass the end. It is the smallest shape Tally's garden is built
+//! from, which is why it lives here rather than beside any one of its callers.
+//!
+//! THREE COPIES BECAME ONE, in two laps. On `20260825.010500` three Caravan rungs -- `bounded.rye`,
+//! `chain.rye`, `twin.rye` -- each held it byte for byte, and it lifted into `caravan/region.rye`.
+//! That fold left a larger relative standing in `tally/seed.rye` and `tally/gardens.rye`, one
+//! assert and one method apart, which a symlink cannot join because a symlink cannot share a
+//! portion of a file. This is the join: the union of all three, seated where Tally already keeps
+//! the memory it lends, with `caravan/region.rye` now a symlink pointing here the way
+//! `tally_copy.rye` points at `tally/copy.rye` from twenty-two rooms.
+//!
+//! WHY HERE AND NOT IN CARAVAN. Every shared body in this tree is reached by symlinking *into*
+//! `tally/`, and nothing symlinks out of it. Reversing that for one module would leave two
+//! directions to learn where there was one.
+//!
+//! A FOLDED BODY'S OWN IMPORTS TRAVEL WITH IT, and this is the one sharp edge of the pattern. Zig
+//! resolves a bare-name `@import` against the directory the file was *opened* through, which for a
+//! symlinked body is the room that reached it rather than this one. So `tally/gardens.rye` gained
+//! `@import("region.rye")` and `comlink/discovery/table.rye` -- which reaches gardens through
+//! `comlink/discovery/tally_gardens.rye` -- stopped building, asking for
+//! `comlink/discovery/region.rye`. The repair is the symlink that room now carries beside its other
+//! four. **Folding a body that imports anything propagates a symlink to every room that reaches
+//! it**, which is why `tally/copy.rye` imports nothing but `std` and why this one does the same.
+//! A build caught it before a commit did; nothing shipped wrong.
+//!
+//! ONE BEHAVIOR CHANGED, and it is a strengthening rather than a fold. Caravan's copy asserted
+//! `buf.len > 0` at `init` and Tally's two did not, so this body keeps the stricter reading: a
+//! region over nothing is an allocator that can never allocate, and it is better named at
+//! construction than met later as an allocation that always fails.
+
+const std = @import("std");
+const assert = std.debug.assert;
+
+/// A length as the u32 every count in this module is kept in.
+pub fn buf_len_u32(buf: []const u8) u32 {
+    // invariant: the length casts to u32 on the next line, so a buffer past that ceiling would wrap
+    // rather than refuse
+    assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
+}
+
+/// The bounded region: one buffer, one cursor, and a refusal by name at the end of it.
+pub const Region = struct {
+    buf: []u8,
+    pos: u32,
+
+    pub fn init(buf: []u8) Region {
+        // invariant: a region opens over real memory, since a zero-length buffer would hand back an
+        // allocator that can never allocate
+        assert(buf.len > 0);
+        const r = Region{ .buf = buf, .pos = 0 };
+        // invariant: a region opens with its cursor inside the buffer it was handed, so the first
+        // allocation measures from a real position rather than past the end
+        assert(r.pos <= buf_len_u32(r.buf));
+        return r;
+    }
+
+    pub fn alloc(self: *Region, n: u32) error{OutOfBounds}![]u8 {
+        const cap = buf_len_u32(self.buf);
+        // invariant: the cursor sits inside the capacity before the allocation is measured from it
+        assert(self.pos <= cap);
+        if (n > cap - self.pos) return error.OutOfBounds;
+        const start: usize = @intCast(self.pos);
+        const end: usize = @intCast(self.pos + n);
+        // invariant: the requested end falls inside the buffer, which is the one check standing
+        // between a caller's size and a write past the region
+        assert(end <= self.buf.len);
+        const slice = self.buf[start..end];
+        self.pos += n;
+        // invariant: the allocation has landed when this runs, so it states that the cursor stayed
+        // inside the capacity
+        assert(self.pos <= cap);
+        return slice;
+    }
+
+    /// Carve a child region out of this one. The child owns its slice outright; the parent's
+    /// cursor has already moved past it, so the two can never handle the same byte.
+    pub fn divide(self: *Region, n: u32) error{OutOfBounds}!Region {
+        // invariant: a division of nothing would name a region that can never allocate, and saying
+        // so here costs one line where meeting it inside `init` would cost a caller a backtrace
+        assert(n > 0);
+        // invariant: the cursor sits inside the buffer before the child is measured out of it
+        assert(self.pos <= buf_len_u32(self.buf));
+        const slice = try self.alloc(n); // reuses the parent's own bounds check
+        // invariant: the child got exactly what was asked for, so its own capacity is the number
+        // the caller reasoned about rather than whatever was left
+        assert(slice.len == @as(usize, @intCast(n)));
+        const child = Region.init(slice);
+        // invariant: a child opens empty, so its first allocation starts at its own beginning
+        assert(child.pos == 0);
+        return child;
+    }
+
+    pub fn clear(self: *Region) void {
+        self.pos = 0;
+        // invariant: the cursor sits inside the buffer after it is reset, so a clear is proven to
+        // return a real region rather than to repair a broken one
+        assert(self.pos <= buf_len_u32(self.buf));
+    }
+
+    pub fn remaining(self: *const Region) u32 {
+        return buf_len_u32(self.buf) - self.pos;
+    }
+};
