@@ -338,8 +338,8 @@ document, a module's comments, or a design, and it answers one question in a for
 | Reading | Asks | How it is taken |
 |---|---|---|
 | **Register** | Does it lead with what is? | **Counted.** 100 minus the share of sentences carrying a negative -- the same reading the register meter gates, lifted from that scan rather than spelled beside it. |
-| **Reach** | Can the intended reader follow it? | **Counted.** Flesch-Kincaid grade and cross-references per hundred words, against the budget the setting carries. Ten points per whole unit over. |
-| **Truth** | Are its claims still honestly true? | **Half counted.** Counted: every relative path it cites, resolved as written, root-relative, or by the fold rule. Judged: whether a behavioral claim still holds, which only reading or running can say. |
+| **Reach** | Can the intended reader follow it? | **Counted.** Flesch-Kincaid grade and cross-references per hundred words, against the budget the setting carries. Ten points per whole unit over. An **index** is read as one -- see below. |
+| **Truth** | Are its claims still honestly true? | **Half counted.** Counted: every relative path it cites, resolved as written, root-relative, or by the fold rule. A **placeholder shape** is an illustration -- see below. Judged: whether a behavioral claim still holds, which only reading or running can say. |
 | **Service** | Does it help the work in front of us? | **Judged.** Read against the live card, `construction/ITINERARY.md`. The tool prints the inputs and stops there. |
 
 **Truth is a gate rather than a quarter.** Below 60 the whole card reads **F**, whatever the other
@@ -361,6 +361,42 @@ The fourth question generalizes cleanly past this tree. Any organization has a p
 working one, and an artifact that serves neither is the one worth finding. An employee at Acme
 Corporation reading this substitutes *the shipped product* for the first and *the working
 repository* for the second, and the question is the same question.
+
+### Two shapes the card reads rather than penalizes
+
+Both were added on `20260825`, and both come from one finding: **a meter that instructs a repair
+which would make the artifact worse is the thing to fix.** That sentence is the test to apply the
+next time a reading looks wrong -- ask what the number is telling a writer to do, and whether doing
+it would help anyone.
+
+**An index is read as an index.** A cross-reference budget of one per hundred words is written for
+prose. On an index the links *are* the content, so `docs/README.md` -- 10 words of prose carrying 5
+links -- read 50 per hundred words and floored its Reach at zero. The card was telling a writer to
+pad an index with prose until its denominator could carry its own rate.
+
+So the card reads a page's own declaration, under **two conditions rather than one**:
+
+1. The page **declares** itself an index in its **header** -- `**Depth:** routing`, or `**Kind:**`
+   naming an index. Header only, meaning the block above the first `---` rule.
+2. The page **measures** as one -- under **100 words** of prose, which is one full unit of the
+   denominator the rate is expressed in.
+
+Two conditions, because **a self-declared exemption is a door, and a door beside a wall makes the
+wall a habit.** The pair discriminated on real data before the code was written: of the living
+pages, four declare an index in their header, three carry 13, 13, and 10 words, and the fourth
+carries 193 and stays graded at an A. When both conditions hold, the density is **reported** on the
+card rather than scored, so a reader still sees it.
+
+**A placeholder shape is an illustration.** `date/YYYYMMDD/name` is a *shape*, with letters standing
+where digits would go, and [`../.claude/rules/stamp-and-name.md`](../.claude/rules/stamp-and-name.md)
+seats that spelling and asks for it by name. `construction/CHECKPOINTS.md` sat at Truth 60, one
+point off the F gate, for writing two of them correctly.
+
+Only the two runs that law spells inside a path shape count -- `YYYYMMDD` and `HHMMSS` -- and zero
+tracked paths in this tree carry either literally, so the reading can never swallow a real path. The
+other half is what keeps it a reading rather than an escape: **a fabricated stamp -- digits naming
+no file -- still costs twenty points**, which is exactly the failure the same law warns about. The
+control plants both halves, and pointed at the old rule it refuses 13 of its 17 new readings.
 
 ### The scale
 

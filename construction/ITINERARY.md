@@ -47,36 +47,34 @@ essay reasoned from it ([`../external-research/20260821-034037_the-bench-measure
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Season `20260809.024320` -- the old season marks are gone; their greens live in the code and in the dated counsel.*
 
-**Git nib:** `4b0b2b3e95` -- four reds from two roots: a sweep that edited two mirrors and a declared ceiling, and a library index counting a gitignored build cache as tree content.
+**Git nib:** `d1ee9ff914` -- the report card learns two blessed constructions; the door roster's below-B ceiling falls to zero by measurement.
 
-**Now.** **Four reds from two roots, both closed on metal.** The cold roster opened `guards_red=4`.
-`document_mirror` and `declared_ceiling` traced to one sweep -- `e9582afd36` gave 110 room READMEs a
-three-line way home, and two of those paths were **mirrors** while a third carried a **declared
-ceiling** (REDS %217). `geode_libraries` and `generated_page_freshness` traced to the other: the
-library index counted modules with `find`, so the `glow` row published **238** where the tree keeps
-**130**, the other 108 being a gitignored build cache. The count asks `git check-ignore` now, and a
-new control proves it on real repositories four ways -- pointed at the old rule it **refuses three
-and passes the one that should** (REDS %216).
+**Now.** **The report card's two misreadings, both closed on metal.** A meter that instructs a
+repair which would make the artifact worse is the thing to fix, and this one did it twice.
+**Reach** scored an index's link density against a budget written for prose, so `docs/README.md` --
+10 words, 5 links -- floored at zero and the only repair on offer was padding an index with prose.
+The card now reads a page's own declaration under **two conditions**: declared in its header
+(`**Depth:** routing`, `**Kind:** ... index`) **and** under 100 words of prose, one full unit of the
+denominator the rate is expressed in. Measured before writing a line: four living pages declare, three
+carry 13, 13, and 10 words, and `docs-geode/edu/README.md` carries 193 and **stays graded at an A**.
+**Truth** charged `construction/CHECKPOINTS.md` forty points for two placeholder shapes
+(`date/YYYYMMDD/name`) the stamp-and-name law seats and asks for by name; only `YYYYMMDD` and
+`HHMMSS` count, zero tracked paths carry either literally, and a **fabricated** stamp still costs
+twenty. The door roster reads **12 of 12 at B or better, ceiling 0**, with no page rewritten.
+Forty-four behaviors in the control; pointed at the old rule it refuses **13 of the 17** new
+readings and passes exactly the 4 that describe behavior which must not change. Argument:
+[the two-condition form](../active-designing/20260825-034444_a-declaration-is-not-an-exemption.md).
 
-**The next door, measured rather than swept.** The report card's **Reach** reading has no honest
-denominator on a page that is mostly a table. It strips tables and bullets, correctly, then divides
-links by whatever prose survives: `docs/README.md` scores **0** from **one line** carrying 5 links
-and 10 words, and `docs-geode/libraries/README.md` -- generated, and proven GREEN by its own witness
-this lap -- reads **F** on 13 words. Of **130 living pages read, 63 carry under 100 words**, so half
-the population has a per-hundred rate extrapolated from under one unit of its own denominator; **11
-score exactly zero**, `docs/ZETA.md` on 2 words. The door roster's below-B ceiling of **1** is that
-artifact and nothing else. **A meter that instructs a repair which would make the artifact worse is
-the thing to fix**, and this one is ten corrections deep, so it takes its own round with a control
-planted both ways rather than a patch at a long lap's end (the %213 precedent).
-Its **Truth** half misreads a second blessed construction: `CHECKPOINTS.md` sits at **60**, one
-point off the F gate, because two *placeholder shapes* -- `date/YYYYMMDD/name` -- count as broken
-links, and the stamp-and-name law seats that spelling. Two readings, one round.
+**The next doors, measured this lap rather than guessed.** **Register carries the same denominator
+fault one reading over** -- `docs-geode/libraries/README.md` reads Register **0** off a single
+surviving sentence, which is why both `crushed index` pages sit at C+. **The card is a document
+meter and says so nowhere**: pointed at `qa_report_card_control.sh` it reads F on 30 of 30 paths
+that are planted heredoc fixtures. Beside it, a real but tiny asymmetry -- Reach skips fenced code
+blocks and Truth does not, worth **5 links across 4 unrostered files**.
 
 **Still open:** **20 caravan blocks stay uncovered on purpose** -- `bounded`, `chain`, and `twin`
 share a byte-identical region body, so a comment costs triple against a zero-slack ratchet, and the
 fold wants its own round. The invariant arc walks back at checkpoint `20260825.031305`.
-
-**Landed, and the detail is in the logs**, one line each in *Prior laps* below.
 
 ---
 ## Landed arcs
@@ -241,7 +239,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260825.031428` | Four reds, two roots -- a sweep that edited two mirrors and a declared ceiling; an index counting a build cache (%216, %217) | [log](../session-logs/20260825-031428_four-reds-from-two-roots.kyri) |
+| `20260825.034444` | The report card reads an index as one and a placeholder as an illustration; door ceiling 1 -> 0 | [log](../session-logs/20260825-034444_a-declaration-is-not-an-exemption.kyri) |
 
 Walk back to any of them with `git log --oneline` and the session log of the same stamp.
 
